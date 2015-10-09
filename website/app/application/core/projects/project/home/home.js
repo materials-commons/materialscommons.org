@@ -5,10 +5,28 @@
     function ProjectHomeController(project, $filter) {
         var ctrl = this;
         ctrl.project = project;
-
         var columnDefs = [
             {headerName: "Name", field: "name"},
-            {headerName: "Owner", field: "owner"}
+            {
+                headerName: "Composition", field: "composition",
+                cellRenderer: function(params){
+                    var measure = '';
+                    params.data.properties.forEach(function(property){
+                        if (property.attribute === 'composition'){
+                            measure =  property.best_measure[0];
+                        }
+                    });
+                    if (measure !== ''){
+                        return  measure.element + ': ' + measure.value+ ' '+measure.unit;
+                    } else{
+                        return '-';
+                    }
+
+                }
+            },
+            {headerName: "Owner", field: "owner"},
+            {headerName: "Description", field: "description"},
+            {headerName: "Files", field: "files"}
         ];
 
         var samples = $filter('orderBy')(ctrl.project.samples, 'name');

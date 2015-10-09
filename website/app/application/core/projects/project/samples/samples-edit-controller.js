@@ -116,7 +116,6 @@
                 } else {
                     $scope.current = $scope.project.samples[0];
                 }
-
                 getMeasurements($scope.current.id);
             }
         }
