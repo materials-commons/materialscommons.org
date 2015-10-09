@@ -138,7 +138,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: "/edit/:file_id",
             templateUrl: "application/core/projects/project/files/edit.html",
             controller: "FilesEditController",
-            controllerAs: 'file',
+            controllerAs: 'ctrl',
             resolve: {
                 file: ["$stateParams", "Restangular",
                     function ($stateParams, Restangular) {
