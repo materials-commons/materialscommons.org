@@ -150,6 +150,27 @@ module.exports = function(r) {
         this.sample_id = sampleID;
     }
 
+    function Note(title, note, projectID, owner) {
+        let now = r.now();
+        this.title = title;
+        this.note = note;
+        this.project_id = projectID;
+        this.owner = owner;
+        this.mtime = now;
+        this.birthtime = now;
+    }
+
+    function Note2Item(itemID, itemType, noteID) {
+        this.item_id = itemID;
+        this.item_type = itemType;
+        this.note_id = noteID;
+    }
+
+    function Tag2Item(tagID, itemID, itemType) {
+        this.tag_id = tagID;
+        this.item_type = itemType;
+        this.item_id = itemID;
+    }
 
     return {
         Sample: Sample,
@@ -171,6 +192,9 @@ module.exports = function(r) {
         Project2Sample: Project2Sample,
         Sample2PropertySet: Sample2PropertySet,
         BestMeasureHistory: BestMeasureHistory,
-        Sample2Datafile: Sample2Datafile
+        Sample2Datafile: Sample2Datafile,
+        Note: Note,
+        Note2Item: Note2Item,
+        Tag2Item: Tag2Item
     };
 };

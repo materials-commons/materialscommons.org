@@ -1,0 +1,18 @@
+<div>
+    <ul class="list-inline">
+        <li><h4 class="text-uppercase section">description</h4></li>
+        <li ng-if="!ctrl.editDescription">
+            <a ng-click="ctrl.editDescription = true" class="text-small">
+                edit
+            </a>
+        </li>
+    </ul>
+
+    <p ng-if="!ctrl.editDescription">{{ctrl.file.description}}</p>
+
+    <div ng-if="ctrl.editDescription">
+        <textarea rows="4" class="col-xs-12" ng-model="ctrl.description"></textarea>
+        <button class="btn btn-primary" ng-click="ctrl.save()">save</button>
+        <button class="btn btn-danger" ng-click="ctrl.cancel()">cancel</button>
+    </div>
+</div>

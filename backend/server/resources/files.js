@@ -4,7 +4,8 @@ module.exports = function(files) {
 
     return {
         get: get,
-        put: put
+        put: put,
+        deleteFile
     };
 
     ///////////////////
@@ -19,7 +20,18 @@ module.exports = function(files) {
     // at the files.put method.
     function* put(next) {
         let file = yield parse(this);
-        let rv = yield files.put(this.params.file_id, file);
+        let rv = yield files.put(this.params.file_id, this.params.project_id, this.reqctx.user.id, file);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
+        }
+        this.body = rv.val;
+        yield next;
+    }
+
+    // deleteFile will attempt to delete the named file.
+    function* deleteFile(next) {
+        console.log('deleteFile in resources called');
+        let rv = yield files.deleteFile(this.params.file_id);
         if (rv.error) {
             this.throw(httpStatus.BAD_REQUEST, rv.error);
         }
