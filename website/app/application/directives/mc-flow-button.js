@@ -9,7 +9,7 @@
             scope: {
                 dir: "=dir"
             },
-            template: "<span style='color: #389dc1; cursor: pointer' title='Upload to directory'><i class='fa fa-fw fa-upload'></i></span>",
+            template: "<span style='color: #64b5f6 ;cursor: pointer' title='Upload to directory' class='heading-label text-uppercase'>upload files</span>",
             link: function (scope, element, attrs) {
                 var flow = mcFlow.get();
                 var isDirectory = attrs.hasOwnProperty('flowDirectory');
@@ -88,10 +88,11 @@
                         // When new files are added, simply append them to the overall list
                         input.addEventListener('change', function (e) {
                             var project = current.project();
+                            console.dir(scope.dir);
                             each(e.target.files, function (f) {
                                 var req = {
                                     project_id: project.id,
-                                    directory_id: scope.dir.datafile_id,
+                                    directory_id: scope.dir.data.id,
                                     filename: f.name,
                                     filesize: f.size,
                                     chunk_size: flow.opts.chunkSize,
@@ -113,8 +114,8 @@
                                                 id: resp.request_id,
                                                 file: f,
                                                 attrs: {
-                                                    directory_name: scope.dir.name,
-                                                    directory_id: scope.dir.datafile_id,
+                                                    directory_name: scope.dir.data.name,
+                                                    directory_id: scope.dir.data.id,
                                                     project_id: project.id,
                                                     project_name: project.name
                                                 }
