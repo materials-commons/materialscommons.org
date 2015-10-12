@@ -11,8 +11,6 @@
 
         ctrl.project = project;
         ctrl.template = template;
-        console.log('edit controller');
-        console.dir(ctrl.template);
 
         function cancel() {
             $state.go('projects.project.processes.list.view');

@@ -293,22 +293,36 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         .state("projects.project.samples", {
             url: "/samples",
             templateUrl: "application/core/projects/project/samples/samples.html",
-            controller: "SamplesController"
-        })
-        .state("projects.project.samples.all", {
-            url: "/all",
-            templateUrl: "application/core/projects/project/samples/all.html",
-            controller: "SamplesAllController"
-        })
-        .state("projects.project.samples.all.edit", {
-            url: "/edit/:sample_id",
-            templateUrl: "application/core/projects/project/samples/edit.html",
-            controller: "SamplesEditController"
+            controller: "SamplesController",
+            controllerAs: "ctrl",
+            resolve: {
+                samples: ["project",
+                    function (project, ProcessList, Restangular) {
+                        return project.samples;
+                    }]
+            }
         })
         .state("projects.project.samples.edit", {
             url: "/edit/:sample_id",
             templateUrl: "application/core/projects/project/samples/edit.html",
-            controller: "SamplesEditController"
+            controller: "SamplesEditController",
+            controllerAs: "ctrl",
+            resolve: {
+                //At this point we have a sample object with properties and best measure.
+                // So, to get other measures Restangular call is made
+                sample: ["$stateParams", "Restangular", "samples",
+                    function ($stateParams, Restangular, samples) {
+                        if ($stateParams.sample_id) {
+                            var sample_id = $stateParams.sample_id;
+                        } else {
+                            if (samples.length > 0) {
+                                sample_id = samples[0].id;
+                            }
+                        }
+                        return Restangular.one('sample').one('details', sample_id).get();
+                    }
+                ]
+            }
         });
 
     $urlRouterProvider.otherwise('/home');
