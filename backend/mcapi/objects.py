@@ -167,7 +167,6 @@ def get_process_details(process_id):
                 .eq_join('datafile_id', r.table('datafiles'))
                 .zip()
                 .coerce_to('array'),
-
                 'files_produced': r.table('process2file')
                 .get_all(process['id'],
                 index='process_id').filter({
@@ -177,3 +176,42 @@ def get_process_details(process_id):
                 .coerce_to('array')
         }).run(g.conn, time_format="raw"))
     return resp.to_json(p)
+
+
+@app.route('/sample/details/<sample_id>', methods=['GET'])
+@apikey
+@jsonp
+def get_sample_details(sample_id):
+    s = list(r.table('samples').get_all(sample_id, index='id')
+        .merge(lambda sample:
+            {
+                'property_sets': r.table('sample2propertyset')
+                .get_all(sample_id, index='sample_id')
+                .merge(lambda row:
+                    {
+                        'processes': r.table('process2sample')
+                        .get_all(row['property_set_id'], index='property_set_id')
+                        .eq_join('process_id', r.table('processes')).zip()
+                        .pluck('process_id', 'name', 'does_transform',
+                        'process_type', 'direction').coerce_to('array'),
+
+                        'properties': r.table('propertyset2property')
+                        .get_all(row['property_set_id'], index= 'property_set_id')
+                        .eq_join('property_id', r.table('properties')).zip()
+                        .order_by('name')
+                        .merge(lambda property:
+                        {
+                            'best_measure': r.table('best_measure_history')\
+                                .get_all(property['best_measure_id'])
+                                .eq_join('measurement_id',
+                                r.table('measurements')).zip()
+                                .coerce_to('array'),
+
+                            'measurements': r.table('property2measurement')
+                                .get_all(property['id'], index="property_id")
+                                .eq_join('measurement_id', r.table('measurements')).zip()
+                                .coerce_to('array')
+                        }).coerce_to('array')
+                    }).coerce_to('array')
+            }).run(g.conn, time_format="raw"))
+    return resp.to_json(s)

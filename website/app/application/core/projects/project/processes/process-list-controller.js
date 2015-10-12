@@ -10,9 +10,11 @@
 
         ctrl.processes = processes;
         ctrl.project = project;
-        ctrl.current = {};
-
-         function viewProcess(process) {
+        ctrl.current = processes[0];
+        if (processes.length > 0) {
+            $state.go('projects.project.processes.list.view.setup', {process_id: ctrl.current.id});
+        }
+        function viewProcess(process) {
             ctrl.current = process;
             $state.go('projects.project.processes.list.view.setup', {process_id: ctrl.current.id});
         }
