@@ -193,7 +193,14 @@ def get_sample_details(sample_id):
                         .get_all(row['property_set_id'], index='property_set_id')
                         .eq_join('process_id', r.table('processes')).zip()
                         .pluck('process_id', 'name', 'does_transform',
-                        'process_type', 'direction').coerce_to('array'),
+                        'process_type', 'direction')
+                        .merge(lambda process:
+                        {
+                            'measurements': r.table('process2measurement')
+                                .get_all(process['process_id'], index="process_id")
+                                .eq_join('measurement_id', r.table('measurements')).zip()
+                                .coerce_to('array')
+                        }).coerce_to('array'),
 
                         'properties': r.table('propertyset2property')
                         .get_all(row['property_set_id'], index= 'property_set_id')
