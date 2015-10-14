@@ -1,24 +1,45 @@
-<div class="tab-pane">
-    <div class="row">
-        <div class="row">
-            <div class="col-xs-5" ng-repeat="set in ctrl.sample.property_sets | reverse">
-                <div class="row" ng-repeat="process in set.processes">
-                    {{process.name}}
-                </div>
-            </div>
-        </div>
-        <hr/>
-        <div class="col-xs-5" ng-repeat="set in ctrl.sample.property_sets | reverse">
-            <div ng-repeat="property in set.properties | orderBy: 'name'">
-                {{property.name}} :
-                <div style="padding-left: 30px;" ng-repeat="measure in property.measurements">{{measure.value}}
-                    {{measure.unit}}
-                </div>
-                <br>
-
-                <div ng-if="property.measurements.length === 0"><br></div>
-            </div>
+<div class="row tab-pane">
+    <div class="col-xs-12 card" style="overflow-x: scroll;">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width:30%" ng-repeat="set in ctrl.sample.property_sets">
+                    <div ng-repeat="process in set.processes">
+                        <i class="fa fa-fw fa-code-fork"></i> {{process.name}}
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td style="width:30%" ng-repeat="set in ctrl.sample.property_sets">
+                    <div ng-repeat="property in set.properties | orderBy: 'name'">
+                        {{property.name}} :
+                        <span ng-if="property.best_measure.length !== 0">
+                                  <display-measurement display-inline="true" current-process="true" project="ctrl.project"
+                                                       measure="property.best_measure[0]"></display-measurement>
+                        </span>
+                        <a style="padding-left: 10px;" class="underline" ng-click="ctrl.measurements(property)"><i
+                                tooltip="Edit Best Measure" class="fa fa-fw fa-edit"></i></a>
+                        </span>
+                        <div class="row">
+                            Measurements : <span ng-if="property.measurements.length === 0">--None--</span>
+                            <ul style="list-style-type: circle;">
+                                <li ng-repeat="measure in property.measurements">
+                                    <div>
+                                        <display-measurement current-process="true" project="ctrl.project"
+                                                             measure="measure"></display-measurement>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-if="ctrl.sample.property_sets.length === 0">
+            No Measurements
         </div>
     </div>
-
 </div>
