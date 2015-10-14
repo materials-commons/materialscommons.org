@@ -989,7 +989,7 @@ header {
 }
 
 .section-as-margin {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .no-bottom-margin {
@@ -1145,7 +1145,7 @@ hr.heading-label {
   margin-right: 10px;
 }
 
-.content-tab .nav-tabs{
+.content-tab .nav-tabs {
   border-bottom: 1px solid #428BCA;
 }
 
@@ -1175,7 +1175,7 @@ hr.heading-label {
 }
 
 .card-side-bar .list-group-item {
-  height: 90px;
+  height: 100px;
   border-radius: 0;
 }
 
@@ -1208,7 +1208,11 @@ hr.heading-label {
 }
 
 .truncate-text {
-  max-height: 20px;
+  max-height: 40px;
   overflow: hidden;
   height: auto;
+}
+
+.display-inline{
+  display: inline-block;
 }

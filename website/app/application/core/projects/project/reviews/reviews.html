@@ -54,7 +54,7 @@
                             <span class="space-left"><i class="fa fa-fw fa-code-fork process"></i>{{(r.attachments | byKey: 'type': 'process').length}} </span>
                             <span class="space-left"><i class="fa fa-fw fa-files-o file"></i>{{(r.attachments | byKey: 'type': 'file').length}}    </span>
                             <span class="space-left"><i class="fa fa-fw fa-comments-o review"></i>{{r.messages.length}}  </span>
-                            <span class="space-left small pull-right">Last commented by: {{r.messages[r.messages.length -1 ].who}}</span>
+                            <span class="space-left pull-right">Last commented by: {{r.messages[r.messages.length -1 ].who}}</span>
                         </div>
                     </li>
                 </ul>
