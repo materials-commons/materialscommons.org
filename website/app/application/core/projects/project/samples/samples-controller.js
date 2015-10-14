@@ -5,9 +5,7 @@
         var ctrl = this;
         ctrl.project = project;
         ctrl.viewSample = viewSample;
-
         ctrl.samples = samples;
-
         if (ctrl.samples.length !== 0) {
             var sortedSamples = $filter('orderBy')(ctrl.samples, 'name');
             ctrl.current = sortedSamples[0];

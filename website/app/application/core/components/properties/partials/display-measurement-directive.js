@@ -8,7 +8,8 @@
                 measure: '=measure',
                 currentProcess: '=',
                 project: '=project',
-                editMeasure: '='
+                editMeasure: '=',
+                displayInline: '='
             },
             templateUrl: 'application/core/components/properties/partials/display-measurement.html'
         };
@@ -17,7 +18,6 @@
     module.controller("displayMeasurementDirectiveController", displayMeasurementDirectiveController);
     displayMeasurementDirectiveController.$inject = ["$scope", "$modal", "modalInstance"];
     function displayMeasurementDirectiveController($scope, $modal, modalInstance) {
-
         $scope.openProcess = function (processID) {
             var i = _.indexOf($scope.project.processes, function (proc) {
                 return proc.id == processID;

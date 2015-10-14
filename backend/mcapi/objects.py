@@ -193,7 +193,7 @@ def get_sample_details(sample_id):
                         .get_all(row['property_set_id'], index='property_set_id')
                         .eq_join('process_id', r.table('processes')).zip()
                         .pluck('process_id', 'name', 'does_transform',
-                        'process_type', 'direction')
+                        'process_type', 'direction').filter({'direction': 'out'})
                         .merge(lambda process:
                         {
                             'measurements': r.table('process2measurement')
@@ -219,6 +219,12 @@ def get_sample_details(sample_id):
                                 .eq_join('measurement_id', r.table('measurements')).zip()
                                 .coerce_to('array')
                         }).coerce_to('array')
-                    }).coerce_to('array')
+                    }).coerce_to('array'),
+                'linked_files': r.table('sample2datafile')
+                .get_all(sample_id,index='sample_id').eq_join('datafile_id',
+                r.table('datafiles')).zip().coerce_to('array'),
+                'processes': r.table('process2sample')
+                .get_all(sample_id, index='sample_id').eq_join('process_id',
+                r.table('processes')).zip().filter({'direction': 'in'}).coerce_to('array')
             }).run(g.conn, time_format="raw"))
     return resp.to_json(s)
