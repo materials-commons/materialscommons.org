@@ -95,7 +95,8 @@
                 }
             };
 
-            //$state.go('projects.project.files.all.edit', {file_id: ctrl.files[0].datafile_id, file_type: 'datadir'});
+            console.dir(ctrl.files[0]);
+            //$state.go('projects.project.files.all.dir', {dir_id: ctrl.files[0].id});
         }
 
         function rowClicked(params) {
