@@ -1,18 +1,16 @@
 <div class="row tab-pane">
-    <div class="col-xs-12 card" style="overflow-x: scroll;">
+    <div class="col-xs-12" style="overflow-x: scroll;">
         <table class="table">
             <thead>
-            <tr>
-                <th style="width:30%" ng-repeat="set in ctrl.sample.property_sets">
+                <th style="padding:30px;" ng-repeat="set in ctrl.sample.property_sets">
                     <div ng-repeat="process in set.processes">
                         <i class="fa fa-fw fa-code-fork"></i> {{process.name}}
                     </div>
                 </th>
-            </tr>
             </thead>
             <tbody>
             <tr>
-                <td style="width:30%" ng-repeat="set in ctrl.sample.property_sets">
+                <td  style="padding:30px;" ng-repeat="set in ctrl.sample.property_sets">
                     <div ng-repeat="property in set.properties | orderBy: 'name'">
                         {{property.name}} :
                         <span ng-if="property.best_measure.length !== 0">
@@ -23,7 +21,7 @@
                                 tooltip="Edit Best Measure" class="fa fa-fw fa-edit"></i></a>
                         </span>
                         <div class="row">
-                            Measurements : <span ng-if="property.measurements.length === 0">--None--</span>
+                            Measurements : <span ng-if="property.measurements.length === 0">--None--<br><br></span>
                             <ul style="list-style-type: circle;">
                                 <li ng-repeat="measure in property.measurements">
                                     <div>
@@ -32,6 +30,7 @@
                                     </div>
                                 </li>
                             </ul>
+                            <br>
                         </div>
                     </div>
                 </td>
