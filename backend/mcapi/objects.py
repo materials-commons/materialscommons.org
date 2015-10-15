@@ -225,6 +225,18 @@ def get_sample_details(sample_id):
                 r.table('datafiles')).zip().coerce_to('array'),
                 'processes': r.table('process2sample')
                 .get_all(sample_id, index='sample_id').eq_join('process_id',
-                r.table('processes')).zip().filter({'direction': 'in'}).coerce_to('array')
+                r.table('processes')).zip().filter({'direction': 'in'})
+                .merge(lambda process:
+                {
+                    'setup': r.table('process2setup')
+                    .get_all(process['id'], index='process_id')
+                    .eq_join("setup_id", r.table("setups")).zip()
+                    .merge(lambda setup: {
+                        'properties':
+                        r.table('setupproperties')
+                        .get_all(setup['setup_id'], index="setup_id")
+                        .coerce_to('array')
+                        }).coerce_to('array')
+                }).coerce_to('array')
             }).run(g.conn, time_format="raw"))
     return resp.to_json(s)

@@ -28,10 +28,10 @@
                         <measurements-tab sample="ctrl.sample" project="ctrl.project"></measurements-tab>
                     </div>
                     <div ng-show="ctrl.isSet('files')">
-                        <files-tab current="current.files"></files-tab>
+                        <files-tab files="ctrl.sample.linked_files"></files-tab>
                     </div>
                     <div ng-show="ctrl.isSet('processes')">
-                        <processes-tab></processes-tab>
+                        <processes-tab sample="ctrl.sample"></processes-tab>
                     </div>
                 </div>
             </div>
