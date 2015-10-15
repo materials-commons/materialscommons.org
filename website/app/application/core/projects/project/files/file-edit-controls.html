@@ -1,12 +1,13 @@
 <ul class="list-inline no-bottom-margin">
     <li>
         <h3 class="file-color" ng-if="!ctrl.renameActive"><i class="fa fa-fw fa-file"></i> {{ctrl.file.name}}</h3>
-                <span ng-if="ctrl.renameActive">
-                    <input type="text" class="section-as-margin" ng-model="ctrl.newName" on-enter="ctrl.renameFile()">
-                    <button class="btn btn-files" ng-click="ctrl.renameFile()">Done</button>
-                    <button class="btn btn-danger" ng-click="ctrl.newName = ctrl.file.name; ctrl.renameActive = false">Cancel
-                    </button>
-                </span>
+            <span ng-if="ctrl.renameActive">
+                <input type="text" class="section-as-margin" ng-model="ctrl.newName" on-enter="ctrl.renameFile()">
+                <button class="btn btn-files" ng-click="ctrl.renameFile()">Done</button>
+                <button class="btn btn-danger" ng-click="ctrl.newName = ctrl.file.name; ctrl.renameActive = false">
+                    Cancel
+                </button>
+            </span>
     </li>
     <li ng-if="!ctrl.renameActive">
         <a ng-click="ctrl.renameActive = !ctrl.renameActive" class="heading-label text-uppercase">rename</a>
@@ -18,7 +19,17 @@
             download
         </a>
     </li>
-    <li ng-if="!ctrl.renameActive">
+    <li ng-if="!ctrl.renameActive" class="dropdown">
+        <a class="heading-label text-uppercase dropdown-toggle" data-toggle="dropdown">
+            link to<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a class="heading-label text-uppercase">process</a></li>
+            <li><a class="heading-label text-uppercase">sample</a></li>
+            <li><a class="heading-label text-uppercase">note</a></li>
+        </ul>
+    </li>
+    <li ng-if="!ctrl.renameActive" class="dropdown">
         <a ng-click="ctrl.deleteFile()" class="heading-label text-uppercase text-danger">delete</a>
     </li>
 </ul>
