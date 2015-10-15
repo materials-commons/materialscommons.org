@@ -1166,7 +1166,7 @@ hr.heading-label {
 
 .content-tab .table > tbody > tr > td {
   height: 240px;
-  width: 50%;
+  /*width: 50%;*/
 }
 
 .content-tab .table > tbody > tr > td > .overflow {
@@ -1213,6 +1213,6 @@ hr.heading-label {
   height: auto;
 }
 
-.display-inline{
+.display-inline {
   display: inline-block;
 }
