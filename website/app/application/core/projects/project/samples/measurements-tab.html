@@ -12,13 +12,11 @@
             <tr>
                 <td class="padding-measure" ng-repeat="set in ctrl.sample.property_sets">
                     <div ng-repeat="property in set.properties | orderBy: 'name'">
-                        {{property.name}} :
+                        <a class="underline" ng-click="ctrl.measurements(property)"><i
+                                tooltip="Edit Best Measure" class="fa fa-fw fa-edit"></i></a>{{property.name}} :
                         <span ng-if="property.best_measure.length !== 0">
                                   <display-measurement display-inline="true" current-process="true" project="ctrl.project"
                                                        measure="property.best_measure[0]"></display-measurement>
-                        </span>
-                        <a style="padding-left: 10px;" class="underline" ng-click="ctrl.measurements(property)"><i
-                                tooltip="Edit Best Measure" class="fa fa-fw fa-edit"></i></a>
                         </span>
                         <div class="row">
                             Measurements : <span ng-if="property.measurements.length === 0">--None--<br><br></span>
