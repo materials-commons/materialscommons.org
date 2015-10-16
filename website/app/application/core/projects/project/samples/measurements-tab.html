@@ -1,8 +1,8 @@
 <div class="row tab-pane">
-    <div class="col-xs-12" style="overflow-x: scroll;">
+    <div class="col-xs-12 measurements-tab">
         <table class="table">
             <thead>
-                <th style="padding:30px;" ng-repeat="set in ctrl.sample.property_sets">
+                <th class="padding-process" ng-repeat="set in ctrl.sample.property_sets">
                     <div ng-repeat="process in set.processes">
                         <i class="fa fa-fw fa-code-fork"></i> {{process.name}}
                     </div>
@@ -10,7 +10,7 @@
             </thead>
             <tbody>
             <tr>
-                <td  style="padding:30px;" ng-repeat="set in ctrl.sample.property_sets">
+                <td class="padding-measure" ng-repeat="set in ctrl.sample.property_sets">
                     <div ng-repeat="property in set.properties | orderBy: 'name'">
                         {{property.name}} :
                         <span ng-if="property.best_measure.length !== 0">

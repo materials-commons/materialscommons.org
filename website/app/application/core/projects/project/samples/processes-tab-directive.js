@@ -19,7 +19,5 @@
 
     function processesTabDirectiveController() {
         var ctrl = this;
-        console.log("here is ");
-        console.dir(ctrl.sample);
     }
 }(angular.module('materialscommons')));
