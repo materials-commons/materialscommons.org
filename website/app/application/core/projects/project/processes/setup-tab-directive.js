@@ -19,7 +19,5 @@
 
     function setupTabDirectiveController() {
         var ctrl = this;
-        console.log("here is ");
-        console.dir(ctrl.setup);
     }
 }(angular.module('materialscommons')));

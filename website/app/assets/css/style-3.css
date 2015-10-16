@@ -1216,3 +1216,20 @@ hr.heading-label {
 .display-inline {
   display: inline-block;
 }
+
+.measurements-tab{
+  overflow-x: scroll;
+}
+
+.measurements-tab .padding-process{
+  padding: 30px;
+}
+
+.measurements-tab .padding-measure{
+  padding: 30px;
+}
+
+.space-left{
+  padding-left:10px;
+}
+
