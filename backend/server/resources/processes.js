@@ -28,6 +28,10 @@ module.exports = function (processes, schema) {
         yield next;
     }
 
+    function* getList(next) {
+        yield next;
+    }
+
     // create creates a new process and associated dependencies.
     // It validates the submitted entry and enters in default
     // values for optional missing attributes.

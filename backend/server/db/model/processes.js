@@ -20,6 +20,7 @@ module.exports = function (r) {
         update: update,
         create: create,
         get: get,
+        getList: getList,
         r: r
     };
 
@@ -86,6 +87,10 @@ module.exports = function (r) {
 
     function* get(processID) {
         return {error: "Not implemented"};
+    }
+
+    function* getList(projectID) {
+
     }
 
     /**
