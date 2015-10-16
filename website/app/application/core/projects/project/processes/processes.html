@@ -1,14 +1,45 @@
 <div>
     <div class="row">
-        <div class="col-xs-12 details-container processes-container">
-            <nav class="navbar navbar-default">
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a>All</a></li>
-                    </ul>
+        <div class="row">
+            <div class="col-xs-4 card card-dark card-left card-side-bar">
+                <div class="row">
+                    <div class="card-header text-center">
+                        <button ui-sref="projects.project.processes.create"
+                                class="btn-review btn btn-default btn-attention"> create
+                        </button>
+                    </div>
                 </div>
-            </nav>
-        </div>
-        <div ui-view></div>
+
+                <ul ng-if="ctrl.processes.length !== 0" class="list-group">
+                    <li class="list-group-item pointer"
+                        ng-repeat="p in ctrl.processes"
+                        ng-class="{active: ctrl.current.id === p.id}"
+                        ng-click="ctrl.viewProcess(p)">
+                        <b class="list-group-item-heading">{{p.name | limitTo: 40 }}</b>
+                        <div class="truncate-text" ta-bind ng-model="p.what" class="small"></div>
+                        <div class="row small" style="padding-top: 5px;">
+                            <span class="space-left"><i class="fa fa-fw fa-cubes sample"></i>{{(p.samples).length}}</span>
+                            <span class="space-left"><i class="fa fa-fw fa-files-o file"></i>{{p.files_used.length + p.files_produced.length}}    </span>
+                        </div>
+                    </li>
+                </ul>
+
+                <h4 ng-if="ctrl.processes.length === 0" class="text-center text-uppercase">
+                    - No Processes -
+                 </h4>
+            </div>
+            <div class="col-xs-8 card-right no-padding">
+                <div ui-view></div>
+            </div>
+        <!--<div class="col-xs-12 details-container processes-container">-->
+            <!--<nav class="navbar navbar-default">-->
+                <!--<div class="collapse navbar-collapse">-->
+                    <!--<ul class="nav navbar-nav">-->
+                        <!--<li class="active"><a>All</a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</nav>-->
+        <!--</div>-->
+        <!--<div ui-view></div>-->
     </div>
 </div>
