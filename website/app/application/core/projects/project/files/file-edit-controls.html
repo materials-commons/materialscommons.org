@@ -10,26 +10,26 @@
             </span>
     </li>
     <li ng-if="!ctrl.renameActive">
-        <a ng-click="ctrl.renameActive = !ctrl.renameActive" class="heading-label text-uppercase">rename</a>
+        <a ng-click="ctrl.renameActive = !ctrl.renameActive" class="text-uppercase">rename</a>
     </li>
     <li ng-if="!ctrl.renameActive">
         <a ng-href="{{ctrl.downloadSrc()}}"
-           class="heading-label text-uppercase"
+           class="text-uppercase small"
            download="{{ctrl.file.name}}">
             download
         </a>
     </li>
     <li ng-if="!ctrl.renameActive" class="dropdown">
-        <a class="heading-label text-uppercase dropdown-toggle" data-toggle="dropdown">
+        <a class="text-uppercase dropdown-toggle small" data-toggle="dropdown">
             link to<span class="caret"></span>
         </a>
         <ul class="dropdown-menu" role="menu">
-            <li><a class="heading-label text-uppercase">process</a></li>
-            <li><a class="heading-label text-uppercase">sample</a></li>
-            <li><a class="heading-label text-uppercase">note</a></li>
+            <li><a class="text-uppercase" ng-click="ctrl.linkTo('processes')">processes</a></li>
+            <li><a class="text-uppercase" ng-click="ctrl.linkTo('samples')">samples</a></li>
+            <li><a class="text-uppercase" ng-click="ctrl.linkTo('notes')">notes</a></li>
         </ul>
     </li>
     <li ng-if="!ctrl.renameActive" class="dropdown">
-        <a ng-click="ctrl.deleteFile()" class="heading-label text-uppercase text-danger">delete</a>
+        <a ng-click="ctrl.deleteFile()" class="text-uppercase text-danger small">delete</a>
     </li>
 </ul>
