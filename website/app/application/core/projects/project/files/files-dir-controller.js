@@ -1,17 +1,13 @@
-(function(module) {
+(function (module) {
     module.controller('DirController', DirController);
-    DirController.$inject = [];
+    DirController.$inject = ['$stateParams', 'project', 'gridFiles'];
 
     /* @ngInject */
-    function DirController() {
+    function DirController($stateParams, project, gridFiles) {
         var ctrl = this;
 
-        init();
-
-        /////////////////
-
-        function init() {
-
-        }
+        var entry = gridFiles.findEntry(project.files[0], $stateParams.dir_id);
+        ctrl.dir = entry.model;
+        ctrl.project = project;
     }
 }(angular.module('materialscommons')));

@@ -7,7 +7,8 @@ module.exports = function (processes, schema) {
     return {
         update: update,
         create: create,
-        get: get
+        get: get,
+        getList: getList
     };
 
     /////////////////////////
@@ -25,6 +26,10 @@ module.exports = function (processes, schema) {
 
 
     function* get(next) {
+        yield next;
+    }
+
+    function* getList(next) {
         yield next;
     }
 
