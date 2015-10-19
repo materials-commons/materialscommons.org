@@ -33,10 +33,13 @@
             switch (what) {
             case "processes":
                 displayProcesses();
+                break;
             case "samples":
                 displaySamples();
+                break;
             case "notes":
                 displayNotes();
+                break;
             }
         }
 
@@ -58,11 +61,37 @@
         }
 
         function displaySamples() {
-
+            var modal = $modal.open({
+                size: 'lg',
+                templateUrl: 'application/core/projects/project/files/samples.html',
+                controller: 'DisplaySamplesModalController',
+                controllerAs: 'ctrl',
+                resolve: {
+                    processes: function() {
+                        return Restangular.one('v2').one('projects', $stateParams.id).one('samples').get();
+                    }
+                }
+            });
+            modal.result.then(function(process) {
+                console.log(process);
+            });
         }
 
         function displayNotes() {
-
+            var modal = $modal.open({
+                size: 'lg',
+                templateUrl: 'application/core/projects/project/files/notes.html',
+                controller: 'DisplayNotesModalController',
+                controllerAs: 'ctrl',
+                resolve: {
+                    processes: function() {
+                        return Restangular.one('v2').one('projects', $stateParams.id).one('notes').get();
+                    }
+                }
+            });
+            modal.result.then(function(process) {
+                console.log(process);
+            });
         }
 
         function deleteFile() {
@@ -99,6 +128,46 @@
     DisplayProcessesModalController.$inject = ['$modalInstance', 'processes'];
 
     function DisplayProcessesModalController($modalInstance, processes) {
+        var ctrl = this;
+        ctrl.processes = processes;
+        ctrl.ok = ok;
+
+        ////////////////////
+
+        function ok() {
+            $modalInstance.close(ctrl.processes[0]);
+        }
+
+        function cancel() {
+            $modalInstance.dismiss('cancel');
+        }
+
+    }
+
+    module.controller('DisplaySamplesModalController', DisplaySamplesModalController);
+    DisplaySamplesModalController.$inject = ['$modalInstance', 'processes'];
+
+    function DisplaySamplesModalController($modalInstance, processes) {
+        var ctrl = this;
+        ctrl.processes = processes;
+        ctrl.ok = ok;
+
+        ////////////////////
+
+        function ok() {
+            $modalInstance.close(ctrl.processes[0]);
+        }
+
+        function cancel() {
+            $modalInstance.dismiss('cancel');
+        }
+
+    }
+
+    module.controller('DisplayNotesModalController', DisplayNotesModalController);
+    DisplayNotesModalController.$inject = ['$modalInstance', 'processes'];
+
+    function DisplayNotesModalController($modalInstance, processes) {
         var ctrl = this;
         ctrl.processes = processes;
         ctrl.ok = ok;
