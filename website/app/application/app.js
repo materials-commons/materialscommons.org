@@ -211,13 +211,13 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: "/processes",
             templateUrl: "application/core/projects/project/processes/processes.html",
             controller: "projectProcesses",
-            controllerAs: 'ctrl',
-            resolve: {
-                processes: ["project",
-                    function (project) {
-                        return project.processes;
-                    }]
-            }
+            controllerAs: 'ctrl'
+            //resolve: {
+            //    processes: ["project",
+            //        function (project) {
+            //            return project.processes;
+            //        }]
+            //}
         })
         .state("projects.project.processes.create", {
             url: "/create",
@@ -255,11 +255,11 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: "/list",
             templateUrl: "application/core/projects/project/processes/list.html",
             controller: "projectListProcess",
-            controllerAs: "processlist",
+            controllerAs: "ctrl",
             resolve: {
-                processes: ["project", "ProcessList", "Restangular",
-                    function (project, ProcessList, Restangular) {
-                        return Restangular.one('processes').one('project', project.id).getList();
+                processes: ["project",
+                    function (project) {
+                        return project.processes;
                     }]
             }
         })
