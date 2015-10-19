@@ -90,7 +90,9 @@ module.exports = function (r) {
     }
 
     function* getList(projectID) {
-
+        let rql = r.table('project2process').getAll(projectID, {index: 'project_id'}).
+            eqJoin('process_id', r.table('processes')).zip();
+        return yield dbExec(rql);
     }
 
     /**
