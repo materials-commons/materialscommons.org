@@ -100,9 +100,7 @@
 
     function DisplayProcessesModalController($modalInstance, processes) {
         var ctrl = this;
-
         ctrl.processes = processes;
-        console.dir(ctrl.processes);
         ctrl.ok = ok;
 
         ////////////////////
