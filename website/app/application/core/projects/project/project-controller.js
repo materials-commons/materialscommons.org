@@ -1,10 +1,10 @@
 (function (module) {
     module.controller('ProjectController', ProjectController);
 
-    ProjectController.$inject = ["ui", "project", "current", "mcapi", "help", "gridFiles", "projects"];
+    ProjectController.$inject = ["ui", "project", "current", "Restangular", "help", "gridFiles", "projects"];
 
     /* @ngInject */
-    function ProjectController(ui, project, current, mcapi, help, gridFiles, projects) {
+    function ProjectController(ui, project, current, Restangular, help, gridFiles, projects) {
         var ctrl = this;
 
         current.setProject(project);
@@ -16,14 +16,13 @@
 
         if (!project.files) {
             ctrl.loaded = false;
-            mcapi('/v2/projects/%/dir/top', project.id)
-                .success(function (files) {
+            Restangular.one('v2').one('projects', project.id)
+                .one('directories').get().then(function(files) {
                     project.files = gridFiles.toGrid(files);
                     ctrl.loaded = true;
-                })
-                .error(function (err) {
+                }).catch(function(err) {
                     console.log('error calling projects %O', err);
-                }).get();
+                });
         }
 
         ////////////////////////////

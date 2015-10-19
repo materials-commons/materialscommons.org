@@ -14,7 +14,8 @@ module.exports = function(projects) {
     }
 
     function* dirTree(next) {
-        let tree = yield projects.dirTree(this.params.project_id, this.params.directory_id);
+        let dirID = this.params.directory_id || 'top';
+        let tree = yield projects.dirTree(this.params.project_id, dirID);
         this.body = tree;
         yield next;
     }
