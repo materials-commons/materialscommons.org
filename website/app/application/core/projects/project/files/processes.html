@@ -1,6 +1,22 @@
 <div>
-    <div ng-repeat="process in ctrl.processes">
-        {{process.name}}
-    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Selected</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="process in ctrl.processes">
+            <td>
+                <i ng-if="process.selected" class="fa fa-2x fa-fw fa-check text-success"></i>
+            </td>
+            <td>
+                <a ng-click="process.selected = !process.selected">{{process.name}}</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
     <button class="btn btn-primary" ng-click="ctrl.ok()">Ok</button>
+    <button class="btn btn-default btn-danger">cancel</button>
 </div>
