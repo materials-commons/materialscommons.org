@@ -151,7 +151,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: "/dir/:dir_id",
             templateUrl: "application/core/projects/project/files/dir.html",
             controller: "DirController",
-            controllerAs: "dir"
+            controllerAs: "ctrl"
         })
         .state("projects.project.files.edit", {
             url: "/edit/:file_id",

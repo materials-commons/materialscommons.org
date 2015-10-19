@@ -14,9 +14,9 @@
     }
 
     module.controller('FileEditControlsDirectiveController', FileEditControlsDirectiveController);
-    FileEditControlsDirectiveController.$inject = ['mcfile', 'pubsub', 'toastr'];
+    FileEditControlsDirectiveController.$inject = ['mcfile', 'pubsub', 'toastr', '$modal', 'Restangular', '$stateParams'];
 
-    function FileEditControlsDirectiveController(mcfile, pubsub, toastr) {
+    function FileEditControlsDirectiveController(mcfile, pubsub, toastr, $modal, Restangular, $stateParams) {
         var ctrl = this;
 
         ctrl.newName = ctrl.file.name;
@@ -24,8 +24,46 @@
         ctrl.renameFile = renameFile;
         ctrl.downloadSrc = downloadSrc;
         ctrl.deleteFile = deleteFile;
+        ctrl.linkTo = linkTo;
 
         ////////////////////////////////
+
+        function linkTo(what) {
+            console.log('linkTo ', what);
+            switch (what) {
+            case "processes":
+                displayProcesses();
+            case "samples":
+                displaySamples();
+            case "notes":
+                displayNotes();
+            }
+        }
+
+        function displayProcesses() {
+            var modal = $modal.open({
+                size: 'lg',
+                templateUrl: 'application/core/projects/project/files/processes.html',
+                controller: 'DisplayProcessesModalController',
+                controllerAs: 'ctrl',
+                resolve: {
+                    processes: function() {
+                        return Restangular.one('v2').one('projects', $stateParams.id).one('processes').get();
+                    }
+                }
+            });
+            modal.result.then(function(process) {
+                console.log(process);
+            });
+        }
+
+        function displaySamples() {
+
+        }
+
+        function displayNotes() {
+
+        }
 
         function deleteFile() {
             ctrl.file.remove().then(function(f) {
@@ -54,6 +92,27 @@
 
         function downloadSrc() {
             return mcfile.downloadSrc(ctrl.file.id);
+        }
+    }
+
+    module.controller('DisplayProcessesModalController', DisplayProcessesModalController);
+    DisplayProcessesModalController.$inject = ['$modalInstance', 'processes'];
+
+    function DisplayProcessesModalController($modalInstance, processes) {
+        var ctrl = this;
+
+        ctrl.processes = processes;
+        console.dir(ctrl.processes);
+        ctrl.ok = ok;
+
+        ////////////////////
+
+        function ok() {
+            $modalInstance.close(ctrl.processes[0]);
+        }
+
+        function cancel() {
+            $modalInstance.dismiss('cancel');
         }
 
     }
