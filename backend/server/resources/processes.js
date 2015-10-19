@@ -7,7 +7,8 @@ module.exports = function (processes, schema) {
     return {
         update: update,
         create: create,
-        get: get
+        get: get,
+        getList: getList
     };
 
     /////////////////////////
