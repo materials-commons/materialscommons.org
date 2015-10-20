@@ -42,6 +42,10 @@ module.exports = function (r) {
             yield updateSampleMeasurements(process.samples);
         }
 
+        if (process.files) {
+            yield updateFiles(processID, process.files);
+        }
+
         return yield get(processID);
     }
 
@@ -85,12 +89,45 @@ module.exports = function (r) {
         yield dbExec(rql);
     }
 
+    // updateFiles adds or deletes files from the process
+    function* updateFiles(processID, files) {
+        let filesToAdd = files.filter(f => f.command == 'add').map(f => new model.Process2File(processID, f.file_id, f.direction));
+        let filesToDelete = files.filter(f => f.command == 'delete').map(f => f.file_id);
+
+        if (filesToAdd.length) {
+            yield addFilesToProcess(filesToAdd);
+        }
+
+        if (filesToDelete.length) {
+            yield deleteFilesFromProcess(processID, filesToDelete);
+        }
+    }
+
+    // addFilesToProcess adds new files to a process.
+    // TODO: Handle files that are already part of the process.
+    function* addFilesToProcess(files) {
+        let rql = r.table('process2file').insert(files);
+        yield dbExec(rql);
+    }
+
+    // deleteFilesFromProcess deletes files from a process
+    // TODO: Handle files that are also mapped to a sample through this process
+    function* deleteFilesFromProcess(processID, files) {
+        let rql = r.table('process2file').getAll(files, {index: 'datafile_id'}).
+            filter({process_id: processID}).
+            delete();
+        yield dbExec(rql);
+    }
+
     function* get(processID) {
-        return {error: "Not implemented"};
+        let rql = r.table('processes').get(processID);
+        return yield dbExec(rql);
     }
 
     function* getList(projectID) {
-
+        let rql = r.table('project2process').getAll(projectID, {index: 'project_id'}).
+            eqJoin('process_id', r.table('processes')).zip();
+        return yield dbExec(rql);
     }
 
     /**
