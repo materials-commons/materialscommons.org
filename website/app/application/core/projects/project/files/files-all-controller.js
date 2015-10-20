@@ -95,8 +95,7 @@
                 }
             };
 
-            console.dir(ctrl.files[0]);
-            //$state.go('projects.project.files.all.dir', {dir_id: ctrl.files[0].id});
+            $state.go('projects.project.files.all.dir', {dir_id: ctrl.files[0].data.id});
         }
 
         function rowClicked(params) {
