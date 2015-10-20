@@ -88,7 +88,6 @@
                         // When new files are added, simply append them to the overall list
                         input.addEventListener('change', function (e) {
                             var project = current.project();
-                            console.dir(scope.dir);
                             each(e.target.files, function (f) {
                                 var req = {
                                     project_id: project.id,
@@ -100,12 +99,9 @@
                                     user_id: User.u()
                                 };
                                 matchFn = function (file) {
-                                    if (file.name === req.filename &&
-                                        file.attrs.directory_id === req.directory_id &&
-                                        file.attrs.project_id === req.project_id) {
-                                        return true;
-                                    }
-                                    return false;
+                                    return !!(file.name === req.filename &&
+                                    file.attrs.directory_id === req.directory_id &&
+                                    file.attrs.project_id === req.project_id);
                                 };
                                 if (!flow.findFile(matchFn)) {
                                     mcapi("/upload")
