@@ -1,17 +1,31 @@
 <div class="row">
-    <div class="col-xs-12 details-container samples-container">
-        <nav class="navbar navbar-default">
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li ui-sref-active="active"><a ui-sref="projects.project.samples.all">All Samples</a></li>
-                </ul>
-            </div>
-        </nav>
+    <div class="col-xs-4 card card-dark card-left card-side-bar">
+        <ul ng-if="ctrl.samples.length !== 0" class="list-group">
+            <li class="list-group-item pointer"
+                ng-repeat="s in ctrl.samples"
+                ng-class="{active: ctrl.current.id === s.id}"
+                ng-click="ctrl.viewSample(s)">
+                <b class="list-group-item-heading">{{s.name}}
+                </b>
+
+                <div class="truncate-text" class="small">{{s.description}}</div>
+                <div class="row small" style="padding-top: 5px;">
+                    <span class="space-left"><i data-placement="right" data-toggle="tooltip" title="Transformations"
+                                                class="fa fa-fw fa-star" style="color: #ff5a60;"></i>{{s.property_sets.length}}</span>
+                    <span class="space-left"><i data-placement="right" data-toggle="tooltip" title="Files"
+                                                class="fa fa-fw fa-files-o file"></i>{{s.linked_files.length}}    </span>
+                    <span class="space-left"><composition properties="s.properties"></composition></span>
+                    <span class="space-left  pull-right"><i data-placement="right" data-toggle="tooltip" title="Owner"
+                                                            class="fa fa-fw fa-user"></i>{{s.owner}} </span>
+                </div>
+            </li>
+        </ul>
+        <h4 ng-if="ctrl.samples.length === 0" class="text-center text-uppercase">
+            No Samples
+        </h4>
     </div>
-    <div class="row">
-        <div class="col-xs-12" style="padding-left: 0px; padding-right: 0px">
-            <div ui-view></div>
-        </div>
+    <div class="col-xs-8 card-right no-padding">
+        <div ui-view></div>
     </div>
 </div>
 
