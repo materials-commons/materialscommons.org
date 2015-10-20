@@ -29,7 +29,6 @@
         ////////////////////////////////
 
         function linkTo(what) {
-            console.log('linkTo ', what);
             switch (what) {
             case "processes":
                 displayProcesses();
@@ -50,13 +49,21 @@
                 controller: 'DisplayProcessesModalController',
                 controllerAs: 'ctrl',
                 resolve: {
-                    processes: function() {
+                    processes: function () {
                         return Restangular.one('v2').one('projects', $stateParams.id).one('processes').get();
                     }
                 }
             });
-            modal.result.then(function(process) {
-                console.log(process);
+            modal.result.then(function (processes) {
+                var processCommands = processes.map(function(p) {
+                    return {
+                        command: 'add',
+                        process_id: p.id,
+                        direction: p.input ? 'in' : 'out'
+                    };
+                });
+                ctrl.file.customPUT({processes: processCommands}).then(function(f) {
+                });
             });
         }
 
@@ -67,13 +74,12 @@
                 controller: 'DisplaySamplesModalController',
                 controllerAs: 'ctrl',
                 resolve: {
-                    processes: function() {
+                    samples: function () {
                         return Restangular.one('v2').one('projects', $stateParams.id).one('samples').get();
                     }
                 }
             });
-            modal.result.then(function(process) {
-                console.log(process);
+            modal.result.then(function (samples) {
             });
         }
 
@@ -84,20 +90,19 @@
                 controller: 'DisplayNotesModalController',
                 controllerAs: 'ctrl',
                 resolve: {
-                    processes: function() {
+                    notes: function () {
                         return Restangular.one('v2').one('projects', $stateParams.id).one('notes').get();
                     }
                 }
             });
-            modal.result.then(function(process) {
-                console.log(process);
+            modal.result.then(function (notes) {
             });
         }
 
         function deleteFile() {
-            ctrl.file.remove().then(function(f) {
+            ctrl.file.remove().then(function (f) {
                 // do something here with deleting the file.
-            }).catch(function(err) {
+            }).catch(function (err) {
                 toastr.error("File deletion failed: " + err.error, "Error");
             });
         }
@@ -135,7 +140,23 @@
         ////////////////////
 
         function ok() {
-            $modalInstance.close(ctrl.processes[0]);
+            var selected = [];
+            ctrl.processes.forEach(function(p) {
+                if (p.input) {
+                    selected.push({
+                        id: p.id,
+                        input: true
+                    });
+                }
+
+                if (p.output) {
+                    selected.push({
+                        id: p.id,
+                        output: true
+                    });
+                }
+            });
+            $modalInstance.close(selected);
         }
 
         function cancel() {
