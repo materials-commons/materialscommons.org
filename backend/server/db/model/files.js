@@ -204,7 +204,15 @@ module.exports = function(r) {
 
     // updateProcesses will add or delete process associations for the file
     function* updateProcesses(fileID, processes) {
+        let processesForFile = yield r.table('process2file').getAll(fileID, {index: 'datafile_id'});
+        let processesMap = [];
+
+        // A file can be used in one or both directions (in or out). Build a map of process id
+        // and direction. This way we don't add a file in the same direction to a process when
+        // that file and direction already exists for a process.
+        processesForFile.forEach(p => processesMap[`${p.process_id}_${p.direction}`] = p);
         let processesToAdd = processes.filter(p => p.command === 'add').
+            filter(p => !(`${p.process_id}_${p.direction}` in processesMap)).
             map(p => new model.Process2File(p.process_id, fileID, p.direction));
         let processesToDelete = processes.filter(p => p.command === 'delete').map(p => p.process_id);
 
