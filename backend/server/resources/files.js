@@ -5,7 +5,7 @@ module.exports = function(files) {
     return {
         get: get,
         getList: getList,
-        put: put,
+        update: update,
         deleteFile
     };
 
@@ -25,9 +25,9 @@ module.exports = function(files) {
 
     // put will update certain file fields. To see which fields can be updated look
     // at the files.put method.
-    function* put(next) {
+    function* update(next) {
         let file = yield parse(this);
-        let rv = yield files.put(this.params.file_id, this.params.project_id, this.reqctx.user.id, file);
+        let rv = yield files.update(this.params.file_id, this.params.project_id, this.reqctx.user.id, file);
         if (rv.error) {
             this.throw(httpStatus.BAD_REQUEST, rv.error);
         }
