@@ -34,7 +34,6 @@
             Restangular.one('v2').one('projects', ctrl.project.id)
                 .one('files').customPOST({file_ids: fileIDs})
                 .then(function (files) {
-                    console.dir(files);
                     ctrl.files = files;
                 })
                 .catch(function (err) {

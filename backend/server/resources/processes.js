@@ -30,6 +30,8 @@ module.exports = function (processes, schema) {
     }
 
     function* getList(next) {
+        this.body = yield processes.getList(this.params.project_id);
+        this.status = 200;
         yield next;
     }
 

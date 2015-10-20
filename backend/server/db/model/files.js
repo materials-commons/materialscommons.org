@@ -15,7 +15,7 @@ module.exports = function(r) {
         countInProject: countInProject,
         get: get,
         getList: getList,
-        put: put,
+        update: update,
         deleteFile
     };
 
@@ -73,7 +73,7 @@ module.exports = function(r) {
     }
 
     // update file
-    function* put(fileID, projectID, user, file) {
+    function* update(fileID, projectID, user, file) {
         let updateFields = {};
 
         if (file.name) {
@@ -98,6 +98,14 @@ module.exports = function(r) {
 
         if (file.notes) {
             yield updateNotes(fileID, projectID, user, file.notes);
+        }
+
+        if (file.processes) {
+            yield updateProcesses(fileID, file.processes);
+        }
+
+        if (file.samples) {
+            yield updateSamples(fileID, file.samples);
         }
 
         let newVal = yield get(fileID);
@@ -192,6 +200,26 @@ module.exports = function(r) {
         let newNote = yield db.insert('notes', n);
         let note2item = new model.Note2Item(fileID, 'datafile', newNote.id);
         return yield db.insert('note2item', note2item);
+    }
+
+    // updateProcesses will add or delete process associations for the file
+    function* updateProcesses(fileID, processes) {
+        let processesToAdd = processes.filter(p => p.command === 'add').
+            map(p => new model.Process2File(p.process_id, fileID, p.direction));
+        let processesToDelete = processes.filter(p => p.command === 'delete').map(p => p.process_id);
+
+        if (processesToAdd.length) {
+            yield r.table('process2file').insert(processesToAdd);
+        }
+
+        if (processesToDelete.length) {
+            yield r.table('process2file').getAll(processesToDelete, {index: 'process_id'}).delete();
+        }
+    }
+
+    // updateSamples will add or delete sample associations for the file
+    function* updateSamples(fileID, samples) {
+
     }
 
     // deleteFile deletes a file if that file is not currently used in any
