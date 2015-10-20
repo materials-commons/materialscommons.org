@@ -3,9 +3,21 @@
 
     function setupTabDirective() {
         return {
-            scope: true,
+            scope: {
+                setup: '='
+            },
+            controller: "setupTabDirectiveController",
+            controllerAs: 'ctrl',
+            bindToController: true,
             restrict: "E",
             templateUrl: "application/core/projects/project/processes/setup.html"
         };
+    }
+
+    module.controller("setupTabDirectiveController", setupTabDirectiveController);
+    setupTabDirectiveController.$inject = [];
+
+    function setupTabDirectiveController() {
+        var ctrl = this;
     }
 }(angular.module('materialscommons')));

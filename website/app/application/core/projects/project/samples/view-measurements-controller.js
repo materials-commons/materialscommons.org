@@ -9,6 +9,7 @@
             item: {}
         };
         processColumns();
+
         function updateBestMeasure() {
             mcapi('/best_measure')
                 .success(function () {
@@ -47,7 +48,6 @@
                         $scope.selected.item = measure;
                     }
                 }
-
             });
         }
     }
