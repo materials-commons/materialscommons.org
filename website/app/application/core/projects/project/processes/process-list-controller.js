@@ -1,20 +1,24 @@
 (function (module) {
     module.controller('projectListProcess', projectListProcess);
-    projectListProcess.$inject = ["processes", "project", "$state", "modalInstance"];
+    projectListProcess.$inject = ["processes", "project", "$state", "modalInstance", "$filter"];
 
-    function projectListProcess(processes, project, $state, modalInstance) {
+    function projectListProcess(processes, project, $state, modalInstance, $filter) {
         var ctrl = this;
 
-        ctrl.chooseTemplate = chooseTemplate;
         ctrl.viewProcess = viewProcess;
+        ctrl.chooseTemplate = chooseTemplate;
 
         ctrl.processes = processes;
         ctrl.project = project;
-        ctrl.current = {};
+        if (ctrl.processes.length !== 0) {
+            var sortedProcesses= $filter('orderBy')(ctrl.processes, 'name');
+            ctrl.current = sortedProcesses[0];
+            $state.go('projects.project.processes.list.view', {process_id: ctrl.current.id});
+        }
 
-         function viewProcess(process) {
+        function viewProcess(process) {
             ctrl.current = process;
-            $state.go('projects.project.processes.list.view.setup', {process_id: ctrl.current.id});
+            $state.go('projects.project.processes.list.view', {process_id: ctrl.current.id});
         }
 
         function chooseTemplate() {

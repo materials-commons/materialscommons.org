@@ -79,16 +79,21 @@ def add_samples(projects_by_id, project_ids):
                         'properties': r.table('propertyset2property')
                         .get_all(sample['property_set_id'], index= 'property_set_id')
                         .eq_join('property_id', r.table('properties')).zip()
-                        .order_by('name').merge(lambda property: {
-                        'best_measure': r.table('best_measure_history')\
-                        .get_all(property['best_measure_id'])
+                        .order_by('name')
+                        .merge(lambda property: {
+                            'best_measure': r.table('best_measure_history')\
+                            .get_all(property['best_measure_id'])
                                             .eq_join('measurement_id',
-                        r.table('measurements')).zip().coerce_to('array')
-                    }),
+                            r.table('measurements')).zip().coerce_to('array')
+                        }),
                     'linked_files': r.table('sample2datafile')
-                       .get_all(sample['id'],
+                    .get_all(sample['id'],
                     index='sample_id').eq_join('datafile_id',
-                    r.table('datafiles')).zip().coerce_to('array')
+                    r.table('datafiles')).zip().coerce_to('array'),
+
+                    'property_sets': r.table('sample2propertyset')
+                    .get_all(sample['id'], index='sample_id')
+                    .coerce_to('array')
                 }).coerce_to('array').run(g.conn, time_format='raw'))
     # for sample in samples:
     #     sample['properties'] = {}

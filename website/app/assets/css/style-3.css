@@ -989,7 +989,7 @@ header {
 }
 
 .section-as-margin {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .no-bottom-margin {
@@ -1135,51 +1135,47 @@ hr.heading-label {
   height: 100%;
 }
 
-.process-tab {
+.content-tab {
   margin-right: 20px;
   margin-left: 20px;
 }
 
-.process-tab .tab-content {
+.content-tab .tab-content {
   padding: 5px 15px;
   margin-right: 10px;
 }
 
-.process-tab .nav-tabs {
+.content-tab .nav-tabs {
   border-bottom: 1px solid #428BCA;
 }
 
-.process-tab .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+.content-tab .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
   border: 1px solid #428BCA;
   background-color: transparent;
   border-bottom: 1px solid white;
   color: #1e88e5;
 }
 
-.process-tab .tab-content {
-  /*min-height: 500px;*/
-}
-
 .tab-content .tab-pane {
   padding: 30px 20px;
 }
 
-.process-tab .nav-tabs > li > a {
+.content-tab .nav-tabs > li > a {
   color: grey;
 }
 
-.process-tab .table > tbody > tr > td {
+.content-tab .table > tbody > tr > td {
   height: 240px;
-  width: 50%;
+  /*width: 50%;*/
 }
 
-.process-tab .table > tbody > tr > td > .overflow {
+.content-tab .table > tbody > tr > td > .overflow {
   max-height: 200px;
   overflow-y: auto;
 }
 
 .card-side-bar .list-group-item {
-  height: 90px;
+  height: 100px;
   border-radius: 0;
 }
 
@@ -1212,7 +1208,28 @@ hr.heading-label {
 }
 
 .truncate-text {
-  max-height: 20px;
+  max-height: 40px;
   overflow: hidden;
   height: auto;
 }
+
+.display-inline {
+  display: inline-block;
+}
+
+.measurements-tab{
+  overflow-x: scroll;
+}
+
+.measurements-tab .padding-process{
+  padding: 30px;
+}
+
+.measurements-tab .padding-measure{
+  padding: 30px;
+}
+
+.space-left{
+  padding-left:10px;
+}
+
