@@ -25,8 +25,8 @@
         </a>
         <ul class="dropdown-menu" role="menu">
             <li><a class="text-uppercase" ng-click="ctrl.linkTo('processes')">processes</a></li>
-            <li><a class="text-uppercase" ng-click="ctrl.linkTo('samples')">samples</a></li>
-            <li><a class="text-uppercase" ng-click="ctrl.linkTo('notes')">notes</a></li>
+            <li ng-if="false"><a class="text-uppercase" ng-click="ctrl.linkTo('samples')">samples</a></li>
+            <li ng-if="false"><a class="text-uppercase" ng-click="ctrl.linkTo('notes')">notes</a></li>
         </ul>
     </li>
     <li ng-if="!ctrl.renameActive" class="dropdown">
