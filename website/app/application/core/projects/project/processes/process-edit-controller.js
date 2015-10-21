@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('projectEditProcess', projectEditProcess);
-    projectEditProcess.$inject = ["project", "modalInstance", "$state", "processTemplates", "template"];
+    projectEditProcess.$inject = ["project", "modalInstance", "$state"];
 
-    function projectEditProcess(project, modalInstance, $state, processTemplates, template) {
+    function projectEditProcess(project, modalInstance, $state) {
         var ctrl = this;
         ctrl.cancel = cancel;
         ctrl.openFile = openFile;
@@ -10,7 +10,6 @@
         ctrl.done = done;
 
         ctrl.project = project;
-        ctrl.template = template;
 
         function cancel() {
             $state.go('projects.project.processes.list.view');
