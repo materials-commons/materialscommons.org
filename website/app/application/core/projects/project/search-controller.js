@@ -29,8 +29,7 @@
         }
 
         function gotoFilesPage(f) {
-            projectFiles.setActiveFile(f);
-            $state.go('projects.project.files.edit', {file_id: f.id, file_type: f._type});
+            $state.go('projects.project.files.edit', {file_id: f.id});
         }
 
         function openFilePopup(file) {
