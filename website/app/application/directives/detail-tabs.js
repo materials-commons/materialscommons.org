@@ -18,7 +18,7 @@
     function DetailTabsDirectiveController() {
         var ctrl = this;
         ctrl.tabs = loadTabs();
-        ctrl.activeTab = ctrl.tabs[0].name;
+        ctrl.activeTab = ctrl.tabs.length ? ctrl.tabs[0].name : '';
         ctrl.setActive = setActive;
         ctrl.isActive = isActive;
 
