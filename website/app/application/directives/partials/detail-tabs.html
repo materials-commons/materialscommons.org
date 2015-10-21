@@ -1,0 +1,20 @@
+<div ng-if="ctrl.tabs.length" class="content-tab">
+    <ul class="nav nav-tabs">
+        <li ng-repeat="tab in ctrl.tabs"
+            ng-class="{active: ctrl.isActive(tab.name)}">
+            <a ng-click="ctrl.setActive(tab.name)" class="text-uppercase">
+                <i class="fa fa-fw" ng-class="tab.icon"></i>
+                {{tab.name}} ({{tab.count}})
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content clearfix">
+        <setup-details ng-if="ctrl.isActive('setup')" setup="ctrl.item.setup"></setup-details>
+        <samples-list ng-if="ctrl.isActive('samples')" samples="ctrl.item.samples"></samples-list>
+        <processes-list ng-if="ctrl.isActive('processes')" processes="ctrl.item.processes"></processes-list>
+        <file-notes ng-if="ctrl.isActive('notes')" file="ctrl.item"></file-notes>
+        <files-list ng-if="ctrl.isActive('files')" files="ctrl.item.files"></files-list>
+        <reviews-list ng-if="ctrl.isActive('reviews')" reviews="ctrl.item.reviews"></reviews-list>
+        <measurements-list ng-if="ctrl.isActive('measurements')" measurements="ctrl.item.measurements"></measurements-list>
+    </div>
+</div>

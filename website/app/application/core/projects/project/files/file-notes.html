@@ -1,12 +1,7 @@
 <div>
-    <ul class="list-inline no-bottom-margin">
-        <li><h4 class="text-uppercase section">notes</h4></li>
-        <li ng-if="!ctrl.addNoteActive">
-            <a ng-click="ctrl.addNoteActive = true" class="text-small text-uppercase">
-                <i class="fa fa-fw fa-plus"></i>add note
-            </a>
-        </li>
-    </ul>
+    <a ng-click="ctrl.addNoteActive = true" class="text-small text-uppercase">
+        <i class="fa fa-fw fa-plus"></i>add note
+    </a>
 
     <div ng-if="ctrl.addNoteActive">
         <div class="row">
