@@ -12,7 +12,7 @@
                 ng-repeat="p in ctrl.processes"
                 ng-class="{active: ctrl.current.id === p.id}"
                 ng-click="ctrl.viewProcess(p)">
-                <b class="list-group-item-heading">{{p.name | limitTo: 40 }}</b>
+                <b class="list-group-item-heading">{{p.name}}</b>
 
                 <div class="truncate-text" ta-bind ng-model="p.what" class="small"></div>
                 <div class="row small" style="padding-top: 5px;">
