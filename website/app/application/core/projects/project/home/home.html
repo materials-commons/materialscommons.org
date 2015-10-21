@@ -1,6 +1,6 @@
 <div class="row ">
     <div class="col-xs-8 card">
-        <table class="table">
+        <table class="table table-striped">
             <thead>
             <tr>
                 <th>Samples</th>
@@ -11,7 +11,7 @@
             <tbody>
             <tr ng-repeat="sample in home.project.samples">
                 <td style="width:40%">
-                    <b><a ui-sref="projects.project.samples.all.edit({sample_id: sample.id})">{{sample.name}}</a></b>
+                    <b><a ui-sref="projects.project.samples.edit({sample_id: sample.id})">{{sample.name}}</a></b>
 
                     <div style="padding-bottom: 15px;">
                         <p style="font-size: 12px;padding-bottom: 10px;">
