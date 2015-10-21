@@ -26,27 +26,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="content-tab">
-                <ul class="nav nav-tabs process-border">
-                    <li ng-class="{active:view.isSet('setup')}">
-                        <a ng-click="view.setTab('setup')"><b><i class="fa fa-fw fa-gear"></i>SETUP ({{view.process.setup[0].properties.length}})</b></a></li>
-                    <li ng-class="{active:view.isSet('samples')}"><a ng-click="view.setTab('samples')"><b><i class="fa fa-fw fa-cubes"></i>SAMPLES
-                        ({{view.process.samples.length}})</b></a></li>
-                    <li ng-class="{active:view.isSet('files')}"><a  ng-click="view.setTab('files')"><b><i class="fa fa-fw fa-copy"></i>FILES ({{view.process.files_used.length + view.process.files_produced.length}})</b></a>
-                    </li>
-                </ul>
-                <div class="tab-content clearfix">
-                    <div ng-show="view.isSet('setup')">
-                       <setup-tab setup="view.process.setup[0]"></setup-tab>
-                    </div>
-                    <div ng-show="view.isSet('samples')">
-                        <samples-tab></samples-tab>
-                    </div>
-                    <div ng-show="view.isSet('files')">
-                        <files-tab current="view.process"></files-tab>
-                    </div>
-                </div>
-            </div>
+            <detail-tabs item="view.process"></detail-tabs>
         </div>
     </div>
 </div>
