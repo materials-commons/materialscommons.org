@@ -832,31 +832,6 @@ header {
     color: red;
 }
 
-.details-container {
-    padding-top: 20px;
-    padding-bottom: 10px;
-}
-
-.details-container > .navbar {
-    background-color: white;
-    box-shadow: 3px 2px 3px #bdbdbd;
-}
-
-.details-container .navbar-default .navbar-nav > li > a {
-    font-size: 18px;
-    text-transform: uppercase;
-    font-weight: 400;
-    color: #979797;
-    /*font-weight: bold;*/
-    line-height: 28px;
-}
-
-.details-container .navbar-default .navbar-nav > li.active > a {
-    color: #FDB600;
-    background-color: #FFFFFF;
-    border-bottom: 5px solid #FDB600;
-}
-
 .details-sidebar {
     /*min-height: 550px;*/
     /*max-height: 600px; /!*This should be true across all the detail pages*!/*/
@@ -875,24 +850,6 @@ header {
 
 .no-padding {
     padding: 0px;
-}
-
-.details-container.processes-container .navbar-default .navbar-nav > li.active > a {
-    color: #3A9EE3;
-    background-color: #FFFFFF;
-    border-bottom: 5px solid #3A9EE3;
-}
-
-.details-container.files-container .navbar-default .navbar-nav > li.active > a {
-    color: #AC91BA;
-    background-color: #FFFFFF;
-    border-bottom: 5px solid #AC91BA;
-}
-
-.details-container.samples-container .navbar-default .navbar-nav > li.active > a {
-    color: #26A69A;
-    background-color: #FFFFFF;
-    border-bottom: 5px solid #26A69A;
 }
 
 .details-sidebar .list-group {
@@ -928,7 +885,6 @@ header {
 }
 
 .details-main-content {
-    /*min-height: 550px;*/
     min-height: 100%;
     overflow-y: auto;
     transition: all 0.5s ease 0s;
@@ -1133,45 +1089,6 @@ hr.heading-label {
 
 .full-height {
     height: 100%;
-}
-
-.content-tab {
-    margin-right: 20px;
-    margin-left: 20px;
-}
-
-.content-tab .tab-content {
-    padding: 5px 15px;
-    margin-right: 10px;
-}
-
-.content-tab .nav-tabs {
-    border-bottom: 1px solid #428BCA;
-}
-
-.content-tab .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-    border: 1px solid #428BCA;
-    background-color: transparent;
-    border-bottom: 1px solid white;
-    color: #1e88e5;
-}
-
-.tab-content .tab-pane {
-    padding: 30px 20px;
-}
-
-.content-tab .nav-tabs > li > a {
-    color: grey;
-}
-
-.content-tab .table > tbody > tr > td {
-    height: 240px;
-    /*width: 50%;*/
-}
-
-.content-tab .table > tbody > tr > td > .overflow {
-    max-height: 200px;
-    overflow-y: auto;
 }
 
 .card-side-bar .list-group-item {
