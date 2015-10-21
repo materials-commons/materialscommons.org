@@ -12,29 +12,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="content-tab">
-                <ul class="nav nav-tabs">
-                    <li ng-class="{active:ctrl.isSet('measurements')}">
-                        <a ng-click="ctrl.setTab('measurements')"><b><i
-                                class="fa fa-fw fa-gear"></i>Measurements & Transformations ({{ctrl.sample.property_sets.length}})</b></a></li>
-                    <li ng-class="{active:ctrl.isSet('files')}"><a ng-click="ctrl.setTab('files')"><b><i
-                            class="fa fa-fw fa-copy"></i>Files ({{ctrl.sample.linked_files.length}})</b></a></li>
-                    <li ng-class="{active:ctrl.isSet('processes')}"><a ng-click="ctrl.setTab('processes')"><b><i
-                            class="fa fa-fw fa-code-fork"></i>Processes ({{ctrl.sample.processes.length}})</b></a>
-                    </li>
-                </ul>
-                <div class="tab-content clearfix">
-                    <div ng-show="ctrl.isSet('measurements')">
-                        <measurements-tab sample="ctrl.sample" project="ctrl.project"></measurements-tab>
-                    </div>
-                    <div ng-show="ctrl.isSet('files')">
-                        <files-tab files="ctrl.sample.linked_files"></files-tab>
-                    </div>
-                    <div ng-show="ctrl.isSet('processes')">
-                        <processes-tab sample="ctrl.sample"></processes-tab>
-                    </div>
-                </div>
-            </div>
+            <detail-tabs item="ctrl.sample"></detail-tabs>
         </div>
     </div>
 </div>

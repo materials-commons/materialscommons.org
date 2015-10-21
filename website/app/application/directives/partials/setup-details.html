@@ -7,9 +7,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="property in ctrl.setup.properties">
-            <td ng-if="property.value" style="height: 0px;"> {{property.name}}</td>
-            <td ng-if="property.value" style="height: 0px;">{{property.value}} {{property.unit}}</td>
+        <tr ng-repeat="property in setup.properties">
+            <td style="height: 0px;"> {{property.name}}</td>
+            <td style="height: 0px;">{{property.value}} {{property.unit}}</td>
         </tr>
         </tbody>
     </table>
