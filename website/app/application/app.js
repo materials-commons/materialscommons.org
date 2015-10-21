@@ -137,7 +137,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         .state("projects.project.files.all.edit", {
             url: "/edit/:file_id",
             templateUrl: "application/core/projects/project/files/edit.html",
-            controller: "FilesEditController",
+            controller: "FileEditController",
             controllerAs: 'ctrl',
             resolve: {
                 file: ["$stateParams", "Restangular",
@@ -156,8 +156,15 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         .state("projects.project.files.edit", {
             url: "/edit/:file_id",
             templateUrl: "application/core/projects/project/files/edit.html",
-            controller: "FilesEditController",
-            controllerAs: "file"
+            controller: "FileEditController",
+            controllerAs: "ctrl",
+            resolve: {
+                file: ["$stateParams", "Restangular",
+                function ($stateParams, Restangular) {
+                    return Restangular.one('v2').one('projects', $stateParams.id).
+                        one('files', $stateParams.file_id).get();
+                }]
+            }
         })
         .state("projects.project.files.images", {
             url: "/images",
@@ -238,18 +245,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: "/edit/:process_id",
             templateUrl: "application/core/projects/project/processes/edit.html",
             controller: "projectEditProcess",
-            controllerAs: 'edit',
-            resolve: {
-                template: ["processes", "processList", "$stateParams", "processTemplates", "processEdit",
-                    function (processes, processList, $stateParams, processTemplates, processEdit) {
-                        //var process = processList.getProcess($stateParams.process_id, processes);
-                        //var template = processTemplates.getTemplateByName(process.template_name);
-                        //console.log(process);
-                        //console.log(template);
-                        //return processEdit.transformSetup($stateParams.process_id)
-                    }
-                ]
-            }
+            controllerAs: 'edit'
         })
         .state("projects.project.processes.list", {
             url: "/list",
