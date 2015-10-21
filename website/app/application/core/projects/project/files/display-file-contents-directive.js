@@ -32,7 +32,7 @@
                 case "application/pdf":
                     return "pdf";
                 case "application/vnd.ms-excel":
-                    return "excel";
+                    return "xls";
                 default:
                     return mediatype.mime;
                 }
