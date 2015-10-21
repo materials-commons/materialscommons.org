@@ -16,7 +16,6 @@
     module.controller('DetailTabsDirectiveController', DetailTabsDirectiveController);
     DetailTabsDirectiveController.$inject = [];
     function DetailTabsDirectiveController() {
-        console.dir(this.item);
         var ctrl = this;
         ctrl.tabs = loadTabs();
         ctrl.activeTab = ctrl.tabs[0].name;
