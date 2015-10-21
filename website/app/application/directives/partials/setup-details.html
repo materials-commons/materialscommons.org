@@ -1,0 +1,16 @@
+<div classx="tab-pane active">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="property in ctrl.setup.properties">
+            <td ng-if="property.value" style="height: 0px;"> {{property.name}}</td>
+            <td ng-if="property.value" style="height: 0px;">{{property.value}} {{property.unit}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
