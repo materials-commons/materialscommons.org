@@ -1,0 +1,38 @@
+<div class="tab-pane row">
+    <div class="col-xs-12 card">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Process</th>
+                <th>Setup</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="process in processes">
+                <td>
+                    <b><a ui-sref="projects.project.processes.edit({process_id: process.id})">{{process.name}}</a></b>
+                    <div style="padding-bottom: 15px;">
+                        <p style="font-size: 12px;padding-bottom: 10px;">
+                            {{process.birthtime | toDateString}}
+                            <span style="padding-left: 10px">{{process.owner}}</span>
+                        </p>
+                        <p>Transformation: {{process.does_transform}}</p>
+                    </div>
+                </td>
+                <td style="width:30%">
+                    <div style="max-height: 200px;overflow-y: auto;">
+                        <setup-tab setup="process.setup[0]"></setup-tab>
+                    </div>
+                </td>
+                <td style="width:30%">
+                    <div style="max-height: 200px;overflow-y: auto;">
+                        What : {{process.what}} <br>
+                        Why: {{process.why}}
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
