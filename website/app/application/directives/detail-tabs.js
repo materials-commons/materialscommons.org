@@ -16,6 +16,7 @@
     module.controller('DetailTabsDirectiveController', DetailTabsDirectiveController);
     DetailTabsDirectiveController.$inject = [];
     function DetailTabsDirectiveController() {
+        console.dir(this.item);
         var ctrl = this;
         ctrl.tabs = loadTabs();
         ctrl.activeTab = ctrl.tabs[0].name;
@@ -57,10 +58,12 @@
 
             if ('measurements' in ctrl.item && ctrl.item.measurements.length) {
                 tabs.push(newTab('measurements', 'fa-flask', ctrl.item.measurements.length));
+            } else if ('property_sets' in ctrl.item && ctrl.item.property_sets.length) {
+                tabs.push(newTab('measurements', 'fa-flask', ctrl.item.property_sets.length));
             }
 
-            if ('setup' in ctrl.item && ctrl.item.setup.properties.length) {
-                tabs.push(newTab('setup', 'fa-cogs', ctrl.item.setup.properties.length));
+            if ('setup' in ctrl.item && ctrl.item.setup[0].properties.length) {
+                tabs.push(newTab('setup', 'fa-cogs', ctrl.item.setup[0].properties.length));
             }
 
             tabs.sort(function compareByName(t1, t2) {
