@@ -40,7 +40,6 @@
         };
 
         function addAttachment(item) {
-            console.log('add attachment');
             var i = _.indexOf($scope.model.attachments, function (entry) {
                 return item.id === entry.id;
             });
@@ -49,7 +48,6 @@
             } else {
                 $scope.model.attachments.splice(i, 1);
             }
-            console.dir($scope.model);
         }
 
         $scope.open = function (size) {
@@ -69,10 +67,7 @@
         };
 
         $scope.createReview = function (isValid) {
-            if (!isValid) {
-                return;
-            }
-            else {
+            if (isValid) {
                 $scope.review = {messages: [], attachments: []};
                 $scope.review.author = User.u();
                 $scope.review.assigned_to = $scope.model.assigned_to;
@@ -99,7 +94,7 @@
                     $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
                     Review.setReviews($scope.reviews);
                     $state.go('projects.project.reviews.edit', {category: 'all', review_id: review.id});
-                }).error(function (reason) {
+                }).error(function () {
                 }).post($scope.review);
         }
 
