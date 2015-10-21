@@ -1,10 +1,10 @@
 (function (module) {
-    module.controller("FilesEditController", FilesEditController);
+    module.controller("FileEditController", FileEditController);
 
-    FilesEditController.$inject = ['file'];
+    FileEditController.$inject = ['file'];
 
     /* @ngInject */
-    function FilesEditController(file) {
+    function FileEditController(file) {
         var ctrl = this;
         ctrl.file = file;
     }
