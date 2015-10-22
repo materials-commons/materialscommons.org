@@ -2,7 +2,7 @@
     <div class="col-xs-12 measurements-tab">
         <table class="table">
             <thead>
-            <th class="padding-process" ng-repeat="set in property_sets">
+            <th class="padding-process" ng-repeat="set in ctrl.sample.property_sets">
                 <div ng-repeat="process in set.processes">
                     <i class="fa fa-fw fa-code-fork"></i> {{process.name}}
                 </div>
