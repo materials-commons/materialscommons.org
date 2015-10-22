@@ -1,4 +1,4 @@
-(function(module) {
+(function (module) {
     module.directive('measurementsList', measurementsListDirective);
     function measurementsListDirective() {
         return {

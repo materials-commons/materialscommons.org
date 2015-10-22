@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div>
     <div class="modal-header">
         <h3 class="modal-title">Choose Template</h3>
     </div>
@@ -10,7 +10,7 @@
     </div>
     <div ng-if="true" class="modal-body">
         <div class="list-group">
-            <a ng-click=""
+            <a  ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
                class="list-group-item"
                ng-repeat="template in templates | orderBy:'name' | filter:search">
                 <h4 class="list-group-item-heading">{{template.name}}</h4>
@@ -21,65 +21,6 @@
                     </li>
                 </ul>
             </a>
-        </div>
-    </div>
-    <div ng-if="false" class="modal-body">
-        <div class="row">
-            <div class="col-xs-4">
-                <div class="details-sidebar">
-                    <ul class="list-group">
-                        <li ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
-                            ng-repeat="template in templates | orderBy: 'name' |filter:search"
-                            class="list-group-item pointer">
-                            <div>{{template.name}}</div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-xs-8 details-main-content" ng-if="template_details">
-                <h3>{{template_details.name}}</h3>
-                <ul>
-                    <li>Description: {{template_details.description}}</li>
-                    <li>Type: {{template_details._type}}</li>
-                    <li>Transforms Sample:{{template_details.does_transform}}</li>
-                    <li>Files Used: </li>
-                    <li>Files Produced:</li>
-                    <li>Setup: {{template_details.settings[0].name}}
-                        <ul>
-                            <li ng-repeat="setting in template_details.setup.settings[0].properties">
-                                <i>{{setting.property.name}}</i> ::
-                                <div class="row">
-                                    <div class="col-xs-offset-2">
-                                        <div class="row">
-                                            Type: {{setting.property._type}}
-                                        </div>
-                                        <div ng-if="setting.property.choices.length !== 0" class="row">
-                                            Choices:
-                                            <div style="padding-left: 50px;"
-                                                 ng-repeat="choice in setting.property.choices">{{choice.name}}
-                                            </div>
-                                        </div>
-                                        <div ng-if="setting.property.units.length !== 0" class="row">
-                                            Units:
-                                            <div  style="padding-left: 50px;"
-                                                  ng-repeat="unit in setting.property.units">
-                                                {{unit}}
-                                            </div>
-                                        </div>
-                                        <div ng-if="setting.property.units.length === 0" class="row">
-                                            Unit: {{setting.property.unit}}
-                                        </div>
-                                        <div class="row">
-                                            Required: {{setting.property.required}}
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
     <div class="modal-footer">

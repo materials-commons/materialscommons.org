@@ -8,7 +8,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="sample in samples">
-            <td>
+            <td style="width:70%">
                 <b><a ui-sref="projects.project.samples.all.edit({sample_id: sample.id})">{{sample.name}}</a></b>
 
                 <div style="padding-bottom: 15px;">
@@ -21,7 +21,7 @@
                     <display-image-tab sample-obj="sample"></display-image-tab>
                 </div>
             </td>
-            <td>
+            <td style="width:30%">
                 <div class="overflow">
                     <ul style="list-style-type: circle;">
                         <li ng-repeat="property in sample.properties">
