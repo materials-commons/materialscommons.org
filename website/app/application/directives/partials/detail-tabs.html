@@ -15,11 +15,11 @@
         <file-notes ng-if="ctrl.isActive('notes')" file="ctrl.item"></file-notes>
         <files-list ng-if="ctrl.isActive('files')" files="ctrl.item.files"></files-list>
         <reviews-list ng-if="ctrl.isActive('reviews')" reviews="ctrl.item.reviews"></reviews-list>
-        <measurements-list ng-if="ctrl.isActive('measurements') && ctrl.item.measurements"
-                           measurements="ctrl.item.measurements">
+        <measurements-list ng-if="ctrl.isActive('measurements') && ctrl.item"
+                           sample="ctrl.item">
         </measurements-list>
         <measurements-list ng-if="ctrl.isActive('measurements') && ctrl.item.property_sets"
-                           measurements="ctrl.item.property_sets">
+                           sample="ctrl.item">
         </measurements-list>
     </div>
 </div>
