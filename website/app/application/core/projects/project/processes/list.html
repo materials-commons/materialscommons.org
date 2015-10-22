@@ -9,7 +9,7 @@
 
         <ul ng-if="ctrl.processes.length !== 0" class="list-group">
             <li class="list-group-item pointer"
-                ng-repeat="p in ctrl.processes"
+                ng-repeat="p in ctrl.processes | orderBy: 'name'"
                 ng-class="{active: ctrl.current.id === p.id}"
                 ng-click="ctrl.viewProcess(p)">
                 <b class="list-group-item-heading">{{p.name}}</b>
