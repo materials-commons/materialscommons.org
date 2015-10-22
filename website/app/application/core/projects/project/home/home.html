@@ -1,3 +1,23 @@
+<div class="row">
+    <ul class="list-inline text-center">
+        <li style="padding: 0 40px 0 40px;">
+                <div class="home-circle process"><a ui-sref="projects.project.processes.list">77</a></div>
+                <p style="color: grey;padding-top: 8px;">PROVENACE</p>
+        </li>
+        <li style="padding: 0 40px 0 40px;">
+                <div class="home-circle sample"><a ui-sref="projects.project.samples">28</a></div>
+                <p style="color: grey;padding-top: 8px;">SAMPLES</p>
+        </li>
+        <li style="padding: 40px;">
+                <div class="home-circle file"><a ui-sref="projects.project.files.all">124</a></div>
+                <p style="color: grey;padding-top: 8px;">FILES</p>
+        </li>
+        <li style="padding: 40px;">
+                <div class="home-circle review"><a ui-sref="projects.project.reviews">65</a></div>
+                <p style="color: grey;padding-top: 8px;">REVIEWS</p>
+        </li>
+    </ul>
+</div>
 <div class="row ">
     <div class="col-xs-8 card">
         <table class="table table-striped">
@@ -27,7 +47,8 @@
                         <ul style="list-style-type: circle;">
                             <li ng-repeat="property in sample.properties">
                                 {{property.name}} :
-                                <display-measurement project="home.project" measure="property.best_measure[0]"></display-measurement>
+                                <display-measurement project="home.project"
+                                                     measure="property.best_measure[0]"></display-measurement>
                             </li>
                         </ul>
                     </div>
