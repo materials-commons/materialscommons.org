@@ -1,14 +1,29 @@
-<div>
+<div class="modal-content">
     <div class="modal-header">
         <h3 class="modal-title">Choose Template</h3>
     </div>
     <br>
 
-    <div class="row" style="padding-left:30px;">
+    <div class="row">
         <input type="text" ng-model="search" class="col-xs-12"
-               placeholder="Search ...">
+               placeholder="Search templates...">
     </div>
-    <div class="modal-body">
+    <div ng-if="true" class="modal-body">
+        <div class="list-group">
+            <a ng-click=""
+               class="list-group-item"
+               ng-repeat="template in templates | orderBy:'name' | filter:search">
+                <h4 class="list-group-item-heading">{{template.name}}</h4>
+                <ul class="list-unstyled">
+                    <li>Description: {{template.description}}</li>
+                    <li ng-if="template.does_transform" class="text-danger">
+                        This template transforms samples.
+                    </li>
+                </ul>
+            </a>
+        </div>
+    </div>
+    <div ng-if="false" class="modal-body">
         <div class="row">
             <div class="col-xs-4">
                 <div class="details-sidebar">
