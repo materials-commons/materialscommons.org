@@ -1152,6 +1152,6 @@ hr.heading-label {
 
 .modal-body {
     max-height: 500px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
