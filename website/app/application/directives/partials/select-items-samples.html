@@ -1,0 +1,23 @@
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Selected</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="sample in samples | orderBy:'name'">
+            <td>
+                <a ng-click="sample.selected = !sample.selected">
+                    <i ng-if="sample.selected" class="fa fa-2x fa-fw fa-check text-success"></i>
+                    <i ng-if="!sample.selected" class="fa fa-2x fa-fw fa-square-o"></i>
+                </a>
+            </td>
+            <td>
+                {{sample.name}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
