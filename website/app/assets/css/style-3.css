@@ -1150,3 +1150,12 @@ hr.heading-label {
     padding-left: 10px;
 }
 
+.modal-dialog, .modal-content {
+    height: 80%;
+}
+
+.modal-body {
+    max-height: 80%;
+    overflow-y: scroll;
+}
+
