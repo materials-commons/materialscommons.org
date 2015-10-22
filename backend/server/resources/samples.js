@@ -4,7 +4,7 @@ module.exports = function(samples, schema) {
     let parse = require('co-body');
 
     return {
-        all: all,
+        allForProject: allForProject,
         byID: byID,
         create: create,
         update: update
@@ -12,7 +12,9 @@ module.exports = function(samples, schema) {
 
     ///////////////////////////////////////
 
-    function *all(next) {
+    function *allForProject(next) {
+        this.body = yield samples.allForProject(this.params.project_id);
+        this.status = 200;
         yield next;
     }
 
