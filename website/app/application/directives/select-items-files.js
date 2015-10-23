@@ -14,12 +14,13 @@
     }
 
     module.controller('SelectItemsFilesDirectiveController', SelectItemsFilesDirectiveController);
-    SelectItemsFilesDirectiveController.$inject = ["Restangular", "gridFiles", "fileType"];
-    function SelectItemsFilesDirectiveController(Restangular, gridFiles, fileType) {
+    SelectItemsFilesDirectiveController.$inject = ["Restangular", "gridFiles", "fileType", "current"];
+    function SelectItemsFilesDirectiveController(Restangular, gridFiles, fileType, current) {
         var ctrl = this;
 
         ctrl.gridShowingFlag = true;
         ctrl.files[0].expanded = true;
+        ctrl.directorySelected = directorySelected;
 
         init();
 
@@ -36,11 +37,23 @@
                         innerRenderer: function (params) {
                             var icon = fileType.icon(params.data);
                             if (params.data._type == 'directory') {
-                                return '<span' + ' id="' + params.data.id + '">' + params.data.name + '</span>';
+                                return [
+                                    '<a ng-click="data.selected = !data.selected; ctrl.directorySelected(data);">',
+                                    '<i ng-if="data.selected" class="fa fa-2x fa-fw fa-check text-success"></i>',
+                                    '<i ng-if="!data.selected" class="fa fa-2x fa-fw fa-square-o"></i>',
+                                    '</a>',
+                                    '<span' + ' id="' + params.data.id + '">' + params.data.name + '</span>'
+                                ].join(' ');
                             }
 
-                            return '<i style="color: #D2C4D5;" class="fa fa-fw ' + icon + '"></i><span title="' +
-                                params.data.name + '">' + params.data.name + '</span>';
+                            return [
+                                '<a ng-click="data.selected = !data.selected">',
+                                '<i ng-if="data.selected" class="fa fa-2x fa-fw fa-check text-success"></i>',
+                                '<i ng-if="!data.selected" class="fa fa-2x fa-fw fa-square-o"></i>',
+                                '</a>',
+                                '<i style="color: #D2C4D5;" class="fa fa-fw ' + icon + '"></i><span title="',
+                                params.data.name + '">' + params.data.name + '</span>'
+                            ].join(' ');
                         }
                     }
                 }
@@ -57,8 +70,8 @@
                 rowHeight: 30,
                 angularCompileRows: true,
                 icons: {
-                    groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
-                    groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
+                    groupExpanded: '<i style="color: #D2C4D5;" class="fa fa-folder-open"/>',
+                    groupContracted: '<i style="color: #D2C4D5" class="fa fa-folder"/>'
                 }
             };
         }
@@ -69,16 +82,34 @@
             }
         }
 
+        function directorySelected(data) {
+            var treeModel = new TreeModel(),
+                root = treeModel.parse(current.project().files[0]);
+            var dir = root.first({strategy: 'pre'}, function (node) {
+                return node.model.data.id === data.id;
+            });
+            dir.model.children.forEach(function (c) {
+                if (c.data._type == 'file') {
+                    c.data.selected = data.selected;
+                }
+            });
+        }
+
         function handleDirectory(params) {
             if (!params.data.childrenLoaded) {
-                Restangular.one('v2').one('projects', project.id)
-                    .one('directories', params.data.id).get().then(function(files) {
+                Restangular.one('v2').one('projects', current.project().id)
+                    .one('directories', params.data.id).get().then(function (files) {
                         var treeModel = new TreeModel(),
-                            root = treeModel.parse(project.files[0]);
+                            root = treeModel.parse(current.project().files[0]);
                         var dir = root.first({strategy: 'pre'}, function (node) {
                             return node.model.data.id === params.data.id;
                         });
                         dir.model.children = gridFiles.toGridChildren(files);
+                        dir.model.children.forEach(function(c) {
+                            if (c.data._type == 'file') {
+                                c.data.selected = params.data.selected;
+                            }
+                        });
                         dir.model.data.childrenLoaded = true;
                         ctrl.gridOptions.api.onNewRows();
                         ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
