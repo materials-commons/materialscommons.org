@@ -50,15 +50,11 @@
 
     module.controller('SelectItemsServiceModalController', SelectItemsServiceModalController);
     SelectItemsServiceModalController.$inject = ['$modalInstance', 'showProcesses',
-        'showFiles', 'showSamples', 'showReviews', 'Restangular', '$stateParams'];
+        'showFiles', 'showSamples', 'showReviews', 'Restangular', '$stateParams', 'current'];
 
     function SelectItemsServiceModalController($modalInstance, showProcesses, showFiles, showSamples,
-                                               showReviews, Restangular, $stateParams) {
-        var ctrl = this,
-            selectedFiles = [],
-            selectedSamples = [],
-            selectedProcesses = [],
-            selectedReviews = [];
+                                               showReviews, Restangular, $stateParams, current) {
+        var ctrl = this;
 
         ctrl.tabs = loadTabs();
         ctrl.activeTab = ctrl.tabs[0].name;
@@ -68,6 +64,8 @@
         ctrl.cancel = cancel;
         ctrl.processes = [];
         ctrl.samples = [];
+        ctrl.files = current.project().files;
+        console.dir(ctrl.files);
 
         /////////////////////////
 
