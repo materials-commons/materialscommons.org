@@ -9,6 +9,7 @@ module.exports = function(r) {
         get: function(id, index) {
             return getSingle(r, 'samples', id, index);
         },
+        allForProject: allForProject,
         findInProject: findInProject,
         countAttributesInSample: countAttributesInSample,
         validateAttribute: validateAttribute,
@@ -27,6 +28,12 @@ module.exports = function(r) {
     function update(sample) {
         let rql;
         return run(rql);
+    }
+
+    function* allForProject(projectID) {
+        let rql = r.table('project2sample').getAll(projectID, {index: 'project_id'}).
+            eqJoin('sample_id', r.table('samples')).zip();
+        return yield run(rql);
     }
 
     function findInProject(projectID, index, key) {

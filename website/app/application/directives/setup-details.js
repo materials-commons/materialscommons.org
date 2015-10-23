@@ -6,9 +6,6 @@
             scope: {
                 setup: '='
             },
-            //controller: 'DetailTabsDirectiveController',
-            //controllerAs: 'ctrl',
-            //bindToController: true,
             templateUrl: 'application/directives/partials/setup-details.html'
         };
     }
