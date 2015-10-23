@@ -65,7 +65,6 @@
         ctrl.processes = [];
         ctrl.samples = [];
         ctrl.files = current.project().files;
-        console.dir(ctrl.files);
 
         /////////////////////////
 
@@ -108,7 +107,6 @@
             if (showSamples) {
                 tabs.push(newTab('samples', 'fa-cubes'));
                 Restangular.one('v2').one('projects', $stateParams.id).one('samples').get().then(function (samples) {
-                    console.dir(samples);
                     ctrl.samples = samples;
                 });
             }
