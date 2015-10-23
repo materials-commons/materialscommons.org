@@ -43,7 +43,7 @@
         }
 
         function displayProcesses() {
-            selectItems.open('processes').then(function(items) {
+            selectItems.open('processes', 'files').then(function(items) {
                 console.dir(items.samples);
                 var processCommands = toInputProcessCommands(items.processes).
                     concat(toOutputProcessCommands(items.processes));
