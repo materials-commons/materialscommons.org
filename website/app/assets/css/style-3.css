@@ -1156,12 +1156,12 @@ hr.heading-label {
 }
 
 .home-circle {
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   border-radius: 50px;
   font-size: 25px;
   color: #fff;
-  line-height: 100px;
+  line-height: 60px;
   text-align: center;
 }
 
