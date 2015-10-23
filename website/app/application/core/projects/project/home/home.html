@@ -1,34 +1,38 @@
 <div class="row">
-    <div class="btn-group">
-        <button class="btn btn-default btn-lg dropdown-toggle" type="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-plus fa-fw"></i>Quick Add <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="#">Process</a></li>
-            <li><a href="#">Sample</a></li>
-            <li><a href="#">File</a></li>
-            <li><a href="#">Review</a></li>
+    <div class="col-xs-2">
+        <div class="btn-group">
+            <button class="btn btn-default btn-lg dropdown-toggle" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-plus fa-fw"></i>Quick Add <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Process</a></li>
+                <li><a href="#">Sample</a></li>
+                <li><a href="#">File</a></li>
+                <li><a href="#">Review</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <ul class="list-inline text-center">
+            <li style="padding-right: 80px;">
+                <div class="home-circle process"><a ui-sref="projects.project.processes.list">77</a></div>
+                <p style="color: grey;padding-top: 8px;">PROVENACE</p>
+            </li>
+            <li style="padding-right: 80px;">
+                <div class="home-circle sample"><a ui-sref="projects.project.samples">28</a></div>
+                <p style="color: grey;padding-top: 8px;">SAMPLES</p>
+            </li>
+            <li style="padding-right: 80px;">
+                <div class="home-circle file"><a ui-sref="projects.project.files.all">124</a></div>
+                <p style="color: grey;padding-top: 8px;">FILES</p>
+            </li>
+            <li style="padding-right: 80px;">
+                <div class="home-circle review"><a ui-sref="projects.project.reviews">65</a></div>
+                <p style="color: grey;padding-top: 8px;">REVIEWS</p>
+            </li>
         </ul>
     </div>
-    <ul class="list-inline text-center">
-        <li style="padding-right: 80px;">
-            <div class="home-circle process"><a ui-sref="projects.project.processes.list">77</a></div>
-            <p style="color: grey;padding-top: 8px;">PROVENACE</p>
-        </li>
-        <li style="padding-right: 80px;">
-            <div class="home-circle sample"><a ui-sref="projects.project.samples">28</a></div>
-            <p style="color: grey;padding-top: 8px;">SAMPLES</p>
-        </li>
-        <li style="padding-right: 80px;">
-            <div class="home-circle file"><a ui-sref="projects.project.files.all">124</a></div>
-            <p style="color: grey;padding-top: 8px;">FILES</p>
-        </li>
-        <li style="padding-right: 80px;">
-            <div class="home-circle review"><a ui-sref="projects.project.reviews">65</a></div>
-            <p style="color: grey;padding-top: 8px;">REVIEWS</p>
-        </li>
-    </ul>
 </div>
 <div class="row ">
     <div class="col-xs-7 card">
