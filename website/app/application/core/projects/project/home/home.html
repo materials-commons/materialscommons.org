@@ -1,35 +1,51 @@
 <div class="row">
-    <div class="col-xs-2">
-        <div class="btn-group">
-            <button class="btn btn-default btn-lg dropdown-toggle" type="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-plus fa-fw"></i>Quick Add <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="#">Process</a></li>
-                <li><a href="#">Sample</a></li>
-                <li><a href="#">File</a></li>
-                <li><a href="#">Review</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="col-xs-6">
+    <div class="col-xs-12 no-padding">
         <ul class="list-inline text-center">
-            <li style="padding-right: 80px;">
-                <div class="home-circle process"><a ui-sref="projects.project.processes.list">77</a></div>
-                <p style="color: grey;padding-top: 8px;">PROVENACE</p>
+            <li class="pull-left">
+                <div class="btn-group">
+                    <button class="btn btn-default btn-lg dropdown-toggle" type="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-plus fa-fw"></i>Quick Add <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li class="text-uppercase"><a href="#">Process</a></li>
+                        <li class="text-uppercase"><a href="#">Sample</a></li>
+                        <li class="text-uppercase"><a href="#">File</a></li>
+                        <li class="text-uppercase"><a href="#">Review</a></li>
+                    </ul>
+                </div>
             </li>
-            <li style="padding-right: 80px;">
-                <div class="home-circle sample"><a ui-sref="projects.project.samples">28</a></div>
-                <p style="color: grey;padding-top: 8px;">SAMPLES</p>
+            <li class="dashboard-item">
+                <div class="text-uppercase">
+                    <div class="circle process-color-bg center-block">
+                        <a ui-sref="projects.project.processes.list">{{77 | number}}</a>
+                    </div>
+                    <p>processes</p>
+                </div>
             </li>
-            <li style="padding-right: 80px;">
-                <div class="home-circle file"><a ui-sref="projects.project.files.all">124</a></div>
-                <p style="color: grey;padding-top: 8px;">FILES</p>
+            <li class="dashboard-item">
+                <div class="text-uppercase">
+                    <div class="circle sample-color-bg center-block">
+                        <a ui-sref="projects.project.samples">{{28 | number}}</a>
+                    </div>
+                    <p>samples</p>
+                </div>
             </li>
-            <li style="padding-right: 80px;">
-                <div class="home-circle review"><a ui-sref="projects.project.reviews">65</a></div>
-                <p style="color: grey;padding-top: 8px;">REVIEWS</p>
+            <li class="dashboard-item">
+                <div class="text-uppercase">
+                    <div class="circle file-color-bg center-block">
+                        <a ui-sref="projects.project.files.all">{{99999 | number}}</a>
+                    </div>
+                    <p>files</p>
+                </div>
+            </li>
+            <li class="dashboard-item">
+                <div class="text-uppercase">
+                    <div class="circle review-color-bg center-block">
+                        <a ui-sref="projects.project.reviews">{{65 | number}}</a>
+                    </div>
+                    <p>reviews</p>
+                </div>
             </li>
         </ul>
     </div>
