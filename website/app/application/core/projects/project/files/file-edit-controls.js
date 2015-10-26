@@ -76,7 +76,7 @@
         }
 
         function deleteFile() {
-            //TODO: Ask user if they really want to delete the file.
+            //TODO: Ask user if they really wants to delete the file.
             ctrl.file.remove().then(function () {
                 // do something here with deleted the file.
             }).catch(function (err) {
