@@ -33,12 +33,12 @@
             case "processes":
                 displayProcesses();
                 break;
-            case "samples":
-                displaySamples();
-                break;
-            case "notes":
-                displayNotes();
-                break;
+            //case "samples":
+            //    displaySamples();
+            //    break;
+            //case "notes":
+            //    displayNotes();
+            //    break;
             }
         }
 
@@ -73,12 +73,6 @@
                     direction: 'out'
                 };
             });
-        }
-
-        function displaySamples() {
-        }
-
-        function displayNotes() {
         }
 
         function deleteFile() {
