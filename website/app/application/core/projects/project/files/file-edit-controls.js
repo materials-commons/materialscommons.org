@@ -44,15 +44,14 @@
 
         function displayProcesses() {
             selectItems.open('processes').then(function(items) {
-                var processCommands = toInputProcessCommands(items.processes).
-                    concat(toOutputProcessCommands(items.processes));
+                var processCommands = toProcessCommands(items.processes);
                 ctrl.file.customPUT({processes: processCommands}).then(function() {
                 });
             });
         }
 
-        function toInputProcessCommands(processes) {
-            return processes.filter(function(p) {
+        function toProcessCommands(processes) {
+            var inputs = processes.filter(function(p) {
                 return p.input;
             }).map(function(p) {
                 return {
@@ -61,10 +60,8 @@
                     direction: 'in'
                 };
             });
-        }
 
-        function toOutputProcessCommands(processes) {
-            return processes.filter(function(p) {
+            var outputs = processes.filter(function(p) {
                 return p.output;
             }).map(function(p) {
                 return {
@@ -73,6 +70,8 @@
                     direction: 'out'
                 };
             });
+
+            return inputs.concat(outputs);
         }
 
         function deleteFile() {
