@@ -1,10 +1,10 @@
 (function (module) {
     module.controller('projectCreateProcess', projectCreateProcess);
-    projectCreateProcess.$inject = ["$scope", "project", "processTemplates", "$modal", "pubsub",
+    projectCreateProcess.$inject = ["$scope", "project", "$modal", "pubsub",
         "mcapi", "$state", "Projects", "current", "measurements",
         "modalInstance", "template"];
 
-    function projectCreateProcess($scope, project, processTemplates, $modal, pubsub,
+    function projectCreateProcess($scope, project, $modal, pubsub,
                                   mcapi, $state, Projects, current, measurements, modalInstance, template) {
 
         pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
@@ -67,7 +67,6 @@
                 item.old_properties = [];
                 item.transformed_properties = [];
                 item.files = [];
-                item.property_set_id = item.property_set_id;
                 //when they choose sample pull all property-measurements from backend
                 mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
                     .success(function (properties) {
