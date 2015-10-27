@@ -85,10 +85,32 @@
                 return s.selected;
             });
 
+            var selectedFiles = getSelectedFiles();
+
             $modalInstance.close({
                 processes: selectedProcesses,
-                samples: selectedSamples
+                samples: selectedSamples,
+                files: selectedFiles
             });
+        }
+
+        function getSelectedFiles() {
+            var files = [],
+                treeModel = new TreeModel(),
+                root = treeModel.parse(current.project().files[0]);
+            // Walk the tree looking for selected files and adding them to the
+            // list of files. Also reset the selected flag so the next time
+            // the popup for files is used it doesn't show previously selected
+            // items.
+            root.walk({strategy: 'pre'}, function(node) {
+                if (node.model.data.selected) {
+                    node.model.data.selected = false;
+                    if (node.model.data._type === 'file') {
+                        files.push(node.model.data);
+                    }
+                }
+            });
+            return files;
         }
 
         function cancel() {
