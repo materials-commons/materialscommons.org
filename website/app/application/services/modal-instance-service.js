@@ -69,6 +69,25 @@
                             }
                         }
                     });
+                },
+
+                viewSetUp : function(properties){
+                    service.modal = {
+                        instance: null,
+                        properties: properties
+                    };
+
+                    service.modal.instance = $modal.open({
+                        size: 'lg',
+                        templateUrl: 'application/core/projects/project/processes/view_setup.html',
+                        controller: 'setupViewController',
+                        controllerAs: 'ctrl',
+                        resolve: {
+                            modal: function () {
+                                return service.modal;
+                            }
+                        }
+                    });
                 }
             };
             return service;

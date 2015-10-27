@@ -1,8 +1,10 @@
 (function (module) {
     module.controller('TemplateInstanceController', TemplateInstanceController);
-    TemplateInstanceController.$inject = ["$scope", "project", "$state", "$log", "modal", "processTemplates", "Review"];
+    TemplateInstanceController.$inject = ["$scope", "project", "$state", "$log",
+        "modal", "processTemplates", "Review", "modalInstance"];
 
-    function TemplateInstanceController($scope, project, $state, $log, modal, processTemplates, Review) {
+    function TemplateInstanceController($scope, project, $state, $log,
+                                        modal, processTemplates, Review, modalInstance) {
         $scope.modal = modal;
         this.all = project.processes;
         $scope.selected = {
@@ -12,6 +14,11 @@
         $scope.showDetails = function (template) {
             $scope.selected.item = template;
             $scope.template_details = processTemplates.newInstance(template);
+        };
+
+        $scope.viewSetUp = function (template) {
+            $scope.template_details = processTemplates.newInstance(template);
+            modalInstance.viewSetUp($scope.template_details.setup.settings[0].properties);
         };
 
         $scope.ok = function () {
