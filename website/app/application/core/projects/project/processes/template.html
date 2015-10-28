@@ -10,21 +10,51 @@
                    placeholder="Search processes...">
         </div>
     </div>
-    <div class="modal-body">
+    <div class="row">
         <ul class="nav nav-tabs">
-            <li ng-class="{active: isActive('favourite')}"><a ng-click="setActive('favourite')" class="text-uppercase">favourite
-                Processes</a></li>
             <li ng-class="{active: isActive('all')}"><a ng-click="setActive('all')" class="text-uppercase">All
+                Processes</a></li>
+            <li ng-class="{active: isActive('favourite')}"><a ng-click="setActive('favourite')" class="text-uppercase">favourite
                 Processes</a></li>
             <li ng-class="{active: isActive('pre-filled')}"><a ng-click="setActive('pre-filled')"
                                                                class="text-uppercase">Pre-filled Processes</a></li>
         </ul>
-        <div class="tab-content clearfix">
+        <div class="modal-body tab-content clearfix">
             <div ng-if="isActive('all')">
                 <div class="list-group">
                     <div ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
                          class="pointer list-group-item"
                          ng-repeat="template in templates | orderBy:'name' | filter:search">
+                        <h4 class="list-group-item-heading">{{template.name}}
+                            <span ng-if="template.isFavorite">
+                                <i class="fa fa-fw fa-star pull-right" style="color: #cdcc44"></i>
+                            </span>
+                            <span ng-click="addToFavourite(template)" ng-if="!template.isFavorite">
+                                <i class="fa fa-fw fa-star-o pull-right"></i>
+                            </span>
+                        </h4>
+
+                        <ul class="list-unstyled">
+                            <li>Description: {{template.description}}
+                            </li>
+                            <li ng-if="template.does_transform" class="text-danger">
+                                This template transforms samples.
+                            </li>
+                            <li>
+                                <span><button class="btn" ng-click="viewSetUp(template)">SetUp</button></span>
+                                <span><button class="btn" ng-click="preFill(template)"><i
+                                        class="fa fa-fw fa-pencil-square-o"></i>Pre-fill
+                                </button> </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="isActive('favourite')">
+                <div class="list-group">
+                    <div ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
+                         class="pointer list-group-item"
+                         ng-repeat="template in favourites | orderBy:'name' | filter:search">
                         <h4 class="list-group-item-heading">{{template.name}}</h4>
 
                         <ul class="list-unstyled">
@@ -35,41 +65,18 @@
                             </li>
                             <li>
                                 <button class="btn" ng-click="viewSetUp(template)">SetUp</button>
-                                <button class="btn" ng-click="addToFavourite(template)"><i
-                                        class="fa fa-fw fa-plus"></i>favourite
-                                </button>
                             </li>
+
                         </ul>
                     </div>
                 </div>
-            </div>
-            <div ng-if="isActive('favourite')">
-                    <div class="list-group">
-                        <div ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
-                             class="pointer list-group-item"
-                             ng-repeat="template in favourites | orderBy:'name' | filter:search">
-                            <h4 class="list-group-item-heading">{{template.name}}</h4>
-
-                            <ul class="list-unstyled">
-                                <li>Description: {{template.description}}
-                                </li>
-                                <li ng-if="template.does_transform" class="text-danger">
-                                    This template transforms samples.
-                                </li>
-                                <li>
-                                    <button class="btn" ng-click="viewSetUp(template)">SetUp</button>
-                                </li>
-
-                            </ul>
-                        </div>
-            </div>
-            <div ng-if="isActive('pre-filled')">
-                Pre-filled
+                <div ng-if="isActive('pre-filled')">
+                    Pre-filled
+                </div>
             </div>
         </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">OK</button>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-    </div>
-</div>

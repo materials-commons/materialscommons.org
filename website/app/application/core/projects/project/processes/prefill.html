@@ -1,0 +1,48 @@
+    <div class="row">
+        <div class="col-xs-8" stylex="margin-left: 10px;">
+            <div class="row">
+                <div class="col-xs-8">
+                    Name your process
+                    <div class="row">
+                        <input ng-model="ctrl.template.name" class="form-control" style="width: 350px;">
+                    </div>
+                    <br>
+                    How would you describe your process?
+                    <div class="row">
+                        <textarea placeholder="What" ng-model="ctrl.template.what" class="form-control col-xs-8">
+                        </textarea>
+                    </div>
+                    <br>
+                    Why did you do?
+                    <div class="row">
+                        <textarea placeholder="Why" ng-model="ctrl.template.why" class="form-control col-xs-8">
+                        </textarea>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <i style="color:#3a9ee3" class="fa fa-plus fa-fw"></i> <span style="color:#3a9ee3"><a
+                            ng-click="ctrl.setUp()">Setup</a></span>
+                    </div>
+                    <br>
+                    <hr class="divider"/>
+                    <div class="row">
+                        <br>
+                        <div class="col-xs-3">
+                            <button ng-click="cancel()"
+                                    class="btn-details-container btn btn-default btn btn-cancel">
+                                Cancel
+                            </button>
+                        </div>
+                        <div class="col-xs-3">
+                            <button ng-click="createProcess()"
+                                    ng-disabled="isProcessing"
+                                    class=" btn btn-default btn-process btn-details-container">Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
