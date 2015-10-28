@@ -1,11 +1,12 @@
 (function (module) {
-    module.controller('projectCreateProcess', projectCreateProcess);
-    projectCreateProcess.$inject = ["$scope", "project", "$modal", "pubsub",
+    module.controller('CreateProcessController', CreateProcessController);
+    CreateProcessController.$inject = ["$scope", "project", "$modal", "pubsub",
         "mcapi", "$state", "Projects", "current", "measurements",
-        "modalInstance", "template"];
+        "modalInstance", "template", "selectItems"];
 
-    function projectCreateProcess($scope, project, $modal, pubsub,
-                                  mcapi, $state, Projects, current, measurements, modalInstance, template) {
+    function CreateProcessController($scope, project, $modal, pubsub,
+                                  mcapi, $state, Projects, current, measurements, modalInstance,
+                                  template, selectItems) {
 
         pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
             addAttachment(sample);
@@ -26,6 +27,14 @@
         pubsub.waitOn($scope, 'updateTransformedSample', function (transformed_sample) {
             updateTransformedSample(transformed_sample);
         });
+
+        /////////////////////////
+
+        function chooseSamples() {
+            selectItems.open('samples').then(function(samples) {
+                console.dir(samples);
+            });
+        }
 
         function updateTransformedSample(transformed_sample) {
             var i = _.indexOf($scope.template.transformed_samples, function (entry) {

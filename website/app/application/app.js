@@ -228,8 +228,8 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         })
         .state("projects.project.processes.create", {
             url: "/create",
-            templateUrl: "application/core/projects/project/processes/create.html",
-            controller: "projectCreateProcess",
+            templateUrl: "application/core/projects/project/processes/create/create.html",
+            controller: "CreateProcessController",
             resolve: {
                 template: ["processList", "processTemplates", "$filter", "measurements",
                     function (processList, processTemplates, $filter, measurements) {
