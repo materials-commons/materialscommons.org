@@ -15,6 +15,10 @@ body {
     margin-top: 41px;
 }
 
+textarea {
+    resize: none;
+}
+
 /*** Override basic bootstrap styles ***/
 
 .btn {
