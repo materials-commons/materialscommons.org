@@ -20,9 +20,11 @@
 
         $scope.preFill = function (template) {
             $scope.showDetails(template);
-            $scope.modal.instance.close();
-            processTemplates.setActiveTemplate(template);
-            $state.go('projects.project.processes.prefill');
+            //$scope.modal.instance.close();
+            modalInstance.preFill($scope.template_details);
+
+            //processTemplates.setActiveTemplate(template);
+            //$state.go('projects.project.processes.prefill');
         };
 
         $scope.ok = function () {

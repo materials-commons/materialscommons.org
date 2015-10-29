@@ -241,21 +241,21 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                 ]
             }
         })
-        .state("projects.project.processes.prefill", {
-            url: "/prefill",
-            templateUrl: "application/core/projects/project/processes/prefill.html",
-            controller: "projectPreFillProcess",
-            controllerAs: "ctrl",
-            resolve: {
-                template: ["processList", "processTemplates", "$filter",
-                    function (processList, processTemplates, $filter) {
-                        var template = processTemplates.getActiveTemplate();
-                        template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
-                        return template;
-                    }
-                ]
-            }
-        })
+        //.state("projects.project.processes.prefill", {
+        //    url: "/prefill",
+        //    templateUrl: "application/core/projects/project/processes/prefill.html",
+        //    controller: "projectPreFillProcess",
+        //    controllerAs: "ctrl",
+        //    resolve: {
+        //        template: ["processList", "processTemplates", "$filter",
+        //            function (processList, processTemplates, $filter) {
+        //                var template = processTemplates.getActiveTemplate();
+        //                template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
+        //                return template;
+        //            }
+        //        ]
+        //    }
+        //})
         .state("projects.project.processes.edit", {
             url: "/edit/:process_id",
             templateUrl: "application/core/projects/project/processes/edit.html",
