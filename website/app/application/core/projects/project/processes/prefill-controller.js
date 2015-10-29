@@ -1,11 +1,11 @@
 (function (module) {
     module.controller('projectPreFillProcess', projectPreFillProcessController);
-    projectPreFillProcessController.$inject = ["template"];
+    projectPreFillProcessController.$inject = ["modal"];
 
-    function projectPreFillProcessController(template) {
+    function projectPreFillProcessController(modal) {
         var ctrl = this;
-        ctrl.template = template;
-
+        ctrl.template = modal.template;
+         console.dir(ctrl.template);
         //ctrl.setUp = setUp;
     }
 }(angular.module('materialscommons')));

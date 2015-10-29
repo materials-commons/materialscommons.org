@@ -10,30 +10,30 @@
                     };
                     var template = '';
                     switch (type) {
-                    case "datafile":
-                        template = 'application/core/projects/project/home/directives/display-file.html';
-                        service.modal.item = item;
-                        break;
-                    case "sample":
-                        template = 'application/core/projects/project/home/directives/display-sample.html';
-                        mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
-                            .success(function (properties) {
-                                item.properties = properties;
-                                service.modal.item = item;
-                            })
-                            .error(function (err) {
-                                console.log(err)
-                            })
-                            .jsonp();
-                        mcapi('/sample/datafile/%', item.id)
-                            .success(function (files) {
-                                item.linked_files = files;
-                            }).jsonp();
-                        break;
-                    case "process":
-                        template = 'application/core/projects/project/home/directives/display-process.html';
-                        service.modal.item = item;
-                        break;
+                        case "datafile":
+                            template = 'application/core/projects/project/home/directives/display-file.html';
+                            service.modal.item = item;
+                            break;
+                        case "sample":
+                            template = 'application/core/projects/project/home/directives/display-sample.html';
+                            mcapi('/sample/measurements/%/%', item.id, item.property_set_id)
+                                .success(function (properties) {
+                                    item.properties = properties;
+                                    service.modal.item = item;
+                                })
+                                .error(function (err) {
+                                    console.log(err)
+                                })
+                                .jsonp();
+                            mcapi('/sample/datafile/%', item.id)
+                                .success(function (files) {
+                                    item.linked_files = files;
+                                }).jsonp();
+                            break;
+                        case "process":
+                            template = 'application/core/projects/project/home/directives/display-process.html';
+                            service.modal.item = item;
+                            break;
                     }
                     service.modal.instance = $modal.open({
                         size: 'lg',
@@ -71,7 +71,7 @@
                     });
                 },
 
-                viewSetUp : function(properties){
+                viewSetUp: function (properties) {
                     service.modal = {
                         instance: null,
                         properties: properties
@@ -81,6 +81,25 @@
                         size: 'lg',
                         templateUrl: 'application/core/projects/project/processes/view_setup.html',
                         controller: 'setupViewController',
+                        controllerAs: 'ctrl',
+                        resolve: {
+                            modal: function () {
+                                return service.modal;
+                            }
+                        }
+                    });
+                },
+
+                preFill: function (template) {
+                    service.modal = {
+                        instance: null,
+                        template: template
+                    };
+
+                    service.modal.instance = $modal.open({
+                        size: 'lg',
+                        templateUrl: 'application/core/projects/project/processes/prefill.html',
+                        controller: 'projectPreFillProcess',
                         controllerAs: 'ctrl',
                         resolve: {
                             modal: function () {

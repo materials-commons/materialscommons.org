@@ -1204,9 +1204,17 @@ li.dashboard-item div p {
 }
 
 .list-group-item.active, .list-group-item:focus, .list-group-item.active:hover {
-  background-color: lightgrey;
+  background-color: #EEE;
   color: black;
   border: none;
+}
+
+.list-group-item-heading{
+  font-size: 1.2rem; /*1.2 times the root font size*/
+}
+
+.fa-star{
+  color: #FFC107;
 }
 
 
