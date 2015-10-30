@@ -32,16 +32,16 @@
                                 </div>
                             </div>
                             <span ng-if="setting.property.units.length === 0">{{::setting.property.unit}}</span>
-                        <span class="col-xs-4" ng-if="setting.property.units.length !== 0">
-                            <select ng-model="setting.property.unit" data-placeholder="Choose"
+                            <span class="col-xs-4" ng-if="setting.property.units.length !== 0">
+                                <select ng-model="setting.property.unit" data-placeholder="Choose"
                                     class="form-control"
                                     ng-required="setting.property.required">
-                                <option value="{{choice}}"
+                                    <option value="{{choice}}"
                                         ng-repeat="choice in setting.property.units">
                                     {{ choice }}
-                                </option>
-                            </select>
-                        </span>
+                                    </option>
+                                </select>
+                            </span>
                             <span class="help-block">{{::setting.property.description}}</span>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                             <span class="col-xs-4" ng-if="setting.property.units.length !== 0">
                                 <select ng-model="setting.property.unit" data-placeholder="Choose" class="form-control"
                                         ng-required="setting.property.required">
-                                    <option value="{{choice}}" ng-repeat="choice in setting.property.units"> {{ choice }}
+                                    <option value="{{choice}}" ng-repeat="choice in setting.property.units"> {{ choice}}
                                     </option>
                                 </select>
                             </span> <span class="help-block">{{::setting.property.description}}</span></div>
@@ -87,7 +87,7 @@
                                 <div ng-message="required">It's a required field.</div>
                                 <div ng-message="text">It's a text field.</div>
                             </div>
-                             <span class="help-block">{{::setting.property.description}}</span></div>
+                            <span class="help-block">{{::setting.property.description}}</span></div>
                     </div>
                     <!--------- unknown type --------->
                     <div ng-switch-default><span>Unknown template type {{setting.property._type}}</span></div>

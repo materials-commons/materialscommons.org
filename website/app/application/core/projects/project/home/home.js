@@ -1,10 +1,14 @@
 (function (module) {
     module.controller('ProjectHomeController', ProjectHomeController);
-    ProjectHomeController.$inject = ["project", "$filter"];
+    ProjectHomeController.$inject = ["project", "$filter", "modalInstance"];
 
-    function ProjectHomeController(project, $filter) {
+    function ProjectHomeController(project, $filter, modalInstance) {
+
         var ctrl = this;
         ctrl.project = project;
+
+        ctrl.chooseTemplate = chooseTemplate;
+
         var columnDefs = [
             {headerName: "Name", field: "name"},
             {
@@ -35,7 +39,10 @@
             columnDefs: columnDefs,
             rowData: samples,
             rowHeight: 45
+        };
+
+        function chooseTemplate() {
+            modalInstance.chooseTemplate(ctrl.project);
         }
     }
-
 }(angular.module('materialscommons')));
