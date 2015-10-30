@@ -8,10 +8,10 @@
                         <i class="fa fa-plus fa-fw"></i>Quick Add <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li class="text-uppercase"><a href="#">Process</a></li>
-                        <li class="text-uppercase"><a href="#">Sample</a></li>
-                        <li class="text-uppercase"><a href="#">File</a></li>
-                        <li class="text-uppercase"><a href="#">Review</a></li>
+                        <li class="text-uppercase"><a ng-click="home.chooseTemplate()">Process</a></li>
+                        <li ng-click="home.chooseTemplate()" class="text-uppercase"><a href="#">Sample</a></li>
+                        <li ng-if="false" class="text-uppercase"><a href="#">File</a></li>
+                        <li ng-if="false" class="text-uppercase"><a href="#">Review</a></li>
                     </ul>
                 </div>
             </li>

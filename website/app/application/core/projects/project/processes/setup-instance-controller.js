@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('setupInstanceController', setupInstanceController);
-    setupInstanceController.$inject = ["$scope", "project", "$state", "$log", "modal", "pubsub", "processTemplates"];
+    setupInstanceController.$inject = ["$scope", "project", "$state", "$log", "modal", "processTemplates"];
 
-    function setupInstanceController($scope, project, $state, $log, modal, pubsub, processTemplates) {
+    function setupInstanceController($scope, project, $state, $log, modal,  processTemplates) {
         $scope.modal = modal;
         $scope.selected = {
             item: {}
