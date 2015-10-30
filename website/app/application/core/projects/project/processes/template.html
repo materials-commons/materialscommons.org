@@ -16,10 +16,10 @@
         <ul class="nav nav-tabs">
             <li ng-class="{active: isActive('all')}"><a ng-click="setActive('all')" class="text-uppercase">All
                 Processes</a></li>
-            <li ng-class="{active: isActive('favourite')}"><a ng-click="setActive('favourite')" class="text-uppercase">favourite
-                Processes</a></li>
+            <li ng-class="{active: isActive('favourite')}"><a ng-click="setActive('favourite')" class="text-uppercase"><i class="fa fa-fw fa-star"></i> favourite
+                Processes ({{favourites.length}})</a></li>
             <li ng-class="{active: isActive('pre-filled')}"><a ng-click="setActive('pre-filled')"
-                                                               class="text-uppercase">Pre-filled Processes</a></li>
+                                                               class="text-uppercase"><i class="fa fa-fw fa-pencil-square-o"></i>Pre-filled Processes (4)</a></li>
         </ul>
         <div class="modal-body tab-content clearfix">
             <div ng-if="isActive('all')">
