@@ -8,9 +8,12 @@
                 <label class="col-xs-3 control-label">
                     Process Name:
                 </label>
+
                 <div class="col-xs-6"><input ng-model="ctrl.template.name" class="form-control"></div>
-            </div> <br>
-            <h4>SETUP</h4><hr/>
+            </div>
+            <br>
+            <h4>SETUP</h4>
+            <hr/>
             <div class="row" ng-repeat="setting in ctrl.template.setup.settings[0].properties">
                 <div ng-switch="setting.property._type">
                     <!--------- number --------->

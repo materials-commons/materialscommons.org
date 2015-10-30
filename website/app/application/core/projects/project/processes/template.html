@@ -14,71 +14,82 @@
 
     <div class="row">
         <ul class="nav nav-tabs">
-            <li ng-class="{active: isActive('all')}"><a ng-click="setActive('all')" class="text-uppercase">All
-                Processes</a></li>
-            <li ng-class="{active: isActive('favourite')}"><a ng-click="setActive('favourite')" class="text-uppercase"><i class="fa fa-fw fa-star"></i> favourite
-                Processes ({{favourites.length}})</a></li>
-            <li ng-class="{active: isActive('pre-filled')}"><a ng-click="setActive('pre-filled')"
-                                                               class="text-uppercase"><i class="fa fa-fw fa-pencil-square-o"></i>Pre-filled Processes (4)</a></li>
+            <li ng-class="{active: isActive('all')}">
+                <a ng-click="setActive('all')" class="text-uppercase">All
+                    Processes</a></li>
+            <li ng-class="{active: isActive('favourite')}">
+                <a ng-click="setActive('favourite')" class="text-uppercase">
+                    <i class="fa fa-fw fa-star"></i> favourite
+                    Processes ({{favourites.length}})</a></li>
+            <li ng-class="{active: isActive('pre-filled')}">
+                <a ng-click="setActive('pre-filled')" class="text-uppercase">
+                    <i class="fa fa-fw fa-pencil-square-o"></i>
+                    Pre-filled Processes (4)</a></li>
         </ul>
-        <div class="modal-body tab-content clearfix">
-            <div ng-if="isActive('all')">
-                <div class="list-group">
-                    <div ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
-                         class="pointer list-group-item"
-                         ng-repeat="template in templates | orderBy:'name' | filter:search">
-                        <div class="row">
-                            <div class="col-xs-7">
-                                <div class="list-group-item-heading">{{template.name}}</div>
-                                <div ng-if="template.does_transform">
-                                    <label class="label label-default">Transforms Sample</label>
+        <div class="modal-body">
+            <div class="tab-content" ng-if="isActive('all')">
+                <div class="tab-pane active">
+                    <div class="list-group">
+                        <div ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
+                             class="pointer list-group-item"
+                             ng-repeat="template in templates | orderBy:'name' | filter:search">
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <div class="list-group-item-heading">{{template.name}}</div>
+                                    <div ng-if="template.does_transform">
+                                        <label class="label label-default">Transforms Sample</label>
+                                    </div>
+                                    <div class="row">
+                                        Description: {{template.description}}
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    Description: {{template.description}}
-                                </div>
-                            </div>
-                            <div class="col-xs-5">
-                                <div ng-if="template.isFavorite">
-                                    <i class="fa fa-fw fa-star pull-right"></i>
-                                </div>
-                                <div ng-click="addToFavourite(template)" ng-if="!template.isFavorite">
-                                    <i class="fa fa-fw fa-star-o pull-right"></i>
-                                </div>
-                                <div class="row">
-                                    <button class="btn btn-info" ng-click="viewSetUp(template)">
-                                        <i class="fa fa-fw fa-gear"></i>SetUp</button>
-                                    <button class="btn btn-info" ng-click="preFill(template)"><i
-                                            class="fa fa-fw fa-pencil-square-o"></i>Pre-fill
-                                    </button>
+                                <div class="col-xs-5">
+                                    <div ng-if="template.isFavorite">
+                                        <i class="fa fa-fw fa-star pull-right"></i>
+                                    </div>
+                                    <div ng-click="addToFavourite(template)" ng-if="!template.isFavorite">
+                                        <i class="fa fa-fw fa-star-o pull-right"></i>
+                                    </div>
+                                    <div class="row">
+                                        <button class="btn btn-info" ng-click="viewSetUp(template)">
+                                            <i class="fa fa-fw fa-gear"></i>SetUp
+                                        </button>
+                                        <button class="btn btn-info" ng-click="preFill(template)"><i
+                                                class="fa fa-fw fa-pencil-square-o"></i>Pre-fill
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div ng-if="isActive('favourite')">
-                <div class="list-group">
-                    <div ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
-                         class="pointer list-group-item"
-                         ng-repeat="template in favourites | orderBy:'name' | filter:search">
-                        <h4 class="list-group-item-heading">{{template.name}}</h4>
+                <div class="tab-pane" ng-if="isActive('favourite')">
+                    <div class="tab-pane active" id="2">
+                        <div class="list-group">
+                            <div ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
+                                 class="pointer list-group-item"
+                                 ng-repeat="template in favourites | orderBy:'name' | filter:search">
+                                <h4 class="list-group-item-heading">{{template.name}}</h4>
 
-                        <ul class="list-unstyled">
-                            <li>Description: {{template.description}}
-                            </li>
-                            <li ng-if="template.does_transform" class="text-danger">
-                                This template transforms samples.
-                            </li>
-                            <li>
-                                <button class="btn" ng-click="viewSetUp(template)">SetUp</button>
-                            </li>
+                                <ul class="list-unstyled">
+                                    <li>Description: {{template.description}}
+                                    </li>
+                                    <li ng-if="template.does_transform" class="text-danger">
+                                        This template transforms samples.
+                                    </li>
+                                    <li>
+                                        <button class="btn" ng-click="viewSetUp(template)">SetUp</button>
+                                    </li>
 
-                        </ul>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div ng-if="isActive('pre-filled')">
+                <div class="tab-pane" ng-if="isActive('pre-filled')">
                     Pre-filled
                 </div>
+
             </div>
         </div>
         <div class="modal-footer">
