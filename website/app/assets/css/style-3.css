@@ -27,9 +27,24 @@ textarea {
     font-weight: 500;
 }
 
+.btn-default {
+    color: white;
+}
+
 .btn-danger {
     background-color: #E57373;
     border-color: #E57373;
+}
+
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger.focus,
+.btn-danger:active,
+.btn-danger.active,
+.open > .dropdown-toggle.btn-danger {
+    color: #ffffff;
+    background-color: #c9302c;
+    border-color: #ac2925;
 }
 
 .text-danger {
