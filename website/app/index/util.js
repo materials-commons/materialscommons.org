@@ -48,6 +48,22 @@ function _add_json_callback2(url) {
     return url + argSeparator + "callback=JSON_CALLBACK";
 }
 
+function differenceById(from, others) {
+    var idsFrom = from.map(function(entry) {
+        return entry.id;
+    });
+    var idsOthers = others.map(function(entry) {
+        return entry.id;
+    });
+
+    var diff = _.difference(idsFrom, idsOthers);
+    return from.filter(function(entry) {
+        return _.indexOf(diff, function(e) {
+            return e == entry.id;
+        }) !== -1;
+    })
+}
+
 String.prototype.capitalize = function () {
     return this.replace(/(?:^|\s)\S/g, function (a) {
         return a.toUpperCase();
@@ -72,5 +88,4 @@ _.mixin({
         // not found, return fail value
         return -1;
     }
-
 });
