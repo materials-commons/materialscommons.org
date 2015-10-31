@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('CreateProcessController', CreateProcessController);
-    CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems", "$state", "template"];
+    CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems", "$state", "template", "$modal"];
 
-    function CreateProcessController(Restangular, $stateParams, selectItems, $state, template) {
+    function CreateProcessController(Restangular, $stateParams, selectItems, $state, template, $modal) {
         var ctrl = this;
 
         ctrl.process = template;
@@ -16,52 +16,78 @@
         /////////////////////////
 
         function chooseSamples() {
-            selectItems.open('samples').then(function(item) {
-                console.dir(item.samples);
+            selectItems.open('samples').then(function (item) {
+                var uniqueSamples = differenceById(item.samples, ctrl.process.input_samples);
+                uniqueSamples.forEach(function (sample) {
+                    ctrl.process.input_samples.push({
+                        id: sample.id,
+                        name: sample.name,
+                        old_properties: [],
+                        new_properties: [],
+                        property_set_id: '',
+                        files: []
+                    });
+                });
             });
         }
 
         function chooseInputFiles() {
-            selectItems.open('files').then(function(item) {
-                console.dir(item.files);
+            selectItems.open('files').then(function (item) {
+                var uniqueFiles = differenceById(item.files, ctrl.process.input_files);
+                uniqueFiles.forEach(function (file) {
+                    ctrl.process.input_files.push({
+                        id: file.id,
+                        name: file.name
+                    });
+                });
             });
         }
 
         function chooseOutputFiles() {
-            selectItems.open('files').then(function(item) {
-                console.dir(item.files);
+            selectItems.open('files').then(function (item) {
+                var uniqueFiles = differenceById(item.files, ctrl.process.output_files);
+                uniqueFiles.forEach(function (file) {
+                    ctrl.process.output_files.push({
+                        id: file.id,
+                        name: file.name
+                    });
+                });
             });
         }
 
-        function cancel () {
+        function cancel() {
             console.log('cancel');
-            //$state.go('projects.project.processes.list');
+            $state.go('projects.project.processes.list');
         }
 
         function submit() {
-            console.log('submit process');
+            console.dir(ctrl.process);
+            //Restangular.one('v2').one('projects', $stateParams.id).('processes').
+            //    post(ctrl.process).then(function (p) {
+            //    console.dir(p);
+            //});
         }
 
-        function linkFilesToSample(files, sample) {
+        function linkFilesToSample(sample, input_files, output_files) {
             var modal = $modal.open({
                 templateUrl: 'application/core/projects/project/processes/link-files-to-sample.html',
                 controller: 'LinkFilesToSampleController',
                 controllerAs: 'sample',
                 resolve: {
                     files: function () {
-                        return files;
+                        return input_files.slice().concat(output_files);
                     },
                     sampleName: function () {
                         return sample.name;
                     },
                     project: function () {
-                        return project;
+                        return {};
                     }
                 }
             });
             modal.result.then(function (linkedFiles) {
                 linkedFiles.forEach(function (f) {
-                    sample.files.push({id: f.datafile_id, name: f.name});
+                    sample.files.push({id: f.id, name: f.name});
                 })
             });
         }
@@ -104,7 +130,7 @@
 
         function unlinkFile(file) {
             var i = _.indexOf(ctrl.filesToLink, function (f) {
-                return f.datafile_id == file.datafile_id;
+                return f.id == file.id;
             });
 
             if (i !== -1) {
