@@ -85,7 +85,7 @@
                         </ul>
                     </td>
                     <td>
-                        <a ng-click="ctrl.remove('input_files', sample)">
+                        <a ng-click="ctrl.remove(ctrl.process.input_samples, sample)">
                             <i class="fa fa-close"></i>
                         </a>
                     </td>
@@ -94,13 +94,13 @@
                     <td>Input File</td>
                     <td>{{file.name}}</td>
                     <td></td>
-                    <td><a ng-click="ctrl.remove('input_files', file)"><i class="fa fa-close"></i></a></td>
+                    <td><a ng-click="ctrl.remove(ctrl.process.input_files, file)"><i class="fa fa-close"></i></a></td>
                 </tr>
                 <tr ng-repeat="file in ctrl.process.output_files | orderBy:'name'">
                     <td>Output File</td>
                     <td>{{file.name}}</td>
                     <td></td>
-                    <td><a ng-click="ctrl.remove('output_files', file)"><i class="fa fa-close"></i></a></td>
+                    <td><a ng-click="ctrl.remove(ctrl.process.output_files, file)"><i class="fa fa-close"></i></a></td>
                 </tr>
                 </tbody>
             </table>
