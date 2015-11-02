@@ -57,7 +57,6 @@
         }
 
         function cancel() {
-            console.log('cancel');
             $state.go('projects.project.processes.list');
         }
 
@@ -65,6 +64,7 @@
             console.dir(ctrl.process);
             Restangular.one('v2').one('projects', $stateParams.id).one('processes').
                 customPOST(ctrl.process).then(function () {
+                    $state.go('projects.project.processes.list');
             }, function(e) {
                 console.log('failure to save process', e);
             });
