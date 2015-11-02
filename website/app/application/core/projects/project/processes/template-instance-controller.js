@@ -23,10 +23,16 @@
             modalInstance.preFill($scope.template_details).then(function (data) {
                 $scope.prefilled.push(data.template);
                 Restangular.one('v2').one('projects', project.id)
-                .customPUT({
-                        process_templates : [
-                            {command: 'add',
-                            template: data.template}
+                    .customPUT({
+                        process_templates: [
+                            {
+                                command: 'add',
+                                template: {
+                                    name: data.template.name,
+                                    setup: data.template.setup.settings[0],
+                                    process_name: data.template.process_name
+                                }
+                            }
                         ]
                     })
             });
@@ -58,7 +64,6 @@
         };
 
         $scope.removeFromFavourite = function (template) {
-
             var index = _.indexOf($scope.templates, function (item) {
                 return item.name === template.name;
             });
@@ -70,7 +75,7 @@
                 return item.name === template.name;
             });
             if (j > -1) {
-                $scope.favourites.splice(j,1);
+                $scope.favourites.splice(j, 1);
             }
         };
 
@@ -101,6 +106,16 @@
             $scope.setActive('all');
             $scope.favourites = [];
             $scope.prefilled = [];
+            var instance = {};
+            //Fill in pre-filled templates
+            project.process_templates.forEach(function(item){
+                if('process_name' in item){
+                    instance = processTemplates.getTemplateByName(item.process_name);
+                    instance.setup.settings[0] = item.setup;
+                    instance.name = item.name;
+                    $scope.prefilled.push(instance);
+                }
+            });
             $scope.selected = {
                 item: {}
             };
