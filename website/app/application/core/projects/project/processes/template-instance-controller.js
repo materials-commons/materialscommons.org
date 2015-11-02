@@ -1,10 +1,10 @@
 (function (module) {
     module.controller('TemplateInstanceController', TemplateInstanceController);
     TemplateInstanceController.$inject = ["$scope", "project", "$state", "$log",
-        "modal", "processTemplates", "Review", "modalInstance"];
+        "modal", "processTemplates", "Review", "modalInstance", "Restangular"];
 
     function TemplateInstanceController($scope, project, $state, $log,
-                                        modal, processTemplates, Review, modalInstance) {
+                                        modal, processTemplates, Review, modalInstance, Restangular) {
         $scope.modal = modal;
         this.all = project.processes;
 
@@ -20,13 +20,16 @@
 
         $scope.openPreFill = function (template) {
             $scope.showDetails(template);
-            //$scope.modal.instance.close();
-            var temp = modalInstance.preFill($scope.template_details);
-            console.dir($scope.template_details);
-            console.dir(temp);
-
-            //processTemplates.setActiveTemplate(template);
-            //$state.go('projects.project.processes.prefill');
+            modalInstance.preFill($scope.template_details).then(function (data) {
+                $scope.prefilled.push(data.template);
+                Restangular.one('v2').one('projects', project.id)
+                .customPUT({
+                        process_templates : [
+                            {command: 'add',
+                            template: data.template}
+                        ]
+                    })
+            });
         };
 
         $scope.ok = function () {
@@ -54,6 +57,23 @@
             }
         };
 
+        $scope.removeFromFavourite = function (template) {
+
+            var index = _.indexOf($scope.templates, function (item) {
+                return item.name === template.name;
+            });
+            if (index > -1) {
+                $scope.templates[index].isFavorite = false;
+            }
+
+            var j = _.indexOf($scope.favourites, function (item) {
+                return item.name === template.name;
+            });
+            if (j > -1) {
+                $scope.favourites.splice(j,1);
+            }
+        };
+
         $scope.isActive = function (tab) {
             return $scope.activeTab === tab;
         };
@@ -65,11 +85,22 @@
             $log.info('Modal dismissed at: ' + new Date());
         });
 
+        $scope.choosePrefilledTemplate = function (template) {
+            $scope.selected.item = template;
+            $scope.template_details = template;
+        };
+
+        $scope.viewPrefilledSetUp = function (template) {
+            $scope.template_details = template;
+            modalInstance.preFill($scope.template_details).then(function (data) {
+            });
+        };
 
         function init() {
             $scope.templates = processTemplates.templates();
             $scope.setActive('all');
             $scope.favourites = [];
+            $scope.prefilled = [];
             $scope.selected = {
                 item: {}
             };

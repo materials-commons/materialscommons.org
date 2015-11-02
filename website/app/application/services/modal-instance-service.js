@@ -96,7 +96,7 @@
                         template: template
                     };
 
-                    service.modal.instance = $modal.open({
+                    var modal = $modal.open({
                         size: 'lg',
                         templateUrl: 'application/core/projects/project/processes/prefill.html',
                         controller: 'projectPreFillProcess',
@@ -107,6 +107,7 @@
                             }
                         }
                     });
+                    return modal.result;
                 }
             };
             return service;
