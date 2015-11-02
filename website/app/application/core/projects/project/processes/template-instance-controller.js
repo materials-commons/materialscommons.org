@@ -35,16 +35,23 @@
                                 }
                             }
                         ]
-                    }).then(function(){
+                    }).then(function () {
                         $scope.prefilled.push(data.template);
                     });
             });
         };
 
         $scope.addToFavourite = function (template) {
-            Restangular.one('v2').one('users', User.u())
-            .customPUT({
-
+            Restangular.one('v2').one('users', User.u(), project.id)
+                .customPUT({
+                    favorites: {
+                        processes: [
+                            {
+                                command: 'add',
+                                name: template.name
+                            }
+                        ]
+                    }
                 });
             $scope.favourites.push(template);
             var index = _.indexOf($scope.templates, function (item) {
