@@ -12,6 +12,7 @@
         ctrl.linkFilesToSample = linkFilesToSample;
         ctrl.cancel = cancel;
         ctrl.submit = submit;
+        ctrl.remove = removeById;
 
         /////////////////////////
 
@@ -24,7 +25,7 @@
                         name: sample.name,
                         old_properties: [],
                         new_properties: [],
-                        property_set_id: '',
+                        property_set_id: sample.property_set_id,
                         files: []
                     });
                 });
@@ -62,10 +63,11 @@
 
         function submit() {
             console.dir(ctrl.process);
-            //Restangular.one('v2').one('projects', $stateParams.id).('processes').
-            //    post(ctrl.process).then(function (p) {
-            //    console.dir(p);
-            //});
+            Restangular.one('v2').one('projects', $stateParams.id).one('processes').
+                customPOST(ctrl.process).then(function () {
+            }, function(e) {
+                console.log('failure to save process', e);
+            });
         }
 
         function linkFilesToSample(sample, input_files, output_files) {
