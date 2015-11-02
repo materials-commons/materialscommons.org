@@ -32,6 +32,8 @@ module.exports = function(r) {
 
     function* allForProject(projectID) {
         let rql = r.table('project2sample').getAll(projectID, {index: 'project_id'}).
+            eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'}).
+            zip().filter({'current': true}).
             eqJoin('sample_id', r.table('samples')).zip();
         return yield run(rql);
     }
@@ -50,8 +52,7 @@ module.exports = function(r) {
     function *countAttributesInSample(asetID, attrIDs) {
         let rql = r.table('attributeset2attribute')
                 .getAll(r.args(attrIDs), {index:'attribute_id'});
-        let count = yield rql.filter({attribute_set_id: asetID}).count();
-        return count;
+        return yield rql.filter({attribute_set_id: asetID}).count();
     }
 
     /**
