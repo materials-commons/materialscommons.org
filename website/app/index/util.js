@@ -61,7 +61,7 @@ function differenceById(from, others) {
         return _.indexOf(diff, function(e) {
             return e == entry.id;
         }) !== -1;
-    })
+    });
 }
 
 function removeById(from, what) {
