@@ -161,7 +161,12 @@
             },
 
             setActiveTemplate: function (template) {
-                self.activeTemplate = this.newInstance(template);
+                if(template.fn){
+                    self.activeTemplate = this.newInstance(template);
+                }else{
+                    self.activeTemplate = template;
+                }
+
             },
 
             getTemplateByName: function (what) {
