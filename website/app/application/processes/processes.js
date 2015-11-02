@@ -1,5 +1,6 @@
 function Apt() {
     this.name = "APT";
+    this.process_name = "APT";
     this.description = "Atom Probe Tomography";
     this._type = "APT";
     this.input_files = [];
@@ -238,6 +239,7 @@ function Apt() {
 
 function Sem() {
     this.name = "SEM";
+    this.process_name = "SEM";
     this.description = "Stem Electron Microscopy";
     this._type = "SEM";
     this.input_files = [];
@@ -399,6 +401,7 @@ function Sem() {
 
 function AsReceived() {
     this.name = "As Received";
+    this.process_name = "As Received";
     this.description = "As Received process is used to create new samples.";
     this._type = "as_received";
     this.input_files = [];
@@ -439,6 +442,7 @@ function AsReceived() {
 
 function AptDataAnalysis() {
     this.name = "APT Data Analysis";
+    this.process_name = "APT Data Analysis";
     this.description = "Atom Probe Tomography Data Analysis";
     this._type = "APT";
     this.input_files = [];
@@ -530,6 +534,7 @@ function AptDataAnalysis() {
 
 function AptDataReconstruction() {
     this.name = "APT Data Reconstruction";
+    this.process_name = "APT Data Reconstruction";
     this.description = "Atom Probe Tomography Data Reconstruction";
     this._type = "APT";
     this.input_files = [];
@@ -689,6 +694,7 @@ function AptDataReconstruction() {
 
 function BroadIonBeamMilling() {
     this.name = "Broad Ion Beam Milling";
+    this.process_name = "Broad Ion Beam Milling";
     this.description = "Broad Ion Beam Milling";
     this._type = "OTHER";
     this.input_files = [];
@@ -767,6 +773,7 @@ function BroadIonBeamMilling() {
 
 function Cogging() {
     this.name = "Cogging";
+    this.process_name = "Cogging";
     this.description = "Cogging";
     this._type = "OTHER";
     this.input_files = [];
@@ -826,6 +833,7 @@ function Cogging() {
 
 function Compression() {
     this.name = "Compression";
+    this.process_name = "Compression";
     this.description = "Compression";
     this._type = "OTHER";
     this.input_files = [];
@@ -949,6 +957,7 @@ function Compression() {
 
 function Computation() {
     this.name = "Computation";
+    this.process_name = "Computation";
     this.description = "Computation";
     this._type = "OTHER";
     this.input_files = [];
@@ -1040,6 +1049,7 @@ function Computation() {
 
 function Creep() {
     this.name = "Creep";
+    this.process_name = "Creep";
     this.description = "Creep";
     this._type = "OTHER";
     this.input_files = [];
@@ -1115,6 +1125,7 @@ function Creep() {
 
 function DicPatterning() {
     this.name = "DIC Patterning";
+    this.process_name = "DIC Patterning";
     this.description = "DIC Patterning";
     this._type = "DIC";
     this.input_files = [];
@@ -1228,6 +1239,7 @@ function DicPatterning() {
 
 function DicStatisticalModelling() {
     this.name = "DIC Statistical Modelling";
+    this.process_name = "DIC Statistical Modelling";
     this.description = "DIC Statistical Modelling";
     this._type = "DIC";
     this.input_files = [];
@@ -1306,6 +1318,7 @@ function DicStatisticalModelling() {
 
 function Electropolishing() {
     this.name = "Electropolishing";
+    this.process_name = "Electropolishing";
     this.description = "Electropolishing";
     this._type = "OTHER";
     this.input_files = [];
@@ -1397,6 +1410,7 @@ function Electropolishing() {
 
 function Etching() {
     this.name = "Etching";
+    this.process_name = "Etching";
     this.description = "Etching";
     this._type = "OTHER";
     this.input_files = [];
@@ -1488,6 +1502,7 @@ function Etching() {
 
 function EbsdSemDataCollection() {
     this.name = "EBSD SEM Data Collection";
+    this.process_name = "EBSD SEM Data Collection";
     this.description = "EBSD SEM Data Collection";
     this._type = "SEM";
     this.input_files = [];
@@ -1643,6 +1658,7 @@ function EbsdSemDataCollection() {
 
 function EpmaDataCollection() {
     this.name = "EPMA Data Collection";
+    this.process_name = "EPMA Data Collection";
     this.description = "EPMA Data Collection";
     this._type = "EPMA";
     this.input_files = [];
@@ -1784,6 +1800,7 @@ function EpmaDataCollection() {
 
 function LowCycleFatigue() {
     this.name = "Low Cycle Fatigue";
+    this.process_name = "Low Cycle Fatigue";
     this.description = "Low Cycle Fatigue";
     this._type = "OTHER";
     this.input_files = [];
@@ -1961,6 +1978,7 @@ function LowCycleFatigue() {
 
 function Annealing() {
     this.name = "Annealing";
+    this.process_name = "Annealing";
     this.description = "Annealing";
     this._type = "OTHER";
     this.input_files = [];
@@ -2072,6 +2090,7 @@ function Annealing() {
 
 function UltrasonicFatigue() {
     this.name = "Ultrasonic Fatigue";
+    this.process_name = "Ultrasonic Fatigue";
     this.description = "Ultrasonic Fatigue";
     this._type = "OTHER";
     this.input_files = [];
@@ -2227,6 +2246,7 @@ function UltrasonicFatigue() {
 
 function TEM() {
     this.name = "TEM";
+    this.process_name = "TEM";
     this.description = "Transmission Electron Microscope";
     this._type = "OTHER";
     this.input_files = [];
@@ -2390,6 +2410,7 @@ function TEM() {
 
 function HeatTreatment() {
     this.name = "Heat Treatment";
+    this.process_name = "Heat Treatment";
     this.description = "HeatTreatment";
     this._type = "OTHER";
     this.input_files = [];
@@ -2484,6 +2505,7 @@ function HeatTreatment() {
 
 function AsMeasured() {
     this.name = "As Measured";
+    this.process_name = "As Measured";
     this.description = "As Measured process allows you to add in all your As Received measurements";
     this._type = "OTHER";
     this.input_files = [];
@@ -2510,6 +2532,7 @@ function AsMeasured() {
 
 function Hardness1() {
     this.name = "Hardness";
+    this.process_name = "Hardness";
     this.description = "Hardness";
     this._type = "OTHER";
     this.input_files = [];
