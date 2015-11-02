@@ -18,10 +18,12 @@
             modalInstance.viewSetUp($scope.template_details.setup.settings[0].properties);
         };
 
-        $scope.preFill = function (template) {
+        $scope.openPreFill = function (template) {
             $scope.showDetails(template);
             //$scope.modal.instance.close();
-            modalInstance.preFill($scope.template_details);
+            var temp = modalInstance.preFill($scope.template_details);
+            console.dir($scope.template_details);
+            console.dir(temp);
 
             //processTemplates.setActiveTemplate(template);
             //$state.go('projects.project.processes.prefill');

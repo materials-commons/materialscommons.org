@@ -1209,11 +1209,11 @@ li.dashboard-item div p {
   border: none;
 }
 
-.list-group-item-heading{
+.list-group-item-heading {
   font-size: 1.2rem; /*1.2 times the root font size*/
 }
 
-.fa-star{
+.fa-star {
   color: #FFC107;
 }
 
