@@ -53,7 +53,6 @@
                             <span class="help-block">{{::setting.property.description}}</span>
                         </div>
                     </div>
-
                     <!--------- selection --------->
                     <div ng-switch-when="selection"><label class="col-xs-3 control-label"> {{::setting.property.name}}
                         <i ng-if="setting.property.required" class="fa fa-fw fa-asterisk text-danger"></i> </label>
@@ -101,22 +100,20 @@
                     <div ng-switch-default><span>Unknown template type {{setting.property._type}}</span></div>
                 </div>
             </div>
-            <br>
-            <hr class="divider"/>
-            <div class="row">
-                <div class="col-xs-3">
-                    <button ng-click="cancel()"
-                            class="btn-details-container btn btn-default btn btn-cancel">
-                        Cancel
-                    </button>
-                </div>
-                <div class="col-xs-3">
-                    <button ng-click="savePreFill()"
-                            ng-disabled="isProcessing"
-                            class=" btn btn-default btn-process btn-details-container">Save
-                    </button>
-                </div>
-            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-xs-3">
+            <button ng-click="ctrl.cancel()"
+                    class="btn-details-container btn btn-default btn btn-cancel">
+                Cancel
+            </button>
+        </div>
+        <div class="col-xs-3">
+            <button ng-click="ctrl.ok()"
+                    ng-disabled="isProcessing"
+                    class=" btn btn-default btn-process btn-details-container">Save
+            </button>
         </div>
     </div>
 </div>
