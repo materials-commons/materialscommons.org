@@ -1,10 +1,11 @@
 (function (module) {
     module.controller('TemplateInstanceController', TemplateInstanceController);
     TemplateInstanceController.$inject = ["$scope", "project", "$state", "$log",
-        "modal", "processTemplates", "Review", "modalInstance", "Restangular"];
+        "modal", "processTemplates", "Review", "modalInstance", "Restangular", "User"];
 
     function TemplateInstanceController($scope, project, $state, $log,
-                                        modal, processTemplates, Review, modalInstance, Restangular) {
+                                        modal, processTemplates, Review, modalInstance,
+                                        Restangular, User) {
         $scope.modal = modal;
         this.all = project.processes;
 
@@ -21,7 +22,7 @@
         $scope.openPreFill = function (template) {
             $scope.showDetails(template);
             modalInstance.preFill($scope.template_details).then(function (data) {
-                $scope.prefilled.push(data.template);
+
                 Restangular.one('v2').one('projects', project.id)
                     .customPUT({
                         process_templates: [
@@ -34,11 +35,17 @@
                                 }
                             }
                         ]
-                    })
+                    }).then(function(){
+                        $scope.prefilled.push(data.template);
+                    });
             });
         };
 
         $scope.addToFavourite = function (template) {
+            Restangular.one('v2').one('users', User.u())
+            .customPUT({
+
+                });
             $scope.favourites.push(template);
             var index = _.indexOf($scope.templates, function (item) {
                 return item.name === template.name;
@@ -46,6 +53,7 @@
             if (index > -1) {
                 $scope.templates[index].isFavorite = true;
             }
+
         };
 
         $scope.removeFromFavourite = function (template) {
