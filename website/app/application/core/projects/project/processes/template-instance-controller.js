@@ -42,7 +42,7 @@
         };
 
         $scope.addToFavourite = function (template) {
-            Restangular.one('v2').one('users', User.u(), project.id)
+            Restangular.one('v2').one('users', project.id)
                 .customPUT({
                     favorites: {
                         processes: [
@@ -52,31 +52,43 @@
                             }
                         ]
                     }
+                }).then(function (data) {
+                    $scope.favourites.push(template);
+                    var index = _.indexOf($scope.templates, function (item) {
+                        return item.name === template.name;
+                    });
+                    if (index > -1) {
+                        $scope.templates[index].isFavorite = true;
+                    }
                 });
-            $scope.favourites.push(template);
-            var index = _.indexOf($scope.templates, function (item) {
-                return item.name === template.name;
-            });
-            if (index > -1) {
-                $scope.templates[index].isFavorite = true;
-            }
-
         };
 
         $scope.removeFromFavourite = function (template) {
-            var index = _.indexOf($scope.templates, function (item) {
-                return item.name === template.name;
-            });
-            if (index > -1) {
-                $scope.templates[index].isFavorite = false;
-            }
+            Restangular.one('v2').one('users', project.id)
+                .customPUT({
+                    favorites: {
+                        processes: [
+                            {
+                                command: 'delete',
+                                name: template.name
+                            }
+                        ]
+                    }
+                }).then(function (data) {
+                    var index = _.indexOf($scope.templates, function (item) {
+                        return item.name === template.name;
+                    });
+                    if (index > -1) {
+                        $scope.templates[index].isFavorite = false;
+                    }
 
-            var j = _.indexOf($scope.favourites, function (item) {
-                return item.name === template.name;
-            });
-            if (j > -1) {
-                $scope.favourites.splice(j, 1);
-            }
+                    var j = _.indexOf($scope.favourites, function (item) {
+                        return item.name === template.name;
+                    });
+                    if (j > -1) {
+                        $scope.favourites.splice(j, 1);
+                    }
+                })
         };
 
         $scope.ok = function () {
