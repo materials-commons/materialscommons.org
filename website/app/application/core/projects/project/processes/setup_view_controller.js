@@ -6,7 +6,6 @@
         var ctrl = this;
 
         $scope.modal = modal;
-         console.dir($scope.modal);
 
         $scope.ok = function () {
             $scope.modal.instance.close();
