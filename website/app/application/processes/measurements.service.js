@@ -240,9 +240,9 @@
                     if (this.isExistingPropertyValid(property)) {
                         //check for the sample touchedProperties
                         var key = self.modal.sample.name;
-                        if (self.touchedProperties.hasOwnProperty(key)){
+                        if (self.touchedProperties.hasOwnProperty(key)) {
                             self.touchedProperties[key].push(property);
-                        } else{
+                        } else {
                             self.touchedProperties[key] = [];
                             self.touchedProperties[key].push(property);
                         }
@@ -259,81 +259,81 @@
 
             processMeasurments: function (property) {
                 var type = property._type;
-                var values = [] ;
+                var values = [];
                 switch (type) {
-                    case 'number':
-                        values = property.value.split("\n");
-                        property.measurements = [];
-                        values.forEach(function (v) {
-                            property.measurements.push({
-                                value: v,
-                                _type: type,
-                                unit: property.unit,
-                                attribute: property.attribute
-                            });
-                        });
-                        this.saveToSample(property);
-                        break;
-                    case 'fraction':
-                        values = property.value.split("\n");
-                        property.measurements = [];
-                        values.forEach(function (v) {
-                            property.measurements.push({
-                                value: v,
-                                _type: type,
-                                unit: property.unit,
-                                attribute: property.attribute
-                            });
-                        });
-                        this.saveToSample(property);
-                        break;
-                    case 'histogram':
-                        property.measurements = [];
+                case 'number':
+                    values = property.value.split("\n");
+                    property.measurements = [];
+                    values.forEach(function (v) {
                         property.measurements.push({
-                            value: property.value,
+                            value: v,
                             _type: type,
                             unit: property.unit,
                             attribute: property.attribute
                         });
-                        this.saveToSample(property);
-                        break;
-                    case 'line':
-                        property.measurements = [];
+                    });
+                    this.saveToSample(property);
+                    break;
+                case 'fraction':
+                    values = property.value.split("\n");
+                    property.measurements = [];
+                    values.forEach(function (v) {
                         property.measurements.push({
-                            value: property.value,
+                            value: v,
                             _type: type,
                             unit: property.unit,
                             attribute: property.attribute
                         });
-                        this.saveToSample(property);
-                        break;
-                    case 'selection':
-                        property.measurements = [];
+                    });
+                    this.saveToSample(property);
+                    break;
+                case 'histogram':
+                    property.measurements = [];
+                    property.measurements.push({
+                        value: property.value,
+                        _type: type,
+                        unit: property.unit,
+                        attribute: property.attribute
+                    });
+                    this.saveToSample(property);
+                    break;
+                case 'line':
+                    property.measurements = [];
+                    property.measurements.push({
+                        value: property.value,
+                        _type: type,
+                        unit: property.unit,
+                        attribute: property.attribute
+                    });
+                    this.saveToSample(property);
+                    break;
+                case 'selection':
+                    property.measurements = [];
+                    property.measurements.push({
+                        value: property.value,
+                        _type: type,
+                        unit: property.unit,
+                        attribute: property.attribute
+                    });
+                    this.saveToSample(property);
+                    break;
+                case 'composition':
+                    var elements = property.value.elements.split("\n");
+                    values = property.value.values.split("\n");
+                    property.measurements = [];
+                    for (var i = 0; i < elements.length - 1; i++) {
                         property.measurements.push({
-                            value: property.value,
-                            _type: type,
+                            value: values[i],
+                            element: elements[i],
+                            _type: property._type,
                             unit: property.unit,
                             attribute: property.attribute
                         });
+                    }
+                    if (elements.length > 1) {
                         this.saveToSample(property);
-                        break;
-                    case 'composition':
-                        var elements = property.value.elements.split("\n");
-                        values = property.value.values.split("\n");
-                        property.measurements = [];
-                        for (var i = 0; i < elements.length - 1; i++) {
-                            property.measurements.push({
-                                value: values[i],
-                                element: elements[i],
-                                _type: property._type,
-                                unit: property.unit,
-                                attribute: property.attribute
-                            });
-                        }
-                        if(elements.length > 1 ){
-                            this.saveToSample(property);
-                        }
-                        break;
+                    }
+                    break;
                 }
             },
 
@@ -341,32 +341,32 @@
                 var type = property._type;
                 var values = [];
                 switch (type) {
-                    case 'number':
-                        values = property.value.split("\n");
-                        return this.isNumberValid(values);
-                        break;
-                    case 'fraction':
-                        values = property.value.split("\n");
-                        return this.isFractionValid(values);
-                        break;
-                    case 'histogram':
-                        var values = [];
-                        values = property.value.values.split("\n");
-                        return this.isNumberValid(values);
-                        break;
-                    case 'line':
-                        var values = [];
-                        values = property.value.values.split("\n");
-                        return this.isNumberValid(values);
-                        break;
-                    case 'selection':
-                        return true;
-                        break;
-                    case 'composition':
-                        var values = [];
-                        values = property.value.values.split("\n");
-                        return this.isNumberValid(values);
-                        break;
+                case 'number':
+                    values = property.value.split("\n");
+                    return this.isNumberValid(values);
+                    break;
+                case 'fraction':
+                    values = property.value.split("\n");
+                    return this.isFractionValid(values);
+                    break;
+                case 'histogram':
+                    var values = [];
+                    values = property.value.values.split("\n");
+                    return this.isNumberValid(values);
+                    break;
+                case 'line':
+                    var values = [];
+                    values = property.value.values.split("\n");
+                    return this.isNumberValid(values);
+                    break;
+                case 'selection':
+                    return true;
+                    break;
+                case 'composition':
+                    var values = [];
+                    values = property.value.values.split("\n");
+                    return this.isNumberValid(values);
+                    break;
                 }
             },
 
@@ -423,7 +423,7 @@
             },
 
             getTouchedProperties: function (key) {
-                if (self.touchedProperties.hasOwnProperty(key)){
+                if (self.touchedProperties.hasOwnProperty(key)) {
                     return self.touchedProperties[key]
                 } else {
                     return [];
@@ -435,7 +435,7 @@
                 self.modal.sample = sample;
             },
 
-            reset: function(){
+            reset: function () {
                 self.touchedProperties = {};
             }
         };

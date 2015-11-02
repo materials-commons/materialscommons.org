@@ -4,7 +4,8 @@
     function currentService() {
         var self = this;
         self.current = {
-            project: null
+            project: null,
+            process: null
         };
 
         return {
@@ -18,6 +19,14 @@
 
             setProject: function (project) {
                 self.current.project = project;
+            },
+
+            process: function() {
+                return self.current.process;
+            },
+
+            setProcess: function(process) {
+                self.current.process = process;
             }
         };
     }
