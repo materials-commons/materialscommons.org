@@ -10,6 +10,7 @@ module.exports = function(model) {
     let processes = require('./processes')(model.processes, schema);
 
     router.get('/projects', projects.all);
+    router.put('/projects/:project_id', validateProjectAccess, projects.update);
     router.get('/projects/:project_id/directories', validateProjectAccess, projects.dirTree);
     router.get('/projects/:project_id/directories/:directory_id', validateProjectAccess, projects.dirTree);
 

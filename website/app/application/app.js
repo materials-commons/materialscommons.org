@@ -228,8 +228,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         })
         .state("projects.project.processes.create", {
             url: "/create",
-            templateUrl: "application/core/projects/project/processes/create.html",
-            controller: "projectCreateProcess",
+            templateUrl: "application/core/projects/project/processes/create/create.html",
+            controller: "CreateProcessController",
+            controllerAs: 'ctrl',
             resolve: {
                 template: ["processList", "processTemplates", "$filter", "measurements",
                     function (processList, processTemplates, $filter, measurements) {
@@ -239,6 +240,17 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                         return template;
                     }
                 ]
+                //,
+                //process: ["$q", "$timeout", function($q, $timeout) {
+                //    //return selectProcessTemplate.open();
+                //    var deferred = $q.defer();
+                //    $timeout(function () {
+                //        //deferred.resolve("successful");
+                //        console.log('rejecting');
+                //        deferred.reject("fail");   // resolve fails here
+                //    }, 2000);
+                //    return deferred.promise;
+                //}]
             }
         })
         //.state("projects.project.processes.prefill", {

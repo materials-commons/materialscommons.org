@@ -1,0 +1,36 @@
+<div class="col-xs-4">
+    <div class="details-sidebar" style="margin-bottom: -900px;padding-bottom: 900px;">
+        <div class="row">
+            <div class="col-xs-12" style="margin-top: 10px;">
+                <div class="row pull-right"><a ui-sref="projects.project.processes.list"> <i
+                        class="fa fa-fw fa-backward"></i> Back to processes list</a></div>
+                <div class="row"><b class="text-center process">{{template.name}}</b></div>
+            </div>
+        </div>
+        <sidebar-process-details></sidebar-process-details>
+        <hr class="divider"/>
+        <sidebar-setup></sidebar-setup>
+        <hr class="divider"/>
+
+        <div ng-show="template._type === 'as_received'">
+            <div class="row">New Sample</div>
+            <div class="row">
+                <div style="padding-left: 20px;" class="col-xs-8">
+                    <div ng-if="bk.newSample.name">Name: {{bk.newSample.name}}</div>
+                    <div ng-if="bk.newSample.description">Description: {{bk.newSample.description}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="!template.does_transform" class="row">
+            <sidebar-samples></sidebar-samples>
+        </div>
+
+        <div class="row" ng-if="template.does_transform">
+            <sidebar-transformed-samples></sidebar-transformed-samples>
+        </div>
+        <hr class="divider"/>
+        <sidebar-files></sidebar-files>
+        <hr class="divider"/>
+    </div>
+</div>
