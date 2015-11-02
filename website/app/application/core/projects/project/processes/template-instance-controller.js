@@ -38,21 +38,6 @@
             });
         };
 
-        $scope.ok = function () {
-            Review.resetCheckedItems();
-            $scope.modal.instance.close($scope.selected.item);
-            processTemplates.setActiveTemplate($scope.selected.item);
-            $state.go('projects.project.processes.create');
-        };
-
-        $scope.cancel = function () {
-            $scope.modal.instance.dismiss('cancel');
-        };
-
-        $scope.setActive = function (tab) {
-            $scope.activeTab = tab;
-        };
-
         $scope.addToFavourite = function (template) {
             $scope.favourites.push(template);
             var index = _.indexOf($scope.templates, function (item) {
@@ -79,8 +64,23 @@
             }
         };
 
+        $scope.ok = function () {
+            Review.resetCheckedItems();
+            $scope.modal.instance.close($scope.selected.item);
+            processTemplates.setActiveTemplate($scope.selected.item);
+            $state.go('projects.project.processes.create');
+        };
+
+        $scope.cancel = function () {
+            $scope.modal.instance.dismiss('cancel');
+        };
+
         $scope.isActive = function (tab) {
             return $scope.activeTab === tab;
+        };
+
+        $scope.setActive = function (tab) {
+            $scope.activeTab = tab;
         };
 
         $scope.modal.instance.result.then(function (selectedItem) {
@@ -108,8 +108,8 @@
             $scope.prefilled = [];
             var instance = {};
             //Fill in pre-filled templates
-            project.process_templates.forEach(function(item){
-                if('process_name' in item){
+            project.process_templates.forEach(function (item) {
+                if ('process_name' in item) {
                     instance = processTemplates.getTemplateByName(item.process_name);
                     instance.setup.settings[0] = item.setup;
                     instance.name = item.name;
