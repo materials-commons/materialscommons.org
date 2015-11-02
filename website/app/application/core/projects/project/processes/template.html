@@ -94,7 +94,8 @@
                 </div>
                 <div class="tab-pane" id="3">
                     <div class="list-group">
-                        <div ng-class="{'active': template === selected.item}" ng-click="choosePrefilledTemplate(template)"
+                        <div ng-class="{'active': template === selected.item}"
+                             ng-click="choosePrefilledTemplate(template)"
                              class="pointer list-group-item"
                              ng-repeat="template in prefilled | orderBy:'name' | filter:search">
 
