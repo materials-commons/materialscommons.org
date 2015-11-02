@@ -64,6 +64,16 @@ function differenceById(from, others) {
     })
 }
 
+function removeById(from, what) {
+    var i = _.indexOf(from, function(item) {
+        return item.id === what.id;
+    });
+
+    if (i !== -1) {
+        from.splice(i, 1);
+    }
+}
+
 String.prototype.capitalize = function () {
     return this.replace(/(?:^|\s)\S/g, function (a) {
         return a.toUpperCase();
