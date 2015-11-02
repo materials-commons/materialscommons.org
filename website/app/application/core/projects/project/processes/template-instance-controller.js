@@ -134,7 +134,7 @@
             $scope.favourites = [];
             $scope.prefilled = [];
             var instance = {};
-            //Fill in pre-filled templates
+            //Fill in pre-filled templates with setup
             project.process_templates.forEach(function (item) {
                 if ('process_name' in item) {
                     instance = processTemplates.getTemplateByName(item.process_name);
@@ -143,6 +143,21 @@
                     $scope.prefilled.push(instance);
                 }
             });
+            //var user = User.attr();
+            //var keys = Object.keys(user.favorites);
+            //co
+            //if(user.favorites){
+            //    var values = user.favorites[keys[0]];
+            //
+            //}
+
+            //if(values.processes !== 0){
+            //    user.favorites[0].processes.forEach(function(item){
+            //        instance = processTemplates.getTemplateByName(item);
+            //        $scope.favourites.push(instance);
+            //    })
+            //}
+
             $scope.selected = {
                 item: {}
             };
