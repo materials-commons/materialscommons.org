@@ -11,6 +11,7 @@ module.exports = function (r) {
         get: function (id, index) {
             return getSingle(r, 'projects', id, index);
         },
+        update: update,
         r: r
     };
 
@@ -164,5 +165,54 @@ module.exports = function (r) {
             dir.children.push(dentry);
         });
         return dir;
+    }
+
+    function* update(projectID, attrs) {
+        var pattrs = {};
+        if (attrs.name) {
+            pattrs.name = attrs.name;
+        }
+        if (attrs.description) {
+            pattrs.description = attrs.description;
+        }
+
+        if (pattrs.name || pattrs.description) {
+            yield r.table('projects').get(projectID).update(pattrs);
+        }
+
+        if (attrs.process_templates) {
+            var addTemplates = attrs.process_templates.filter(p => p.command == 'add').map(p => p.template);
+            var deleteTemplates = attrs.process_templates.filter(p => p.command === 'delete').map(p => p.template);
+            var project = yield r.table('projects').get(projectID);
+            if (!project.process_templates) {
+                project.process_templates = [];
+            }
+            // remove deleted templates
+            project.process_templates = project.process_templates.
+                filter(p => _.indexOf(deleteTemplates, t => t.name === p.name) === -1);
+
+            // add new templates if they don't exist
+            project.process_templates = differenceByField(project.process_templates, addTemplates);
+            yield r.table('projects').get(projectID).update({process_templates: project.process_templates});
+        }
+
+        return yield r.table('projects').get(projectID);
+    }
+
+    function differenceByField(from, others, field) {
+        var elementsFrom = from.map(function(entry) {
+            return entry[field];
+        });
+
+        var elementsOthers = others.map(function(entry) {
+            return entry[field];
+        });
+
+        var diff = _.difference(elementsFrom, elementsOthers);
+        return from.filter(function(entry) {
+            return _.indexOf(diff, function(e) {
+                    return e == entry[field];
+                }) !== -1;
+        });
     }
 };
