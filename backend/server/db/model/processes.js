@@ -207,7 +207,7 @@ module.exports = function (r) {
     function *addSetupFiles(processID, files) {
         let toAdd = [];
         files.forEach(file => {
-            let p2sf = new model.Process2Setupfile(processID, file);
+            let p2sf = new model.Process2Setupfile(processID, file.id);
             toAdd.push(p2sf);
         });
 
@@ -443,10 +443,10 @@ module.exports = function (r) {
      *
      * @param {String} asetID - Attribute set to fill in.
      * @param {Array} shares - A list of attribute ids this attribute set shares.
+     * @param {Array} unknowns - A list of attributes with unknown measurements.
      * @param {Array} uses - A list of attribute ids to use to create new attributes.
-     * @param processID {String} - The process id
      */
-    function *fillAttributeSet(asetID, shares, uses, unknowns, processID) {
+    function *fillAttributeSet(asetID, shares, uses, unknowns) {
         yield fillFromShares(asetID, shares);
         yield fillFromUses(asetID, uses);
         yield fillFromUnknowns(asetID, unknowns);
@@ -513,9 +513,6 @@ module.exports = function (r) {
 
             // Get the attribute
             let attr = yield r.table('properties').get(attrID);
-
-            // Save this attributes id for later use.
-            let origID = attr.id;
 
             // Use as template for new attribute
             delete attr['id'];
@@ -598,7 +595,6 @@ module.exports = function (r) {
             let p2of = new model.Process2File(processID, files[i].id, direction);
             addTo.push(p2of);
         }
-        let created = yield db.insert('process2file', addTo);
-        return created;
+        return yield db.insert('process2file', addTo);
     }
 };
