@@ -29,7 +29,7 @@ module.exports = function(model) {
     router.post('/projects/:project_id/files', validateProjectAccess, files.getList);
     router.delete('/projects/:project_id/files/:file_id', validateProjectAccess, files.deleteFile);
 
-    router.put('/users', users.update);
+    router.put('/users/:project_id', users.update);
 
     return router;
 };
