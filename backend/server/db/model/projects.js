@@ -3,6 +3,7 @@ module.exports = function (r) {
     const run = require('./run');
     const getSingle = require('./get-single');
     const path = require('path');
+    const _ = require('lodash');
 
     return {
         all: all,
@@ -192,8 +193,10 @@ module.exports = function (r) {
                 filter(p => _.indexOf(deleteTemplates, t => t.name === p.name) === -1);
 
             // add new templates if they don't exist
-            project.process_templates = differenceByField(project.process_templates, addTemplates);
-            yield r.table('projects').get(projectID).update({process_templates: project.process_templates});
+            var toAdd = differenceByField(addTemplates, project.process_templates, 'name');
+            yield r.table('projects').get(projectID).update({
+                process_templates: project.process_templates.concat(toAdd)
+            });
         }
 
         return yield r.table('projects').get(projectID);
@@ -209,9 +212,10 @@ module.exports = function (r) {
         });
 
         var diff = _.difference(elementsFrom, elementsOthers);
+
         return from.filter(function(entry) {
             return _.indexOf(diff, function(e) {
-                    return e == entry[field];
+                    return e === entry[field];
                 }) !== -1;
         });
     }
