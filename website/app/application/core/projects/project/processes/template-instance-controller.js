@@ -1,11 +1,11 @@
 (function (module) {
     module.controller('TemplateInstanceController', TemplateInstanceController);
     TemplateInstanceController.$inject = ["$scope", "project", "$state", "$log",
-        "modal", "processTemplates", "Review", "modalInstance", "Restangular", "User"];
+        "modal", "processTemplates", "Review", "modalInstance", "Restangular"];
 
     function TemplateInstanceController($scope, project, $state, $log,
                                         modal, processTemplates, Review, modalInstance,
-                                        Restangular, User) {
+                                        Restangular) {
         $scope.modal = modal;
         this.all = project.processes;
 
@@ -21,23 +21,8 @@
 
         $scope.openPreFill = function (template) {
             $scope.showDetails(template);
-            modalInstance.preFill($scope.template_details).then(function (data) {
-
-                Restangular.one('v2').one('projects', project.id)
-                    .customPUT({
-                        process_templates: [
-                            {
-                                command: 'add',
-                                template: {
-                                    name: data.template.name,
-                                    setup: data.template.setup.settings[0],
-                                    process_name: data.template.process_name
-                                }
-                            }
-                        ]
-                    }).then(function () {
-                        $scope.prefilled.push(data.template);
-                    });
+            modalInstance.preFill($scope.template_details, project).then(function (t) {
+                $scope.prefilled.push(t);
             });
         };
 
@@ -52,7 +37,7 @@
                             }
                         ]
                     }
-                }).then(function (data) {
+                }).then(function () {
                     $scope.favourites.push(template);
                     var index = _.indexOf($scope.templates, function (item) {
                         return item.name === template.name;
@@ -74,7 +59,7 @@
                             }
                         ]
                     }
-                }).then(function (data) {
+                }).then(function () {
                     var index = _.indexOf($scope.templates, function (item) {
                         return item.name === template.name;
                     });
@@ -124,8 +109,7 @@
 
         $scope.viewPrefilledSetUp = function (template) {
             $scope.template_details = template;
-            modalInstance.preFill($scope.template_details).then(function (data) {
-            });
+            modalInstance.preFill($scope.template_details, project);
         };
 
         function init() {
