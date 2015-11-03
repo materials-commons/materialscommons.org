@@ -4,7 +4,7 @@
     function displayImageDirective() {
         return {
             scope: {
-                sampleObj : "="
+                sample: "="
             },
             restrict: "E",
             controller: "displayImageTabDirectiveController",
@@ -23,8 +23,8 @@
         imageCtrl.fileSrc = fileSrc;
 
         function images(files) {
-            var images = [s];
-            if (files){
+            var images = [];
+            if (files) {
                 files.forEach(function (f) {
                     if (isImage(f.mediatype.mime)) {
                         images.push(f);
