@@ -8,8 +8,8 @@
                         <i class="fa fa-plus fa-fw"></i>Quick Add <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li class="text-uppercase"><a ng-click="home.chooseTemplate()">Process</a></li>
-                        <li ng-click="home.chooseTemplate()" class="text-uppercase"><a href="#">Sample</a></li>
+                        <li class="text-uppercase"><a ng-click="ctrl.chooseTemplate()">Process</a></li>
+                        <li ng-click="ctrl.chooseTemplate()" class="text-uppercase"><a href="#">Sample</a></li>
                         <li ng-if="false" class="text-uppercase"><a href="#">File</a></li>
                         <li ng-if="false" class="text-uppercase"><a href="#">Review</a></li>
                     </ul>
@@ -18,7 +18,7 @@
             <li class="dashboard-item">
                 <div class="text-uppercase">
                     <div class="circle process-color-bg center-block">
-                        <a ui-sref="projects.project.processes.list">{{77 | number}}</a>
+                        <span>{{ctrl.project.processes.length | number}}</span>
                     </div>
                     <p>processes</p>
                 </div>
@@ -26,7 +26,7 @@
             <li class="dashboard-item">
                 <div class="text-uppercase">
                     <div class="circle sample-color-bg center-block">
-                        <a ui-sref="projects.project.samples">{{28 | number}}</a>
+                        <span>{{ctrl.project.samples.length | number}}</span>
                     </div>
                     <p>samples</p>
                 </div>
@@ -34,7 +34,7 @@
             <li class="dashboard-item">
                 <div class="text-uppercase">
                     <div class="circle file-color-bg center-block">
-                        <a ui-sref="projects.project.files.all">{{99999 | number}}</a>
+                        <span>{{ctrl.project.file_count | number}}</span>
                     </div>
                     <p>files</p>
                 </div>
@@ -42,7 +42,7 @@
             <li class="dashboard-item">
                 <div class="text-uppercase">
                     <div class="circle review-color-bg center-block">
-                        <a ui-sref="projects.project.reviews">{{65 | number}}</a>
+                        <span>{{ctrl.project.reviews.length | number}}</span>
                     </div>
                     <p>reviews</p>
                 </div>
@@ -56,12 +56,11 @@
             <thead>
             <tr>
                 <th>Samples</th>
-                <th>Properties</th>
                 <th>Description</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="sample in home.project.samples">
+            <tr ng-repeat="sample in ctrl.project.samples">
                 <td style="width:40%">
                     <b><a ui-sref="projects.project.samples.edit({sample_id: sample.id})">{{sample.name}}</a></b>
 
@@ -71,18 +70,7 @@
                             <span style="padding-left: 10px">{{sample.owner}}</span>
                         </p>
 
-                        <display-image-tab sample-obj="sample"></display-image-tab>
-                    </div>
-                </td>
-                <td style="width:30%">
-                    <div style="max-height: 200px;overflow-y: auto;">
-                        <ul style="list-style-type: circle;">
-                            <li ng-repeat="property in sample.properties">
-                                {{property.name}} :
-                                <display-measurement project="home.project"
-                                                     measure="property.best_measure[0]"></display-measurement>
-                            </li>
-                        </ul>
+                        <display-image-tab sample="sample"></display-image-tab>
                     </div>
                 </td>
                 <td style="width:30%;">
@@ -93,7 +81,7 @@
         </table>
     </div>
     <div class="col-xs-5">
-        <div home-calendar project="home.project"></div>
+        <div home-calendar project="ctrl.project"></div>
     </div>
 </div>
 
