@@ -184,18 +184,24 @@ module.exports = function (r) {
         if (attrs.process_templates) {
             var addTemplates = attrs.process_templates.filter(p => p.command == 'add').map(p => p.template);
             var deleteTemplates = attrs.process_templates.filter(p => p.command === 'delete').map(p => p.template);
+            var updateTemplates = attrs.process_templates.filter(p => p.command === 'update').map(p => p.template);
             var project = yield r.table('projects').get(projectID);
             if (!project.process_templates) {
                 project.process_templates = [];
             }
             // remove deleted templates
             project.process_templates = project.process_templates.
-                filter(p => _.indexOf(deleteTemplates, t => t.name === p.name) === -1);
+                filter(p => _.indexOf(deleteTemplates, t => t.name === p.name, null) === -1);
+
+            // remove templates to update. They will be added back with their new values in
+            // the add step.
+            project.process_templates = project.process_templates.
+                filter(p => _.indexOf(updateTemplates, t => t.name === p.name, null) === -1);
 
             // add new templates if they don't exist
             var toAdd = differenceByField(addTemplates, project.process_templates, 'name');
             yield r.table('projects').get(projectID).update({
-                process_templates: project.process_templates.concat(toAdd)
+                process_templates: project.process_templates.concat(toAdd).concat(updateTemplates)
             });
         }
 
