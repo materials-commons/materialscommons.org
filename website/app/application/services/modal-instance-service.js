@@ -90,20 +90,18 @@
                     });
                 },
 
-                preFill: function (template) {
-                    service.modal = {
-                        instance: null,
-                        template: template
-                    };
-
+                preFill: function (template, project) {
                     var modal = $modal.open({
                         size: 'lg',
                         templateUrl: 'application/core/projects/project/processes/prefill.html',
                         controller: 'projectPreFillProcess',
                         controllerAs: 'ctrl',
                         resolve: {
-                            modal: function () {
-                                return service.modal;
+                            template: function () {
+                                return template;
+                            },
+                            project: function() {
+                                return project;
                             }
                         }
                     });
