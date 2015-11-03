@@ -39,6 +39,7 @@ def add_computed_attributes(projects, user):
         p['users'] = []
         p['notes'] = []
         p['events'] = []
+        p['file_count'] = 0
     project_ids = [p['id'] for p in projects]
     projects_by_id = {p['id']: p for p in projects}
 
@@ -49,6 +50,7 @@ def add_computed_attributes(projects, user):
         add_processes(projects_by_id, project_ids)
         add_notes(projects_by_id, project_ids)
         add_events(projects_by_id, project_ids)
+        add_file_counts(projects_by_id, project_ids)
 
 
 def add_users(projects_by_id, project_ids):
@@ -112,7 +114,6 @@ def add_processes(projects_by_id, project_ids):
     processes = []
     for project_id in project_ids:
         processes.extend(process.get_process_information(project_id))
-        #processes.extend(process.get_processes(project_id))
     add_computed_items(projects_by_id, processes, 'project_id', 'processes')
 
 
@@ -128,6 +129,15 @@ def add_events(projects_by_id, project_ids):
                   .order_by('mtime')
                   .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, events, 'project_id', 'events')
+
+
+def add_file_counts(projects_by_id, project_ids):
+    project_file_counts = r.table('project2datafile').get_all(*project_ids, index='project_id')\
+                               .group('project_id').count().run(g.conn)
+    for project_id in project_file_counts.keys():
+        file_count = project_file_counts[project_id]
+        if project_id in projects_by_id:
+            projects_by_id[project_id]['file_count'] = file_count
 
 
 def add_computed_items(projects_by_id, items, projects_key, item_key):
