@@ -40,6 +40,7 @@ def add_computed_attributes(projects, user):
         p['notes'] = []
         p['events'] = []
         p['file_count'] = 0
+        p['process_templates'] = []
     project_ids = [p['id'] for p in projects]
     projects_by_id = {p['id']: p for p in projects}
 
