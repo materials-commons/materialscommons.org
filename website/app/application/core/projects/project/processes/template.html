@@ -20,7 +20,7 @@
             <li>
                 <a data-target="#2" data-toggle="tab" class="text-uppercase">
                     <i class="fa fa-fw fa-star"></i> favourite
-                    Processes ({{favourites.length}})</a></li>
+                    Processes ({{(templates | byKey: 'isFavorite': true).length}})</a></li>
             <li>
                 <a data-target="#3" data-toggle="tab" class="text-uppercase">
                     <i class="fa fa-fw fa-pencil-square-o"></i>
@@ -67,7 +67,7 @@
                     <div class="list-group">
                         <div ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
                              class="pointer list-group-item"
-                             ng-repeat="template in favourites | orderBy:'name' | filter:search">
+                             ng-repeat="template in templates | byKey: 'isFavorite': true |orderBy:'name' | filter:search">
                             <div class="row">
                                 <div class="col-xs-7">
                                     <div class="list-group-item-heading">{{template.name}}</div>
