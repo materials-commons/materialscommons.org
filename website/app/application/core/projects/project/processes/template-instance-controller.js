@@ -1,11 +1,11 @@
 (function (module) {
     module.controller('TemplateInstanceController', TemplateInstanceController);
     TemplateInstanceController.$inject = ["$scope", "project", "$state", "$log",
-        "modal", "processTemplates", "Review", "modalInstance", "Restangular"];
+        "modal", "processTemplates", "Review", "modalInstance", "Restangular", "User"];
 
     function TemplateInstanceController($scope, project, $state, $log,
                                         modal, processTemplates, Review, modalInstance,
-                                        Restangular) {
+                                        Restangular, User) {
         $scope.modal = modal;
         this.all = project.processes;
 
@@ -38,13 +38,15 @@
                         ]
                     }
                 }).then(function () {
-                    $scope.favourites.push(template);
+                    $scope.project_favorites.push(template.name);
                     var index = _.indexOf($scope.templates, function (item) {
                         return item.name === template.name;
                     });
                     if (index > -1) {
                         $scope.templates[index].isFavorite = true;
                     }
+                    $scope.user.favorites[$scope.index].processes = $scope.project_favorites;
+                    User.save($scope.user);
                 });
         };
 
@@ -67,12 +69,14 @@
                         $scope.templates[index].isFavorite = false;
                     }
 
-                    var j = _.indexOf($scope.favourites, function (item) {
-                        return item.name === template.name;
+                    var j = _.indexOf($scope.project_favorites, function (item) {
+                        return item === template.name;
                     });
                     if (j > -1) {
-                        $scope.favourites.splice(j, 1);
+                        $scope.project_favorites.splice(j, 1);
                     }
+                    $scope.user.favorites[$scope.index].processes = $scope.project_favorites;
+                    User.save($scope.user);
                 })
         };
 
@@ -115,7 +119,6 @@
         function init() {
             $scope.templates = processTemplates.templates();
             $scope.setActive('all');
-            $scope.favourites = [];
             $scope.prefilled = [];
             var instance = {};
             //Fill in pre-filled templates with setup
@@ -127,20 +130,23 @@
                     $scope.prefilled.push(instance);
                 }
             });
-            //var user = User.attr();
-            //var keys = Object.keys(user.favorites);
-            //co
-            //if(user.favorites){
-            //    var values = user.favorites[keys[0]];
-            //
-            //}
-
-            //if(values.processes !== 0){
-            //    user.favorites[0].processes.forEach(function(item){
-            //        instance = processTemplates.getTemplateByName(item);
-            //        $scope.favourites.push(instance);
-            //    })
-            //}
+            $scope.user = User.attr();
+            //Get fav processes for a project
+            for (var i in $scope.user.favorites){
+                if($scope.user.favorites.hasOwnProperty(i) && i === project.id){
+                    $scope.index = i;
+                    $scope.project_favorites = $scope.user.favorites[i].processes;
+                }
+            }
+            //set isFavorite field in all the templates
+            $scope.project_favorites.forEach(function (fav) {
+                var index = _.indexOf($scope.templates, function (item) {
+                    return item.name === fav;
+                });
+                if (index > -1) {
+                    $scope.templates[index].isFavorite = true;
+                }
+            });
 
             $scope.selected = {
                 item: {}
