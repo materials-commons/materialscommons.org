@@ -15,6 +15,7 @@
         <file-notes ng-if="ctrl.isActive('notes')" file="ctrl.item"></file-notes>
         <files-list ng-if="ctrl.isActive('files')" files="ctrl.item.files"></files-list>
         <reviews-list ng-if="ctrl.isActive('reviews')" reviews="ctrl.item.reviews"></reviews-list>
+        <!-- For the moment measurements are not supported in the controller while we rethink them -->
         <measurements-list ng-if="ctrl.isActive('measurements') && ctrl.item"
                            sample="ctrl.item">
         </measurements-list>
