@@ -123,9 +123,8 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         })
         .state("projects.project.files", {
             url: "/files",
-            templateUrl: "application/core/projects/project/files/files.html",
-            controller: "FilesController",
-            controllerAs: "files"
+            abstract: true,
+            template: '<div ui-view></div>'
         })
         .state("projects.project.files.all", {
             url: "/all",
@@ -165,16 +164,6 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                         one('files', $stateParams.file_id).get();
                 }]
             }
-        })
-        .state("projects.project.files.images", {
-            url: "/images",
-            templateUrl: "application/core/projects/project/files/images.html",
-            controller: "FilesImagesController"
-        })
-        .state("projects.project.files.types", {
-            url: "/types",
-            templateUrl: "application/core/projects/project/files/types.html",
-            controller: "FilesByTypeController"
         })
         .state("projects.project.files.search", {
             url: "/search",
@@ -294,8 +283,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             resolve: {
                 process: ["$stateParams", "Restangular", "processes",
                     function ($stateParams, Restangular, processes) {
+                        var process_id = '';
                         if ($stateParams.process_id) {
-                            var process_id = $stateParams.process_id;
+                            process_id = $stateParams.process_id;
                         } else {
                             if (processes.length > 0) {
                                 process_id = processes[0].id;
