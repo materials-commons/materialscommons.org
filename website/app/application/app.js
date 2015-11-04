@@ -205,15 +205,8 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         })
         .state("projects.project.processes", {
             url: "/processes",
-            templateUrl: "application/core/projects/project/processes/processes.html",
-            controller: "projectProcesses",
-            controllerAs: 'ctrl'
-            //resolve: {
-            //    processes: ["project",
-            //        function (project) {
-            //            return project.processes;
-            //        }]
-            //}
+            abstract: true,
+            template: ' <div ui-view></div>'
         })
         .state("projects.project.processes.create", {
             url: "/create",

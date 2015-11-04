@@ -12,7 +12,7 @@
             controller: "DisplayFileUploadEntryDirectiveController",
             controllerAs: 'upload',
             bindToController: true,
-            templateUrl: "application/core/projects/project/home/directives/display-file-upload-entry.html"
+            templateUrl: "application/directives/display-file-upload-entry.html"
         };
     }
 

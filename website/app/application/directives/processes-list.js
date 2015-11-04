@@ -6,9 +6,6 @@
             scope: {
                 processes: '='
             },
-            //controller: 'DetailTabsDirectiveController',
-            //controllerAs: 'ctrl',
-            //bindToController: true,
             templateUrl: 'application/directives/partials/processes-list.html'
         };
     }
