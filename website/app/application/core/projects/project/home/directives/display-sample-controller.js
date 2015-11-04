@@ -1,6 +1,4 @@
 (function (module) {
-
-
     module.controller("DisplaySampleController",
         ["$scope", "$log", "modal", "$state", "project", "mcfile", "modalInstance",
             DisplaySampleController]);

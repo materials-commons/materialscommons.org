@@ -6,9 +6,6 @@
             scope: {
                 samples: '='
             },
-            //controller: 'DetailTabsDirectiveController',
-            //controllerAs: 'ctrl',
-            //bindToController: true,
             templateUrl: 'application/directives/partials/samples-list.html'
         };
     }
