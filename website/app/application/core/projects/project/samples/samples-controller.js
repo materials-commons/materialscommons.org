@@ -9,12 +9,12 @@
         if (ctrl.samples.length !== 0) {
             var sortedSamples = $filter('orderBy')(ctrl.samples, 'name');
             ctrl.current = sortedSamples[0];
-            $state.go('projects.project.samples.edit', {sample_id: ctrl.current.id});
+            $state.go('projects.project.samples.list.edit', {sample_id: ctrl.current.id});
         }
 
         function viewSample(sample) {
             ctrl.current = sample;
-            $state.go('projects.project.samples.edit', {sample_id: ctrl.current.id});
+            $state.go('projects.project.samples.list.edit', {sample_id: ctrl.current.id});
         }
     }
 }(angular.module('materialscommons')));
