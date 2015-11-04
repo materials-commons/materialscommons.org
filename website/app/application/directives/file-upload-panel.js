@@ -8,7 +8,7 @@
             scope: true,
             controllerAs: 'uploader',
             bindToController: true,
-            templateUrl: 'application/core/projects/project/home/directives/file-upload-panel.html'
+            templateUrl: 'application/directives/file-upload-panel.html'
         };
     }
 
