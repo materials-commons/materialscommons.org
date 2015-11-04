@@ -155,10 +155,10 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controllerAs: "ctrl",
             resolve: {
                 file: ["$stateParams", "Restangular",
-                function ($stateParams, Restangular) {
-                    return Restangular.one('v2').one('projects', $stateParams.id).
-                        one('files', $stateParams.file_id).get();
-                }]
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('v2').one('projects', $stateParams.id).
+                            one('files', $stateParams.file_id).get();
+                    }]
             }
         })
         .state("projects.project.files.search", {
@@ -285,8 +285,13 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                 ]
             }
         })
-        .state("projects.project.samples", {
-            url: "/samples",
+        .state('projects.project.samples', {
+            url: '/samples',
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state("projects.project.samples.list", {
+            url: "/list",
             templateUrl: "application/core/projects/project/samples/samples.html",
             controller: "SamplesController",
             controllerAs: "ctrl",
@@ -297,7 +302,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                     }]
             }
         })
-        .state("projects.project.samples.edit", {
+        .state("projects.project.samples.list.edit", {
             url: "/edit/:sample_id",
             templateUrl: "application/core/projects/project/samples/edit.html",
             controller: "SamplesEditController",
@@ -315,6 +320,21 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                             }
                         }
                         return Restangular.one('sample').one('details', sample_id).get();
+                    }
+                ]
+            }
+        })
+        .state('projects.project.samples.edit', {
+            url: '/edit/:sample_id',
+            templateUrl: "application/core/projects/project/samples/edit.html",
+            controller: "SamplesEditController",
+            controllerAs: "ctrl",
+            resolve: {
+                //At this point we have a sample object with properties and best measure.
+                // So, to get other measures Restangular call is made
+                sample: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('sample').one('details', $stateParams.sample_id).get();
                     }
                 ]
             }
