@@ -48,13 +48,15 @@
                 reset_apikey: function (new_key) {
                     if (self.mcuser) {
                         self.mcuser.apikey = new_key;
-                        $window.sessionStorage.mcuser = self.mcuser;
+                        $window.sessionStorage.mcuser = JSON.stringify(self.mcuser);
                     }
                 },
+
                 save: function (user) {
                     if (self.mcuser) {
                         self.mcuser.fullname = user.fullname;
-                        $window.sessionStorage.mcuser = self.mcuser;
+                        $window.sessionStorage.mcuser = JSON.stringify(self.mcuser);
+                        console.log($window.sessionStorage.mcuser);
                     }
                 }
 
