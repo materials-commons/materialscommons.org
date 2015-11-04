@@ -289,19 +289,6 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                 ]
             }
         })
-        .state("projects.project.processes.list.view.setup", {
-            url: "/setup",
-            templateUrl: "application/core/projects/project/processes/setup.html"
-        })
-        .state("projects.project.processes.list.view.samples", {
-            url: "/samples",
-            templateUrl: "application/core/projects/project/processes/samples.html"
-        })
-        .state("projects.project.processes.list.view.files", {
-            url: "/files",
-            templateUrl: "application/core/projects/project/processes/files.html"
-        })
-
         .state("projects.project.samples", {
             url: "/samples",
             templateUrl: "application/core/projects/project/samples/samples.html",
