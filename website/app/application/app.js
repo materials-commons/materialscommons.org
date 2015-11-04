@@ -38,10 +38,6 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: '/reviews',
             templateUrl: 'application/core/reviews/reviews.html'
         })
-        .state('machines', {
-            url: '/machines',
-            templateUrl: 'application/core/machines/machines.html'
-        })
 
         /*
          ########################################################################
