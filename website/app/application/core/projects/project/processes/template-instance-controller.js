@@ -8,6 +8,7 @@
                                         Restangular, User) {
         $scope.modal = modal;
         this.all = project.processes;
+        $scope.project_favorites = [];
 
         $scope.showDetails = function (template) {
             $scope.selected.item = template;
