@@ -30,12 +30,17 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="1">
                     <div class="list-group">
-                        <div ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
+                        <div ng-class="{'active': template === selected.item}"
                              class="pointer list-group-item"
                              ng-repeat="template in templates | orderBy:'name' | filter:search">
                             <div class="row">
                                 <div class="col-xs-7">
-                                    <div class="list-group-item-heading">{{template.name}}</div>
+                                    <div class="list-group-item-heading">
+                                        <a ng-click="selectTemplate(template)">
+                                            <i class="fa fa-fw fa-square-o fa-2x"></i>
+                                        </a>
+                                        {{template.name}}
+                                    </div>
                                     <div ng-if="template.does_transform">
                                         <label class="label label-default">Transforms Sample</label>
                                     </div>
@@ -65,12 +70,17 @@
                 </div>
                 <div class="tab-pane" id="2">
                     <div class="list-group">
-                        <div ng-class="{'active': template === selected.item}" ng-click="showDetails(template)"
+                        <div ng-class="{'active': template === selected.item}"
                              class="pointer list-group-item"
                              ng-repeat="template in templates | byKey: 'isFavorite': true |orderBy:'name' | filter:search">
                             <div class="row">
                                 <div class="col-xs-7">
-                                    <div class="list-group-item-heading">{{template.name}}</div>
+                                    <div class="list-group-item-heading">
+                                        <a ng-click="selectTemplate(template)">
+                                            <i class="fa fa-fw fa-square-o fa-2x"></i>
+                                        </a>
+                                        {{template.name}}
+                                    </div>
                                     <div ng-if="template.does_transform">
                                         <label class="label label-default">Transforms Sample</label>
                                     </div>
@@ -95,13 +105,17 @@
                 <div class="tab-pane" id="3">
                     <div class="list-group">
                         <div ng-class="{'active': template === selected.item}"
-                             ng-click="choosePrefilledTemplate(template)"
                              class="pointer list-group-item"
                              ng-repeat="template in prefilled | orderBy:'name' | filter:search">
 
                             <div class="row">
                                 <div class="col-xs-7">
-                                    <div class="list-group-item-heading">{{template.name}}</div>
+                                    <div class="list-group-item-heading">
+                                        <a ng-click="choosePrefilledTemplate(template)">
+                                            <i class="fa fa-fw fa-square-o fa-2x"></i>
+                                        </a>
+                                        {{template.name}}
+                                    </div>
                                     <div ng-if="template.does_transform">
                                         <label class="label label-default">Transforms Sample</label>
                                     </div>
@@ -123,8 +137,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-warning" ng-click="dismiss()">Dismiss</button>
         </div>
     </div>
 </div>
