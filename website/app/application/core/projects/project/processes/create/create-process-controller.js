@@ -1,8 +1,9 @@
 (function (module) {
     module.controller('CreateProcessController', CreateProcessController);
-    CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems", "$state", "template", "$modal"];
+    CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems", "$previousState",
+        "template", "$modal"];
 
-    function CreateProcessController(Restangular, $stateParams, selectItems, $state, template, $modal) {
+    function CreateProcessController(Restangular, $stateParams, selectItems, $previousState, template, $modal) {
         var ctrl = this;
 
         ctrl.process = template;
@@ -57,14 +58,14 @@
         }
 
         function cancel() {
-            $state.go('projects.project.processes.list');
+            $previousState.go();
         }
 
         function submit() {
             console.dir(ctrl.process);
             Restangular.one('v2').one('projects', $stateParams.id).one('processes').
                 customPOST(ctrl.process).then(function () {
-                    $state.go('projects.project.processes.list');
+                    $previousState.go();
             }, function(e) {
                 console.log('failure to save process', e);
             });

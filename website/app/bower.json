@@ -28,6 +28,7 @@
     "textAngular": "1.2.1",
     "jquery": "1.11.3",
     "restangular": "1.5.1",
-    "font-awesome": "4.4.0"
+    "font-awesome": "4.4.0",
+    "ui-router-extras": "~0.1.0"
   }
 }
