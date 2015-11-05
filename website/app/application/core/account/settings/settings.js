@@ -14,7 +14,8 @@
         function updateName() {
             mcapi('/users/%', ctrl.mcuser.email)
                 .success(function () {
-                    User.save(ctrl.mcuser);
+                    User.attr.fullname = ctrl.fullname;
+                    User.save();
                     toastr.success('User name updated', 'Success', {
                         closeButton: true
                     });
