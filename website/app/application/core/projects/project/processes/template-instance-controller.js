@@ -1,19 +1,14 @@
 (function (module) {
     module.controller('TemplateInstanceController', TemplateInstanceController);
     TemplateInstanceController.$inject = ["$scope", "project", "$state", "$log",
-        "modal", "processTemplates", "Review", "modalInstance", "Restangular", "User"];
+        "modal", "processTemplates", "modalInstance", "Restangular", "User"];
 
     function TemplateInstanceController($scope, project, $state, $log,
-                                        modal, processTemplates, Review, modalInstance,
+                                        modal, processTemplates, modalInstance,
                                         Restangular, User) {
         $scope.modal = modal;
         this.all = project.processes;
         $scope.project_favorites = [];
-
-        $scope.showDetails = function (template) {
-            $scope.selected.item = template;
-            $scope.template_details = processTemplates.newInstance(template);
-        };
 
         $scope.viewSetUp = function (template) {
             $scope.template_details = processTemplates.newInstance(template);
@@ -46,8 +41,8 @@
                     if (index > -1) {
                         $scope.templates[index].isFavorite = true;
                     }
-                    $scope.user.favorites[$scope.index].processes = $scope.project_favorites;
-                    User.save($scope.user);
+                    $scope.user.favorites[project.id].processes = $scope.project_favorites;
+                    User.save();
                 });
         };
 
@@ -76,19 +71,19 @@
                     if (j > -1) {
                         $scope.project_favorites.splice(j, 1);
                     }
-                    $scope.user.favorites[$scope.index].processes = $scope.project_favorites;
-                    User.save($scope.user);
+                    $scope.user.favorites[project.id].processes = $scope.project_favorites;
+                    User.save();
                 })
         };
 
-        $scope.ok = function () {
-            Review.resetCheckedItems();
+        $scope.selectTemplate = function (template) {
+            $scope.selected.item = template;
             $scope.modal.instance.close($scope.selected.item);
             processTemplates.setActiveTemplate($scope.selected.item);
             $state.go('projects.project.processes.create');
         };
 
-        $scope.cancel = function () {
+        $scope.dismiss = function () {
             $scope.modal.instance.dismiss('cancel');
         };
 
@@ -122,7 +117,7 @@
             $scope.setActive('all');
             $scope.prefilled = [];
             var instance = {};
-            //Fill in pre-filled templates with setup
+            // Fill in pre-filled templates with setup
             project.process_templates.forEach(function (item) {
                 if ('process_name' in item) {
                     instance = processTemplates.getTemplateByName(item.process_name);
@@ -132,19 +127,26 @@
                 }
             });
             $scope.user = User.attr();
-            //Get fav processes for a project
-            for (var i in $scope.user.favorites){
-                if($scope.user.favorites.hasOwnProperty(i) && i === project.id){
-                    $scope.index = i;
-                    $scope.project_favorites = $scope.user.favorites[i].processes;
-                }
+            // Get fav processes for a project
+            if (project.id in $scope.user.favorites) {
+                    $scope.project_favorites = $scope.user.favorites[project.id].processes || [];
+            } else {
+                $scope.user.favorites[project.id] = {
+                    processes: []
+                };
             }
-            //set isFavorite field in all the templates
+
+            // Reset all template favorites to false.
+            $scope.templates.forEach(function(t) {
+                t.isFavorite = false;
+            });
+
+            // set isFavorite field in all the templates
             $scope.project_favorites.forEach(function (fav) {
                 var index = _.indexOf($scope.templates, function (item) {
                     return item.name === fav;
                 });
-                if (index > -1) {
+                if (index !== -1) {
                     $scope.templates[index].isFavorite = true;
                 }
             });
