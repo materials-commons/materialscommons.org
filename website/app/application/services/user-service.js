@@ -21,20 +21,16 @@
                         $window.sessionStorage.mcuser = null;
                         self.mcuser = undefined;
                     } else {
-                        var mcuser = {};
-                        mcuser = u;
-                        $window.sessionStorage.mcuser = JSON.stringify(mcuser);
-                        self.mcuser = mcuser;
+                        if (! u.favorites) {
+                            u.favorites = {};
+                        }
+                        $window.sessionStorage.mcuser = JSON.stringify(u);
+                        self.mcuser = u;
                     }
                 },
 
                 apikey: function () {
-                    var key = self.mcuser ? self.mcuser.apikey : undefined;
-                    return key;
-                },
-
-                keyparam: function () {
-                    return {apikey: self.mcuser.apikey};
+                    return self.mcuser ? self.mcuser.apikey : undefined;
                 },
 
                 u: function () {
@@ -52,11 +48,9 @@
                     }
                 },
 
-                save: function (user) {
+                save: function () {
                     if (self.mcuser) {
-                        self.mcuser.fullname = user.fullname;
                         $window.sessionStorage.mcuser = JSON.stringify(self.mcuser);
-                        console.log($window.sessionStorage.mcuser);
                     }
                 }
 
