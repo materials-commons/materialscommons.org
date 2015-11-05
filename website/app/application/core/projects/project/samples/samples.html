@@ -1,5 +1,14 @@
 <div class="row">
     <div class="col-xs-4 card card-dark card-left card-side-bar">
+        <div class="row">
+            <div class="card-header text-center">
+                <button ng-click="ctrl.createSample()"
+                        class="btn-details-container btn-sample btn btn-default">
+                    create
+                </button>
+            </div>
+        </div>
+
         <ul ng-if="ctrl.samples.length !== 0" class="list-group">
             <li class="list-group-item pointer"
                 ng-repeat="s in ctrl.samples"
@@ -8,7 +17,7 @@
                 <b class="list-group-item-heading">{{s.name}}
                 </b>
 
-                <div class="truncate-text" class="small">{{s.description}}</div>
+                <div class="truncate-text small">{{s.description}}</div>
                 <div class="row small" style="padding-top: 5px;">
                     <span class="space-left"><i data-placement="right" data-toggle="tooltip" title="Transformations"
                                                 class="fa fa-fw fa-star" style="color: #ff5a60;"></i>{{s.property_sets.length}}</span>
