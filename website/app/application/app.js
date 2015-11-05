@@ -14,6 +14,8 @@ var app = angular.module('materialscommons',
         'angular.filter', 'ui.calendar',
         '$strap.directives', 'ui.bootstrap', 'toastr',
         "hljs", "RecursionHelper", 'googlechart',
+        'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
+        'ct.ui.router.extras.previous',
         'materialscommons']);
 
 app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
