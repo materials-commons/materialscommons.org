@@ -218,39 +218,20 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                         return template;
                     }
                 ]
-                //,
-                //process: ["$q", "$timeout", function($q, $timeout) {
-                //    //return selectProcessTemplate.open();
-                //    var deferred = $q.defer();
-                //    $timeout(function () {
-                //        //deferred.resolve("successful");
-                //        console.log('rejecting');
-                //        deferred.reject("fail");   // resolve fails here
-                //    }, 2000);
-                //    return deferred.promise;
-                //}]
             }
         })
-        //.state("projects.project.processes.prefill", {
-        //    url: "/prefill",
-        //    templateUrl: "application/core/projects/project/processes/prefill.html",
-        //    controller: "projectPreFillProcess",
-        //    controllerAs: "ctrl",
-        //    resolve: {
-        //        template: ["processList", "processTemplates", "$filter",
-        //            function (processList, processTemplates, $filter) {
-        //                var template = processTemplates.getActiveTemplate();
-        //                template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
-        //                return template;
-        //            }
-        //        ]
-        //    }
-        //})
         .state("projects.project.processes.edit", {
             url: "/edit/:process_id",
             templateUrl: "application/core/projects/project/processes/edit.html",
             controller: "projectEditProcess",
-            controllerAs: 'edit'
+            controllerAs: 'edit',
+            resolve: {
+                process: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('process').one('details', $stateParams.process_id).get();
+                    }
+                ]
+            }
         })
         .state("projects.project.processes.list", {
             url: "/list",
