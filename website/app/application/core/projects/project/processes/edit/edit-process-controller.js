@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('EditProcessController', EditProcessController);
-    EditProcessController.$inject = ["Restangular", "$stateParams", "selectItems", "$state", "process", "$modal", "processTemplates"];
+    EditProcessController.$inject = ["Restangular", "$stateParams", "selectItems", "$state", "process", "processTemplates"];
 
-    function EditProcessController(Restangular, $stateParams, selectItems, $state, process, $modal, processTemplates) {
+    function EditProcessController(Restangular, $stateParams, selectItems, $state, process, processTemplates) {
         var ctrl = this;
 
         ctrl.process = process[0];
@@ -46,7 +46,7 @@
         }
 
         function samples() {
-            ctrl.process.input_samples = ctrl.process.samples.map(function(sample){
+            ctrl.process.input_samples = ctrl.process.samples.map(function (sample) {
                 return {
                     id: sample.id,
                     name: sample.name,
@@ -63,17 +63,32 @@
         }
 
         function files() {
-            ctrl.process['input_files'] = ctrl.process.files_used.map(function(file){
+            ctrl.process['input_files'] = ctrl.process.files_used.map(function (file) {
                 return {id: file.id, name: file.name}
             });
 
-            ctrl.process['output_files'] = ctrl.process.files_produced.map(function(file){
+            ctrl.process['output_files'] = ctrl.process.files_produced.map(function (file) {
                 return {id: file.id, name: file.name}
             });
         }
 
-        function submit(){
-        console.dir(ctrl.process);
+        function submit() {
+            //console.dir(ctrl.process);
+            var sendToBackend = {};
+            sendToBackend.id = ctrl.process.id;
+            sendToBackend.what = ctrl.process.what;
+            sendToBackend.name = ctrl.process.name;
+            sendToBackend.setup = ctrl.process.setup;
+            sendToBackend.input_samples = ctrl.process.input_samples;
+            sendToBackend.input_files = ctrl.process.input_files;
+            sendToBackend.output_files = ctrl.process.output_files;
+            console.dir(sendToBackend);
+            //Restangular.one('v2').one('projects', $stateParams.id).one('processes', ctrl.process.id).
+            //    customPUT(sendToBackend).then(function () {
+            //        $state.go('projects.project.processes.list');
+            //    }, function (e) {
+            //        console.log('failure to save process', e);
+            //    });
         }
 
         function cancel() {
