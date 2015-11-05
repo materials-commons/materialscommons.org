@@ -170,7 +170,6 @@
             },
 
             getTemplateByName: function (what) {
-                //var q = $q.defer();
                 var i = _.indexOf(self.templates, function (template) {
                     return template.name === what;
                 });
