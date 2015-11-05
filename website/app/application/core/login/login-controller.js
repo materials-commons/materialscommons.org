@@ -2,12 +2,12 @@
     module.controller('LoginController', LoginController);
 
     LoginController.$inject = ["$state", "User", "toastr",
-        "mcapi", "pubsub", "model.projects",
+        "mcapi", "model.projects",
         "$anchorScroll", "$location", "Restangular"];
 
     /* @ngInject */
 
-    function LoginController($state, User, toastr, mcapi, pubsub, projects, $anchorScroll, $location, Restangular) {
+    function LoginController($state, User, toastr, mcapi, projects, $anchorScroll, $location, Restangular) {
         var ctrl = this;
 
         ctrl.cancel = cancel;
@@ -20,7 +20,6 @@
             mcapi('/user/%/apikey', ctrl.email, ctrl.password)
                 .success(function (u) {
                     User.setAuthenticated(true, u);
-                    pubsub.send("tags.change");
                     projects.clear();
                     Restangular.setDefaultRequestParams({apikey: User.apikey()});
                     projects.getList().then(function (projects) {
