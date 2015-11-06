@@ -31,7 +31,7 @@ module.exports = function (r) {
      */
     function *update(processID, process) {
         if (process.setup) {
-           yield updateProcessSetup(process.setup);
+            yield updateProcessSetup(process.setup);
         }
 
         if (process.name || process.why || process.what) {
@@ -76,10 +76,10 @@ module.exports = function (r) {
     // not currently support addition or deletion.
     function* updateSampleMeasurements(samples) {
         let measurements = [];
-        samples.forEach(function(sample) {
+        samples.forEach(function (sample) {
             if (sample.properties) {
-                sample.properties.forEach(function(prop) {
-                    prop.measurements.forEach(function(m) {
+                sample.properties.forEach(function (prop) {
+                    prop.measurements.forEach(function (m) {
                         measurements.push(m);
                     })
                 })
@@ -91,7 +91,8 @@ module.exports = function (r) {
 
     // updateFiles adds or deletes files from the process
     function* updateFiles(processID, files) {
-        let filesToAdd = files.filter(f => f.command == 'add').map(f => new model.Process2File(processID, f.file_id, f.direction));
+        let filesToAdd = files.filter(f => f.command == 'add').
+            map(f => new model.Process2File(processID, f.file_id, f.direction));
         let filesToDelete = files.filter(f => f.command == 'delete').map(f => f.file_id);
 
         if (filesToAdd.length) {

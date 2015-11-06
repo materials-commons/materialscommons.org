@@ -1,32 +1,37 @@
 (function (module) {
     module.controller('TemplateInstanceController', TemplateInstanceController);
-    TemplateInstanceController.$inject = ["$scope", "project", "$state", "$log",
-        "modal", "processTemplates", "Review", "modalInstance", "Restangular", "User"];
+    TemplateInstanceController.$inject = ["project", "templates", "modalInstance", "$modalInstance",
+        "Restangular", "User"];
 
-    function TemplateInstanceController($scope, project, $state, $log,
-                                        modal, processTemplates, Review, modalInstance,
-                                        Restangular, User) {
-        $scope.modal = modal;
-        this.all = project.processes;
+    function TemplateInstanceController(project, templates, modalInstance, $modalInstance, Restangular, User) {
+        var ctrl = this;
+        ctrl.templates = templates;
+        ctrl.viewSetup = viewSetup;
+        ctrl.openPrefill = openPrefill;
+        ctrl.markAsFavorite = markAsFavorite;
+        ctrl.unmarkAsFavorite = unmarkAsFavorite;
+        ctrl.selectTemplate = selectTemplate;
+        ctrl.dismiss = dismiss;
+        ctrl.activeTab = 'all';
+        ctrl.isActive = isActive;
+        ctrl.setActive = setActive;
+        ctrl.viewPrefilledSetUp = viewPrefilledSetUp;
 
-        $scope.showDetails = function (template) {
-            $scope.selected.item = template;
-            $scope.template_details = processTemplates.newInstance(template);
-        };
+        /////////////////////
 
-        $scope.viewSetUp = function (template) {
-            $scope.template_details = processTemplates.newInstance(template);
-            modalInstance.viewSetUp($scope.template_details.setup.settings[0].properties);
-        };
+        function viewSetup(template) {
+            var details = new template.fn();
+            modalInstance.viewSetUp(details.setup.settings[0].properties);
+        }
 
-        $scope.openPreFill = function (template) {
-            $scope.showDetails(template);
-            modalInstance.preFill($scope.template_details, project).then(function (t) {
-                $scope.prefilled.push(t);
+        function openPrefill(template) {
+            var details = new template.fn();
+            modalInstance.preFill(details, project).then(function (t) {
+                templates.push(t);
             });
-        };
+        }
 
-        $scope.addToFavourite = function (template) {
+        function markAsFavorite(template) {
             Restangular.one('v2').one('users', project.id)
                 .customPUT({
                     favorites: {
@@ -38,19 +43,13 @@
                         ]
                     }
                 }).then(function () {
-                    $scope.project_favorites.push(template.name);
-                    var index = _.indexOf($scope.templates, function (item) {
-                        return item.name === template.name;
-                    });
-                    if (index > -1) {
-                        $scope.templates[index].isFavorite = true;
-                    }
-                    $scope.user.favorites[$scope.index].processes = $scope.project_favorites;
-                    User.save($scope.user);
+                    var t = _.find(templates, {name: template.name});
+                    t.favorite = true;
+                    User.addToFavorites(project.id, t.name);
                 });
-        };
+        }
 
-        $scope.removeFromFavourite = function (template) {
+        function unmarkAsFavorite(template) {
             Restangular.one('v2').one('users', project.id)
                 .customPUT({
                     favorites: {
@@ -62,97 +61,31 @@
                         ]
                     }
                 }).then(function () {
-                    var index = _.indexOf($scope.templates, function (item) {
-                        return item.name === template.name;
-                    });
-                    if (index > -1) {
-                        $scope.templates[index].isFavorite = false;
-                    }
-
-                    var j = _.indexOf($scope.project_favorites, function (item) {
-                        return item === template.name;
-                    });
-                    if (j > -1) {
-                        $scope.project_favorites.splice(j, 1);
-                    }
-                    $scope.user.favorites[$scope.index].processes = $scope.project_favorites;
-                    User.save($scope.user);
-                })
-        };
-
-        $scope.ok = function () {
-            Review.resetCheckedItems();
-            $scope.modal.instance.close($scope.selected.item);
-            processTemplates.setActiveTemplate($scope.selected.item);
-            $state.go('projects.project.processes.create');
-        };
-
-        $scope.cancel = function () {
-            $scope.modal.instance.dismiss('cancel');
-        };
-
-        $scope.isActive = function (tab) {
-            return $scope.activeTab === tab;
-        };
-
-        $scope.setActive = function (tab) {
-            $scope.activeTab = tab;
-        };
-
-        $scope.modal.instance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
-
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
-        });
-
-        $scope.choosePrefilledTemplate = function (template) {
-            $scope.selected.item = template;
-            $scope.template_details = template;
-        };
-
-        $scope.viewPrefilledSetUp = function (template) {
-            $scope.template_details = template;
-            modalInstance.preFill($scope.template_details, project);
-        };
-
-        function init() {
-            $scope.templates = processTemplates.templates();
-            $scope.setActive('all');
-            $scope.prefilled = [];
-            var instance = {};
-            //Fill in pre-filled templates with setup
-            project.process_templates.forEach(function (item) {
-                if ('process_name' in item) {
-                    instance = processTemplates.getTemplateByName(item.process_name);
-                    instance.setup.settings[0] = item.setup;
-                    instance.name = item.name;
-                    $scope.prefilled.push(instance);
-                }
-            });
-            $scope.user = User.attr();
-            //Get fav processes for a project
-            for (var i in $scope.user.favorites){
-                if($scope.user.favorites.hasOwnProperty(i) && i === project.id){
-                    $scope.index = i;
-                    $scope.project_favorites = $scope.user.favorites[i].processes;
-                }
-            }
-            //set isFavorite field in all the templates
-            $scope.project_favorites.forEach(function (fav) {
-                var index = _.indexOf($scope.templates, function (item) {
-                    return item.name === fav;
+                    var t = _.find(templates, {name: template.name});
+                    t.favorite = false;
+                    User.removeFromFavorites(project.id, t.name);
                 });
-                if (index > -1) {
-                    $scope.templates[index].isFavorite = true;
-                }
-            });
-
-            $scope.selected = {
-                item: {}
-            };
         }
 
-        init();
+        function selectTemplate(template) {
+            $modalInstance.close(template.name);
+        }
+
+        function dismiss() {
+            $modalInstance.dismiss('cancel');
+        }
+
+        function isActive(tab) {
+            return ctrl.activeTab === tab;
+        }
+
+        function setActive(tab) {
+            ctrl.activeTab = tab;
+        }
+
+        function viewPrefilledSetUp(template) {
+            var details = new template.fn();
+            modalInstance.preFill(details, project);
+        }
     }
 }(angular.module('materialscommons')));
