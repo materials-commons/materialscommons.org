@@ -14,6 +14,8 @@ var app = angular.module('materialscommons',
         'angular.filter', 'ui.calendar',
         '$strap.directives', 'ui.bootstrap', 'toastr',
         "hljs", "RecursionHelper", 'googlechart',
+        'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
+        'ct.ui.router.extras.previous',
         'materialscommons']);
 
 app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
@@ -92,11 +94,13 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
                 project: ["$stateParams", "model.projects", "projects",
+                    // Inject projects so that it resolves before look up the project.
                     function ($stateParams, Projects) {
-                        // We use templates as a dependency so that they are all loaded
-                        // before getting to this step. Otherwise the order of items
-                        // being resolved isn't in the order we need them.
                         return Projects.get($stateParams.id);
+                    }],
+                templates: ["processTemplates", "project",
+                    function (processTemplates, project) {
+                        return processTemplates.templates(project.process_templates);
                     }]
             },
             onEnter: ["pubsub", "project", function (pubsub) {
@@ -205,16 +209,16 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             template: ' <div ui-view></div>'
         })
         .state("projects.project.processes.create", {
-            url: "/create",
+            url: "/create/:process",
             templateUrl: "application/core/projects/project/processes/create/create.html",
             controller: "CreateProcessController",
             controllerAs: 'ctrl',
             resolve: {
-                template: ["processList", "processTemplates", "$filter", "measurements",
-                    function (processList, processTemplates, $filter, measurements) {
-                        var template = processTemplates.getActiveTemplate();
+                template: ["$filter", "$stateParams", "templates",
+                    function ($filter, $stateParams, templates) {
+                        var t = _.find(templates, {name: $stateParams.process});
+                        var template = new t.fn();
                         template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
-                        measurements.templates();
                         return template;
                     }
                 ]

@@ -1,9 +1,11 @@
-<div class="row" >
+<div class="row">
     <div class="col-xs-4 card card-dark card-left card-side-bar">
         <div class="row">
             <div class="card-header text-center">
-                <button ng-click="ctrl.chooseTemplate()" class="btn-details-container btn-process btn btn-default"> create</button>
-
+                <button ng-click="ctrl.chooseTemplate()"
+                        class="btn-details-container btn-process btn btn-default">
+                    create
+                </button>
             </div>
         </div>
 
@@ -14,7 +16,7 @@
                 ng-click="ctrl.viewProcess(p)">
                 <b class="list-group-item-heading">{{p.name}}</b>
 
-                <div class="truncate-text" ta-bind ng-model="p.what" class="small"></div>
+                <div class="truncate-text small" ta-bind ng-model="p.what"></div>
                 <div class="row small" style="padding-top: 5px;">
                             <span class="space-left"><i
                                     class="fa fa-fw fa-cubes sample"></i>4</span>
