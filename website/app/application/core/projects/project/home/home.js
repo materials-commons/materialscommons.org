@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('ProjectHomeController', ProjectHomeController);
-    ProjectHomeController.$inject = ["project", "modalInstance", "processTemplates", "$state"];
+    ProjectHomeController.$inject = ["project", "modalInstance", "templates", "$state"];
 
-    function ProjectHomeController(project, modalInstance, processTemplates, $state) {
+    function ProjectHomeController(project, modalInstance, templates, $state) {
         var ctrl = this;
 
         ctrl.project = project;
@@ -12,13 +12,13 @@
         /////////////////////////
 
         function chooseTemplate() {
-            modalInstance.chooseTemplate(ctrl.project);
+            modalInstance.chooseTemplate(ctrl.project, templates).then(function(processTemplateName) {
+                $state.go('projects.project.processes.create', {process: processTemplateName});
+            });
         }
 
         function createSample() {
-            var template = processTemplates.getTemplateByName('As Received');
-            processTemplates.setActiveTemplate(template);
-            $state.go('projects.project.processes.create');
+            $state.go('projects.project.processes.create', {process: 'As Received'});
         }
     }
 }(angular.module('materialscommons')));
