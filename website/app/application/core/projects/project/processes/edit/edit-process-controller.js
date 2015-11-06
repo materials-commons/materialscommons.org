@@ -6,27 +6,29 @@
         var ctrl = this;
 
         ctrl.process = process[0];
-        console.dir(ctrl.process);
+        ctrl.process['updated_samples'] = [];
+        ctrl.process['updated_input_files'] = [];
+        ctrl.process['updated_output_files'] = [];
+
         ctrl.process.process_name = "APT"; //to be deleted
         ctrl.template = processTemplates.getTemplateByName(ctrl.process.process_name);
 
+        ctrl.chooseSamples = chooseSamples;
+        ctrl.chooseInputFiles = chooseInputFiles;
+        ctrl.chooseOutputFiles = chooseOutputFiles;
         ctrl.fillSetUp = fillSetUp;
         ctrl.samples = samples;
         ctrl.files = files;
         ctrl.submit = submit;
         ctrl.cancel = cancel;
-
-        ctrl.chooseSamples = chooseSamples;
-        ctrl.chooseInputFiles = chooseInputFiles;
-        ctrl.chooseOutputFiles = chooseOutputFiles;
+        ctrl.remove = remove;
 
         ctrl.fillSetUp();
         ctrl.samples();
         ctrl.files();
-        console.dir(ctrl.process);
-
         /**
-         * fillSetUp: will read all the setup values from process and place inside template.
+         * fillSetUp: will read all the setup values from process
+         * and place inside template.
          *
          */
         function fillSetUp() {
@@ -38,8 +40,10 @@
                 if (i > -1) {
                     ctrl.settings[i].property.value = property.value;
                     ctrl.settings[i].property.unit = property.unit;
-                    ctrl.settings[i].property.setup_id = property.setup_id;
-                    ctrl.settings[i].property.id = property.id;
+                    ctrl.settings[i].property.id = property.setup_id;
+                    ctrl.settings[i].property.property_id = property.id;
+                    ctrl.settings[i].property._type = property._type;
+                    ctrl.settings[i].property.attribute = property.attribute;
                 }
             });
             ctrl.process.setup = ctrl.template.setup;
@@ -58,33 +62,28 @@
             });
         }
 
-        function cancel() {
-            $state.go('projects.project.processes.list');
-        }
-
         function files() {
             ctrl.process['input_files'] = ctrl.process.files_used.map(function (file) {
                 return {id: file.id, name: file.name}
             });
-
             ctrl.process['output_files'] = ctrl.process.files_produced.map(function (file) {
                 return {id: file.id, name: file.name}
             });
         }
 
         function submit() {
-            //console.dir(ctrl.process);
-            var sendToBackend = {};
-            sendToBackend.id = ctrl.process.id;
-            sendToBackend.what = ctrl.process.what;
-            sendToBackend.name = ctrl.process.name;
-            sendToBackend.setup = ctrl.process.setup;
-            sendToBackend.input_samples = ctrl.process.input_samples;
-            sendToBackend.input_files = ctrl.process.input_files;
-            sendToBackend.output_files = ctrl.process.output_files;
-            console.dir(sendToBackend);
+            var updated_process = {
+                id: ctrl.process.id,
+                what: ctrl.process.what,
+                name: ctrl.process.name,
+                setup: ctrl.process.setup,
+                input_samples: ctrl.process.updated_samples,
+                input_files: ctrl.process.updated_input_files,
+                output_files: ctrl.process.updated_output_files
+            };
+            console.dir(updated_process);
             //Restangular.one('v2').one('projects', $stateParams.id).one('processes', ctrl.process.id).
-            //    customPUT(sendToBackend).then(function () {
+            //    customPUT(updated_process).then(function () {
             //        $state.go('projects.project.processes.list');
             //    }, function (e) {
             //        console.log('failure to save process', e);
@@ -107,6 +106,7 @@
                         property_set_id: sample.property_set_id,
                         files: []
                     });
+                    ctrl.process.updated_samples.push({id: sample.id, command: 'add'});
                 });
             });
         }
@@ -119,6 +119,7 @@
                         id: file.id,
                         name: file.name
                     });
+                    ctrl.process.updated_input_files.push({id: file.id, command: 'add'});
                 });
             });
         }
@@ -131,9 +132,35 @@
                         id: file.id,
                         name: file.name
                     });
+                    ctrl.process.updated_output_files.push({id: file.id, command: 'add'});
                 });
             });
         }
+
+        function remove(type, item) {
+            if(type === 'input_sample'){
+                remove_from_list('input_samples', item);
+                remove_from_list('updated_samples', item);
+            }else if(type === 'input_file'){
+                remove_from_list('input_files', item);
+                remove_from_list('updated_input_files', item);
+            }else{
+                remove_from_list('output_files', item);
+                remove_from_list('updated_output_files', item);
+            }
+        }
+
+        function remove_from_list(type, item){
+            var i = _.indexOf(ctrl.process[type], function(file){
+                return file.id === item.id
+            });
+            if (i > -1){
+                ctrl.process[type].splice(i, 1);
+            }else{
+                ctrl.process[type].push({id: item.id, command: 'delete'})
+            }
+        }
+
     }
 
 }(angular.module('materialscommons')));
