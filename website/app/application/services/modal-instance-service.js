@@ -50,25 +50,23 @@
                     });
                     return service.modal.instance;
                 },
-                chooseTemplate: function (project) {
-                    service.modal = {
-                        instance: null,
-                        items: []
-                    };
 
-                    service.modal.instance = $modal.open({
+                chooseTemplate: function (project, templates) {
+                    var modal = $modal.open({
                         size: 'lg',
                         templateUrl: 'application/core/projects/project/processes/template.html',
                         controller: 'TemplateInstanceController',
+                        controllerAs: 'ctrl',
                         resolve: {
-                            modal: function () {
-                                return service.modal;
-                            },
                             project: function () {
                                 return project;
+                            },
+                            templates: function() {
+                                return templates;
                             }
                         }
                     });
+                    return modal.result;
                 },
 
                 viewSetUp: function (properties) {
