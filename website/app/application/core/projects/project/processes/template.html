@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <input type="text" ng-model="search" class="form-control"
+            <input type="text" ng-model="ctrl.search" class="form-control"
                    placeholder="Search processes...">
         </div>
     </div>
@@ -15,28 +15,33 @@
     <div class="row">
         <ul class="nav nav-tabs">
             <li class="active">
-                <a data-target="#1" data-toggle="tab" class="text-uppercase">All
-                    Processes</a></li>
+                <a data-target="#1" data-toggle="tab" class="text-uppercase">
+                    All Processes
+                </a>
+            </li>
             <li>
                 <a data-target="#2" data-toggle="tab" class="text-uppercase">
                     <i class="fa fa-fw fa-star"></i> favourite
-                    Processes ({{(templates | byKey: 'isFavorite': true).length}})</a></li>
+                    Processes ({{(ctrl.templates | filter:{favorite:true}).length}})
+                </a>
+            </li>
             <li>
                 <a data-target="#3" data-toggle="tab" class="text-uppercase">
                     <i class="fa fa-fw fa-pencil-square-o"></i>
-                    Pre-filled Processes ({{prefilled.length}})</a></li>
+                    Pre-filled Processes ({{(ctrl.templates | filter:{prefill:true}).length}})
+                </a>
+            </li>
         </ul>
         <div class="modal-body">
             <div class="tab-content">
                 <div class="tab-pane active" id="1">
                     <div class="list-group">
-                        <div ng-class="{'active': template === selected.item}"
-                             class="pointer list-group-item"
-                             ng-repeat="template in templates | orderBy:'name' | filter:search">
+                        <div ng-repeat="template in ctrl.templates | filter:ctrl.search | orderBy:'name'"
+                             class="list-group-item">
                             <div class="row">
                                 <div class="col-xs-7">
                                     <div class="list-group-item-heading">
-                                        <a ng-click="selectTemplate(template)">
+                                        <a ng-click="ctrl.selectTemplate(template)">
                                             <i class="fa fa-fw fa-square-o fa-2x"></i>
                                         </a>
                                         {{template.name}}
@@ -49,17 +54,17 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-5">
-                                    <div ng-click="removeFromFavourite(template)" ng-if="template.isFavorite">
+                                    <div ng-click="ctrl.unmarkAsFavorite(template)" ng-if="template.favorite">
                                         <i class="fa fa-fw fa-star pull-right"></i>
                                     </div>
-                                    <div ng-click="addToFavourite(template)" ng-if="!template.isFavorite">
+                                    <div ng-click="ctrl.markAsFavorite(template)" ng-if="!template.favorite">
                                         <i class="fa fa-fw fa-star-o pull-right"></i>
                                     </div>
                                     <div class="row">
-                                        <button class="btn btn-info" ng-click="viewSetUp(template)">
+                                        <button class="btn btn-info" ng-click="ctrl.viewSetUp(template)">
                                             <i class="fa fa-fw fa-gear"></i>SetUp
                                         </button>
-                                        <button class="btn btn-info" ng-click="openPreFill(template)"><i
+                                        <button class="btn btn-info" ng-click="ctrl.openPrefill(template)"><i
                                                 class="fa fa-fw fa-pencil-square-o"></i>Pre-fill
                                         </button>
                                     </div>
@@ -70,13 +75,12 @@
                 </div>
                 <div class="tab-pane" id="2">
                     <div class="list-group">
-                        <div ng-class="{'active': template === selected.item}"
-                             class="pointer list-group-item"
-                             ng-repeat="template in templates | byKey: 'isFavorite': true |orderBy:'name' | filter:search">
+                        <div class="list-group-item"
+                             ng-repeat="template in ctrl.templates | filter:{favorite:true} | filter:ctrl.search | orderBy:'name'">
                             <div class="row">
                                 <div class="col-xs-7">
                                     <div class="list-group-item-heading">
-                                        <a ng-click="selectTemplate(template)">
+                                        <a ng-click="ctrl.selectTemplate(template)">
                                             <i class="fa fa-fw fa-square-o fa-2x"></i>
                                         </a>
                                         {{template.name}}
@@ -90,10 +94,10 @@
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="row">
-                                        <button class="btn btn-info" ng-click="viewSetUp(template)">
+                                        <button class="btn btn-info" ng-click="ctrl.viewSetUp(template)">
                                             <i class="fa fa-fw fa-gear"></i>SetUp
                                         </button>
-                                        <button class="btn btn-info" ng-click="openPreFill(template)"><i
+                                        <button class="btn btn-info" ng-click="ctrl.openPrefill(template)"><i
                                                 class="fa fa-fw fa-pencil-square-o"></i>Pre-fill
                                         </button>
                                     </div>
@@ -104,14 +108,13 @@
                 </div>
                 <div class="tab-pane" id="3">
                     <div class="list-group">
-                        <div ng-class="{'active': template === selected.item}"
-                             class="pointer list-group-item"
-                             ng-repeat="template in prefilled | orderBy:'name' | filter:search">
+                        <div class="list-group-item"
+                             ng-repeat="template in ctrl.templates | filter:{prefill: true} | filter:search | orderBy:'name'">
 
                             <div class="row">
                                 <div class="col-xs-7">
                                     <div class="list-group-item-heading">
-                                        <a ng-click="choosePrefilledTemplate(template)">
+                                        <a ng-click="ctrl.selectTemplate(template)">
                                             <i class="fa fa-fw fa-square-o fa-2x"></i>
                                         </a>
                                         {{template.name}}
@@ -125,7 +128,7 @@
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="row">
-                                        <button class="btn btn-info" ng-click="viewPrefilledSetUp(template)">
+                                        <button class="btn btn-info" ng-click="ctrl.viewPrefilledSetUp(template)">
                                             <i class="fa fa-fw fa-gear"></i>SetUp
                                         </button>
                                     </div>
@@ -137,7 +140,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-warning" ng-click="dismiss()">Dismiss</button>
+            <button class="btn btn-warning" ng-click="ctrl.dismiss()">Dismiss</button>
         </div>
     </div>
 </div>
