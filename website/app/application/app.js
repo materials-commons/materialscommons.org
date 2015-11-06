@@ -226,9 +226,16 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         })
         .state("projects.project.processes.edit", {
             url: "/edit/:process_id",
-            templateUrl: "application/core/projects/project/processes/edit.html",
-            controller: "projectEditProcess",
-            controllerAs: 'edit'
+            templateUrl: "application/core/projects/project/processes/edit/edit.html",
+            controller: "EditProcessController",
+            controllerAs: 'ctrl',
+            resolve: {
+                process: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('process').one('details', $stateParams.process_id).get();
+                    }
+                ]
+            }
         })
         .state("projects.project.processes.list", {
             url: "/list",
