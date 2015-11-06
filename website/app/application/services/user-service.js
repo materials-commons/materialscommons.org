@@ -41,6 +41,30 @@
                     return self.mcuser;
                 },
 
+                favorites: function(projectID) {
+                    if (!(projectID in self.mcuser.favorites)) {
+                        self.mcuser.favorites[projectID] = {
+                            processes: []
+                        };
+                    }
+                    return self.mcuser.favorites[projectID];
+                },
+
+                addToFavorites: function(projectID, templateName) {
+                    self.mcuser.favorites[projectID].processes.push(templateName);
+                    $window.sessionStorage.mcuser = JSON.stringify(self.mcuser);
+                },
+
+                removeFromFavorites: function(projectID, templateName) {
+                    var i = _.indexOf(self.mcuser.favorites[projectID].processes, function(n) {
+                        return n === templateName;
+                    });
+                    if (i !== -1) {
+                        self.mcuser.favorites[projectID].processes.splice(i, 1);
+                        $window.sessionStorage.mcuser = JSON.stringify(self.mcuser);
+                    }
+                },
+
                 reset_apikey: function (new_key) {
                     if (self.mcuser) {
                         self.mcuser.apikey = new_key;
