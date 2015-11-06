@@ -1,10 +1,9 @@
 (function (module) {
-    module.factory("processTemplates",
-        [processTemplates]);
+    module.factory("processTemplates", processTemplates);
+    processTemplates.$inject = ["User"];
 
-    function processTemplates() {
+    function processTemplates(User) {
         var self = this;
-        self.activeTemplate = {};
         self.templates = [
             {
                 name: "APT",
@@ -146,37 +145,34 @@
             }
         ];
 
+        self.templatesByName = _.indexBy(self.templates, 'name');
+
+        function addProjectTemplates(templates, projectTemplates) {
+            var filledOutProjectTemplates = projectTemplates.map(function(processTemplate) {
+                var templateCopy = angular.copy(self.templatesByName[processTemplate.process_name]);
+                templateCopy.name = processTemplate.name;
+                templateCopy.prefill = true;
+                return templateCopy;
+            });
+            return templates.concat(filledOutProjectTemplates);
+        }
+
+        function markFavorites(templates, favorites) {
+            var templatesByName = _.indexBy(templates, 'name');
+            favorites.forEach(function(favoriteTemplate) {
+                if (favoriteTemplate in templatesByName) {
+                    templatesByName[favoriteTemplate].favorite = true;
+                }
+            });
+        }
+
         return {
-
-            templates: function () {
-                return self.templates;
-            },
-
-            newInstance: function (template) {
-                return new template.fn();
-            },
-
-            getActiveTemplate: function () {
-                return self.activeTemplate;
-            },
-
-            setActiveTemplate: function (template) {
-                if(template.fn){
-                    self.activeTemplate = this.newInstance(template);
-                }else{
-                    self.activeTemplate = template;
-                }
-
-            },
-
-            getTemplateByName: function (what) {
-                var i = _.indexOf(self.templates, function (template) {
-                    return template.name === what;
-                });
-
-                if (i > -1){
-                    return this.newInstance(self.templates[i]);
-                }
+            templates: function(projectTemplates) {
+                var templates = angular.copy(self.templates);
+                projectTemplates = projectTemplates || [];
+                templates = addProjectTemplates(templates, projectTemplates);
+                markFavorites(templates, User.favorites().processes);
+                return templates;
             }
         };
     }
