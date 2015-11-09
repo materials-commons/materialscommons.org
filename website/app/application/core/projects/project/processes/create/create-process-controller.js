@@ -97,9 +97,9 @@
     }
 
     module.controller("LinkFilesToSampleController", LinkFilesToSampleController);
-    LinkFilesToSampleController.$inject = ["$modalInstance", "project", "files", "sampleName", "modalInstance"];
+    LinkFilesToSampleController.$inject = ["$modalInstance", "project", "files", "sampleName", "mcmodal"];
 
-    function LinkFilesToSampleController($modalInstance, project, files, sampleName, modalInstance) {
+    function LinkFilesToSampleController($modalInstance, project, files, sampleName, mcmodal) {
         var ctrl = this;
         ctrl.name = sampleName;
         ctrl.files = files;
@@ -158,7 +158,7 @@
         }
 
         function openFile(file) {
-            modalInstance.openModal(file, 'datafile', project);
+            mcmodal.openModal(file, 'datafile', project);
         }
     }
 }(angular.module('materialscommons')));
