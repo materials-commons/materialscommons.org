@@ -167,11 +167,11 @@
         }
 
         return {
-            templates: function(projectTemplates) {
+            templates: function(projectTemplates, projectID) {
                 var templates = angular.copy(self.templates);
                 projectTemplates = projectTemplates || [];
                 templates = addProjectTemplates(templates, projectTemplates);
-                markFavorites(templates, User.favorites().processes);
+                markFavorites(templates, User.favorites(projectID).processes);
                 return templates;
             }
         };
