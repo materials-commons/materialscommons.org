@@ -100,7 +100,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                     }],
                 templates: ["processTemplates", "project",
                     function (processTemplates, project) {
-                        return processTemplates.templates(project.process_templates);
+                        return processTemplates.templates(project.process_templates, project.id);
                     }]
             },
             onEnter: ["pubsub", "project", function (pubsub) {
