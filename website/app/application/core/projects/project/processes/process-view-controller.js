@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('projectViewProcess', projectViewProcess);
-    projectViewProcess.$inject = ["project", "mcfile", "modalInstance", "$state", "process"];
+    projectViewProcess.$inject = ["project", "mcfile", "mcmodal", "$state", "process"];
 
-    function projectViewProcess(project, mcfile, modalInstance, $state, process) {
+    function projectViewProcess(project, mcfile, mcmodal, $state, process) {
         var ctrl = this;
         ctrl.openSample = openSample;
         ctrl.openFile = openFile;
@@ -29,11 +29,11 @@
         }
 
         function openSample(sample) {
-            modalInstance.openModal(sample, 'sample', ctrl.project);
+            mcmodal.openModal(sample, 'sample', ctrl.project);
         }
 
         function openFile(file) {
-            modalInstance.openModal(file, 'datafile', ctrl.project);
+            mcmodal.openModal(file, 'datafile', ctrl.project);
         }
 
         function editProvenance() {
