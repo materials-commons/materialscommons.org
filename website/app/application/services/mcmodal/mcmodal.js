@@ -36,6 +36,7 @@
                     service.modal.item = item;
                     break;
                 }
+
                 service.modal.instance = $modal.open({
                     size: 'lg',
                     templateUrl: template,
@@ -55,7 +56,7 @@
             chooseTemplate: function (project, templates) {
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'application/core/projects/project/processes/template.html',
+                    templateUrl: 'application/services/mcmodal/partials/template.html',
                     controller: 'TemplateInstanceController',
                     controllerAs: 'ctrl',
                     resolve: {
@@ -73,7 +74,7 @@
             viewSetup: function (properties) {
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'application/core/projects/project/processes/view_setup.html',
+                    templateUrl: 'application/services/mcmodal/partials/view_setup.html',
                     controller: 'setupViewController',
                     controllerAs: 'ctrl',
                     resolve: {
@@ -88,7 +89,7 @@
             preFill: function (template, project) {
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'application/core/projects/project/processes/prefill.html',
+                    templateUrl: 'application/services/mcmodal/partials/prefill.html',
                     controller: 'projectPreFillProcess',
                     controllerAs: 'ctrl',
                     resolve: {
