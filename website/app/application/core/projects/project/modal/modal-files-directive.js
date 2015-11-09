@@ -14,10 +14,10 @@
 
     module.controller("modalFilesDirectiveController", modalFilesDirectiveController);
     modalFilesDirectiveController.$inject = ["$scope", "projectFiles", "$filter", "Review", "pubsub", "$modal",
-            "mcapi", "mcfile", "modalInstance"];
+            "mcapi", "mcfile", "mcmodal"];
 
     function modalFilesDirectiveController($scope, projectFiles, $filter, Review, pubsub,
-                                           $modal, mcapi, mcfile, modalInstance) {
+                                           $modal, mcapi, mcfile, mcmodal) {
         $scope.modalState = {
             showTree: true,
             query: ""
@@ -168,7 +168,7 @@
                 // We don't have a full file object, so find it in projectFiles
                 f = projectFiles.findFileByID($scope.project.id, file.datafile_id);
             }
-            modalInstance.openModal(f, 'datafile', $scope.project);
+            mcmodal.openModal(f, 'datafile', $scope.project);
         }
     }
 

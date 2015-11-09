@@ -16,14 +16,14 @@
     }
 
     module.controller("displayMeasurementDirectiveController", displayMeasurementDirectiveController);
-    displayMeasurementDirectiveController.$inject = ["$scope", "$modal", "modalInstance"];
-    function displayMeasurementDirectiveController($scope, $modal, modalInstance) {
+    displayMeasurementDirectiveController.$inject = ["$scope", "$modal", "mcmodal"];
+    function displayMeasurementDirectiveController($scope, $modal, mcmodal) {
         $scope.openProcess = function (processID) {
             var i = _.indexOf($scope.project.processes, function (proc) {
                 return proc.id == processID;
             });
             if (i !== -1) {
-                modalInstance.openModal($scope.project.processes[i], 'process', $scope.project);
+                mcmodal.openModal($scope.project.processes[i], 'process', $scope.project);
             }
         };
 
