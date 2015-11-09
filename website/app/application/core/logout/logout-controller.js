@@ -2,15 +2,12 @@
 
     module.controller('LogoutController', LogoutController);
 
-    LogoutController.$inject = ["$rootScope", "$state", "$window",
-        "User", "projectFiles", "model.projects"];
+    LogoutController.$inject = ["$rootScope", "$state", "User", "model.projects"];
 
     /* @ngInject */
-    function LogoutController($rootScope, $state, $window, User, projectFiles, projects) {
+    function LogoutController($rootScope, $state, User, projects) {
         $rootScope.email_address = '';
-        $window.sessionStorage.removeItem('mcuser');
-        User.setAuthenticated(false, '', '');
-        projectFiles.clear();
+        User.setAuthenticated(false);
         projects.clear();
         $state.transitionTo('home');
     }
