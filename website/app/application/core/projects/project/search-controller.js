@@ -1,10 +1,10 @@
 (function (module) {
     module.controller('SearchController', SearchController);
 
-    SearchController.$inject = ["mcapi", "project", "$stateParams", "mcfile", "$state", "projectFiles", "mcmodal"];
+    SearchController.$inject = ["mcapi", "project", "$stateParams", "mcfile", "$state", "mcmodal"];
 
     /* @ngInject */
-    function SearchController(mcapi, project, $stateParams, mcfile, $state, projectFiles, mcmodal) {
+    function SearchController(mcapi, project, $stateParams, mcfile, $state, mcmodal) {
         var ctrl = this;
         ctrl.isImage = isImage;
         ctrl.fileSrc = fileSrc;
@@ -33,12 +33,13 @@
         }
 
         function openFilePopup(file) {
-            var f = file;
-            if ('datafile_id' in file) {
-                // We don't have a full file object, so find it in projectFiles
-                f = projectFiles.findFileByID(project.id, file.datafile_id);
-            }
-            mcmodal.openModal(f, 'datafile', project);
+            console.log('openFilePopup', file);
+            //var f = file;
+            //if ('datafile_id' in file) {
+            //    // We don't have a full file object, so find it in projectFiles
+            //    f = projectFiles.findFileByID(project.id, file.datafile_id);
+            //}
+            //mcmodal.openModal(f, 'datafile', project);
         }
 
         // images goes through the list of files and returns all the images.
