@@ -62,7 +62,6 @@
         }
 
         function submit() {
-            console.dir(ctrl.process);
             Restangular.one('v2').one('projects', $stateParams.id).one('processes').
                 customPOST(ctrl.process).then(function () {
                     $previousState.go();
