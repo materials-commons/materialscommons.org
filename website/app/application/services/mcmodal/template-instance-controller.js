@@ -8,14 +8,13 @@
         ctrl.templates = templates;
         ctrl.viewSetup = viewSetup;
         ctrl.openPrefill = openPrefill;
-        ctrl.markAsFavorite = markAsFavorite;
-        ctrl.unmarkAsFavorite = unmarkAsFavorite;
+        ctrl.toggleFavorite = toggleFavorite;
         ctrl.selectTemplate = selectTemplate;
         ctrl.dismiss = dismiss;
         ctrl.activeTab = 'all';
         ctrl.isActive = isActive;
         ctrl.setActive = setActive;
-        ctrl.viewPrefilledSetUp = viewPrefilledSetUp;
+        ctrl.viewPrefilledSetup = viewPrefilledSetup;
 
         /////////////////////
 
@@ -31,39 +30,26 @@
             });
         }
 
-        function markAsFavorite(template) {
-            Restangular.one('v2').one('users', project.id)
-                .customPUT({
-                    favorites: {
-                        processes: [
-                            {
-                                command: 'add',
-                                name: template.name
-                            }
-                        ]
-                    }
-                }).then(function () {
-                    var t = _.find(templates, {name: template.name});
-                    t.favorite = true;
-                    User.addToFavorites(project.id, t.name);
-                });
-        }
+        function toggleFavorite(template) {
+            var command = template.favorite ? 'delete' : 'add';
+            template.favorite = !template.favorite;
 
-        function unmarkAsFavorite(template) {
             Restangular.one('v2').one('users', project.id)
                 .customPUT({
                     favorites: {
                         processes: [
                             {
-                                command: 'delete',
+                                command: command,
                                 name: template.name
                             }
                         ]
                     }
-                }).then(function () {
-                    var t = _.find(templates, {name: template.name});
-                    t.favorite = false;
-                    User.removeFromFavorites(project.id, t.name);
+                }).then(function() {
+                    if (command == 'add') {
+                        User.addToFavorites(project.id, template.name);
+                    } else {
+                        User.removeFromFavorites(project.id, template.name);
+                    }
                 });
         }
 
@@ -83,7 +69,7 @@
             ctrl.activeTab = tab;
         }
 
-        function viewPrefilledSetUp(template) {
+        function viewPrefilledSetup(template) {
             var details = new template.fn();
             mcmodal.preFill(details, project);
         }
