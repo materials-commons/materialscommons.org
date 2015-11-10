@@ -57,7 +57,7 @@
                 var modal = $modal.open({
                     size: 'lg',
                     templateUrl: 'application/services/mcmodal/partials/template.html',
-                    controller: 'TemplateInstanceController',
+                    controller: 'TemplatesModalController',
                     controllerAs: 'ctrl',
                     resolve: {
                         project: function () {
@@ -71,33 +71,33 @@
                 return modal.result;
             },
 
-            viewSetup: function (properties) {
+            viewSetup: function (template) {
                 var modal = $modal.open({
                     size: 'lg',
                     templateUrl: 'application/services/mcmodal/partials/view_setup.html',
                     controller: 'setupViewController',
                     controllerAs: 'ctrl',
                     resolve: {
-                        properties: function () {
-                            return properties;
+                        template: function () {
+                            return template;
                         }
                     }
                 });
                 return modal.result;
             },
 
-            preFill: function (template, project) {
+            preFill: function (template, existingTemplateNames) {
                 var modal = $modal.open({
                     size: 'lg',
                     templateUrl: 'application/services/mcmodal/partials/prefill.html',
-                    controller: 'projectPreFillProcess',
+                    controller: 'PreFillProcessController',
                     controllerAs: 'ctrl',
                     resolve: {
                         template: function () {
                             return template;
                         },
-                        project: function () {
-                            return project;
+                        existingTemplateNames: function() {
+                            return existingTemplateNames ? existingTemplateNames : [];
                         }
                     }
                 });
