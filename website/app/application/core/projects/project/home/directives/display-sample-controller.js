@@ -1,9 +1,9 @@
 (function (module) {
     module.controller("DisplaySampleController",
-        ["$scope", "$log", "modal", "$state", "project", "mcfile", "modalInstance",
+        ["$scope", "$log", "modal", "$state", "project", "mcfile", "mcmodal",
             DisplaySampleController]);
 
-    function DisplaySampleController($scope, $log, modal, $state, project, mcfile, modalInstance) {
+    function DisplaySampleController($scope, $log, modal, $state, project, mcfile, mcmodal) {
         $scope.modal = modal;
         $scope.project = project;
         $scope.selected = {
@@ -38,11 +38,11 @@
         };
 
         $scope.openSample = function (sample) {
-            modalInstance.openModal(sample, 'sample', project);
+            mcmodal.openModal(sample, 'sample', project);
         };
 
         $scope.openFile = function (file) {
-            modalInstance.openModal(file, 'datafile', project);
+            mcmodal.openModal(file, 'datafile', project);
         };
 
     }
