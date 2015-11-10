@@ -16,6 +16,7 @@
                     <th>Type</th>
                     <th>Choices</th>
                     <th>Units</th>
+                    <th>Value</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,12 @@
                              ng-repeat="unit in item.property.units">{{unit}}
                         </div>
                         <div ng-if="item.property.unit">{{item.property.unit}}</div>
+                    </td>
+                    <td>
+                        <div ng-if="item.property.value">
+                            {{item.property.value}} <span ng-if="item.property.unit">{{item.property.unit}}</span>
+                        </div>
+                        <div ng-if="!item.property.value"></div>
                     </td>
                 </tr>
                 </tbody>
