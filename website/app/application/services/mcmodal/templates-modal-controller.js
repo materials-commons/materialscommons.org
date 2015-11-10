@@ -25,10 +25,8 @@
         }
 
         function editPrefill(template) {
-            console.log('editPrefill');
             var templateDetails = template.create();
             mcmodal.preFill(templateDetails).then(function(t) {
-                console.log('editedTemplate', t);
                 Restangular.one('v2').one('projects', project.id)
                     .customPUT({
                         process_templates: [
@@ -71,6 +69,7 @@
                             processTemplates.add(ctrl.templates, t);
                         });
                 } else {
+                    // TODO: Make sure this is being handled in prefill.
                     console.log('template already exists');
                 }
             });
