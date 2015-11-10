@@ -9,6 +9,7 @@
         ctrl.chooseTemplate = chooseTemplate;
         ctrl.chooseExistingProcess = chooseExistingProcess;
         ctrl.createSample = createSample;
+        ctrl.useTemplate = useTemplate;
         ctrl.templates = templates;
 
         /////////////////////////
@@ -17,6 +18,10 @@
             mcmodal.chooseTemplate(ctrl.project, templates).then(function(processTemplateName) {
                 $state.go('projects.project.processes.create', {process: processTemplateName});
             });
+        }
+
+        function useTemplate(templateName) {
+            $state.go('projects.project.processes.create', {process: templateName});
         }
 
         function createSample() {
