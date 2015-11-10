@@ -217,7 +217,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                 template: ["$filter", "$stateParams", "templates",
                     function ($filter, $stateParams, templates) {
                         var t = _.find(templates, {name: $stateParams.process});
-                        var template = new t.fn();
+                        var template = t.create();
                         template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
                         return template;
                     }
