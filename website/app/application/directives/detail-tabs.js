@@ -47,8 +47,16 @@
                 tabs.push(newTab('processes', 'fa-code-fork', ctrl.item.processes.length));
             }
 
-            if ('files' in ctrl.item && ctrl.item.files.length) {
-                tabs.push(newTab('files', 'fa-files-o', ctrl.item.files.length));
+            if ('linked_files' in ctrl.item && ctrl.item.linked_files.length) {
+                tabs.push(newTab('files', 'fa-files-o', ctrl.item.linked_files.length));
+            }
+
+            if ('files_used' in ctrl.item && ctrl.item.files_used.length) {
+                tabs.push(newTab('Input Files', 'fa-files-o', ctrl.item.files_used.length));
+            }
+
+            if ('files_produced' in ctrl.item && ctrl.item.files_produced.length) {
+                tabs.push(newTab('Output Files', 'fa-files-o', ctrl.item.files_produced.length));
             }
 
             if ('samples' in ctrl.item && ctrl.item.samples.length) {
