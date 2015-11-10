@@ -6,9 +6,6 @@
             scope: {
                 files: '='
             },
-            //controller: 'DetailTabsDirectiveController',
-            //controllerAs: 'ctrl',
-            //bindToController: true,
             templateUrl: 'application/directives/partials/files-list.html'
         };
     }
