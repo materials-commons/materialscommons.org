@@ -165,7 +165,6 @@
         }
 
         function markFavorites(templates, favorites) {
-            console.log('markFavorites', favorites);
             var templatesByName = _.indexBy(templates, 'name');
             favorites.forEach(function(favoriteTemplate) {
                 if (favoriteTemplate in templatesByName) {
@@ -194,7 +193,9 @@
                 });
                 if (i !== -1) {
                     templates[i].create = function() {
-                        var t = new template.fn();
+                        var tproto = self.templatesByName[template.process_name];
+                        var t = new tproto.fn();
+                        t.name = template.name;
                         t.prefill = true;
                         t.setup.settings[0].properties = angular.copy(template.setup.settings[0].properties);
                         return t;
