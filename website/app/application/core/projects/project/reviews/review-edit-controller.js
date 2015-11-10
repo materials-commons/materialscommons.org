@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('projectEditReview', projectEditReview);
-    projectEditReview.$inject = ["$scope", "project", "$stateParams", "Review", "User", "$filter", "modalInstance"];
+    projectEditReview.$inject = ["$scope", "project", "$stateParams", "Review", "User", "$filter", "mcmodal"];
 
-    function projectEditReview($scope, project, $stateParams, Review, User, $filter, modalInstance) {
+    function projectEditReview($scope, project, $stateParams, Review, User, $filter, mcmodal) {
 
         $scope.openReview = function (review) {
             $scope.review = review;
@@ -16,7 +16,7 @@
         };
 
         $scope.openDetails = function (params, type) {
-            modalInstance.openModal(params, type, project);
+            mcmodal.openModal(params, type, project);
         };
 
         $scope.project = project;

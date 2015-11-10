@@ -18,6 +18,7 @@
 
                 setAuthenticated: function (authenticated, u) {
                     if (!authenticated) {
+                        $window.sessionStorage.removeItem('mcuser');
                         $window.sessionStorage.mcuser = null;
                         self.mcuser = undefined;
                     } else {

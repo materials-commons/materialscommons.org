@@ -2,7 +2,7 @@
     module.directive("userguide", userguideDirective);
     function userguideDirective() {
         return {
-            scope: true,
+            scope: {},
             bindToController: true,
             restrict: "AE",
             replace: true,
@@ -14,19 +14,15 @@
 
     module.controller("UserguideDirectiveController", UserguideDirectiveController);
 
-    UserguideDirectiveController.$inject = ["$scope", "help", "ui", "$stateParams"];
+    UserguideDirectiveController.$inject = ["help", "ui", "$stateParams"];
 
     /* @ngInject */
-    function UserguideDirectiveController($scope, help, ui, $stateParams) {
+    function UserguideDirectiveController(help, ui, $stateParams) {
         var ctrl = this;
 
         ctrl.close = close;
-        ctrl.toggle = toggle;
         ctrl.toggleExpanded = toggleExpanded;
         ctrl.isExpanded = isExpanded;
-        ctrl.goTo = goTo;
-
-        ctrl.showSamples = false;
 
         ////////////////////////
 
@@ -42,10 +38,6 @@
         function isExpanded() {
             return ui.isExpanded($stateParams.id, "help");
         }
-
-        function goTo(what) {
-            $scope.showSamples = true;
-        }
     }
 
-});
+}(angular.module('materialscommons')));

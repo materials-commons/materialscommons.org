@@ -1,15 +1,15 @@
 <div>
     <div class="modal-header">
-        <h3 class="modal-title">View SetUp Details</h3>
+        <h3 class="modal-title">View Setup Details</h3>
     </div>
     <br>
 
-    <div ng-if="modal.properties.length === 0">
+    <div ng-if="ctrl.properties.length === 0">
         No Setup information
     </div>
     <div class="modal-body row">
         <div class="col-xs-12">
-            <table ng-if="modal.properties.length !== 0" class="table">
+            <table ng-if="ctrl.properties.length !== 0" class="table">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -19,7 +19,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in modal.properties">
+                <tr ng-repeat="item in ctrl.properties">
                     <td> {{item.property.name}}</td>
                     <td> {{item.property._type}}</td>
                     <td>
@@ -38,7 +38,6 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">OK</button>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-warning" ng-click="ctrl.dismiss()">Dismiss</button>
     </div>
 </div>
