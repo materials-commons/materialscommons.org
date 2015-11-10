@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('projectEditProcess', projectEditProcess);
-    projectEditProcess.$inject = ["project", "modalInstance", "$state"];
+    projectEditProcess.$inject = ["project", "mcmodal", "$state"];
 
-    function projectEditProcess(project, modalInstance, $state) {
+    function projectEditProcess(project, mcmodal, $state) {
         var ctrl = this;
         ctrl.cancel = cancel;
         ctrl.openFile = openFile;
@@ -16,11 +16,11 @@
         }
 
         function openFile(file) {
-            modalInstance.openModal(file, 'datafile', ctrl.project);
+            mcmodal.openModal(file, 'datafile', ctrl.project);
         }
 
         function openSample(sample) {
-            modalInstance.openModal(sample, 'sample', ctrl.project);
+            mcmodal.openModal(sample, 'sample', ctrl.project);
         }
 
         function done() {

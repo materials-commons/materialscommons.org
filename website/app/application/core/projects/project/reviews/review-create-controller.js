@@ -1,9 +1,9 @@
 (function (module) {
     module.controller('projectCreateReview', projectCreateReview);
     projectCreateReview.$inject = ["$scope", "project", "User", "pubsub", "$modal", "Review", "mcapi", "$state",
-        "$filter", "modalInstance"];
+        "$filter", "mcmodal"];
 
-    function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi, $state, $filter, modalInstance) {
+    function projectCreateReview($scope, project, User, pubsub, $modal, Review, mcapi, $state, $filter, mcmodal) {
 
         pubsub.waitOn($scope, 'addSampleToReview', function (sample) {
             addAttachment(sample);
@@ -99,7 +99,7 @@
         }
 
         $scope.openDetails = function (params) {
-            modalInstance.openModal(params, project);
+            mcmodal.openModal(params, project);
         };
 
         $scope.cancel = function () {

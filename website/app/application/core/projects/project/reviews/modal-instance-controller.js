@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('ModalInstanceCtrl', ModalInstanceCtrl);
-    ModalInstanceCtrl.$inject = ["$scope", "$log", "modal", "project", "mcfile", "modalInstance"];
+    ModalInstanceCtrl.$inject = ["$scope", "$log", "modal", "project", "mcfile", "mcmodal"];
 
-    function ModalInstanceCtrl($scope, $log, modal, project, mcfile, modalInstance) {
+    function ModalInstanceCtrl($scope, $log, modal, project, mcfile, mcmodal) {
         $scope.modal = modal;
         $scope.project = project;
         $scope.selected = {
@@ -32,11 +32,11 @@
         };
 
         $scope.openSample = function (sample) {
-            modalInstance.openModal(sample, 'sample', project);
+            mcmodal.openModal(sample, 'sample', project);
         };
 
         $scope.openFile = function (file) {
-            modalInstance.openModal(file, 'datafile', project);
+            mcmodal.openModal(file, 'datafile', project);
         };
     }
 }(angular.module('materialscommons')));

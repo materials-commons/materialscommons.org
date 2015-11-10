@@ -1,9 +1,9 @@
 (function (module) {
     module.controller('TemplateInstanceController', TemplateInstanceController);
-    TemplateInstanceController.$inject = ["project", "templates", "modalInstance", "$modalInstance",
+    TemplateInstanceController.$inject = ["project", "templates", "mcmodal", "$modalInstance",
         "Restangular", "User"];
 
-    function TemplateInstanceController(project, templates, modalInstance, $modalInstance, Restangular, User) {
+    function TemplateInstanceController(project, templates, mcmodal, $modalInstance, Restangular, User) {
         var ctrl = this;
         ctrl.templates = templates;
         ctrl.viewSetup = viewSetup;
@@ -21,12 +21,12 @@
 
         function viewSetup(template) {
             var details = new template.fn();
-            modalInstance.viewSetUp(details.setup.settings[0].properties);
+            mcmodal.viewSetup(details.setup.settings[0].properties);
         }
 
         function openPrefill(template) {
             var details = new template.fn();
-            modalInstance.preFill(details, project).then(function (t) {
+            mcmodal.preFill(details, project).then(function (t) {
                 templates.push(t);
             });
         }
@@ -85,7 +85,7 @@
 
         function viewPrefilledSetUp(template) {
             var details = new template.fn();
-            modalInstance.preFill(details, project);
+            mcmodal.preFill(details, project);
         }
     }
 }(angular.module('materialscommons')));

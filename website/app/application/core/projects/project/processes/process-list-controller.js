@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('projectListProcess', projectListProcess);
-    projectListProcess.$inject = ["processes", "project", "$state", "modalInstance", "$filter"];
+    projectListProcess.$inject = ["processes", "project", "$state", "mcmodal", "$filter"];
 
-    function projectListProcess(processes, project, $state, modalInstance, $filter) {
+    function projectListProcess(processes, project, $state, mcmodal, $filter) {
         var ctrl = this;
 
         ctrl.viewProcess = viewProcess;
@@ -22,7 +22,7 @@
         }
 
         function chooseTemplate() {
-            modalInstance.chooseTemplate(ctrl.project);
+            mcmodal.chooseTemplate(ctrl.project);
         }
     }
 }(angular.module('materialscommons')));

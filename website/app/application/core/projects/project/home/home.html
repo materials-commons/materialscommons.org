@@ -8,9 +8,32 @@
                         <i class="fa fa-plus fa-fw"></i>Quick Add <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li class="text-uppercase"><a ng-click="ctrl.chooseTemplate()">Process</a></li>
+                        <li class="text-uppercase dropdown-submenu">
+                            <a>Process</a>
+                            <ul class="dropdown-menu">
+                                <li class="text-uppercase dropdown-submenu">
+                                    <a>From Favorite</a>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="template in ctrl.templates | filter:{favorite:true} | orderBy:'name'"
+                                            class="text-uppercase">
+                                            <a>
+                                                {{template.name}} <span ng-if="template.prefill">(PF)</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="text-uppercase">
+                                    <a ng-click="ctrl.chooseTemplate()">Choose Template</a>
+                                </li>
+                                <li class="text-uppercase">
+                                    <a ng-click="ctrl.chooseExistingProcess()">Choose From Existing Process</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li ng-click="ctrl.createSample()" class="text-uppercase"><a href="#">Sample</a></li>
-                        <li ng-if="false" class="text-uppercase"><a href="#">File</a></li>
+                        <li ng-if="false" class="text-uppercase">
+                            <a href="#">File</a>
+                        </li>
                         <li ng-if="false" class="text-uppercase"><a href="#">Review</a></li>
                     </ul>
                 </div>
