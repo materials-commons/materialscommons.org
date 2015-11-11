@@ -13,7 +13,7 @@
         function setUp(template, process) {
             var settings = template.setup.settings[0].properties;
             process.setup[0].properties.forEach(function (property) {
-                var i = _.indexOf(ctrl.settings, function (setting) {
+                var i = _.indexOf(settings, function (setting) {
                     return setting.property.attribute === property.attribute
                 });
                 if (i > -1) {
@@ -36,7 +36,7 @@
                     old_properties: [],
                     new_properties: [],
                     property_set_id: sample.property_set_id,
-                    files: []
+                    files: sample.linked_files
                 }
             });
         }
