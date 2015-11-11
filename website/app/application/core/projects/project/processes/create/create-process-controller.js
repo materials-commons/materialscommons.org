@@ -62,12 +62,13 @@
         }
 
         function submit() {
+            console.dir(ctrl.process);
             Restangular.one('v2').one('projects', $stateParams.id).one('processes').
                 customPOST(ctrl.process).then(function () {
                     $previousState.go();
-            }, function(e) {
-                console.log('failure to save process', e);
-            });
+                }, function (e) {
+                    console.log('failure to save process', e);
+                });
         }
 
         function linkFilesToSample(sample, input_files, output_files) {
@@ -88,76 +89,116 @@
                 }
             });
             modal.result.then(function (linkedFiles) {
+                //linkedFiles.forEach(function (f) {
+                //    sample.files.push({id: f.id, name: f.name});
+                //})
                 linkedFiles.forEach(function (f) {
-                    sample.files.push({id: f.id, name: f.name});
-                })
+                    if ('command' in f) {
+                        if (f.command === 'add') {
+                            var i = _.indexOf(sample.files, function (item) {
+                                return f.id === item.id;
+                            });
+                            if (i !== -1) {
+                                sample.files.splice(i, 1);
+                                sample.files.push({id: f.id, command: f.command, name: f.name});
+                            } else {
+                                sample.files.push({id: f.id, command: f.command, name: f.name});
+                            }
+                        }
+                        else {
+                            var i = _.indexOf(sample.files, function (item) {
+                                return f.id == item.id;
+                            });
+                            if (i !== -1) {
+                                sample.files.splice(i, 1);
+                            }
+                        }
+                }
             });
         }
+
+    )
+        ;
+    }
+}
+
+module.controller("LinkFilesToSampleController", LinkFilesToSampleController);
+LinkFilesToSampleController.$inject = ["$modalInstance", "project", "files", "sampleName", "mcmodal"];
+
+function LinkFilesToSampleController($modalInstance, project, files, sampleName, mcmodal) {
+    var ctrl = this;
+    ctrl.name = sampleName;
+    ctrl.files = files;
+    ctrl.ok = ok;
+    ctrl.cancel = cancel;
+    ctrl.filesToLink = [];
+    ctrl.linkFile = linkFile;
+    ctrl.unlinkFile = unlinkFile;
+    ctrl.linkAllFiles = linkAllFiles;
+    ctrl.unlinkAllFiles = unlinkAllFiles;
+    ctrl.openFile = openFile;
+
+    files.forEach(function (f) {
+        //if(f.linked == true){
+        ctrl.filesToLink.push({id: f.id, name: f.name, linked: f.linked});
+        //}
+    });
+    /////////
+
+    function ok() {
+        $modalInstance.close(ctrl.filesToLink);
     }
 
-    module.controller("LinkFilesToSampleController", LinkFilesToSampleController);
-    LinkFilesToSampleController.$inject = ["$modalInstance", "project", "files", "sampleName", "mcmodal"];
+    function cancel() {
+        $modalInstance.dismiss('cancel');
+    }
 
-    function LinkFilesToSampleController($modalInstance, project, files, sampleName, mcmodal) {
-        var ctrl = this;
-        ctrl.name = sampleName;
-        ctrl.files = files;
-        ctrl.ok = ok;
-        ctrl.cancel = cancel;
-        ctrl.filesToLink = [];
-        ctrl.linkFile = linkFile;
-        ctrl.unlinkFile = unlinkFile;
-        ctrl.linkAllFiles = linkAllFiles;
-        ctrl.unlinkAllFiles = unlinkAllFiles;
-        ctrl.openFile = openFile;
-
-        files.forEach(function (f) {
-            f.linked = false;
+    function linkFile(file) {
+        file.linked = true;
+        var i = _.indexOf(ctrl.filesToLink, function (f) {
+            return f.id == file.id;
         });
-
-        /////////
-
-        function ok() {
-            $modalInstance.close(ctrl.filesToLink);
-        }
-
-        function cancel() {
-            $modalInstance.dismiss('cancel');
-        }
-
-        function linkFile(file) {
-            file.linked = true;
-            ctrl.filesToLink.push(file);
-        }
-
-        function unlinkFile(file) {
-            var i = _.indexOf(ctrl.filesToLink, function (f) {
-                return f.id == file.id;
-            });
-
-            if (i !== -1) {
-                file.linked = false;
-                ctrl.filesToLink.splice(i, 1);
-            }
-        }
-
-        function linkAllFiles() {
-            ctrl.filesToLink = [];
-            ctrl.files.forEach(function (f) {
-                f.linked = true;
-                ctrl.filesToLink.push(f);
-            });
-        }
-
-        function unlinkAllFiles() {
-            ctrl.files.forEach(function (f) {
-                f.linked = false;
-            });
-            ctrl.filesToLink = [];
-        }
-
-        function openFile(file) {
-            mcmodal.openModal(file, 'datafile', project);
+        if (i !== -1) {
+            ctrl.filesToLink.splice(i, 1);
+            ctrl.filesToLink.push({id: file.id, command: 'add', name: file.name});
+        } else {
+            ctrl.filesToLink.push({id: file.id, command: 'add', name: file.name});
         }
     }
-}(angular.module('materialscommons')));
+
+    function unlinkFile(file) {
+        file.linked = false;
+        var i = _.indexOf(ctrl.filesToLink, function (f) {
+            return f.id == file.id;
+        });
+        if (i !== -1) {
+            ctrl.filesToLink.splice(i, 1);
+            ctrl.filesToLink.push({id: file.id, command: 'delete', name: file.name});
+        }
+    }
+
+    function linkAllFiles() {
+        ctrl.filesToLink = [];
+        ctrl.files.forEach(function (f) {
+            linkFile(f);
+            //f.linked = true;
+            //ctrl.filesToLink.push(f);
+        });
+    }
+
+    function unlinkAllFiles() {
+        ctrl.files.forEach(function (f) {
+            //f.linked = false;
+            unlinkFile(f);
+        });
+        //ctrl.filesToLink = [];
+    }
+
+    function openFile(file) {
+        mcmodal.openModal(file, 'datafile', project);
+    }
+}
+}
+(angular.module('materialscommons'))
+)
+;
