@@ -12,7 +12,7 @@ module.exports = function getSingle(r, table, id, index) {
             });
     }
 
-    return run(r.table(table).get(id)).then(function(user) {
-        return user;
+    return run(r.table(table).get(id)).then(function(item) {
+        return item;
     });
 };
