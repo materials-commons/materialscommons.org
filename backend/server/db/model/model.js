@@ -172,6 +172,23 @@ module.exports = function(r) {
         this.item_id = itemID;
     }
 
+    function Directory(name, owner, project, parent) {
+        let now = r.now();
+        this._type = "datadir";
+        this.owner = owner;
+        this.name = name;
+        this.project = project;
+        this.parent = parent;
+        this.birthtime = now;
+        this.mtime = now;
+        this.atime = now;
+    }
+
+    function Project2DataDir(projectID, dirID) {
+        this.project_id = projectID;
+        this.datadir_id = dirID;
+    }
+
     return {
         Sample: Sample,
         Process: Process,
@@ -195,6 +212,8 @@ module.exports = function(r) {
         Sample2Datafile: Sample2Datafile,
         Note: Note,
         Note2Item: Note2Item,
-        Tag2Item: Tag2Item
+        Tag2Item: Tag2Item,
+        Directory: Directory,
+        Project2DataDir: Project2DataDir
     };
 };
