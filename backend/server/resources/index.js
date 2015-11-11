@@ -1,19 +1,22 @@
 module.exports = function(model) {
     'use strict';
 
-    let validateProjectAccess = require('./project-access')(model.access);
-    let schema = require('../schema')(model);
-    let router = require('koa-router')();
-    let projects = require('./projects')(model.projects);
-    let samples = require('./samples')(model.samples, schema);
-    let files = require('./files')(model.files);
-    let processes = require('./processes')(model.processes, schema);
+    const validateProjectAccess = require('./project-access')(model.access);
+    const schema = require('../schema')(model);
+    const router = require('koa-router')();
+    const projects = require('./projects')(model.projects);
+    const samples = require('./samples')(model.samples, schema);
+    const files = require('./files')(model.files);
+    const processes = require('./processes')(model.processes, schema);
+    const directories = require('./directories')(model.directories);
     const users = require('./users')(model.users);
 
     router.get('/projects', projects.all);
     router.put('/projects/:project_id', validateProjectAccess, projects.update);
-    router.get('/projects/:project_id/directories', validateProjectAccess, projects.dirTree);
-    router.get('/projects/:project_id/directories/:directory_id', validateProjectAccess, projects.dirTree);
+
+    router.get('/projects/:project_id/directories', validateProjectAccess, directories.get);
+    router.get('/projects/:project_id/directories/:directory_id', validateProjectAccess, directories.get);
+    router.post('/projects/:project_id/directories', validateProjectAccess, directories.create);
 
     router.post('/projects/:project_id/processes', validateProjectAccess, processes.create);
     router.put('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.update);
