@@ -9,7 +9,10 @@
                     Process Name:
                 </label>
 
-                <div class="col-xs-6"><input ng-model="ctrl.template.name" class="form-control"></div>
+                <div class="col-xs-6">
+                    <input ng-if="!ctrl.template.prefill" ng-model="ctrl.template.name" class="form-control">
+                    <span ng-if="ctrl.template.prefill">{{ctrl.template.name}}</span>
+                </div>
             </div>
             <br>
             <h4>SETUP</h4>

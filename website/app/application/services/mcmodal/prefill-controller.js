@@ -1,8 +1,8 @@
 (function (module) {
-    module.controller('projectPreFillProcess', projectPreFillProcessController);
-    projectPreFillProcessController.$inject = ["template", "$modalInstance", "Restangular", "project"];
+    module.controller('PreFillProcessController', PreFillProcessController);
+    PreFillProcessController.$inject = ['template', 'existingTemplateNames', 'toastr', '$modalInstance'];
 
-    function projectPreFillProcessController(template, $modalInstance, Restangular, project) {
+    function PreFillProcessController(template, existingTemplateNames, toastr, $modalInstance) {
         var ctrl = this;
 
         ctrl.template = template;
@@ -12,38 +12,19 @@
         /////////////////////////
 
         function ok() {
-            var command = templateExists(ctrl.template.name) ? 'update' : 'add';
-            Restangular.one('v2').one('projects', project.id)
-                .customPUT({
-                    process_templates: [
-                        {
-                            command: command,
-                            template: {
-                                name: ctrl.template.name,
-                                setup: ctrl.template.setup.settings[0],
-                                process_name: ctrl.template.process_name
-                            }
-                        }
-                    ]
-                }).then(
-                function success() {
-                    $modalInstance.close(ctrl.template);
-                },
-                function failure() {
-
-                });
+            var index = _.indexOf(existingTemplateNames, template.name);
+            if (index !== -1) {
+                toastr.error("A template with name '" +
+                    template.name +
+                    "' already exists. Please choose a unique name",
+                    'Error');
+            } else {
+                $modalInstance.close(ctrl.template);
+            }
         }
 
         function cancel() {
             $modalInstance.dismiss('cancel');
-        }
-
-        function templateExists(templateName) {
-            var i = _.indexOf(project.process_templates, function(t) {
-                return t.name === templateName;
-            });
-
-            return i !== -1;
         }
     }
 }(angular.module('materialscommons')));
