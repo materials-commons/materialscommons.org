@@ -7,10 +7,10 @@ require('./init')();
 
 var model = require('./model-loader')(module.parent);
 var apikey = require('./apikey')(model.users);
-var projects = require('./resources/projects-routes')(model);
+var resources = require('./resources')(model);
 
 app.use(apikey);
-app.use(mount('/', projects.routes())).use(projects.allowedMethods());
+app.use(mount('/', resources.routes())).use(resources.allowedMethods());
 
 // Look for changes on the access and projects tables. If a change is detected
 // then invalidate the project access cache so that it will be reloaded.
