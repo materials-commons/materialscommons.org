@@ -26,6 +26,22 @@
             }
         });
 
+        pubsub.waitOn($scope, 'files.dir.refresh', function (dirID) {
+            Restangular.one('v2').one('projects', project.id)
+                .one('directories', dirID).get().then(function (files) {
+                    var treeModel = new TreeModel(),
+                        root = treeModel.parse(project.files[0]);
+                    var dir = root.first({strategy: 'pre'}, function (node) {
+                        return node.model.data.id === dirID;
+                    });
+
+                    dir.model.children = gridFiles.toGridChildren(files);
+                    dir.model.data.childrenLoaded = true;
+                    ctrl.gridOptions.api.onNewRows();
+                    ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+                });
+        });
+
         init();
 
         ///////////////////////////////
@@ -109,18 +125,18 @@
         function handleDirectory(params) {
             if (!params.data.childrenLoaded) {
                 Restangular.one('v2').one('projects', project.id)
-                    .one('directories', params.data.id).get().then(function(files) {
-                            var treeModel = new TreeModel(),
-                                root = treeModel.parse(project.files[0]);
-                            var dir = root.first({strategy: 'pre'}, function (node) {
-                                return node.model.data.id === params.data.id;
-                            });
-                            dir.model.children = gridFiles.toGridChildren(files);
-                            dir.model.data.childrenLoaded = true;
-                            ctrl.gridOptions.api.onNewRows();
-                            ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+                    .one('directories', params.data.id).get().then(function (files) {
+                        var treeModel = new TreeModel(),
+                            root = treeModel.parse(project.files[0]);
+                        var dir = root.first({strategy: 'pre'}, function (node) {
+                            return node.model.data.id === params.data.id;
+                        });
+                        dir.model.children = gridFiles.toGridChildren(files);
+                        dir.model.data.childrenLoaded = true;
+                        ctrl.gridOptions.api.onNewRows();
+                        ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
                         $state.go('projects.project.files.all.dir', {dir_id: params.data.id});
-                });
+                    });
             } else {
                 ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
                 $state.go('projects.project.files.all.dir', {dir_id: params.data.id});

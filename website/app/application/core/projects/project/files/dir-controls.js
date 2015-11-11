@@ -14,9 +14,28 @@
     }
 
     module.controller('DirControlsDirectiveController', DirControlsDirectiveController);
-    DirControlsDirectiveController.$inject = [];
+    DirControlsDirectiveController.$inject = ["Restangular", "$stateParams", "pubsub"];
 
-    function DirControlsDirectiveController() {
+    function DirControlsDirectiveController(Restangular, $stateParams, pubsub) {
         var ctrl = this;
+        ctrl.createDirActive = false;
+        ctrl.createDir = createDir;
+        ctrl.dirPath = '';
+
+        ///////////////////////
+
+        function createDir() {
+            if (ctrl.dirPath !== '') {
+                ctrl.createDirActive = false;
+                Restangular.one('v2').one('projects', $stateParams.id).one('directories')
+                    .customPOST({
+                        from_dir: $stateParams.dir_id,
+                        path: ctrl.dirPath
+                    }).then(function() {
+                        pubsub.send('files.dir.refresh', $stateParams.dir_id);
+                    }, function() {
+                    });
+            }
+        }
     }
 }(angular.module('materialscommons')));
