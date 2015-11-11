@@ -152,6 +152,13 @@
                 var templateCopy = angular.copy(self.templatesByName[processTemplate.process_name]);
                 templateCopy.name = processTemplate.name;
                 templateCopy.prefill = true;
+                templateCopy.create = function() {
+                    var t = new templateCopy.fn();
+                    t.name = templateCopy.name;
+                    t.prefill = true;
+                    t.setup.settings[0].properties = angular.copy(processTemplate.setup.properties);
+                    return t;
+                };
                 return templateCopy;
             });
             return templates.concat(filledOutProjectTemplates);
@@ -169,10 +176,59 @@
         return {
             templates: function(projectTemplates, projectID) {
                 var templates = angular.copy(self.templates);
+                templates.forEach(function(t) {
+                    t.create = function() {
+                        return new t.fn();
+                    };
+                });
                 projectTemplates = projectTemplates || [];
                 templates = addProjectTemplates(templates, projectTemplates);
                 markFavorites(templates, User.favorites(projectID).processes);
                 return templates;
+            },
+
+            replace: function(templates, template) {
+                var i = _.indexOf(templates, function(t) {
+                    return t.name === template.name;
+                });
+                if (i !== -1) {
+                    templates[i].create = function() {
+                        var tproto = self.templatesByName[template.process_name];
+                        var t = new tproto.fn();
+                        t.name = template.name;
+                        t.prefill = true;
+                        t.setup.settings[0].properties = angular.copy(template.setup.settings[0].properties);
+                        return t;
+                    }
+                }
+            },
+
+            add: function(templates, template) {
+                var existing = _.find(templates, {name: template.name});
+                if (existing) {
+                    return false;
+                }
+
+                var t = angular.copy(self.templatesByName[template.process_name]);
+                t.name = template.name;
+                t.create = function() {
+                    var tmpl = new t.fn();
+                    tmpl.prefill = true;
+                    tmpl.name = template.name;
+                    tmpl.setup.settings[0].properties = angular.copy(template.setup.settings[0].properties);
+                    return tmpl;
+                };
+
+                templates.push(t);
+                return true;
+            },
+
+            byName: function(name) {
+                var t = self.templatesByName[name];
+                t.create = function() {
+                    return new t.fn();
+                };
+                return t;
             }
         };
     }

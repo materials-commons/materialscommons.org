@@ -16,7 +16,7 @@
                                     <ul class="dropdown-menu">
                                         <li ng-repeat="template in ctrl.templates | filter:{favorite:true} | orderBy:'name'"
                                             class="text-uppercase">
-                                            <a>
+                                            <a ng-click="ctrl.useTemplate(template.name)">
                                                 {{template.name}} <span ng-if="template.prefill">(PF)</span>
                                             </a>
                                         </li>
