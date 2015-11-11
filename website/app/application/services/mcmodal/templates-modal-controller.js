@@ -26,7 +26,7 @@
 
         function editPrefill(template) {
             var templateDetails = template.create();
-            mcmodal.preFill(templateDetails).then(function(t) {
+            mcmodal.preFill(templateDetails).then(function (t) {
                 Restangular.one('v2').one('projects', project.id)
                     .customPUT({
                         process_templates: [
@@ -39,7 +39,7 @@
                                 }
                             }
                         ]
-                    }).then(function() {
+                    }).then(function () {
                         processTemplates.replace(ctrl.templates, t);
                     });
             });
@@ -47,31 +47,25 @@
 
         function addPrefill(template) {
             var templateDetails = template.create();
-            var existingTemplateNames = templates.map(function(t) {
+            var existingTemplateNames = templates.map(function (t) {
                 return t.name;
             });
-            mcmodal.preFill(templateDetails, existingTemplateNames).then(function(t) {
-                var existing = _.find(ctrl.templates, {name: t.name});
-                if (!existing) {
-                    Restangular.one('v2').one('projects', project.id)
-                        .customPUT({
-                            process_templates: [
-                                {
-                                    command: 'add',
-                                    template: {
-                                        name: t.name,
-                                        setup: t.setup.settings[0],
-                                        process_name: t.process_name
-                                    }
+            mcmodal.preFill(templateDetails, existingTemplateNames).then(function (t) {
+                Restangular.one('v2').one('projects', project.id)
+                    .customPUT({
+                        process_templates: [
+                            {
+                                command: 'add',
+                                template: {
+                                    name: t.name,
+                                    setup: t.setup.settings[0],
+                                    process_name: t.process_name
                                 }
-                            ]
-                        }).then(function () {
-                            processTemplates.add(ctrl.templates, t);
-                        });
-                } else {
-                    // TODO: Make sure this is being handled in prefill.
-                    console.log('template already exists');
-                }
+                            }
+                        ]
+                    }).then(function () {
+                        processTemplates.add(ctrl.templates, t);
+                    });
             });
         }
 
@@ -89,7 +83,7 @@
                             }
                         ]
                     }
-                }).then(function() {
+                }).then(function () {
                     if (command == 'add') {
                         User.addToFavorites(project.id, template.name);
                     } else {
