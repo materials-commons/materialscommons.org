@@ -1,75 +1,33 @@
 (function (module) {
     module.controller('EditProcessController', EditProcessController);
-    EditProcessController.$inject = ["Restangular", "$stateParams", "selectItems", "$state", "process", "processTemplates"];
+    EditProcessController.$inject = ["processEdit", "selectItems", "$state", "process",
+        "processTemplates", "$modal"];
 
-    function EditProcessController(Restangular, $stateParams, selectItems, $state, process, processTemplates) {
+    function EditProcessController(processEdit, selectItems, $state, process,
+                                   processTemplates, $modal) {
         var ctrl = this;
 
         ctrl.process = process[0];
         ctrl.process['updated_samples'] = [];
         ctrl.process['updated_input_files'] = [];
         ctrl.process['updated_output_files'] = [];
+        ctrl.process['samples_files'] = [];
 
         ctrl.process.process_name = "APT"; //to be deleted
-        ctrl.template = processTemplates.getTemplateByName(ctrl.process.process_name);
+        var template = processTemplates.byName(ctrl.process.process_name);
 
+        ctrl.template = template.create();
         ctrl.chooseSamples = chooseSamples;
         ctrl.chooseInputFiles = chooseInputFiles;
         ctrl.chooseOutputFiles = chooseOutputFiles;
-        ctrl.fillSetUp = fillSetUp;
-        ctrl.samples = samples;
-        ctrl.files = files;
+        ctrl.linkFilesToSample = linkFilesToSample;
+
         ctrl.submit = submit;
         ctrl.cancel = cancel;
         ctrl.remove = remove;
+        processEdit.fillProcess(ctrl.template, ctrl.process);
 
-        ctrl.fillSetUp();
-        ctrl.samples();
-        ctrl.files();
-        /**
-         * fillSetUp: will read all the setup values from process
-         * and place inside template.
-         *
-         */
-        function fillSetUp() {
-            ctrl.settings = ctrl.template.setup.settings[0].properties;
-            ctrl.process.setup[0].properties.forEach(function (property) {
-                var i = _.indexOf(ctrl.settings, function (setting) {
-                    return setting.property.attribute === property.attribute
-                });
-                if (i > -1) {
-                    ctrl.settings[i].property.value = property.value;
-                    ctrl.settings[i].property.unit = property.unit;
-                    ctrl.settings[i].property.id = property.setup_id;
-                    ctrl.settings[i].property.property_id = property.id;
-                    ctrl.settings[i].property._type = property._type;
-                    ctrl.settings[i].property.attribute = property.attribute;
-                }
-            });
-            ctrl.process.setup = ctrl.template.setup;
-        }
-
-        function samples() {
-            ctrl.process.input_samples = ctrl.process.samples.map(function (sample) {
-                return {
-                    id: sample.id,
-                    name: sample.name,
-                    old_properties: [],
-                    new_properties: [],
-                    property_set_id: sample.property_set_id,
-                    files: []
-                }
-            });
-        }
-
-        function files() {
-            ctrl.process['input_files'] = ctrl.process.files_used.map(function (file) {
-                return {id: file.id, name: file.name}
-            });
-            ctrl.process['output_files'] = ctrl.process.files_produced.map(function (file) {
-                return {id: file.id, name: file.name}
-            });
-        }
+        //////////////////////////////////
 
         function submit() {
             var updated_process = {
@@ -79,7 +37,8 @@
                 setup: ctrl.process.setup,
                 input_samples: ctrl.process.updated_samples,
                 input_files: ctrl.process.updated_input_files,
-                output_files: ctrl.process.updated_output_files
+                output_files: ctrl.process.updated_output_files,
+                sample_files: ctrl.process.samples_files
             };
             console.dir(updated_process);
             //Restangular.one('v2').one('projects', $stateParams.id).one('processes', ctrl.process.id).
@@ -138,29 +97,63 @@
         }
 
         function remove(type, item) {
-            if(type === 'input_sample'){
-                remove_from_list('input_samples', item);
-                remove_from_list('updated_samples', item);
-            }else if(type === 'input_file'){
-                remove_from_list('input_files', item);
-                remove_from_list('updated_input_files', item);
-            }else{
-                remove_from_list('output_files', item);
-                remove_from_list('updated_output_files', item);
+            if (type === 'input_sample') {
+                removeFromList('input_samples', item);
+                removeFromList('updated_samples', item);
+            } else if (type === 'input_file') {
+                removeFromList('input_files', item);
+                removeFromList('updated_input_files', item);
+            } else {
+                removeFromList('output_files', item);
+                removeFromList('updated_output_files', item);
             }
         }
 
-        function remove_from_list(type, item){
-            var i = _.indexOf(ctrl.process[type], function(file){
+        function removeFromList(type, item) {
+            var i = _.indexOf(ctrl.process[type], function (file) {
                 return file.id === item.id
             });
-            if (i > -1){
+            if (i > -1) {
                 ctrl.process[type].splice(i, 1);
-            }else{
+            } else {
                 ctrl.process[type].push({id: item.id, command: 'delete'})
             }
         }
 
+        function linkFilesToSample(sample, input_files, output_files) {
+            var modal = $modal.open({
+                templateUrl: 'application/core/projects/project/processes/link-files-to-sample.html',
+                controller: 'LinkFilesToSampleController',
+                controllerAs: 'sample',
+                resolve: {
+                    files: function () {
+                        var files = input_files.concat(output_files);
+                        var linkedFilesById = _.indexBy(sample.files, 'id');
+
+                        var allFiles = files.map(function (f) {
+                            if (f.id in linkedFilesById) {
+                                f.linked = true;
+                            } else {
+                                f.linked = false;
+                            }
+                            return f
+                        });
+                        return allFiles;
+                    },
+                    sampleName: function () {
+                        return sample.name;
+                    },
+                    project: function () {
+                        return {};
+                    }
+                }
+            });
+            modal.result.then(function (linkedFiles) {
+                ctrl.process = processEdit.addToProcess(linkedFiles, ctrl.process);
+                sample = processEdit.addToSamples(linkedFiles, sample);
+            });
+        }
     }
 
 }(angular.module('materialscommons')));
+;
