@@ -51,10 +51,48 @@
         }
 
         return {
-            fillProcess: function(template, process) {
+            fillProcess: function (template, process) {
                 setUp(template, process);
                 samples(process);
                 files(process);
+            },
+
+            addToProcess: function (files, process) {
+                files.forEach(function (f) {
+                    var i = _.indexOf(process.samples_files, function (item) {
+                        return f.id === item.id;
+                    });
+                    if (i !== -1) {
+                        process.samples_files.splice(i, 1);
+                        process.samples_files.push({id: f.id, command: f.command, name: f.name});
+                    } else {
+                        if (f.command) {
+                            process.samples_files.push({id: f.id, command: f.command, name: f.name});
+                        }
+                    }
+                });
+                return process;
+            },
+
+            addToSamples: function (files, sample) {
+                files.forEach(function (f) {
+                    if (f.command) {
+                        var i = _.indexOf(sample.files, function (item) {
+                            return f.id === item.id;
+                        });
+                        if (i !== -1) {
+                            sample.files.splice(i, 1);
+                            if(!(f.command === 'delete')){
+                                sample.files.push({id: f.id, command: f.command, name: f.name, linked: f.linked});
+                            }
+                        } else {
+                            if(!(f.command === 'delete')){
+                                sample.files.push({id: f.id, command: f.command, name: f.name, linked: f.linked});
+                            }
+                        }
+                    }
+                });
+                return sample;
             }
         };
     }

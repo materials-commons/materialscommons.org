@@ -149,33 +149,10 @@
                 }
             });
             modal.result.then(function (linkedFiles) {
-                linkedFiles.forEach(function (f) {
-                    if ('command' in f){
-                        ctrl.process.samples_files.push({sample_id: sample.id, id: f.id, command: f.command});
-                        if(f.command === 'add'){
-                            var i = _.indexOf(sample.files, function (item) {
-                                return f.id === item.id;
-                            });
-                            if (i !== -1) {
-                                sample.files.splice(i, 1);
-                                sample.files.push({id: f.id, command: f.command, name: f.name});
-                            }else{
-                                sample.files.push({id: f.id, command: f.command, name: f.name});
-                            }
-                        } else{
-                            var i = _.indexOf(sample.files, function (item) {
-                                return f.id == item.id;
-                            });
-                            if (i !== -1) {
-                                sample.files.splice(i, 1);
-                            }
-                        }
-                    }
-                });
-
+                ctrl.process = processEdit.addToProcess(linkedFiles, ctrl.process);
+                sample = processEdit.addToSamples(linkedFiles, sample);
             });
         }
-
     }
 
 }(angular.module('materialscommons')));

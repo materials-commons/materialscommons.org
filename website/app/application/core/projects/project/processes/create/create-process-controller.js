@@ -160,9 +160,9 @@ function LinkFilesToSampleController($modalInstance, project, files, sampleName,
         });
         if (i !== -1) {
             ctrl.filesToLink.splice(i, 1);
-            ctrl.filesToLink.push({id: file.id, command: 'add', name: file.name});
+            ctrl.filesToLink.push({id: file.id, command: 'add', name: file.name, linked: file.linked});
         } else {
-            ctrl.filesToLink.push({id: file.id, command: 'add', name: file.name});
+            ctrl.filesToLink.push({id: file.id, command: 'add', name: file.name, linked: file.linked});
         }
     }
 
@@ -173,7 +173,7 @@ function LinkFilesToSampleController($modalInstance, project, files, sampleName,
         });
         if (i !== -1) {
             ctrl.filesToLink.splice(i, 1);
-            ctrl.filesToLink.push({id: file.id, command: 'delete', name: file.name});
+            ctrl.filesToLink.push({id: file.id, command: 'delete', name: file.name, linked: file.linked});
         }
     }
 
