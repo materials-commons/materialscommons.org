@@ -33,7 +33,8 @@
                         calendar_event.push({
                             title: grouped_by_convertedtime[key].length + " " + title,
                             start: d,
-                            description: ''
+                            description: '',
+                            tooltip: "This is a cool event"
                         });
                     });
                 }

@@ -57,7 +57,7 @@
         $scope.uiConfig = {
             calendar: {
                 height: 450,
-                editable: true,
+                editable: false,
                 header: {
                     left: 'title',
                     center: '',
@@ -95,7 +95,6 @@
         }
 
         function alertOnEventClick(event, jsEvent, view) {
-            console.dir(event);
             var date = event.start;
             var what = event.title.split(' ')[1];
             switch (what){
@@ -118,10 +117,7 @@
         }
 
         function eventRender(event, element) {
-            $timeout(function () {
-                $(element).attr('tooltip', event.description);
-                $compile(element)($scope);
-            });
+            element.attr('title', event.tooltip);
         }
 
         function closeAlert() {
