@@ -16,10 +16,10 @@
     module.controller("HomeCalendarController", HomeCalendarController);
 
     HomeCalendarController.$inject = ["$scope", "Events", "uiCalendarConfig",
-        "$compile", "$timeout", "ui"];
+        "$compile", "$timeout", "ui", "$state"];
 
     /* @ngInject */
-    function HomeCalendarController($scope, Events, uiCalendarConfig, $compile, $timeout, ui) {
+    function HomeCalendarController($scope, Events, uiCalendarConfig, $compile, $timeout, ui, $state) {
         $scope.project = Events.addConvertedTime($scope.project);
 
         var eventReviews = {
@@ -95,12 +95,22 @@
         }
 
         function alertOnEventClick(event, jsEvent, view) {
+            console.dir(event);
             var date = event.start;
-            $scope.alertMessage = ('Showing ' + event.title + ' created on  ' + date._d.toDateString());
-            //Mask other panels
             var what = event.title.split(' ')[1];
-            ui.showPanelByCalendarEvent($scope.project.id, what);
-            alertOnDayClick(date, jsEvent, view, 'eventclick');
+            switch (what){
+                case "processes":
+                    $state.go('projects.project.processes.list');
+                    break;
+                case "samples":
+                    $state.go('projects.project.samples.list');
+                    break;
+                case "reviews":
+                    $state.go('projects.project.reviews');
+                    break;
+            }
+            //ui.showPanelByCalendarEvent($scope.project.id, what);
+            //alertOnDayClick(date, jsEvent, view, 'eventclick');
         }
 
         function changeView(view, calendar) {

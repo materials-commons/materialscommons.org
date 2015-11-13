@@ -6,7 +6,7 @@
     function EditProcessController(processEdit, selectItems, $state, process,
                                    processTemplates, $modal) {
         var ctrl = this;
-
+         console.dir(process);
         ctrl.process = process[0];
         ctrl.process['updated_samples'] = [];
         ctrl.process['updated_input_files'] = [];
