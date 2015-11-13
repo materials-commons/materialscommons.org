@@ -1,6 +1,6 @@
 (function (module) {
     module.controller('ProjectHomeController', ProjectHomeController);
-    ProjectHomeController.$inject = ["project", "mcmodal", "templates", "$state"];
+    ProjectHomeController.$inject = ["project", "mcmodal", "templates", "$state", "processes"];
 
     function ProjectHomeController(project, mcmodal, templates, $state) {
         var ctrl = this;
@@ -29,7 +29,9 @@
         }
 
         function chooseExistingProcess() {
-            console.log('chooseExistingProcess');
+            mcmodal.chooseExistingProcess(ctrl.project).then(function(existingProcess) {
+                $state.go('projects.project.processes.edit', {process_id: existingProcess});
+            });
         }
     }
 }(angular.module('materialscommons')));
