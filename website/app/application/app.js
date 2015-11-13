@@ -113,7 +113,13 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
             controller: "ProjectHomeController",
-            controllerAs: "ctrl"
+            controllerAs: "ctrl" ,
+            resolve: {
+                processes: ["project",
+                    function (project) {
+                        return project.processes;
+                    }]
+            }
         })
         .state('projects.project.search', {
             url: '/search/:query',
