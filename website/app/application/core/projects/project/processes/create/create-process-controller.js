@@ -80,8 +80,8 @@
                     files: function () {
                         return input_files.slice().concat(output_files);
                     },
-                    sampleName: function () {
-                        return sample.name;
+                    sample: function () {
+                        return sample;
                     },
                     project: function () {
                         return {};
@@ -89,9 +89,6 @@
                 }
             });
             modal.result.then(function (linkedFiles) {
-                //linkedFiles.forEach(function (f) {
-                //    sample.files.push({id: f.id, name: f.name});
-                //})
                 linkedFiles.forEach(function (f) {
                     if ('command' in f) {
                         if (f.command === 'add') {
@@ -123,11 +120,12 @@
 }
 
 module.controller("LinkFilesToSampleController", LinkFilesToSampleController);
-LinkFilesToSampleController.$inject = ["$modalInstance", "project", "files", "sampleName", "mcmodal"];
+LinkFilesToSampleController.$inject = ["$modalInstance", "project", "files", "sample", "mcmodal"];
 
-function LinkFilesToSampleController($modalInstance, project, files, sampleName, mcmodal) {
+function LinkFilesToSampleController($modalInstance, project, files, sample, mcmodal) {
     var ctrl = this;
-    ctrl.name = sampleName;
+    ctrl.name = sample.name;
+    ctrl.sample_id = sample.id;
     ctrl.files = files;
     ctrl.ok = ok;
     ctrl.cancel = cancel;
@@ -156,24 +154,24 @@ function LinkFilesToSampleController($modalInstance, project, files, sampleName,
     function linkFile(file) {
         file.linked = true;
         var i = _.indexOf(ctrl.filesToLink, function (f) {
-            return f.id == file.id;
+            return (f.id == file.id && f.sample_id == file.sample_id);
         });
         if (i !== -1) {
             ctrl.filesToLink.splice(i, 1);
-            ctrl.filesToLink.push({id: file.id, command: 'add', name: file.name, linked: file.linked});
+            ctrl.filesToLink.push({id: file.id, command: 'add', name: file.name, linked: file.linked, sample_id: ctrl.sample_id});
         } else {
-            ctrl.filesToLink.push({id: file.id, command: 'add', name: file.name, linked: file.linked});
+            ctrl.filesToLink.push({id: file.id, command: 'add', name: file.name, linked: file.linked, sample_id: ctrl.sample_id});
         }
     }
 
     function unlinkFile(file) {
         file.linked = false;
         var i = _.indexOf(ctrl.filesToLink, function (f) {
-            return f.id == file.id;
+            return (f.id == file.id && f.sample_id == file.sample_id);
         });
         if (i !== -1) {
             ctrl.filesToLink.splice(i, 1);
-            ctrl.filesToLink.push({id: file.id, command: 'delete', name: file.name, linked: file.linked});
+            ctrl.filesToLink.push({id: file.id, command: 'delete', name: file.name, linked: file.linked, sample_id: ctrl.sample_id});
         }
     }
 
@@ -181,17 +179,13 @@ function LinkFilesToSampleController($modalInstance, project, files, sampleName,
         ctrl.filesToLink = [];
         ctrl.files.forEach(function (f) {
             linkFile(f);
-            //f.linked = true;
-            //ctrl.filesToLink.push(f);
         });
     }
 
     function unlinkAllFiles() {
         ctrl.files.forEach(function (f) {
-            //f.linked = false;
             unlinkFile(f);
         });
-        //ctrl.filesToLink = [];
     }
 
     function openFile(file) {
