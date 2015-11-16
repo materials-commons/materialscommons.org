@@ -246,8 +246,8 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "EditProcessController",
             controllerAs: 'ctrl',
             resolve: {
-                process: ["$stateParams", "Restangular","processEdit",
-                    function ($stateParams, Restangular, processEdit) {
+                process: ["$stateParams", "Restangular","processEdit","templates",
+                    function ($stateParams, Restangular, processEdit, templates) {
                         return Restangular.one('process').one('details', $stateParams.process_id).get().then(function (process) {
                             var t = _.find(templates, {name: process.process_name});
                             var template = t.create();

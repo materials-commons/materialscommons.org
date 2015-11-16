@@ -54,7 +54,8 @@
 
         function chooseSamples() {
             selectItems.open('samples').then(function (item) {
-                var uniqueSamples = differenceById(item.input_samples, ctrl.process.input_samples);
+                console.dir(item);
+                var uniqueSamples = differenceById(item.samples, ctrl.process.input_samples);
                 uniqueSamples.forEach(function (sample) {
                     ctrl.process.input_samples.push({
                         id: sample.id,
@@ -64,7 +65,7 @@
                         property_set_id: sample.property_set_id,
                         files: []
                     });
-                    ctrl.process.updated_samples.push({id: sample.id, command: 'add'});
+                    ctrl.process.updated_samples.push({id: sample.id, command: 'add', property_set_id: sample.property_set_id});
                 });
             });
         }
