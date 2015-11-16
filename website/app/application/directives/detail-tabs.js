@@ -34,7 +34,7 @@
 
         function loadTabs() {
             var tabs = [];
-
+             console.dir(ctrl.item);
             if ('notes' in ctrl.item && ctrl.item.notes.length) {
                 tabs.push(newTab('notes', 'fa-sticky-note', ctrl.item.notes.length));
             }
@@ -51,16 +51,16 @@
                 tabs.push(newTab('files', 'fa-files-o', ctrl.item.linked_files.length));
             }
 
-            if ('files_used' in ctrl.item && ctrl.item.files_used.length) {
-                tabs.push(newTab('Input Files', 'fa-files-o', ctrl.item.files_used.length));
+            if ('input_files' in ctrl.item && ctrl.item.input_files.length) {
+                tabs.push(newTab('Input Files', 'fa-files-o', ctrl.item.input_files.length));
             }
 
-            if ('files_produced' in ctrl.item && ctrl.item.files_produced.length) {
-                tabs.push(newTab('Output Files', 'fa-files-o', ctrl.item.files_produced.length));
+            if ('output_files' in ctrl.item && ctrl.item.output_files.length) {
+                tabs.push(newTab('Output Files', 'fa-files-o', ctrl.item.output_files.length));
             }
 
-            if ('samples' in ctrl.item && ctrl.item.samples.length) {
-                tabs.push(newTab('samples', 'fa-cubes', ctrl.item.samples.length));
+            if ('input_samples' in ctrl.item && ctrl.item.input_samples.length) {
+                tabs.push(newTab('samples', 'fa-cubes', ctrl.item.input_samples.length));
             }
 
             //

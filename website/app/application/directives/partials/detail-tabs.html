@@ -10,12 +10,12 @@
     </ul>
     <div class="tab-content clearfix">
         <setup-details ng-if="ctrl.isActive('setup')" setup="ctrl.item.setup[0]"></setup-details>
-        <samples-list ng-if="ctrl.isActive('samples')" samples="ctrl.item.samples"></samples-list>
+        <samples-list ng-if="ctrl.isActive('samples')" samples="ctrl.item.input_samples"></samples-list>
         <processes-list ng-if="ctrl.isActive('processes')" processes="ctrl.item.processes"></processes-list>
         <file-notes ng-if="ctrl.isActive('notes')" file="ctrl.item"></file-notes>
         <files-list ng-if="ctrl.isActive('files')" files="ctrl.item.linked_files"></files-list>
-        <files-list ng-if="ctrl.isActive('Input Files')" files="ctrl.item.files_used"></files-list>
-        <files-list ng-if="ctrl.isActive('Output Files')" files="ctrl.item.files_produced"></files-list>
+        <files-list ng-if="ctrl.isActive('Input Files')" files="ctrl.item.input_files"></files-list>
+        <files-list ng-if="ctrl.isActive('Output Files')" files="ctrl.item.output_files"></files-list>
         <reviews-list ng-if="ctrl.isActive('reviews')" reviews="ctrl.item.reviews"></reviews-list>
         <!-- For the moment measurements are not supported in the controller while we rethink them -->
         <measurements-list ng-if="ctrl.isActive('measurements') && ctrl.item"

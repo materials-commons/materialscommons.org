@@ -113,7 +113,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
             controller: "ProjectHomeController",
-            controllerAs: "ctrl" ,
+            controllerAs: "ctrl",
             resolve: {
                 processes: ["project",
                     function (project) {
@@ -212,20 +212,30 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         .state("projects.project.processes", {
             url: "/processes",
             abstract: true,
-            template: ' <div ui-view></div>'
+            template: '<div ui-view></div>'
         })
         .state("projects.project.processes.create", {
-            url: "/create/:process",
+            url: "/create/:process/:process_id",
             templateUrl: "application/core/projects/project/processes/create/create.html",
             controller: "CreateProcessController",
             controllerAs: 'ctrl',
             resolve: {
-                template: ["$filter", "$stateParams", "templates",
-                    function ($filter, $stateParams, templates) {
-                        var t = _.find(templates, {name: $stateParams.process});
-                        var template = t.create();
-                        template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
-                        return template;
+                template: ["$filter", "$stateParams", "templates", "Restangular", "processEdit",
+                    function ($filter, $stateParams, templates, Restangular, processEdit) {
+                        if ($stateParams.process_id) {
+                            var t = _.find(templates, {name: $stateParams.process});
+                            var template = t.create();
+                            template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
+                            return Restangular.one('process').one('details', $stateParams.process_id).get().then(function (process) {
+                                return processEdit.fillProcess(template, process);
+                            });
+                        } else {
+                            var t = _.find(templates, {name: $stateParams.process});
+                            var template = t.create();
+                            template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
+                            return template;
+                        }
+
                     }
                 ]
             }
@@ -236,9 +246,13 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "EditProcessController",
             controllerAs: 'ctrl',
             resolve: {
-                process: ["$stateParams", "Restangular",
-                    function ($stateParams, Restangular) {
-                        return Restangular.one('process').one('details', $stateParams.process_id).get();
+                process: ["$stateParams", "Restangular","processEdit",
+                    function ($stateParams, Restangular, processEdit) {
+                        return Restangular.one('process').one('details', $stateParams.process_id).get().then(function (process) {
+                            var t = _.find(templates, {name: process.process_name});
+                            var template = t.create();
+                            return processEdit.fillProcess(template, process);
+                        });
                     }
                 ]
             }

@@ -6,16 +6,16 @@
     function EditProcessController(processEdit, selectItems, $state, process,
                                    processTemplates, $modal) {
         var ctrl = this;
-        ctrl.process = process[0];
+        ctrl.process = process;
         ctrl.process['updated_samples'] = [];
         ctrl.process['updated_input_files'] = [];
         ctrl.process['updated_output_files'] = [];
         ctrl.process['samples_files'] = [];
 
-        ctrl.process.process_name = "APT"; //to be deleted
-        var template = processTemplates.byName(ctrl.process.process_name);
+        //ctrl.process.process_name = "APT"; //to be deleted
+        //var template = processTemplates.byName(ctrl.process.process_name);
 
-        ctrl.template = template.create();
+        //ctrl.template = template.create();
         ctrl.chooseSamples = chooseSamples;
         ctrl.chooseInputFiles = chooseInputFiles;
         ctrl.chooseOutputFiles = chooseOutputFiles;
@@ -24,7 +24,7 @@
         ctrl.submit = submit;
         ctrl.cancel = cancel;
         ctrl.remove = remove;
-        processEdit.fillProcess(ctrl.template, ctrl.process);
+        //ctrl.process = processEdit.fillProcess(ctrl.template, ctrl.process);
 
         //////////////////////////////////
 
@@ -54,7 +54,7 @@
 
         function chooseSamples() {
             selectItems.open('samples').then(function (item) {
-                var uniqueSamples = differenceById(item.samples, ctrl.process.input_samples);
+                var uniqueSamples = differenceById(item.input_samples, ctrl.process.input_samples);
                 uniqueSamples.forEach(function (sample) {
                     ctrl.process.input_samples.push({
                         id: sample.id,

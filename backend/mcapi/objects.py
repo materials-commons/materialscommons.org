@@ -138,7 +138,7 @@ def get_process_details(process_id):
                 })
                 .coerce_to('array'),
 
-                'samples': r.table('process2sample')
+                'input_samples': r.table('process2sample')
                 .get_all(process['id'], index='process_id')
                 .eq_join('sample_id', r.table("samples"))
                 .without({"right": {"_type": True}})
@@ -161,14 +161,14 @@ def get_process_details(process_id):
                 })
                 .coerce_to('array'),
 
-                'files_used': r.table('process2file')
+                'input_files': r.table('process2file')
                 .get_all(process['id'],
                 index='process_id').filter({
                 'direction': "in"})
                 .eq_join('datafile_id', r.table('datafiles'))
                 .zip()
                 .coerce_to('array'),
-                'files_produced': r.table('process2file')
+                'output_files': r.table('process2file')
                 .get_all(process['id'],
                 index='process_id').filter({
                 'direction': "out"})
@@ -176,7 +176,7 @@ def get_process_details(process_id):
                 .zip()
                 .coerce_to('array')
         }).run(g.conn, time_format="raw"))
-    return resp.to_json(p)
+    return resp.to_json(p[0])
 
 
 @app.route('/sample/details/<sample_id>', methods=['GET'])
