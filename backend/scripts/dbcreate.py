@@ -65,14 +65,20 @@ def create_tables():
     create_table("property2measurement", "property_id", "measurement_id")
     create_table("process2measurement", "process_id", "measurement_id")
     create_table("sample2propertyset", "sample_id", "property_set_id")
+
     create_table("process2sample", "sample_id", "process_id",
                  "property_set_id", "_type")
+    create_compound_index("process2sample", "process_sample_property_set",
+                          ["process_id", "sample_id", "property_set_id"])
+
     create_table("project2sample", "sample_id", "project_id")
     create_table("best_measure_history", "process_id", "property_id")
     create_table("process2file", "process_id", "datafile_id", "_type")
     create_table("propertysets", "parent_id")
 
     create_table("sample2datafile", "sample_id", "datafile_id")
+    create_compound_index("sample2datafile", "sample_file", ["sample_id", "datafile_id"])
+
     create_table("measurement2datafile", "measurement_id", "datafile_id")
 
 
@@ -84,6 +90,10 @@ def create_table(table, *args):
 
 def create_index(table, name):
     run(r.db('materialscommons').table(table).index_create(name))
+
+
+def create_compound_index(table, name, index_fields):
+    run(r.db('materialscommons').table(table).index_create(name, index_fields))
 
 
 def create_indices():

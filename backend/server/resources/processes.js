@@ -21,16 +21,25 @@ module.exports = function (processes, schema) {
         }
         this.body = rv.val;
         yield next;
-
     }
 
 
     function* get(next) {
+        let rv = yield processes.get(this.params.process_id);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
+        }
+        this.status = 200;
+        this.body = rv.val;
         yield next;
     }
 
     function* getList(next) {
-        this.body = yield processes.getList(this.params.project_id);
+        let rv = yield processes.getList(this.params.project_id);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
+        }
+        this.body = rv.val;
         this.status = 200;
         yield next;
     }
