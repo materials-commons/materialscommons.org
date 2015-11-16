@@ -38,12 +38,20 @@ module.exports = function (r) {
             yield updateProcessAttributes(processID, process);
         }
 
-        if (process.samples) {
-            yield updateSampleMeasurements(process.samples);
+        if (process.input_samples) {
+            yield updateSamples(process.input_samples);
         }
 
-        if (process.files) {
-            yield updateFiles(processID, process.files);
+        if (process.input_files) {
+            yield updateFiles(processID, process.input_files, 'in');
+        }
+
+        if (process.output_files) {
+            yield updateFiles(processID, process.output_files, 'out');
+        }
+
+        if (process.sample_files) {
+            yield updateSampleFiles(process.sample_files);
         }
 
         return yield get(processID);
@@ -72,27 +80,10 @@ module.exports = function (r) {
         yield db.update('processes', processID, updateAttrs);
     }
 
-    // updateSampleMeasurements updates existing measurements for samples. It does
-    // not currently support addition or deletion.
-    function* updateSampleMeasurements(samples) {
-        let measurements = [];
-        samples.forEach(function (sample) {
-            if (sample.properties) {
-                sample.properties.forEach(function (prop) {
-                    prop.measurements.forEach(function (m) {
-                        measurements.push(m);
-                    })
-                })
-            }
-        });
-        let rql = r.table('measurements').insert(measurements, {conflict: "update"});
-        yield dbExec(rql);
-    }
-
     // updateFiles adds or deletes files from the process
-    function* updateFiles(processID, files) {
+    function* updateFiles(processID, files, direction) {
         let filesToAdd = files.filter(f => f.command == 'add').
-            map(f => new model.Process2File(processID, f.file_id, f.direction));
+            map(f => new model.Process2File(processID, f.file_id, direction));
         let filesToDelete = files.filter(f => f.command == 'delete').map(f => f.file_id);
 
         if (filesToAdd.length) {
@@ -121,14 +112,82 @@ module.exports = function (r) {
     }
 
     function* get(processID) {
-        let rql = r.table('processes').get(processID);
-        return yield dbExec(rql);
+        let rql = r.table('processes').getAll(processID).
+            merge(function(process) {
+                return {
+                    setup: r.table('process2setup').getAll(process('id'), {index: 'process_id'}).
+                        eqJoin('setup_id', r.table('setups')).zip().
+                        merge(function(setup) {
+                            return {
+                                properties: r.table('setupproperties').
+                                    getAll(setup('setup_id'), {index: 'setup_id'}).
+                                    coerceTo('array')
+                            }
+                        }).coerceTo('array'),
+                    samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'}).
+                        eqJoin('sample_id', r.table('samples')).zip().
+                        merge(function(sample) {
+                            return {
+                                properties: r.table('propertyset2property').
+                                    getAll(sample('property_set_id'), {index: 'property_set_id'}).
+                                    eqJoin('property_id', r.table('properties')).zip().
+                                    orderBy('name').
+                                    merge(function (property) {
+                                        return {
+                                            best_measure: r.table('best_measure_history').
+                                                getAll(property('best_measure_id')).
+                                                eqJoin('measurement_id', r.table('measurements')).
+                                                zip().coerceTo('array')
+                                        }
+                                    }).coerceTo('array'),
+                                files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'}).
+                                    eqJoin('datafile_id', r.table('datafiles')).zip().pluck('id', 'name').
+                                    coerceTo('array')
+                            }
+                        }).coerceTo('array'),
+                    input_files : r.table('process2file').getAll(process('id'), {index: 'process_id'}).
+                        filter({direction: 'in'}).
+                        eqJoin('datafile_id', r.table('datafiles'))
+                        .zip().coerceTo('array'),
+                    output_files: r.table('process2file').getAll(process('id'), {index: 'process_id'}).
+                        filter({direction: 'out'}).
+                        eqJoin('datafile_id', r.table('datafiles'))
+                        .zip().coerceTo('array')
+                }
+            });
+        let process = yield dbExec(rql);
+        return process.length ? {val: process[0]} : {error: `No such process ${processID}`};
     }
 
     function* getList(projectID) {
         let rql = r.table('project2process').getAll(projectID, {index: 'project_id'}).
             eqJoin('process_id', r.table('processes')).zip();
-        return yield dbExec(rql);
+        let processes =  yield dbExec(rql);
+        return {val: processes};
+    }
+
+    function* updateSamples(processID, samples) {
+        let samplesToAdd = samples.filter(s => s.command === 'add').
+            map(s => new model.Process2Sample(processID, s.id, s.property_set_id, 'in'));
+        let addRql = r.table('process2sample').insert(samplesToAdd);
+        yield dbExec(addRql);
+
+        let samplesToDelete = samples.filter(s => s.command == 'delete').map(s => [processID, s.id, s.property_set_id]);
+        let deleteRql = r.table('process2sample').
+            getAll(r.args(samplesToDelete), {index: 'process_sample_property_set'}).delete();
+        yield dbExec(deleteRql);
+    }
+
+    function* updateSampleFiles(sampleFiles) {
+        let fileSamplesToAdd = sampleFiles.filter(s => s.command === 'add').
+            map(s => new model.Sample2Datafile(s.id, s.file_id));
+        let addRql = r.table('sample2datafile').insert(fileSamplesToAdd);
+        yield dbExec(addRql);
+
+        let fileSamplesToDelete = sampleFiles.filter(s => s.command === 'delete').map(s => [s.id, s.file_id]);
+        let deleteRql = r.table('sample2datafile').
+            getAll(r.args(fileSamplesToDelete), {index: 'sample_file'}).delete();
+        yield dbExec(deleteRql);
     }
 
     /**
