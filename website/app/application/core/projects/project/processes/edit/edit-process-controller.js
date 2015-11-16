@@ -143,8 +143,9 @@
             });
             modal.result.then(function (linkedFiles) {
                 //this will update the view - edit.html
-                ctrl.process = processEdit.addToProcess(linkedFiles, ctrl.process);
-                sample = processEdit.addToSamples(linkedFiles, sample);
+                //console.dir(linkedFiles);
+                ctrl.process = processEdit.addToSamplesFiles(linkedFiles, ctrl.process);
+                sample = processEdit.refreshSample(linkedFiles, sample);
             });
         }
     }
