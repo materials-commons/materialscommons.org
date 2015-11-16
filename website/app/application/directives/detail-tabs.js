@@ -34,7 +34,6 @@
 
         function loadTabs() {
             var tabs = [];
-             console.dir(ctrl.item);
             if ('notes' in ctrl.item && ctrl.item.notes.length) {
                 tabs.push(newTab('notes', 'fa-sticky-note', ctrl.item.notes.length));
             }
