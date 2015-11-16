@@ -14,7 +14,7 @@
 
         ctrl.project = project;
         ctrl.tab = 'setup';
-        ctrl.process = process[0];
+        ctrl.process = process;
 
         function setTab(tabId) {
             ctrl.tab = tabId;

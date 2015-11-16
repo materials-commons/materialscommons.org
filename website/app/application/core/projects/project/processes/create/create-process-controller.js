@@ -5,8 +5,9 @@
 
     function CreateProcessController(Restangular, $stateParams, selectItems, $previousState, template, $modal) {
         var ctrl = this;
-
+        console.log('here');
         ctrl.process = template;
+        console.log(template);
         ctrl.chooseSamples = chooseSamples;
         ctrl.chooseInputFiles = chooseInputFiles;
         ctrl.chooseOutputFiles = chooseOutputFiles;
