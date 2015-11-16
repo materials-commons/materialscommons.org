@@ -67,7 +67,7 @@
                 return process;
             },
 
-            addToProcess: function (files, process) {
+            addToSamplesFiles: function (files, process) {
                 files.forEach(function (f) {
                     var i = _.indexOf(process.samples_files, function (item) {
                         return f.id === item.id && f.sample_id == item.sample_id;
@@ -80,7 +80,7 @@
                             name: f.name,
                             sample_id: f.sample_id
                         });
-                    } else {
+                    }else {
                         if (f.command) {
                             process.samples_files.push({
                                 id: f.id,
@@ -94,11 +94,11 @@
                 return process;
             },
 
-            addToSamples: function (files, sample) {
+            refreshSample: function (files, sample) {
                 files.forEach(function (f) {
                     if (f.command) {
                         var i = _.indexOf(sample.files, function (item) {
-                            return f.id === item.id && f.sample_id == item.sample_id;
+                            return f.id === item.id && f.sample_id == sample.id;
                         });
                         if (i !== -1) {
                             sample.files.splice(i, 1);
