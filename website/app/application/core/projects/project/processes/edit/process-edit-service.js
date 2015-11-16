@@ -4,32 +4,32 @@
 
     function processEdit() {
         var self = this;
-
+        self.process = {};
         /**
          * fillSetUp: will read all the setup values from process
          * and place inside template.
          *
          */
         function setUp(template, process) {
-            var settings = template.setup.settings[0].properties;
             process.setup[0].properties.forEach(function (property) {
-                var i = _.indexOf(settings, function (setting) {
-                    return setting.property.attribute === property.attribute
+                var i = _.indexOf(template.setup.settings[0].properties, function (template_property) {
+                    return template_property.property.attribute === property.attribute
                 });
                 if (i > -1) {
-                    settings[i].property.value = property.value;
-                    settings[i].property.unit = property.unit;
-                    settings[i].property.id = property.setup_id;
-                    settings[i].property.property_id = property.id;
-                    settings[i].property._type = property._type;
-                    settings[i].property.attribute = property.attribute;
+                    template.setup.settings[0].properties[i].property.value = property.value;
+                    template.setup.settings[0].properties[i].property.unit = property.unit;
+                    template.setup.settings[0].properties[i].property.id = property.setup_id;
+                    template.setup.settings[0].properties[i].property.property_id = property.id;
+                    template.setup.settings[0].properties[i].property._type = property._type;
+                    template.setup.settings[0].properties[i].property.attribute = property.attribute;
                 }
             });
             process.setup = template.setup;
+            return process;
         }
 
         function samples(process) {
-            process.input_samples = process.samples.map(function (sample) {
+            process.input_samples = process.input_samples.map(function (sample) {
                 return {
                     id: sample.id,
                     name: sample.name,
@@ -39,22 +39,32 @@
                     files: sample.linked_files
                 }
             });
+            return process;
         }
 
         function files(process) {
-            process['input_files'] = process.files_used.map(function (file) {
+            process['input_files'] = process.input_files.map(function (file) {
                 return {id: file.id, name: file.name}
             });
-            process['output_files'] = process.files_produced.map(function (file) {
+            process['output_files'] = process.output_files.map(function (file) {
                 return {id: file.id, name: file.name}
             });
+            return process;
         }
+
+        function basicDetails(template, process) {
+            process.name = template.name;
+            return process;
+        }
+
 
         return {
             fillProcess: function (template, process) {
-                setUp(template, process);
-                samples(process);
-                files(process);
+                process = basicDetails(template, process);
+                process = setUp(template, process);
+                process = samples(process);
+                process = files(process);
+                return process;
             },
 
             addToProcess: function (files, process) {
@@ -64,10 +74,20 @@
                     });
                     if (i !== -1) {
                         process.samples_files.splice(i, 1);
-                        process.samples_files.push({id: f.id, command: f.command, name: f.name, sample_id: f.sample_id});
+                        process.samples_files.push({
+                            id: f.id,
+                            command: f.command,
+                            name: f.name,
+                            sample_id: f.sample_id
+                        });
                     } else {
                         if (f.command) {
-                            process.samples_files.push({id: f.id, command: f.command, name: f.name, sample_id: f.sample_id});
+                            process.samples_files.push({
+                                id: f.id,
+                                command: f.command,
+                                name: f.name,
+                                sample_id: f.sample_id
+                            });
                         }
                     }
                 });
@@ -82,11 +102,11 @@
                         });
                         if (i !== -1) {
                             sample.files.splice(i, 1);
-                            if(!(f.command === 'delete')){
+                            if (!(f.command === 'delete')) {
                                 sample.files.push({id: f.id, command: f.command, name: f.name, linked: f.linked});
                             }
                         } else {
-                            if(!(f.command === 'delete')){
+                            if (!(f.command === 'delete')) {
                                 sample.files.push({id: f.id, command: f.command, name: f.name, linked: f.linked});
                             }
                         }
