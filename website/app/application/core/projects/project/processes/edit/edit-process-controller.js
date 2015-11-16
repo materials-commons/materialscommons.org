@@ -6,7 +6,6 @@
     function EditProcessController(processEdit, selectItems, $state, process,
                                    processTemplates, $modal) {
         var ctrl = this;
-         console.dir(process);
         ctrl.process = process[0];
         ctrl.process['updated_samples'] = [];
         ctrl.process['updated_input_files'] = [];
@@ -140,8 +139,8 @@
                         });
                         return allFiles;
                     },
-                    sampleName: function () {
-                        return sample.name;
+                    sample: function () {
+                        return sample;
                     },
                     project: function () {
                         return {};
