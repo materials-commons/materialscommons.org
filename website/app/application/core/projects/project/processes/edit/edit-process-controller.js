@@ -1,10 +1,9 @@
 (function (module) {
     module.controller('EditProcessController', EditProcessController);
     EditProcessController.$inject = ["processEdit", "selectItems", "$state", "process",
-        "processTemplates", "$modal"];
+       "$modal"];
 
-    function EditProcessController(processEdit, selectItems, $state, process,
-                                   processTemplates, $modal) {
+    function EditProcessController(processEdit, selectItems, $state, process, $modal) {
         var ctrl = this;
         ctrl.process = process;
         ctrl.process['updated_samples'] = [];
@@ -12,10 +11,6 @@
         ctrl.process['updated_output_files'] = [];
         ctrl.process['samples_files'] = [];
 
-        //ctrl.process.process_name = "APT"; //to be deleted
-        //var template = processTemplates.byName(ctrl.process.process_name);
-
-        //ctrl.template = template.create();
         ctrl.chooseSamples = chooseSamples;
         ctrl.chooseInputFiles = chooseInputFiles;
         ctrl.chooseOutputFiles = chooseOutputFiles;
@@ -24,7 +19,6 @@
         ctrl.submit = submit;
         ctrl.cancel = cancel;
         ctrl.remove = remove;
-        //ctrl.process = processEdit.fillProcess(ctrl.template, ctrl.process);
 
         //////////////////////////////////
 
@@ -54,7 +48,6 @@
 
         function chooseSamples() {
             selectItems.open('samples').then(function (item) {
-                console.dir(item);
                 var uniqueSamples = differenceById(item.samples, ctrl.process.input_samples);
                 uniqueSamples.forEach(function (sample) {
                     ctrl.process.input_samples.push({
@@ -149,6 +142,7 @@
                 }
             });
             modal.result.then(function (linkedFiles) {
+                //this will update the view - edit.html
                 ctrl.process = processEdit.addToProcess(linkedFiles, ctrl.process);
                 sample = processEdit.addToSamples(linkedFiles, sample);
             });
