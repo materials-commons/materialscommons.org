@@ -60,14 +60,14 @@
             addToProcess: function (files, process) {
                 files.forEach(function (f) {
                     var i = _.indexOf(process.samples_files, function (item) {
-                        return f.id === item.id;
+                        return f.id === item.id && f.sample_id == item.sample_id;
                     });
                     if (i !== -1) {
                         process.samples_files.splice(i, 1);
-                        process.samples_files.push({id: f.id, command: f.command, name: f.name});
+                        process.samples_files.push({id: f.id, command: f.command, name: f.name, sample_id: f.sample_id});
                     } else {
                         if (f.command) {
-                            process.samples_files.push({id: f.id, command: f.command, name: f.name});
+                            process.samples_files.push({id: f.id, command: f.command, name: f.name, sample_id: f.sample_id});
                         }
                     }
                 });
@@ -78,7 +78,7 @@
                 files.forEach(function (f) {
                     if (f.command) {
                         var i = _.indexOf(sample.files, function (item) {
-                            return f.id === item.id;
+                            return f.id === item.id && f.sample_id == item.sample_id;
                         });
                         if (i !== -1) {
                             sample.files.splice(i, 1);
