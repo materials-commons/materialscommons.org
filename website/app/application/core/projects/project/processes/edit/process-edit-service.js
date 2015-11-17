@@ -3,8 +3,6 @@
     processEdit.$inject = [];
 
     function processEdit() {
-        var self = this;
-        self.process = {};
         /**
          * fillSetUp: will read all the setup values from process
          * and place inside template.
@@ -73,7 +71,7 @@
                             name: f.name,
                             sample_id: f.sample_id
                         });
-                    }else {
+                    } else {
                         if (f.command) {
                             process.samples_files.push({
                                 id: f.id,
