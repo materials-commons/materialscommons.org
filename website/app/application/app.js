@@ -222,16 +222,17 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             resolve: {
                 template: ["$filter", "$stateParams", "templates", "Restangular", "processEdit",
                     function ($filter, $stateParams, templates, Restangular, processEdit) {
+                        var t, template;
                         if ($stateParams.process_id) {
-                            var t = _.find(templates, {name: $stateParams.process});
-                            var template = t.create();
+                            t = _.find(templates, {name: $stateParams.process});
+                            template = t.create();
                             template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
                             return Restangular.one('process').one('details', $stateParams.process_id).get().then(function (process) {
                                 return processEdit.fillProcess(template, process);
                             });
                         } else {
-                            var t = _.find(templates, {name: $stateParams.process});
-                            var template = t.create();
+                            t = _.find(templates, {name: $stateParams.process});
+                            template = t.create();
                             template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
                             return template;
                         }
@@ -246,7 +247,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "EditProcessController",
             controllerAs: 'ctrl',
             resolve: {
-                process: ["$stateParams", "Restangular","processEdit","templates",
+                process: ["$stateParams", "Restangular", "processEdit", "templates",
                     function ($stateParams, Restangular, processEdit, templates) {
                         return Restangular.one('process').one('details', $stateParams.process_id).get().then(function (process) {
                             var t = _.find(templates, {name: process.process_name});
@@ -263,9 +264,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "projectListProcess",
             controllerAs: "ctrl",
             resolve: {
-                processes: ["project",
-                    function (project) {
-                        return project.processes;
+                processes: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('v2').one("projects", $stateParams.id).one("processes").getList();
                     }]
             }
         })
