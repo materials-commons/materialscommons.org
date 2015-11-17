@@ -1,9 +1,9 @@
 (function (module) {
     module.controller('EditProcessController', EditProcessController);
-    EditProcessController.$inject = ["processEdit", "selectItems", "$state", "process",
-        "$modal"];
+    EditProcessController.$inject = ["processEdit", "selectItems", "$state", "$stateParams",
+        "process", "$modal", "Restangular"];
 
-    function EditProcessController(processEdit, selectItems, $state, process, $modal) {
+    function EditProcessController(processEdit, selectItems, $state, $stateParams, process, $modal, Restangular) {
         var ctrl = this;
         ctrl.process = process;
         ctrl.process['updated_samples'] = [];
@@ -27,19 +27,34 @@
                 id: ctrl.process.id,
                 what: ctrl.process.what,
                 name: ctrl.process.name,
-                setup: ctrl.process.setup,
+                setup: ctrl.process.setup.settings[0].properties.map(function (p) {
+                    p = p.property;
+                    var prop = {
+                        value: p.value,
+                        name: p.name,
+                        description: p.description,
+                        unit: p.unit,
+                        setup_id: p.setup_id,
+                        _type: p._type,
+                        attribute: p.attribute
+                    };
+                    if (p.id) {
+                        prop.id = p.id;
+                    }
+                    return prop;
+                }),
                 input_samples: ctrl.process.updated_samples,
                 input_files: ctrl.process.updated_input_files,
                 output_files: ctrl.process.updated_output_files,
                 sample_files: ctrl.process.samples_files
             };
             console.dir(updated_process);
-            //Restangular.one('v2').one('projects', $stateParams.id).one('processes', ctrl.process.id).
-            //    customPUT(updated_process).then(function () {
-            //        $state.go('projects.project.processes.list');
-            //    }, function (e) {
-            //        console.log('failure to save process', e);
-            //    });
+            Restangular.one('v2').one('projects', $stateParams.id).one('processes', ctrl.process.id).
+                customPUT(updated_process).then(function () {
+                    $state.go('projects.project.processes.list');
+                }, function (e) {
+                    console.log('failure to save process', e);
+                });
         }
 
         function cancel() {
@@ -53,8 +68,6 @@
                     ctrl.process.input_samples.push({
                         id: sample.id,
                         name: sample.name,
-                        old_properties: [],
-                        new_properties: [],
                         property_set_id: sample.property_set_id,
                         files: []
                     });
@@ -126,16 +139,11 @@
                     files: function () {
                         var files = input_files.concat(output_files);
                         var linkedFilesById = _.indexBy(sample.files, 'id');
-
-                        var allFiles = files.map(function (f) {
-                            if (f.id in linkedFilesById) {
-                                f.linked = true;
-                            } else {
-                                f.linked = false;
-                            }
-                            return f
-                        });
-                        return allFiles;
+                        var setLinkedFlag = function(f) {
+                            f.linked = (f.id in linkedFilesById);
+                            return f;
+                        };
+                        return files.map(setLinkedFlag);
                     },
                     sample: function () {
                         return sample;
@@ -155,4 +163,3 @@
     }
 
 }(angular.module('materialscommons')));
-;
