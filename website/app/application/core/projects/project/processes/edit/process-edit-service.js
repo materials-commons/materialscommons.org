@@ -3,8 +3,6 @@
     processEdit.$inject = [];
 
     function processEdit() {
-        var self = this;
-
         /**
          * fillSetUp: will read all the setup values from process
          * and place inside template.
@@ -17,9 +15,11 @@
                 });
                 if (i > -1) {
                     template.setup.settings[0].properties[i].property.value = property.value;
+                    template.setup.settings[0].properties[i].property.name = property.name;
+                    template.setup.settings[0].properties[i].property.description = property.description;
                     template.setup.settings[0].properties[i].property.unit = property.unit;
-                    template.setup.settings[0].properties[i].property.id = property.setup_id;
-                    template.setup.settings[0].properties[i].property.property_id = property.id;
+                    template.setup.settings[0].properties[i].property.id = property.id;
+                    template.setup.settings[0].properties[i].property.setup_id = property.setup_id;
                     template.setup.settings[0].properties[i].property._type = property._type;
                     template.setup.settings[0].properties[i].property.attribute = property.attribute;
                 }
@@ -33,8 +33,6 @@
                 return {
                     id: sample.id,
                     name: sample.name,
-                    old_properties: [],
-                    new_properties: [],
                     property_set_id: sample.property_set_id,
                     files: sample.linked_files
                 }
@@ -52,22 +50,8 @@
             return process;
         }
 
-        function basicDetails(process) {
-            //when we choose to create a new process from existing process.
-            // we miss these field inside process.
-            if (!('output_samples' in process)) {
-                process.output_samples = [];
-            }
-            if (!('transformed_samples' in process)) {
-                process.transformed_samples = [];
-            }
-            return process;
-        }
-
-
         return {
             fillProcess: function (template, process) {
-                process = basicDetails(process);
                 process = setUp(template, process);
                 process = samples(process);
                 process = files(process);
