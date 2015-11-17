@@ -1,7 +1,7 @@
 (function (module) {
     module.controller('EditProcessController', EditProcessController);
     EditProcessController.$inject = ["processEdit", "selectItems", "$state", "process",
-       "$modal"];
+        "$modal"];
 
     function EditProcessController(processEdit, selectItems, $state, process, $modal) {
         var ctrl = this;
@@ -58,7 +58,11 @@
                         property_set_id: sample.property_set_id,
                         files: []
                     });
-                    ctrl.process.updated_samples.push({id: sample.id, command: 'add', property_set_id: sample.property_set_id});
+                    ctrl.process.updated_samples.push({
+                        id: sample.id,
+                        command: 'add',
+                        property_set_id: sample.property_set_id
+                    });
                 });
             });
         }
