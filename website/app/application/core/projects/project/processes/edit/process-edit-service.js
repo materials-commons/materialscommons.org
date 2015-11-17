@@ -4,7 +4,7 @@
 
     function processEdit() {
         var self = this;
-        self.process = {};
+
         /**
          * fillSetUp: will read all the setup values from process
          * and place inside template.
@@ -52,15 +52,22 @@
             return process;
         }
 
-        function basicDetails(template, process) {
-            process.name = template.name;
+        function basicDetails(process) {
+            //when we choose to create a new process from existing process.
+            // we miss these field inside process.
+            if (!('output_samples' in process)) {
+                process.output_samples = [];
+            }
+            if (!('transformed_samples' in process)) {
+                process.transformed_samples = [];
+            }
             return process;
         }
 
 
         return {
             fillProcess: function (template, process) {
-                process = basicDetails(template, process);
+                process = basicDetails(process);
                 process = setUp(template, process);
                 process = samples(process);
                 process = files(process);
@@ -80,7 +87,7 @@
                             name: f.name,
                             sample_id: f.sample_id
                         });
-                    }else {
+                    } else {
                         if (f.command) {
                             process.samples_files.push({
                                 id: f.id,
