@@ -1,10 +1,10 @@
 (function (module) {
     module.controller('CreateProcessController', CreateProcessController);
-    CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems", "$previousState",
-        "template", "$modal", "processEdit"];
+    CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems",
+        "template", "$modal", "processEdit", "$previousState"];
 
-    function CreateProcessController(Restangular, $stateParams, selectItems, $previousState, template,
-                                     $modal, processEdit) {
+    function CreateProcessController(Restangular, $stateParams, selectItems, template,
+                                     $modal, processEdit, $previousState) {
         var ctrl = this;
         ctrl.process = template;
         ctrl.chooseSamples = chooseSamples;

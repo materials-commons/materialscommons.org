@@ -291,6 +291,19 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                 ]
             }
         })
+        .state("projects.project.processes.view", {
+            url: "/view/:process_id",
+            templateUrl: "application/core/projects/project/processes/view.html",
+            controller: "projectViewProcess",
+            controllerAs: 'view',
+            resolve: {
+                process: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('process').one('details', $stateParams.process_id).get();
+                    }
+                ]
+            }
+        })
         .state('projects.project.samples', {
             url: '/samples',
             abstract: true,
@@ -367,9 +380,33 @@ function appRun($rootScope, User, Restangular) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
     }
 
-    $rootScope.$on('$stateChangeStart', function () {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        //console.log('$stateChangeStart');
+        //console.log('  event', event);
+        //console.log('  toState', toState);
+        //console.log('  toParams', toParams);
+        //console.log('  fromState', fromState);
+        //console.log('  fromParams', fromParams);
+        //console.log('=============================');
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
         }
+    });
+
+    $rootScope.$on('$stateNotFound', function() {
+        //console.log('$stateNotFound');
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function() {
+        //console.log('$stateChangeSuccess');
+    });
+
+    $rootScope.$on('$stateChangeError', function() {
+        //console.log('$stateChangeError');
+    });
+
+    $rootScope.$on('$viewContentLoading', function(event, viewConfig) {
+        //console.log('$viewContentLoading');
+        //console.log(event, viewConfig);
     });
 }
