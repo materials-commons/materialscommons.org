@@ -381,33 +381,9 @@ function appRun($rootScope, User, Restangular) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
     }
 
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-        //console.log('$stateChangeStart');
-        //console.log('  event', event);
-        //console.log('  toState', toState);
-        //console.log('  toParams', toParams);
-        //console.log('  fromState', fromState);
-        //console.log('  fromParams', fromParams);
-        //console.log('=============================');
+    $rootScope.$on('$stateChangeStart', function () {
         if (User.isAuthenticated()) {
             $rootScope.email_address = User.u();
         }
-    });
-
-    $rootScope.$on('$stateNotFound', function() {
-        //console.log('$stateNotFound');
-    });
-
-    $rootScope.$on('$stateChangeSuccess', function() {
-        //console.log('$stateChangeSuccess');
-    });
-
-    $rootScope.$on('$stateChangeError', function() {
-        //console.log('$stateChangeError');
-    });
-
-    $rootScope.$on('$viewContentLoading', function(event, viewConfig) {
-        //console.log('$viewContentLoading');
-        //console.log(event, viewConfig);
     });
 }
