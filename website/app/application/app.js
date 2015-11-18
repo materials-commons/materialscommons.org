@@ -113,13 +113,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
             controller: "ProjectHomeController",
-            controllerAs: "ctrl",
-            resolve: {
-                processes: ["project",
-                    function (project) {
-                        return project.processes;
-                    }]
-            }
+            controllerAs: "ctrl"
         })
         .state('projects.project.search', {
             url: '/search/:query',
@@ -237,7 +231,6 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                             template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
                             return template;
                         }
-
                     }
                 ]
             }
