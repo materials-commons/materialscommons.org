@@ -156,7 +156,7 @@ def get_process_details(process_id):
                     'linked_files': r.table('sample2datafile')
                        .get_all(sample['id'],
                     index='sample_id').eq_join('datafile_id',
-                    r.table('datafiles')).zip().pluck('id', 'name')
+                    r.table('datafiles')).zip().pluck('id', 'name', 'mediatype')
                     .coerce_to('array')
                 })
                 .coerce_to('array'),
