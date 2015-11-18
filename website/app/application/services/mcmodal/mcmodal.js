@@ -70,18 +70,16 @@
                 });
                 return modal.result;
             },
-            chooseExistingProcess: function (project) {
+
+            chooseExistingProcess: function (processes) {
                 var modal = $modal.open({
                     size: 'lg',
                     templateUrl: 'application/services/mcmodal/partials/existing-process.html',
                     controller: 'existingProcessController',
                     controllerAs: 'ctrl',
                     resolve: {
-                        project: function () {
-                            return project;
-                        },
                         processes: function () {
-                            return project.processes;
+                            return processes;
                         }
                     }
                 });
