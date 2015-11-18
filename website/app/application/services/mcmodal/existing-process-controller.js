@@ -10,7 +10,7 @@
         ctrl.processes = processes;
 
         function selectProcess(process) {
-            $modalInstance.close(process.id);
+            $modalInstance.close(process);
         }
 
         function dismiss() {
