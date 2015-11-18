@@ -57,6 +57,12 @@
                 process = setUp(template, process);
                 process = samples(process);
                 process = files(process);
+                if (!('output_samples' in process)) {
+                    process.output_samples = [];
+                }
+                if (!('transformed_samples' in process)) {
+                    process.transformed_samples = [];
+                }
                 return process;
             },
 
