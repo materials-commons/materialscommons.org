@@ -30,7 +30,7 @@
 
         function chooseExistingProcess() {
             mcmodal.chooseExistingProcess(ctrl.project).then(function (existingProcess) {
-                $state.go('projects.project.processes.create', {process:  "APT", process_id: existingProcess});
+                $state.go('projects.project.processes.create', {process:  existingProcess.process_name, process_id: existingProcess.id});
             });
         }
     }
