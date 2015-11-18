@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('projectListProcess', projectListProcess);
-    projectListProcess.$inject = ["processes", "project", "$state", "mcmodal", "$filter"];
+    projectListProcess.$inject = ["processes", "project", "templates", "$state", "mcmodal", "$filter"];
 
-    function projectListProcess(processes, project, $state, mcmodal, $filter) {
+    function projectListProcess(processes, project, templates, $state, mcmodal, $filter) {
         var ctrl = this;
 
         ctrl.viewProcess = viewProcess;
@@ -24,7 +24,9 @@
         }
 
         function chooseTemplate() {
-            mcmodal.chooseTemplate(ctrl.project);
+            mcmodal.chooseTemplate(ctrl.project, templates).then(function (processTemplateName) {
+                $state.go('projects.project.processes.create', {process: processTemplateName, process_id: ''});
+            });
         }
     }
 }(angular.module('materialscommons')));
