@@ -34,7 +34,9 @@
                     id: sample.id,
                     name: sample.name,
                     property_set_id: sample.property_set_id,
-                    files: sample.linked_files
+                    files: sample.linked_files,
+                    old_properties: [],
+                    new_properties: []
                 }
             });
             return process;
