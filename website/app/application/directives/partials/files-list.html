@@ -5,15 +5,18 @@
     <table ng-if="files.length !== 0" class="table">
         <thead>
         <tr>
-            <th>File Details</th>
-            <th>Image</th>
+            <th>Details</th>
+            <th>Contents</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="file in files">
             <td>
-                <b><a ui-sref="projects.project.files.edit({file_id: file.id,
-                    file_type: file.type})">{{file.name}}</a></b>
+                <b>
+                    <a ui-sref="projects.project.files.edit({file_id: file.id, file_type: file.type})">
+                        {{file.name}}
+                    </a>
+                </b>
 
                 <div style="padding-bottom: 15px;">
                     <p style="font-size: 12px;padding-bottom: 10px;">
@@ -23,8 +26,8 @@
                     </p>
                 </div>
             </td>
-            <td>
-                <img class="img-thumbnail" height="220" width="220" ng-src={{view.fileSrc(file.id)}}>
+            <td class="col-xs-6">
+                <display-file-contents file="file"></display-file-contents>
             </td>
         </tr>
         </tbody>
