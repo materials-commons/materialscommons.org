@@ -9,7 +9,7 @@
             scope: {
                 file: '=file'
             },
-            templateUrl: 'application/core/projects/project/files/display-file-contents.html'
+            templateUrl: 'application/directives/display-file-contents.html'
         };
     }
 
