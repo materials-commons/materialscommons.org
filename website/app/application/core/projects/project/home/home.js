@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('ProjectHomeController', ProjectHomeController);
-    ProjectHomeController.$inject = ["project", "mcmodal", "templates", "$state"];
+    ProjectHomeController.$inject = ["project", "mcmodal", "templates", "$state", "Restangular"];
 
-    function ProjectHomeController(project, mcmodal, templates, $state) {
+    function ProjectHomeController(project, mcmodal, templates, $state, Restangular) {
         var ctrl = this;
 
         ctrl.project = project;
@@ -16,21 +16,24 @@
 
         function chooseTemplate() {
             mcmodal.chooseTemplate(ctrl.project, templates).then(function (processTemplateName) {
-                $state.go('projects.project.processes.create', {process: processTemplateName});
+                $state.go('projects.project.processes.create', {process: processTemplateName, process_id: ''});
             });
         }
 
         function useTemplate(templateName) {
-            $state.go('projects.project.processes.create', {process: templateName});
+            $state.go('projects.project.processes.create', {process: templateName, process_id: ''});
         }
 
         function createSample() {
-            $state.go('projects.project.processes.create', {process: 'As Received'});
+            $state.go('projects.project.processes.create', {process: 'As Received', process_id: ''});
         }
 
         function chooseExistingProcess() {
-            mcmodal.chooseExistingProcess(ctrl.project).then(function (existingProcess) {
-                $state.go('projects.project.processes.create', {process:  existingProcess.process_name, process_id: existingProcess.id});
+            Restangular.one('v2').one("projects", project.id).one("processes").getList().then(function(processes) {
+                mcmodal.chooseExistingProcess(processes).then(function (existingProcess) {
+                    var processName = existingProcess.process_name ? existingProcess.process_name : 'TEM';
+                    $state.go('projects.project.processes.create', {process: processName, process_id: existingProcess.id});
+                });
             });
         }
     }
