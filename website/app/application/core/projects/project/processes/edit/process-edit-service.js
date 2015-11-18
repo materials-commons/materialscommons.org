@@ -34,7 +34,9 @@
                     id: sample.id,
                     name: sample.name,
                     property_set_id: sample.property_set_id,
-                    files: sample.linked_files
+                    files: sample.linked_files,
+                    old_properties: [],
+                    new_properties: []
                 }
             });
             return process;
@@ -55,6 +57,12 @@
                 process = setUp(template, process);
                 process = samples(process);
                 process = files(process);
+                if (!('output_samples' in process)) {
+                    process.output_samples = [];
+                }
+                if (!('transformed_samples' in process)) {
+                    process.transformed_samples = [];
+                }
                 return process;
             },
 
