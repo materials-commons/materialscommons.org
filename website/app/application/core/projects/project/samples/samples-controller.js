@@ -1,8 +1,8 @@
 (function (module) {
     module.controller("SamplesController", SamplesController);
-    SamplesController.$inject = ["$state", "project", "$filter", "samples", "processTemplates"];
+    SamplesController.$inject = ["$state", "project", "$filter", "samples"];
 
-    function SamplesController($state, project, $filter, samples, processTemplates) {
+    function SamplesController($state, project, $filter, samples) {
         var ctrl = this;
 
         ctrl.project = project;
@@ -24,9 +24,7 @@
         }
 
         function createSample() {
-            var template = processTemplates.getTemplateByName('As Received');
-            processTemplates.setActiveTemplate(template);
-            $state.go('projects.project.processes.create');
+            $state.go('projects.project.processes.create', {process: 'As Received', process_id: ''});
         }
     }
 }(angular.module('materialscommons')));
