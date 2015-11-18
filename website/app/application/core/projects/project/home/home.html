@@ -11,7 +11,7 @@
                         <li class="text-uppercase dropdown-submenu">
                             <a>Process</a>
                             <ul class="dropdown-menu">
-                                <li class="text-uppercase dropdown-submenu">
+                                <li class="text-uppercase dropdown-submenu" ng-if="(ctrl.templates | filter:{favorite:true}).length">
                                     <a>From Favorite</a>
                                     <ul class="dropdown-menu">
                                         <li ng-repeat="template in ctrl.templates | filter:{favorite:true} | orderBy:'name'"
