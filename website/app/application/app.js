@@ -228,6 +228,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                             template = t.create();
                             template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
                             return Restangular.one('process').one('details', $stateParams.process_id).get().then(function (process) {
+                                process.name = template.name;
                                 return processEdit.fillProcess(template, process);
                             });
                         } else {
