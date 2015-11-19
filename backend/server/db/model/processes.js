@@ -60,7 +60,6 @@ module.exports = function (r) {
     // updateProcessSetup updates the setupproperties table entries. It assumes
     // that the list of properties already exists.
     function* updateProcessSetup(setupProperties) {
-        console.log('updateProcessSetup', setupProperties);
         let rql = r.table('setupproperties').insert(setupProperties, {conflict: "update"});
         yield dbExec(rql);
     }
@@ -84,13 +83,12 @@ module.exports = function (r) {
     // updateFiles adds or deletes files from the process
     function* updateFiles(processID, files, direction) {
         let filesToAdd = files.filter(f => f.command == 'add').
-            map(f => new model.Process2File(processID, f.id, direction));
-        let filesToDelete = files.filter(f => f.command == 'delete').map(f => f.id);
-
+        map(f => new model.Process2File(processID, f.id, direction));
         if (filesToAdd.length) {
             yield addFilesToProcess(filesToAdd);
         }
 
+        let filesToDelete = files.filter(f => f.command == 'delete').map(f => f.id);
         if (filesToDelete.length) {
             yield deleteFilesFromProcess(processID, filesToDelete);
         }
@@ -106,35 +104,41 @@ module.exports = function (r) {
     // deleteFilesFromProcess deletes files from a process
     // TODO: Handle files that are also mapped to a sample through this process
     function* deleteFilesFromProcess(processID, files) {
-        console.log('deleteFilesFromProcess', processID, files);
-        let rv = yield r.table('process2file').getAll(r.args(files), {index: 'datafile_id'}).
-            filter({process_id: processID}).
-            delete();
-        console.log(' rv =', rv);
+        yield r.table('process2file').getAll(r.args(files), {index: 'datafile_id'})
+            .filter({process_id: processID})
+            .delete();
     }
 
     function* updateSamples(processID, samples) {
-        let samplesToAdd = samples.filter(s => s.command === 'add').
-            map(s => new model.Process2Sample(processID, s.id, s.property_set_id, 'in'));
-        let addRql = r.table('process2sample').insert(samplesToAdd);
-        yield dbExec(addRql);
+        let samplesToAdd = samples.filter(s => s.command === 'add')
+            .map(s => new model.Process2Sample(processID, s.id, s.property_set_id, 'in'));
+        if (samplesToAdd.length) {
+            let addRql = r.table('process2sample').insert(samplesToAdd);
+            yield dbExec(addRql);
+        }
 
         let samplesToDelete = samples.filter(s => s.command == 'delete').map(s => [processID, s.id, s.property_set_id]);
-        let deleteRql = r.table('process2sample').
+        if (samplesToDelete.length) {
+            let deleteRql = r.table('process2sample').
             getAll(r.args(samplesToDelete), {index: 'process_sample_property_set'}).delete();
-        yield dbExec(deleteRql);
+            yield dbExec(deleteRql);
+        }
     }
 
     function* updateSampleFiles(sampleFiles) {
-        let fileSamplesToAdd = sampleFiles.filter(s => s.command === 'add').
-            map(s => new model.Sample2Datafile(s.id, s.file_id));
-        let addRql = r.table('sample2datafile').insert(fileSamplesToAdd);
-        yield dbExec(addRql);
+        let fileSamplesToAdd = sampleFiles.filter(s => s.command === 'add')
+            .map(s => new model.Sample2Datafile(s.id, s.file_id));
+        if (fileSamplesToAdd.length) {
+            let addRql = r.table('sample2datafile').insert(fileSamplesToAdd);
+            yield dbExec(addRql);
+        }
 
         let fileSamplesToDelete = sampleFiles.filter(s => s.command === 'delete').map(s => [s.id, s.file_id]);
-        let deleteRql = r.table('sample2datafile').
-            getAll(r.args(fileSamplesToDelete), {index: 'sample_file'}).delete();
-        yield dbExec(deleteRql);
+        if (fileSamplesToDelete.length) {
+            let deleteRql = r.table('sample2datafile')
+                .getAll(r.args(fileSamplesToDelete), {index: 'sample_file'}).delete();
+            yield dbExec(deleteRql);
+        }
     }
 
     function* get(processID) {
@@ -145,51 +149,51 @@ module.exports = function (r) {
 
     function* getList(projectID) {
         let rql = processDetailsRql(r.table('project2process').getAll(projectID, {index: 'project_id'}).
-            eqJoin('process_id', r.table('processes')).zip());
-        let processes =  yield dbExec(rql);
+        eqJoin('process_id', r.table('processes')).zip());
+        let processes = yield dbExec(rql);
         return {val: processes};
     }
 
     function processDetailsRql(rql) {
-        return rql.merge(function(process) {
+        return rql.merge(function (process) {
             return {
                 setup: r.table('process2setup').getAll(process('id'), {index: 'process_id'}).
-                    eqJoin('setup_id', r.table('setups')).zip().
-                    merge(function(setup) {
+                eqJoin('setup_id', r.table('setups')).zip().
+                merge(function (setup) {
+                    return {
+                        properties: r.table('setupproperties')
+                            .getAll(setup('setup_id'), {index: 'setup_id'})
+                            .coerceTo('array')
+                    }
+                }).coerceTo('array'),
+                samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
+                    .eqJoin('sample_id', r.table('samples')).zip().
+                    merge(function (sample) {
                         return {
-                            properties: r.table('setupproperties').
-                                getAll(setup('setup_id'), {index: 'setup_id'}).
-                                coerceTo('array')
-                        }
-                    }).coerceTo('array'),
-                samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'}).
-                    eqJoin('sample_id', r.table('samples')).zip().
-                    merge(function(sample) {
-                        return {
-                            properties: r.table('propertyset2property').
-                                getAll(sample('property_set_id'), {index: 'property_set_id'}).
-                                eqJoin('property_id', r.table('properties')).zip().
-                                orderBy('name').
-                                merge(function (property) {
+                            properties: r.table('propertyset2property')
+                                .getAll(sample('property_set_id'), {index: 'property_set_id'})
+                                .eqJoin('property_id', r.table('properties')).zip()
+                                .orderBy('name')
+                                .merge(function (property) {
                                     return {
-                                        best_measure: r.table('best_measure_history').
-                                            getAll(property('best_measure_id')).
-                                            eqJoin('measurement_id', r.table('measurements')).
-                                            zip().coerceTo('array')
+                                        best_measure: r.table('best_measure_history')
+                                            .getAll(property('best_measure_id'))
+                                            .eqJoin('measurement_id', r.table('measurements'))
+                                            .zip().coerceTo('array')
                                     }
                                 }).coerceTo('array'),
-                            files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'}).
-                                eqJoin('datafile_id', r.table('datafiles')).zip().pluck('id', 'name').
-                                coerceTo('array')
+                            files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
+                                .eqJoin('datafile_id', r.table('datafiles')).zip().pluck('id', 'name')
+                                .coerceTo('array')
                         }
                     }).coerceTo('array'),
-                input_files : r.table('process2file').getAll(process('id'), {index: 'process_id'}).
-                    filter({direction: 'in'}).
-                    eqJoin('datafile_id', r.table('datafiles'))
+                input_files: r.table('process2file').getAll(process('id'), {index: 'process_id'})
+                    .filter({direction: 'in'})
+                    .eqJoin('datafile_id', r.table('datafiles'))
                     .zip().coerceTo('array'),
-                output_files: r.table('process2file').getAll(process('id'), {index: 'process_id'}).
-                    filter({direction: 'out'}).
-                    eqJoin('datafile_id', r.table('datafiles'))
+                output_files: r.table('process2file').getAll(process('id'), {index: 'process_id'})
+                    .filter({direction: 'out'})
+                    .eqJoin('datafile_id', r.table('datafiles'))
                     .zip().coerceTo('array')
             }
         });
@@ -205,7 +209,8 @@ module.exports = function (r) {
      * @returns {Object} - The new process created from the definition.
      */
     function *create(process) {
-        let p = new model.Process(process.name, process.owner, process._type, process.what, process.why, process.does_transform, process.process_name);
+        let p = new model.Process(process.name, process.owner, process._type, process.what,
+            process.why, process.does_transform, process.process_name);
         let proc = yield addProcess(process.project_id, p);
         let settings = yield addProcessSetup(proc.id, process.setup);
         yield addSampleMeasurements(proc.id, process.input_samples);
@@ -258,8 +263,8 @@ module.exports = function (r) {
             setup.properties = [];
             for (let j = 0; j < current.properties.length; j++) {
                 let p = current.properties[j].property;
-                let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute, p._type, p.value,
-                    p.unit);
+                let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
+                    p._type, p.value, p.unit);
                 let sprop = yield db.insert('setupproperties', prop);
                 setup.properties.push(sprop);
             }
@@ -362,7 +367,8 @@ module.exports = function (r) {
             let inserted = yield db.insert('properties', p);
             let ps2p = new model.PropertySet2Property(inserted.id, psetID);
             yield db.insert('propertyset2property', ps2p);
-            let measurements = yield addPropertyMeasurements(inserted.id, current.name, current.attribute, sampleID, current.measurements);
+            let measurements = yield addPropertyMeasurements(inserted.id, current.name, current.attribute,
+                sampleID, current.measurements);
             created.push.apply(created, measurements);
         }
         return created;
@@ -498,7 +504,7 @@ module.exports = function (r) {
             let oldPSetID = current.property_set_id;
             yield r.table('sample2propertyset').getAll(oldPSetID, {index: 'property_set_id'}).update({current: false});
             yield r.table('propertysets').getAll(oldPSetID).update({current: false});
-            yield fillAttributeSet(asetCreated.id, current.shares, current.uses, current.unknowns, processID);
+            yield fillAttributeSet(asetCreated.id, current.shares, current.uses, current.unknowns);
             let proc2sample = new model.Process2Sample(processID, current.sample_id, asetCreated.id, 'out');
             yield db.insert('process2sample', proc2sample);
         }
@@ -614,8 +620,7 @@ module.exports = function (r) {
      */
     function *attachMeasurements(newAttrID, fromAttrID) {
         // Get original attributes measurements
-        let rql = r.table('property2measurement')
-            .getAll(fromAttrID, {index: 'property_id'});
+        let rql = r.table('property2measurement').getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
         // Change id to newAttrID and insert into table
         original.forEach(function (m) {
@@ -634,8 +639,7 @@ module.exports = function (r) {
      */
     function *attachBestMeasureHistory(newAttrID, fromAttrID) {
         // Get original attributes best measure history
-        let rql = r.table('best_measure_history')
-            .getAll(fromAttrID, {index: 'property_id'});
+        let rql = r.table('best_measure_history').getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
 
         // Change to newAttrID and insert
