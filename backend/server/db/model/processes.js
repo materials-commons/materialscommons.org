@@ -12,9 +12,10 @@
 module.exports = function (r) {
     'use strict';
 
-    let model = require('./model')(r);
-    let db = require('./db')(r);
-    let dbExec = require('./run');
+    const model = require('./model')(r);
+    const db = require('./db')(r);
+    const dbExec = require('./run');
+    const _ = require('lodash');
 
     return {
         update: update,
@@ -127,18 +128,31 @@ module.exports = function (r) {
 
     function* updateSampleFiles(sampleFiles) {
         let fileSamplesToAdd = sampleFiles.filter(s => s.command === 'add')
-            .map(s => new model.Sample2Datafile(s.id, s.file_id));
+            .map(s => new model.Sample2Datafile(s.sample_id, s.id));
+        fileSamplesToAdd = yield removeExistingSampleFileEntries(fileSamplesToAdd);
         if (fileSamplesToAdd.length) {
             let addRql = r.table('sample2datafile').insert(fileSamplesToAdd);
             yield dbExec(addRql);
         }
 
-        let fileSamplesToDelete = sampleFiles.filter(s => s.command === 'delete').map(s => [s.id, s.file_id]);
+        let fileSamplesToDelete = sampleFiles.filter(s => s.command === 'delete').map(s => [s.sample_id, s.id]);
         if (fileSamplesToDelete.length) {
             let deleteRql = r.table('sample2datafile')
                 .getAll(r.args(fileSamplesToDelete), {index: 'sample_file'}).delete();
             yield dbExec(deleteRql);
         }
+    }
+
+    // removeExistingSampleFileEntries removes file entries for the given sample that
+    // are already associated with the sample.
+    function* removeExistingSampleFileEntries(sampleFileEntries) {
+        if (sampleFileEntries.length) {
+            let indexEntries = sampleFileEntries.map(entry => [entry.sample_id, entry.datafile_id]);
+            let matchingEntries = yield r.table('sample2datafile').getAll(r.args(indexEntries), {index: 'sample_file'});
+            var byFileID = _.indexBy(matchingEntries, 'datafile_id');
+            return sampleFileEntries.filter(entry => (!(entry.datafile_id in byFileID)));
+        }
+        return sampleFileEntries;
     }
 
     function* get(processID) {
@@ -148,8 +162,8 @@ module.exports = function (r) {
     }
 
     function* getList(projectID) {
-        let rql = processDetailsRql(r.table('project2process').getAll(projectID, {index: 'project_id'}).
-        eqJoin('process_id', r.table('processes')).zip());
+        let rql = processDetailsRql(r.table('project2process')
+            .getAll(projectID, {index: 'project_id'}).eqJoin('process_id', r.table('processes')).zip());
         let processes = yield dbExec(rql);
         return {val: processes};
     }
@@ -157,8 +171,8 @@ module.exports = function (r) {
     function processDetailsRql(rql) {
         return rql.merge(function (process) {
             return {
-                setup: r.table('process2setup').getAll(process('id'), {index: 'process_id'}).
-                eqJoin('setup_id', r.table('setups')).zip().
+                setup: r.table('process2setup').getAll(process('id'), {index: 'process_id'})
+                    .eqJoin('setup_id', r.table('setups')).zip().
                 merge(function (setup) {
                     return {
                         properties: r.table('setupproperties')
@@ -314,13 +328,14 @@ module.exports = function (r) {
         }
     }
 
-    // addSetupFiles adds the files used in setup to the database.
     function *addSample2File(sampleID, files) {
         let toAdd = [];
         files.forEach(file => {
             let s2f = new model.Sample2Datafile(sampleID, file.id);
             toAdd.push(s2f);
         });
+
+        toAdd = yield removeExistingSampleFileEntries(toAdd);
 
         let created = [];
         if (toAdd.length !== 0) {
