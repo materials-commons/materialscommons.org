@@ -146,16 +146,16 @@ module.exports = function (r) {
     function* getList(projectID) {
         let rql = processDetailsRql(r.table('project2process').getAll(projectID, {index: 'project_id'}).
             eqJoin('process_id', r.table('processes')).zip());
-        let processes =  yield dbExec(rql);
+        let processes = yield dbExec(rql);
         return {val: processes};
     }
 
     function processDetailsRql(rql) {
-        return rql.merge(function(process) {
+        return rql.merge(function (process) {
             return {
                 setup: r.table('process2setup').getAll(process('id'), {index: 'process_id'}).
                     eqJoin('setup_id', r.table('setups')).zip().
-                    merge(function(setup) {
+                    merge(function (setup) {
                         return {
                             properties: r.table('setupproperties').
                                 getAll(setup('setup_id'), {index: 'setup_id'}).
@@ -164,7 +164,7 @@ module.exports = function (r) {
                     }).coerceTo('array'),
                 samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'}).
                     eqJoin('sample_id', r.table('samples')).zip().
-                    merge(function(sample) {
+                    merge(function (sample) {
                         return {
                             properties: r.table('propertyset2property').
                                 getAll(sample('property_set_id'), {index: 'property_set_id'}).
@@ -183,7 +183,7 @@ module.exports = function (r) {
                                 coerceTo('array')
                         }
                     }).coerceTo('array'),
-                input_files : r.table('process2file').getAll(process('id'), {index: 'process_id'}).
+                input_files: r.table('process2file').getAll(process('id'), {index: 'process_id'}).
                     filter({direction: 'in'}).
                     eqJoin('datafile_id', r.table('datafiles'))
                     .zip().coerceTo('array'),
