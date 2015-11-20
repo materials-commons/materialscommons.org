@@ -118,9 +118,6 @@ a:hover, a:visited {
 
 /* Display contents in cards */
 
-.main {
-  /*background-color: #ffffff;*/
-}
 
 .sidebar {
   border-left: none;
@@ -161,10 +158,6 @@ a:hover, a:visited {
 
 .sidebar .counts{
   font-size: 0.9rem;
-}
-
-.padding-left-15{
-  padding-left: 15px;
 }
 
 .text-light{
@@ -1181,5 +1174,15 @@ li.dashboard-item div p {
   -moz-border-radius: 6px 0 6px 6px;
   border-radius: 6px 0 6px 6px;
 }
+
+
+.padding-left-15{
+  padding-left: 15px;
+}
+
+.padding-top-20{
+  padding-top: 20px;
+}
+
 
 
