@@ -1,6 +1,6 @@
 <ul class="list-inline no-bottom-margin">
     <li>
-        <h3 class="file-color" ng-if="!ctrl.renameActive"><i class="fa fa-fw fa-file"></i> {{ctrl.file.name}}</h3>
+        <h3 class="h3custom" ng-if="!ctrl.renameActive"><i class="fa fa-fw fa-file"></i> {{ctrl.file.name}}</h3>
             <span ng-if="ctrl.renameActive">
                 <input type="text" class="section-as-margin" ng-model="ctrl.newName" on-enter="ctrl.renameFile()">
                 <button class="btn btn-files" ng-click="ctrl.renameFile()">Done</button>

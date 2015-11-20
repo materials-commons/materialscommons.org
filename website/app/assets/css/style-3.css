@@ -133,7 +133,7 @@ a:hover, a:visited {
   height: auto;
   border-radius: 0;
   border-left: none;
-  padding: 10px 20px 10px 30px;
+  padding: 10px 20px 10px 20px;
 }
 
 .sidebar .list-group-item.active {

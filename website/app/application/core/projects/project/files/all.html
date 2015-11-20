@@ -1,18 +1,31 @@
 <div class="row">
-    <div class="col-xs-3 card card-dark card-left card-side-bar padding">
+    <div class="col-xs-3 sidebar">
         <div class="row">
-            <div class="">
-                <h4 class="file-color text-uppercase text-center">file tree</h4>
+            <h4 class="file-color text-uppercase text-center">file tree</h4>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <input placeholder="Search all..." class="form-control" ng-model="search">
             </div>
         </div>
+        <br>
+
         <div class="row">
             <file-upload-panel></file-upload-panel>
         </div>
-        <div ng-if="files.gridShowingFlag" ag-grid="files.gridOptions"
-             class="ag-file-browser">
+        <div class="row">
+            <div class="col-sm-12">
+                <div ng-if="files.gridShowingFlag" ag-grid="files.gridOptions"
+                     class="ag-file-browser">
+                </div>
+            </div>
         </div>
-        <div ng-if="!files.gridShowingFlag" ag-grid="files.gridOptions"
-             class="ag-file-browser">
+        <div class="row">
+            <div class="col-sm-12">
+                <div ng-if="!files.gridShowingFlag" ag-grid="files.gridOptions"
+                     class="ag-file-browser">
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-xs-9 no-padding">

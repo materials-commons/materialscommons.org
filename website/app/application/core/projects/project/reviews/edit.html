@@ -1,10 +1,23 @@
-<div class="row">
-    <div class="col-xs-12 card card-right">
-        <div ng-if="review.status === 'closed'" class="row">
+<div class="row detail-content">
+    <h3 class="h3custom">{{review.title}}</h3>
+    <!--<div class="col-xs-12 card card-right">-->
+    <ul class="row text-light list-inline">
+        <li><i class="fa fa-calendar"></i>{{view.process.birthtime | toDateString}}</li>
+        <li><i class="fa fa-user"></i>{{view.process.owner}}</li>
+        <li><i class="fa fa-file"></i>
+            <span ng-if="view.process.does_transform">{{view.process.process_name}} (Transforms)</span>
+            <span ng-if="!view.process.does_transform">{{view.process.process_name}}  (Does not Transform)</span></li>
+        <li class="pull-right">
+            <button class="btn btn-info">Edit</button>
+            <button class="btn btn-danger">Delete</button>
+        </li>
+    </ul>
+    <br><br>
+
+    <div ng-if="review.status === 'closed'" class="row">
             <i ng-class="{'fa-minus-circle review-closed': review.status === 'closed'}" class="fa fa-fw"></i><span
                 class="review headings" style="color: #e57373">closed</span>
         </div>
-         <h2 class="review">{{review.title}}</h2>
 
         <div class="row">
             <div class="col-xs-5">
@@ -102,5 +115,5 @@
                 AND ARCHIVE</a>
             </div>
         </div>
-    </div>
+    <!--</div>-->
 </div>
