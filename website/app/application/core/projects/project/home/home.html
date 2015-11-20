@@ -11,7 +11,8 @@
                         <li class="text-uppercase dropdown-submenu">
                             <a>Process</a>
                             <ul class="dropdown-menu">
-                                <li class="text-uppercase dropdown-submenu" ng-if="(ctrl.templates | filter:{favorite:true}).length">
+                                <li class="text-uppercase dropdown-submenu"
+                                    ng-if="(ctrl.templates | filter:{favorite:true}).length">
                                     <a>From Favorite</a>
                                     <ul class="dropdown-menu">
                                         <li ng-repeat="template in ctrl.templates | filter:{favorite:true} | orderBy:'name'"
@@ -40,33 +41,41 @@
             </li>
             <li class="dashboard-item">
                 <div class="text-uppercase">
-                    <div class="circle process-color-bg center-block">
+                    <a class="circle process-color-bg center-block"
+                       ui-sref="projects.project.processes.list">
                         <span>{{ctrl.project.processes.length | number}}</span>
-                    </div>
+                    </a>
+
                     <p>processes</p>
                 </div>
             </li>
             <li class="dashboard-item">
                 <div class="text-uppercase">
-                    <div class="circle sample-color-bg center-block">
+                    <a class="circle sample-color-bg center-block"
+                       ui-sref="projects.project.samples.list">
                         <span>{{ctrl.project.samples.length | number}}</span>
-                    </div>
+                    </a>
+
                     <p>samples</p>
                 </div>
             </li>
             <li class="dashboard-item">
                 <div class="text-uppercase">
-                    <div class="circle file-color-bg center-block">
+                    <a class="circle file-color-bg center-block"
+                       ui-sref="projects.project.files.all">
                         <span>{{ctrl.project.file_count | number}}</span>
-                    </div>
+                    </a>
+
                     <p>files</p>
                 </div>
             </li>
             <li class="dashboard-item">
                 <div class="text-uppercase">
-                    <div class="circle review-color-bg center-block">
+                    <a class="circle review-color-bg center-block"
+                       ui-sref="projects.project.reviews">
                         <span>{{ctrl.project.reviews.length | number}}</span>
-                    </div>
+                    </a>
+
                     <p>reviews</p>
                 </div>
             </li>
