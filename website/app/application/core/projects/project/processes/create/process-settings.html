@@ -1,5 +1,6 @@
 <div>
     <h4>Process Setup</h4>
+
     <div class="row" ng-form="settingForm" ng-repeat="setting in settings">
         <div ng-switch="setting.property._type">
             <!--------- number --------->
@@ -22,18 +23,15 @@
                         <div ng-if="mainSettingForm.$submitted || mainSettingForm.$touched"
                              ng-messages="settingForm.numberInput.$error" class="errors">
                             <div ng-message="number">Please enter number.</div>
-                            <div ng-message="required">Its a required field.</div>
+                            <div ng-message="required">This is a required field.</div>
                         </div>
                     </div>
                     <span ng-if="setting.property.units.length === 0">{{::setting.property.unit}}</span>
                         <span class="col-xs-4" ng-if="setting.property.units.length !== 0">
                             <select ng-model="setting.property.unit" data-placeholder="Choose"
                                     class="form-control"
+                                    ng-options="unit for unit in setting.property.units"
                                     ng-required="setting.property.required">
-                                <option value="{{choice}}"
-                                        ng-repeat="choice in setting.property.units">
-                                    {{ choice }}
-                                </option>
                             </select>
                         </span>
                     <span class="help-block">{{::setting.property.description}}</span>
@@ -41,17 +39,22 @@
             </div>
 
             <!--------- selection --------->
-            <div ng-switch-when="selection"><label class="col-xs-4 control-label"> {{::setting.property.name}}
-                <i ng-if="setting.property.required" class="fa fa-asterisk text-danger"></i> </label>
+            <div ng-switch-when="selection">
+                <label class="col-xs-4 control-label">
+                    {{::setting.property.name}}
+                    <i ng-if="setting.property.required" class="fa fa-asterisk text-danger"></i>
+                </label>
 
                 <div class="col-xs-6">
-                    <div class="col-xs-8"><select ng-model="setting.property.value" data-placeholder="Choose"
-                                                  name="selectInput" class="form-control"
-                                                  ng-required="setting.property.required">
-                        <option value="{{choice.value}}" ng-repeat="choice in setting.property.choices">
-                            {{ choice.name }}
-                        </option>
-                    </select>
+                    <div class="col-xs-8">
+                        <select ng-model="setting.property.value" data-placeholder="Choose"
+                                name="selectInput" class="form-control"
+                                ng-options="choice as choice.name for choice in setting.property.choices track by choice.value"
+                                ng-required="setting.property.required">
+                            <!--<option value="{{choice.value}}" ng-repeat="choice in setting.property.choices">-->
+                                <!--{{choice.name}}-->
+                            <!--</option>-->
+                        </select>
 
                         <div ng-if="mainSettingForm.$submitted || mainSettingForm.$touched"
                              ng-messages="settingForm.selectInput.$error" class="errors">
