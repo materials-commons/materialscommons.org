@@ -162,8 +162,8 @@ module.exports = function (r) {
     }
 
     function* getList(projectID) {
-        let rql = processDetailsRql(r.table('project2process')
-            .getAll(projectID, {index: 'project_id'}).eqJoin('process_id', r.table('processes')).zip());
+        let rql = processDetailsRql(r.table('project2process').getAll(projectID, {index: 'project_id'})
+            .eqJoin('process_id', r.table('processes')).zip());
         let processes = yield dbExec(rql);
         return {val: processes};
     }
@@ -172,17 +172,18 @@ module.exports = function (r) {
         return rql.merge(function (process) {
             return {
                 setup: r.table('process2setup').getAll(process('id'), {index: 'process_id'})
-                    .eqJoin('setup_id', r.table('setups')).zip().
-                merge(function (setup) {
-                    return {
-                        properties: r.table('setupproperties')
-                            .getAll(setup('setup_id'), {index: 'setup_id'})
-                            .coerceTo('array')
-                    }
-                }).coerceTo('array'),
+                    .eqJoin('setup_id', r.table('setups')).zip()
+                    .merge(function (setup) {
+                        return {
+                            properties: r.table('setupproperties')
+                                .getAll(setup('setup_id'), {index: 'setup_id'})
+                                .coerceTo('array')
+                        }
+                    }).coerceTo('array'),
+
                 samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
-                    .eqJoin('sample_id', r.table('samples')).zip().
-                    merge(function (sample) {
+                    .eqJoin('sample_id', r.table('samples')).zip()
+                    .merge(function (sample) {
                         return {
                             properties: r.table('propertyset2property')
                                 .getAll(sample('property_set_id'), {index: 'property_set_id'})
