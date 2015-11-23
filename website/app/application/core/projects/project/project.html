@@ -6,13 +6,14 @@
 
     <div class="project-content">
         <div ng-if="project.loaded" class="row">
-            <div ng-class="{'col-sm-12': project.isExpanded('help'), 'col-sm-4': !project.isExpanded('help') && project.showHelp()}"
+            <div class="no-padding"  ng-class="{'col-sm-12': project.isExpanded('help'), 'col-sm-4': !project.isExpanded('help')
+             && project.showHelp()}"
                  ng-if="project.showHelp()">
                 <userguide></userguide>
             </div>
-            <div ng-class="{'col-sm-8': project.showHelp(), 'col-sm-12': !project.showHelp()}"
+            <div class="no-padding" ng-class="{'col-sm-8': project.showHelp(), 'col-sm-12': !project.showHelp()}"
                  ng-if="!project.isExpanded('help')">
-                <div ui-view></div>
+                <div ui-view class="child-div-selector" ng-style="{height: project.windowHeight}"></div>
             </div>
         </div>
     </div>
