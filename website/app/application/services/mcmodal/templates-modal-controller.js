@@ -51,6 +51,7 @@
                 return t.name;
             });
             mcmodal.preFill(templateDetails, existingTemplateNames).then(function (t) {
+                console.dir(t.setup.settings[0]);
                 Restangular.one('v2').one('projects', project.id)
                     .customPUT({
                         process_templates: [
@@ -58,7 +59,15 @@
                                 command: 'add',
                                 template: {
                                     name: t.name,
-                                    setup: t.setup.settings[0],
+                                    setup: t.setup.settings[0].map(function(setting) {
+                                        return {
+                                            name: setting.property.name,
+                                            attribute: setting.property.attribute,
+                                            unit: setting.property.unit,
+                                            value: setting.property.value,
+                                            _type: setting.property._type
+                                        };
+                                    }),
                                     process_name: t.process_name
                                 }
                             }
