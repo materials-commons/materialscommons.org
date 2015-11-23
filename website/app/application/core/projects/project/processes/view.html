@@ -1,7 +1,8 @@
 <div class="row detail-content">
     <h3 class="h3custom">{{view.process.name}}</h3>
     <ul class="text-light list-inline">
-        <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-calendar"></i>{{view.process.birthtime | toDateString}}</li>
+        <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-calendar"></i>{{view.process.birthtime | toDateString}}
+        </li>
         <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-user"></i>{{view.process.owner}}</li>
         <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-file"></i>
             <span ng-if="view.process.does_transform">{{view.process.process_name}} (Transforms)</span>
@@ -22,6 +23,7 @@
         </div>
     </div>
     <br>
+
     <div class="row">
         <detail-tabs item="view.process"></detail-tabs>
     </div>
