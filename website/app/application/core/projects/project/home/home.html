@@ -15,11 +15,15 @@
                                     <li class="text-uppercase dropdown-submenu">
                                         <a>From Favorite</a>
                                         <ul class="dropdown-menu">
-                                            <li ng-repeat="template in ctrl.templates | filter:{favorite:true} | orderBy:'name'"
+                                            <li ng-if="ctrl.hasFavorites()"
+                                                ng-repeat="template in ctrl.templates | filter:{favorite:true} | orderBy:'name'"
                                                 class="text-uppercase">
-                                                <a ng-click="ctrl.useTemplate(template.name)">
+                                                <a ui-sref="projects.project.processes.create({process: template.name, process_id: ''})">
                                                     {{template.name}} <span ng-if="template.prefill">(PF)</span>
                                                 </a>
+                                            </li>
+                                            <li ng-if="!ctrl.hasFavorites()">
+                                                No favorites defined
                                             </li>
                                         </ul>
                                     </li>
@@ -31,7 +35,9 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li ng-click="ctrl.createSample()" class="text-uppercase"><a href="#">Sample</a></li>
+                            <li class="text-uppercase">
+                                <a ui-sref="projects.project.processes.create({process: 'As Received', process_id: ''})">Sample</a>
+                            </li>
                             <li ng-if="false" class="text-uppercase">
                                 <a href="#">File</a>
                             </li>

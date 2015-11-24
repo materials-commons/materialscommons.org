@@ -8,9 +8,8 @@
         ctrl.project = project;
         ctrl.chooseTemplate = chooseTemplate;
         ctrl.chooseExistingProcess = chooseExistingProcess;
-        ctrl.createSample = createSample;
-        ctrl.useTemplate = useTemplate;
         ctrl.templates = templates;
+        ctrl.hasFavorites = _.partial(_.any, ctrl.templates, _.matchesProperty('favorite', true));
 
         /////////////////////////
 
@@ -18,14 +17,6 @@
             mcmodal.chooseTemplate(ctrl.project, templates).then(function (processTemplateName) {
                 $state.go('projects.project.processes.create', {process: processTemplateName, process_id: ''});
             });
-        }
-
-        function useTemplate(templateName) {
-            $state.go('projects.project.processes.create', {process: templateName, process_id: ''});
-        }
-
-        function createSample() {
-            $state.go('projects.project.processes.create', {process: 'As Received', process_id: ''});
         }
 
         function chooseExistingProcess() {
