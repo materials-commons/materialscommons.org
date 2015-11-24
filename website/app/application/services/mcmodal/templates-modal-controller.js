@@ -40,8 +40,8 @@
                             }
                         ]
                     }).then(function () {
-                        processTemplates.replace(ctrl.templates, t);
-                    });
+                    processTemplates.replace(ctrl.templates, t);
+                });
             });
         }
 
@@ -51,20 +51,18 @@
                 return t.name;
             });
             mcmodal.preFill(templateDetails, existingTemplateNames).then(function (t) {
-                console.dir(t.setup.settings[0]);
-                Restangular.one('v2').one('projects', project.id)
-                    .customPUT({
+                Restangular.one('v2').one('projects', project.id).customPUT({
                         process_templates: [
                             {
                                 command: 'add',
                                 template: {
                                     name: t.name,
-                                    setup: t.setup.settings[0].map(function(setting) {
+                                    setup: t.setup.settings[0].properties.map(function (setting) {
                                         return {
                                             name: setting.property.name,
                                             attribute: setting.property.attribute,
                                             unit: setting.property.unit,
-                                            value: setting.property.value,
+                                            value: setting.property.value == null ? "" : setting.property.value,
                                             _type: setting.property._type
                                         };
                                     }),
@@ -72,7 +70,8 @@
                                 }
                             }
                         ]
-                    }).then(function () {
+                    })
+                    .then(function () {
                         processTemplates.add(ctrl.templates, t);
                     });
             });
@@ -93,12 +92,12 @@
                         ]
                     }
                 }).then(function () {
-                    if (command == 'add') {
-                        User.addToFavorites(project.id, template.name);
-                    } else {
-                        User.removeFromFavorites(project.id, template.name);
-                    }
-                });
+                if (command == 'add') {
+                    User.addToFavorites(project.id, template.name);
+                } else {
+                    User.removeFromFavorites(project.id, template.name);
+                }
+            });
         }
 
         function selectTemplate(template) {
