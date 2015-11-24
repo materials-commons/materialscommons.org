@@ -156,7 +156,15 @@
                     var t = new templateCopy.fn();
                     t.name = templateCopy.name;
                     t.prefill = true;
-                    t.setup.settings[0].properties = angular.copy(processTemplate.setup.properties);
+                    var templatePropertiesByName = _.indexBy(processTemplate.setup, 'name');
+                    t.setup.settings[0].properties.forEach(function(prop) {
+                        if (prop.property.name in templatePropertiesByName) {
+                            var propSetup = templatePropertiesByName[prop.property.name];
+                            prop.property.unit = propSetup.unit;
+                            prop.property.value = propSetup.value;
+                        }
+                    });
+                    //t.setup.settings[0].properties = angular.copy(processTemplate.setup.properties);
                     return t;
                 };
                 return templateCopy;
@@ -221,14 +229,6 @@
 
                 templates.push(t);
                 return true;
-            },
-
-            byName: function(name) {
-                var t = self.templatesByName[name];
-                t.create = function() {
-                    return new t.fn();
-                };
-                return t;
             }
         };
     }
