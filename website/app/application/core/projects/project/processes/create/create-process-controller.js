@@ -1,10 +1,10 @@
 (function (module) {
     module.controller('CreateProcessController', CreateProcessController);
     CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems",
-        "template", "$modal", "processEdit", "$previousState"];
+        "template", "$modal", "processEdit", "$previousState", "$state"];
 
     function CreateProcessController(Restangular, $stateParams, selectItems, template,
-                                     $modal, processEdit, $previousState) {
+                                     $modal, processEdit, $previousState, $state) {
         var ctrl = this;
         ctrl.process = template;
         ctrl.chooseSamples = chooseSamples;
@@ -13,6 +13,7 @@
         ctrl.linkFilesToSample = linkFilesToSample;
         ctrl.cancel = cancel;
         ctrl.submit = submit;
+        ctrl.submitAndAnother = submitAndAnother;
         ctrl.remove = removeById;
 
         /////////////////////////
@@ -59,6 +60,13 @@
 
         function cancel() {
             $previousState.go();
+        }
+
+        function submitAndAnother() {
+            Restangular.one('v2').one('projects', $stateParams.id).one('processes').customPOST(ctrl.process)
+                .then(function(p) {
+                    $state.go('projects.project.processes.create', {process: p.process_name, process_id: p.id});
+                });
         }
 
         function submit() {
