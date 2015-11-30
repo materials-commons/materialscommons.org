@@ -2768,10 +2768,10 @@ templates.forEach(function(t) {
     t2.setup.settings[0].properties.forEach(function(prop) {
         propnames = propnames + prop.property.name;
     });
-    console.log('adding ', propnames + ':' + t.name);
+    //console.log('adding ', propnames + ':' + t.name);
     templatesByProperties[propnames] = t.name;
 });
-console.log(templatesByProperties);
+//console.log(templatesByProperties);
 
 var ropts = {
     db: 'materialscommons',
@@ -2789,21 +2789,30 @@ r.table('processes').eqJoin('id', r.table('process2setup'), {index: 'process_id'
     }).then(function(processes) {
         var foundCount = 0, notFoundCount = 0, likelyFound = 0, likelyCount1 = 0;
         processes.forEach(function(p) {
+            if (p.process_name && p.process_name !== '') {
+                return;
+            }
             var propnames = "";
             p.setup_properties.forEach(function(sp) {
                 propnames = propnames + sp.name;
             });
             if (propnames in templatesByProperties) {
-                console.log('\nFound process/template match: ');
-                console.log('  process id:    ' + p.process_id);
-                console.log('  process name:  ' + p.name);
-                console.log('  template name: ' + templatesByProperties[propnames]);
-                foundCount++;
+                if (!p.process_name || p.process_name == '') {
+                    console.log('\nFound process/template match: ');
+                    console.log('  process id:    ' + p.process_id);
+                    console.log('  process name:  ' + p.name);
+                    console.log('  template name: ' + templatesByProperties[propnames]);
+                    r.table('processes').get(p.process_id).update({process_name: templatesByProperties[propnames]}).then(function() {
+                        console.log('set process_name for ', p.process_id);
+                    });
+                    foundCount++;
+                }
             } else {
                 console.log('\nUnable to find template match for: ');
                 console.log('  process id:    ' + p.process_id);
                 console.log('  process name:  ' + p.name);
                 console.log('  process_type:  ' + p.process_type);
+                console.log('  does transform:' + p.does_transform);
                 console.log('  key:           ' + propnames);
                 console.log('  possible templates: ' + templatesByProcessTypes[p.process_type]);
                 var likelyTemplates = determineLikelyTemplates(p.name, templatesByProcessTypes[p.process_type]);
@@ -2812,7 +2821,14 @@ r.table('processes').eqJoin('id', r.table('process2setup'), {index: 'process_id'
                     likelyFound++;
                     if (likelyTemplates.length === 1) {
                         likelyCount1++;
+                        r.table('processes').get(p.process_id).update({process_name: likelyTemplates[0]}).then(function() {
+                            console.log('set likely template');
+                        });
                     }
+                } else if (p.process_type === 'SEM') {
+                    r.table('processes').get(p.process_id).update({process_name: 'SEM'}).then(function() {
+                        console.log('set SEM template');
+                    });
                 }
                 notFoundCount++;
             }
