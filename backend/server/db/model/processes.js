@@ -227,15 +227,14 @@ module.exports = function (r) {
         let p = new model.Process(process.name, process.owner, process._type, process.what,
             process.why, process.does_transform, process.process_name);
         let proc = yield addProcess(process.project_id, p);
-        let settings = yield addProcessSetup(proc.id, process.setup);
+        yield addProcessSetup(proc.id, process.setup);
         yield addSampleMeasurements(proc.id, process.input_samples);
         yield addCreatedSamples(process.output_samples, process.project_id, proc.id, process.owner);
         yield addTransformedSamples(process.transformed_samples, proc.id);
         yield addFiles(proc.id, process.input_files, 'in');
         yield addFiles(proc.id, process.output_files, 'out');
 
-        proc.settings = settings;
-        return proc;
+        return yield get(proc.id);
     }
 
     ///////////////// Module private methods /////////////////
