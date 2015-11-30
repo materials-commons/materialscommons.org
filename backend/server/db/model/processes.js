@@ -237,7 +237,6 @@ module.exports = function (r) {
         return yield get(proc.id);
     }
 
-    ///////////////// Module private methods /////////////////
     // addProcess inserts the process and add it to the project.
     function *addProcess(projectID, process) {
         let p = yield db.insert('processes', process);
