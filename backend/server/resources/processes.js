@@ -1,6 +1,5 @@
 module.exports = function (processes, schema) {
     'use strict';
-    const ec = require('./error-code');
     const parse = require('co-body');
     const httpStatus = require('http-status');
 
@@ -48,22 +47,18 @@ module.exports = function (processes, schema) {
     // It validates the submitted entry and enters in default
     // values for optional missing attributes.
     function *create(next) {
-        try {
-            let process = yield parse(this);
-            process.project_id = this.params.project_id;
-            process.owner = this.reqctx.user.id;
-            //process = prepareProcess(process);
-            //yield validateProcess(process);
-            let inserted = yield processes.create(process);
-            this.status = 200;
-            this.body = inserted;
-            yield next;
-        } catch (err) {
-            console.log(err, err.stack.split("\n"));
-            let e = ec(err);
-            this.status = e.status();
-            this.body = e.error();
+        let process = yield parse(this);
+        process.project_id = this.params.project_id;
+        process.owner = this.reqctx.user.id;
+        //process = prepareProcess(process);
+        //yield validateProcess(process);
+        let rv = yield processes.create(process);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
         }
+        this.status = 200;
+        this.body = rv.val;
+        yield next;
 
         //////////////////////
 
