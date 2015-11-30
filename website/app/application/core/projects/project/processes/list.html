@@ -1,15 +1,17 @@
 <div class="row take-parent-height">
-    <div class="col-xs-3  sidebar take-parent-height">
+    <div class="col-xs-3 sidebar take-parent-height">
         <div class="row">
             <div class="col-sm-12">
                 <a class="pull-right" ng-click="ctrl.chooseTemplate()">Create New Process</a>
             </div>
-        </div><br>
+        </div>
+        <br>
+
         <div class="row">
             <div class="col-sm-12">
                 <a class="pull-right text-muted padding-left-15">Samples</a>
                 <a class="pull-right text-muted padding-left-15">Processes</a>
-                <a class="pull-right ">All</a>
+                <a class="pull-right">All</a>
             </div>
         </div>
         <div class="row">
@@ -17,12 +19,13 @@
                 <input placeholder="Search all..." class="form-control" ng-model="search">
             </div>
         </div>
-        <ul ng-if="ctrl.processes.length !== 0" class="list-group" >
+        <ul ng-if="ctrl.processes.length !== 0" class="list-group">
             <li class="list-group-item pointer no-padding no-position"
                 ng-repeat="p in ctrl.processes | orderBy: 'name'"
                 ng-class="{active: ctrl.current.id === p.id}"
                 ng-click="ctrl.viewProcess(p)">
                 <p class="heading">{{p.name}}</p>
+
                 <div class="text-muted truncate-text" ta-bind ng-model="p.what"></div>
                 <div class="row counts">
                     <span>
