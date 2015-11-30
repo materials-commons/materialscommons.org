@@ -164,7 +164,6 @@
                             prop.property.value = propSetup.value;
                         }
                     });
-                    //t.setup.settings[0].properties = angular.copy(processTemplate.setup.properties);
                     return t;
                 };
                 return templateCopy;
