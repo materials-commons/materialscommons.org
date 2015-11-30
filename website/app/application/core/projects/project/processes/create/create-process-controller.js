@@ -11,10 +11,12 @@
         ctrl.chooseInputFiles = chooseInputFiles;
         ctrl.chooseOutputFiles = chooseOutputFiles;
         ctrl.linkFilesToSample = linkFilesToSample;
-        ctrl.cancel = cancel;
+        ctrl.cancel = gotoPreviousState;
         ctrl.submit = submit;
         ctrl.submitAndAnother = submitAndAnother;
         ctrl.remove = removeById;
+
+        setPreviousStateMemo();
 
         /////////////////////////
 
@@ -58,24 +60,35 @@
             });
         }
 
-        function cancel() {
-            $previousState.go();
+        function gotoPreviousState() {
+            $previousState.go('processes_previous');
+            $previousState.forget('processes_previous');
         }
 
         function submitAndAnother() {
             Restangular.one('v2').one('projects', $stateParams.id).one('processes').customPOST(ctrl.process)
-                .then(function(p) {
+                .then(function (p) {
                     $state.go('projects.project.processes.create', {process: p.process_name, process_id: p.id});
                 });
         }
 
         function submit() {
-            Restangular.one('v2').one('projects', $stateParams.id).one('processes').
-                customPOST(ctrl.process).then(function () {
-                    $previousState.go();
+            Restangular.one('v2').one('projects', $stateParams.id).one('processes')
+                .customPOST(ctrl.process)
+                .then(function () {
+                    gotoPreviousState();
                 }, function (e) {
                     console.log('failure to save process', e);
                 });
+        }
+
+        function setPreviousStateMemo() {
+            var previous = $previousState.get('processes_previous');
+            if (!previous) {
+                $previousState.memo('processes_previous');
+            } else if (previous.state.name !== 'projects.project.processes.create') {
+                $previousState.memo('processes_previous');
+            }
         }
 
         function linkFilesToSample(sample, input_files, output_files) {
