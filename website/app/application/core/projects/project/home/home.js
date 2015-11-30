@@ -22,8 +22,8 @@
         function chooseExistingProcess() {
             Restangular.one('v2').one("projects", project.id).one("processes").getList().then(function(processes) {
                 mcmodal.chooseExistingProcess(processes).then(function (existingProcess) {
-                    var processName = existingProcess.process_name ? existingProcess.process_name : 'TEM';
-                    $state.go('projects.project.processes.create', {process: processName, process_id: existingProcess.id});
+                    $state.go('projects.project.processes.create',
+                        {process: existingProcess.process_name, process_id: existingProcess.id});
                 });
             });
         }
