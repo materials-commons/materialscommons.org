@@ -21,7 +21,7 @@
         var imageCtrl = this;
         imageCtrl.images = images;
         imageCtrl.fileSrc = fileSrc;
-
+        console.dir(imageCtrl.sample);
         function images(files) {
             var images = [];
             if (files) {
