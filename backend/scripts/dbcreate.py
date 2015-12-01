@@ -93,7 +93,10 @@ def create_index(table, name):
 
 
 def create_compound_index(table, name, index_fields):
-    run(r.db('materialscommons').table(table).index_create(name, index_fields))
+    fields = []
+    for index_field_name in index_fields:
+        fields.append(r.row[index_field_name])
+    run(r.db('materialscommons').table(table).index_create(name, fields))
 
 
 def create_indices():

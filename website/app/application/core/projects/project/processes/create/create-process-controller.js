@@ -1,19 +1,22 @@
 (function (module) {
     module.controller('CreateProcessController', CreateProcessController);
-    CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems", "$previousState",
-        "template", "$modal", "processEdit"];
+    CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems",
+        "template", "$modal", "processEdit", "$previousState", "$state"];
 
-    function CreateProcessController(Restangular, $stateParams, selectItems, $previousState, template,
-                                     $modal, processEdit) {
+    function CreateProcessController(Restangular, $stateParams, selectItems, template,
+                                     $modal, processEdit, $previousState, $state) {
         var ctrl = this;
         ctrl.process = template;
         ctrl.chooseSamples = chooseSamples;
         ctrl.chooseInputFiles = chooseInputFiles;
         ctrl.chooseOutputFiles = chooseOutputFiles;
         ctrl.linkFilesToSample = linkFilesToSample;
-        ctrl.cancel = cancel;
+        ctrl.cancel = gotoPreviousState;
         ctrl.submit = submit;
+        ctrl.submitAndAnother = submitAndAnother;
         ctrl.remove = removeById;
+
+        setPreviousStateMemo();
 
         /////////////////////////
 
@@ -57,18 +60,35 @@
             });
         }
 
-        function cancel() {
-            $previousState.go();
+        function gotoPreviousState() {
+            $previousState.go('processes_previous');
+            $previousState.forget('processes_previous');
+        }
+
+        function submitAndAnother() {
+            Restangular.one('v2').one('projects', $stateParams.id).one('processes').customPOST(ctrl.process)
+                .then(function (p) {
+                    $state.go('projects.project.processes.create', {process: p.process_name, process_id: p.id});
+                });
         }
 
         function submit() {
-            console.dir(ctrl.process);
-            Restangular.one('v2').one('projects', $stateParams.id).one('processes').
-                customPOST(ctrl.process).then(function () {
-                    $previousState.go();
+            Restangular.one('v2').one('projects', $stateParams.id).one('processes')
+                .customPOST(ctrl.process)
+                .then(function () {
+                    gotoPreviousState();
                 }, function (e) {
                     console.log('failure to save process', e);
                 });
+        }
+
+        function setPreviousStateMemo() {
+            var previous = $previousState.get('processes_previous');
+            if (!previous) {
+                $previousState.memo('processes_previous');
+            } else if (previous.state.name !== 'projects.project.processes.create') {
+                $previousState.memo('processes_previous');
+            }
         }
 
         function linkFilesToSample(sample, input_files, output_files) {
@@ -78,7 +98,6 @@
                 controllerAs: 'sample',
                 resolve: {
                     files: function () {
-                        //return input_files.slice().concat(output_files);
                         var files = input_files.concat(output_files);
                         var linkedFilesById = _.indexBy(sample.files, 'id');
                         var setLinked = function (f) {
@@ -92,6 +111,7 @@
                     sample: function () {
                         return sample;
                     },
+
                     project: function () {
                         return {};
                     }
@@ -100,100 +120,7 @@
             modal.result.then(function (linkedFiles) {
                     sample = processEdit.refreshSample(linkedFiles, sample);
                 }
-            )
-            ;
-        }
-    }
-
-    module.controller("LinkFilesToSampleController", LinkFilesToSampleController);
-    LinkFilesToSampleController.$inject = ["$modalInstance", "project", "files", "sample", "mcmodal"];
-
-    function LinkFilesToSampleController($modalInstance, project, files, sample, mcmodal) {
-        var ctrl = this;
-        ctrl.name = sample.name;
-        ctrl.sample_id = sample.id;
-        ctrl.files = files;
-        ctrl.ok = ok;
-        ctrl.cancel = cancel;
-        ctrl.filesToLink = [];
-        ctrl.linkFile = linkFile;
-        ctrl.unlinkFile = unlinkFile;
-        ctrl.linkAllFiles = linkAllFiles;
-        ctrl.unlinkAllFiles = unlinkAllFiles;
-        ctrl.openFile = openFile;
-
-        files.forEach(function (f) {
-            //if(f.linked == true){
-            ctrl.filesToLink.push({id: f.id, name: f.name, linked: f.linked});
-            //}
-        });
-        /////////
-
-        function ok() {
-            $modalInstance.close(ctrl.filesToLink);
-        }
-
-        function cancel() {
-            $modalInstance.dismiss('cancel');
-        }
-
-        function linkFile(file) {
-            file.linked = true;
-            var i = _.indexOf(ctrl.filesToLink, function (f) {
-                return (f.id == file.id && f.sample_id == file.sample_id);
-            });
-            if (i !== -1) {
-                ctrl.filesToLink.splice(i, 1);
-                ctrl.filesToLink.push({
-                    id: file.id,
-                    command: 'add',
-                    name: file.name,
-                    linked: file.linked,
-                    sample_id: ctrl.sample_id
-                });
-            } else {
-                ctrl.filesToLink.push({
-                    id: file.id,
-                    command: 'add',
-                    name: file.name,
-                    linked: file.linked,
-                    sample_id: ctrl.sample_id
-                });
-            }
-        }
-
-        function unlinkFile(file) {
-            file.linked = false;
-            var i = _.indexOf(ctrl.filesToLink, function (f) {
-                return (f.id == file.id && f.sample_id == file.sample_id);
-            });
-            if (i !== -1) {
-                ctrl.filesToLink.splice(i, 1);
-                ctrl.filesToLink.push({
-                    id: file.id,
-                    command: 'delete',
-                    name: file.name,
-                    linked: file.linked,
-                    sample_id: ctrl.sample_id
-                });
-            }
-        }
-
-        function linkAllFiles() {
-            ctrl.filesToLink = [];
-            ctrl.files.forEach(function (f) {
-                linkFile(f);
-            });
-        }
-
-        function unlinkAllFiles() {
-            ctrl.files.forEach(function (f) {
-                unlinkFile(f);
-            });
-        }
-
-        function openFile(file) {
-            mcmodal.openModal(file, 'datafile', project);
+            );
         }
     }
 }(angular.module('materialscommons')));

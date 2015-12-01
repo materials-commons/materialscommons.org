@@ -1,11 +1,17 @@
 #!/bin/sh
 
 CMD="$1"
+
 TESTING="$2"
 INITFLAG="$3"
 TESTSERVER=false
-SERVERTYPE="production"
+SERVERTYPE="unit"
 
+if [ "$1" = "sstop" ]; then
+    export TESTING="$3"
+elif [ "$1" = "sr" ]; then
+    export TESTING="$3"
+fi
 
 function is_running()
 {
@@ -96,6 +102,73 @@ function stop_servers()
     echo Stopped $SERVERTYPE.
 }
 
+function stop_named_server()
+{
+    case "$1" in
+        mcapiserver)
+            echo Stopping mcapiserver...
+            ps -eo "pid,command" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+            do
+                kill $line
+                echo Stopped mcapiserver with pid $line
+            done
+            ;;
+
+        mcstored)
+            echo Stopping mcstored...
+            MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+            if [ "$MCSTORED_PID" != "" ]; then
+                kill $MCSTORED_PID
+                echo Stopped mcstored with pid $MCSTORED_PID
+            fi
+            ;;
+
+        mcapi)
+            echo Stopping mcapi...
+            APPMC_PID=$(ps -eo "pid,command" | grep "app_mc.js" | grep "p $MC_APP_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+            if [ "$APPMC_PID" != "" ]; then
+                kill $APPMC_PID
+                echo Stopped mcapi with pid $APPMC_PID
+            fi
+            ;;
+
+        *)
+            echo "Unknown server: $1"
+            exit 1
+            ;;
+    esac
+}
+
+function restart_named_server()
+{
+    stop_named_server $1
+    case "$1" in
+        mcapiserver)
+            echo "  Starting mcapiserver..."
+            ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&
+            ;;
+
+        mcstored)
+            echo "  Starting mcstored..."
+            mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > /tmp/mcstored.out.${SERVERTYPE} 2>&1&
+            ;;
+
+        mcapi)
+            echo "  Starting mcapi..."
+            gulp build-server
+            node sbin/app_mc.js -p $MC_APP_SERVICE_PORT > /tmp/app_mc.out.${SERVERTYPE} 2>&1&
+            ;;
+
+        *)
+            echo "Unknown server: $1"
+            exit 1
+            ;;
+    esac
+
+    disown -a
+    echo Restarted Server $1 for server type $SERVERTYPE.
+}
+
 function status_servers()
 {
     echo
@@ -166,6 +239,12 @@ if [ "$TESTING" = "-u" ]; then
 elif [ "$TESTING" = "-t" ]; then
     TESTSERVER=t
     SERVERTYPE="test"
+elif [ "$TESTING" = "-p" ]; then
+    TESTSERVER=p
+    SERVERTYPE="production"
+else
+    TESTSERVER=u
+    SERVERTYPE="unit"
 fi
 
 REINIT=f
@@ -228,7 +307,7 @@ elif [ $TESTSERVER = "u" ]; then
     if [ "$REINIT" = "t" ]; then
         (cd $MCDB_DIR; rm -rf rethinkdb_data)
     fi
-else
+elif [ "$TESTSERVER" = "p" ]; then
     export MCDB_PORT=28015
     export MCDB_CONNECTION="localhost:$MCDB_PORT"
     export MC_APP_SERVICE_PORT=3000
@@ -247,6 +326,32 @@ else
 
     if [ -f /etc/materialscommons/config.prod ]; then
         . /etc/materialscommons/config.prod
+    fi
+else
+    # Default to unit
+    export MC_SERVICE_PORT=5002
+    export MC_APP_SERVICE_PORT=5004
+    export MCDB_PORT=30815
+    export MCDB_CONNECTION="localhost:$MCDB_PORT"
+    export MCDB_DIR=~/testdb
+    export RETHINKDB_HTTP_PORT=8090
+    export RETHINKDB_CLUSTER_PORT=31815
+    export MCFS_PORT=35882
+    export MC_ES_URL="http://localhost:9500"
+    if [ "$MCDB_FILE" = "" ]; then
+        export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
+    fi
+    export MCDIR=~/mcdir/mcfs/data/test
+    export MCFS_HTTP_PORT=5012
+
+    if [ -f /etc/materialscommons/config.unit ]; then
+        . /etc/materialscommons/config.unit
+    fi
+    if [ ! -d $MCDB_DIR ]; then
+        mkdir $MCDB_DIR
+    fi
+    if [ "$REINIT" = "t" ]; then
+        (cd $MCDB_DIR; rm -rf rethinkdb_data)
     fi
 fi
 
@@ -268,15 +373,27 @@ case "$CMD" in
         fi
         stop_servers
         ;;
+
+    sstop)
+        stop_named_server $2
+        ;;
+
+    sr)
+        restart_named_server $2
+        ;;
+
     status)
         status_servers
         ;;
+
     env)
         show_env
         ;;
+
     "")
         status_servers
         ;;
+
     *)
         echo "Unknown command: $CMD"
         exit 1

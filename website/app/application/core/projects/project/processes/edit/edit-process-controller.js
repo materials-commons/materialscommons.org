@@ -48,7 +48,6 @@
                 output_files: ctrl.process.updated_output_files,
                 sample_files: ctrl.process.samples_files
             };
-            console.dir(updated_process);
             Restangular.one('v2').one('projects', $stateParams.id).one('processes', ctrl.process.id).
                 customPUT(updated_process).then(function () {
                     $state.go('projects.project.processes.list');
@@ -154,8 +153,6 @@
                 }
             });
             modal.result.then(function (linkedFiles) {
-                //this will update the view - edit.html
-                //console.dir(linkedFiles);
                 ctrl.process = processEdit.addToSamplesFiles(linkedFiles, ctrl.process);
                 sample = processEdit.refreshSample(linkedFiles, sample);
             });

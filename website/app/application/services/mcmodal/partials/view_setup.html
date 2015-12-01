@@ -31,7 +31,7 @@
                         <div ng-if="item.property.units.length !== 0"
                              ng-repeat="unit in item.property.units">{{unit}}
                         </div>
-                        <div ng-if="item.property.unit">{{item.property.unit}}</div>
+                        <div ng-if="item.property.unit && item.property.units.length === 0">{{item.property.unit}}</div>
                     </td>
                     <td>
                         <div ng-if="item.property.value">
