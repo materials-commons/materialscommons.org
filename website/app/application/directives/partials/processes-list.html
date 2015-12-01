@@ -11,7 +11,7 @@
             <tbody>
             <tr ng-repeat="process in processes">
                 <td>
-                    <b><a ui-sref="projects.project.processes.edit({process_id: process.id})">{{process.name}}</a></b>
+                    <b><a ui-sref="projects.project.processes.view({process_id: process.id})">{{process.name}}</a></b>
                     <div style="padding-bottom: 15px;">
                         <p style="font-size: 12px;padding-bottom: 10px;">
                             {{process.birthtime | toDateString}}

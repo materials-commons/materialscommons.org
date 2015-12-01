@@ -1,36 +1,30 @@
 (function (module) {
     module.controller('ProjectHomeController', ProjectHomeController);
-    ProjectHomeController.$inject = ["project", "mcmodal", "templates", "$state"];
+    ProjectHomeController.$inject = ["project", "mcmodal", "templates", "$state", "Restangular"];
 
-    function ProjectHomeController(project, mcmodal, templates, $state) {
+    function ProjectHomeController(project, mcmodal, templates, $state, Restangular) {
         var ctrl = this;
 
         ctrl.project = project;
         ctrl.chooseTemplate = chooseTemplate;
         ctrl.chooseExistingProcess = chooseExistingProcess;
-        ctrl.createSample = createSample;
-        ctrl.useTemplate = useTemplate;
         ctrl.templates = templates;
+        ctrl.hasFavorites = _.partial(_.any, ctrl.templates, _.matchesProperty('favorite', true));
 
         /////////////////////////
 
         function chooseTemplate() {
             mcmodal.chooseTemplate(ctrl.project, templates).then(function (processTemplateName) {
-                $state.go('projects.project.processes.create', {process: processTemplateName});
+                $state.go('projects.project.processes.create', {process: processTemplateName, process_id: ''});
             });
         }
 
-        function useTemplate(templateName) {
-            $state.go('projects.project.processes.create', {process: templateName});
-        }
-
-        function createSample() {
-            $state.go('projects.project.processes.create', {process: 'As Received'});
-        }
-
         function chooseExistingProcess() {
-            mcmodal.chooseExistingProcess(ctrl.project).then(function (existingProcess) {
-                $state.go('projects.project.processes.create', {process:  existingProcess.process_name, process_id: existingProcess.id});
+            Restangular.one('v2').one("projects", project.id).one("processes").getList().then(function(processes) {
+                mcmodal.chooseExistingProcess(processes).then(function (existingProcess) {
+                    $state.go('projects.project.processes.create',
+                        {process: existingProcess.process_name, process_id: existingProcess.id});
+                });
             });
         }
     }

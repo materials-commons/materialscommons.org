@@ -13,9 +13,12 @@
 
                 <div class="truncate-text small" ta-bind ng-model="p.what"></div>
                 <div class="row small" style="padding-top: 5px;">
-                            <span class="space-left"><i
-                                    class="fa fa-fw fa-cubes sample"></i>4</span>
-                    <span class="space-left"><i class="fa fa-fw fa-files-o file"></i>6 </span>
+                    <span class="space-left">
+                        <i class="fa fa-fw fa-cubes sample"></i>{{p.samples.length}}
+                    </span>
+                    <span class="space-left">
+                        <i class="fa fa-fw fa-files-o file"></i>{{p.input_files.length+p.output_files.length}}
+                    </span>
                 </div>
             </li>
         </ul>

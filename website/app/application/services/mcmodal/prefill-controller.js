@@ -14,10 +14,8 @@
         function ok() {
             var index = _.indexOf(existingTemplateNames, template.name);
             if (index !== -1) {
-                toastr.error("A template with name '" +
-                    template.name +
-                    "' already exists. Please choose a unique name",
-                    'Error');
+                var msg = "A template with name '" + template.name + "' already exists. Please choose a unique name.";
+                toastr.error(msg, 'Error');
             } else {
                 $modalInstance.close(ctrl.template);
             }

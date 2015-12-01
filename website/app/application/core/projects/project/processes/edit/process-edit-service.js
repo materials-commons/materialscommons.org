@@ -101,13 +101,21 @@
                         });
                         if (i !== -1) {
                             sample.files.splice(i, 1);
-                            if (!(f.command === 'delete')) {
-                                sample.files.push({id: f.id, command: f.command, name: f.name, linked: f.linked});
-                            }
+                            sample.files.push({
+                                id: f.id,
+                                command: f.command,
+                                name: f.name,
+                                sample_id: f.sample_id,
+                                linked: f.linked
+                            });
                         } else {
-                            if (!(f.command === 'delete')) {
-                                sample.files.push({id: f.id, command: f.command, name: f.name, linked: f.linked});
-                            }
+                            sample.files.push({
+                                id: f.id,
+                                command: f.command,
+                                name: f.name,
+                                sample_id: f.sample_id,
+                                linked: f.linked
+                            });
                         }
                     }
                 });
