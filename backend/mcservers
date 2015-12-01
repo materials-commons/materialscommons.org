@@ -171,6 +171,9 @@ function restart_named_server()
 
 function status_servers()
 {
+    export MCDB_PORT=28015
+    export MC_SERVICE_PORT=5000
+    export MC_API_SERVICE_PORT=3000
     echo
     echo "RethinkDB (production):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
@@ -371,7 +374,7 @@ case "$CMD" in
         start_servers
         ;;
     stop)
-        if [ $TESTSERVER = false ]; then
+        if [ $TESTSERVER = "p" ]; then
             echo "**** You are stopping PRODUCTION ****"
             read -p "Are you sure you want to do this [y/n]? " -n 1 -r
             echo
