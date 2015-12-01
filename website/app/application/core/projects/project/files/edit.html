@@ -2,12 +2,12 @@
     <div class="col-xs-12 card card-right">
         <file-edit-controls file="ctrl.file"></file-edit-controls>
         <ul class="row text-light list-inline">
-            <li><i class="fa fa-calendar"></i>{{ctrl.file.birthtime | toDateString}}</li>
-            <li><i class="fa fa-user"></i>{{ctrl.file.owner}}</li>
-            <li><i class="fa fa-copy"></i>{{ctrl.file.size | bytes}}</li>
-            <li><i class=""></i>{{ctrl.file.mediatype.mime}}</li>
+            <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-calendar"></i>{{ctrl.file.birthtime | toDateString}}</li>
+            <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-user"></i>{{ctrl.file.owner}}</li>
+            <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-copy"></i>{{ctrl.file.size | bytes}}</li>
+            <li class="col-lg-3 col-md-3 col-sm-6"><i class=""></i>{{ctrl.file.mediatype.mime}}</li>
         </ul>
-        <br><br>
+        <br>
 
         <div class="row">
             <file-description file="ctrl.file"></file-description>

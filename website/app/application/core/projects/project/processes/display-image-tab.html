@@ -1,5 +1,4 @@
 <div ng-if="ctrl.sample.linked_files.length !== 0">
-    <b>Image files:</b>
     <span ng-repeat="img in ctrl.images(ctrl.sample.linked_files) | first:3">
         <img class="img-thumbnail" height="100" width="100"
              ng-src={{ctrl.fileSrc(img.id)}}>
