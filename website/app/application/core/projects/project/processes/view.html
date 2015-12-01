@@ -4,12 +4,19 @@
         <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-calendar"></i>{{view.process.birthtime | toDateString}}
         </li>
         <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-user"></i>{{view.process.owner}}</li>
-        <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-file"></i>
+        <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-code-fork"></i>
             <span ng-if="view.process.does_transform">{{view.process.process_name}} (Transforms)</span>
             <span ng-if="!view.process.does_transform">{{view.process.process_name}}  (Does not Transform)</span></li>
         <li class="pull-right">
-            <button class="btn btn-info">Edit</button>
-            <button class="btn btn-danger">Delete</button>
+            <a class="btn btn-info"
+               ui-sref="projects.project.processes.create({process: view.process.process_name, process_id: view.process.id})">
+                Create From Process
+            </a>
+            <a class="btn btn-info"
+               ui-sref="projects.project.processes.edit({process_id: view.process.id})">
+                Edit
+            </a>
+            <button ng-if="false" class="btn btn-danger">Delete</button>
         </li>
     </ul>
     <br><br>

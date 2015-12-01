@@ -40,8 +40,8 @@
                             }
                         ]
                     }).then(function () {
-                        processTemplates.replace(ctrl.templates, t);
-                    });
+                    processTemplates.replace(ctrl.templates, t);
+                });
             });
         }
 
@@ -51,19 +51,27 @@
                 return t.name;
             });
             mcmodal.preFill(templateDetails, existingTemplateNames).then(function (t) {
-                Restangular.one('v2').one('projects', project.id)
-                    .customPUT({
+                Restangular.one('v2').one('projects', project.id).customPUT({
                         process_templates: [
                             {
                                 command: 'add',
                                 template: {
                                     name: t.name,
-                                    setup: t.setup.settings[0],
+                                    setup: t.setup.settings[0].properties.map(function (setting) {
+                                        return {
+                                            name: setting.property.name,
+                                            attribute: setting.property.attribute,
+                                            unit: setting.property.unit,
+                                            value: setting.property.value == null ? "" : setting.property.value,
+                                            _type: setting.property._type
+                                        };
+                                    }),
                                     process_name: t.process_name
                                 }
                             }
                         ]
-                    }).then(function () {
+                    })
+                    .then(function () {
                         processTemplates.add(ctrl.templates, t);
                     });
             });
@@ -84,12 +92,12 @@
                         ]
                     }
                 }).then(function () {
-                    if (command == 'add') {
-                        User.addToFavorites(project.id, template.name);
-                    } else {
-                        User.removeFromFavorites(project.id, template.name);
-                    }
-                });
+                if (command == 'add') {
+                    User.addToFavorites(project.id, template.name);
+                } else {
+                    User.removeFromFavorites(project.id, template.name);
+                }
+            });
         }
 
         function selectTemplate(template) {

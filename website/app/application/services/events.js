@@ -2,39 +2,38 @@
     module.factory('Events', ['$filter', EventsService]);
 
     function EventsService($filter) {
-        var service = {
-            date: '',
+        function update(items) {
+            items.forEach(function (item) {
+                var item_date = new Date(item.mtime.epoch_time * 1000);
+                item.converted_mtime = Date.UTC(item_date.getUTCFullYear(), item_date.getUTCMonth(), item_date.getUTCDate());
+            });
+            return items;
+        }
 
+        return {
             addConvertedTime: function (project) {
-                project.reviews = service.update(project.reviews);
-                project.samples = service.update(project.samples);
-                project.processes = service.update(project.processes);
-                project.notes = service.update(project.notes);
-                project.drafts = service.update(project.drafts);
+                project.reviews = update(project.reviews);
+                project.samples = update(project.samples);
+                project.processes = update(project.processes);
+                project.notes = update(project.notes);
+                project.drafts = update(project.drafts);
                 return project;
-            },
-
-            update: function (items) {
-                items.forEach(function (item) {
-                    var item_date = new Date(item.mtime.epoch_time * 1000);
-                    item.converted_mtime = Date.UTC(item_date.getUTCFullYear(), item_date.getUTCMonth(), item_date.getUTCDate());
-                });
-                return items;
             },
 
             prepareCalendarEvent: function (items, title) {
                 var calendar_event = [];
                 if (items.length !== 0) {
-                    var grouped_by_convertedtime = $filter('groupBy')(items, 'converted_mtime');
-                    Object.keys(grouped_by_convertedtime).forEach(function (key) {
+                    var groupedByConvertedTime = $filter('groupBy')(items, 'converted_mtime');
+                    Object.keys(groupedByConvertedTime).forEach(function (key) {
                         var d = new Date(0);
-                        var value = grouped_by_convertedtime[key][0];
+                        var value = groupedByConvertedTime[key][0];
                         d.setUTCSeconds(value.mtime.epoch_time);
+                        var tooltip = groupedByConvertedTime[key].map(function (e) {return e.name;}).join('\n');
                         calendar_event.push({
-                            title: grouped_by_convertedtime[key].length + " " + title,
+                            title: groupedByConvertedTime[key].length + " " + title,
                             start: d,
                             description: '',
-                            tooltip: "This is a cool event"
+                            tooltip: tooltip
                         });
                     });
                 }
@@ -53,7 +52,6 @@
                 }
                 return project;
             }
-        };
-        return service;
+        }
     }
 }(angular.module('materialscommons')));
