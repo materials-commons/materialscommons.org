@@ -5,7 +5,7 @@
  * @license
  */
 
-module.exports = function(r) {
+module.exports = function (r) {
     const runQuery = require('./run');
     const db = require('./db')(r);
     const _ = require('lodash');
@@ -27,48 +27,59 @@ module.exports = function(r) {
     // get details on a file
     function* get(file_id) {
         let rql = r.table('datafiles').get(file_id).
-            merge(function() {
-                return {
-                    tags: r.table('tag2item').getAll(file_id, {index: 'item_id'}).
-                        orderBy('tag_id').
-                        pluck('tag_id').coerceTo('array'),
-                    notes: r.table('note2item').getAll(file_id, {index: 'item_id'}).
-                        eqJoin('note_id', r.table('notes')).zip().coerceTo('array'),
-                    samples: r.table('sample2datafile').getAll(file_id, {index: 'datafile_id'}).
-                        eqJoin('sample_id', r.table('samples')).zip().
-                        pluck('name', 'id').distinct().
-                        coerceTo('array'),
-                    processes: r.table('process2file').getAll(file_id, {index: 'datafile_id'}).
-                        eqJoin('process_id', r.table('processes')).zip().
-                        pluck('name', 'id').distinct().
-                        coerceTo('array')
-                }
-            });
+        merge(function () {
+            return {
+                tags: r.table('tag2item').getAll(file_id, {index: 'item_id'})
+                    .orderBy('tag_id')
+                    .pluck('tag_id').coerceTo('array'),
+                notes: r.table('note2item').getAll(file_id, {index: 'item_id'})
+                    .eqJoin('note_id', r.table('notes')).zip().coerceTo('array'),
+                samples: r.table('sample2datafile').getAll(file_id, {index: 'datafile_id'})
+                    .eqJoin('sample_id', r.table('samples')).zip()
+                    .distinct()
+                    .coerceTo('array'),
+                processes: r.table('process2file').getAll(file_id, {index: 'datafile_id'})
+                    .eqJoin('process_id', r.table('processes')).zip()
+                    .merge(function (proc) {
+                        return {
+                            setup: r.table('process2setup').getAll(proc('process_id'), {index: 'process_id'})
+                                .eqJoin('setup_id', r.table('setups')).zip()
+                                .merge(function (setup) {
+                                    return {
+                                        properties: r.table('setupproperties')
+                                            .getAll(setup('setup_id'), {index: 'setup_id'})
+                                            .coerceTo('array')
+                                    }
+                                }).coerceTo('array')
+                        }
+                    }).distinct().coerceTo('array')
+            }
+        });
         return runQuery(rql);
     }
 
     // getList gets the details for the given file ids
     function* getList(projectID, fileIDs) {
         let rql = r.table('datafiles').getAll(r.args(fileIDs)).
-            eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).
-            zip().filter({project_id: projectID}).
-            merge(function(file) {
-                return {
-                    tags: r.table('tag2item').getAll(file('datafile_id'), {index: 'item_id'}).
-                        orderBy('tag_id').
-                        pluck('tag_id').coerceTo('array'),
-                    notes: r.table('note2item').getAll(file('datafile_id'), {index: 'item_id'}).
-                        eqJoin('note_id', r.table('notes')).zip().coerceTo('array'),
-                    samples: r.table('sample2datafile').getAll(file('datafile_id'), {index: 'datafile_id'}).
-                        eqJoin('sample_id', r.table('samples')).zip().
-                        pluck('name', 'id').distinct().
-                        coerceTo('array'),
-                    processes: r.table('process2file').getAll(file('datafile_id'), {index: 'datafile_id'}).
-                        eqJoin('process_id', r.table('processes')).zip().
-                        pluck('name', 'id').distinct().
-                        coerceTo('array')
-                }
-            });
+        eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).
+        zip().filter({project_id: projectID}).
+        merge(function (file) {
+            return {
+                tags: r.table('tag2item').getAll(file('datafile_id'), {index: 'item_id'}).
+                orderBy('tag_id').
+                pluck('tag_id').coerceTo('array'),
+                notes: r.table('note2item').getAll(file('datafile_id'), {index: 'item_id'}).
+                eqJoin('note_id', r.table('notes')).zip().coerceTo('array'),
+                samples: r.table('sample2datafile').getAll(file('datafile_id'), {index: 'datafile_id'}).
+                eqJoin('sample_id', r.table('samples')).zip().
+                pluck('name', 'id').distinct().
+                coerceTo('array'),
+                processes: r.table('process2file').getAll(file('datafile_id'), {index: 'datafile_id'}).
+                eqJoin('process_id', r.table('processes')).zip().
+                pluck('name', 'id').distinct().
+                coerceTo('array')
+            }
+        });
         return runQuery(rql);
     }
 
@@ -116,9 +127,9 @@ module.exports = function(r) {
     // the given directory. This is used when a file is being renamed.
     function* validateFileName(fileID, fileName) {
         let rql = r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).
-            eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip().
-            eqJoin('datafile_id', r.table('datafiles')).zip().
-            filter({name: fileName}).count();
+        eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip().
+        eqJoin('datafile_id', r.table('datafiles')).zip().
+        filter({name: fileName}).count();
         let matchingNameCount = yield runQuery(rql);
         return matchingNameCount === 0;
     }
@@ -145,11 +156,11 @@ module.exports = function(r) {
 
     // deleteTags will delete tags associated with a file.
     function* deleteTags(tagsDeleted, tagsFromDB) {
-            let tagsHash = [];
-            tagsFromDB.forEach(t => tagsHash[t.tag_id] = t);
-            let tagsToDelete = tagsDeleted.map(t => tagsHash[t].id);
-            let rql = r.table('tag2item').getAll(r.args(tagsToDelete)).delete();
-            return yield runQuery(rql);
+        let tagsHash = [];
+        tagsFromDB.forEach(t => tagsHash[t.tag_id] = t);
+        let tagsToDelete = tagsDeleted.map(t => tagsHash[t].id);
+        let rql = r.table('tag2item').getAll(r.args(tagsToDelete)).delete();
+        return yield runQuery(rql);
     }
 
     // addTags will add tags to a file.
@@ -212,8 +223,8 @@ module.exports = function(r) {
         // that file and direction already exists for a process.
         processesForFile.forEach(p => processesMap[`${p.process_id}_${p.direction}`] = p);
         let processesToAdd = processes.filter(p => p.command === 'add').
-            filter(p => !(`${p.process_id}_${p.direction}` in processesMap)).
-            map(p => new model.Process2File(p.process_id, fileID, p.direction));
+        filter(p => !(`${p.process_id}_${p.direction}` in processesMap)).
+        map(p => new model.Process2File(p.process_id, fileID, p.direction));
         let processesToDelete = processes.filter(p => p.command === 'delete').map(p => p.process_id);
 
         if (processesToAdd.length) {
