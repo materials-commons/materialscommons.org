@@ -10,7 +10,8 @@
     </ul>
     <div class="tab-content clearfix">
         <setup-details ng-if="ctrl.isActive('setup')" setup="ctrl.item.setup[0]"></setup-details>
-        <samples-list ng-if="ctrl.isActive('samples')" samples="ctrl.item.input_samples"></samples-list>
+        <samples-list ng-if="ctrl.isActive('samples') && ctrl.item.input_samples" samples="ctrl.item.input_samples"></samples-list>
+        <samples-list ng-if="ctrl.isActive('samples') && ctrl.item.samples" samples="ctrl.item.samples"></samples-list>
         <processes-list ng-if="ctrl.isActive('processes')" processes="ctrl.item.processes"></processes-list>
         <file-notes ng-if="ctrl.isActive('notes')" file="ctrl.item"></file-notes>
         <files-list ng-if="ctrl.isActive('files')" files="ctrl.item.linked_files"></files-list>
