@@ -22,9 +22,6 @@
                                      ng-src="{{search.fileSrc(hit._source.id)}}">
                             </a>
                         </div>
-                        <div ng-if="hit._source.contents.length !== 0">
-                            <p>{{hit._source.contents | truncate:75:'...':false}}</p>
-                        </div>
                     </div>
 
                     <div ng-switch-when="sample">
