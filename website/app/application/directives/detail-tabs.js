@@ -60,6 +60,8 @@
 
             if ('input_samples' in ctrl.item && ctrl.item.input_samples.length) {
                 tabs.push(newTab('samples', 'fa-cubes', ctrl.item.input_samples.length));
+            }else if('samples' in ctrl.item && ctrl.item.samples.length) {
+                tabs.push(newTab('samples', 'fa-cubes', ctrl.item.samples.length));
             }
 
             //
