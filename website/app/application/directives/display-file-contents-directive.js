@@ -1,4 +1,4 @@
-(function(module) {
+(function (module) {
     module.directive("displayFileContents", displayFileContentsDirective);
     function displayFileContentsDirective() {
         return {
@@ -28,11 +28,13 @@
             if (isImage(mediatype.mime)) {
                 return "image";
             } else {
-                switch(mediatype.mime) {
+                switch (mediatype.mime) {
                 case "application/pdf":
                     return "pdf";
                 case "application/vnd.ms-excel":
                     return "xls";
+                case "application/octet-stream":
+                    return "binary";
                 default:
                     return mediatype.mime;
                 }
