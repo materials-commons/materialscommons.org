@@ -1,31 +1,35 @@
-<div class="row">
-    <div class="col-xs-3 sidebar">
+<div class="row take-parent-height">
+    <div class="col-xs-3 sidebar take-parent-height">
         <div class="row">
+            <div class="col-sm-12">
                 <a class="pull-right" ui-sref="projects.project.reviews.create">Create New Review</a>
+            </div>
         </div>
         <br>
 
         <div class="row">
-                <a ng-click="listReviewsByType('my_reviews')" class="pull-right text-muted padding-left-15"><i
+            <div class="col-sm-12">
+                <a ng-click="ctrl.listReviewsByType('my_reviews')" class="pull-right text-muted padding-left-15"><i
                         class="fa fa-fw fa-user"></i> My Reviews</a>
-                <a ng-click="listReviewsByType('due')" class="pull-right text-muted padding-left-15"><i
+                <a ng-click="ctrl.listReviewsByType('due')" class="pull-right text-muted padding-left-15"><i
                         class="fa fa-fw fa-exclamation-circle text-danger"></i>Due</a>
-                <a ng-click="listReviewsByType('closed')" class="text-muted padding-left-15"><i
+                <a ng-click="ctrl.listReviewsByType('closed')" class="pull-right text-muted padding-left-15"><i
                         class="fa fa-fw fa-archive"></i>Archived</a>
-                <a ng-click="listReviewsByType('all')"><i class="fa fa-fw fa-list"></i>All</a>
+                <a ng-click="ctrl.listReviewsByType('all')" class="pull-right text-muted padding-left-15"><i
+                        class="fa fa-fw fa-list"></i>All</a>
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
                 <input placeholder="Search all..." class="form-control" ng-model="search">
             </div>
         </div>
-        <br>
 
-        <ul ng-if="reviews.length !== 0" class="list-group">
+        <ul ng-if="ctrl.reviews.length !== 0" class="list-group">
             <li class="list-group-item pointer no-padding no-position"
-                ng-repeat="r in reviews"
+                ng-repeat="r in ctrl.reviews"
                 ng-class="{active: review.id === r.id}"
-                ui-sref="projects.project.reviews.edit({'review_id': r.id})">
+                ui-sref="projects.project.reviews.list.view({'review_id': r.id})">
                 <p class="heading">{{r.title}}</p>
 
                 <div class="text-muted truncate-text" ta-bind ng-model="r.messages[0].message"></div>
@@ -38,11 +42,14 @@
                 </div>
             </li>
         </ul>
-        <h4 ng-if="reviews.length === 0" class="text-center text-uppercase">
-            {{noReviewsMessage}}
+        <h4 ng-if="ctrl.reviews.length === 0" class="text-center text-uppercase">
+            --None--
         </h4>
     </div>
-    <div class="col-xs-8 no-padding">
-        <div ui-view></div>
+    <div class="col-xs-9 no-padding take-parent-height">
+        <div class="take-parent-height" ui-view></div>
     </div>
 </div>
+
+
+

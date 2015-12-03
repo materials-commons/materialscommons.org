@@ -1,51 +1,55 @@
 (function (module) {
     module.controller('projectReviews', projectReviews);
-    projectReviews.$inject = ["$scope", "project", "$filter", "Review", "pubsub", "User", "$stateParams"];
+    projectReviews.$inject = ["project", "Review",  "reviews",  "User", "$filter"];
 
-    function projectReviews($scope, project, $filter, Review, pubsub, User, $stateParams) {
+    function projectReviews(project, Review, reviews, User, $filter) {
+        var ctrl = this;
 
-        pubsub.waitOn($scope, 'activeReview.change', function () {
-            $scope.review = Review.getActiveReview();
-        });
+        ctrl.reviews = reviews;
+        ctrl.project = project;
+        ctrl.listReviewsByType = listReviewsByType;
+        listReviewsByType();
 
-        pubsub.waitOn($scope, 'reviews.change', function () {
-            $scope.reviews = Review.getReviews();
-        });
+        //pubsub.waitOn($scope, 'activeReview.change', function () {
+        //    ctrl.review = Review.getActiveReview();
+        //});
+        //
+        //pubsub.waitOn($scope, 'reviews.change', function () {
+        //    ctrl.reviews = Review.getReviews();
+        //});
 
-        $scope.listReviewsByType = function (type) {
-            $scope.type = type;
+        function listReviewsByType(type) {
             switch (type) {
             case "all":
-                $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
-                Review.listReviewsByType($scope.reviews, type);
-                $scope.noReviewsMessage = "No reviews of any type";
+                ctrl.reviews = $filter('byKey')(ctrl.project.reviews, 'status', 'open');
+                Review.listReviewsByType(ctrl.reviews, type);
+                ctrl.noReviewsMessage = "No reviews of any type";
                 break;
             case "my_reviews":
-                $scope.reviews = $filter('byKey')($scope.project.reviews, 'author', User.u());
-                $scope.reviews = $filter('byKey')($scope.reviews, 'status', 'open');
-                Review.listReviewsByType($scope.reviews, type);
-                $scope.noReviewsMessage = "You have no open reviews";
+                ctrl.reviews = $filter('byKey')(ctrl.project.reviews, 'author', User.u());
+                ctrl.reviews = $filter('byKey')(ctrl.reviews, 'status', 'open');
+                Review.listReviewsByType(ctrl.reviews, type);
+                ctrl.noReviewsMessage = "You have no open reviews";
                 break;
             case "due":
-                $scope.reviews = $filter('byKey')($scope.project.reviews, 'assigned_to', User.u());
-                $scope.reviews = $filter('byKey')($scope.reviews, 'status', 'open');
-                Review.listReviewsByType($scope.reviews, type);
-                $scope.noReviewsMessage = "You have no reviews due";
+                ctrl.reviews = $filter('byKey')(ctrl.project.reviews, 'assigned_to', User.u());
+                ctrl.reviews = $filter('byKey')(ctrl.reviews, 'status', 'open');
+                Review.listReviewsByType(ctrl.reviews, type);
+                ctrl.noReviewsMessage = "You have no reviews due";
                 break;
             case "closed":
-                $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'closed');
-                Review.listReviewsByType($scope.reviews, type);
-                $scope.noReviewsMessage = "There are no archived reviews";
+                ctrl.reviews = $filter('byKey')(ctrl.project.reviews, 'status', 'closed');
+                Review.listReviewsByType(ctrl.reviews, type);
+                ctrl.noReviewsMessage = "There are no archived reviews";
+                break;
+            default:
+                ctrl.reviews = $filter('byKey')(ctrl.project.reviews, 'status', 'open');
+                Review.listReviewsByType(ctrl.reviews, 'all');
+                ctrl.noReviewsMessage = "No reviews of any type";
                 break;
             }
-        };
-
-        function init() {
-            $scope.project = project;
-            $scope.listReviewsByType($stateParams.category === "" ? 'my_reviews' : $stateParams.category);
         }
 
-        init();
     }
 
 }(angular.module('materialscommons')));
