@@ -102,7 +102,7 @@
                 listReviewsByType: function (reviews, type) {
                     if (reviews.length > 0) {
                         service.setActiveReview(reviews[0]);
-                        $state.go('projects.project.reviews.edit', {category: type, review_id: reviews[0].id});
+                        $state.go('projects.project.reviews.list.view', {category: type, review_id: reviews[0].id});
                     }
                 }
             };

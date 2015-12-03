@@ -177,21 +177,6 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "ProjectAccessController",
             controllerAs: 'access'
         })
-        .state("projects.project.reviews", {
-            url: "/reviews/:category",
-            templateUrl: "application/core/projects/project/reviews/reviews.html",
-            controller: "projectReviews"
-        })
-        .state("projects.project.reviews.edit", {
-            url: "/edit/:review_id",
-            templateUrl: "application/core/projects/project/reviews/edit.html",
-            controller: "projectEditReview"
-        })
-        .state("projects.project.reviews.create", {
-            url: "/reviews/create",
-            templateUrl: "application/core/projects/project/reviews/create.html",
-            controller: "projectCreateReview"
-        })
         .state("projects.project.notes", {
             url: "/notes",
             templateUrl: "application/core/projects/project/notes/notes.html",
@@ -355,6 +340,33 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                     }
                 ]
             }
+        })
+        .state("projects.project.reviews", {
+            url: "/reviews",
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state("projects.project.reviews.list", {
+            url: "/list",
+            templateUrl: "application/core/projects/project/reviews/reviews.html",
+            controller: "projectReviews",
+            controllerAs: "ctrl",
+            resolve: {
+                reviews: ["project", "Review", "User", "$filter",
+                    function (project, Review, User, $filter) {
+                        return project.reviews;
+                    }]
+            }
+        })
+        .state("projects.project.reviews.list.view", {
+            url: "/view/:review_id",
+            templateUrl: "application/core/projects/project/reviews/view.html",
+            controller: "projectViewReview"
+        })
+        .state("projects.project.reviews.list.create", {
+            url: "/reviews/create",
+            templateUrl: "application/core/projects/project/reviews/create.html",
+            controller: "projectCreateReview"
         });
 
     $urlRouterProvider.otherwise('/home');
