@@ -1,27 +1,39 @@
 (function (module) {
-    module.controller('projectEditReview', projectEditReview);
-    projectEditReview.$inject = ["$scope", "project", "$stateParams", "Review", "User", "$filter", "mcmodal"];
+    module.controller('projectViewReview', projectViewReview);
+    projectViewReview.$inject = ["$scope", "project", "$stateParams", "Review", "User", "$filter", "mcmodal"];
 
-    function projectEditReview($scope, project, $stateParams, Review, User, $filter, mcmodal) {
+    function projectViewReview($scope, project, $stateParams, Review, User, $filter, mcmodal) {
 
-        $scope.openReview = function (review) {
+        var ctrl = this;
+        ctrl.project = project;
+        ctrl.user = User.u();
+        ctrl.today = new Date();
+
+        ctrl.openReview = openReview;
+        ctrl.addComment = addComment;
+        ctrl.archiveReview = archiveReview;
+        ctrl.openDetails = openDetails;
+
+        function openReview(review) {
             $scope.review = review;
-        };
-        $scope.addComment = function () {
+        }
+
+        function addComment() {
             Review.addComment($scope.model, $scope.review);
             $scope.model.comment = '';
-        };
-        $scope.archiveReview = function () {
+        }
+
+        function archiveReview() {
             Review.closeReview($scope.review.id, project);
-        };
+        }
 
-        $scope.openDetails = function (params, type) {
+        function openDetails(params, type) {
             mcmodal.openModal(params, type, project);
-        };
+        }
 
-        $scope.project = project;
-        $scope.user = User.u();
-        $scope.today = new Date();
+        //$scope.project = project;
+        //$scope.user = User.u();
+        //$scope.today = new Date();
         $scope.model = {
             title: "",
             comment: ''
