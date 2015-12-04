@@ -4,26 +4,21 @@
             ng-class="{active: ctrl.isActive(tab.name)}">
             <a ng-click="ctrl.setActive(tab.name)" class="text-uppercase">
                 <i class="fa fa-fw" ng-class="tab.icon"></i>
-                {{tab.name}} ({{tab.count}})
+                <span ng-if="tab.name !== 'setup'">{{tab.name}} ({{tab.count}})</span>
+                <span ng-if="tab.name === 'setup'">{{tab.name}}</span>
             </a>
         </li>
     </ul>
     <div class="tab-content clearfix">
         <setup-details ng-if="ctrl.isActive('setup')" setup="ctrl.item.setup[0]"></setup-details>
-        <samples-list ng-if="ctrl.isActive('samples') && ctrl.item.input_samples" samples="ctrl.item.input_samples"></samples-list>
+        <samples-list ng-if="ctrl.isActive('samples') && ctrl.item.input_samples"
+                      samples="ctrl.item.input_samples"></samples-list>
         <samples-list ng-if="ctrl.isActive('samples') && ctrl.item.samples" samples="ctrl.item.samples"></samples-list>
         <processes-list ng-if="ctrl.isActive('processes')" processes="ctrl.item.processes"></processes-list>
         <file-notes ng-if="ctrl.isActive('notes')" file="ctrl.item"></file-notes>
         <files-list ng-if="ctrl.isActive('files')" files="ctrl.item.linked_files"></files-list>
-        <files-list ng-if="ctrl.isActive('Input Files')" files="ctrl.item.input_files"></files-list>
-        <files-list ng-if="ctrl.isActive('Output Files')" files="ctrl.item.output_files"></files-list>
+        <files-list ng-if="ctrl.isActive('input files')" files="ctrl.item.input_files"></files-list>
+        <files-list ng-if="ctrl.isActive('output files')" files="ctrl.item.output_files"></files-list>
         <reviews-list ng-if="ctrl.isActive('reviews')" reviews="ctrl.item.reviews"></reviews-list>
-        <!-- For the moment measurements are not supported in the controller while we rethink them -->
-        <measurements-list ng-if="ctrl.isActive('measurements') && ctrl.item"
-                           sample="ctrl.item">
-        </measurements-list>
-        <measurements-list ng-if="ctrl.isActive('measurements') && ctrl.item.property_sets"
-                           sample="ctrl.item">
-        </measurements-list>
     </div>
 </div>
