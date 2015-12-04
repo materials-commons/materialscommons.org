@@ -93,7 +93,7 @@
                     $scope.project.reviews.unshift(review);
                     $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
                     Review.setReviews($scope.reviews);
-                    $state.go('projects.project.reviews.edit', {category: 'all', review_id: review.id});
+                    $state.go('projects.project.reviews.list.view', {category: 'all', review_id: review.id});
                 }).error(function () {
                 }).post($scope.review);
         }
@@ -103,7 +103,7 @@
         };
 
         $scope.cancel = function () {
-            $state.go('projects.project.reviews.edit', {category: 'all'});
+            $state.go('projects.project.reviews.list.view', {category: 'all'});
         };
 
         function init() {

@@ -128,10 +128,10 @@ a:hover, a:visited {
 }
 
 .sidebar .list-group-item {
-    height: auto;
-    border-radius: 0;
-    border-left: none;
-    padding: 10px 20px 10px 30px;
+  height: auto;
+  border-radius: 0;
+  border-left: none;
+  padding: 10px 20px 10px 20px;
 }
 
 .sidebar .list-group-item.active {

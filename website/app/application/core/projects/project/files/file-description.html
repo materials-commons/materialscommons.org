@@ -1,14 +1,19 @@
 <div>
-    <ul class="list-inline">
-        <li><h4 class="text-uppercase section">description</h4></li>
-        <li ng-if="!ctrl.editDescription">
-            <a ng-click="ctrl.editDescription = true" class="text-small">
-                edit
-            </a>
-        </li>
-    </ul>
+    <div class="row">
+        <h4 class="h4custom">Details</h4>
 
-    <p ng-if="!ctrl.editDescription">{{ctrl.file.description}}</p>
+        <div class="row">
+            <div class="col-xs-2 text-light no-padding">Description about the file
+                <span ng-if="!ctrl.editDescription">
+                    <a ng-click="ctrl.editDescription = true" class="text-small">
+                     edit
+                     </a>
+                </span>
+            </div>
+            <div class="col-xs-10 description">{{ctrl.file.description}}</div>
+        </div>
+    </div>
+    <!--<p ng-if="!ctrl.editDescription">{{ctrl.file.description}}</p>-->
 
     <div ng-if="ctrl.editDescription">
         <textarea rows="4" class="col-xs-12" ng-model="ctrl.description"></textarea>

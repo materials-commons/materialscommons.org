@@ -21,7 +21,6 @@
         ctrl.activeTab = ctrl.tabs.length ? ctrl.tabs[0].name : '';
         ctrl.setActive = setActive;
         ctrl.isActive = isActive;
-
         //////////////////
 
         function setActive(tab) {

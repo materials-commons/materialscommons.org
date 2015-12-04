@@ -10,7 +10,7 @@
             controllerAs: 'ctrl',
             bindToController: true,
             template: [
-                '<h4 class="text-uppercase section">tags</h4>',
+                '<h4 class="h4custom">Tags</h4>',
                 '<tags-input on-tag-added="ctrl.updateTags()" display-property="tag_id"',
                 '            on-tag-removed="ctrl.updateTags()" ng-model="ctrl.file.tags"',
                 '            placeholder="Tags..." replace-spaces-with-dashes="false">',
