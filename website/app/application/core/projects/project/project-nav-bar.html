@@ -1,6 +1,6 @@
 <div class="project-nav-bar">
     <ul class="project-bar nav nav-tabs">
-        <li class="dropdown projects-drop-down">
+        <li class="dropdown projects-drop-down pull-right">
             <a title="{{navbar.project.name}}" class="dropdown-toggle pointer projects-focus" data-toggle="dropdown">
                 <i class="fa fa-fw fa-briefcase"></i>
                 {{navbar.project.name | truncate: 25: '...'}} <span
@@ -17,7 +17,7 @@
                 </li>
             </ul>
         </li>
-        <li role="presentation" ui-sref-active="active">
+        <li class="padding-left-30" role="presentation" ui-sref-active="active">
             <a ui-sref="projects.project.home"
                ui-sref-opts="{reload: true}"
                ng-click="navbar.clearSearch()"
