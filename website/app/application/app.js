@@ -298,9 +298,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "SamplesController",
             controllerAs: "ctrl",
             resolve: {
-                samples: ["project",
-                    function (project) {
-                        return project.samples;
+                samples: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('v2').one("projects", $stateParams.id).one("samples").getList();
                     }]
             }
         })
