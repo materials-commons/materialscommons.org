@@ -89,7 +89,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-6 card">
+        <div class="col-xs-6  table-samples">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -97,7 +97,7 @@
                     <th>Description</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody >
                 <tr ng-repeat="sample in ctrl.project.samples">
                     <td style="width:40%">
                         <b><a ui-sref="projects.project.samples.edit({sample_id: sample.id})">{{sample.name}}</a></b>

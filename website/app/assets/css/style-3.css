@@ -518,6 +518,11 @@ h4, h5, h6 {
     border-radius: 3px;
 }
 
+.table-samples{
+    max-height: 500px;
+    overflow-y: auto;
+}
+
 .home-panel-body ul {
     margin-bottom: 0;
 }
@@ -1173,6 +1178,10 @@ li.dashboard-item div p {
 
 .padding-left-15 {
     padding-left: 15px;
+}
+
+.padding-left-30 {
+    padding-left: 30px;
 }
 
 .padding-top-20 {
