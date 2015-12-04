@@ -1,4 +1,4 @@
-(function(module) {
+(function (module) {
     module.factory('filterProcess', filterProcessService);
     filterProcessService.$inject = [];
 
@@ -41,7 +41,7 @@
         }
 
         return {
-            byAll: function(process, searchText) {
+            byAll: function (process, searchText) {
                 if (filterByProcess(process, searchText)) {
                     return true;
                 }
