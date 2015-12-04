@@ -23,7 +23,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
     mcglobals = {};
     doConfig();
     $stateProvider
-        // Navbar
+    // Navbar
         .state('home', {
             url: '/home',
             templateUrl: 'application/core/splash.html'
@@ -142,7 +142,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                 file: ["$stateParams", "Restangular",
                     function ($stateParams, Restangular) {
                         return Restangular.one('v2').one('projects', $stateParams.id).
-                            one('files', $stateParams.file_id).get();
+                        one('files', $stateParams.file_id).get();
                     }]
             }
         })
@@ -161,7 +161,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
                 file: ["$stateParams", "Restangular",
                     function ($stateParams, Restangular) {
                         return Restangular.one('v2').one('projects', $stateParams.id).
-                            one('files', $stateParams.file_id).get();
+                        one('files', $stateParams.file_id).get();
                     }]
             }
         })
@@ -366,7 +366,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             resolve: {
                 review: ["$stateParams", "Restangular",
                     function ($stateParams, Restangular) {
-                        return  Restangular.one('review').one('details', $stateParams.review_id).get();
+                        return Restangular.one('review').one('details', $stateParams.review_id).get();
                     }
                 ]
             }
