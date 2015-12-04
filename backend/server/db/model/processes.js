@@ -163,7 +163,7 @@ module.exports = function (r) {
 
     function* getList(projectID) {
         let rql = processDetailsRql(r.table('project2process').getAll(projectID, {index: 'project_id'})
-            .eqJoin('process_id', r.table('processes')).zip());
+            .eqJoin('process_id', r.table('processes')).zip()).filter(r.row('process_type').ne('as_received'));
         let processes = yield dbExec(rql);
         return {val: processes};
     }
