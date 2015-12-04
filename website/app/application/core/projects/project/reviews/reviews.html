@@ -2,20 +2,27 @@
     <div class="col-xs-3 sidebar take-parent-height">
         <div class="row">
             <div class="col-sm-12">
-                <a class="pull-right" ui-sref="projects.project.reviews.create">Create New Review</a>
+                <a class="pull-right" ui-sref="projects.project.reviews.list.create">Create New Review</a>
             </div>
         </div>
         <br>
-
         <div class="row">
             <div class="col-sm-12">
-                <a ng-click="ctrl.listReviewsByType('my_reviews')" class="pull-right text-muted padding-left-15"><i
+                <a ng-click="ctrl.listReviewsByType('my_reviews')"
+                   ng-class="{underline: ctrl.category === 'my_reviews'}"
+                   class="pull-right text-muted padding-left-15"><i
                         class="fa fa-fw fa-user"></i> My Reviews</a>
-                <a ng-click="ctrl.listReviewsByType('due')" class="pull-right text-muted padding-left-15"><i
+                <a ng-click="ctrl.listReviewsByType('due')"
+                   ng-class="{underline: ctrl.category === 'due'}"
+                   class="pull-right text-muted padding-left-15"><i
                         class="fa fa-fw fa-exclamation-circle text-danger"></i>Due</a>
-                <a ng-click="ctrl.listReviewsByType('closed')" class="pull-right text-muted padding-left-15"><i
+                <a ng-click="ctrl.listReviewsByType('closed')"
+                   ng-class="{underline: ctrl.category === 'closed'}"
+                   class="pull-right text-muted padding-left-15"><i
                         class="fa fa-fw fa-archive"></i>Archived</a>
-                <a ng-click="ctrl.listReviewsByType('all')" class="pull-right text-muted padding-left-15"><i
+                <a ng-click="ctrl.listReviewsByType('all')"
+                   ng-class="{underline: ctrl.category === 'all'}"
+                   class="pull-right text-muted padding-left-15"><i
                         class="fa fa-fw fa-list"></i>All</a>
             </div>
         </div>
@@ -43,7 +50,7 @@
             </li>
         </ul>
         <h4 ng-if="ctrl.reviews.length === 0" class="text-center text-uppercase">
-            --None--
+            {{ctrl.noReviewsMessage}}
         </h4>
     </div>
     <div class="col-xs-9 no-padding take-parent-height">
