@@ -7,6 +7,7 @@
                                      $modal, processEdit, $previousState, $state) {
         var ctrl = this;
         ctrl.process = template;
+        console.dir(ctrl.process);
         ctrl.chooseSamples = chooseSamples;
         ctrl.chooseInputFiles = chooseInputFiles;
         ctrl.chooseOutputFiles = chooseOutputFiles;
@@ -15,6 +16,7 @@
         ctrl.submit = submit;
         ctrl.submitAndAnother = submitAndAnother;
         ctrl.remove = removeById;
+        ctrl.submitSample = submitSample;
 
         setPreviousStateMemo();
 
@@ -80,6 +82,12 @@
                 }, function (e) {
                     console.log('failure to save process', e);
                 });
+        }
+
+        function submitSample() {
+            ctrl.process.output_samples.push(ctrl.sample);
+            console.dir(ctrl.process);
+            submit();
         }
 
         function setPreviousStateMemo() {
