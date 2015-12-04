@@ -3,7 +3,8 @@
         <li class="dropdown projects-drop-down">
             <a title="{{navbar.project.name}}" class="dropdown-toggle pointer projects-focus" data-toggle="dropdown">
                 <i class="fa fa-fw fa-briefcase"></i>
-                {{navbar.project.name | truncate: 25: '...'}} <span class="white badge">{{navbar.projects.length}}</span>
+                {{navbar.project.name | truncate: 25: '...'}} <span
+                    class="white badge">{{navbar.projects.length}}</span>
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu projects-drop-down nav-dropdown-scrollbar" role="menu">
@@ -49,7 +50,7 @@
             </a>
         </li>
         <li role="presentation" ui-sref-active="active">
-            <a ui-sref="projects.project.reviews"
+            <a ui-sref="projects.project.reviews.list"
                ui-sref-opts="{reload: true}"
                ng-click="navbar.clearSearch()"
                class="pointer">
