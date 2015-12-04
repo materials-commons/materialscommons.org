@@ -8,8 +8,15 @@
         </thead>
         <tbody>
         <tr ng-repeat="property in setup.properties">
-            <td> {{property.name}}</td>
-            <td>{{property.value}} {{property.unit}}</td>
+            <td style="height: 0;">
+                {{property.name}}
+            </td>
+            <td ng-if="property.value.name" style="height: 0">
+                {{property.value.name}} {{property.unit}}
+            </td>
+            <td ng-if="!property.value.name" style="height: 0;">
+                {{property.value}} {{property.unit}}
+            </td>
         </tr>
         </tbody>
     </table>
