@@ -38,16 +38,18 @@
             var searchTextLC = ctrl.searchText.toLowerCase();
             switch (ctrl.filterBy) {
             case 'all':
-                return filterProcess.byAll(process, searchTextLC); break;
+                return filterProcess.byAll(process, searchTextLC);
+                break;
             case 'processes':
-                return filterProcess.byProcess(process, searchTextLC); break;
+                return filterProcess.byProcess(process, searchTextLC);
+                break;
             case 'samples':
-                return filterProcess.bySample(process, searchTextLC); break;
+                return filterProcess.bySample(process, searchTextLC);
+                break;
             default:
-                return filterProcess.byAll(process, searchTextLC); break;
+                return filterProcess.byAll(process, searchTextLC);
+                break;
             }
         }
-
-
     }
 }(angular.module('materialscommons')));
