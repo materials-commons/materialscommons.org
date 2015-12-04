@@ -9,19 +9,32 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <a class="pull-right text-muted padding-left-15">Samples</a>
-                <a class="pull-right text-muted padding-left-15">Processes</a>
-                <a class="pull-right">All</a>
+                <a class="pull-right text-muted padding-left-15"
+                   ng-class="{'text-muted': ctrl.filterBy !== 'samples'}"
+                   ng-click="ctrl.filterBy = 'samples'">
+                    Samples
+                </a>
+                <a class="pull-right padding-left-15"
+                   ng-class="{'text-muted': ctrl.filterBy !== 'processes'}"
+                   ng-click="ctrl.filterBy = 'processes'">
+                    Processes
+                </a>
+                <a class="pull-right"
+                   ng-class="{'text-muted': ctrl.filterBy !== 'all'}"
+                   ng-click="ctrl.filterBy = 'all'">All</a>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <input placeholder="Search all..." class="form-control" ng-model="search">
+                <input placeholder="Search all..."
+                       class="form-control"
+                       ng-model="ctrl.searchText"
+                       ng-model-options="{ updateOn: 'default blur', debounce: { default: 200, blur: 0} }">
             </div>
         </div>
         <ul ng-if="ctrl.processes.length !== 0" class="list-group">
             <li class="list-group-item pointer no-padding no-position"
-                ng-repeat="p in ctrl.processes | orderBy: 'name'"
+                ng-repeat="p in ctrl.processes | orderBy: 'name' | filter:ctrl.processFilter"
                 ng-class="{active: ctrl.current.id === p.id}"
                 ng-click="ctrl.viewProcess(p)">
                 <p class="heading">{{p.name}}</p>
