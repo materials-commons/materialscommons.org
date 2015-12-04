@@ -366,7 +366,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             resolve: {
                 review: ["$stateParams", "Restangular",
                     function ($stateParams, Restangular) {
-                        return  Restangular.one('review').one('details', $stateParams.review_id).get();
+                        return Restangular.one('review').one('details', $stateParams.review_id).get();
                     }
                 ]
             }
