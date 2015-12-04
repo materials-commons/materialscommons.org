@@ -1,8 +1,8 @@
 <div class="row detail-content">
-    <h3 class="h3custom">{{review.title}}</h3>
+    <h3 class="h3custom">{{ctrl.review.title}}</h3>
 
-    <div ng-if="review.status === 'closed'" class="row">
-        <i ng-class="{'fa-minus-circle review-closed': review.status === 'closed'}" class="fa fa-fw"></i><span
+    <div ng-if="ctrl.review.status === 'closed'" class="row">
+        <i ng-class="{'fa-minus-circle review-closed': ctrl.review.status === 'closed'}" class="fa fa-fw"></i><span
             class="review headings" style="color: #e57373">closed</span>
     </div>
 
