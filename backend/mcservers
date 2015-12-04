@@ -41,7 +41,7 @@ function start_servers()
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting mcapiserver..."
-        ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&
+        ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapiserver.out.${SERVERTYPE} 2>&1&
     fi
 
     R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
@@ -145,7 +145,7 @@ function restart_named_server()
     case "$1" in
         mcapiserver)
             echo "  Starting mcapiserver..."
-            ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&
+            ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapiserver.out.${SERVERTYPE} 2>&1&
             ;;
 
         mcstored)
@@ -232,7 +232,7 @@ function show_env()
     echo "   mcapi.js binary:        sbin/mcapi.js"
     echo " Commands: "
     echo "   rethinkdb command:      rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon"
-    echo "   mcapiserver.py command: mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&"
+    echo "   mcapiserver.py command: mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapiserver.out.${SERVERTYPE} 2>&1&"
     echo "   mcstored command:       mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:$MCDB_PORT --es-url=${MC_ES_URL} > /tmp/mcstored.out.${SERVERTYPE} 2>&1&"
     echo "   mcapi.js command:       gulp build-server && node sbin/mcapi.js -p $MC_API_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&"
     if [ ${SERVERTYPE} = "production" ]; then
