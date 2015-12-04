@@ -2,9 +2,10 @@ module.exports = function(samples, schema) {
     'use strict';
     let ec = require('./error-code');
     let parse = require('co-body');
+    const httpStatus = require('http-status');
 
     return {
-        allForProject: allForProject,
+        getList: getList,
         byID: byID,
         create: create,
         update: update
@@ -12,8 +13,12 @@ module.exports = function(samples, schema) {
 
     ///////////////////////////////////////
 
-    function *allForProject(next) {
-        this.body = yield samples.allForProject(this.params.project_id);
+    function *getList(next) {
+        let rv = yield samples.getList(this.params.project_id);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
+        }
+        this.body = rv.val;
         this.status = 200;
         yield next;
     }

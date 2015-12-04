@@ -24,7 +24,7 @@ module.exports = function(model) {
     router.get('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.get);
 
     router.post('/projects/:project_id/samples', validateProjectAccess, samples.create);
-    router.get('/projects/:project_id/samples', validateProjectAccess, samples.allForProject);
+    router.get('/projects/:project_id/samples', validateProjectAccess, samples.getList);
     router.put('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.update);
 
     router.get('/projects/:project_id/files/:file_id', validateProjectAccess, files.get);
