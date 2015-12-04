@@ -1,4 +1,4 @@
-<div>
+<div ng-if="ctrl.process.process_name !== 'As Received'">
     <div class="row">
         <div class="col-xs-5">
             Name
@@ -111,6 +111,45 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+<div ng-if="ctrl.process.process_name === 'As Received'">
+    <div class="row">
+        <div class="col-xs-5">
+            Name
+            <div class="row">
+                <input placeholder="Sample name..." ng-model="ctrl.sample.name"
+                       class="form-control col-xs-8">
+            </div>
+            Description
+            <div class="row">
+                <textarea placeholder="description..." rows="10" ng-model="ctrl.sample.description"
+                          class="form-control col-xs-8">
+                </textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <ul class="list-inline" style="padding-top:50px">
+            <li>
+                <button ng-click="ctrl.submitSample()"
+                        class="btn btn-default btn-info">
+                    Submit
+                </button>
+            </li>
+            <li>
+                <button ng-click="ctrl.submitAndAnother()"
+                        class="btn btn-default btn-info">
+                    Submit And Another
+                </button>
+            </li>
+            <li>
+                <button ng-click="ctrl.cancel()"
+                        class="btn btn-default btn-danger">
+                    Cancel
+                </button>
+            </li>
+        </ul>
     </div>
 </div>
 
