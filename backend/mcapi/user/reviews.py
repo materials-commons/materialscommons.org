@@ -9,7 +9,7 @@ from .. import resp
 from loader.model import review
 
 
-@app.route('/reviews/<id>', methods=['GET'])
+@app.route('/review/details/<id>', methods=['GET'])
 @apikey(shared=True)
 @jsonp
 def get_review(id):

@@ -18,7 +18,7 @@
                         .success(function () {
                             var review = service.findReview(reviewID, "reviews", project);
                             review.status = "closed";
-                            $state.go('projects.project.reviews', {category: 'closed'});
+                            $state.go('projects.project.reviews.list', {category: 'closed'});
                         }).put({'status': 'closed'});
                 },
 
