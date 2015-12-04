@@ -347,13 +347,13 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             template: '<div ui-view></div>'
         })
         .state("projects.project.reviews.list", {
-            url: "/list",
+            url: "/list/:category",
             templateUrl: "application/core/projects/project/reviews/reviews.html",
             controller: "projectReviews",
             controllerAs: "ctrl",
             resolve: {
-                reviews: ["project", "Review", "User", "$filter",
-                    function (project, Review, User, $filter) {
+                reviews: ["project",
+                    function (project) {
                         return project.reviews;
                     }]
             }
@@ -362,10 +362,11 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: "/view/:review_id",
             templateUrl: "application/core/projects/project/reviews/view.html",
             controller: "projectViewReview",
+            controllerAs: "ctrl",
             resolve: {
                 review: ["$stateParams", "Restangular",
                     function ($stateParams, Restangular) {
-                        return Restangular.one('reviews', $stateParams.review_id).get();
+                        return  Restangular.one('review').one('details', $stateParams.review_id).get();
                     }
                 ]
             }
@@ -373,7 +374,8 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         .state("projects.project.reviews.list.create", {
             url: "/reviews/create",
             templateUrl: "application/core/projects/project/reviews/create.html",
-            controller: "projectCreateReview"
+            controller: "projectCreateReview",
+            controllerAs: "ctrl"
         });
 
     $urlRouterProvider.otherwise('/home');
