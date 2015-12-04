@@ -1,13 +1,15 @@
 (function (module) {
     module.controller('projectViewReview', projectViewReview);
-    projectViewReview.$inject = ["$scope", "project", "$stateParams", "Review", "User", "$filter", "mcmodal"];
+    projectViewReview.$inject = ["$scope", "project", "$stateParams", "Review", "User", "$filter", "mcmodal", "review"];
 
-    function projectViewReview($scope, project, $stateParams, Review, User, $filter, mcmodal) {
+    function projectViewReview($scope, project, $stateParams, Review, User, $filter, mcmodal, review) {
 
         var ctrl = this;
         ctrl.project = project;
+        ctrl.review = review;
         ctrl.user = User.u();
         ctrl.today = new Date();
+        ctrl.modal = {title: "", comment: ''};
 
         ctrl.openReview = openReview;
         ctrl.addComment = addComment;
@@ -34,31 +36,31 @@
         //$scope.project = project;
         //$scope.user = User.u();
         //$scope.today = new Date();
-        $scope.model = {
-            title: "",
-            comment: ''
-        };
+        //$scope.model = {
+        //    title: "",
+        //    comment: ''
+        //};
 
-        function init() {
-            if ($stateParams.review_id) {
-                if ($stateParams.category === 'due') {
-                    $scope.reviews = $filter('byKey')($scope.project.reviews, 'assigned_to', User.u());
-                } else if ($stateParams.category === 'closed') {
-                    $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'closed');
-                } else {
-                    $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
-                }
+        //function init() {
+        //    if ($stateParams.review_id) {
+        //        if ($stateParams.category === 'due') {
+        //            $scope.reviews = $filter('byKey')($scope.project.reviews, 'assigned_to', User.u());
+        //        } else if ($stateParams.category === 'closed') {
+        //            $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'closed');
+        //        } else {
+        //            $scope.reviews = $filter('byKey')($scope.project.reviews, 'status', 'open');
+        //        }
+        //
+        //        var i = _.indexOf($scope.reviews, function (rev) {
+        //            return $stateParams.review_id === rev.id;
+        //        });
+        //        if (i !== -1) {
+        //            $scope.review = $scope.reviews[i];
+        //            Review.setActiveReview($scope.review);
+        //        }
+        //    }
+        //}
 
-                var i = _.indexOf($scope.reviews, function (rev) {
-                    return $stateParams.review_id === rev.id;
-                });
-                if (i !== -1) {
-                    $scope.review = $scope.reviews[i];
-                    Review.setActiveReview($scope.review);
-                }
-            }
-        }
-
-        init();
+        //init();
     }
 }(angular.module('materialscommons')));

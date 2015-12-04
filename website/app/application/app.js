@@ -361,7 +361,14 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         .state("projects.project.reviews.list.view", {
             url: "/view/:review_id",
             templateUrl: "application/core/projects/project/reviews/view.html",
-            controller: "projectViewReview"
+            controller: "projectViewReview",
+            resolve: {
+                review: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('reviews', $stateParams.review_id).get();
+                    }
+                ]
+            }
         })
         .state("projects.project.reviews.list.create", {
             url: "/reviews/create",
