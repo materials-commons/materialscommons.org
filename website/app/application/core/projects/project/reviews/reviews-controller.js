@@ -1,22 +1,25 @@
 (function (module) {
     module.controller('projectReviews', projectReviews);
-    projectReviews.$inject = ["project", "Review",  "reviews",  "User", "$filter"];
+    projectReviews.$inject = ["$scope", "project", "pubsub", "Review", "reviews", "User", "$filter", "$stateParams"];
 
-    function projectReviews(project, Review, reviews, User, $filter) {
+    function projectReviews($scope, project, pubsub, Review, reviews, User, $filter, $stateParams) {
         var ctrl = this;
 
         ctrl.reviews = reviews;
         ctrl.project = project;
         ctrl.listReviewsByType = listReviewsByType;
-        listReviewsByType();
+        ctrl.category = $stateParams.category;
 
-        //pubsub.waitOn($scope, 'activeReview.change', function () {
-        //    ctrl.review = Review.getActiveReview();
-        //});
-        //
-        //pubsub.waitOn($scope, 'reviews.change', function () {
-        //    ctrl.reviews = Review.getReviews();
-        //});
+        listReviewsByType($stateParams.category);
+
+
+        pubsub.waitOn($scope, 'activeReview.change', function () {
+            ctrl.review = Review.getActiveReview();
+        });
+
+        pubsub.waitOn($scope, 'reviews.change', function () {
+            ctrl.reviews = Review.getReviews();
+        });
 
         function listReviewsByType(type) {
             switch (type) {
