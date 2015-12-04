@@ -86,7 +86,6 @@
 
         function submitSample() {
             ctrl.process.output_samples.push(ctrl.sample);
-            console.dir(ctrl.process);
             submit();
         }
 
