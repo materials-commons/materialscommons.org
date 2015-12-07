@@ -7,7 +7,6 @@
                                      $modal, processEdit, $previousState, $state) {
         var ctrl = this;
         ctrl.process = template;
-        console.dir(ctrl.process);
         ctrl.chooseSamples = chooseSamples;
         ctrl.chooseInputFiles = chooseInputFiles;
         ctrl.chooseOutputFiles = chooseOutputFiles;
@@ -86,7 +85,6 @@
 
         function submitSample() {
             ctrl.process.output_samples.push(ctrl.sample);
-            console.dir(ctrl.process);
             submit();
         }
 
