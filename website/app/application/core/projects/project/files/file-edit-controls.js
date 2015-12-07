@@ -33,27 +33,27 @@
             case "processes":
                 displayProcesses();
                 break;
-            //case "samples":
-            //    displaySamples();
-            //    break;
-            //case "notes":
-            //    displayNotes();
-            //    break;
+                //case "samples":
+                //    displaySamples();
+                //    break;
+                //case "notes":
+                //    displayNotes();
+                //    break;
             }
         }
 
         function displayProcesses() {
-            selectItems.open('processes').then(function(items) {
+            selectItems.open('processes').then(function (items) {
                 var processCommands = toProcessCommands(items.processes);
-                ctrl.file.customPUT({processes: processCommands}).then(function() {
+                ctrl.file.customPUT({processes: processCommands}).then(function () {
                 });
             });
         }
 
         function toProcessCommands(processes) {
-            var inputs = processes.filter(function(p) {
+            var inputs = processes.filter(function (p) {
                 return p.input;
-            }).map(function(p) {
+            }).map(function (p) {
                 return {
                     command: 'add',
                     process_id: p.id,
@@ -61,9 +61,9 @@
                 };
             });
 
-            var outputs = processes.filter(function(p) {
+            var outputs = processes.filter(function (p) {
                 return p.output;
-            }).map(function(p) {
+            }).map(function (p) {
                 return {
                     command: 'add',
                     process_id: p.id,
