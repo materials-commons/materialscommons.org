@@ -347,7 +347,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             template: '<div ui-view></div>'
         })
         .state("projects.project.reviews.list", {
-            url: "/list/:category",
+            url: "/list",
             templateUrl: "application/core/projects/project/reviews/reviews.html",
             controller: "projectReviews",
             controllerAs: "ctrl",

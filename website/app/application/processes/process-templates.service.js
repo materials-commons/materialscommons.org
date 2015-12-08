@@ -218,6 +218,7 @@
 
                 var t = angular.copy(self.templatesByName[template.process_name]);
                 t.name = template.name;
+                t.prefill = true;
                 t.create = function() {
                     var tmpl = new t.fn();
                     tmpl.prefill = true;
@@ -227,7 +228,7 @@
                 };
 
                 templates.push(t);
-                return true;
+                return templates;
             }
         };
     }

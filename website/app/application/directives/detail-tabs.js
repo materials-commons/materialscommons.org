@@ -21,6 +21,8 @@
         ctrl.activeTab = ctrl.tabs.length ? ctrl.tabs[0].name : '';
         ctrl.setActive = setActive;
         ctrl.isActive = isActive;
+
+        ctrl.setActive('setup');
         //////////////////
 
         function setActive(tab) {
@@ -33,6 +35,11 @@
 
         function loadTabs() {
             var tabs = [];
+
+            if ('setup' in ctrl.item) {
+                tabs.push(newTab('setup', 'fa-cogs', ctrl.item.setup[0].properties.length));
+            }
+
             if ('notes' in ctrl.item) {
                 tabs.push(newTab('notes', 'fa-sticky-note', ctrl.item.notes.length));
             }
@@ -63,15 +70,12 @@
                 tabs.push(newTab('samples', 'fa-cubes', ctrl.item.samples.length));
             }
 
-            if ('setup' in ctrl.item) {
-                tabs.push(newTab('setup', 'fa-cogs', ctrl.item.setup[0].properties.length));
-            }
 
             tabs.sort(function compareByName(t1, t2) {
-                if (t1.name < t2.name) {
+                if (t1.name > t2.name) {
                     return -1;
                 }
-                if (t1.name > t2.name) {
+                if (t1.name < t2.name) {
                     return 1;
                 }
                 return 0;

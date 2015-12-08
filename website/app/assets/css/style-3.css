@@ -1196,3 +1196,9 @@ li.dashboard-item div p {
   height: 100%;
 }
 
+.snippet {
+  max-height: 100px;
+  overflow: hidden;
+  height: auto;
+}
+
