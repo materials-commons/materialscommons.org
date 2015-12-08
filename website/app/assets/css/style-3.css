@@ -13,38 +13,26 @@ html {
 
 .h3custom {
   font-size: 1.4rem; /*19.6px */
+  margin-top: 15px;
 }
 
 .h4custom {
   font-size: 1.2rem; /*16.8px */
+  margin-top: 15px;
 }
 
 body {
   font-family: roboto, serif;
   font-style: normal;
-  /*overflow-y: scroll;*/
   overflow-x: hidden;
   color: #424242;
   background-color: #FFFFFF;
-  /*height: 100%;*/
   margin-top: 41px;
 }
 
 textarea {
   resize: none;
 }
-
-/*** Override basic bootstrap styles ***/
-
-/*.btn {*/
-/*text-transform: uppercase;*/
-/*border-radius: 2px;*/
-/*font-weight: 500;*/
-/*}*/
-
-/*.btn-default {*/
-/*color: white;*/
-/*}*/
 
 .btn {
   font-weight: bold;
@@ -81,14 +69,6 @@ a {
 a:hover, a:visited {
   opacity: 0.7;
 }
-
-/*h1, h2 {*/
-/*color: #515151;*/
-/*}*/
-
-/*h3, h4, h5, h6 {*/
-/*color: #5e5e5e;*/
-/*}*/
 
 .text-emphasis {
   color: #515151;
@@ -131,13 +111,13 @@ a:hover, a:visited {
   height: auto;
   border-radius: 0;
   border-left: none;
-  padding: 10px 20px 10px 20px;
+  padding: 20px 20px 20px 20px;
 }
 
 .sidebar .list-group-item.active {
   color: #212121;
   background-color: #EEF3F5;
-  border: none;
+  border: 0.5px solid lightgrey;
 }
 
 .sidebar .list-group-item.active .heading {
