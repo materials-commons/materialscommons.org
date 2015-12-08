@@ -7,23 +7,43 @@
         </div>
         <br>
         <div class="row">
+            <!--<div class="col-sm-12">-->
+                <!--<a ng-click="ctrl.listReviewsByType('my_reviews')"-->
+                   <!--ng-class="{'text-muted': ctrl.category === 'my_reviews'}"-->
+                   <!--class="pull-right text-muted padding-left-15"><i-->
+                        <!--class="fa fa-fw fa-user"></i> My Reviews</a>-->
+                <!--<a ng-click="ctrl.listReviewsByType('due')"-->
+                   <!--ng-class="{'text-muted': ctrl.category === 'due'}"-->
+                   <!--class="pull-right text-muted padding-left-15"><i-->
+                        <!--class="fa fa-fw fa-exclamation-circle text-danger"></i>Due</a>-->
+                <!--<a ng-click="ctrl.listReviewsByType('closed')"-->
+                   <!--ng-class="{'text-muted': ctrl.category === 'closed'}"-->
+                   <!--class="pull-right text-muted padding-left-15"><i-->
+                        <!--class="fa fa-fw fa-archive"></i>Archived</a>-->
+                <!--<a ng-click="ctrl.listReviewsByType('all')"-->
+                   <!--ng-class="{'text-muted': ctrl.category === 'all'}"-->
+                   <!--class="pull-right text-muted padding-left-15"><i-->
+                        <!--class="fa fa-fw fa-list"></i>All</a>-->
+            <!--</div>-->
             <div class="col-sm-12">
-                <a ng-click="ctrl.listReviewsByType('my_reviews')"
-                   ng-class="{underline: ctrl.category === 'my_reviews'}"
-                   class="pull-right text-muted padding-left-15"><i
-                        class="fa fa-fw fa-user"></i> My Reviews</a>
-                <a ng-click="ctrl.listReviewsByType('due')"
-                   ng-class="{underline: ctrl.category === 'due'}"
-                   class="pull-right text-muted padding-left-15"><i
-                        class="fa fa-fw fa-exclamation-circle text-danger"></i>Due</a>
-                <a ng-click="ctrl.listReviewsByType('closed')"
-                   ng-class="{underline: ctrl.category === 'closed'}"
-                   class="pull-right text-muted padding-left-15"><i
-                        class="fa fa-fw fa-archive"></i>Archived</a>
-                <a ng-click="ctrl.listReviewsByType('all')"
-                   ng-class="{underline: ctrl.category === 'all'}"
-                   class="pull-right text-muted padding-left-15"><i
-                        class="fa fa-fw fa-list"></i>All</a>
+                <a class="pull-right text-muted padding-left-15"
+                   ng-class="{'text-muted': ctrl.category !== 'my_reviews'}"
+                   ng-click="ctrl.listReviewsByType('my_reviews')">
+                    My Reviews
+                </a>
+                <a class="pull-right text-muted padding-left-15"
+                   ng-class="{'text-muted': ctrl.category !== 'due'}"
+                   ng-click="ctrl.listReviewsByType('due')">
+                    Due
+                </a>
+                <a class="pull-right text-muted padding-left-15"
+                   ng-class="{'text-muted': ctrl.category !== 'closed'}"
+                   ng-click="ctrl.listReviewsByType('closed')">
+                    Archived
+                </a>
+                <a class="pull-right"
+                   ng-class="{'text-muted': ctrl.category !== 'all'}"
+                   ng-click="ctrl.listReviewsByType('all')">All</a>
             </div>
         </div>
         <div class="row">

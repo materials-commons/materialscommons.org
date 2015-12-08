@@ -1,16 +1,15 @@
 (function (module) {
     module.controller('projectReviews', projectReviews);
-    projectReviews.$inject = ["$scope", "project", "pubsub", "Review", "reviews", "User", "$filter", "$stateParams"];
+    projectReviews.$inject = ["$scope", "project", "pubsub", "Review", "reviews", "User", "$filter"];
 
-    function projectReviews($scope, project, pubsub, Review, reviews, User, $filter, $stateParams) {
+    function projectReviews($scope, project, pubsub, Review, reviews, User, $filter) {
         var ctrl = this;
 
         ctrl.reviews = reviews;
         ctrl.project = project;
         ctrl.listReviewsByType = listReviewsByType;
-        ctrl.category = $stateParams.category;
 
-        listReviewsByType($stateParams.category);
+        listReviewsByType();
 
 
         pubsub.waitOn($scope, 'activeReview.change', function () {
@@ -24,28 +23,33 @@
         function listReviewsByType(type) {
             switch (type) {
             case "all":
+                ctrl.category = type;
                 ctrl.reviews = $filter('byKey')(ctrl.project.reviews, 'status', 'open');
                 Review.listReviewsByType(ctrl.reviews, type);
                 ctrl.noReviewsMessage = "No reviews of any type";
                 break;
             case "my_reviews":
-                ctrl.reviews = $filter('byKey')(ctrl.project.reviews, 'author', User.u());
-                ctrl.reviews = $filter('byKey')(ctrl.reviews, 'status', 'open');
+                ctrl.category = type;
+                var reviews = $filter('byKey')(ctrl.project.reviews, 'author', User.u());
+                ctrl.reviews = $filter('byKey')(reviews, 'status', 'open');
                 Review.listReviewsByType(ctrl.reviews, type);
                 ctrl.noReviewsMessage = "You have no open reviews";
                 break;
             case "due":
-                ctrl.reviews = $filter('byKey')(ctrl.project.reviews, 'assigned_to', User.u());
-                ctrl.reviews = $filter('byKey')(ctrl.reviews, 'status', 'open');
+                ctrl.category = type;
+                var reviews = $filter('byKey')(ctrl.project.reviews, 'assigned_to', User.u());
+                ctrl.reviews = $filter('byKey')(reviews, 'status', 'open');
                 Review.listReviewsByType(ctrl.reviews, type);
                 ctrl.noReviewsMessage = "You have no reviews due";
                 break;
             case "closed":
+                ctrl.category = type;
                 ctrl.reviews = $filter('byKey')(ctrl.project.reviews, 'status', 'closed');
                 Review.listReviewsByType(ctrl.reviews, type);
                 ctrl.noReviewsMessage = "There are no archived reviews";
                 break;
             default:
+                ctrl.category = 'all';
                 ctrl.reviews = $filter('byKey')(ctrl.project.reviews, 'status', 'open');
                 Review.listReviewsByType(ctrl.reviews, 'all');
                 ctrl.noReviewsMessage = "No reviews of any type";
