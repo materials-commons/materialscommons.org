@@ -17,10 +17,10 @@
         <span><i class="fa fa-fw fa-file-o"></i>Binary file cannot be displayed</span>
     </div>
     <div ng-switch-default>
-        <div ng-if="view.file.size <= 10000"
+        <div data-toggle="modal" data-target="#myModal" class="snippet" ng-if="view.file.size <= 10000"
              hljs include="view.fileSrc">
         </div>
-        <code ng-if="view.file.size > 10000 && view.file.size <= 2000000"
+        <code data-toggle="modal" data-target="#myModal" class="snippet" ng-if="view.file.size > 10000 && view.file.size <= 2000000"
               style="white-space: pre-line" ng-include="view.fileSrc">
         </code>
 

@@ -31,6 +31,7 @@
                 <div class="tab-pane active" id="1">
                     <div class="list-group">
                         <h4>Favorites</h4>
+
                         <div ng-repeat="template in ctrl.templates | filter:{favorite:true} | filter:ctrl.search | orderBy:'name'"
                              class="list-group-item">
                             <div class="row">
@@ -54,6 +55,7 @@
                                            ng-class="{'fa-star' : template.favorite, 'fa-star-o': !template.favorite}">
                                         </i>
                                     </a>
+
                                     <div class="row">
                                         <button class="btn btn-info" ng-click="ctrl.viewSetup(template)">
                                             <i class="fa fa-fw fa-gear"></i>Setup
@@ -71,8 +73,55 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="list-group">
+                        <h4>Prefilled</h4>
+
+                        <div ng-repeat="template in ctrl.templates | filter:{prefill:true} | filter:ctrl.search | orderBy:'name'"
+                             class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <div class="list-group-item-heading">
+                                        <a ng-click="ctrl.selectTemplate(template)">
+                                            <i class="fa fa-fw fa-square-o fa-2x"></i>
+                                        </a>
+                                        {{template.name}}
+                                    </div>
+                                    <div ng-if="template.does_transform">
+                                        <label class="label label-default">Transforms Sample</label>
+                                    </div>
+                                    <div class="row">
+                                        Description: {{template.description}}
+                                    </div>
+                                </div>
+                                <div class="col-xs-5">
+                                    <a ng-click="ctrl.toggleFavorite(template)">
+                                        <i class="fa fa-fw fa-star pull-right"
+                                           ng-class="{'fa-star' : template.favorite, 'fa-star-o': !template.favorite}">
+                                        </i>
+                                    </a>
+
+                                    <div class="row">
+                                        <button class="btn btn-info" ng-click="ctrl.viewSetup(template)">
+                                            <i class="fa fa-fw fa-gear"></i>Setup
+                                        </button>
+                                        <button ng-if="template.prefill" class="btn btn-info"
+                                                ng-click="ctrl.editPrefill(template)">
+                                            <i class="fa fa-fw fa-pencil-square-o"></i>Edit
+                                        </button>
+                                        <button ng-if="!template.prefill" class="btn btn-info"
+                                                ng-click="ctrl.addPrefill(template)">
+                                            <i class="fa fa-fw fa-plus"></i>pre-fill
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="list-group">
                         <h4>All</h4>
+
                         <div ng-repeat="template in ctrl.templates | filter:ctrl.search | orderBy:'name'"
                              class="list-group-item">
                             <div class="row">
@@ -96,6 +145,7 @@
                                            ng-class="{'fa-star' : template.favorite, 'fa-star-o': !template.favorite}">
                                         </i>
                                     </a>
+
                                     <div class="row">
                                         <button class="btn btn-info" ng-click="ctrl.viewSetup(template)">
                                             <i class="fa fa-fw fa-gear"></i>Setup
@@ -140,6 +190,7 @@
                                            ng-class="{'fa-star' : template.favorite, 'fa-star-o': !template.favorite}">
                                         </i>
                                     </a>
+
                                     <div class="row">
                                         <button class="btn btn-info" ng-click="ctrl.viewSetup(template)">
                                             <i class="fa fa-fw fa-gear"></i>Setup
