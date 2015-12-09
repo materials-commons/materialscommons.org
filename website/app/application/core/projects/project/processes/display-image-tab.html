@@ -1,10 +1,12 @@
 <div ng-if="ctrl.sample.linked_files.length !== 0">
     <span ng-repeat="img in ctrl.images(ctrl.sample.linked_files) | first:3">
-        <img class="img-thumbnail" height="100" width="100"
+        <img ng-click="ctrl.showImage(img)" class="img-thumbnail" height="100" width="100"
              ng-src={{ctrl.fileSrc(img.id)}}>
     </span>
 
     <div ng-if="ctrl.sample.linked_files.length > 1">
-        ... more ({{ctrl.sample.linked_files.length - 3}}) files
+       <a  ng-if="ctrl.sample.linked_files.length - 3!== 0" ui-sref="projects.project.samples.edit({sample_id: ctrl.sample.id})" >
+           ... more ({{ctrl.sample.linked_files.length - 3}}) files
+       </a>
     </div>
 </div>
