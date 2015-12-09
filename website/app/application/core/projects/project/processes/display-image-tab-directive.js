@@ -15,12 +15,14 @@
     }
 
     module.controller("displayImageTabDirectiveController", displayImageTabDirectiveController);
-    displayImageTabDirectiveController.$inject = ["mcfile"];
+    displayImageTabDirectiveController.$inject = ["mcfile", "mcmodal"];
 
-    function displayImageTabDirectiveController(mcfile) {
+    function displayImageTabDirectiveController(mcfile, mcmodal) {
         var imageCtrl = this;
         imageCtrl.images = images;
         imageCtrl.fileSrc = fileSrc;
+        imageCtrl.showImage = showImage;
+
         function images(files) {
             var images = [];
             if (files) {
@@ -35,6 +37,10 @@
 
         function fileSrc(id) {
             return mcfile.src(id);
+        }
+
+        function showImage(file){
+            mcmodal.viewImage(file);
         }
     }
 }(angular.module('materialscommons')));

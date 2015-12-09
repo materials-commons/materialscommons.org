@@ -13,12 +13,14 @@ html {
 
 .h3custom {
   font-size: 1.4rem; /*19.6px */
-  margin-top: 15px;
+  margin-top: 0px;
+  margin-bottom: 5px;
 }
 
 .h4custom {
   font-size: 1.2rem; /*16.8px */
   margin-top: 15px;
+  margin-bottom: 5px;
 }
 
 body {
