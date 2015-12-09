@@ -43,7 +43,7 @@
             }
         }
 
-        function showImage(file){
+        function showImage(file) {
             mcmodal.viewImage(file);
         }
 
