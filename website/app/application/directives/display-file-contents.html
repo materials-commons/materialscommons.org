@@ -1,6 +1,6 @@
 <div ng-switch="view.fileType">
     <div ng-switch-when="image">
-        <a data-toggle="modal" data-target="#myModal"><img class="col-xs-3 no-padding img-responsive center-block"
+        <a><img ng-click="view.showImage(view.file)" class="col-xs-3 no-padding img-responsive center-block"
                                                            ng-src="{{view.fileSrc}}"> </a>
     </div>
     <div ng-switch-when="pdf">
@@ -17,10 +17,10 @@
         <span><i class="fa fa-fw fa-file-o"></i>Binary file cannot be displayed</span>
     </div>
     <div ng-switch-default>
-        <div data-toggle="modal" data-target="#myModal" class="snippet" ng-if="view.file.size <= 10000"
+        <div ng-click="view.showImage(view.file)" class="snippet" ng-if="view.file.size <= 10000"
              hljs include="view.fileSrc">
         </div>
-        <code data-toggle="modal" data-target="#myModal" class="snippet" ng-if="view.file.size > 10000 && view.file.size <= 2000000"
+        <code ng-click="view.showImage(view.file)" class="snippet" ng-if="view.file.size > 10000 && view.file.size <= 2000000"
               style="white-space: pre-line" ng-include="view.fileSrc">
         </code>
 
@@ -34,20 +34,20 @@
     </div>
 </div>
 
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">×</button>
-                <h3 class="modal-title">{{view.file.name}}</h3>
-            </div>
-            <div class="modal-body">
-                <img class="no-padding img-responsive center-block"
-                     ng-src="{{view.fileSrc}}">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div id="myModal" class="modal fade" tabindex="-1" role="dialog">-->
+    <!--<div class="modal-dialog modal-lg">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal">×</button>-->
+                <!--<h3 class="modal-title">{{view.file.name}}</h3>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--<img class="no-padding img-responsive center-block"-->
+                     <!--ng-src="{{view.fileSrc}}">-->
+            <!--</div>-->
+            <!--<div class="modal-footer">-->
+                <!--<button class="btn btn-default" data-dismiss="modal">Close</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

@@ -117,7 +117,23 @@
                     }
                 });
                 return modal.result;
+            },
+
+            viewImage: function (file) {
+                var modal = $modal.open({
+                    size: 'lg',
+                    templateUrl: 'application/services/mcmodal/partials/image.html',
+                    controller: 'ImageController',
+                    controllerAs: 'ctrl',
+                    resolve: {
+                        file: function () {
+                            return file;
+                        }
+                    }
+                });
+                return modal.result;
             }
+
         };
         return service;
     }
