@@ -22,6 +22,7 @@
         ctrl.fileType = determineFileType(ctrl.file.mediatype);
         ctrl.fileSrc = mcfile.src(ctrl.file.id);
         ctrl.showImage = showImage;
+        ctrl.downloadSrc = downloadSrc;
 
         //////////////
 
@@ -44,6 +45,10 @@
 
         function showImage(file){
             mcmodal.viewImage(file);
+        }
+
+        function downloadSrc() {
+            return mcfile.downloadSrc(ctrl.file.id);
         }
 
     }
