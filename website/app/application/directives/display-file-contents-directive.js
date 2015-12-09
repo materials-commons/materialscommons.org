@@ -14,13 +14,14 @@
     }
 
     module.controller("DisplayFileContentsDirectiveController", DisplayFileContentsDirectiveController);
-    DisplayFileContentsDirectiveController.$inject = ["mcfile"];
+    DisplayFileContentsDirectiveController.$inject = ["mcfile", "mcmodal"];
 
     /* @ngInject */
-    function DisplayFileContentsDirectiveController(mcfile) {
+    function DisplayFileContentsDirectiveController(mcfile, mcmodal) {
         var ctrl = this;
         ctrl.fileType = determineFileType(ctrl.file.mediatype);
         ctrl.fileSrc = mcfile.src(ctrl.file.id);
+        ctrl.showImage = showImage;
 
         //////////////
 
@@ -40,5 +41,10 @@
                 }
             }
         }
+
+        function showImage(file){
+            mcmodal.viewImage(file);
+        }
+
     }
 }(angular.module('materialscommons')));
