@@ -1,21 +1,25 @@
-<div class="row">
-    <div class="col-lg-offset-2 col-lg-8">
-        <h4>Group Permissions</h4> <br>
+<div class="row"><br>
+    <div class="col-sm-offset-2 col-sm-6">
+        <h3 class="h3custom">Collaborators for project {{access.project.name}}</h3> <br>
 
-        <table class="table table-boxed">
+        <table class="table table-striped">
             <thead>
             <tr>
-                <th>User</th>
-                <th>Delete</th>
+                <th>Users</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="user in access.project.users | orderBy: 'user_id'">
                 <td>{{user.user_id}}</td>
-                <td ng-if="access.isOwnerOrUser(user.user_id)">
-                    <button ng-click="access.deleteUser(user.id)" class="btn btn-danger">Remove</button>
+                <td ng-if="access.isOwner(access.signedInUser)">
+                    <div ng-if="access.signedInUser === user.user_id">
+                         Owner
+                    </div>
+                    <div ng-if="access.signedInUser !== user.user_id">
+                        <button ng-click="access.deleteUser(user.id)" class="btn btn-danger">Remove</button>
+                    </div>
                 </td>
-                <td ng-if="!access.isOwnerOrUser(user.user_id)">Not Authorized</td>
+                <td ng-if="!access.isOwner(access.signedInUser)">Not Authorized</td>
             </tr>
             </tbody>
         </table>
