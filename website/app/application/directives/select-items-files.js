@@ -31,7 +31,7 @@
                 {
                     headerName: "",
                     field: "name",
-                    width: 350,
+                    width: 650,
                     cellRenderer: {
                         renderer: 'group',
                         innerRenderer: function (params) {
@@ -105,7 +105,7 @@
                             return node.model.data.id === params.data.id;
                         });
                         dir.model.children = gridFiles.toGridChildren(files);
-                        dir.model.children.forEach(function(c) {
+                        dir.model.children.forEach(function (c) {
                             if (c.data._type == 'file') {
                                 c.data.selected = params.data.selected;
                             }
