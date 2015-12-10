@@ -44,8 +44,8 @@
 
                 <div class="text-muted truncate-text">{{s.description}}</div>
                 <div class="row counts">
-                    <span>
-                        <i popover-placement="top" uib-popover="On the Top!" class="fa fa-fw fa-flask"
+                    <span  popover-placement="right" popover="{{s.processes | byKey: 'does_transform': true | transformProcesses}}" popover-title="Transformations" popover-trigger="mouseenter">
+                        <i class="fa fa-fw fa-flask"
                            style="color: #ff5a60;"></i>{{s.transforms}}</span>
                     <span class="padding-left-15"><i data-placement="right" data-toggle="tooltip" title="Files"
                                                      class="fa fa-fw fa-files-o file"></i>{{s.files.length}}  </span>
