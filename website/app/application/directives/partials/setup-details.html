@@ -1,6 +1,6 @@
 <div>
-    <div ng-if="!setup.properties.length">
-        <h1 class="text-uppercase">No Setup</h1>
+    <div ng-if="setup.properties.length === 0">
+        <h3 class="text-uppercase">No Setup</h3>
     </div>
     <div ng-if="setup.properties.length">
         <table class="table table-striped">
