@@ -22,7 +22,11 @@
         ctrl.setActive = setActive;
         ctrl.isActive = isActive;
 
-        ctrl.setActive('setup');
+        if(ctrl.item._type === 'process' ){
+            ctrl.setActive('setup');
+        }else if (ctrl.item._type === 'sample' ){
+            ctrl.setActive('processes');
+        }
         //////////////////
 
         function setActive(tab) {
