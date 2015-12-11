@@ -91,12 +91,23 @@
             submit();
         }
 
+        // setPreviousStateMemo sets the process_previous memo to the previous state. It
+        // only sets the memo if the previous state doesn't exist. If it does exist that
+        // means that create has been entered multiple times.
         function setPreviousStateMemo() {
-            var previous = $previousState.get('processes_previous');
-            if (!previous) {
+            var previousMemo = $previousState.get('processes_previous');
+            var previousState = $previousState.get();
+            if (!previousMemo) {
                 $previousState.memo('processes_previous');
-            } else if (previous.state.name !== 'projects.project.processes.create') {
-                $previousState.memo('processes_previous');
+            } else {
+                // previousMemo is not null, but the user may not have cancelled to clear
+                // the previousMemo. That is they may have gone to the tabs rather than
+                // the cancel button to get out of a create.
+                if (previousState.state.name !== 'projects.project.processes.create') {
+                    // User did not cancel, so we have an old state. Save new previous state
+                    // so user will go where they expect if they press the cancel button.
+                    $previousState.memo('processes_previous');
+                }
             }
         }
 
@@ -127,9 +138,8 @@
                 }
             });
             modal.result.then(function (linkedFiles) {
-                    sample = processEdit.refreshSample(linkedFiles, sample);
-                }
-            );
+                sample = processEdit.refreshSample(linkedFiles, sample);
+            });
         }
     }
 }(angular.module('materialscommons')));
