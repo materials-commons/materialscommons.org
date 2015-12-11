@@ -9,7 +9,7 @@
             scope: {
                 dir: "=dir"
             },
-            template: "<a><span title='Upload to directory' class='heading-label text-uppercase'>upload files</span></a>",
+            template: "<span style='color: #64b5f6; cursor: pointer' title='Upload to directory' class='heading-label text-uppercase'>upload files</span>",
             link: function (scope, element, attrs) {
                 var flow = mcFlow.get();
                 var isDirectory = attrs.hasOwnProperty('flowDirectory');
