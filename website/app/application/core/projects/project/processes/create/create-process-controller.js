@@ -135,9 +135,8 @@
                 }
             });
             modal.result.then(function (linkedFiles) {
-                    sample = processEdit.refreshSample(linkedFiles, sample);
-                }
-            );
+                sample = processEdit.refreshSample(linkedFiles, sample);
+            });
         }
     }
 }(angular.module('materialscommons')));
