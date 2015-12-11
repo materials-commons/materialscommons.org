@@ -40,10 +40,12 @@
         function chooseInputFiles() {
             selectItems.open('files').then(function (item) {
                 var uniqueFiles = differenceById(item.files, ctrl.process.input_files);
+                console.dir(uniqueFiles);
                 uniqueFiles.forEach(function (file) {
                     ctrl.process.input_files.push({
                         id: file.id,
-                        name: file.name
+                        name: file.name,
+                        mediatype: file.mediatype
                     });
                 });
             });
@@ -55,7 +57,8 @@
                 uniqueFiles.forEach(function (file) {
                     ctrl.process.output_files.push({
                         id: file.id,
-                        name: file.name
+                        name: file.name,
+                        mediatype: file.mediatype
                     });
                 });
             });

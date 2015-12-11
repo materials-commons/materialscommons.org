@@ -85,7 +85,8 @@
                 uniqueFiles.forEach(function (file) {
                     ctrl.process.input_files.push({
                         id: file.id,
-                        name: file.name
+                        name: file.name,
+                        mediatype: file.mediatype
                     });
                     ctrl.process.updated_input_files.push({id: file.id, command: 'add'});
                 });
@@ -98,7 +99,8 @@
                 uniqueFiles.forEach(function (file) {
                     ctrl.process.output_files.push({
                         id: file.id,
-                        name: file.name
+                        name: file.name,
+                        mediatype: file.mediatype
                     });
                     ctrl.process.updated_output_files.push({id: file.id, command: 'add'});
                 });
