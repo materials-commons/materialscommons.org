@@ -5,7 +5,6 @@
             priority: 1,
             terminal: true,
             link: function (scope, element, attr) {
-                console.log('yes');
                 var msg = attr.ngConfirmClick || "Are you sure?";
                 var clickAction = attr.ngClick;
                 element.bind('click', function () {

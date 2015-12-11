@@ -12,6 +12,7 @@
                 var template = '';
                 switch (type) {
                 case "datafile":
+                    console.dir(item);
                     template = 'application/core/projects/project/home/directives/display-file.html';
                     service.modal.item = item;
                     break;
