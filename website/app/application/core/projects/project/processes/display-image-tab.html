@@ -4,9 +4,8 @@
              ng-src={{ctrl.fileSrc(img.id)}}>
     </span>
 
-    <div ng-if="ctrl.sample.linked_files.length > 1">
-       <a  ng-if="ctrl.sample.linked_files.length - 3!== 0" ui-sref="projects.project.samples.edit({sample_id: ctrl.sample.id})" >
-           ... more ({{ctrl.sample.linked_files.length - 3}}) files
-       </a>
+    <div ng-if="ctrl.images(ctrl.sample.linked_files).length > 3">
+        <a ui-sref="projects.project.samples.edit({sample_id: ctrl.sample.id})">
+            ... more ({{ctrl.images(ctrl.sample.linked_files).length - 3}}) images </a>
     </div>
 </div>
