@@ -50,6 +50,23 @@ def convert_setup_selections_to_name_value(conn):
     print "Done."
 
 
+def add_as_received_processes(conn):
+    print "Setting process name for all processes with type 'as_received'"
+    r.table('processes').filter({'process_type': 'as_received'}).update({'process_name': 'As Received'}).run(conn)
+    print "Done."
+
+
+def set_specific_process_names(conn):
+    print "Setting process names for certain ids"
+    r.table('processes').get('d297b7d9-a568-4980-8af1-4f0bafa251f7').update({'process_name': 'TEM'}).run(conn)
+    r.table('processes').get('d86edee0-c659-4105-8b07-8ee1b278bf41').update({'process_name': 'Heat Treatment'}).run(conn)
+    r.table('processes').get('92a44e96-ae9b-476b-a777-94e8fe443596').update({'process_name': 'TEM'}).run(conn)
+    r.table('processes').get('d6d19225-2f82-426b-8e2d-2961924c6fcc').update({'process_name': 'Heat Treatment'}).run(conn)
+    r.table('processes').get('65348deb-d25c-46e8-83a8-179c61e2ab01').update({'process_name': 'Heat Treatment'}).run(conn)
+    r.table('processes').get('3f16c122-7683-4a2f-9d94-92bc82765fe2').update({'process_name': 'TEM'}).run(conn)
+    print "Done"
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
@@ -58,6 +75,8 @@ def main():
     conn = r.connect('localhost', options.port, db="materialscommons")
     remove_nulls_in_setup(conn)
     remove_duplicates_in_sample2datafile(conn)
+    add_as_received_processes(conn)
+    set_specific_process_names(conn)
     # change_processes_field_to_description(conn)
     # convert_setup_selections_to_name_value(conn)
 
