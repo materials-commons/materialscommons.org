@@ -1883,9 +1883,9 @@ function EpmaDataCollection() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Line", "value" : "line"},
-                            {"name": "Grid", "value" : "grid"},
-                            {"name": "Point", "value" : "point"}]
+                        choices: [{"name": "Line", "value": "line"},
+                            {"name": "Grid", "value": "grid"},
+                            {"name": "Point", "value": "point"}]
                     },
                     validators: [],
                     valid: false,
@@ -1977,8 +1977,8 @@ function LowCycleFatigue() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Total strain control", "value" : "total_strain_control"},
-                            {"name": "Plastic strain control", "value" : "plastic_strain_control"},
+                        choices: [{"name": "Total strain control", "value": "total_strain_control"},
+                            {"name": "Plastic strain control", "value": "plastic_strain_control"},
                             {"name": "Stress control", "value": "stress_control"},
                             {"name": "Displacement control", "value": "displacement_control"}]
                     },
@@ -2028,8 +2028,8 @@ function LowCycleFatigue() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Continuous", "value" : "continuous"},
-                            {"name": "Interrupted( with hold times)", "value" : "interrupted"}]
+                        choices: [{"name": "Continuous", "value": "continuous"},
+                            {"name": "Interrupted( with hold times)", "value": "interrupted"}]
                     },
                     validators: [],
                     valid: false,
@@ -2045,9 +2045,9 @@ function LowCycleFatigue() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Sinusoidal", "value" : "sinusoidal"},
-                            {"name": "Rectangular", "value" : "rectangular"},
-                            {"name": "Triangular", "value" : "triangular"}]
+                        choices: [{"name": "Sinusoidal", "value": "sinusoidal"},
+                            {"name": "Rectangular", "value": "rectangular"},
+                            {"name": "Triangular", "value": "triangular"}]
                     },
                     validators: [],
                     valid: false,
@@ -2063,7 +2063,7 @@ function LowCycleFatigue() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Constant", "value" : "constant"},  {"name": "Variable", "value" : "variable"}]
+                        choices: [{"name": "Constant", "value": "constant"}, {"name": "Variable", "value": "variable"}]
                     },
                     validators: [],
                     valid: false,
@@ -2167,7 +2167,7 @@ function Annealing() {
                         attribute: "time",
                         description: "",
                         value: null,
-                        units: ["seconds","minutes","hours"],
+                        units: ["seconds", "minutes", "hours"],
                         unit: "",
                         _type: "number",
                         required: false,
@@ -2187,10 +2187,10 @@ function Annealing() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Air Quench", "value" : "air_quench"},
-                            {"name": "Water Quench", "value" : "water_quench"},
-                            {"name": "Furnace Cooled", "value" : "furnace_cooled"},
-                            {"name": "Air Cooled", "value" : "air_cooled"}]
+                        choices: [{"name": "Air Quench", "value": "air_quench"},
+                            {"name": "Water Quench", "value": "water_quench"},
+                            {"name": "Furnace Cooled", "value": "furnace_cooled"},
+                            {"name": "Air Cooled", "value": "air_cooled"}]
                     },
                     validators: [],
                     valid: false,
@@ -2222,8 +2222,8 @@ function Annealing() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Recrystallization", "value" : "recrystallization"},
-                            {"name": "Grain Growth", "value" : "grain_growth"}]
+                        choices: [{"name": "Recrystallization", "value": "recrystallization"},
+                            {"name": "Grain Growth", "value": "grain_growth"}]
                     },
                     validators: [],
                     valid: false,
@@ -2439,10 +2439,10 @@ function TEM() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Diffraction", "value" : "diffraction"},
-                            {"name": "Diffraction Imaging", "value" : "diffraction_imaging"},
-                            {"name": "High Resolution Imaging", "value" : "high_resolution_imaging"},
-                            {"name": "Scanning z-contrast", "value" : "scanning_z_contrast"}]
+                        choices: [{"name": "Diffraction", "value": "diffraction"},
+                            {"name": "Diffraction Imaging", "value": "diffraction_imaging"},
+                            {"name": "High Resolution Imaging", "value": "high_resolution_imaging"},
+                            {"name": "Scanning z-contrast", "value": "scanning_z_contrast"}]
                     },
                     validators: [],
                     valid: false,
@@ -2458,8 +2458,8 @@ function TEM() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Yes", "value" : "yes"},
-                            {"name": "No", "value" : "no"}]
+                        choices: [{"name": "Yes", "value": "yes"},
+                            {"name": "No", "value": "no"}]
                     },
                     validators: [],
                     valid: false,
@@ -2475,9 +2475,9 @@ function TEM() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Bright Field", "value" : "bright_field"},
-                            {"name": "High Angle Angular Dark Field", "value" : "high_angle_angular_dark_field"},
-                            {"name": "Tilt Series", "value" : "tilt_series"}]
+                        choices: [{"name": "Bright Field", "value": "bright_field"},
+                            {"name": "High Angle Angular Dark Field", "value": "high_angle_angular_dark_field"},
+                            {"name": "Tilt Series", "value": "tilt_series"}]
                     },
                     validators: [],
                     valid: false,
@@ -2493,9 +2493,9 @@ function TEM() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Standard", "value" : "standard"},
-                            {"name": "Cryo", "value" : "cryo"},
-                            {"name": "Heating", "value" : "heating"}, {"name": "Other", "value" : "other"}]
+                        choices: [{"name": "Standard", "value": "standard"},
+                            {"name": "Cryo", "value": "cryo"},
+                            {"name": "Heating", "value": "heating"}, {"name": "Other", "value": "other"}]
                     },
                     validators: [],
                     valid: false,
@@ -2539,7 +2539,7 @@ function TEM() {
                         attribute: "camera_length",
                         description: "",
                         value: null,
-                        units: ["cm", "mm","m"],
+                        units: ["cm", "mm", "m"],
                         unit: "",
                         _type: "number",
                         required: false,
@@ -2599,7 +2599,7 @@ function HeatTreatment() {
                         attribute: "time",
                         description: "",
                         value: null,
-                        units: ["seconds","minutes","hours"],
+                        units: ["seconds", "minutes", "hours"],
                         unit: "",
                         _type: "number",
                         required: false,
@@ -2619,10 +2619,10 @@ function HeatTreatment() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Air Quench", "value" : "air_quench"},
-                            {"name": "Water Quench", "value" : "water_quench"},
-                            {"name": "Furnace Cooled", "value" : "furnace_cooled"},
-                            {"name": "Air Cooled", "value" : "air_cooled"}]
+                        choices: [{"name": "Air Quench", "value": "air_quench"},
+                            {"name": "Water Quench", "value": "water_quench"},
+                            {"name": "Furnace Cooled", "value": "furnace_cooled"},
+                            {"name": "Air Cooled", "value": "air_cooled"}]
                     },
                     validators: [],
                     valid: false,
@@ -2709,10 +2709,10 @@ function Hardness1() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Vickers", "value" : "vickers"},
-                            {"name": "Rockwell A", "value" : "rockwell_a"},
-                            {"name": "Rockwell B", "value" : "rockwell_b"},
-                            {"name": "Rockwell C", "value" : "rockwell_c"}]
+                        choices: [{"name": "Vickers", "value": "vickers"},
+                            {"name": "Rockwell A", "value": "rockwell_a"},
+                            {"name": "Rockwell B", "value": "rockwell_b"},
+                            {"name": "Rockwell C", "value": "rockwell_c"}]
                     },
                     validators: [],
                     valid: false,
@@ -2758,14 +2758,14 @@ function Hardness1() {
 var templates = processTemplates();
 var templatesByProperties = [];
 var templatesByProcessTypes = [];
-templates.forEach(function(t) {
+templates.forEach(function (t) {
     var t2 = new t.fn();
     var propnames = "";
     if (!(t2._type in templatesByProcessTypes)) {
         templatesByProcessTypes[t2._type] = [];
     }
     templatesByProcessTypes[t2._type].push(t2.name);
-    t2.setup.settings[0].properties.forEach(function(prop) {
+    t2.setup.settings[0].properties.forEach(function (prop) {
         propnames = propnames + prop.property.name;
     });
     //console.log('adding ', propnames + ':' + t.name);
@@ -2781,70 +2781,87 @@ var ropts = {
 var r = require('rethinkdbdash')(ropts);
 
 r.table('processes').eqJoin('id', r.table('process2setup'), {index: 'process_id'}).zip().
-    merge(function(process) {
-        return {
-            setup_properties: r.table('setupproperties').
-                getAll(process('setup_id'), {index: 'setup_id'}).coerceTo('array')
+merge(function (process) {
+    return {
+        setup_properties: r.table('setupproperties').
+        getAll(process('setup_id'), {index: 'setup_id'}).coerceTo('array')
+    }
+}).then(function (processes) {
+    var foundCount = 0, notFoundCount = 0, likelyFound = 0, likelyCount1 = 0;
+    processes.forEach(function (p) {
+        if (p.process_name && p.process_name !== '') {
+            return;
         }
-    }).then(function(processes) {
-        var foundCount = 0, notFoundCount = 0, likelyFound = 0, likelyCount1 = 0;
-        processes.forEach(function(p) {
-            if (p.process_name && p.process_name !== '') {
-                return;
-            }
-            var propnames = "";
-            p.setup_properties.forEach(function(sp) {
-                propnames = propnames + sp.name;
-            });
-            if (propnames in templatesByProperties) {
-                if (!p.process_name || p.process_name == '') {
-                    console.log('\nFound process/template match: ');
-                    console.log('  process id:    ' + p.process_id);
-                    console.log('  process name:  ' + p.name);
-                    console.log('  template name: ' + templatesByProperties[propnames]);
-                    r.table('processes').get(p.process_id).update({process_name: templatesByProperties[propnames]}).then(function() {
-                        console.log('set process_name for ', p.process_id);
-                    });
-                    foundCount++;
-                }
-            } else {
-                console.log('\nUnable to find template match for: ');
+
+        var propnames = "";
+        p.setup_properties.forEach(function (sp) {
+            propnames = propnames + sp.name;
+        });
+        if (propnames in templatesByProperties) {
+            if (!p.process_name || p.process_name == '') {
+                console.log('\nFound process/template match: ');
                 console.log('  process id:    ' + p.process_id);
                 console.log('  process name:  ' + p.name);
-                console.log('  process_type:  ' + p.process_type);
-                console.log('  does transform:' + p.does_transform);
-                console.log('  key:           ' + propnames);
-                console.log('  possible templates: ' + templatesByProcessTypes[p.process_type]);
-                var likelyTemplates = determineLikelyTemplates(p.name, templatesByProcessTypes[p.process_type]);
-                console.log('  likely template(s):' + likelyTemplates);
-                if (likelyTemplates.length) {
+                console.log('  template name: ' + templatesByProperties[propnames]);
+                r.table('processes').get(p.process_id).update({process_name: templatesByProperties[propnames]}).then(function () {
+                    console.log('set process_name for ', p.process_id);
+                });
+                foundCount++;
+            }
+        } else {
+            console.log('\nUnable to find template match for: ');
+            console.log('  process id:    ' + p.process_id);
+            console.log('  process name:  ' + p.name);
+            console.log('  process_type:  ' + p.process_type);
+            console.log('  does transform:' + p.does_transform);
+            console.log('  key:           ' + propnames);
+            console.log('  possible templates: ' + templatesByProcessTypes[p.process_type]);
+            var likelyTemplates = determineLikelyTemplates(p.name, templatesByProcessTypes[p.process_type]);
+            console.log('  likely template(s):' + likelyTemplates);
+            if (likelyTemplates.length) {
+                if (p.process_type === 'SEM') {
+                    if (p.name.indexOf('EBSD SEM Data Collection') !== -1) {
+                        r.table('processes').get(p.process_id)
+                            .update({process_name: 'EBSD SEM Data Collection'})
+                            .then(function () {
+                                console.log('set EBSD SEM Data Collection');
+                            });
+                    } else {
+                        r.table('processes').get(p.process_id)
+                            .update({process_name: 'SEM'})
+                            .then(function () {
+                                console.log('set SEM');
+                            });
+                    }
+                } else {
                     likelyFound++;
                     if (likelyTemplates.length === 1) {
                         likelyCount1++;
-                        r.table('processes').get(p.process_id).update({process_name: likelyTemplates[0]}).then(function() {
+                        r.table('processes').get(p.process_id).update({process_name: likelyTemplates[0]}).then(function () {
                             console.log('set likely template');
                         });
                     }
-                } else if (p.process_type === 'SEM') {
-                    r.table('processes').get(p.process_id).update({process_name: 'SEM'}).then(function() {
-                        console.log('set SEM template');
-                    });
                 }
-                notFoundCount++;
+            } else if (p.process_type === 'SEM') {
+                r.table('processes').get(p.process_id).update({process_name: 'SEM'}).then(function () {
+                    console.log('set SEM template');
+                });
             }
-        });
-        console.log('\n\n');
-        console.log('Total processes: ' + processes.length);
-        console.log('  Found:     ' + foundCount);
-        console.log('  Not Found: ' + notFoundCount);
-        console.log('  Likely:    ' + likelyFound);
-        console.log('  Likely(1): ' + likelyCount1);
+            notFoundCount++;
+        }
     });
+    console.log('\n\n');
+    console.log('Total processes: ' + processes.length);
+    console.log('  Found:     ' + foundCount);
+    console.log('  Not Found: ' + notFoundCount);
+    console.log('  Likely:    ' + likelyFound);
+    console.log('  Likely(1): ' + likelyCount1);
+});
 
 function determineLikelyTemplates(name, templateNames) {
     //console.log('determine', name, templateNames);
     var matches = [];
-    templateNames.forEach(function(tname) {
+    templateNames.forEach(function (tname) {
         //console.log('indexOf', name, tname);
         if (name.indexOf(tname) !== -1) {
             //console.log('   note -1');
