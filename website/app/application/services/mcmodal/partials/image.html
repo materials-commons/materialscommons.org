@@ -4,8 +4,9 @@
     </div>
     <br>
     <div class="modal-body">
-        <img class="no-padding img-responsive center-block"
-        ng-src="{{ctrl.fileSrc}}">
+        <display-file-contents file="ctrl.file"></display-file-contents>
+        <!--<img class="no-padding img-responsive center-block"-->
+        <!--ng-src="{{ctrl.fileSrc}}">-->
     </div>
     <div class="modal-footer">
         <button class="btn btn-warning" ng-click="ctrl.cancel()">Dismiss</button>
