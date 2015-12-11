@@ -6,9 +6,9 @@
         <div style="padding-left:30px;">
             <div class="row">
                 <div class="sample headings">Details</div>
-                <span class="pull-right">
-                    <i style="color:red;" class="fa fa-asterisk"></i> :: Denotes current process measurements
-                </span>
+                <!--<span class="pull-right">-->
+                    <!--<i style="color:red;" class="fa fa-asterisk"></i> :: Denotes current process measurements-->
+                <!--</span>-->
 
                 <div class="col-xs-12">
                     <div class="row"><b>Name: </b>{{modal.item.name}} <br></div>
@@ -17,37 +17,37 @@
                         {{modal.item.description}}<br></div>
                 </div>
             </div>
+            <!--<div class="row">-->
+                <!--<div class="sample headings">Properties</div>-->
+                <!--<ul>-->
+                    <!--<li style="padding:10px;" ng-repeat="property in modal.item.properties">-->
+                        <!--<b>{{property.name}}</b> :-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-xs-offset-1">-->
+                                <!--Best Measure:-->
+                                   <!--<span ng-if="property.best_measure.length !== 0">-->
+                                        <!--<display-measurement project="project" measure="property.best_measure[0]">-->
+                                        <!--</display-measurement>-->
+                                    <!--</span><br>-->
+                                <!--Measurements:-->
+                                <!--<ul>-->
+                                    <!--<li ng-repeat="measure in property.measurements">-->
+                                        <!--<div>-->
+                                            <!--<display-measurement current-process="modal.item.process_id"-->
+                                                                 <!--edit-measure="editMeasure"-->
+                                                                 <!--project="project"-->
+                                                                 <!--measure="measure">-->
+                                            <!--</display-measurement>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
             <div class="row">
-                <div class="sample headings">Properties</div>
-                <ul>
-                    <li style="padding:10px;" ng-repeat="property in modal.item.properties">
-                        <b>{{property.name}}</b> :
-                        <div class="row">
-                            <div class="col-xs-offset-1">
-                                Best Measure:
-                                   <span ng-if="property.best_measure.length !== 0">
-                                        <display-measurement project="project" measure="property.best_measure[0]">
-                                        </display-measurement>
-                                    </span><br>
-                                Measurements:
-                                <ul>
-                                    <li ng-repeat="measure in property.measurements">
-                                        <div>
-                                            <display-measurement current-process="modal.item.process_id"
-                                                                 edit-measure="editMeasure"
-                                                                 project="project"
-                                                                 measure="measure">
-                                            </display-measurement>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="row">
-                <div class="sample headings">Attachments</div>
+                <div class="sample headings">Linked Files</div>
                 <div class="row" ng-repeat="file in modal.item.linked_files">
                     <div style="padding-left: 10px;padding-bottom: 20px;;line-height: 5px;">
                         <i class="fa fa-fw fa-paperclip fa-lg" style="color: #919191"></i>
