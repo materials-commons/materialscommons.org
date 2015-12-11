@@ -14,14 +14,14 @@
     }
 
     module.controller('SelectItemsFilesDirectiveController', SelectItemsFilesDirectiveController);
-    SelectItemsFilesDirectiveController.$inject = ["Restangular", "gridFiles", "fileType", "current"];
-    function SelectItemsFilesDirectiveController(Restangular, gridFiles, fileType, current) {
+    SelectItemsFilesDirectiveController.$inject = ["Restangular", "gridFiles", "fileType", "current", "mcmodal"];
+    function SelectItemsFilesDirectiveController(Restangular, gridFiles, fileType, current, mcmodal) {
         var ctrl = this;
 
         ctrl.gridShowingFlag = true;
         ctrl.files[0].expanded = true;
         ctrl.directorySelected = directorySelected;
-
+        ctrl.openFile = openFile;
         init();
 
         ///////////////
@@ -51,7 +51,7 @@
                                 '<i ng-if="data.selected" class="fa fa-2x fa-fw fa-check text-success"></i>',
                                 '<i ng-if="!data.selected" class="fa fa-2x fa-fw fa-square-o"></i>',
                                 '</a>',
-                                '<i style="color: #D2C4D5;" class="fa fa-fw ' + icon + '"></i><span title="',
+                                '<i style="color: #D2C4D5;" class="fa fa-fw ' + icon + '"></i><span ng-click="ctrl.openFile(data)" title="',
                                 params.data.name + '">' + params.data.name + '</span>'
                             ].join(' ');
                         }
@@ -93,6 +93,10 @@
                     c.data.selected = data.selected;
                 }
             });
+        }
+
+        function openFile(file) {
+            mcmodal.openModal(file, 'datafile', current.project());
         }
 
         function handleDirectory(params) {

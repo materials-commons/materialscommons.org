@@ -1182,5 +1182,6 @@ li.dashboard-item div p {
   max-height: 100px;
   overflow: hidden;
   height: auto;
+  width: 200px;
 }
 
