@@ -41,10 +41,10 @@
 
                 <div class="text-muted truncate-text" ta-bind ng-model="p.what"></div>
                 <div class="row counts">
-                    <span>
+                    <span data-placement="right" data-toggle="tooltip" title="Samples">
                         <i class="fa fa-fw fa-cubes sample"></i>{{p.samples.length}}
                     </span>
-                    <span class="padding-left-15">
+                    <span data-placement="right" data-toggle="tooltip" title="Files" class="padding-left-15">
                         <i class="fa fa-fw fa-files-o file"></i>{{p.input_files.length+p.output_files.length}}
                     </span>
                     <span class="pull-right">{{p.mtime | toDateString}}</span>
