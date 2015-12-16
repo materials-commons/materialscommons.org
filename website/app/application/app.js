@@ -23,7 +23,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
     mcglobals = {};
     doConfig();
     $stateProvider
-        // Navbar
+    // Navbar
         .state('home', {
             url: '/home',
             templateUrl: 'application/core/splash.html'
@@ -139,10 +139,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "FileEditController",
             controllerAs: 'ctrl',
             resolve: {
-                file: ["$stateParams", "Restangular",
-                    function ($stateParams, Restangular) {
-                        return Restangular.one('v2').one('projects', $stateParams.id).
-                            one('files', $stateParams.file_id).get();
+                file: ["$stateParams", "projectsService",
+                    function ($stateParams, projectsService) {
+                        return projectsService.getProjectFile($stateParams.id, $stateParams.file_id);
                     }]
             }
         })
@@ -158,10 +157,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "FileEditController",
             controllerAs: "ctrl",
             resolve: {
-                file: ["$stateParams", "Restangular",
-                    function ($stateParams, Restangular) {
-                        return Restangular.one('v2').one('projects', $stateParams.id).
-                            one('files', $stateParams.file_id).get();
+                file: ["$stateParams", "projectsService",
+                    function ($stateParams, projectsService) {
+                        return projectsService.getProjectFile($stateParams.id, $stateParams.file_id);
                     }]
             }
         })
@@ -247,9 +245,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "projectListProcess",
             controllerAs: "ctrl",
             resolve: {
-                processes: ["$stateParams", "Restangular",
-                    function ($stateParams, Restangular) {
-                        return Restangular.one('v2').one("projects", $stateParams.id).one("processes").getList();
+                processes: ["$stateParams", "projectsService",
+                    function ($stateParams, projectsService) {
+                        return projectsService.getProjectProcesses($stateParams.id);
                     }]
             }
         })
@@ -298,9 +296,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "SamplesController",
             controllerAs: "ctrl",
             resolve: {
-                samples: ["$stateParams", "Restangular",
-                    function ($stateParams, Restangular) {
-                        return Restangular.one('v2').one("projects", $stateParams.id).one("samples").getList();
+                samples: ["$stateParams", "projectsService",
+                    function ($stateParams, projectsService) {
+                        return projectsService.getProjectSamples($stateParams.id);
                     }]
             }
         })
