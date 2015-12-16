@@ -1,9 +1,9 @@
 (function (module) {
     module.controller('CreateProcessController', CreateProcessController);
-    CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems",
+    CreateProcessController.$inject = ["projectsService", "$stateParams", "selectItems",
         "template", "$modal", "processEdit", "$previousState", "$state"];
 
-    function CreateProcessController(Restangular, $stateParams, selectItems, template,
+    function CreateProcessController(projectsService, $stateParams, selectItems, template,
                                      $modal, processEdit, $previousState, $state) {
         var ctrl = this;
         ctrl.process = template;
@@ -70,20 +70,21 @@
         }
 
         function submitAndAnother() {
-            Restangular.one('v2').one('projects', $stateParams.id).one('processes').customPOST(ctrl.process)
-                .then(function (p) {
-                    $state.go('projects.project.processes.create', {process: p.process_name, process_id: p.id});
-                });
+            projectsService.createProjectProcess($stateParams.id, ctrl.process).then(function () {
+                $state.go('projects.project.processes.create', {process: p.process_name, process_id: p.id});
+            });
         }
 
         function submit() {
-            Restangular.one('v2').one('projects', $stateParams.id).one('processes')
-                .customPOST(ctrl.process)
-                .then(function () {
+            projectsService.createProjectProcess($stateParams.id, ctrl.process).then(
+                function success() {
                     gotoPreviousState();
-                }, function (e) {
+                },
+
+                function failure() {
                     console.log('failure to save process', e);
-                });
+                }
+            );
         }
 
         function submitSample() {

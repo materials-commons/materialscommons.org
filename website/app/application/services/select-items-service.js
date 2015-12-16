@@ -50,10 +50,10 @@
 
     module.controller('SelectItemsServiceModalController', SelectItemsServiceModalController);
     SelectItemsServiceModalController.$inject = ['$modalInstance', 'showProcesses',
-        'showFiles', 'showSamples', 'showReviews', 'Restangular', '$stateParams', 'current'];
+        'showFiles', 'showSamples', 'showReviews', 'projectsService', '$stateParams', 'current'];
 
     function SelectItemsServiceModalController($modalInstance, showProcesses, showFiles, showSamples,
-                                               showReviews, Restangular, $stateParams, current) {
+                                               showReviews, projectsService, $stateParams, current) {
         var ctrl = this;
 
         ctrl.tabs = loadTabs();
@@ -102,7 +102,7 @@
             // list of files. Also reset the selected flag so the next time
             // the popup for files is used it doesn't show previously selected
             // items.
-            root.walk({strategy: 'pre'}, function(node) {
+            root.walk({strategy: 'pre'}, function (node) {
                 if (node.model.data.selected) {
                     node.model.data.selected = false;
                     if (node.model.data._type === 'file') {
@@ -121,14 +121,14 @@
             var tabs = [];
             if (showProcesses) {
                 tabs.push(newTab('processes', 'fa-code-fork'));
-                Restangular.one('v2').one('projects', $stateParams.id).one('processes').get().then(function (p) {
-                    ctrl.processes = p;
+                projectsService.getProjectProcesses($stateParams.id).then(function (processes) {
+                    ctrl.processes = processes;
                 });
             }
 
             if (showSamples) {
                 tabs.push(newTab('samples', 'fa-cubes'));
-                Restangular.one('v2').one('projects', $stateParams.id).one('samples').get().then(function (samples) {
+                projectsService.getProjectSamples($stateParams.id).then(function (samples) {
                     ctrl.samples = samples;
                 });
             }

@@ -7,9 +7,6 @@
         var projectsAPI = _.partial(Restangular.one('v2').one, 'projects');
 
         return {
-            getProject: function (projectID) {
-
-            },
 
             getProjectSamples: function (projectID) {
                 return projectsAPI(projectID).one('samples').getList();
@@ -17,6 +14,24 @@
 
             getProjectProcesses: function (projectID) {
                 return projectsAPI(projectID).one('processes').getList();
+            },
+
+            updateProjectProcess: function (projectID, process) {
+                return projectsAPI(projectID).one('processes', process.id).customPUT(process).then(function(p) {
+                    if (onChangeFn) {
+                        onChangeFn(p);
+                    }
+                    return p;
+                });
+            },
+
+            createProjectProcess: function(projectID, process) {
+                return projectsAPI(projectID).one('processes').customPOST(process).then(function(p) {
+                    if (onChangeFn) {
+                        onChangeFn(p);
+                    }
+                    return p;
+                });
             },
 
             getProjectDirectory: function (projectID, dirID) {
@@ -27,22 +42,27 @@
                 }
             },
 
-            getProjectFile: function (projectID, fileID) {
-                return projectsAPI(projectID).one('files', fileID).get();
-            },
-
             createProjectDir: function (projectID, fromDirID, path) {
                 return projectsAPI(projectID).one('directories').customPOST({
                     from_dir: fromDirID,
                     path: path
-                }).then(function(dir) {
-                    onChangeFn(fromDirID, dir);
+                }).then(function (dir) {
+                    if (onChangeFn) {
+                        onChangeFn(fromDirID, dir);
+                    }
                     return dir;
                 });
             },
 
-            onChange: function (fn) {
+            getProjectFile: function (projectID, fileID) {
+                return projectsAPI(projectID).one('files', fileID).get();
+            },
+
+            onChange: function (scope, fn) {
                 onChangeFn = fn;
+                scope.$on('$destroy', function() {
+                    onChangeFn = null;
+                });
             }
         }
     }
