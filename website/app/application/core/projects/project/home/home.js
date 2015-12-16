@@ -1,8 +1,8 @@
 (function (module) {
     module.controller('ProjectHomeController', ProjectHomeController);
-    ProjectHomeController.$inject = ["project", "mcmodal", "templates", "$state", "Restangular"];
+    ProjectHomeController.$inject = ["project", "mcmodal", "templates", "$state", "projectsService"];
 
-    function ProjectHomeController(project, mcmodal, templates, $state, Restangular) {
+    function ProjectHomeController(project, mcmodal, templates, $state, projectsService) {
         var ctrl = this;
 
         ctrl.project = project;
@@ -20,7 +20,7 @@
         }
 
         function chooseExistingProcess() {
-            Restangular.one('v2').one("projects", project.id).one("processes").getList().then(function (processes) {
+            projectsService.getProjectProcesses(project.id).then(function (processes) {
                 mcmodal.chooseExistingProcess(processes).then(function (existingProcess) {
                     $state.go('projects.project.processes.create',
                         {process: existingProcess.process_name, process_id: existingProcess.id});

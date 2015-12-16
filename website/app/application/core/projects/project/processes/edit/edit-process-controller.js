@@ -1,9 +1,9 @@
 (function (module) {
     module.controller('EditProcessController', EditProcessController);
     EditProcessController.$inject = ["processEdit", "selectItems", "$state", "$stateParams",
-        "process", "$modal", "Restangular"];
+        "process", "$modal", "projectsService"];
 
-    function EditProcessController(processEdit, selectItems, $state, $stateParams, process, $modal, Restangular) {
+    function EditProcessController(processEdit, selectItems, $state, $stateParams, process, $modal, projectsService) {
         var ctrl = this;
         ctrl.process = process;
         ctrl.process['updated_samples'] = [];
@@ -23,7 +23,7 @@
         //////////////////////////////////
 
         function submit() {
-            var updated_process = {
+            var updatedProcess = {
                 id: ctrl.process.id,
                 what: ctrl.process.what,
                 name: ctrl.process.name,
@@ -48,12 +48,14 @@
                 output_files: ctrl.process.updated_output_files,
                 sample_files: ctrl.process.samples_files
             };
-            Restangular.one('v2').one('projects', $stateParams.id).one('processes', ctrl.process.id).
-                customPUT(updated_process).then(function () {
+            projectsService.updateProjectProcess($stateParams.id, updatedProcess).then(
+                function success() {
                     $state.go('projects.project.processes.list');
-                }, function (e) {
+                },
+                function failure(e) {
                     console.log('failure to save process', e);
-                });
+                }
+            );
         }
 
         function cancel() {
