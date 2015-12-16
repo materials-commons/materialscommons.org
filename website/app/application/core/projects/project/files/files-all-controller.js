@@ -26,7 +26,7 @@
             }
         });
 
-        pubsub.waitOn($scope, 'files.dir.refresh', function (dirID) {
+        projectsService.onChange(function(dirID) {
             projectsService.getProjectDirectory(project.id, dirID).then(function (files) {
                 loadFilesIntoDirectory(dirID, files);
             });

@@ -1,4 +1,4 @@
-(function(module) {
+(function (module) {
     module.factory('projectsService', projectsService);
     projectsService.$inject = ["Restangular"];
 
@@ -7,19 +7,19 @@
         var projectsAPI = _.partial(Restangular.one('v2').one, 'projects');
 
         return {
-            getProject: function(projectID) {
+            getProject: function (projectID) {
 
             },
 
-            getProjectSamples: function(projectID) {
+            getProjectSamples: function (projectID) {
                 return projectsAPI(projectID).one('samples').getList();
             },
 
-            getProjectProcesses: function(projectID) {
+            getProjectProcesses: function (projectID) {
                 return projectsAPI(projectID).one('processes').getList();
             },
 
-            getProjectDirectory: function(projectID, dirID) {
+            getProjectDirectory: function (projectID, dirID) {
                 if (!dirID) {
                     return projectsAPI(projectID).one('directories').get();
                 } else {
@@ -27,11 +27,21 @@
                 }
             },
 
-            getProjectFile: function(projectID, fileID) {
+            getProjectFile: function (projectID, fileID) {
                 return projectsAPI(projectID).one('files', fileID).get();
             },
 
-            onChange: function(fn) {
+            createProjectDir: function (projectID, fromDirID, path) {
+                return projectsAPI(projectID).one('directories').customPOST({
+                    from_dir: fromDirID,
+                    path: path
+                }).then(function(dir) {
+                    onChangeFn(fromDirID, dir);
+                    return dir;
+                });
+            },
+
+            onChange: function (fn) {
                 onChangeFn = fn;
             }
         }

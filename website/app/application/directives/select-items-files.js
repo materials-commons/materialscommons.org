@@ -14,8 +14,8 @@
     }
 
     module.controller('SelectItemsFilesDirectiveController', SelectItemsFilesDirectiveController);
-    SelectItemsFilesDirectiveController.$inject = ["Restangular", "gridFiles", "fileType", "current", "mcmodal"];
-    function SelectItemsFilesDirectiveController(Restangular, gridFiles, fileType, current, mcmodal) {
+    SelectItemsFilesDirectiveController.$inject = ["projectsService", "gridFiles", "fileType", "current", "mcmodal"];
+    function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileType, current, mcmodal) {
         var ctrl = this;
 
         ctrl.gridShowingFlag = true;
@@ -101,23 +101,22 @@
 
         function handleDirectory(params) {
             if (!params.data.childrenLoaded) {
-                Restangular.one('v2').one('projects', current.project().id)
-                    .one('directories', params.data.id).get().then(function (files) {
-                        var treeModel = new TreeModel(),
-                            root = treeModel.parse(current.project().files[0]);
-                        var dir = root.first({strategy: 'pre'}, function (node) {
-                            return node.model.data.id === params.data.id;
-                        });
-                        dir.model.children = gridFiles.toGridChildren(files);
-                        dir.model.children.forEach(function (c) {
-                            if (c.data._type == 'file') {
-                                c.data.selected = params.data.selected;
-                            }
-                        });
-                        dir.model.data.childrenLoaded = true;
-                        ctrl.gridOptions.api.onNewRows();
-                        ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+                projectsService.getProjectDirectory(current.project().id, params.data.id).then(function (files) {
+                    var treeModel = new TreeModel(),
+                        root = treeModel.parse(current.project().files[0]);
+                    var dir = root.first({strategy: 'pre'}, function (node) {
+                        return node.model.data.id === params.data.id;
                     });
+                    dir.model.children = gridFiles.toGridChildren(files);
+                    dir.model.children.forEach(function (c) {
+                        if (c.data._type == 'file') {
+                            c.data.selected = params.data.selected;
+                        }
+                    });
+                    dir.model.data.childrenLoaded = true;
+                    ctrl.gridOptions.api.onNewRows();
+                    ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+                });
             } else {
                 ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
             }
