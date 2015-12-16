@@ -192,7 +192,10 @@ def get_project_toplevel_datadir(project, user):
     filter_by = {'name': project, 'owner': user}
     selection = list(r.table('projects').filter(filter_by).run(g.conn))
     proj = selection[0]
-    rv = {'project_id': proj['id'], 'datadir_id': proj['datadir']}
+    dirs = list(r.table('projects').get_all(proj['id'])
+                .eq_join('name', r.table('datadirs'), index='name').zip().run(g.conn))
+
+    rv = {'project_id': proj['id'], 'datadir_id': dirs[0]['id']}
     return args.json_as_format_arg(rv)
 
 
