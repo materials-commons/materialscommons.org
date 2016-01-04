@@ -31,6 +31,7 @@ module.exports = function (r) {
                         getAll(ddir('datadir_id'), {index: 'datadir_id'}).
                         eqJoin('datafile_id', r.table('datafiles')).
                         zip().
+                        filter({current: true}).
                         coerceTo('array'),
                     'directories': r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
                 }
@@ -48,6 +49,7 @@ module.exports = function (r) {
                         getAll(ddir('datadir_id'), {index: 'datadir_id'}).
                         eqJoin('datafile_id', r.table('datafiles')).
                         zip().
+                        filter({current: true}).
                         coerceTo('array'),
                     'directories': r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
                 }
