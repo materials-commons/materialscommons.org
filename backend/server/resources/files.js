@@ -3,10 +3,11 @@ module.exports = function(files) {
     const httpStatus = require('http-status');
 
     return {
-        get: get,
-        getList: getList,
-        update: update,
-        deleteFile
+        get,
+        getList,
+        update,
+        deleteFile,
+        byPath
     };
 
     ///////////////////
@@ -39,6 +40,16 @@ module.exports = function(files) {
     function* deleteFile(next) {
         console.log('deleteFile in resources called');
         let rv = yield files.deleteFile(this.params.file_id);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
+        }
+        this.body = rv.val;
+        yield next;
+    }
+
+    function* byPath(next) {
+        let args = yield parse(this);
+        let rv = yield files.byPath(this.params.project_id, args.file_path);
         if (rv.error) {
             this.throw(httpStatus.BAD_REQUEST, rv.error);
         }
