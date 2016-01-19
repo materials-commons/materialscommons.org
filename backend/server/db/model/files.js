@@ -251,7 +251,6 @@ module.exports = function (r) {
     function* byPath(projectID, filePath) {
         let fileName = path.basename(filePath);
         let dir = path.dirname(filePath);
-        console.log('byPath', projectID, filePath, fileName, dir);
         let rql = r.table('datadirs').getAll(dir, {index: 'name'})
             .eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip()
             .filter({project_id: projectID})
