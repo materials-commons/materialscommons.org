@@ -31,7 +31,7 @@ module.exports = function(model) {
     router.put('/projects/:project_id/files/:file_id', validateProjectAccess, files.update);
     router.post('/projects/:project_id/files', validateProjectAccess, files.getList);
     router.delete('/projects/:project_id/files/:file_id', validateProjectAccess, files.deleteFile);
-    router.put('/projects:/project_id/files/by_path', validateProjectAccess, files.byPath);
+    router.put('/projects/:project_id/files_by_path', validateProjectAccess, files.byPath);
 
     router.put('/users/:project_id', users.update);
 
