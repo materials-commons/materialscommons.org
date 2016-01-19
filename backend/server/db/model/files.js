@@ -259,6 +259,13 @@ module.exports = function (r) {
             .eqJoin('datafile_id', r.table('datafiles')).zip()
             .filter({current: true, name: fileName});
         let matches = yield runQuery(rql);
-        return (!matches.length || matches.length !== 1) ? {error: 'No matching file'} : {val: matches[0]};
+        if (!matches.length || matches.length !== 1) {
+            return {error: 'No matching file'};
+        }
+        let f = matches[0];
+        f['birthtime'] = f['birthtime'].epoch_time;
+        f['mtime'] = f['mtime'].epoch_time;
+        f['atime'] = f['atime'].epoch_time;
+        return {val: f};
     }
 };
