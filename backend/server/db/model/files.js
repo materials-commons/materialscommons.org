@@ -10,6 +10,7 @@ module.exports = function (r) {
     const db = require('./db')(r);
     const _ = require('lodash');
     const model = require('./model')(r);
+    const path = require('path');
 
     return {
         countInProject,
@@ -248,17 +249,16 @@ module.exports = function (r) {
     }
 
     function* byPath(projectID, filePath) {
-        let rql = r.table('datafiles').getAll(filePath, {index: 'name'}).filter({current: true})
-            .eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).zip()
-            .filter({project_id: projectID});
+        let fileName = path.basename(filePath);
+        let dir = path.dirname(filePath);
+        console.log('byPath', projectID, filePath, fileName, dir);
+        let rql = r.table('datadirs').getAll(dir, {index: 'name'})
+            .eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip()
+            .filter({project_id: projectID})
+            .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
+            .eqJoin('datafile_id', r.table('datafiles')).zip()
+            .filter({current: true, name: fileName});
         let matches = yield runQuery(rql);
-        if (matches.length !== 1) {
-            return {
-                error: 'No matching file'
-            };
-        }
-        return {
-            val: matches[0]
-        };
+        return (!matches.length || matches.length !== 1) ? {error: 'No matching file'} : {val: matches[0]};
     }
 };
