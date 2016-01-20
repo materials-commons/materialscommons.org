@@ -4,8 +4,13 @@ import access
 
 
 def project_name_exists(name, user):
-    selection = list(r.table('projects').filter({'name': name, 'owner': user})
-                     .run(g.conn))
+    if access.is_administrator(user):
+        rql = r.table('projects').filter({'name': name})
+    else:
+        rql = r.table('access').get_all(user, index='user_id').eq_join('project_id', r.table('projects')).zip()\
+            .filter({'name': name})
+
+    selection = list(rql.run(g.conn))
     if selection:
         return True
     return False
