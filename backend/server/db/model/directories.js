@@ -73,6 +73,7 @@ module.exports = function (r) {
                 _type: 'file',
                 size: f.size,
                 name: f.name,
+                path: path.join(dir.path, f.name),
                 mediatype: f.mediatype,
                 checksum: f.checksum,
                 id: f.id
