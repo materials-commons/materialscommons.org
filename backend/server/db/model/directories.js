@@ -63,6 +63,8 @@ module.exports = function (r) {
             id: results.datadir_id,
             size: 0,
             name: path.basename(results.name),
+            path: results.name,
+            checksum: "",
             children: []
         };
 
@@ -72,6 +74,7 @@ module.exports = function (r) {
                 size: f.size,
                 name: f.name,
                 mediatype: f.mediatype,
+                checksum: f.checksum,
                 id: f.id
             };
         });
@@ -81,7 +84,9 @@ module.exports = function (r) {
                 _type: 'directory',
                 id: d.id,
                 size: 0,
-                name: path.basename(d.name)
+                name: path.basename(d.name),
+                path: d.name,
+                checksum: ""
             };
         });
 
