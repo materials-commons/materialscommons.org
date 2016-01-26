@@ -32,18 +32,9 @@ function Apt() {
                         _type: "selection",
                         required: true,
                         choices: [
-                            {
-                                name: "FIM",
-                                value: "fim"
-                            },
-                            {
-                                name: "Voltage",
-                                value: "voltage"
-                            },
-                            {
-                                name: "Laser",
-                                value: "laser"
-                            }
+                            {name: "FIM", value: "fim"},
+                            {name: "Voltage", value: "voltage"},
+                            {name: "Laser", value: "laser"}
                         ]
                     },
                     validators: [],
@@ -190,26 +181,11 @@ function Apt() {
                         required: false,
                         _type: "selection",
                         choices: [
-                            {
-                                "name": "He",
-                                "value": "He"
-                            },
-                            {
-                                "name": "Ar",
-                                "value": "Ar"
-                            },
-                            {
-                                "name": "Ne",
-                                "value": "Ne"
-                            },
-                            {
-                                "name": "Other",
-                                "value": "other"
-                            },
-                            {
-                                "name": "None",
-                                "value": "none"
-                            }
+                            {"name": "He", "value": "He"},
+                            {"name": "Ar", "value": "Ar"},
+                            {"name": "Ne", "value": "Ne"},
+                            {"name": "Other", "value": "other"},
+                            {"name": "None", "value": "none"}
                         ]
                     },
                     validators: [],
@@ -369,7 +345,8 @@ function Sem() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Secondary", "value": "secondary"},
+                        choices: [
+                            {"name": "Secondary", "value": "secondary"},
                             {"name": "Backscattered", "value": "backscattered"},
                             {"name": "Other", "value": "other"}
                         ]
@@ -565,11 +542,12 @@ function AptDataReconstruction() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Voltage", "value": "voltage"}, {
-                            "name": "Shank Angle",
-                            "value": "shank_angle"
-                        },
-                            {"name": "Tip Image", "value": "tip_image"}, {"name": "Other", "value": "other"}]
+                        choices: [
+                            {"name": "Voltage", "value": "voltage"},
+                            {"name": "Shank Angle", "value": "shank_angle"},
+                            {"name": "Tip Image", "value": "tip_image"},
+                            {"name": "Other", "value": "other"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -725,10 +703,12 @@ function BroadIonBeamMilling() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Ga", "value": "Ga"}, {"name": "Ne", "value": "Ne"}, {
-                            "name": "Ar",
-                            "value": "Ar"
-                        }, {"name": "Other", "value": "other"}]
+                        choices: [
+                            {"name": "Ga", "value": "Ga"},
+                            {"name": "Ne", "value": "Ne"},
+                            {"name": "Ar", "value": "Ar"},
+                            {"name": "Other", "value": "other"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -1156,10 +1136,10 @@ function DicPatterning() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Large-Scale", "value": "large_scale"}, {
-                            "name": "Small-Scale",
-                            "value": "small_scale"
-                        }]
+                        choices: [
+                            {"name": "Large-Scale", "value": "large_scale"},
+                            {"name": "Small-Scale", "value": "small_scale"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -1207,7 +1187,10 @@ function DicPatterning() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Alumina", "value": "alumina"}, {"name": "Gold", "value": "gold"}]
+                        choices: [
+                            {"name": "Alumina", "value": "alumina"},
+                            {"name": "Gold", "value": "gold"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -1223,10 +1206,11 @@ function DicPatterning() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "APTMS", "value": "aptms"}, {
-                            "name": "MPTMS",
-                            "value": "mptms"
-                        }, {"name": "N/A", "value": "n/a"}]
+                        choices: [
+                            {"name": "APTMS", "value": "aptms"},
+                            {"name": "MPTMS", "value": "mptms"},
+                            {"name": "N/A", "value": "n/a"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -1302,10 +1286,12 @@ function DicStatisticalModelling() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Linear", "value": "linear"},
+                        choices: [
+                            {"name": "Linear", "value": "linear"},
                             {"name": "Interactions", "value": "interactions"},
                             {"name": "PureQuadratic", "value": "purequadratic"},
-                            {"name": "Quadratic", "value": "quadratic"}]
+                            {"name": "Quadratic", "value": "quadratic"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -1737,9 +1723,11 @@ function EpmaDataCollection() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Line", "value" : "line"},
-                            {"name": "Grid", "value" : "grid"},
-                            {"name": "Point", "value" : "point"}]
+                        choices: [
+                            {"name": "Line", "value": "line"},
+                            {"name": "Grid", "value": "grid"},
+                            {"name": "Point", "value": "point"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -1831,10 +1819,12 @@ function LowCycleFatigue() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Total strain control", "value" : "total_strain_control"},
-                            {"name": "Plastic strain control", "value" : "plastic_strain_control"},
+                        choices: [
+                            {"name": "Total strain control", "value": "total_strain_control"},
+                            {"name": "Plastic strain control", "value": "plastic_strain_control"},
                             {"name": "Stress control", "value": "stress_control"},
-                            {"name": "Displacement control", "value": "displacement_control"}]
+                            {"name": "Displacement control", "value": "displacement_control"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -1882,8 +1872,10 @@ function LowCycleFatigue() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Continuous", "value" : "continuous"},
-                            {"name": "Interrupted( with hold times)", "value" : "interrupted"}]
+                        choices: [
+                            {"name": "Continuous", "value": "continuous"},
+                            {"name": "Interrupted( with hold times)", "value": "interrupted"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -1899,9 +1891,11 @@ function LowCycleFatigue() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Sinusoidal", "value" : "sinusoidal"},
-                            {"name": "Rectangular", "value" : "rectangular"},
-                            {"name": "Triangular", "value" : "triangular"}]
+                        choices: [
+                            {"name": "Sinusoidal", "value": "sinusoidal"},
+                            {"name": "Rectangular", "value": "rectangular"},
+                            {"name": "Triangular", "value": "triangular"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -1917,7 +1911,10 @@ function LowCycleFatigue() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Constant", "value" : "constant"},  {"name": "Variable", "value" : "variable"}]
+                        choices: [
+                            {"name": "Constant", "value": "constant"},
+                            {"name": "Variable", "value": "variable"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -2021,7 +2018,7 @@ function Annealing() {
                         attribute: "time",
                         description: "",
                         value: null,
-                        units: ["seconds","minutes","hours"],
+                        units: ["seconds", "minutes", "hours"],
                         unit: "",
                         _type: "number",
                         required: false,
@@ -2041,10 +2038,12 @@ function Annealing() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Air Quench", "value" : "air_quench"},
-                            {"name": "Water Quench", "value" : "water_quench"},
-                            {"name": "Furnace Cooled", "value" : "furnace_cooled"},
-                            {"name": "Air Cooled", "value" : "air_cooled"}]
+                        choices: [
+                            {"name": "Air Quench", "value": "air_quench"},
+                            {"name": "Water Quench", "value": "water_quench"},
+                            {"name": "Furnace Cooled", "value": "furnace_cooled"},
+                            {"name": "Air Cooled", "value": "air_cooled"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -2076,8 +2075,10 @@ function Annealing() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Recrystallization", "value" : "recrystallization"},
-                            {"name": "Grain Growth", "value" : "grain_growth"}]
+                        choices: [
+                            {"name": "Recrystallization", "value": "recrystallization"},
+                            {"name": "Grain Growth", "value": "grain_growth"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -2293,10 +2294,12 @@ function TEM() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Diffraction", "value" : "diffraction"},
-                            {"name": "Diffraction Imaging", "value" : "diffraction_imaging"},
-                            {"name": "High Resolution Imaging", "value" : "high_resolution_imaging"},
-                            {"name": "Scanning z-contrast", "value" : "scanning_z_contrast"}]
+                        choices: [
+                            {"name": "Diffraction", "value": "diffraction"},
+                            {"name": "Diffraction Imaging", "value": "diffraction_imaging"},
+                            {"name": "High Resolution Imaging", "value": "high_resolution_imaging"},
+                            {"name": "Scanning z-contrast", "value": "scanning_z_contrast"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -2312,8 +2315,10 @@ function TEM() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Yes", "value" : "yes"},
-                            {"name": "No", "value" : "no"}]
+                        choices: [
+                            {"name": "Yes", "value": "yes"},
+                            {"name": "No", "value": "no"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -2329,9 +2334,11 @@ function TEM() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Bright Field", "value" : "bright_field"},
-                            {"name": "High Angle Angular Dark Field", "value" : "high_angle_angular_dark_field"},
-                            {"name": "Tilt Series", "value" : "tilt_series"}]
+                        choices: [
+                            {"name": "Bright Field", "value": "bright_field"},
+                            {"name": "High Angle Angular Dark Field", "value": "high_angle_angular_dark_field"},
+                            {"name": "Tilt Series", "value": "tilt_series"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -2347,9 +2354,12 @@ function TEM() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Standard", "value" : "standard"},
-                            {"name": "Cryo", "value" : "cryo"},
-                            {"name": "Heating", "value" : "heating"}, {"name": "Other", "value" : "other"}]
+                        choices: [
+                            {"name": "Standard", "value": "standard"},
+                            {"name": "Cryo", "value": "cryo"},
+                            {"name": "Heating", "value": "heating"},
+                            {"name": "Other", "value": "other"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -2393,7 +2403,7 @@ function TEM() {
                         attribute: "camera_length",
                         description: "",
                         value: null,
-                        units: ["cm", "mm","m"],
+                        units: ["cm", "mm", "m"],
                         unit: "",
                         _type: "number",
                         required: false,
@@ -2453,7 +2463,7 @@ function HeatTreatment() {
                         attribute: "time",
                         description: "",
                         value: null,
-                        units: ["seconds","minutes","hours"],
+                        units: ["seconds", "minutes", "hours"],
                         unit: "",
                         _type: "number",
                         required: false,
@@ -2473,10 +2483,12 @@ function HeatTreatment() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Air Quench", "value" : "air_quench"},
-                            {"name": "Water Quench", "value" : "water_quench"},
-                            {"name": "Furnace Cooled", "value" : "furnace_cooled"},
-                            {"name": "Air Cooled", "value" : "air_cooled"}]
+                        choices: [
+                            {"name": "Air Quench", "value": "air_quench"},
+                            {"name": "Water Quench", "value": "water_quench"},
+                            {"name": "Furnace Cooled", "value": "furnace_cooled"},
+                            {"name": "Air Cooled", "value": "air_cooled"}
+                        ]
                     },
                     validators: [],
                     valid: false,
@@ -2563,10 +2575,12 @@ function Hardness1() {
                         unit: "",
                         _type: "selection",
                         required: false,
-                        choices: [{"name": "Vickers", "value" : "vickers"},
-                            {"name": "Rockwell A", "value" : "rockwell_a"},
-                            {"name": "Rockwell B", "value" : "rockwell_b"},
-                            {"name": "Rockwell C", "value" : "rockwell_c"}]
+                        choices: [
+                            {"name": "Vickers", "value": "vickers"},
+                            {"name": "Rockwell A", "value": "rockwell_a"},
+                            {"name": "Rockwell B", "value": "rockwell_b"},
+                            {"name": "Rockwell C", "value": "rockwell_c"}
+                        ]
                     },
                     validators: [],
                     valid: false,
