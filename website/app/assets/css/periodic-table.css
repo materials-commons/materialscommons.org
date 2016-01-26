@@ -1,7 +1,7 @@
 
 section {
     max-width: 600px;
-    margin: 0px auto;
+    /*margin: 0px auto;*/
     overflow: hidden;
     min-width: 300px;
 }
