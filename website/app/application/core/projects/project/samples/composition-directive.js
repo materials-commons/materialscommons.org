@@ -22,8 +22,12 @@
         var i = _.indexOf(ctrl.properties, function (property) {
             return property.attribute === 'composition'
         });
-        if (i > -1) {
-            ctrl.composition = ctrl.properties[i];
+        if (i > -1 && ctrl.properties[i].best_measure.length) {
+            ctrl.hasComposition = true;
+            ctrl.units = ctrl.properties[i].best_measure[0].unit;
+            ctrl.composition = ctrl.properties[i].best_measure[0].value.map(function(e) {
+                return e.element + ':' + e.value;
+            }).join(', ');
         }
     }
 }(angular.module('materialscommons')));

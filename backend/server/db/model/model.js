@@ -139,8 +139,8 @@ module.exports = function(r) {
         this.property_id = attrID;
     }
 
-    function BestMeasureHistory(attrID, mID) {
-        this.property_id = attrID;
+    function BestMeasureHistory(propertyID, mID) {
+        this.property_id = propertyID;
         this.measurement_id = mID;
         this.when = r.now();
         this._type = 'best_measure_history';

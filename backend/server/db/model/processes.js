@@ -230,6 +230,7 @@ module.exports = function (r) {
         yield addProcessSetup(proc.id, process.setup);
         yield addSampleMeasurements(proc.id, process.input_samples);
         yield addCreatedSamples(process.output_samples, process.project_id, proc.id, process.owner);
+        yield addSampleMeasurements(proc.id, process.output_samples);
         yield addTransformedSamples(process.transformed_samples, proc.id);
         yield addFiles(proc.id, process.input_files, 'in');
         yield addFiles(proc.id, process.output_files, 'out');
@@ -410,9 +411,18 @@ module.exports = function (r) {
             m.element = current.element;
             let inserted = yield db.insert('measurements', m);
             createdMeasurements.push(inserted);
+            if (current.is_best_measure) {
+                yield addAsBestMeasure(pID, inserted.id)
+            }
             yield addMeasurementToProperty(pID, inserted.id)
         }
         return createdMeasurements;
+    }
+
+    function* addAsBestMeasure(propertyID, measurementID) {
+        let bmh = new model.BestMeasureHistory(propertyID, measurementID);
+        let inserted = yield db.insert('best_measure_history', bmh);
+        yield r.table('properties').get(propertyID).update({best_measure_id: inserted.id});
     }
 
     /**
@@ -458,6 +468,8 @@ module.exports = function (r) {
         for (let i = 0; i < samples.length; i++) {
             let current = samples[i];
             let s = yield addNewSample(current.name, current.description, owner);
+            current.id = s.sample.id;
+            current.property_set_id = s.asetID;
             yield addSampleAssociations(s.sample.id, s.asetID, projectID, processID);
             created.push(s.sample);
         }

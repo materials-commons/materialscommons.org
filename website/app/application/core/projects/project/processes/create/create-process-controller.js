@@ -16,6 +16,14 @@
         ctrl.submitAndAnother = submitAndAnother;
         ctrl.remove = removeById;
         ctrl.submitSample = submitSample;
+        ctrl.doc = {value: []};
+        ctrl.sample = {
+            name: '',
+            description: '',
+            old_properties: [],
+            new_properties: [],
+            files: []
+        };
 
         setPreviousStateMemo();
 
@@ -40,7 +48,6 @@
         function chooseInputFiles() {
             selectItems.open('files').then(function (item) {
                 var uniqueFiles = differenceById(item.files, ctrl.process.input_files);
-                console.dir(uniqueFiles);
                 uniqueFiles.forEach(function (file) {
                     ctrl.process.input_files.push({
                         id: file.id,
@@ -82,12 +89,33 @@
                 },
 
                 function failure() {
-                    console.log('failure to save process', e);
+                    console.log('failed to save process', e);
                 }
             );
         }
 
         function submitSample() {
+            if (ctrl.doc.value.length) {
+                var composition = ctrl.doc.value.map(function(c) {
+                    return {
+                        element: c.element,
+                        value: _.parseInt(c.value)
+                    };
+                });
+                var measurement = {
+                    name: 'Composition',
+                    attribute: 'composition',
+                    measurements: [
+                        {
+                            is_best_measure: true,
+                            value: composition,
+                            unit: ctrl.doc.unit,
+                            _type: 'composition'
+                        }
+                    ]
+                };
+                ctrl.sample.new_properties.push(measurement);
+            }
             ctrl.process.output_samples.push(ctrl.sample);
             submit();
         }

@@ -1,8 +1,22 @@
 (function (module) {
+
+    module.directive('periodicTable',
+        function () {
+            return {
+                restrict: "E",
+                controller: 'PeriodicTableController',
+                scope: {
+                    doc: '=doc'
+                },
+                templateUrl: 'application/directives/periodic-table.html'
+            };
+        });
+
     module.controller("PeriodicTableController", PeriodicTableController);
     PeriodicTableController.$inject = ["$scope"];
 
     function PeriodicTableController($scope) {
+        console.log('PeriodicTableController');
 
         $scope.addElement = function (ele) {
             $scope.doc.value.push({'element': ele, 'value': ''});
@@ -35,16 +49,4 @@
 
         init();
     }
-
-    module.directive('periodicTable',
-        function () {
-            return {
-                restrict: "A",
-                controller: 'PeriodicTableController',
-                scope: {
-                    doc: '=doc'
-                },
-                templateUrl: 'application/directives/periodic-table.html'
-            };
-        });
 }(angular.module('materialscommons')));
