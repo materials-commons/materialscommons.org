@@ -10,7 +10,6 @@
         ctrl.tab = "measurements";
         ctrl.sample = sample[0];
         ctrl.project = project;
-        console.dir(ctrl.sample);
 
         function fileSrc(id) {
             return mcfile.src(id);
