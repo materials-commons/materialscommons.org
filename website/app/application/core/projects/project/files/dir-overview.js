@@ -15,34 +15,90 @@
     }
 
     module.controller('DirOverviewDirectiveController', DirOverviewDirectiveController);
-    DirOverviewDirectiveController.$inject = ["fileType", "Restangular", "mcfile"];
+    DirOverviewDirectiveController.$inject = ["fileType", "mcfile", "$filter", "Restangular", "User"];
 
-    function DirOverviewDirectiveController(fileType, Restangular, mcfile) {
+    function DirOverviewDirectiveController(fileType, mcfile, $filter, Restangular, User) {
         var ctrl = this;
 
         ctrl.viewFiles = viewFiles;
-        ctrl.fileSrc = fileSrc;
+        ctrl.fileSrc = mcfile.src;
         ctrl.isImage = isImage;
         ctrl.overview = _.values(fileType.overview(ctrl.dir.children));
+        ctrl.allFiles = {
+            files: allFiles()
+        };
+        ctrl.downloadCount = 0;
+        ctrl.downloadSelectedFiles = downloadSelectedFiles;
+        ctrl.fileSelect = fileSelect;
+        ctrl.selectAllFiles = selectAllFiles;
+        ctrl.deselectSelectedFiles = deselectSelectedFiles;
+        ctrl.files = ctrl.allFiles.files;
+        ctrl.fileFilter = {
+            name: ''
+        };
+        ctrl.downloadState = 'none';
+        ctrl.downloadURL = '';
 
         ////////////////
 
-        function viewFiles(entry) {
-            var fileIDs = entry.files.map(function (f) {
-                return f.id;
-            });
-            Restangular.one('v2').one('projects', ctrl.project.id)
-                .one('files').customPOST({file_ids: fileIDs})
-                .then(function (files) {
-                    ctrl.files = files;
-                })
-                .catch(function (err) {
-                    console.log("error", err);
+        function allFiles() {
+            return ctrl.dir.children.filter(function (f) { return f.data._type !== "directory"; })
+                .map(function (f) {
+                    f.data.selected = false;
+                    return f.data;
                 });
         }
 
-        function fileSrc(id) {
-            return mcfile.src(id);
+        function viewFiles(entry) {
+            ctrl.files = entry.files.map(function (f) {
+                f.selected = false;
+                return f;
+            });
+            ctrl.downloadCount = 0;
+        }
+
+        function fileSelect(file) {
+            if (file.selected) {
+                ctrl.downloadCount--;
+            } else {
+                ctrl.downloadCount++;
+            }
+            file.selected = !file.selected;
+        }
+
+        function selectAllFiles() {
+            var filesToSelect = $filter('filter')(ctrl.files, ctrl.fileFilter);
+            filesToSelect.forEach(function (f) {
+                f.selected = true;
+            });
+            ctrl.downloadCount = ctrl.files.length;
+        }
+
+        function deselectSelectedFiles() {
+            ctrl.files.forEach(function (f) {
+                if (f.selected) {
+                    f.selected = false;
+                }
+            });
+            ctrl.downloadCount = 0;
+        }
+
+        function downloadSelectedFiles() {
+            ctrl.downloadState = 'preparing';
+            var fileIDs = ctrl.files.filter(function (f) { return f.selected; }).map(function (f) { return f.id});
+            Restangular.one("project2").one("archive").customPOST({
+                file_ids: fileIDs
+            }).then(
+                function success(resp) {
+                    ctrl.downloadURL = "api/project2/download/archive/" + resp.archive_id + ".zip?apikey=" + User.apikey();
+                    ctrl.downloadState = 'done';
+                    deselectSelectedFiles();
+                },
+
+                function failure() {
+                    console.log('archive creation failed');
+                }
+            );
         }
     }
 }(angular.module('materialscommons')));
