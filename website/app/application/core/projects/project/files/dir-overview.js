@@ -15,9 +15,9 @@
     }
 
     module.controller('DirOverviewDirectiveController', DirOverviewDirectiveController);
-    DirOverviewDirectiveController.$inject = ["fileType", "mcfile", "$filter", "Restangular", "User"];
+    DirOverviewDirectiveController.$inject = ["fileType", "mcfile", "$filter", "Restangular", "User", "$interval"];
 
-    function DirOverviewDirectiveController(fileType, mcfile, $filter, Restangular, User) {
+    function DirOverviewDirectiveController(fileType, mcfile, $filter, Restangular, User, $interval) {
         var ctrl = this;
 
         ctrl.viewFiles = viewFiles;
@@ -38,6 +38,7 @@
         };
         ctrl.downloadState = 'none';
         ctrl.downloadURL = '';
+        ctrl.downloadMessageFlash = '';
 
         ////////////////
 
@@ -85,6 +86,14 @@
 
         function downloadSelectedFiles() {
             ctrl.downloadState = 'preparing';
+            //var stop = $interval(function() {
+            //    console.log('interval tick');
+            //    if (ctrl.downloadState !== 'preparing') {
+            //        $interval.cancel(stop);
+            //    } else {
+            //        ctrl.downloadMessageFlash = ctrl.downloadMessageFlash === '' ? 'building' : '';
+            //    }
+            //}, 500);
             var fileIDs = ctrl.files.filter(function (f) { return f.selected; }).map(function (f) { return f.id});
             Restangular.one("project2").one("archive").customPOST({
                 file_ids: fileIDs
