@@ -36,7 +36,11 @@
     </div>
     <div ng-if="ctrl.files.length" class="col-xs-offset-1 col-xs-10">
         <div class="row">
-            <span ng-if="ctrl.downloadState == 'preparing'">Preparing download (this may take some time)...</span>
+            <span ng-if="ctrl.downloadState == 'preparing'">
+                <i class="fa fa-circle-o-notch fa-spin"></i>
+                Preparing download (this may take some time)...
+                {{ctrl.downloadMessageFlash}}
+            </span>
             <span ng-if="ctrl.downloadState == 'done'">
                 <a ng-href="{{ctrl.downloadURL}}" ng-click="ctrl.downloadState='none'">
                     Preparation done click here to download
