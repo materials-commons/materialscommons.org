@@ -1,149 +1,351 @@
 <section>
+    <div class="row">
+        <div class="col-lg-offset-2">
+            <div class="row">
+                <ul class="list-inline">
+                    <li class="element-chosen">Element Chosen</li>
+                    <li class="element-other-nonmetal">Other nonmetals</li>
+                    <li class="element-alkali-metal">Alkali metals</li>
+                    <li class="element-alkaline-earth-metal">Alkaline earth metals</li>
+                </ul>
+            </div>
+            <div class="row">
+                <ul class="list-inline">
+                    <li class="element-noble-gas">Noble gases</li>
+                    <li class="element-metalloid">Metalloids</li>
+                    <li class="element-halogen">Halogens</li>
+                    <li class="element-transition-metal">Transition metals</li>
+                </ul>
+            </div>
+            <div class="row">
+                <ul class="list-inline">
+                    <li class="element-post-transition-metal">Post-transition metals</li>
+                    <li class="element-lanthanoid">Lanthanoids</li>
+                    <li class="element-actinoid">Actinoids</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="container">
+            <div class="panelOne">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_one_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelTwo">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_two_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelThree">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_three_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelThree">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_three_1_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelThree">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_three_2_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelThree">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_three_3_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelThree">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_three_4_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelThree">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_three_5_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelThree">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_three_6_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelThree">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_three_7_elements">{{p.e}}
+                </div>
+            </div>
+            <div class="panelThree">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_three_8_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelThree">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_three_9_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelTwo">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_two_1_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelTwo">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_two_2_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelTwo">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_two_3_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelTwo">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_two_4_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelTwo">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_two_5_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="panelOne">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.panel_one_1_elements">
+                    {{p.e}}
+                </div>
+            </div>
+        </div>
+        <div id="clear"></div>
+        <div class="lowerContainer">
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_1_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_2_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_3_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_4_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_5_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_6_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_7_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_8_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_9_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_10_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_11_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_12_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_13_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_14_elements">
+                    {{p.e}}
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="box"
+                     ng-class="ctrl.getElementColor(p)"
+                     ng-click="ctrl.addElement(p)"
+                     ng-repeat="p in ctrl.bottom_15_elements">
+                    {{p.e}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-offset-1">
+            <ul class="list-inline">
+                <li>
+                    <input id="elementName"
+                           type="text" ng-model="ctrl.elementName"
+                           placeholder="Element..."
+                           ng-change="ctrl.lookForMatches()"
+                           ng-focus="ctrl.elementName === ''"
+                           on-enter="ctrl.addElementFromInput()"
+                           ng-model-options="{ updateOn: 'default blur', debounce: { default: 200, blur: 0} }">
+                </li>
+                <li>
+                    <input name="number" ng-model="ctrl.elementPercentage" placeholder="percentage..."
+                           on-enter="ctrl.addElementFromInput()"
+                           class="form-control" type="number" step=="any" style="width:40%">
+                </li>
+            </ul>
+        </div>
+    </div>
     <table class="table table_small">
         <thead>
         <th>Element</th>
         <th>
-            <div>
-                <input type="radio"
-                       value="at%" ng-model="doc.unit"/>
-                atomic % <br>
-                <input type="radio"
-                       value="wt%" ng-model="doc.unit"/>
-                weight %
-            </div>
+            <ul class="list-inline">
+                <li><input type="radio" value="at%" ng-model="ctrl.doc.unit"/> atomic %</li>
+                <li><input type="radio" value="wt%" ng-model="ctrl.doc.unit"/> weight %</li>
+            </ul>
         </th>
 
         </thead>
         <tbody>
-        <tr ng-repeat="each in doc.value">
-            <td>{{each.element}}</td>
-            <td>
-                <input name="number" validator="number" ng-model="each.value"
-                       class="form-control" type="text" style="width:40%">
+        <tr ng-if="!ctrl.doc.value.length">
+            <td>Choose base element</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr ng-if="ctrl.doc.value.length">
+            <td>{{ctrl.doc.value[0].element}}</td>
+            <td>Balance ({{ctrl.showRemaining()}}%)</td>
+            <td><a class="close" ng-click="ctrl.removeElement(0)">x</a></td>
+        </tr>
+        <tr ng-repeat="e in ctrl.doc.value">
+            <td ng-if="$index !== 0">{{e.element}}</td>
+            <td ng-if="$index !== 0">
+                <input name="number" ng-model="e.value" placeholder="percentage..."
+                       class="form-control" type="number" step=="any" style="width:40%">
             </td>
-            <td><a class="close" ng-click="removeElement($index)">x</a></td>
+            <td ng-if="$index !== 0"><a class="close" ng-click="ctrl.removeElement($index)">x</a></td>
         </tr>
         </tbody>
     </table>
-
-
-    <div id="container">
-        <div id="panelOne">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_one_elements">{{p}}</div>
-        </div>
-        <div id="panelTwo">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_elements">{{p}}</div>
-        </div>
-        <div id="panelThree">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_elements">{{p}}</div>
-        </div>
-        <div id="panelThree">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_1_elements">{{p}}</div>
-        </div>
-        <div id="panelThree">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_2_elements">{{p}}</div>
-        </div>
-        <div id="panelThree">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_3_elements">{{p}}</div>
-        </div>
-        <div id="panelThree">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_4_elements">{{p}}</div>
-        </div>
-        <div id="panelThree">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_5_elements">{{p}}</div>
-        </div>
-        <div id="panelThree">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_6_elements">{{p}}</div>
-        </div>
-        <div id="panelThree">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_7_elements">{{p}}</div>
-        </div>
-        <div id="panelThree">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_8_elements">{{p}}</div>
-        </div>
-        <div id="panelThree">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_three_9_elements">{{p}}</div>
-        </div>
-        <div id="panelTwo">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_1_elements">{{p}}</div>
-        </div>
-        <div id="panelTwo">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_2_elements">{{p}}</div>
-        </div>
-        <div id="panelTwo">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_3_elements">{{p}}</div>
-        </div>
-        <div id="panelTwo">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_4_elements">{{p}}</div>
-        </div>
-        <div id="panelTwo">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_two_5_elements">{{p}}</div>
-        </div>
-        <div id="panelOne">
-            <div class="box" ng-click="addElement(p)" ng-repeat="p in panel_one_1_elements">{{p}}</div>
-        </div>
-    </div>
-    <div id="clear"></div>
-    <div id="lowerContainer">
-        <div class="bottom">
-            <div class="box"><a>La</a></div>
-            <div class="box"><a>Ac</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Ce</a></div>
-            <div class="box"><a>Th</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Pr</a></div>
-            <div class="box"><a>Pa</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Nd</a></div>
-            <div class="box"><a>U</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Pm</a></div>
-            <div class="box"><a>Np</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Sm</a></div>
-            <div class="box"><a>Pu</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Eu</a></div>
-            <div class="box"><a>Am</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Gd</a></div>
-            <div class="box"><a>Cm</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Tb</a></div>
-            <div class="box"><a>Bk</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Dy</a></div>
-            <div class="box"><a>Cf</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Ho</a></div>
-            <div class="box"><a>Es</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Er</a></div>
-            <div class="box"><a>Fm</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Tm</a></div>
-            <div class="box"><a>Md</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Yb</a></div>
-            <div class="box"><a>No</a></div>
-        </div>
-        <div class="bottom">
-            <div class="box"><a>Lu</a></div>
-            <div class="box"><a>Lr</a></div>
-        </div>
-    </div>
 </section>
