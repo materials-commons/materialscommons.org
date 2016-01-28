@@ -5,6 +5,8 @@
             return {
                 restrict: "E",
                 controller: 'PeriodicTableController',
+                controllerAs: 'ctrl',
+                bindToController: true,
                 scope: {
                     doc: '=doc'
                 },
@@ -13,40 +15,324 @@
         });
 
     module.controller("PeriodicTableController", PeriodicTableController);
-    PeriodicTableController.$inject = ["$scope"];
+    PeriodicTableController.$inject = ["focus"];
 
-    function PeriodicTableController($scope) {
-        console.log('PeriodicTableController');
+    function PeriodicTableController(focus) {
+        var ctrl = this;
 
-        $scope.addElement = function (ele) {
-            $scope.doc.value.push({'element': ele, 'value': ''});
-        };
-        $scope.removeElement = function (i) {
-            $scope.doc.value.splice(i, 1);
-        };
+        ctrl.addElement = addElement;
+        ctrl.removeElement = removeElement;
+        ctrl.showRemaining = showRemaining;
+        ctrl.getElementColor = getElementColor;
+        ctrl.addElementFromInput = addElementFromInput;
+        ctrl.elementName = '';
+        ctrl.elementPercentage = 0;
+        ctrl.lookForMatches = lookForMatches;
 
-        function init() {
-            $scope.doc.unit = "at%"; //setting default unit for composition
-            $scope.panel_one_elements = ["H", "Li", "Na", "K", "Rb", "Cs", "Fr"];
-            $scope.panel_two_elements = ["Be", "Mg", "Ca", "Sr", "Ba", "Ra"];
-            $scope.panel_three_elements = ["Sc", "Y", "La-Lu", "Ac-Lr"];
-            $scope.panel_three_1_elements = ["Ti", "Zr", "Hf", "Rf"];
-            $scope.panel_three_2_elements = ["V", "Nb", "Ta", "Db"];
-            $scope.panel_three_3_elements = ["Cr", "Mb", "W", "Sg"];
-            $scope.panel_three_4_elements = ["Mn", "Tc", "Re", "Bh"];
-            $scope.panel_three_5_elements = ["Fe", "Ru", "Os", "Hs"];
-            $scope.panel_three_6_elements = ["Co", "Rh", "Ir", "Mt"];
-            $scope.panel_three_7_elements = ["Ni", "Pd", "Pt", "Ds"];
-            $scope.panel_three_8_elements = ["Cu", "Ag", "Au", "Rg"];
-            $scope.panel_three_9_elements = ["Zn", "Cd", "Hg", "Cn"];
-            $scope.panel_two_1_elements = ["B", "Al", "Ga", "In", "Ti", "Uut"];
-            $scope.panel_two_2_elements = ["C", "Si", "Ge", "Sn", "Rb", "Fl"];
-            $scope.panel_two_3_elements = ["N", "P", "As", "Sb", "Bi", "Uup"];
-            $scope.panel_two_4_elements = ["O", "S", "Se", "Te", "Po", "Lv"];
-            $scope.panel_two_5_elements = ["F", "Cl", "Br", "I", "At", "Uus"];
-            $scope.panel_one_1_elements = ["He", "Ne", "Ar", "Kr", "Xe", "Rn", "Uuo"];
+        ctrl.doc.unit = "at%"; //setting default unit for composition
+
+        ctrl.panel_one_elements = [
+            {e: "H", chosen: false, color: 'element-other-nonmetal'},
+            {e: "Li", chosen: false, color: 'element-alkali-metal'},
+            {e: "Na", chosen: false, color: 'element-alkali-metal'},
+            {e: "K", chosen: false, color: 'element-alkali-metal'},
+            {e: "Rb", chosen: false, color: 'element-alkali-metal'},
+            {e: "Cs", chosen: false, color: 'element-alkali-metal'},
+            {e: "Fr", chosen: false, color: 'element-alkali-metal'}
+        ];
+
+        ctrl.panel_two_elements = [
+            {e: "Be", chosen: false, color: 'element-alkaline-earth-metal'},
+            {e: "Mg", chosen: false, color: 'element-alkaline-earth-metal'},
+            {e: "Ca", chosen: false, color: 'element-alkaline-earth-metal'},
+            {e: "Sr", chosen: false, color: 'element-alkaline-earth-metal'},
+            {e: "Ba", chosen: false, color: 'element-alkaline-earth-metal'},
+            {e: "Ra", chosen: false, color: 'element-alkaline-earth-metal'}
+        ];
+
+        ctrl.panel_three_elements = [
+            {e: "Sc", chosen: false, color: 'element-transition-metal'},
+            {e: "Y", chosen: false, color: 'element-transition-metal'},
+            {e: "La-Lu", chosen: false, color: 'element-lanthanoid'},
+            {e: "Ac-Lr", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.panel_three_1_elements = [
+            {e: "Ti", chosen: false, color: 'element-transition-metal'},
+            {e: "Zr", chosen: false, color: 'element-transition-metal'},
+            {e: "Hf", chosen: false, color: 'element-transition-metal'},
+            {e: "Rf", chosen: false, color: 'element-transition-metal'}
+        ];
+
+        ctrl.panel_three_2_elements = [
+            {e: "V", chosen: false, color: 'element-transition-metal'},
+            {e: "Nb", chosen: false, color: 'element-transition-metal'},
+            {e: "Ta", chosen: false, color: 'element-transition-metal'},
+            {e: "Db", chosen: false, color: 'element-transition-metal'}
+        ];
+
+        ctrl.panel_three_3_elements = [
+            {e: "Cr", chosen: false, color: 'element-transition-metal'},
+            {e: "Mb", chosen: false, color: 'element-transition-metal'},
+            {e: "W", chosen: false, color: 'element-transition-metal'},
+            {e: "Sg", chosen: false, color: 'element-transition-metal'}
+        ];
+
+        ctrl.panel_three_4_elements = [
+            {e: "Mn", chosen: false, color: 'element-transition-metal'},
+            {e: "Tc", chosen: false, color: 'element-transition-metal'},
+            {e: "Re", chosen: false, color: 'element-transition-metal'},
+            {e: "Bh", chosen: false, color: 'element-transition-metal'}
+        ];
+
+        ctrl.panel_three_5_elements = [
+            {e: "Fe", chosen: false, color: 'element-transition-metal'},
+            {e: "Ru", chosen: false, color: 'element-transition-metal'},
+            {e: "Os", chosen: false, color: 'element-transition-metal'},
+            {e: "Hs", chosen: false, color: 'element-transition-metal'}
+        ];
+
+        ctrl.panel_three_6_elements = [
+            {e: "Co", chosen: false, color: 'element-transition-metal'},
+            {e: "Rh", chosen: false, color: 'element-transition-metal'},
+            {e: "Ir", chosen: false, color: 'element-transition-metal'},
+            {e: "Mt", chosen: false, color: 'element-transition-metal'}
+        ];
+
+        ctrl.panel_three_7_elements = [
+            {e: "Ni", chosen: false, color: 'element-transition-metal'},
+            {e: "Pd", chosen: false, color: 'element-transition-metal'},
+            {e: "Pt", chosen: false, color: 'element-transition-metal'},
+            {e: "Ds", chosen: false, color: 'element-transition-metal'}
+        ];
+
+        ctrl.panel_three_8_elements = [
+            {e: "Cu", chosen: false, color: 'element-transition-metal'},
+            {e: "Ag", chosen: false, color: 'element-transition-metal'},
+            {e: "Au", chosen: false, color: 'element-transition-metal'},
+            {e: "Rg", chosen: false, color: 'element-transition-metal'}
+        ];
+
+        ctrl.panel_three_9_elements = [
+            {e: "Zn", chosen: false, color: 'element-transition-metal'},
+            {e: "Cd", chosen: false, color: 'element-transition-metal'},
+            {e: "Hg", chosen: false, color: 'element-transition-metal'},
+            {e: "Cn", chosen: false, color: 'element-transition-metal'}
+        ];
+
+        ctrl.panel_two_1_elements = [
+            {e: "B", chosen: false, color: 'element-metalloid'},
+            {e: "Al", chosen: false, color: 'element-post-transition-metal'},
+            {e: "Ga", chosen: false, color: 'element-post-transition-metal'},
+            {e: "In", chosen: false, color: 'element-post-transition-metal'},
+            {e: "Ti", chosen: false, color: 'element-post-transition-metal'},
+            {e: "Uut", chosen: false, color: 'element-post-transition-metal'}
+        ];
+
+        ctrl.panel_two_2_elements = [
+            {e: "C", chosen: false, color: 'element-other-nonmetal'},
+            {e: "Si", chosen: false, color: 'element-metalloid'},
+            {e: "Ge", chosen: false, color: 'element-metalloid'},
+            {e: "Sn", chosen: false, color: 'element-post-transition-metal'},
+            {e: "Pb", chosen: false, color: 'element-post-transition-metal'},
+            {e: "Fl", chosen: false, color: 'element-post-transition-metal'}
+        ];
+
+        ctrl.panel_two_3_elements = [
+            {e: "N", chosen: false, color: 'element-other-nonmetal'},
+            {e: "P", chosen: false, color: 'element-other-nonmetal'},
+            {e: "As", chosen: false, color: 'element-metalloid'},
+            {e: "Sb", chosen: false, color: 'element-metalloid'},
+            {e: "Bi", chosen: false, color: 'element-post-transition-metal'},
+            {e: "Uup", chosen: false, color: 'element-post-transition-metal'}
+        ];
+
+        ctrl.panel_two_4_elements = [
+            {e: "O", chosen: false, color: 'element-other-nonmetal'},
+            {e: "S", chosen: false, color: 'element-other-nonmetal'},
+            {e: "Se", chosen: false, color: 'element-other-nonmetal'},
+            {e: "Te", chosen: false, color: 'element-metalloid'},
+            {e: "Po", chosen: false, color: 'element-metalloid'},
+            {e: "Lv", chosen: false, color: 'element-post-transition-metal'}
+        ];
+
+        ctrl.panel_two_5_elements = [
+            {e: "F", chosen: false, color: 'element-halogen'},
+            {e: "Cl", chosen: false, color: 'element-halogen'},
+            {e: "Br", chosen: false, color: 'element-halogen'},
+            {e: "I", chosen: false, color: 'element-halogen'},
+            {e: "At", chosen: false, color: 'element-halogen'},
+            {e: "Uus", chosen: false, color: 'element-halogen'}
+        ];
+
+        ctrl.panel_one_1_elements = [
+            {e: "He", chosen: false, color: 'element-noble-gas'},
+            {e: "Ne", chosen: false, color: 'element-noble-gas'},
+            {e: "Ar", chosen: false, color: 'element-noble-gas'},
+            {e: "Kr", chosen: false, color: 'element-noble-gas'},
+            {e: "Xe", chosen: false, color: 'element-noble-gas'},
+            {e: "Rn", chosen: false, color: 'element-noble-gas'},
+            {e: "Uuo", chosen: false, color: 'element-noble-gas'}
+        ];
+
+        ctrl.bottom_1_elements = [
+            {e: "La", chosen: false, color: 'element-lanthanoid'},
+            {e: "Ac", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_2_elements = [
+            {e: "Ce", chosen: false, color: 'element-lanthanoid'},
+            {e: "Th", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_3_elements = [
+            {e: "Pr", chosen: false, color: 'element-lanthanoid'},
+            {e: "Pa", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_4_elements = [
+            {e: "Nd", chosen: false, color: 'element-lanthanoid'},
+            {e: "U", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_5_elements = [
+            {e: "Pm", chosen: false, color: 'element-lanthanoid'},
+            {e: "Np", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_6_elements = [
+            {e: "Sm", chosen: false, color: 'element-lanthanoid'},
+            {e: "Pu", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_7_elements = [
+            {e: "Eu", chosen: false, color: 'element-lanthanoid'},
+            {e: "Am", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_8_elements = [
+            {e: "Gd", chosen: false, color: 'element-lanthanoid'},
+            {e: "Cm", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_9_elements = [
+            {e: "Tb", chosen: false, color: 'element-lanthanoid'},
+            {e: "Bk", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_10_elements = [
+            {e: "Dy", chosen: false, color: 'element-lanthanoid'},
+            {e: "Cf", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_11_elements = [
+            {e: "Ho", chosen: false, color: 'element-lanthanoid'},
+            {e: "Es", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_12_elements = [
+            {e: "Er", chosen: false, color: 'element-lanthanoid'},
+            {e: "Fm", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_13_elements = [
+            {e: "Tm", chosen: false, color: 'element-lanthanoid'},
+            {e: "Md", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_14_elements = [
+            {e: "Yb", chosen: false, color: 'element-lanthanoid'},
+            {e: "No", chosen: false, color: 'element-actinoid'}
+        ];
+
+        ctrl.bottom_15_elements = [
+            {e: "Lu", chosen: false, color: 'element-lanthanoid'},
+            {e: "Lr", chosen: false, color: 'element-actinoid'}
+        ];
+
+        var allElements = [].concat(ctrl.panel_one_elements, ctrl.panel_two_elements,
+            ctrl.panel_three_elements, ctrl.panel_three_1_elements, ctrl.panel_three_2_elements,
+            ctrl.panel_three_3_elements, ctrl.panel_three_4_elements, ctrl.panel_three_5_elements,
+            ctrl.panel_three_6_elements, ctrl.panel_three_7_elements, ctrl.panel_three_8_elements,
+            ctrl.panel_three_9_elements, ctrl.panel_two_1_elements, ctrl.panel_two_2_elements,
+            ctrl.panel_two_3_elements, ctrl.panel_two_4_elements, ctrl.panel_two_5_elements,
+            ctrl.panel_one_1_elements, ctrl.bottom_1_elements, ctrl.bottom_2_elements,
+            ctrl.bottom_3_elements, ctrl.bottom_4_elements, ctrl.bottom_5_elements,
+            ctrl.bottom_6_elements, ctrl.bottom_7_elements, ctrl.bottom_8_elements,
+            ctrl.bottom_9_elements, ctrl.bottom_10_elements, ctrl.bottom_11_elements,
+            ctrl.bottom_12_elements, ctrl.bottom_13_elements, ctrl.bottom_14_elements,
+            ctrl.bottom_15_elements);
+        var matchingElements = [];
+
+        ////////////////////////////////
+
+        function addElement(element) {
+            if (!element.chosen) {
+                ctrl.doc.value.push({element: element.e, value: 0});
+                element.chosen = true;
+            }
         }
 
-        init();
+        function removeElement(index) {
+            if (index === 0) {
+                // Removing base element so clear everything
+                ctrl.doc.value.length = 0;
+                allElements.forEach(function (e) { e.chosen = false; });
+                matchingElements.length = 0;
+                return;
+            }
+            var e = ctrl.doc.value[index].element;
+            ctrl.doc.value.splice(index, 1);
+            var i = _.findIndex(allElements, {e: e});
+            if (i !== -1) {
+                allElements[i].chosen = false;
+            }
+        }
+
+        function addElementFromInput() {
+            var i = _.findIndex(allElements, function (e) { return e.e.toUpperCase() == ctrl.elementName.toUpperCase()});
+            if (i !== -1 && !allElements[i].chosen) {
+                var element = allElements[i];
+                ctrl.doc.value.push({element: element.e, value: ctrl.elementPercentage});
+                element.chosen = true;
+                ctrl.elementName = '';
+                ctrl.elementPercentage = 0;
+                matchingElements.length = 0;
+                focus('elementName');
+            }
+        }
+
+        function showRemaining() {
+            if (!ctrl.doc.value.length) {
+                return;
+            }
+            var total = 0;
+            for (var i = 1; i < ctrl.doc.value.length; i++) {
+                total += +ctrl.doc.value[i].value;
+            }
+            ctrl.doc.value[0].value = 100.0 - total;
+            return ctrl.doc.value[0].value;
+        }
+
+        function getElementColor(e) {
+            if (e.chosen) {
+                return 'element-chosen';
+            }
+
+            if (_.findIndex(matchingElements, function (item) {return item === e.e;}) !== -1) {
+                return 'element-match';
+            }
+            return e.color;
+        }
+
+        function lookForMatches() {
+            if (ctrl.elementName === '') {
+                matchingElements.length = 0;
+            } else {
+                matchingElements = allElements
+                    .filter(function (e) { return e.e.toUpperCase().startsWith(ctrl.elementName.toUpperCase());})
+                    .map(function (e) { return e.e;})
+            }
+        }
     }
 }(angular.module('materialscommons')));
