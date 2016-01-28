@@ -106,26 +106,5 @@
             </tr>
             </tbody>
         </table>
-
-
-        <div ng-if="false" class="section-as-margin" ng-repeat="file in ctrl.files">
-            <span>
-                <b>{{$index+1}}. </b>
-                <i class="fa fa-files-o fa-fw file-color"></i>
-                <a ui-sref="projects.project.files.all.edit({file_id: file.datafile_id})">{{file.name}}</a>
-                {{file.mediatype.mime}}
-                <a ng-click="file.download = !file.download" class="pull-right">
-                    <i ng-if="file.download" class="fa fa-2x fa-fw fa-check text-success"></i>
-                    <i ng-if="!file.download" class="fa fa-2x fa-fw fa-square-o"></i>
-                </a>
-            </span>
-
-            <div ng-if="ctrl.isImage(file.mediatype.mime)">
-                <a ui-sref="projects.project.files.all.edit({file_id: file.datafile_id})">
-                    <img class="img-thumbnail" height="140" width="140"
-                         ng-src="{{ctrl.fileSrc(file.datafile_id)}}">
-                </a>
-            </div>
-        </div>
     </div>
 </div>
