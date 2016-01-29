@@ -99,7 +99,7 @@
                 var composition = ctrl.doc.value.map(function(c) {
                     return {
                         element: c.element,
-                        value: _.parseInt(c.value)
+                        value: c.value
                     };
                 });
                 var measurement = {
