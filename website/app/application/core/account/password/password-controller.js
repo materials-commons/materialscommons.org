@@ -1,31 +1,46 @@
 (function (module) {
     module.controller('AccountPasswordController', AccountPasswordController);
 
-    AccountPasswordController.$inject = ["mcapi", "User", "alertService"];
+    AccountPasswordController.$inject = ["mcapi", "User", "toastr", "focus"];
 
     /* @ngInject */
-    function AccountPasswordController(mcapi, User, alertService) {
+    function AccountPasswordController(mcapi, User, toastr, focus) {
         var ctrl = this;
         ctrl.newPassword = null;
         ctrl.verifyNewPassword = null;
 
-        ctrl.change = change;
+        ctrl.changePassword = changePassword;
 
         //////////////
 
-        function change() {
+        function changePassword() {
             if (ctrl.newPassword) {
                 if (ctrl.newPassword === ctrl.verifyNewPassword) {
                     mcapi('/user/%/password', User.u(), ctrl.newPassword)
                         .success(function () {
-                            alertService.sendMessage("Password updated successfully");
+                            toastr.success("Password updated successfully", {
+                                closeButton: true
+                            });
+                            resetPasswordFields();
                         }).error(function (data) {
-                            alertService.sendMessage(data.error);
-                        }).put({password: ctrl.newPassword});
+                        toastr.error("Unable to update password: " + data.error, {
+                            closeButton: true
+                        });
+                        resetPasswordFields();
+                    }).put({password: ctrl.newPassword});
                 } else {
-                    alertService.sendMessage("Passwords do not match.");
+                    toastr.error("Passwords do not match.", {
+                        closeButton: true
+                    });
+                    resetPasswordFields();
                 }
             }
+        }
+
+        function resetPasswordFields() {
+            focus('inputPassword');
+            ctrl.newPassword = '';
+            ctrl.verifyNewPassword = '';
         }
     }
 }(angular.module('materialscommons')));
