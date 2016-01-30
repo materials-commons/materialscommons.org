@@ -16,6 +16,7 @@ var app = angular.module('materialscommons',
         "hljs", "RecursionHelper", 'googlechart',
         'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
         'ct.ui.router.extras.previous',
+        'btford.socket-io',
         'materialscommons']);
 
 app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
@@ -379,13 +380,20 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
     $urlRouterProvider.otherwise('/home');
 }]);
 
-app.run(["$rootScope", "User", "Restangular", appRun]);
+app.run(["$rootScope", "User", "Restangular", "socketFactory", appRun]);
 
-function appRun($rootScope, User, Restangular) {
+function appRun($rootScope, User, Restangular, socketFactory) {
     Restangular.setBaseUrl(mcglobals.apihost);
     if (User.isAuthenticated()) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
     }
+
+    var socket = socketFactory();
+    socket.forward('connect');
+    socket.forward('event');
+    socket.forward('disconnect');
+    socket.forward('reconnect');
+    socket.forward('event');
 
     // appRun will run when the application starts up and before any controllers have run.
     // This means it will run on a refresh. We check if the user is already authenticated
