@@ -77,7 +77,11 @@
         }
 
         function submitAndAnother() {
+            if (ctrl.doc.value.length) {
+                filloutSampleComposition();
+            }
             projectsService.createProjectProcess($stateParams.id, ctrl.process).then(function () {
+                ctrl.doc.value.length = 0;
                 $state.go('projects.project.processes.create', {process: p.process_name, process_id: p.id});
             });
         }
@@ -85,6 +89,7 @@
         function submit() {
             projectsService.createProjectProcess($stateParams.id, ctrl.process).then(
                 function success() {
+                    ctrl.doc.value.length = 0;
                     gotoPreviousState();
                 },
 
@@ -95,6 +100,11 @@
         }
 
         function submitSample() {
+            filloutSampleComposition();
+            submit();
+        }
+
+        function filloutSampleComposition() {
             if (ctrl.doc.value.length) {
                 var composition = ctrl.doc.value.map(function(c) {
                     return {
@@ -117,7 +127,6 @@
                 ctrl.sample.new_properties.push(measurement);
             }
             ctrl.process.output_samples.push(ctrl.sample);
-            submit();
         }
 
         // setPreviousStateMemo sets the process_previous memo to the previous state. It
