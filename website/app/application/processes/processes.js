@@ -412,7 +412,44 @@ function AsReceived() {
                     validators: [],
                     valid: false,
                     errorMessage: ""
-                }]
+                },
+                {
+                    property: {
+                        name: "Supplier",
+                        attribute: "supplier",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+
+                {
+                    property: {
+                        name: "Production method",
+                        attribute: "production_method",
+                        description: "Production method used",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [
+                            {name: "Cast", value: "cast"},
+                            {name: "Extruded", value: "extruded"},
+                            {name: "Rolled", value: "rolled"},
+                            {name: "Other", value: "other"},
+                            {name: "Unknown", value: "unknown"}
+                        ]
+                    }
+                }
+            ]
         }]
     };
 }
