@@ -135,19 +135,43 @@
                 <fieldset>
                     <div class="form-group">
                         <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="ctrl.sampleGroup">Treat as sample group
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="ctrl.sampleGroup">
-                        <label class="control-label col-sm-4" for="something">Sample Group Active</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="something">
+                            <input type="checkbox" id="sampleGroupCheckbox"
+                                   ng-model="ctrl.sampleGroup">
+                            <label for="sampleGroupCheckbox">Treat as sample group</label>
                         </div>
                     </div>
                 </fieldset>
             </form>
+            <div ng-if="ctrl.sampleGroup" class="row">
+                <div class="col-sm-offset-1">
+                    <ul class="list-inline">
+                        <li>
+                            <label class="radio-inline">
+                                <input type="radio"
+                                       name="sampleGroupSizeRadios"
+                                       value="set-size"
+                                       ng-model="ctrl.sampleGroupSizing" checked> Set sample group size
+                            </label>
+                        </li>
+                        <li>
+                            <label class="radio-inline">
+                                <input type="radio"
+                                       name="sampleGroupSizeRadios"
+                                       value="as-needed"
+                                       ng-model="ctrl.sampleGroupSizing"> Create samples as needed
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div ng-if="ctrl.sampleGroup && ctrl.sampleGroupSizing === 'set-size'" class="row">
+                <div class="col-xs-offset-1">
+                    <label class="col-xs-4 control-label">Sample group size</label>
+                    <div class="col-xs-4">
+                        <input type="number" class="form-control" ng-model="ctrl.sampleGroupSize">
+                    </div>
+                </div>
+            </div>
             <process-settings settings="ctrl.process.setup.settings[0].properties"></process-settings>
         </div>
     </div>

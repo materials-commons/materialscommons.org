@@ -25,6 +25,10 @@
             files: []
         };
 
+        ctrl.sampleGroupSizing = 'set-size';
+        ctrl.sampleGroupSize = 10;
+        ctrl.sampleGroup = false;
+
         setPreviousStateMemo();
 
         /////////////////////////
@@ -77,8 +81,8 @@
         }
 
         function submitAndAnother() {
-            if (ctrl.doc.value.length) {
-                filloutSampleComposition();
+            if (ctrl.process.process_name === 'As Received') {
+                filloutSampleProperties();
             }
             projectsService.createProjectProcess($stateParams.id, ctrl.process).then(function () {
                 ctrl.doc.value.length = 0;
@@ -93,18 +97,18 @@
                     gotoPreviousState();
                 },
 
-                function failure() {
+                function failure(e) {
                     console.log('failed to save process', e);
                 }
             );
         }
 
         function submitSample() {
-            filloutSampleComposition();
+            filloutSampleProperties();
             submit();
         }
 
-        function filloutSampleComposition() {
+        function filloutSampleProperties() {
             if (ctrl.doc.value.length) {
                 var composition = ctrl.doc.value.map(function(c) {
                     return {
@@ -125,6 +129,12 @@
                     ]
                 };
                 ctrl.sample.new_properties.push(measurement);
+            }
+            ctrl.sample.has_group = ctrl.sampleGroup;
+            if (ctrl.sampleGroupSizing == 'set-size') {
+                ctrl.sample.group_size = ctrl.sampleGroupSize;
+            } else {
+                ctrl.sample.group_size = 0;
             }
             ctrl.process.output_samples.push(ctrl.sample);
         }
