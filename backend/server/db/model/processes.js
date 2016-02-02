@@ -464,16 +464,34 @@ module.exports = function (r) {
      * @returns {Array} - The created samples.
      */
     function *addCreatedSamples(samples, projectID, processID, owner) {
-        let created = [];
         for (let i = 0; i < samples.length; i++) {
             let current = samples[i];
-            let s = yield addNewSample(current.name, current.description, owner);
+            let s = yield addNewSample(current.name, current.description, owner, current.has_group, current.group_size);
             current.id = s.sample.id;
             current.property_set_id = s.asetID;
             yield addSampleAssociations(s.sample.id, s.asetID, projectID, processID);
-            created.push(s.sample);
+            if (current.has_group && current.group_size) {
+                yield createGroupedSamples(current, owner, projectID, processID);
+            }
         }
-        return created;
+    }
+
+    function* createGroupedSamples(sample, owner, projectID, processID) {
+        for (let i = 0; i < sample.group_size; i++) {
+            let s = yield addChildSample(`${sample.name}_${i+1}`, sample.description, owner, sample.property_set_id);
+            yield addSampleAssociations(s.id, sample.property_set_id, projectID, processID);
+            let s2s = new model.Sample2Sample(sample.id, s.id);
+            yield db.insert('sample2sample', s2s);
+        }
+    }
+
+    function* addChildSample(name, description, owner, psetID) {
+        let s = new model.Sample(name, description, owner);
+        s.is_grouped = true;
+        let sample = yield db.insert('samples', s);
+        let s2as = new model.Sample2PropertySet(sample.id, psetID, true);
+        yield db.insert('sample2propertyset', s2as);
+        return sample
     }
 
     /**
@@ -481,10 +499,14 @@ module.exports = function (r) {
      * @param {String} name - The name of the sample.
      * @param {String} description - Description of the sample.
      * @param {String} owner - Sample owner.
+     * @param {Boolean} hasGroup - Does the sample have samples grouped under it.
+     * @param {Integer} groupSize - Size of sample group to create.
      * @returns {Object}  - The created sample.
      */
-    function *addNewSample(name, description, owner) {
+    function *addNewSample(name, description, owner, hasGroup, groupSize) {
         let s = new model.Sample(name, description, owner);
+        s.group_size = groupSize;
+        s.has_group = hasGroup;
         let sample = yield db.insert('samples', s);
         let aset = new model.PropertySet(true);
         let createdASet = yield db.insert('propertysets', aset);
