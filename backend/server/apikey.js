@@ -10,12 +10,11 @@ module.exports = function(users) {
     let whiteList = {
         "/login": true,
         "/socket.io/socket.io.js": true,
-        "/socket.io/": true,
+        "/socket.io/": true
     };
     // validateAPIKey Looks up the apikey. If none is specified, or a
     // bad key is passed then abort the calls and send back an 401.
     return function *validateAPIKey(next) {
-        console.log('path', this.path);
         if (!(this.path in whiteList)) {
             let UNAUTHORIZED = httpStatus.UNAUTHORIZED;
             let apikey = this.query.apikey || this.throw(UNAUTHORIZED, 'Not authorized');
