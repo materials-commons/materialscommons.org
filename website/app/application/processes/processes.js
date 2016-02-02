@@ -434,7 +434,7 @@ function AsReceived() {
                     property: {
                         name: "Production method",
                         attribute: "production_method",
-                        description: "Production method used",
+                        description: "",
                         value: null,
                         units: [],
                         unit: "",
