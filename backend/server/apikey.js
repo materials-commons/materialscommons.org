@@ -8,9 +8,7 @@ module.exports = function(users) {
     // whiteList contains paths that don't require
     // a valid apikey.
     let whiteList = {
-        "/login": true,
-        "/socket.io/socket.io.js": true,
-        "/socket.io/": true
+        "/login": true
     };
     // validateAPIKey Looks up the apikey. If none is specified, or a
     // bad key is passed then abort the calls and send back an 401.
