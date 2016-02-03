@@ -277,10 +277,12 @@ module.exports = function (r) {
             setup.properties = [];
             for (let j = 0; j < current.properties.length; j++) {
                 let p = current.properties[j].property;
-                let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
-                    p._type, p.value, p.unit);
-                let sprop = yield db.insert('setupproperties', prop);
-                setup.properties.push(sprop);
+                if (p.value) {
+                    let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
+                        p._type, p.value, p.unit);
+                    let sprop = yield db.insert('setupproperties', prop);
+                    setup.properties.push(sprop);
+                }
             }
             created.push(setup);
         }
@@ -317,13 +319,15 @@ module.exports = function (r) {
             let sampleID = sample.id;
             let samplePSetID = sample.property_set_id;
 
-            let measurements = yield addExistingPropertyMeasurements(sampleID, sample.old_properties);
-            yield addMeasurementsToProcess(processID, measurements);
+            if (sample.old_properties.length || sample.new_properties.length) {
+                let measurements = yield addExistingPropertyMeasurements(sampleID, sample.old_properties);
+                yield addMeasurementsToProcess(processID, measurements);
 
-            measurements = yield addNewPropertyMeasurements(sampleID, samplePSetID, sample.new_properties);
-            yield addMeasurementsToProcess(processID, measurements);
-            let proc2sample = new model.Process2Sample(processID, sampleID, samplePSetID, 'in');
-            yield db.insert('process2sample', proc2sample);
+                measurements = yield addNewPropertyMeasurements(sampleID, samplePSetID, sample.new_properties);
+                yield addMeasurementsToProcess(processID, measurements);
+                let proc2sample = new model.Process2Sample(processID, sampleID, samplePSetID, 'in');
+                yield db.insert('process2sample', proc2sample);
+            }
             yield addSample2File(sampleID, sample.files);
         }
     }
