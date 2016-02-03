@@ -444,8 +444,8 @@ function AsReceived() {
                             {name: "Cast", value: "cast"},
                             {name: "Extruded", value: "extruded"},
                             {name: "Rolled", value: "rolled"},
-                            {name: "Other", value: "other"},
-                            {name: "Unknown", value: "unknown"}
+                            {name: "Unknown", value: "unknown"},
+                            {name: "Other", value: "other"}
                         ]
                     }
                 }
