@@ -1,10 +1,10 @@
 (function (module) {
     module.controller('CreateProcessController', CreateProcessController);
     CreateProcessController.$inject = ["projectsService", "$stateParams", "selectItems",
-        "template", "$modal", "processEdit", "$previousState", "$state"];
+        "template", "$modal", "processEdit", "$previousState", "$state", "toastr"];
 
     function CreateProcessController(projectsService, $stateParams, selectItems, template,
-                                     $modal, processEdit, $previousState, $state) {
+                                     $modal, processEdit, $previousState, $state, toastr) {
         var ctrl = this;
         ctrl.process = template;
         ctrl.chooseSamples = chooseSamples;
@@ -81,6 +81,10 @@
         }
 
         function submitAndAnother() {
+            if (ctrl.process.process_name === 'As Received' && ctrl.sample.name === '') {
+                toastr.error("You must specify a sample name", 'Error', {closeButton: true});
+                return;
+            }
             if (ctrl.process.process_name === 'As Received') {
                 filloutSampleProperties();
             }
@@ -104,6 +108,10 @@
         }
 
         function submitSample() {
+            if (ctrl.sample.name === '') {
+                toastr.error("You must specify a sample name", 'Error', {closeButton: true});
+                return;
+            }
             filloutSampleProperties();
             submit();
         }
