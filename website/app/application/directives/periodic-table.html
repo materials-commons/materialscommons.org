@@ -1,6 +1,10 @@
 <section>
     <div class="row">
-        <div class="col-lg-offset-2">
+        <a class="col-xs-offset-1" ng-click="ctrl.showGuide = !ctrl.showGuide">
+            <span ng-if="!ctrl.showGuide">Show Guide</span>
+            <span ng-if="ctrl.showGuide">Hide Guide</span>
+        </a>
+        <div ng-if="ctrl.showGuide" class="col-xs-offset-2">
             <div class="row">
                 <ul class="list-inline">
                     <li class="element-chosen">Element Chosen</li>
@@ -24,6 +28,9 @@
                     <li class="element-actinoid">Actinoids</li>
                 </ul>
             </div>
+        </div>
+        <div ng-if="!ctrl.doc.value.length" class="col-xs-offset-2">
+            <h4>Choose base element</h4>
         </div>
     </div>
     <div class="row">
@@ -299,10 +306,12 @@
     </div>
     <div class="row">
         <div class="col-xs-offset-1">
+            Choose element or enter in below
             <ul class="list-inline">
                 <li>
                     <input id="elementName"
                            type="text" ng-model="ctrl.elementName"
+                           class="form-control"
                            placeholder="Element..."
                            ng-change="ctrl.lookForMatches()"
                            ng-focus="ctrl.elementName === ''"
@@ -310,9 +319,20 @@
                            ng-model-options="{ updateOn: 'default blur', debounce: { default: 200, blur: 0} }">
                 </li>
                 <li>
-                    <input name="number" ng-model="ctrl.elementPercentage" placeholder="percentage..."
-                           on-enter="ctrl.addElementFromInput()"
-                           class="form-control" type="number" step=="any" style="width:40%">
+                    <div class="col-xs-8">
+                        <label class="col-xs-2 control-label" style="margin-bottom:0">{{ctrl.doc.unit}}</label>
+                        <div class="col-xs-6">
+                            <input name="number" ng-model="ctrl.elementPercentage" placeholder="percentage..."
+                                   on-enter="ctrl.addElementFromInput()"
+                                   class="form-control col-xs-8" type="number" step="any">
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <button class="btn btn-success btn-default"
+                            ng-click="ctrl.addElementFromInput()">
+                        Add
+                    </button>
                 </li>
             </ul>
         </div>
