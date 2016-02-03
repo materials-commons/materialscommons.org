@@ -384,16 +384,6 @@ app.run(["$rootScope", "User", "Restangular", "socketFactory", appRun]);
 
 function appRun($rootScope, User, Restangular, socketFactory) {
     Restangular.setBaseUrl(mcglobals.apihost);
-    if (User.isAuthenticated()) {
-        Restangular.setDefaultRequestParams({apikey: User.apikey()});
-    }
-
-    var socket = socketFactory();
-    socket.forward('connect');
-    socket.forward('event');
-    socket.forward('disconnect');
-    socket.forward('reconnect');
-    socket.forward('event');
 
     // appRun will run when the application starts up and before any controllers have run.
     // This means it will run on a refresh. We check if the user is already authenticated
@@ -403,6 +393,15 @@ function appRun($rootScope, User, Restangular, socketFactory) {
     // the apikey param in Restangular.
     if (User.isAuthenticated()) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
+    }
+
+    if (false) {
+        var socket = socketFactory();
+        socket.forward('connect');
+        socket.forward('event');
+        socket.forward('disconnect');
+        socket.forward('reconnect');
+        socket.forward('event');
     }
 
     $rootScope.$on('$stateChangeStart', function () {
