@@ -29,6 +29,9 @@ model.r.table('users').changes().toStream().on('data', function() {
     apikeyCache.clear()
 });
 
+var server = require('http').createServer(app.callback());
+var io = require('socket.io')(server);
+
 if (!module.parent) {
     var cli = cliArgs([
         {name: 'port', type: Number, alias: 'p', description: 'Port to listen on'}
@@ -36,8 +39,13 @@ if (!module.parent) {
 
     var options = cli.parse();
     var port = options.port || 3000;
+    //io.set('origins', `http://localhost:${port}`);
+    io.on('connection', function(socket) {
+        console.log('socket.io connection');
+        socket.emit('event', {msg: 'you are connected'});
+    });
     console.log('Listening on port: ' + port + ' pid: ' + process.pid);
-    app.listen(port);
+    server.listen(port);
 }
 
 //////////////////////

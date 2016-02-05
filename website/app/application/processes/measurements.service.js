@@ -1,5 +1,6 @@
 (function (module) {
     module.factory("measurements", measurementsService);
+    measurementsService.$inject = [];
 
     function measurementsService() {
         var self = this;
@@ -350,12 +351,10 @@
                     return this.isFractionValid(values);
                     break;
                 case 'histogram':
-                    var values = [];
                     values = property.value.values.split("\n");
                     return this.isNumberValid(values);
                     break;
                 case 'line':
-                    var values = [];
                     values = property.value.values.split("\n");
                     return this.isNumberValid(values);
                     break;
@@ -363,7 +362,6 @@
                     return true;
                     break;
                 case 'composition':
-                    var values = [];
                     values = property.value.values.split("\n");
                     return this.isNumberValid(values);
                     break;

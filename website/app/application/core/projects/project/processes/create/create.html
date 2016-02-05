@@ -35,26 +35,28 @@
                 </ul>
             </div>
             <div class="row">
-                <ul class="list-inline" style="padding-top:50px">
-                    <li>
-                        <button ng-click="ctrl.submit()"
-                                class="btn btn-default btn-info">
-                            Submit
-                        </button>
-                    </li>
-                    <li>
-                        <button ng-click="ctrl.submitAndAnother()"
-                                class="btn btn-default btn-info">
-                            Submit And Another
-                        </button>
-                    </li>
-                    <li>
-                        <button ng-click="ctrl.cancel()"
-                                class="btn btn-default btn-danger">
-                            Cancel
-                        </button>
-                    </li>
-                </ul>
+                <div class="col-xs-12">
+                    <ul class="list-inline" style="padding-top:50px">
+                        <li>
+                            <button ng-click="ctrl.submit()"
+                                    class="btn btn-default btn-info">
+                                Submit
+                            </button>
+                        </li>
+                        <li>
+                            <button ng-click="ctrl.submitAndAnother()"
+                                    class="btn btn-default btn-info">
+                                Submit And Another
+                            </button>
+                        </li>
+                        <li>
+                            <button ng-click="ctrl.cancel()"
+                                    class="btn btn-default btn-danger">
+                                Cancel
+                            </button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -129,30 +131,79 @@
             </div>
         </div>
         <div class="col-xs-7">
+            <form class="form-horizontal">
+                <fieldset>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <input type="checkbox" id="sampleGroupCheckbox"
+                                   ng-model="ctrl.sampleGroup">
+                            <label for="sampleGroupCheckbox">Treat as sample group</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            <div ng-if="ctrl.sampleGroup" class="row">
+                <div class="col-sm-offset-1">
+                    <ul class="list-inline">
+                        <li>
+                            <label class="radio-inline">
+                                <input type="radio"
+                                       name="sampleGroupSizeRadios"
+                                       value="set-size"
+                                       ng-model="ctrl.sampleGroupSizing" checked> Set sample group size
+                            </label>
+                        </li>
+                        <li>
+                            <label class="radio-inline">
+                                <input type="radio"
+                                       name="sampleGroupSizeRadios"
+                                       value="as-needed"
+                                       ng-model="ctrl.sampleGroupSizing"> Create samples as needed
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div ng-if="ctrl.sampleGroup && ctrl.sampleGroupSizing === 'set-size'" class="row">
+                <div class="col-xs-offset-1">
+                    <label class="col-xs-4 control-label">Sample group size</label>
+                    <div class="col-xs-4">
+                        <input type="number" class="form-control" ng-model="ctrl.sampleGroupSize">
+                    </div>
+                </div>
+            </div>
             <process-settings settings="ctrl.process.setup.settings[0].properties"></process-settings>
         </div>
     </div>
     <div class="row">
-        <ul class="list-inline" style="padding-top:50px">
-            <li>
-                <button ng-click="ctrl.submitSample()"
-                        class="btn btn-default btn-info">
-                    Submit
-                </button>
-            </li>
-            <li>
-                <button ng-click="ctrl.submitAndAnother()"
-                        class="btn btn-default btn-info">
-                    Submit And Another
-                </button>
-            </li>
-            <li>
-                <button ng-click="ctrl.cancel()"
-                        class="btn btn-default btn-danger">
-                    Cancel
-                </button>
-            </li>
-        </ul>
+        <div class="col-xs-9">
+            Composition
+            <periodic-table doc="ctrl.doc"></periodic-table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="list-inline" style="padding-top:50px">
+                <li>
+                    <button ng-click="ctrl.submitSample()"
+                            class="btn btn-default btn-info">
+                        Submit
+                    </button>
+                </li>
+                <li>
+                    <button ng-click="ctrl.submitAndAnother()"
+                            class="btn btn-default btn-info">
+                        Submit And Another
+                    </button>
+                </li>
+                <li>
+                    <button ng-click="ctrl.cancel()"
+                            class="btn btn-default btn-danger">
+                        Cancel
+                    </button>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
