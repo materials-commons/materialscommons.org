@@ -230,6 +230,7 @@ module.exports = function (r) {
         yield addProcessSetup(proc.id, process.setup);
         yield addSampleMeasurements(proc.id, process.input_samples);
         yield addCreatedSamples(process.output_samples, process.project_id, proc.id, process.owner);
+        yield addSampleMeasurements(proc.id, process.output_samples);
         yield addTransformedSamples(process.transformed_samples, proc.id);
         yield addFiles(proc.id, process.input_files, 'in');
         yield addFiles(proc.id, process.output_files, 'out');
@@ -276,10 +277,12 @@ module.exports = function (r) {
             setup.properties = [];
             for (let j = 0; j < current.properties.length; j++) {
                 let p = current.properties[j].property;
-                let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
-                    p._type, p.value, p.unit);
-                let sprop = yield db.insert('setupproperties', prop);
-                setup.properties.push(sprop);
+                if (p.value) {
+                    let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
+                        p._type, p.value, p.unit);
+                    let sprop = yield db.insert('setupproperties', prop);
+                    setup.properties.push(sprop);
+                }
             }
             created.push(setup);
         }
@@ -316,13 +319,15 @@ module.exports = function (r) {
             let sampleID = sample.id;
             let samplePSetID = sample.property_set_id;
 
-            let measurements = yield addExistingPropertyMeasurements(sampleID, sample.old_properties);
-            yield addMeasurementsToProcess(processID, measurements);
+            if (sample.old_properties.length || sample.new_properties.length) {
+                let measurements = yield addExistingPropertyMeasurements(sampleID, sample.old_properties);
+                yield addMeasurementsToProcess(processID, measurements);
 
-            measurements = yield addNewPropertyMeasurements(sampleID, samplePSetID, sample.new_properties);
-            yield addMeasurementsToProcess(processID, measurements);
-            let proc2sample = new model.Process2Sample(processID, sampleID, samplePSetID, 'in');
-            yield db.insert('process2sample', proc2sample);
+                measurements = yield addNewPropertyMeasurements(sampleID, samplePSetID, sample.new_properties);
+                yield addMeasurementsToProcess(processID, measurements);
+                let proc2sample = new model.Process2Sample(processID, sampleID, samplePSetID, 'in');
+                yield db.insert('process2sample', proc2sample);
+            }
             yield addSample2File(sampleID, sample.files);
         }
     }
@@ -410,9 +415,18 @@ module.exports = function (r) {
             m.element = current.element;
             let inserted = yield db.insert('measurements', m);
             createdMeasurements.push(inserted);
+            if (current.is_best_measure) {
+                yield addAsBestMeasure(pID, inserted.id)
+            }
             yield addMeasurementToProperty(pID, inserted.id)
         }
         return createdMeasurements;
+    }
+
+    function* addAsBestMeasure(propertyID, measurementID) {
+        let bmh = new model.BestMeasureHistory(propertyID, measurementID);
+        let inserted = yield db.insert('best_measure_history', bmh);
+        yield r.table('properties').get(propertyID).update({best_measure_id: inserted.id});
     }
 
     /**
@@ -454,14 +468,34 @@ module.exports = function (r) {
      * @returns {Array} - The created samples.
      */
     function *addCreatedSamples(samples, projectID, processID, owner) {
-        let created = [];
         for (let i = 0; i < samples.length; i++) {
             let current = samples[i];
-            let s = yield addNewSample(current.name, current.description, owner);
+            let s = yield addNewSample(current.name, current.description, owner, current.has_group, current.group_size);
+            current.id = s.sample.id;
+            current.property_set_id = s.asetID;
             yield addSampleAssociations(s.sample.id, s.asetID, projectID, processID);
-            created.push(s.sample);
+            if (current.has_group && current.group_size) {
+                yield createGroupedSamples(current, owner, projectID, processID);
+            }
         }
-        return created;
+    }
+
+    function* createGroupedSamples(sample, owner, projectID, processID) {
+        for (let i = 0; i < sample.group_size; i++) {
+            let s = yield addChildSample(`${sample.name}_${i+1}`, sample.description, owner, sample.property_set_id);
+            yield addSampleAssociations(s.id, sample.property_set_id, projectID, processID);
+            let s2s = new model.Sample2Sample(sample.id, s.id);
+            yield db.insert('sample2sample', s2s);
+        }
+    }
+
+    function* addChildSample(name, description, owner, psetID) {
+        let s = new model.Sample(name, description, owner);
+        s.is_grouped = true;
+        let sample = yield db.insert('samples', s);
+        let s2as = new model.Sample2PropertySet(sample.id, psetID, true);
+        yield db.insert('sample2propertyset', s2as);
+        return sample
     }
 
     /**
@@ -469,10 +503,14 @@ module.exports = function (r) {
      * @param {String} name - The name of the sample.
      * @param {String} description - Description of the sample.
      * @param {String} owner - Sample owner.
+     * @param {Boolean} hasGroup - Does the sample have samples grouped under it.
+     * @param {Integer} groupSize - Size of sample group to create.
      * @returns {Object}  - The created sample.
      */
-    function *addNewSample(name, description, owner) {
+    function *addNewSample(name, description, owner, hasGroup, groupSize) {
         let s = new model.Sample(name, description, owner);
+        s.group_size = groupSize;
+        s.has_group = hasGroup;
         let sample = yield db.insert('samples', s);
         let aset = new model.PropertySet(true);
         let createdASet = yield db.insert('propertysets', aset);

@@ -78,6 +78,7 @@ def add_samples(projects_by_id, project_ids):
                    .zip().filter({'current': True})
                    .eq_join('sample_id', r.table('samples'))
                    .zip()
+                   .filter({'is_grouped': False})
                    .order_by('name')
                     .merge(lambda sample: {
                         'properties': r.table('propertyset2property')
@@ -189,7 +190,10 @@ def create_project():
 
 
 def get_project_toplevel_datadir(project, user):
-    filter_by = {'name': project, 'owner': user}
+    if access.is_administrator(user):
+        filter_by = {'name': project}
+    else:
+        filter_by = {'name': project, 'owner': user}
     selection = list(r.table('projects').filter(filter_by).run(g.conn))
     proj = selection[0]
     dirs = list(r.table('projects').get_all(proj['id'])

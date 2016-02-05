@@ -1,10 +1,10 @@
 (function (module) {
     module.controller('CreateProcessController', CreateProcessController);
-    CreateProcessController.$inject = ["Restangular", "$stateParams", "selectItems",
-        "template", "$modal", "processEdit", "$previousState", "$state"];
+    CreateProcessController.$inject = ["projectsService", "$stateParams", "selectItems",
+        "template", "$modal", "processEdit", "$previousState", "$state", "toastr"];
 
-    function CreateProcessController(Restangular, $stateParams, selectItems, template,
-                                     $modal, processEdit, $previousState, $state) {
+    function CreateProcessController(projectsService, $stateParams, selectItems, template,
+                                     $modal, processEdit, $previousState, $state, toastr) {
         var ctrl = this;
         ctrl.process = template;
         ctrl.chooseSamples = chooseSamples;
@@ -16,6 +16,18 @@
         ctrl.submitAndAnother = submitAndAnother;
         ctrl.remove = removeById;
         ctrl.submitSample = submitSample;
+        ctrl.doc = {value: []};
+        ctrl.sample = {
+            name: '',
+            description: '',
+            old_properties: [],
+            new_properties: [],
+            files: []
+        };
+
+        ctrl.sampleGroupSizing = 'set-size';
+        ctrl.sampleGroupSize = 10;
+        ctrl.sampleGroup = false;
 
         setPreviousStateMemo();
 
@@ -40,7 +52,6 @@
         function chooseInputFiles() {
             selectItems.open('files').then(function (item) {
                 var uniqueFiles = differenceById(item.files, ctrl.process.input_files);
-                console.dir(uniqueFiles);
                 uniqueFiles.forEach(function (file) {
                     ctrl.process.input_files.push({
                         id: file.id,
@@ -70,25 +81,70 @@
         }
 
         function submitAndAnother() {
-            Restangular.one('v2').one('projects', $stateParams.id).one('processes').customPOST(ctrl.process)
-                .then(function (p) {
-                    $state.go('projects.project.processes.create', {process: p.process_name, process_id: p.id});
-                });
+            if (ctrl.process.process_name === 'As Received' && ctrl.sample.name === '') {
+                toastr.error("You must specify a sample name", 'Error', {closeButton: true});
+                return;
+            }
+            if (ctrl.process.process_name === 'As Received') {
+                filloutSampleProperties();
+            }
+            projectsService.createProjectProcess($stateParams.id, ctrl.process).then(function () {
+                ctrl.doc.value.length = 0;
+                $state.go('projects.project.processes.create', {process: p.process_name, process_id: p.id});
+            });
         }
 
         function submit() {
-            Restangular.one('v2').one('projects', $stateParams.id).one('processes')
-                .customPOST(ctrl.process)
-                .then(function () {
+            projectsService.createProjectProcess($stateParams.id, ctrl.process).then(
+                function success() {
+                    ctrl.doc.value.length = 0;
                     gotoPreviousState();
-                }, function (e) {
-                    console.log('failure to save process', e);
-                });
+                },
+
+                function failure(e) {
+                    console.log('failed to save process', e);
+                }
+            );
         }
 
         function submitSample() {
-            ctrl.process.output_samples.push(ctrl.sample);
+            if (ctrl.sample.name === '') {
+                toastr.error("You must specify a sample name", 'Error', {closeButton: true});
+                return;
+            }
+            filloutSampleProperties();
             submit();
+        }
+
+        function filloutSampleProperties() {
+            if (ctrl.doc.value.length) {
+                var composition = ctrl.doc.value.map(function(c) {
+                    return {
+                        element: c.element,
+                        value: c.value
+                    };
+                });
+                var measurement = {
+                    name: 'Composition',
+                    attribute: 'composition',
+                    measurements: [
+                        {
+                            is_best_measure: true,
+                            value: composition,
+                            unit: ctrl.doc.unit,
+                            _type: 'composition'
+                        }
+                    ]
+                };
+                ctrl.sample.new_properties.push(measurement);
+            }
+            ctrl.sample.has_group = ctrl.sampleGroup;
+            if (ctrl.sampleGroupSizing == 'set-size') {
+                ctrl.sample.group_size = ctrl.sampleGroupSize;
+            } else {
+                ctrl.sample.group_size = 0;
+            }
+            ctrl.process.output_samples.push(ctrl.sample);
         }
 
         // setPreviousStateMemo sets the process_previous memo to the previous state. It

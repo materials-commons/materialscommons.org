@@ -31,6 +31,7 @@ module.exports = function (r) {
                         getAll(ddir('datadir_id'), {index: 'datadir_id'}).
                         eqJoin('datafile_id', r.table('datafiles')).
                         zip().
+                        filter({current: true}).
                         coerceTo('array'),
                     'directories': r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
                 }
@@ -48,6 +49,7 @@ module.exports = function (r) {
                         getAll(ddir('datadir_id'), {index: 'datadir_id'}).
                         eqJoin('datafile_id', r.table('datafiles')).
                         zip().
+                        filter({current: true}).
                         coerceTo('array'),
                     'directories': r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
                 }
@@ -61,6 +63,8 @@ module.exports = function (r) {
             id: results.datadir_id,
             size: 0,
             name: path.basename(results.name),
+            path: results.name,
+            checksum: "",
             children: []
         };
 
@@ -69,7 +73,9 @@ module.exports = function (r) {
                 _type: 'file',
                 size: f.size,
                 name: f.name,
+                path: path.join(dir.path, f.name),
                 mediatype: f.mediatype,
+                checksum: f.checksum,
                 id: f.id
             };
         });
@@ -79,7 +85,9 @@ module.exports = function (r) {
                 _type: 'directory',
                 id: d.id,
                 size: 0,
-                name: path.basename(d.name)
+                name: path.basename(d.name),
+                path: d.name,
+                checksum: ""
             };
         });
 

@@ -11,6 +11,9 @@ module.exports = function(r) {
         this.owner = owner;
         this.birthtime = r.now();
         this.mtime = this.birthtime;
+        this.is_grouped = false;
+        this.has_group = false;
+        this.group_size = 0;
         this._type = "sample";
     }
 
@@ -139,8 +142,8 @@ module.exports = function(r) {
         this.property_id = attrID;
     }
 
-    function BestMeasureHistory(attrID, mID) {
-        this.property_id = attrID;
+    function BestMeasureHistory(propertyID, mID) {
+        this.property_id = propertyID;
         this.measurement_id = mID;
         this.when = r.now();
         this._type = 'best_measure_history';
@@ -190,6 +193,11 @@ module.exports = function(r) {
         this.datadir_id = dirID;
     }
 
+    function Sample2Sample(parentID, childID) {
+        this.parent_sample_id = parentID;
+        this.sample_id = childID;
+    }
+
     return {
         Sample: Sample,
         Process: Process,
@@ -215,6 +223,7 @@ module.exports = function(r) {
         Note2Item: Note2Item,
         Tag2Item: Tag2Item,
         Directory: Directory,
-        Project2DataDir: Project2DataDir
+        Project2DataDir: Project2DataDir,
+        Sample2Sample: Sample2Sample
     };
 };

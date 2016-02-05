@@ -16,6 +16,7 @@ var app = angular.module('materialscommons',
         "hljs", "RecursionHelper", 'googlechart',
         'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
         'ct.ui.router.extras.previous',
+        'btford.socket-io',
         'materialscommons']);
 
 app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
@@ -23,7 +24,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
     mcglobals = {};
     doConfig();
     $stateProvider
-        // Navbar
+    // Navbar
         .state('home', {
             url: '/home',
             templateUrl: 'application/core/splash.html'
@@ -139,10 +140,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "FileEditController",
             controllerAs: 'ctrl',
             resolve: {
-                file: ["$stateParams", "Restangular",
-                    function ($stateParams, Restangular) {
-                        return Restangular.one('v2').one('projects', $stateParams.id).
-                            one('files', $stateParams.file_id).get();
+                file: ["$stateParams", "projectsService",
+                    function ($stateParams, projectsService) {
+                        return projectsService.getProjectFile($stateParams.id, $stateParams.file_id);
                     }]
             }
         })
@@ -158,10 +158,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "FileEditController",
             controllerAs: "ctrl",
             resolve: {
-                file: ["$stateParams", "Restangular",
-                    function ($stateParams, Restangular) {
-                        return Restangular.one('v2').one('projects', $stateParams.id).
-                            one('files', $stateParams.file_id).get();
+                file: ["$stateParams", "projectsService",
+                    function ($stateParams, projectsService) {
+                        return projectsService.getProjectFile($stateParams.id, $stateParams.file_id);
                     }]
             }
         })
@@ -247,9 +246,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "projectListProcess",
             controllerAs: "ctrl",
             resolve: {
-                processes: ["$stateParams", "Restangular",
-                    function ($stateParams, Restangular) {
-                        return Restangular.one('v2').one("projects", $stateParams.id).one("processes").getList();
+                processes: ["$stateParams", "projectsService",
+                    function ($stateParams, projectsService) {
+                        return projectsService.getProjectProcesses($stateParams.id);
                     }]
             }
         })
@@ -298,9 +297,9 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             controller: "SamplesController",
             controllerAs: "ctrl",
             resolve: {
-                samples: ["$stateParams", "Restangular",
-                    function ($stateParams, Restangular) {
-                        return Restangular.one('v2').one("projects", $stateParams.id).one("samples").getList();
+                samples: ["$stateParams", "projectsService",
+                    function ($stateParams, projectsService) {
+                        return projectsService.getProjectSamples($stateParams.id);
                     }]
             }
         })
@@ -381,13 +380,10 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
     $urlRouterProvider.otherwise('/home');
 }]);
 
-app.run(["$rootScope", "User", "Restangular", appRun]);
+app.run(["$rootScope", "User", "Restangular", "socketFactory", appRun]);
 
-function appRun($rootScope, User, Restangular) {
+function appRun($rootScope, User, Restangular, socketFactory) {
     Restangular.setBaseUrl(mcglobals.apihost);
-    if (User.isAuthenticated()) {
-        Restangular.setDefaultRequestParams({apikey: User.apikey()});
-    }
 
     // appRun will run when the application starts up and before any controllers have run.
     // This means it will run on a refresh. We check if the user is already authenticated
@@ -397,6 +393,15 @@ function appRun($rootScope, User, Restangular) {
     // the apikey param in Restangular.
     if (User.isAuthenticated()) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
+    }
+
+    if (false) {
+        var socket = socketFactory();
+        socket.forward('connect');
+        socket.forward('event');
+        socket.forward('disconnect');
+        socket.forward('reconnect');
+        socket.forward('event');
     }
 
     $rootScope.$on('$stateChangeStart', function () {

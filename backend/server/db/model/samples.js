@@ -2,8 +2,6 @@ module.exports = function (r) {
     const run = require('./run');
     const getSingle = require('./get-single');
     return {
-        update: update,
-        forUser: forUser,
         get: function (id, index) {
             return getSingle(r, 'samples', id, index);
         },
@@ -17,25 +15,58 @@ module.exports = function (r) {
 
     /////////////////
 
-    function forUser(user) {
-        let rql;
-
-        return run(rql);
-    }
-
-    function update(sample) {
-        let rql;
-        return run(rql);
+    function* get(sampleID) {
+        let rql = r.table('samples').getAll(sampleID)
+            .merge(function (sample) {
+                return {
+                    processes: r.table('process2sample').getAll(sample('property_set_id'), {index: 'property_set_id'})
+                        .eqJoin('process_id', r.table('processes')).zip()
+                        .pluck('process_id', 'name', 'does_transform', 'process_type', 'direction')
+                        .filter({direction: 'out'})
+                        .merge(function (process) {
+                            return {
+                                measurements: r.table('process2measurement')
+                                    .getAll(process('process_id'), {index: 'process_id'})
+                                    .eqJoin('measurement_id', r.table('measurements')).zip().coerceTo('array')
+                            };
+                        }).coerceTo('array'),
+                    files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
+                        .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+                    properties: r.table('propertyset2property')
+                        .getAll(sample('property_set_id'), {index: 'property_set_id'})
+                        .eqJoin('property_id', r.table('properties')).zip()
+                        .orderBy('name')
+                        .merge(function (property) {
+                            return {
+                                best_measure: r.table('best_measure_history')
+                                    .getAll(property('best_measure_id'))
+                                    .eqJoin('measurement_id', r.table('measurements'))
+                                    .zip().coerceTo('array'),
+                                measurements: r.table('property2measurement')
+                                    .getAll(property('id'), {index: 'property_id'})
+                                    .eqJoin('measurement_id', r.table('measurements')).zip().coerceTo('array')
+                            };
+                        }).coerceTo('array')
+                }
+            })
     }
 
     function* getList(projectID) {
         let rql = sampleDetailsRql(r.table('project2sample').getAll(projectID, {index: 'project_id'})
             .eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'})
             .zip().filter({'current': true})
-            .eqJoin('sample_id', r.table('samples')).zip());
+            .eqJoin('sample_id', r.table('samples')).zip()).filter({is_grouped: false});
         let samples = yield run(rql);
         samples = samples.map(s => {
             s.transforms = s.processes.filter(p => p.does_transform).length;
+            s.properties = s.properties.map(p => {
+                if (p.best_measure.length) {
+                    p.best_measure = p.best_measure[0];
+                } else {
+                    p.best_measure = null;
+                }
+                return p;
+            });
             return s;
         });
         return {val: samples};
@@ -121,17 +152,5 @@ module.exports = function (r) {
     function getMeasurements(sampleID, measurements) {
         let rql = r.table('measurements').getAll(r.args(this, measurements));
         return run(rql.filter({sample_id: sampleID}));
-    }
-
-    /**
-     * Returns the attribute ids from attrs that are in the given
-     * attribute set id.
-     * @param {String} asetID - The attribute set id all attributes must belong to.
-     * @param {Array} attrs - The list of attributes to retrieve (filtered by asetID)
-     */
-    function getAttributesFromAS(asetID, attrs) {
-        let rql = r.table('attributeset2attribute')
-            .getAll(r.args(attrs), {index: 'attribute_id'});
-        return run(rql.filter({attribute_set_id: asetID}));
     }
 };
