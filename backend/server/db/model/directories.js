@@ -27,13 +27,13 @@ module.exports = function (r) {
             filter({'project_id': projectID}).
             merge(function (ddir) {
                 return {
-                    'files': r.table('datadir2datafile').
+                    files: r.table('datadir2datafile').
                         getAll(ddir('datadir_id'), {index: 'datadir_id'}).
                         eqJoin('datafile_id', r.table('datafiles')).
                         zip().
                         filter({current: true}).
                         coerceTo('array'),
-                    'directories': r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
+                    directories: r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
                 }
             });
         return dbExec(rql).then(results => toDir(results[0]));
@@ -45,13 +45,13 @@ module.exports = function (r) {
             zip().
             merge(function (ddir) {
                 return {
-                    'files': r.table('datadir2datafile').
+                    files: r.table('datadir2datafile').
                         getAll(ddir('datadir_id'), {index: 'datadir_id'}).
                         eqJoin('datafile_id', r.table('datafiles')).
                         zip().
                         filter({current: true}).
                         coerceTo('array'),
-                    'directories': r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
+                    directories: r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
                 }
             });
         return dbExec(rql).then(results => toDir(results[0]));
