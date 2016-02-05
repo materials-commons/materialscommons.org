@@ -1,18 +1,12 @@
 <div>
-    <label class="col-xs-3 control-label" for="stringInput">
-        {{::property.name}}
-        <i ng-if="property.required"
-           class="fa fa-fw fa-asterisk text-danger"></i>
-    </label>
-
-    <div class="col-xs-6">
+    <h4>{{property.name}} : {{property.description}}</h4>
+    <hr/>
+    <div class="row col-xs-6">
         <input type="text"
-               id="stringInput"
                class="form-control"
                name="stringInput"
                ng-required="property.required"
                ng-model="property.value">
-        <span ng-show="form.stringInput.$error.required" class="text-danger">You must supply a {{::property.name}}.</span>
         <span class="help-block">{{::property.description}}</span>
     </div>
 </div>

@@ -1,52 +1,43 @@
-Application.Directives.directive("projectNavBar", projectNavBarDirective);
-function projectNavBarDirective() {
-    return {
-        restrict: "E",
-        replace: true,
-        scope: {
-            project: "=project",
-            projects: "=projects"
-        },
-        controller: "projectNavBarDirectiveController",
-        templateUrl: "application/core/projects/project/project-nav-bar.html"
-    };
-}
+(function (module) {
+    module.directive("projectNavBar", projectNavBarDirective);
 
-Application.Controllers.controller("projectNavBarDirectiveController",
-    ["$scope", "current", "$state", "ui", "User", "sideboard", "navBarState", "pubsub",
-        projectNavBarDirectiveController]);
-function projectNavBarDirectiveController($scope, current, $state, ui, User, sideboard, navBarState, pubsub) {
-    $scope.setProject = function (project) {
-        current.setProject(project);
-        $scope.showProjects = false;
-        $state.go("projects.project.home", {id: project.id});
-    };
-
-    $scope.isMinimized = function (panel) {
-        return !ui.showPanel($scope.project.id, panel);
-    };
-
-    $scope.showPanel = function (panel) {
-        return ui.showPanel($scope.project.id, panel);
-    };
-
-    $scope.openPanel = function (panel) {
-        ui.togglePanelState($scope.project.id, panel);
-    };
-
-    $scope.clearSearch = function() {
-        pubsub.send('clear.search');
-    };
-
-    $scope.togglePanel = function (panel) {
-        $scope.activePage = navBarState.setActiveState(panel);
-    };
-
-    function init() {
-        $scope.mcuser = User.attr();
-        $scope.list = sideboard.get($scope.project.id);
+    function projectNavBarDirective() {
+        return {
+            restrict: "E",
+            replace: true,
+            scope: {
+                project: "=project",
+                projects: "=projects"
+            },
+            bindToController: true,
+            controller: "ProjectNavBarDirectiveController",
+            controllerAs: 'navbar',
+            templateUrl: "application/core/projects/project/project-nav-bar.html"
+        };
     }
 
-    init();
+    module.controller("ProjectNavBarDirectiveController", ProjectNavBarDirectiveController);
+    ProjectNavBarDirectiveController.$inject = ["current", "$state", "User", "pubsub"];
 
-}
+    /* @ngInject */
+    function ProjectNavBarDirectiveController(current, $state, User, pubsub) {
+        var ctrl = this;
+
+        ctrl.mcuser = User.attr();
+
+        ctrl.setProject = setProject;
+        ctrl.clearSearch = clearSearch;
+
+        //////////////////////////////
+
+        function setProject(project) {
+            current.setProject(project);
+            $state.go("projects.project.home", {id: project.id});
+        }
+
+        function clearSearch() {
+            pubsub.send('clear.search');
+        }
+    }
+
+}(angular.module('materialscommons')));

@@ -1,0 +1,42 @@
+<div class="col-xs-offset-1 col-xs-6">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Type</th>
+            <th>Count</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="entry in ctrl.overview">
+            <td>
+                <i class="fa fa-fw {{entry.icon}} file-color"></i> {{entry.name}}
+            </td>
+            <td>{{entry.count}}</td>
+            <td>
+                <a ng-if="entry.name !== 'Directory'"
+                   ng-click="ctrl.viewFiles(entry)" class="text-uppercase">
+                    view files
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div ng-if="ctrl.files" class="section">
+        <div class="section-as-margin" ng-repeat="file in ctrl.files">
+            <span>
+                <b>{{$index+1}}. </b>
+                <i class="fa fa-files-o fa-fw file-color"></i>
+                <a ui-sref="projects.project.files.all.edit({file_id: file.datafile_id})">{{file.name}}</a>
+                {{file.mediatype.mime}}
+            </span>
+
+            <div ng-if="ctrl.isImage(file.mediatype.mime)">
+                <a ui-sref="projects.project.files.all.edit({file_id: file.datafile_id})">
+                    <img class="img-thumbnail" height="140" width="140"
+                         ng-src="{{ctrl.fileSrc(file.datafile_id)}}">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,6 +7,15 @@ var minifyCss = require("gulp-minify-css");
 var rev = require("gulp-rev");
 var clean = require("gulp-clean");
 var gulpSequence = require("gulp-sequence");
+var checkCSS = require('gulp-check-unused-css');
+
+gulp.task('unused-css', function() {
+    var stream = gulp.src([
+        'app/assets/css/style-3.css',
+        'app/**/*.html'
+    ]).pipe(checkCSS());
+    return stream;
+});
 
 // Default task to run. Runs the dependencies in order waiting for each to
 // complete before running the others.

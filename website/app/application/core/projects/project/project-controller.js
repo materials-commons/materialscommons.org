@@ -1,38 +1,47 @@
-Application.Controllers.controller('ProjectController',
-    ["$scope", "ui", "project", "current", "projectFiles",
-        "mcapi", "help", "projects", "$state", ProjectController]);
+(function (module) {
+    module.controller('ProjectController', ProjectController);
 
-function ProjectController($scope, ui, project, current, projectFiles, mcapi,
-                           help, projects, $state) {
-    $scope.projects = projects;
-    $scope.setProject = function (project) {
-        $scope.project = project;
+    ProjectController.$inject = ["ui", "project", "current", "Restangular", "help", "gridFiles",
+        "projects", "$window", "$timeout"];
+
+    /* @ngInject */
+    function ProjectController(ui, project, current, Restangular, help, gridFiles, projects, $window, $timeout) {
+        var ctrl = this;
+
         current.setProject(project);
-        $scope.showProjects = false;
-        $state.go("projects.project.home", {id: project.id});
-    };
+        ctrl.isExpanded = isExpanded;
+        ctrl.showHelp = showHelp;
+        ctrl.project = project;
+        ctrl.projects = projects;
+        ctrl.loaded = true;
+        ctrl.windowHeight = $window.innerHeight - 86;
 
-    $scope.showHelp = function () {
-        return help.isActive();
-    };
+        // set height of project content area dynamically.
+        var w = angular.element($window);
+        w.bind('resize', function() {
+            $timeout(function() {
+                ctrl.windowHeight = $window.innerHeight - 86;
+            });
+        });
 
-    $scope.isExpanded = function (what) {
-        return help.isActive() && ui.isExpanded(project.id, what);
-    };
+        if (!project.files) {
+            ctrl.loaded = false;
+            Restangular.one('v2').one('projects', project.id).one('directories').get().then(function(files) {
+                    project.files = gridFiles.toGrid(files);
+                    ctrl.loaded = true;
+                }).catch(function(err) {
+                    console.log('error calling projects %O', err);
+                });
+        }
 
-    current.setProject(project);
-    $scope.project = project;
-    $scope.loaded = true;
+        ////////////////////////////
 
-    if (!(project.id in projectFiles.model.projects)) {
-        $scope.loaded = false;
-        mcapi("/projects/%/tree2", project.id)
-            .success(function (files) {
-                var obj = {};
-                obj.dir = files[0];
-                projectFiles.model.projects[project.id] = obj;
-                //projectFiles.loadByMediaType(project);
-                $scope.loaded = true;
-            }).jsonp();
+        function isExpanded(what) {
+            return help.isActive() && ui.isExpanded(project.id, what);
+        }
+
+        function showHelp() {
+            return help.isActive();
+        }
     }
-}
+}(angular.module('materialscommons')));

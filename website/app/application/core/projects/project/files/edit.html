@@ -1,109 +1,30 @@
-<div class="row" ng-if="file.type === 'datafile'">
-    <div class="col-xs-12" style="padding-left: 0px; padding-right: 1px;">
-        <div class="details-main-content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="headings">
-                        {{file.active.name}}
-                        <a ng-href="{{file.downloadSrc(file.active)}}" download="{{file.active.name}}">
-                            <span style="color: #9782be;padding-left:10px;" class="fa-stack fa-lg">
-                                <i class="fa fa-circle-thin fa-stack-2x"></i>
-                                <i class="fa fa-download fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                        <a ng-click="file.rename()" class="pull-right">Rename</a>
-                    </div>
-                </div>
-            </div>
+<div class="row detail-content">
+    <div class="col-xs-12 card card-right">
+        <file-edit-controls file="ctrl.file"></file-edit-controls>
+        <ul class="row text-light list-inline">
+            <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-calendar"></i>{{ctrl.file.birthtime | toDateString}}</li>
+            <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-user"></i>{{ctrl.file.owner}}</li>
+            <li class="col-lg-3 col-md-3 col-sm-6"><i class="fa fa-copy"></i>{{ctrl.file.size | bytes}}</li>
+            <li class="col-lg-3 col-md-3 col-sm-6"><i class=""></i>{{ctrl.file.mediatype.mime}}</li>
+        </ul>
 
-            <div class="row">
-                <div class="file headings row">details</div>
-                <ul class="list-inline">
-                    <li>Type: {{file.active.mediatype.mime}}</li>
-                    <li>Owner: {{file.active.owner}}</li>
-                    <li>Created: {{file.active.birthtime | toDateString}}</li>
-                </ul>
-                <br>
-            </div>
+        <div class="row">
+            <file-description file="ctrl.file"></file-description>
+        </div>
 
-            <div class="row">
-                <div class="col-xs-12" ng-switch="file.fileType">
-                    <div ng-switch-when="image">
-                        <img class="img-responsive center-block col-xs-8"
-                             ng-src="{{file.fileSrc(file.active)}}">
-                    </div>
-                    <div ng-switch-when="pdf">
-                        <div class="embed-responsive embed-responsive-4by3">
-                            <embed class="col-xs-8 embed-responsive-item"
-                                   ng-src="{{file.fileSrc(file.active)}}">
-                            </embed>
-                        </div>
-                    </div>
-                    <div ng-switch-when="xls">Download the excel file
-                    </div>
-                    <div ng-switch-default>
-                        <div ng-if="file.active.size <= 10000"
-                             hljs include="file.fileSrc(file.active)">
-                        </div>
-                        <code
-                                ng-if="file.active.size > 10000 && file.active.size <= 2000000"
-                                style="white-space:pre-line" ng-include="file.fileSrc(file.active)">
-                        </code>
-
-                        <div ng-if="file.active.size > 2000000">File too big to display</div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="file headings">tags</div>
-                <div class="row" style="padding: 10px;">
-                    <div class="row">
-                        <tags-input on-tag-added="file.addTag($tag)" display-property="tag_id"
-                                    on-tag-removed="file.removeTag($tag)" ng-model="file.active.tags"
-                                    placeholder="Add a Tag" replace-spaces-with-dashes="false">
-                        </tags-input>
-                    </div>
-                </div>
-                <div class="file headings">note</div>
-                <div class="row">
-                    <span class="pull-right">
-                            <a ng-click="file.editNote = !file.editNote"><i class="fa fa-fw fa-edit"></i></a></span>
-
-                    <div class="row" ng-show="!file.editNote">
-                        <div class="col-xs-8">Title: {{file.active.notes[0].title}}</div>
-                        <hr>
-                        <div ng-if="file.active.notes.length !== 0" class="col-xs-11" ta-bind
-                             ng-model="file.active.notes[0].note"></div>
-                    </div>
-                    <div class="row" ng-show="file.editNote">
-                        <create-note item-type="datafile" item="file.active"></create-note>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-xs-5">
+                <display-file-contents file="ctrl.file"></display-file-contents>
             </div>
         </div>
-    </div>
-</div>
 
-<div ng-if="file.type === 'datadir'">
-    <div class="col-xs-12" style="padding-left: 0px; padding-right: 1px;">
-        <div class="details-main-content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <a class="pull-right" ng-click="file.createFolder()">CREATE FOLDER</a>
+        <div class="row">
+            <file-tags file="ctrl.file"></file-tags>
+        </div>
 
-                    <div class="headings">{{file.active.displayname}}
-                        <mc-flow-button dir="file.active" ng-if="file.active.type === 'datadir'"></mc-flow-button>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="file headings row">details</div>
-                <ul class="list-inline">
-                    <li>Type: directory</li>
-                    <li>Owner: {{file.active.owner}}</li>
-                    <li>Created: {{file.active.birthtime | toDateString}}</li>
-                </ul>
-                <span>Path: {{file.active.name}}</span>
+        <div class="row">
+            <div class="section">
+                <detail-tabs item="ctrl.file"></detail-tabs>
             </div>
         </div>
     </div>

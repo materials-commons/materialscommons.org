@@ -1,79 +1,75 @@
-Application.Controllers.controller('projectAccess',
-    ["$scope", "$stateParams", "mcapi", "User", "pubsub", "model.projects", "toastr",
-        projectAccess]);
+(function (module) {
+    module.controller('ProjectAccessController', ProjectAccessController);
 
-function projectAccess($scope, $stateParams, mcapi, User, pubsub, Projects, toastr) {
+    ProjectAccessController.$inject = ["mcapi", "User", "pubsub", "project", "toastr"];
 
-    $scope.addUser = function () {
-        mcapi('/access/new')
-            .success(function (data) {
-                $scope.project.users.push({
-                    'id': data.id,
-                    'user_id': $scope.bk.user.email,
-                    'project_id': $scope.project.id,
-                    'project_name': $scope.project.name
-                });
-                pubsub.send('access.change');
-                $scope.bk.user = '';
-            })
-            .error(function (e) {
-                toastr.error(e.error, 'Error', {
-                    closeButton: true
-                });
-            }).post({
-                'user_id': $scope.bk.user.email,
-                'project_id': $scope.project.id,
-                'project_name': $scope.project.name
-            });
-    };
+    /* @ngInject */
+    function ProjectAccessController(mcapi, User, pubsub, project, toastr) {
+        var ctrl = this;
+        ctrl.isOwner = isOwner;
+        ctrl.deleteUser = deleteUser;
+        ctrl.addUser = addUser;
 
-    $scope.deleteUser = function (id) {
-        mcapi('/access/%/remove', id)
-            .success(function () {
-                var i = _.indexOf($scope.project.users, function (item) {
-                    return (item.id === id);
-                });
-                if (i !== -1) {
-                    $scope.project.users.splice(i, 1);
-                }
-                pubsub.send('access.change');
-            }).delete();
-    };
+        ctrl.project = project;
+        ctrl.signedInUser = User.u();
+        ctrl.user = '';
 
-    $scope.isOwner = function(username) {
-        if (username == $scope.project.owner) {
-            return true;
-        } else if (User.attr().admin) {
-            return true;
-        }
-
-        return false;
-    };
-
-    $scope.isOwnerOrUser = function(username) {
-        if (username == $scope.project.owner && username == $scope.signed_in_user) {
-            return true;
-        } else if (User.attr().admin) {
-            return true;
-        } else if (username == $scope.signed_in_user) {
-            return true;
-        }
-        return false;
-    };
-
-    function init() {
-        $scope.bk = {
-            user: ''
-        };
-        Projects.get($stateParams.id).then(function (project) {
-            $scope.project = project;
-        });
         mcapi('/users')
-            .success(function (data) {
-                $scope.all_users = data;
+            .success(function (users) {
+                ctrl.allUsers = users;
             }).jsonp();
-        $scope.signed_in_user = User.u();
-    }
 
-    init();
-}
+        ///////////////////////////////////////
+
+        function deleteUser(id) {
+            mcapi('/access/%/remove', id)
+                .success(function () {
+                    var i = _.indexOf(ctrl.project.users, function (item) {
+                        return (item.id === id);
+                    });
+                    if (i !== -1) {
+                        ctrl.project.users.splice(i, 1);
+                    }
+                    pubsub.send('access.change');
+                }).delete();
+        }
+
+        function addUser() {
+            var i = _.indexOf(ctrl.project.users, function (item) {
+                return (item.id === ctrl.user.email);
+            });
+            if (i === -1) {
+                mcapi('/access/new')
+                    .success(function (data) {
+                        ctrl.project.users.push({
+                            'id': data.id,
+                            'user_id': ctrl.user.email,
+                            'project_id': ctrl.project.id,
+                            'project_name': ctrl.project.name
+                        });
+                        pubsub.send('access.change');
+                        ctrl.user = '';
+                    })
+                    .error(function (e) {
+                        toastr.error(e.error, 'Error', {
+                            closeButton: true
+                        });
+                    }).post({
+                        'user_id': ctrl.user.email,
+                        'project_id': ctrl.project.id,
+                        'project_name': ctrl.project.name
+                    });
+            }
+
+        }
+
+        function isOwner(username) {
+            if (username === ctrl.project.owner && username === ctrl.signedInUser) {
+                return true;
+            } else if (User.attr().admin) {
+                return true;
+            }
+            return false;
+        }
+    }
+}(angular.module('materialscommons')));

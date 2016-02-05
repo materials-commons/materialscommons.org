@@ -5,178 +5,66 @@ from optparse import OptionParser
 import sys
 
 
-used_files = {}
-
-
 def msg(s):
     print s
     sys.stdout.flush()
 
 
-def get_used_files(conn):
-    global used_files
-    used = list(r.table('datafiles').filter(r.row['usesid'].ne("")).pluck('usesid').
-                eq_join('usesid', r.table('datafiles')).zip().run(conn))
-    for u in used:
-        used_files[u['id']] = u
+def remove_nulls_in_setup(conn):
+    print "Removing nulls in setup..."
+    r.table('setupproperties').filter({'unit': None}).update({'unit': ''}).run(conn)
+    r.table('setupproperties').filter({'value': None}).update({'value': ''}).run(conn)
+    print "Done."
 
 
-def is_used_file(file_id):
-    global used_files
-    return file_id in used_files
-    
-
-def delete_tables(conn):
-    """Delete tables that are no longer used."""
-    msg("Deleting tables...")
-    drop_table('templates', conn)
-    drop_table('ui', conn)
-    drop_table('projects2samples', conn)
-    drop_table('process2item', conn)
-    drop_table('runs', conn)
-    drop_table('sample2item', conn)
-    drop_table('saver', conn)
-    drop_table('property_sets', conn)
-    drop_table('project2processes', conn)
-    drop_table('news', conn)
-    drop_table('drafts', conn)
-    drop_table('usergroups', conn)
-    drop_table('comment2item', conn)
-    drop_table('review2item', conn)
-    msg("Done.")
-
-
-def drop_table(table_name, conn):
-    try:
-        r.table_drop(table_name).run(conn)
-    except r.RqlRuntimeError:
-        pass
-
-
-def reset_tables(conn):
-    """Delete tables that will be recreated.
-    The tables are recreated by the dbcreate.py script.
-    """
-    msg("Reseting tables...")
-    drop_table('properties', conn)
-    drop_table('notes', conn)
-    drop_table('note2item', conn)
-    drop_table('processes', conn)
-    drop_table('project2datafile', conn)
-    drop_table('reviews', conn)
-    drop_table('samples', conn)
-    drop_table('tags', conn)
-    drop_table('tag2item', conn)
-    drop_table('uploads', conn)
-    msg("Done.")
-
-
-def delete_projects(conn):
-    """Delete projects that are no longer used."""
-    msg("Deleting unused projects...")
-    with open("projects2delete.txt") as f:
-        for project_id in f:
-            project_id = project_id.strip()
-            msg("   Project %s" % project_id)
-            delete_project(project_id, conn)
-            delete_project_files(project_id, conn)
-            delete_project_dirs(project_id, conn)
-            delete_project_access(project_id, conn)
-    msg("Done.")
-
-
-def delete_project(project_id, conn):
-    r.table('projects').get(project_id).delete().run(conn)
-    pass
-
-
-def delete_project_files(project_id, conn):
-    """Delete all the files for the project"""
-    msg("     Deleting project files...")
-    files = list(r.table('project2datadir').get_all(project_id, index="project_id").
-                 eq_join('datadir_id', r.table('datadir2datafile'), index='datadir_id').
-                 zip().
-                 eq_join('datafile_id', r.table('datafiles')).zip().run(conn))
-    msg("Number of files to delete for project %s: %d" % (project_id, len(files)))
-    for f in files:
-        if not is_used_file(f['id']):
-            delete_file(f['id'], conn)
+def remove_duplicates_in_sample2datafile(conn):
+    print "Removing duplicate sample2datafile entries..."
+    already_seen = {}
+    s2df_entries = list(r.table('sample2datafile').run(conn))
+    for s2df in s2df_entries:
+        if s2df['datafile_id'] not in already_seen:
+            already_seen[s2df['datafile_id']] = True
         else:
-            msg("      Not deleting file %s/%s because it is refered to" % (f['id'], project_id))
-    msg("     Done.")
+            print "Deleting duplicate sample2datafile entry"
+            r.table('sample2datafile').get(s2df['id']).delete().run(conn)
+    print "Done."
 
 
-def delete_project_dirs(project_id, conn):
-    msg("     Deleting project directories...")
-    p2d_entries = list(r.table('project2datadir').get_all(project_id, index="project_id").
-                       run(conn))
-    for p2d in p2d_entries:
-        r.table('project2datadir').get(p2d['id']).delete().run(conn)
-        r.table('datadirs').get(p2d['datadir_id']).delete().run(conn)
-        r.table('datadir2datafile').get_all(p2d['datadir_id'], index='datadir_id').delete().run(conn)
-    msg("     Done.")
-
-
-def delete_file(file_id, conn):
-    r.table('datafiles').get(file_id).delete().run(conn)
-
-
-# def delete_if_usesid_in_project(f, files, conn):
-#     found = False
-#     for file_entry in files:
-#         if file_entry['id'] == f['usesid']:
-#             found = True
-#             break
-#     if found:
-#         delete_file(f['id'], conn)
-#     else:
-#         msg("     Leaving file id %s because it uses an id outside of project" % f['id'])
-
-
-def delete_project_access(project_id, conn):
-    """Delete all access entries for project in the access table"""
-    r.table('access').get_all(project_id, index='project_id').delete().run(conn)
-
-
-def reload_project2datafile(conn):
-    """The project2datafile table is not up to date,
-    so reload it with the files in a project.
+def change_processes_field_to_description(conn):
+    """ Combine the process what and why fields into a single description field
+    and then delete the what and why fields. Users are confused by the two
+    fields.
+    :param conn: connection to the database
     """
-    msg("Reloading project2datafile table...")
-    drop_table('project2datafile', conn)
-    r.table_create('project2datafile').run(conn)
-    r.table('project2datafile').index_create('project_id').run(conn)
-    r.table('project2datafile').index_create('datafile_id').run(conn)
-    projects = list(r.table('projects').run(conn))
-    for project in projects:
-        msg("   project %s/%s" % (project['name'], project['id']))
-        project_id = project['id']
-        files = list(r.table('project2datadir').get_all(project_id, index='project_id').
-                     eq_join('datadir_id', r.table('datadir2datafile'), index='datadir_id').
-                     zip().
-                     run(conn))
-        for f in files:
-            entry = {
-                'project_id': project_id,
-                'datafile_id': f['datafile_id']
-            }
-            r.table('project2datafile').insert(entry).run(conn)
-    msg("Done.")
+    print "Combining what/why field in processes into description..."
+    print "Done."
 
 
-def fix_mediatypes(conn):
-    """Make sure each file has a mediatype set for it."""
-    msg("Fixing missing mediatypes on files...")
-    all_files = list(r.table('datafiles').run(conn))
-    for f in all_files:
-        if 'mediatype' not in f:
-            mediatype = {
-                "description": "unknown",
-                "mime": "unknown"
-            }
-            msg("  Adding mediatype to %s %s" % (f['id'], f['name']))
-            r.table('datafiles').get(f['id']).update(mediatype).run(conn)
-    msg("Done.")
+def convert_setup_selections_to_name_value(conn):
+    """ Selections display the external name rather than value field. This
+    would allow users to search on those fields without having to know the
+    internal name.
+    :param conn: connect to the database
+    """
+    print "Converting setup selections to name/value pair"
+    print "Done."
+
+
+def add_as_received_processes(conn):
+    print "Setting process name for all processes with type 'as_received'"
+    r.table('processes').filter({'process_type': 'as_received'}).update({'process_name': 'As Received'}).run(conn)
+    print "Done."
+
+
+def set_specific_process_names(conn):
+    print "Setting process names for certain ids"
+    r.table('processes').get('d297b7d9-a568-4980-8af1-4f0bafa251f7').update({'process_name': 'TEM'}).run(conn)
+    r.table('processes').get('d86edee0-c659-4105-8b07-8ee1b278bf41').update({'process_name': 'Heat Treatment'}).run(conn)
+    r.table('processes').get('92a44e96-ae9b-476b-a777-94e8fe443596').update({'process_name': 'TEM'}).run(conn)
+    r.table('processes').get('d6d19225-2f82-426b-8e2d-2961924c6fcc').update({'process_name': 'Heat Treatment'}).run(conn)
+    r.table('processes').get('65348deb-d25c-46e8-83a8-179c61e2ab01').update({'process_name': 'Heat Treatment'}).run(conn)
+    r.table('processes').get('3f16c122-7683-4a2f-9d94-92bc82765fe2').update({'process_name': 'TEM'}).run(conn)
+    print "Done"
 
 
 def main():
@@ -185,12 +73,12 @@ def main():
                       help="rethinkdb port", default=30815)
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
-    get_used_files(conn)
-    delete_tables(conn)
-    reset_tables(conn)
-    delete_projects(conn)
-    reload_project2datafile(conn)
-    fix_mediatypes(conn)
+    remove_nulls_in_setup(conn)
+    remove_duplicates_in_sample2datafile(conn)
+    add_as_received_processes(conn)
+    set_specific_process_names(conn)
+    # change_processes_field_to_description(conn)
+    # convert_setup_selections_to_name_value(conn)
 
 if __name__ == "__main__":
     main()
