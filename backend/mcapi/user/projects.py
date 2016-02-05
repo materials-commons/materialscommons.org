@@ -39,6 +39,9 @@ def add_computed_attributes(projects, user):
         p['users'] = []
         p['notes'] = []
         p['events'] = []
+        p['file_count'] = 0
+        if 'process_templates' not in p:
+            p['process_templates'] = []
     project_ids = [p['id'] for p in projects]
     projects_by_id = {p['id']: p for p in projects}
 
@@ -49,6 +52,7 @@ def add_computed_attributes(projects, user):
         add_processes(projects_by_id, project_ids)
         add_notes(projects_by_id, project_ids)
         add_events(projects_by_id, project_ids)
+        add_file_counts(projects_by_id, project_ids)
 
 
 def add_users(projects_by_id, project_ids):
@@ -75,9 +79,28 @@ def add_samples(projects_by_id, project_ids):
                    .eq_join('sample_id', r.table('samples'))
                    .zip()
                    .order_by('name')
-                   .run(g.conn, time_format='raw'))
-    for sample in samples:
-        sample['properties'] = {}
+                    .merge(lambda sample: {
+                        'properties': r.table('propertyset2property')
+                        .get_all(sample['property_set_id'], index= 'property_set_id')
+                        .eq_join('property_id', r.table('properties')).zip()
+                        .order_by('name')
+                        .merge(lambda property: {
+                            'best_measure': r.table('best_measure_history')\
+                            .get_all(property['best_measure_id'])
+                                            .eq_join('measurement_id',
+                            r.table('measurements')).zip().coerce_to('array')
+                        }),
+                    'linked_files': r.table('sample2datafile')
+                    .get_all(sample['id'],
+                    index='sample_id').eq_join('datafile_id',
+                    r.table('datafiles')).zip().coerce_to('array'),
+
+                    'property_sets': r.table('sample2propertyset')
+                    .get_all(sample['id'], index='sample_id')
+                    .coerce_to('array')
+                }).coerce_to('array').run(g.conn, time_format='raw'))
+    # for sample in samples:
+    #     sample['properties'] = {}
     add_computed_items(projects_by_id, samples, 'project_id', 'samples')
 
 
@@ -93,7 +116,6 @@ def add_processes(projects_by_id, project_ids):
     processes = []
     for project_id in project_ids:
         processes.extend(process.get_process_information(project_id))
-        #processes.extend(process.get_processes(project_id))
     add_computed_items(projects_by_id, processes, 'project_id', 'processes')
 
 
@@ -109,6 +131,15 @@ def add_events(projects_by_id, project_ids):
                   .order_by('mtime')
                   .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, events, 'project_id', 'events')
+
+
+def add_file_counts(projects_by_id, project_ids):
+    project_file_counts = r.table('project2datafile').get_all(*project_ids, index='project_id')\
+                               .group('project_id').count().run(g.conn)
+    for project_id in project_file_counts.keys():
+        file_count = project_file_counts[project_id]
+        if project_id in projects_by_id:
+            projects_by_id[project_id]['file_count'] = file_count
 
 
 def add_computed_items(projects_by_id, items, projects_key, item_key):
@@ -161,14 +192,16 @@ def get_project_toplevel_datadir(project, user):
     filter_by = {'name': project, 'owner': user}
     selection = list(r.table('projects').filter(filter_by).run(g.conn))
     proj = selection[0]
-    rv = {'project_id': proj['id'], 'datadir_id': proj['datadir']}
+    dirs = list(r.table('projects').get_all(proj['id'])
+                .eq_join('name', r.table('datadirs'), index='name').zip().run(g.conn))
+
+    rv = {'project_id': proj['id'], 'datadir_id': dirs[0]['id']}
     return args.json_as_format_arg(rv)
 
 
 def make_toplevel_datadir(j, user):
     name = dmutil.get_required('name', j)
-    access = dmutil.get_optional('access', j, "private")
-    ddir = datadir.DataDir(name, access, user, "")
+    ddir = datadir.DataDir(name, user, "", "")
     dir_id = dmutil.insert_entry_id('datadirs', ddir.__dict__)
     return dir_id
 

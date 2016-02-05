@@ -1,31 +1,43 @@
-Application.Directives.directive("userguide", userguideDirective);
-function userguideDirective() {
-    return {
-        scope: true,
-        restrict: "AE",
-        replace: true,
-        templateUrl: "application/core/projects/project/help/userguide.html",
-        controller: "userguideDirectiveController"
-    };
-}
+(function (module) {
+    module.directive("userguide", userguideDirective);
+    function userguideDirective() {
+        return {
+            scope: {},
+            bindToController: true,
+            restrict: "AE",
+            replace: true,
+            templateUrl: "application/core/projects/project/help/userguide.html",
+            controller: "UserguideDirectiveController",
+            controllerAs: 'userguide'
+        };
+    }
 
-Application.Controllers.controller("userguideDirectiveController",
-                                   ["$scope", "help", "ui", "$stateParams", userguideDirectiveController]);
-function userguideDirectiveController($scope, help, ui, $stateParams) {
-    $scope.close = function() {
-        help.toggle();
-        ui.setIsExpanded($stateParams.id, "help", false);
-    };
+    module.controller("UserguideDirectiveController", UserguideDirectiveController);
 
-    $scope.toggleExpand = function() {
-        ui.toggleIsExpanded($stateParams.id, "help");
-    };
+    UserguideDirectiveController.$inject = ["help", "ui", "$stateParams"];
 
-    $scope.isExpanded = function() {
-        return ui.isExpanded($stateParams.id, "help");
-    };
-    $scope.goTo = function(what){
-        $scope.showSamples = true;
-    };
+    /* @ngInject */
+    function UserguideDirectiveController(help, ui, $stateParams) {
+        var ctrl = this;
 
-}
+        ctrl.close = close;
+        ctrl.toggleExpanded = toggleExpanded;
+        ctrl.isExpanded = isExpanded;
+
+        ////////////////////////
+
+        function close () {
+            help.toggle();
+            ui.setIsExpanded($stateParams.id, "help", false);
+        }
+
+        function toggleExpanded() {
+            ui.toggleIsExpanded($stateParams.id, "help");
+        }
+
+        function isExpanded() {
+            return ui.isExpanded($stateParams.id, "help");
+        }
+    }
+
+}(angular.module('materialscommons')));

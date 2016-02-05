@@ -14,7 +14,7 @@ module.exports = function(r) {
         this._type = "sample";
     }
 
-    function Process(name, owner, ptype, what, why, transform) {
+    function Process(name, owner, ptype, what, why, transform, process_name) {
         this.name = name;
         this.owner = owner;
         this.what = what;
@@ -24,6 +24,7 @@ module.exports = function(r) {
         this.mtime = this.birthtime;
         this._type = "process";
         this.does_transform = transform;
+        this.process_name = process_name;
     }
 
     function Process2Setup(processID, setupID) {
@@ -150,6 +151,44 @@ module.exports = function(r) {
         this.sample_id = sampleID;
     }
 
+    function Note(title, note, projectID, owner) {
+        let now = r.now();
+        this.title = title;
+        this.note = note;
+        this.project_id = projectID;
+        this.owner = owner;
+        this.mtime = now;
+        this.birthtime = now;
+    }
+
+    function Note2Item(itemID, itemType, noteID) {
+        this.item_id = itemID;
+        this.item_type = itemType;
+        this.note_id = noteID;
+    }
+
+    function Tag2Item(tagID, itemID, itemType) {
+        this.tag_id = tagID;
+        this.item_type = itemType;
+        this.item_id = itemID;
+    }
+
+    function Directory(name, owner, project, parent) {
+        let now = r.now();
+        this._type = "datadir";
+        this.owner = owner;
+        this.name = name;
+        this.project = project;
+        this.parent = parent;
+        this.birthtime = now;
+        this.mtime = now;
+        this.atime = now;
+    }
+
+    function Project2DataDir(projectID, dirID) {
+        this.project_id = projectID;
+        this.datadir_id = dirID;
+    }
 
     return {
         Sample: Sample,
@@ -171,6 +210,11 @@ module.exports = function(r) {
         Project2Sample: Project2Sample,
         Sample2PropertySet: Sample2PropertySet,
         BestMeasureHistory: BestMeasureHistory,
-        Sample2Datafile: Sample2Datafile
+        Sample2Datafile: Sample2Datafile,
+        Note: Note,
+        Note2Item: Note2Item,
+        Tag2Item: Tag2Item,
+        Directory: Directory,
+        Project2DataDir: Project2DataDir
     };
 };

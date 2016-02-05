@@ -4,51 +4,8 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            <div class="col-xs-6" ng-switch on="selected.item.mediatype.mime">
-                <div ng-switch-when="image/tiff">
-                    <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
-                </div>
-                <div ng-switch-when="image/bmp">
-                    <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
-                </div>
-                <div ng-switch-when="image/jpeg">
-                    <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
-                </div>
-                <div ng-switch-when="image/gif">
-                    <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
-                </div>
-                <div ng-switch-when="image/png">
-                    <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
-                </div>
-                <div ng-switch-when="image/x-ms-bmp">
-                    <img class="img-responsive" ng-src="{{fileSrc(selected.item)}}">
-                </div>
-                <div ng-switch-when="application/pdf">
-                    <div class="embed-responsive embed-responsive-4by3">
-                        <embed class="col-xs-8 embed-responsive-item"
-                               ng-src="{{fileSrc(selected.item)}}">
-                        </embed>
-                    </div>
-                </div>
-                <div ng-switch-when="application/vnd.ms-excel">Download the excel file
-                    <h4>
-                        <a ng-href="{{downloadSrc(selected.item)}}"
-                           download="{{selected.item.name}}">
-                            <i class="fa fa-fw fa-download"> </i>
-                        </a></h4>
-                </div>
-                <div ng-switch-default>
-                    <div ng-if="selected.item.size <= 10000"
-                         hljs
-                         include="fileSrc(selected.item)">
-                    </div>
-                    <code ng-if="selected.item.size > 10000 && item.item.size <= 2000000"
-                          style="white-space:pre-line" ng-include="fileSrc(selected.item)">
-                    </code>
-
-                    <div ng-if="selected.item.size > 2000000">File too big to display
-                    </div>
-                </div>
+            <div class="col-xs-6">
+                <display-file-contents file="modal.item"></display-file-contents>
             </div>
             <div class="col-xs-6">
                 <div><label>Owner:</label>{{selected.item.owner}}</div>
@@ -57,14 +14,12 @@
                 <div><label>Modified:</label>{{selected.item.mtime | toDateString}}</div>
                 <div><label>Media Type:</label>{{selected.item.mediatype.mime}}</div>
                 <div><label>Notes:</label>
-
                     <div ng-if="selected.item.notes.length > 0" ta-bind ng-model="selected.item.notes[0].note"></div>
                 </div>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">OK</button>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-warning" ng-click="cancel()">Dismiss</button>
     </div>
 </div>

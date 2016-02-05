@@ -1,32 +1,38 @@
-<div class="row">
-    <div class="col-lg-offset-2 col-lg-8">
-        <h4>Group Permissions</h4> <br>
+<div class="row"><br>
+    <div class="col-sm-offset-2 col-sm-6">
+        <h3 class="h3custom">Collaborators for project {{access.project.name}}</h3> <br>
 
-        <table class="table table-boxed">
+        <table class="table table-striped">
             <thead>
-            <th>User</th>
-            <th>Delete</th>
+            <tr>
+                <th>Users</th>
+            </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="ac in project.users | orderBy: 'user_id'">
-                <td>{{ac.user_id}}</td>
-                <td ng-if="isOwnerOrUser(ac.user_id)">
-                    <button ng-click="deleteUser(ac.id)" class="btn btn-danger">Remove</button>
+            <tr ng-repeat="user in access.project.users | orderBy: 'user_id'">
+                <td>{{user.user_id}}</td>
+                <td ng-if="access.isOwner(access.signedInUser)">
+                    <div ng-if="access.signedInUser === user.user_id">
+                         Owner
+                    </div>
+                    <div ng-if="access.signedInUser !== user.user_id">
+                        <button ng-click="access.deleteUser(user.id)" class="btn btn-danger">Remove</button>
+                    </div>
                 </td>
-                <td ng-if="!isOwnerOrUser(ac.user_id)">Not Authorized</td>
+                <td ng-if="!access.isOwner(access.signedInUser)">Not Authorized</td>
             </tr>
             </tbody>
         </table>
-        <div class="row" ng-show="isOwner(signed_in_user)">
+        <div class="row" ng-show="access.isOwner(access.signedInUser)">
             <div class="form-group">
                 <div class="col-lg-6">
-                    <select ui-select2="select2IconOptions"
+                    <select ui-select2
                             ng-multiple="false"
-                            ng-options="user.email for user in all_users | orderBy:'email'"
-                            class="form-control" ng-model="bk.user">
+                            ng-options="user.email for user in access.allUsers | orderBy:'email'"
+                            class="form-control" ng-model="access.user">
                     </select>
                 </div>
-                <button class="btn btn-info" ng-click="addUser()" ng-disabled="!bk.user">Add</button>
+                <button class="btn btn-info" ng-click="access.addUser()" ng-disabled="!access.user">Add</button>
             </div>
         </div>
     </div>

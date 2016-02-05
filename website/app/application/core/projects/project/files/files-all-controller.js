@@ -1,107 +1,150 @@
-Application.Controllers.controller("FilesAllController",
-    ["$scope", "projectFiles", "mcfile", "$state", "pubsub", "$filter", FilesAllController]);
-function FilesAllController($scope, projectFiles, mcfile, $state, pubsub, $filter) {
-    var f = projectFiles.model.projects[$scope.project.id].dir;
+(function (module) {
+    module.controller("FilesAllController", FilesAllController);
 
-    // Root is name of project. Have it opened by default.
-    $scope.files = [f];
-    $scope.files[0].expanded = true;
-    $scope.files[0].children = $filter('orderBy')($scope.files[0].children, 'displayname');
+    FilesAllController.$inject = ["$scope", "project", "$state", "pubsub", "Restangular", "gridFiles"];
 
-    pubsub.waitOn($scope, 'files.refresh', function () {
-        $scope.gridOptions.api.recomputeAggregates();
-        $scope.gridOptions.api.refreshGroupRows();
-        $scope.gridOptions.api.refreshView();
-    });
+    /* @ngInject */
+    function FilesAllController($scope, project, $state, pubsub, Restangular, gridFiles) {
+        var ctrl = this;
 
-    $scope.fileSrc = function (file) {
-        return mcfile.src(file.id);
-    };
+        ctrl.gridShowingFlag = true;
+        ctrl.files = project.files;
+        ctrl.files[0].expanded = true;
 
-    var columnDefs = [
-        {
-            displayName: "",
-            field: "name",
-            width: 350,
-            cellRenderer: function (params) {
-                var icon = "fa-file";
-                switch (params.node.mediatype.mime) {
-                case "application/pdf":
-                    icon = "fa-file-pdf-o";
-                    break;
-                case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-                    icon = "fa-file-excel-o";
-                    break;
-                case "application/vnd.ms-excel":
-                    icon = "fa-file-excel-o";
-                    break;
-                case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                    icon = "fa-file-word-o";
-                    break;
-                case "application/ms-word":
-                    icon = "fa-file-word-o";
-                    break;
-                case "application/vnd.ms-powerpoint.presentation.macroEnabled.12":
-                    icon = "fa-file-powerpoint-o";
-                    break;
-                case "application/vnd.ms-powerpoint":
-                    icon = "fa-file-powerpoint-o";
-                    break;
-                default:
-                    if (isImage(params.node.mediatype.mime)) {
-                        icon = "fa-file-image-o";
+        pubsub.waitOn($scope, 'files.refresh', function (f) {
+            var treeModel = new TreeModel(),
+                root = treeModel.parse(project.files[0]);
+            var file = root.first({strategy: 'pre'}, function (node) {
+                return node.model.data.id === f.id;
+            });
+            if (file) {
+                file.model.data.name = f.name;
+                ctrl.gridOptions.api.recomputeAggregates();
+                ctrl.gridOptions.api.refreshGroupRows();
+                ctrl.gridOptions.api.refreshView();
+                ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+            }
+        });
+
+        pubsub.waitOn($scope, 'files.dir.refresh', function (dirID) {
+            Restangular.one('v2').one('projects', project.id)
+                .one('directories', dirID).get().then(function (files) {
+                    var treeModel = new TreeModel(),
+                        root = treeModel.parse(project.files[0]);
+                    var dir = root.first({strategy: 'pre'}, function (node) {
+                        return node.model.data.id === dirID;
+                    });
+
+                    dir.model.children = gridFiles.toGridChildren(files);
+                    dir.model.data.childrenLoaded = true;
+                    ctrl.gridOptions.api.onNewRows();
+                    ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+                });
+        });
+
+        init();
+
+        ///////////////////////////////
+
+        function init() {
+            var columnDefs = [
+                {
+                    headerName: "",
+                    field: "name",
+                    width: 350,
+                    cellRenderer: {
+                        renderer: 'group',
+                        innerRenderer: function (params) {
+                            if (params.data._type == 'directory') {
+                                return '<span' + ' id="' + params.data.id + '">' + params.data.name + '</span>';
+                            }
+
+                            var icon = "fa-file";
+                            switch (params.data.mediatype.mime) {
+                            case "application/pdf":
+                                icon = "fa-file-pdf-o";
+                                break;
+                            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                                icon = "fa-file-excel-o";
+                                break;
+                            case "application/vnd.ms-excel":
+                                icon = "fa-file-excel-o";
+                                break;
+                            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                                icon = "fa-file-word-o";
+                                break;
+                            case "application/ms-word":
+                                icon = "fa-file-word-o";
+                                break;
+                            case "application/vnd.ms-powerpoint.presentation.macroEnabled.12":
+                                icon = "fa-file-powerpoint-o";
+                                break;
+                            case "application/vnd.ms-powerpoint":
+                                icon = "fa-file-powerpoint-o";
+                                break;
+                            default:
+                                if (isImage(params.data.mediatype.mime)) {
+                                    icon = "fa-file-image-o";
+                                }
+                                break;
+                            }
+                            return '<i style="color: #D2C4D5;" class="fa fa-fw ' + icon + '"></i><span title="' + params.data.name + '">' +
+                                params.data.name + '</span>';
+                        }
                     }
-                    break;
                 }
-                return '<i style="color: #D2C4D5;" class="fa fa-fw ' + icon + '"></i><span title="' + params.node.name + '">' +
-                    '<a data-toggle="tooltip" data-placement="top">' +
-                    params.node.name + '</a></span>';
-            }
-        }];
+            ];
 
-    $scope.gridOptions = {
-        columnDefs: columnDefs,
-        rowData: $scope.files,
-        rowsAlreadyGrouped: true,
-        rowClicked: rowClicked,
-        enableColResize: false,
-        enableSorting: false,
-        rowHeight: 30,
-        angularCompileRows: false,
-        icons: {
-            groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
-            groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
-        },
-        groupInnerCellRenderer: groupInnerCellRenderer
-    };
+            ctrl.gridOptions = {
+                columnDefs: columnDefs,
+                rowData: ctrl.files,
+                rowClicked: rowClicked,
+                rowSelection: 'single',
+                rowsAlreadyGrouped: true,
+                enableColResize: false,
+                enableSorting: false,
+                rowHeight: 30,
+                angularCompileRows: false,
+                icons: {
+                    groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
+                    groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
+                }
+            };
 
-    function groupInnerCellRenderer(params) {
-        var eCell = document.createElement('span');
-        eCell.innerHTML = params.node.displayname;
-        return eCell;
-    }
-
-    function rowClicked(params) {
-        if (params.node.type == 'datadir') {
-            projectFiles.setActiveDirectory(params.node);
-            var file = projectFiles.findFileByID($scope.project.id, params.node.datafile_id);
-            file.expanded = params.node.expanded;
-            if (!params.node.sorted) {
-                file.children = $filter('orderBy')(file.children, 'displayname');
-                file.sorted = true;
-                $scope.gridOptions.api.onNewRows();
-            }
-        } else {
-            projectFiles.setActiveFile(params.node);
+            $state.go('projects.project.files.all.dir', {dir_id: ctrl.files[0].data.id});
         }
-        $state.go('projects.project.files.all.edit', {file_id: params.node.datafile_id, file_type: params.node.type});
+
+        function rowClicked(params) {
+            if (params.data._type == 'directory') {
+                handleDirectory(params);
+            } else {
+                handleFile(params);
+            }
+        }
+
+        function handleDirectory(params) {
+            if (!params.data.childrenLoaded) {
+                Restangular.one('v2').one('projects', project.id)
+                    .one('directories', params.data.id).get().then(function (files) {
+                        var treeModel = new TreeModel(),
+                            root = treeModel.parse(project.files[0]);
+                        var dir = root.first({strategy: 'pre'}, function (node) {
+                            return node.model.data.id === params.data.id;
+                        });
+                        dir.model.children = gridFiles.toGridChildren(files);
+                        dir.model.data.childrenLoaded = true;
+                        ctrl.gridOptions.api.onNewRows();
+                        ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+                        $state.go('projects.project.files.all.dir', {dir_id: params.data.id});
+                    });
+            } else {
+                ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
+                $state.go('projects.project.files.all.dir', {dir_id: params.data.id});
+            }
+        }
+
+        function handleFile(params) {
+            $state.go('projects.project.files.all.edit', {file_id: params.data.id});
+        }
     }
-
-    function init() {
-        projectFiles.setActiveDirectory($scope.files[0]);
-        $state.go('projects.project.files.all.edit', {file_id: $scope.files[0].datafile_id, file_type: 'datadir'});
-    }
-
-    init();
-}
-
+}(angular.module('materialscommons')));

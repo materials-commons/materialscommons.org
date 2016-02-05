@@ -2,7 +2,7 @@
 
 from mcapi.mcapp import app, mcdb_connect
 from mcapi import tservices, public, utils, private, access
-from mcapi import process, machine, template, objects, doc, cache
+from mcapi import process, template, objects, doc, cache
 from mcapi.user import account, datadirs, datafiles, reviews
 from mcapi.user import ud, usergroups, projects, conditions, drafts, notes
 from mcapi.user import provenance
