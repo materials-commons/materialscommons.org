@@ -79,6 +79,8 @@ def create_tables():
     create_table("sample2datafile", "sample_id", "datafile_id")
     create_compound_index("sample2datafile", "sample_file", ["sample_id", "datafile_id"])
 
+    create_table("sample2sample", "parent_sample_id", "sample_id")
+
     create_table("measurement2datafile", "measurement_id", "datafile_id")
 
 

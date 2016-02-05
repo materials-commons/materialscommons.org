@@ -10,13 +10,15 @@ module.exports = function (r) {
     const db = require('./db')(r);
     const _ = require('lodash');
     const model = require('./model')(r);
+    const path = require('path');
 
     return {
-        countInProject: countInProject,
-        get: get,
-        getList: getList,
-        update: update,
-        deleteFile
+        countInProject,
+        get,
+        getList,
+        update,
+        deleteFile,
+        byPath
     };
 
     function* countInProject(ids, projectID) {
@@ -26,8 +28,7 @@ module.exports = function (r) {
 
     // get details on a file
     function* get(file_id) {
-        let rql = r.table('datafiles').get(file_id).
-        merge(function () {
+        let rql = r.table('datafiles').get(file_id).merge(function () {
             return {
                 tags: r.table('tag2item').getAll(file_id, {index: 'item_id'})
                     .orderBy('tag_id')
@@ -60,24 +61,12 @@ module.exports = function (r) {
 
     // getList gets the details for the given file ids
     function* getList(projectID, fileIDs) {
-        let rql = r.table('datafiles').getAll(r.args(fileIDs)).
-        eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).
-        zip().filter({project_id: projectID}).
-        merge(function (file) {
+        let rql = r.table('datafiles').getAll(r.args(fileIDs)).eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).zip().filter({project_id: projectID}).merge(function (file) {
             return {
-                tags: r.table('tag2item').getAll(file('datafile_id'), {index: 'item_id'}).
-                orderBy('tag_id').
-                pluck('tag_id').coerceTo('array'),
-                notes: r.table('note2item').getAll(file('datafile_id'), {index: 'item_id'}).
-                eqJoin('note_id', r.table('notes')).zip().coerceTo('array'),
-                samples: r.table('sample2datafile').getAll(file('datafile_id'), {index: 'datafile_id'}).
-                eqJoin('sample_id', r.table('samples')).zip().
-                pluck('name', 'id').distinct().
-                coerceTo('array'),
-                processes: r.table('process2file').getAll(file('datafile_id'), {index: 'datafile_id'}).
-                eqJoin('process_id', r.table('processes')).zip().
-                pluck('name', 'id').distinct().
-                coerceTo('array')
+                tags: r.table('tag2item').getAll(file('datafile_id'), {index: 'item_id'}).orderBy('tag_id').pluck('tag_id').coerceTo('array'),
+                notes: r.table('note2item').getAll(file('datafile_id'), {index: 'item_id'}).eqJoin('note_id', r.table('notes')).zip().coerceTo('array'),
+                samples: r.table('sample2datafile').getAll(file('datafile_id'), {index: 'datafile_id'}).eqJoin('sample_id', r.table('samples')).zip().pluck('name', 'id').distinct().coerceTo('array'),
+                processes: r.table('process2file').getAll(file('datafile_id'), {index: 'datafile_id'}).eqJoin('process_id', r.table('processes')).zip().pluck('name', 'id').distinct().coerceTo('array')
             }
         });
         return runQuery(rql);
@@ -126,10 +115,7 @@ module.exports = function (r) {
     // validateFileName ensures that the file name doesn't already exist in
     // the given directory. This is used when a file is being renamed.
     function* validateFileName(fileID, fileName) {
-        let rql = r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).
-        eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip().
-        eqJoin('datafile_id', r.table('datafiles')).zip().
-        filter({name: fileName}).count();
+        let rql = r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip().eqJoin('datafile_id', r.table('datafiles')).zip().filter({name: fileName}).count();
         let matchingNameCount = yield runQuery(rql);
         return matchingNameCount === 0;
     }
@@ -222,9 +208,7 @@ module.exports = function (r) {
         // and direction. This way we don't add a file in the same direction to a process when
         // that file and direction already exists for a process.
         processesForFile.forEach(p => processesMap[`${p.process_id}_${p.direction}`] = p);
-        let processesToAdd = processes.filter(p => p.command === 'add').
-        filter(p => !(`${p.process_id}_${p.direction}` in processesMap)).
-        map(p => new model.Process2File(p.process_id, fileID, p.direction));
+        let processesToAdd = processes.filter(p => p.command === 'add').filter(p => !(`${p.process_id}_${p.direction}` in processesMap)).map(p => new model.Process2File(p.process_id, fileID, p.direction));
         let processesToDelete = processes.filter(p => p.command === 'delete').map(p => p.process_id);
 
         if (processesToAdd.length) {
@@ -261,6 +245,26 @@ module.exports = function (r) {
         yield r.table('datafiles').get(fileID).delete();
         yield r.table('project2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
         yield r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
+        return {val: f};
+    }
+
+    function* byPath(projectID, filePath) {
+        let fileName = path.basename(filePath);
+        let dir = path.dirname(filePath);
+        let rql = r.table('datadirs').getAll(dir, {index: 'name'})
+            .eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip()
+            .filter({project_id: projectID})
+            .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
+            .eqJoin('datafile_id', r.table('datafiles')).zip()
+            .filter({current: true, name: fileName});
+        let matches = yield runQuery(rql);
+        if (!matches.length || matches.length !== 1) {
+            return {error: 'No matching file'};
+        }
+        let f = matches[0];
+        f['birthtime'] = f['birthtime'].epoch_time;
+        f['mtime'] = f['mtime'].epoch_time;
+        f['atime'] = f['atime'].epoch_time;
         return {val: f};
     }
 };

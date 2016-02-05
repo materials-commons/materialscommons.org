@@ -24,6 +24,7 @@
     <link href="assets/css/select2/select2.css" rel="stylesheet">
     <link href="assets/css/select2/select2-bootstrap.css" rel="stylesheet">
     <link href="assets/css/zenburn.css" rel="stylesheet">
+    <link href="assets/css/periodic-table.css" rel="stylesheet">
     <link href="assets/css/vis.css" rel="stylesheet">
     <link href="assets/css/fullcalendar.css" rel="stylesheet">
     <link href="assets/css/ng-tags-input.css" rel="stylesheet">
@@ -73,6 +74,10 @@
     </div>
 </div>
 
+<!--
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+-->
+<script src="/socket.io/socket.io.js"></script>
 <!-- build:jsassets js/assets.js -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
@@ -86,6 +91,7 @@
 <script src="bower_components/ui-router-extras/release/modular/ct-ui-router-extras.previous.min.js"></script>
 <script src="bower_components/ui-router-extras/release/modular/ct-ui-router-extras.transition.min.js"></script>
 <script src="bower_components/lodash/lodash.min.js"></script>
+<script src="bower_components/angular-socket-io/socket.min.js"></script>
 <script src="assets/js/flow.js"></script>
 <script src="assets/js/select2.min.js"></script>
 <script src="assets/js/TreeModel-min.js"></script>
@@ -187,6 +193,7 @@
 <script src="application/directives/notes-list.js"></script>
 <script src="application/directives/files-list.js"></script>
 <script src="application/directives/reviews-list.js"></script>
+<script src="application/directives/periodic-table-directive.js"></script>
 <script src="application/directives/measurements-list.js"></script>
 <script src="application/services/mcmodal/templates-modal-controller.js"></script>
 <script src="application/services/select-items-service.js"></script>
@@ -211,9 +218,11 @@
 <script src="application/services/sideboard.js"></script>
 <script src="application/services/mcfile.js"></script>
 <script src="application/services/mc-flow.js"></script>
+<script src="application/services/focus.js"></script>
 <script src="application/core/projects/services/toggle-dragbuttons-service.js"></script>
 <script src="application/services/model/projects-service.js"></script>
 <script src="application/services/model/templates-service.js"></script>
+<script src="application/services/projects-service.js"></script>
 <script src="application/filters/todatestring-filter.js"></script>
 <script src="application/filters/reverse-filter.js"></script>
 <script src="application/filters/bykey-filter.js"></script>
