@@ -1,15 +1,31 @@
-Application.Controllers.controller('projectHome',
-    ["$scope", "project", "ui", projectHome]);
+(function (module) {
+    module.controller('ProjectHomeController', ProjectHomeController);
+    ProjectHomeController.$inject = ["project", "mcmodal", "templates", "$state", "Restangular"];
 
-function projectHome($scope, project, ui) {
+    function ProjectHomeController(project, mcmodal, templates, $state, Restangular) {
+        var ctrl = this;
 
-    $scope.showPanel = function(what) {
-        return ui.showPanel(project.id, what);
-    };
+        ctrl.project = project;
+        ctrl.chooseTemplate = chooseTemplate;
+        ctrl.chooseExistingProcess = chooseExistingProcess;
+        ctrl.templates = templates;
+        ctrl.hasFavorites = _.partial(_.any, ctrl.templates, _.matchesProperty('favorite', true));
 
-    $scope.openPanel = function (panel) {
-        ui.togglePanelState(project.id, panel);
-    };
+        /////////////////////////
 
-    $scope.project = project;
-}
+        function chooseTemplate() {
+            mcmodal.chooseTemplate(ctrl.project, templates).then(function (processTemplateName) {
+                $state.go('projects.project.processes.create', {process: processTemplateName, process_id: ''});
+            });
+        }
+
+        function chooseExistingProcess() {
+            Restangular.one('v2').one("projects", project.id).one("processes").getList().then(function (processes) {
+                mcmodal.chooseExistingProcess(processes).then(function (existingProcess) {
+                    $state.go('projects.project.processes.create',
+                        {process: existingProcess.process_name, process_id: existingProcess.id});
+                });
+            });
+        }
+    }
+}(angular.module('materialscommons')));

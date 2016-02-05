@@ -4,9 +4,9 @@ module.exports = function(access) {
     let projectAccessCache = require('./project-access-cache')(access);
     return function *validateProject(next) {
         let projectID = this.params.project_id;
-        let project = yield projectAccessCache.find(projectID);
+        let projects = yield projectAccessCache.find(projectID);
 
-        if (! project) {
+        if (! projects) {
             this.throw(httpStatus.BAD_REQUEST, "Unknown project");
         }
 
@@ -16,7 +16,7 @@ module.exports = function(access) {
 
         this.reqctx.project = {
             id: projectID,
-            name: project.name
+            name: projects[0].project_name
         };
 
         yield next;

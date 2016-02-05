@@ -1,14 +1,13 @@
-module.exports = function(r) {
-    'use strict';
-
-    let run = require('./run');
-    let getSingle = require('./get-single');
+module.exports = function (r) {
+    const run = require('./run');
+    const getSingle = require('./get-single');
     return {
         update: update,
         forUser: forUser,
-        get: function(id, index) {
+        get: function (id, index) {
             return getSingle(r, 'samples', id, index);
         },
+        getList: getList,
         findInProject: findInProject,
         countAttributesInSample: countAttributesInSample,
         validateAttribute: validateAttribute,
@@ -29,22 +28,58 @@ module.exports = function(r) {
         return run(rql);
     }
 
+    function* getList(projectID) {
+        let rql = sampleDetailsRql(r.table('project2sample').getAll(projectID, {index: 'project_id'})
+            .eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'})
+            .zip().filter({'current': true})
+            .eqJoin('sample_id', r.table('samples')).zip());
+        let samples = yield run(rql);
+        samples = samples.map(s => {
+            s.transforms = s.processes.filter(p => p.does_transform).length;
+            return s;
+        });
+        return {val: samples};
+    }
+
+    function sampleDetailsRql(rql) {
+        return rql.merge(function (sample) {
+            return {
+                files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
+                    .eqJoin('datafile_id', r.table('datafiles')).zip().pluck('id', 'name')
+                    .coerceTo('array'),
+                properties: r.table('propertyset2property')
+                    .getAll(sample('property_set_id'), {index: 'property_set_id'})
+                    .eqJoin('property_id', r.table('properties')).zip()
+                    .orderBy('name')
+                    .merge(function (property) {
+                        return {
+                            best_measure: r.table('best_measure_history')
+                                .getAll(property('best_measure_id'))
+                                .eqJoin('measurement_id', r.table('measurements'))
+                                .zip().coerceTo('array')
+                        }
+                    }).coerceTo('array'),
+                processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
+                    .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
+            }
+        });
+    }
+
     function findInProject(projectID, index, key) {
         let filterTerm = {};
         filterTerm[index] = key;
         let rql = r.table('project2sample')
-                .getAll(projectID, {index: 'project_id'})
-                .eqJoin('sample_id', r.table('samples'))
-                .zip()
-                .filter(filterTerm);
+            .getAll(projectID, {index: 'project_id'})
+            .eqJoin('sample_id', r.table('samples'))
+            .zip()
+            .filter(filterTerm);
         return run(rql);
     }
 
     function *countAttributesInSample(asetID, attrIDs) {
         let rql = r.table('attributeset2attribute')
-                .getAll(r.args(attrIDs), {index:'attribute_id'});
-        let count = yield rql.filter({attribute_set_id: asetID}).count();
-        return count;
+            .getAll(r.args(attrIDs), {index: 'attribute_id'});
+        return yield rql.filter({attribute_set_id: asetID}).count();
     }
 
     /**
@@ -55,12 +90,12 @@ module.exports = function(r) {
      */
     function validateAttribute(sampleID, attributeID) {
         let rql = r.table('sample2attributeset')
-                .getAll(sampleID, {index: 'sample_id'})
-                .eqJoin('attribute_set_id',
-                        r.table('attributeset2attribute'),
-                        {index: 'attribute_set_id'})
-                .zip()
-                .filter({attribute_id: attributeID});
+            .getAll(sampleID, {index: 'sample_id'})
+            .eqJoin('attribute_set_id',
+                r.table('attributeset2attribute'),
+                {index: 'attribute_set_id'})
+            .zip()
+            .filter({attribute_id: attributeID});
         return run(rql);
     }
 
@@ -72,8 +107,8 @@ module.exports = function(r) {
      */
     function validateAttributeSet(sampleID, attrSetID) {
         let rql = r.table('sample2attributeset')
-                .getAll(sampleID, {index: 'sample_id'})
-                .filter({attribute_set_id: attrSetID});
+            .getAll(sampleID, {index: 'sample_id'})
+            .filter({attribute_set_id: attrSetID});
         return run(rql);
     }
 
@@ -96,7 +131,7 @@ module.exports = function(r) {
      */
     function getAttributesFromAS(asetID, attrs) {
         let rql = r.table('attributeset2attribute')
-                .getAll(r.args(attrs), {index: 'attribute_id'});
+            .getAll(r.args(attrs), {index: 'attribute_id'});
         return run(rql.filter({attribute_set_id: asetID}));
     }
 };

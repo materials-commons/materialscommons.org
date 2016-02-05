@@ -1,9 +1,5 @@
 <div class="row">
     <div class="panel" style="border: 1px solid #d3d3d3; box-shadow: 5px 4px 5px #a1a1a1;">
-        <div ng-show="alertMessage != undefined && alertMessage != ''">
-            <p><a ng-click="goHome()">Clear filter</a></p>
-            <alert close="goHome()">{{alertMessage}}</alert>
-        </div>
         <div class="panel-body">
             <div ng-if="ready">
                 <div style="padding-bottom: 6px;" ui-calendar="uiConfig.calendar" calendar="myCalendar"

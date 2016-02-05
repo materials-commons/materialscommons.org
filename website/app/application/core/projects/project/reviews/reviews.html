@@ -1,55 +1,68 @@
-<div>
-    <div class="row">
-        <div class="col-xs-12 details-container">
-            <nav class="navbar navbar-default">
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li ng-class="{active: type === 'my_reviews'}"><a ng-click="listReviewsByType('my_reviews')">My
-                            Reviews</a>
-                        </li>
-                        <li ng-class="{active: type === 'due'}"><a ng-click="listReviewsByType('due')">Due</a></li>
-
-                        <li ng-class="{active: type === 'all'}"><a ng-click="listReviewsByType('all')">all</a>
-                        </li>
-                        <li ng-class="{active: type === 'closed'}"><a
-                                ng-click="listReviewsByType('closed')">Archived</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-
-        <div class="row" style="margin-top: 20px;">
-            <div class="col-xs-4">
-                <div class="details-sidebar" style=" margin-bottom: -900px;padding-bottom: 900px;">
-                    <div class="row">
-                        <div style="text-align: center;margin-top: 20px;">
-                            <button ui-sref="projects.project.reviews.create"
-                                    class="btn-review  btn-details-container btn btn-default"> create
-                            </button>
-                        </div>
-                    </div>
-                    <ul class="list-group">
-                        <li class="list-group-item pointer"
-                            ng-repeat="each_review in reviews"
-                            ng-class="{active: review.id === each_review.id}"
-                            ui-sref="projects.project.reviews.edit({'review_id': each_review.id})">
-                                <span class="pull-right">
-                                        <a style="font-size: 25px;" ng-if="review.messages.length !== 0"
-                                           class="fa-stack fa-2x">
-                                            <i ng-class="{'review-active': review.id === each_review.id, 'review-inactive': review.id !== each_review.id}"
-                                               class="fa fa-comment fa-stack-1x"></i>
-                                            <i style='font-size: 13px;line-height: 0;font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;font-weight: bold'
-                                               class="fa fa-stack-1x fa-inverse">{{each_review.messages.length}}</i>
-                                        </a>
-                                </span>
-                            {{each_review.title}}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-xs-8" stylex="margin-left: 10px;">
-                <div ui-view></div>
+<div class="row take-parent-height">
+    <div class="col-xs-3 sidebar take-parent-height">
+        <div class="row">
+            <div class="col-sm-12">
+                <a class="pull-right" ui-sref="projects.project.reviews.list.create">Create New Review</a>
             </div>
         </div>
+        <br>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <a class="pull-right text-muted padding-left-15"
+                   ng-class="{'text-muted': ctrl.category !== 'my_reviews'}"
+                   ng-click="ctrl.listReviewsByType('my_reviews')">
+                    My Reviews
+                </a>
+                <a class="pull-right text-muted padding-left-15"
+                   ng-class="{'text-muted': ctrl.category !== 'due'}"
+                   ng-click="ctrl.listReviewsByType('due')">
+                    Due
+                </a>
+                <a class="pull-right text-muted padding-left-15"
+                   ng-class="{'text-muted': ctrl.category !== 'closed'}"
+                   ng-click="ctrl.listReviewsByType('closed')">
+                    Archived
+                </a>
+                <a class="pull-right"
+                   ng-class="{'text-muted': ctrl.category !== 'all'}"
+                   ng-click="ctrl.listReviewsByType('all')">All</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <input placeholder="Search all..." class="form-control" ng-model="search">
+            </div>
+        </div>
+
+        <ul ng-if="ctrl.reviews.length !== 0" class="list-group">
+            <li class="list-group-item pointer no-padding no-position"
+                ng-repeat="r in ctrl.reviews"
+                ng-class="{active: review.id === r.id}"
+                ui-sref="projects.project.reviews.list.view({'review_id': r.id})">
+                <p class="heading">{{r.title}}</p>
+
+                <div class="text-muted truncate-text" ta-bind ng-model="r.messages[0].message"></div>
+                <div class="row counts">
+                    <span data-placement="right" data-toggle="tooltip" title="Samples"><i
+                            class="fa fa-fw fa-cubes sample"></i>{{(r.attachments | byKey: 'type': 'sample').length}}</span>
+                    <span data-placement="right" data-toggle="tooltip" title="Processes" class="padding-left-15"><i
+                            class="fa fa-fw fa-code-fork process"></i>{{(r.attachments | byKey: 'type': 'process').length}}  </span>
+                    <span data-placement="right" data-toggle="tooltip" title="Files" class="padding-left-15"><i
+                            class="fa fa-fw fa-files-o file"></i>{{(r.attachments | byKey: 'type': 'file').length}}    </span>
+                    <span data-placement="right" data-toggle="tooltip" title="Comments" class="pull-right"><i
+                            class="fa fa-fw fa-comments-o review"></i>{{r.messages.length}}</span>
+                </div>
+            </li>
+        </ul>
+        <h4 ng-if="ctrl.reviews.length === 0" class="text-center text-uppercase">
+            {{ctrl.noReviewsMessage}}
+        </h4>
+    </div>
+    <div class="col-xs-9 no-padding take-parent-height">
+        <div class="take-parent-height" ui-view></div>
     </div>
 </div>
+
+
+

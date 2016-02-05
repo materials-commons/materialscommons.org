@@ -1,47 +1,24 @@
-var Application = Application || {};
-
-Application.Constants = angular.module('application.core.constants', []);
-Application.Services = angular.module('application.core.services', []);
-Application.Controllers = angular.module('application.core.controllers', []);
-Application.Filters = angular.module('application.core.filters', []);
-Application.Directives = angular.module('application.core.directives', []);
+angular.module('materialscommons', []);
 
 var app = angular.module('materialscommons',
     [
-        'ngAnimate',
         'ngSanitize',
         'ngMessages',
         'ui',
-        'highcharts-ng',
         'ngCookies',
         'ui.router',
-        'ngHandsontable',
-        'btford.socket-io',
         'restangular',
         'jmdobry.angular-cache',
-        'validation', 'validation.rule', 'wu.masonry',
         'textAngular', 'angularGrid',
         'ngDragDrop', 'ngTagsInput',
-        'ng-context-menu', 'angular.filter', 'ui.calendar',
+        'angular.filter', 'ui.calendar',
         '$strap.directives', 'ui.bootstrap', 'toastr',
-        "hljs", "nsPopover", "RecursionHelper",'googlechart',
-        'application.core.constants', 'application.core.services',
-        'application.core.controllers',
-        'application.core.filters', 'application.core.directives']);
+        "hljs", "RecursionHelper", 'googlechart',
+        'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
+        'ct.ui.router.extras.previous',
+        'materialscommons']);
 
-// This factory needs to hang off of this module for some reason
-app.factory('msocket', ["socketFactory", function (socketFactory) {
-    var msocket = socketFactory({
-        ioSocket: io.connect('https://localhost:8082')
-    });
-    msocket.forward('file');
-    msocket.forward('connect');
-    msocket.forward('disconnect');
-    msocket.forward('error');
-    return msocket;
-}]);
-
-app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", function ($stateProvider, $validationProvider, $urlRouterProvider) {
+app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
 
     mcglobals = {};
     doConfig();
@@ -57,15 +34,11 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         })
         .state('logout', {
             url: '/logout',
-            controller: 'logout'
+            controller: 'LogoutController'
         })
         .state('reviews', {
             url: '/reviews',
             templateUrl: 'application/core/reviews/reviews.html'
-        })
-        .state('machines', {
-            url: '/machines',
-            templateUrl: 'application/core/machines/machines.html'
         })
 
         /*
@@ -107,79 +80,90 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
                 Projects: "model.projects",
                 projects: function (Projects) {
                     return Projects.getList();
-                },
-
-                Templates: "model.templates",
-                templates: function (Templates) {
-                    return Templates.getList();
                 }
             }
         })
         .state('projects.create', {
             url: '/create',
             templateUrl: 'application/core/projects/create.html',
-            controller: 'projectsCreate'
+            controller: 'CreateProjectController',
+            controllerAs: 'project'
         })
         .state('projects.project', {
             url: '/project/:id',
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
-                project: ["$stateParams", "model.projects", "projects", "templates",
-                    function ($stateParams, Projects, projects, templates) {
-                        // We use templates as a dependency so that they are all loaded
-                        // before getting to this step. Otherwise the order of items
-                        // being resolved isn't in the order we need them.
+                project: ["$stateParams", "model.projects", "projects",
+                    // Inject projects so that it resolves before look up the project.
+                    function ($stateParams, Projects) {
                         return Projects.get($stateParams.id);
+                    }],
+                templates: ["processTemplates", "project",
+                    function (processTemplates, project) {
+                        return processTemplates.templates(project.process_templates, project.id);
                     }]
             },
-            onEnter: ["pubsub", "project", function (pubsub, project) {
+            onEnter: ["pubsub", "project", function (pubsub) {
                 pubsub.send("reviews.change");
             }],
-            controller: "ProjectController"
+            controller: "ProjectController",
+            controllerAs: 'project'
         })
         .state('projects.project.home', {
             url: '/home',
             templateUrl: 'application/core/projects/project/home/home.html',
-            controller: "projectHome"
+            controller: "ProjectHomeController",
+            controllerAs: "ctrl"
         })
         .state('projects.project.search', {
             url: '/search/:query',
             templateUrl: 'application/core/projects/project/search.html',
-            controller: 'searchController',
+            controller: 'SearchController',
             controllerAs: 'search'
         })
         .state("projects.project.files", {
             url: "/files",
-            templateUrl: "application/core/projects/project/files/files.html",
-            controller: "FilesController",
-            controllerAs: "files"
+            abstract: true,
+            template: '<div ui-view></div>'
         })
         .state("projects.project.files.all", {
             url: "/all",
             templateUrl: "application/core/projects/project/files/all.html",
-            controller: "FilesAllController"
+            controller: "FilesAllController",
+            controllerAs: 'files'
+
         })
         .state("projects.project.files.all.edit", {
-            url: "/edit/:file_id/:file_type",
+            url: "/edit/:file_id",
             templateUrl: "application/core/projects/project/files/edit.html",
-            controller: "FilesEditController",
-            controllerAs: 'file'
+            controller: "FileEditController",
+            controllerAs: 'ctrl',
+            resolve: {
+                file: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('v2').one('projects', $stateParams.id).
+                            one('files', $stateParams.file_id).get();
+                    }]
+            }
+        })
+        .state("projects.project.files.all.dir", {
+            url: "/dir/:dir_id",
+            templateUrl: "application/core/projects/project/files/dir.html",
+            controller: "DirController",
+            controllerAs: "ctrl"
         })
         .state("projects.project.files.edit", {
-            url: "/edit/:file_id/:file_type",
+            url: "/edit/:file_id",
             templateUrl: "application/core/projects/project/files/edit.html",
-            controller: "FilesEditController",
-            controllerAs: "file"
-        })
-        .state("projects.project.files.images", {
-            url: "/images",
-            templateUrl: "application/core/projects/project/files/images.html",
-            controller: "FilesImagesController"
-        })
-        .state("projects.project.files.types", {
-            url: "/types",
-            templateUrl: "application/core/projects/project/files/types.html",
-            controller: "FilesByTypeController"
+            controller: "FileEditController",
+            controllerAs: "ctrl",
+            resolve: {
+                file: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('v2').one('projects', $stateParams.id).
+                            one('files', $stateParams.file_id).get();
+                    }]
+            }
         })
         .state("projects.project.files.search", {
             url: "/search",
@@ -190,27 +174,14 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         .state("projects.project.access", {
             url: "/access",
             templateUrl: "application/core/projects/project/access/access.html",
-            controller: "projectAccess"
-        })
-        .state("projects.project.reviews", {
-            url: "/reviews/:category",
-            templateUrl: "application/core/projects/project/reviews/reviews.html",
-            controller: "projectReviews"
-        })
-        .state("projects.project.reviews.edit", {
-            url: "/edit/:review_id",
-            templateUrl: "application/core/projects/project/reviews/edit.html",
-            controller: "projectEditReview"
-        })
-        .state("projects.project.reviews.create", {
-            url: "/reviews/create",
-            templateUrl: "application/core/projects/project/reviews/create.html",
-            controller: "projectCreateReview"
+            controller: "ProjectAccessController",
+            controllerAs: 'access'
         })
         .state("projects.project.notes", {
             url: "/notes",
             templateUrl: "application/core/projects/project/notes/notes.html",
-            controller: "projectNotes"
+            controller: "projectNotes",
+            controllerAs: 'notes'
         })
         .state("projects.project.sideboard", {
             url: "/sideboard",
@@ -219,83 +190,214 @@ app.config(["$stateProvider", "$validationProvider", "$urlRouterProvider", funct
         })
         .state("projects.project.processes", {
             url: "/processes",
-            templateUrl: "application/core/projects/project/processes/processes.html",
-            controller: "projectProcesses",
-            controllerAs: 'processes'
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state("projects.project.processes.create", {
+            url: "/create/:process/:process_id",
+            templateUrl: "application/core/projects/project/processes/create/create.html",
+            controller: "CreateProcessController",
+            controllerAs: 'ctrl',
+            resolve: {
+                template: ["$filter", "$stateParams", "templates", "Restangular", "processEdit",
+                    function ($filter, $stateParams, templates, Restangular, processEdit) {
+                        var t, template;
+                        if ($stateParams.process_id) {
+                            t = _.find(templates, {name: $stateParams.process});
+                            template = t.create();
+                            template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
+                            return Restangular.one('process').one('details', $stateParams.process_id).get().then(function (process) {
+                                process.name = template.name;
+                                var p = processEdit.fillProcess(template, process);
+                                p.input_samples = [];
+                                p.input_files = [];
+                                p.output_files = [];
+                                return p;
+                            });
+                        } else {
+                            t = _.find(templates, {name: $stateParams.process});
+                            template = t.create();
+                            template.name = template.name + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
+                            return template;
+                        }
+                    }
+                ]
+            }
+        })
+        .state("projects.project.processes.edit", {
+            url: "/edit/:process_id",
+            templateUrl: "application/core/projects/project/processes/edit/edit.html",
+            controller: "EditProcessController",
+            controllerAs: 'ctrl',
+            resolve: {
+                process: ["$stateParams", "Restangular", "processEdit", "templates",
+                    function ($stateParams, Restangular, processEdit, templates) {
+                        return Restangular.one('process').one('details', $stateParams.process_id).get().then(function (process) {
+                            var t = _.find(templates, {name: process.process_name});
+                            var template = t.create();
+                            return processEdit.fillProcess(template, process);
+                        });
+                    }
+                ]
+            }
         })
         .state("projects.project.processes.list", {
             url: "/list",
             templateUrl: "application/core/projects/project/processes/list.html",
-            controller: "projectListProcess"
-        })
-        .state("projects.project.processes.create", {
-            url: "/create",
-            templateUrl: "application/core/projects/project/processes/create.html",
-            controller: "projectCreateProcess"
-        })
-        .state("projects.project.processes.list.edit", {
-            url: "/edit/:process_id",
-            templateUrl: "application/core/projects/project/processes/edit.html",
-            controller: "projectEditProcess"
+            controller: "projectListProcess",
+            controllerAs: "ctrl",
+            resolve: {
+                processes: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('v2').one("projects", $stateParams.id).one("processes").getList();
+                    }]
+            }
         })
         .state("projects.project.processes.list.view", {
             url: "/view/:process_id",
             templateUrl: "application/core/projects/project/processes/view.html",
-            controller: "projectViewProcess"
+            controller: "projectViewProcess",
+            controllerAs: 'view',
+            resolve: {
+                process: ["$stateParams", "Restangular", "processes",
+                    function ($stateParams, Restangular, processes) {
+                        var process_id = '';
+                        if ($stateParams.process_id) {
+                            process_id = $stateParams.process_id;
+                        } else {
+                            if (processes.length > 0) {
+                                process_id = processes[0].id;
+                            }
+                        }
+                        return Restangular.one('process').one('details', process_id).get();
+                    }
+                ]
+            }
         })
-        .state("projects.project.samples", {
-            url: "/samples",
+        .state("projects.project.processes.view", {
+            url: "/view/:process_id",
+            templateUrl: "application/core/projects/project/processes/view.html",
+            controller: "projectViewProcess",
+            controllerAs: 'view',
+            resolve: {
+                process: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('process').one('details', $stateParams.process_id).get();
+                    }
+                ]
+            }
+        })
+        .state('projects.project.samples', {
+            url: '/samples',
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state("projects.project.samples.list", {
+            url: "/list",
             templateUrl: "application/core/projects/project/samples/samples.html",
-            controller: "SamplesController"
+            controller: "SamplesController",
+            controllerAs: "ctrl",
+            resolve: {
+                samples: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('v2').one("projects", $stateParams.id).one("samples").getList();
+                    }]
+            }
         })
-        .state("projects.project.samples.all", {
-            url: "/all",
-            templateUrl: "application/core/projects/project/samples/all.html",
-            controller: "SamplesAllController"
-        })
-        .state("projects.project.samples.all.edit", {
+        .state("projects.project.samples.list.edit", {
             url: "/edit/:sample_id",
             templateUrl: "application/core/projects/project/samples/edit.html",
-            controller: "SamplesEditController"
+            controller: "SamplesEditController",
+            controllerAs: "ctrl",
+            resolve: {
+                //At this point we have a sample object with properties and best measure.
+                // So, to get other measures Restangular call is made
+                sample: ["$stateParams", "Restangular", "samples",
+                    function ($stateParams, Restangular, samples) {
+                        if ($stateParams.sample_id) {
+                            var sample_id = $stateParams.sample_id;
+                        } else {
+                            if (samples.length > 0) {
+                                sample_id = samples[0].id;
+                            }
+                        }
+                        return Restangular.one('sample').one('details', sample_id).get();
+                    }
+                ]
+            }
         })
-        .state("projects.project.samples.edit", {
-            url: "/edit/:sample_id",
+        .state('projects.project.samples.edit', {
+            url: '/edit/:sample_id',
             templateUrl: "application/core/projects/project/samples/edit.html",
-            controller: "SamplesEditController"
+            controller: "SamplesEditController",
+            controllerAs: "ctrl",
+            resolve: {
+                //At this point we have a sample object with properties and best measure.
+                // So, to get other measures Restangular call is made
+                sample: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('sample').one('details', $stateParams.sample_id).get();
+                    }
+                ]
+            }
+        })
+        .state("projects.project.reviews", {
+            url: "/reviews",
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state("projects.project.reviews.list", {
+            url: "/list",
+            templateUrl: "application/core/projects/project/reviews/reviews.html",
+            controller: "projectReviews",
+            controllerAs: "ctrl",
+            resolve: {
+                reviews: ["project",
+                    function (project) {
+                        return project.reviews;
+                    }]
+            }
+        })
+        .state("projects.project.reviews.list.view", {
+            url: "/view/:review_id",
+            templateUrl: "application/core/projects/project/reviews/view.html",
+            controller: "projectViewReview",
+            controllerAs: "ctrl",
+            resolve: {
+                review: ["$stateParams", "Restangular",
+                    function ($stateParams, Restangular) {
+                        return Restangular.one('review').one('details', $stateParams.review_id).get();
+                    }
+                ]
+            }
+        })
+        .state("projects.project.reviews.list.create", {
+            url: "/reviews/create",
+            templateUrl: "application/core/projects/project/reviews/create.html",
+            controller: "projectCreateReview",
+            controllerAs: "ctrl"
         });
 
     $urlRouterProvider.otherwise('/home');
-    createNumericValidator($validationProvider);
-    $validationProvider.showSuccessMessage = false;
-    $validationProvider.setErrorHTML(function (msg) {
-        return '<span class="validation-invalid">' + msg + '</span>';
-    });
-
-    $validationProvider.setSuccessHTML(function (msg) {
-        return '<span class="validation-valid">' + msg + '</span>';
-    });
-
 }]);
-
-function createNumericValidator(validationProvider) {
-    var expression = {
-        numeric: /^[0-9]*\.?[0-9]+$/
-    };
-
-    var validationMsgs = {
-        numeric: {
-            error: "Invalid numeric value",
-            success: ""
-        }
-    };
-
-    validationProvider.setExpression(expression).setDefaultMsg(validationMsgs);
-}
 
 app.run(["$rootScope", "User", "Restangular", appRun]);
 
 function appRun($rootScope, User, Restangular) {
     Restangular.setBaseUrl(mcglobals.apihost);
+    if (User.isAuthenticated()) {
+        Restangular.setDefaultRequestParams({apikey: User.apikey()});
+    }
+
+    // appRun will run when the application starts up and before any controllers have run.
+    // This means it will run on a refresh. We check if the user is already authenticated
+    // during the run. If they are then the browser has been refreshed and we need to
+    // set the apikey param for Restangular. This param is set in the login-controller.
+    // However on a refresh the login-controller isn't run so we need to explicitly set
+    // the apikey param in Restangular.
+    if (User.isAuthenticated()) {
+        Restangular.setDefaultRequestParams({apikey: User.apikey()});
+    }
 
     $rootScope.$on('$stateChangeStart', function () {
         if (User.isAuthenticated()) {

@@ -1,34 +1,64 @@
-module.exports = function(processes, schema) {
+module.exports = function (processes, schema) {
     'use strict';
-    let ec = require('./error-code');
-    let parse = require('co-body');
+    const parse = require('co-body');
+    const httpStatus = require('http-status');
 
     return {
-        create: create
+        update: update,
+        create: create,
+        get: get,
+        getList: getList
     };
 
     /////////////////////////
+
+    function* update(next) {
+        let process = yield parse(this);
+        let rv = yield processes.update(this.params.process_id, process);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
+        }
+        this.body = rv.val;
+        yield next;
+    }
+
+
+    function* get(next) {
+        let rv = yield processes.get(this.params.process_id);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
+        }
+        this.status = 200;
+        this.body = rv.val;
+        yield next;
+    }
+
+    function* getList(next) {
+        let rv = yield processes.getList(this.params.project_id);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
+        }
+        this.body = rv.val;
+        this.status = 200;
+        yield next;
+    }
 
     // create creates a new process and associated dependencies.
     // It validates the submitted entry and enters in default
     // values for optional missing attributes.
     function *create(next) {
-        try {
-            let process = yield parse(this);
-            process.project_id = this.params.project_id;
-            process.owner = this.reqctx.user.id;
-            //process = prepareProcess(process);
-            //yield validateProcess(process);
-            let inserted = yield processes.create(process);
-            this.status = 200;
-            this.body = inserted;
-            yield next;
-        } catch (err) {
-            console.log(err, err.stack.split("\n"));
-            let e = ec(err);
-            this.status = e.status();
-            this.body = e.error();
+        let process = yield parse(this);
+        process.project_id = this.params.project_id;
+        process.owner = this.reqctx.user.id;
+        //process = prepareProcess(process);
+        //yield validateProcess(process);
+        let rv = yield processes.create(process);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
         }
+        this.status = 200;
+        this.body = rv.val;
+        yield next;
 
         //////////////////////
 
@@ -136,7 +166,7 @@ module.exports = function(processes, schema) {
         schema.processes.addDefaultsToTarget(process);
 
         // Add owner and project to created samples
-        process.samples_created.forEach(function(s) {
+        process.samples_created.forEach(function (s) {
             s.owner = process.owner;
             s.project_id = process.project_id;
         });
