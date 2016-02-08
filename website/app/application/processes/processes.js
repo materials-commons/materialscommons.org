@@ -429,7 +429,38 @@ function AsReceived() {
                     valid: false,
                     errorMessage: ""
                 },
-
+                {
+                    property: {
+                        name: "Dimensions",
+                        attribute: "dimensions",
+                        description: "",
+                        value: null,
+                        units: ["cm", "mm"],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
+                {
+                    property: {
+                        name: "Manufacturing Date",
+                        attribute: "manufacturing_date",
+                        description: "",
+                        value: null,
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    },
+                    validators: [],
+                    valid: false,
+                    errorMessage: ""
+                },
                 {
                     property: {
                         name: "Production method",
