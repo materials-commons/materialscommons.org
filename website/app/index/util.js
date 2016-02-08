@@ -98,4 +98,8 @@ _.mixin({
         // not found, return fail value
         return -1;
     }
+
+    //contains: function(list, value, fromIndex) {
+    //    return _.includes(list, value, fromIndex);
+    //}
 });
