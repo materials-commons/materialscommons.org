@@ -78,7 +78,6 @@ def add_samples(projects_by_id, project_ids):
                    .zip().filter({'current': True})
                    .eq_join('sample_id', r.table('samples'))
                    .zip()
-                   .filter({'is_grouped': False})
                    .order_by('name')
                     .merge(lambda sample: {
                         'properties': r.table('propertyset2property')

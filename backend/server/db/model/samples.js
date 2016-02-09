@@ -55,7 +55,7 @@ module.exports = function (r) {
         let rql = sampleDetailsRql(r.table('project2sample').getAll(projectID, {index: 'project_id'})
             .eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'})
             .zip().filter({'current': true})
-            .eqJoin('sample_id', r.table('samples')).zip()).filter({is_grouped: false});
+            .eqJoin('sample_id', r.table('samples')).zip());
         let samples = yield run(rql);
         samples = samples.map(s => {
             s.transforms = s.processes.filter(p => p.does_transform).length;

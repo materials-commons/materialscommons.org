@@ -98,7 +98,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="sample in ctrl.project.samples">
+                <tr ng-repeat="sample in ctrl.project.samples | filter:{is_grouped: false}">
                     <td style="width:40%">
                         <b><a ui-sref="projects.project.samples.edit({sample_id: sample.id})">{{sample.name}}</a></b>
 
@@ -106,6 +106,9 @@
                             <p style="font-size: 12px;padding-bottom: 10px;">
                                 {{sample.birthtime | toDateString}}
                                 <span style="padding-left: 10px">{{sample.owner}}</span>
+                                <span ng-if="sample.has_group" style="padding-left: 10px">
+                                    Group size: {{sample.group_size}}
+                                </span>
                             </p>
 
                             <display-image-tab sample="sample"></display-image-tab>
