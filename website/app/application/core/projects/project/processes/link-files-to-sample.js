@@ -15,7 +15,6 @@
         ctrl.linkAllFiles = linkAllFiles;
         ctrl.unlinkAllFiles = unlinkAllFiles;
         ctrl.openFile = openFile;
-                                     console.dir(files);
         files.forEach(function (f) {
             ctrl.filesToLink.push({id: f.id, name: f.name, linked: f.linked});
         });
