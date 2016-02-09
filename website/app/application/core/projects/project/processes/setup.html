@@ -19,7 +19,12 @@
                 {{property.value.name}} {{property.unit}}
             </td>
             <td ng-if="!property.value.name" style="height: 0;">
-                {{property.value}} {{property.unit}}
+                <span ng-if="property._type === 'date'">
+                    {{property.value | toDateString}}
+                </span>
+                <span ng-if="property._type !== 'date'">
+                    {{property.value}} {{property.unit}}
+                </span>
             </td>
         </tr>
         </tbody>
