@@ -86,7 +86,7 @@
                 return;
             }
             if (ctrl.process.process_name === 'As Received') {
-                filloutSampleProperties();
+                filloutSample();
             }
             projectsService.createProjectProcess($stateParams.id, ctrl.process).then(function () {
                 ctrl.doc.value.length = 0;
@@ -112,11 +112,11 @@
                 toastr.error("You must specify a sample name", 'Error', {closeButton: true});
                 return;
             }
-            filloutSampleProperties();
+            filloutSample();
             submit();
         }
 
-        function filloutSampleProperties() {
+        function filloutSample() {
             if (ctrl.doc.value.length) {
                 var composition = ctrl.doc.value.map(function(c) {
                     return {
@@ -145,6 +145,20 @@
                 ctrl.sample.group_size = 0;
             }
             ctrl.process.output_samples.push(ctrl.sample);
+
+            addSampleInputFiles();
+        }
+
+        function addSampleInputFiles() {
+            var linkedFiles = ctrl.process.input_files.map(function(f) {
+                return {
+                    id: f.id,
+                    command: 'add',
+                    name: f.name,
+                    sample_id: ""
+                }
+            });
+            ctrl.sample = processEdit.refreshSample(linkedFiles, ctrl.sample);
         }
 
         // setPreviousStateMemo sets the process_previous memo to the previous state. It
