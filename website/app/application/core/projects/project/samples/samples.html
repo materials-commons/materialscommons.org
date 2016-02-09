@@ -37,7 +37,7 @@
         </div>
         <ul ng-if="ctrl.samples.length !== 0" class="list-group">
             <li class="list-group-item pointer no-padding no-position"
-                ng-repeat="s in ctrl.samples | orderBy: 'name' | filter:ctrl.sampleFilter"
+                ng-repeat="s in ctrl.samples | filter:{is_grouped: false} | orderBy: 'name' | filter:ctrl.sampleFilter"
                 ng-class="{active: ctrl.current.id === s.id}"
                 ng-click="ctrl.viewSample(s)">
                 <p class="heading">{{s.name}}</p>
