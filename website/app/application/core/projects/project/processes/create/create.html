@@ -182,6 +182,18 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-xs-8">
+            <ul class="list-inline">
+                <li>
+                    <button ng-click="ctrl.chooseInputFiles()"
+                            class="btn btn-default btn-files">
+                        <i class="fa fa-fw fa-plus"></i> Input Files
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-xs-12">
             <ul class="list-inline" style="padding-top:50px">
                 <li>
@@ -205,6 +217,33 @@
             </ul>
         </div>
     </div>
+
+    <hr class="divider">
+    <div class="row">
+        <div class="col-xs-12">
+            <table ng-if="ctrl.process.input_samples.length || ctrl.process.input_files.length || ctrl.process.output_files.length"
+                   class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="file in ctrl.process.input_files | orderBy:'name'">
+                    <td>Input File</td>
+                    <td>{{file.name}}</td>
+                    <td></td>
+                    <td><a ng-click="ctrl.remove(ctrl.process.input_files, file)"><i class="fa fa-close"></i></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
 </div>
 
 
