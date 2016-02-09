@@ -225,8 +225,9 @@ def get_sample_details(sample_id):
 
                 'processes': (
                     r.table('process2sample')
-                    .get_all(sample_id, index='sample_id')
-                    .eq_join('process_id', r.table('processes')).zip().filter({'direction': 'in'})
+                    .get_all(sample_id, index='sample_id').pluck('process_id', 'sample_id', 'property_set_id')
+                    .distinct()
+                    .eq_join('process_id', r.table('processes')).zip()
                     .merge(lambda process: {
                         'setup': (
                             r.table('process2setup')
