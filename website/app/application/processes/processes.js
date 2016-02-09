@@ -453,7 +453,7 @@ function AsReceived() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        _type: "date",
                         required: false,
                         choices: []
                     },
