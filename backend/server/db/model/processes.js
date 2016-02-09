@@ -232,6 +232,12 @@ module.exports = function (r) {
         yield addCreatedSamples(process.output_samples, process.project_id, proc.id, process.owner);
         yield addSampleMeasurements(proc.id, process.output_samples);
         yield addTransformedSamples(process.transformed_samples, proc.id);
+        yield addSampleFiles(process.input_samples);
+        yield addSampleFiles(process.output_samples);
+
+        // TODO: Do we need to add files for transformed_samples?
+        // yield addSampleFiles(process.transformed_samples);
+
         yield addFiles(proc.id, process.input_files, 'in');
         yield addFiles(proc.id, process.output_files, 'out');
 
@@ -332,7 +338,13 @@ module.exports = function (r) {
                 let proc2sample = new model.Process2Sample(processID, sampleID, samplePSetID, 'in');
                 yield db.insert('process2sample', proc2sample);
             }
-            yield addSample2File(sampleID, sample.files);
+        }
+    }
+
+    function* addSampleFiles(samples) {
+        for (let i = 0; i < samples.length; i++) {
+            let sample = samples[i];
+            yield addSample2File(sample.id, sample.files);
         }
     }
 
