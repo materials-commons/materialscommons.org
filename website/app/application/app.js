@@ -95,7 +95,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
                 project: ["$stateParams", "model.projects", "projects",
-                    // Inject projects so that it resolves before look up the project.
+                    // Inject projects so that it resolves before looking up the project.
                     function ($stateParams, Projects) {
                         return Projects.get($stateParams.id);
                     }],
