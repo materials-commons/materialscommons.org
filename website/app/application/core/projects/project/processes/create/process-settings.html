@@ -38,6 +38,30 @@
                 </div>
             </div>
 
+            <!--------- date --------->
+            <div ng-switch-when="date">
+                <label class="col-xs-4 control-label">
+                    {{::setting.property.name}}
+                    <i ng-if="setting.property.required" class="fa fa-asterisk text-danger"></i>
+                </label>
+                <div class="col-xs-6">
+                    <div class="col-xs-8">
+                        <p class="input-group">
+                            <input type="text" class="form-control" datepicker-popup="dd-MMMM-yyyy"
+                                   ng-model="setting.property.value" is-open="setting.property.opened"
+                                   placeholder="No date chosen..."
+                                   datepicker-options="ctrl.datePickerOptions" close-text="Close">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default"
+                                        ng-click="ctrl.openDatePicker($event, setting.property)">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <!--------- selection --------->
             <div ng-switch-when="selection">
                 <label class="col-xs-4 control-label">
