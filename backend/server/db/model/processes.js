@@ -278,8 +278,12 @@ module.exports = function (r) {
             for (let j = 0; j < current.properties.length; j++) {
                 let p = current.properties[j].property;
                 if (p.value) {
+                    let val = p.value;
+                    if (p._type === "date") {
+                        val = new Date(p.value);
+                    }
                     let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
-                        p._type, p.value, p.unit);
+                        p._type, val, p.unit);
                     let sprop = yield db.insert('setupproperties', prop);
                     setup.properties.push(sprop);
                 }
@@ -504,7 +508,7 @@ module.exports = function (r) {
      * @param {String} description - Description of the sample.
      * @param {String} owner - Sample owner.
      * @param {Boolean} hasGroup - Does the sample have samples grouped under it.
-     * @param {Integer} groupSize - Size of sample group to create.
+     * @param {number} groupSize - Size of sample group to create.
      * @returns {Object}  - The created sample.
      */
     function *addNewSample(name, description, owner, hasGroup, groupSize) {
