@@ -53,17 +53,22 @@
                            ng-model="ctrl.fileFilter.name"
                            ng-model-options="{ updateOn: 'default blur', debounce: { default: 200, blur: 0} }">
                 </li>
-                <li ng-if="ctrl.downloadCount">
+                <li ng-if="ctrl.selectedCount">
                     <a class="text-uppercase" ng-click="ctrl.downloadSelectedFiles()">
-                        <i class="fa fa-fw fa-download"></i>download selected
+                        <i class="fa fa-fw fa-download"></i> download selected
                     </a>
                 </li>
-                <li ng-if="!ctrl.downloadCount">
+                <li ng-if="ctrl.selectedCount">
+                    <a class="text-uppercase" ng-click="ctrl.shareSelectedFiles()">
+                        <i class="fa fa-fw"></i> share selected
+                    </a>
+                </li>
+                <li ng-if="!ctrl.selectedCount">
                     <a class="text-uppercase" ng-click="ctrl.selectAllFiles()">
                         select all
                     </a>
                 </li>
-                <li ng-if="ctrl.downloadCount">
+                <li ng-if="ctrl.selectedCount">
                     <a class="text-uppercase" ng-click="ctrl.deselectSelectedFiles()">
                         clear selected
                     </a>

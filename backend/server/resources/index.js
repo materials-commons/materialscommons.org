@@ -10,6 +10,7 @@ module.exports = function(model) {
     const processes = require('./processes')(model.processes, schema);
     const directories = require('./directories')(model.directories);
     const users = require('./users')(model.users);
+    const shares = require('./shares')(model.shares, schema);
 
     router.get('/projects', projects.all);
     router.put('/projects/:project_id', validateProjectAccess, projects.update);
@@ -32,6 +33,10 @@ module.exports = function(model) {
     router.post('/projects/:project_id/files', validateProjectAccess, files.getList);
     router.delete('/projects/:project_id/files/:file_id', validateProjectAccess, files.deleteFile);
     router.put('/projects/:project_id/files_by_path', validateProjectAccess, files.byPath);
+
+    router.get('/projects/:project_id/shares', validateProjectAccess, shares.getList);
+    router.post('/projects/:project_id/shares', validateProjectAccess, shares.create);
+    router.delete('/projects/:project_id/shares/:share_id', validateProjectAccess, shares.remove);
 
     router.put('/users/:project_id', users.update);
 

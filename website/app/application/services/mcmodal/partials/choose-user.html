@@ -1,0 +1,21 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">Choose Users</h3>
+    </div>
+    <br>
+    <div class="modal-body">
+        <ul class="list-unstyled">
+            <li ng-repeat="user in ctrl.users">
+                <div class="checkbox">
+                    <input type="checkbox" id="usersCheckbox"
+                           ng-model="user.selected">
+                    <label for="usersCheckbox">{{user.name}}</label>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn bt-success text-uppercase">ok</button>
+        <button class="btn btn-warning text-uppercase">cancel</button>
+    </div>
+</div>

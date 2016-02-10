@@ -72,6 +72,21 @@
                 return modal.result;
             },
 
+            chooseUsers: function(users) {
+                var modal = $modal.open({
+                    size: 'lg',
+                    templateUrl: 'application/services/mcmodal/partials/choose-users.html',
+                    controller: 'ChooseUsersController',
+                    controllerAs: 'ctrl',
+                    resolve: {
+                        userslist: function() {
+                            return users;
+                        }
+                    }
+                });
+                return modal.result;
+            },
+
             chooseExistingProcess: function (processes) {
                 var modal = $modal.open({
                     size: 'lg',
