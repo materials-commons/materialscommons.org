@@ -7,15 +7,14 @@
         <ul class="list-unstyled">
             <li ng-repeat="user in ctrl.users">
                 <div class="checkbox">
-                    <input type="checkbox" id="usersCheckbox"
-                           ng-model="user.selected">
-                    <label for="usersCheckbox">{{user.name}}</label>
+                    <input type="checkbox" id="{{user.name}}" ng-model="user.selected">
+                    <label for="{{user.name}}">{{user.name}}</label>
                 </div>
             </li>
         </ul>
     </div>
     <div class="modal-footer">
-        <button class="btn bt-success text-uppercase">ok</button>
-        <button class="btn btn-warning text-uppercase">cancel</button>
+        <button class="btn bt-success text-uppercase" ng-click="ctrl.ok()">ok</button>
+        <button class="btn btn-warning text-uppercase" ng-click="ctrl.cancel()">cancel</button>
     </div>
 </div>
