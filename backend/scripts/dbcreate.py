@@ -81,6 +81,10 @@ def create_tables():
 
     create_table("sample2sample", "parent_sample_id", "sample_id")
 
+    create_table("shares", "project_id", "item_id", "item_type")
+    create_table("user2share", "user_id", "share_id")
+    create_compound_index('user2share', 'user_share', ["user_id", "share_id"])
+
     create_table("measurement2datafile", "measurement_id", "datafile_id")
 
 

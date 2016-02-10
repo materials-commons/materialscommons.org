@@ -23,10 +23,6 @@
 
             process: function() {
                 return self.current.process;
-            },
-
-            setProcess: function(process) {
-                self.current.process = process;
             }
         };
     }

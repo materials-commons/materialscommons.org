@@ -15,9 +15,9 @@
     }
 
     module.controller('DirOverviewDirectiveController', DirOverviewDirectiveController);
-    DirOverviewDirectiveController.$inject = ["fileType", "mcfile", "$filter", "Restangular", "User", "$interval"];
+    DirOverviewDirectiveController.$inject = ["fileType", "mcfile", "$filter", "Restangular", "User", "current"];
 
-    function DirOverviewDirectiveController(fileType, mcfile, $filter, Restangular, User, $interval) {
+    function DirOverviewDirectiveController(fileType, mcfile, $filter, Restangular, User, current) {
         var ctrl = this;
 
         ctrl.viewFiles = viewFiles;
@@ -27,8 +27,9 @@
         ctrl.allFiles = {
             files: allFiles()
         };
-        ctrl.downloadCount = 0;
+        ctrl.selectedCount = 0;
         ctrl.downloadSelectedFiles = downloadSelectedFiles;
+        ctrl.shareSelectedFiles = shareSelectedFiles;
         ctrl.fileSelect = fileSelect;
         ctrl.selectAllFiles = selectAllFiles;
         ctrl.deselectSelectedFiles = deselectSelectedFiles;
@@ -55,14 +56,14 @@
                 f.selected = false;
                 return f;
             });
-            ctrl.downloadCount = 0;
+            ctrl.selectedCount = 0;
         }
 
         function fileSelect(file) {
             if (file.selected) {
-                ctrl.downloadCount--;
+                ctrl.selectedCount--;
             } else {
-                ctrl.downloadCount++;
+                ctrl.selectedCount++;
             }
             file.selected = !file.selected;
         }
@@ -72,7 +73,7 @@
             filesToSelect.forEach(function (f) {
                 f.selected = true;
             });
-            ctrl.downloadCount = ctrl.files.length;
+            ctrl.selectedCount = ctrl.files.length;
         }
 
         function deselectSelectedFiles() {
@@ -81,19 +82,11 @@
                     f.selected = false;
                 }
             });
-            ctrl.downloadCount = 0;
+            ctrl.selectedCount = 0;
         }
 
         function downloadSelectedFiles() {
             ctrl.downloadState = 'preparing';
-            //var stop = $interval(function() {
-            //    console.log('interval tick');
-            //    if (ctrl.downloadState !== 'preparing') {
-            //        $interval.cancel(stop);
-            //    } else {
-            //        ctrl.downloadMessageFlash = ctrl.downloadMessageFlash === '' ? 'building' : '';
-            //    }
-            //}, 500);
             var fileIDs = ctrl.files.filter(function (f) { return f.selected; }).map(function (f) { return f.id});
             Restangular.one("project2").one("archive").customPOST({
                 file_ids: fileIDs
@@ -108,6 +101,10 @@
                     console.log('archive creation failed');
                 }
             );
+        }
+
+        function shareSelectedFiles() {
+            console.dir(current.project());
         }
     }
 }(angular.module('materialscommons')));
