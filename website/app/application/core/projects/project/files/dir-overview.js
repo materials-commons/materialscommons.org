@@ -15,9 +15,11 @@
     }
 
     module.controller('DirOverviewDirectiveController', DirOverviewDirectiveController);
-    DirOverviewDirectiveController.$inject = ["fileType", "mcfile", "$filter", "Restangular", "User", "current"];
+    DirOverviewDirectiveController.$inject = ["fileType", "mcfile", "$filter", "Restangular",
+        "User", "current", "mcmodal"];
 
-    function DirOverviewDirectiveController(fileType, mcfile, $filter, Restangular, User, current) {
+    function DirOverviewDirectiveController(fileType, mcfile, $filter, Restangular,
+                                            User, current, mcmodal) {
         var ctrl = this;
 
         ctrl.viewFiles = viewFiles;
@@ -104,7 +106,11 @@
         }
 
         function shareSelectedFiles() {
-            console.dir(current.project());
+            var toUserName = function (u) { return u.user_id;};
+            var users = current.project().users.map(toUserName);
+            mcmodal.chooseUsers(users).then(function(chosenUsers) {
+                console.log('users chosen', chosenUsers);
+            })
         }
     }
 }(angular.module('materialscommons')));
