@@ -19,7 +19,7 @@
                     </a>
                 </td>
             </tr>
-            <tr ng-repeat="entry in ctrl.overview">
+            <tr ng-repeat="entry in ctrl.overview | filter:{name: '!Directory'}">
                 <td>
                     <i class="fa fa-fw {{entry.icon}} file-color"></i> {{entry.name}}
                 </td>
