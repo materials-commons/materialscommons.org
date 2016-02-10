@@ -10,6 +10,11 @@
         ctrl.createSample = createSample;
         ctrl.sampleFilter = sampleFilter;
         ctrl.filterBy = 'all';
+        ctrl.showSamplesInGroups = false;
+        ctrl.showGroupsChanged = showGroupsChanged;
+        ctrl.showGroupsFilter = {
+            is_grouped: false
+        };
 
         if (ctrl.samples.length !== 0) {
             var sortedSamples = $filter('orderBy')(ctrl.samples, 'name');
@@ -18,6 +23,16 @@
         }
 
         //////////////////
+
+        function showGroupsChanged() {
+            if (!ctrl.showSamplesInGroups) {
+                ctrl.showGroupsFilter = {
+                    is_grouped: false
+                }
+            } else {
+                ctrl.showGroupsFilter = {};
+            }
+        }
 
         function viewSample(sample) {
             ctrl.current = sample;

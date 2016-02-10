@@ -10,6 +10,11 @@
 
         <div class="row">
             <div class="col-sm-12">
+                <div class="checkbox pull-left" style="margin-top:0;margin-bottom:0">
+                    <input type="checkbox" id="sampleGroupCheckbox" ng-change="ctrl.showGroupsChanged()"
+                           ng-model="ctrl.showSamplesInGroups" style="margin-top:0">
+                    <label for="sampleGroupCheckbox" style="margin-top:0">Show all</label>
+                </div>
                 <a class="pull-right padding-left-15"
                    ng-class="{'text-muted': ctrl.filterBy !== 'samples'}"
                    ng-click="ctrl.filterBy = 'samples'">
@@ -37,14 +42,16 @@
         </div>
         <ul ng-if="ctrl.samples.length !== 0" class="list-group">
             <li class="list-group-item pointer no-padding no-position"
-                ng-repeat="s in ctrl.samples | filter:{is_grouped: false} | orderBy: 'name' | filter:ctrl.sampleFilter"
+                ng-repeat="s in ctrl.samples | filter:ctrl.showGroupsFilter | orderBy: 'name' | filter:ctrl.sampleFilter"
                 ng-class="{active: ctrl.current.id === s.id}"
                 ng-click="ctrl.viewSample(s)">
                 <p class="heading">{{s.name}}</p>
 
                 <div class="text-muted truncate-text">{{s.description}}</div>
                 <div class="row counts">
-                    <span  popover-placement="right" popover="{{s.processes | byKey: 'does_transform': true | transformProcesses}}" popover-title="Transformations" popover-trigger="mouseenter">
+                    <span popover-placement="right"
+                          popover="{{s.processes | byKey: 'does_transform': true | transformProcesses}}"
+                          popover-title="Transformations" popover-trigger="mouseenter">
                         <i class="fa fa-fw fa-flask"
                            style="color: #ff5a60;"></i>{{s.transforms}}</span>
                     <span class="padding-left-15"><i data-placement="right" data-toggle="tooltip" title="Files"
