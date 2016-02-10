@@ -7,6 +7,7 @@ module.exports = function models(r) {
         processes: require('./processes')(r),
         files: require('./files')(r),
         directories: require('./directories')(r),
+        shares: require('./shares')(r),
         r: r
     };
 };

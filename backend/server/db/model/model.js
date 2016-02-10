@@ -198,6 +198,21 @@ module.exports = function(r) {
         this.sample_id = childID;
     }
 
+    function Share(projectID, itemID, itemType, itemName) {
+        let now = r.now();
+        this._type = 'share';
+        this.project_id = projectID;
+        this.item_id = itemID;
+        this.item_type = itemType;
+        this.item_name = itemName;
+        this.birthtime = now;
+    }
+
+    function User2Share(userID, shareID) {
+        this.user_id = userID;
+        this.share_id = shareID;
+    }
+
     return {
         Sample: Sample,
         Process: Process,
@@ -224,6 +239,8 @@ module.exports = function(r) {
         Tag2Item: Tag2Item,
         Directory: Directory,
         Project2DataDir: Project2DataDir,
-        Sample2Sample: Sample2Sample
+        Sample2Sample: Sample2Sample,
+        Share: Share,
+        User2Share: User2Share
     };
 };
