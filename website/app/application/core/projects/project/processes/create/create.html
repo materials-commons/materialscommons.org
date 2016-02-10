@@ -142,26 +142,28 @@
                     </div>
                 </fieldset>
             </form>
-            <div ng-if="ctrl.sampleGroup" class="row">
-                <div class="col-sm-offset-1">
-                    <ul class="list-inline">
-                        <li>
-                            <label class="radio-inline">
-                                <input type="radio"
-                                       name="sampleGroupSizeRadios"
-                                       value="set-size"
-                                       ng-model="ctrl.sampleGroupSizing" checked> Set sample group size
-                            </label>
-                        </li>
-                        <li>
-                            <label class="radio-inline">
-                                <input type="radio"
-                                       name="sampleGroupSizeRadios"
-                                       value="as-needed"
-                                       ng-model="ctrl.sampleGroupSizing"> Create samples as needed
-                            </label>
-                        </li>
-                    </ul>
+            <div ng-if="false">
+                <div ng-if="ctrl.sampleGroup" class="row">
+                    <div class="col-sm-offset-1">
+                        <ul class="list-inline">
+                            <li>
+                                <label class="radio-inline">
+                                    <input type="radio"
+                                           name="sampleGroupSizeRadios"
+                                           value="set-size"
+                                           ng-model="ctrl.sampleGroupSizing" checked> Set sample group size
+                                </label>
+                            </li>
+                            <li>
+                                <label class="radio-inline">
+                                    <input type="radio"
+                                           name="sampleGroupSizeRadios"
+                                           value="as-needed"
+                                           ng-model="ctrl.sampleGroupSizing"> Create samples as needed
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div ng-if="ctrl.sampleGroup && ctrl.sampleGroupSizing === 'set-size'" class="row">
