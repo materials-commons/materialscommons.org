@@ -1,4 +1,9 @@
 <div>
+    <div class="checkbox pull-left">
+        <input type="checkbox" id="sampleGroupCheckbox" ng-change="ctrl.showGroupsChanged()"
+               ng-model="ctrl.showSamplesInGroups">
+        <label for="sampleGroupCheckbox">Show all</label>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -7,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="sample in samples | orderBy:'name'">
+        <tr ng-repeat="sample in ctrl.samples | filter:ctrl.showGroupsFilter | orderBy:'name'">
             <td>
                 <a ng-click="sample.selected = !sample.selected">
                     <i ng-if="sample.selected" class="fa fa-2x fa-fw fa-check text-success"></i>
