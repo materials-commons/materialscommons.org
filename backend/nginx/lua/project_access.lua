@@ -19,7 +19,7 @@ if apikey == nil then
     ngx.exit(ngx.HTTP_UNAUTHORIZED)
 end
 
-local res = ngx.location.capture("/authenticate_project/" .. elements[project_index],
+local res = ngx.location.capture("/authenticate_project/" .. elements[project_index+1],
     {args = { apikey: apikey}})
 if res.status ~= 200 then
     ngx.log(ngx.WARN, "No access to project")
