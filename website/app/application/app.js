@@ -4,6 +4,7 @@ var app = angular.module('materialscommons',
     [
         'ngSanitize',
         'ngMessages',
+        'ngMaterial',
         'ui',
         'ngCookies',
         'ui.router',
