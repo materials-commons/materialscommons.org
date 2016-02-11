@@ -11,7 +11,7 @@
             },
             bindToController: true,
             controller: "ProjectNavBarDirectiveController",
-            controllerAs: 'navbar',
+            controllerAs: 'ctrl',
             templateUrl: "application/core/projects/project/project-nav-bar.html"
         };
     }
@@ -20,23 +20,19 @@
     ProjectNavBarDirectiveController.$inject = ["current", "$state", "User", "pubsub"];
 
     /* @ngInject */
-    function ProjectNavBarDirectiveController(current, $state, User, pubsub) {
+    function ProjectNavBarDirectiveController(current, $state, User) {
         var ctrl = this;
 
         ctrl.mcuser = User.attr();
 
         ctrl.setProject = setProject;
-        ctrl.clearSearch = clearSearch;
+
 
         //////////////////////////////
 
         function setProject(project) {
             current.setProject(project);
             $state.go("projects.project.home", {id: project.id});
-        }
-
-        function clearSearch() {
-            pubsub.send('clear.search');
         }
     }
 
