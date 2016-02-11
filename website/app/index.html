@@ -42,7 +42,11 @@
 </head>
 <body>
 <navbar></navbar>
-<div ui-view></div>
+
+<md-content layout="column" flex>
+    <div ui-view></div>
+</md-content>
+
 <div class="modal fade"
      ng-controller="newProjectModalController as project"
      id="newProject"
