@@ -7,55 +7,47 @@
             restrict: "AE",
             replace: true,
             templateUrl: "index/navbar.html",
-            controller: "navbarDirectiveController"
+            controller: "NavbarDirectiveController",
+            controllerAs: 'ctrl'
         };
     }
 
-    module.controller("navbarDirectiveController", navbarDirectiveController);
-    navbarDirectiveController.$inject = ["$scope", "help", "$state", "pubsub"];
+    module.controller("NavbarDirectiveController", NavbarDirectiveController);
+    NavbarDirectiveController.$inject = ["$scope", "help", "$state", "pubsub", "current", "User"];
 
-    function navbarDirectiveController($scope, help, $state, pubsub) {
+    function NavbarDirectiveController($scope, help, $state, pubsub, current, User) {
+        var ctrl = this;
+
         // This is needed to toggle the menu closed when an item is selected.
         // This is a part of how ui-bootstrap interacts with the menus and
         // the menu item does an ng-click.
-        $scope.status = {
+        ctrl.status = {
             isopen: false
         };
+        ctrl.query = "";
 
-        $scope.toggleHelp = function () {
-            help.toggle();
-        };
+        ctrl.toggleHelp = help.toggle;
+        ctrl.search = search;
+        ctrl.home = home;
 
-        $scope.search = search;
+        pubsub.waitOn($scope, 'clear.search', function () {
+            ctrl.query = "";
+        });
 
         ////////////////////////
 
         function search() {
-            if ($scope.query != "") {
-                $state.go('projects.project.search', {query: $scope.query}, {reload: true});
+            if (ctrl.query != "") {
+                $state.go('projects.project.search', {query: ctrl.query}, {reload: true});
             }
         }
 
-        pubsub.waitOn($scope, 'clear.search', function () {
-            $scope.query = "";
-        })
-    }
-
-    module.controller("FlexController", FlexController);
-    FlexController.$inject = ["$scope"];
-    function FlexController($scope) {
-        var col1Length = 1000;
-        var col2Length = 2;
-        var i = 0;
-        $scope.col1 = [];
-        $scope.col2 = [];
-
-        for (i = 0; i < col1Length; i++) {
-            $scope.col1.push("col1");
-        }
-
-        for (i = 0; i < col2Length; i++) {
-            $scope.col2.push("col2");
+        function home() {
+            if (User.isAuthenticated()) {
+                $state.go("projects.project.home", {id: current.projectID()});
+            } else {
+                $state.go("home");
+            }
         }
     }
 }(angular.module('materialscommons')));
