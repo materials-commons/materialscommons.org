@@ -17,16 +17,13 @@
     }
 
     module.controller("ProjectNavBarDirectiveController", ProjectNavBarDirectiveController);
-    ProjectNavBarDirectiveController.$inject = ["current", "$state", "User", "pubsub"];
+    ProjectNavBarDirectiveController.$inject = ["current", "$state"];
 
     /* @ngInject */
-    function ProjectNavBarDirectiveController(current, $state, User) {
+    function ProjectNavBarDirectiveController(current, $state) {
         var ctrl = this;
 
-        ctrl.mcuser = User.attr();
-
         ctrl.setProject = setProject;
-
 
         //////////////////////////////
 

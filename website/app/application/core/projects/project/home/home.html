@@ -1,95 +1,81 @@
-<div>
-    <div class="row padding-top-20">
-        <div class="col-xs-12 no-padding">
-            <ul class="list-inline text-center padding-left-15">
-                <li class="pull-left">
-                    <div class="btn-group">
-                        <button class="btn btn-default btn-info btn-lg dropdown-toggle" type="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-plus fa-fw"></i>Quick Add <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li class="text-uppercase dropdown-submenu">
-                                <a>Process</a>
-                                <ul class="dropdown-menu">
-                                    <li class="text-uppercase dropdown-submenu">
-                                        <a>From Favorite</a>
-                                        <ul class="dropdown-menu">
-                                            <li ng-if="ctrl.hasFavorites()"
-                                                ng-repeat="template in ctrl.templates | filter:{favorite:true} | orderBy:'name'"
-                                                class="text-uppercase">
-                                                <a ui-sref="projects.project.processes.create({process: template.name, process_id: ''})">
-                                                    {{template.name}} <span ng-if="template.prefill">(PF)</span>
-                                                </a>
-                                            </li>
-                                            <li ng-if="!ctrl.hasFavorites()">
-                                                No favorites defined
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="text-uppercase">
-                                        <a ng-click="ctrl.chooseTemplate()">Choose Template</a>
-                                    </li>
-                                    <li class="text-uppercase">
-                                        <a ng-click="ctrl.chooseExistingProcess()">Choose From Existing Process</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="text-uppercase">
-                                <a ui-sref="projects.project.processes.create({process: 'As Received', process_id: ''})">Sample</a>
-                            </li>
-                            <li ng-if="false" class="text-uppercase">
-                                <a href="#">File</a>
-                            </li>
-                            <li ng-if="false" class="text-uppercase"><a href="#">Review</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="dashboard-item">
-                    <div class="text-uppercase">
-                        <a class="circle process-color-bg center-block"
-                           ui-sref="projects.project.processes.list">
-                            <span>{{ctrl.project.processes.length | number}}</span>
-                        </a>
+<div layout="row" layout-xs="column" layout-wrap layout-margin>
+    <div flex="90">
+        <md-button class="md-raised" ng-click="$mdOpenMenu($event)">
+            <md-icon md-font-icon="fa-plus" class="fa fa-md-icon"></md-icon>
+            Quick Add
+        </md-button>
+    </div>
 
-                        <p>processes</p>
-                    </div>
-                </li>
-                <li class="dashboard-item">
-                    <div class="text-uppercase">
-                        <a class="circle sample-color-bg center-block"
-                           ui-sref="projects.project.samples.list">
-                            <span>{{ctrl.project.samples.length | number}}</span>
-                        </a>
-
-                        <p>samples</p>
-                    </div>
-                </li>
-                <li class="dashboard-item">
-                    <div class="text-uppercase">
-                        <a class="circle file-color-bg center-block"
-                           ui-sref="projects.project.files.all">
-                            <span>{{ctrl.project.file_count | number}}</span>
-                        </a>
-
-                        <p>files</p>
-                    </div>
-                </li>
-                <li class="dashboard-item">
-                    <div class="text-uppercase">
-                        <a class="circle review-color-bg center-block"
-                           ui-sref="projects.project.reviews">
-                            <span>{{ctrl.project.reviews.length | number}}</span>
-                        </a>
-
-                        <p>reviews</p>
-                    </div>
-                </li>
-            </ul>
+    <div flex="100">
+        <div layout="row" layout-md="column" layout-wrap layout-align="space-between center">
+            <div flex="25">
+                <md-card class="process-color-bg text-white">
+                    <md-card-title layout="column">
+                        <md-card-title-text layout-align="center center">
+                            <span class="md-headline">
+                                {{ctrl.project.processes.length | number}} Processes
+                                <i class="fa fa-code-fork"></i>
+                            </span>
+                        </md-card-title-text>
+                        <md-card-actions layout="row" layout-align="center center">
+                            <md-button>New Process</md-button>
+                            <md-button class="text-black">View</md-button>
+                        </md-card-actions>
+                    </md-card-title>
+                </md-card>
+            </div>
+            <div flex="25">
+                <md-card class="sample-color-bg text-white">
+                    <md-card-title layout="column">
+                        <md-card-title-text layout-align="center center">
+                            <span class="md-headline">
+                                {{ctrl.project.samples.length | number}} Samples
+                                <i class="fa fa-cubes"></i>
+                            </span>
+                        </md-card-title-text>
+                        <md-card-actions layout="row" layout-align="center center">
+                            <md-button>New Sample</md-button>
+                            <md-button class="text-black">View</md-button>
+                        </md-card-actions>
+                    </md-card-title>
+                </md-card>
+            </div>
+            <div flex="25">
+                <md-card class="file-color-bg text-white">
+                    <md-card-title layout="column">
+                        <md-card-title-text layout-align="center center">
+                            <span class="md-headline">
+                                {{ctrl.project.file_count | number}} Files
+                                <i class="fa fa-files-o"></i>
+                            </span>
+                        </md-card-title-text>
+                        <md-card-actions layout="row" layout-align="center center">
+                            <md-button>Upload Files</md-button>
+                            <md-button class="text-black">View</md-button>
+                        </md-card-actions>
+                    </md-card-title>
+                </md-card>
+            </div>
+            <div flex="25">
+                <md-card class="review-color-bg text-white">
+                    <md-card-title layout="column">
+                        <md-card-title-text layout-align="center center">
+                            <span class="md-headline">
+                                {{ctrl.project.reviews.length | number}} Review
+                                <i class="fa fa-comment"></i>
+                            </span>
+                        </md-card-title-text>
+                        <md-card-actions layout="row" layout-align="center center">
+                            <md-button>New Review</md-button>
+                            <md-button class="text-black">View</md-button>
+                        </md-card-actions>
+                    </md-card-title>
+                </md-card>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-6  table-samples">
+    <div layout="row" layout-align="space-around start">
+        <div flex="45" layout-align="start start">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -124,8 +110,8 @@
                 -- No Samples --
             </div>
         </div>
-
-        <div class="col-xs-6">
+        <div flex="5"></div>
+        <div flex="45">
             <div home-calendar project="ctrl.project"></div>
         </div>
     </div>

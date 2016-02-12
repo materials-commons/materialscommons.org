@@ -7,10 +7,43 @@ html {
     position: fixed !important;
 }
 
+/* ***************** Materials Design CSS ***************** */
+
 .fa-md-icon {
     height: auto;
     padding-bottom: 4px;
 }
+
+.md-mc-primary-color-hue-2-bg {
+    background-color:#283593;
+}
+
+.process-color-bg {
+    background-color: #0288d1;
+}
+
+.sample-color-bg {
+    background-color: #009688;
+}
+
+.file-color-bg {
+    background-color: #9782be;
+}
+
+.review-color-bg {
+    background-color: #ffc107;
+}
+
+.text-black {
+    color: rgba(0,0,0, 0.87);
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+
+/* *************** End Materials Design CSS *************** */
 
 .h1custom {
     font-size: 1.8rem; /*25.2px */
@@ -859,33 +892,24 @@ header {
     color: #FDB600;
 }
 
-.review-color-bg {
-    background-color: #FDB600;
-}
+
 
 .file, .file-color {
     color: #9782be;
 }
 
-.file-color-bg {
-    background-color: #9782be;
-}
+
 
 .process, .process-color {
     color: #1E88E5;
 }
 
-.process-color-bg {
-    background-color: #1E88E5;
-}
 
 .sample, .sample-color {
     color: #26A69A;
 }
 
-.sample-color-bg {
-    background-color: #26A69A;
-}
+
 
 .details-main-content .headings {
     font-size: 16px;
