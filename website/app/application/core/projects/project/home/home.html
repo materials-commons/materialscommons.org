@@ -1,5 +1,5 @@
 <div layout="row" layout-xs="column" layout-wrap layout-margin>
-    <div flex="90">
+    <div ng-if="false" flex="90">
         <md-button class="md-raised" ng-click="$mdOpenMenu($event)">
             <md-icon md-font-icon="fa-plus" class="fa fa-md-icon"></md-icon>
             Quick Add
@@ -61,7 +61,7 @@
                     <md-card-title layout="column">
                         <md-card-title-text layout-align="center center">
                             <span class="md-headline">
-                                {{ctrl.project.reviews.length | number}} Review
+                                {{ctrl.project.reviews.length | number}} Reviews
                                 <i class="fa fa-comment"></i>
                             </span>
                         </md-card-title-text>
