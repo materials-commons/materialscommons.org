@@ -1,0 +1,41 @@
+<div>
+    {{$ctrl.message}}
+    <div id="top" class="row">
+        <header>
+            <div class="row">
+                <h1 style="color: white; padding: 30px;">Materials Commons</h1>
+            </div>
+            <div class="row">
+                <div class="login-splash">
+                    <div class="row">
+                        <input ng-model="$ctrl.userLogin" name="email" required="" class="form-control"
+                               placeholder="Email..."
+                               type="email">
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <input ng-model="$ctrl.password" required=""
+                               class="form-control" placeholder="Password..."
+                               on-enter="$ctrl.login()"
+                               type="password">
+                    </div>
+                    <br>
+                    <p style="color:red;" ng-if="message">
+                        <b>{{message}}</b>
+                    </p>
+                    <br>
+
+                    <div class="row">
+                        <button class="btn btn-primary btn-lg" style="width: 100%;" ng-click="$ctrl.login()">
+                            Login
+                        </button>
+                        <button class="btn btn-warning btn-lg" style="width: 100%; margin-top: 10px" ng-click="$ctrl.cancel()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+</div>
