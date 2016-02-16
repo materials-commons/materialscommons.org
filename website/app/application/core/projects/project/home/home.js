@@ -1,15 +1,18 @@
 (function (module) {
     module.controller('ProjectHomeController', ProjectHomeController);
-    ProjectHomeController.$inject = ["project", "mcmodal", "templates", "$state", "projectsService"];
+    ProjectHomeController.$inject = ["$state", "projectsService", "$stateParams", "model.projects"];
 
-    function ProjectHomeController(project, mcmodal, templates, $state, projectsService) {
+    function ProjectHomeController($state, projectsService, $stateParams, projects) {
         var ctrl = this;
 
-        ctrl.project = project;
+        projects.get($stateParams.id).then(function(p) {
+            ctrl.project = p;
+        });
+        //ctrl.project = project;
         ctrl.chooseTemplate = chooseTemplate;
         ctrl.chooseExistingProcess = chooseExistingProcess;
-        ctrl.templates = templates;
-        ctrl.hasFavorites = _.partial(_.any, ctrl.templates, _.matchesProperty('favorite', true));
+        ctrl.templates = []; // templates;
+        ctrl.hasFavorites = []; //_.partial(_.any, ctrl.templates, _.matchesProperty('favorite', true));
 
         /////////////////////////
 
