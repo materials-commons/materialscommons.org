@@ -1,0 +1,106 @@
+<div layout="row" flex="100" layout-fill>
+    <div ng-if="!$ctrl.showSidebar" layout="column" flex="5" class="md-mc-primary-color-hue-2-bg" style="color: white"
+         ng-cloak>
+        <md-button ng-click="$ctrl.showSidebar = true">O</md-button>
+    </div>
+    <md-sidenav class="md-mc-primary-color-hue-2-bg" style="color: white; z-index: 1000"
+                md-is-locked-open="$ctrl.showSidebar"
+                ng-cloak>
+
+        <md-button ng-click="$ctrl.showSidebar = false" layout-align="start stretch">Hide</md-button>
+        <md-button ui-sref="projects" style="color: white">Back to projects</md-button>
+        <div layout="column" layout-align="center center">{{$ctrl.project.name}}</div>
+        <md-content class="md-mc-primary-color-hue-2-bg" style="color: white" flex>
+            <ul class="sidebar-menu">
+                <li>
+                    <md-button ng-click="$ctrl.toggle('treeOpen')">
+                        <div layout="row" flex>
+                            Tree
+                            <span flex></span>
+                            <md-icon md-font-icon="fa" style="color:white"
+                                     ng-class="{'fa-chevron-down': $ctrl.treeOpen, 'fa-chevron-up': !$ctrl.treeOpen}"></md-icon>
+                        </div>
+                    </md-button>
+                </li>
+                <li ng-if="$ctrl.treeOpen">
+                    Show project tree
+                </li>
+                <li>
+                    <md-button ng-click="$ctrl.toggle('samplesOpen')">
+                        <div layout="row" flex>
+                            Samples
+                            <span flex></span>
+                            <md-icon md-font-icon="fa" style="color:white"
+                                     ng-class="{'fa-chevron-down': $ctrl.samplesOpen, 'fa-chevron-up': !$ctrl.samplesOpen}"></md-icon>
+                        </div>
+                    </md-button>
+                </li>
+                <li ng-if="$ctrl.samplesOpen">
+                    <mc-project-samples samples="$ctrl.project.samples"></mc-project-samples>
+                </li>
+                <li>
+                    <md-button ng-click="$ctrl.toggle('filesOpen')">
+                        <div layout="row" flex>
+                            Files
+                            <span flex></span>
+                            <md-icon md-font-icon="fa" style="color:white"
+                                     ng-class="{'fa-chevron-down': $ctrl.filesOpen, 'fa-chevron-up': !$ctrl.filesOpen}"></md-icon>
+                        </div>
+                    </md-button>
+                </li>
+                <li ng-if="$ctrl.filesOpen">
+                    Show files
+                </li>
+                <li>
+                    <md-button ng-click="$ctrl.toggle('processesOpen')">
+                        <div layout="row" flex>
+                            Processes
+                            <span flex></span>
+                            <md-icon md-font-icon="fa" style="color:white"
+                                     ng-class="{'fa-chevron-down': $ctrl.processesOpen, 'fa-chevron-up': !$ctrl.processesOpen}"></md-icon>
+                        </div>
+                    </md-button>
+                </li>
+                <li ng-if="$ctrl.processesOpen">
+                    Show processes
+                </li>
+                <li>
+                    <md-button ng-click="$ctrl.toggle('datasetsOpen')">
+                        <div layout="row" flex>
+                            Datasets
+                            <span flex></span>
+                            <md-icon md-font-icon="fa" style="color:white"
+                                     ng-class="{'fa-chevron-down': $ctrl.datasetsOpen, 'fa-chevron-up': !$ctrl.datasetsOpen}"></md-icon>
+                        </div>
+                    </md-button>
+                </li>
+                <li ng-if="$ctrl.datasetsOpen">
+                    Show datasets
+                </li>
+                <li>
+                    <md-button ng-click="$ctrl.toggle('sharesOpen')">
+                        <div layout="row" flex>
+                            Shares
+                            <span flex></span>
+                            <md-icon md-font-icon="fa" style="color:white"
+                                     ng-class="{'fa-chevron-down': $ctrl.sharesOpen, 'fa-chevron-up': !$ctrl.sharesOpen}"></md-icon>
+                        </div>
+                    </md-button>
+                </li>
+                <li ng-if="$ctrl.sharesOpen">
+                    Show shares
+                </li>
+            </ul>
+        </md-content>
+
+    </md-sidenav>
+    <div layout="column" flex>
+        <navbar></navbar>
+        <md-content layout="row" layout-align="start stretch" flex>
+            <div ui-view flex layout-fill></div>
+        </md-content>
+        <md-toolbar ng-if="false" style="background-color: #9e9e9e">
+            <span>Doc items here</span>
+        </md-toolbar>
+    </div>
+</div>

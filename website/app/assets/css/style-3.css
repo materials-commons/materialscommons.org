@@ -9,6 +9,15 @@ html {
 
 /* ***************** Materials Design CSS ***************** */
 
+.md-row {
+    line-height: 30px;
+}
+
+.md-row-hover:hover {
+    background-color:#267ed5;
+    color: white;
+}
+
 .fa-md-icon {
     height: auto;
     padding-bottom: 4px;
@@ -91,6 +100,11 @@ html {
     width: 400px;
     background-color: white;
     background-color: rgba(255, 255, 255, 0.3);
+}
+
+.mc-md-list-item:hover,
+.mc-md-list-item:focus {
+    background: #267ed5 !important;
 }
 
 /* *************** End Materials Design CSS *************** */
@@ -625,13 +639,13 @@ a:focus {
     /*font-weight: bold;*/
 }
 
-table a, .table a {
-    text-decoration: none;
-}
+/*table a, .table a {*/
+    /*text-decoration: none;*/
+/*}*/
 
-td > a {
-    color: #204d65;
-}
+/*td > a {*/
+    /*color: #204d65;*/
+/*}*/
 
 .caret-light {
     color: white;
@@ -655,32 +669,32 @@ label {
 }
 
 /* ***** Override default bootstrap table styles ***** */
-.table-bordered th,
-.table-bordered td {
-    /* border: 3px solid #e8e6cf !important; */
-    border: 2px solid #d3d3d3 !important;
-}
+/*.table-bordered th,*/
+/*.table-bordered td {*/
+    /*!* border: 3px solid #e8e6cf !important; *!*/
+    /*border: 2px solid #d3d3d3 !important;*/
+/*}*/
 
-.table > thead > tr > th {
-    border-bottom: 2px solid #d3d3d3;
-}
+/*.table > thead > tr > th {*/
+    /*border-bottom: 2px solid #d3d3d3;*/
+/*}*/
 
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
-    padding: 8px;
-    line-height: 1.42857143;
-    vertical-align: top;
-    border-top: 2px solid #d3d3d3;
-}
+/*.table > thead > tr > th,*/
+/*.table > tbody > tr > th,*/
+/*.table > tfoot > tr > th,*/
+/*.table > thead > tr > td,*/
+/*.table > tbody > tr > td,*/
+/*.table > tfoot > tr > td {*/
+    /*padding: 8px;*/
+    /*line-height: 1.42857143;*/
+    /*vertical-align: top;*/
+    /*border-top: 2px solid #d3d3d3;*/
+/*}*/
 
-.table-striped > tbody > tr:nth-child(2n+1) > td,
-.table-striped > tbody > tr:nth-child(2n+1) > th {
-    background-color: #f4f4f6;
-}
+/*.table-striped > tbody > tr:nth-child(2n+1) > td,*/
+/*.table-striped > tbody > tr:nth-child(2n+1) > th {*/
+    /*background-color: #f4f4f6;*/
+/*}*/
 
 .close {
     color: black;

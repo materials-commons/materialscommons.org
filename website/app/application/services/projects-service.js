@@ -1,15 +1,30 @@
 (function (module) {
     module.factory('projectsService', projectsService);
-    projectsService.$inject = ["Restangular"];
+    projectsService.$inject = ['Restangular', 'model.projects'];
 
-    function projectsService(Restangular) {
+    function projectsService(Restangular, modelProjects) {
         var onChangeFn = null;
         var projectsAPI = _.partial(Restangular.one('v2').one, 'projects');
 
         return {
 
+            getAllProjects: function() {
+                return modelProjects.getList();
+            },
+
+            getProject: function(projectID) {
+                return modelProjects.get(projectID);
+            },
+
             getProjectSamples: function (projectID) {
                 return projectsAPI(projectID).one('samples').getList();
+            },
+
+            getProjectSample: function (projectID, sampleID) {
+                return Restangular.one('sample').one('details', sampleID).get()
+                    .then(function (samples) {
+                        return samples[0];
+                    });
             },
 
             getProjectProcesses: function (projectID) {
@@ -17,7 +32,7 @@
             },
 
             updateProjectProcess: function (projectID, process) {
-                return projectsAPI(projectID).one('processes', process.id).customPUT(process).then(function(p) {
+                return projectsAPI(projectID).one('processes', process.id).customPUT(process).then(function (p) {
                     if (onChangeFn) {
                         onChangeFn(p);
                     }
@@ -25,8 +40,8 @@
                 });
             },
 
-            createProjectProcess: function(projectID, process) {
-                return projectsAPI(projectID).one('processes').customPOST(process).then(function(p) {
+            createProjectProcess: function (projectID, process) {
+                return projectsAPI(projectID).one('processes').customPOST(process).then(function (p) {
                     if (onChangeFn) {
                         onChangeFn(p);
                     }
@@ -60,7 +75,7 @@
 
             onChange: function (scope, fn) {
                 onChangeFn = fn;
-                scope.$on('$destroy', function() {
+                scope.$on('$destroy', function () {
                     onChangeFn = null;
                 });
             }

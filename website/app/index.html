@@ -19,8 +19,8 @@
     <!-- build:css assets/css/style.css -->
     <link href="assets/css/roboto.css" rel="stylesheet">
     <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <!--<link href="assets/css/bootstrap.css" rel="stylesheet">-->
+    <!--<link href="assets/css/awesome-bootstrap-checkbox.css" rel="stylesheet">-->
     <link href="assets/css/select2/select2.css" rel="stylesheet">
     <link href="assets/css/select2/select2-bootstrap.css" rel="stylesheet">
     <link href="assets/css/zenburn.css" rel="stylesheet">
@@ -32,6 +32,7 @@
     <link href="bower_components/ag-grid/dist/theme-blue.min.css" rel="stylesheet">
     <link href="bower_components/angular-toastr/dist/angular-toastr.min.css" rel="stylesheet">
     <link href="bower_components/angular-material/angular-material.min.css" rel="stylesheet">
+    <link href="bower_components/angular-material-data-table/dist/md-data-table.min.css" rel="stylesheet">
 
     <!-- Application style sheets -->
     <link href="assets/css/style-3.css" rel="stylesheet">
@@ -63,9 +64,18 @@
 <script src="assets/js/lodash.min.js"></script>
 <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
 <script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.min.js"></script>
+<script src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
 
 <!-- get from bower -->
 <script src="assets/js/angular/angular-filter.js"></script>
+
+<!-- These are needed for the full size calendar -->
+<script src="assets/js/moment.min.js"></script>
+<script src="assets/js/fullcalendar.js"></script>
+<script src="assets/js/calendar.js"></script>
+
+
+<!-- end get from bower -->
 
 <script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
 <!-- endbuild -->
@@ -77,7 +87,20 @@
 <script src="components/login/mc-login.component.js"></script>
 
 <!-- Component: Projects -->
-<script src="components/projects/mc-project.component.js"></script>
+<script src="components/projects/mc-projects.component.js"></script>
+
+<!-- Component: Project -->
+<script src="components/project/mc-project.component.js"></script>
+<script src="components/project/mc-project-samples.component.js"></script>
+
+<!-- Component: Sample -->
+<script src="components/sample/mc-sample.component.js"></script>
+
+<!-- Component: files -->
+<script src="components/files/mc-files.component.js"></script>
+
+<!-- Component: processes -->
+<script src="components/processes/mc-processes.component.js"></script>
 
 <!-- These need to moved to different directories -->
 <!-- Global Services -->
@@ -89,6 +112,9 @@
 <script src="application/services/cached-service-factory-service.js"></script>
 <script src="application/services/model/projects-service.js"></script>
 
+<!-- needed for home-calendar -->
+<script src="application/services/events.js"></script>
+
 <!-- Turn into component -->
 <script src="application/core/projects/project/home/home.js"></script>
 
@@ -96,8 +122,12 @@
 <script src="index/navbar.js"></script>
 <script src="application/directives/on-enter.js"></script>
 
+<script src="application/core/projects/project/home/directives/home-calendar.js"></script>
+
 <!-- filters -->
 <script src="application/filters/todatestring-filter.js"></script>
+<script src="application/filters/bytes.js"></script>
+
 <!-- endbuild -->
 </body>
 </html>
