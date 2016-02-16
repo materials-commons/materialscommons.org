@@ -3,11 +3,12 @@
          ng-cloak>
         <md-button ng-click="$ctrl.showSidebar = true">O</md-button>
     </div>
-    <md-sidenav class="md-mc-primary-color-hue-2-bg" style="color: white; z-index: 1000" md-is-locked-open="$ctrl.showSidebar"
+    <md-sidenav class="md-mc-primary-color-hue-2-bg" style="color: white; z-index: 1000"
+                md-is-locked-open="$ctrl.showSidebar"
                 ng-cloak>
-        <div layout="column">
-            <md-content class="md-mc-primary-color-hue-2-bg" style="color: white">
-                <md-button ng-click="$ctrl.showSidebar = false">Hide</md-button>
+
+            <md-button ng-click="$ctrl.showSidebar = false" layout-align="start stretch">Hide</md-button>
+            <md-content class="md-mc-primary-color-hue-2-bg" style="color: white" flex>
                 <ul class="sidebar-menu">
                     <li>
                         <md-button ng-click="$ctrl.projectsOpen = !$ctrl.projectsOpen">
@@ -26,7 +27,7 @@
                     </li>
                 </ul>
             </md-content>
-        </div>
+
     </md-sidenav>
     <div layout="column" flex>
         <navbar></navbar>
