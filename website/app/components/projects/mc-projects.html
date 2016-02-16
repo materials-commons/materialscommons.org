@@ -31,10 +31,10 @@
     </md-sidenav>
     <div layout="column" flex>
         <navbar></navbar>
-        <md-content ng-controller="TestDropController as ctrl" layout="row" layout-align="start stretch" flex>
+        <md-content layout="row" layout-align="start stretch" flex>
             <div ui-view flex layout-fill></div>
         </md-content>
-        <md-toolbar style="background-color: #9e9e9e">
+        <md-toolbar ng-if="false" style="background-color: #9e9e9e">
             <span>Doc items here</span>
         </md-toolbar>
     </div>

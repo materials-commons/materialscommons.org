@@ -6,6 +6,7 @@
         var ctrl = this;
 
         projects.get($stateParams.id).then(function(p) {
+            ctrl.projectLoaded = true;
             ctrl.project = p;
         });
         //ctrl.project = project;
