@@ -13,41 +13,62 @@
     }
 
     module.controller("NavbarDirectiveController", NavbarDirectiveController);
-    NavbarDirectiveController.$inject = ["$scope", "help", "$state", "pubsub", "current", "User"];
+    NavbarDirectiveController.$inject = ['User'];
 
-    function NavbarDirectiveController($scope, help, $state, pubsub, current, User) {
+    function NavbarDirectiveController(User) {
         var ctrl = this;
 
-        // This is needed to toggle the menu closed when an item is selected.
-        // This is a part of how ui-bootstrap interacts with the menus and
-        // the menu item does an ng-click.
-        ctrl.status = {
-            isopen: false
-        };
         ctrl.query = "";
 
-        ctrl.toggleHelp = help.toggle;
+        ctrl.toggleHelp = help;
         ctrl.search = search;
         ctrl.home = home;
+        ctrl.user = User.u();
 
-        pubsub.waitOn($scope, 'clear.search', function () {
-            ctrl.query = "";
-        });
+        //pubsub.waitOn($scope, 'clear.search', function () {
+        //    ctrl.query = "";
+        //});
 
         ////////////////////////
 
+        function help() {
+
+        }
+
         function search() {
-            if (ctrl.query != "") {
-                $state.go('projects.project.search', {query: ctrl.query}, {reload: true});
-            }
+            //if (ctrl.query != "") {
+            //    $state.go('projects.project.search', {query: ctrl.query}, {reload: true});
+            //}
         }
 
         function home() {
-            if (User.isAuthenticated()) {
-                $state.go("projects.project.home", {id: current.projectID()});
-            } else {
-                $state.go("home");
-            }
+            //if (User.isAuthenticated()) {
+            //    $state.go("projects.project.home", {id: current.projectID()});
+            //} else {
+            //    $state.go("home");
+            //}
+        }
+    }
+
+    module.controller("TestDragController", TestDragController);
+    TestDragController.$inject = [];
+    function TestDragController() {
+        var ctrl = this;
+
+        ctrl.messages = [];
+        for (var i = 0; i < 10; i++) {
+            ctrl.messages.push("This is " + i + " from drag");
+        }
+    }
+
+    module.controller("TestDropController", TestDropController);
+    TestDropController.$inject = [];
+    function TestDropController() {
+        var ctrl = this;
+
+        ctrl.messages = [];
+        for (var i = 0; i < 10; i++) {
+            ctrl.messages.push("This is " + i + " from drop");
         }
     }
 }(angular.module('materialscommons')));
