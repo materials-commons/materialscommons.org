@@ -33,6 +33,10 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: '/project/:project_id',
             template: '<mc-project></mc-project>'
         })
+        .state('project.home', {
+            url: '/home',
+            template: '<mc-project-home></mc-project-home>'
+        })
         .state('project.sample', {
             url: '/sample/:sample_id',
             template: '<mc-sample></mc-sample>'
