@@ -9,7 +9,9 @@
 
         <md-button ng-click="$ctrl.showSidebar = false">Hide</md-button>
         <md-button ui-sref="projects" style="color: white">Back to projects</md-button>
-        <md-button ui-sref="project" style="color: white">{{$ctrl.project.name}}</md-button>
+        <md-button ui-sref="project.home" style="color: white">
+            <md-icon md-font-icon="fa" class="fa-home fa-md-icon text-white"></md-icon> {{$ctrl.project.name}}
+        </md-button>
         <md-content class="md-mc-primary-color-hue-2-bg" style="color: white" flex>
             <ul class="sidebar-menu">
                 <li>
