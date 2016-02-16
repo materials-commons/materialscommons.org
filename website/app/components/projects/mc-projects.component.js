@@ -17,7 +17,7 @@
         });
 
         ctrl.openProject = function(projectID) {
-            $state.go('project', {project_id: projectID});
+            $state.go('project.home', {project_id: projectID});
         };
     }
 }(angular.module('materialscommons')));

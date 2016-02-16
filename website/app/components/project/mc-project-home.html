@@ -13,7 +13,7 @@
                     <md-card-title layout="column">
                         <md-card-title-text layout-align="center center">
                             <span class="md-headline">
-                                {{ctrl.project.processes.length | number}} Processes
+                                {{$ctrl.project.processes.length | number}} Processes
                                 <i class="fa fa-code-fork"></i>
                             </span>
                         </md-card-title-text>
@@ -29,7 +29,7 @@
                     <md-card-title layout="column">
                         <md-card-title-text layout-align="center center">
                             <span class="md-headline">
-                                {{ctrl.project.samples.length | number}} Samples
+                                {{$ctrl.project.samples.length | number}} Samples
                                 <i class="fa fa-cubes"></i>
                             </span>
                         </md-card-title-text>
@@ -45,7 +45,7 @@
                     <md-card-title layout="column">
                         <md-card-title-text layout-align="center center">
                             <span class="md-headline">
-                                {{ctrl.project.file_count | number}} Files
+                                {{$ctrl.project.file_count | number}} Files
                                 <i class="fa fa-files-o"></i>
                             </span>
                         </md-card-title-text>
@@ -61,7 +61,7 @@
                     <md-card-title layout="column">
                         <md-card-title-text layout-align="center center">
                             <span class="md-headline">
-                                {{ctrl.project.reviews.length | number}} Reviews
+                                {{$ctrl.project.reviews.length | number}} Reviews
                                 <i class="fa fa-comment"></i>
                             </span>
                         </md-card-title-text>
@@ -84,7 +84,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="sample in ctrl.project.samples | filter:{is_grouped: false}">
+                <tr ng-repeat="sample in $ctrl.project.samples | filter:{is_grouped: false}">
                     <td>
                         <b><a ui-sref="projects.project.samples.edit({sample_id: sample.id})">{{sample.name}}</a></b>
 
@@ -106,13 +106,13 @@
                 </tr>
                 </tbody>
             </table>
-            <div ng-if="ctrl.project.samples.length === 0">
+            <div ng-if="$ctrl.project.samples.length === 0">
                 -- No Samples --
             </div>
         </div>
         <div flex="5"></div>
         <div flex>
-            <div ng-if="ctrl.projectLoaded" home-calendar project="ctrl.project"></div>
+            <div ng-if="$ctrl.projectLoaded" home-calendar project="$ctrl.project"></div>
         </div>
     </div>
 </div>

@@ -1,11 +1,16 @@
 (function (module) {
-    module.controller('ProjectHomeController', ProjectHomeController);
-    ProjectHomeController.$inject = ["$state", "projectsService", "$stateParams", "model.projects"];
+    module.component('mcProjectHome', {
+       templateUrl: 'components/project/mc-project-home.html',
+        controller: 'MCProjectHomeComponentController'
+    });
 
-    function ProjectHomeController($state, projectsService, $stateParams, projects) {
+    module.controller('MCProjectHomeComponentController', MCProjectHomeComponentController);
+    MCProjectHomeComponentController.$inject = ["$state", "projectsService", "$stateParams"];
+
+    function MCProjectHomeComponentController($state, projectsService, $stateParams) {
         var ctrl = this;
 
-        projects.get($stateParams.id).then(function(p) {
+        projectsService.getProject($stateParams.project_id).then(function(p) {
             ctrl.projectLoaded = true;
             ctrl.project = p;
         });
