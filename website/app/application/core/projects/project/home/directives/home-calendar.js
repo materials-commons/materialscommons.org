@@ -15,11 +15,10 @@
 
     module.controller("HomeCalendarController", HomeCalendarController);
 
-    HomeCalendarController.$inject = ["$scope", "Events", "uiCalendarConfig",
-        "$compile", "$timeout", "ui", "$state"];
+    HomeCalendarController.$inject = ["$scope", "Events", "uiCalendarConfig", "$timeout", "$state"];
 
     /* @ngInject */
-    function HomeCalendarController($scope, Events, uiCalendarConfig, $compile, $timeout, ui, $state) {
+    function HomeCalendarController($scope, Events, uiCalendarConfig, $timeout, $state) {
         $scope.project = Events.addConvertedTime($scope.project);
 
         var eventReviews = {
@@ -45,7 +44,6 @@
         $scope.goHome = function () {
             //When they clear the filter it should reset the panel state
             // and day click should be today's date
-            ui.resetPanels($scope.project.id);
             var date = {'_d': new Date()};
             alertOnDayClick(date, '', '', '');
             closeAlert();
@@ -70,7 +68,7 @@
         };
 
         $timeout(function () {
-            // Make sure the calendar directive has loaded, but running the ng event loop
+            // Make sure the calendar directive has loaded, by running the ng event loop
             // before setting ready to true which then renders in the ng-if.
             $scope.ready = true;
         });
@@ -94,8 +92,7 @@
             previous = $(this);
         }
 
-        function alertOnEventClick(event, jsEvent, view) {
-            var date = event.start;
+        function alertOnEventClick(event) {
             var what = event.title.split(' ')[1];
             switch (what){
                 case "processes":
@@ -108,8 +105,6 @@
                     $state.go('projects.project.reviews');
                     break;
             }
-            //ui.showPanelByCalendarEvent($scope.project.id, what);
-            //alertOnDayClick(date, jsEvent, view, 'eventclick');
         }
 
         function changeView(view, calendar) {

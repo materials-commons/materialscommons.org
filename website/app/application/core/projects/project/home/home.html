@@ -75,7 +75,7 @@
         </div>
     </div>
     <div layout="row" layout-align="space-around start">
-        <div flex="45" layout-align="start start">
+        <div flex layout-align="start start">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -85,7 +85,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="sample in ctrl.project.samples | filter:{is_grouped: false}">
-                    <td style="width:40%">
+                    <td>
                         <b><a ui-sref="projects.project.samples.edit({sample_id: sample.id})">{{sample.name}}</a></b>
 
                         <div style="padding-bottom: 15px;">
@@ -100,7 +100,7 @@
                             <display-image-tab sample="sample"></display-image-tab>
                         </div>
                     </td>
-                    <td style="width:30%;">
+                    <td>
                         <div style="max-height: 200px;overflow-y: auto;">{{sample.description}}</div>
                     </td>
                 </tr>
@@ -111,8 +111,8 @@
             </div>
         </div>
         <div flex="5"></div>
-        <div flex="45">
-            <div home-calendar project="ctrl.project"></div>
+        <div flex>
+            <div ng-if="ctrl.projectLoaded" home-calendar project="ctrl.project"></div>
         </div>
     </div>
 </div>

@@ -5,20 +5,19 @@
     });
 
     module.controller('MCProjectsComponentController', MCProjectsComponentController);
-    MCProjectsComponentController.$inject = ['model.projects', '$state'];
+    MCProjectsComponentController.$inject = ['projectsService', '$state'];
     function MCProjectsComponentController(projectsService, $state) {
-        console.log('MCProjectsComponentController');
         var ctrl = this;
         ctrl.isOpen = true;
-        ctrl.projectsOpen = false;
+        ctrl.projectsOpen = true;
         ctrl.showSidebar = true;
         ctrl.projects = [];
-        projectsService.getList().then(function(projects) {
+        projectsService.getAllProjects().then(function(projects) {
             ctrl.projects = projects;
         });
 
         ctrl.openProject = function(projectID) {
-            $state.go('projects.project', {id: projectID});
+            $state.go('project', {project_id: projectID});
         };
     }
 }(angular.module('materialscommons')));
