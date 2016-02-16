@@ -7,9 +7,9 @@
                 md-is-locked-open="$ctrl.showSidebar"
                 ng-cloak>
 
-        <md-button ng-click="$ctrl.showSidebar = false" layout-align="start stretch">Hide</md-button>
+        <md-button ng-click="$ctrl.showSidebar = false">Hide</md-button>
         <md-button ui-sref="projects" style="color: white">Back to projects</md-button>
-        <div layout="column" layout-align="center center">{{$ctrl.project.name}}</div>
+        <md-button ui-sref="project" style="color: white">{{$ctrl.project.name}}</md-button>
         <md-content class="md-mc-primary-color-hue-2-bg" style="color: white" flex>
             <ul class="sidebar-menu">
                 <li>
