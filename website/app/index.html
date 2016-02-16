@@ -40,14 +40,8 @@
     <link href="application/core/projects/project/files/files.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
-<body layout="column" layout-fill>
-<div ui-view></div>
-<!--<navbar></navbar>-->
-
-<!--<md-content layout="column" flex>-->
-    <!--<div ui-view></div>-->
-<!--</md-content>-->
-
+<body layout="row" flex layout-fill>
+<div ui-view flex layout-fill></div>
 
 <!--
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
@@ -67,7 +61,13 @@
 <script src="bower_components/ui-router-extras/release/modular/ct-ui-router-extras.transition.min.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="assets/js/lodash.min.js"></script>
-<script src='bower_components/angular-toastr/dist/angular-toastr.tpls.min.js'></script>
+<script src="bower_components/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
+<script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.min.js"></script>
+
+<!-- get from bower -->
+<script src="assets/js/angular/angular-filter.js"></script>
+
+<script src="assets/js/angular/angular-cache-2.3.3.min.js"></script>
 <!-- endbuild -->
 
 <!-- build:appjs js/app.js -->
@@ -79,10 +79,25 @@
 <!-- Component: Projects -->
 <script src="components/projects/mc-project.component.js"></script>
 
+<!-- These need to moved to different directories -->
 <!-- Global Services -->
 <script src="application/services/user-service.js"></script>
 <script src="application/services/mcapi-service.js"></script>
+
+<script src="application/services/projects-service.js"></script>
+
+<script src="application/services/cached-service-factory-service.js"></script>
+<script src="application/services/model/projects-service.js"></script>
+
+<!-- Turn into component -->
+<script src="application/core/projects/project/home/home.js"></script>
+
+<!-- Misc directives -->
+<script src="index/navbar.js"></script>
 <script src="application/directives/on-enter.js"></script>
+
+<!-- filters -->
+<script src="application/filters/todatestring-filter.js"></script>
 <!-- endbuild -->
 </body>
 </html>

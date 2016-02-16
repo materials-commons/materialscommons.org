@@ -1,3 +1,40 @@
-<div>
-    All projects will be listed here {{$ctrl.message}}
+<div layout="row" flex="100" layout-fill>
+    <div ng-if="!$ctrl.showSidebar" layout="column" flex="2" class="md-mc-primary-color-hue-2-bg" style="color: white"
+         ng-cloak>
+        <md-button ng-click="$ctrl.showSidebar = true">O</md-button>
+    </div>
+    <md-sidenav class="md-mc-primary-color-hue-2-bg" style="color: white; z-index: 1000" md-is-locked-open="$ctrl.showSidebar"
+                ng-cloak>
+        <div layout="column">
+            <md-content class="md-mc-primary-color-hue-2-bg" style="color: white">
+                <md-button ng-click="$ctrl.showSidebar = false">Hide</md-button>
+                <ul class="sidebar-menu">
+                    <li>
+                        <md-button ng-click="$ctrl.projectsOpen = !$ctrl.projectsOpen">
+                            <div layout="row" flex>
+                                Projects
+                                <span flex></span>
+                                <md-icon md-font-icon="fa" style="color:white"
+                                         ng-class="{'fa-chevron-down': $ctrl.projectsOpen, 'fa-chevron-up': !$ctrl.projectsOpen}"></md-icon>
+                            </div>
+                        </md-button>
+                    </li>
+                    <li ng-if="$ctrl.projectsOpen" ng-repeat="project in $ctrl.projects">
+                        <md-button ng-click="$ctrl.openProject(project.id)">
+                            <span style="padding-left:15px; text-transform: lowercase">{{project.name | truncate:30:'...'}}</span>
+                        </md-button>
+                    </li>
+                </ul>
+            </md-content>
+        </div>
+    </md-sidenav>
+    <div layout="column" flex>
+        <navbar></navbar>
+        <md-content ng-controller="TestDropController as ctrl" layout="row" layout-align="start stretch" flex>
+            <div ui-view flex layout-fill></div>
+        </md-content>
+        <md-toolbar style="background-color: #9e9e9e">
+            <span>Doc items here</span>
+        </md-toolbar>
+    </div>
 </div>

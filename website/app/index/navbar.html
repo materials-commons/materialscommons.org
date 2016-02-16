@@ -1,4 +1,4 @@
-<md-toolbar layout="row" layout-align="center end" class="toolbar-fixed-">
+<md-toolbar>
     <div class="md-toolbar-tools">
         <h1><a ng-click="ctrl.home()">MaterialsCommons</a></h1>
         <span flex-offset="30"></span>
@@ -13,7 +13,7 @@
             <md-button>Help</md-button>
             <md-menu>
                 <md-button ng-click="$mdOpenMenu($event)">
-                    <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>{{email_address}}
+                    <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>{{::ctrl.user}}
                 </md-button>
                 <md-menu-content>
                     <md-menu-item>

@@ -7,6 +7,9 @@ var app = angular.module('materialscommons',
         'ngMaterial',
         'ui.router',
         'restangular',
+        'dndLists',
+        'angular.filter',
+        'jmdobry.angular-cache',
         'toastr',
         'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
         'ct.ui.router.extras.previous',
@@ -29,9 +32,13 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: '/projects',
             template: '<mc-projects></mc-projects>'
         })
-        .state('project', {
-            url: '/project/:project_id',
-            template: '<mc-project></mc-project>'
+        .state('projects.project', {
+                url: '/project/:id',
+                templateUrl: 'application/core/projects/project/home/home.html',
+                controller: "ProjectHomeController",
+                controllerAs: "ctrl"
+            //url: '/project/:project_id',
+            //template: '<mc-project></mc-project>'
         });
         //.state('logout', {
         //    url: '/logout',
