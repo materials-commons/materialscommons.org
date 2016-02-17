@@ -25,7 +25,7 @@ html {
 }
 
 .md-mc-primary-color-hue-2-bg {
-    background-color:#283593;
+    background-color: #283593;
 }
 
 .process-color-bg {
@@ -45,7 +45,7 @@ html {
 }
 
 .text-black {
-    color: rgba(0,0,0, 0.87);
+    color: rgba(0, 0, 0, 0.87);
 }
 
 .text-white {
@@ -108,6 +108,7 @@ html {
     border-right-color: #267ed5;
     border-right-width: 2px
 }
+
 .mc-md-list-item:hover,
 .mc-md-list-item:focus {
     background: #267ed5 !important;
@@ -116,6 +117,11 @@ html {
 /* ** md-table ** */
 table.md-table th.md-column {
     color: black;
+}
+
+.md-input-bottom-0 {
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 /* *************** End Materials Design CSS *************** */
@@ -651,11 +657,11 @@ a:focus {
 }
 
 /*table a, .table a {*/
-    /*text-decoration: none;*/
+/*text-decoration: none;*/
 /*}*/
 
 /*td > a {*/
-    /*color: #204d65;*/
+/*color: #204d65;*/
 /*}*/
 
 .caret-light {
@@ -682,12 +688,12 @@ label {
 /* ***** Override default bootstrap table styles ***** */
 /*.table-bordered th,*/
 /*.table-bordered td {*/
-    /*!* border: 3px solid #e8e6cf !important; *!*/
-    /*border: 2px solid #d3d3d3 !important;*/
+/*!* border: 3px solid #e8e6cf !important; *!*/
+/*border: 2px solid #d3d3d3 !important;*/
 /*}*/
 
 /*.table > thead > tr > th {*/
-    /*border-bottom: 2px solid #d3d3d3;*/
+/*border-bottom: 2px solid #d3d3d3;*/
 /*}*/
 
 /*.table > thead > tr > th,*/
@@ -696,15 +702,15 @@ label {
 /*.table > thead > tr > td,*/
 /*.table > tbody > tr > td,*/
 /*.table > tfoot > tr > td {*/
-    /*padding: 8px;*/
-    /*line-height: 1.42857143;*/
-    /*vertical-align: top;*/
-    /*border-top: 2px solid #d3d3d3;*/
+/*padding: 8px;*/
+/*line-height: 1.42857143;*/
+/*vertical-align: top;*/
+/*border-top: 2px solid #d3d3d3;*/
 /*}*/
 
 /*.table-striped > tbody > tr:nth-child(2n+1) > td,*/
 /*.table-striped > tbody > tr:nth-child(2n+1) > th {*/
-    /*background-color: #f4f4f6;*/
+/*background-color: #f4f4f6;*/
 /*}*/
 
 .close {
@@ -860,8 +866,6 @@ textarea.no-resize {
     background-position: 10% 60%;
 }
 
-
-
 .icon-splash {
     background-color: white;
     height: 30vh;
@@ -955,24 +959,17 @@ textarea.no-resize {
     color: #FDB600;
 }
 
-
-
 .file, .file-color {
     color: #9782be;
 }
-
-
 
 .process, .process-color {
     color: #1E88E5;
 }
 
-
 .sample, .sample-color {
     color: #26A69A;
 }
-
-
 
 .details-main-content .headings {
     font-size: 16px;

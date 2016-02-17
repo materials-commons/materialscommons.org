@@ -45,7 +45,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         })
         .state('project.file', {
             url: '/file/:file_id',
-            template: '<mc-file-tree></mc-file-tree>'
+            template: '<mc-file></mc-file>'
         })
         .state('project.dir', {
             url: '/dir/:dir_id',

@@ -144,8 +144,7 @@
         }
 
         function handleFile(params) {
-            console.log('handleFile');
-            //$state.go('projects.project.files.all.edit', {file_id: params.data.id});
+            $state.go('project.file', {file_id: params.data.id});
         }
     }
 }(angular.module('materialscommons')));
