@@ -1,7 +1,11 @@
-<md-list>
+<md-list style="background-color:#bbdefb;">
     <md-list-item md-ink-ripple="true" class="mc-md-list-item"
                   ng-click="$ctrl.chooseSample(sample)"
-                  ng-repeat="sample in $ctrl.samples" style="padding-left:10px">
-        {{sample.name}}
+                  ng-repeat="sample in $ctrl.samples">
+        <div layout="column">
+            {{sample.name}}
+            <span flex>Hello world</span>
+        </div>
+        <md-divider></md-divider>
     </md-list-item>
 </md-list>
