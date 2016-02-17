@@ -1,26 +1,25 @@
 (function(module) {
     module.component('mcProject', {
         templateUrl: 'components/project/mc-project.html',
-        controller: 'MCProjectComponentController',
-        scope: {
-            project: '='
-        }
+        controller: 'MCProjectComponentController'
     });
 
     module.controller('MCProjectComponentController', MCProjectComponentController);
-    MCProjectComponentController.$inject = ["projectsService", "$stateParams"];
-    function MCProjectComponentController(projectsService, $stateParams) {
+    MCProjectComponentController.$inject = ["projectsService", "$state", "$stateParams", "project"];
+    function MCProjectComponentController(projectsService, $state, $stateParams, project) {
         var ctrl = this;
-
-        projectsService.getProject($stateParams.project_id).then(function(p) {
-            ctrl.project = p;
-        });
 
         ctrl.showSidebar = true;
         ctrl.toggle = toggle;
+        ctrl.openTree = openTree;
+        ctrl.openFiles = openFiles;
 
         closeAll();
-        ctrl.samplesOpen = true;
+
+        projectsService.getProject($stateParams.project_id).then(function(p) {
+            project.set(p);
+            ctrl.project = p;
+        });
 
         ////////////////////////////////////////
 
@@ -31,12 +30,21 @@
         }
 
         function closeAll() {
-            ctrl.treeOpen = false;
             ctrl.samplesOpen = false;
-            ctrl.filesOpen = false;
             ctrl.processesOpen = false;
             ctrl.sharesOpen = false;
             ctrl.datasetsOpen = false;
+            ctrl.filesOpen = false;
+        }
+
+        function openTree() {
+
+        }
+
+        function openFiles() {
+            toggle('filesOpen');
+            //closeAll();
+            //$state.go('project.files');
         }
     }
 }(angular.module('materialscommons')));

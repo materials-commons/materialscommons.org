@@ -11,7 +11,6 @@
     MCProcessesComponentController.$inject = [];
     function MCProcessesComponentController() {
         var ctrl = this;
-        console.log('MCProcessesComponentController', ctrl.processes);
         ctrl.selectProcess = selectProcess;
 
         //////////////////////////
