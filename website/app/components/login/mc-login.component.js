@@ -7,7 +7,6 @@
     module.controller('MCLoginController', MCLoginController);
     MCLoginController.$inject = ["$state", "User", "toastr", "mcapi", "Restangular"];
     function MCLoginController($state, User, toastr, mcapi, Restangular) {
-        console.log('MCLoginController');
         var ctrl = this;
 
         ctrl.message = "MCLoginController";

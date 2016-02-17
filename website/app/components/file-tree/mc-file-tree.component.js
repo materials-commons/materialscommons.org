@@ -1,19 +1,27 @@
 (function (module) {
-    module.controller("FilesAllController", FilesAllController);
+    module.component('mcFileTree', {
+        templateUrl: 'components/file-tree/mc-file-tree.html',
+        controller: 'MCFileTreeComponentController'
+    });
 
-    FilesAllController.$inject = ["$scope", "project", "$state", "pubsub", "projectsService", "gridFiles"];
-
-    /* @ngInject */
-    function FilesAllController($scope, project, $state, pubsub, projectsService, gridFiles) {
+    module.controller('MCFileTreeComponentController', MCFileTreeComponentController);
+    MCFileTreeComponentController.$inject = ["$scope", "project", "$state", "$stateParams", "pubsub", "projectsService", "gridFiles"];
+    function MCFileTreeComponentController($scope, project, $state, $stateParams, pubsub, projectsService, gridFiles) {
         var ctrl = this;
+        var proj = project.get();
 
-        ctrl.gridShowingFlag = true;
-        ctrl.files = project.files;
-        ctrl.files[0].expanded = true;
+        projectsService.getProjectDirectory(proj.id).then(function (files) {
+            proj.files = gridFiles.toGrid(files);
+            ctrl.files = proj.files;
+            ctrl.files[0].expanded = true;
+            init();
+            ctrl.gridShowingFlag = true;
+        });
+
 
         pubsub.waitOn($scope, 'files.refresh', function (f) {
             var treeModel = new TreeModel(),
-                root = treeModel.parse(project.files[0]);
+                root = treeModel.parse(proj.files[0]);
             var file = root.first({strategy: 'pre'}, function (node) {
                 return node.model.data.id === f.id;
             });
@@ -26,13 +34,11 @@
             }
         });
 
-        projectsService.onChange($scope, function(dirID) {
-            projectsService.getProjectDirectory(project.id, dirID).then(function (files) {
+        projectsService.onChange($scope, function (dirID) {
+            projectsService.getProjectDirectory(proj.id, dirID).then(function (files) {
                 loadFilesIntoDirectory(dirID, files);
             });
         });
-
-        init();
 
         ///////////////////////////////
 
@@ -101,7 +107,7 @@
                 }
             };
 
-            $state.go('projects.project.files.all.dir', {dir_id: ctrl.files[0].data.id});
+            $state.go('project.dir', {dir_id: ctrl.files[0].data.id});
         }
 
         function rowClicked(params) {
@@ -113,20 +119,21 @@
         }
 
         function handleDirectory(params) {
+            console.log('handleDirectory');
             if (!params.data.childrenLoaded) {
-                projectsService.getProjectDirectory(project.id, params.data.id).then(function (files) {
+                projectsService.getProjectDirectory(proj.id, params.data.id).then(function (files) {
                     loadFilesIntoDirectory(params.data.id, files);
-                    $state.go('projects.project.files.all.dir', {dir_id: params.data.id});
+                    $state.go('project.dir', {dir_id: params.data.id});
                 });
             } else {
                 ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
-                $state.go('projects.project.files.all.dir', {dir_id: params.data.id});
+                $state.go('project.dir', {dir_id: params.data.id});
             }
         }
 
         function loadFilesIntoDirectory(dirID, files) {
             var treeModel = new TreeModel(),
-                root = treeModel.parse(project.files[0]);
+                root = treeModel.parse(proj.files[0]);
             var dir = root.first({strategy: 'pre'}, function (node) {
                 return node.model.data.id === dirID;
             });
@@ -137,7 +144,8 @@
         }
 
         function handleFile(params) {
-            $state.go('projects.project.files.all.edit', {file_id: params.data.id});
+            console.log('handleFile');
+            //$state.go('projects.project.files.all.edit', {file_id: params.data.id});
         }
     }
 }(angular.module('materialscommons')));

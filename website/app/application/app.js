@@ -12,6 +12,7 @@ var app = angular.module('materialscommons',
         'angular.filter',
         'ui.calendar',
         'jmdobry.angular-cache',
+        'angularGrid',
         'toastr',
         'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
         'ct.ui.router.extras.previous',
@@ -40,6 +41,18 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         .state('project.sample', {
             url: '/sample/:sample_id',
             template: '<mc-sample></mc-sample>'
+        })
+        .state('project.file', {
+            url: '/file/:file_id',
+            template: '<mc-file-tree></mc-file-tree>'
+        })
+        .state('project.dir', {
+            url: '/dir/:dir_id',
+            template: '<mc-dir></mc-dir>'
+        })
+        .state('project.tree', {
+            url: '/tree',
+            template: '<mc-project-tree></mc-project-tree>'
         });
     //.state('logout', {
     //    url: '/logout',
