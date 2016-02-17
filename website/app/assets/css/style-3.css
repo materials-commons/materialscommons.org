@@ -102,6 +102,11 @@ html {
     background-color: rgba(255, 255, 255, 0.3);
 }
 
+.sidebar-menu .mc-md-list-item .md-button {
+    color: black;
+    border-right-color: #267ed5;
+    border-right-width: 2px
+}
 .mc-md-list-item:hover,
 .mc-md-list-item:focus {
     background: #267ed5 !important;
