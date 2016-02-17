@@ -81,7 +81,7 @@ html {
     line-height: 40px;
     margin: 0;
     overflow: hidden;
-    padding: 0px 16px;
+    padding: 0 16px;
     text-align: left;
     text-decoration: none;
     white-space: normal;
@@ -111,6 +111,11 @@ html {
 .mc-md-list-item:hover,
 .mc-md-list-item:focus {
     background: #267ed5 !important;
+}
+
+/* ** md-table ** */
+table.md-table th.md-column {
+    color: black;
 }
 
 /* *************** End Materials Design CSS *************** */
@@ -231,7 +236,7 @@ a:hover, a:visited {
 .sidebar .list-group-item.active {
     color: #212121;
     background-color: #EEF3F5;
-    border: 0.5px solid lightgrey;
+    border: 1px solid lightgrey;
 }
 
 .sidebar .list-group-item.active .heading {

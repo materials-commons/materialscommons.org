@@ -9,8 +9,8 @@
     });
 
     module.controller('MCDirOverviewComponentController', MCDirOverviewComponentController);
-    MCDirOverviewComponentController.$inject = ["fileType", "mcfile", "$filter", "Restangular", "User"];
-    function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User) {
+    MCDirOverviewComponentController.$inject = ["fileType", "mcfile", "$filter", "Restangular", "User", "mcmodal", "project"];
+    function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, project) {
         var ctrl = this;
 
         ctrl.viewFiles = viewFiles;
@@ -58,7 +58,6 @@
             } else {
                 ctrl.selectedCount++;
             }
-            file.selected = !file.selected;
         }
 
         function selectAllFiles() {
@@ -98,7 +97,8 @@
 
         function shareSelectedFiles() {
             var toUserName = function (u) { return u.user_id;};
-            var users = current.project().users.map(toUserName);
+            var proj = project.get();
+            var users = proj.users.map(toUserName);
             mcmodal.chooseUsers(users).then(function(chosenUsers) {
                 console.log('users chosen', chosenUsers);
             })
