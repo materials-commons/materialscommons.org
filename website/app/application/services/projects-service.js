@@ -13,7 +13,9 @@
             },
 
             getProject: function(projectID) {
-                return modelProjects.get(projectID);
+                return modelProjects.getList().then(function() {
+                    return modelProjects.get(projectID);
+                });
             },
 
             getProjectSamples: function (projectID) {
