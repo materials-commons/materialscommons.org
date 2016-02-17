@@ -15,17 +15,11 @@
         <md-content class="md-mc-primary-color-hue-2-bg" style="color: white" flex>
             <ul class="sidebar-menu">
                 <li>
-                    <md-button ng-click="$ctrl.toggle('treeOpen')">
+                    <md-button ng-click="$ctrl.openTree()">
                         <div layout="row" flex>
                             Tree
-                            <span flex></span>
-                            <md-icon md-font-icon="fa" style="color:white"
-                                     ng-class="{'fa-chevron-down': $ctrl.treeOpen, 'fa-chevron-up': !$ctrl.treeOpen}"></md-icon>
                         </div>
                     </md-button>
-                </li>
-                <li ng-if="$ctrl.treeOpen">
-                    Show project tree
                 </li>
                 <li>
                     <md-button ng-click="$ctrl.toggle('samplesOpen')">
@@ -41,7 +35,7 @@
                     <mc-project-samples samples="$ctrl.project.samples"></mc-project-samples>
                 </li>
                 <li>
-                    <md-button ng-click="$ctrl.toggle('filesOpen')">
+                    <md-button ng-click="$ctrl.openFiles()">
                         <div layout="row" flex>
                             Files
                             <span flex></span>
@@ -51,7 +45,7 @@
                     </md-button>
                 </li>
                 <li ng-if="$ctrl.filesOpen">
-                    Show files
+                    <mc-file-tree></mc-file-tree>
                 </li>
                 <li>
                     <md-button ng-click="$ctrl.toggle('processesOpen')">

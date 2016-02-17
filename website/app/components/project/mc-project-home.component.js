@@ -5,16 +5,14 @@
     });
 
     module.controller('MCProjectHomeComponentController', MCProjectHomeComponentController);
-    MCProjectHomeComponentController.$inject = ["$state", "projectsService", "$stateParams"];
+    MCProjectHomeComponentController.$inject = ["$state", "project"];
 
-    function MCProjectHomeComponentController($state, projectsService, $stateParams) {
+    function MCProjectHomeComponentController($state, project) {
         var ctrl = this;
 
-        projectsService.getProject($stateParams.project_id).then(function(p) {
-            ctrl.projectLoaded = true;
-            ctrl.project = p;
-        });
-        //ctrl.project = project;
+
+        ctrl.project = project.get();
+        ctrl.projectLoaded = true;
         ctrl.chooseTemplate = chooseTemplate;
         ctrl.chooseExistingProcess = chooseExistingProcess;
         ctrl.templates = []; // templates;

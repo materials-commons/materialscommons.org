@@ -14,7 +14,8 @@ html {
 }
 
 .md-row-hover:hover {
-    background-color:#267ed5;
+    /*background-color:#267ed5;*/
+    background-color: #eeeeee;
     color: white;
 }
 
