@@ -33,27 +33,49 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
         })
         .state('project', {
             url: '/project/:project_id',
-            template: '<mc-project></mc-project>'
+            template: '<mc-project></mc-project>',
+            resolve: {
+                // Set the current project in the project service so all components
+                // will resolve without having to worry if a promise has resolved.
+                // The resolved object is ignored.
+                _project: ["$stateParams", "projectsService", "project",
+                    // Inject projects so that it resolves before looking up the project.
+                    function ($stateParams, projectsService, project) {
+                        return projectsService.getProject($stateParams.project_id)
+                            .then(function (proj) {
+                                project.set(proj);
+                                return proj;
+                            });
+                    }]
+            }
         })
         .state('project.home', {
             url: '/home',
             template: '<mc-project-home></mc-project-home>'
         })
-        .state('project.sample', {
+        .state('project.processes', {
+            url: '/processes',
+            template: '<mc-project-processes></mc-project-processes>'
+        })
+        .state('project.samples', {
             url: '/sample/:sample_id',
             template: '<mc-sample></mc-sample>'
         })
-        .state('project.file', {
+        .state('project.files', {
+            url: '/files',
+            template: '<mc-file-tree></mc-file-tree>'
+        })
+        .state('project.files.file', {
             url: '/file/:file_id',
             template: '<mc-file></mc-file>'
         })
-        .state('project.dir', {
+        .state('project.files.dir', {
             url: '/dir/:dir_id',
             template: '<mc-dir></mc-dir>'
         })
-        .state('project.tree', {
-            url: '/tree',
-            template: '<mc-project-tree></mc-project-tree>'
+        .state('project.settings', {
+            url: '/settings',
+            template: '<mc-project-settings></mc-project-settings>'
         });
     //.state('logout', {
     //    url: '/logout',
