@@ -11,7 +11,7 @@
     <p flex ng-if="!$ctrl.file.description && !$ctrl.editDescription">No description given</p>
 
     <md-input-container ng-if="$ctrl.editDescription">
-        <textarea rows=10 ng-model="$ctrl.description"></textarea>
+        <textarea rows=10 placeholder="Description..." ng-model="$ctrl.description"></textarea>
         <md-button class="md-primary" ng-click="$ctrl.save()">save</md-button>
         <md-button class="md-warn" ng-click="$ctrl.editDescription = false">cancel</md-button>
     </md-input-container>
