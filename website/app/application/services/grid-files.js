@@ -27,11 +27,13 @@
         }
 
         function createDirectoryEntry(entry) {
+            console.dir(entry);
             return {
                 group: true,
                 expanded: false,
                 data: {
                     name: entry.name,
+                    path: entry.path,
                     _type: 'directory',
                     id: entry.id,
                     size: '',
@@ -47,6 +49,7 @@
                 data: {
                     name: entry.name,
                     _type: 'file',
+                    path: entry.path,
                     size: entry.size,
                     mediatype: entry.mediatype,
                     id: entry.id
@@ -62,6 +65,7 @@
                         expanded: true,
                         data: {
                             name: files.name,
+                            path: files.path,
                             _type: files._type,
                             id: files.id,
                             childrenLoaded: true
@@ -82,10 +86,9 @@
             findEntry(files, id) {
                 var treeModel = new TreeModel(),
                     root = treeModel.parse(files);
-                var entry = root.first({strategy: 'pre'}, function (node) {
+                return root.first({strategy: 'pre'}, function (node) {
                     return node.model.data.id === id;
                 });
-                return entry;
             }
         }
     }
