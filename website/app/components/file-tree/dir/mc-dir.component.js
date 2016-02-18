@@ -12,6 +12,7 @@
 
         var entry = gridFiles.findEntry(ctrl.project.files[0], $stateParams.dir_id);
         if (entry) {
+            console.dir(entry.model);
             ctrl.dir = entry.model;
         }
     }
