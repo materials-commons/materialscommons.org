@@ -9,7 +9,6 @@
 
     function MCProjectHomeComponentController($state, project) {
         var ctrl = this;
-        console.log('MCProjectHome', project.get());
         ctrl.project = project.get();
         ctrl.projectLoaded = true;
         ctrl.chooseTemplate = chooseTemplate;

@@ -106,7 +106,7 @@
                 }
             };
 
-            //$state.go('project.files.dir', {dir_id: ctrl.files[0].data.id});
+            $state.go('project.files.dir', {dir_id: ctrl.files[0].data.id});
         }
 
         function rowClicked(params) {
@@ -118,15 +118,14 @@
         }
 
         function handleDirectory(params) {
-            console.log('handleDirectory');
             if (!params.data.childrenLoaded) {
                 projectsService.getProjectDirectory(proj.id, params.data.id).then(function (files) {
                     loadFilesIntoDirectory(params.data.id, files);
-                    //$state.go('project.files.dir', {dir_id: params.data.id});
+                    $state.go('project.files.dir', {dir_id: params.data.id});
                 });
             } else {
                 ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
-                //$state.go('project.files.dir', {dir_id: params.data.id});
+                $state.go('project.files.dir', {dir_id: params.data.id});
             }
         }
 
@@ -143,7 +142,7 @@
         }
 
         function handleFile(params) {
-            //$state.go('project.files.file', {file_id: params.data.id});
+            $state.go('project.files.file', {file_id: params.data.id});
         }
     }
 }(angular.module('materialscommons')));
