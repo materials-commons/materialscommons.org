@@ -1,4 +1,4 @@
-<div layout="row">
+<div layout="row" layout-align="start center">
     <h3 class="md-title" ng-if="!$ctrl.renameActive"><i class="fa fa-fw fa-file"></i> {{$ctrl.file.name}}</h3>
     <span ng-if="$ctrl.renameActive">
         <md-input-container md-no-float class="md-input-bottom-0">
@@ -9,14 +9,14 @@
             </md-button>
         </md-input-container>
     </span>
-    <md-button ng-if="!$ctrl.renameActive" ng-click="$ctrl.renameActive = !$ctrl.renameActive"
+    <md-button ng-if="!$ctrl.renameActive"
+               ng-click="$ctrl.renameActive = !$ctrl.renameActive; $ctrl.newName = $ctrl.file.name"
                class="md-primary">
         rename
     </md-button>
-    <a ng-if="!$ctrl.renameActive" ng-href="{{$ctrl.downloadSrc()}}"
-       class="md-primary" download="{{$ctrl.file.name}}">
+    <md-button ng-if="!$ctrl.renameActive" ng-href="{{$ctrl.downloadSrc()}}" class="md-primary" download="{{$ctrl.file.name}}">
         download
-    </a>
+    </md-button>
 
     <div ng-if="false">
         <li ng-if="!$ctrl.renameActive" class="dropdown">

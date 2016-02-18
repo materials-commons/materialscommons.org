@@ -5,8 +5,13 @@
     });
 
     module.controller('MCFileComponentController', MCFileComponentController);
-    MCFileComponentController.inject = [];
-    function MCFileComponentController() {
-
+    MCFileComponentController.inject = ["projectsService", "$stateParams"];
+    function MCFileComponentController(projectsService, $stateParams) {
+        var ctrl = this;
+        ctrl.file = {};
+        projectsService.getProjectFile($stateParams.project_id, $stateParams.file_id)
+            .then(function(file) {
+                ctrl.file = file;
+            });
     }
 }(angular.module('materialscommons')));
