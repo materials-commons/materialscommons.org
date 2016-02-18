@@ -18,7 +18,6 @@
         ////////////////////
 
         function login() {
-            console.log('login');
             mcapi('/user/%/apikey', ctrl.userLogin, ctrl.password)
                 .success(function (u) {
                     User.setAuthenticated(true, u);
