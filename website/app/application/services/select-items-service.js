@@ -50,10 +50,10 @@
 
     module.controller('SelectItemsServiceModalController', SelectItemsServiceModalController);
     SelectItemsServiceModalController.$inject = ['$modalInstance', 'showProcesses',
-        'showFiles', 'showSamples', 'showReviews', 'projectsService', '$stateParams', 'current'];
+        'showFiles', 'showSamples', 'showReviews', 'projectsService', '$stateParams', 'project'];
 
     function SelectItemsServiceModalController($modalInstance, showProcesses, showFiles, showSamples,
-                                               showReviews, projectsService, $stateParams, current) {
+                                               showReviews, projectsService, $stateParams, project) {
         var ctrl = this;
 
         ctrl.tabs = loadTabs();
@@ -64,7 +64,7 @@
         ctrl.cancel = cancel;
         ctrl.processes = [];
         ctrl.samples = [];
-        ctrl.files = current.project().files;
+        ctrl.files = project.get().files;
 
         /////////////////////////
 
@@ -97,7 +97,7 @@
         function getSelectedFiles() {
             var files = [],
                 treeModel = new TreeModel(),
-                root = treeModel.parse(current.project().files[0]);
+                root = treeModel.parse(project.get().files[0]);
             // Walk the tree looking for selected files and adding them to the
             // list of files. Also reset the selected flag so the next time
             // the popup for files is used it doesn't show previously selected
