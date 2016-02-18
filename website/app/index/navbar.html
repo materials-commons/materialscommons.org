@@ -1,15 +1,15 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
         <h1><a ng-click="ctrl.home()">MaterialsCommons</a></h1>
-        <span flex-offset="30"></span>
-        <md-input-container md-no-float flex="40" class="md-input-bottom-0">
+        <span flex-offset="5"></span>
+        <md-input-container md-no-float flex="50" class="md-input-bottom-0">
             <input placeholder="SEARCH PROJECT..." type="text"
                    ng-model="ctrl.query"
                    on-enter="ctrl.search()"
                    style="color:white; border-bottom-color:white">
         </md-input-container>
         <span flex></span>
-        <div layout="row" layout-align="space-around">
+        <div layout="row" layout-sm="column" layout-align="space-around">
             <md-button ui-sref="projects">Projects</md-button>
             <md-button>Help</md-button>
             <md-menu>
