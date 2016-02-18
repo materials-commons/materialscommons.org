@@ -18,7 +18,6 @@
             ctrl.gridShowingFlag = true;
         });
 
-
         pubsub.waitOn($scope, 'files.refresh', function (f) {
             var treeModel = new TreeModel(),
                 root = treeModel.parse(proj.files[0]);
@@ -84,7 +83,7 @@
                                 }
                                 break;
                             }
-                            return '<i style="color: #D2C4D5;" class="fa fa-fw ' + icon + '"></i><span title="' + params.data.name + '">' +
+                            return '<i class="file-tree-icon-color fa fa-fw ' + icon + '"></i><span title="' + params.data.name + '">' +
                                 params.data.name + '</span>';
                         }
                     }
@@ -102,12 +101,12 @@
                 rowHeight: 30,
                 angularCompileRows: false,
                 icons: {
-                    groupExpanded: '<i style="color: #D2C4D5 " class="fa fa-folder-open"/>',
-                    groupContracted: '<i style="color: #D2C4D5 " class="fa fa-folder"/>'
+                    groupExpanded: '<i class="file-tree-icon-color fa fa-folder-open"/>',
+                    groupContracted: '<i class="file-tree-icon-color fa fa-folder"/>'
                 }
             };
 
-            $state.go('project.dir', {dir_id: ctrl.files[0].data.id});
+            //$state.go('project.files.dir', {dir_id: ctrl.files[0].data.id});
         }
 
         function rowClicked(params) {
@@ -123,11 +122,11 @@
             if (!params.data.childrenLoaded) {
                 projectsService.getProjectDirectory(proj.id, params.data.id).then(function (files) {
                     loadFilesIntoDirectory(params.data.id, files);
-                    $state.go('project.dir', {dir_id: params.data.id});
+                    //$state.go('project.files.dir', {dir_id: params.data.id});
                 });
             } else {
                 ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
-                $state.go('project.dir', {dir_id: params.data.id});
+                //$state.go('project.files.dir', {dir_id: params.data.id});
             }
         }
 
@@ -144,7 +143,7 @@
         }
 
         function handleFile(params) {
-            $state.go('project.file', {file_id: params.data.id});
+            //$state.go('project.files.file', {file_id: params.data.id});
         }
     }
 }(angular.module('materialscommons')));
