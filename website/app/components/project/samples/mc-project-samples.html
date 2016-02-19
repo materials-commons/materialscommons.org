@@ -4,12 +4,27 @@
         <md-content layout-margin class="mc-md-file-tree-bg">
             <ul class="sidebar-menu">
                 <li ng-repeat="sample in $ctrl.samples | orderBy:'name'">
-                    <md-button ui-sref="project.samples.sample({sample_id: sample.id})">
+                    <md-button ui-sref="project.samples.sample({sample_id: sample.id})" style="text-transform: none">
                         <div layout="column" layout-align="start start">
                             <span>{{sample.name}}</span>
-                            <span>hello</span>
+                            <div layout="row" layout-align="space-between center">
+                                <!--<span popover-placement="right"-->
+                                <!--popover="{{sample.processes | byKey: 'does_transform': true | transformProcesses}}"-->
+                                <!--popover-title="Transformations" popover-trigger="mouseenter">-->
+                                <!--<i class="fa fa-fw fa-flask" style="color: #ff5a60;"></i>{{sample.transforms}}-->
+                                <!--</span>-->
+                                <span>
+                                    <i data-placement="right" data-toggle="tooltip" title="Files"
+                                       class="fa fa-fw fa-files-o file"></i>{{sample.files.length}}
+                                </span>
+                                <!--<span><composition properties="s.properties"></composition></span>-->
+                                <span>
+                                    <i data-placement="right" data-toggle="tooltip" title="Owner"
+                                       class="fa fa-fw fa-user"></i>{{sample.owner}}
+                                </span>
+                            </div>
+                            <md-divider></md-divider>
                         </div>
-                        <md-divider></md-divider>
                     </md-button>
                 </li>
             </ul>
