@@ -57,6 +57,10 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: '/processes',
             template: '<mc-project-processes></mc-project-processes>'
         })
+        .state('project.processes.process', {
+            url: '/process/:process_id',
+            template: '<mc-process></mc-process>'
+        })
         .state('project.samples', {
             url: '/samples',
             template: '<mc-project-samples></mc-project-samples>'
