@@ -1,38 +1,37 @@
 <div layout="row" flex="100" layout-fill>
-    <div ng-if="!$ctrl.showSidebar" layout="column" flex="2" class="md-mc-primary-color-hue-2-bg" style="color: white"
-         ng-cloak>
-        <md-button ng-click="$ctrl.showSidebar = true">O</md-button>
-    </div>
-    <md-sidenav class="md-mc-primary-color-hue-2-bg" style="color: white;"
-                md-is-locked-open="$ctrl.showSidebar"
-                ng-cloak>
-
-            <md-button ng-click="$ctrl.showSidebar = false" layout-align="start stretch">Hide</md-button>
-            <md-content class="md-mc-primary-color-hue-2-bg" style="color: white" flex>
-                <ul class="sidebar-menu">
-                    <li>
-                        <md-button ng-click="$ctrl.projectsOpen = !$ctrl.projectsOpen">
-                            <div layout="row" flex>
-                                Projects
-                                <span flex></span>
-                                <md-icon md-font-icon="fa" style="color:white"
-                                         ng-class="{'fa-chevron-down': $ctrl.projectsOpen, 'fa-chevron-up': !$ctrl.projectsOpen}"></md-icon>
-                            </div>
-                        </md-button>
-                    </li>
-                    <li ng-if="$ctrl.projectsOpen" ng-repeat="project in $ctrl.projects">
-                        <md-button ng-click="$ctrl.openProject(project.id)">
-                            <span style="padding-left:15px; text-transform: lowercase">{{project.name | truncate:30:'...'}}</span>
-                        </md-button>
-                    </li>
-                </ul>
-            </md-content>
-
-    </md-sidenav>
     <div layout="column" flex>
         <navbar></navbar>
-        <md-content layout="row" layout-align="start stretch" flex>
-            <div ui-view flex layout-fill></div>
+        <md-content layout="row" layout-sm="column" layout-wrap layout-align="start stretch" flex>
+            <div flex="25" flex-sm="100" ng-repeat="project in $ctrl.projects">
+                <md-card class="md-primary">
+                    <md-card-header ng-click="$ctrl.openProject(project.id)"
+                                    class="cursor-pointer md-mc-project-card-header">
+                        <md-card-avatar>
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-bars fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </md-card-avatar>
+                        <md-card-header-text>
+                            <span class="md-title">{{project.name}}</span>
+                            <span class="md-subhead">{{project.owner}}</span>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <img ng-if="project.image" ng-src="{{project.image}}" class="md-card-image">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">Actions</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-actions layout="row" layout-align="start center">
+                        <md-button>Manage Users</md-button>
+                        <md-button>Settings</md-button>
+                    </md-card-actions>
+                    <md-card-content>
+                        <p>{{project.description}}</p>
+                    </md-card-content>
+                </md-card>
+            </div>
         </md-content>
         <md-toolbar ng-if="false" style="background-color: #9e9e9e">
             <span>Doc items here</span>

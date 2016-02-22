@@ -32,6 +32,10 @@ html {
     background-color: #283593;
 }
 
+.md-mc-project-card-header {
+    background-color: #d1d1d1;
+}
+
 .mc-md-file-tree-bg {
     background-color: #c5cae9;
 }
