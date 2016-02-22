@@ -33,6 +33,10 @@
                 return projectsAPI(projectID).one('processes').getList();
             },
 
+            getProjectProcess: function(projectID, processID) {
+                return Restangular.one('process').one('details', processID).get();
+            },
+
             updateProjectProcess: function (projectID, process) {
                 return projectsAPI(projectID).one('processes', process.id).customPUT(process).then(function (p) {
                     if (onChangeFn) {
