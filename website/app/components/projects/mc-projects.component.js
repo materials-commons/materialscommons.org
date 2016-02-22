@@ -9,15 +9,15 @@
     function MCProjectsComponentController(projectsService, $state) {
         var ctrl = this;
         ctrl.isOpen = true;
-        ctrl.projectsOpen = true;
-        ctrl.showSidebar = true;
+        ctrl.openProject = openProject;
         ctrl.projects = [];
         projectsService.getAllProjects().then(function(projects) {
             ctrl.projects = projects;
         });
 
-        ctrl.openProject = function(projectID) {
+        function openProject(projectID) {
+            console.log('openProject');
             $state.go('project.home', {project_id: projectID});
-        };
+        }
     }
 }(angular.module('materialscommons')));
