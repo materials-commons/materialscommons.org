@@ -86,7 +86,6 @@ html {
 
 .sidebar-menu .md-button {
     border-radius: 0;
-    color: white;
     cursor: pointer;
     display: block;
     align-items: inherit;
@@ -103,6 +102,7 @@ html {
 .sidebar-menu .md-button:hover,
 .sidebar-menu .md-button:focus {
     background: #267ed5 !important;
+    color: white;
 }
 
 .login-splash {

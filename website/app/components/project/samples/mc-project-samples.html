@@ -1,5 +1,5 @@
 <div layout="row" layout-fill>
-    <md-sidenav flex="25" class="md-whiteframe-4dp mc-md-file-tree-bg" style="color: white;"
+    <md-sidenav flex="25" class="md-whiteframe-4dp"
                 md-is-locked-open="true">
         <div layout="column" layout-align="center end">
             <md-button ui-sref="project.processes.new({process:'As Received', process_id:''})"
@@ -17,12 +17,12 @@
             <md-button style="margin-top:0"><i class="fa fa-fw fa-arrow-down"></i>A-Z</md-button>
         </div>
         <md-divider></md-divider>
-        <md-content class="mc-md-file-tree-bg">
+        <md-content>
             <ul class="sidebar-menu">
                 <li ng-repeat="sample in $ctrl.samples | filter:$ctrl.showGroupsFilter | filter:$ctrl.searchText | orderBy:'name'">
                     <md-button ui-sref="project.samples.sample({sample_id: sample.id})" style="text-transform: none">
                         <div layout="column" layout-align="start start">
-                            <span>{{sample.name}}</span>
+                            <span style="line-height: 20px; margin-top:12px">{{sample.name}}</span>
                             <p style="line-height: 20px" class="truncate-text">{{sample.description}}</p>
                             <div layout="row" layout-fill layout-align="space-between center">
                                 <!--<span popover-placement="right"-->

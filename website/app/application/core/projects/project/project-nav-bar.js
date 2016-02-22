@@ -5,10 +5,6 @@
         return {
             restrict: "E",
             replace: true,
-            scope: {
-                project: "=project",
-                projects: "=projects"
-            },
             bindToController: true,
             controller: "ProjectNavBarDirectiveController",
             controllerAs: 'ctrl',
@@ -17,11 +13,12 @@
     }
 
     module.controller("ProjectNavBarDirectiveController", ProjectNavBarDirectiveController);
-    ProjectNavBarDirectiveController.$inject = ["current", "$state"];
+    ProjectNavBarDirectiveController.$inject = ["project", "$state"];
 
     /* @ngInject */
-    function ProjectNavBarDirectiveController(current, $state) {
+    function ProjectNavBarDirectiveController(project, $state) {
         var ctrl = this;
+        ctrl.project = project.get().name;
 
         ctrl.setProject = setProject;
 
