@@ -3,8 +3,11 @@
 
     function navbarDirective() {
         return {
-            scope: true,
-            restrict: "AE",
+            scope: {
+                search: '='
+            },
+            restrict: "E",
+            bindToController: true,
             replace: true,
             templateUrl: "index/navbar.html",
             controller: "NavbarDirectiveController",
@@ -19,6 +22,7 @@
         var ctrl = this;
 
         ctrl.query = "";
+        ctrl.placeholder = ctrl.search === 'projects' ? "SEARCH PROJECTS..." : "SEARCH PROJECT...";
 
         ctrl.toggleHelp = help;
         ctrl.search = search;
