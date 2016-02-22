@@ -5,16 +5,28 @@
     });
 
     module.controller('MCProjectSamplesComponentController', MCProjectSamplesComponentController);
-    MCProjectSamplesComponentController.$inject = ["$state", "project"];
-    function MCProjectSamplesComponentController($state, project) {
+    MCProjectSamplesComponentController.$inject = ["project"];
+    function MCProjectSamplesComponentController(project) {
         var ctrl = this;
-        ctrl.chooseSample = chooseSample;
         ctrl.samples = project.get().samples;
+        ctrl.searchText = '';
+        ctrl.showSamplesInGroups = false;
+
+        ctrl.showGroupsChangede = showGroupsChanged;
+        ctrl.showGroupsFilter = {
+            is_grouped: false
+        };
 
         ///////////////////////////
 
-        function chooseSample(sample) {
-            $state.go('project.samples.sample', {sample_id: sample.id});
+        function showGroupsChanged() {
+            if (!ctrl.showSamplesInGroups) {
+                ctrl.showGroupsFilter = {
+                    is_grouped: false
+                }
+            } else {
+                ctrl.showGroupsFilter = {};
+            }
         }
     }
 }(angular.module('materialscommons')));
