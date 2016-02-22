@@ -1,7 +1,7 @@
 <div layout="row" layout-fill>
-    <md-sidenav flex="25" class="md-whiteframe-4dp mc-md-file-tree-bg" style="color: white;"
+    <md-sidenav flex="25" class="md-whiteframe-4dp"
                 md-is-locked-open="true">
-        <md-content layout-margin class="mc-md-file-tree-bg">
+        <md-content layout-margin>
             <div ng-if="$ctrl.gridShowingFlag" ag-grid="$ctrl.gridOptions" class="ag-file-browser"></div>
             <div ng-if="!$ctrl.gridShowingFlag" ag-grid="$ctrl.gridOptions" class="ag-file-browser"></div>
         </md-content>
