@@ -106,7 +106,9 @@
                 }
             };
 
-            $state.go('project.files.dir', {dir_id: ctrl.files[0].data.id});
+            if (!$stateParams.file_id) {
+                $state.go('project.files.dir', {dir_id: ctrl.files[0].data.id});
+            }
         }
 
         function rowClicked(params) {

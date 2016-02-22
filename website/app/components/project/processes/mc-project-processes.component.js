@@ -5,8 +5,8 @@
     });
 
     module.controller('MCProjectProcessesComponentController', MCProjectProcessesComponentController);
-    MCProjectProcessesComponentController.$inject = ["project"];
-    function MCProjectProcessesComponentController(project) {
+    MCProjectProcessesComponentController.$inject = ["project", "$stateParams"];
+    function MCProjectProcessesComponentController(project, $stateParams) {
         var ctrl = this;
 
         ctrl.processes = project.get().processes;
