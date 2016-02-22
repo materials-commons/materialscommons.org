@@ -18,18 +18,10 @@
                         </md-card-header-text>
                     </md-card-header>
                     <img ng-if="project.image" ng-src="{{project.image}}" class="md-card-image">
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline">Actions</span>
-                        </md-card-title-text>
-                    </md-card-title>
                     <md-card-actions layout="row" layout-align="start center">
-                        <md-button>Manage Users</md-button>
-                        <md-button>Settings</md-button>
+                        <md-button class="md-primary">Manage Users</md-button>
+                        <md-button class="md-primary">Settings</md-button>
                     </md-card-actions>
-                    <md-card-content>
-                        <p>{{project.description}}</p>
-                    </md-card-content>
                 </md-card>
             </div>
         </md-content>
