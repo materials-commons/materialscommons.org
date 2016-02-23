@@ -4,7 +4,7 @@
     function navbarDirective() {
         return {
             scope: {
-                search: '='
+                search: '@'
             },
             restrict: "E",
             bindToController: true,
