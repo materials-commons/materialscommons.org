@@ -1,0 +1,5 @@
+<div layout="row" layout-margin layout-align="start center">
+    <md-button class="md-primary" ng-click="$ctrl.showAPIKey()">{{ $ctrl.showHideButtonText }}</md-button>
+    <md-button class="md-warn" ng-click="$ctrl.resetAPIKey()">Reset API Key</md-button>
+    <span ng-show="$ctrl.showKey">Your current apikey is: {{ $ctrl.apikey }}</span>
+</div>

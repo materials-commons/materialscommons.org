@@ -3,9 +3,6 @@
 
     function navbarDirective() {
         return {
-            scope: {
-                search: '@'
-            },
             restrict: 'E',
             bindToController: true,
             replace: true,
@@ -21,8 +18,10 @@
     function NavbarDirectiveController(User, $state, projects) {
         var ctrl = this;
 
+        var inProjectsState = $state.includes('projects');
+
         ctrl.query = '';
-        ctrl.placeholder = ctrl.search === 'projects' ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
+        ctrl.placeholder = inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
 
         ctrl.toggleHelp = help;
         ctrl.search = search;
