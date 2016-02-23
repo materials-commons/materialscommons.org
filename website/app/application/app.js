@@ -440,9 +440,7 @@ function appRun($rootScope, User, Restangular, $state) {
     }
 
     $rootScope.$on('$stateChangeStart', function (event, toState) {
-        if (User.isAuthenticated()) {
-            $rootScope.email_address = User.u();
-        } else if (toState.url !== '/login') {
+        if (!User.isAuthenticated() && toState.url !== '/login') {
             event.preventDefault();
             $state.go('login');
         }
