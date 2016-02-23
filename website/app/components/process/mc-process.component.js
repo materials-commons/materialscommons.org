@@ -10,7 +10,6 @@
         var ctrl = this;
         projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
             .then(function(process) {
-                console.dir(process);
                 ctrl.process = process;
             });
     }
