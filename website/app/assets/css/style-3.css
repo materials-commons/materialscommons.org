@@ -9,6 +9,13 @@ html {
 
 /* ***************** Materials Design CSS ***************** */
 
+/* Change underline color of tabs when we assign class mc-tabs to md-tabs*/
+/* http://stackoverflow.com/questions/33950471/how-to-change-the-underline-color-of-selected-tab-in-angular-material */
+md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
+    color: black !important;
+    background-color: black !important;
+}
+
 .md-row {
     line-height: 30px;
 }
