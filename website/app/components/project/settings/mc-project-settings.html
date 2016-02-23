@@ -1,0 +1,43 @@
+<div layout="column" layout-margin>
+    <h3 class="md-title">Collaborators for project {{$ctrl.project.name}}</h3>
+
+    <md-table-container>
+        <table md-table>
+            <thead md-head>
+            <tr md-row>
+                <th md-column>Users</th>
+                <th md-column>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr md-row class="md-row-hover" ng-repeat="user in $ctrl.project.users | orderBy: 'user_id'">
+                <td md-cell>{{user.user_id}}</td>
+                <td md-cell ng-if="$ctrl.isOwner($ctrl.signedInUser)">
+                    <div ng-if="$ctrl.signedInUser === user.user_id">
+                        Owner
+                    </div>
+                    <div ng-if="$ctrl.signedInUser !== user.user_id">
+                        <md-button ng-click="$ctrl.deleteUser(user.id)" class="md-warn">Remove</md-button>
+                    </div>
+                </td>
+                <td md-cell ng-if="!$ctrl.isOwner($ctrl.signedInUser)">Not Authorized</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <div ng-if="$ctrl.isOwner($ctrl.signedInUser)">
+        <div flex="70">
+            <form>
+                <md-input-container class="md-block">
+                    <label>Add User</label>
+                    <md-select ng-model="$ctrl.user" ng-model-options="{trackBy: '$value.email'}">
+                        <md-option ng-value="user" ng-repeat="user in $ctrl.allUsers | orderBy:'name'">
+                            {{user.email}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </form>
+        </div>
+        <md-button class="md-primary" ng-click="$ctrl.addUser()" ng-disabled="!$ctrl.user">Add</md-button>
+    </div>
+</div>
