@@ -1,11 +1,11 @@
 <div layout="column" layout-fill layout-margin layout-wrap>
     <div ng-if="$ctrl.file">
         <mc-file-edit-controls file="$ctrl.file"></mc-file-edit-controls>
-        <div layout="row" layout-margin>
-            <span class="md-subhead"><i class="fa fa-calendar"></i>{{$ctrl.file.birthtime | toDateString}}</span>
-            <span class="md-subhead"><i class="fa fa-user"></i>{{$ctrl.file.owner}}</span>
-            <span class="md-subhead"><i class="fa fa-copy"></i>{{$ctrl.file.size | bytes}}</span>
-            <span class="md-subhead"><i class=""></i>{{$ctrl.file.mediatype.mime}}</span>
+        <div layout="row" flex="60" layout-align="space-around center">
+            <span class="md-subhead-light"><i class="fa fa-calendar"></i>{{$ctrl.file.birthtime | toDateString}}</span>
+            <span class="md-subhead-light"><i class="fa fa-user"></i>{{$ctrl.file.owner}}</span>
+            <span class="md-subhead-light"><i class="fa fa-copy"></i>{{$ctrl.file.size | bytes}}</span>
+            <span class="md-subhead-light"><i class=""></i>{{$ctrl.file.mediatype.mime}}</span>
         </div>
 
         <div layout-margin>
