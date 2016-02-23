@@ -17,7 +17,6 @@
         ctrl.user = '';
 
         mcapi('/users').success(function (users) {
-            console.dir(users);
             ctrl.allUsers = users;
         }).jsonp();
 
