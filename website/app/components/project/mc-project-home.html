@@ -86,7 +86,7 @@
                 <tbody>
                 <tr ng-repeat="sample in $ctrl.project.samples | filter:{is_grouped: false}">
                     <td>
-                        <b><a ui-sref="projects.project.samples.edit({sample_id: sample.id})">{{sample.name}}</a></b>
+                        <b><a ui-sref="project.samples({sample_id: sample.id})">{{sample.name}}</a></b>
 
                         <div style="padding-bottom: 15px;">
                             <p style="font-size: 12px;padding-bottom: 10px;">

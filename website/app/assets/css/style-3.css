@@ -14,7 +14,12 @@ html {
 }
 
 .file-tree-icon-color {
-    color: #283593;
+    color: #2196f3;
+}
+
+a {
+    /*color: #64b5f6;*/
+    color: #2196f3;
 }
 
 .md-row-hover:hover {
@@ -23,17 +28,22 @@ html {
     color: white;
 }
 
+.md-subhead-light {
+    font-size: 1rem;
+    color: #858585;
+}
+
 .fa-md-icon {
     height: auto;
     padding-bottom: 3px;
 }
 
 .md-mc-primary-color-hue-2-bg {
-    background-color: #283593;
+    background-color: #1565c0;
 }
 
 .md-mc-primary-bg {
-    background-color: #3f51b5;
+    background-color: #2196f3;
 }
 
 .md-mc-project-card-header {
@@ -41,7 +51,7 @@ html {
 }
 
 .mc-md-file-tree-bg {
-    background-color: #c5cae9;
+    background-color: #1565c0;
 }
 
 .process-color-bg {
@@ -105,8 +115,9 @@ html {
 
 .sidebar-menu .md-button:hover,
 .sidebar-menu .md-button:focus {
-    background: #3f51b5 !important;
-    color: white;
+    background-color: #ecf0f1 !important;
+    font-weight: bold;
+    color: black;
 }
 
 .login-splash {
@@ -203,9 +214,7 @@ textarea {
     color: #E57373;
 }
 
-a {
-    color: #64b5f6;
-}
+
 
 a:hover, a:visited {
     opacity: 0.7;
