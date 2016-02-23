@@ -6,16 +6,17 @@
 
     module.controller('MCUserPasswordComponentController', MCUserPasswordComponentController);
 
-    MCUserPasswordComponentController.$inject = ['mcapi', 'User', 'toastr', 'focus'];
+    MCUserPasswordComponentController.$inject = ['mcapi', 'User', 'toastr', 'focus', '$previousState'];
 
     /* @ngInject */
-    function MCUserPasswordComponentController(mcapi, User, toastr, focus) {
+    function MCUserPasswordComponentController(mcapi, User, toastr, focus, $previousState) {
         var ctrl = this;
         ctrl.newPassword = null;
         ctrl.verifyNewPassword = null;
         focus('inputPassword');
 
         ctrl.changePassword = changePassword;
+        ctrl.cancel = cancel;
 
         //////////////
 
@@ -27,13 +28,14 @@
                             toastr.success('Password updated successfully', {
                                 closeButton: true
                             });
+                            $previousState.go();
+                        })
+                        .error(function (data) {
+                            toastr.error('Unable to update password: ' + data.error, {
+                                closeButton: true
+                            });
                             resetPasswordFields();
-                        }).error(function (data) {
-                        toastr.error('Unable to update password: ' + data.error, {
-                            closeButton: true
-                        });
-                        resetPasswordFields();
-                    }).put({password: ctrl.newPassword});
+                        }).put({password: ctrl.newPassword});
                 } else {
                     toastr.error('Passwords do not match.', {
                         closeButton: true
@@ -47,6 +49,10 @@
             focus('inputPassword');
             ctrl.newPassword = '';
             ctrl.verifyNewPassword = '';
+        }
+
+        function cancel() {
+            $previousState.go();
         }
     }
 }(angular.module('materialscommons')));
