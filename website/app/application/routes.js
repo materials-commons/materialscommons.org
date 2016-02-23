@@ -17,6 +17,10 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/apikey',
             template: '<mc-user-apikey></mc-user-apikey>'
         })
+        .state('user.password', {
+            url: '/password',
+            template: '<mc-user-password></mc-user-password>'
+        })
         .state('project', {
             url: '/project/:project_id',
             template: '<mc-project></mc-project>',
