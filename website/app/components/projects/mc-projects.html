@@ -5,7 +5,7 @@
             <md-button class="md-primary md-raised" ng-click="$ctrl.toggleSidenav()">create project</md-button>
         </div>
         <md-content layout="row" layout-sm="column" layout-wrap layout-align="start stretch" flex>
-            <div flex="25" flex-sm="100" ng-repeat="project in $ctrl.projects">
+            <div flex="25" flex-sm="100" ng-repeat="project in $ctrl.projects | orderBy:'name'">
                 <md-card class="md-primary">
                     <md-card-header ng-click="$ctrl.openProject(project.id)"
                                     class="cursor-pointer md-mc-project-card-header">
