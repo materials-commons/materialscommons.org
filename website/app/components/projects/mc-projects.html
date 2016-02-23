@@ -1,6 +1,9 @@
 <div layout="row" flex="100" layout-fill>
     <div layout="column" flex>
         <navbar search="projects"></navbar>
+        <div layout="row">
+            <md-button class="md-primary md-raised" ng-click="$ctrl.toggleSidenav()">create project</md-button>
+        </div>
         <md-content layout="row" layout-sm="column" layout-wrap layout-align="start stretch" flex>
             <div flex="25" flex-sm="100" ng-repeat="project in $ctrl.projects">
                 <md-card class="md-primary">
@@ -25,8 +28,15 @@
                 </md-card>
             </div>
         </md-content>
-        <md-toolbar ng-if="false" style="background-color: #9e9e9e">
-            <span>Doc items here</span>
-        </md-toolbar>
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="createProject">
+            <md-content layout-padding>
+                <form>
+                    <md-input-container>
+                        <label for="projectName">Project Name</label>
+                        <input type="text" id="projectName" md-autofocus>
+                    </md-input-container>
+                </form>
+            </md-content>
+        </md-sidenav>
     </div>
 </div>
