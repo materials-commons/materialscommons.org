@@ -41,7 +41,8 @@
     <link href="application/core/projects/project/files/files.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
-<body layout="row" flex layout-fill>
+<body layout="column" flex ng-controller="MCAppController as ctrl">
+<navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
 <div ui-view flex layout-fill></div>
 
 <!--
@@ -86,9 +87,14 @@
 
 <!-- build:appjs js/app.js -->
 <script src="application/app.js"></script>
+<script src="application/routes.js"></script>
+<script src="application/mc-app.controller.js"></script>
 
 <!-- Component: Login -->
 <script src="components/login/mc-login.component.js"></script>
+
+<!-- Component: User -->
+<script src="components/user/mc-user-apikey.component.js"></script>
 
 <!-- Component: Projects -->
 <script src="components/projects/mc-projects.component.js"></script>
