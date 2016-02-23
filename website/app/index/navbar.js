@@ -1,37 +1,34 @@
 (function (module) {
-    module.directive("navbar", navbarDirective);
+    module.directive('navbar', navbarDirective);
 
     function navbarDirective() {
         return {
             scope: {
                 search: '@'
             },
-            restrict: "E",
+            restrict: 'E',
             bindToController: true,
             replace: true,
-            templateUrl: "index/navbar.html",
-            controller: "NavbarDirectiveController",
+            templateUrl: 'index/navbar.html',
+            controller: 'NavbarDirectiveController',
             controllerAs: 'ctrl'
         };
     }
 
-    module.controller("NavbarDirectiveController", NavbarDirectiveController);
-    NavbarDirectiveController.$inject = ['User'];
+    module.controller('NavbarDirectiveController', NavbarDirectiveController);
+    NavbarDirectiveController.$inject = ['User', '$state', 'model.projects'];
 
-    function NavbarDirectiveController(User) {
+    function NavbarDirectiveController(User, $state, projects) {
         var ctrl = this;
 
-        ctrl.query = "";
-        ctrl.placeholder = ctrl.search === 'projects' ? "SEARCH PROJECTS..." : "SEARCH PROJECT...";
+        ctrl.query = '';
+        ctrl.placeholder = ctrl.search === 'projects' ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
 
         ctrl.toggleHelp = help;
         ctrl.search = search;
         ctrl.home = home;
+        ctrl.logout = logout;
         ctrl.user = User.u();
-
-        //pubsub.waitOn($scope, 'clear.search', function () {
-        //    ctrl.query = "";
-        //});
 
         ////////////////////////
 
@@ -40,39 +37,19 @@
         }
 
         function search() {
-            //if (ctrl.query != "") {
+            //if (ctrl.query != '') {
             //    $state.go('projects.project.search', {query: ctrl.query}, {reload: true});
             //}
         }
 
         function home() {
-            //if (User.isAuthenticated()) {
-            //    $state.go("projects.project.home", {id: current.projectID()});
-            //} else {
-            //    $state.go("home");
-            //}
+            $state.go('projects');
         }
-    }
 
-    module.controller("TestDragController", TestDragController);
-    TestDragController.$inject = [];
-    function TestDragController() {
-        var ctrl = this;
-
-        ctrl.messages = [];
-        for (var i = 0; i < 10; i++) {
-            ctrl.messages.push("This is " + i + " from drag");
-        }
-    }
-
-    module.controller("TestDropController", TestDropController);
-    TestDropController.$inject = [];
-    function TestDropController() {
-        var ctrl = this;
-
-        ctrl.messages = [];
-        for (var i = 0; i < 10; i++) {
-            ctrl.messages.push("This is " + i + " from drop");
+        function logout() {
+            User.setAuthenticated(false);
+            projects.clear();
+            $state.go('login');
         }
     }
 }(angular.module('materialscommons')));
