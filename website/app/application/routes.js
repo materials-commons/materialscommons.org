@@ -43,6 +43,10 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/home',
             template: '<mc-project-home></mc-project-home>'
         })
+        .state('project.search', {
+            url: '/search/:query',
+            template: '<mc-project-search></mc-project-search>'
+        })
         .state('project.processes', {
             url: '/processes',
             template: '<mc-project-processes></mc-project-processes>'

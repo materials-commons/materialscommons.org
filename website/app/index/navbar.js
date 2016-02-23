@@ -36,9 +36,9 @@
         }
 
         function search() {
-            //if (ctrl.query != '') {
-            //    $state.go('projects.project.search', {query: ctrl.query}, {reload: true});
-            //}
+            if (ctrl.query != '') {
+                $state.go('project.search', {query: ctrl.query}, {reload: true});
+            }
         }
 
         function home() {
