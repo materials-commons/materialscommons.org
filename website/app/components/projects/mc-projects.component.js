@@ -12,6 +12,10 @@
         ctrl.openProject = openProject;
         ctrl.projects = [];
         ctrl.toggleSidenav = toggleSidenav;
+        ctrl.newProjectName = '';
+        ctrl.newProjectDescription = '';
+        ctrl.cancel = cancel;
+        ctrl.create = create;
 
         projectsService.getAllProjects().then(function(projects) {
             ctrl.projects = projects;
@@ -25,6 +29,35 @@
 
         function toggleSidenav() {
             $mdSidenav('createProject').toggle();
+        }
+
+        function create() {
+            if (ctrl.newProjectName !== '') {
+                projectsService.createProject(ctrl.newProjectName, ctrl.newProjectDescription)
+                .then(
+                    function success() {
+                        toggleSidenav();
+                        clearNewProjectVars();
+                        projectsService.getAllProjects().then(function(projects) {
+                            ctrl.projects = projects;
+                        });
+                    },
+
+                    function error(err) {
+                        console.log('error', err);
+                    }
+                );
+            }
+        }
+
+        function cancel() {
+            toggleSidenav();
+            clearNewProjectVars();
+        }
+
+        function clearNewProjectVars() {
+            ctrl.newProjectName = '';
+            ctrl.newProjectDescription = '';
         }
     }
 }(angular.module('materialscommons')));
