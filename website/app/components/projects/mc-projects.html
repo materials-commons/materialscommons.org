@@ -31,9 +31,15 @@
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="createProject">
             <md-content layout-padding>
                 <form>
-                    <md-input-container>
+                    <md-input-container md-no-float>
                         <label for="projectName">Project Name</label>
-                        <input type="text" id="projectName" md-autofocus>
+                        <input type="text" id="projectName" md-autofocus ng-model="$ctrl.newProjectName">
+                    </md-input-container>
+                    <md-input-container md-no-float>
+                        <label for="projectDescription">Project Description</label>
+                        <textarea rows=10 id="projectDescription" ng-model="$ctrl.newProjectDescription"></textarea>
+                        <md-button class="md-primary" ng-click="$ctrl.create()">create</md-button>
+                        <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
                     </md-input-container>
                 </form>
             </md-content>

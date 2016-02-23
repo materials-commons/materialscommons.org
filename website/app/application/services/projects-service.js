@@ -9,13 +9,25 @@
         return {
 
             getAllProjects: function() {
-                return modelProjects.getList();
+                return modelProjects.getList(true);
             },
 
             getProject: function(projectID) {
                 return modelProjects.getList().then(function() {
                     return modelProjects.get(projectID);
                 });
+            },
+
+            createProject: function(projectName, projectDescription) {
+                return Restangular.one('projects').customPOST({
+                    name: projectName,
+                    description: projectDescription
+                }).then(function(p) {
+                    if (onChangeFn) {
+                        onChangeFn(p);
+                    }
+                    return p;
+                })
             },
 
             getProjectSamples: function (projectID) {
