@@ -30,12 +30,19 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
                 // The resolved object is ignored.
                 _project: ["$stateParams", "projectsService", "project",
                     // Inject projects so that it resolves before looking up the project.
-                    function ($stateParams, projectsService, project) {
+                    function($stateParams, projectsService, project) {
                         return projectsService.getProject($stateParams.project_id)
-                            .then(function (proj) {
+                            .then(function(proj) {
                                 project.set(proj);
                                 return proj;
                             });
+                    }],
+
+                _templates: ["processTemplates", "templates", "_project",
+                    function(processTemplates, templates, project) {
+                        var projectTemplates = processTemplates.templates(project.process_templates, project.id);
+                        templates.set(projectTemplates);
+                        return projectTemplates;
                     }]
             }
         })
@@ -50,6 +57,19 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.processes', {
             url: '/processes',
             template: '<mc-project-processes></mc-project-processes>'
+        })
+        .state('project.processes.create', {
+            url: '/create-process/:template_id',
+            template: '<mc-process-create></mc-process-create>',
+            resolve: {
+                _template: ['templates', 'template', '$stateParams',
+                    function(templates, template, $stateParams) {
+                        console.log('_template');
+                        var t = templates.getTemplate($stateParams.template_id);
+                        template.set(t);
+                        return t;
+                    }]
+            }
         })
         .state('project.processes.process', {
             url: '/process/:process_id',

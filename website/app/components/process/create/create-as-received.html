@@ -1,0 +1,68 @@
+<div layout="row" layout-wrap layout-fill>
+    <div layout="column" flex="45">
+        <md-input-container>
+            <label>Sample name</label>
+            <input type="text" ng-model="$ctrl.sample.name">
+        </md-input-container>
+        <md-input-container>
+            <label>Description</label>
+                <textarea rows="10" ng-model="ctrl.sample.description">
+                </textarea>
+        </md-input-container>
+    </div>
+    <span flex></span>
+    <div layout="column" flex="45">
+        <md-checkbox ng-model="$ctrl.sampleGroup">Treat as sample group</md-checkbox>
+        <div ng-if="$ctrl.sampleGroup && $ctrl.sampleGroupSizing === 'set-size'">
+            <md-input-container>
+                <label>Sample group size</label>
+                <input type="number" ng-model="$ctrl.sampleGroupSize">
+            </md-input-container>
+        </div>
+        <process-settings settings="$ctrl.process.setup.settings[0].properties"></process-settings>
+    </div>
+
+    <!--<div ng-if="false">-->
+        <!--<div ng-if="ctrl.sampleGroup">-->
+            <!--<md-radio-group ng-model="$ctrl.sampleGroupSize">-->
+                <!--<md-radio-button value="set-size">Set sample group size</md-radio-button>-->
+                <!--<md-radio-button value="as-needed">Create samples as needed</md-radio-button>-->
+            <!--</md-radio-group>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<process-settings settings="$ctrl.process.setup.settings[0].properties"></process-settings>-->
+
+    <!--<label>Composition</label>-->
+    <!--<periodic-table doc="$ctrl.doc"></periodic-table>-->
+    <!--<md-button ng-click="$ctrl.chooseInputFiles()"><i class="fa fa-fw fa-plus"></i> Input Files</md-button>-->
+    <!--<md-button ng-click="$ctrl.submitSample()">Submit</md-button>-->
+    <!--<md-button ng-click="$ctrl.submitAndAnother()">Submit and Another</md-button>-->
+    <!--<md-button ng-click="$ctrl.cancel()">Cancel</md-button>-->
+
+    <!--<md-divider></md-divider>-->
+    <!--<div class="row" ng-if="false">-->
+        <!--<div class="col-xs-12">-->
+            <!--<table ng-if="ctrl.process.input_samples.length || ctrl.process.input_files.length || ctrl.process.output_files.length"-->
+                   <!--class="table table-striped">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>Type</th>-->
+                    <!--<th>Name</th>-->
+                    <!--<th></th>-->
+                    <!--<th></th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr ng-repeat="file in ctrl.process.input_files | orderBy:'name'">-->
+                    <!--<td>Input File</td>-->
+                    <!--<td>{{file.name}}</td>-->
+                    <!--<td></td>-->
+                    <!--<td><a ng-click="ctrl.remove(ctrl.process.input_files, file)"><i class="fa fa-close"></i></a></td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+    <!--</div>-->
+
+</div>
