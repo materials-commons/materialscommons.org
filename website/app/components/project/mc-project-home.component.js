@@ -19,9 +19,11 @@
         /////////////////////////
 
         function chooseTemplate() {
-            mcmodal.chooseTemplate(ctrl.project, templates).then(function (processTemplateName) {
-                $state.go('projects.project.processes.create', {process: processTemplateName, process_id: ''});
-            });
+            //mcmodal.chooseTemplate(ctrl.project, templates).then(function (processTemplateName) {
+            //    $state.go('projects.project.processes.create', {process: processTemplateName, process_id: ''});
+            //});
+            console.log('chooseTemplate');
+            $state.go('project.processes.create', {template_id: 'As Received', process_id:''});
         }
 
         function chooseExistingProcess() {
