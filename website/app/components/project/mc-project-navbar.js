@@ -1,16 +1,20 @@
-(function (module) {
+(function(module) {
     module.component("mcProjectNavbar", {
         templateUrl: 'components/project/mc-project-navbar.html',
         controller: 'MCProjectNavbarComponentController'
     });
 
     module.controller('MCProjectNavbarComponentController', MCProjectNavbarComponentController);
-    MCProjectNavbarComponentController.$inject = ['project', '$state'];
-    function MCProjectNavbarComponentController(project, $state) {
+    MCProjectNavbarComponentController.$inject = ['project', '$state', '$rootScope'];
+    function MCProjectNavbarComponentController(project, $state, $rootScope) {
         var ctrl = this;
 
         ctrl.currentTab = getCurrentTabIndex();
         ctrl.project = project.get();
+
+        $rootScope.$on('$stateChangeSuccess', function() {
+            ctrl.currentTab = getCurrentTabIndex();
+        });
 
         /////////////////////
 
