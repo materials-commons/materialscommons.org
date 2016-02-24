@@ -12,10 +12,10 @@
                 <md-card class="process-color-bg text-white">
                     <md-card-title layout="column">
                         <md-card-title-text layout-align="center center">
-                            <span class="md-headline">
+                            <a class="md-headline text-white" ui-sref="project.processes">
                                 {{$ctrl.project.processes.length | number}} Processes
                                 <i class="fa fa-code-fork"></i>
-                            </span>
+                            </a>
                         </md-card-title-text>
                         <md-card-actions layout="row" layout-align="center center">
                             <md-button>New Process</md-button>
@@ -28,10 +28,10 @@
                 <md-card class="sample-color-bg text-white">
                     <md-card-title layout="column">
                         <md-card-title-text layout-align="center center">
-                            <span class="md-headline">
+                            <a class="md-headline text-white" ui-sref="project.samples">
                                 {{$ctrl.project.samples.length | number}} Samples
                                 <i class="fa fa-cubes"></i>
-                            </span>
+                            </a>
                         </md-card-title-text>
                         <md-card-actions layout="row" layout-align="center center">
                             <md-button>New Sample</md-button>
@@ -44,10 +44,10 @@
                 <md-card class="file-color-bg text-white">
                     <md-card-title layout="column">
                         <md-card-title-text layout-align="center center">
-                            <span class="md-headline">
+                            <a class="md-headline text-white" ui-sref="project.files">
                                 {{$ctrl.project.file_count | number}} Files
                                 <i class="fa fa-files-o"></i>
-                            </span>
+                            </a>
                         </md-card-title-text>
                         <md-card-actions layout="row" layout-align="center center">
                             <md-button>Upload Files</md-button>
