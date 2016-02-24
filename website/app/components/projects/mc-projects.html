@@ -16,14 +16,17 @@
                             </span>
                         </md-card-avatar>
                         <md-card-header-text>
-                            <span class="md-title">{{project.name}}</span>
-                            <span class="md-subhead">{{project.owner}}</span>
+                            <span class="md-title">{{project.name}} ({{project.owner}})</span>
+                            <span class="md-subhead" layout="row" flex="80" layout-align="space-between center">
+                                <span><i class="fa fa-fw fa-code-fork"></i>{{project.processes.length | number}}</span>
+                                <span><i class="fa fa-fw fa-cubes"></i>{{project.samples.length | number}}</span>
+                                <span><i class="fa fa-fw fa-files-o"></i>{{project.file_count | number}}</span>
+                            </span>
                         </md-card-header-text>
                     </md-card-header>
                     <img ng-if="project.image" ng-src="{{project.image}}" class="md-card-image">
                     <md-card-actions layout="row" layout-align="start center">
-                        <md-button class="md-primary">Manage Users</md-button>
-                        <md-button class="md-primary">Settings</md-button>
+                        <md-button class="md-primary" ui-sref="project.settings({project_id: project.id})">Manage Users</md-button>
                     </md-card-actions>
                 </md-card>
             </div>
