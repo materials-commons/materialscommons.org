@@ -15,12 +15,12 @@
                                 </span>
                                 <span class="row">Path: {{hit._source.path}}</span>
                             </div>
-                            <div ng-if="$ctrl.isImage(hit._source.mediatype.mime)">
-                                <a ng-click="$ctrl.openFilePopup(hit._source)">
-                                    <img class="img-thumbnail" height="140" width="140"
-                                         ng-src="{{$ctrl.fileSrc(hit._source.id)}}">
-                                </a>
-                            </div>
+                        </div>
+                        <div ng-if="$ctrl.isImage(hit._source.mediatype.mime)">
+                            <a ng-click="$ctrl.openFilePopup(hit._source)">
+                                <img class="img-thumbnail" height="140" width="140"
+                                     ng-src="{{$ctrl.fileSrc(hit._source.id)}}">
+                            </a>
                         </div>
                     </div>
                     <div ng-switch-when="sample">
@@ -32,15 +32,15 @@
                                     <a ui-sref="project.samples.sample({sample_id: hit._source.sample_id})">{{hit._source.name}}</a>
                                 </span>
                             </div>
-                            <span>
-                                <a ng-repeat="image in $ctrl.images(hit._source.files) | first:5"
-                                   ng-click="$ctrl.openFilePopup(image)">
-                                    <img class="img-thumbnail" height="140" width="140"
-                                         ng-src={{$ctrl.fileSrc(image.datafile_id)}}>
-                                </a>
-                                <span ng-if="hit._source.files.length > 5">  ...and {{hit._source.files.length-5}} More</span>
-                            </span>
                         </div>
+                        <span>
+                            <a ng-repeat="image in $ctrl.images(hit._source.files) | first:5"
+                               ng-click="$ctrl.openFilePopup(image)">
+                                <img class="img-thumbnail" height="140" width="140"
+                                     ng-src={{$ctrl.fileSrc(image.datafile_id)}}>
+                            </a>
+                            <span ng-if="hit._source.files.length > 5"> ... and {{hit._source.files.length-5}} More</span>
+                        </span>
                     </div>
                 </div>
             </md-list-item>
