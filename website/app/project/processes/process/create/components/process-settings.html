@@ -9,7 +9,7 @@
                     <!--------- number --------->
                     <div ng-switch-when="number">
                         <div layout="row" layout-align="start center">
-                            <md-input-container class="md-blockx">
+                            <md-input-container md-no-float>
                                 <label>{{::setting.property.name}}</label>
                                 <input type="number"
                                        name="numberInput"
@@ -21,10 +21,12 @@
                                 {{::setting.property.unit}}
                             </span>
                             <span ng-if="setting.property.units.length !== 0">
-                                <select flex="10" ng-model="setting.property.unit" data-placeholder="Choose"
-                                        ng-options="unit for unit in setting.property.units"
-                                        ng-required="setting.property.required">
-                                </select>
+                                <md-select ng-model="setting.property.unit" class="units-align">
+                                    <md-option ng-repeat="unit in setting.property.units"
+                                               ng-value="unit" ng-selected="$first">
+                                        {{unit}}
+                                    </md-option>
+                                </md-select>
                             </span>
                         </div>
                     </div>
@@ -46,18 +48,10 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        {{setting.property.value}}
-                        <!--<select ng-model="setting.property.value"-->
-                        <!--data-placeholder="Choose"-->
-                        <!--name="selectInput"-->
-                        <!--ng-options="choice as choice.name for choice in setting.property.choices track by choice.value"-->
-                        <!--ng-required="setting.property.required">-->
-                        <!--</select>-->
                         <div ng-if="setting.property.value.name === 'Other'">
-                            <md-input-container class="md-block">
-                                <input type="text"
-                                       placeholder="{{setting.attribute.name}}..."
-                                       ng-model="setting.property.value.value">
+                            <md-input-container class="md-block" md-no-float>
+                                <label>Specify {{setting.property.name}}...</label>
+                                <input type="text" ng-model="setting.property.value.value">
                             </md-input-container>
                         </div>
                     </div>

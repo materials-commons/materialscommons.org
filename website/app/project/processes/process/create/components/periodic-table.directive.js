@@ -10,7 +10,7 @@
                 scope: {
                     doc: '=doc'
                 },
-                templateUrl: 'application/directives/periodic-table.html'
+                templateUrl: 'project/processes/process/create/components/periodic-table.html'
             };
         });
 
