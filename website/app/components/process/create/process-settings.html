@@ -1,118 +1,83 @@
 <div layout="column">
     <h4 class="md-title">Setup</h4>
 
-    <div ng-form="ctrl.settingForm" ng-repeat="setting in ctrl.settings">
-        <div ng-switch="setting.property._type">
+    <md-content layout-padding>
+        <form name="processSettingsForm">
+            <div ng-repeat="setting in ctrl.settings">
+                <div ng-switch="setting.property._type">
 
-            <!--------- number --------->
-            <div ng-switch-when="number">
-                <div layout="row">
-                    <md-input-container>
-                        <label>{{::seting.property.name}}</label>
-                        <input type="number"
-                               name="numberInput"
-                               step="any"
-                               class="form-control"
-                               ng-required="setting.property.required"
-                               ng-model="setting.property.value">
-                    </md-input-container>
-                    <span ng-if="setting.property.units.length === 0">{{::setting.property.unit}}</span>
-                    <span ng-if="setting.property.units.length !== 0">
-                        <select ng-model="setting.property.unit" data-placeholder="Choose"
-                                class="form-control"
-                                ng-options="unit for unit in setting.property.units"
-                                ng-required="setting.property.required">
-                        </select>
-                    </span>
-                </div>
-            </div>
-
-            <!--------- date --------->
-            <div ng-switch-when="date">
-                <div layout="row">
-                    <label>{{::setting.property.name}}</label>
-                    <md-datepicker ng-model="setting.property.value"></md-datepicker>
-                </div>
-                <!--<label class="col-xs-4 control-label">-->
-
-                    <!--<i ng-if="setting.property.required" class="fa fa-asterisk text-danger"></i>-->
-                <!--</label>-->
-                <!--<div class="col-xs-6">-->
-                    <!--<div class="col-xs-8">-->
-                        <!--<p class="input-group">-->
-                            <!--<input type="text" class="form-control" datepicker-popup="dd-MMMM-yyyy"-->
-                                   <!--ng-model="setting.property.value" is-open="setting.property.opened"-->
-                                   <!--placeholder="No date chosen..."-->
-                                   <!--datepicker-options="ctrl.datePickerOptions" close-text="Close">-->
-                            <!--<span class="input-group-btn">-->
-                                <!--<button type="button" class="btn btn-default"-->
-                                        <!--ng-click="ctrl.openDatePicker($event, setting.property)">-->
-                                    <!--<i class="glyphicon glyphicon-calendar"></i>-->
-                                <!--</button>-->
-                            <!--</span>-->
-                        <!--</p>-->
-                    <!--</div>-->
-                <!--</div>-->
-            </div>
-
-            <!--------- selection --------->
-            <div ng-switch-when="selection">
-                <label class="col-xs-4 control-label">
-                    {{::setting.property.name}}
-                    <i ng-if="setting.property.required" class="fa fa-asterisk text-danger"></i>
-                </label>
-
-                <div class="col-xs-6">
-                    <div class="col-xs-4">
-                        <select ng-model="setting.property.value"
-                                data-placeholder="Choose"
-                                name="selectInput" class="form-control"
-                                ng-options="choice as choice.name for choice in setting.property.choices track by choice.value"
-                                ng-required="setting.property.required">
-                        </select>
-
-                        <div ng-if="ctrl.mainSettingForm.$submitted || ctrl.mainSettingForm.$touched"
-                             ng-messages="ctrl.settingForm.selectInput.$error" class="errors">
-                            <div ng-message="required">It's a required field.</div>
+                    <!--------- number --------->
+                    <div ng-switch-when="number">
+                        <div layout="row" layout-align="start center">
+                            <md-input-container class="md-blockx">
+                                <label>{{::setting.property.name}}</label>
+                                <input type="number"
+                                       name="numberInput"
+                                       step="any"
+                                       ng-required="setting.property.required"
+                                       ng-model="setting.property.value">
+                            </md-input-container>
+                            <span ng-if="setting.property.units.length === 0" class="unit-align">
+                                {{::setting.property.unit}}
+                            </span>
+                            <span ng-if="setting.property.units.length !== 0">
+                                <select flex="10" ng-model="setting.property.unit" data-placeholder="Choose"
+                                        ng-options="unit for unit in setting.property.units"
+                                        ng-required="setting.property.required">
+                                </select>
+                            </span>
                         </div>
                     </div>
-                    <div ng-if="setting.property.value.name === 'Other'">
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control"
-                                   placeholder="{{setting.attribute.name}}..."
-                                   ng-model="setting.property.value.value">
+
+                    <!--------- date --------->
+                    <div ng-switch-when="date">
+                        <label>{{::setting.property.name}}</label>
+                        <md-datepicker ng-model="setting.property.value"></md-datepicker>
+                    </div>
+
+                    <!--------- selection --------->
+                    <div ng-switch-when="selection">
+                        <md-input-container class="md-block">
+                            <label>{{::setting.property.name}}</label>
+                            <md-select ng-model="setting.property.value">
+                                <md-option ng-value="choice"
+                                           ng-repeat="choice in setting.property.choices" ng-selected="$first">
+                                    {{choice.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        {{setting.property.value}}
+                        <!--<select ng-model="setting.property.value"-->
+                        <!--data-placeholder="Choose"-->
+                        <!--name="selectInput"-->
+                        <!--ng-options="choice as choice.name for choice in setting.property.choices track by choice.value"-->
+                        <!--ng-required="setting.property.required">-->
+                        <!--</select>-->
+                        <div ng-if="setting.property.value.name === 'Other'">
+                            <md-input-container class="md-block">
+                                <input type="text"
+                                       placeholder="{{setting.attribute.name}}..."
+                                       ng-model="setting.property.value.value">
+                            </md-input-container>
                         </div>
                     </div>
-                    <span class="help-block">{{::setting.property.description}}</span>
-                </div>
 
-            </div>
-
-            <!--------- string --------->
-            <div ng-switch-when="string">
-                <label class="col-xs-4 control-label">
-                    {{::setting.property.name}}
-                    <i ng-if="setting.property.required" class="fa fa-asterisk text-danger"></i>
-                </label>
-
-                <div class="col-xs-6">
-                    <input type="text" name="stringInput" class="form-control"
-                           ng-required="setting.property.required"
-                           ng-model="setting.property.value">
-
-                    <div ng-if="ctrl.mainSettingForm.$submitted || ctrl.mainSettingForm.$touched"
-                         ng-messages="ctrl.settingForm.stringInput.$error" class="errors">
-                        <div ng-message="required">It's a required field.</div>
-                        <div ng-message="text">It's a text field.</div>
+                    <!--------- string --------->
+                    <div ng-switch-when="string">
+                        <md-input-container class="md-block">
+                            <label>{{::setting.property.name}}</label>
+                            <input type="text" name="stringInput"
+                                   ng-required="setting.property.required"
+                                   ng-model="setting.property.value">
+                        </md-input-container>
                     </div>
-                    <span class="help-block">{{::setting.property.description}}</span>
+
+                    <!--------- unknown type --------->
+                    <div ng-switch-default>
+                        <span>Unknown template type {{setting.property._type}}</span>
+                    </div>
                 </div>
             </div>
-
-            <!--------- unknown type --------->
-            <div ng-switch-default>
-                <span>Unknown template type {{setting.property._type}}</span>
-            </div>
-        </div>
-    </div>
+        </form>
+    </md-content>
 </div>
