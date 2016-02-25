@@ -36,7 +36,6 @@
 
     <!-- Application style sheets -->
     <link href="assets/css/style-3.css" rel="stylesheet">
-    <link href="index/index.css" rel="stylesheet">
     <link href="application/core/projects/project/project.css" rel="stylesheet">
     <link href="application/core/projects/project/files/files.css" rel="stylesheet">
     <!-- endbuild -->
@@ -45,10 +44,6 @@
 <navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
 <div ui-view flex layout-fill></div>
 
-<!--
-<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
--->
-<script src="/socket.io/socket.io.js"></script>
 <!-- build:jsassets js/assets.js -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
@@ -86,74 +81,81 @@
 <!-- endbuild -->
 
 <!-- build:appjs js/app.js -->
-<script src="application/app.js"></script>
-<script src="application/routes.js"></script>
-<script src="application/mc-app.controller.js"></script>
 
-<!-- Component: Login -->
-<script src="components/login/mc-login.component.js"></script>
+<!-- Materials Commons App -->
+<script src="app.js"></script>
+<script src="routes.js"></script>
+<script src="mc-app.controller.js"></script>
 
-<!-- Component: User -->
-<script src="components/user/mc-user-apikey.component.js"></script>
-<script src="components/user/mc-user-password.component.js"></script>
+<!-- projects -->
+<script src="projects/mc-projects.component.js"></script>
 
-<!-- Component: Projects -->
-<script src="components/projects/mc-projects.component.js"></script>
+<!-- project -->
+<script src="project/mc-project.component.js"></script>
+<script src="project/mc-project-navbar.js"></script>
 
-<!-- Component: Project -->
-<script src="components/project/mc-project.component.js"></script>
-<script src="components/project/mc-project-home.component.js"></script>
-<script src="components/project/mc-project-navbar.js"></script>
-<script src="components/project/samples/mc-project-samples.component.js"></script>
-<script src="components/project/processes/mc-project-processes.component.js"></script>
-<script src="components/project/settings/mc-project-settings.component.js"></script>
-<script src="components/project/search/mc-project-search.component.js"></script>
+<!-- project/services -->
+<script src="project/services/mcfile.service.js"></script>
+<script src="project/services/project.service.js"></script>
 
-<!-- Component: Sample -->
-<script src="components/sample/mc-sample.component.js"></script>
+<!-- project/components -->
+<script src="project/components/files-list/mc-files-list.component.js"></script>
+<script src="project/components/processes-list/mc-processes-list.component.js"></script>
+<script src="project/components/display-file-contents-directive.js"></script>
 
-<!-- Component: Process -->
-<script src="components/process/mc-process.component.js"></script>
-<script src="components/process/create/mc-process-create.component.js"></script>
-<script src="components/process/create/create-as-received.component.js"></script>
-<script src="components/process/create/processing-settings.js"></script>
+<!-- project/home -->
+<script src="project/home/mc-project-home.component.js"></script>
 
-<!-- Component: files -->
-<script src="components/files/mc-files.component.js"></script>
+<!-- project/files -->
+<script src="project/files/mc-file-tree.component.js"></script>
+<script src="project/files/components/dir/mc-dir.component.js"></script>
+<script src="project/files/components/dir/mc-dir-controls.component.js"></script>
+<script src="project/files/components/dir/mc-dir-overview.component.js"></script>
+<script src="project/files/components/file/mc-file.component.js"></script>
+<script src="project/files/components/file/mc-file-edit-controls.component.js"></script>
+<script src="project/files/components/file/mc-file-description.component.js"></script>
 
-<!-- Component: processes -->
-<script src="components/processes/mc-processes.component.js"></script>
 
-<!-- Component: file-tree -->
-<script src="components/file-tree/mc-file-tree.component.js"></script>
-<script src="components/file-tree/dir/mc-dir.component.js"></script>
-<script src="components/file-tree/dir/mc-dir-controls.component.js"></script>
-<script src="components/file-tree/dir/mc-dir-overview.component.js"></script>
-<script src="components/file-tree/file/mc-file.component.js"></script>
-<script src="components/file-tree/file/mc-file-edit-controls.component.js"></script>
-<script src="components/file-tree/file/mc-file-description.component.js"></script>
-<script src="application/directives/display-file-contents-directive.js"></script>
+<!-- project/processes -->
+<script src="project/processes/mc-project-processes.component.js"></script>
+<script src="project/processes/process/mc-process.component.js"></script>
+<script src="project/processes/process/create/mc-process-create.component.js"></script>
+<script src="project/processes/process/create/create-as-received.component.js"></script>
+<script src="project/processes/process/create/processing-settings.js"></script>
+
+<!-- project/samples -->
+<script src="project/samples/mc-project-samples.component.js"></script>
+<script src="project/samples/sample/mc-sample.component.js"></script>
+
+<!-- project/search -->
+<script src="project/search/mc-project-search.component.js"></script>
+
+<!-- project/settings -->
+<script src="project/settings/mc-project-settings.component.js"></script>
+
+<!-- user -->
+<script src="user/mc-user-apikey.component.js"></script>
+<script src="user/mc-user-password.component.js"></script>
+
+<!-- model -->
+
+<!-- login -->
+<script src="login/mc-login.component.js"></script>
+
+
 
 <!-- These need to moved to different directories -->
 <!-- Global Services -->
-<script src="application/services/user-service.js"></script>
-<script src="application/services/mcapi-service.js"></script>
 
-<script src="application/services/projects-service.js"></script>
 
-<script src="application/services/cached-service-factory-service.js"></script>
-<script src="application/services/model/projects-service.js"></script>
-
-<script src="application/services/pubsub-service.js"></script>
 <script src="application/services/grid-files.js"></script>
 <script src="application/services/file-type-service.js"></script>
-<script src="application/services/mcfile.js"></script>
-<script src="services/project.service.js"></script>
-<script src="application/services/focus.js"></script>
+
+
+
 <script src="application/processes/process-templates.service.js"></script>
 <script src="application/processes/processes.js"></script>
-<script src="services/templates.service.js"></script>
-<script src="services/template.service.js"></script>
+
 
 <!-- mcmodal and dependencies -->
 <script src="application/services/mcmodal/mcmodal.js"></script>
@@ -171,17 +173,30 @@
 <!-- Turn into component -->
 
 <!-- Misc directives -->
-<script src="index/navbar.js"></script>
 <script src="application/directives/on-enter.js"></script>
 
 <script src="application/core/projects/project/home/directives/home-calendar.js"></script>
 
-<!-- filters -->
-<script src="application/filters/todatestring-filter.js"></script>
-<script src="application/filters/bytes.js"></script>
+<!-- global.services -->
+<script src="global.services/user.service.js"></script>
+<script src="global.services/mcapi.service.js"></script>
+<script src="global.services/templates.service.js"></script>
+<script src="global.services/template.service.js"></script>
+<script src="global.services/pubsub.service.js"></script>
+<script src="global.services/projects-service.service.js"></script>
+<script src="global.services/cached-service-factory.service.js"></script>
+<script src="global.services/model/projects-service.js"></script>
+<script src="global.services/focus.service.js"></script>
 
-<!-- Utility functions -->
-<script src="application/util/util.js"></script>
+<!-- global.components -->
+<script src="global.components/navbar.directive.js"></script>
+
+<!-- global.filters -->
+<script src="global.filters/todatestring-filter.js"></script>
+<script src="global.filters/bytes.js"></script>
+
+<!-- util -->
+<script src="util/util.js"></script>
 
 <!-- endbuild -->
 </body>
