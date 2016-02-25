@@ -158,6 +158,11 @@ table.md-table th.md-column {
     margin-bottom: 0;
 }
 
+.unit-align {
+    margin-bottom: 8px;
+    margin-left: 10px;
+}
+
 /* *************** End Materials Design CSS *************** */
 
 .h1custom {
