@@ -463,37 +463,6 @@ function AsReceived() {
                 },
                 {
                     property: {
-                        name: 'Test',
-                        attribute: 'test',
-                        description: '',
-                        value: null,
-                        units: ['mm', 'cm'],
-                        unit: '',
-                        _type: 'number',
-                        required: false
-                    },
-                    validators: [],
-                    valid: false,
-                    errorMessage: ''
-                },
-                {
-                    property: {
-                        name: 'Test2',
-                        attribute: 'test2',
-                        description: '',
-                        value: null,
-                        units: [],
-                        unit: 'cm',
-                        _type: 'number',
-                        required: false
-                    },
-                    validators: [],
-                    valid: false,
-                    errorMessage: ''
-                },
-
-                {
-                    property: {
                         name: "Production method",
                         attribute: "production_method",
                         description: "",
