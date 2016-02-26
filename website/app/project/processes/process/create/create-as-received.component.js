@@ -22,7 +22,6 @@
             files: []
         };
         ctrl.composition = {value: []};
-
         ctrl.sampleGroup = false;
         ctrl.sampleGroupSizing = 'set-size';
         ctrl.sampleGroupSize = 10;
@@ -30,9 +29,11 @@
         ctrl.chooseSamples = _.partial(processSelections.selectSamples, ctrl.process.input_samples);
         ctrl.chooseInputFiles = _.partial(processSelections.selectFiles, ctrl.process.input_files);
         ctrl.chooseOutputFiles = _.partial(processSelections.selectFiles, ctrl.process.output_files);
+        ctrl.remove = removeById;
         ctrl.submit = submit;
         ctrl.submitAndAnother = submitAndAnother;
         ctrl.cancel = previousStateService.go;
+        previousStateService.setMemo('process_create_previous', 'project.processes.create');
 
         /////////////////
 
@@ -45,7 +46,8 @@
         }
 
         function submit() {
-            performSubmit(previousStateService.go);
+            var go = _partial(previousStateService.go, 'process_create_previous');
+            performSubmit(go);
         }
 
         function performSubmit(goFn) {
