@@ -10,7 +10,7 @@
                 </textarea>
         </md-input-container>
         <label>Composition</label>
-        <periodic-table doc="$ctrl.doc"></periodic-table>
+        <periodic-table doc="$ctrl.composition"></periodic-table>
     </div>
     <span flex></span>
     <div layout="column" flex="45">
@@ -36,7 +36,7 @@
         Files
     </md-button>
     <span flex></span>
-    <md-button class="md-primary md-raised" ng-click="$ctrl.submitSample()">Submit</md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.submit()">Submit</md-button>
     <md-button class="md-primary md-raised" ng-click="$ctrl.submitAndAnother()">Submit and Another</md-button>
     <md-button class="md-warn md-raised" ng-click="$ctrl.cancel()">Cancel</md-button>
 

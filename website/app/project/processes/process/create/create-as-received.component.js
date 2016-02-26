@@ -6,11 +6,12 @@
 
     module.controller('MCProcessCreateAsReceivedComponentController', MCProcessCreateAsReceivedComponentController);
     MCProcessCreateAsReceivedComponentController.$inject = [
-        'template', 'processSelections', 'prepareCreatedSample', 'createProcess', 'toastr', 'previousStateService'
+        'template', 'processSelections', 'prepareCreatedSample', 'createProcess', 'toastr', 'previousStateService',
+        '$state'
     ];
     function MCProcessCreateAsReceivedComponentController(template, processSelections,
                                                           prepareCreatedSample, createProcess,
-                                                          toastr, previousStateService) {
+                                                          toastr, previousStateService, $state) {
         var ctrl = this;
         ctrl.process = template.get();
         ctrl.sample = {
@@ -20,7 +21,7 @@
             new_properties: [],
             files: []
         };
-        ctrl.doc = {value: []};
+        ctrl.composition = {value: []};
 
         ctrl.sampleGroup = false;
         ctrl.sampleGroupSizing = 'set-size';
@@ -29,11 +30,25 @@
         ctrl.chooseSamples = _.partial(processSelections.selectSamples, ctrl.process.input_samples);
         ctrl.chooseInputFiles = _.partial(processSelections.selectFiles, ctrl.process.input_files);
         ctrl.chooseOutputFiles = _.partial(processSelections.selectFiles, ctrl.process.output_files);
-        ctrl.submitSample = submitSample;
+        ctrl.submit = submit;
+        ctrl.submitAndAnother = submitAndAnother;
+        ctrl.cancel = previousStateService.go;
 
         /////////////////
 
-        function submitSample() {
+        function submitAndAnother() {
+            var go = _.partial($state.go, 'project.processes.create', {
+                template_id: ctrl.process.process_name,
+                process_id: ''
+            });
+            performSubmit(go);
+        }
+
+        function submit() {
+            performSubmit(previousStateService.go);
+        }
+
+        function performSubmit(goFn) {
             if (ctrl.sample.name === '') {
                 toastr.error("You must specify a sample name", 'Error', {closeButton: true});
                 return;
@@ -42,18 +57,18 @@
             createProcess($stateParams.project_id, ctrl.process)
                 .then(
                     function success() {
-                        ctrl.doc.value.length = 0;
-                        previousStateService.gotoPreviousState();
+                        ctrl.composition.value.length = 0;
+                        goFn();
                     },
 
                     function failure() {
                         toastr.error('Unable to create sample', 'Error', {closeButton: true});
                     }
-                )
+                );
         }
 
         function prepareSample() {
-            prepareCreatedSample.filloutComposition(ctrl.sample, ctrl.doc);
+            prepareCreatedSample.filloutComposition(ctrl.sample, ctrl.composition);
             prepareCreatedSample.setupSampleGroup(sample, ctrl.sampleGroup, ctrl.sampleGroupSizing,
                 ctrl.sampleGroupSize);
             prepareCreatedSample.addSampleInputFiles(sample, ctrl.process.input_files);
