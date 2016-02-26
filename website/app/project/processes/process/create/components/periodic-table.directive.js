@@ -8,7 +8,7 @@
                 controllerAs: 'ctrl',
                 bindToController: true,
                 scope: {
-                    doc: '=doc'
+                    composition: '=composition'
                 },
                 templateUrl: 'project/processes/process/create/components/periodic-table.html'
             };
@@ -29,7 +29,7 @@
         ctrl.elementPercentage = 0;
         ctrl.lookForMatches = lookForMatches;
 
-        ctrl.doc.unit = "at%"; //setting default unit for composition
+        ctrl.composition.unit = "at%"; //setting default unit for composition
 
         ctrl.panel_one_elements = [
             {e: "H", chosen: false, color: 'element-other-nonmetal'},
@@ -268,7 +268,7 @@
 
         function addElement(element) {
             if (!element.chosen) {
-                ctrl.doc.value.push({element: element.e, value: 0});
+                ctrl.composition.value.push({element: element.e, value: 0});
                 element.chosen = true;
             }
         }
@@ -276,13 +276,13 @@
         function removeElement(index) {
             if (index === 0) {
                 // Removing base element so clear everything
-                ctrl.doc.value.length = 0;
+                ctrl.composition.value.length = 0;
                 allElements.forEach(function (e) { e.chosen = false; });
                 matchingElements.length = 0;
                 return;
             }
-            var e = ctrl.doc.value[index].element;
-            ctrl.doc.value.splice(index, 1);
+            var e = ctrl.composition.value[index].element;
+            ctrl.composition.value.splice(index, 1);
             var i = _.findIndex(allElements, {e: e});
             if (i !== -1) {
                 allElements[i].chosen = false;
@@ -293,7 +293,7 @@
             var i = _.findIndex(allElements, function (e) { return e.e.toUpperCase() == ctrl.elementName.toUpperCase()});
             if (i !== -1 && !allElements[i].chosen) {
                 var element = allElements[i];
-                ctrl.doc.value.push({element: element.e, value: ctrl.elementPercentage});
+                ctrl.composition.value.push({element: element.e, value: ctrl.elementPercentage});
                 element.chosen = true;
                 ctrl.elementName = '';
                 ctrl.elementPercentage = 0;
@@ -303,15 +303,15 @@
         }
 
         function showRemaining() {
-            if (!ctrl.doc.value.length) {
+            if (!ctrl.composition.value.length) {
                 return;
             }
             var total = 0;
-            for (var i = 1; i < ctrl.doc.value.length; i++) {
-                total += +ctrl.doc.value[i].value;
+            for (var i = 1; i < ctrl.composition.value.length; i++) {
+                total += +ctrl.composition.value[i].value;
             }
-            ctrl.doc.value[0].value = 100.0 - total;
-            return ctrl.doc.value[0].value;
+            ctrl.composition.value[0].value = 100.0 - total;
+            return ctrl.composition.value[0].value;
         }
 
         function getElementColor(e) {

@@ -29,7 +29,7 @@
                 </ul>
             </div>
         </div>
-        <div ng-if="!ctrl.doc.value.length" class="col-xs-offset-2">
+        <div ng-if="!ctrl.composition.value.length" class="col-xs-offset-2">
             <h4>Choose base element</h4>
         </div>
     </div>
@@ -320,7 +320,7 @@
                 </li>
                 <li>
                     <div class="col-xs-8">
-                        <label class="col-xs-2 control-label" style="margin-bottom:0">{{ctrl.doc.unit}}</label>
+                        <label class="col-xs-2 control-label" style="margin-bottom:0">{{ctrl.composition.unit}}</label>
                         <div class="col-xs-6">
                             <input name="number" ng-model="ctrl.elementPercentage" placeholder="percentage..."
                                    on-enter="ctrl.addElementFromInput()"
@@ -342,24 +342,24 @@
         <th>Element</th>
         <th>
             <ul class="list-inline">
-                <li><input type="radio" value="at%" ng-model="ctrl.doc.unit"/> atomic %</li>
-                <li><input type="radio" value="wt%" ng-model="ctrl.doc.unit"/> weight %</li>
+                <li><input type="radio" value="at%" ng-model="ctrl.composition.unit"/> atomic %</li>
+                <li><input type="radio" value="wt%" ng-model="ctrl.composition.unit"/> weight %</li>
             </ul>
         </th>
 
         </thead>
         <tbody>
-        <tr ng-if="!ctrl.doc.value.length">
+        <tr ng-if="!ctrl.composition.value.length">
             <td>Choose base element</td>
             <td></td>
             <td></td>
         </tr>
-        <tr ng-if="ctrl.doc.value.length">
-            <td>{{::ctrl.doc.value[0].element}}</td>
+        <tr ng-if="ctrl.composition.value.length">
+            <td>{{::ctrl.composition.value[0].element}}</td>
             <td>Balance ({{ctrl.showRemaining()}}%)</td>
             <td><a class="close" ng-click="ctrl.removeElement(0)">x</a></td>
         </tr>
-        <tr ng-repeat="e in ctrl.doc.value">
+        <tr ng-repeat="e in ctrl.composition.value">
             <td ng-if="$index !== 0">{{::e.element}}</td>
             <td ng-if="$index !== 0">
                 <input name="number" ng-model="e.value" placeholder="percentage..."
