@@ -20,7 +20,8 @@
         <md-content>
             <ul class="sidebar-menu">
                 <li ng-repeat="process in $ctrl.processes | filter:$ctrl.searchText | orderBy:'name'">
-                    <md-button ui-sref="project.processes.process({process_id: process.id})" style="text-transform: none">
+                    <md-button ui-sref="project.processes.process({process_id: process.id})"
+                               style="text-transform: none">
                         <div layout="column" layout-align="start start">
                             <span style="line-height: 20px; margin-top:12px">{{process.name}}</span>
                             <p style="line-height: 20px" class="truncate-text">{{process.description}}</p>
