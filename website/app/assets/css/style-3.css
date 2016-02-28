@@ -16,6 +16,10 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     background-color: black !important;
 }
 
+.project-card:hover {
+    background-color: #2196f3;
+}
+
 .md-row {
     line-height: 30px;
 }
