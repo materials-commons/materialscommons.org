@@ -1,11 +1,11 @@
 <div layout="row" flex="100" layout-fill>
     <div layout="column" flex>
-        <!--<navbar search="projects"></navbar>-->
         <div layout="row">
             <md-button class="md-primary md-raised" ng-click="$ctrl.toggleSidenav()">create project</md-button>
         </div>
         <md-content layout="row" layout-wrap layout-align="start stretch" flex>
-            <div flex="25" flex-md="33" flex-sm="60" ng-repeat="project in $ctrl.projects | orderBy:'name'">
+            <div flex="25" flex-md="33" flex-sm="60" class="project-card"
+                 ng-repeat="project in $ctrl.projects | orderBy:'name'">
                 <md-card class="md-primary">
                     <md-card-header ng-click="$ctrl.openProject(project.id)"
                                     class="cursor-pointer md-mc-project-card-header">
@@ -22,8 +22,8 @@
                     </md-card-header>
                     <img ng-if="project.image" ng-src="{{project.image}}" class="md-card-image">
                     <md-card-actions layout="row" layout-align="start center">
-                        <md-button class="md-primary" ui-sref="project.settings({project_id: project.id})">Manage
-                            Users
+                        <md-button class="md-primary" ui-sref="project.settings({project_id: project.id})">
+                            Manage Access
                         </md-button>
                         <span flex></span>
                         <span class="md-subhead" layout="row" flex="60" layout-align="space-between center">
