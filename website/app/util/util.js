@@ -72,6 +72,8 @@ function removeById(from, what) {
     if (i !== -1) {
         from.splice(i, 1);
     }
+
+    return i;
 }
 
 String.prototype.capitalize = function () {
