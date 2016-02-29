@@ -6,10 +6,11 @@
 
     module.controller('MCProcessCreateOtherComponentController', MCProcessCreateOtherComponentController);
     MCProcessCreateOtherComponentController.$inject = [
-        'template', 'processSelections', 'createProcess', 'toastr', 'previousStateService', '$state', 'sampleLinker'
+        'template', 'processSelections', 'createProcess', 'toastr', 'previousStateService',
+        '$state', 'sampleLinker', 'processEdit'
     ];
     function MCProcessCreateOtherComponentController(template, processSelections, createProcess, toastr,
-                                                     previousStateService, $state, sampleLinker) {
+                                                     previousStateService, $state, sampleLinker, processEdit) {
         var ctrl = this;
         ctrl.process = template.get();
 
@@ -18,7 +19,7 @@
         ctrl.chooseInputFiles = _.partial(processSelections.selectFiles, ctrl.process.input_files);
         ctrl.chooseOutputFiles = _.partial(processSelections.selectFiles, ctrl.process.output_files);
 
-        ctrl.linkFilesToSample = sampleLinker.linkFilesToSample;
+        ctrl.linkFilesToSample = linkFilesToSample;
 
         ctrl.submit = submit;
         ctrl.submitAndAnother = submitAndAnother;
@@ -50,6 +51,12 @@
                         toastr.error('Unable to create sample', 'Error', {closeButton: true});
                     }
                 );
+        }
+
+        function linkFilesToSample(sample, input_files, output_files) {
+            sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function(linkedFiles) {
+                sample = processEdit.refreshSample(linkedFiles, sample);
+            });
         }
     }
 }(angular.module('materialscommons')));
