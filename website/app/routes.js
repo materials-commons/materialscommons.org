@@ -81,7 +81,33 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.processes.process', {
             url: '/process/:process_id',
-            template: '<mc-process></mc-process>'
+            template: '<mc-process></mc-process>',
+            resolve: {
+                _process: ['process', 'projectsService', '$stateParams',
+                    function(process, projectsService, $stateParams) {
+                        return projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
+                            .then(function(p) {
+                                process.set(p);
+                                return p;
+                            });
+                    }]
+            }
+        })
+        .state('project.processes.edit', {
+            url: '/edit/:process_id',
+            template: '<mc-process-edit></mc-process-edit>',
+            resolve: {
+                _process: ['process', 'projectsService', '$stateParams', 'processEdit', 'templates',
+                    function(process, projectsService, $stateParams, processEdit, templates) {
+                        return projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
+                            .then(function(proc) {
+                                var t = templates.getTemplate(proc.process_name);
+                                var p = processEdit.fillProcess(t, proc);
+                                process.set(p);
+                                return p;
+                            });
+                    }]
+            }
         })
         .state('project.samples', {
             url: '/samples',
