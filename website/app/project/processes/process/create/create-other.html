@@ -14,14 +14,14 @@
     <div layout="column" flex="45">
         <process-settings settings="$ctrl.process.setup.settings[0].properties"></process-settings>
     </div>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.chooseSamples()">
+        <i class="fa fa-fw fa-plus"></i> Samples
+    </md-button>
     <md-button class="md-primary md-raised" ng-click="$ctrl.chooseInputFiles()">
         <i class="fa fa-fw fa-plus"></i> Input Files
     </md-button>
     <md-button class="md-primary md-raised" ng-click="$ctrl.chooseOutputFiles()">
-        <i class="fa fa-fw fa-plus"></i> Input Files
-    </md-button>
-    <md-button class="md-primary md-raised" ng-click="$ctrl.chooseSamples()">
-        <i class="fa fa-fw fa-plus"></i> Input Files
+        <i class="fa fa-fw fa-plus"></i> Output Files
     </md-button>
     <span flex></span>
     <md-button class="md-primary md-raised" ng-click="$ctrl.submit()">Submit</md-button>

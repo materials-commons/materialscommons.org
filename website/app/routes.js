@@ -62,12 +62,20 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/create-process/:template_id',
             template: '<mc-process-create></mc-process-create>',
             resolve: {
-                _template: ['templates', 'template', '$stateParams',
-                    function(templates, template, $stateParams) {
-                        console.log('_template');
-                        var t = templates.getTemplate($stateParams.template_id);
-                        template.set(t);
-                        return t;
+                _template: ['templates', 'template', '$stateParams', 'projectsService',
+                    function(templates, template, $stateParams, projectsService) {
+                        if ($stateParams.process_id) {
+                            return projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
+                                .then(function(process) {
+                                    var t = templates.loadTemplateFromProcess($stateParams.template_id, process);
+                                    template.set(t);
+                                    return t;
+                                });
+                        } else {
+                            var t = templates.getTemplate($stateParams.template_id);
+                            template.set(t);
+                            return t;
+                        }
                     }]
             }
         })
