@@ -1,7 +1,7 @@
 (function(module) {
     module.factory('sampleLinker', sampleLinkerService);
     sampleLinkerService.$inject = ['$modal', 'processEdit'];
-    function sampleLinkerService($modal, processEdit) {
+    function sampleLinkerService($modal) {
         return {
             linkFilesToSample: function(sample, input_files, output_files) {
                 var modal = $modal.open({
@@ -29,9 +29,7 @@
                         }
                     }
                 });
-                modal.result.then(function(linkedFiles) {
-                    sample = processEdit.refreshSample(linkedFiles, sample);
-                });
+                return modal.result;
             }
         }
     }
