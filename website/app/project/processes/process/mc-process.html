@@ -1,5 +1,10 @@
 <div layout="column" layout-margin layout-fill layout-wrap>
-    <h3 class="md-title">{{$ctrl.process.name}}</h3>
+    <div layout="row" layout-align="start center">
+        <h3 class="md-title">{{$ctrl.process.name}}</h3>
+        <span flex></span>
+        <md-button ng-click="$ctrl.edit()" class="md-primary">edit</md-button>
+        <span flex></span>
+    </div>
     <div layout="row" flex="60" layout-align="space-around center">
         <span class="md-subhead-light"><i class="fa fa-calendar"></i>{{$ctrl.process.birthtime | toDateString}}</span>
         <span class="md-subhead-light"><i class="fa fa-user"></i>{{$ctrl.process.owner}}</span>
