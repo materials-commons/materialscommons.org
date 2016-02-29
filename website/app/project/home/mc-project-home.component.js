@@ -5,32 +5,30 @@
     });
 
     module.controller('MCProjectHomeComponentController', MCProjectHomeComponentController);
-    MCProjectHomeComponentController.$inject = ["$state", "project"];
+    MCProjectHomeComponentController.$inject = ['$state', 'project', 'templates', 'mcmodal', 'projectsService'];
 
-    function MCProjectHomeComponentController($state, project) {
+    function MCProjectHomeComponentController($state, project, templates, mcmodal, projectsService) {
         var ctrl = this;
         ctrl.project = project.get();
         ctrl.projectLoaded = true;
+        ctrl.templates = templates.get();
         ctrl.chooseTemplate = chooseTemplate;
         ctrl.chooseExistingProcess = chooseExistingProcess;
-        ctrl.templates = []; // templates;
-        ctrl.hasFavorites = []; //_.partial(_.any, ctrl.templates, _.matchesProperty('favorite', true));
+        ctrl.hasFavorites = _.partial(_.any, ctrl.templates, _.matchesProperty('favorite', true));
 
         /////////////////////////
 
         function chooseTemplate() {
-            //mcmodal.chooseTemplate(ctrl.project, templates).then(function (processTemplateName) {
-            //    $state.go('projects.project.processes.create', {process: processTemplateName, process_id: ''});
-            //});
-            console.log('chooseTemplate');
-            $state.go('project.processes.create', {template_id: 'As Received', process_id:''});
+            mcmodal.chooseTemplate(ctrl.project, ctrl.templates).then(function (processTemplateName) {
+                $state.go('project.processes.create', {template_id: processTemplateName, process_id: ''});
+            });
         }
 
         function chooseExistingProcess() {
-            projectsService.getProjectProcesses(project.id).then(function (processes) {
+            projectsService.getProjectProcesses(ctrl.project.id).then(function (processes) {
                 mcmodal.chooseExistingProcess(processes).then(function (existingProcess) {
-                    $state.go('projects.project.processes.create',
-                        {process: existingProcess.process_name, process_id: existingProcess.id});
+                    $state.go('project.processes.create',
+                        {template_id: existingProcess.process_name, process_id: existingProcess.id});
                 });
             });
         }

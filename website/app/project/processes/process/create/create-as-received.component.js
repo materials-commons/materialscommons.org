@@ -32,7 +32,7 @@
         ctrl.remove = removeById;
         ctrl.submit = submit;
         ctrl.submitAndAnother = submitAndAnother;
-        ctrl.cancel = _partial(previousStateService.go, 'process_create_previous');
+        ctrl.cancel = _.partial(previousStateService.go, 'process_create_previous');
 
         previousStateService.setMemo('process_create_previous', 'project.processes.create');
 

@@ -17,11 +17,43 @@
                                 <i class="fa fa-code-fork"></i>
                             </a>
                         </md-card-title-text>
-                        <md-card-actions layout="row" layout-align="center center">
-                            <md-button ng-click="$ctrl.chooseTemplate()">
-                                New Process
-                            </md-button>
-                            <md-button class="text-black">View</md-button>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-menu-bar>
+                                <md-menu>
+                                    <md-button ng-click="$mdOpenMenu($event)">
+                                        New Process
+                                    </md-button>
+                                    <md-menu-content>
+                                        <md-menu-item>
+                                            <md-menu>
+                                                <md-button ng-click="$mdOpenMenu()">
+                                                    <span class="text-uppercase">favorites</span>
+                                                </md-button>
+                                                <md-menu-content>
+                                                    <md-menu-item
+                                                            ng-repeat="template in $ctrl.templates | filter:{favorite: true} | orderBy:'name'">
+                                                        <a ui-sref="project.processes.create({template_id: template.name, process_id:''})">
+                                                            {{template.name}} <span ng-if="template.prefill">(PF)</span>
+                                                        </a>
+                                                    </md-menu-item>
+                                                    <md-menu-item ng-if="!$ctrl.hasFavorites()">No favorites
+                                                    </md-menu-item>
+                                                </md-menu-content>
+                                            </md-menu>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="$ctrl.chooseTemplate()">
+                                                <span class="text-uppercase">Choose Template</span>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="$ctrl.chooseExistingProcess()">
+                                                <span class="text-uppercase">Choose from existing process</span>
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                            </md-menu-bar>
                         </md-card-actions>
                     </md-card-title>
                 </md-card>
@@ -35,9 +67,8 @@
                                 <i class="fa fa-cubes"></i>
                             </a>
                         </md-card-title-text>
-                        <md-card-actions layout="row" layout-align="center center">
+                        <md-card-actions layout="row" layout-align="end center">
                             <md-button>New Sample</md-button>
-                            <md-button class="text-black">View</md-button>
                         </md-card-actions>
                     </md-card-title>
                 </md-card>
@@ -51,9 +82,8 @@
                                 <i class="fa fa-files-o"></i>
                             </a>
                         </md-card-title-text>
-                        <md-card-actions layout="row" layout-align="center center">
+                        <md-card-actions layout="row" layout-align="end center">
                             <md-button>Upload Files</md-button>
-                            <md-button class="text-black">View</md-button>
                         </md-card-actions>
                     </md-card-title>
                 </md-card>
@@ -67,9 +97,8 @@
                                 <i class="fa fa-comment"></i>
                             </span>
                         </md-card-title-text>
-                        <md-card-actions layout="row" layout-align="center center">
+                        <md-card-actions layout="row" layout-align="end center">
                             <md-button>New Review</md-button>
-                            <md-button class="text-black">View</md-button>
                         </md-card-actions>
                     </md-card-title>
                 </md-card>
