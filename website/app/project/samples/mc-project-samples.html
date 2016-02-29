@@ -2,7 +2,8 @@
     <md-sidenav flex="25" class="md-whiteframe-4dp"
                 md-is-locked-open="true">
         <div layout="column" layout-align="center end">
-            <md-button ui-sref="project.processes.new({process:'As Received', process_id:''})"
+            <md-button class="md-primary"
+                       ui-sref="project.processes.create({template_id:'As Received', process_id:''})"
                        layout-align="center end">
                 <i class="fa fa-fw fa-plus"></i>Create New Sample
             </md-button>
