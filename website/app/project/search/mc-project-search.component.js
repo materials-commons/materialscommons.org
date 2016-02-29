@@ -6,7 +6,7 @@
 
     module.controller('MCProjectSearchComponentController', MCProjectSearchComponentController);
     MCProjectSearchComponentController.$inject = ['mcapi', '$stateParams', 'mcfile', '$state', 'mcmodal'];
-    function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state, mcmodal) {
+    function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state) {
         var ctrl = this;
         var projectID = $stateParams.project_id;
         ctrl.isImage = isImage;
@@ -20,10 +20,8 @@
         //////////////////////////////
 
         function init() {
-            console.log('Search query', $stateParams.query);
             mcapi('/search/project/%/files', projectID)
                 .success(function (results) {
-                    console.dir(results);
                     ctrl.results = results;
                 })
                 .post({query_string: $stateParams.query});

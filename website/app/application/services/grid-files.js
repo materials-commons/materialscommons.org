@@ -27,7 +27,6 @@
         }
 
         function createDirectoryEntry(entry) {
-            console.dir(entry);
             return {
                 group: true,
                 expanded: false,

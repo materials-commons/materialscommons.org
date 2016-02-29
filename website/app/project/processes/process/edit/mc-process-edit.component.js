@@ -12,7 +12,6 @@
 
     function MCProcessEditComponentController(sampleLinker, process, toastr, processSelections,
                                               projectsService, $state) {
-        console.log('MCProcessEditComponentController');
         var ctrl = this;
         ctrl.process = process.get();
         ctrl.process['updated_samples'] = [];
