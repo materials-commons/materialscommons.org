@@ -16,6 +16,11 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     background-color: black !important;
 }
 
+.mc-md-card-title-home-adj {
+    padding-top: 26px;
+    padding-bottom: 18px;
+}
+
 .project-card:hover {
     background-color: #2196f3;
 }

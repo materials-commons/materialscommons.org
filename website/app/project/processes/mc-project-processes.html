@@ -2,10 +2,10 @@
     <md-sidenav flex="25" class="md-whiteframe-4dp"
                 md-is-locked-open="true">
         <div layout="column" layout-align="center end">
-            <md-button ui-sref="project.processes.create({process:'As Received', process_id:''})"
-                       layout-align="center end" class="md-primary">
-                <i class="fa fa-fw fa-plus"></i>Create New Process
-            </md-button>
+            <mc-new-process-menu button-name="CREATE NEW PROCESS"
+                                 button-class="md-primary"
+                                 button-icon="fa-plus">
+            </mc-new-process-menu>
         </div>
         <md-input-container md-no-float style="margin-top: 0; margin-bottom: 0; margin-left: 6px; margin-right: 6px;">
             <input placeholder="Search processes..." ng-model="$ctrl.searchText">
