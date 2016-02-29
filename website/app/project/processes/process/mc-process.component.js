@@ -5,12 +5,16 @@
     });
 
     module.controller('MCProcessComponentController', MCProcessComponentController);
-    MCProcessComponentController.$inject = ["$stateParams", "projectsService"];
-    function MCProcessComponentController($stateParams, projectsService) {
+    MCProcessComponentController.$inject = ['process', '$state', '$stateParams'];
+    function MCProcessComponentController(process, $state, $stateParams) {
         var ctrl = this;
-        projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
-            .then(function(process) {
-                ctrl.process = process;
-            });
+        ctrl.process = process.get();
+        ctrl.edit = edit;
+
+        ///////////////////
+
+        function edit() {
+            $state.go('project.processes.edit', {process_id: $stateParams.process_id});
+        }
     }
 }(angular.module('materialscommons')));
