@@ -18,49 +18,14 @@
                             </a>
                         </md-card-title-text>
                         <md-card-actions layout="row" layout-align="end center">
-                            <md-menu-bar>
-                                <md-menu>
-                                    <md-button ng-click="$mdOpenMenu($event)">
-                                        New Process
-                                    </md-button>
-                                    <md-menu-content>
-                                        <md-menu-item>
-                                            <md-menu>
-                                                <md-button ng-click="$mdOpenMenu()">
-                                                    <span class="text-uppercase">favorites</span>
-                                                </md-button>
-                                                <md-menu-content>
-                                                    <md-menu-item
-                                                            ng-repeat="template in $ctrl.templates | filter:{favorite: true} | orderBy:'name'">
-                                                        <a ui-sref="project.processes.create({template_id: template.name, process_id:''})">
-                                                            {{template.name}} <span ng-if="template.prefill">(PF)</span>
-                                                        </a>
-                                                    </md-menu-item>
-                                                    <md-menu-item ng-if="!$ctrl.hasFavorites()">No favorites
-                                                    </md-menu-item>
-                                                </md-menu-content>
-                                            </md-menu>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.chooseTemplate()">
-                                                <span class="text-uppercase">Choose Template</span>
-                                            </md-button>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.chooseExistingProcess()">
-                                                <span class="text-uppercase">Choose from existing process</span>
-                                            </md-button>
-                                        </md-menu-item>
-                                    </md-menu-content>
-                                </md-menu>
-                            </md-menu-bar>
+                            <mc-new-process-menu button-name='NEW PROCESS' button-class='' button-icon=''></mc-new-process-menu>
                         </md-card-actions>
                     </md-card-title>
                 </md-card>
             </div>
             <div flex="25">
                 <md-card class="sample-color-bg text-white">
-                    <md-card-title layout="column">
+                    <md-card-title layout="column" class="mc-md-card-title-home-adj">
                         <md-card-title-text layout-align="center center">
                             <a class="md-headline text-white" ui-sref="project.samples">
                                 {{$ctrl.project.samples.length | number}} Samples
@@ -68,14 +33,16 @@
                             </a>
                         </md-card-title-text>
                         <md-card-actions layout="row" layout-align="end center">
-                            <md-button>New Sample</md-button>
+                            <md-button ui-sref="project.processes.create({template_id:'As Received', process_id:''})">
+                                New Sample
+                            </md-button>
                         </md-card-actions>
                     </md-card-title>
                 </md-card>
             </div>
             <div flex="25">
                 <md-card class="file-color-bg text-white">
-                    <md-card-title layout="column">
+                    <md-card-title layout="column" class="mc-md-card-title-home-adj">
                         <md-card-title-text layout-align="center center">
                             <a class="md-headline text-white" ui-sref="project.files">
                                 {{$ctrl.project.file_count | number}} Files
@@ -90,7 +57,7 @@
             </div>
             <div flex="25">
                 <md-card class="review-color-bg text-white">
-                    <md-card-title layout="column">
+                    <md-card-title layout="column" class="mc-md-card-title-home-adj">
                         <md-card-title-text layout-align="center center">
                             <span class="md-headline">
                                 {{$ctrl.project.reviews.length | number}} Reviews
