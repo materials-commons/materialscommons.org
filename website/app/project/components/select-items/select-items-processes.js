@@ -6,7 +6,7 @@
             scope: {
                 processes: '='
             },
-            templateUrl: 'application/directives/partials/select-items-processes.html'
+            templateUrl: 'project/components/select-items/select-items-processes.html'
         }
     }
 }(angular.module('materialscommons')));
