@@ -5,20 +5,13 @@
                 <ol ui-tree-nodes ng-model="$ctrl.files">
                     <li ng-repeat="file in $ctrl.files track by file.data.id" ui-tree-node>
                         <div ui-tree-handle>
-                            grab here
+                            <span ng-if="file.expand"><i class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
+                            <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
                             <a ng-click="file.expand = !file.expand" data-nodrag>
                                 {{::file.data.name}}
                             </a>
                         </div>
                         <mc-file-tree2-dir file="file" ng-if="file.expand"></mc-file-tree2-dir>
-                        <!--<ol ui-tree-nodes ng-model="file.children">-->
-                        <!--<li ng-repeat="file in file.children track by file.id" ui-tree-node>-->
-                        <!--<div ui-tree-handle>-->
-                        <!--{{file.data.name}}-->
-                        <!--</div>-->
-                        <!--<mc-show-children ng-if="file.expand"></mc-show-children>-->
-                        <!--</li>-->
-                        <!--</ol>-->
                     </li>
                 </ol>
             </div>
