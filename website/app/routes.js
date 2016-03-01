@@ -134,7 +134,7 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.files', {
             url: '/files',
-            template: '<mc-file-tree></mc-file-tree>'
+            template: '<mc-file-tree2></mc-file-tree2>'
         })
         .state('project.files.file', {
             url: '/file/:file_id',
