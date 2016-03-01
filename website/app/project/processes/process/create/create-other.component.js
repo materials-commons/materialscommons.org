@@ -7,10 +7,11 @@
     module.controller('MCProcessCreateOtherComponentController', MCProcessCreateOtherComponentController);
     MCProcessCreateOtherComponentController.$inject = [
         'template', 'processSelections', 'createProcess', 'toastr', 'previousStateService',
-        '$state', 'sampleLinker', 'processEdit'
+        '$state', 'sampleLinker', 'processEdit', '$stateParams'
     ];
     function MCProcessCreateOtherComponentController(template, processSelections, createProcess, toastr,
-                                                     previousStateService, $state, sampleLinker, processEdit) {
+                                                     previousStateService, $state, sampleLinker, processEdit,
+                                                     $stateParams) {
         var ctrl = this;
         ctrl.process = template.get();
 
@@ -36,7 +37,7 @@
         }
 
         function submit() {
-            var go = _partial(previousStateService.go, 'process_create_previous');
+            var go = _.partial(previousStateService.go, 'process_create_previous');
             performSubmit(go);
         }
 

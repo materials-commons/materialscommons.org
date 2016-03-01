@@ -7,11 +7,11 @@
     module.controller('MCProcessCreateAsReceivedComponentController', MCProcessCreateAsReceivedComponentController);
     MCProcessCreateAsReceivedComponentController.$inject = [
         'template', 'processSelections', 'prepareCreatedSample', 'createProcess', 'toastr', 'previousStateService',
-        '$state'
+        '$state', '$stateParams'
     ];
     function MCProcessCreateAsReceivedComponentController(template, processSelections,
                                                           prepareCreatedSample, createProcess,
-                                                          toastr, previousStateService, $state) {
+                                                          toastr, previousStateService, $state, $stateParams) {
         var ctrl = this;
         ctrl.process = template.get();
         ctrl.sample = {
@@ -47,19 +47,22 @@
         }
 
         function submit() {
-            var go = _partial(previousStateService.go, 'process_create_previous');
+            var go = _.partial(previousStateService.go, 'process_create_previous');
             performSubmit(go);
         }
 
         function performSubmit(goFn) {
+            console.log('performSubmit');
             if (ctrl.sample.name === '') {
                 toastr.error("You must specify a sample name", 'Error', {closeButton: true});
                 return;
             }
             prepareSample();
+            ctrl.process.output_samples.push(ctrl.sample);
             createProcess($stateParams.project_id, ctrl.process)
                 .then(
                     function success() {
+                        console.log('create process success');
                         ctrl.composition.value.length = 0;
                         goFn();
                     },
@@ -72,9 +75,9 @@
 
         function prepareSample() {
             prepareCreatedSample.filloutComposition(ctrl.sample, ctrl.composition);
-            prepareCreatedSample.setupSampleGroup(sample, ctrl.sampleGroup, ctrl.sampleGroupSizing,
+            prepareCreatedSample.setupSampleGroup(ctrl.sample, ctrl.sampleGroup, ctrl.sampleGroupSizing,
                 ctrl.sampleGroupSize);
-            prepareCreatedSample.addSampleInputFiles(sample, ctrl.process.input_files);
+            prepareCreatedSample.addSampleInputFiles(ctrl.sample, ctrl.process.input_files);
         }
     }
 }(angular.module('materialscommons')));

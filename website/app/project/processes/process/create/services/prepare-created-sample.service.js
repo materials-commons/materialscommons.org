@@ -1,7 +1,7 @@
 (function(module) {
     module.factory('prepareCreatedSample', prepareCreatedSampleService);
     prepareCreatedSampleService.$inject = ['processEdit'];
-    function prepareCreatedSampleService() {
+    function prepareCreatedSampleService(processEdit) {
         return {
             filloutComposition: function(sample, compositionElements) {
                 if (compositionElements.value.length) {
@@ -45,7 +45,7 @@
                         sample_id: ""
                     }
                 });
-                sample = processEdit.refreshSample(linkedFiles, sample);
+                processEdit.refreshSample(linkedFiles, sample);
             }
         }
     }
