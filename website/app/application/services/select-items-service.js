@@ -121,14 +121,15 @@
             var tabs = [];
             if (showProcesses) {
                 tabs.push(newTab('processes', 'fa-code-fork'));
-                projectsService.getProjectProcesses($stateParams.id).then(function (processes) {
+                projectsService.getProjectProcesses($stateParams.project_id).then(function (processes) {
                     ctrl.processes = processes;
                 });
             }
 
             if (showSamples) {
                 tabs.push(newTab('samples', 'fa-cubes'));
-                projectsService.getProjectSamples($stateParams.id).then(function (samples) {
+                projectsService.getProjectSamples($stateParams.project_id).then(function (samples) {
+                    console.log('getProjectSamples', samples);
                     ctrl.samples = samples;
                 });
             }

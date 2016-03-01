@@ -24,7 +24,8 @@
         /////////////////////////
 
         function chooseTemplate() {
-            mcmodal.chooseTemplate(ctrl.project, ctrl.templates).then(function (processTemplateName) {
+            var proj = project.get();
+            mcmodal.chooseTemplate(proj, ctrl.templates).then(function (processTemplateName) {
                 $state.go('project.processes.create', {template_id: processTemplateName, process_id: ''});
             });
         }
