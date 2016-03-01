@@ -14,10 +14,11 @@
     }
 
     module.controller('SelectItemsFilesDirectiveController', SelectItemsFilesDirectiveController);
-    SelectItemsFilesDirectiveController.$inject = ["projectsService", "gridFiles", "fileType", "current", "mcmodal"];
-    function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileType, current, mcmodal) {
+    SelectItemsFilesDirectiveController.$inject = ["projectsService", "gridFiles", "fileType", "project", "mcmodal"];
+    function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileType, project, mcmodal) {
         var ctrl = this;
 
+        var proj = project.get();
         ctrl.gridShowingFlag = true;
         ctrl.files[0].expanded = true;
         ctrl.directorySelected = directorySelected;
@@ -84,7 +85,7 @@
 
         function directorySelected(data) {
             var treeModel = new TreeModel(),
-                root = treeModel.parse(current.project().files[0]);
+                root = treeModel.parse(proj.files[0]);
             var dir = root.first({strategy: 'pre'}, function (node) {
                 return node.model.data.id === data.id;
             });
@@ -96,14 +97,14 @@
         }
 
         function openFile(file) {
-            mcmodal.openModal(file, 'datafile', current.project());
+            mcmodal.openModal(file, 'datafile', proj);
         }
 
         function handleDirectory(params) {
             if (!params.data.childrenLoaded) {
-                projectsService.getProjectDirectory(current.project().id, params.data.id).then(function (files) {
+                projectsService.getProjectDirectory(proj.id, params.data.id).then(function (files) {
                     var treeModel = new TreeModel(),
-                        root = treeModel.parse(current.project().files[0]);
+                        root = treeModel.parse(proj.files[0]);
                     var dir = root.first({strategy: 'pre'}, function (node) {
                         return node.model.data.id === params.data.id;
                     });

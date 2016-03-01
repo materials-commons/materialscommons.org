@@ -50,21 +50,30 @@
 
     module.controller('SelectItemsServiceModalController', SelectItemsServiceModalController);
     SelectItemsServiceModalController.$inject = ['$modalInstance', 'showProcesses',
-        'showFiles', 'showSamples', 'showReviews', 'projectsService', '$stateParams', 'project'];
+        'showFiles', 'showSamples', 'showReviews', 'projectsService', '$stateParams', 'project', 'gridFiles'];
 
     function SelectItemsServiceModalController($modalInstance, showProcesses, showFiles, showSamples,
-                                               showReviews, projectsService, $stateParams, project) {
+                                               showReviews, projectsService, $stateParams, project, gridFiles) {
         var ctrl = this;
 
-        ctrl.tabs = loadTabs();
-        ctrl.activeTab = ctrl.tabs[0].name;
-        ctrl.setActive = setActive;
-        ctrl.isActive = isActive;
-        ctrl.ok = ok;
-        ctrl.cancel = cancel;
-        ctrl.processes = [];
-        ctrl.samples = [];
-        ctrl.files = project.get().files;
+
+        var proj = project.get();
+
+        projectsService.getProjectDirectory(proj.id).then(function (files) {
+            proj.files = gridFiles.toGrid(files);
+            ctrl.files = proj.files;
+            ctrl.files[0].expanded = true;
+            ctrl.gridShowingFlag = true;
+
+            ctrl.tabs = loadTabs();
+            ctrl.activeTab = ctrl.tabs[0].name;
+            ctrl.setActive = setActive;
+            ctrl.isActive = isActive;
+            ctrl.ok = ok;
+            ctrl.cancel = cancel;
+            ctrl.processes = [];
+            ctrl.samples = [];
+        });
 
         /////////////////////////
 
