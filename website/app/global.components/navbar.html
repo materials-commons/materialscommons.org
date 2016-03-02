@@ -17,29 +17,29 @@
                 </md-button>
                 <md-menu-content>
                     <md-menu-item>
-                        <a ui-sref="user.password">
-                            <i class="fa fa-fw fa-unlock-alt space-right"></i>
-                            Change Password
-                        </a>
+                        <md-button ui-sref="user.password">
+                            <md-icon md-font-icon="fa-unlock-alt" class="fa fa-md-icon"></md-icon>
+                            <span class="text-uppercase">Change Password</span>
+                        </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <a ui-sref="user.settings">
-                            <i class="fa fa-fw fa-user space-right"></i>
-                            Account Settings
-                        </a>
+                        <md-button ui-sref="user.settings">
+                            <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>
+                            <span class="text-uppercase">Account Settings</span>
+                        </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <a ui-sref="user.apikey">
-                            <i class="fa fa-fw fa-key space-right"></i>
-                            Apikey
-                        </a>
+                        <md-button ui-sref="user.apikey">
+                            <md-icon md-font-icon="fa-key" class="fa fa-md-icon"></md-icon>
+                            <span class="text-uppercase">Apikey</span>
+                        </md-button>
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
                     <md-menu-item>
-                        <a ng-click="ctrl.logout()">
-                            <i class="fa fa-fw fa-sign-out space-right"></i>
-                            Logout
-                        </a>
+                        <md-button ng-click="ctrl.logout()">
+                            <md-icon md-font-icon="fa-sign-out" class="fa fa-md-icon"></md-icon>
+                            <span class="text-uppercase">Logout</span>
+                        </md-button>
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
