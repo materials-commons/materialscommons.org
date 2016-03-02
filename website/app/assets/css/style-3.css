@@ -16,6 +16,18 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     background-color: black !important;
 }
 
+.angular-ui-tree-handle:hover {
+    background-color: #f4f6f7;
+}
+
+.angular-ui-tree-handle-active {
+    background-color: #f4f6f7;
+}
+
+.drag-handle-color {
+    color: #c1c3c4;
+}
+
 .mc-md-card-title-home-adj {
     padding-top: 26px;
     padding-bottom: 18px;

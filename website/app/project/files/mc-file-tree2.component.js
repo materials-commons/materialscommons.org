@@ -12,6 +12,11 @@
         var ctrl = this;
         var proj = project.get();
 
+        ctrl.treeOptions = {
+            dropped: function(event) {
+                console.log('dropped', event);
+            }
+        };
 
         projectsService.getProjectDirectory(proj.id).then(function(files) {
             proj.files = gridFiles.toGrid(files);
@@ -45,6 +50,7 @@
     function MCFileTree2DirDirectiveController(projectsService, gridFiles, project) {
         var ctrl = this;
         var projectID = project.get().id;
+        ctrl.setActive = setActive;
 
         if (ctrl.file.data._type === 'directory' && !ctrl.file.data.childrenLoaded) {
             projectsService.getProjectDirectory(projectID, ctrl.file.data.id).then(function(files) {
@@ -55,6 +61,15 @@
         } else {
             ctrl.files = ctrl.file.children;
         }
-        console.log('MCFileTree2DirectiveController', ctrl.file);
+
+        function setActive(file) {
+            // clear all other active flags.
+            var treeModel = new TreeModel(),
+                root = treeModel.parse(project.get().files[0]);
+            root.walk(function(node) {
+                node.model.active = false;
+            });
+            file.active = true;
+        }
     }
 }(angular.module('materialscommons')));
