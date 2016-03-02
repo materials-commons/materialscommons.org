@@ -17,11 +17,11 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
 }
 
 .angular-ui-tree-handle:hover {
-    background-color: #f4f6f7;
+    background-color: #e7e9ea;
 }
 
 .angular-ui-tree-handle-active {
-    background-color: #f4f6f7;
+    background-color: #e7e9ea;
 }
 
 .drag-handle-color {

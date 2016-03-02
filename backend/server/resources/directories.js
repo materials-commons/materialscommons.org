@@ -44,7 +44,7 @@ module.exports = function(directories) {
             this.throw(httpStatus.BAD_REQUEST, 'no directory id to move to');
         }
 
-        let rv = yield directories.update(this.params.project_id, this.params.directory_id, updateArgs.move);
+        let rv = yield directories.update(this.params.project_id, this.params.directory_id, updateArgs);
         if (rv.error) {
             this.throw(httpStatus.BAD_REQUEST, rv.error);
         }
