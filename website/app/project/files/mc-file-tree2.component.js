@@ -1,4 +1,4 @@
-(function (module) {
+(function(module) {
     module.component('mcFileTree2', {
         templateUrl: 'project/files/mc-file-tree2.html',
         controller: 'MCFileTree2ComponentController'
@@ -6,9 +6,11 @@
 
     module.controller('MCFileTree2ComponentController', MCFileTree2ComponentController);
     MCFileTree2ComponentController.$inject = [
-        '$scope', 'project', '$state', '$stateParams', 'pubsub', 'fileTreeProjectService'
+        '$scope', 'project', '$state', '$stateParams', 'pubsub', 'fileTreeProjectService',
+        'fileTreeMoveService', 'toastr'
     ];
-    function MCFileTree2ComponentController($scope, project, $state, $stateParams, pubsub, fileTreeProjectService) {
+    function MCFileTree2ComponentController($scope, project, $state, $stateParams, pubsub,
+                                            fileTreeProjectService, fileTreeMoveService, toastr) {
         var ctrl = this;
         var proj = project.get();
 
@@ -18,13 +20,34 @@
                     dest = event.dest.nodesScope.$nodeScope.$modelValue;
 
                 if (src.data._type === 'directory') {
-                    console.log('move directory');
+                    console.log('moving directory');
+                    return fileTreeMoveService.moveDir(src.data.id, dest.data.id);
+                    //return true;
                 } else {
-                    console.log('move file');
+                    console.log('moving file');
+                    var srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
+                    return fileTreeMoveService.moveFile(src.data.id, srcDir.data.id, dest.data.id);
+                    //return true;
                 }
-                console.dir(src);
-                console.dir(dest);
-                //projectsService.
+            },
+
+            beforeDrop: function(event) {
+                var src = event.source.nodeScope.$modelValue,
+                    dest = event.dest.nodesScope.$nodeScope.$modelValue,
+                    srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
+                //console.log('src', src);
+                //console.log('dest', dest);
+                //console.log('srcDir', srcDir)
+                if (srcDir.data.id == dest.data.id) {
+                    // Reject move - attempt to move the file/directory around under it's
+                    // current directory;
+                    var itemType = src.data._type === 'directory' ? 'Directory' : 'File';
+                    toastr.error('Attempt to move ' + itemType + " into current it's directory.",
+                        'Error', {closeButton: true});
+                    return false;
+                }
+
+                return true;
             }
         };
 
@@ -50,7 +73,7 @@
             bindToController: true,
             templateUrl: 'project/files/mc-file-tree2-dir.html',
             compile: function(element) {
-                return RecursionHelper.compile(element, function(scope, ielement, iattrs, controller, transcludeFn){});
+                return RecursionHelper.compile(element, function(scope, ielement, iattrs, controller, transcludeFn) {});
             }
         }
     }
