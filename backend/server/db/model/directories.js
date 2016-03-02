@@ -7,7 +7,8 @@ module.exports = function (r) {
 
     return {
         get: get,
-        create: create
+        create: create,
+        update: update
     };
 
     /////////////////////////////
@@ -201,5 +202,30 @@ module.exports = function (r) {
         let proj2dir = new model.Project2DataDir(projectID, newDir.id);
         yield db.insert('project2datadir', proj2dir);
         return newDir;
+    }
+
+    function* update(projectID, directoryID, updateArgs) {
+        // Only update supported for now is moving a directory.
+
+        // Validate that the new directory is in the project
+        let findDirRql = r.table('project2datadir')
+            .getAll([projectID, updateArgs.move.new_directory_id], {index: 'project_datadir'});
+        let matches = yield dbExec(findDirRql);
+        if (!matches.length) {
+            return {error: 'Directory not in project'};
+        }
+
+        let newDir = yield dbExec(r.table('datadirs').get(updateArgs.move.new_directory_id));
+        let updateDir = yield dbExec(r.table('datadirs').get(directoryID));
+        let updateFields = {
+            name: path.join(newDir.name, path.basename(updateDir.name)),
+            parent: newDir.id
+        };
+
+        yield r.table('datadirs').get(directoryID).update(updateFields);
+
+        let rv = {};
+        rv.val = yield directoryByID(directoryID);
+        return rv;
     }
 };

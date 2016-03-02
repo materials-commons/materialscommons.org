@@ -6,23 +6,33 @@
 
     module.controller('MCFileTree2ComponentController', MCFileTree2ComponentController);
     MCFileTree2ComponentController.$inject = [
-        '$scope', 'project', '$state', '$stateParams', 'pubsub', 'projectsService', 'gridFiles'
+        '$scope', 'project', '$state', '$stateParams', 'pubsub', 'fileTreeProjectService'
     ];
-    function MCFileTree2ComponentController($scope, project, $state, $stateParams, pubsub, projectsService, gridFiles) {
+    function MCFileTree2ComponentController($scope, project, $state, $stateParams, pubsub, fileTreeProjectService) {
         var ctrl = this;
         var proj = project.get();
 
         ctrl.treeOptions = {
             dropped: function(event) {
-                console.log('dropped', event);
+                var src = event.source.nodeScope.$modelValue,
+                    dest = event.dest.nodesScope.$nodeScope.$modelValue;
+
+                if (src.data._type === 'directory') {
+                    console.log('move directory');
+                } else {
+                    console.log('move file');
+                }
+                console.dir(src);
+                console.dir(dest);
+                //projectsService.
             }
         };
 
-        projectsService.getProjectDirectory(proj.id).then(function(files) {
-            proj.files = gridFiles.toGrid(files);
+        fileTreeProjectService.getProjectRoot(proj.id).then(function(files) {
+            proj.files = files;
             ctrl.files = proj.files;
             ctrl.files[0].data.childrenLoaded = true;
-            console.dir(proj.files);
+            ctrl.files[0].expand = true;
         });
     }
 
@@ -46,15 +56,15 @@
     }
 
     module.controller('MCFileTree2DirDirectiveController', MCFileTree2DirDirectiveController);
-    MCFileTree2DirDirectiveController.$inject = ['projectsService', 'gridFiles', 'project', '$state'];
-    function MCFileTree2DirDirectiveController(projectsService, gridFiles, project, $state) {
+    MCFileTree2DirDirectiveController.$inject = ['fileTreeProjectService', 'project', '$state'];
+    function MCFileTree2DirDirectiveController(fileTreeProjectService, project, $state) {
         var ctrl = this;
         var projectID = project.get().id;
         ctrl.setActive = setActive;
 
         if (ctrl.file.data._type === 'directory' && !ctrl.file.data.childrenLoaded) {
-            projectsService.getProjectDirectory(projectID, ctrl.file.data.id).then(function(files) {
-                ctrl.file.children = gridFiles.toGridChildren(files);
+            fileTreeProjectService.getDirectory(projectID, ctrl.file.data.id).then(function(files) {
+                ctrl.file.children = files;
                 ctrl.file.data.childrenLoaded = true;
                 ctrl.files = ctrl.file.children;
             });
