@@ -46,8 +46,8 @@
     }
 
     module.controller('MCFileTree2DirDirectiveController', MCFileTree2DirDirectiveController);
-    MCFileTree2DirDirectiveController.$inject = ['projectsService', 'gridFiles', 'project'];
-    function MCFileTree2DirDirectiveController(projectsService, gridFiles, project) {
+    MCFileTree2DirDirectiveController.$inject = ['projectsService', 'gridFiles', 'project', '$state'];
+    function MCFileTree2DirDirectiveController(projectsService, gridFiles, project, $state) {
         var ctrl = this;
         var projectID = project.get().id;
         ctrl.setActive = setActive;
@@ -70,6 +70,12 @@
                 node.model.active = false;
             });
             file.active = true;
+
+            if (file.data._type === 'file') {
+                $state.go('project.files.file', {file_id: file.data.id});
+            } else {
+                $state.go('project.files.dir', {dir_id: file.data.id});
+            }
         }
     }
 }(angular.module('materialscommons')));
