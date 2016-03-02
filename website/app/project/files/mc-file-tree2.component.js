@@ -20,14 +20,10 @@
                     dest = event.dest.nodesScope.$nodeScope.$modelValue;
 
                 if (src.data._type === 'directory') {
-                    console.log('moving directory');
                     return fileTreeMoveService.moveDir(src.data.id, dest.data.id);
-                    //return true;
                 } else {
-                    console.log('moving file');
                     var srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
                     return fileTreeMoveService.moveFile(src.data.id, srcDir.data.id, dest.data.id);
-                    //return true;
                 }
             },
 
@@ -35,9 +31,6 @@
                 var src = event.source.nodeScope.$modelValue,
                     dest = event.dest.nodesScope.$nodeScope.$modelValue,
                     srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
-                //console.log('src', src);
-                //console.log('dest', dest);
-                //console.log('srcDir', srcDir)
                 if (srcDir.data.id == dest.data.id) {
                     // Reject move - attempt to move the file/directory around under it's
                     // current directory;
