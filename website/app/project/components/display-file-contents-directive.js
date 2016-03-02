@@ -19,7 +19,6 @@
     /* @ngInject */
     function DisplayFileContentsDirectiveController(mcfile, mcmodal) {
         var ctrl = this;
-        console.log('file =', ctrl.file);
         ctrl.fileType = determineFileType(ctrl.file.mediatype);
         ctrl.fileSrc = mcfile.src(ctrl.file.id);
         ctrl.showImage = showImage;
