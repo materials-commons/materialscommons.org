@@ -274,12 +274,10 @@ module.exports = function(r) {
 
     function *moveFile(fileID, projectID, moveArgs) {
         // Make sure new directoryID is in project.
-        console.log(`Moving file ${fileID} for project ${projectID} to ${moveArgs.new_directory_id}`);
         let findDirRql = r.table('project2datadir')
             .getAll([projectID, moveArgs.new_directory_id], {index: 'project_datadir'});
         let matches = yield runQuery(findDirRql);
         if (!matches.length) {
-            console.log('Could not find dir in project');
             return {error: 'Directory not in project'};
         }
         // Move file to directory by getting the original entry and updating it
