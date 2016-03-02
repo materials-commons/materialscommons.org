@@ -1,13 +1,13 @@
 <div layout="row" layout-fill>
     <md-sidenav flex="25" class="md-whiteframe-4dp" md-is-locked-open="true">
         <md-content layout-margin>
-            <div ui-tree>
+            <div ui-tree="$ctrl.treeOptions">
                 <ol ui-tree-nodes ng-model="$ctrl.files">
                     <li ng-repeat="file in $ctrl.files track by file.data.id" ui-tree-node>
                         <div ui-tree-handle>
-                            <span ng-if="file.expand"><i class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
-                            <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
                             <a ng-click="file.expand = !file.expand" data-nodrag>
+                                <span ng-if="file.expand"><i class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
+                                <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
                                 {{::file.data.name}}
                             </a>
                         </div>
