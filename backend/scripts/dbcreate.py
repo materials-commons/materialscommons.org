@@ -44,12 +44,16 @@ def create_tables():
 
     create_table("datadirs", "name", "project_id", "parent")
     create_table("project2datadir", "datadir_id", "project_id")
+    create_compound_index('project2datadir', 'project_datadir', 
+                          ['project_id', 'datadir_id'])
     create_table("project2datafile", "project_id", "datafile_id")
     create_table("tag2item", "tag_id", "item_id")
     create_table("comment2item", "comment_id", "item_id")
     create_table("note2item", "note_id", "item_id")
     create_table("review2item", "review_id", "item_id")
     create_table("datadir2datafile", "datadir_id", "datafile_id")
+    create_compound_index('datadir2datafile', 'datadir_datafile',
+                          ['datadir_id', 'datafile_id'])
     create_table("uploads", "uploads", "project_id")
 
     # Create samples model

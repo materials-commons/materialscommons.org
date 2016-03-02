@@ -4,7 +4,8 @@ module.exports = function(directories) {
 
     return {
         get,
-        create
+        create,
+        update
     };
 
     ////////////////
@@ -29,6 +30,24 @@ module.exports = function(directories) {
             this.throw(httpStatus.BAD_REQUEST, rv.error);
         }
 
+        this.body = rv.val;
+        yield next;
+    }
+
+    function* update(next) {
+        let updateArgs = yield parse(this);
+        if (!updateArgs.move) {
+            this.throw(httpStatus.BAD_REQUEST, 'no move args specified');
+        }
+
+        if (!updateArgs.move.new_directory_id) {
+            this.throw(httpStatus.BAD_REQUEST, 'no directory id to move to');
+        }
+
+        let rv = yield directories.update(this.params.project_id, this.params.directory_id, updateArgs.move);
+        if (rv.error) {
+            this.throw(httpStatus.BAD_REQUEST, rv.error);
+        }
         this.body = rv.val;
         yield next;
     }
