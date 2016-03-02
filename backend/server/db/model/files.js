@@ -5,7 +5,7 @@
  * @license
  */
 
-module.exports = function (r) {
+module.exports = function(r) {
     const runQuery = require('./run');
     const db = require('./db')(r);
     const _ = require('lodash');
@@ -28,7 +28,7 @@ module.exports = function (r) {
 
     // get details on a file
     function* get(file_id) {
-        let rql = r.table('datafiles').get(file_id).merge(function () {
+        let rql = r.table('datafiles').get(file_id).merge(function() {
             return {
                 tags: r.table('tag2item').getAll(file_id, {index: 'item_id'})
                     .orderBy('tag_id')
@@ -41,11 +41,11 @@ module.exports = function (r) {
                     .coerceTo('array'),
                 processes: r.table('process2file').getAll(file_id, {index: 'datafile_id'})
                     .eqJoin('process_id', r.table('processes')).zip()
-                    .merge(function (proc) {
+                    .merge(function(proc) {
                         return {
                             setup: r.table('process2setup').getAll(proc('process_id'), {index: 'process_id'})
                                 .eqJoin('setup_id', r.table('setups')).zip()
-                                .merge(function (setup) {
+                                .merge(function(setup) {
                                     return {
                                         properties: r.table('setupproperties')
                                             .getAll(setup('setup_id'), {index: 'setup_id'})
@@ -61,7 +61,7 @@ module.exports = function (r) {
 
     // getList gets the details for the given file ids
     function* getList(projectID, fileIDs) {
-        let rql = r.table('datafiles').getAll(r.args(fileIDs)).eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).zip().filter({project_id: projectID}).merge(function (file) {
+        let rql = r.table('datafiles').getAll(r.args(fileIDs)).eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).zip().filter({project_id: projectID}).merge(function(file) {
             return {
                 tags: r.table('tag2item').getAll(file('datafile_id'), {index: 'item_id'}).orderBy('tag_id').pluck('tag_id').coerceTo('array'),
                 notes: r.table('note2item').getAll(file('datafile_id'), {index: 'item_id'}).eqJoin('note_id', r.table('notes')).zip().coerceTo('array'),
@@ -106,6 +106,10 @@ module.exports = function (r) {
 
         if (file.samples) {
             yield updateSamples(fileID, file.samples);
+        }
+
+        if (file.move) {
+            yield moveFile(fileID, projectID, file.move);
         }
 
         let newVal = yield get(fileID);
@@ -266,5 +270,21 @@ module.exports = function (r) {
         f['mtime'] = f['mtime'].epoch_time;
         f['atime'] = f['atime'].epoch_time;
         return {val: f};
+    }
+
+    function *moveFile(fileID, projectID, moveArgs) {
+        // Make sure new directoryID is in project.
+        let findDirRql = r.table('project2datadir')
+            .getAll([projectID, moveArgs.new_directory_id], {index: 'project_datadir'});
+        let matches = yield runQuery(findDirRql);
+        if (!matches.length) {
+            return {error: 'Directory not in project'};
+        }
+        // Move file to directory by getting the original entry and updating it
+        // to the new directory.
+        yield r.table('datadir2datafile')
+            .getAll([fileID, moveArgs.old_directory_id], {index: 'datadir_datafile'})
+            .update({datadir_id: moveArgs.new_directory_id});
+        return {val: true};
     }
 };
