@@ -3,12 +3,21 @@
         <li ng-repeat="file in ctrl.files track by file.data.id" ui-tree-node>
             <div ui-tree-handle ng-class="{'angular-ui-tree-handle-active': file.active}">
                 <div ng-if="file.data._type === 'directory'">
-                    <i class="fa fa-fw fa-arrows drag-handle-color"></i>
-                    <a ng-click="file.expand = !file.expand; ctrl.setActive(file)" data-nodrag>
-                        <span ng-if="file.expand"><i class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
-                        <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
-                        {{file.data.name}}
-                    </a>
+                    <div layout="row">
+                        <i class="fa fa-fw fa-arrows drag-handle-color"></i>
+                        <a ng-click="file.expand = !file.expand; ctrl.setActive(file)" data-nodrag>
+                            <span ng-if="file.expand"><i
+                                    class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
+                            <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
+                            {{file.data.name}}
+                        </a>
+                    </div>
+                    <div ng-if="false">
+                        <!-- experimental code to see if we can find a way to create controls in the tree -->
+                        <div layout="row" layout-align="end center" ng-if="file.active">
+                            <span>create dir</span>
+                        </div>
+                    </div>
                 </div>
                 <div ng-if="file.data._type === 'file'">
                     <i class="fa fa-fw fa-arrows drag-handle-color"></i>
