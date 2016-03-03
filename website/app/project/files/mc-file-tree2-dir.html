@@ -8,7 +8,8 @@
                         <a ng-click="file.expand = !file.expand; ctrl.setActive(this, file)" data-nodrag>
                             <span ng-if="file.expand"><i
                                     class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
-                            <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
+                                <span ng-if="!file.expand"><i
+                                        class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
                             {{file.data.name}}
                         </a>
                     </div>
