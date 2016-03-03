@@ -5,7 +5,7 @@
                 <div ng-if="file.data._type === 'directory'">
                     <div layout="row">
                         <i class="fa fa-fw fa-reorder drag-handle-color"></i>
-                        <a ng-click="file.expand = !file.expand; ctrl.setActive(file)" data-nodrag>
+                        <a ng-click="file.expand = !file.expand; ctrl.setActive(this, file)" data-nodrag>
                             <span ng-if="file.expand"><i
                                     class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
                             <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
@@ -20,11 +20,16 @@
                     </div>
                 </div>
                 <div ng-if="file.data._type === 'file'">
-                    <i class="fa fa-fw fa-reorder drag-handle-color"></i>
-                    <a ng-click="ctrl.setActive(file)" data-nodrag>
-                        <span><i class="fa fa-fw fa-file file-tree-icon-color"></i></span>
-                        {{file.data.name}}
-                    </a>
+                    <div ng-if="file.data.name !== ctrl.placeholderName">
+                        <i class="fa fa-fw fa-reorder drag-handle-color"></i>
+                        <a ng-click="ctrl.setActive(this, file)" data-nodrag>
+                            <span><i class="fa fa-fw fa-file file-tree-icon-color"></i></span>
+                            {{file.data.name}}
+                        </a>
+                    </div>
+                    <!-- placeholder for empty directory so we can add items to it -->
+                    <div ng-if="file.data.name === ctrl.placeholderName">
+                    </div>
                 </div>
             </div>
             <div ng-if="file.data._type === 'directory'">

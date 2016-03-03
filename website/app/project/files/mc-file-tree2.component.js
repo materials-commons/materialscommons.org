@@ -4,6 +4,24 @@
         controller: 'MCFileTree2ComponentController'
     });
 
+    var placeholderName = '__$$placeholder$$__';
+
+    function loadEmptyPlaceHolder(dir) {
+        dir.children.push({
+            data: {
+                name: placeholderName,
+                _type: 'file'
+            }
+        });
+    }
+
+    //function removeEmptyPlaceHolder(dir) {
+    //    dir.children = dir.children.filter(function(entry) {
+    //        return entry.data.name !== placeholderName;
+    //    });
+    //    console.log('removeEmptyPlaceHolder', dir.children);
+    //}
+
     module.controller('MCFileTree2ComponentController', MCFileTree2ComponentController);
     MCFileTree2ComponentController.$inject = [
         '$scope', 'project', '$state', '$stateParams', 'pubsub', 'fileTreeProjectService',
@@ -17,14 +35,25 @@
         ctrl.treeOptions = {
             dropped: function(event) {
                 var src = event.source.nodeScope.$modelValue,
-                    dest = event.dest.nodesScope.$nodeScope.$modelValue;
+                    dest = event.dest.nodesScope.$nodeScope.$modelValue,
+                    srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
 
                 if (src.data._type === 'directory') {
-                    return fileTreeMoveService.moveDir(src.data.id, dest.data.id);
+                    return fileTreeMoveService.moveDir(src.data.id, dest.data.id).then(function() {
+                        if (srcDir.children.length === 0) {
+                            loadEmptyPlaceHolder(srcDir);
+                        }
+                        return true;
+                    });
                 } else {
-                    var srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
-                    return fileTreeMoveService.moveFile(src.data.id, srcDir.data.id, dest.data.id);
+                    return fileTreeMoveService.moveFile(src.data.id, srcDir.data.id, dest.data.id).then(function() {
+                        if (srcDir.children.length === 0) {
+                            loadEmptyPlaceHolder(srcDir);
+                        }
+                        return true;
+                    });
                 }
+
             },
 
             beforeDrop: function(event) {
@@ -50,6 +79,10 @@
             ctrl.files[0].data.childrenLoaded = true;
             ctrl.files[0].expand = true;
         });
+
+        /////////////////////
+
+
     }
 
     module.directive('mcFileTree2Dir', mcFileTree2DirDirective);
@@ -66,7 +99,8 @@
             bindToController: true,
             templateUrl: 'project/files/mc-file-tree2-dir.html',
             compile: function(element) {
-                return RecursionHelper.compile(element, function(scope, ielement, iattrs, controller, transcludeFn) {});
+                return RecursionHelper.compile(element, function(scope, ielement, iattrs, controller, transcludeFn) {
+                });
             }
         }
     }
@@ -77,10 +111,14 @@
         var ctrl = this;
         var projectID = project.get().id;
         ctrl.setActive = setActive;
+        ctrl.placeholderName = placeholderName;
 
         if (ctrl.file.data._type === 'directory' && !ctrl.file.data.childrenLoaded) {
             fileTreeProjectService.getDirectory(projectID, ctrl.file.data.id).then(function(files) {
                 ctrl.file.children = files;
+                if (!ctrl.file.children.length) {
+                    loadEmptyPlaceHolder(ctrl.file);
+                }
                 ctrl.file.data.childrenLoaded = true;
                 ctrl.files = ctrl.file.children;
             });
@@ -88,7 +126,7 @@
             ctrl.files = ctrl.file.children;
         }
 
-        function setActive(file) {
+        function setActive(node, file) {
             // clear all other active flags.
             var treeModel = new TreeModel(),
                 root = treeModel.parse(project.get().files[0]);
@@ -100,6 +138,7 @@
             if (file.data._type === 'file') {
                 $state.go('project.files.file', {file_id: file.data.id});
             } else {
+                node.toggle();
                 $state.go('project.files.dir', {dir_id: file.data.id});
             }
         }
