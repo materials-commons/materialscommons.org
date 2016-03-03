@@ -15,13 +15,6 @@
         });
     }
 
-    //function removeEmptyPlaceHolder(dir) {
-    //    dir.children = dir.children.filter(function(entry) {
-    //        return entry.data.name !== placeholderName;
-    //    });
-    //    console.log('removeEmptyPlaceHolder', dir.children);
-    //}
-
     module.controller('MCFileTree2ComponentController', MCFileTree2ComponentController);
     MCFileTree2ComponentController.$inject = [
         '$scope', 'project', '$state', '$stateParams', 'pubsub', 'fileTreeProjectService',
@@ -78,11 +71,11 @@
             ctrl.files = proj.files;
             ctrl.files[0].data.childrenLoaded = true;
             ctrl.files[0].expand = true;
+
+            if (!$stateParams.file_id) {
+                $state.go('project.files.dir', {dir_id: ctrl.files[0].data.id});
+            }
         });
-
-        /////////////////////
-
-
     }
 
     module.directive('mcFileTree2Dir', mcFileTree2DirDirective);
