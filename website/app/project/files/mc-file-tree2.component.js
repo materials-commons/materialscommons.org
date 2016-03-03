@@ -108,6 +108,7 @@
 
         if (ctrl.file.data._type === 'directory' && !ctrl.file.data.childrenLoaded) {
             fileTreeProjectService.getDirectory(projectID, ctrl.file.data.id).then(function(files) {
+                console.log('promise done to get directory:', ctrl.file.data.id);
                 ctrl.file.children = files;
                 if (!ctrl.file.children.length) {
                     loadEmptyPlaceHolder(ctrl.file);
@@ -116,6 +117,7 @@
                 ctrl.files = ctrl.file.children;
             });
         } else {
+            console.log('directory already loaded ', ctrl.file.data.id);
             ctrl.files = ctrl.file.children;
         }
 
@@ -132,6 +134,7 @@
                 $state.go('project.files.file', {file_id: file.data.id});
             } else {
                 node.toggle();
+                console.log('going to ' + file.data.name + ' loaded status ' + file.data.childrenLoaded);
                 $state.go('project.files.dir', {dir_id: file.data.id});
             }
         }

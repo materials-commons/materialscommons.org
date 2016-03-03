@@ -13,6 +13,7 @@
         var entry = gridFiles.findEntry(ctrl.project.files[0], $stateParams.dir_id);
         if (entry) {
             ctrl.dir = entry.model;
+            console.dir(ctrl.dir);
         }
     }
 }(angular.module('materialscommons')));
