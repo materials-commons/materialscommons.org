@@ -108,13 +108,7 @@
         ctrl.files = ctrl.file.children;
 
         function setActive(node, file) {
-            // clear all other active flags.
-            var treeModel = new TreeModel(),
-                root = treeModel.parse(project.get().files[0]);
-            root.walk(function(node) {
-                node.model.active = false;
-            });
-
+            clearActiveStateInAllNodes();
 
             if (file.data._type === 'file') {
                 file.active = true;
@@ -138,6 +132,14 @@
                     $state.go('project.files.dir', {dir_id: file.data.id});
                 }
             }
+        }
+
+        function clearActiveStateInAllNodes() {
+            var treeModel = new TreeModel(),
+                root = treeModel.parse(project.get().files[0]);
+            root.walk(function(treeNode) {
+                treeNode.model.active = false;
+            });
         }
     }
 }(angular.module('materialscommons')));
