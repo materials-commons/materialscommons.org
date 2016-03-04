@@ -103,9 +103,13 @@
     function MCFileTree2DirDirectiveController(fileTreeProjectService, project, $state) {
         var ctrl = this;
         var projectID = project.get().id;
-        ctrl.setActive = setActive;
         ctrl.placeholderName = placeholderName;
         ctrl.files = ctrl.file.children;
+
+        ctrl.setActive = setActive;
+        ctrl.addFolder = addFolder;
+
+        //////////////////////////
 
         function setActive(node, file) {
             clearActiveStateInAllNodes();
@@ -140,6 +144,24 @@
             root.walk(function(treeNode) {
                 treeNode.model.active = false;
             });
+        }
+
+        function addFolder(node, file) {
+            console.dir(file);
+            console.dir(node);
+            node.$modelValue.children.push({
+                    data: {
+                        id: 'abc123',
+                        name: 'new folder',
+                        _type: 'directory'
+                    }
+            });
+            //file.children.push({
+            //    data: {
+            //        name: 'new folder',
+            //        _type: 'directory'
+            //    }
+            //});
         }
     }
 }(angular.module('materialscommons')));
