@@ -105,7 +105,7 @@
         var projectID = project.get().id;
         ctrl.setActive = setActive;
         ctrl.placeholderName = placeholderName;
-
+        
         if (ctrl.file.data._type === 'directory' && !ctrl.file.data.childrenLoaded) {
             fileTreeProjectService.getDirectory(projectID, ctrl.file.data.id).then(function(files) {
                 console.log('promise done to get directory:', ctrl.file.data.id);
