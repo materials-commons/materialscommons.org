@@ -15,6 +15,15 @@
                     .then(function(files) {
                         return gridFiles.toGrid(files);
                     });
+            },
+
+            createProjectDir: function (projectID, fromDirID, path) {
+                return projectsAPI(projectID).one('directories').customPOST({
+                    from_dir: fromDirID,
+                    path: path
+                }).then(function (dirs) {
+                    return dirs.dirs[0];
+                });
             }
         };
     }

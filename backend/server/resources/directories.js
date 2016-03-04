@@ -30,7 +30,7 @@ module.exports = function(directories) {
             this.throw(httpStatus.BAD_REQUEST, rv.error);
         }
 
-        this.body = rv.val;
+        this.body = {dirs: rv.val};
         yield next;
     }
 
