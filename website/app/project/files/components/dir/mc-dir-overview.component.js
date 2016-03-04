@@ -9,8 +9,10 @@
     });
 
     module.controller('MCDirOverviewComponentController', MCDirOverviewComponentController);
-    MCDirOverviewComponentController.$inject = ["fileType", "mcfile", "$filter", "Restangular", "User", "mcmodal", "project"];
-    function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, project) {
+    MCDirOverviewComponentController.$inject = [
+        'fileType', 'mcfile', '$filter', 'Restangular', 'User', 'mcmodal', 'project', 'toastr'
+    ];
+    function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, project, toastr) {
         var ctrl = this;
 
         ctrl.viewFiles = viewFiles;
@@ -90,7 +92,7 @@
                 },
 
                 function failure() {
-                    console.log('archive creation failed');
+                    toastr.error('Unable to create file archive.', 'Error', {closeButton: true});
                 }
             );
         }
