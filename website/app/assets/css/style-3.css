@@ -69,6 +69,11 @@ a {
     color: #858585;
 }
 
+.mc-file-tree-control {
+    font-size: 0.8rem;
+    color: #b1d4f1;
+}
+
 .fa-md-icon {
     height: auto;
     padding-bottom: 3px;
@@ -198,7 +203,7 @@ table.md-table th.md-column {
 }
 
 .margin-top-10 {
-    margin-top:10px;
+    margin-top: 10px;
 }
 
 /* *************** End Materials Design CSS *************** */
@@ -263,8 +268,6 @@ textarea {
 .text-danger {
     color: #E57373;
 }
-
-
 
 a:hover, a:visited {
     opacity: 0.7;
@@ -890,13 +893,13 @@ input[type="checkbox"]:focus {
     outline: none;
 }
 
-.fa-download {
-    color: #9782be;
-}
+/*.fa-download {*/
+    /*color: #9782be;*/
+/*}*/
 
-.fa-upload {
-    color: #e26a6a;
-}
+/*.fa-upload {*/
+    /*color: #e26a6a;*/
+/*}*/
 
 .loading-panel {
     border: solid 3px #518394;
