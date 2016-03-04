@@ -76,14 +76,15 @@
             },
 
             createProjectDir: function (projectID, fromDirID, path) {
+                console.log('createProjectDir', projectID, fromDirID, path);
                 return projectsAPI(projectID).one('directories').customPOST({
                     from_dir: fromDirID,
                     path: path
-                }).then(function (dir) {
+                }).then(function (dirs) {
                     if (onChangeFn) {
-                        onChangeFn(fromDirID, dir);
+                        onChangeFn(fromDirID, dirs);
                     }
-                    return dir;
+                    return dirs;
                 });
             },
 

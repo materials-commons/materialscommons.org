@@ -13,11 +13,9 @@
                             {{file.data.name}}
                         </a>
                     </div>
-                    <div ng-if="true">
-                        <!-- experimental code to see if we can find a way to create controls in the tree -->
-                        <div ng-if="file.active"
-                             layout="row" layout-align="space-around center" data-nodrag>
-                            <a class="mc-file-tree-control text-uppercase" ng-click="ctrl.addFolder(this, file)">
+                    <div ng-if="file.active">
+                        <div layout="row" layout-align="space-around center" data-nodrag>
+                            <a class="mc-file-tree-control text-uppercase" ng-click="file.promptForDir = true">
                                 <i class="fa fa-fw fa-plus-square"></i> sub folder
                             </a>
                             <a class="mc-file-tree-control text-uppercase">
@@ -26,6 +24,11 @@
                             <a class="mc-file-tree-control text-uppercase">
                                 <i class="fa fa-fw fa-pencil-square"></i>rename
                             </a>
+                        </div>
+                        <div ng-if="file.promptForDir" layout="row" data-nodrag>
+                            <md-input-container>
+                                <input on-enter="ctrl.addFolder(file)" ng-model="ctrl.folderName">
+                            </md-input-container>
                         </div>
                     </div>
                 </div>
