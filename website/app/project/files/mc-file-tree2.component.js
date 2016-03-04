@@ -105,6 +105,7 @@
         var projectID = project.get().id;
         ctrl.placeholderName = placeholderName;
         ctrl.files = ctrl.file.children;
+        ctrl.folderName = '';
 
         ctrl.setActive = setActive;
         ctrl.addFolder = addFolder;
@@ -146,22 +147,17 @@
             });
         }
 
-        function addFolder(node, file) {
-            console.dir(file);
-            console.dir(node);
-            node.$modelValue.children.push({
-                    data: {
-                        id: 'abc123',
-                        name: 'new folder',
-                        _type: 'directory'
-                    }
+        function addFolder(file) {
+            file.promptForFolder = false;
+            fileTreeProjectService.createProjectDir(project.get().id, file.data.id, ctrl.folderName)
+            .then(function(dir) {
+                ctrl.folderName = '';
+                file.children.push({
+                    id: dir.id,
+                    name: ctrl.folderName,
+                    _type: 'directory'
+                });
             });
-            //file.children.push({
-            //    data: {
-            //        name: 'new folder',
-            //        _type: 'directory'
-            //    }
-            //});
         }
     }
 }(angular.module('materialscommons')));

@@ -117,9 +117,9 @@ module.exports = function (r) {
                 error: `directory id ${dirArgs.from_dir} not found`
             };
         }
-        yield createDirs(projectID, startingDir, dirSegments(dirArgs.path));
+        let created = yield createDirs(projectID, startingDir, dirSegments(dirArgs.path));
         return {
-            val: true
+            val: created
         };
     }
 
@@ -152,9 +152,9 @@ module.exports = function (r) {
             }
         }
 
-        yield createDirs(projectID, startingDir, dirSegments(dirArgs.path));
+        let created = yield createDirs(projectID, startingDir, dirSegments(dirArgs.path));
         return {
-            val: []
+            val: created
         };
     }
 
@@ -174,12 +174,14 @@ module.exports = function (r) {
         let existing = true;
         let dirPath = startingDir.name;
         let dirEntry = startingDir;
+        let createdDirs = [];
         for (let pathEntry of dirSegments) {
             dirPath = dirPath + '/' + pathEntry;
             if (!existing) {
                 // if we encountered an unknown dir then all dirs afterward are
                 // unknown and can just be created.
                 dirEntry = yield insertDir(projectID, dirEntry.id, dirEntry.owner, dirPath);
+                createdDirs.push(dirEntry);
             } else {
                 // Check if dir exists, if it does continue checking, if not
                 // create it, set dirEntry to newly created (so we have a parent),
@@ -189,11 +191,13 @@ module.exports = function (r) {
                 if (!newDirEntry) {
                     existing = false;
                     dirEntry = yield insertDir(projectID, dirEntry.id, dirEntry.owner, dirPath);
+                    createdDirs.push(dirEntry);
                 } else {
                     dirEntry = newDirEntry;
                 }
             }
         }
+        return createdDirs;
     }
 
     function* insertDir(projectID, parentID, owner, dirPath) {
