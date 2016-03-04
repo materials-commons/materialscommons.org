@@ -135,7 +135,21 @@
             } else {
                 node.toggle();
                 console.log('going to ' + file.data.name + ' loaded status ' + file.data.childrenLoaded);
-                $state.go('project.files.dir', {dir_id: file.data.id});
+                if (!file.data.childrenLoaded) {
+                    console.log('file children not loaded', file.data.name);
+                    fileTreeProjectService.getDirectory(projectID, file.data.id).then(function(files) {
+                        console.log('promise done to get directory:', file.data.name);
+                        file.children = files;
+                        if (!file.children.length) {
+                            loadEmptyPlaceHolder(file);
+                        }
+                        file.data.childrenLoaded = true;
+                        $state.go('project.files.dir', {dir_id: file.data.id});
+                    });
+                } else {
+                    console.log('file children loaded!', file.data.name);
+                    $state.go('project.files.dir', {dir_id: file.data.id});
+                }
             }
         }
     }
