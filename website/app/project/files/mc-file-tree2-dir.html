@@ -1,6 +1,6 @@
 <div>
     <ol ui-tree-nodes ng-model="ctrl.files">
-        <li ng-repeat="file in ctrl.files track by file.data.id" ui-tree-node>
+        <li ng-repeat="file in ctrl.files track by file.data.id | orderBy:'data.name'" ui-tree-node>
             <div ui-tree-handle ng-class="{'angular-ui-tree-handle-active': file.active}">
                 <div ng-if="file.data._type === 'directory'">
                     <div layout="row" layout-align="start center">
@@ -16,12 +16,15 @@
                     <div ng-if="true">
                         <!-- experimental code to see if we can find a way to create controls in the tree -->
                         <div ng-if="file.active"
-                             layout="row" layout-align="space-around center" flex="50" flex-md="70" data-nodrag>
-                            <a class="mc-file-tree-control text-uppercase">
+                             layout="row" layout-align="space-around center" data-nodrag>
+                            <a class="mc-file-tree-control text-uppercase" ng-click="ctrl.addFolder(this, file)">
                                 <i class="fa fa-fw fa-plus-square"></i> sub folder
                             </a>
                             <a class="mc-file-tree-control text-uppercase">
                                 <i class="fa fa-fw fa-upload"></i>upload files
+                            </a>
+                            <a class="mc-file-tree-control text-uppercase">
+                                <i class="fa fa-fw fa-pencil-square"></i>rename
                             </a>
                         </div>
                     </div>
