@@ -105,21 +105,7 @@
         var projectID = project.get().id;
         ctrl.setActive = setActive;
         ctrl.placeholderName = placeholderName;
-        
-        if (ctrl.file.data._type === 'directory' && !ctrl.file.data.childrenLoaded) {
-            fileTreeProjectService.getDirectory(projectID, ctrl.file.data.id).then(function(files) {
-                console.log('promise done to get directory:', ctrl.file.data.id);
-                ctrl.file.children = files;
-                if (!ctrl.file.children.length) {
-                    loadEmptyPlaceHolder(ctrl.file);
-                }
-                ctrl.file.data.childrenLoaded = true;
-                ctrl.files = ctrl.file.children;
-            });
-        } else {
-            console.log('directory already loaded ', ctrl.file.data.id);
-            ctrl.files = ctrl.file.children;
-        }
+        ctrl.files = ctrl.file.children;
 
         function setActive(node, file) {
             // clear all other active flags.
@@ -128,26 +114,27 @@
             root.walk(function(node) {
                 node.model.active = false;
             });
-            file.active = true;
+
 
             if (file.data._type === 'file') {
+                file.active = true;
                 $state.go('project.files.file', {file_id: file.data.id});
             } else {
                 node.toggle();
-                console.log('going to ' + file.data.name + ' loaded status ' + file.data.childrenLoaded);
                 if (!file.data.childrenLoaded) {
-                    console.log('file children not loaded', file.data.name);
                     fileTreeProjectService.getDirectory(projectID, file.data.id).then(function(files) {
-                        console.log('promise done to get directory:', file.data.name);
                         file.children = files;
                         if (!file.children.length) {
                             loadEmptyPlaceHolder(file);
                         }
+                        file.active = true;
                         file.data.childrenLoaded = true;
+                        file.expand = !file.expand;
                         $state.go('project.files.dir', {dir_id: file.data.id});
                     });
                 } else {
-                    console.log('file children loaded!', file.data.name);
+                    file.active = true;
+                    file.expand = !file.expand;
                     $state.go('project.files.dir', {dir_id: file.data.id});
                 }
             }

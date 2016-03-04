@@ -5,7 +5,7 @@
                 <div ng-if="file.data._type === 'directory'">
                     <div layout="row">
                         <i class="fa fa-fw fa-reorder drag-handle-color"></i>
-                        <a ng-click="file.expand = !file.expand; ctrl.setActive(this, file)" data-nodrag>
+                        <a ng-click="ctrl.setActive(this, file)" data-nodrag>
                             <span ng-if="file.expand"><i
                                     class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
                                 <span ng-if="!file.expand"><i
