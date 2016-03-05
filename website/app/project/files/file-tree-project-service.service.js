@@ -24,6 +24,14 @@
                 }).then(function (dirs) {
                     return dirs.dirs[0];
                 });
+            },
+
+            renameProjectDir: function(projectID, dirID, newDirectoryName) {
+                return projectsAPI(projectID).one('directories', dirID).customPUT({
+                    rename: {
+                        new_name: newDirectoryName
+                    }
+                });
             }
         };
     }

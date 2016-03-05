@@ -109,6 +109,7 @@
 
         ctrl.setActive = setActive;
         ctrl.addFolder = addFolder;
+        ctrl.renameFolder = renameFolder;
 
         //////////////////////////
 
@@ -150,17 +151,24 @@
         function addFolder(file) {
             file.promptForFolder = false;
             fileTreeProjectService.createProjectDir(project.get().id, file.data.id, ctrl.folderName)
-            .then(function(dir) {
-                // Fix up the datastructure either on server or on client so its a grid file.
-                file.children.push({
-                    data: {
-                        id: dir.id,
-                        name: ctrl.folderName,
-                        _type: 'directory'
-                    }
+                .then(function(dir) {
+                    // Fix up the datastructure either on server or on client so its a grid file.
+                    file.children.push({
+                        data: {
+                            id: dir.id,
+                            name: ctrl.folderName,
+                            _type: 'directory'
+                        }
+                    });
+                    ctrl.folderName = '';
                 });
-                ctrl.folderName = '';
-            });
+        }
+
+        function renameFolder(file) {
+            fileTreeProjectService.renameProjectDir(project.get().id, file.data.id, file.data.name)
+                .then(function() {
+                    file.promptForRename = false;
+                });
         }
     }
 }(angular.module('materialscommons')));
