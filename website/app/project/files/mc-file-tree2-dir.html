@@ -15,7 +15,7 @@
                     </div>
                     <div ng-if="file.active">
                         <div layout="row" layout-align="space-around center" data-nodrag>
-                            <a class="mc-file-tree-control text-uppercase" ng-click="file.promptForDir = true">
+                            <a class="mc-file-tree-control text-uppercase" ng-click="file.promptForFolder = !file.promptForFolder">
                                 <i class="fa fa-fw fa-plus-square"></i> sub folder
                             </a>
                             <a class="mc-file-tree-control text-uppercase">
@@ -25,7 +25,7 @@
                                 <i class="fa fa-fw fa-pencil-square"></i>rename
                             </a>
                         </div>
-                        <div ng-if="file.promptForDir" layout="row" data-nodrag>
+                        <div ng-if="file.promptForFolder" layout="row" data-nodrag>
                             <md-input-container>
                                 <input on-enter="ctrl.addFolder(file)" ng-model="ctrl.folderName">
                             </md-input-container>
