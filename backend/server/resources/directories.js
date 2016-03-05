@@ -36,12 +36,18 @@ module.exports = function(directories) {
 
     function* update(next) {
         let updateArgs = yield parse(this);
-        if (!updateArgs.move) {
-            this.throw(httpStatus.BAD_REQUEST, 'no move args specified');
+
+        if (!updateArgs.move && !updateArgs.rename) {
+            this.throw(httpStatus.BAD_REQUEST, 'badly formed update args');
         }
 
-        if (!updateArgs.move.new_directory_id) {
+        if (updateArgs.move && !updateArgs.move.new_directory_id) {
             this.throw(httpStatus.BAD_REQUEST, 'no directory id to move to');
+        }
+
+
+        if (updateArgs.rename && !updateArgs.rename.new_name) {
+            this.throw(httpStatus.BAD_REQUEST, 'no new directory name');
         }
 
         let rv = yield directories.update(this.params.project_id, this.params.directory_id, updateArgs);

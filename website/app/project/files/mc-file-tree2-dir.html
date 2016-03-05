@@ -18,16 +18,19 @@
                             <a class="mc-file-tree-control text-uppercase" ng-click="file.promptForFolder = !file.promptForFolder">
                                 <i class="fa fa-fw fa-plus-square"></i> sub folder
                             </a>
-                            <a class="mc-file-tree-control text-uppercase">
-                                <i class="fa fa-fw fa-upload"></i>upload files
-                            </a>
-                            <a class="mc-file-tree-control text-uppercase">
+                            <mc-flow-button dir="file"></mc-flow-button>
+                            <a class="mc-file-tree-control text-uppercase" ng-click="file.promptForRename = !file.promptForRename">
                                 <i class="fa fa-fw fa-pencil-square"></i>rename
                             </a>
                         </div>
                         <div ng-if="file.promptForFolder" layout="row" data-nodrag>
                             <md-input-container>
-                                <input on-enter="ctrl.addFolder(file)" ng-model="ctrl.folderName">
+                                <input placeholder="Folder..." on-enter="ctrl.addFolder(file)" ng-model="ctrl.folderName">
+                            </md-input-container>
+                        </div>
+                        <div ng-if="file.promptForRename" layout="row" data-nodrag>
+                            <md-input-container>
+                                <input on-enter="ctrl.renameFolder(file)" ng-model="file.data.name">
                             </md-input-container>
                         </div>
                     </div>

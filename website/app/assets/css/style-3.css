@@ -74,6 +74,11 @@ a {
     color: #b1d4f1;
 }
 
+.mc-flow-button:hover {
+    color: #23527c;
+    opacity: 0.7;
+}
+
 .fa-md-icon {
     height: auto;
     padding-bottom: 3px;
