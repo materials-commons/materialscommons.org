@@ -209,17 +209,23 @@ module.exports = function (r) {
     }
 
     function* update(projectID, directoryID, updateArgs) {
-        // Only update supported for now is moving a directory.
+        if (updateArgs.move) {
+            return yield moveDirectory(projectID, directoryID, updateArgs.move);
+        } else {
+            return yield renameDirectory(directoryID, updateArgs.rename);
+        }
+    }
 
+    function* moveDirectory(projectID, directoryID, moveArgs) {
         // Validate that the new directory is in the project
         let findDirRql = r.table('project2datadir')
-            .getAll([projectID, updateArgs.move.new_directory_id], {index: 'project_datadir'});
+            .getAll([projectID, moveArgs.new_directory_id], {index: 'project_datadir'});
         let matches = yield dbExec(findDirRql);
         if (!matches.length) {
             return {error: 'Directory not in project'};
         }
 
-        let newDir = yield dbExec(r.table('datadirs').get(updateArgs.move.new_directory_id));
+        let newDir = yield dbExec(r.table('datadirs').get(moveArgs.new_directory_id));
         let updateDir = yield dbExec(r.table('datadirs').get(directoryID));
         let updateFields = {
             name: path.join(newDir.name, path.basename(updateDir.name)),
@@ -228,6 +234,13 @@ module.exports = function (r) {
 
         yield r.table('datadirs').get(directoryID).update(updateFields);
 
+        let rv = {};
+        rv.val = yield directoryByID(directoryID);
+        return rv;
+    }
+
+    function* renameDirectory(directoryID, renameArgs) {
+        yield r.table('datadirs').get(directoryID).update({name: renameArgs.new_name});
         let rv = {};
         rv.val = yield directoryByID(directoryID);
         return rv;

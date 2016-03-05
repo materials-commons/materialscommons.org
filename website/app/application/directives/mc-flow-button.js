@@ -1,15 +1,15 @@
 (function (module) {
     module.directive("mcFlowButton",
-        ["mcFlow", "current", "mcapi", "User", mcFlowButtonDirective]);
+        ["mcFlow", "project", "mcapi", "User", mcFlowButtonDirective]);
 
-    function mcFlowButtonDirective(mcFlow, current, mcapi, User) {
+    function mcFlowButtonDirective(mcFlow, project, mcapi, User) {
         return {
             restrict: 'E',
             replace: true,
             scope: {
                 dir: "=dir"
             },
-            template: "<span style='color: #64b5f6; cursor: pointer' title='Upload to directory' class='heading-label text-uppercase'>upload files</span>",
+            template: "<span style='cursor: pointer' title='Upload to directory' class='mc-file-tree-control mc-flow-button text-uppercase'><i class='fa fa-fw fa-upload'></i>upload files</span>",
             link: function (scope, element, attrs) {
                 var flow = mcFlow.get();
                 var isDirectory = attrs.hasOwnProperty('flowDirectory');
@@ -87,10 +87,10 @@
 
                         // When new files are added, simply append them to the overall list
                         input.addEventListener('change', function (e) {
-                            var project = current.project();
+                            var proj = project.get();
                             each(e.target.files, function (f) {
                                 var req = {
-                                    project_id: project.id,
+                                    project_id: proj.id,
                                     directory_id: scope.dir.data.id,
                                     filename: f.name,
                                     filesize: f.size,
@@ -112,8 +112,8 @@
                                                 attrs: {
                                                     directory_name: scope.dir.data.name,
                                                     directory_id: scope.dir.data.id,
-                                                    project_id: project.id,
-                                                    project_name: project.name
+                                                    project_id: proj.id,
+                                                    project_name: proj.name
                                                 }
                                             };
                                             flow.addFiles([o], e);
