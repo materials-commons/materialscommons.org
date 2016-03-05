@@ -151,12 +151,15 @@
             file.promptForFolder = false;
             fileTreeProjectService.createProjectDir(project.get().id, file.data.id, ctrl.folderName)
             .then(function(dir) {
-                ctrl.folderName = '';
+                // Fix up the datastructure either on server or on client so its a grid file.
                 file.children.push({
-                    id: dir.id,
-                    name: ctrl.folderName,
-                    _type: 'directory'
+                    data: {
+                        id: dir.id,
+                        name: ctrl.folderName,
+                        _type: 'directory'
+                    }
                 });
+                ctrl.folderName = '';
             });
         }
     }
