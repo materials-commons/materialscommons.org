@@ -10,11 +10,16 @@ module.exports = function(model) {
     let dataTypes = require('./schema-data-types');
     defineRules();
 
+    let directorySchema = require('./directory-schema')(schema);
+
+    console.log('directorySchema', directorySchema);
+
     return {
         samples: defineSamplesSchema(),
         transformedSamples: defineTransformedSamplesSchema(),
         processes: defineProcessSchema(),
         measurements: defineMeasurementsSchema(),
+        createDirectory: directorySchema.defineCreateDirectorySchema(),
         model: model
     };
 
@@ -297,5 +302,7 @@ module.exports = function(model) {
         schema.defineRule('isValidPropertyType', schemaRules.isValidPropertyType);
         schema.defineRule('isValidUnit', schemaRules.isValidUnit);
         schema.defineRule('oneOf', schemaRules.oneOf);
+        schema.defineRule('mustNotStartWith', schemaRules.mustNotStartWith);
+        schema.defineRule('mustNotExistInDirectory', schemaRules.mustNotExistInDirectory, true);
     }
 };
