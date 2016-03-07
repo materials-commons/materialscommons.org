@@ -1,6 +1,6 @@
 var cliArgs = require('command-line-args');
 var mount = require('koa-mount');
-var bodyParser = require('koa-bodyparser');
+//var bodyParser = require('koa-bodyparser');
 var koa = require('koa');
 var app = module.exports = koa();
 require('koa-qs')(app);
@@ -11,7 +11,7 @@ var apikey = require('./apikey')(model.users);
 var resources = require('./resources')(model);
 
 app.use(apikey);
-app.use(bodyParser());
+//app.use(bodyParser());
 app.use(mount('/', resources.routes())).use(resources.allowedMethods());
 
 // Look for changes on the access and projects tables. If a change is detected
