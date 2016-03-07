@@ -34,7 +34,7 @@ describe('Schema Rules', function() {
                 try {
                     err.should.exist;
                     err.should.be.an.instanceOf(Object).and.have.property('rule');
-                    err.rule.should.be.eql('exists');
+                    err.rule.should.be.eql('mustExist');
                     err.actual.should.be.eql('not-exist');
                 } catch (error) {
                     rv = error;
@@ -68,7 +68,7 @@ describe('Schema Rules', function() {
                 let rv = null;
                 try {
                     err.should.exist;
-                    err.rule.should.be.eql('notExists');
+                    err.rule.should.be.eql('mustNotExist');
                     err.actual.should.be.eql('admin');
                 } catch (error) {
                     rv = error;

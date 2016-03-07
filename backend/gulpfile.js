@@ -14,7 +14,7 @@ var serverSrc = 'server/**/*.js';
 gulp.task('build-server', ['clean-sbin'], function() {
     return gulp
         .src(serverSrc)
-        .pipe(babel({optional: ['runtime'], blacklist: ['regenerator']}))
+        .pipe(babel({presets: ['es2015'], plugins:['transform-runtime']}))
         .pipe(gulp.dest('sbin'));
 });
 

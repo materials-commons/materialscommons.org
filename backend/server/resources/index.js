@@ -8,7 +8,7 @@ module.exports = function(model) {
     const samples = require('./samples')(model.samples, schema);
     const files = require('./files')(model.files);
     const processes = require('./processes')(model.processes, schema);
-    const directories = require('./directories')(model.directories);
+    const directories = require('./directories')(model.directories, schema);
     const users = require('./users')(model.users);
     const shares = require('./shares')(model.shares, schema);
 

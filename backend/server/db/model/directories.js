@@ -1,4 +1,4 @@
-module.exports = function (r) {
+module.exports = function(r) {
     const path = require('path');
     const dbExec = require('./run');
     const db = require('./db')(r);
@@ -8,7 +8,9 @@ module.exports = function (r) {
     return {
         get: get,
         create: create,
-        update: update
+        update: update,
+        findInProject: findInProject,
+        subdirExists: subdirExists
     };
 
     /////////////////////////////
@@ -22,18 +24,16 @@ module.exports = function (r) {
     }
 
     function topLevelDir(projectID) {
-        let rql = r.table('projects').getAll(projectID).
-            eqJoin('name', r.table('datadirs'), {index: 'name'}).zip().
-            eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip().
-            filter({'project_id': projectID}).
-            merge(function (ddir) {
+        let rql = r.table('projects').getAll(projectID)
+            .eqJoin('name', r.table('datadirs'), {index: 'name'}).zip()
+            .eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip()
+            .filter({'project_id': projectID})
+            .merge(function(ddir) {
                 return {
-                    files: r.table('datadir2datafile').
-                        getAll(ddir('datadir_id'), {index: 'datadir_id'}).
-                        eqJoin('datafile_id', r.table('datafiles')).
-                        zip().
-                        filter({current: true}).
-                        coerceTo('array'),
+                    files: r.table('datadir2datafile').getAll(ddir('datadir_id'), {index: 'datadir_id'})
+                        .eqJoin('datafile_id', r.table('datafiles')).zip()
+                        .filter({current: true})
+                        .coerceTo('array'),
                     directories: r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
                 }
             });
@@ -41,17 +41,14 @@ module.exports = function (r) {
     }
 
     function directoryByID(directoryID) {
-        let rql = r.table('project2datadir').getAll(directoryID, {index: 'datadir_id'}).
-            eqJoin('datadir_id', r.table('datadirs')).
-            zip().
-            merge(function (ddir) {
+        let rql = r.table('project2datadir').getAll(directoryID, {index: 'datadir_id'})
+            .eqJoin('datadir_id', r.table('datadirs')).zip()
+            .merge(function(ddir) {
                 return {
-                    files: r.table('datadir2datafile').
-                        getAll(ddir('datadir_id'), {index: 'datadir_id'}).
-                        eqJoin('datafile_id', r.table('datafiles')).
-                        zip().
-                        filter({current: true}).
-                        coerceTo('array'),
+                    files: r.table('datadir2datafile').getAll(ddir('datadir_id'), {index: 'datadir_id'})
+                        .eqJoin('datafile_id', r.table('datafiles')).zip()
+                        .filter({current: true})
+                        .coerceTo('array'),
                     directories: r.table('datadirs').getAll(ddir('datadir_id'), {index: 'parent'}).coerceTo('array')
                 }
             });
@@ -124,8 +121,7 @@ module.exports = function (r) {
     }
 
     function* dirByPath(projectID, dirPath) {
-        let rql = r.table('datadirs').getAll(dirPath, {index: 'name'}).
-            filter({project: projectID});
+        let rql = r.table('datadirs').getAll(dirPath, {index: 'name'}).filter({project: projectID});
         let dirs = yield dbExec(rql);
         if (dirs.length) {
             return dirs[0];
@@ -135,7 +131,7 @@ module.exports = function (r) {
 
     function* dirById(dirID, projectID) {
         let dir = yield getSingle(r, 'datadirs', dirID);
-        if (! dir) {
+        if (!dir) {
             return null;
         } else if (dir.project !== projectID) {
             return null;
@@ -244,5 +240,22 @@ module.exports = function (r) {
         let rv = {};
         rv.val = yield directoryByID(directoryID);
         return rv;
+    }
+
+    function findInProject(projectID, _key, dir) {
+        if (dir.startsWith('/')) {
+            return dbExec(r.table('datadirs').getAll(dir, {index: 'name'}))
+                .then(function(d) {
+                    console.log('findInProject 2nd step');
+                    return dbExec(r.table('project2datadir').getAll([projectID, d.id], {index: 'project_datadir'}));
+                });
+        } else {
+            return r.table('project2datadir').getAll([projectID, dir], {index: 'project_datadir'}).run();
+        }
+    }
+
+    function subdirExists(dirID, subdirName) {
+        let rql = r.table('datadirs').getAll(dirID, {index: 'parent'}).filter({name: subdirName});
+        return dbExec(rql);
     }
 };

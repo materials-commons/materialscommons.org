@@ -1,4 +1,4 @@
-module.exports = function(directories) {
+module.exports = function(directories, schema) {
     const parse = require('co-body');
     const httpStatus = require('http-status');
 
@@ -17,12 +17,12 @@ module.exports = function(directories) {
 
     function* create(next) {
         let dirArgs = yield parse(this);
-        if (!dirArgs.from_dir) {
-            this.throw(httpStatus.BAD_REQUEST, 'no from_dir specified');
-        }
+        dirArgs = prepareDirArgs(this.params.project_id, dirArgs);
+        console.log('calling schema.createDirectory.validateAsync');
 
-        if (!dirArgs.path) {
-            this.throw(httpStatus.BAD_REQUEST, 'no path specified');
+        let errors = yield validate(dirArgs);
+        if (errors != null) {
+            this.throw(httpStatus.BAD_REQUEST, 'Request did not validate');
         }
 
         let rv = yield directories.create(this.params.project_id, this.reqctx.project.name, dirArgs);
@@ -32,6 +32,22 @@ module.exports = function(directories) {
 
         this.body = {dirs: rv.val};
         yield next;
+    }
+
+    function prepareDirArgs(projectID, dirArgs) {
+        schema.createDirectory.stripNonSchemaAttrs(dirArgs);
+        dirArgs.project_id = projectID;
+        return dirArgs;
+    }
+
+    function validate(dirArgs) {
+        return schema.createDirectory.validateAsync(dirArgs).then(function() {
+            console.log('dirArgs validated');
+            return null;
+        }, function(errors) {
+            console.log('dirArgs did not validate', errors);
+            return errors;
+        });
     }
 
     function* update(next) {

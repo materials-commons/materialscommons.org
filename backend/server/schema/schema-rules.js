@@ -26,7 +26,9 @@ module.exports = function(model) {
         oneOf: oneOf,
         mustBeForSample: mustBeForSample,
         mustBeValidMeasurements: mustBeValidMeasurements,
-        mustBeForAttributeSet: mustBeForAttributeSet
+        mustBeForAttributeSet: mustBeForAttributeSet,
+        mustNotStartWith: mustNotStartWith,
+        mustNotExistInDirectory: mustNotExistInDirectory
     };
 
     ////////////////////////////////////////
@@ -90,13 +92,18 @@ module.exports = function(model) {
         let project_id = this.project_id;
         model[modelName].findInProject(this.project_id, 'id', what)
             .then((matches) => {
-                let error = matches.length !== 0 ? null : {
-                    rules: 'mustExistInProject',
-                    actual: what,
-                    expected: `${what} should exist in project ${project_id}`
-                };
-                done(error);
-            });
+                    console.log('mustExistInProject promise returned', matches);
+                    let error = matches.length !== 0 ? null : {
+                        rules: 'mustExistInProject',
+                        actual: what,
+                        expected: `${what} should exist in project ${project_id}`
+                    };
+                    console.log('calling done', error);
+                    done(error);
+                },
+                () => {
+                    console.log('mustExistInProject rejected');
+                });
     }
 
     // isValidPropertyType checks the different known types for a property.
@@ -140,6 +147,21 @@ module.exports = function(model) {
         };
     }
 
+    function mustNotStartWith(what, spec) {
+        console.log('mustNotStartWith', what, spec);
+        if (what.startsWith(spec)) {
+            console.log('   returning error starts with', spec);
+            return {
+                rule: 'mustNotStartWith',
+                actual: what,
+                expected: '${what} should not start with ${spec}'
+            }
+        }
+
+        console.log('   return null');
+        return null;
+    }
+
     /**
      * Checks that a given attribute_id or attribute_set_id belongs
      * to the sample_id in this.
@@ -177,7 +199,7 @@ module.exports = function(model) {
          * Checks if there were any matches. If not generates an error.
          * @param {Array} matches - A list of matching items.
          */
-        function checkMatch (matches) {
+        function checkMatch(matches) {
             if (matches.length !== 0) {
                 done(null);
             } else {
@@ -257,5 +279,26 @@ module.exports = function(model) {
             .then((attrs) => {
                 done(attrs.length !== attributes.length ? error : null);
             });
+    }
+
+    function mustNotExistInDirectory(dirName, key, done) {
+        let dirIDToCheckIn = this[key];
+        console.log('dirIDToCheckIn', dirIDToCheckIn, dirName);
+        model.directories.subdirExists(dirIDToCheckIn, dirName).then(function(dirs) {
+            console.log(dirs);
+            let error = dirs.length === 0 ? null : {
+                rule: 'mustNotExistInDirectory',
+                actual: dirName,
+                expected: `No child directory with name ${dirName}`
+            };
+            done(error);
+        }, function(err) {
+            let error = {
+                rule: 'mustNotExistInDirectory',
+                actual: dirName,
+                expected: `No child directory with name ${dirName}, got error: ${err}`
+            };
+            done(error);
+        });
     }
 };
