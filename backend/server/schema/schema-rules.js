@@ -96,17 +96,14 @@ module.exports = function(model) {
         model[modelName].findInProject(this.project_id, 'id', what)
             .then(
                 (matches) => {
-                    console.log('mustExistInProject promise returned', matches);
                     let error = matches.length !== 0 ? null : {
                         rules: 'mustExistInProject',
                         actual: what,
                         expected: `${what} should exist in project ${project_id}`
                     };
-                    console.log('calling done', error);
                     done(error);
                 },
                 (err) => {
-                    console.log('mustExistInProject rejected', err);
                     let error = {
                         rules: 'mustExistInProject',
                         actual: what,
@@ -136,12 +133,6 @@ module.exports = function(model) {
         return _.indexOf(propertyUnits, what) === -1 ? invalid : null;
     }
 
-    /**
-     *
-     * @param {} what
-     * @param {} spec
-     * @returns {}
-     */
     function oneOf(what, spec) {
         let attrs = spec.split(':');
         for (let i = 0; i < attrs.length; i++) {
@@ -158,9 +149,7 @@ module.exports = function(model) {
     }
 
     function mustNotStartWith(what, spec) {
-        console.log('mustNotStartWith', what, spec);
         if (what.startsWith(spec)) {
-            console.log('   returning error starts with', spec);
             return {
                 rule: 'mustNotStartWith',
                 actual: what,
@@ -168,7 +157,6 @@ module.exports = function(model) {
             }
         }
 
-        console.log('   return null');
         return null;
     }
 
@@ -229,7 +217,7 @@ module.exports = function(model) {
      * all the measurements came from this sample, and that the measurements
      * all have the same type.
      * @param {Array} measurements - List of measurement ids.
-     * @param {Bool} _ignore - Ignored (parameter in schema definition)
+     * @param {bool} _ignore - Ignored (parameter in schema definition)
      * @param {Function} done - Callback to signal success or failure
      */
     function mustBeValidMeasurements(measurements, _ignore, done) {
@@ -268,12 +256,6 @@ module.exports = function(model) {
         }
     }
 
-    /**
-     *
-     * @param {} attributes
-     * @param {} _ignore
-     * @param {} done
-     */
     function mustBeForAttributeSet(attributes, _ignore, done) {
         if (!attributes) {
             done(null);
@@ -293,9 +275,7 @@ module.exports = function(model) {
 
     function mustNotExistInDirectory(dirName, key, done) {
         let dirIDToCheckIn = this[key];
-        console.log('dirIDToCheckIn', dirIDToCheckIn, dirName);
         model.directories.subdirExists(dirIDToCheckIn, dirName).then(function(dirs) {
-            console.log(dirs);
             let error = dirs.length === 0 ? null : {
                 rule: 'mustNotExistInDirectory',
                 actual: dirName,
