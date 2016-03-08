@@ -52,6 +52,7 @@ module.exports = function(directories, schema) {
         });
     }
 
+    // TODO: Finish moving code to schema validator.
     function* update(next) {
         let updateArgs = yield parse(this);
 
