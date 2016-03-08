@@ -1,7 +1,6 @@
 module.exports = function(schema) {
     const promise = require('bluebird');
 
-    console.log('setting up directory schema');
     return {
         defineCreateDirectorySchema: defineCreateDirectorySchema
     };
