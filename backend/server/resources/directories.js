@@ -90,20 +90,16 @@ module.exports = function(directories, schema) {
 
     function validateMoveArgs(moveArgs) {
         return schema.moveDirectory.validateAsync(moveArgs).then(function() {
-            console.log('moveArgs validated');
             return null;
         }, function(errors) {
-            console.log('moveArgs did not validate', errors);
             return errors;
         });
     }
 
     function validateRenameArgs(renameArgs) {
         return schema.renameDirectory.validateAsync(renameArgs).then(function() {
-            console.log('renameArgs validated');
             return null;
         }, function(errors) {
-            console.log('renameArgs did not validate', errors);
             return errors;
         });
     }
