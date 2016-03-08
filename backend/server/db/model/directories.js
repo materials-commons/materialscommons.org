@@ -10,7 +10,8 @@ module.exports = function(r) {
         create: create,
         update: update,
         findInProject: findInProject,
-        subdirExists: subdirExists
+        subdirExists: subdirExists,
+        peerDirectories: peerDirectories
     };
 
     /////////////////////////////
@@ -256,6 +257,15 @@ module.exports = function(r) {
 
     function subdirExists(dirID, subdirName) {
         let rql = r.table('datadirs').getAll(dirID, {index: 'parent'}).filter({name: subdirName});
+        return dbExec(rql);
+    }
+
+    function peerDirectories(dirID) {
+        let rql = r.table('datadirs').get(dirID).merge(function(dir) {
+                return {
+                    peer_directories: r.table('datadirs').getAll(dir('id'), {index: 'parent'}).coerceTo('array')
+                }
+            });
         return dbExec(rql);
     }
 };
