@@ -17,11 +17,10 @@
 
     module.controller('MCFileTree2ComponentController', MCFileTree2ComponentController);
     MCFileTree2ComponentController.$inject = [
-        '$scope', 'project', '$state', '$stateParams', 'pubsub', 'fileTreeProjectService',
-        'fileTreeMoveService', 'toastr'
+        'project', '$state', '$stateParams', 'fileTreeProjectService', 'fileTreeMoveService', 'toastr'
     ];
-    function MCFileTree2ComponentController($scope, project, $state, $stateParams, pubsub,
-                                            fileTreeProjectService, fileTreeMoveService, toastr) {
+    function MCFileTree2ComponentController(project, $state, $stateParams, fileTreeProjectService,
+                                            fileTreeMoveService, toastr) {
         var ctrl = this;
         var proj = project.get();
 
