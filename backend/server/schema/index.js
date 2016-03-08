@@ -15,6 +15,8 @@ module.exports = function(model) {
         processes: defineProcessSchema(),
         measurements: defineMeasurementsSchema(),
         createDirectory: directorySchema.defineCreateDirectorySchema(),
+        renameDirectory: directorySchema.defineRenameDirectorySchema(),
+        moveDirectory: directorySchema.defineMoveDirectorySchema(),
         model: model
     };
 
