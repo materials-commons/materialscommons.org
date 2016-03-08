@@ -1,12 +1,10 @@
-<div layout="row" flex="100" layout-fill>
-    <md-content layout="row" layout-wrap layout-align="start stretch" flex>
-    </md-content>
-    <div layout="column" flex>
-        <ul>
-            <li ng-repeat="project in $ctrl.sharedProjects">
-                {{project.name}}
-            </li>
-        </ul>
-        <md-button class="md-primary" ui-sref="projects.list">Projects</md-button>
+<div layout="column" flex="100" layout-fill layout-margin>
+    <div layout="row" layout-wrap layout-align="space-around stretch" flex="100">
+        <md-content flex="{{$ctrl.flexSize}}" class="md-whiteframe-4dp" ng-repeat="project in $ctrl.sharedProjects">
+            <mc-project-share-tree project="project"></mc-project-share-tree>
+        </md-content>
+    </div>
+    <div layout="row" flex>
+        <div ui-view></div>
     </div>
 </div>
