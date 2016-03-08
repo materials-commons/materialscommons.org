@@ -1,18 +1,13 @@
-var Schema = require('js-data-schema');
-var schema = new Schema();
-var promise = require('bluebird');
-
-
 module.exports = function(model) {
-    'use strict';
+    const Schema = require('js-data-schema');
+    const schema = new Schema();
+    const promise = require('bluebird');
 
     let schemaRules = require('./schema-rules')(model);
-    let dataTypes = require('./schema-data-types');
+    //let dataTypes = require('./schema-data-types');
     defineRules();
 
     let directorySchema = require('./directory-schema')(schema);
-
-    console.log('directorySchema', directorySchema);
 
     return {
         samples: defineSamplesSchema(),
