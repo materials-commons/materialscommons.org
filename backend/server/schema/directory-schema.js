@@ -48,7 +48,7 @@ module.exports = function(schema) {
                 mustExistInProject: 'directories'
             }
         });
-        moveDirSchema.validateAsync = promise.promisify(createDirSchema.validate);
+        moveDirSchema.validateAsync = promise.promisify(moveDirSchema.validate);
         return moveDirSchema;
     }
 
@@ -72,7 +72,7 @@ module.exports = function(schema) {
                 mustNotExistInParentDirectory: 'directory_id'
             }
         });
-        renameDirSchema.validateAsync = promise.promisify(createDirSchema.validate);
+        renameDirSchema.validateAsync = promise.promisify(renameDirSchema.validate);
         return renameDirSchema;
     }
 };
