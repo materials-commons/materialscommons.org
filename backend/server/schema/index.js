@@ -299,5 +299,6 @@ module.exports = function(model) {
         schema.defineRule('oneOf', schemaRules.oneOf);
         schema.defineRule('mustNotStartWith', schemaRules.mustNotStartWith);
         schema.defineRule('mustNotExistInDirectory', schemaRules.mustNotExistInDirectory, true);
+        schema.defineRule('mustNotExistInParentDirectory', schemaRules.mustNotExistInParentDirectory, true);
     }
 };

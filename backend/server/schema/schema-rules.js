@@ -1,6 +1,8 @@
-var _ = require('lodash');
 module.exports = function(model) {
     'use strict';
+
+    const _ = require('lodash');
+    const path = require('path');
 
     let propertyTypes = [
         'number',
@@ -28,7 +30,8 @@ module.exports = function(model) {
         mustBeValidMeasurements: mustBeValidMeasurements,
         mustBeForAttributeSet: mustBeForAttributeSet,
         mustNotStartWith: mustNotStartWith,
-        mustNotExistInDirectory: mustNotExistInDirectory
+        mustNotExistInDirectory: mustNotExistInDirectory,
+        mustNotExistInParentDirectory: mustNotExistInParentDirectory
     };
 
     ////////////////////////////////////////
@@ -307,5 +310,34 @@ module.exports = function(model) {
             };
             done(error);
         });
+    }
+
+    function mustNotExistInParentDirectory(name, idKey, done) {
+        let dirID = this[idKey];
+        let error = null;
+        // Get directory
+        model.directories.peerDirectories(dirID).then(
+            (dir) => {
+                if (dir.peer_directories.length) {
+                    let parentDirName = path.dirname(dir.name);
+                    let index = _.findIndex(dir.peer_directories, {name: `${parentDirName}/${name}`});
+                    if (index !== -1) {
+                        error = {
+                            rule: 'mustNotExistInParentDirectory',
+                            actual: 'name',
+                            expected: `${name} not to exist in directory`
+                        };
+                    }
+                    done(error);
+                }
+            },
+            (e) => {
+                error = {
+                    rule: 'mustNotExistInParentDirectory',
+                    actual: 'name',
+                    expected: `${name} not to exist in directory with error ${e}`
+                };
+                done(error);
+            });
     }
 };
