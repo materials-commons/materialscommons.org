@@ -101,8 +101,14 @@ module.exports = function(model) {
                     console.log('calling done', error);
                     done(error);
                 },
-                () => {
-                    console.log('mustExistInProject rejected');
+                (err) => {
+                    console.log('mustExistInProject rejected', err);
+                    let error = {
+                        rules: 'mustExistInProject',
+                        actual: what,
+                        expected: `${what} should exist in project ${project_id} error ${err}`
+                    };
+                    done(err);
                 });
     }
 
