@@ -91,7 +91,8 @@ module.exports = function(model) {
     function mustExistInProject(what, modelName, done) {
         let project_id = this.project_id;
         model[modelName].findInProject(this.project_id, 'id', what)
-            .then((matches) => {
+            .then(
+                (matches) => {
                     console.log('mustExistInProject promise returned', matches);
                     let error = matches.length !== 0 ? null : {
                         rules: 'mustExistInProject',
