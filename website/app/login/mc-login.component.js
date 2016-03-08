@@ -22,7 +22,7 @@
                 .success(function (u) {
                     User.setAuthenticated(true, u);
                     Restangular.setDefaultRequestParams({apikey: User.apikey()});
-                    $state.go('projects');
+                    $state.go('projects.list');
                 })
                 .error(function (reason) {
                     ctrl.message = "Incorrect Password/Username!";

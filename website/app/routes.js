@@ -6,7 +6,16 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('projects', {
             url: '/projects',
+            abstract: true,
+            template: '<div ui-view></div>',
+        })
+        .state('projects.list', {
+            url: '/list',
             template: '<mc-projects></mc-projects>'
+        })
+        .state('projects.share', {
+            url: '/share',
+            template: '<mc-projects-share></mc-projects-share>'
         })
         .state('user', {
             url: '/user',

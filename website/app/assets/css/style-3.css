@@ -45,6 +45,10 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     background-color: #2196f3;
 }
 
+.project-selected {
+    background-color: #1565c0;
+}
+
 .md-row {
     line-height: 30px;
 }
