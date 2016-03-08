@@ -1,13 +1,22 @@
 <div layout="row" flex="100" layout-fill>
     <div layout="column" flex>
-        <div layout="row">
+        <div ng-if="!$ctrl.sharingOn" layout="row">
             <md-button class="md-primary md-raised" ng-click="$ctrl.toggleSidenav()">create project</md-button>
+            <md-button class="md-primary md-raised" ng-click="$ctrl.sharingOn = true">share</md-button>
+        </div>
+        <div ng-if="$ctrl.sharingOn" layout="row">
+            <md-button class="md-primary md-raised" ng-click="$ctrl.gotoSharing()">done</md-button>
+            <md-button class="md-warn md-raised" ng-click="$ctrl.cancelSharing()">cancel</md-button>
+        </div>
+        <div ng-if="$ctrl.sharingOn" layout="row" layout-margin>
+            <p class="md-headline">Select up to {{$ctrl.maxSharedProjects}} projects. Click done when you have chosen the projects you want to
+                share between.</p>
         </div>
         <md-content layout="row" layout-wrap layout-align="start stretch" flex>
-            <div flex="25" flex-md="33" flex-sm="60" class="project-card"
+            <div flex="25" flex-md="33" flex-sm="60" class="project-card" ng-class="{'project-selected': $ctrl.sharingOn && project.selected}"
                  ng-repeat="project in $ctrl.projects | orderBy:'name'">
                 <md-card class="md-primary">
-                    <md-card-header ng-click="$ctrl.openProject(project.id)"
+                    <md-card-header ng-click="$ctrl.openProject(project)"
                                     class="cursor-pointer md-mc-project-card-header">
                         <md-card-avatar>
                             <span class="fa-stack fa-lg">

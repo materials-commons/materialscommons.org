@@ -5,8 +5,10 @@
     });
 
     module.controller('MCProjectsComponentController', MCProjectsComponentController);
-    MCProjectsComponentController.$inject = ['projectsService', '$state', '$mdSidenav'];
-    function MCProjectsComponentController(projectsService, $state, $mdSidenav) {
+    MCProjectsComponentController.$inject = [
+        'projectsService', '$state', '$mdSidenav', 'sharedProjectsList', 'toastr'
+    ];
+    function MCProjectsComponentController(projectsService, $state, $mdSidenav, sharedProjectsList, toastr) {
         var ctrl = this;
         ctrl.isOpen = true;
         ctrl.openProject = openProject;
@@ -16,6 +18,12 @@
         ctrl.newProjectDescription = '';
         ctrl.cancel = cancel;
         ctrl.create = create;
+        ctrl.sharingOn = false;
+        ctrl.cancelSharing = cancelSharing;
+        ctrl.gotoSharing = gotoSharing;
+        ctrl.maxSharedProjects = 3;
+        sharedProjectsList.clearSharedProjects();
+        sharedProjectsList.setMaxProjects(ctrl.maxSharedProjects);
 
         projectsService.getAllProjects().then(function(projects) {
             ctrl.projects = projects;
@@ -23,8 +31,25 @@
 
         ///////////////////////
 
-        function openProject(projectID) {
-            $state.go('project.home', {project_id: projectID});
+        function openProject(project) {
+            if (ctrl.sharingOn) {
+                if (sharedProjectsList.isFull() && !project.selected) {
+                    // Adding project, but the list is full, so delete the last item.
+                    var removed = sharedProjectsList.removeLast();
+                    removed.selected = false;
+                }
+
+                project.selected = !project.selected;
+
+                if (project.selected) {
+                    sharedProjectsList.addProject(project);
+                } else {
+                    // Project was deselected
+                    sharedProjectsList.removeProject(project);
+                }
+            } else {
+                $state.go('project.home', {project_id: project.id});
+            }
         }
 
         function toggleSidenav() {
@@ -47,6 +72,23 @@
                         console.log('error', err);
                     }
                 );
+            }
+        }
+
+        function cancelSharing() {
+            sharedProjectsList.get().forEach(function(proj) {
+                proj.selected = false;
+            });
+            sharedProjectsList.clearSharedProjects();
+            ctrl.sharingOn = false;
+        }
+
+        function gotoSharing() {
+            if (sharedProjectsList.count() < 2) {
+                toastr.error('You must select at least 2 projects', 'Error', {closeButton: true});
+            } else {
+                $state.go('projects.share');
+                ctrl.sharingOn = false;
             }
         }
 
