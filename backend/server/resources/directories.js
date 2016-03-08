@@ -20,17 +20,19 @@ module.exports = function(directories, schema) {
         dirArgs = prepareDirArgs(this.params.project_id, dirArgs);
         console.log('calling schema.createDirectory.validateAsync');
 
-        let errors = yield validate(dirArgs);
+        let errors = yield validateDirArgs(dirArgs);
         if (errors != null) {
-            this.throw(httpStatus.BAD_REQUEST, 'Request did not validate');
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield directories.create(this.params.project_id, this.reqctx.project.name, dirArgs);
+            if (rv.error) {
+                this.status = httpStatus.NOT_ACCEPTABLE;
+                this.body = rv;
+            } else {
+                this.body = {dirs: rv.val};
+            }
         }
-
-        let rv = yield directories.create(this.params.project_id, this.reqctx.project.name, dirArgs);
-        if (rv.error) {
-            this.throw(httpStatus.BAD_REQUEST, rv.error);
-        }
-
-        this.body = {dirs: rv.val};
         yield next;
     }
 
@@ -40,7 +42,7 @@ module.exports = function(directories, schema) {
         return dirArgs;
     }
 
-    function validate(dirArgs) {
+    function validateDirArgs(dirArgs) {
         return schema.createDirectory.validateAsync(dirArgs).then(function() {
             console.log('dirArgs validated');
             return null;
@@ -54,15 +56,12 @@ module.exports = function(directories, schema) {
         let updateArgs = yield parse(this);
 
         if (!updateArgs.move && !updateArgs.rename) {
-            this.throw(httpStatus.BAD_REQUEST, 'badly formed update args');
-        }
-
-        if (updateArgs.move && !updateArgs.move.new_directory_id) {
+            this.body = {error: 'badly formed update args'};
+            this.status = httpStatus.BAD_REQUEST;
+        } else if (updateArgs.move) {
+            prepareUpdateArgsBySchema(schema)
             this.throw(httpStatus.BAD_REQUEST, 'no directory id to move to');
-        }
-
-
-        if (updateArgs.rename && !updateArgs.rename.new_name) {
+        } else if (updateArgs.rename) {
             this.throw(httpStatus.BAD_REQUEST, 'no new directory name');
         }
 
@@ -72,5 +71,14 @@ module.exports = function(directories, schema) {
         }
         this.body = rv.val;
         yield next;
+    }
+
+    function prepareUpdateArgsBySchema(schema, projectID, args) {
+        schema.stripNonSchemaAttrs(args);
+        args.project_id = projectID;
+        return args;
+    }
+    function validateMoveArgs(moveArgs) {
+
     }
 };
