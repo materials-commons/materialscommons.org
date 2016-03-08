@@ -18,8 +18,10 @@
                 var centry;
                 if (entry._type == 'directory') {
                     centry = createDirectoryEntry(entry);
-                } else {
+                } else if (entry._type == 'file') {
                     centry = createFileEntry(entry);
+                } else {
+                    centry = createOtherEntry(entry);
                 }
                 children.push(centry);
             });
@@ -28,7 +30,6 @@
 
         function createDirectoryEntry(entry) {
             return {
-                group: true,
                 expanded: false,
                 data: {
                     name: entry.name,
@@ -44,7 +45,6 @@
 
         function createFileEntry(entry) {
             return {
-                group: false,
                 data: {
                     name: entry.name,
                     _type: 'file',
@@ -56,11 +56,20 @@
             };
         }
 
+        function createOtherEntry(entry) {
+            return {
+                data: {
+                    name: entry.name,
+                    _type: entry._type,
+                    id: entry.id
+                }
+            };
+        }
+
         return {
             toGrid: function (files) {
                 var gridData = [
                     {
-                        group: true,
                         expanded: true,
                         data: {
                             name: files.name,
