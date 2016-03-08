@@ -52,34 +52,59 @@ module.exports = function(directories, schema) {
         });
     }
 
-    // TODO: Finish moving code to schema validator.
     function* update(next) {
         let updateArgs = yield parse(this);
-
-        if (!updateArgs.move && !updateArgs.rename) {
-            this.body = {error: 'badly formed update args'};
+        let errors = yield validateUpdateArgs(this.params.project_id, this.params.directory_id, updateArgs);
+        if (errors !== null) {
+            this.body = errors;
             this.status = httpStatus.BAD_REQUEST;
-        } else if (updateArgs.move) {
-            prepareUpdateArgsBySchema(schema)
-            this.throw(httpStatus.BAD_REQUEST, 'no directory id to move to');
-        } else if (updateArgs.rename) {
-            this.throw(httpStatus.BAD_REQUEST, 'no new directory name');
+        } else {
+            let rv = yield directories.update(this.params.project_id, this.params.directory_id, updateArgs);
+            if (rv.error) {
+                this.body = rv;
+                this.status = httpStatus.NOT_ACCEPTABLE;
+            } else {
+                this.body = rv.val;
+            }
         }
 
-        let rv = yield directories.update(this.params.project_id, this.params.directory_id, updateArgs);
-        if (rv.error) {
-            this.throw(httpStatus.BAD_REQUEST, rv.error);
-        }
-        this.body = rv.val;
         yield next;
     }
 
-    function prepareUpdateArgsBySchema(schema, projectID, args) {
-        schema.stripNonSchemaAttrs(args);
-        args.project_id = projectID;
-        return args;
+    function* validateUpdateArgs(projectID, directoryID, updateArgs) {
+        updateArgs.project_id = projectID;
+        if (!updateArgs.move && !updateArgs.rename) {
+            return {error: 'badly formed update args'};
+        } else if (updateArgs.move) {
+            updateArgs.move.project_id = projectID;
+            updateArgs.move.directory_id = directoryID;
+            schema.moveDirectory.stripNonSchemaAttrs(updateArgs.move);
+            return yield validateMoveArgs(updateArgs.move);
+        } else {
+            updateArgs.rename.project_id = projectID;
+            updateArgs.rename.directory_id = directoryID;
+            schema.renameDirectory.stripNonSchemaAttrs(updateArgs.rename);
+            return yield validateRenameArgs(updateArgs.rename);
+        }
     }
-    function validateMoveArgs(moveArgs) {
 
+    function validateMoveArgs(moveArgs) {
+        return schema.moveDirectory.validateAsync(moveArgs).then(function() {
+            console.log('moveArgs validated');
+            return null;
+        }, function(errors) {
+            console.log('moveArgs did not validate', errors);
+            return errors;
+        });
+    }
+
+    function validateRenameArgs(renameArgs) {
+        return schema.renameDirectory.validateAsync(renameArgs).then(function() {
+            console.log('renameArgs validated');
+            return null;
+        }, function(errors) {
+            console.log('renameArgs did not validate', errors);
+            return errors;
+        });
     }
 };
