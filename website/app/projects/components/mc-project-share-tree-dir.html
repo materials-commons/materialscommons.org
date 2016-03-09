@@ -18,17 +18,24 @@
                     <div ng-if="component.data.name !== ctrl.placeholderName">
                         <i class="fa fa-fw fa-reorder drag-handle-color"></i>
                         <a ng-click="ctrl.setActive(this, component)" data-nodrag>
-                            <span><i class="fa fa-fw fa-file file-tree-icon-color"></i></span>
-                            {{component.data.name}}
+                            <span>
+                                <i class="fa fa-fw file-tree-icon-color"
+                                   ng-class="component.data.icon">
+                                </i>
+                            </span>
+                            {{component.data.name}} {{component.icon}}
                         </a>
                     </div>
                     <!-- placeholder for empty directory so we can add items to it -->
-                    <div ng-if="component.data.name === ctrl.placeholderName">
-                    </div>
+                    <!--<div ng-if="component.data.name === ctrl.placeholderName">-->
+                    <!--</div>-->
                 </div>
             </div>
             <div ng-if="component.data._type === 'directory'">
-                <mc-project-share-tree-dir ng-if="component.expand" component="component" project="ctrl.project"></mc-project-share-tree-dir>
+                <mc-project-share-tree-dir ng-if="component.expand"
+                                           component="component"
+                                           project="ctrl.project">
+                </mc-project-share-tree-dir>
             </div>
         </li>
     </ol>
