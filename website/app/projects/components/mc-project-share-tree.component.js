@@ -1,4 +1,5 @@
 (function(module) {
+
     var placeholderName = '__$$placeholder$$__';
 
     function loadEmptyPlaceHolder(dir) {
@@ -27,6 +28,19 @@
         ctrl.components = ctrl.project.components;
         ctrl.components[0].data.childrenLoaded = true;
         ctrl.components[0].expand = true;
+        ctrl.nodropEnabled = false;
+
+        ctrl.treeOptions = {
+            dragStart: function(event) {
+                ctrl.nodropEnabled = true;
+                return true;
+            },
+
+            beforeDrop: function(event) {
+                ctrl.nodropEnabled = false;
+                return true;
+            }
+        };
     }
 
     module.directive('mcProjectShareTreeDir', MCProjectShareTreeDirDirective);
@@ -51,18 +65,32 @@
     }
 
     module.controller('MCProjectShareTreeDirDirectiveController', MCProjectShareTreeDirDirectiveController);
-    MCProjectShareTreeDirDirectiveController.$inject = [];
-    function MCProjectShareTreeDirDirectiveController() {
+    MCProjectShareTreeDirDirectiveController.$inject = ['gridFiles'];
+    function MCProjectShareTreeDirDirectiveController(gridFiles) {
         var ctrl = this;
         ctrl.components = ctrl.component.children;
         ctrl.setActive = setActive;
+        ctrl.placeholderName = placeholderName;
 
         ////////////////////
 
         function setActive(node, component) {
             clearActiveStateInAllNodes();
-            console.dir(component);
-            console.dir(ctrl.project);
+            if (!component.data.childrenLoaded && component.data.id.startsWith('processes__')) {
+                component.children = gridFiles.toGridChildren({children: ctrl.project.processes});
+                component.data.childrenLoaded = true;
+                if (!component.children.length) {
+                    loadEmptyPlaceHolder(component);
+                }
+            } else if (!component.data.childrenLoaded && component.data.id.startsWith('samples__')) {
+                component.children = gridFiles.toGridChildren({children: ctrl.project.samples});
+                component.data.childrenLoaded = true;
+                if (!component.children.length) {
+                    //loadEmptyPlaceHolder(component);
+                }
+            }
+
+            component.expand = !component.expand;
         }
 
         function clearActiveStateInAllNodes() {

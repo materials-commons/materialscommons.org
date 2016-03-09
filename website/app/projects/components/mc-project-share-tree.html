@@ -1,4 +1,5 @@
-<div layout-margin ui-tree="$ctrl.treeOptions">
+<div layout-margin ui-tree="$ctrl.treeOptions" data-clone-enabled="true"
+     data-nodrop-enabled="{{$ctrl.nodropEnabled}}" data-empty-placeholder-enabled="true">
     <ol ui-tree-nodes ng-model="$ctrl.components">
         <li ng-repeat="component in $ctrl.components track by component.data.id" ui-tree-node>
             <div ui-tree-handle>

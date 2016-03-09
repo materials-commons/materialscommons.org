@@ -51,7 +51,8 @@
                     path: entry.path,
                     size: entry.size,
                     mediatype: entry.mediatype,
-                    id: entry.id
+                    id: entry.id,
+                    icon: 'fa-files-o'
                 }
             };
         }
@@ -61,9 +62,19 @@
                 data: {
                     name: entry.name,
                     _type: entry._type,
-                    id: entry.id
+                    id: entry.id,
+                    icon: toIcon(entry._type)
                 }
             };
+        }
+
+        function toIcon(_type) {
+            switch (_type) {
+                case 'sample': return 'fa-cubes';
+                case 'process': return 'fa-code-fork';
+                case 'file': return 'fa-files-o';
+                default: return 'fa-files-o';
+            }
         }
 
         return {
