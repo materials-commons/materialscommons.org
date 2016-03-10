@@ -22,7 +22,7 @@
 
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'application/services/partials/select-items.html',
+                    templateUrl: 'global.services/select-items/select-items.html',
                     controller: 'SelectItemsServiceModalController',
                     controllerAs: 'ctrl',
                     resolve: {
@@ -138,7 +138,6 @@
             if (showSamples) {
                 tabs.push(newTab('samples', 'fa-cubes'));
                 projectsService.getProjectSamples($stateParams.project_id).then(function (samples) {
-                    console.log('getProjectSamples', samples);
                     ctrl.samples = samples;
                 });
             }

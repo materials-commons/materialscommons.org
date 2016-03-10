@@ -1,0 +1,32 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">Select Items</h3>
+    </div>
+    <div class="modal-body">
+        <md-tabs md-selected="ctrl.currentTab" class="" md-dynamic-height md-border-bottom>
+            <md-tab ng-repeat="tab in ctrl.tabs" ng-click="ctrl.setActive(tab.name)">
+                <md-tab-label>
+                    <i class="fa fa-fw" ng-class="tab.icon"></i> {{tab.name}}
+                </md-tab-label>
+                <md-tab-body>
+                    <div ng-if="ctrl.isActive('samples')">
+                        <select-items-samples samples="ctrl.samples"></select-items-samples>
+                    </div>
+                    <div ng-if="ctrl.isActive('processes')">
+                        <select-items-processes processes="ctrl.processes"></select-items-processes>
+                    </div>
+                    <div ng-if="ctrl.isActive('files')">
+                        <select-items-files files="ctrl.files"></select-items-files>
+                    </div>
+                    <div ng-if="ctrl.isActive('reviews')">
+                        reviews
+                    </div>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </div>
+    <div class="modal-footer">
+        <md-button class="md-primary md-raised" ng-click="ctrl.ok()">OK</md-button>
+        <md-button class="md-warn md-raised" ng-click="ctrl.cancel()">Cancel</md-button>
+    </div>
+</div>
