@@ -19,11 +19,13 @@
     function SelectItemsSamplesDirectiveController() {
         var ctrl = this;
 
+        ctrl.selected = [];
         ctrl.showSamplesInGroups = false;
         ctrl.showGroupsChanged = showGroupsChanged;
         ctrl.showGroupsFilter = {
             is_grouped: false
         };
+        ctrl.toggleSampleSelected = toggleSampleSelected;
 
         /////////////////////////
 
@@ -35,6 +37,10 @@
             } else {
                 ctrl.showGroupsFilter = {};
             }
+        }
+
+        function toggleSampleSelected(sample) {
+            sample.selected = !sample.selected;
         }
     }
 }(angular.module('materialscommons')));
