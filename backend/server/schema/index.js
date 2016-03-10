@@ -17,6 +17,7 @@ module.exports = function(model) {
         createDirectory: directorySchema.defineCreateDirectorySchema(),
         renameDirectory: directorySchema.defineRenameDirectorySchema(),
         moveDirectory: directorySchema.defineMoveDirectorySchema(),
+        validate: validate,
         model: model
     };
 
@@ -133,7 +134,7 @@ module.exports = function(model) {
 
     function defineSamplesSchema() {
         let samples = schema.defineSchema('Samples', {
-            name:{
+            name: {
                 type: 'string',
                 nullable: false,
                 mustNotExistInProject: 'samples:name'
@@ -281,21 +282,25 @@ module.exports = function(model) {
         return measurements;
     }
 
+    function validate(schema, body) {
+        return schema.validateAsync(body).then(() => null, (errors) => errors);
+    }
+
     /////////////// Define Rules ///////////////
 
     function defineRules() {
         schema.defineRule('mustExist', schemaRules.mustExist, true);
         schema.defineRule('mustNotExist', schemaRules.mustNotExist, true);
         schema.defineRule('mustNotExistInProject',
-                          schemaRules.mustNotExistInProject, true);
+            schemaRules.mustNotExistInProject, true);
         schema.defineRule('mustExistInProject',
-                          schemaRules.mustExistInProject, true);
+            schemaRules.mustExistInProject, true);
         schema.defineRule('mustBeForSample',
-                          schemaRules.mustBeForSample, true);
+            schemaRules.mustBeForSample, true);
         schema.defineRule('mustBeForAttributeSet',
-                          schemaRules.mustBeForAttributeSet, true);
+            schemaRules.mustBeForAttributeSet, true);
         schema.defineRule('mustBeValidMeasurements',
-                          schemaRules.mustBeValidMeasurements, true);
+            schemaRules.mustBeValidMeasurements, true);
         schema.defineRule('isValidPropertyType', schemaRules.isValidPropertyType);
         schema.defineRule('isValidUnit', schemaRules.isValidUnit);
         schema.defineRule('oneOf', schemaRules.oneOf);
