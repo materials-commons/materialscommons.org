@@ -95,6 +95,9 @@
         }
 
         function getSelectedFiles() {
+            if (!showFiles) {
+                return [];
+            }
             var files = [],
                 treeModel = new TreeModel(),
                 root = treeModel.parse(project.get().files[0]);
