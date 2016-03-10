@@ -1,11 +1,4 @@
 <div layout="row" layout-xs="column" layout-wrap layout-margin>
-    <div ng-if="false" flex="90">
-        <md-button class="md-raised" ng-click="$mdOpenMenu($event)">
-            <md-icon md-font-icon="fa-plus" class="fa fa-md-icon"></md-icon>
-            Quick Add
-        </md-button>
-    </div>
-
     <div flex="100">
         <div layout="row" layout-sm="column" layout-wrap layout-align="space-between center">
             <div flex="25">
@@ -33,7 +26,7 @@
                             </a>
                         </md-card-title-text>
                         <md-card-actions layout="row" layout-align="end center">
-                            <md-button ui-sref="project.processes.create({template_id:'As Received', process_id:''})">
+                            <md-button ui-sref="project.create.process({template_id:'As Received', process_id:''})">
                                 New Sample
                             </md-button>
                         </md-card-actions>
