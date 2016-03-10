@@ -6,7 +6,6 @@
             getDirectory: function(projectID, directoryID) {
                 return projectsAPI(projectID).one('directories', directoryID).get()
                     .then(function(files) {
-                        console.dir(files);
                         return gridFiles.toGridChildren(files);
                     });
             },

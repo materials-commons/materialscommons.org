@@ -21,6 +21,10 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     margin-top: 4px;
 }
 
+.mc-md-file-checkbox {
+    margin-bottom: 6px;
+}
+
 .angular-ui-tree-handle:hover {
     background-color: #e7e9ea;
 }
