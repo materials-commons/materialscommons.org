@@ -1,4 +1,4 @@
-(function (module) {
+(function(module) {
     module.component('mcNewProcessMenu', {
         templateUrl: 'project/components/mc-new-process-menu.html',
         controller: 'MCNewProcessMenuComponentController',
@@ -25,16 +25,16 @@
 
         function chooseTemplate() {
             var proj = project.get();
-            mcmodal.chooseTemplate(proj, ctrl.templates).then(function (processTemplateName) {
-                $state.go('project.processes.create', {template_id: processTemplateName, process_id: ''});
+            mcmodal.chooseTemplate(proj, ctrl.templates).then(function(processTemplateName) {
+                $state.go('project.create.process', {template_id: processTemplateName, process_id: ''});
             });
         }
 
         function chooseExistingProcess() {
             var projectID = project.get().id;
-            projectsService.getProjectProcesses(projectID).then(function (processes) {
-                mcmodal.chooseExistingProcess(processes).then(function (existingProcess) {
-                    $state.go('project.processes.create',
+            projectsService.getProjectProcesses(projectID).then(function(processes) {
+                mcmodal.chooseExistingProcess(processes).then(function(existingProcess) {
+                    $state.go('project.create.process',
                         {template_id: existingProcess.process_name, process_id: existingProcess.id});
                 });
             });
