@@ -16,6 +16,11 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     background-color: black !important;
 }
 
+.mc-md-dir-checkbox {
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+
 .angular-ui-tree-handle:hover {
     background-color: #e7e9ea;
 }
@@ -903,11 +908,11 @@ input[type="checkbox"]:focus {
 }
 
 /*.fa-download {*/
-    /*color: #9782be;*/
+/*color: #9782be;*/
 /*}*/
 
 /*.fa-upload {*/
-    /*color: #e26a6a;*/
+/*color: #e26a6a;*/
 /*}*/
 
 .loading-panel {
