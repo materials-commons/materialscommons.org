@@ -7,11 +7,11 @@
 
     module.controller('MCProcessEditComponentController', MCProcessEditComponentController);
     MCProcessEditComponentController.$inject = [
-        'sampleLinker', 'process', 'toastr', 'processSelections', 'projectsService', '$state'
+        'sampleLinker', 'process', 'toastr', 'processSelections', 'projectsService', '$state', '$stateParams'
     ];
 
     function MCProcessEditComponentController(sampleLinker, process, toastr, processSelections,
-                                              projectsService, $state) {
+                                              projectsService, $state, $stateParams) {
         var ctrl = this;
         ctrl.process = process.get();
         ctrl.process['updated_samples'] = [];
@@ -22,7 +22,7 @@
         ctrl.linkFilesToSample = linkFilesToSample;
 
         ctrl.chooseSamples = _.partial(processSelections.selectUpdatedSamples,
-            ctrl.process.input_samples, ctrl.process.updatrouteed_samples);
+            ctrl.process.input_samples, ctrl.process.updated_samples);
         ctrl.chooseInputFiles = _.partial(processSelections.selectUpdatedFiles,
             ctrl.process.input_files, ctrl.process.updated_input_files);
         ctrl.chooseOutputFiles = _.partial(processSelections.selectUpdatedFiles,
