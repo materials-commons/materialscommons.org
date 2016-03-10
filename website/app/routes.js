@@ -7,7 +7,7 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('projects', {
             url: '/projects',
             abstract: true,
-            template: '<div ui-view></div>',
+            template: '<div ui-view></div>'
         })
         .state('projects.list', {
             url: '/list',
@@ -78,12 +78,13 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/search/:query',
             template: '<mc-project-search></mc-project-search>'
         })
-        .state('project.processes', {
-            url: '/processes',
-            template: '<mc-project-processes></mc-project-processes>'
+        .state('project.create', {
+            url: '/create',
+            abstract: true,
+            template: '<div ui-view></div>'
         })
-        .state('project.processes.create', {
-            url: '/create-process/:template_id',
+        .state('project.create.process', {
+            url: '/process/:template_id/:process_id',
             template: '<mc-process-create></mc-process-create>',
             resolve: {
                 _template: ['templates', 'template', '$stateParams', 'projectsService',
@@ -103,6 +104,31 @@ function setupRoutes($stateProvider, $urlRouterProvider) {
                     }]
             }
         })
+        .state('project.processes', {
+            url: '/processes',
+            template: '<mc-project-processes></mc-project-processes>'
+        })
+        //.state('project.processes.create', {
+        //    url: '/create-process/:template_id',
+        //    template: '<mc-process-create></mc-process-create>',
+        //    resolve: {
+        //        _template: ['templates', 'template', '$stateParams', 'projectsService',
+        //            function(templates, template, $stateParams, projectsService) {
+        //                if ($stateParams.process_id) {
+        //                    return projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
+        //                        .then(function(process) {
+        //                            var t = templates.loadTemplateFromProcess($stateParams.template_id, process);
+        //                            template.set(t);
+        //                            return t;
+        //                        });
+        //                } else {
+        //                    var t = templates.getTemplate($stateParams.template_id);
+        //                    template.set(t);
+        //                    return t;
+        //                }
+        //            }]
+        //    }
+        //})
         .state('project.processes.process', {
             url: '/process/:process_id',
             template: '<mc-process></mc-process>',
