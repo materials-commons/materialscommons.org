@@ -108,12 +108,6 @@
                 does_transform: true
             },
             {
-                name: "Annealing",
-                description: "Annealing",
-                fn: Annealing,
-                does_transform: true
-            },
-            {
                 name: "Ultrasonic Fatigue",
                 description: "Ultrasonic Fatigue",
                 fn: UltrasonicFatigue,
