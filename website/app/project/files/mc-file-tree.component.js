@@ -1,150 +1,173 @@
-(function (module) {
+(function(module) {
     module.component('mcFileTree', {
         templateUrl: 'project/files/mc-file-tree.html',
         controller: 'MCFileTreeComponentController'
     });
 
+    var placeholderName = '__$$placeholder$$__';
+
+    function loadEmptyPlaceHolder(dir) {
+        dir.children.push({
+            data: {
+                name: placeholderName,
+                _type: 'file'
+            }
+        });
+    }
+
     module.controller('MCFileTreeComponentController', MCFileTreeComponentController);
-    MCFileTreeComponentController.$inject = ["$scope", "project", "$state", "$stateParams", "pubsub", "projectsService", "gridFiles"];
-    function MCFileTreeComponentController($scope, project, $state, $stateParams, pubsub, projectsService, gridFiles) {
+    MCFileTreeComponentController.$inject = [
+        'project', '$state', '$stateParams', 'fileTreeProjectService', 'fileTreeMoveService', 'toastr'
+    ];
+    function MCFileTreeComponentController(project, $state, $stateParams, fileTreeProjectService,
+                                            fileTreeMoveService, toastr) {
         var ctrl = this;
         var proj = project.get();
 
-        projectsService.getProjectDirectory(proj.id).then(function (files) {
-            proj.files = gridFiles.toGrid(files);
-            ctrl.files = proj.files;
-            ctrl.files[0].expanded = true;
-            init();
-            ctrl.gridShowingFlag = true;
-        });
+        ctrl.treeOptions = {
+            dropped: function(event) {
+                var src = event.source.nodeScope.$modelValue,
+                    dest = event.dest.nodesScope.$nodeScope.$modelValue,
+                    srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
 
-        pubsub.waitOn($scope, 'files.refresh', function (f) {
-            var treeModel = new TreeModel(),
-                root = treeModel.parse(proj.files[0]);
-            var file = root.first({strategy: 'pre'}, function (node) {
-                return node.model.data.id === f.id;
-            });
-            if (file) {
-                file.model.data.name = f.name;
-                ctrl.gridOptions.api.recomputeAggregates();
-                ctrl.gridOptions.api.refreshGroupRows();
-                ctrl.gridOptions.api.refreshView();
-                ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
-            }
-        });
-
-        projectsService.onChange($scope, function (dirID) {
-            projectsService.getProjectDirectory(proj.id, dirID).then(function (files) {
-                loadFilesIntoDirectory(dirID, files);
-            });
-        });
-
-        ///////////////////////////////
-
-        function init() {
-            var columnDefs = [
-                {
-                    headerName: "",
-                    field: "name",
-                    width: 350,
-                    cellRenderer: {
-                        renderer: 'group',
-                        innerRenderer: function (params) {
-                            if (params.data._type == 'directory') {
-                                return '<span' + ' id="' + params.data.id + '">' + params.data.name + '</span>';
-                            }
-
-                            var icon = "fa-file";
-                            switch (params.data.mediatype.mime) {
-                            case "application/pdf":
-                                icon = "fa-file-pdf-o";
-                                break;
-                            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-                                icon = "fa-file-excel-o";
-                                break;
-                            case "application/vnd.ms-excel":
-                                icon = "fa-file-excel-o";
-                                break;
-                            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                                icon = "fa-file-word-o";
-                                break;
-                            case "application/ms-word":
-                                icon = "fa-file-word-o";
-                                break;
-                            case "application/vnd.ms-powerpoint.presentation.macroEnabled.12":
-                                icon = "fa-file-powerpoint-o";
-                                break;
-                            case "application/vnd.ms-powerpoint":
-                                icon = "fa-file-powerpoint-o";
-                                break;
-                            default:
-                                if (isImage(params.data.mediatype.mime)) {
-                                    icon = "fa-file-image-o";
-                                }
-                                break;
-                            }
-                            return '<i class="file-tree-icon-color fa fa-fw ' + icon + '"></i><span title="' + params.data.name + '">' +
-                                params.data.name + '</span>';
+                if (src.data._type === 'directory') {
+                    return fileTreeMoveService.moveDir(src.data.id, dest.data.id).then(function() {
+                        if (srcDir.children.length === 0) {
+                            loadEmptyPlaceHolder(srcDir);
                         }
-                    }
+                        return true;
+                    });
+                } else {
+                    return fileTreeMoveService.moveFile(src.data.id, srcDir.data.id, dest.data.id).then(function() {
+                        if (srcDir.children.length === 0) {
+                            loadEmptyPlaceHolder(srcDir);
+                        }
+                        return true;
+                    });
                 }
-            ];
 
-            ctrl.gridOptions = {
-                columnDefs: columnDefs,
-                rowData: ctrl.files,
-                rowClicked: rowClicked,
-                rowSelection: 'single',
-                rowsAlreadyGrouped: true,
-                enableColResize: false,
-                enableSorting: false,
-                rowHeight: 30,
-                angularCompileRows: false,
-                icons: {
-                    groupExpanded: '<i class="file-tree-icon-color fa fa-folder-open"/>',
-                    groupContracted: '<i class="file-tree-icon-color fa fa-folder"/>'
+            },
+
+            beforeDrop: function(event) {
+                var src = event.source.nodeScope.$modelValue,
+                    dest = event.dest.nodesScope.$nodeScope.$modelValue,
+                    srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
+                if (srcDir.data.id == dest.data.id) {
+                    // Reject move - attempt to move the file/directory around under it's
+                    // current directory;
+                    var itemType = src.data._type === 'directory' ? 'Directory' : 'File';
+                    toastr.error('Attempt to move ' + itemType + " into current it's directory.",
+                        'Error', {closeButton: true});
+                    return false;
                 }
-            };
+
+                return true;
+            }
+        };
+
+        fileTreeProjectService.getProjectRoot(proj.id).then(function(files) {
+            proj.files = files;
+            ctrl.files = proj.files;
+            ctrl.files[0].data.childrenLoaded = true;
+            ctrl.files[0].expand = true;
 
             if (!$stateParams.file_id) {
                 $state.go('project.files.dir', {dir_id: ctrl.files[0].data.id});
             }
-        }
+        });
+    }
 
-        function rowClicked(params) {
-            if (params.data._type == 'directory') {
-                handleDirectory(params);
-            } else {
-                handleFile(params);
-            }
-        }
-
-        function handleDirectory(params) {
-            if (!params.data.childrenLoaded) {
-                projectsService.getProjectDirectory(proj.id, params.data.id).then(function (files) {
-                    loadFilesIntoDirectory(params.data.id, files);
-                    $state.go('project.files.dir', {dir_id: params.data.id});
+    module.directive('mcFileTreeDir', mcFileTreeDirDirective);
+    mcFileTreeDirDirective.$inject = ['RecursionHelper'];
+    function mcFileTreeDirDirective(RecursionHelper) {
+        return {
+            restrict: 'E',
+            scope: {
+                file: '='
+            },
+            controller: 'MCFileTreeDirDirectiveController',
+            replace: true,
+            controllerAs: 'ctrl',
+            bindToController: true,
+            templateUrl: 'project/files/mc-file-tree-dir.html',
+            compile: function(element) {
+                return RecursionHelper.compile(element, function(scope, ielement, iattrs, controller, transcludeFn) {
                 });
+            }
+        }
+    }
+
+    module.controller('MCFileTreeDirDirectiveController', MCFileTreeDirDirectiveController);
+    MCFileTreeDirDirectiveController.$inject = ['fileTreeProjectService', 'project', '$state'];
+    function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $state) {
+        var ctrl = this;
+        var projectID = project.get().id;
+        ctrl.placeholderName = placeholderName;
+        ctrl.files = ctrl.file.children;
+        ctrl.folderName = '';
+
+        ctrl.setActive = setActive;
+        ctrl.addFolder = addFolder;
+        ctrl.renameFolder = renameFolder;
+
+        //////////////////////////
+
+        function setActive(node, file) {
+            clearActiveStateInAllNodes();
+
+            if (file.data._type === 'file') {
+                file.active = true;
+                $state.go('project.files.file', {file_id: file.data.id});
             } else {
-                ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
-                $state.go('project.files.dir', {dir_id: params.data.id});
+                node.toggle();
+                if (!file.data.childrenLoaded) {
+                    fileTreeProjectService.getDirectory(projectID, file.data.id).then(function(files) {
+                        file.children = files;
+                        if (!file.children.length) {
+                            loadEmptyPlaceHolder(file);
+                        }
+                        file.active = true;
+                        file.data.childrenLoaded = true;
+                        file.expand = !file.expand;
+                        $state.go('project.files.dir', {dir_id: file.data.id});
+                    });
+                } else {
+                    file.active = true;
+                    file.expand = !file.expand;
+                    $state.go('project.files.dir', {dir_id: file.data.id});
+                }
             }
         }
 
-        function loadFilesIntoDirectory(dirID, files) {
+        function clearActiveStateInAllNodes() {
             var treeModel = new TreeModel(),
-                root = treeModel.parse(proj.files[0]);
-            var dir = root.first({strategy: 'pre'}, function (node) {
-                return node.model.data.id === dirID;
+                root = treeModel.parse(project.get().files[0]);
+            root.walk(function(treeNode) {
+                treeNode.model.active = false;
             });
-            dir.model.children = gridFiles.toGridChildren(files);
-            dir.model.data.childrenLoaded = true;
-            ctrl.gridOptions.api.onNewRows();
-            ctrl.gridShowingFlag = !ctrl.gridShowingFlag;
         }
 
-        function handleFile(params) {
-            $state.go('project.files.file', {file_id: params.data.id});
+        function addFolder(file) {
+            file.promptForFolder = false;
+            fileTreeProjectService.createProjectDir(project.get().id, file.data.id, ctrl.folderName)
+                .then(function(dir) {
+                    // Fix up the datastructure either on server or on client so its a grid file.
+                    file.children.push({
+                        data: {
+                            id: dir.id,
+                            name: ctrl.folderName,
+                            _type: 'directory'
+                        }
+                    });
+                    ctrl.folderName = '';
+                });
+        }
+
+        function renameFolder(file) {
+            fileTreeProjectService.renameProjectDir(project.get().id, file.data.id, file.data.name)
+                .then(function() {
+                    file.promptForRename = false;
+                });
         }
     }
 }(angular.module('materialscommons')));
