@@ -6,7 +6,6 @@
                     <div layout="row" layout-align="start center">
                         <md-checkbox ng-model="file.data.selected" class="mc-md-dir-checkbox"
                                      ng-change="ctrl.dirToggle(file)"></md-checkbox>
-                        <i class="fa fa-fw fa-reorder drag-handle-color"></i>
                         <a ng-click="ctrl.setActive(file)" data-nodrag>
                             <span ng-if="file.expand"><i
                                     class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
@@ -19,7 +18,6 @@
                 <div ng-if="file.data._type !== 'directory'">
                     <div ng-if="file.data.name !== ctrl.placeholderName">
                         <md-checkbox ng-model="file.data.selected" class="mc-md-file-checkbox"></md-checkbox>
-                        <i class="fa fa-fw fa-reorder drag-handle-color"></i>
                         <a ng-click="ctrl.setActive(this, file)" data-nodrag>
                             <span>
                                 <i class="fa fa-fw file-tree-icon-color"
