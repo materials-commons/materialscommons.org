@@ -13,7 +13,7 @@
                     </md-button>
                     <md-menu-content width="3">
                         <md-menu-item ng-repeat="template in $ctrl.templates | filter:{favorite: true} | orderBy:'name'">
-                            <a ui-sref="project.processes.create({template_id: template.name, process_id:''})">
+                            <a ui-sref="project.create.process({template_id: template.name, process_id:''})">
                                 {{template.name}} <span class="text-uppercase" ng-if="template.prefill">(PF)</span>
                             </a>
                         </md-menu-item>
