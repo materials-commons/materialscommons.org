@@ -1,6 +1,6 @@
 (function(module) {
     module.component('mcLogin', {
-        templateUrl: 'login/mc-login.html',
+        templateUrl: 'app/login/mc-login.html',
         controller: 'MCLoginController'
     });
 

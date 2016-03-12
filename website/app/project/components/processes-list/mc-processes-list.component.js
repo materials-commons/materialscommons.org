@@ -1,6 +1,6 @@
 (function(module) {
     module.component('mcProcessesList', {
-        templateUrl: 'project/components/processes-list/mc-processes-list.html',
+        templateUrl: 'app/project/components/processes-list/mc-processes-list.html',
         controller: 'MCProcessesListComponentController',
         bindings: {
             processes: '='

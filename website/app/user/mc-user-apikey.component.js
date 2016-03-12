@@ -1,6 +1,6 @@
 (function(module) {
     module.component('mcUserApikey', {
-        templateUrl: 'user/mc-user-apikey.html',
+        templateUrl: 'app/user/mc-user-apikey.html',
         controller: 'MCUserApikeyComponentController'
     });
     module.controller('MCUserApikeyComponentController', MCUserApikeyComponentController);

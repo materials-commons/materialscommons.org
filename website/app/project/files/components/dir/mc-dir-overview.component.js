@@ -1,6 +1,6 @@
 (function (module) {
     module.component('mcDirOverview', {
-        templateUrl: 'project/files/components/dir/mc-dir-overview.html',
+        templateUrl: 'app/project/files/components/dir/mc-dir-overview.html',
         controller: 'MCDirOverviewComponentController',
         bindings: {
             dir: '=',

@@ -9,7 +9,7 @@
             controller: 'ProcessSettingsDirectiveController',
             controllerAs: 'ctrl',
             bindToController: true,
-            templateUrl: 'project/processes/process/create/components/process-settings.html'
+            templateUrl: 'app/project/processes/process/create/components/process-settings.html'
         }
     }
 

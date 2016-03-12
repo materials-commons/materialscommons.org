@@ -1,6 +1,6 @@
 (function (module) {
     module.component('mcProjectProcesses', {
-        templateUrl: 'project/processes/mc-project-processes.html',
+        templateUrl: 'app/project/processes/mc-project-processes.html',
         controller: 'MCProjectProcessesComponentController'
     });
 

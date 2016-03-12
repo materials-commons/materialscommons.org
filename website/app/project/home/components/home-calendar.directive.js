@@ -7,7 +7,7 @@
             scope: {
                 project: '=project'
             },
-            templateUrl: 'application/core/projects/project/home/directives/home-calendar.html'
+            templateUrl: 'app/project/home/components/home-calendar.html'
         };
     }
 

@@ -1,7 +1,7 @@
 (function(module) {
     module.component('mcProcessEdit', {
         // Use the create process template
-        templateUrl: 'project/processes/process/create/create-other.html',
+        templateUrl: 'app/project/processes/process/create/create-other.html',
         controller: 'MCProcessEditComponentController'
     });
 

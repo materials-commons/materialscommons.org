@@ -10,7 +10,7 @@
                 scope: {
                     composition: '=composition'
                 },
-                templateUrl: 'project/processes/process/create/components/periodic-table.html'
+                templateUrl: 'app/project/processes/process/create/components/periodic-table.html'
             };
         });
 
