@@ -1,6 +1,6 @@
 (function(module) {
     module.component("mcProjectNavbar", {
-        templateUrl: 'project/mc-project-navbar.html',
+        templateUrl: 'app/project/mc-project-navbar.html',
         controller: 'MCProjectNavbarComponentController'
     });
 

@@ -5,7 +5,7 @@
         return {
             linkFilesToSample: function(sample, input_files, output_files) {
                 var modal = $modal.open({
-                    templateUrl: 'project/processes/process/services/link-files-to-sample.html',
+                    templateUrl: 'app/project/processes/process/services/link-files-to-sample.html',
                     controller: 'LinkFilesToSampleController',
                     controllerAs: 'sample',
                     resolve: {

@@ -12,7 +12,7 @@
     }
 
     module.component('mcProjectShareTree', {
-        templateUrl: 'projects/components/mc-project-share-tree.html',
+        templateUrl: 'app/projects/components/mc-project-share-tree.html',
         controller: 'MCProjectShareTreeComponentController',
         bindings: {
             project: '='
@@ -56,7 +56,7 @@
             replace: true,
             controllerAs: 'ctrl',
             bindToController: true,
-            templateUrl: 'projects/components/mc-project-share-tree-dir.html',
+            templateUrl: 'app/projects/components/mc-project-share-tree-dir.html',
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope, ielement, iattrs, controller, transcludeFn) {
                 });

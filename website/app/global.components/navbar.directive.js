@@ -6,7 +6,7 @@
             restrict: 'E',
             bindToController: true,
             replace: true,
-            templateUrl: 'global.components/navbar.html',
+            templateUrl: 'app/global.components/navbar.html',
             controller: 'NavbarDirectiveController',
             controllerAs: 'ctrl'
         };

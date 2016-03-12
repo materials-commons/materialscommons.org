@@ -1,6 +1,6 @@
 (function (module) {
     module.component('mcFile', {
-        templateUrl: 'project/files/components/file/mc-file.html',
+        templateUrl: 'app/project/files/components/file/mc-file.html',
         controller: 'MCFileComponentController'
     });
 

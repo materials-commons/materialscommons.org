@@ -1,6 +1,6 @@
 (function(module) {
     module.component('mcFileTree', {
-        templateUrl: 'project/files/mc-file-tree.html',
+        templateUrl: 'app/project/files/mc-file-tree.html',
         controller: 'MCFileTreeComponentController'
     });
 
@@ -89,7 +89,7 @@
             replace: true,
             controllerAs: 'ctrl',
             bindToController: true,
-            templateUrl: 'project/files/mc-file-tree-dir.html',
+            templateUrl: 'app/project/files/mc-file-tree-dir.html',
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope, ielement, iattrs, controller, transcludeFn) {
                 });

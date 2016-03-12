@@ -1,6 +1,6 @@
 (function(module) {
     module.component('mcFilesList', {
-        templateUrl: 'project/components/files-list/mc-files-list.html',
+        templateUrl: 'app/project/components/files-list/mc-files-list.html',
         controller: 'MCFilesListComponentController',
         bindings: {
             files: '='
