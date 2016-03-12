@@ -1,6 +1,6 @@
 (function (module) {
     module.component('mcFileEditControls', {
-        templateUrl: 'project/files/components/file/mc-file-edit-controls.html',
+        templateUrl: 'app/project/files/components/file/mc-file-edit-controls.html',
         controller: 'MCFileEditControlsComponentController',
         bindings: {
             file: '='

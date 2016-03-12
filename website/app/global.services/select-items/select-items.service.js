@@ -22,7 +22,7 @@
 
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'global.services/select-items/select-items.html',
+                    templateUrl: 'app/global.services/select-items/select-items.html',
                     controller: 'SelectItemsServiceModalController',
                     controllerAs: 'ctrl',
                     resolve: {

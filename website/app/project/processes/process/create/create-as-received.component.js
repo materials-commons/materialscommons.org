@@ -1,6 +1,6 @@
 (function(module) {
     module.component('mcProcessCreateAsReceived', {
-        templateUrl: 'project/processes/process/create/create-as-received.html',
+        templateUrl: 'app/project/processes/process/create/create-as-received.html',
         controller: 'MCProcessCreateAsReceivedComponentController'
     });
 

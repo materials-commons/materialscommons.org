@@ -9,7 +9,7 @@
             controller: 'SelectItemsFilesDirectiveController',
             controllerAs: 'ctrl',
             bindToController: true,
-            templateUrl: 'project/components/select-items/select-items-files.html'
+            templateUrl: 'app/project/components/select-items/select-items-files.html'
         }
     }
 

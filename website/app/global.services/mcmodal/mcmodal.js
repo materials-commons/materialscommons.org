@@ -57,7 +57,7 @@
             chooseTemplate: function (project, templates) {
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'application/services/mcmodal/partials/template.html',
+                    templateUrl: 'app/global.services/mcmodal/partials/template.html',
                     controller: 'TemplatesModalController',
                     controllerAs: 'ctrl',
                     resolve: {
@@ -75,7 +75,7 @@
             chooseUsers: function(users) {
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'application/services/mcmodal/partials/choose-users.html',
+                    templateUrl: 'app/global.services/mcmodal/partials/choose-users.html',
                     controller: 'ChooseUsersController',
                     controllerAs: 'ctrl',
                     resolve: {
@@ -90,7 +90,7 @@
             chooseExistingProcess: function (processes) {
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'application/services/mcmodal/partials/existing-process.html',
+                    templateUrl: 'app/global.services/mcmodal/partials/existing-process.html',
                     controller: 'existingProcessController',
                     controllerAs: 'ctrl',
                     resolve: {
@@ -105,7 +105,7 @@
             viewSetup: function (template) {
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'application/services/mcmodal/partials/view_setup.html',
+                    templateUrl: 'app/global.services/mcmodal/partials/view_setup.html',
                     controller: 'setupViewController',
                     controllerAs: 'ctrl',
                     resolve: {
@@ -120,7 +120,7 @@
             preFill: function (template, existingTemplateNames) {
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'application/services/mcmodal/partials/prefill.html',
+                    templateUrl: 'app/global.services/mcmodal/partials/prefill.html',
                     controller: 'PreFillProcessController',
                     controllerAs: 'ctrl',
                     resolve: {
@@ -138,7 +138,7 @@
             viewImage: function (file) {
                 var modal = $modal.open({
                     size: 'lg',
-                    templateUrl: 'application/services/mcmodal/partials/image.html',
+                    templateUrl: 'app/global.services/mcmodal/partials/image.html',
                     controller: 'ImageController',
                     controllerAs: 'ctrl',
                     resolve: {

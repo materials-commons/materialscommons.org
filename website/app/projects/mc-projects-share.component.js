@@ -1,6 +1,6 @@
 (function(module){
     module.component('mcProjectsShare', {
-        templateUrl: 'projects/mc-projects-share.html',
+        templateUrl: 'app/projects/mc-projects-share.html',
         controller: 'MCProjectsShareComponentController'
     });
     module.controller('MCProjectsShareComponentController', MCProjectsShareComponentController);

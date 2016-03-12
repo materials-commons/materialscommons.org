@@ -1,6 +1,6 @@
 (function (module) {
     module.component('mcUserPassword', {
-        templateUrl: 'user/mc-user-password.html',
+        templateUrl: 'app/user/mc-user-password.html',
         controller: 'MCUserPasswordComponentController'
     });
 

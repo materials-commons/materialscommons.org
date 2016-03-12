@@ -1,6 +1,6 @@
 (function(module) {
     module.component('mcNewProcessMenu', {
-        templateUrl: 'project/components/mc-new-process-menu.html',
+        templateUrl: 'app/project/components/mc-new-process-menu.html',
         controller: 'MCNewProcessMenuComponentController',
         bindings: {
             buttonName: '@',
