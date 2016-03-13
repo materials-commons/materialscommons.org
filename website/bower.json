@@ -32,7 +32,6 @@
     "restangular": "1.5.1",
     "font-awesome": "4.4.0",
     "ui-router-extras": "~0.1.0",
-    "angular-socket-io": "~0.7.0",
     "angular-ui-router": "~0.2.18",
     "angular-drag-and-drop-lists": "~1.4.0",
     "angular-material-data-table": "~0.9.11",
