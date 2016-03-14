@@ -12,6 +12,10 @@
   "globals": {
     "angular": true,
     "module": true,
-    "inject": true
+    "inject": true,
+    "_add_json_callback": true,
+    "_": true,
+    "TreeModel": true,
+    "isImage": true
   }
 }
