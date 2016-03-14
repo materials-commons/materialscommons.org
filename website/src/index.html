@@ -27,12 +27,27 @@
     <div ui-view flex layout-fill></div>
 
     <!-- build:js(src) scripts/vendor.js -->
+    <!-- get from bower -->
+    <script src="assets/js/angular-filter.js"></script>
+    <script src="assets/js/TreeModel-min.js"></script>
+    <script src="assets/js/lodash.min.js"></script>
+    <script src="assets/js/angular-cache-2.3.3.min.js"></script>
+
+    <!-- These are needed for the full size calendar -->
+    <script src="assets/js/moment.min.js"></script>
+    <script src="assets/js/fullcalendar.js"></script>
+    <script src="assets/js/calendar.js"></script>
+    <!-- end get from bower -->
+
+    <!-- Our own custom version of flow.js -->
+    <script src="assets/js/flow.js"></script>
     <!-- bower:js -->
     <!-- run `gulp inject` to automatically populate bower script dependencies -->
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp/serve,.tmp/partials}) scripts/app.js -->
+    <script src="app/util/util.js"></script>
     <!-- inject:js -->
     <!-- js files will be automatically insert here -->
     <!-- endinject -->
