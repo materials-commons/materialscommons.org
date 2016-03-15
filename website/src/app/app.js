@@ -4,6 +4,7 @@ import './global.services/index.module';
 import './global.filters/index.module';
 import './global.components/index.module';
 import './login/index.module';
+import './model/index.module';
 
 angular.module('materialscommons',
     [
@@ -25,7 +26,9 @@ angular.module('materialscommons',
         'ct.ui.router.extras.previous',
         'mc.global.services',
         'mc.global.filters',
-        'mc.global.components'
+        'mc.global.components',
+        'mc.login',
+        'mc.model'
     ])
     .config( appConfig)
     .run(appRun)
