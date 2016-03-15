@@ -5,4 +5,5 @@ import './components/index.module';
 import './files/index.module';
 import './home/index.module';
 import './processes/index.module';
+import './samples/index.module';
 
