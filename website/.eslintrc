@@ -19,5 +19,10 @@
     "isImage": true,
     "bytesToSizeStr": true,
     "Flow": true
+  }, 
+  "rules": {
+    "angular/log": 0,
+    "no-console": 0,
+    "angular/document-service": 0
   }
 }
