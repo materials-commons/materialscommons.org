@@ -16,6 +16,7 @@
     "_add_json_callback": true,
     "_": true,
     "TreeModel": true,
-    "isImage": true
+    "isImage": true,
+    "bytesToSizeStr": true
   }
 }

@@ -1,4 +1,4 @@
-function templatesService($filter, processEdit) {
+export function templatesService($filter, processEdit, $log) {
     'ngInject';
 
     var self = this;
@@ -11,7 +11,7 @@ function templatesService($filter, processEdit) {
     function getTemplate(name) {
         var t = _.find(self.templates, {name: name});
         if (!t) {
-            console.log('did not find template');
+            $log.log('did not find template');
             return null;
         }
         var template = t.create();

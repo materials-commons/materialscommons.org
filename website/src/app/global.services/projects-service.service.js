@@ -74,7 +74,6 @@ export function projectsService(Restangular, modelProjects) {
         },
 
         createProjectDir: function(projectID, fromDirID, path) {
-            console.log('createProjectDir', projectID, fromDirID, path);
             return projectsAPI(projectID).one('directories').customPOST({
                 from_dir: fromDirID,
                 path: path

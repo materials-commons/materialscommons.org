@@ -1,18 +1,8 @@
 import { setupRoutes } from './routes.js';
 import { MCAppController } from './mc-app.controller';
-import { UserService } from './global.services/user.service';
-import { CachedServiceFactoryService } from './global.services/cached-service-factory.service';
-import { fileTypeService } from './global.services/file-type-service';
-import { focusService } from './global.services/focus.service';
-import { gridFiles } from './global.services/grid-files';
-import { mcapiService } from './global.services/mcapi.service';
-import { onChangeService } from './global.services/on-change.service';
-import { previousStateService } from './global.services/previous-state.service';
-import { projectsAPIService } from './global.services/projects-api.service';
-import { projectsService } from './global.services/projects-service.service';
-import { pubsubService } from './global.services/pubsub.service';
-import { templateService } from './global.services/template.service';
-import { templatesService } from './global.services/templates.service';
+import './global.services/index.module';
+import './global.filters/index.module';
+
 
 angular.module('materialscommons',
     [
@@ -31,32 +21,24 @@ angular.module('materialscommons',
         'angularGrid',
         'toastr',
         'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
-        'ct.ui.router.extras.previous'
+        'ct.ui.router.extras.previous',
+        'mc.global.services',
+        'mc.global.filters'
     ])
-    .config(["$stateProvider", "$urlRouterProvider", "$mdThemingProvider", appConfig])
-    .run(["$rootScope", "User", "Restangular", "$state", "mcglobals", appRun])
+    .config( appConfig)
+    .run(appRun)
     .constant('mcglobals', setupMCGlobals())
-    .factory('User', UserService)
-    .factory('CachedServiceFactory', CachedServiceFactoryService)
-    .factory("fileType", fileTypeService)
-    .factory('focus', focusService)
-    .factory('gridFiles', gridFiles)
-    .factory('mcapi', mcapiService)
-    .factory('onChangeService', onChangeService)
-    .factory('previousStateService', previousStateService)
-    .factory('projectsAPI', projectsAPIService)
-    .factory('projectsService', projectsService)
-    .factory('pubsub', pubsubService)
-    .factory('template', templateService)
-    .factory("templates", templatesService)
     .controller('MCAppController', MCAppController);
 
 function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider) {
+    'ngInject';
     setupMaterialsTheme($mdThemingProvider);
     setupRoutes($stateProvider, $urlRouterProvider);
 }
 
-function appRun($rootScope, User, Restangular, $state, mcglobals) {
+function appRun($scope, $rootScope, User, Restangular, $state, mcglobals) {
+    'ngInject';
+
     Restangular.setBaseUrl(mcglobals.apihost);
 
     // appRun will run when the application starts up and before any controllers have run.
@@ -69,21 +51,25 @@ function appRun($rootScope, User, Restangular, $state, mcglobals) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
     }
 
-    $rootScope.$on('$stateChangeStart', function(event, toState) {
+    var unregister = $rootScope.$on('$stateChangeStart', function(event, toState) {
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
         if (!User.isAuthenticated() && toState.url !== '/login') {
             event.preventDefault();
             $state.go('login');
         }
     });
+
+    $scope.$on('$destroy', function() { unregister(); });
 }
 
-function setupMCGlobals() {
+function setupMCGlobals($window) {
+    'ngInject';
+
     var mcglobals = {};
-    if (window.location.hostname === 'localhost') {
-        mcglobals.apihost = window.location.protocol + '//localhost:5002';
+    if ($window.location.hostname === 'localhost') {
+        mcglobals.apihost = $window.location.protocol + '//localhost:5002';
     } else {
-        mcglobals.apihost = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api';
+        mcglobals.apihost = $window.location.protocol + '//' + $window.location.hostname + ':' + $window.location.port + '/api';
     }
 
     return mcglobals;
