@@ -1,4 +1,4 @@
-function Composition() {
+export function Composition() {
     this.property = {
         name: "Composition",
         attribute: "composition",
@@ -15,7 +15,7 @@ function Composition() {
     this.validators = [];
 }
 
-function AreaFraction() {
+export function AreaFraction() {
     this.property = {
         name: "Area Fraction",
         attribute: "area_fraction",
@@ -30,7 +30,7 @@ function AreaFraction() {
     this.validators = [];
 }
 
-function VolumeFraction() {
+export function VolumeFraction() {
     this.property = {
         name: "Volume Fraction",
         attribute: "volume_fraction",
@@ -46,7 +46,7 @@ function VolumeFraction() {
     this.validators = [];
 }
 
-function DislocationDensity() {
+export function DislocationDensity() {
     this.property = {
         name: "Dislocation Density",
         attribute: "dislocation_density",
@@ -62,7 +62,7 @@ function DislocationDensity() {
     this.validators = [];
 }
 
-function Length() {
+export function Length() {
     this.property = {
         name: "Length",
         attribute: "length",
@@ -78,7 +78,7 @@ function Length() {
     this.validators = [];
 }
 
-function Width() {
+export function Width() {
     this.property = {
         name: "Width",
         attribute: "width",
@@ -93,7 +93,7 @@ function Width() {
     this.validators = [];
 }
 
-function Height() {
+export function Height() {
     this.property = {
         name: "Height",
         attribute: "height",
@@ -108,7 +108,7 @@ function Height() {
     this.validators = [];
 }
 
-function Density() {
+export function Density() {
     this.property = {
         name: "Density",
         attribute: "density",
@@ -123,7 +123,7 @@ function Density() {
     this.validators = [];
 }
 
-function Volume() {
+export function Volume() {
     this.property = {
         name: "Volume",
         attribute: "volume",
@@ -138,7 +138,7 @@ function Volume() {
     this.validators = [];
 }
 
-function YoungsModulus() {
+export function YoungsModulus() {
     this.property = {
         name: "Young's modulus",
         attribute: "youngs_modulus",
@@ -153,7 +153,7 @@ function YoungsModulus() {
     this.validators = [];
 }
 
-function TensileYieldStrength() {
+export function TensileYieldStrength() {
     this.property = {
         name: "Tensile Yield Strength",
         attribute: "tensile_yield_strength",
@@ -168,7 +168,7 @@ function TensileYieldStrength() {
     this.validators = [];
 }
 
-function UltimateTensileStrength() {
+export function UltimateTensileStrength() {
     this.property = {
         name: "Ultimate Tensile Strength",
         attribute: "ultimate_tensile_strength",
@@ -183,7 +183,7 @@ function UltimateTensileStrength() {
     this.validators = [];
 }
 
-function StrainToFracture() {
+export function StrainToFracture() {
     this.property = {
         name: "Strain To Fracture",
         attribute: "strain_to_fracture",
@@ -198,7 +198,7 @@ function StrainToFracture() {
     this.validators = [];
 }
 
-function SpaceGroup() {
+export function SpaceGroup() {
     this.property = {
         name: "Space Group",
         attribute: "space_group",
@@ -213,7 +213,7 @@ function SpaceGroup() {
     this.validators = [];
 }
 
-function PointGroup() {
+export function PointGroup() {
     this.property = {
         name: "Point Group",
         attribute: "point_group",
@@ -228,7 +228,7 @@ function PointGroup() {
     this.validators = [];
 }
 
-function CrystalSystem() {
+export function CrystalSystem() {
     this.property = {
         name: "Crystal System",
         attribute: "crystal_system",
@@ -243,7 +243,7 @@ function CrystalSystem() {
     this.validators = [];
 }
 
-function BandGap() {
+export function BandGap() {
     this.property = {
         name: "Band Gap",
         attribute: "band_gap",
@@ -258,7 +258,7 @@ function BandGap() {
     this.validators = [];
 }
 
-function FatigueLife() {
+export function FatigueLife() {
     this.property = {
         name: "Fatigue Life",
         attribute: "fatigue_life",
@@ -289,7 +289,7 @@ function FatigueLife() {
     this.validators = [];
 }
 
-function CrackGrowth() {
+export function CrackGrowth() {
     this.property = {
         name: "Crack Growth",
         attribute: "crack_growth",
@@ -320,7 +320,7 @@ function CrackGrowth() {
     this.validators = [];
 }
 
-function ParticleSizeDistribution() {
+export function ParticleSizeDistribution() {
     this.property = {
         name: "Particle Size Distribution",
         attribute: "particle_size_distribution",
@@ -335,7 +335,7 @@ function ParticleSizeDistribution() {
     this.validators = [];
 }
 
-function ParticleShapeDistribution() {
+export function ParticleShapeDistribution() {
     this.property = {
         name: "Particle Shape Distribution",
         attribute: "particle_shape_distribution",
@@ -350,7 +350,7 @@ function ParticleShapeDistribution() {
     this.validators = [];
 }
 
-function GrainSizeDistribution() {
+export function GrainSizeDistribution() {
     this.property = {
         name: "Grain Size Distribution",
         attribute: "grain_size_distribution",
@@ -365,7 +365,7 @@ function GrainSizeDistribution() {
     this.validators = [];
 }
 
-function GrainOrientationDistribution() {
+export function GrainOrientationDistribution() {
     this.property = {
         name: "Grain Orientation Distribution",
         attribute: "grain_orientation_distribution",
@@ -380,7 +380,7 @@ function GrainOrientationDistribution() {
     this.validators = [];
 }
 
-function StressStrain() {
+export function StressStrain() {
     this.property = {
         name: "Stress Vs Strain",
         attribute: "stress_strain",
@@ -395,7 +395,7 @@ function StressStrain() {
     this.validators = [];
 }
 
-function StressDisplacement() {
+export function StressDisplacement() {
     this.property = {
         name: "Stress Vs Displacement",
         attribute: "stress_displacement",
@@ -410,7 +410,7 @@ function StressDisplacement() {
     this.validators = [];
 }
 
-function PhasesPresent() {
+export function PhasesPresent() {
     this.property = {
         name: "Phases Present",
         attribute: "phases_present",
@@ -425,7 +425,7 @@ function PhasesPresent() {
     this.validators = [];
 }
 
-function Shape() {
+export function Shape() {
     this.property = {
         name: "Shape",
         attribute: "shape",
@@ -443,7 +443,7 @@ function Shape() {
     this.validators = [];
 }
 
-function GaugeLength() {
+export function GaugeLength() {
     this.property = {
         name: "Gauge Length",
         attribute: "gauge_length",
@@ -459,7 +459,7 @@ function GaugeLength() {
     this.validators = [];
 }
 
-function GaugeThickness() {
+export function GaugeThickness() {
     this.property = {
         name: "Gauge Thickness",
         attribute: "gauge_thickness",
@@ -475,7 +475,7 @@ function GaugeThickness() {
     this.validators = [];
 }
 
-function Area() {
+export function Area() {
     this.property = {
         name: "Area",
         attribute: "area",
@@ -491,7 +491,7 @@ function Area() {
     this.validators = [];
 }
 
-function Hardness() {
+export function Hardness() {
     this.property = {
         name: "Hardness",
         attribute: "hardness",
