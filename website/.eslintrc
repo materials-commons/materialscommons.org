@@ -19,7 +19,9 @@
     "TreeModel": true,
     "isImage": true,
     "bytesToSizeStr": true,
-    "Flow": true
+    "Flow": true,
+    "removeById": true,
+    "differenceById": true
   },
   "rules": {
     "angular/log": 0,
