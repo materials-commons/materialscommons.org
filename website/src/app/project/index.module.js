@@ -7,4 +7,6 @@ import './home/index.module';
 import './processes/index.module';
 import './samples/index.module';
 import './search/index.module';
+import './services/index.module';
+import './settings/index.module';
 
