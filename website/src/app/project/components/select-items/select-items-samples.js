@@ -1,47 +1,44 @@
-(function (module) {
-    module.directive('selectItemsSamples', selectItemsSamplesDirective);
-    function selectItemsSamplesDirective() {
-        return {
-            restrict: 'E',
-            scope: {
-                samples: '='
-            },
-            controller: 'SelectItemsSamplesDirectiveController',
-            controllerAs: 'ctrl',
-            bindToController: true,
-            templateUrl: 'app/project/components/select-items/select-items-samples.html'
-        }
+angular.module('mc.project').directive('selectItemsSamples', selectItemsSamplesDirective);
+function selectItemsSamplesDirective() {
+    return {
+        restrict: 'E',
+        scope: {
+            samples: '='
+        },
+        controller: SelectItemsSamplesDirectiveController,
+        controllerAs: 'ctrl',
+        bindToController: true,
+        templateUrl: 'app/project/components/select-items/select-items-samples.html'
     }
+}
 
-    module.controller('SelectItemsSamplesDirectiveController', SelectItemsSamplesDirectiveController);
-    SelectItemsSamplesDirectiveController.$inject = [];
+function SelectItemsSamplesDirectiveController() {
+    'ngInject';
 
-    function SelectItemsSamplesDirectiveController() {
-        var ctrl = this;
+    var ctrl = this;
 
-        ctrl.selected = [];
-        ctrl.showSamplesInGroups = false;
-        ctrl.showGroupsChanged = showGroupsChanged;
-        ctrl.showGroupsFilter = {
-            is_grouped: false
-        };
-        ctrl.toggleSampleSelected = toggleSampleSelected;
+    ctrl.selected = [];
+    ctrl.showSamplesInGroups = false;
+    ctrl.showGroupsChanged = showGroupsChanged;
+    ctrl.showGroupsFilter = {
+        is_grouped: false
+    };
+    ctrl.toggleSampleSelected = toggleSampleSelected;
 
-        /////////////////////////
+    /////////////////////////
 
-        function showGroupsChanged() {
-            if (!ctrl.showSamplesInGroups) {
-                ctrl.showGroupsFilter = {
-                    is_grouped: false
-                }
-            } else {
-                ctrl.showGroupsFilter = {};
+    function showGroupsChanged() {
+        if (!ctrl.showSamplesInGroups) {
+            ctrl.showGroupsFilter = {
+                is_grouped: false
             }
-        }
-
-        function toggleSampleSelected(sample) {
-            sample.selected = !sample.selected;
+        } else {
+            ctrl.showGroupsFilter = {};
         }
     }
-}(angular.module('materialscommons')));
+
+    function toggleSampleSelected(sample) {
+        sample.selected = !sample.selected;
+    }
+}
 
