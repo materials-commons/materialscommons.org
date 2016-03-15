@@ -2,7 +2,8 @@ import { setupRoutes } from './routes.js';
 import { MCAppController } from './mc-app.controller';
 import './global.services/index.module';
 import './global.filters/index.module';
-
+import './global.components/index.module';
+import './login/index.module';
 
 angular.module('materialscommons',
     [
@@ -23,7 +24,8 @@ angular.module('materialscommons',
         'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
         'ct.ui.router.extras.previous',
         'mc.global.services',
-        'mc.global.filters'
+        'mc.global.filters',
+        'mc.global.components'
     ])
     .config( appConfig)
     .run(appRun)
