@@ -1,4 +1,4 @@
-angular.module('mc.project').component('mcFilesSelect', {
+angular.module('materialscommons').component('mcFilesSelect', {
     templateUrl: 'app/project/components/select-items/mc-files-select.html',
     controller: MCFilesSelectComponentController,
     bindings: {
@@ -20,7 +20,7 @@ function MCFilesSelectComponentController(fileTreeProjectService) {
 
 }
 
-angular.module('mc.project').directive('mcFilesSelectDir', MCFilesSelectDirDirective);
+angular.module('materialscommons').directive('mcFilesSelectDir', MCFilesSelectDirDirective);
 function MCFilesSelectDirDirective(RecursionHelper) {
     'ngInject';
 

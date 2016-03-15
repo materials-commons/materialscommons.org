@@ -16,7 +16,7 @@ import { modelProjectsService } from './model/projects-service';
 import { mcmodalService } from './mcmodal/mcmodal';
 
 
-angular.module('mc.global.services', [])
+angular.module('materialscommons')
     .factory('selectItems', selectItemsService)
     .factory('User', UserService)
     .factory('CachedServiceFactory', CachedServiceFactoryService)
