@@ -1,37 +1,35 @@
-(function(module) {
-    module.component('mcUserApikey', {
-        templateUrl: 'app/user/mc-user-apikey.html',
-        controller: 'MCUserApikeyComponentController'
-    });
-    module.controller('MCUserApikeyComponentController', MCUserApikeyComponentController);
-    MCUserApikeyComponentController.$inject = ["mcapi", "User"];
-    /* @ngInject */
-    function MCUserApikeyComponentController(mcapi, User) {
-        var ctrl = this;
+angular.module('materialscommons').component('mcUserApikey', {
+    templateUrl: 'app/user/mc-user-apikey.html',
+    controller: MCUserApikeyComponentController
+});
 
-        ctrl.showKey = false;
-        ctrl.showHideButtonText = "Show API Key";
-        ctrl.apikey = User.apikey();
+function MCUserApikeyComponentController(mcapi, User) {
+    'ngInject';
 
-        ctrl.showAPIKey = showAPIKey;
-        ctrl.resetAPIKey = resetAPIKey;
+    var ctrl = this;
 
-        //////////////////
+    ctrl.showKey = false;
+    ctrl.showHideButtonText = "Show API Key";
+    ctrl.apikey = User.apikey();
 
-        function showAPIKey () {
-            ctrl.showKey = !ctrl.showKey;
-            if (!ctrl.showKey) {
-                ctrl.showHideButtonText = "Show API Key";
-            } else {
-                ctrl.showHideButtonText = "Hide API Key";
-            }
-        }
+    ctrl.showAPIKey = showAPIKey;
+    ctrl.resetAPIKey = resetAPIKey;
 
-        function resetAPIKey() {
-            mcapi('/user/%/apikey/reset', User.u())
-                .success(function (data) {
-                    User.reset_apikey(data.apikey);
-                }).put();
+    //////////////////
+
+    function showAPIKey() {
+        ctrl.showKey = !ctrl.showKey;
+        if (!ctrl.showKey) {
+            ctrl.showHideButtonText = "Show API Key";
+        } else {
+            ctrl.showHideButtonText = "Hide API Key";
         }
     }
-}(angular.module('materialscommons')));
+
+    function resetAPIKey() {
+        mcapi('/user/%/apikey/reset', User.u())
+            .success(function(data) {
+                User.reset_apikey(data.apikey);
+            }).put();
+    }
+}
