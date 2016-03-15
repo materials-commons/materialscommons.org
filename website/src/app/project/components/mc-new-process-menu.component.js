@@ -1,4 +1,4 @@
-angular.module('mc.project').component('mcNewProcessMenu', {
+angular.module('materialscommons').component('mcNewProcessMenu', {
     templateUrl: 'app/project/components/mc-new-process-menu.html',
     controller: MCNewProcessMenuComponentController,
     bindings: {

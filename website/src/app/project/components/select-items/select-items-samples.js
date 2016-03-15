@@ -1,4 +1,4 @@
-angular.module('mc.project').directive('selectItemsSamples', selectItemsSamplesDirective);
+angular.module('materialscommons').directive('selectItemsSamples', selectItemsSamplesDirective);
 function selectItemsSamplesDirective() {
     return {
         restrict: 'E',

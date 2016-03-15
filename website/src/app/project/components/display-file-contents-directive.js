@@ -1,4 +1,4 @@
-angular.module('mc.project').directive("displayFileContents", displayFileContentsDirective);
+angular.module('materialscommons').directive("displayFileContents", displayFileContentsDirective);
 function displayFileContentsDirective() {
     return {
         restrict: "E",

@@ -1,4 +1,4 @@
-angular.module('mc.project').component('mcProcessesList', {
+angular.module('materialscommons').component('mcProcessesList', {
     templateUrl: 'app/project/components/processes-list/mc-processes-list.html',
     controller: MCProcessesListComponentController,
     bindings: {

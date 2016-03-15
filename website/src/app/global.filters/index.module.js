@@ -1,6 +1,6 @@
 import { bytesFilter } from './bytes';
 import { toDateStringFilter } from './todatestring-filter';
 
-angular.module('mc.global.filters', [])
+angular.module('materialscommons')
     .filter('bytes', bytesFilter)
     .filter('toDateString', toDateStringFilter);

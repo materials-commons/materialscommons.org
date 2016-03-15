@@ -1,3 +1,4 @@
+import './index.module';
 import { setupRoutes } from './routes.js';
 import { MCAppController } from './mc-app.controller';
 import './global.services/index.module';
@@ -7,31 +8,7 @@ import './login/index.module';
 import './model/index.module';
 import './project/index.module';
 
-angular.module('materialscommons',
-    [
-        'ngSanitize',
-        'ngMessages',
-        'ngMaterial',
-        'ui.router',
-        'restangular',
-        'ui.tree',
-        'RecursionHelper',
-        'md.data.table',
-        'angular.filter',
-        'ui.calendar',
-        'jmdobry.angular-cache',
-        'ui.bootstrap',
-        'angularGrid',
-        'toastr',
-        'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
-        'ct.ui.router.extras.previous',
-        'mc.global.services',
-        'mc.global.filters',
-        'mc.global.components',
-        'mc.login',
-        'mc.model',
-        'mc.project'
-    ])
+angular.module('materialscommons')
     .config( appConfig)
     .run(appRun)
     .constant('mcglobals', setupMCGlobals())
