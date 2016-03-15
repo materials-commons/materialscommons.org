@@ -1,7 +1,6 @@
-(function (module) {
-    module.factory('model.projects',
-        ["CachedServiceFactory",
-            function (CachedServiceFactory) {
-                return new CachedServiceFactory("projects");
-            }]);
-}(angular.module('materialscommons')));
+export function modelProjectsService(CachedServiceFactory) {
+    'ngInject';
+
+    return new CachedServiceFactory("projects");
+}
+

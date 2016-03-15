@@ -13,7 +13,7 @@
     }
 
     module.controller('NavbarDirectiveController', NavbarDirectiveController);
-    NavbarDirectiveController.$inject = ['User', '$state', 'model.projects'];
+    NavbarDirectiveController.$inject = ['User', '$state', 'modelProjects'];
 
     function NavbarDirectiveController(User, $state, projects) {
         var ctrl = this;

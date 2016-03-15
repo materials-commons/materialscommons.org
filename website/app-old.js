@@ -79,7 +79,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             abstract: true,
             template: '<div ui-view></div>',
             resolve: {
-                Projects: "model.projects",
+                Projects: "modelProjects",
                 projects: function (Projects) {
                     return Projects.getList();
                 }
@@ -95,7 +95,7 @@ app.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $u
             url: '/project/:id',
             templateUrl: 'application/core/projects/project/project.html',
             resolve: {
-                project: ["$stateParams", "model.projects", "projects",
+                project: ["$stateParams", "modelProjects", "projects",
                     // Inject projects so that it resolves before looking up the project.
                     function ($stateParams, Projects) {
                         return Projects.get($stateParams.id);

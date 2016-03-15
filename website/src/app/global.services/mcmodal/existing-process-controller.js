@@ -1,20 +1,17 @@
-(function (module) {
-    module.controller('existingProcessController', existingProcessController);
-    existingProcessController.$inject = ["processes", "$modalInstance"];
+export function existingProcessController(processes, $modalInstance) {
+    'ngInject';
 
-    function existingProcessController(processes, $modalInstance) {
-        var ctrl = this;
+    var ctrl = this;
 
-        ctrl.selectProcess = selectProcess;
-        ctrl.dismiss = dismiss;
-        ctrl.processes = processes;
+    ctrl.selectProcess = selectProcess;
+    ctrl.dismiss = dismiss;
+    ctrl.processes = processes;
 
-        function selectProcess(process) {
-            $modalInstance.close(process);
-        }
-
-        function dismiss() {
-            $modalInstance.dismiss('cancel');
-        }
+    function selectProcess(process) {
+        $modalInstance.close(process);
     }
-}(angular.module('materialscommons')));
+
+    function dismiss() {
+        $modalInstance.dismiss('cancel');
+    }
+}
