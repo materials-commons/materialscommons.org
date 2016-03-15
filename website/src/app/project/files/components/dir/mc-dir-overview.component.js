@@ -100,6 +100,6 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
         var users = proj.users.map(toUserName);
         mcmodal.chooseUsers(users).then(function(chosenUsers) {
             console.log('users chosen', chosenUsers);
-        })
+        });
     }
 }
