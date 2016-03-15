@@ -3,8 +3,6 @@ angular.module('materialscommons').component('mcFile', {
     controller: MCFileComponentController
 });
 
-module.controller('MCFileComponentController', MCFileComponentController);
-MCFileComponentController.inject = ["projectsService", "$stateParams"];
 function MCFileComponentController(projectsService, $stateParams) {
     'ngInject';
 
