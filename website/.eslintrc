@@ -17,6 +17,7 @@
     "_": true,
     "TreeModel": true,
     "isImage": true,
-    "bytesToSizeStr": true
+    "bytesToSizeStr": true,
+    "Flow": true
   }
 }
