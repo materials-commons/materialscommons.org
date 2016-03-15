@@ -1,63 +1,58 @@
-(function (module) {
-    module.component('mcProcessCreateOther', {
-        templateUrl: 'app/project/processes/process/create/create-other.html',
-        controller: 'MCProcessCreateOtherComponentController'
-    });
+angular.module('materialscommons').component('mcProcessCreateOther', {
+    templateUrl: 'app/project/processes/process/create/create-other.html',
+    controller: MCProcessCreateOtherComponentController
+});
 
-    module.controller('MCProcessCreateOtherComponentController', MCProcessCreateOtherComponentController);
-    MCProcessCreateOtherComponentController.$inject = [
-        'template', 'processSelections', 'createProcess', 'toastr', 'previousStateService',
-        '$state', 'sampleLinker', 'processEdit', '$stateParams'
-    ];
-    function MCProcessCreateOtherComponentController(template, processSelections, createProcess, toastr,
-                                                     previousStateService, $state, sampleLinker, processEdit,
-                                                     $stateParams) {
-        var ctrl = this;
-        ctrl.process = template.get();
+function MCProcessCreateOtherComponentController(template, processSelections, createProcess, toastr,
+                                                 previousStateService, $state, sampleLinker, processEdit,
+                                                 $stateParams) {
+    'ngInject';
 
-        ctrl.remove = removeById;
-        ctrl.chooseSamples = _.partial(processSelections.selectSamples, ctrl.process.input_samples);
-        ctrl.chooseInputFiles = _.partial(processSelections.selectFiles, ctrl.process.input_files);
-        ctrl.chooseOutputFiles = _.partial(processSelections.selectFiles, ctrl.process.output_files);
+    var ctrl = this;
+    ctrl.process = template.get();
 
-        ctrl.linkFilesToSample = linkFilesToSample;
+    ctrl.remove = removeById;
+    ctrl.chooseSamples = _.partial(processSelections.selectSamples, ctrl.process.input_samples);
+    ctrl.chooseInputFiles = _.partial(processSelections.selectFiles, ctrl.process.input_files);
+    ctrl.chooseOutputFiles = _.partial(processSelections.selectFiles, ctrl.process.output_files);
 
-        ctrl.submit = submit;
-        ctrl.submitAndAnother = submitAndAnother;
-        ctrl.cancel = _.partial(previousStateService.go, 'process_create_previous');
+    ctrl.linkFilesToSample = linkFilesToSample;
 
-        previousStateService.setMemo('process_create_previous', 'project.processes.create');
+    ctrl.submit = submit;
+    ctrl.submitAndAnother = submitAndAnother;
+    ctrl.cancel = _.partial(previousStateService.go, 'process_create_previous');
 
-        function submitAndAnother() {
-            var go = _.partial($state.go, 'project.processes.create', {
-                template_id: ctrl.process.process_name,
-                process_id: ''
-            });
-            performSubmit(go);
-        }
+    previousStateService.setMemo('process_create_previous', 'project.processes.create');
 
-        function submit() {
-            var go = _.partial(previousStateService.go, 'process_create_previous');
-            performSubmit(go);
-        }
-
-        function performSubmit(goFn) {
-            createProcess($stateParams.project_id, ctrl.process)
-                .then(
-                    function success() {
-                        goFn();
-                    },
-
-                    function failure() {
-                        toastr.error('Unable to create sample', 'Error', {closeButton: true});
-                    }
-                );
-        }
-
-        function linkFilesToSample(sample, input_files, output_files) {
-            sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function(linkedFiles) {
-                sample = processEdit.refreshSample(linkedFiles, sample);
-            });
-        }
+    function submitAndAnother() {
+        var go = _.partial($state.go, 'project.processes.create', {
+            template_id: ctrl.process.process_name,
+            process_id: ''
+        });
+        performSubmit(go);
     }
-}(angular.module('materialscommons')));
+
+    function submit() {
+        var go = _.partial(previousStateService.go, 'process_create_previous');
+        performSubmit(go);
+    }
+
+    function performSubmit(goFn) {
+        createProcess($stateParams.project_id, ctrl.process)
+            .then(
+                function success() {
+                    goFn();
+                },
+
+                function failure() {
+                    toastr.error('Unable to create sample', 'Error', {closeButton: true});
+                }
+            );
+    }
+
+    function linkFilesToSample(sample, input_files, output_files) {
+        sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function(linkedFiles) {
+            sample = processEdit.refreshSample(linkedFiles, sample);
+        });
+    }
+}

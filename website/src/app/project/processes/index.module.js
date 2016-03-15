@@ -1,0 +1,14 @@
+import './mc-project-processes.component';
+import './process/mc-process.component';
+import './process/create/components/periodic-table.directive';
+import './process/create/components/processing-settings.directive';
+import './process/create/services/create-process.service';
+import './process/create/services/prepare-created-sample.service';
+import './process/create/create-as-received.component';
+import './process/create/create-other.component';
+import './process/create/mc-process-create.component';
+import './process/edit/mc-process-edit.component';
+import './process/services/process-edit.service';
+import './process/services/process-selections.service';
+import './process/services/process.service';
+import './process/services/sample-linker.service';
