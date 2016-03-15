@@ -7,6 +7,8 @@ import './global.components/index.module';
 import './login/index.module';
 import './model/index.module';
 import './project/index.module';
+import './projects/index.module';
+import './user/index.module';
 
 angular.module('materialscommons')
     .config( appConfig)
