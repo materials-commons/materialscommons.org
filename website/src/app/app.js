@@ -5,6 +5,7 @@ import './global.filters/index.module';
 import './global.components/index.module';
 import './login/index.module';
 import './model/index.module';
+import './project/index.module';
 
 angular.module('materialscommons',
     [
@@ -28,7 +29,8 @@ angular.module('materialscommons',
         'mc.global.filters',
         'mc.global.components',
         'mc.login',
-        'mc.model'
+        'mc.model',
+        'mc.project'
     ])
     .config( appConfig)
     .run(appRun)
