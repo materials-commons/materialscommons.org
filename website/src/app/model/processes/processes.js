@@ -1,4 +1,4 @@
-function Apt() {
+export function Apt() {
     this.name = "APT";
     this.process_name = "APT";
     this.description = "Atom Probe Tomography";
@@ -213,7 +213,7 @@ function Apt() {
     ];
 }
 
-function Sem() {
+export function Sem() {
     this.name = "SEM";
     this.process_name = "SEM";
     this.description = "Stem Electron Microscopy";
@@ -376,7 +376,7 @@ function Sem() {
     ];
 }
 
-function AsReceived() {
+export function AsReceived() {
     this.name = "As Received";
     this.process_name = "As Received";
     this.description = "As Received process is used to create new samples.";
@@ -485,7 +485,7 @@ function AsReceived() {
     };
 }
 
-function AptDataAnalysis() {
+export function AptDataAnalysis() {
     this.name = "APT Data Analysis";
     this.process_name = "APT Data Analysis";
     this.description = "Atom Probe Tomography Data Analysis";
@@ -577,7 +577,7 @@ function AptDataAnalysis() {
     ];
 }
 
-function AptDataReconstruction() {
+export function AptDataReconstruction() {
     this.name = "APT Data Reconstruction";
     this.process_name = "APT Data Reconstruction";
     this.description = "Atom Probe Tomography Data Reconstruction";
@@ -738,7 +738,7 @@ function AptDataReconstruction() {
     ];
 }
 
-function BroadIonBeamMilling() {
+export function BroadIonBeamMilling() {
     this.name = "Broad Ion Beam Milling";
     this.process_name = "Broad Ion Beam Milling";
     this.description = "Broad Ion Beam Milling";
@@ -819,7 +819,7 @@ function BroadIonBeamMilling() {
     ];
 }
 
-function Cogging() {
+export function Cogging() {
     this.name = "Cogging";
     this.process_name = "Cogging";
     this.description = "Cogging";
@@ -879,7 +879,7 @@ function Cogging() {
     ];
 }
 
-function Compression() {
+export function Compression() {
     this.name = "Compression";
     this.process_name = "Compression";
     this.description = "Compression";
@@ -1003,7 +1003,7 @@ function Compression() {
     ];
 }
 
-function Computation() {
+export function Computation() {
     this.name = "Computation";
     this.process_name = "Computation";
     this.description = "Computation";
@@ -1095,7 +1095,7 @@ function Computation() {
     ];
 }
 
-function Creep() {
+export function Creep() {
     this.name = "Creep";
     this.process_name = "Creep";
     this.description = "Creep";
@@ -1171,7 +1171,7 @@ function Creep() {
     ];
 }
 
-function DicPatterning() {
+export function DicPatterning() {
     this.name = "DIC Patterning";
     this.process_name = "DIC Patterning";
     this.description = "DIC Patterning";
@@ -1289,7 +1289,7 @@ function DicPatterning() {
     ];
 }
 
-function DicStatisticalModelling() {
+export function DicStatisticalModelling() {
     this.name = "DIC Statistical Modelling";
     this.process_name = "DIC Statistical Modelling";
     this.description = "DIC Statistical Modelling";
@@ -1370,7 +1370,7 @@ function DicStatisticalModelling() {
     ];
 }
 
-function Electropolishing() {
+export function Electropolishing() {
     this.name = "Electropolishing";
     this.process_name = "Electropolishing";
     this.description = "Electropolishing";
@@ -1462,7 +1462,7 @@ function Electropolishing() {
     ];
 }
 
-function Etching() {
+export function Etching() {
     this.name = "Etching";
     this.process_name = "Etching";
     this.description = "Etching";
@@ -1554,7 +1554,7 @@ function Etching() {
     ];
 }
 
-function EbsdSemDataCollection() {
+export function EbsdSemDataCollection() {
     this.name = "EBSD SEM Data Collection";
     this.process_name = "EBSD SEM Data Collection";
     this.description = "EBSD SEM Data Collection";
@@ -1710,7 +1710,7 @@ function EbsdSemDataCollection() {
     ];
 }
 
-function EpmaDataCollection() {
+export function EpmaDataCollection() {
     this.name = "EPMA Data Collection";
     this.process_name = "EPMA Data Collection";
     this.description = "EPMA Data Collection";
@@ -1854,7 +1854,7 @@ function EpmaDataCollection() {
     ];
 }
 
-function LowCycleFatigue() {
+export function LowCycleFatigue() {
     this.name = "Low Cycle Fatigue";
     this.process_name = "Low Cycle Fatigue";
     this.description = "Low Cycle Fatigue";
@@ -2041,7 +2041,7 @@ function LowCycleFatigue() {
     ];
 }
 
-function UltrasonicFatigue() {
+export function UltrasonicFatigue() {
     this.name = "Ultrasonic Fatigue";
     this.process_name = "Ultrasonic Fatigue";
     this.description = "Ultrasonic Fatigue";
@@ -2197,7 +2197,7 @@ function UltrasonicFatigue() {
     ];
 }
 
-function TEM() {
+export function TEM() {
     this.name = "TEM";
     this.process_name = "TEM";
     this.description = "Transmission Electron Microscope";
@@ -2370,7 +2370,7 @@ function TEM() {
     ];
 }
 
-function HeatTreatment() {
+export function HeatTreatment() {
     this.name = "Heat Treatment";
     this.process_name = "Heat Treatment";
     this.description = "HeatTreatment";
@@ -2467,7 +2467,7 @@ function HeatTreatment() {
     ];
 }
 
-function AsMeasured() {
+export function AsMeasured() {
     this.name = "As Measured";
     this.process_name = "As Measured";
     this.description = "As Measured process allows you to add in all your As Received measurements";
@@ -2494,7 +2494,7 @@ function AsMeasured() {
     ];
 }
 
-function Hardness1() {
+export function Hardness1() {
     this.name = "Hardness";
     this.process_name = "Hardness";
     this.description = "Hardness";
