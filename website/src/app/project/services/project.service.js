@@ -1,19 +1,16 @@
-(function (module) {
-    module.factory("project", projectService);
-    projectService.$inject = [];
+angular.module('materialscommons').factory("project", projectService);
 
-    function projectService() {
-        var self = this;
-        self.project = {};
+function projectService() {
+    var self = this;
+    self.project = {};
 
-        return {
-            set: function(proj) {
-                self.project = angular.copy(proj);
-            },
+    return {
+        set: function(proj) {
+            self.project = angular.copy(proj);
+        },
 
-            get: function() {
-                return self.project;
-            }
+        get: function() {
+            return self.project;
         }
     }
-}(angular.module('materialscommons')));
+}
