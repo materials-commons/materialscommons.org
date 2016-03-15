@@ -1,4 +1,4 @@
-export function mcapiService($http, User, mcglobals) {
+export function mcapiService($http, User, mcglobals, $log) {
     'ngInject';
 
     function MCApi() {
@@ -114,10 +114,10 @@ export function mcapiService($http, User, mcglobals) {
                 cache: false,
                 transformResponse: function(data) {
                     try {
-                        var jsonObject = JSON.parse(data);
+                        var jsonObject = angular.fromJson(data);
                         return jsonObject;
                     } catch (e) {
-                        console.log("Invalid json: " + e);
+                        $log.log("Invalid json: " + e);
                     }
                     return {};
                 }

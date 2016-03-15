@@ -1,12 +1,12 @@
-export function UserService($window) {
+export function UserService($window, $log) {
     'ngInject';
 
     var self = this;
     if ($window.sessionStorage.mcuser) {
         try {
-            self.mcuser = JSON.parse($window.sessionStorage.mcuser);
+            self.mcuser = angular.fromJson($window.sessionStorage.mcuser);
         } catch (err) {
-            console.log("Error parse mcuser in sessionStorage");
+            $log.log("Error parse mcuser in sessionStorage");
             self.mcuser = null;
         }
     }
@@ -25,7 +25,7 @@ export function UserService($window) {
                 if (!u.favorites) {
                     u.favorites = {};
                 }
-                $window.sessionStorage.mcuser = JSON.stringify(u);
+                $window.sessionStorage.mcuser = angular.toJson(u);
                 self.mcuser = u;
             }
         },
@@ -53,7 +53,7 @@ export function UserService($window) {
 
         addToFavorites: function(projectID, templateName) {
             self.mcuser.favorites[projectID].processes.push(templateName);
-            $window.sessionStorage.mcuser = JSON.stringify(self.mcuser);
+            $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
         },
 
         removeFromFavorites: function(projectID, templateName) {
@@ -62,20 +62,20 @@ export function UserService($window) {
             });
             if (i !== -1) {
                 self.mcuser.favorites[projectID].processes.splice(i, 1);
-                $window.sessionStorage.mcuser = JSON.stringify(self.mcuser);
+                $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
             }
         },
 
         reset_apikey: function(new_key) {
             if (self.mcuser) {
                 self.mcuser.apikey = new_key;
-                $window.sessionStorage.mcuser = JSON.stringify(self.mcuser);
+                $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
             }
         },
 
         save: function() {
             if (self.mcuser) {
-                $window.sessionStorage.mcuser = JSON.stringify(self.mcuser);
+                $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
             }
         }
     };
