@@ -7,7 +7,8 @@ module.exports = function(files) {
         getList,
         update,
         deleteFile,
-        byPath
+        byPath,
+        getVersions
     };
 
     ///////////////////
@@ -21,6 +22,22 @@ module.exports = function(files) {
     function* getList(next) {
         let args = yield parse(this);
         this.body = yield files.getList(this.params.project_id, args.file_ids);
+        yield next;
+    }
+
+    function* getVersions(next) {
+        if (yield files.isInProject(this.params.project_id, this.params.file_id)) {
+            let rv = yield files.getVersions(this.params.file_id);
+            if (rv.error) {
+                this.status = httpStatus.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = {versions: rv.val};
+            }
+        } else {
+            this.status = httpStatus.BAD_REQUEST;
+        }
+
         yield next;
     }
 
