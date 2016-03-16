@@ -18,7 +18,9 @@ module.exports = function(r) {
         getList,
         update,
         deleteFile,
-        byPath
+        byPath,
+        isInProject,
+        getVersions
     };
 
     function* countInProject(ids, projectID) {
@@ -286,5 +288,50 @@ module.exports = function(r) {
             .getAll([moveArgs.old_directory_id, fileID], {index: 'datadir_datafile'})
             .update({datadir_id: moveArgs.new_directory_id});
         return {val: true};
+    }
+
+    function* isInProject(projectID, fileID) {
+        let rql = r.table('project2datafile').getAll([projectID, fileID], {index: 'project_datafile'});
+        let matches = yield runQuery(rql);
+        return matches.length !== 0;
+    }
+
+    function* getVersions(fileID) {
+        // get original file
+        let f = yield runQuery(r.table('datafiles').get(fileID));
+        if (!f) {
+            return {error: 'No such file'};
+        } else if (f.parent === '') {
+            return {val: []};
+        }
+
+        let files = [];
+
+        // get all files in the given files directory
+        let rql = r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'})
+            .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
+            .eqJoin('datafile_id', r.table('datafiles')).zip();
+        let allDirFiles = yield runQuery(rql);
+        let filesIdMap = _.indexBy(allDirFiles, 'id');
+        let current = f;
+        while (true) {
+            let parentFile = filesIdMap[current.id];
+            files.push(
+                {
+                    _type: 'file',
+                    size: parentFile.size,
+                    name: parentFile.name,
+                    path: parentFile.name,
+                    mediatype: parentFile.mediatype,
+                    checksum: parentFile.checksum,
+                    id: parentFile.id
+                });
+            if (parentFile.parent !== '') {
+                current = parentFile;
+            } else {
+                break;
+            }
+        }
+        return {val: files};
     }
 };
