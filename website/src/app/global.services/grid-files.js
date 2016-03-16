@@ -44,6 +44,7 @@ export function gridFiles() {
 
     function createFileEntry(entry) {
         return {
+            expanded: false,
             data: {
                 name: entry.name,
                 _type: 'file',
@@ -52,18 +53,21 @@ export function gridFiles() {
                 mediatype: entry.mediatype,
                 id: entry.id,
                 icon: 'fa-files-o'
-            }
+            },
+            children: []
         };
     }
 
     function createOtherEntry(entry) {
         return {
+            expanded: false,
             data: {
                 name: entry.name,
                 _type: entry._type,
                 id: entry.id,
                 icon: toIcon(entry._type)
-            }
+            },
+            children: []
         };
     }
 
