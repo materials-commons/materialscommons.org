@@ -14,25 +14,7 @@
                         </a>
                     </div>
                     <div ng-if="file.active">
-                        <div layout="row" layout-align="space-around center" data-nodrag>
-                            <a class="mc-file-tree-control text-uppercase" ng-click="file.promptForFolder = !file.promptForFolder">
-                                <i class="fa fa-fw fa-plus-square"></i> sub folder
-                            </a>
-                            <mc-flow-button dir="file"></mc-flow-button>
-                            <a class="mc-file-tree-control text-uppercase" ng-click="file.promptForRename = !file.promptForRename">
-                                <i class="fa fa-fw fa-pencil-square"></i>rename
-                            </a>
-                        </div>
-                        <div ng-if="file.promptForFolder" layout="row" data-nodrag>
-                            <md-input-container>
-                                <input placeholder="Folder..." on-enter="ctrl.addFolder(file)" ng-model="ctrl.folderName">
-                            </md-input-container>
-                        </div>
-                        <div ng-if="file.promptForRename" layout="row" data-nodrag>
-                            <md-input-container>
-                                <input on-enter="ctrl.renameFolder(file)" ng-model="file.data.name">
-                            </md-input-container>
-                        </div>
+                        <mc-file-tree-dir-controls file="file" project-id="ctrl.projectID"></mc-file-tree-dir-controls>
                     </div>
                 </div>
                 <div ng-if="file.data._type === 'file'">
@@ -42,6 +24,9 @@
                             <span><i class="fa fa-fw fa-file file-tree-icon-color"></i></span>
                             {{file.data.name}}
                         </a>
+                    </div>
+                    <div ng-if="file.active">
+                        <mc-file-tree-file-controls file="file" project-id="ctrl.projectID"></mc-file-tree-file-controls>
                     </div>
                     <!-- placeholder for empty directory so we can add items to it -->
                     <div ng-if="file.data.name === ctrl.placeholderName">
