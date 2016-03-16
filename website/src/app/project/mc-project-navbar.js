@@ -1,4 +1,4 @@
-angular.module('mc.project').component("mcProjectNavbar", {
+angular.module('materialscommons').component("mcProjectNavbar", {
     templateUrl: 'app/project/mc-project-navbar.html',
     controller: MCProjectNavbarComponentController
 });

@@ -15,11 +15,5 @@ angular.module('materialscommons',
         'angularGrid',
         'toastr',
         'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
-        'ct.ui.router.extras.previous',
-        'mc.global.services',
-        'mc.global.filters',
-        'mc.global.components',
-        'mc.login',
-        'mc.model',
-        'mc.project'
+        'ct.ui.router.extras.previous'
     ]);

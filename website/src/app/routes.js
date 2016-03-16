@@ -1,4 +1,6 @@
 export function setupRoutes($stateProvider, $urlRouterProvider) {
+    'ngInject';
+
     $stateProvider
         .state('login', {
             url: '/login',
