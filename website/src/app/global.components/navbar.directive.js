@@ -9,7 +9,7 @@ export function navbarDirective() {
     };
 }
 
-function NavbarDirectiveController(User, $state, projects) {
+function NavbarDirectiveController(User, $state, modelProjects) {
     'ngInject';
 
     var ctrl = this;
@@ -43,7 +43,7 @@ function NavbarDirectiveController(User, $state, projects) {
 
     function logout() {
         User.setAuthenticated(false);
-        projects.clear();
+        modelProjects.clear();
         $state.go('login');
     }
 }

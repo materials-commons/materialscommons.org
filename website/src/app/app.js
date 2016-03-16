@@ -11,18 +11,20 @@ import './projects/index.module';
 import './user/index.module';
 
 angular.module('materialscommons')
+    .constant('mcglobals', setupMCGlobals())
     .config( appConfig)
     .run(appRun)
-    .constant('mcglobals', setupMCGlobals())
     .controller('MCAppController', MCAppController);
 
+appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider'];
 function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider) {
     'ngInject';
     setupMaterialsTheme($mdThemingProvider);
     setupRoutes($stateProvider, $urlRouterProvider);
 }
 
-function appRun($scope, $rootScope, User, Restangular, $state, mcglobals) {
+appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals'];
+function appRun($rootScope, User, Restangular, $state, mcglobals) {
     'ngInject';
 
     Restangular.setBaseUrl(mcglobals.apihost);
@@ -45,17 +47,17 @@ function appRun($scope, $rootScope, User, Restangular, $state, mcglobals) {
         }
     });
 
-    $scope.$on('$destroy', function() { unregister(); });
+    $rootScope.$on('$destroy', function() { unregister(); });
 }
 
-function setupMCGlobals($window) {
+function setupMCGlobals() {
     'ngInject';
 
     var mcglobals = {};
-    if ($window.location.hostname === 'localhost') {
-        mcglobals.apihost = $window.location.protocol + '//localhost:5002';
+    if (window.location.hostname === 'localhost') {
+        mcglobals.apihost = window.location.protocol + '//localhost:5002';
     } else {
-        mcglobals.apihost = $window.location.protocol + '//' + $window.location.hostname + ':' + $window.location.port + '/api';
+        mcglobals.apihost = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api';
     }
 
     return mcglobals;
