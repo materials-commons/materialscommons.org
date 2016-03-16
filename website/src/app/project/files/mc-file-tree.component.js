@@ -159,9 +159,6 @@ function MCFileTreeDirControlsComponentController(fileTreeProjectService) {
     ctrl.promptForFolder = false;
     ctrl.promptForRename = false;
 
-    console.dir(ctrl.file);
-    console.log(ctrl.projectId);
-
     function addFolder() {
         ctrl.promptForFolder = false;
         fileTreeProjectService.createProjectDir(ctrl.projectId, ctrl.file.data.id, ctrl.folderName)
