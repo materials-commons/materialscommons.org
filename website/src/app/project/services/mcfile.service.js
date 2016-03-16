@@ -5,12 +5,12 @@ function mcfileService(User) {
     return {
         src: function(fileID) {
             var apikey = User.apikey();
-            return "datafiles/static/" + fileID + "?apikey=" + apikey;
+            return "api/datafiles/static/" + fileID + "?apikey=" + apikey;
         },
 
         downloadSrc: function(fileID) {
             var apikey = User.apikey();
-            return "datafiles/static/" + fileID + "?apikey=" + apikey + "&original=true";
+            return "api/datafiles/static/" + fileID + "?apikey=" + apikey + "&original=true";
         }
     };
 }
