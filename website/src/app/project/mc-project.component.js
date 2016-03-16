@@ -1,4 +1,4 @@
-angular.module('mc.project')
+angular.module('materialscommons')
     .component('mcProject', {
         templateUrl: 'app/project/mc-project.html',
         controller: MCProjectComponentController
@@ -6,6 +6,7 @@ angular.module('mc.project')
 
 function MCProjectComponentController(projectsService, $state, $stateParams, project) {
     'ngInject';
+
     var ctrl = this;
 
     ctrl.showSidebar = true;
