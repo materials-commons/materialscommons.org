@@ -98,14 +98,11 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $stat
     'ngInject';
 
     var ctrl = this;
-    var projectID = project.get().id;
+    ctrl.projectID = project.get().id;
     ctrl.placeholderName = placeholderName;
     ctrl.files = ctrl.file.children;
-    ctrl.folderName = '';
 
     ctrl.setActive = setActive;
-    ctrl.addFolder = addFolder;
-    ctrl.renameFolder = renameFolder;
 
     //////////////////////////
 
@@ -118,7 +115,7 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $stat
         } else {
             node.toggle();
             if (!file.data.childrenLoaded) {
-                fileTreeProjectService.getDirectory(projectID, file.data.id).then(function(files) {
+                fileTreeProjectService.getDirectory(ctrl.projectID, file.data.id).then(function(files) {
                     file.children = files;
                     if (!file.children.length) {
                         loadEmptyPlaceHolder(file);
@@ -143,13 +140,34 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $stat
             treeNode.model.active = false;
         });
     }
+}
 
-    function addFolder(file) {
-        file.promptForFolder = false;
-        fileTreeProjectService.createProjectDir(project.get().id, file.data.id, ctrl.folderName)
+angular.module('materialscommons').component('mcFileTreeDirControls', {
+    templateUrl: 'app/project/files/mc-file-tree-dir-controls.html',
+    controller: MCFileTreeDirControlsComponentController,
+    bindings: {
+        file: '=',
+        projectId: '<'
+    }
+});
+
+function MCFileTreeDirControlsComponentController(fileTreeProjectService) {
+    var ctrl = this;
+    ctrl.addFolder = addFolder;
+    ctrl.renameFolder = renameFolder;
+    ctrl.folderName = '';
+    ctrl.promptForFolder = false;
+    ctrl.promptForRename = false;
+
+    console.dir(ctrl.file);
+    console.log(ctrl.projectId);
+
+    function addFolder() {
+        ctrl.promptForFolder = false;
+        fileTreeProjectService.createProjectDir(ctrl.projectId, ctrl.file.data.id, ctrl.folderName)
             .then(function(dir) {
                 // Fix up the datastructure either on server or on client so its a grid file.
-                file.children.push({
+                ctrl.file.children.push({
                     data: {
                         id: dir.id,
                         name: ctrl.folderName,
@@ -160,10 +178,23 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $stat
             });
     }
 
-    function renameFolder(file) {
-        fileTreeProjectService.renameProjectDir(project.get().id, file.data.id, file.data.name)
+    function renameFolder() {
+        fileTreeProjectService.renameProjectDir(ctrl.projectId, ctrl.file.data.id, ctrl.file.data.name)
             .then(function() {
-                file.promptForRename = false;
+                ctrl.promptForRename = false;
             });
     }
+}
+
+angular.module('materialscommons').component('mcFileTreeFileControls', {
+    templateUrl: 'app/project/files/mc-file-tree-file-controls.html',
+    controller: MCFileTreeFileControlsComponentController,
+    bindings: {
+        file: '=',
+        projectId: '<'
+    }
+});
+
+function MCFileTreeFileControlsComponentController() {
+    var ctrl = this;
 }
