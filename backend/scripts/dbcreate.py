@@ -47,6 +47,8 @@ def create_tables():
     create_compound_index('project2datadir', 'project_datadir', 
                           ['project_id', 'datadir_id'])
     create_table("project2datafile", "project_id", "datafile_id")
+    create_compound_index('project2datafile', 'project_datafile',
+                          ['project_id', 'datafile_id'])
     create_table("tag2item", "tag_id", "item_id")
     create_table("comment2item", "comment_id", "item_id")
     create_table("note2item", "note_id", "item_id")
