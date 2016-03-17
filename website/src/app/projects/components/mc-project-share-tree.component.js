@@ -1,3 +1,11 @@
+angular.module('materialscommons').component('mcProjectShareTree', {
+    templateUrl: 'app/projects/components/mc-project-share-tree.html',
+    controller: MCProjectShareTreeComponentController,
+    bindings: {
+        project: '='
+    }
+});
+
 var placeholderName = '__$$placeholder$$__';
 
 function loadEmptyPlaceHolder(dir) {
@@ -8,14 +16,6 @@ function loadEmptyPlaceHolder(dir) {
         }
     });
 }
-
-angular.module('materialscommons').component('mcProjectShareTree', {
-    templateUrl: 'app/projects/components/mc-project-share-tree.html',
-    controller: MCProjectShareTreeComponentController,
-    bindings: {
-        project: '='
-    }
-});
 
 function MCProjectShareTreeComponentController(projectTreeService) {
     'ngInject';
@@ -84,7 +84,7 @@ function MCProjectShareTreeDirDirectiveController(gridFiles) {
             component.children = gridFiles.toGridChildren({children: ctrl.project.samples});
             component.data.childrenLoaded = true;
             if (!component.children.length) {
-                //loadEmptyPlaceHolder(component);
+                loadEmptyPlaceHolder(component);
             }
         }
 

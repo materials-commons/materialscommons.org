@@ -56,7 +56,6 @@ module.exports = function(files) {
 
     // deleteFile will attempt to delete the named file.
     function* deleteFile(next) {
-        console.log('deleteFile in resources called');
         let rv = yield files.deleteFile(this.params.file_id);
         if (rv.error) {
             this.throw(httpStatus.BAD_REQUEST, rv.error);
