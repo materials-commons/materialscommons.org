@@ -14,11 +14,12 @@
                         </a>
                     </div>
                     <div ng-if="file.active">
-                        <mc-file-tree-dir-controls file="file" project-id="ctrl.projectID"></mc-file-tree-dir-controls>
+                        <mc-file-tree-dir-controls node="this" file="file"
+                                                   project-id="ctrl.projectID"></mc-file-tree-dir-controls>
                     </div>
                 </div>
                 <div ng-if="file.data._type === 'file'">
-                    <div ng-if="file.data.name !== ctrl.placeholderName">
+                    <div>
                         <i class="fa fa-fw fa-reorder drag-handle-color"></i>
                         <a ng-click="ctrl.setActive(this, file)" data-nodrag>
                             <span><i class="fa fa-fw fa-file file-tree-icon-color"></i></span>
@@ -27,9 +28,6 @@
                     </div>
                     <div ng-if="file.active">
                         <mc-file-tree-file-controls file="file" project-id="ctrl.projectID"></mc-file-tree-file-controls>
-                    </div>
-                    <!-- placeholder for empty directory so we can add items to it -->
-                    <div ng-if="file.data.name === ctrl.placeholderName">
                     </div>
                 </div>
             </div>

@@ -3,23 +3,13 @@ angular.module('materialscommons').component('mcFileTree', {
     controller: MCFileTreeComponentController
 });
 
-var placeholderName = '__$$placeholder$$__';
-
-function loadEmptyPlaceHolder(dir) {
-    dir.children.push({
-        data: {
-            name: placeholderName,
-            _type: 'file'
-        }
-    });
-}
-
 function MCFileTreeComponentController(project, $state, $stateParams, fileTreeProjectService,
                                        fileTreeMoveService, toastr) {
     'ngInject';
 
     var ctrl = this;
     var proj = project.get();
+    ctrl.projectID = proj.id;
 
     ctrl.treeOptions = {
         dropped: function(event) {
@@ -29,16 +19,10 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
 
             if (src.data._type === 'directory') {
                 return fileTreeMoveService.moveDir(src.data.id, dest.data.id).then(function() {
-                    if (srcDir.children.length === 0) {
-                        loadEmptyPlaceHolder(srcDir);
-                    }
                     return true;
                 });
             } else {
                 return fileTreeMoveService.moveFile(src.data.id, srcDir.data.id, dest.data.id).then(function() {
-                    if (srcDir.children.length === 0) {
-                        loadEmptyPlaceHolder(srcDir);
-                    }
                     return true;
                 });
             }
@@ -99,7 +83,6 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $stat
 
     var ctrl = this;
     ctrl.projectID = project.get().id;
-    ctrl.placeholderName = placeholderName;
     ctrl.files = ctrl.file.children;
 
     ctrl.setActive = setActive;
@@ -117,9 +100,6 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $stat
             if (!file.data.childrenLoaded) {
                 fileTreeProjectService.getDirectory(ctrl.projectID, file.data.id).then(function(files) {
                     file.children = files;
-                    if (!file.children.length) {
-                        loadEmptyPlaceHolder(file);
-                    }
                     file.active = true;
                     file.data.childrenLoaded = true;
                     file.expand = !file.expand;
@@ -147,17 +127,25 @@ angular.module('materialscommons').component('mcFileTreeDirControls', {
     controller: MCFileTreeDirControlsComponentController,
     bindings: {
         file: '=',
-        projectId: '<'
+        projectId: '<',
+        noDelete: '@',
+        noRename: '@',
+        node: '='
     }
 });
 
-function MCFileTreeDirControlsComponentController(fileTreeProjectService) {
+function MCFileTreeDirControlsComponentController(fileTreeProjectService, fileTreeDeleteService) {
+    'ngInject';
+
     var ctrl = this;
     ctrl.addFolder = addFolder;
     ctrl.renameFolder = renameFolder;
+    ctrl.deleteFolder = deleteFolder;
     ctrl.folderName = '';
     ctrl.promptForFolder = false;
     ctrl.promptForRename = false;
+    ctrl.allowDelete = !ctrl.noDelete;
+    ctrl.allowRename = !ctrl.noRename;
 
     function addFolder() {
         ctrl.promptForFolder = false;
@@ -181,6 +169,11 @@ function MCFileTreeDirControlsComponentController(fileTreeProjectService) {
                 ctrl.promptForRename = false;
             });
     }
+
+    function deleteFolder() {
+        fileTreeDeleteService.deleteDir(ctrl.projectId, ctrl.file.data.id)
+            .then(() => ctrl.node.remove());
+    }
 }
 
 angular.module('materialscommons').component('mcFileTreeFileControls', {
@@ -193,5 +186,7 @@ angular.module('materialscommons').component('mcFileTreeFileControls', {
 });
 
 function MCFileTreeFileControlsComponentController() {
+    'ngInject';
+
     var ctrl = this;
 }
