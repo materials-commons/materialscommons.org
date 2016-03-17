@@ -1,4 +1,4 @@
-function isImage(mime) {
+export function isImage(mime) {
     switch (mime) {
     case "image/gif":
     case "image/jpeg":
@@ -12,7 +12,7 @@ function isImage(mime) {
     }
 }
 
-function numberWithCommas(n) {
+export function numberWithCommas(n) {
     n = n.toString();
     var pattern = /(-?\d+)(\d{3})/;
     while (pattern.test(n)) {
@@ -21,7 +21,7 @@ function numberWithCommas(n) {
     return n;
 }
 
-function bytesToSizeStr(bytes) {
+export function bytesToSizeStr(bytes) {
     if(bytes === 0) return '0 Byte';
     var k = 1000;
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
@@ -30,15 +30,15 @@ function bytesToSizeStr(bytes) {
 
 }
 
-function endsWith(str, suffix) {
+export function endsWith(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
-function _add_json_callback(url) {
+export function _add_json_callback(url) {
     return url + "&callback=JSON_CALLBACK";
 }
 
-function _add_json_callback2(url) {
+export function _add_json_callback2(url) {
     var qIndex = url.indexOf("?");
     var argSeparator = "&";
     if (qIndex == -1) {
@@ -48,7 +48,7 @@ function _add_json_callback2(url) {
     return url + argSeparator + "callback=JSON_CALLBACK";
 }
 
-function differenceById(from, others) {
+export function differenceById(from, others) {
     var idsFrom = from.map(function(entry) {
         return entry.id;
     });
@@ -64,7 +64,7 @@ function differenceById(from, others) {
     });
 }
 
-function removeById(from, what) {
+export function removeById(from, what) {
     var i = _.indexOf(from, function(item) {
         return item.id === what.id;
     });

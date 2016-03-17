@@ -1,3 +1,5 @@
+import { isImage } from '../../util/util';
+
 angular.module('materialscommons').component('mcProjectSearch', {
     templateUrl: 'app/project/search/mc-project-search.html',
     controller: MCProjectSearchComponentController

@@ -1,3 +1,5 @@
+import { isImage } from '../../../../util/util';
+
 angular.module('materialscommons').component('mcDirOverview', {
     templateUrl: 'app/project/files/components/dir/mc-dir-overview.html',
     controller: MCDirOverviewComponentController,

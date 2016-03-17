@@ -1,3 +1,5 @@
+import { isImage } from '../../../util/util';
+
 angular.module('materialscommons').component('mcFilesList', {
     templateUrl: 'app/project/components/files-list/mc-files-list.html',
     controller: MCFilesListComponentController,
