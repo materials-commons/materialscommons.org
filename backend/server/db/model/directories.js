@@ -11,7 +11,9 @@ module.exports = function(r) {
         update: update,
         findInProject: findInProject,
         subdirExists: subdirExists,
-        peerDirectories: peerDirectories
+        peerDirectories: peerDirectories,
+        isEmpty,
+        remove
     };
 
     /////////////////////////////
@@ -247,7 +249,6 @@ module.exports = function(r) {
         if (dir.startsWith('/')) {
             return dbExec(r.table('datadirs').getAll(dir, {index: 'name'}))
                 .then(function(d) {
-                    console.log('findInProject 2nd step');
                     return dbExec(r.table('project2datadir').getAll([projectID, d.id], {index: 'project_datadir'}));
                 });
         } else {
@@ -262,10 +263,36 @@ module.exports = function(r) {
 
     function peerDirectories(dirID) {
         let rql = r.table('datadirs').get(dirID).merge(function(dir) {
-                return {
-                    peer_directories: r.table('datadirs').getAll(dir('id'), {index: 'parent'}).coerceTo('array')
-                }
-            });
+            return {
+                peer_directories: r.table('datadirs').getAll(dir('id'), {index: 'parent'}).coerceTo('array')
+            }
+        });
         return dbExec(rql);
+    }
+
+    function* isEmpty(dirID) {
+        let childrenDirs = yield dbExec(r.table('datadirs').getAll(dirID, {index: 'parent'}));
+        if (childrenDirs.length) {
+            return false;
+        }
+
+        let childrenFiles = yield dbExec(r.table('datadir2datafile').getAll(dirID, {index: 'datadir_id'}));
+        return childrenFiles.length === 0;
+    }
+
+    function* remove(projectID, dirID) {
+        let rv = yield r.table('datadirs').get(dirID).delete();
+        console.log('after dir id get rv', rv);
+        if (!rv || !rv.deleted) {
+            return {error: 'Unable to delete'};
+        }
+
+        rv = yield r.table('project2datadir').getAll([projectID, dirID], {index: 'project_datadir'}).delete();
+        console.log('after project2datadir get', rv);
+        if (!rv || !rv.deleted) {
+            return {error: 'Unable to delete'};
+        }
+
+        return {val: true};
     }
 };

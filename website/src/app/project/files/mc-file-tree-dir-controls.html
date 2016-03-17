@@ -4,10 +4,11 @@
             <i class="fa fa-fw fa-plus-square"></i> folder
         </a>
         <mc-flow-button dir="$ctrl.file"></mc-flow-button>
-        <a class="mc-file-tree-control text-uppercase" ng-click="$ctrl.promptForRename = !$ctrl.promptForRename">
+        <a ng-if="$ctrl.allowRename" class="mc-file-tree-control text-uppercase"
+           ng-click="$ctrl.promptForRename = !$ctrl.promptForRename">
             <i class="fa fa-fw fa-pencil-square"></i>rename
         </a>
-        <a class="mc-file-tree-control text-uppercase">
+        <a ng-if="$ctrl.allowDelete" class="mc-file-tree-control text-uppercase" ng-click="$ctrl.deleteFolder()">
             <i class="fa fa-fw fa-trash-o"></i>delete
         </a>
     </div>

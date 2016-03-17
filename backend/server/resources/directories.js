@@ -5,10 +5,12 @@ module.exports = function(directories, schema) {
     return {
         get,
         create,
-        update
+        update,
+        remove
     };
 
     ////////////////
+
     function* get(next) {
         let dirID = this.params.directory_id || 'top';
         this.body = yield directories.get(this.params.project_id, dirID);
@@ -102,5 +104,26 @@ module.exports = function(directories, schema) {
         }, function(errors) {
             return errors;
         });
+    }
+
+    function* remove(next) {
+        let projectID = this.params.project_id,
+            dirID = this.params.directory_id,
+            matches = yield directories.findInProject(projectID, null, dirID);
+        if (!matches.length) {
+            this.body = {error: 'Unknown directory'};
+        } else if (yield directories.isEmpty(dirID)) {
+            let rv = yield directories.remove(projectID, dirID);
+            this.body = rv.error ? rv : {status: 'Directory deleted'};
+        } else {
+            this.body = {error: 'Directory not empty'};
+        }
+
+        // If body contains error then set status code.
+        if (this.body.error) {
+            this.status = httpStatus.BAD_REQUEST;
+        }
+
+        yield next;
     }
 };

@@ -19,6 +19,7 @@ module.exports = function(model) {
     router.get('/projects/:project_id/directories/:directory_id', validateProjectAccess, directories.get);
     router.post('/projects/:project_id/directories', validateProjectAccess, directories.create);
     router.put('/projects/:project_id/directories/:directory_id', validateProjectAccess, directories.update);
+    router.delete('/projects/:project_id/directories/:directory_id', validateProjectAccess, directories.remove);
 
     router.post('/projects/:project_id/processes', validateProjectAccess, processes.create);
     router.put('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.update);
