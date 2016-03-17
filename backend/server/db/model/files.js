@@ -121,7 +121,11 @@ module.exports = function(r) {
     // validateFileName ensures that the file name doesn't already exist in
     // the given directory. This is used when a file is being renamed.
     function* validateFileName(fileID, fileName) {
-        let rql = r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip().eqJoin('datafile_id', r.table('datafiles')).zip().filter({name: fileName}).count();
+        let rql = r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'})
+            .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
+            .eqJoin('datafile_id', r.table('datafiles')).zip()
+            .filter({name: fileName})
+            .count();
         let matchingNameCount = yield runQuery(rql);
         return matchingNameCount === 0;
     }
