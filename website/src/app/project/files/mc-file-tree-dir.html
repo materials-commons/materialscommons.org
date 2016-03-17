@@ -14,8 +14,8 @@
                         </a>
                     </div>
                     <div ng-if="file.active">
-                        <mc-file-tree-dir-controls node="this" file="file"
-                                                   project-id="ctrl.projectID"></mc-file-tree-dir-controls>
+                        <mc-file-tree-dir-controls node="this" file="file" project-id="ctrl.projectID">
+                        </mc-file-tree-dir-controls>
                     </div>
                 </div>
                 <div ng-if="file.data._type === 'file'">
@@ -27,7 +27,8 @@
                         </a>
                     </div>
                     <div ng-if="file.active">
-                        <mc-file-tree-file-controls file="file" project-id="ctrl.projectID"></mc-file-tree-file-controls>
+                        <mc-file-tree-file-controls node="this" file="file" project-id="ctrl.projectID">
+                        </mc-file-tree-file-controls>
                     </div>
                     <div ng-if="file.data.name === ctrl.placeholderName">
                     </div>
