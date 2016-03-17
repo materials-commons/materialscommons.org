@@ -1,3 +1,5 @@
+import { isImage } from '../util/util';
+
 export function fileTypeService() {
     'ngInject';
 
