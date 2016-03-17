@@ -1,3 +1,5 @@
+import { _add_json_callback } from '../util/util';
+
 export function mcapiService($http, User, mcglobals, $log) {
     'ngInject';
 

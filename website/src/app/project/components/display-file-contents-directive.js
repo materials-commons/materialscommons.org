@@ -1,3 +1,5 @@
+import { isImage } from '../../util/util';
+
 angular.module('materialscommons').directive("displayFileContents", displayFileContentsDirective);
 function displayFileContentsDirective() {
     return {
