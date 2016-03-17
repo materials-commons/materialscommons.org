@@ -5,21 +5,47 @@ function fileTreeDeleteService(projectTreeModel, projectsAPI, toastr) {
         return projectsAPI(projectID).one('directories', dirID).customDELETE();
     }
 
+    function deleteProjectFile(projectID, fileID) {
+        return projectsAPI(projectID).one('files', fileID).customDELETE();
+    }
+
+    function dropNode(id) {
+        let root = projectTreeModel.root(),
+            node = projectTreeModel.findNodeByID(root, id);
+        if (node) {
+            node.drop();
+        }
+        return true;
+    }
+
+    function displayError(err) {
+        let msg = getErrorMessage(err);
+        toastr.error(msg, 'Error', {closeButton: true});
+        return false;
+    }
+
+    function getErrorMessage(err) {
+        if (err.error) {
+            return err.error;
+        } else if (err.data && err.data.error) {
+            return err.data.error;
+        } else {
+            return 'Unknown error';
+        }
+    }
+
     return {
         deleteDir: function(projectID, dirID) {
             return deleteProjectDir(projectID, dirID).then(
-                () => {
-                    let root = projectTreeModel.root(),
-                        dirNode = projectTreeModel.findNodeByID(root, dirID);
-                    if (dirNode) {
-                        dirNode.drop();
-                    }
-                },
+                () => dropNode(dirID),
+                (err) => displayError(err)
+            );
+        },
 
-                (err) => {
-                    let msg = err.error ? err.error : 'Unknown error';
-                    toastr.error(msg, 'Error', {closeButton: true});
-                }
+        deleteFile: function(projectID, fileID) {
+            return deleteProjectFile(projectID, fileID).then(
+                () => dropNode(fileID),
+                (err) => displayError(err)
             );
         }
     }
