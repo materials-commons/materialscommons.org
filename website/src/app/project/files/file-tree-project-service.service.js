@@ -34,8 +34,10 @@ function fileTreeProjectService(projectsAPI, gridFiles) {
             });
         },
 
-        deleteProjectDir: function(projectID, dirID) {
-            return projectsAPI(projectID).one('directories', dirID).customDELETE();
+        renameProjectFile: function(projectID, fileID, newFileName) {
+            return projectsAPI(projectID).one('files', fileID).customPUT({
+                name: newFileName
+            });
         }
     };
 }
