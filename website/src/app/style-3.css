@@ -955,7 +955,7 @@ textarea.no-resize {
 }
 
 .splash-header {
-    background: url('../img/splash/bg1.png');
+    background: url('../assets/img/splash/bg1.png');
     background-size: cover;
     height: 102vh;
     margin-top: -45px;
