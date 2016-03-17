@@ -14,16 +14,16 @@
     <!-- endbuild -->
 
     <!-- build:css({.tmp/serve,src}) styles/app.css -->
-    <link href="assets/css/roboto.css" rel="stylesheet">
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <link href="assets/css/zenburn.css" rel="stylesheet">
-    <link href="assets/css/periodic-table.css" rel="stylesheet">
-    <link href="assets/css/fullcalendar.css" rel="stylesheet">
-    <link href="assets/css/ng-tags-input.css" rel="stylesheet">
+    <link href="app/external/css/roboto.css" rel="stylesheet">
+    <link href="app/external/css/bootstrap.css" rel="stylesheet">
+    <link href="app/external/css/zenburn.css" rel="stylesheet">
+    <link href="app/external/css/periodic-table.css" rel="stylesheet">
+    <link href="app/external/css/fullcalendar.css" rel="stylesheet">
+    <link href="app/external/css/ng-tags-input.css" rel="stylesheet">
     <!-- inject:css -->
     <!-- css files will be automatically insert here -->
     <!-- endinject -->
-    <link href="assets/css/style-3.css" rel="stylesheet">
+    <link href="app/style-3.css" rel="stylesheet">
     <!-- endbuild -->
   </head>
   <body layout="column" flex ng-controller="MCAppController as ctrl">
@@ -41,19 +41,19 @@
 
     <!-- build:js({.tmp/serve,.tmp/partials}) scripts/app.js -->
     <!-- get from bower -->
-    <script src="app/external/angular-filter.js"></script>
-    <script src="app/external/TreeModel-min.js"></script>
-    <script src="app/external/lodash.min.js"></script>
-    <script src="app/external/angular-cache-2.3.3.min.js"></script>
+    <script src="app/external/js/angular-filter.js"></script>
+    <script src="app/external/js/TreeModel-min.js"></script>
+    <script src="app/external/js/lodash.min.js"></script>
+    <script src="app/external/js/angular-cache-2.3.3.min.js"></script>
 
     <!-- These are needed for the full size calendar -->
-    <script src="app/external/moment.min.js"></script>
-    <script src="app/external/fullcalendar.js"></script>
-    <script src="app/external/calendar.js"></script>
+    <script src="app/external/js/moment.min.js"></script>
+    <script src="app/external/js/fullcalendar.js"></script>
+    <script src="app/external/js/calendar.js"></script>
     <!-- end get from bower -->
 
     <!-- Our own custom version of flow.js -->
-    <script src="app/external/flow.js"></script>
+    <script src="app/external/js/flow.js"></script>
     <!-- inject:js -->
     <!-- js files will be automatically insert here -->
     <!-- endinject -->
