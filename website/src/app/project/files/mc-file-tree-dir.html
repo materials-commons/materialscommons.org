@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div ng-if="file.data._type === 'file'">
-                    <div>
+                    <div ng-if="file.data.name !== ctrl.placeholderName">
                         <i class="fa fa-fw fa-reorder drag-handle-color"></i>
                         <a ng-click="ctrl.setActive(this, file)" data-nodrag>
                             <span><i class="fa fa-fw fa-file file-tree-icon-color"></i></span>
@@ -28,6 +28,8 @@
                     </div>
                     <div ng-if="file.active">
                         <mc-file-tree-file-controls file="file" project-id="ctrl.projectID"></mc-file-tree-file-controls>
+                    </div>
+                    <div ng-if="file.data.name === ctrl.placeholderName">
                     </div>
                 </div>
             </div>
