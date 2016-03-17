@@ -199,7 +199,13 @@ function MCFileTreeDirControlsComponentController(fileTreeProjectService, fileTr
     }
 
     function deleteFolder() {
-        fileTreeDeleteService.deleteDir(ctrl.projectId, ctrl.file.data.id).then(() => ctrl.node.remove());
+        fileTreeDeleteService.deleteDir(ctrl.projectId, ctrl.file.data.id).then(
+            (success) => {
+                if (success) {
+                    ctrl.node.remove()
+                }
+            }
+        );
     }
 }
 
@@ -213,16 +219,37 @@ angular.module('materialscommons').component('mcFileTreeFileControls', {
     }
 });
 
-function MCFileTreeFileControlsComponentController(fileTreeDeleteService) {
+function MCFileTreeFileControlsComponentController(fileTreeProjectService, fileTreeDeleteService, toastr) {
     'ngInject';
 
     var ctrl = this;
-
+    ctrl.promptForRename = false;
+    ctrl.renameFile = renameFile;
     ctrl.deleteFile = deleteFile;
+    ctrl.newFileName = ctrl.file.data.name;
 
     /////////////////////
 
+    function renameFile() {
+        fileTreeProjectService.renameProjectFile(ctrl.projectId, ctrl.file.data.id, ctrl.newFileName)
+            .then(
+                () => {
+                    ctrl.promptForRename = false;
+                    ctrl.file.data.name = ctrl.newFileName;
+                },
+                (err) => {
+                    console.dir(err);
+                    toastr.error('Rename failed', 'Error', {closeButton: true});
+                }
+            );
+    }
+
     function deleteFile() {
-        fileTreeDeleteService.deleteFile(ctrl.projectId, ctrl.file.data.id).then(() => ctrl.node.remove());
+        fileTreeDeleteService.deleteFile(ctrl.projectId, ctrl.file.data.id).then(
+            (success) => {
+                if (success) {
+                    ctrl.node.remove();
+                }
+            });
     }
 }
