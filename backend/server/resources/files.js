@@ -36,6 +36,7 @@ module.exports = function(files) {
             }
         } else {
             this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: 'Unknown file'};
         }
 
         yield next;
