@@ -1,6 +1,7 @@
 angular.module('materialscommons').factory('fileTreeDeleteService', fileTreeDeleteService);
 
 function fileTreeDeleteService(projectTreeModel, projectsAPI, toastr) {
+
     function deleteProjectDir(projectID, dirID) {
         return projectsAPI(projectID).one('directories', dirID).customDELETE();
     }

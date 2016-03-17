@@ -220,7 +220,6 @@ angular.module('materialscommons').component('mcFileTreeFileControls', {
 });
 
 function MCFileTreeFileControlsComponentController(fileTreeProjectService, fileTreeDeleteService, toastr) {
-    'ngInject';
 
     var ctrl = this;
     ctrl.promptForRename = false;
