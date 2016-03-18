@@ -21,6 +21,16 @@
                     <span><i class="fa fa-fw fa-files-o"></i>Files</span>
                 </md-tab-label>
             </md-tab>
+            <md-tab ng-if="false" ui-sref="project.reports">
+                <md-tab-label>
+                    <span><i class="fa fa-fw fa-bar-chart"></i>Reports</span>
+                </md-tab-label>
+            </md-tab>
+            <md-tab ng-if="false" ui-sref="project.tools">
+                <md-tab-label>
+                    <span><i class="fa fa-fw fa-wrench"></i>Tools</span>
+                </md-tab-label>
+            </md-tab>
             <!--<md-tab ui-sref="project.reviews">-->
             <!--<md-tab-label>-->
             <!--<span><i class="fa fa-fw fa-comment"></i>Reviews</span>-->
@@ -35,7 +45,9 @@
     </div>
     <span flex></span>
     <div class="row" layout-margin>
-        <a class="md-title" style="color: white" ui-sref="project.home">{{$ctrl.project.name}}</a>
+        <a class="md-title" style="color: white" ui-sref="project.home" tooltip="{{$ctrl.project.name}}">
+            {{$ctrl.project.name | truncate:30:'...'}}
+        </a>
         <a style="color:white;" ui-sref="projects.list">change</a>
     </div>
 </div>
