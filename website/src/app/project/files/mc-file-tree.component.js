@@ -19,13 +19,25 @@ function loadEmptyPlaceHolder(dir) {
     });
 }
 
+/*@ngInject*/
 function MCFileTreeComponentController(project, $state, $stateParams, fileTreeProjectService,
-                                       fileTreeMoveService, toastr) {
-    'ngInject';
-
-    var ctrl = this;
-    var proj = project.get();
+                                       fileTreeMoveService, toastr, mcFlow, $timeout) {
+    var ctrl = this,
+        flow = mcFlow.get(),
+        proj = project.get();
     ctrl.projectID = proj.id;
+    ctrl.showUploadsButton = false;
+
+    flow.on('catchAll', () => {
+        $timeout(() => {
+            console.log('got flow event', flow.files.length);
+            if (!ctrl.showUploadsButton && flow.files.length) {
+                ctrl.showUploadsButton = true;
+            } else if (!flow.files.length) {
+                ctrl.showUploadsButton = false;
+            }
+        });
+    });
 
     ctrl.treeOptions = {
         dropped: function(event) {
@@ -81,9 +93,9 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
 }
 
 angular.module('materialscommons').directive('mcFileTreeDir', mcFileTreeDirDirective);
-function mcFileTreeDirDirective(RecursionHelper) {
-    'ngInject';
 
+/*@ngInject*/
+function mcFileTreeDirDirective(RecursionHelper) {
     return {
         restrict: 'E',
         scope: {
@@ -100,9 +112,8 @@ function mcFileTreeDirDirective(RecursionHelper) {
     }
 }
 
+/*@ngInject*/
 function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $state) {
-    'ngInject';
-
     var ctrl = this;
     ctrl.projectID = project.get().id;
     ctrl.files = ctrl.file.children;
@@ -160,9 +171,8 @@ angular.module('materialscommons').component('mcFileTreeDirControls', {
     }
 });
 
+/*@ngInject*/
 function MCFileTreeDirControlsComponentController(fileTreeProjectService, fileTreeDeleteService) {
-    'ngInject';
-
     var ctrl = this;
     ctrl.addFolder = addFolder;
     ctrl.renameFolder = renameFolder;
@@ -219,8 +229,8 @@ angular.module('materialscommons').component('mcFileTreeFileControls', {
     }
 });
 
+/*@ngInject*/
 function MCFileTreeFileControlsComponentController(fileTreeProjectService, fileTreeDeleteService, toastr) {
-
     var ctrl = this;
     ctrl.promptForRename = false;
     ctrl.renameFile = renameFile;

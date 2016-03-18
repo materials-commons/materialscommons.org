@@ -152,6 +152,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/files',
             template: '<mc-file-tree></mc-file-tree>'
         })
+        .state('project.files.uploads', {
+            url: '/uploads',
+            template: '<mc-file-uploads></mc-file-uploads>'
+        })
         .state('project.files.file', {
             url: '/file/:file_id',
             template: '<mc-file></mc-file>'

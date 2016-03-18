@@ -1,6 +1,9 @@
 <div layout="row" layout-fill>
     <md-sidenav flex="30" class="md-whiteframe-4dp" md-is-locked-open="true">
-        <md-content layout-margin>
+        <div ng-if="$ctrl.showUploadsButton" layout="row" layout-align="center center">
+            <md-button class="md-primary" ui-sref="project.files.uploads">show uploads</md-button>
+        </div>
+        <md-content layout-margin flex="100">
             <div ui-tree="$ctrl.treeOptions" data-empty-placeholder-enabled="true">
                 <ol ui-tree-nodes ng-model="$ctrl.files">
                     <li ng-repeat="file in $ctrl.files track by file.data.id" ui-tree-node>
