@@ -32,7 +32,7 @@
                                 <i class="fa fa-fw fa-edit"></i>
                             </a>
                         </div>
-                        <a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" data-nodrag style="color:red">
+                        <a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" data-nodrag style="color:#ff5824">
                             <i class="fa fa-fw fa-remove"></i>
                         </a>
                     </div>
@@ -74,6 +74,15 @@
             <md-button class="md-primary" ng-click="$ctrl.expandAll()">Expand all</md-button>
             <md-button class="md-warn" ng-click="$ctrl.collapseAll()">Collapse all</md-button>
         </div>
+        <md-autocomplete md-selected-item="$ctrl.selectedProcess"
+                         md-item-text="process.name"
+                         md-items="process in $ctrl.getMatches(searchText)"
+                         on-enter="$ctrl.addProcess()"
+                         md-search-text="searchText">
+            <md-item-template>
+                <span md-highlight-text="searchText">{{process.name}}</span>
+            </md-item-template>
+        </md-autocomplete>
         <div ui-tree id="tree-root">
             <ol ui-tree-nodes ng-model="$ctrl.experiment.steps">
                 <li ng-repeat="step in $ctrl.experiment.steps" ui-tree-node ng-include="'experiment-step.html'"></li>

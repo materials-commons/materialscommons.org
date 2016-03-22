@@ -3,7 +3,7 @@ angular.module('materialscommons').component('mcCreateExperiment', {
     controller: MCCreateExperimentComponentController
 });
 
-function MCCreateExperimentComponentController($scope) {
+function MCCreateExperimentComponentController($scope, templates, $filter) {
     console.log('mcCreateExperiment');
     let ctrl = this;
     let last = 0;
@@ -13,6 +13,10 @@ function MCCreateExperimentComponentController($scope) {
     ctrl.remove = remove;
     ctrl.toggle = toggle;
     ctrl.addTopStep = addTopStep;
+    ctrl.getMatches = getMatches;
+    ctrl.addProcess = addProcess;
+
+    let projectTemplates = templates.get();
 
     ctrl.experiment = {
         name: '',
@@ -61,5 +65,14 @@ function MCCreateExperimentComponentController($scope) {
 
     function toggle(node) {
         node.toggle();
+    }
+
+    function getMatches(searchText) {
+        return $filter('filter')(projectTemplates, searchText);
+    }
+
+    function addProcess() {
+        console.log('I would add', ctrl.selectedProcess);
+        ctrl.selectedProcess = '';
     }
 }
