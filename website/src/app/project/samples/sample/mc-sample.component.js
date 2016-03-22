@@ -1,14 +1,20 @@
 angular.module('materialscommons').component('mcSample', {
     templateUrl: 'app/project/samples/sample/mc-sample.html',
-    controller: MCSampleComponentController
+    controller: MCSampleComponentController,
+    bindings: {
+        sampleId: '<',
+        projectId: '<'
+    }
 });
 
-function MCSampleComponentController($stateParams, projectsService) {
-    'ngInject';
-
+/*@ngInject*/
+function MCSampleComponentController(projectsService) {
     var ctrl = this;
-    projectsService.getProjectSample($stateParams.project_id, $stateParams.sample_id)
-        .then(function(sample) {
-            ctrl.sample = sample;
-        });
+    ctrl.sample = null;
+    console.log('MCSampleComponentController', ctrl.projectId, ctrl.sampleId);
+    projectsService.getProjectSample(ctrl.projectId, ctrl.sampleId)
+        .then(
+            (sample) => ctrl.sample = sample,
+            () => console.log('failed to retrieve sample')
+        );
 }

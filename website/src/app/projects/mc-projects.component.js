@@ -3,9 +3,8 @@ angular.module('materialscommons').component('mcProjects', {
     controller: MCProjectsComponentController
 });
 
+/*@ngInject*/
 function MCProjectsComponentController(projectsService, $state, $mdSidenav, sharedProjectsList, toastr) {
-    'ngInject';
-
     var ctrl = this;
     ctrl.isOpen = true;
     ctrl.openProject = openProject;
@@ -18,7 +17,7 @@ function MCProjectsComponentController(projectsService, $state, $mdSidenav, shar
     ctrl.sharingOn = false;
     ctrl.cancelSharing = cancelSharing;
     ctrl.gotoSharing = gotoSharing;
-    ctrl.maxSharedProjects = 3;
+    ctrl.maxSharedProjects = 2;
     sharedProjectsList.clearSharedProjects();
     sharedProjectsList.setMaxProjects(ctrl.maxSharedProjects);
 

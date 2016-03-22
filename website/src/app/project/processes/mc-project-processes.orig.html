@@ -1,0 +1,50 @@
+<div layout="row" layout-fill>
+    <md-sidenav flex="25" class="md-whiteframe-4dp"
+                md-is-locked-open="true">
+        <div layout="column" layout-align="center end">
+            <mc-new-process-menu button-name="CREATE NEW PROCESS"
+                                 button-class="md-primary"
+                                 button-icon="fa-plus">
+            </mc-new-process-menu>
+        </div>
+        <md-input-container md-no-float style="margin-top: 0; margin-bottom: 0; margin-left: 6px; margin-right: 6px;">
+            <input placeholder="Search processes..." ng-model="$ctrl.searchText">
+        </md-input-container>
+        <div layout-align="space-around center" style="margin-left:6px;">
+            <span>Sort:</span>
+            <span flex></span>
+            <md-button style="margin-top:0">Date</md-button>
+            <md-button style="margin-top:0"><i class="fa fa-fw fa-arrow-down"></i>A-Z</md-button>
+        </div>
+        <md-divider></md-divider>
+        <md-content>
+            <ul class="sidebar-menu">
+                <li ng-repeat="process in $ctrl.processes | filter:$ctrl.searchText | orderBy:'name'">
+                    <md-button ui-sref="project.processes.process({process_id: process.id})"
+                               style="text-transform: none">
+                        <div layout="column" layout-align="start start">
+                            <span style="line-height: 20px; margin-top:12px">{{process.name}}</span>
+                            <p style="line-height: 20px" class="truncate-text">{{process.description}}</p>
+                            <div layout="row" layout-fill layout-align="space-between center">
+                                <span><i class="fa fa-fw fa-flask"></i>{{process.transforms}}</span>
+                                <span>
+                                    <i data-placement="right" data-toggle="tooltip" title="Files"
+                                       class="fa fa-fw fa-files-o file"></i>{{process.linked_files.length}}
+                                </span>
+                                <!--<span><composition properties="s.properties"></composition></span>-->
+                                <span>
+                                    <i data-placement="right" data-toggle="tooltip" title="Owner"
+                                       class="fa fa-fw fa-user"></i>{{process.owner}}
+                                </span>
+                            </div>
+                            <md-divider></md-divider>
+                        </div>
+                    </md-button>
+                </li>
+            </ul>
+        </md-content>
+    </md-sidenav>
+    <md-content flex>
+        <div ui-view></div>
+    </md-content>
+</div>

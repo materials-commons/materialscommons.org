@@ -1,4 +1,5 @@
 import './mc-project-processes.component';
+import './mc-project-processes-table.component';
 import './process/mc-process.component';
 import './process/create/components/periodic-table.directive';
 import './process/create/components/processing-settings.directive';

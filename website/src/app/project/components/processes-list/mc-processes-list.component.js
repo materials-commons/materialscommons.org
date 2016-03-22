@@ -6,11 +6,12 @@ angular.module('materialscommons').component('mcProcessesList', {
     }
 });
 
+/*@ngInject*/
 function MCProcessesListComponentController() {
-    'ngInject';
-
     var ctrl = this;
     ctrl.selectProcess = selectProcess;
+
+    //console.log('MCProcessesListComponentController', ctrl.processes.length);
 
     //////////////////////////
 
