@@ -1,6 +1,5 @@
+/*ngInject*/
 export function setupRoutes($stateProvider, $urlRouterProvider) {
-    'ngInject';
-
     $stateProvider
         .state('login', {
             url: '/login',
@@ -108,7 +107,20 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.processes', {
             url: '/processes',
-            template: '<mc-project-processes></mc-project-processes>'
+            template: '<mc-project-processes processes="ctrl.processes"></mc-project-processes>',
+            controllerAs: 'ctrl',
+            controller: ['projectsService', '$stateParams', 'toastr',
+                function(projectsService, $stateParams, toastr) {
+                    var ctrl = this;
+                    ctrl.processes = [];
+                    projectsService.getProjectProcesses($stateParams.project_id).then(
+                        (processes) => {
+                            console.dir(processes);
+                            ctrl.processes = processes;
+                        },
+                        () => toastr.error('Unable to retrieve project processes', 'Error', {closeButton: true})
+                    )
+                }]
         })
         .state('project.processes.process', {
             url: '/process/:process_id',
@@ -142,7 +154,20 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.samples', {
             url: '/samples',
-            template: '<mc-project-samples></mc-project-samples>'
+            template: '<mc-project-samples samples="ctrl.samples"></mc-project-samples>',
+            controllerAs: 'ctrl',
+            controller: ['samplesService', '$stateParams', 'toastr',
+                function(samplesService, $stateParams, toastr) {
+                    var ctrl = this;
+                    ctrl.samples = [];
+                    samplesService.getProjectSamples($stateParams.project_id).then(
+                        (samples) => {
+                            //console.dir(samples);
+                            ctrl.samples = samples;
+                        },
+                        (err) => toastr.error('Error retrieving samples for project', 'Error', {closeButton: true})
+                    );
+                }]
         })
         .state('project.samples.sample', {
             url: '/sample/:sample_id',
