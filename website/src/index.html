@@ -33,8 +33,8 @@
 <![endif]-->
 <navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
 <mc-project-navbar ng-if="ctrl.inProject()"></mc-project-navbar>
-<md-content>
-    <div ui-view></div>
+<md-content flex>
+    <div ui-view layout-fill></div>
 </md-content>
 <!--<md-content>-->
 <!--<div ng-repeat="item in ctrl.items">-->
