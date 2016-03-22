@@ -16,6 +16,6 @@ function MCProcessesListComponentController() {
     //////////////////////////
 
     function selectProcess(process) {
-        //console.log('selectProcess', process);
+        console.log('selectProcess', process);
     }
 }

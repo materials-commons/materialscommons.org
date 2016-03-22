@@ -165,7 +165,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                             //console.dir(samples);
                             ctrl.samples = samples;
                         },
-                        (err) => toastr.error('Error retrieving samples for project', 'Error', {closeButton: true})
+                        () => toastr.error('Error retrieving samples for project', 'Error', {closeButton: true})
                     );
                 }]
         })
