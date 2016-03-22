@@ -1,0 +1,84 @@
+<!-- Nested node template -->
+<script type="text/ng-template" id="experiment-step.html">
+    <div ui-tree-handle class="experiment-step tree-node-content" flex="80">
+        <md-card>
+            <md-card-header class="md-mc-step-card-header">
+                <md-card-avatar>
+                    <a data-nodrag ng-click="$ctrl.toggle(this)">
+                        <i class="fa fa-fw"
+                           ng-class="{'fa-chevron-right': collapsed, 'fa-chevron-down': !collapsed}"></i>
+                    </a>
+                </md-card-avatar>
+                <md-card-header-text>
+                    <div layout="row" layout-align="space-between start">
+                        <div>
+                            <md-input-container md-no-float ng-if="step.edit" data-nodrag style="bottom:23px">
+                                <input type="text" ng-model="step.title" placeholder="Name..."
+                                       on-enter="step.edit = false">
+                            </md-input-container>
+                            <span ng-if="!step.edit" class="md-title">{{step.title | truncate:40:'...'}}</span>
+                            <a ng-if="!step.edit" ng-click="step.edit = !step.edit" data-nodrag>
+                                <i class="fa fa-fw fa-edit"></i>
+                            </a>
+                            <md-input-container md-no-float ng-if="step.editDescription" data-nodrag>
+                                    <input type="text" ng-model="step.description" placeholder="Description..."
+                                           on-enter="step.editDescription = false">
+                            </md-input-container>
+                            <span ng-if="!step.editDescription" class="md-subhead">
+                                {{step.description | truncate:40}}
+                            </span>
+                            <a ng-if="!step.editDescription"
+                               ng-click="step.editDescription = !step.editDescription" data-nodrag>
+                                <i class="fa fa-fw fa-edit"></i>
+                            </a>
+                        </div>
+                        <a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" data-nodrag style="color:red">
+                            <i class="fa fa-fw fa-remove"></i>
+                        </a>
+                    </div>
+                </md-card-header-text>
+            </md-card-header>
+            <img ng-if="step.image" ng-src="{{step.image}}" class="md-card-image">
+            <md-card-actions layout="row" layout-align="start center">
+                <a class="md-primary text-uppercase" data-nodrag ng-click="$ctrl.newStep(this)">
+                    <i class="fa fa-fw fa-plus"></i> add child step
+                </a>
+                <span flex></span>
+            </md-card-actions>
+        </md-card>
+    </div>
+    <ol ui-tree-nodes="" ng-model="step.steps" ng-class="{hidden: collapsed}">
+        <li ng-repeat="step in step.steps" ui-tree-node ng-include="'experiment-step.html'">
+        </li>
+    </ol>
+</script>
+
+<div layout="row" layout-fill layout-margin>
+    <div flex="25" layout="column">
+        <p>You are creating a new experiment. Please add some details.</p>
+        <md-input-container md-no-float>
+            <input type="text" placeholder="Name your experiment..." ng-model="$ctrl.experiment.name">
+        </md-input-container>
+        <md-input-container md-no-float>
+            <textarea placeholder="Description..." ng-model="$ctrl.experiment.description"></textarea>
+        </md-input-container>
+        <md-input-container md-no-float>
+            <textarea placeholder="Goal..." ng-model="$ctrl.experiment.goal"></textarea>
+        </md-input-container>
+    </div>
+    <div layout="column" flex="50">
+        <div layout="row">
+            <md-button class="md-primary" ng-click="$ctrl.addTopStep()">
+                <i class="fa fa-fw fa-plus"></i>add step
+            </md-button>
+            <md-button class="md-primary" ng-click="$ctrl.expandAll()">Expand all</md-button>
+            <md-button class="md-warn" ng-click="$ctrl.collapseAll()">Collapse all</md-button>
+        </div>
+        <div ui-tree id="tree-root">
+            <ol ui-tree-nodes ng-model="$ctrl.experiment.steps">
+                <li ng-repeat="step in $ctrl.experiment.steps" ui-tree-node ng-include="'experiment-step.html'"></li>
+            </ol>
+        </div>
+    </div>
+    <span flex="10"></span>
+</div>

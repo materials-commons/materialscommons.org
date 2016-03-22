@@ -113,6 +113,11 @@ a {
     background-color: #d1d1d1;
 }
 
+.md-mc-step-card-header {
+    background-color: #1565c0;
+    color: white;
+}
+
 .mc-md-file-tree-bg {
     background-color: #1565c0;
 }
