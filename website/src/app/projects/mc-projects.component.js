@@ -25,6 +25,11 @@ function MCProjectsComponentController(projectsService, $state, $mdSidenav, shar
         ctrl.projects = projects;
     });
 
+    ctrl.items = [];
+    for (var i = 0; i < 1000; i++) {
+        ctrl.items.push(i);
+    }
+
     ///////////////////////
 
     function openProject(project) {
