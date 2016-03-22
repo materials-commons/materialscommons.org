@@ -17,6 +17,7 @@ function MCProjectSamplesComponentController($mdDialog, $stateParams) {
     ctrl.sample = null;
     ctrl.projectId = $stateParams.project_id;
     ctrl.sidebarOpen = false;
+    ctrl.sortOrder = 'name';
 
     ctrl.showGroupsChanged = showGroupsChanged;
     ctrl.showGroupsFilter = {
