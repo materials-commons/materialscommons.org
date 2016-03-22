@@ -1,6 +1,6 @@
 <!doctype html>
 <html ng-app="materialscommons" ng-strict-di>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Materials Commons</title>
     <meta name="description" content="">
@@ -25,43 +25,53 @@
     <!-- endinject -->
     <link href="app/style-3.css" rel="stylesheet">
     <!-- endbuild -->
-  </head>
-  <body layout="column" flex ng-controller="MCAppController as ctrl">
-    <!--[if lt IE 10]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    <navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
-    <div ui-view flex layout-fill></div>
+</head>
+<body layout="column" flex ng-controller="MCAppController as ctrl">
+<!--[if lt IE 10]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+<navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
+<mc-project-navbar ng-if="ctrl.inProject()"></mc-project-navbar>
+<md-content>
+    <div ui-view></div>
+</md-content>
+<!--<md-content>-->
+<!--<div ng-repeat="item in ctrl.items">-->
+<!--{{item}}-->
+<!--</div>-->
+<!--</md-content>-->
 
-    <!-- build:js(src) scripts/vendor.js -->
-    <!-- bower:js -->
-    <!-- run `gulp inject` to automatically populate bower script dependencies -->
-    <!-- endbower -->
-    <!-- get from bower -->
-    <script src="app/external/js/angular-filter.js"></script>
-    <script src="app/external/js/TreeModel-min.js"></script>
-    <script src="app/external/js/lodash.min.js"></script>
-    <script src="app/external/js/angular-cache-2.3.3.min.js"></script>
 
-    <!-- These are needed for the full size calendar -->
-    <script src="app/external/js/moment.min.js"></script>
-    <script src="app/external/js/fullcalendar.js"></script>
-    <script src="app/external/js/calendar.js"></script>
-    <!-- end get from bower -->
+<!-- build:js(src) scripts/vendor.js -->
+<!-- bower:js -->
+<!-- run `gulp inject` to automatically populate bower script dependencies -->
+<!-- endbower -->
+<!-- get from bower -->
+<script src="app/external/js/angular-filter.js"></script>
+<script src="app/external/js/TreeModel-min.js"></script>
+<script src="app/external/js/lodash.min.js"></script>
+<script src="app/external/js/angular-cache-2.3.3.min.js"></script>
 
-    <!-- Our own custom version of flow.js -->
-    <script src="app/external/js/flow.js"></script>
-    <!-- endbuild -->
+<!-- These are needed for the full size calendar -->
+<script src="app/external/js/moment.min.js"></script>
+<script src="app/external/js/fullcalendar.js"></script>
+<script src="app/external/js/calendar.js"></script>
+<!-- end get from bower -->
 
-    <!-- build:js({.tmp/serve,.tmp/partials}) scripts/app.js -->
-    <!-- inject:js -->
-    <!-- js files will be automatically insert here -->
-    <!-- endinject -->
+<!-- Our own custom version of flow.js -->
+<script src="app/external/js/flow.js"></script>
+<!-- endbuild -->
 
-    <!-- inject:partials -->
-    <!-- angular templates will be automatically converted in js and inserted here -->
-    <!-- endinject -->
-    <!-- endbuild -->
+<!-- build:js({.tmp/serve,.tmp/partials}) scripts/app.js -->
+<!-- inject:js -->
+<!-- js files will be automatically insert here -->
+<!-- endinject -->
 
-  </body>
+<!-- inject:partials -->
+<!-- angular templates will be automatically converted in js and inserted here -->
+<!-- endinject -->
+<!-- endbuild -->
+
+</body>
 </html>
