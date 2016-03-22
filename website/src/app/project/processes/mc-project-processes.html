@@ -1,27 +1,41 @@
-<div layout="column" layout-margin>
-    <md-toolbar style="background-color:white">
-        <div layout="row" layout-align="start center" layout-margin>
-            <md-input-container md-no-float>
-                <input type="text" ng-model="$ctrl.query" placeholder="filter...">
-            </md-input-container>
-            <span flex></span>
-            <a ng-click="$ctrl.showTableView = true"
-               ng-style="!$ctrl.showTableView && {'color': 'black'}">
-                <i class="fa fa-fw fa-th-list" style="margin-bottom: 15px"></i>
-            </a>
-            <a ng-click="$ctrl.showTableView = false"
-               ng-style="$ctrl.showTableView && {'color': 'black'}">
-                <i class="fa fa-fw fa-th" style="margin-bottom: 15px"></i>
-            </a>
-            <span flex="5"></span>
-        </div>
-    </md-toolbar>
-    <div layout="row">
-        <div ng-if="$ctrl.showTableView">
-            <mc-project-processes-table processes="$ctrl.processes" filter-by="$ctrl.query"></mc-project-processes-table>
-        </div>
-        <div ng-if="!$ctrl.showTableView">
-            Show card view
+<div layout="row" layout-fill layout-margin layout-align="start start">
+    <span flex="10"></span>
+    <div layout="column" flex="80" md-whiteframe layout-align="start stretch">
+        <md-toolbar style="background-color:white" flex="100">
+            <div layout="row" layout-align="start center" style="background-color:#e9e9e9; padding-left:8px; padding-right:8px">
+                <md-input-container md-no-float style="margin-top: 5px; margin-bottom:5px">
+                    <input type="text" ng-model="$ctrl.query" placeholder="SEARCH...">
+                    <md-icon md-font-icon="fa-search" class="fa"
+                             style="display:inline-block; color:grey; bottom: 23px"></md-icon>
+                </md-input-container>
+                <span flex></span>
+                <a ng-click="$ctrl.showTableView = true"
+                   ng-style="!$ctrl.showTableView && {'color': 'black'}">
+                    <i class="fa fa-fw fa-th-list" style="margin-bottom: 15px"></i>
+                </a>
+                <a ng-click="$ctrl.showTableView = false"
+                   ng-style="$ctrl.showTableView && {'color': 'black'}">
+                    <i class="fa fa-fw fa-th" style="margin-bottom: 15px"></i>
+                </a>
+            </div>
+            <div layout="row" layout-align="start center" style="color: black;background-color:#f4f5f7; padding-left:8px;padding-right:8px">
+                <h3 class="md-title" style="color:black">PROCESSES</h3>
+                <span flex="20"></span>
+                <mc-new-process-menu button-name="CREATE NEW PROCESS"
+                                     button-class="md-primary md-raised"
+                                     button-icon="fa-plus" style="color:black">
+                </mc-new-process-menu>
+            </div>
+        </md-toolbar>
+        <div layout="row" layout-align="center stretch">
+            <div ng-if="$ctrl.showTableView">
+                <mc-project-processes-table processes="$ctrl.processes"
+                                            filter-by="$ctrl.query"></mc-project-processes-table>
+            </div>
+            <div ng-if="!$ctrl.showTableView">
+                Show card view
+            </div>
         </div>
     </div>
+    <span flex="10"></span>
 </div>
