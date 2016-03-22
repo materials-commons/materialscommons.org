@@ -115,7 +115,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     ctrl.processes = [];
                     projectsService.getProjectProcesses($stateParams.project_id).then(
                         (processes) => {
-                            console.dir(processes);
+                            //console.dir(processes);
                             ctrl.processes = processes;
                         },
                         () => toastr.error('Unable to retrieve project processes', 'Error', {closeButton: true})
