@@ -1,8 +1,20 @@
 <!-- Nested node template -->
 <script type="text/ng-template" id="experiment-step.html">
-    <div ui-tree-handle class="experiment-step tree-node-content" flex="80">
-        <md-card>
-            <md-card-header class="md-mc-step-card-header">
+    <div ui-tree-handle class="experiment-step tree-node-content" flexx="80">
+        <md-card md-whiteframe>
+            <!--<md-card-title layout="row">-->
+                <!--<md-card-title-text>-->
+                    <!--<a data-nodrag ng-click="$ctrl.toggle(this)">-->
+                        <!--<i class="fa fa-fw"-->
+                           <!--ng-class="{'fa-chevron-right': collapsed, 'fa-chevron-down': !collapsed}"></i>-->
+                    <!--</a>-->
+                    <!--<span class="md-title">{{step.title}}</span>-->
+                    <!--<a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" data-nodrag style="color:#ff5824">-->
+                        <!--<i class="fa fa-fw fa-remove"></i>-->
+                    <!--</a>-->
+                <!--</md-card-title-text>-->
+            <!--</md-card-title>-->
+            <md-card-header>
                 <md-card-avatar>
                     <a data-nodrag ng-click="$ctrl.toggle(this)">
                         <i class="fa fa-fw"
@@ -11,40 +23,21 @@
                 </md-card-avatar>
                 <md-card-header-text>
                     <div layout="row" layout-align="space-between start">
-                        <div>
-                            <md-input-container md-no-float ng-if="step.edit" data-nodrag style="bottom:23px">
-                                <input type="text" ng-model="step.title" placeholder="Name..."
-                                       on-enter="step.edit = false">
-                            </md-input-container>
-                            <span ng-if="!step.edit" class="md-title">{{step.title | truncate:40:'...'}}</span>
-                            <a ng-if="!step.edit" ng-click="step.edit = !step.edit" data-nodrag>
-                                <i class="fa fa-fw fa-edit"></i>
-                            </a>
-                            <md-input-container md-no-float ng-if="step.editDescription" data-nodrag>
-                                    <input type="text" ng-model="step.description" placeholder="Description..."
-                                           on-enter="step.editDescription = false">
-                            </md-input-container>
-                            <span ng-if="!step.editDescription" class="md-subhead">
-                                {{step.description | truncate:40}}
-                            </span>
-                            <a ng-if="!step.editDescription"
-                               ng-click="step.editDescription = !step.editDescription" data-nodrag>
-                                <i class="fa fa-fw fa-edit"></i>
-                            </a>
-                        </div>
+                        <span class="md-title">{{step.title | truncate:40:'...'}}</span>
+                        <a ng-click="$ctrl.promptForRepeat(step)"><i class="fa fa-fw fa-repeat"></i></a>
                         <a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" data-nodrag style="color:#ff5824">
                             <i class="fa fa-fw fa-remove"></i>
                         </a>
                     </div>
                 </md-card-header-text>
             </md-card-header>
-            <img ng-if="step.image" ng-src="{{step.image}}" class="md-card-image">
-            <md-card-actions layout="row" layout-align="start center">
-                <a class="md-primary text-uppercase" data-nodrag ng-click="$ctrl.newStep(this)">
-                    <i class="fa fa-fw fa-plus"></i> add child step
-                </a>
-                <span flex></span>
-            </md-card-actions>
+            <!--<img ng-if="step.image" ng-src="{{step.image}}" class="md-card-image">-->
+            <!--<md-card-actions layout="row" layout-align="start center">-->
+                <!--<a class="md-primary text-uppercase" data-nodrag ng-click="$ctrl.newStep(this)">-->
+                    <!--<i class="fa fa-fw fa-plus"></i> add child step-->
+                <!--</a>-->
+                <!--<span flex></span>-->
+            <!--</md-card-actions>-->
         </md-card>
     </div>
     <ol ui-tree-nodes="" ng-model="step.steps" ng-class="{hidden: collapsed}">
@@ -66,7 +59,7 @@
             <textarea placeholder="Goal..." ng-model="$ctrl.experiment.goal"></textarea>
         </md-input-container>
     </div>
-    <div layout="column" flex="50">
+    <div layout="column" flex="20">
         <div layout="row">
             <md-button class="md-primary" ng-click="$ctrl.addTopStep()">
                 <i class="fa fa-fw fa-plus"></i>add step
@@ -77,13 +70,21 @@
         <md-autocomplete md-selected-item="$ctrl.selectedProcess"
                          md-item-text="process.name"
                          md-items="process in $ctrl.getMatches(searchText)"
+                         md-selected-item-change="$ctrl.addProcess()"
+                         md-delay="200"
+                         md-no-cache="true"
+                         placeholder="Choose process..."
                          on-enter="$ctrl.addProcess()"
-                         md-search-text="searchText">
+                         md-search-text="$ctrl.searchText">
             <md-item-template>
-                <span md-highlight-text="searchText">{{process.name}}</span>
+                <span md-highlight-text="$ctrl.searchText">{{process.name}}</span>
             </md-item-template>
+            <md-not-found>
+                Unknown process {{$ctrl.searchText}}
+                <a ng-click="$ctrl.newProcessEntry($ctrl.searchText)">Click to create new process type</a>
+            </md-not-found>
         </md-autocomplete>
-        <div ui-tree id="tree-root">
+        <div ui-tree id="tree-root" ng-if="$ctrl.experiment.steps.length">
             <ol ui-tree-nodes ng-model="$ctrl.experiment.steps">
                 <li ng-repeat="step in $ctrl.experiment.steps" ui-tree-node ng-include="'experiment-step.html'"></li>
             </ol>
