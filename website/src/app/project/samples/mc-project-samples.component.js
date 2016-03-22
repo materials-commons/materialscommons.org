@@ -94,7 +94,6 @@ function MCProjectSamplesComponentController($mdDialog, $stateParams) {
 /*@ngInject*/
 function ShowProcessesDialogController($mdDialog) {
     var ctrl = this;
-    console.dir(ctrl.processes);
     ctrl.closeDialog = function() {
         $mdDialog.hide();
     }
