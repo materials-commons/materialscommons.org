@@ -1,8 +1,8 @@
-<div layout="column" layout-fill>
+<div layout="column" layout-margin>
     <md-toolbar style="background-color:white">
         <div layout="row">
-            <md-input-container>
-                <input type="text" ng-model="$ctrl.query">
+            <md-input-container md-no-float>
+                <input type="text" ng-model="$ctrl.query" placeholder="SEARCH...">
             </md-input-container>
         </div>
     </md-toolbar>
@@ -21,7 +21,7 @@
                 </tr>
                 </thead>
                 <tbody md-body>
-                <tr md-row class="md-row-hover pointer" ng-repeat="sample in $ctrl.samples | filter:$ctrl.query">
+                <tr md-row class="md-row-hover pointer" ng-repeat="sample in $ctrl.samples | filter:$ctrl.query | orderBy:$ctrl.sortOrder">
                     <td md-cell>
                         <a class="md-primary" ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
                     </td>
