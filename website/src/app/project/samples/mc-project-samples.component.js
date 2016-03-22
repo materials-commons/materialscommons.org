@@ -67,19 +67,24 @@ function MCProjectSamplesComponentController($mdDialog, $stateParams) {
             controller: ShowSampleDialogController,
             controllerAs: 'ctrl',
             bindToController: true
-        })
+        });
     }
 
     function showProcesses(processes) {
         console.dir(processes);
         $mdDialog.show({
             template: `
-                <md-button class="md-warn" ng-click="ctrl.closeDialog()">close</md-button>
-                <md-list>
-                    <md-list-item ng-repeat="process in ctrl.processes">
-                        {{process.name}}
-                    </md-list-item>
-                </md-list>`,
+                <md-dialog>
+                    <md-dialog-content>
+                        <md-button class="md-warn" ng-click="ctrl.closeDialog()">close</md-button>
+                        <md-list>
+                            <md-list-item ng-repeat="process in ctrl.processes">
+                                {{process.name}}
+                            </md-list-item>
+                        </md-list>
+                    </md-dialog-content>
+                </md-dialog>
+                `,
             locals: {
                 processes: processes
             },
@@ -87,7 +92,7 @@ function MCProjectSamplesComponentController($mdDialog, $stateParams) {
             controllerAs: 'ctrl',
             bindToController: true,
             fullscreen: true
-        })
+        });
     }
 }
 

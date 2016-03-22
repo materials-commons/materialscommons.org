@@ -3,7 +3,8 @@ angular.module('materialscommons').component('mcCreateExperiment', {
     controller: MCCreateExperimentComponentController
 });
 
-function MCCreateExperimentComponentController($scope, templates, $filter) {
+/*@ngInject*/
+function MCCreateExperimentComponentController($scope, templates, $filter, $mdDialog) {
     console.log('mcCreateExperiment');
     let ctrl = this;
     let last = 0;
@@ -15,16 +16,17 @@ function MCCreateExperimentComponentController($scope, templates, $filter) {
     ctrl.addTopStep = addTopStep;
     ctrl.getMatches = getMatches;
     ctrl.addProcess = addProcess;
+    ctrl.newProcessEntry = newProcessEntry;
+    ctrl.searchText= '';
 
-    let projectTemplates = templates.get();
+    ctrl.projectTemplates = templates.get();
+    //console.dir(projectTemplates);
 
     ctrl.experiment = {
         name: '',
         goal: '',
         description:'',
-        steps: [
-            {title: '', steps:[], edit: true, editDescription: false, description: ''}
-        ]
+        steps: []
     };
 
     /////////////////////////
@@ -49,9 +51,10 @@ function MCCreateExperimentComponentController($scope, templates, $filter) {
         last++;
     }
 
-    function addTopStep() {
+    function addTopStep(title) {
+        let experimentTitle = title ? title : '';
         ctrl.experiment.steps.push({
-            title: '',
+            title: experimentTitle,
             steps: [],
             edit: true,
             editDescription: false,
@@ -67,12 +70,83 @@ function MCCreateExperimentComponentController($scope, templates, $filter) {
         node.toggle();
     }
 
-    function getMatches(searchText) {
-        return $filter('filter')(projectTemplates, searchText);
+    function getMatches() {
+        //console.dir(ctrl.projectTemplates);
+        console.log(ctrl.projectTemplates.length);
+        let v = $filter('filter')(ctrl.projectTemplates, ctrl.searchText);
+        console.log('v is', v);
+        return v;
     }
 
     function addProcess() {
-        console.log('I would add', ctrl.selectedProcess);
-        ctrl.selectedProcess = '';
+        if (ctrl.selectedProcess) {
+            console.log('I would add', ctrl.selectedProcess);
+            addTopStep(ctrl.selectedProcess.name);
+            ctrl.selectedProcess = undefined;
+            ctrl.searchText = '';
+        } else if (ctrl.searchText !== '') {
+            // enter hit on a partial, they want to create a new entry
+            newProcessEntry(ctrl.searchText);
+        }
     }
+
+    function newProcessEntry(processName) {
+        console.log('newProcessEntry');
+        ctrl.selectedProcess = undefined;
+        ctrl.searchText = '';
+        $mdDialog.show({
+            template: `
+                <md-dialog flex="40">
+                    <md-toolbar layout="row">
+                        <div layout-margin>
+                            <h3>Create Process</h3>
+                         </div>
+                    </md-toolbar>
+                    <md-dialog-content layout-margin>
+                       <form layout="column" flex="40" style="margin-top:10px;">
+                            <md-input-container md-no-float>
+                                <label>Process name</label>
+                                <input ng-model="ctrl.process.name" ng-disabled="true">
+                            </md-input-container>
+                            <md-input-container md-no-float>
+                                <input type="text" ng-model="ctrl.process.description" placeholder="Description...">
+                            </md-input-container>
+                            <md-checkbox ng-model="ctrl.process.does_transform">
+                                Process transforms inputs
+                            </md-checkbox>
+                       </form>
+                    </md-dialog-content>
+                    <md-dialog-actions layout="row" style="background-color:#e5e5e5">
+                        <md-button class="md-primary" ng-click="ctrl.done()">done</md-button>
+                        <md-button class="md-warn" ng-click="ctrl.cancel()">cancel</md-button>
+                    </md-dialog-actions>
+                </md-dialog>
+                `,
+            locals: {
+                processName: processName
+            },
+            controller: CreateProcessDialogController,
+            controllerAs: 'ctrl',
+            bindToController: true,
+            fullscreen: true
+        }).then((p) => {
+            console.log('I would create a new process type', p);
+            ctrl.projectTemplates.push(p);
+            console.dir(ctrl.projectTemplates);
+            addTopStep(p.name);
+        });
+    }
+}
+
+/*@ngInject*/
+function CreateProcessDialogController($mdDialog) {
+    let ctrl = this;
+    ctrl.process = {
+        name: ctrl.processName,
+        description: '',
+        does_transform: false
+    };
+
+    ctrl.done = () => $mdDialog.hide(ctrl.process);
+    ctrl.cancel = () => $mdDialog.cancel();
 }
