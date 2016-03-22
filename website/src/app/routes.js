@@ -84,6 +84,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<div ui-view></div>'
         })
+        .state('project.create.experiment', {
+            url: '/experiment',
+            template: '<mc-create-experiment></mc-create-experiment>'
+        })
         .state('project.create.process', {
             url: '/process/:template_id/:process_id',
             template: '<mc-process-create></mc-process-create>',
@@ -104,6 +108,15 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                         }
                     }]
             }
+        })
+        .state('project.experiments', {
+            url: '/experiments',
+            template: '<mc-project-experiments experiments="ctrl.experiments"></mc-project-experiments>',
+            controllerAs: 'ctrl',
+            controller: [function() {
+                let ctrl = this;
+                ctrl.experiments = [];
+            }]
         })
         .state('project.processes', {
             url: '/processes',
