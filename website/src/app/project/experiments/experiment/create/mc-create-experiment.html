@@ -38,7 +38,7 @@
 <div layout="row" layout-fill layout-margin>
     <md-content flex="25">
         <div layout="column">
-            <p>You are creating a new experiment. Please add some details.</p>
+            <h3>Experiment</h3>
             <md-input-container md-no-float>
                 <input type="text" placeholder="Name your experiment..." ng-model="$ctrl.experiment.name">
             </md-input-container>
@@ -52,27 +52,43 @@
     </md-content>
     <md-content flex>
         <div layout="column">
-            <div layout="row">
-                <md-button class="md-primary" ng-click="$ctrl.expandAll()">Expand all</md-button>
-                <md-button class="md-warn" ng-click="$ctrl.collapseAll()">Collapse all</md-button>
+            <div layout="row" layout-align="space-between center">
+                <div>
+                    <md-button class="md-primary" ng-click="$ctrl.addHeadings = true; $ctrl.addProcesses = false">
+                        Add Headings
+                    </md-button>
+                    <md-button class="md-primary" ng-click="$ctrl.addProcesses = true; $ctrl.addHeadings = false">
+                        Add Processes
+                    </md-button>
+                </div>
+                <div>
+                    <md-button class="md-primary" ng-click="$ctrl.expandAll()">Expand all</md-button>
+                    <md-button class="md-warn" ng-click="$ctrl.collapseAll()">Collapse all</md-button>
+                </div>
             </div>
-            <md-autocomplete md-selected-item="$ctrl.selectedProcess"
-                             md-item-text="process.name"
-                             md-items="process in $ctrl.getMatches(searchText)"
-                             md-selected-item-change="$ctrl.addProcess()"
-                             md-delay="200"
-                             md-no-cache="true"
-                             placeholder="Choose process..."
-                             on-enter="$ctrl.addProcess()"
-                             md-search-text="$ctrl.searchText">
-                <md-item-template>
-                    <span md-highlight-text="$ctrl.searchText">{{process.name}}</span>
-                </md-item-template>
-                <md-not-found>
-                    Unknown process {{$ctrl.searchText}}
-                    <a ng-click="$ctrl.newProcessEntry($ctrl.searchText)">Click to create new process type</a>
-                </md-not-found>
-            </md-autocomplete>
+            <div ng-if="$ctrl.addProcesses">
+                <md-autocomplete md-selected-item="$ctrl.selectedProcess"
+                                 md-item-text="process.name"
+                                 md-items="process in $ctrl.getMatches(searchText)"
+                                 md-selected-item-change="$ctrl.addProcess()"
+                                 md-delay="200"
+                                 md-no-cache="true"
+                                 placeholder="Choose process..."
+                                 on-enter="$ctrl.addProcess()"
+                                 md-search-text="$ctrl.searchText">
+                    <md-item-template>
+                        <span md-highlight-text="$ctrl.searchText">{{process.name}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        Unknown process {{$ctrl.searchText}}
+                        <a ng-click="$ctrl.newProcessEntry($ctrl.searchText)">Click to create new process type</a>
+                    </md-not-found>
+                </md-autocomplete>
+            </div>
+            <md-input-container ng-if="$ctrl.addHeadings" md-no-float>
+                <input type="text" on-enter="$ctrl.addHeading()"
+                       ng-model="$ctrl.heading" placeholder="Heading...">
+            </md-input-container>
             <div ui-tree id="tree-root" ng-if="$ctrl.experiment.steps.length">
                 <ol ui-tree-nodes ng-model="$ctrl.experiment.steps">
                     <li ng-repeat="step in $ctrl.experiment.steps" ui-tree-node
@@ -82,5 +98,8 @@
         </div>
     </md-content>
     <md-content flex="35">
+        <div layout="column">
+            <h3></h3>
+        </div>
     </md-content>
 </div>
