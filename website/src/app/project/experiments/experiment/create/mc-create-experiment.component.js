@@ -8,6 +8,8 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
     console.log('mcCreateExperiment');
     let ctrl = this;
     let last = 0;
+    ctrl.addHeadings = true;
+    ctrl.addProcesses = false;
     ctrl.expandAll = expandAll;
     ctrl.collapseAll = collapseAll;
     ctrl.newStep = newStep;
