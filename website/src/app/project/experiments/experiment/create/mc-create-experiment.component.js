@@ -17,7 +17,12 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
     ctrl.getMatches = getMatches;
     ctrl.addProcess = addProcess;
     ctrl.newProcessEntry = newProcessEntry;
+    ctrl.toggleSelected = toggleSelected;
+    ctrl.selectedStep = null;
     ctrl.searchText= '';
+
+    ctrl.items = [];
+    for(var i = 0; i < 1000; i++) { ctrl.items.push(i); }
 
     ctrl.projectTemplates = templates.get();
     //console.dir(projectTemplates);
@@ -46,7 +51,8 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
             steps: [],
             edit: true,
             editDescription: false,
-            description: ''
+            description: '',
+            selected: false
         });
         last++;
     }
@@ -58,8 +64,21 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
             steps: [],
             edit: true,
             editDescription: false,
-            description: ''
+            description: '',
+            selected: false
         });
+    }
+
+    function addToSelected(title) {
+        let experimentTitle = title ? title : '';
+        ctrl.selectedStep.steps.push({
+            title: experimentTitle,
+            steps: [],
+            edit: true,
+            editDescription: false,
+            description: '',
+            selected: false
+        })
     }
 
     function remove(node) {
@@ -71,17 +90,16 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
     }
 
     function getMatches() {
-        //console.dir(ctrl.projectTemplates);
-        console.log(ctrl.projectTemplates.length);
-        let v = $filter('filter')(ctrl.projectTemplates, ctrl.searchText);
-        console.log('v is', v);
-        return v;
+        return $filter('filter')(ctrl.projectTemplates, ctrl.searchText);
     }
 
     function addProcess() {
         if (ctrl.selectedProcess) {
-            console.log('I would add', ctrl.selectedProcess);
-            addTopStep(ctrl.selectedProcess.name);
+            if (ctrl.selectedStep) {
+                addToSelected(ctrl.selectedProcess.name);
+            } else {
+                addTopStep(ctrl.selectedProcess.name);
+            }
             ctrl.selectedProcess = undefined;
             ctrl.searchText = '';
         } else if (ctrl.searchText !== '') {
@@ -130,11 +148,21 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
             bindToController: true,
             fullscreen: true
         }).then((p) => {
-            console.log('I would create a new process type', p);
             ctrl.projectTemplates.push(p);
-            console.dir(ctrl.projectTemplates);
             addTopStep(p.name);
         });
+    }
+
+    function toggleSelected(step) {
+        console.log('toggleSelected');
+        if (ctrl.selectedStep && ctrl.selectedStep !== step) {
+            ctrl.selectedStep.selected = false;
+        } else if (ctrl.selectedStep && ctrl.selectedStep === step) {
+            ctrl.selectedStep.selected = !ctrl.selectedStep.selected;
+        } else {
+            step.selected = true;
+            ctrl.selectedStep = step;
+        }
     }
 }
 
