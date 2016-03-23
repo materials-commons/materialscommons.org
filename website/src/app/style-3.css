@@ -58,6 +58,14 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     background-color: #1565c0;
 }
 
+.current-step {
+    background-color: #f4f5f7;
+}
+
+.step-selected {
+    border: 3px solid #1565c0;
+}
+
 .md-row {
     line-height: 30px;
 }
@@ -107,6 +115,10 @@ a {
 
 .md-mc-primary-bg {
     background-color: #2196f3;
+}
+
+.md-mc-primary-hue-2-color {
+    color: #1565c0;
 }
 
 .md-mc-project-card-header {

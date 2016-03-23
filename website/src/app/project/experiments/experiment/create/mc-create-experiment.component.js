@@ -10,7 +10,9 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
     let last = 0;
     ctrl.addHeadings = true;
     ctrl.addProcesses = false;
+    ctrl.currentStep = null;
 
+    ctrl.heading = '';
     ctrl.addHeading = addHeading;
     ctrl.expandAll = expandAll;
     ctrl.collapseAll = collapseAll;
@@ -23,10 +25,12 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
     ctrl.newProcessEntry = newProcessEntry;
     ctrl.toggleSelected = toggleSelected;
     ctrl.selectedStep = null;
-    ctrl.searchText= '';
+    ctrl.searchText = '';
 
     ctrl.items = [];
-    for(var i = 0; i < 1000; i++) { ctrl.items.push(i); }
+    for (var i = 0; i < 1000; i++) {
+        ctrl.items.push(i);
+    }
 
     ctrl.projectTemplates = templates.get();
     //console.dir(projectTemplates);
@@ -34,7 +38,7 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
     ctrl.experiment = {
         name: '',
         goal: '',
-        description:'',
+        description: '',
         steps: []
     };
 
@@ -63,26 +67,30 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
 
     function addTopStep(title) {
         let experimentTitle = title ? title : '';
-        ctrl.experiment.steps.push({
+        let newStep = {
             title: experimentTitle,
             steps: [],
             edit: true,
             editDescription: false,
             description: '',
             selected: false
-        });
+        };
+        ctrl.experiment.steps.push(newStep);
+        ctrl.currentStep = newStep;
     }
 
     function addToSelected(title) {
         let experimentTitle = title ? title : '';
-        ctrl.selectedStep.steps.push({
+        let newStep = {
             title: experimentTitle,
             steps: [],
             edit: true,
             editDescription: false,
             description: '',
             selected: false
-        })
+        };
+        ctrl.selectedStep.steps.push(newStep);
+        ctrl.currentStep = newStep;
     }
 
     function remove(node) {
@@ -110,6 +118,27 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
             // enter hit on a partial, they want to create a new entry
             newProcessEntry(ctrl.searchText);
         }
+    }
+
+    function addHeading() {
+        if (!ctrl.heading) {
+            return;
+        }
+        let newStep = {
+            title: ctrl.heading,
+            steps: [],
+            edit: true,
+            editDescription: false,
+            description: '',
+            selected: false
+        };
+        if (ctrl.selectedStep) {
+            ctrl.selectedStep.steps.push(newStep);
+        } else {
+            ctrl.experiment.steps.push(newStep);
+        }
+        ctrl.currentStep = newStep;
+        ctrl.heading = '';
     }
 
     function newProcessEntry(processName) {
@@ -158,15 +187,18 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
     }
 
     function toggleSelected(step) {
-        console.log('toggleSelected');
+        ctrl.currentStep = step;
+        if (ctrl.selectedStep && ctrl.selectedStep === step) {
+            step.selected = false;
+            ctrl.selectedStep = null;
+            return;
+        }
+
         if (ctrl.selectedStep && ctrl.selectedStep !== step) {
             ctrl.selectedStep.selected = false;
-        } else if (ctrl.selectedStep && ctrl.selectedStep === step) {
-            ctrl.selectedStep.selected = !ctrl.selectedStep.selected;
-        } else {
-            step.selected = true;
-            ctrl.selectedStep = step;
         }
+        step.selected = true;
+        ctrl.selectedStep = step;
     }
 }
 
