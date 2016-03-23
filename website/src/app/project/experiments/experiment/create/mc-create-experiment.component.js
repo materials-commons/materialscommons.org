@@ -10,6 +10,8 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
     let last = 0;
     ctrl.addHeadings = true;
     ctrl.addProcesses = false;
+
+    ctrl.addHeading = addHeading;
     ctrl.expandAll = expandAll;
     ctrl.collapseAll = collapseAll;
     ctrl.newStep = newStep;
