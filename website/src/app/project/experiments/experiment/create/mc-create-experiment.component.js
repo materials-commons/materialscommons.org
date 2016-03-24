@@ -60,7 +60,13 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
             edit: true,
             editDescription: false,
             description: '',
-            selected: false
+            selected: false,
+            flag: {
+                important: false,
+                review: false,
+                error: false,
+                done: false
+            }
         });
         last++;
     }
@@ -73,7 +79,13 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
             edit: true,
             editDescription: false,
             description: '',
-            selected: false
+            selected: false,
+            flag: {
+                important: false,
+                review: false,
+                error: false,
+                done: false
+            }
         };
         ctrl.experiment.steps.push(newStep);
         ctrl.currentStep = newStep;
@@ -87,13 +99,23 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
             edit: true,
             editDescription: false,
             description: '',
-            selected: false
+            selected: false,
+            flag: {
+                important: false,
+                review: false,
+                error: false,
+                done: false
+            }
         };
         ctrl.selectedStep.steps.push(newStep);
         ctrl.currentStep = newStep;
     }
 
     function remove(node) {
+        if (node.$modelValue == ctrl.currentStep) {
+            ctrl.currentStep = null;
+        }
+        console.dir(node);
         node.remove();
     }
 
@@ -129,8 +151,14 @@ function MCCreateExperimentComponentController($scope, templates, $filter, $mdDi
             steps: [],
             edit: true,
             editDescription: false,
-            description: '',
-            selected: false
+            description: 'hello world',
+            selected: false,
+            flag: {
+                important: false,
+                review: false,
+                error: false,
+                done: false
+            }
         };
         if (ctrl.selectedStep) {
             ctrl.selectedStep.steps.push(newStep);
