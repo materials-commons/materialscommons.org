@@ -1,37 +1,61 @@
 <script type="text/ng-template" id="experiment-step.html">
-    <div ui-tree-handle class="experiment-step tree-node-content" layout="row" layout-fill>
-        <div layout="column">
-            <i class="fa fa-fw fa-reorder"></i>
-            <a data-nodrag ng-click="$ctrl.toggle(this)">
-                <i class="fa fa-fw"
-                   ng-class="{'fa-chevron-right': collapsed, 'fa-chevron-down': !collapsed}"></i>
-            </a>
+    <div ui-tree-handle class="experiment-step tree-node-content" layout="column" style="margin-top: 30px">
+        <div layout="row" style="margin-bottom:10px">
+            <div flex-offset="80" flex="5" style="text-align: center">
+                <span class="md-subhead">Done</span>
+            </div>
+            <div style="text-align: center" flex-offset="5">
+                <span class="md-subhead">Flags</span>
+            </div>
         </div>
-        <md-card md-whiteframe data-nodrag
-                 ng-class="{'step-selected': step.selected, 'current-step': step === $ctrl.currentStep}" flex>
-            <md-card-header>
-                <md-card-header-text layout="column">
-                    <div layout="row" layout-align="space-between start">
-                        <a flex="30" class="md-title" ng-click="$ctrl.toggleSelected(step)">
-                            {{::step.title | truncate:40:'...'}}
-                        </a>
-                        <a flex="10" ng-click="$ctrl.promptForRepeat(step)"><i class="fa fa-fw fa-repeat"></i></a>
-                        <a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" style="color:#ff5824">
-                            <i class="fa fa-fw fa-remove"></i>
-                        </a>
-                    </div>
-                    <span class="md-subhead-light">{{::step.description | truncate:60:'...'}}</span>
-                </md-card-header-text>
-            </md-card-header>
-            <!--<img ng-if="step.image" ng-src="{{step.image}}" class="md-card-image">-->
-            <!--<md-card-actions layout="row" layout-align="start center">-->
-            <!--<a class="md-primary text-uppercase" data-nodrag ng-click="$ctrl.newStep(this)">-->
-            <!--<i class="fa fa-fw fa-plus"></i> add child step-->
-            <!--</a>-->
-            <!--<span flex></span>-->
-            <!--</md-card-actions>-->
-        </md-card>
-        <md-checkbox data-nodrag flex="10"></md-checkbox>
+        <div layout="row">
+            <div layout="column">
+                <i class="fa fa-fw fa-reorder"></i>
+                <a data-nodrag ng-click="$ctrl.toggle(this)">
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-chevron-right': collapsed, 'fa-chevron-down': !collapsed}"></i>
+                </a>
+            </div>
+            <md-card md-whiteframe data-nodrag
+                     ng-class="{'step-selected': step.selected, 'current-step': step === $ctrl.currentStep}" flex>
+                <md-card-header>
+                    <md-card-header-text layout="column" flex>
+                        <div layout="row" layout-align="space-between start">
+                            <a flex="30" class="md-title" ng-click="$ctrl.toggleSelected(step)">
+                                {{::step.title | truncate:40:'...'}}
+                            </a>
+                            <a flex="10" ng-click="$ctrl.promptForRepeat(step)"><i class="fa fa-fw fa-repeat"></i></a>
+                            <a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" style="color:#ff5824">
+                                <i class="fa fa-fw fa-remove"></i>
+                            </a>
+                        </div>
+                        <span class="md-subhead-light">{{::step.description | truncate:60:'...'}}</span>
+                        <div layout="row">
+                            <div ng-if="step.flag.done" flex="25" class="mc-flag mc-done-bg">done</div>
+                            <div ng-if="step.flag.review" flex="25" class="mc-flag mc-review-bg">review</div>
+                            <div ng-if="step.flag.error" flex="25" class="mc-flag mc-error-bg">error</div>
+                            <div ng-if="step.flag.important" flex="25" class="mc-flag mc-important-bg">important</div>
+                        </div>
+                    </md-card-header-text>
+
+                </md-card-header>
+                <!--<img ng-if="step.image" ng-src="{{step.image}}" class="md-card-image">-->
+                <!--<md-card-actions layout="row" layout-align="start center">-->
+                <!--<a class="md-primary text-uppercase" data-nodrag ng-click="$ctrl.newStep(this)">-->
+                <!--<i class="fa fa-fw fa-plus"></i> add child step-->
+                <!--</a>-->
+                <!--<span flex></span>-->
+                <!--</md-card-actions>-->
+            </md-card>
+            <div layout="row" layout-align="start center" flex="10">
+                <md-checkbox data-nodrag class="mc-done" ng-model="step.flag.done">Done</md-checkbox>
+            </div>
+            <div layout="column" layout-align="end start" flex="10">
+                <md-checkbox data-nodrag class="mc-review" ng-model="step.flag.review">Review</md-checkbox>
+                <md-checkbox data-nodrag class="mc-error" ng-model="step.flag.error">Error</md-checkbox>
+                <md-checkbox data-nodrag class="mc-important" ng-model="step.flag.important">Important</md-checkbox>
+            </div>
+        </div>
     </div>
     <ol ui-tree-nodes="" ng-model="step.steps" ng-class="{hidden: collapsed}">
         <li ng-repeat="step in step.steps" ui-tree-node ng-include="'experiment-step.html'">
@@ -39,7 +63,7 @@
     </ol>
 </script>
 
-<div layout="row" layout-fill layout-margin layout-align="start start">
+<div layout="row" flex layout-margin layout-align="start start">
     <div layout="column" flex="100" layout-align="start stretch" md-whiteframe>
         <md-toolbar style="background-color: white" flex="100">
             <div layout="row" layout-align="start center"
@@ -87,6 +111,7 @@
                              md-item-text="process.name"
                              md-items="process in $ctrl.getMatches(searchText)"
                              md-selected-item-change="$ctrl.addProcess()"
+                             md-select-on-match="true"
                              md-delay="200"
                              md-no-cache="true"
                              placeholder="Choose process..."
@@ -105,15 +130,18 @@
             <input type="text" on-enter="$ctrl.addHeading()"
                    ng-model="$ctrl.heading" placeholder="Add heading...">
         </md-input-container>
-        <div layout="row" layout-align="space-between start" layout-fill style="margin-bottom: 20px;">
+
+        <div layout="row" layout-align="space-between start" style="margin-bottom: 20px;">
             <div class="md-subhead-light">
-                Adding at <span style="color:#1565c0">{{$ctrl.selectedStep ? $ctrl.selectedStep.title : 'Top level'}}</span>
+                Adding at <span
+                    style="color:#1565c0">{{$ctrl.selectedStep ? $ctrl.selectedStep.title : 'Top level'}}</span>
             </div>
 
             <div class="md-subhead-light">
                 Editing <span style="color: #ff5824">{{$ctrl.currentStep ? $ctrl.currentStep.title : 'None'}}</span>
             </div>
         </div>
+
         <div layout="column">
             <div ui-tree id="tree-root" ng-if="$ctrl.experiment.steps.length">
                 <ol ui-tree-nodes ng-model="$ctrl.experiment.steps">
@@ -127,37 +155,37 @@
 
 
 <!--<div layout="row" layout-fill layout-margin layout-align="start start">-->
-    <!--<md-content flex="25">-->
-        <!--<div layout="column">-->
-            <!--<h3>Experiment</h3>-->
-            <!--<md-input-container md-no-float>-->
-                <!--<input type="text" placeholder="Name your experiment..." ng-model="$ctrl.experiment.name">-->
-            <!--</md-input-container>-->
-            <!--<md-input-container md-no-float>-->
-                <!--<textarea placeholder="Description..." ng-model="$ctrl.experiment.description"></textarea>-->
-            <!--</md-input-container>-->
-            <!--<md-input-container md-no-float>-->
-                <!--<textarea placeholder="Goal..." ng-model="$ctrl.experiment.goal"></textarea>-->
-            <!--</md-input-container>-->
-        <!--</div>-->
-    <!--</md-content>-->
-    <!---->
-    <!--<span flex="5"></span>-->
-    <!--<md-content flex="30" layout="column">-->
-        <!--<div layout="row" layout-align="center start">-->
-            <!--<h3>Details</h3>-->
-        <!--</div>-->
-        <!--<div ng-if="$ctrl.currentStep">-->
-            <!--<form>-->
-                <!--<md-input-container class="md-block" flex>-->
-                    <!--<label>Title</label>-->
-                    <!--<input type="text" ng-model="$ctrl.currentStep.title">-->
-                <!--</md-input-container>-->
-                <!--<md-input-container class="md-block">-->
-                    <!--<label>Description</label>-->
-                    <!--<textarea ng-model="$ctrl.currentStep.description"></textarea>-->
-                <!--</md-input-container>-->
-            <!--</form>-->
-        <!--</div>-->
-    <!--</md-content>-->
+<!--<md-content flex="25">-->
+<!--<div layout="column">-->
+<!--<h3>Experiment</h3>-->
+<!--<md-input-container md-no-float>-->
+<!--<input type="text" placeholder="Name your experiment..." ng-model="$ctrl.experiment.name">-->
+<!--</md-input-container>-->
+<!--<md-input-container md-no-float>-->
+<!--<textarea placeholder="Description..." ng-model="$ctrl.experiment.description"></textarea>-->
+<!--</md-input-container>-->
+<!--<md-input-container md-no-float>-->
+<!--<textarea placeholder="Goal..." ng-model="$ctrl.experiment.goal"></textarea>-->
+<!--</md-input-container>-->
+<!--</div>-->
+<!--</md-content>-->
+<!---->
+<!--<span flex="5"></span>-->
+<!--<md-content flex="30" layout="column">-->
+<!--<div layout="row" layout-align="center start">-->
+<!--<h3>Details</h3>-->
+<!--</div>-->
+<!--<div ng-if="$ctrl.currentStep">-->
+<!--<form>-->
+<!--<md-input-container class="md-block" flex>-->
+<!--<label>Title</label>-->
+<!--<input type="text" ng-model="$ctrl.currentStep.title">-->
+<!--</md-input-container>-->
+<!--<md-input-container class="md-block">-->
+<!--<label>Description</label>-->
+<!--<textarea ng-model="$ctrl.currentStep.description"></textarea>-->
+<!--</md-input-container>-->
+<!--</form>-->
+<!--</div>-->
+<!--</md-content>-->
 <!--</div>-->
