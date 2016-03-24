@@ -3,9 +3,8 @@ angular.module('materialscommons').component("mcProjectNavbar", {
     controller: MCProjectNavbarComponentController
 });
 
+/*@ngInject*/
 function MCProjectNavbarComponentController(project, $state, $rootScope, $scope) {
-    'ngInject';
-
     var ctrl = this;
 
     ctrl.currentTab = getCurrentTabIndex();
@@ -22,7 +21,7 @@ function MCProjectNavbarComponentController(project, $state, $rootScope, $scope)
     function getCurrentTabIndex() {
         if ($state.includes('project.home')) {
             return 0;
-        } else if ($state.includes('project.experiments')) {
+        } else if ($state.includes('project.experiments') || $state.includes('project.create.experiment')) {
             return 1;
         } else if ($state.includes('project.processes')) {
             return 2;
