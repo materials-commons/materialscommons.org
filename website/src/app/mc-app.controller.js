@@ -3,6 +3,10 @@ export class MCAppController {
         'ngInject';
         this.isAuthenticated = User.isAuthenticated;
         this.$stateParams = $stateParams;
+        this.items = [];
+        for (let i = 0; i < 1000; i++) {
+            this.items.push(i);
+        }
     }
 
     inProject() {
