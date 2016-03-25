@@ -34,7 +34,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project', {
             url: '/project/:project_id',
             abstract: true,
-            template: '<ui-view flex="100"></ui-view>',
+            template: '<ui-view flex="100" layout="column"></ui-view>',
             resolve: {
                 // Set the current project in the project service so all components
                 // will resolve without having to worry if a promise has resolved.
@@ -83,7 +83,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.create', {
             url: '/create',
             abstract: true,
-            template: '<div ui-view></div>'
+            template: '<ui-view flex layout="column"></ui-view>'
         })
         .state('project.create.experiment', {
             url: '/experiment',
