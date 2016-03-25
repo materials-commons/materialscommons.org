@@ -26,28 +26,30 @@
     <link href="app/style-3.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
-<body layout="column" ng-controller="MCAppController as ctrl" style="overflow:hidden; height: 99vh; max-height: 99vh">
+<body layout="row" ng-controller="MCAppController as ctrl" style="overflow:hidden;" ng-cloak>
 <!--[if lt IE 10]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
 
-<navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
-<mc-project-navbar ng-if="ctrl.inProject()"></mc-project-navbar>
+<div flex layout="column">
+    <navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
+    <mc-project-navbar ng-if="ctrl.inProject()"></mc-project-navbar>
 
-<div ng-if="false" layout="column" flex style="overflow:auto">
-    <check-md-content ng-if="true" flex></check-md-content>
-    <div flex layout="column" ng-if="false">
-        <div>Hello world with div and ng-if in div</div>
-        <md-content flex>
-            <div ng-repeat="item in ctrl.items">{{item}}</div>
-        </md-content>
+    <!--<div ng-if="false" layout="column" flex style="overflow:auto">-->
+    <!--<check-md-content ng-if="true" flex></check-md-content>-->
+    <!--<div flex layout="column" ng-if="false">-->
+    <!--<div>Hello world with div and ng-if in div</div>-->
+    <!--<md-content flex>-->
+    <!--<div ng-repeat="item in ctrl.items">{{item}}</div>-->
+    <!--</md-content>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <div flex layout="column">
+        <ui-view ng-if="true" flex layout="column"></ui-view>
     </div>
-</div>
-
-<div layout="column" flex style="overflow:auto">
-    <ui-view ng-if="true" flex layout-fill></ui-view>
 </div>
 
 <!--<md-content flex>-->

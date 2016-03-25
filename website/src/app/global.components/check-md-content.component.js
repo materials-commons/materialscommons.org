@@ -1,11 +1,8 @@
 angular.module('materialscommons').component('checkMdContent', {
     template: `
-    <div layout="column" flex>
-        <div>Hello there from directive<div>
-        <md-content flex>
+        <md-content flex layout="column">
             <div ng-repeat="item in $ctrl.items">{{item}}</div>
         </md-content>
-    </div>
     `,
     controller: CheckMDContentComponentController
 });
