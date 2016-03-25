@@ -26,24 +26,28 @@
     <link href="app/style-3.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
-<body layout="column" ng-controller="MCAppController as ctrl">
+<body layout="column" ng-controller="MCAppController as ctrl" style="overflow:hidden; height: 99vh; max-height: 99vh">
 <!--[if lt IE 10]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
 <![endif]-->
+
+
 <navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
 <mc-project-navbar ng-if="ctrl.inProject()"></mc-project-navbar>
-<div layout="column" flex classx="overflow-hidden">
-    <div ng-if="false" style="overflow: auto">
-        <check-md-content show="false"></check-md-content>
-    </div>
-    <div ng-if="true" style="overflow:hidden">
-        hello there in index
-        <md-content>
+
+<div ng-if="false" layout="column" flex style="overflow:auto">
+    <check-md-content ng-if="true" flex></check-md-content>
+    <div flex layout="column" ng-if="false">
+        <div>Hello world with div and ng-if in div</div>
+        <md-content flex>
             <div ng-repeat="item in ctrl.items">{{item}}</div>
         </md-content>
     </div>
-    <!--<ui-view flex></ui-view>-->
+</div>
+
+<div layout="column" flex style="overflow:auto">
+    <ui-view ng-if="true" flex layout-fill></ui-view>
 </div>
 
 <!--<md-content flex>-->
