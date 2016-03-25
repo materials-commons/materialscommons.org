@@ -33,7 +33,8 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project', {
             url: '/project/:project_id',
-            template: '<mc-project></mc-project>',
+            abstract: true,
+            template: '<ui-view flex="100"></ui-view>',
             resolve: {
                 // Set the current project in the project service so all components
                 // will resolve without having to worry if a promise has resolved.
