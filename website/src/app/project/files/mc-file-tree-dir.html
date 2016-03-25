@@ -1,4 +1,4 @@
-<div>
+<div flex>
     <ol ui-tree-nodes ng-model="ctrl.files">
         <li ng-repeat="file in ctrl.files track by file.data.id | orderBy:'data.name'" ui-tree-node>
             <div ui-tree-handle ng-class="{'angular-ui-tree-handle-active': file.active}">
