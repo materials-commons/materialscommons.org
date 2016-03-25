@@ -26,22 +26,29 @@
     <link href="app/style-3.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
-<body layout="column" flex ng-controller="MCAppController as ctrl">
+<body layout="column" ng-controller="MCAppController as ctrl">
 <!--[if lt IE 10]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
 <![endif]-->
 <navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
 <mc-project-navbar ng-if="ctrl.inProject()"></mc-project-navbar>
-<!--<md-content flex>-->
-    <ui-view flex></ui-view>
-<!--</md-content>-->
-<!--<md-content>-->
-<!--<div ng-repeat="item in ctrl.items">-->
-<!--{{item}}-->
-<!--</div>-->
-<!--</md-content>-->
+<div layout="column" flex classx="overflow-hidden">
+    <div ng-if="false" style="overflow: auto">
+        <check-md-content show="false"></check-md-content>
+    </div>
+    <div ng-if="true" style="overflow:hidden">
+        hello there in index
+        <md-content>
+            <div ng-repeat="item in ctrl.items">{{item}}</div>
+        </md-content>
+    </div>
+    <!--<ui-view flex></ui-view>-->
+</div>
 
+<!--<md-content flex>-->
+<!--<ui-view flex="100"></ui-view>-->
+<!--</md-content>-->
 
 <!-- build:js(src) scripts/vendor.js -->
 <!-- bower:js -->
