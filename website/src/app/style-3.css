@@ -1,14 +1,13 @@
 html {
-    /*height: 100%;*/
-    height: 100vh;
-    max-height: 100vh;
+    height: 100%;
+    /*height: 100vh;*/
+    /*max-height: 100vh;*/
     font-size: 14px;
 }
 
 body {
     font-family: roboto, serif;
     font-style: normal;
-    overflow-x: hidden;
     color: #424242;
     background-color: #FFFFFF;
     /*margin-top: 41px;*/
