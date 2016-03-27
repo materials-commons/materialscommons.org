@@ -1,6 +1,6 @@
-// onEnter is a simple example directive. It allows a method
-// to be called when the enter key is pressed on an element.
-export function onEnterDirective() {
+// onEnter allows a method to be called when the enter key is pressed on an element.
+angular.module('materialscommons').directive('onEnter', onEnterDirective);
+function onEnterDirective() {
     return function(scope, element, attrs) {
         element.bind("keydown keypress", function(event) {
             if (event.which === 13) {
