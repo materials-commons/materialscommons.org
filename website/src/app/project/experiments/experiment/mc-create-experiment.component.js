@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcCreateExperiment', {
-    templateUrl: 'app/project/experiments/experiment/create/mc-create-experiment.html',
+    templateUrl: 'app/project/experiments/experiment/mc-create-experiment.html',
     controller: MCCreateExperimentComponentController
 });
 
