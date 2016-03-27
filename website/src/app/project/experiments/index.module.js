@@ -1,3 +1,5 @@
 import './mc-project-experiments.component';
 import './mc-project-experiments-table.component';
-import './experiment/create/mc-create-experiment.component';
+import './experiment/mc-create-experiment.component';
+import './experiment/mc-experiment-outline-detail-view.component';
+import './experiment/mc-experiment-outline-simple-view.component';
