@@ -1,4 +1,6 @@
-export function navbarDirective() {
+angular.module('materialscommons').directive('navbar', navbarDirective);
+
+function navbarDirective() {
     return {
         restrict: 'E',
         bindToController: true,
@@ -9,9 +11,8 @@ export function navbarDirective() {
     };
 }
 
+/*@ngInject*/
 function NavbarDirectiveController(User, $state, modelProjects) {
-    'ngInject';
-
     var ctrl = this;
 
     var inProjectsState = $state.includes('projects');

@@ -1,7 +1,4 @@
 import './check-md-content.component';
-import { navbarDirective } from './navbar.directive';
-import { onEnterDirective } from './on-enter';
-
-angular.module('materialscommons')
-    .directive('navbar', navbarDirective)
-    .directive('onEnter', onEnterDirective);
+import './navbar.directive';
+import './on-enter';
+import './on-key-code.directive';
