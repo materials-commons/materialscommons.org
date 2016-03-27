@@ -1,0 +1,36 @@
+<script type="text/ng-template" id="experiment-simple-step.html">
+    <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex layout-fill
+         layout="column">
+        <div flex layout="row" style="margin-top: 2px">
+            <div flex layout-fill layout="row" style="border-top: 2px solid #f4f5f7">
+                <div flex="35">
+                    <i class="fa fa-fw fa-reorder"></i>
+                    <a data-nodrag ng-click="this.toggle()">
+                        <i class="fa fa-fw"
+                           ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
+                    </a>
+                    {{::step.title | truncate:25:'....'}}
+                </div>
+                <span flex="5"></span>
+                <div ng-if="step.flag.done" flex="15" class="mc-flag mc-done-bg">done</div>
+                <div ng-if="step.flag.review" flex="15" class="mc-flag mc-review-bg">review</div>
+                <div ng-if="step.flag.error" flex="15" class="mc-flag mc-error-bg">error</div>
+                <div ng-if="step.flag.important" flex="15" class="mc-flag mc-important-bg">important</div>
+            </div>
+        </div>
+    </div>
+    <ol ui-tree-nodes="" ng-model="step.steps" ng-class="{hidden: collapsed}">
+        <li ng-repeat="step in step.steps" ui-tree-node ng-include="'experiment-simple-step.html'">
+        </li>
+    </ol>
+</script>
+
+<div layout="column" layout-margin style="max-height: 60vh;">
+    <md-content ui-tree id="tree-root" ng-if="$ctrl.experiment.steps.length">
+        <ol ui-tree-nodes ng-model="$ctrl.experiment.steps">
+            <li ng-repeat="step in $ctrl.experiment.steps" ui-tree-node
+                ng-include="'experiment-simple-step.html'">
+            </li>
+        </ol>
+    </md-content>
+</div>
