@@ -122,6 +122,21 @@ function MCExperimentComponentController($scope, templates, $filter, $mdDialog) 
         return $filter('filter')(ctrl.projectTemplates, ctrl.searchText);
     }
 
+    function toggleSelected(step) {
+        ctrl.currentStep = step;
+        if (ctrl.selectedStep && ctrl.selectedStep === step) {
+            step.selected = false;
+            ctrl.selectedStep = null;
+            return;
+        }
+
+        if (ctrl.selectedStep && ctrl.selectedStep !== step) {
+            ctrl.selectedStep.selected = false;
+        }
+        step.selected = true;
+        ctrl.selectedStep = step;
+    }
+
     function addProcess() {
         if (ctrl.selectedProcess) {
             if (ctrl.selectedStep) {
@@ -197,20 +212,7 @@ function MCExperimentComponentController($scope, templates, $filter, $mdDialog) 
         });
     }
 
-    function toggleSelected(step) {
-        ctrl.currentStep = step;
-        if (ctrl.selectedStep && ctrl.selectedStep === step) {
-            step.selected = false;
-            ctrl.selectedStep = null;
-            return;
-        }
 
-        if (ctrl.selectedStep && ctrl.selectedStep !== step) {
-            ctrl.selectedStep.selected = false;
-        }
-        step.selected = true;
-        ctrl.selectedStep = step;
-    }
 
     function toggleDetailHeader(header) {
         ctrl.currentStep.details[header] = !ctrl.currentStep.details[header];
