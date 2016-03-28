@@ -6,14 +6,14 @@ $mc-color-error: #ff5824;
 $mc-color-important: #3f51b5;
 $mc-color-done: #4caf50;
 
-.scroll-here {
-  min-height: calc(100% - 64px - 64px - 64px);
-}
-
 .mc-flag {
   color: white;
   text-align: center;
   text-transform: uppercase;
+}
+
+textarea {
+  resize: none;
 }
 
 .mc-error-bg {
