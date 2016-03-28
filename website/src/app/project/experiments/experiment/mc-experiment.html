@@ -42,6 +42,7 @@
                               placeholder="Description..."></textarea>
                     </md-input-container>
                 </div>
+                <div ng-if="!$ctrl.currentStep.details.showTitle" style="margin-bottom:18px"></div>
 
                 <a class="md-subtitle" style="margin-bottom:18px;"
                    ng-click="$ctrl.currentStep.details.showStatus = !$ctrl.currentStep.details.showStatus">
