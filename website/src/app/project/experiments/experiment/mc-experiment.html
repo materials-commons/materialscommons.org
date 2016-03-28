@@ -186,7 +186,10 @@
                 </div>
             </div>
             <div flex="80">
-                <mc-experiment-outline-simple-view ng-if="!$ctrl.showSimple" experiment="$ctrl.experiment">
+                <mc-experiment-outline-simple-view ng-if="!$ctrl.showSimple"
+                                                   current-step="$ctrl.currentStep"
+                                                   selected-step="$ctrl.selectedStep"
+                                                   experiment="$ctrl.experiment">
                 </mc-experiment-outline-simple-view>
                 <mc-experiment-outline-detail-view ng-if="$ctrl.showSimple" experiment="$ctrl.experiment">
                 </mc-experiment-outline-detail-view>
