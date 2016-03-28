@@ -1,11 +1,10 @@
-angular.module('materialscommons').component('mcCreateExperiment', {
-    templateUrl: 'app/project/experiments/experiment/mc-create-experiment.html',
-    controller: MCCreateExperimentComponentController
+angular.module('materialscommons').component('mcExperiment', {
+    templateUrl: 'app/project/experiments/experiment/mc-experiment.html',
+    controller: MCExperimentComponentController
 });
 
 /*@ngInject*/
-function MCCreateExperimentComponentController($scope, templates, $filter, $mdDialog) {
-    console.log('mcCreateExperiment');
+function MCExperimentComponentController($scope, templates, $filter, $mdDialog) {
     let ctrl = this;
     let last = 0;
     ctrl.addHeadings = true;

@@ -85,9 +85,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<ui-view flex layout="column"></ui-view>'
         })
-        .state('project.create.experiment', {
-            url: '/experiment',
-            template: '<mc-create-experiment></mc-create-experiment>'
+        .state('project.experiment', {
+            url: '/experiment/:experiment_id',
+            template: '<mc-experiment></mc-experiment>'
         })
         .state('project.create.process', {
             url: '/process/:template_id/:process_id',
