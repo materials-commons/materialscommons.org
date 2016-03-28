@@ -1,18 +1,21 @@
 <script type="text/ng-template" id="experiment-simple-step.html">
     <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex layout-fill
          layout="column">
-        <div flex layout="column" style="margin-top: 2px;border-top: 2px solid #f4f5f7">
+        <div flex layout="column" style="margin-top: 2px;border-top: 2px solid #f4f5f7"
+             ng-class="{'step-selected': step.selected, 'current-step': step === $ctrl.currentStep}">
             <div flex layout-fill layout="row">
-                <div flex="90">
-                    <i class="fa fa-fw fa-reorder"></i>
+                <i class="fa fa-fw fa-reorder"></i>
+                <div flex="90" data-nodrag>
                     <a data-nodrag ng-click="this.toggle()">
                         <i class="fa fa-fw"
                            ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                     </a>
-                    {{step.title | truncate:60:'....'}}
+                    <a class="md-primary md-title" ng-click="$ctrl.toggleSelected(step)" data-nodrag>{{step.title |
+                        truncate:60:'....'}}</a>
                 </div>
             </div>
-            <div flex layout-fill layout="row">
+            <div flex layout-fill layout="row" data-nodrag ng-click="$ctrl.toggleSelected(step)"
+                 style="outline:0; cursor: pointer">
                 <span flex="20"></span>
                 <div ng-if="step.flag.done" flex="20" class="mc-flag mc-done-bg">done</div>
                 <div ng-if="step.flag.review" flex="20" class="mc-flag mc-review-bg">review</div>
