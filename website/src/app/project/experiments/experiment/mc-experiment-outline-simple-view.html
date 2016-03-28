@@ -9,10 +9,8 @@
                         <i class="fa fa-fw"
                            ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                     </a>
-                    {{::step.title | truncate:60:'....'}}
+                    {{step.title | truncate:60:'....'}}
                 </div>
-                <a class="md-primary" data-nodrag><i class="fa fa-fw fa-long-arrow-left"></i></a>
-                <a class="md-primary" data-nodrag><i class="fa fa-fw fa-long-arrow-right"></i></a>
             </div>
             <div flex layout-fill layout="row">
                 <span flex="20"></span>
