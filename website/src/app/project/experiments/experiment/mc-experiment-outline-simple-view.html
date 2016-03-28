@@ -1,21 +1,25 @@
 <script type="text/ng-template" id="experiment-simple-step.html">
     <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex layout-fill
          layout="column">
-        <div flex layout="row" style="margin-top: 2px">
-            <div flex layout-fill layout="row" style="border-top: 2px solid #f4f5f7">
-                <div flex="35">
+        <div flex layout="column" style="margin-top: 2px;border-top: 2px solid #f4f5f7">
+            <div flex layout-fill layout="row">
+                <div flex="90">
                     <i class="fa fa-fw fa-reorder"></i>
                     <a data-nodrag ng-click="this.toggle()">
                         <i class="fa fa-fw"
                            ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                     </a>
-                    {{::step.title | truncate:25:'....'}}
+                    {{::step.title | truncate:60:'....'}}
                 </div>
-                <span flex="5"></span>
-                <div ng-if="step.flag.done" flex="15" class="mc-flag mc-done-bg">done</div>
-                <div ng-if="step.flag.review" flex="15" class="mc-flag mc-review-bg">review</div>
-                <div ng-if="step.flag.error" flex="15" class="mc-flag mc-error-bg">error</div>
-                <div ng-if="step.flag.important" flex="15" class="mc-flag mc-important-bg">important</div>
+                <a class="md-primary" data-nodrag><i class="fa fa-fw fa-long-arrow-left"></i></a>
+                <a class="md-primary" data-nodrag><i class="fa fa-fw fa-long-arrow-right"></i></a>
+            </div>
+            <div flex layout-fill layout="row">
+                <span flex="20"></span>
+                <div ng-if="step.flag.done" flex="20" class="mc-flag mc-done-bg">done</div>
+                <div ng-if="step.flag.review" flex="20" class="mc-flag mc-review-bg">review</div>
+                <div ng-if="step.flag.error" flex="20" class="mc-flag mc-error-bg">error</div>
+                <div ng-if="step.flag.important" flex="20" class="mc-flag mc-important-bg">important</div>
             </div>
         </div>
     </div>
