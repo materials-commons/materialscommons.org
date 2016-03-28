@@ -14,6 +14,7 @@ angular.module('materialscommons',
         'ui.bootstrap',
         'angularGrid',
         'toastr',
+            'ngCkeditor',
         'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
         'ct.ui.router.extras.previous'
     ]);
