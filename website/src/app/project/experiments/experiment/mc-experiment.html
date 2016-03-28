@@ -24,7 +24,108 @@
     </div>
 
     <div layout="row" flex>
-        <div layout="column" flex="80">
+        <md-sidenav flex="30" md-is-locked-open="true" style="max-height: 85vh;">
+            <span style="text-align: center">Step Details</span>
+            <md-content layout="column" ng-if="$ctrl.currentStep">
+                <a class="md-subtitle"
+                   ng-click="$ctrl.currentStep.details.showTitle = !$ctrl.currentStep.details.showTitle">
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-chevron-right': !$ctrl.currentStep.details.showTitle, 'fa-chevron-down': $ctrl.currentStep.details.showTitle}"></i>
+                    Title
+                </a>
+                <div ng-if="$ctrl.currentStep.details.showTitle" layout="column">
+                    <md-input-container md-no-float>
+                        <input type="text" ng-model="$ctrl.currentStep.title" placeholder="Title...">
+                    </md-input-container>
+                    <md-input-container md-no-float>
+                    <textarea type="text" ng-model="$ctrl.currentStep.description"
+                              placeholder="Description..."></textarea>
+                    </md-input-container>
+                </div>
+
+                <a class="md-subtitle" style="margin-bottom:18px;"
+                   ng-click="$ctrl.currentStep.details.showStatus = !$ctrl.currentStep.details.showStatus">
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-chevron-right': !$ctrl.currentStep.details.showStatus, 'fa-chevron-down': $ctrl.currentStep.details.showStatus}"></i>
+                    Status
+                </a>
+                <div ng-if="$ctrl.currentStep.details.showStatus">
+                    <md-checkbox data-nodrag class="mc-done" ng-model="$ctrl.currentStep.flag.done">Done</md-checkbox>
+                    <md-checkbox data-nodrag class="mc-review" ng-model="$ctrl.currentStep.flag.review">Review
+                    </md-checkbox>
+                    <md-checkbox data-nodrag class="mc-error" ng-model="$ctrl.currentStep.flag.error">Error
+                    </md-checkbox>
+                    <md-checkbox data-nodrag class="mc-important" ng-model="$ctrl.currentStep.flag.important">
+                        Important
+                    </md-checkbox>
+                </div>
+
+                <a class="md-subtitle" style="margin-bottom:18px; margin-top: 18px"
+                   ng-click="$ctrl.currentStep.details.showNotes = !$ctrl.currentStep.details.showNotes">
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-chevron-right': !$ctrl.currentStep.details.showNotes, 'fa-chevron-down': $ctrl.currentStep.details.showNotes}"></i>
+                    Notes
+                </a>
+                <textarea ng-if="$ctrl.currentStep.details.showNotes" ckeditor="editorOptions"
+                          ng-model="$ctrl.currentStep.notes">
+                </textarea>
+
+                <a class="md-subtitle" style="margin-bottom:18px; margin-top: 18px"
+                   ng-click="$ctrl.currentStep.details.showSamples = !$ctrl.currentStep.details.showSamples">
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-chevron-right': !$ctrl.currentStep.details.showSamples, 'fa-chevron-down': $ctrl.currentStep.details.showSamples}"></i>
+                    Samples
+                </a>
+                <div ng-if="$ctrl.currentStep.details.showSamples">
+                    <md-tabs md-selected="$ctrl.details.currentSamplesTab" md-border-bottom>
+                        <md-tab>
+                            <md-tab-label>
+                                Input Samples
+                            </md-tab-label>
+                            <md-tab-body>
+                                Show input samples here
+                            </md-tab-body>
+                        </md-tab>
+                        <md-tab>
+                            <md-tab-label>
+                                Output Samples
+                            </md-tab-label>
+                            <md-tab-body>
+                                Show output samples here
+                            </md-tab-body>
+                        </md-tab>
+                    </md-tabs>
+                </div>
+
+                <a class="md-subtitle" style="margin-bottom:18px; margin-top: 18px"
+                   ng-click="$ctrl.currentStep.details.showFiles = !$ctrl.currentStep.details.showFiles">
+                    <i class="fa fa-fw"
+                       ng-class="{'fa-chevron-right': !$ctrl.currentStep.details.showFiles, 'fa-chevron-down': $ctrl.currentStep.details.showFiles}"></i>
+                    Files
+                </a>
+                <div ng-if="$ctrl.currentStep.details.showFiles">
+                    <md-tabs md-selected="$ctrl.details.currentFilesTab" md-stretch-tabs md-border-bottom>
+                        <md-tab>
+                            <md-tab-label>
+                                Input Files
+                            </md-tab-label>
+                            <md-tab-body>
+                                Show input files here
+                            </md-tab-body>
+                        </md-tab>
+                        <md-tab>
+                            <md-tab-label>
+                                Output Files
+                            </md-tab-label>
+                            <md-tab-body>
+                                Show output files here
+                            </md-tab-body>
+                        </md-tab>
+                    </md-tabs>
+                </div>
+            </md-content>
+        </md-sidenav>
+        <div layout="column" flex="80" layout-margin>
             <div layout="row" layout-align="space-between center">
                 <div>
                     <md-button class="md-primary" ng-class="{'md-hue-2': $ctrl.addHeadings}"
@@ -84,9 +185,9 @@
                 </div>
             </div>
             <div flex="80">
-                <mc-experiment-outline-simple-view ng-if="$ctrl.showSimple" experiment="$ctrl.experiment">
+                <mc-experiment-outline-simple-view ng-if="!$ctrl.showSimple" experiment="$ctrl.experiment">
                 </mc-experiment-outline-simple-view>
-                <mc-experiment-outline-detail-view ng-if="!$ctrl.showSimple" experiment="$ctrl.experiment">
+                <mc-experiment-outline-detail-view ng-if="$ctrl.showSimple" experiment="$ctrl.experiment">
                 </mc-experiment-outline-detail-view>
             </div>
         </div>

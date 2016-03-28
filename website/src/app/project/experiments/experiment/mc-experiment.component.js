@@ -11,7 +11,13 @@ function MCExperimentComponentController($scope, templates, $filter, $mdDialog) 
     ctrl.addProcesses = false;
     ctrl.currentStep = null;
 
+    $scope.editorOptions = {
+        height: '20vh',
+        width: '25vw'
+    };
+
     ctrl.heading = '';
+    ctrl.toggleDetailHeader = toggleDetailHeader;
     ctrl.addHeading = addHeading;
     ctrl.expandAll = expandAll;
     ctrl.collapseAll = collapseAll;
@@ -51,61 +57,51 @@ function MCExperimentComponentController($scope, templates, $filter, $mdDialog) 
         $scope.$broadcast('angular-ui-tree:collapse-all');
     }
 
-    function newStep(node) {
-        let nodeData = node.$modelValue;
-        nodeData.steps.push({
+    function createEmptyStep() {
+        return {
             title: '',
             steps: [],
             edit: true,
             editDescription: false,
             description: '',
+            notes: '',
             selected: false,
             flag: {
                 important: false,
                 review: false,
                 error: false,
                 done: false
+            },
+            details: {
+                showTitle: true,
+                showStatus: true,
+                showNotes: true,
+                showFiles: false,
+                showSamples: false,
+                currentFilesTab: 0,
+                currentSamplesTab: 0
             }
-        });
+        };
+    }
+
+    function newStep(node) {
+        let nodeData = node.$modelValue;
+        nodeData.steps.push(createEmptyStep());
         last++;
     }
 
     function addTopStep(title) {
         let experimentTitle = title ? title : '';
-        let newStep = {
-            title: experimentTitle,
-            steps: [],
-            edit: true,
-            editDescription: false,
-            description: '',
-            selected: false,
-            flag: {
-                important: false,
-                review: false,
-                error: false,
-                done: false
-            }
-        };
+        let newStep = createEmptyStep();
+        newStep.title = experimentTitle;
         ctrl.experiment.steps.push(newStep);
         ctrl.currentStep = newStep;
     }
 
     function addToSelected(title) {
         let experimentTitle = title ? title : '';
-        let newStep = {
-            title: experimentTitle,
-            steps: [],
-            edit: true,
-            editDescription: false,
-            description: '',
-            selected: false,
-            flag: {
-                important: false,
-                review: false,
-                error: false,
-                done: false
-            }
-        };
+        let newStep = createEmptyStep();
+        newStep.title = experimentTitle;
         ctrl.selectedStep.steps.push(newStep);
         ctrl.currentStep = newStep;
     }
@@ -145,20 +141,8 @@ function MCExperimentComponentController($scope, templates, $filter, $mdDialog) 
         if (!ctrl.heading) {
             return;
         }
-        let newStep = {
-            title: ctrl.heading,
-            steps: [],
-            edit: true,
-            editDescription: false,
-            description: 'hello world',
-            selected: false,
-            flag: {
-                important: false,
-                review: false,
-                error: false,
-                done: false
-            }
-        };
+        let newStep = createEmptyStep();
+        newStep.title = ctrl.heading;
         if (ctrl.selectedStep) {
             ctrl.selectedStep.steps.push(newStep);
         } else {
@@ -226,6 +210,10 @@ function MCExperimentComponentController($scope, templates, $filter, $mdDialog) 
         }
         step.selected = true;
         ctrl.selectedStep = step;
+    }
+
+    function toggleDetailHeader(header) {
+        ctrl.currentStep.details[header] = !ctrl.currentStep.details[header];
     }
 }
 
