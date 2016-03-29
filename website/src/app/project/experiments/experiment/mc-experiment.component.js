@@ -11,6 +11,7 @@ function MCExperimentComponentController($scope, templates, $filter, $mdDialog, 
     ctrl.addHeadings = true;
     ctrl.addProcesses = false;
     ctrl.currentStep = null;
+    ctrl.currentNode = null;
 
     $scope.editorOptions = {
         height: '20vh',
@@ -18,16 +19,13 @@ function MCExperimentComponentController($scope, templates, $filter, $mdDialog, 
     };
 
     ctrl.heading = '';
-    ctrl.toggleDetailHeader = toggleDetailHeader;
     ctrl.expandAll = expandAll;
     ctrl.collapseAll = collapseAll;
     ctrl.getMatches = getMatches;
     ctrl.newProcessEntry = newProcessEntry;
     ctrl.searchText = '';
-    ctrl.currentNode = null;
 
     ctrl.projectTemplates = templates.get();
-    //console.dir(projectTemplates);
 
     ctrl.experiment = new Experiment('test experiment');
     let s = new ExperimentStep('', '');
@@ -98,11 +96,6 @@ function MCExperimentComponentController($scope, templates, $filter, $mdDialog, 
             ctrl.projectTemplates.push(p);
             addTopStep(p.name);
         });
-    }
-
-
-    function toggleDetailHeader(header) {
-        ctrl.currentStep.details[header] = !ctrl.currentStep.details[header];
     }
 }
 
