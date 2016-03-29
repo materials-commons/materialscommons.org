@@ -5,13 +5,15 @@
              ng-class="{'step-selected': step.selected, 'current-step': step === $ctrl.currentStep}">
             <div flex layout-fill layout="row">
                 <i class="fa fa-fw fa-reorder"></i>
-                <div flex="90" data-nodrag>
+                <div flex="90" data-nodrag layout-fill>
                     <a data-nodrag ng-click="this.toggle()">
                         <i class="fa fa-fw"
                            ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                     </a>
-                    <a class="md-primary md-title" ng-click="$ctrl.toggleSelected(step)" data-nodrag>{{step.title |
-                        truncate:60:'....'}}</a>
+                    <input ng-if="true" size="60" type="text" data-nodrag ng-model="step.title">
+                    <a ng-if="false" class="md-primary md-title" ng-click="$ctrl.toggleSelected(step)" data-nodrag>
+                        {{step.title | truncate:60:'....'}}
+                    </a>
                 </div>
             </div>
             <div flex layout-fill layout="row" data-nodrag ng-click="$ctrl.toggleSelected(step)"
