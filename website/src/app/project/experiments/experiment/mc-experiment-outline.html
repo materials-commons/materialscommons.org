@@ -1,0 +1,51 @@
+<script type="text/ng-template" id="experiment-simple-step.html">
+    <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex
+         layout="column">
+        <div flex layout="column" style="margin-top: 2px;border-top: 2px solid #f4f5f7"
+             ng-class="{'current-step': step === $ctrl.currentStep}">
+            <div flex layout-fill layout="row">
+                <i class="fa fa-fw fa-reorder"></i>
+                <div flex data-nodrag layout="row" layout-fill layout-align="space-between"
+                     ng-click="$ctrl.setCurrent(step, this)">
+                    <span>
+                        <a data-nodrag ng-click="this.toggle()">
+                            <i class="fa fa-fw"
+                               ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
+                        </a>
+                        <input ng-if="true" size="60" type="text" data-nodrag ng-model="step.title"
+                               placeholder="Title..."
+                               style="margin-top:4px" on-enter="$ctrl.addBlankStep(this)" id="{{step.id}}">
+                        <a ng-if="false" class="md-primary md-title" data-nodrag>
+                            {{step.title | truncate:60:'....'}}
+                        </a>
+                    </span>
+                    <a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" style="color:#ff5824">
+                        <i class="fa fa-fw fa-remove"></i>
+                    </a>
+                </div>
+            </div>
+            <div flex layout-fill layout="row" data-nodrag
+                 style="outline:0; cursor: pointer; margin-top: 10px">
+                <span flex="20"></span>
+                <div ng-if="step.flags.done" flex="20" class="mc-flag mc-done-bg">done</div>
+                <div ng-if="step.flags.review" flex="20" class="mc-flag mc-review-bg">review</div>
+                <div ng-if="step.flags.error" flex="20" class="mc-flag mc-error-bg">error</div>
+                <div ng-if="step.flags.important" flex="20" class="mc-flag mc-important-bg">important</div>
+            </div>
+        </div>
+    </div>
+    <ol ui-tree-nodes="" ng-model="step.steps" ng-class="{hidden: collapsed}">
+        <li ng-repeat="step in step.steps" ui-tree-node ng-include="'experiment-simple-step.html'">
+        </li>
+    </ol>
+</script>
+
+<div layout="column" layout-margin style="max-height: 60vh;">
+    <md-content ui-tree id="tree-root" ng-if="$ctrl.experiment.steps.length">
+        <ol ui-tree-nodes ng-model="$ctrl.experiment.steps">
+            <li ng-repeat="step in $ctrl.experiment.steps" ui-tree-node
+                ng-include="'experiment-simple-step.html'">
+            </li>
+        </ol>
+    </md-content>
+</div>
