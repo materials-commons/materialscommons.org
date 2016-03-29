@@ -33,15 +33,17 @@
                        ng-class="{'fa-chevron-right': !$ctrl.currentStep.details.showTitle, 'fa-chevron-down': $ctrl.currentStep.details.showTitle}"></i>
                     Title
                 </a>
-                <div ng-if="$ctrl.currentStep.details.showTitle" layout="column">
-                    <md-input-container md-no-float>
-                        <input type="text" ng-model="$ctrl.currentStep.title" placeholder="Title...">
-                    </md-input-container>
-                    <md-input-container md-no-float>
+                <!--<div ng-show="$ctrl.currentStep.details.showTitle" layout="column" flex layout-fill>-->
+
+                <md-input-container md-no-float ng-if="$ctrl.currentStep.details.showTitle">
+                    <input type="text" ng-model="$ctrl.currentStep.title" placeholder="Title...">
+                </md-input-container>
+                <md-input-container md-no-float ng-if="$ctrl.currentStep.details.showTitle">
                     <textarea type="text" ng-model="$ctrl.currentStep.description"
                               placeholder="Description..."></textarea>
-                    </md-input-container>
-                </div>
+                </md-input-container>
+
+                <!--</div>-->
                 <div ng-if="!$ctrl.currentStep.details.showTitle" style="margin-bottom:18px"></div>
 
                 <a class="md-subtitle" style="margin-bottom:18px;"
@@ -50,7 +52,7 @@
                        ng-class="{'fa-chevron-right': !$ctrl.currentStep.details.showStatus, 'fa-chevron-down': $ctrl.currentStep.details.showStatus}"></i>
                     Status
                 </a>
-                <div ng-if="$ctrl.currentStep.details.showStatus">
+                <div ng-show="$ctrl.currentStep.details.showStatus">
                     <md-checkbox data-nodrag class="mc-done" ng-model="$ctrl.currentStep.flag.done">
                         <span class="mc-done-color">Done</span>
                     </md-checkbox>
