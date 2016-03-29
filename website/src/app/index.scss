@@ -20,12 +20,20 @@ textarea {
   background-color: $mc-color-error;
 }
 
+.mc-error-color {
+  color: $mc-color-error;
+}
+
 md-checkbox.md-checked.mc-error .md-icon {
   background-color: $mc-color-error;
 }
 
 .mc-review-bg {
   background-color: $mc-color-review;
+}
+
+.mc-review-color {
+  color: $mc-color-review;
 }
 
 md-checkbox.md-checked.mc-review .md-icon {
@@ -36,12 +44,20 @@ md-checkbox.md-checked.mc-review .md-icon {
   background-color: $mc-color-important;
 }
 
+.mc-important-color {
+  color: $mc-color-important;
+}
+
 md-checkbox.md-checked.mc-important .md-icon {
   background-color: $mc-color-important;
 }
 
 .mc-done-bg {
   background-color: $mc-color-done;
+}
+
+.mc-done-color {
+  color: $mc-color-done;
 }
 
 md-checkbox.md-checked.mc-done .md-icon {

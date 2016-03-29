@@ -51,13 +51,17 @@
                     Status
                 </a>
                 <div ng-if="$ctrl.currentStep.details.showStatus">
-                    <md-checkbox data-nodrag class="mc-done" ng-model="$ctrl.currentStep.flag.done">Done</md-checkbox>
-                    <md-checkbox data-nodrag class="mc-review" ng-model="$ctrl.currentStep.flag.review">Review
+                    <md-checkbox data-nodrag class="mc-done" ng-model="$ctrl.currentStep.flag.done">
+                        <span class="mc-done-color">Done</span>
                     </md-checkbox>
-                    <md-checkbox data-nodrag class="mc-error" ng-model="$ctrl.currentStep.flag.error">Error
+                    <md-checkbox data-nodrag class="mc-review" ng-model="$ctrl.currentStep.flag.review">
+                        <span class="mc-review-color">Review</span>
+                    </md-checkbox>
+                    <md-checkbox data-nodrag class="mc-error" ng-model="$ctrl.currentStep.flag.error">
+                        <span class="mc-error-color">Error</span>
                     </md-checkbox>
                     <md-checkbox data-nodrag class="mc-important" ng-model="$ctrl.currentStep.flag.important">
-                        Important
+                        <span class="mc-important-color">Important</span>
                     </md-checkbox>
                 </div>
 
