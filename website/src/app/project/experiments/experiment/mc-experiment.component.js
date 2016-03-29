@@ -94,7 +94,6 @@ function MCExperimentComponentController($scope, templates, $filter, $mdDialog, 
             fullscreen: true
         }).then((p) => {
             ctrl.projectTemplates.push(p);
-            addTopStep(p.name);
         });
     }
 }
