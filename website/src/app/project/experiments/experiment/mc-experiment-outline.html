@@ -19,13 +19,13 @@
                             {{step.title | truncate:60:'....'}}
                         </a>
                     </span>
+                    <span flex="5"></span>
                     <div flex layout-fill layout="row" data-nodrag
                          style="outline:0; cursor: pointer;">
-                        <span flex="5"></span>
-                        <div ng-if="step.flags.done" flex="20" class="mc-flag mc-done-bg">done</div>
-                        <div ng-if="step.flags.review" flex="20" class="mc-flag mc-review-bg">review</div>
-                        <div ng-if="step.flags.error" flex="20" class="mc-flag mc-error-bg">error</div>
-                        <div ng-if="step.flags.important" flex="20" class="mc-flag mc-important-bg">important</div>
+                        <div ng-if="step.flags.done" flex="25" class="mc-flag mc-done-bg">done</div>
+                        <div ng-if="step.flags.review" flex="25" class="mc-flag mc-review-bg">review</div>
+                        <div ng-if="step.flags.error" flex="25" class="mc-flag mc-error-bg">error</div>
+                        <div ng-if="step.flags.important" flex="25" class="mc-flag mc-important-bg">important</div>
                     </div>
                     <a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" style="color:#ff5824">
                         <i class="fa fa-fw fa-remove"></i>
