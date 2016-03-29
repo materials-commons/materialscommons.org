@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="experiment-simple-step.html">
-    <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex layout-fill
+    <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex
          layout="column">
         <div flex layout="column" style="margin-top: 2px;border-top: 2px solid #f4f5f7"
              ng-class="{'step-selected': step.selected, 'current-step': step === $ctrl.currentStep}">
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div flex layout-fill layout="row" data-nodrag ng-click="$ctrl.toggleSelected(step)"
-                 style="outline:0; cursor: pointer">
+                 style="outline:0; cursor: pointer; margin-top: 6px">
                 <span flex="20"></span>
                 <div ng-if="step.flag.done" flex="20" class="mc-flag mc-done-bg">done</div>
                 <div ng-if="step.flag.review" flex="20" class="mc-flag mc-review-bg">review</div>
