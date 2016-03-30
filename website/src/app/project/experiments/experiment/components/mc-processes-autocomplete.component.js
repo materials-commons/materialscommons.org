@@ -18,7 +18,6 @@ function MCProcessesAutocompleteComponentController(templates, $filter, $mdDialo
     }
 
     function newProcessEntry(processName) {
-        console.log('newProcessEntry');
         ctrl.selectedProcess = undefined;
         ctrl.searchText = '';
         $mdDialog.show({
