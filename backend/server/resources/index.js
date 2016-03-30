@@ -11,6 +11,7 @@ module.exports = function(model) {
     const directories = require('./directories')(model.directories, schema);
     const users = require('./users')(model.users);
     const shares = require('./shares')(model.shares, schema);
+    const experiments = require('./experiments')(model.experiments, schema);
 
     router.get('/projects', projects.all);
     router.put('/projects/:project_id', validateProjectAccess, projects.update);
@@ -40,6 +41,14 @@ module.exports = function(model) {
     router.get('/projects/:project_id/shares', validateProjectAccess, shares.getList);
     router.post('/projects/:project_id/shares', validateProjectAccess, shares.create);
     router.delete('/projects/:project_id/shares/:share_id', validateProjectAccess, shares.remove);
+
+    router.get('/projects/:project_id/experiments', validateProjectAccess, experiments.getForProject);
+    router.get('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.getSingle);
+    router.get('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.getStep);
+    router.post('/projects/:project_id/experiments', validateProjectAccess, experiments.create);
+    router.post('/projects/:project_id/experiments/:experiment_id/step', validateProjectAccess, experiments.createStep);
+    router.put('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.update);
+    router.put('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.updateStep);
 
     router.put('/users/:project_id', users.update);
 
