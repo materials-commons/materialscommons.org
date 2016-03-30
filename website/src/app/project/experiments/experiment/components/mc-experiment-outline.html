@@ -18,27 +18,23 @@
                         <a ng-if="false" class="md-primary md-title" data-nodrag>
                             {{step.title | truncate:60:'....'}}
                         </a>
+                        <a class="md-primary" data-nodrag ng-click="step.displayState.open = !step.displayState.open">
+                            <i class="fa fa-fw"
+                               ng-class="{'fa-angle-double-right': !step.displayState.open, 'fa-angle-double-down': step.displayState.open}"></i>
+                        </a>
                     </span>
-                    <span flex="5"></span>
                     <div flex="10" layout-fill layout="row" layout-align="start center">
                         <i ng-if="step.flags.review" class="mc-review-color fa fa-fw fa-flag"></i>
                         <i ng-if="step.flags.error" class="mc-error-color fa fa-fw fa-flag"></i>
                         <i ng-if="step.flags.important" class="mc-important-color fa fa-fw fa-flag"></i>
                     </div>
-                    <a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" style="color:#ff5824">
+                    <a class="mc-error-color" data-nodrag ng-click="$ctrl.remove(this)">
                         <i class="fa fa-fw fa-remove"></i>
                     </a>
                 </div>
             </div>
-            <div flex ng-if="false" layout-fill layout="row" data-nodrag
-                 style="outline:0; cursor: pointer; margin-top: 10px">
-                <span flex="20"></span>
-                <div ng-if="step.flags.done" flex="20" class="mc-flag mc-done-bg">done</div>
-                <div ng-if="step.flags.review" flex="20" class="mc-flag mc-review-bg">review</div>
-                <div ng-if="step.flags.error" flex="20" class="mc-flag mc-error-bg">error</div>
-                <div ng-if="step.flags.important" flex="20" class="mc-flag mc-important-bg">important</div>
-            </div>
         </div>
+        <mc-experiment-step-details data-nodrag step="step" ng-if="step.displayState.open"></mc-experiment-step-details>
     </div>
     <ol ui-tree-nodes="" ng-model="step.steps" ng-class="{hidden: collapsed}">
         <li ng-repeat="step in step.steps" ui-tree-node ng-include="'experiment-simple-step.html'">
@@ -46,7 +42,7 @@
     </ol>
 </script>
 
-<div layout="column" layout-margin style="max-height: 60vh;">
+<div layout="column" layout-margin style="max-height: 65vh;">
     <md-content ui-tree id="tree-root" ng-if="$ctrl.experiment.steps.length">
         <ol ui-tree-nodes ng-model="$ctrl.experiment.steps">
             <li ng-repeat="step in $ctrl.experiment.steps" ui-tree-node
