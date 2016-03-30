@@ -1,28 +1,4 @@
 <div layout="column" flex layout-margin style="overflow: hidden">
-    <div ng-if="false" layout="row" flex layout-align="start start">
-        <div layout="column" flex="100" layout-align="start stretch" md-whiteframe>
-            <md-toolbar style="background-color: white" flex>
-                <div layout="row" layout-align="start center"
-                     style="background-color:#e9e9e9; padding-left:8px; padding-right:8px">
-                    <md-input-container md-no-float style="margin-top: 5px; margin-bottom:5px" flex="40">
-                        <input type="text" ng-model="$ctrl.query" placeholder="SEARCH...">
-                        <md-icon md-font-icon="fa-search" class="fa"
-                                 style="display:inline-block; color:grey; bottom: 23px"></md-icon>
-                    </md-input-container>
-                    <span flex></span>
-                    <a ng-click="$ctrl.showTableView = true"
-                       ng-style="!$ctrl.showTableView && {'color': 'black'}">
-                        <i class="fa fa-fw fa-th-list" style="margin-bottom: 15px"></i>
-                    </a>
-                    <a ng-click="$ctrl.showTableView = false"
-                       ng-style="$ctrl.showTableView && {'color': 'black'}">
-                        <i class="fa fa-fw fa-th" style="margin-bottom: 15px"></i>
-                    </a>
-                </div>
-            </md-toolbar>
-        </div>
-    </div>
-
     <div layout="row" flex>
         <md-sidenav ng-if="true" flex="30" md-is-locked-open="true" style="max-height: 82vh;">
             <span style="text-align: center" class="md-subhead">Details</span>
@@ -48,61 +24,15 @@
                     <i class="fa fa-fw fa-arrow-right"></i>Move Right
                 </md-button>
             </div>
+
             <div layout="row" layout-align="space-between center">
-                <div>
-                    <md-button class="md-primary" ng-class="{'md-hue-2': $ctrl.addHeadings}"
-                               ng-click="$ctrl.addHeadings = true; $ctrl.addProcesses = false">
-                        Add Headings
-                    </md-button>
-                    <md-button class="md-primary" ng-class="{'md-hue-2': $ctrl.addProcesses}"
-                               ng-click="$ctrl.addProcesses = true; $ctrl.addHeadings = false">
-                        Add Processes
-                    </md-button>
-                </div>
                 <div>
                     <md-button class="md-primary" ng-click="$ctrl.expandAll()">Expand all</md-button>
                     <md-button class="md-warn" ng-click="$ctrl.collapseAll()">Collapse all</md-button>
                 </div>
             </div>
 
-            <div ng-if="false">
-                <div ng-if="$ctrl.addProcesses" style="margin-top: 9px; margin-bottom: 18px">
-                    <md-autocomplete md-selected-item="$ctrl.selectedProcess"
-                                     md-item-text="process.name"
-                                     md-items="process in $ctrl.getMatches(searchText)"
-                                     md-selected-item-change="$ctrl.addProcess()"
-                                     md-select-on-match="true"
-                                     md-delay="200"
-                                     md-no-cache="true"
-                                     placeholder="Choose process..."
-                                     on-enter="$ctrl.addProcess()"
-                                     md-search-text="$ctrl.searchText">
-                        <md-item-template>
-                            <span md-highlight-text="$ctrl.searchText">{{process.name}}</span>
-                        </md-item-template>
-                        <md-not-found>
-                            Unknown process {{$ctrl.searchText}}
-                            <a ng-click="$ctrl.newProcessEntry($ctrl.searchText)">Click to create new process type</a>
-                        </md-not-found>
-                    </md-autocomplete>
-                </div>
-                <md-input-container ng-if="$ctrl.addHeadings" md-no-float style="margin-bottom:0">
-                    <input type="text" on-enter="$ctrl.addHeading()"
-                           ng-model="$ctrl.heading" placeholder="Add heading...">
-                </md-input-container>
 
-                <div layout="row" layout-align="space-between start" style="margin-bottom: 20px;">
-                    <div class="md-subhead-light">
-                        Adding at <span
-                            style="color:#1565c0">{{$ctrl.selectedStep ? $ctrl.selectedStep.title : 'Top level'}}</span>
-                    </div>
-
-                    <div class="md-subhead-light">
-                        Editing <span
-                            style="color: #ff5824">{{$ctrl.currentStep ? $ctrl.currentStep.title : 'None'}}</span>
-                    </div>
-                </div>
-            </div>
             <div flex="80">
                 <mc-experiment-outline current-step="$ctrl.currentStep"
                                        current-node="$ctrl.currentNode"
