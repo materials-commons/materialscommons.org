@@ -20,12 +20,10 @@
                         </a>
                     </span>
                     <span flex="5"></span>
-                    <div flex layout-fill layout="row" data-nodrag
-                         style="outline:0; cursor: pointer;">
-                        <div ng-if="step.flags.done" flex="25" class="mc-flag mc-done-bg">done</div>
-                        <div ng-if="step.flags.review" flex="25" class="mc-flag mc-review-bg">review</div>
-                        <div ng-if="step.flags.error" flex="25" class="mc-flag mc-error-bg">error</div>
-                        <div ng-if="step.flags.important" flex="25" class="mc-flag mc-important-bg">important</div>
+                    <div flex="10" layout-fill layout="row" layout-align="start center">
+                        <i ng-if="step.flags.review" class="mc-review-color fa fa-fw fa-flag"></i>
+                        <i ng-if="step.flags.error" class="mc-error-color fa fa-fw fa-flag"></i>
+                        <i ng-if="step.flags.important" class="mc-important-color fa fa-fw fa-flag"></i>
                     </div>
                     <a class="md-warn" data-nodrag ng-click="$ctrl.remove(this)" style="color:#ff5824">
                         <i class="fa fa-fw fa-remove"></i>
