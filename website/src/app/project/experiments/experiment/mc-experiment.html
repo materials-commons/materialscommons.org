@@ -24,115 +24,12 @@
     </div>
 
     <div layout="row" flex>
-        <md-sidenav flex="30" md-is-locked-open="true" style="max-height: 82vh;">
+        <md-sidenav ng-if="true" flex="30" md-is-locked-open="true" style="max-height: 82vh;">
             <span style="text-align: center" class="md-subhead">Details</span>
-            <md-content layout="column" ng-if="$ctrl.currentStep">
-                <a class="md-subtitle"
-                   ng-click="$ctrl.currentStep.details.showTitle = !$ctrl.currentStep.displayState.details.showTitle">
-                    <i class="fa fa-fw"
-                       ng-class="{'fa-chevron-right': !$ctrl.currentStep.displayState.details.showTitle, 'fa-chevron-down': $ctrl.currentStep.displayState.details.showTitle}"></i>
-                    Title
-                </a>
-                <!--<div ng-show="$ctrl.currentStep.details.showTitle" layout="column" flex layout-fill>-->
-
-                <md-input-container md-no-float ng-if="$ctrl.currentStep.displayState.details.showTitle">
-                    <input type="text" ng-model="$ctrl.currentStep.title" placeholder="Title...">
-                </md-input-container>
-                <md-input-container md-no-float ng-if="$ctrl.currentStep.displayState.details.showTitle">
-                    <textarea type="text" ng-model="$ctrl.currentStep.description"
-                              placeholder="Description..."></textarea>
-                </md-input-container>
-
-                <!--</div>-->
-                <div ng-if="!$ctrl.currentStep.displayState.details.showTitle" style="margin-bottom:18px"></div>
-
-                <a class="md-subtitle" style="margin-bottom:18px;"
-                   ng-click="$ctrl.currentStep.displayState.details.showStatus = !$ctrl.currentStep.displayState.details.showStatus">
-                    <i class="fa fa-fw"
-                       ng-class="{'fa-chevron-right': !$ctrl.currentStep.displayState.details.showStatus, 'fa-chevron-down': $ctrl.currentStep.displayState.details.showStatus}"></i>
-                    Status
-                </a>
-                <div ng-show="$ctrl.currentStep.displayState.details.showStatus">
-                    <md-checkbox data-nodrag class="mc-done" ng-model="$ctrl.currentStep.flags.done">
-                        <span class="mc-done-color">Done</span>
-                    </md-checkbox>
-                    <md-checkbox data-nodrag class="mc-review" ng-model="$ctrl.currentStep.flags.review">
-                        <span class="mc-review-color">Review</span>
-                    </md-checkbox>
-                    <md-checkbox data-nodrag class="mc-error" ng-model="$ctrl.currentStep.flags.error">
-                        <span class="mc-error-color">Error</span>
-                    </md-checkbox>
-                    <md-checkbox data-nodrag class="mc-important" ng-model="$ctrl.currentStep.flags.important">
-                        <span class="mc-important-color">Important</span>
-                    </md-checkbox>
-                </div>
-
-                <a class="md-subtitle" style="margin-bottom:18px; margin-top: 18px"
-                   ng-click="$ctrl.currentStep.displayState.details.showNotes = !$ctrl.currentStep.displayState.details.showNotes">
-                    <i class="fa fa-fw"
-                       ng-class="{'fa-chevron-right': !$ctrl.currentStep.displayState.details.showNotes, 'fa-chevron-down': $ctrl.currentStep.displayState.details.showNotes}"></i>
-                    Notes
-                </a>
-                <textarea ng-if="$ctrl.currentStep.displayState.details.showNotes" ckeditor="editorOptions"
-                          ng-model="$ctrl.currentStep.notes">
-                </textarea>
-
-                <a class="md-subtitle" style="margin-bottom:18px; margin-top: 18px"
-                   ng-click="$ctrl.currentStep.displayState.details.showSamples = !$ctrl.currentStep.displayState.details.showSamples">
-                    <i class="fa fa-fw"
-                       ng-class="{'fa-chevron-right': !$ctrl.currentStep.displayState.details.showSamples, 'fa-chevron-down': $ctrl.currentStep.displayState.details.showSamples}"></i>
-                    Samples
-                </a>
-                <div ng-if="$ctrl.currentStep.displayState.details.showSamples">
-                    <md-tabs md-selected="$ctrl.currentStep.displayState.details.currentSamplesTab" md-border-bottom>
-                        <md-tab>
-                            <md-tab-label>
-                                Input Samples
-                            </md-tab-label>
-                            <md-tab-body>
-                                Show input samples here
-                            </md-tab-body>
-                        </md-tab>
-                        <md-tab>
-                            <md-tab-label>
-                                Output Samples
-                            </md-tab-label>
-                            <md-tab-body>
-                                Show output samples here
-                            </md-tab-body>
-                        </md-tab>
-                    </md-tabs>
-                </div>
-
-                <a class="md-subtitle" style="margin-bottom:18px; margin-top: 18px"
-                   ng-click="$ctrl.currentStep.details.showFiles = !$ctrl.currentStep.details.showFiles">
-                    <i class="fa fa-fw"
-                       ng-class="{'fa-chevron-right': !$ctrl.currentStep.details.showFiles, 'fa-chevron-down': $ctrl.currentStep.details.showFiles}"></i>
-                    Files
-                </a>
-                <div ng-if="$ctrl.currentStep.displayState.details.showFiles">
-                    <md-tabs md-selected="$ctrl.currentStep.displayState.details.currentFilesTab" md-stretch-tabs
-                             md-border-bottom>
-                        <md-tab>
-                            <md-tab-label>
-                                Input Files
-                            </md-tab-label>
-                            <md-tab-body>
-                                Show input files here
-                            </md-tab-body>
-                        </md-tab>
-                        <md-tab>
-                            <md-tab-label>
-                                Output Files
-                            </md-tab-label>
-                            <md-tab-body>
-                                Show output files here
-                            </md-tab-body>
-                        </md-tab>
-                    </md-tabs>
-                </div>
-            </md-content>
+            <mc-experiment-sidebar-details ng-if="true" current-step="$ctrl.currentStep">
+            </mc-experiment-sidebar-details>
         </md-sidenav>
+
         <div layout="column" flex="80" layout-margin>
             <div layout="row">
                 <md-button class="md-primary" ng-click="$ctrl.moveLeft()">
