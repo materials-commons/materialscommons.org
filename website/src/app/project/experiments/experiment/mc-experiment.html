@@ -1,4 +1,8 @@
-<div layout="column" flex layout-margin style="overflow: hidden">
+<div style="overflow: auto" ng-if="$ctrl.showStepMaximized()">
+    <mc-experiment-step-details step="$ctrl.currentStep"></mc-experiment-step-details>
+</div>
+
+<div ng-if="!$ctrl.showStepMaximized()" layout="column" flex layout-margin style="overflow: hidden">
     <div layout="row" flex>
         <md-sidenav ng-if="true" flex="30" md-is-locked-open="true" style="max-height: 82vh;">
             <span style="text-align: center" class="md-subhead">Details</span>
