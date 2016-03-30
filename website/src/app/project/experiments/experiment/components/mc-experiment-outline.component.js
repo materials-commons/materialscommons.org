@@ -1,7 +1,7 @@
-import {ExperimentStep} from './experiment';
+import {ExperimentStep} from '../experiment.model';
 
 angular.module('materialscommons').component('mcExperimentOutline', {
-    templateUrl: 'app/project/experiments/experiment/mc-experiment-outline.html',
+    templateUrl: 'app/project/experiments/experiment/components/mc-experiment-outline.html',
     controller: MCExperimentOutlineComponentController,
     bindings: {
         experiment: '=',
