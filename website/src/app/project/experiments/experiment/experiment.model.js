@@ -20,7 +20,9 @@ export class ExperimentStep {
                 showSamples: false,
                 currentFilesTab: 0,
                 currentSamplesTab: 0
-            }
+            },
+            open: false,
+            maximize: false
         };
         this.node = null;
     }

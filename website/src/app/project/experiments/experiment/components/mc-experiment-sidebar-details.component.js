@@ -8,6 +8,13 @@ angular.module('materialscommons').component('mcExperimentSidebarDetails', {
 
 /*@ngInject*/
 function MCExperimentSidebarDetailsComponentController($scope) {
+    let ctrl = this;
+
+    ctrl.maximize = (step) => {
+        ctrl.currentStep = step;
+        ctrl.currentStep.displayState = true;
+    };
+
     $scope.editorOptions = {
         height: '20vh',
         width: '25vw'

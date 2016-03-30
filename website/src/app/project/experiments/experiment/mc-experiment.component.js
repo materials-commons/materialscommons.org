@@ -24,5 +24,6 @@ function MCExperimentComponentController($scope, moveStep) {
     ctrl.moveDown = () => moveStep.down(ctrl.currentNode, ctrl.currentStep, ctrl.experiment);
     ctrl.expandAll = () => $scope.$broadcast('angular-ui-tree:expand-all');
     ctrl.collapseAll = () => $scope.$broadcast('angular-ui-tree:collapse-all');
+    ctrl.showStepMaximized = () => ctrl.currentStep && ctrl.currentStep.displayState.maximize;
 }
 
