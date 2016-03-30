@@ -7,23 +7,44 @@
             <i class="fa fa-fw fa-expand"></i>
         </a>
     </div>
-    <md-input-container md-no-float>
-        <textarea type="text" ng-model="$ctrl.step.description" placeholder="Description..."></textarea>
-    </md-input-container>
-    <div layout="row" layout-align="center center">
-        <div>
-            <md-checkbox data-nodrag class="mc-done" ng-model="$ctrl.step.flags.done">
-                <span class="mc-done-color">Done</span>
-            </md-checkbox>
-            <md-checkbox data-nodrag class="mc-review" ng-model="$ctrl.step.flags.review">
-                <span class="mc-review-color">Review</span>
-            </md-checkbox>
-            <md-checkbox data-nodrag class="mc-error" ng-model="$ctrl.step.flags.error">
-                <span class="mc-error-color">Error</span>
-            </md-checkbox>
-            <md-checkbox data-nodrag class="mc-important" ng-model="$ctrl.step.flags.important">
-                <span class="mc-important-color">Important</span>
-            </md-checkbox>
-        </div>
-    </div>
+    <md-tabs md-selected="$ctrl.step.displayState.selected" md-border-bottom md-dynamic-height>
+        <md-tab>
+            <md-tab-label>
+                Details
+            </md-tab-label>
+            <md-tab-body>
+                <md-input-container md-no-float>
+                    <textarea type="text" ng-model="$ctrl.step.description" placeholder="Description..."></textarea>
+                </md-input-container>
+                <div layout="row" layout-align="center center">
+                    <div>
+                        <md-checkbox data-nodrag class="mc-done" ng-model="$ctrl.step.flags.done">
+                            <span class="mc-done-color">Done</span>
+                        </md-checkbox>
+                        <md-checkbox data-nodrag class="mc-review" ng-model="$ctrl.step.flags.review">
+                            <span class="mc-review-color">Review</span>
+                        </md-checkbox>
+                        <md-checkbox data-nodrag class="mc-error" ng-model="$ctrl.step.flags.error">
+                            <span class="mc-error-color">Error</span>
+                        </md-checkbox>
+                        <md-checkbox data-nodrag class="mc-important" ng-model="$ctrl.step.flags.important">
+                            <span class="mc-important-color">Important</span>
+                        </md-checkbox>
+                    </div>
+                </div>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>Notes</md-tab-label>
+            <md-tab-body><textarea ckeditor ng-model="$ctrl.step.notes"></textarea></md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>Samples</md-tab-label>
+            <md-tab-body>Samples here</md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>Files</md-tab-label>
+            <md-tab-body>Files here</md-tab-body>
+        </md-tab>
+    </md-tabs>
 </div>
