@@ -8,6 +8,11 @@
         </a>
         <span flex="10"></span>
         <span class="md-title">{{$ctrl.step.title}}</span>
+        <span flex></span>
+        <mc-new-process-menu button-name="ADD PROCESS"
+                             button-class="md-primary md-raised"
+                             button-icon="fa-plus" style="color:black">
+        </mc-new-process-menu>
     </div>
     <md-tabs md-selected="$ctrl.step.displayState.selected" md-border-bottom md-dynamic-height>
         <md-tab>
