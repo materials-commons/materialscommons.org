@@ -12,12 +12,17 @@
                             <i class="fa fa-fw"
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                         </a>
-                        <input ng-if="true" size="60" type="text" data-nodrag ng-model="step.title"
+                        <input ng-if="$ctrl.currentStep === step && !step.flags.done && step.displayState.editTitle"
+                               size="60" type="text" data-nodrag ng-model="step.title"
                                placeholder="Title..."
-                               style="margin-top:4px" on-enter="$ctrl.addBlankStep(this)" id="{{step.id}}">
-                        <a ng-if="false" class="md-primary md-title" data-nodrag>
+                               style="margin-top:4px" on-enter="$ctrl.addBlankStep(this)" id="{{step.id}}"
+                               class="mark-text-done">
+                        <span ng-if="$ctrl.currentStep !== step || step.flags.done || !step.displayState.editTitle"
+                              ng-click="step.displayState.editTitle = true"
+                              class="md-subhead"
+                              ng-class="{'mark-text-done': step.flags.done}">
                             {{step.title | truncate:60:'....'}}
-                        </a>
+                        </span>
                         <a class="md-primary" data-nodrag ng-click="step.displayState.open = !step.displayState.open">
                             <i class="fa fa-fw"
                                ng-class="{'fa-angle-double-right': !step.displayState.open, 'fa-angle-double-down': step.displayState.open}"></i>

@@ -21,6 +21,7 @@ export class ExperimentStep {
                 currentFilesTab: 0,
                 currentSamplesTab: 0
             },
+            editTitle: true,
             open: false,
             maximize: false
         };
