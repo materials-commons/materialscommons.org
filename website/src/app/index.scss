@@ -13,6 +13,22 @@ $mc-color-done: #4caf50;
   text-transform: uppercase;
 }
 
+.mark-text-done {
+  //font-size: 4em;
+  position: relative;
+}
+
+.mark-text-done::after {
+  border-bottom: 0.125em solid $mc-color-done; //rgba(255, 0, 0, 0.5);
+  content: "";
+  left: 0;
+  line-height: 1em;
+  margin-top: calc(0.125em / 2 * -1);
+  position: absolute;
+  right: 0;
+  top: 50%;
+}
+
 textarea {
   resize: none;
 }

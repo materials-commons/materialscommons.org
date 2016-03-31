@@ -17,8 +17,12 @@ function MCExperimentOutlineComponentController(focus, toastr) {
     ctrl.setCurrent = setCurrent;
     ctrl.addBlankStep = addBlankStep;
     ctrl.remove = remove;
+    ctrl.titleClicked = () => console.log('title clicked');
 
     function setCurrent(step, node) {
+        if (ctrl.currentStep !== step) {
+            ctrl.currentStep.displayState.editTitle = false;
+        }
         ctrl.currentStep = step;
         ctrl.currentNode = node;
     }
