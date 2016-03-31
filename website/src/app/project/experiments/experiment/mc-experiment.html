@@ -4,9 +4,9 @@
 
 <div ng-if="!$ctrl.showStepMaximized()" layout="column" flex layout-margin style="overflow: hidden">
     <div layout="row" flex>
-        <md-sidenav ng-if="true" flex="30" md-is-locked-open="true" style="max-height: 82vh;">
+        <md-sidenav flex="30" md-is-locked-open="$ctrl.showSidebar" style="max-height: 82vh;">
             <span style="text-align: center" class="md-subhead">Details</span>
-            <mc-experiment-sidebar-details ng-if="true" current-step="$ctrl.currentStep">
+            <mc-experiment-sidebar-details current-step="$ctrl.currentStep">
             </mc-experiment-sidebar-details>
         </md-sidenav>
 
@@ -33,6 +33,10 @@
                 <div>
                     <md-button class="md-primary" ng-click="$ctrl.expandAll()">Expand all</md-button>
                     <md-button class="md-warn" ng-click="$ctrl.collapseAll()">Collapse all</md-button>
+                    <md-button class="md-primary" ng-click="$ctrl.showSidebar = !$ctrl.showSidebar">
+                        <span ng-if="$ctrl.showSidebar">Hide Sidebar</span>
+                        <span ng-if="!$ctrl.showSidebar">Show Sidebar</span>
+                    </md-button>
                 </div>
             </div>
 
