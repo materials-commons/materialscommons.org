@@ -10,26 +10,25 @@
             </mc-experiment-sidebar-details>
         </md-sidenav>
 
-        <div layout="column" flex layout-margin md-whiteframe>
-            <div layout="row">
-                <md-button class="md-primary" ng-click="$ctrl.moveLeft()">
-                    <i class="fa fa-fw fa-arrow-left"></i>Move Left
-                </md-button>
-
-                <md-button class="md-primary" ng-click="$ctrl.moveDown()">
-                    <i class="fa fa-fw fa-arrow-down"></i>Move Down
-                </md-button>
-
-                <md-button class="md-primary" ng-click="$ctrl.moveUp()">
-                    <i class="fa fa-fw fa-arrow-up"></i>Move Up
-                </md-button>
-
-                <md-button class="md-primary" ng-click="$ctrl.moveRight()">
-                    <i class="fa fa-fw fa-arrow-right"></i>Move Right
-                </md-button>
-            </div>
-
+        <div layout="column" flex md-whiteframe layout-margin>
             <div layout="row" layout-align="space-between center">
+                <div>
+                    <md-button class="md-primary" ng-click="$ctrl.moveLeft()">
+                        <i class="fa fa-fw fa-arrow-left"></i>Left
+                    </md-button>
+
+                    <md-button class="md-primary" ng-click="$ctrl.moveDown()">
+                        <i class="fa fa-fw fa-arrow-down"></i>Down
+                    </md-button>
+
+                    <md-button class="md-primary" ng-click="$ctrl.moveUp()">
+                        <i class="fa fa-fw fa-arrow-up"></i>Up
+                    </md-button>
+
+                    <md-button class="md-primary" ng-click="$ctrl.moveRight()">
+                        <i class="fa fa-fw fa-arrow-right"></i>Right
+                    </md-button>
+                </div>
                 <div>
                     <md-button class="md-primary" ng-click="$ctrl.expandAll()">Expand all</md-button>
                     <md-button class="md-warn" ng-click="$ctrl.collapseAll()">Collapse all</md-button>
@@ -39,7 +38,6 @@
                     </md-button>
                 </div>
             </div>
-
 
             <div flex>
                 <mc-experiment-outline current-step="$ctrl.currentStep"
