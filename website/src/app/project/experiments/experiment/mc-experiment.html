@@ -12,39 +12,70 @@
 
         <div layout="column" flex md-whiteframe>
             <md-toolbar>
-                <!--<md-menu-bar>-->
-                <!--<md-menu>-->
-                <!--<md-button ng-click="$mdOpenMenu()">A</md-button>-->
-                <!--<md-menu-content>-->
-                <!--<md-menu-item><md-button>b</md-button></md-menu-item>-->
-                <!--</md-menu-content>-->
-                <!--</md-menu>-->
-                <!--</md-menu-bar>-->
+
                 <div layout="row" layout-align="space-between center">
+                    <md-menu-bar>
+                        <md-menu>
+                            <md-button ng-click="$mdOpenMenu()">Organize</md-button>
+                            <md-menu-content width="3">
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.moveLeft()">
+                                        <span class="text-uppercase"><i
+                                                class="fa fa-fw fa-arrow-left"></i>Move Left</span>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.moveRight()">
+                                        <span class="text-uppercase"><i
+                                                class="fa fa-fw fa-arrow-right"></i>Move Right</span>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.moveUp()">
+                                        <span class="text-uppercase"><i class="fa fa-fw fa-arrow-up"></i>Move Up</span>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.moveDown()">
+                                        <span class="text-uppercase"><i
+                                                class="fa fa-fw fa-arrow-down"></i>Move Down</span>
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                        <md-menu>
+                            <md-button ng-click="$mdOpenMenu()">View</md-button>
+                            <md-menu-content width="3">
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.expandAll()">
+                                        <span class="text-uppercase">Expand all</span>
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.collapseAll()">
+                                        <span class="text-uppercase">Collapse all</span>
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-divider></md-menu-divider>
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.openAll()">
+                                        <span class="text-uppercase">Open All</span>
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.closeAll()">
+                                        <span class="text-uppercase">Close All</span>
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </md-menu-bar>
                     <div>
-                        <md-button class="md-primary" ng-click="$ctrl.moveLeft()">
-                            <span class="text-white"><i class="fa fa-fw fa-arrow-left"></i>Left</span>
-                        </md-button>
 
-                        <md-button class="md-primary text-white" ng-click="$ctrl.moveRight()">
-                            <span class="text-white"><i class="fa fa-fw fa-arrow-right"></i>Right</span>
-                        </md-button>
 
-                        <md-button class="md-primary text-white" ng-click="$ctrl.moveUp()">
-                            <span class="text-white"><i class="fa fa-fw fa-arrow-up"></i>Up</span>
-                        </md-button>
-
-                        <md-button class="md-primary text-white" ng-click="$ctrl.moveDown()">
-                            <span class="text-white"><i class="fa fa-fw fa-arrow-down"></i>Down</span>
-                        </md-button>
-                    </div>
-                    <div>
-                        <md-button class="md-primary text-white" ng-click="$ctrl.expandAll()">
-                            <span class="text-white">Expand all</span>
-                        </md-button>
-                        <md-button class="md-primary" ng-click="$ctrl.collapseAll()">
-                            <span class="text-white">Collapse all</span>
-                        </md-button>
                         <md-button class="md-primary text-white" ng-click="$ctrl.showSidebar = !$ctrl.showSidebar">
                             <span class="text-white" ng-if="$ctrl.showSidebar">Hide Sidebar</span>
                             <span class="text-white" ng-if="!$ctrl.showSidebar">Show Sidebar</span>

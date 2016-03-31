@@ -26,5 +26,17 @@ function MCExperimentComponentController($scope, moveStep) {
     ctrl.expandAll = () => $scope.$broadcast('angular-ui-tree:expand-all');
     ctrl.collapseAll = () => $scope.$broadcast('angular-ui-tree:collapse-all');
     ctrl.showStepMaximized = () => ctrl.currentStep && ctrl.currentStep.displayState.maximize;
+    ctrl.openAll = openAll;
+    ctrl.closeAll = closeAll;
+
+    function openAll() {
+        var treeModel = new TreeModel({childrenPropertyName: 'steps'}),
+            root = treeModel.parse(ctrl.experiment);
+        console.dir(root);
+    }
+
+    function closeAll() {
+
+    }
 }
 
