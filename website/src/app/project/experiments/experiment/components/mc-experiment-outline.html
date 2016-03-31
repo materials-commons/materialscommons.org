@@ -8,6 +8,7 @@
                 <div flex data-nodrag layout="row" layout-fill layout-align="space-between" style="margin-bottom: 4px;"
                      ng-click="$ctrl.setCurrent(step, this)">
                     <span>
+                        <md-checkbox data-nodrag class="mc-done" ng-model="step.flags.done"></md-checkbox>
                         <a data-nodrag ng-click="this.toggle()">
                             <i class="fa fa-fw"
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
@@ -20,6 +21,7 @@
                         <span ng-if="$ctrl.currentStep !== step || step.flags.done || !step.displayState.editTitle"
                               ng-click="step.displayState.editTitle = true"
                               class="md-subhead"
+                              style="cursor: pointer"
                               ng-class="{'mark-text-done': step.flags.done}">
                             {{step.title | truncate:60:'....'}}
                         </span>
