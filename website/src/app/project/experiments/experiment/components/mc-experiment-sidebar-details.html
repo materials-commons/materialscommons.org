@@ -1,6 +1,13 @@
 <md-content layout="column" layout-fill ng-if="$ctrl.currentStep">
+    <div layout="row" layout-align="center center" style="margin-bottom: 18px;">
+        <mc-new-process-menu button-name="ADD PROCESS"
+                             button-class="md-primary md-raised"
+                             button-icon="fa-plus" style="color:black">
+        </mc-new-process-menu>
+    </div>
+
     <a class="md-subtitle"
-       ng-click="$ctrl.currentStep.details.showTitle = !$ctrl.currentStep.displayState.details.showTitle">
+       ng-click="$ctrl.currentStep.displayState.details.showTitle = !$ctrl.currentStep.displayState.details.showTitle">
         <i class="fa fa-fw"
            ng-class="{'fa-chevron-right': !$ctrl.currentStep.displayState.details.showTitle, 'fa-chevron-down': $ctrl.currentStep.displayState.details.showTitle}"></i>
         Title
