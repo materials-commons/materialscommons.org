@@ -17,6 +17,6 @@ function MCExperimentSidebarDetailsComponentController($scope) {
 
     $scope.editorOptions = {
         height: '20vh',
-        width: '25vw'
+        width: '27vw'
     };
 }
