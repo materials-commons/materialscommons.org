@@ -6,6 +6,8 @@
         <a ng-if="!$ctrl.step.displayState.maximize" ng-click="$ctrl.step.displayState.maximize = true">
             <i class="fa fa-fw fa-expand"></i>
         </a>
+        <span flex="10"></span>
+        <span class="md-title">{{$ctrl.step.title}}</span>
     </div>
     <md-tabs md-selected="$ctrl.step.displayState.selected" md-border-bottom md-dynamic-height>
         <md-tab>
@@ -13,7 +15,7 @@
                 Details
             </md-tab-label>
             <md-tab-body>
-                <md-input-container md-no-float>
+                <md-input-container md-no-float class="md-block">
                     <textarea type="text" ng-model="$ctrl.step.description" placeholder="Description..."></textarea>
                 </md-input-container>
                 <div layout="row" layout-align="center center">
