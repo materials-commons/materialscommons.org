@@ -10,7 +10,7 @@ function MCExperimentComponentController($scope, moveStep) {
     let ctrl = this;
     ctrl.currentStep = null;
     ctrl.currentNode = null;
-    ctrl.showSidebar = true;
+    ctrl.showSidebar = false;
 
     // Create the initial hard coded experiment
     ctrl.experiment = new Experiment('test experiment');
