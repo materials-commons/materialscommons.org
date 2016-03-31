@@ -2,7 +2,7 @@
     <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex
          layout="column">
         <div flex layout="column" style="margin-top: 2px; margin-bottom: 2px;border-top: 2px solid #f4f5f7"
-             ng-class="{'current-step': step === $ctrl.currentStep}">
+             ng-class="{'current-step': step === $ctrl.currentStep}" on-enter="$ctrl.addBlankStep(this)">
             <div flex layout-fill layout="row">
                 <i class="fa fa-fw fa-reorder"></i>
                 <div flex data-nodrag layout="row" layout-fill layout-align="space-between" style="margin-bottom: 4px;"
@@ -13,12 +13,12 @@
                             <i class="fa fa-fw"
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                         </a>
-                        <input ng-if="$ctrl.currentStep === step && !step.flags.done && step.displayState.editTitle"
+                        <input ng-if="($ctrl.currentStep === step && !step.flags.done && step.displayState.editTitle) || step.title === ''"
                                size="60" type="text" data-nodrag ng-model="step.title"
                                placeholder="Title..."
-                               style="margin-top:4px" on-enter="$ctrl.addBlankStep(this)" id="{{step.id}}"
+                               style="margin-top:4px" id="{{step.id}}"
                                class="mark-text-done">
-                        <span ng-if="$ctrl.currentStep !== step || step.flags.done || !step.displayState.editTitle"
+                        <span ng-if="!(($ctrl.currentStep === step && !step.flags.done && step.displayState.editTitle) || step.title === '')"
                               ng-click="step.displayState.editTitle = true"
                               class="md-subhead"
                               style="cursor: pointer"
