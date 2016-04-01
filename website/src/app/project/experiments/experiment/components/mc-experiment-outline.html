@@ -2,10 +2,11 @@
     <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex
          layout="column">
         <div flex layout="column" style="margin-top: 2px; margin-bottom: 2px;border-top: 2px solid #f4f5f7"
-             ng-class="{'current-step': step === $ctrl.currentStep}" on-enter="$ctrl.addBlankStep(this)">
+             on-enter="$ctrl.addBlankStep(this)">
             <div flex layout-fill layout="row">
                 <i class="fa fa-fw fa-reorder"></i>
-                <div flex data-nodrag layout="row" layout-fill layout-align="space-between" style="margin-bottom: 4px;"
+                <div flex data-nodrag layout="row" layout-fill layout-align="space-between"
+                     style="margin-bottom: 4px; outline: none"
                      ng-click="$ctrl.setCurrent(step, this)">
                     <span>
                         <md-checkbox data-nodrag class="mc-done" ng-model="step.flags.done"></md-checkbox>
@@ -13,16 +14,14 @@
                             <i class="fa fa-fw"
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                         </a>
-                        <input ng-if="($ctrl.currentStep === step && !step.flags.done && step.displayState.editTitle) || step.title === ''"
+                        <input ng-if="($ctrl.currentStep === step && !step.flags.done) || step.title === ''"
                                size="60" type="text" data-nodrag ng-model="step.title"
                                placeholder="Title..."
-                               style="margin-top:4px" id="{{step.id}}"
-                               class="mark-text-done">
-                        <span ng-if="!(($ctrl.currentStep === step && !step.flags.done && step.displayState.editTitle) || step.title === '')"
+                               style="margin-top:4px" id="{{step.id}}">
+                        <span ng-if="!(($ctrl.currentStep === step && !step.flags.done) || step.title === '')"
                               ng-click="step.displayState.editTitle = true"
                               class="md-subhead"
-                              style="cursor: pointer"
-                              ng-class="{'mark-text-done': step.flags.done}">
+                              ng-class="{'mark-text-done': step.flags.done, 'current-step': $ctrl.currentStep === step && step.flags.done}">
                             {{step.title | truncate:60:'....'}}
                         </span>
                         <a class="md-primary" data-nodrag ng-click="step.displayState.open = !step.displayState.open">
@@ -41,7 +40,9 @@
                 </div>
             </div>
         </div>
-        <mc-experiment-step-details data-nodrag step="step" ng-if="step.displayState.open"></mc-experiment-step-details>
+        <mc-experiment-step-details data-nodrag current-step="$ctrl.currentStep" step="step"
+                                    ng-if="step.displayState.open">
+        </mc-experiment-step-details>
     </div>
     <ol ui-tree-nodes="" ng-model="step.steps" ng-class="{hidden: collapsed}">
         <li ng-repeat="step in step.steps" ui-tree-node ng-include="'experiment-simple-step.html'">
