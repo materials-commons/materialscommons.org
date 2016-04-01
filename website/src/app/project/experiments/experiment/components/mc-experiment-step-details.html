@@ -1,13 +1,20 @@
 <div flex layout="column">
     <md-toolbar style="background-color: #e7e8ea">
         <div layout="row" layout-align="space-between center" layout-margin>
-            <a ng-if="$ctrl.step.displayState.maximize" ng-click="$ctrl.step.displayState.maximize = false">
-                <i class="fa fa-fw fa-compress"></i>
-            </a>
-            <a ng-if="!$ctrl.step.displayState.maximize"
+            <md-button class="md-primary" ng-if="$ctrl.step.displayState.maximize"
+                       ng-click="$ctrl.step.displayState.maximize = false">
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-square-o fa-stack-2x"></i>
+                    <i class="fa fa-compress fa-stack-1x"></i>
+                </span>
+            </md-button>
+            <md-button class="md-primary" ng-if="!$ctrl.step.displayState.maximize"
                ng-click="$ctrl.currentStep = $ctrl.step; $ctrl.step.displayState.maximize = true">
-                <i class="fa fa-fw fa-expand"></i>
-            </a>
+                 <span class="fa-stack fa-lg">
+                    <i class="fa fa-square-o fa-stack-2x"></i>
+                    <i class="fa fa-expand fa-stack-1x"></i>
+                </span>
+            </md-button>
             <span class="md-title text-black">{{$ctrl.step.title}}</span>
             <mc-new-process-menu button-name="ADD PROCESS"
                                  button-class="md-primary md-raised"
