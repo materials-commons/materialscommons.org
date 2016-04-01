@@ -41,6 +41,14 @@ $mc-step-detail-color: #e7e8ea;
   top: 50%;
 }
 
+.md-vertical-divider {
+  border-top-width: 0;
+  border-right-width: 1px;
+  border-right-style: solid;
+  height: 100%;
+  padding-top: 2px;
+}
+
 textarea {
   resize: none;
 }

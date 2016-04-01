@@ -12,8 +12,13 @@
 
         <div layout="column" flex md-whiteframe>
             <md-toolbar>
+                <div layout="row" layout-align="space-between center" layout-padding>
+                    <div layout="column" style="margin-left:15px">
+                        <span>{{$ctrl.experiment.name}}</span>
+                        <span class="md-subhead text-black">Look at grain size as it relates to hardness</span>
+                    </div>
 
-                <div layout="row" layout-align="space-between center">
+                    <md-divider class="md-vertical-divider"></md-divider>
                     <md-menu-bar>
                         <md-menu>
                             <md-button ng-click="$mdOpenMenu()">Organize</md-button>
@@ -74,8 +79,6 @@
                         </md-menu>
                     </md-menu-bar>
                     <div>
-
-
                         <md-button class="md-primary text-white" ng-click="$ctrl.showSidebar = !$ctrl.showSidebar">
                             <span class="text-white" ng-if="$ctrl.showSidebar">Hide Sidebar</span>
                             <span class="text-white" ng-if="!$ctrl.showSidebar">Show Sidebar</span>
