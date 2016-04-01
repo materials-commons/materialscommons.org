@@ -1,20 +1,22 @@
-<div flex layout-margin layout="column">
-    <div layout="row">
-        <a ng-if="$ctrl.step.displayState.maximize" ng-click="$ctrl.step.displayState.maximize = false">
-            <i class="fa fa-fw fa-compress"></i>
-        </a>
-        <a ng-if="!$ctrl.step.displayState.maximize" ng-click="$ctrl.step.displayState.maximize = true">
-            <i class="fa fa-fw fa-expand"></i>
-        </a>
-        <span flex="10"></span>
-        <span class="md-title">{{$ctrl.step.title}}</span>
-        <span flex></span>
-        <mc-new-process-menu button-name="ADD PROCESS"
-                             button-class="md-primary md-raised"
-                             button-icon="fa-plus" style="color:black">
-        </mc-new-process-menu>
-    </div>
-    <md-tabs md-selected="$ctrl.step.displayState.selected" md-border-bottom md-dynamic-height>
+<div flex layout="column">
+    <md-toolbar style="background-color: #e7e8ea">
+        <div layout="row" layout-align="space-between center" layout-margin>
+            <a ng-if="$ctrl.step.displayState.maximize" ng-click="$ctrl.step.displayState.maximize = false">
+                <i class="fa fa-fw fa-compress"></i>
+            </a>
+            <a ng-if="!$ctrl.step.displayState.maximize"
+               ng-click="$ctrl.currentStep = $ctrl.step; $ctrl.step.displayState.maximize = true">
+                <i class="fa fa-fw fa-expand"></i>
+            </a>
+            <span class="md-title">{{$ctrl.step.title}}</span>
+            <mc-new-process-menu button-name="ADD PROCESS"
+                                 button-class="md-primary md-raised"
+                                 button-icon="fa-plus" style="color:black">
+            </mc-new-process-menu>
+        </div>
+    </md-toolbar>
+    <md-tabs md-selected="$ctrl.step.displayState.selected"
+             class="step-details-border" md-border-bottom md-dynamic-height>
         <md-tab>
             <md-tab-label>
                 Details
