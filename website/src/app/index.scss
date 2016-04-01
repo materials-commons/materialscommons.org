@@ -5,6 +5,7 @@ $mc-color-review: #ffc107;
 $mc-color-error: #ff5824;
 $mc-color-important: #3f51b5;
 $mc-color-done: #4caf50;
+$mc-step-detail-color: #e7e8ea;
 
 .mc-flag {
   color: white;
@@ -14,8 +15,19 @@ $mc-color-done: #4caf50;
 }
 
 .mark-text-done {
-  //font-size: 4em;
   position: relative;
+}
+
+.step-toolbar-bg {
+  background-color: $mc-step-detail-color;
+}
+
+.step-details-border {
+  border-left: 2px solid $mc-step-detail-color;
+  border-right: 2px solid $mc-step-detail-color;
+  border-bottom: 2px solid $mc-step-detail-color;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mark-text-done::after {
