@@ -35,13 +35,13 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     margin-bottom: 6px;
 }
 
-/*.angular-ui-tree-handle:hover {*/
-/*background-color: #e7e9ea;*/
-/*}*/
+.mc-active-tree-node.angular-ui-tree-handle:hover {
+    background-color: #e7e9ea;
+}
 
-/*.angular-ui-tree-handle-active {*/
-/*background-color: #e7e9ea;*/
-/*}*/
+.mc-active-tree-node.angular-ui-tree-handle-active {
+    background-color: #e7e9ea;
+}
 
 .angular-ui-tree-placeholder {
     background: #f0f9ff;
