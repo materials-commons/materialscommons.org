@@ -1,7 +1,7 @@
 <div flex>
     <ol ui-tree-nodes ng-model="ctrl.files">
         <li ng-repeat="file in ctrl.files track by file.data.id | orderBy:'data.name'" ui-tree-node>
-            <div ui-tree-handle ng-class="{'angular-ui-tree-handle-active': file.active}">
+            <div ui-tree-handle class="mc-active-tree-node" ng-class="{'angular-ui-tree-handle-active': file.active}">
                 <div ng-if="file.data._type === 'directory'">
                     <div layout="row" layout-align="start center">
                         <i class="fa fa-fw fa-reorder drag-handle-color"></i>
