@@ -11,7 +11,6 @@ angular.module('materialscommons').component('mcNewProcessMenu', {
 /*@ngInject*/
 function MCNewProcessMenuComponentController(templates, project, projectsService, mcmodal, $state) {
     var ctrl = this;
-    console.log('buttonClass', ctrl.buttonClass);
     ctrl.templates = templates.get();
     ctrl.chooseTemplate = chooseTemplate;
     ctrl.chooseExistingProcess = chooseExistingProcess;
