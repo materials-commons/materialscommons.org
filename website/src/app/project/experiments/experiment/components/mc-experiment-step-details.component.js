@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentStepDetails', {
-    templateUrl: 'app/project/experiments/experiment/components/mc-experiment-step-details.html',
+    templateUrl: 'app/project/experiments/experiment/components/mc-experiment-details.html',
     controller: MCExperimentStepDetailsComponentController,
     bindings: {
         step: '=',
