@@ -55,6 +55,10 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     color: #c1c3c4;
 }
 
+.font-16 {
+    font-size: 16px;
+}
+
 .mc-md-card-title-home-adj {
     padding-top: 26px;
     padding-bottom: 18px;
