@@ -17,7 +17,8 @@
                         <input ng-if="($ctrl.currentStep === step && !step.flags.done) || step.title === ''"
                                size="60" type="text" data-nodrag ng-model="step.title"
                                placeholder="Title..."
-                               style="margin-top:4px" id="{{step.id}}">
+                               class="mc-experiment"
+                               style="margin-top:4px;" id="{{step.id}}">
                         <span ng-if="!(($ctrl.currentStep === step && !step.flags.done) || step.title === '')"
                               ng-click="step.displayState.editTitle = true"
                               class="md-subhead"
