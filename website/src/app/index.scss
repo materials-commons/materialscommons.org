@@ -49,6 +49,13 @@ $mc-step-detail-color: #e7e8ea;
   padding-top: 2px;
 }
 
+.mc-input-as-line {
+  background-color: transparent;
+  border-style: solid;
+  border-width: 0px 0px 1px 0px;
+  border-color: #f4f5f7;
+}
+
 textarea {
   resize: none;
 }
