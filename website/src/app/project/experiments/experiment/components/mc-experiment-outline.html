@@ -5,7 +5,7 @@
              on-enter="$ctrl.addBlankStep(this)">
             <div flex layout-fill layout="row">
                 <i class="fa fa-fw fa-reorder"></i>
-                <div flex data-nodrag layout="row" layout-fill layout-align="space-between"
+                <div flex data-nodrag layout="row" layout-fill layout-align="start center"
                      style="margin-bottom: 4px; outline: none"
                      ng-click="$ctrl.setCurrent(step, this)">
                     <span>
@@ -15,7 +15,7 @@
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                         </a>
                         <input ng-if="($ctrl.currentStep === step && !step.flags.done) || step.title === ''"
-                               size="60" type="text" data-nodrag ng-model="step.title"
+                               size="40" type="text" data-nodrag ng-model="step.title"
                                placeholder="Title..."
                                class="mc-experiment"
                                style="margin-top:4px;" id="{{step.id}}">
@@ -30,10 +30,14 @@
                                ng-class="{'fa-angle-double-right': !step.displayState.open, 'fa-angle-double-down': step.displayState.open}"></i>
                         </a>
                     </span>
+                    <span flex></span>
                     <div flex="10" layout-fill layout="row" layout-align="start center">
-                        <i ng-if="step.flags.review" class="mc-review-color fa fa-fw fa-flag"></i>
-                        <i ng-if="step.flags.error" class="mc-error-color fa fa-fw fa-flag"></i>
-                        <i ng-if="step.flags.important" class="mc-important-color fa fa-fw fa-flag"></i>
+                        <i ng-class="{'mc-review-color': step.flags.review, 'text-white': !step.flags.review}"
+                           class="fa fa-fw fa-flag"></i>
+                        <i ng-class="{'mc-error-color': step.flags.error, 'text-white': !step.flags.error}"
+                           class="fa fa-fw fa-flag"></i>
+                        <i ng-class="{'mc-important-color': step.flags.important, 'text-white': !step.flags.important}"
+                           class="fa fa-fw fa-flag"></i>
                     </div>
                     <a class="mc-error-color" data-nodrag ng-click="$ctrl.remove(this)">
                         <i class="fa fa-fw fa-remove"></i>

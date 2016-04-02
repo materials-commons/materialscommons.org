@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentSidebarDetails', {
-    templateUrl: 'app/project/experiments/experiment/components/mc-experiment-sidebar-details.html',
+    templateUrl: 'app/project/experiments/experiment/components/mc-experiment-details.html',
     controller: MCExperimentSidebarDetailsComponentController,
     bindings: {
         currentStep: '='

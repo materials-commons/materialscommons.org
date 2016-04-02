@@ -84,9 +84,9 @@
     </div>
 
     <a class="md-subtitle" style="margin-bottom:18px; margin-top: 18px"
-       ng-click="$ctrl.currentStep.details.showFiles = !$ctrl.currentStep.details.showFiles">
+       ng-click="$ctrl.currentStep.displayState.details.showFiles = !$ctrl.currentStep.displayState.details.showFiles">
         <i class="fa fa-fw"
-           ng-class="{'fa-chevron-right': !$ctrl.currentStep.details.showFiles, 'fa-chevron-down': $ctrl.currentStep.details.showFiles}"></i>
+           ng-class="{'fa-chevron-right': !$ctrl.currentStep.displayState.details.showFiles, 'fa-chevron-down': $ctrl.currentStep.displayState.details.showFiles}"></i>
         Files
     </a>
     <div ng-if="$ctrl.currentStep.displayState.details.showFiles">
