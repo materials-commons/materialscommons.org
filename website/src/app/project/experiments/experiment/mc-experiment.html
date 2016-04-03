@@ -6,8 +6,10 @@
     <div layout="row" flex>
         <md-sidenav flex="30" md-is-locked-open="$ctrl.showSidebar" style="max-height: 82vh; margin-right: 8px">
             <span style="text-align: center" class="md-subhead">Details</span>
-            <mc-experiment-sidebar-details current-step="$ctrl.currentStep">
-            </mc-experiment-sidebar-details>
+            <md-content layout="column" layout-fill>
+                <mc-experiment-details step="$ctrl.currentStep" editor-options="$ctrl.editorOptions">
+                </mc-experiment-details>
+            </md-content>
         </md-sidenav>
 
         <div layout="column" flex md-whiteframe>
