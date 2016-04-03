@@ -39,6 +39,7 @@ export class Experiment {
         this.goal = '';
         this.description = 'Look at grain size as it relates to hardness';
         this.aim = '';
+        this.done = false;
         this.steps = [];
     }
 
