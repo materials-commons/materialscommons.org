@@ -20,8 +20,8 @@
                                class="mc-experiment"
                                style="margin-top:4px;" id="{{step.id}}">
                         <span ng-if="!(($ctrl.currentStep === step && !step.flags.done) || step.title === '')"
-                              ng-click="step.displayState.editTitle = true"
-                              class="md-subhead"
+                              ng-click="$ctrl.currentStep = step; step.displayState.editTitle = true"
+                              class="md-subhead cursor-pointer"
                               ng-class="{'mark-text-done': step.flags.done, 'current-step': $ctrl.currentStep === step && step.flags.done}">
                             {{step.title | truncate:40:'....'}}
                         </span>
