@@ -6,9 +6,9 @@ angular.module('materialscommons').component('mcExperiment', {
 });
 
 /*@ngInject*/
-function MCExperimentComponentController($scope, moveStep) {
+function MCExperimentComponentController($scope, moveStep, currentStep) {
     let ctrl = this;
-    ctrl.currentStep = null;
+    ctrl.currentStep = currentStep.get();
     ctrl.currentNode = null;
     ctrl.showSidebar = false;
 
@@ -18,6 +18,11 @@ function MCExperimentComponentController($scope, moveStep) {
     s.id = "simple0";
     ctrl.experiment.steps.push(s);
     ctrl.currentStep = s;
+
+    ctrl.editorOptions = {
+        height: '20vh',
+        width: '27vw'
+    };
 
     ctrl.moveLeft = () => moveStep.left(ctrl.currentNode, ctrl.currentStep, ctrl.experiment);
     ctrl.moveRight = () => moveStep.right(ctrl.currentNode, ctrl.currentStep);
