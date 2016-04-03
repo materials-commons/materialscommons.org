@@ -1,6 +1,12 @@
 <div layout="column">
     <div layout="row" layout-align="end center" style="margin-bottom: 18px;">
-        <md-button class="md-primary">Maximize</md-button>
+        <md-button ng-if="!$ctrl.step.displayState.maximize" ng-click="$ctrl.maximize()" class="md-primary">
+            Maximize
+        </md-button>
+        <md-button ng-if="$ctrl.step.displayState.maximize" ng-click="$ctrl.step.displayState.maximize = false"
+                   class="md-primary">
+            Minimize
+        </md-button>
         <mc-new-process-menu button-name="ADD PROCESS"
                              button-class="md-primary md-raised"
                              button-icon="fa-plus" style="color:black">
