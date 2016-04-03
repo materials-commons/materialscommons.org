@@ -15,7 +15,7 @@
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                         </a>
                         <input ng-if="($ctrl.currentStep === step && !step.flags.done) || step.title === ''"
-                               size="40" type="text" data-nodrag ng-model="step.title"
+                               size="40" type="text" data-nodrag ng-model="step.title" ng-model-opts="{debounce: 250}"
                                placeholder="Title..."
                                class="mc-experiment"
                                style="margin-top:4px;" id="{{step.id}}">
@@ -23,7 +23,7 @@
                               ng-click="step.displayState.editTitle = true"
                               class="md-subhead"
                               ng-class="{'mark-text-done': step.flags.done, 'current-step': $ctrl.currentStep === step && step.flags.done}">
-                            {{step.title | truncate:60:'....'}}
+                            {{step.title | truncate:40:'....'}}
                         </span>
                         <a class="md-primary" data-nodrag ng-click="step.displayState.open = !step.displayState.open">
                             <i class="fa fa-fw"
@@ -45,9 +45,9 @@
                 </div>
             </div>
         </div>
-        <mc-experiment-step-details data-nodrag current-step="$ctrl.currentStep" step="step"
-                                    ng-if="step.displayState.open">
-        </mc-experiment-step-details>
+        <mc-experiment-details ng-if="step.displayState.open" data-nodrag
+                               step="step" editor-options="$ctrl.editorOptions" ng-cloak>
+        </mc-experiment-details>
     </div>
     <ol ui-tree-nodes="" ng-model="step.steps" ng-class="{hidden: collapsed}">
         <li ng-repeat="step in step.steps" ui-tree-node ng-include="'experiment-simple-step.html'">
