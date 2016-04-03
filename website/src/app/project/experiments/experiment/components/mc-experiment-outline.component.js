@@ -5,19 +5,22 @@ angular.module('materialscommons').component('mcExperimentOutline', {
     controller: MCExperimentOutlineComponentController,
     bindings: {
         experiment: '=',
-        currentStep: '=',
         currentNode: '='
     }
 });
 
 /*@ngInject*/
-function MCExperimentOutlineComponentController(focus, toastr) {
+function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
     let lastID = 1;
     let ctrl = this;
+    ctrl.editorOptions = {
+        height: '55vh',
+        width: '93vw'
+    };
+    ctrl.currentStep = currentStep.get();
     ctrl.setCurrent = setCurrent;
     ctrl.addBlankStep = addBlankStep;
     ctrl.remove = remove;
-    ctrl.titleClicked = () => console.log('title clicked');
 
     function setCurrent(step, node) {
         if (ctrl.currentStep !== step) {
