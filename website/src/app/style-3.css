@@ -464,10 +464,6 @@ a:hover, a:visited {
     padding: 5px;
 }
 
-.cursor-pointer {
-    cursor: pointer;
-}
-
 .btn.btn-success > .fa.fa-check-circle, .btn.btn-danger > .fa.fa-minus-circle {
     padding-right: 6px;
 }
