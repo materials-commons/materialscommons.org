@@ -15,7 +15,7 @@ function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
     let ctrl = this;
     ctrl.editorOptions = {
         height: '55vh',
-        width: '90vw'
+        width: '85vw'
     };
     ctrl.currentStep = currentStep.get();
     ctrl.setCurrent = setCurrent;
