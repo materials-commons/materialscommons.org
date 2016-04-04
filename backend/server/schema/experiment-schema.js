@@ -23,6 +23,17 @@ module.exports = function(schema) {
                 nullable: false
             },
 
+            goal: {
+                type: 'string',
+                nullable: false
+            },
+
+            status: {
+                type: 'string',
+                nullable: false,
+                isValidExperimentStatus: true
+            },
+
             description: {
                 type: 'string'
             }
