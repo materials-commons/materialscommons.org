@@ -65,11 +65,13 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
 }
 
 .project-card:hover {
-    background-color: #2196f3;
+    /*background-color: #2196f3;*/
+    box-shadow: 5px 5px 5px 0px #a3a3a3;
 }
 
 .project-selected {
-    background-color: #1565c0;
+    /*background-color: #1565c0;*/
+    border: 8px solid #1565c0;
 }
 
 .current-step {
