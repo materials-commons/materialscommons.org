@@ -13,7 +13,9 @@
             <tr md-row class="md-row-hover pointer"
                 ng-repeat="experiment in $ctrl.experiments | filter:$ctrl.filterBy | orderBy:$ctrl.sortOrder">
                 <td md-cell>
-                    <a class="md-primary" ng-click="$ctrl.showExperiment(experiment)">{{experiment.name}}</a>
+                    <a class="md-primary" ui-sref="project.experiment({experiment_id: experiment.id})">
+                        {{experiment.name}}
+                    </a>
                 </td>
                 <td md-cell>
                     {{experiment.status}}
@@ -22,7 +24,7 @@
                     {{experiment.description}}
                 </td>
                 <td md-cell>
-                    {{process.mtime | toDate}}
+                    {{experiment.mtime | toDate}}
                 </td>
             </tr>
             </tbody>
