@@ -37,9 +37,9 @@ export class Experiment {
     constructor(name) {
         this.name = name;
         this.goal = '';
-        this.description = 'Look at grain size as it relates to hardness';
+        this.description = '';
         this.aim = '';
-        this.done = false;
+        this.status = 'in-progress';
         this.steps = [];
     }
 
