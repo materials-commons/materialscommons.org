@@ -11,6 +11,10 @@ class ExperimentsService {
     createForProject(projectID, experiment) {
         return this.projectsAPI(projectID).one('experiments').customPOST(experiment);
     }
+
+    getForProject(projectID, experimentID) {
+        return this.projectsAPI(projectID).one('experiments', experimentID).customGET();
+    }
 }
 
 angular.module('materialscommons').service('experimentsService', ExperimentsService);
