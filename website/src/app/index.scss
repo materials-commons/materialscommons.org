@@ -47,6 +47,10 @@ $mc-light-grey: #f4f5f7;
   padding-right: 10px;
 }
 
+.dialog-form {
+  margin-top: 10px;
+}
+
 .mark-text-done::after {
   border-bottom: 0.125em solid $mc-color-done; //rgba(255, 0, 0, 0.5);
   content: "";
