@@ -15,10 +15,10 @@
         </div>
         <div layout="row" flex style="max-height: 80vh">
             <md-content layout="row" layout-wrap layout-align="start stretch" flex>
-                <div flex="25" flex-md="33" flex-sm="60" class="project-card"
-                     ng-class="{'project-selected': $ctrl.sharingOn && project.selected}"
+                <div flex="25" flex-md="33" flex-sm="60"
                      ng-repeat="project in $ctrl.projects | orderBy:'name'">
-                    <md-card class="md-primary">
+                    <md-card class="md-primary project-card"
+                             ng-class="{'project-selected': $ctrl.sharingOn && project.selected}">
                         <md-card-header ng-click="$ctrl.openProject(project)"
                                         class="cursor-pointer md-mc-project-card-header">
                             <md-card-avatar>
