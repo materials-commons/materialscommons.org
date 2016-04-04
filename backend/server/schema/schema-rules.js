@@ -18,6 +18,13 @@ module.exports = function(model) {
         'f'
     ];
 
+    let experimentStatusStrings = [
+        'done',
+        'on-hold',
+        'in-progress',
+        'error'
+    ];
+
     return {
         mustExist: mustExist,
         mustNotExist: mustNotExist,
@@ -25,6 +32,7 @@ module.exports = function(model) {
         mustExistInProject: mustExistInProject,
         isValidPropertyType: isValidPropertyType,
         isValidUnit: isValidUnit,
+        isValidExperimentStatus: isValidExperimentStatus,
         oneOf: oneOf,
         mustBeForSample: mustBeForSample,
         mustBeValidMeasurements: mustBeValidMeasurements,
@@ -114,7 +122,7 @@ module.exports = function(model) {
     }
 
     // isValidPropertyType checks the different known types for a property.
-    function isValidPropertyType(what, _ignore) {
+    function isValidPropertyType(what) {
         let invalid = {
             rule: 'isValidPropertyType',
             actual: what,
@@ -124,7 +132,7 @@ module.exports = function(model) {
     }
 
     // isValidUnit checks the different known types for unit.
-    function isValidUnit(what, _ignore) {
+    function isValidUnit(what) {
         let invalid = {
             rule: 'isValidUnit',
             actual: what,
@@ -133,7 +141,22 @@ module.exports = function(model) {
         return _.indexOf(propertyUnits, what) === -1 ? invalid : null;
     }
 
-    function oneOf(what, spec) {
+    // isValidExperimentStatus ensures that the status is set to one
+    // of the valid strings.
+    function isValidExperimentStatus(what) {
+        console.log('isValidExperimentStatus', what, experimentStatusStrings);
+        let invalid = {
+            rule: 'isValidExperimentStatus',
+            actual: what,
+            expected: `status to be one of ${experimentStatusStrings}`
+        };
+
+        let lookup = _.findIndex(experimentStatusStrings, (s) => s === what);
+        console.log('lookup', lookup);
+        return lookup === -1 ? invalid : null;
+    }
+
+    function oneOf(_what, spec) {
         let attrs = spec.split(':');
         for (let i = 0; i < attrs.length; i++) {
             if (_.has(this, attrs[i])) {

@@ -213,6 +213,24 @@ module.exports = function(r) {
         this.share_id = shareID;
     }
 
+    function Experiment(name, owner) {
+        let now = r.now();
+        this.name = name;
+        this.owner = owner;
+        this._type = 'experiment';
+        this.description = '';
+        this.goal = '';
+        this.aim = '';
+        this.status = 'in-progress';
+        this.birthtime = now;
+        this.mtime = now;
+    }
+
+    function Project2Experiment(project_id, experiment_id) {
+        this.project_id = project_id;
+        this.experiment_id = experiment_id;
+    }
+
     return {
         Sample: Sample,
         Process: Process,
@@ -241,6 +259,8 @@ module.exports = function(r) {
         Project2DataDir: Project2DataDir,
         Sample2Sample: Sample2Sample,
         Share: Share,
-        User2Share: User2Share
+        User2Share: User2Share,
+        Experiment: Experiment,
+        Project2Experiment: Project2Experiment
     };
 };
