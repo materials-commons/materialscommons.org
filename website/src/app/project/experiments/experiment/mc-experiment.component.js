@@ -29,13 +29,13 @@ function MCExperimentComponentController($scope, moveStep, currentStep) {
         width: '93vw'
     };
 
-    ctrl.moveLeft = () => moveStep.left(ctrl.currentNode, ctrl.currentStep, ctrl.experiment);
-    ctrl.moveRight = () => moveStep.right(ctrl.currentNode, ctrl.currentStep);
-    ctrl.moveUp = () => moveStep.up(ctrl.currentNode, ctrl.currentStep);
-    ctrl.moveDown = () => moveStep.down(ctrl.currentNode, ctrl.currentStep, ctrl.experiment);
+    ctrl.moveLeft = () => moveStep.left(ctrl.currentNode, currentStep.get(), ctrl.experiment);
+    ctrl.moveRight = () => moveStep.right(ctrl.currentNode, currentStep.get());
+    ctrl.moveUp = () => moveStep.up(ctrl.currentNode, currentStep.get());
+    ctrl.moveDown = () => moveStep.down(ctrl.currentNode, currentStep.get(), ctrl.experiment);
     ctrl.expandAll = () => $scope.$broadcast('angular-ui-tree:expand-all');
     ctrl.collapseAll = () => $scope.$broadcast('angular-ui-tree:collapse-all');
-    ctrl.showStepMaximized = () => ctrl.currentStep && ctrl.currentStep.displayState.maximize;
+    ctrl.showStepMaximized = () => currentStep.get().displayState.maximize;
     ctrl.openAll = openAll;
     ctrl.closeAll = closeAll;
     ctrl.getCurrentStep = () => currentStep.get();
