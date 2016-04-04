@@ -93,6 +93,13 @@ def create_tables():
 
     create_table("measurement2datafile", "measurement_id", "datafile_id")
 
+    create_table("project2experiment", "project_id", "experiment_id")
+    create_table("experiments")
+    create_table("experiment2experiment_step", "experiment_id", "experiment_step_id")
+    create_table("experiment_steps")
+    create_table("experiment2sample", "experiment_id", "sample_id")
+    create_table("experiment2datafile", "experiment_id", "datafile_id")
+
 
 def create_table(table, *args):
     run(r.db('materialscommons').table_create(table))
