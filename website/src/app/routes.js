@@ -114,9 +114,15 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/experiments',
             template: '<mc-project-experiments experiments="ctrl.experiments"></mc-project-experiments>',
             controllerAs: 'ctrl',
-            controller: [function() {
+            controller: ['$stateParams', 'experimentsService', 'toastr', function($stateParams, experimentsService, toastr) {
                 let ctrl = this;
                 ctrl.experiments = [];
+                experimentsService.getAllForProject($stateParams.project_id).then(
+                    (experiments) => {
+                        ctrl.experiments = experiments;
+                    },
+                    () => toastr.error('Unable to retrieve experiments for project', 'Error', {closeButton: true})
+                );
             }]
         })
         .state('project.processes', {
@@ -129,7 +135,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     ctrl.processes = [];
                     projectsService.getProjectProcesses($stateParams.project_id).then(
                         (processes) => {
-                            //console.dir(processes);
                             ctrl.processes = processes;
                         },
                         () => toastr.error('Unable to retrieve project processes', 'Error', {closeButton: true})
