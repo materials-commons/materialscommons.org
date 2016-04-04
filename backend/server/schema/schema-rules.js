@@ -144,16 +144,13 @@ module.exports = function(model) {
     // isValidExperimentStatus ensures that the status is set to one
     // of the valid strings.
     function isValidExperimentStatus(what) {
-        console.log('isValidExperimentStatus', what, experimentStatusStrings);
         let invalid = {
             rule: 'isValidExperimentStatus',
             actual: what,
             expected: `status to be one of ${experimentStatusStrings}`
         };
 
-        let lookup = _.findIndex(experimentStatusStrings, (s) => s === what);
-        console.log('lookup', lookup);
-        return lookup === -1 ? invalid : null;
+        return _.findIndex(experimentStatusStrings, (s) => s === what) === -1 ? invalid : null;
     }
 
     function oneOf(_what, spec) {
