@@ -6,18 +6,27 @@ angular.module('materialscommons').component('mcExperiment', {
 });
 
 /*@ngInject*/
-function MCExperimentComponentController($scope, moveStep, currentStep) {
+function MCExperimentComponentController($scope, $stateParams, moveStep, currentStep, experimentsService) {
     let ctrl = this;
     ctrl.currentNode = null;
     ctrl.showSidebar = false;
 
-    // Create the initial hard coded experiment
-    ctrl.experiment = new Experiment('test experiment');
-    let s = new ExperimentStep('', '');
-    s.id = "simple0";
-    ctrl.experiment.steps.push(s);
-    ctrl.currentStep = currentStep.set(s);
-    ctrl.currentStep = currentStep.get();
+    experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id).then(
+        (e) => {
+            ctrl.experiment = e;
+            if (!ctrl.experiment.steps.length) {
+                let s = new ExperimentStep('My first step', '');
+                s.id = "simple0";
+                ctrl.experiment.steps.push(s);
+                currentStep.set(s);
+                ctrl.currentStep = currentStep.get();
+            } else {
+                currentStep.set(ctrl.experiment.steps[0]);
+                ctrl.currentStep = currentStep.get();
+            }
+        },
+        (error) => console.log('error', error)
+    );
 
     ctrl.editorOptions = {
         height: '20vh',
@@ -35,7 +44,12 @@ function MCExperimentComponentController($scope, moveStep, currentStep) {
     ctrl.moveDown = () => moveStep.down(ctrl.currentNode, currentStep.get(), ctrl.experiment);
     ctrl.expandAll = () => $scope.$broadcast('angular-ui-tree:expand-all');
     ctrl.collapseAll = () => $scope.$broadcast('angular-ui-tree:collapse-all');
-    ctrl.showStepMaximized = () => currentStep.get().displayState.maximize;
+    ctrl.showStepMaximized = () => {
+        if (!currentStep.get()) {
+            return false;
+        }
+        return currentStep.get().displayState.maximize;
+    };
     ctrl.openAll = openAll;
     ctrl.closeAll = closeAll;
     ctrl.getCurrentStep = () => currentStep.get();
