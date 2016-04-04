@@ -1,7 +1,7 @@
 <script type="text/ng-template" id="experiment-simple-step.html">
     <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex
          layout="column">
-        <div flex layout="column" style="margin-top: 2px; margin-bottom: 2px;border-top: 2px solid #f4f5f7"
+        <div flex layout="column" class="mc-experiment-outline-step"
              on-enter="$ctrl.addBlankStep(this)">
             <div flex layout-fill layout="row">
                 <i class="fa fa-fw fa-reorder"></i>
@@ -32,11 +32,11 @@
                     </span>
                     <span flex></span>
                     <div flex="10" layout-fill layout="row" layout-align="start center">
-                        <i ng-class="{'mc-review-color': step.flags.review, 'text-white': !step.flags.review}"
+                        <i ng-class="{'mc-review-color': step.flags.review, 'mc-light-grey-color': !step.flags.review}"
                            class="fa fa-fw fa-flag"></i>
-                        <i ng-class="{'mc-error-color': step.flags.error, 'text-white': !step.flags.error}"
+                        <i ng-class="{'mc-error-color': step.flags.error, 'mc-light-grey-color': !step.flags.error}"
                            class="fa fa-fw fa-flag"></i>
-                        <i ng-class="{'mc-important-color': step.flags.important, 'text-white': !step.flags.important}"
+                        <i ng-class="{'mc-important-color': step.flags.important, 'mc-light-grey-color': !step.flags.important}"
                            class="fa fa-fw fa-flag"></i>
                     </div>
                     <a class="mc-error-color" data-nodrag ng-click="$ctrl.remove(this)">

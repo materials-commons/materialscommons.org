@@ -27,6 +27,7 @@ function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
             ctrl.currentStep.displayState.editTitle = false;
         }
         ctrl.currentStep = step;
+        currentStep.set(step);
         ctrl.currentNode = node;
     }
 

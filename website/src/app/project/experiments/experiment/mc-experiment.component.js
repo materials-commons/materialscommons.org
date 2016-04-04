@@ -8,7 +8,6 @@ angular.module('materialscommons').component('mcExperiment', {
 /*@ngInject*/
 function MCExperimentComponentController($scope, moveStep, currentStep) {
     let ctrl = this;
-    ctrl.currentStep = currentStep.get();
     ctrl.currentNode = null;
     ctrl.showSidebar = false;
 
@@ -17,7 +16,8 @@ function MCExperimentComponentController($scope, moveStep, currentStep) {
     let s = new ExperimentStep('', '');
     s.id = "simple0";
     ctrl.experiment.steps.push(s);
-    ctrl.currentStep = s;
+    ctrl.currentStep = currentStep.set(s);
+    ctrl.currentStep = currentStep.get();
 
     ctrl.editorOptions = {
         height: '20vh',
@@ -33,6 +33,7 @@ function MCExperimentComponentController($scope, moveStep, currentStep) {
     ctrl.showStepMaximized = () => ctrl.currentStep && ctrl.currentStep.displayState.maximize;
     ctrl.openAll = openAll;
     ctrl.closeAll = closeAll;
+    ctrl.getCurrentStep = () => currentStep.get();
 
     function openAll() {
         var treeModel = new TreeModel({childrenPropertyName: 'steps'}),
