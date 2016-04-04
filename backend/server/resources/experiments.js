@@ -3,8 +3,8 @@ module.exports = function(experiments, schema) {
     const status = require('http-status');
 
     return {
-        getForProject,
-        getSingle,
+        getAllForProject,
+        get,
         getStep,
         createStep,
         updateStep,
@@ -12,11 +12,11 @@ module.exports = function(experiments, schema) {
         create
     };
 
-    function* getForProject(next) {
+    function* getAllForProject(next) {
         yield next;
     }
 
-    function* getSingle(next) {
+    function* get(next) {
         yield next;
     }
 
@@ -45,7 +45,7 @@ module.exports = function(experiments, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.create(experimentArgs);
+            let rv = yield experiments.create(experimentArgs, this.reqctx.user.id);
             if (rv.error) {
                 this.status = status.NOT_ACCEPTABLE;
                 this.body = rv;

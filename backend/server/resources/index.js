@@ -42,8 +42,8 @@ module.exports = function(model) {
     router.post('/projects/:project_id/shares', validateProjectAccess, shares.create);
     router.delete('/projects/:project_id/shares/:share_id', validateProjectAccess, shares.remove);
 
-    router.get('/projects/:project_id/experiments', validateProjectAccess, experiments.getForProject);
-    router.get('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.getSingle);
+    router.get('/projects/:project_id/experiments', validateProjectAccess, experiments.getAllForProject);
+    router.get('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.get);
     router.get('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.getStep);
     router.post('/projects/:project_id/experiments', validateProjectAccess, experiments.create);
     router.post('/projects/:project_id/experiments/:experiment_id/step', validateProjectAccess, experiments.createStep);

@@ -34,18 +34,14 @@ module.exports = function(model) {
     function defineRules() {
         schema.defineRule('mustExist', schemaRules.mustExist, true);
         schema.defineRule('mustNotExist', schemaRules.mustNotExist, true);
-        schema.defineRule('mustNotExistInProject',
-            schemaRules.mustNotExistInProject, true);
-        schema.defineRule('mustExistInProject',
-            schemaRules.mustExistInProject, true);
-        schema.defineRule('mustBeForSample',
-            schemaRules.mustBeForSample, true);
-        schema.defineRule('mustBeForAttributeSet',
-            schemaRules.mustBeForAttributeSet, true);
-        schema.defineRule('mustBeValidMeasurements',
-            schemaRules.mustBeValidMeasurements, true);
+        schema.defineRule('mustNotExistInProject', schemaRules.mustNotExistInProject, true);
+        schema.defineRule('mustExistInProject', schemaRules.mustExistInProject, true);
+        schema.defineRule('mustBeForSample', schemaRules.mustBeForSample, true);
+        schema.defineRule('mustBeForAttributeSet', schemaRules.mustBeForAttributeSet, true);
+        schema.defineRule('mustBeValidMeasurements', schemaRules.mustBeValidMeasurements, true);
         schema.defineRule('isValidPropertyType', schemaRules.isValidPropertyType);
         schema.defineRule('isValidUnit', schemaRules.isValidUnit);
+        schema.defineRule('isValidExperimentStatus', schemaRules.isValidExperimentStatus);
         schema.defineRule('oneOf', schemaRules.oneOf);
         schema.defineRule('mustNotStartWith', schemaRules.mustNotStartWith);
         schema.defineRule('mustNotExistInDirectory', schemaRules.mustNotExistInDirectory, true);
