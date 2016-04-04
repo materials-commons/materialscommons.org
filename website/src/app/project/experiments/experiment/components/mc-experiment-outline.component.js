@@ -15,7 +15,7 @@ function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
     let ctrl = this;
     ctrl.editorOptions = {
         height: '55vh',
-        width: '93vw'
+        width: '90vw'
     };
     ctrl.currentStep = currentStep.get();
     ctrl.setCurrent = setCurrent;
@@ -37,6 +37,7 @@ function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
         lastID++;
         node.$parentNodesScope.$modelValue.push(newStep);
         ctrl.currentStep = newStep;
+        currentStep.set(newStep);
         focus(newStep.id);
     }
 

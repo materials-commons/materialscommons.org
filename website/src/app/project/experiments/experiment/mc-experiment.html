@@ -1,5 +1,8 @@
-<div style="overflow: auto" ng-if="$ctrl.showStepMaximized()">
-    <mc-experiment-step-details step="$ctrl.currentStep"></mc-experiment-step-details>
+<div style="overflow: auto; max-height: 80vh" ng-if="$ctrl.showStepMaximized()" layout-margin>
+    <md-content layout="column" flex="95">
+        <mc-experiment-details step="$ctrl.currentStep" editor-options="$ctrl.editorOptionsMaximized">
+        </mc-experiment-details>
+    </md-content>
 </div>
 
 <div ng-if="!$ctrl.showStepMaximized()" layout="column" flex layout-margin style="overflow: hidden">
