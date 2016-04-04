@@ -13,10 +13,29 @@ module.exports = function(experiments, schema) {
     };
 
     function* getAllForProject(next) {
+        let rv = yield experiments.getAllForProject(this.params.project_id);
+        if (rv.error) {
+            this.body = rv;
+            this.status = status.NOT_FOUND;
+        } else {
+            this.body = rv.val;
+        }
         yield next;
     }
 
     function* get(next) {
+        let isInProject = yield experiments.experimentExistsInProject(this.params.project_id, this.params.experiment_id);
+        if (!isInProject) {
+            this.status = status.NOT_FOUND;
+        } else {
+            let rv = yield experiments.get(this.params.experiment_id);
+            if (rv.error) {
+                this.body = rv;
+                this.status = status.NOT_FOUND;
+            } else {
+                this.body = rv.val;
+            }
+        }
         yield next;
     }
 
