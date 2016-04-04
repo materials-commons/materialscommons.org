@@ -4,5 +4,4 @@ import './experiment/move-step.service';
 import './experiment/mc-experiment.component';
 import './experiment/components/mc-experiment-details.component';
 import './experiment/components/mc-experiment-outline.component';
-import './experiment/components/mc-experiment-step-details.component';
 import './experiment/current-step.service';
