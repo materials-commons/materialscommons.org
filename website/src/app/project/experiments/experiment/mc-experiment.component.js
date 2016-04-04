@@ -24,6 +24,11 @@ function MCExperimentComponentController($scope, moveStep, currentStep) {
         width: '27vw'
     };
 
+    ctrl.editorOptionsMaximized = {
+        height: '55vh',
+        width: '93vw'
+    };
+
     ctrl.moveLeft = () => moveStep.left(ctrl.currentNode, ctrl.currentStep, ctrl.experiment);
     ctrl.moveRight = () => moveStep.right(ctrl.currentNode, ctrl.currentStep);
     ctrl.moveUp = () => moveStep.up(ctrl.currentNode, ctrl.currentStep);
