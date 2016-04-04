@@ -6,7 +6,8 @@ module.exports = function(r) {
     return {
         getAllForProject,
         get,
-        create
+        create,
+        experimentExistsInProject
     };
 
     function* getAllForProject(projectID) {
@@ -15,8 +16,9 @@ module.exports = function(r) {
             .merge((experiment) => {
                 return {
                     steps: r.table('experiment2experiment_step')
-                        .getAll([experiment('id'), experiment('id')], {index: 'experiment_experiment_step_parent'})
+                        .getAll(experiment('id'), {index: 'experiment_id'})
                         .eqJoin('experiment_step_id', r.table('experiment_steps')).zip()
+                        .filter({parent: ''})
                         .coerceTo('array')
                 }
             });
@@ -50,5 +52,12 @@ module.exports = function(r) {
         let proj2experiment = new model.Project2Experiment(experiment.project_id, newExperiment.id);
         yield db.insert('project2experiment', proj2experiment);
         return {val: newExperiment};
+    }
+
+    function* experimentExistsInProject(projectID, experimentID) {
+        console.log('experimentExistsInProject');
+        let rql = r.table('project2experiment').getAll([projectID, experimentID], {index: 'project_experiment'});
+        let matches = yield dbExec(rql);
+        return matches.length !== 0;
     }
 };
