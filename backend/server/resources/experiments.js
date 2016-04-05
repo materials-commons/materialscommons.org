@@ -85,8 +85,6 @@ module.exports = function(experiments, schema) {
     }
 
     function* validateCreateStepArgs(stepArgs, projectID, experimentID, stepID) {
-        stepArgs.parent_id = '';
-
         let errors = yield schema.validate(schema.createExperimentStep, stepArgs);
         if (errors !== null) {
             return errors;
@@ -113,7 +111,31 @@ module.exports = function(experiments, schema) {
     }
 
     function* update(next) {
+        let updateArgs = yield parse(this);
+        let errors = yield validateUpdateExperimentArgs(updateArgs, this.params.project_id, this.params.experiment_id);
+        if (errors != null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield experiments.update();
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = errors;
+            } else {
+                this.body = rv.val;
+            }
+        }
         yield next;
+    }
+
+    function* validateUpdateExperimentArgs(experimentArgs, projectID, experimentID) {
+        schema.prepare(schema.updateExperiment, experimentArgs);
+        let errors = yield schema.validate(schema.updateExperiment, experimentArgs);
+        if (errors != null) {
+            return errors;
+        }
+        let isInProject = yield experiments.experimentExistsInProject(projectID, experimentID);
+        return isInProject ? null : {error: 'No such experiment'};
     }
 
     function* create(next) {
