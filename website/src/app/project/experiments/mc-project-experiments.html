@@ -29,11 +29,12 @@
         <div layout="row" layout-align="center stretch">
             <md-content flex>
                 <div ng-if="$ctrl.showTableView">
-                    <mc-project-experiments-table experiments="$ctrl.experiments"
-                                                filter-by="$ctrl.query"></mc-project-experiments-table>
+                    <mc-project-experiments-table experiments="$ctrl.experiments" filter-by="$ctrl.query">
+                    </mc-project-experiments-table>
                 </div>
                 <div ng-if="!$ctrl.showTableView">
-                    Show card view
+                    <mc-project-experiments-cards experiments="$ctrl.experiments" filter-by="$ctrl.query">
+                    </mc-project-experiments-cards>
                 </div>
             </md-content>
         </div>
