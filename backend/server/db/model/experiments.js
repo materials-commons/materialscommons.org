@@ -7,6 +7,7 @@ module.exports = function(r) {
         getAllForProject,
         get,
         create,
+        update,
         createStep,
         getStep,
         experimentExistsInProject,
@@ -54,6 +55,16 @@ module.exports = function(r) {
         let estep = new model.ExperimentStep('', owner);
         yield createStep(newExperiment.id, estep, owner);
         return yield get(newExperiment.id);
+    }
+
+    function* update(updateArgs, experimentID) {
+        let steps = updateArgs.steps;
+        delete updateArgs.steps;
+
+        yield db.update('experiments', experimentID, updateArgs);
+        if (steps.length) {
+            console.log('going to update steps');
+        }
     }
 
     function* createStep(experimentID, step, owner) {
