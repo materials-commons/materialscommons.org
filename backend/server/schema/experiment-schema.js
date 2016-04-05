@@ -2,8 +2,10 @@ module.exports = function(schema) {
     const promise = require('bluebird');
 
     return {
-        defineCreateExperimentSchema: defineCreateExperimentSchema,
-        defineCreateExperimentStepSchema
+        defineCreateExperimentSchema,
+        defineUpdateExperimentSchema,
+        defineCreateExperimentStepSchema,
+        defineUpdateExperimentStepSchema
     };
 
     function defineCreateExperimentSchema() {
@@ -49,6 +51,29 @@ module.exports = function(schema) {
         return createExperimentSchema;
     }
 
+    function defineUpdateExperimentSchema() {
+        let updateExperimentSchema = schema.defineSchema('UpdateExperiment', {
+            name: {
+                type: 'string'
+            },
+
+            description: {
+                type: 'string'
+            },
+
+            notes: {
+                type: 'string'
+            },
+
+            steps: {
+                type: 'array'
+            }
+        });
+        updateExperimentSchema.setDefaults({steps: []});
+        updateExperimentSchema.validateAsync = promise.promisify(updateExperimentSchema.validate);
+        return updateExperimentSchema;
+    }
+
     function defineCreateExperimentStepSchema() {
         let createExperimentStepSchema = schema.defineSchema('CreateExperimentStep', {
             name: {
@@ -68,5 +93,43 @@ module.exports = function(schema) {
         createExperimentStepSchema.setDefaults({parent_id: '', description: ''});
         createExperimentStepSchema.validateAsync = promise.promisify(createExperimentStepSchema.validate);
         return createExperimentStepSchema;
+    }
+
+    function defineUpdateExperimentStepSchema() {
+        let updateExperimentStepSchema = schema.defineSchema('UpdateExperimentStep', {
+            name: {
+                type: 'string'
+            },
+            description: {
+                type: 'string'
+            },
+            notes: {
+                type: 'string'
+            },
+            parent_id: {
+                type: 'string'
+            },
+            flags: {
+                done: {
+                    type: 'boolean'
+                },
+                important: {
+                    type: 'boolean'
+                },
+                error: {
+                    type: 'boolean'
+                },
+                review: {
+                    type: 'boolean'
+                }
+            },
+            steps: {
+                type: 'array'
+            }
+        });
+
+        updateExperimentStepSchema.setDefaults({steps: []});
+        updateExperimentStepSchema.validateAsync = promise.promisify(updateExperimentStepSchema.validate);
+        return updateExperimentStepSchema;
     }
 };
