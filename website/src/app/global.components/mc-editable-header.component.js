@@ -11,6 +11,8 @@ angular.module('materialscommons').component('mcEditableHeader', {
                type="text" class="mc-input-as-line"
                on-enter="$ctrl.editField = false"
                ng-model="$ctrl.header"
+               ng-model-options="{debounce: 250}"
+               ng-change="$ctrl.onChange && $ctrl.onChange()"
                ng-class="$ctrl.inputClasses"
                ng-mouseleave="$ctrl.editField = false">
     </div>
@@ -18,6 +20,7 @@ angular.module('materialscommons').component('mcEditableHeader', {
     bindings: {
         header: '=',
         headerClasses: '@',
-        inputClasses: '@'
+        inputClasses: '@',
+        onChange: '&'
     }
 });
