@@ -89,11 +89,11 @@
                     <md-divider class="md-vertical-divider"></md-divider>
                     <div layout="column" flex>
                         <mc-editable-header header="$ctrl.experiment.name"
-                                            on-change="$ctrl.updateName()"
+                                            on-change="$ctrl.updateName(what)"
                                             input-classes="mc-input-as-line">
                         </mc-editable-header>
                         <mc-editable-header header-classes="md-subhead text-black"
-                                            on-change="$ctrl.updateDescription()"
+                                            on-change="$ctrl.updateDescription(what)"
                                             input-classes="font-16 mc-input-line text-black"
                                             header="$ctrl.experiment.description">
                         </mc-editable-header>

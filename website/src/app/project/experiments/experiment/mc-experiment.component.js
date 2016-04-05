@@ -6,7 +6,7 @@ angular.module('materialscommons').component('mcExperiment', {
 });
 
 /*@ngInject*/
-function MCExperimentComponentController($scope, $stateParams, moveStep, currentStep, experimentsService) {
+function MCExperimentComponentController($scope, $stateParams, moveStep, currentStep, experimentsService, toast) {
     let ctrl = this;
 
     ctrl.$onInit = () => {
@@ -51,12 +51,22 @@ function MCExperimentComponentController($scope, $stateParams, moveStep, current
     ctrl.closeAll = closeAll;
     ctrl.getCurrentStep = () => currentStep.get();
 
-    ctrl.updateName = () => {
-        console.log('experiment name changed:', ctrl.experiment.name);
+    ctrl.updateName = (name) => {
+        experimentsService
+            .updateForProject($stateParams.project_id, $stateParams.experiment_id, {name: name})
+            .then(
+                (experiment) => console.dir(experiment),
+                (error) => toast.error('Failed to update project name')
+            );
     };
 
-    ctrl.updateDescription = () => {
-        console.log('experiment description changed:', ctrl.experiment.description);
+    ctrl.updateDescription = (description) => {
+        experimentsService
+            .updateForProject($stateParams.project_id, $stateParams.experiment_id, {description: description})
+            .then(
+                (experiment) => console.dir(experiment),
+                (error) => toast.error('Failed to update project description')
+            );
     };
 
     function openAll() {
