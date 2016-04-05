@@ -57,7 +57,7 @@ module.exports = function(r) {
         return yield get(newExperiment.id);
     }
 
-    function* update(updateArgs, experimentID) {
+    function* update(experimentID, updateArgs) {
         let steps = updateArgs.steps;
         delete updateArgs.steps;
 
@@ -65,6 +65,7 @@ module.exports = function(r) {
         if (steps.length) {
             console.log('going to update steps');
         }
+        return yield get(experimentID);
     }
 
     function* createStep(experimentID, step, owner) {
@@ -72,7 +73,6 @@ module.exports = function(r) {
         estep.description = step.description;
         estep.parent_id = step.parent_id;
         let createdStep = yield db.insert('experiment_steps', estep);
-        console.log('createStep', createdStep);
         let e2estep = new model.Experiment2ExperimentStep(experimentID, createdStep.id);
         yield db.insert('experiment2experiment_step', e2estep);
         return yield getStep(createdStep.id);
