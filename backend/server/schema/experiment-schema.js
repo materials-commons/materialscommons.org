@@ -54,15 +54,18 @@ module.exports = function(schema) {
     function defineUpdateExperimentSchema() {
         let updateExperimentSchema = schema.defineSchema('UpdateExperiment', {
             name: {
-                type: 'string'
+                type: 'string',
+                nullable: true
             },
 
             description: {
-                type: 'string'
+                type: 'string',
+                nullable: true
             },
 
             notes: {
-                type: 'string'
+                type: 'string',
+                nullable: true
             },
 
             steps: {
@@ -98,29 +101,38 @@ module.exports = function(schema) {
     function defineUpdateExperimentStepSchema() {
         let updateExperimentStepSchema = schema.defineSchema('UpdateExperimentStep', {
             name: {
-                type: 'string'
+                type: 'string',
+                nullable: true
             },
             description: {
-                type: 'string'
+                type: 'string',
+                nullable: true
             },
             notes: {
-                type: 'string'
+                type: 'string',
+                nullable: true
             },
             parent_id: {
-                type: 'string'
+                type: 'string',
+                nullable: true
             },
             flags: {
+                nullable: true,
                 done: {
-                    type: 'boolean'
+                    type: 'boolean',
+                    nullable: true
                 },
                 important: {
-                    type: 'boolean'
+                    type: 'boolean',
+                    nullable: true
                 },
                 error: {
-                    type: 'boolean'
+                    type: 'boolean',
+                    nullable: true
                 },
                 review: {
-                    type: 'boolean'
+                    type: 'boolean',
+                    nullable: true
                 }
             },
             steps: {
