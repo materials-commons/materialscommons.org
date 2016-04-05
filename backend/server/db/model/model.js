@@ -221,6 +221,7 @@ module.exports = function(r) {
         this.description = '';
         this.goal = '';
         this.aim = '';
+        this.notes = '';
         this.status = 'in-progress';
         this.birthtime = now;
         this.mtime = now;
