@@ -7,6 +7,12 @@ $mc-color-important: #3f51b5;
 $mc-color-done: #4caf50;
 $mc-step-detail-color: #e7e8ea;
 $mc-light-grey: #f4f5f7;
+$mc-color-error-dark: #d32f2f;
+
+/* Customize md toast */
+md-toast.md-error-theme .md-toast-content {
+  background-color: $mc-color-error-dark;
+}
 
 .mc-light-grey-bg {
   background-color: $mc-light-grey;
