@@ -1,4 +1,4 @@
-import {Experiment, ExperimentStep} from './experiment.model';
+import {Experiment, ExperimentStep, toUIStep} from './experiment.model';
 
 angular.module('materialscommons').component('mcExperiment', {
     templateUrl: 'app/project/experiments/experiment/mc-experiment.html',
@@ -8,34 +8,47 @@ angular.module('materialscommons').component('mcExperiment', {
 /*@ngInject*/
 function MCExperimentComponentController($scope, $stateParams, moveStep, currentStep, experimentsService) {
     let ctrl = this;
-    ctrl.currentNode = null;
-    ctrl.showSidebar = false;
 
-    experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id).then(
-        (e) => {
-            ctrl.experiment = e;
-            if (!ctrl.experiment.steps.length) {
-                let s = new ExperimentStep('My first step', '');
-                s.id = "simple0";
-                ctrl.experiment.steps.push(s);
-                currentStep.set(s);
-                ctrl.currentStep = currentStep.get();
-            } else {
-                currentStep.set(ctrl.experiment.steps[0]);
-                ctrl.currentStep = currentStep.get();
-            }
-        },
-        (error) => console.log('error', error)
-    );
+    ctrl.$onInit = function() {
+        ctrl.currentNode = null;
+        ctrl.showSidebar = false;
+        ctrl.experiment = null;
 
-    ctrl.editorOptions = {
-        height: '20vh',
-        width: '27vw'
-    };
+        experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id).then(
+            (e) => {
+                ctrl.experiment = e;
+                if (!ctrl.experiment.steps.length) {
+                    let s = {
+                        name: '',
+                        description: ''
+                    };
+                    experimentsService.createStep($stateParams.project_id, $stateParams.experiment_id, s).then(
+                        (step) => {
+                            toUIStep(step);
+                            ctrl.experiment.steps.push(step);
+                            currentStep.set(step);
+                            ctrl.currentStep = currentStep.get();
+                        },
+                        (error) => console.log('error', error)
+                    );
+                } else {
+                    ctrl.experiment.steps.forEach((step) => toUIStep(step));
+                    currentStep.set(ctrl.experiment.steps[0]);
+                    ctrl.currentStep = currentStep.get();
+                }
+            },
+            (error) => console.log('error', error)
+        );
 
-    ctrl.editorOptionsMaximized = {
-        height: '55vh',
-        width: '93vw'
+        ctrl.editorOptions = {
+            height: '20vh',
+            width: '27vw'
+        };
+
+        ctrl.editorOptionsMaximized = {
+            height: '55vh',
+            width: '93vw'
+        };
     };
 
     ctrl.moveLeft = () => moveStep.left(ctrl.currentNode, currentStep.get(), ctrl.experiment);

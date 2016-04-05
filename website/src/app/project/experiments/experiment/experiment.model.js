@@ -1,7 +1,7 @@
 export class ExperimentStep {
-    constructor(title, _type) {
+    constructor(name, _type) {
         this.id = '';
-        this.title = title;
+        this.name = name;
         this._type = _type;
         this.steps = [];
         this.description = '';
@@ -33,6 +33,24 @@ export class ExperimentStep {
     }
 }
 
+export function toUIStep(step) {
+    step.displayState = {
+        details: {
+            showTitle: true,
+            showStatus: true,
+            showNotes: true,
+            showFiles: false,
+            showSamples: false,
+            currentFilesTab: 0,
+            currentSamplesTab: 0
+        },
+        editTitle: true,
+        open: false,
+        maximize: false
+    };
+    step.node = null;
+}
+
 export class Experiment {
     constructor(name) {
         this.name = name;
@@ -43,8 +61,8 @@ export class Experiment {
         this.steps = [];
     }
 
-    addStep(title, _type) {
-        let s = new ExperimentStep(title, _type);
+    addStep(name, _type) {
+        let s = new ExperimentStep(name, _type);
         this.steps.push(s);
     }
 }
