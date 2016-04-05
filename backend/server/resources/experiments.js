@@ -117,7 +117,7 @@ module.exports = function(experiments, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.update();
+            let rv = yield experiments.update(this.params.experiment_id, updateArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = errors;
