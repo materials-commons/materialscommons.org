@@ -21,8 +21,10 @@ module.exports = function(model) {
         renameDirectory: directorySchema.defineRenameDirectorySchema(),
         moveDirectory: directorySchema.defineMoveDirectorySchema(),
         createExperiment: experimentSchema.defineCreateExperimentSchema(),
+        updateExperiment: experimentSchema.defineUpdateExperimentSchema(),
         createExperimentStep: experimentSchema.defineCreateExperimentStepSchema(),
-        validate: validate,
+        updateExperimentStep: experimentSchema.defineUpdateExperimentStepSchema(),
+        validate,
         prepare,
         model: model
     };
