@@ -226,6 +226,29 @@ module.exports = function(r) {
         this.mtime = now;
     }
 
+    function ExperimentStep(name, owner) {
+        let now = r.now();
+        this.name = name;
+        this.owner = owner;
+        this._type = 'experiment_step';
+        this.description = '';
+        this.notes = '';
+        this.flags = {
+            important: false,
+            review: false,
+            error: false,
+            done: false
+        };
+        this.parent_id = '';
+        this.birthtime = now;
+        this.mtime = now;
+    }
+
+    function Experiment2ExperimentStep(experimentID, experimentStepID) {
+        this.experiment_id = experimentID;
+        this.experiment_step_id = experimentStepID;
+    }
+
     function Project2Experiment(project_id, experiment_id) {
         this.project_id = project_id;
         this.experiment_id = experiment_id;
@@ -261,6 +284,8 @@ module.exports = function(r) {
         Share: Share,
         User2Share: User2Share,
         Experiment: Experiment,
-        Project2Experiment: Project2Experiment
+        Project2Experiment: Project2Experiment,
+        ExperimentStep,
+        Experiment2ExperimentStep
     };
 };

@@ -21,12 +21,19 @@ module.exports = function(model) {
         renameDirectory: directorySchema.defineRenameDirectorySchema(),
         moveDirectory: directorySchema.defineMoveDirectorySchema(),
         createExperiment: experimentSchema.defineCreateExperimentSchema(),
+        createExperimentStep: experimentSchema.defineCreateExperimentStepSchema(),
         validate: validate,
+        prepare,
         model: model
     };
 
     function validate(schema, body) {
         return schema.validateAsync(body).then(() => null, (errors) => errors);
+    }
+
+    function prepare(schema, body) {
+        schema.stripNonSchemaAttrs(body);
+        schema.addDefaultsToTarget(body);
     }
 
     /////////////// Define Rules ///////////////

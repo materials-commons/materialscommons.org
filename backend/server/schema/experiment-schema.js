@@ -2,7 +2,8 @@ module.exports = function(schema) {
     const promise = require('bluebird');
 
     return {
-        defineCreateExperimentSchema: defineCreateExperimentSchema
+        defineCreateExperimentSchema: defineCreateExperimentSchema,
+        defineCreateExperimentStepSchema
     };
 
     function defineCreateExperimentSchema() {
@@ -15,7 +16,6 @@ module.exports = function(schema) {
             name: {
                 type: 'string',
                 nullable: false
-                // mustNotExistInProject: 'experiments'
             },
 
             aim: {
@@ -39,7 +39,34 @@ module.exports = function(schema) {
             }
         });
 
+        createExperimentSchema.setDefaults({
+            aim: '',
+            goal: '',
+            description: '',
+            status: 'in-progress'
+        });
         createExperimentSchema.validateAsync = promise.promisify(createExperimentSchema.validate);
         return createExperimentSchema;
+    }
+
+    function defineCreateExperimentStepSchema() {
+        let createExperimentStepSchema = schema.defineSchema('CreateExperimentStep', {
+            name: {
+                type: 'string',
+                nullable: false
+            },
+            description: {
+                type: 'string',
+                nullable: false
+            },
+            parent_id: {
+                type: 'string',
+                nullable: false
+            }
+        });
+
+        createExperimentStepSchema.setDefaults({parent_id: '', description: ''});
+        createExperimentStepSchema.validateAsync = promise.promisify(createExperimentStepSchema.validate);
+        return createExperimentStepSchema;
     }
 };
