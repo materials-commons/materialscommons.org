@@ -8,11 +8,11 @@
         <form layout="column" class="dialog-form">
             <md-input-container md-no-float>
                 <label>Name</label>
-                <input ng-model="ctrl.name" type="text">
+                <input ng-model="ctrl.name" type="text" on-enter="ctrl.submit()">
             </md-input-container>
             <md-input-container md-no-float>
                 <label>Description</label>
-                <input ng-model="ctrl.description" type="text">
+                <input ng-model="ctrl.description" type="text" on-enter="ctrl.submit()">
             </md-input-container>
         </form>
     </md-dialog-content>
