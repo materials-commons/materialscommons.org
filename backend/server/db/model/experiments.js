@@ -51,7 +51,9 @@ module.exports = function(r) {
         let newExperiment = yield db.insert('experiments', e);
         let proj2experiment = new model.Project2Experiment(experiment.project_id, newExperiment.id);
         yield db.insert('project2experiment', proj2experiment);
-        return {val: newExperiment};
+        let estep = new model.ExperimentStep('', owner);
+        yield createStep(newExperiment.id, estep, owner);
+        return yield get(newExperiment.id);
     }
 
     function* createStep(experimentID, step, owner) {
