@@ -9,7 +9,7 @@ angular.module('materialscommons').component('mcExperiment', {
 function MCExperimentComponentController($scope, $stateParams, moveStep, currentStep, experimentsService) {
     let ctrl = this;
 
-    ctrl.$onInit = function() {
+    ctrl.$onInit = () => {
         ctrl.currentNode = null;
         ctrl.showSidebar = false;
         ctrl.experiment = null;
@@ -17,25 +17,9 @@ function MCExperimentComponentController($scope, $stateParams, moveStep, current
         experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id).then(
             (e) => {
                 ctrl.experiment = e;
-                if (!ctrl.experiment.steps.length) {
-                    let s = {
-                        name: '',
-                        description: ''
-                    };
-                    experimentsService.createStep($stateParams.project_id, $stateParams.experiment_id, s).then(
-                        (step) => {
-                            toUIStep(step);
-                            ctrl.experiment.steps.push(step);
-                            currentStep.set(step);
-                            ctrl.currentStep = currentStep.get();
-                        },
-                        (error) => console.log('error', error)
-                    );
-                } else {
-                    ctrl.experiment.steps.forEach((step) => toUIStep(step));
-                    currentStep.set(ctrl.experiment.steps[0]);
-                    ctrl.currentStep = currentStep.get();
-                }
+                ctrl.experiment.steps.forEach((step) => toUIStep(step));
+                currentStep.set(ctrl.experiment.steps[0]);
+                ctrl.currentStep = currentStep.get();
             },
             (error) => console.log('error', error)
         );
