@@ -15,6 +15,10 @@ class ExperimentsService {
     getForProject(projectID, experimentID) {
         return this.projectsAPI(projectID).one('experiments', experimentID).customGET();
     }
+
+    createStep(projectID, experimentID, experimentStep) {
+        return this.projectsAPI(projectID).one('experiments', experimentID).one('step').customPOST(experimentStep);
+    }
 }
 
 angular.module('materialscommons').service('experimentsService', ExperimentsService);

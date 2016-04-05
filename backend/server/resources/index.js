@@ -47,6 +47,7 @@ module.exports = function(model) {
     router.get('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.getStep);
     router.post('/projects/:project_id/experiments', validateProjectAccess, experiments.create);
     router.post('/projects/:project_id/experiments/:experiment_id/step', validateProjectAccess, experiments.createStep);
+    router.post('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.createStep);
     router.put('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.update);
     router.put('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.updateStep);
 
