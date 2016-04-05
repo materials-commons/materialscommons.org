@@ -17,6 +17,10 @@ function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
         height: '55vh',
         width: '85vw'
     };
+    ctrl.onChange = (step) => {
+        console.log('onChange!', step);
+    };
+
     ctrl.currentStep = currentStep.get();
     ctrl.setCurrent = setCurrent;
     ctrl.addBlankStep = addBlankStep;
