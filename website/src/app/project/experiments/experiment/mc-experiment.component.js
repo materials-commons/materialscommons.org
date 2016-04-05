@@ -51,6 +51,14 @@ function MCExperimentComponentController($scope, $stateParams, moveStep, current
     ctrl.closeAll = closeAll;
     ctrl.getCurrentStep = () => currentStep.get();
 
+    ctrl.updateName = () => {
+        console.log('experiment name changed:', ctrl.experiment.name);
+    };
+
+    ctrl.updateDescription = () => {
+        console.log('experiment description changed:', ctrl.experiment.description);
+    };
+
     function openAll() {
         var treeModel = new TreeModel({childrenPropertyName: 'steps'}),
             root = treeModel.parse(ctrl.experiment);
