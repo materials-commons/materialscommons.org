@@ -16,7 +16,9 @@
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                         </a>
                         <input ng-if="($ctrl.currentStep === step && !step.flags.done) || step.name === ''"
-                               size="40" type="text" data-nodrag ng-model="step.name" ng-model-opts="{debounce: 250}"
+                               size="40" type="text" data-nodrag ng-model="step.name"
+                               ng-model-options="{debounce: 3000}"
+                               ng-change="$ctrl.onChange(step)"
                                placeholder="Title..."
                                class="mc-experiment"
                                style="margin-top:4px;" id="{{step.id}}">
