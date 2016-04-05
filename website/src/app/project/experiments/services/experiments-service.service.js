@@ -12,6 +12,10 @@ class ExperimentsService {
         return this.projectsAPI(projectID).one('experiments').customPOST(experiment);
     }
 
+    updateForProject(projectID, experimentID, what) {
+        return this.projectsAPI(projectID).one('experiments', experimentID).customPUT(what);
+    }
+
     getForProject(projectID, experimentID) {
         return this.projectsAPI(projectID).one('experiments', experimentID).customGET();
     }
