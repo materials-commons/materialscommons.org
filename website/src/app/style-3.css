@@ -79,7 +79,7 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
 }
 
 .step-selected {
-    border: 3px solid #1565c0;
+    border-left: 7px solid #1565c0;
 }
 
 .md-row {
