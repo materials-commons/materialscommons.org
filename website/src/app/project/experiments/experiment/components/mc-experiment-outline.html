@@ -2,39 +2,41 @@
     <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex="95"
          layout="column">
         <div flex layout="column" class="mc-experiment-outline-step"
+             ng-class="{'step-selected': $ctrl.currentStep === step}"
              on-enter="$ctrl.addBlankStep(this)">
             <div flex layout-fill layout="row" style="padding-left: 16px; padding-top: 2px;">
                 <i class="fa fa-fw fa-reorder"></i>
                 <div flex data-nodrag layout="row" layout-fill layout-align="start center"
-                     style="margin-bottomx: 2px; outline: none"
+                     style="outline: none"
                      ng-click="$ctrl.setCurrent(step, this)">
                     <span>
                         <md-checkbox data-nodrag class="mc-done" ng-model="step.flags.done"
-                                     style="margin-bottom:10px"></md-checkbox>
+                                     style="margin-bottom:14px"></md-checkbox>
                         <a data-nodrag ng-click="this.toggle()">
                             <i class="fa fa-fw"
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                         </a>
-                        <input ng-if="($ctrl.currentStep === step && !step.flags.done) || step.name === ''"
+                        <input ng-if="!step.flags.done"
                                size="40" type="text" data-nodrag ng-model="step.name"
-                               ng-model-options="{debounce: 3000}"
+                               ng-model-options="{debounce: 250}"
                                ng-change="$ctrl.onChange(step)"
                                placeholder="Title..."
-                               class="mc-experiment"
-                               style="margin-top:4px;" id="{{step.id}}">
-                        <span ng-if="!(($ctrl.currentStep === step && !step.flags.done) || step.name === '')"
+                               class="mc-input-no-border"
+                               id="{{step.id}}">
+                        <span ng-if="step.flags.done"
                               ng-click="$ctrl.currentStep = step; step.displayState.editTitle = true"
-                              class="md-subhead cursor-pointer"
-                              ng-class="{'mark-text-done': step.flags.done, 'current-step': $ctrl.currentStep === step && step.flags.done}">
+                              class="cursor-pointer"
+                              ng-class="{'mark-text-done': step.flags.done}">
                             {{step.name | truncate:40:'....'}}
                         </span>
-                        <a class="md-primary" data-nodrag ng-click="step.displayState.open = !step.displayState.open">
-                            <i class="fa fa-fw"
-                               ng-class="{'fa-angle-double-right': !step.displayState.open, 'fa-angle-double-down': step.displayState.open}"></i>
-                        </a>
                     </span>
                     <span flex></span>
-                    <div flex="10" layout-fill layout="row" layout-align="start center">
+                    <a class="md-primary" data-nodrag ng-click="step.displayState.open = !step.displayState.open"
+                       style="padding-bottom: 14px">
+                        <i class="fa fa-fw"
+                           ng-class="{'fa-angle-double-right': !step.displayState.open, 'fa-angle-double-down': step.displayState.open}"></i>
+                    </a>
+                    <div flex="10" layout-fill layout="row" layout-align="start center" style="padding-bottom:14px">
                         <i ng-class="{'mc-review-color': step.flags.review, 'mc-light-grey-color': !step.flags.review}"
                            class="fa fa-fw fa-flag"></i>
                         <i ng-class="{'mc-error-color': step.flags.error, 'mc-light-grey-color': !step.flags.error}"
