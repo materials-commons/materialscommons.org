@@ -29,6 +29,11 @@ md-toast.md-error-theme .md-toast-content {
   padding-top: 6px;
   background-color: $mc-light-grey;
   border-radius: 6px;
+  border-left: 7px solid $mc-light-grey;
+}
+
+.step-selected {
+  border-left: 7px solid $mc-md-primary-color;
 }
 
 .mc-flag {
