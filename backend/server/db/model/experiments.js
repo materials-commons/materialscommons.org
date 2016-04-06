@@ -43,6 +43,7 @@ module.exports = function(r) {
                 }
             });
         let experiment = yield dbExec(rql);
+        experiment.steps.forEach((step) => step.steps = []);
         return {val: experiment};
     }
 
