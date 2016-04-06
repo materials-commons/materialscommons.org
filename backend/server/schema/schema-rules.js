@@ -21,7 +21,7 @@ module.exports = function(model) {
     let experimentStatusStrings = [
         'done',
         'on-hold',
-        'in-progress',
+        'active',
         'error'
     ];
 

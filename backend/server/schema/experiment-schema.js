@@ -45,7 +45,7 @@ module.exports = function(schema) {
             aim: '',
             goal: '',
             description: '',
-            status: 'in-progress'
+            status: 'active'
         });
         createExperimentSchema.validateAsync = promise.promisify(createExperimentSchema.validate);
         return createExperimentSchema;
