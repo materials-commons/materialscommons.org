@@ -4,7 +4,7 @@
         <div flex layout="column" class="mc-experiment-outline-step"
              ng-class="{'step-selected': $ctrl.currentStep === step}"
              on-enter="$ctrl.addBlankStep(this)">
-            <div flex layout-fill layout="row" style="padding-top: 2px; padding-left: 10px;">
+            <div flex layout-fill layout="row" style="padding-top: 9px; padding-left: 10px;">
                 <i class="fa fa-fw fa-reorder"></i>
                 <div flex data-nodrag layout="row" layout-fill layout-align="start center"
                      style="outline: none"
@@ -37,11 +37,11 @@
                     </a>
                     <div flex="10" layout-fill layout="row" layout-align="start center" style="padding-bottom:14px">
                         <i ng-class="{'mc-review-color': step.flags.review, 'mc-light-grey-color': !step.flags.review}"
-                           class="fa fa-fw fa-flag"></i>
+                           class="fa fa-fw fa-circle"></i>
                         <i ng-class="{'mc-error-color': step.flags.error, 'mc-light-grey-color': !step.flags.error}"
-                           class="fa fa-fw fa-flag"></i>
+                           class="fa fa-fw fa-bomb"></i>
                         <i ng-class="{'mc-important-color': step.flags.important, 'mc-light-grey-color': !step.flags.important}"
-                           class="fa fa-fw fa-flag"></i>
+                           class="fa fa-fw fa-exclamation-circle"></i>
                     </div>
                 </div>
                 <a class="mc-error-color" data-nodrag ng-click="$ctrl.remove(this)">

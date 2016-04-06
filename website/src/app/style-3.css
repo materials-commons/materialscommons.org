@@ -78,10 +78,6 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     font-weight: bold;
 }
 
-.step-selected {
-    border-left: 7px solid #1565c0;
-}
-
 .md-row {
     line-height: 30px;
 }
