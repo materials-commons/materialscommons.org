@@ -15,7 +15,7 @@ module.exports = function(model) {
     return {
         samples: samplesSchema.defineSamplesSchema(),
         transformedSamples: samplesSchema.defineTransformedSamplesSchema(),
-        processes: processSchema.defineProcessSchema(),
+        processes: processSchema.defineCreateProcessSchema(),
         measurements: measurementsSchema.defineMeasurementsSchema(),
         createDirectory: directorySchema.defineCreateDirectorySchema(),
         renameDirectory: directorySchema.defineRenameDirectorySchema(),

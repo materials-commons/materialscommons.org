@@ -2,11 +2,12 @@ module.exports = function(schema) {
     const promise = require('bluebird');
 
     return {
-        defineProcessSchema: defineProcessSchema
+        defineCreateProcessSchema,
+        defineCreateProcessSetupSchema
     };
 
-    function defineProcessSchema() {
-        let process = schema.defineSchema('Process', {
+    function defineCreateProcessSchema() {
+        let createProcessSchema = schema.defineSchema('CreateProcess', {
             owner: {
                 type: 'string',
                 nullable: false
@@ -22,18 +23,7 @@ module.exports = function(schema) {
                 nullable: false
             },
 
-            template_id: {
-                type: 'string',
-                nullable: false,
-                mustExist: 'templates'
-            },
-
-            what: {
-                type: 'string',
-                nullable: true
-            },
-
-            how: {
+            description: {
                 type: 'string',
                 nullable: true
             },
@@ -51,35 +41,92 @@ module.exports = function(schema) {
                 }
             },
 
-            samples_created: {
+            input_samples: {
                 type: 'array',
-                nullable: true
+                nullable: false
             },
 
-            measurements_taken: {
+            output_samples: {
                 type: 'array',
-                nullable: true
+                nullable: false
             },
 
-            samples_transformed: {
+            transformed_samples: {
                 type: 'array',
-                nullable: true
+                nullable: false
             },
 
-            files_created: {
+            input_files: {
                 type: 'array',
-                nullable: true
+                nullable: false
+            },
+
+            output_files: {
+                type: 'array',
+                nullable: false
             }
         });
-        process.setDefaults({
+
+        createProcessSchema.setDefaults({
             description: '',
-            how: '',
-            samples_created: [],
-            measurements_taken: [],
-            samples_transformed: [],
-            files_created: []
+            input_samples: [],
+            output_samples: [],
+            transformed_samples: [],
+            input_files: [],
+            output_files: []
         });
-        process.validateAsync = promise.promisify(process.validate);
-        return process;
+        createProcessSchema.validateAsync = promise.promisify(createProcessSchema.validate);
+        return createProcessSchema;
+    }
+
+    function defineCreateProcessSetupSchema() {
+        let createSetupSchema = schema.defineSchema('CreateProcessSetup', {
+            name: {
+                type: 'string',
+                nullable: false
+            },
+
+            attribute: {
+                type: 'string',
+                nullable: false
+            },
+
+            properties: {
+                type: 'array',
+                nullable: false,
+                isValidProperties: true
+            }
+        });
+
+        createSetupSchema.setDefaults({});
+        createSetupSchema.validateAsync = promise.promisify(createSetupSchema.validate);
+        return createSetupSchema;
+
+    }
+
+    function defineCreateProcessSampleSchema() {
+        let createProcessSampleSchema = schema.defineSchema('CreateProcessSample', {});
+
+        createProcessSampleSchema.setDefaults({});
+        createProcessSampleSchema.validateAsync = promise.promisify(createProcessSampleSchema.validate);
+        return createProcessSampleSchema;
+
+    }
+
+    function defineCreateProcessTransformedSampleSchema() {
+        let createProcessTransformedSampleSchema = schema.defineSchema('CreateProcessTransformedSample', {});
+
+        createProcessTransformedSampleSchema.setDefaults({});
+        createProcessTransformedSampleSchema.validateAsync = promise.promisify(
+            createProcessTransformedSampleSchema.validate);
+        return createProcessTransformedSampleSchema;
+    }
+
+    function defineCreateProcessFilesSchema() {
+        let createProcessFileSchema = schema.defineSchema('CreateProcessFile', {});
+
+        createProcessFileSchema.setDefaults({});
+        createProcessFileSchema.validateAsync = promise.promisify(createProcessFileSchema.validate);
+        return createProcessFileSchema;
     }
 };
