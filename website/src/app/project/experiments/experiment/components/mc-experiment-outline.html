@@ -17,17 +17,16 @@
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
                         </a>
                         <input ng-if="!step.flags.done"
-                               size="40" type="text" data-nodrag ng-model="step.name"
+                               size="40" type="text" data-nodrag
+                               ng-model="step.name"
                                ng-model-options="{debounce: 250}"
                                ng-change="$ctrl.onChange(step)"
                                placeholder="Title..."
                                class="mc-input-no-border"
                                id="{{step.id}}">
                         <span ng-if="step.flags.done"
-                              ng-click="$ctrl.currentStep = step; step.displayState.editTitle = true"
-                              class="cursor-pointer"
-                              ng-class="{'mark-text-done': step.flags.done}">
-                            {{step.name | truncate:40:'....'}}
+                              class="mark-text-done">
+                            {{::step.name | truncate:40:'....'}}
                         </span>
                     </span>
                     <span flex></span>
