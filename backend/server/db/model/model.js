@@ -222,7 +222,7 @@ module.exports = function(r) {
         this.goal = '';
         this.aim = '';
         this.notes = '';
-        this.status = 'in-progress';
+        this.status = 'active';
         this.birthtime = now;
         this.mtime = now;
     }
@@ -231,9 +231,15 @@ module.exports = function(r) {
         let now = r.now();
         this.name = name;
         this.owner = owner;
+        this.placement = 0;
         this._type = 'experiment_step';
         this.description = '';
         this.notes = '';
+        this.estimate = {
+            value: 0,
+            unit: ''
+        };
+        this.due_date = 0;
         this.flags = {
             important: false,
             review: false,
