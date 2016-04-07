@@ -64,7 +64,7 @@ export class Experiment {
         this.goal = '';
         this.description = '';
         this.aim = '';
-        this.status = 'in-progress';
+        this.status = 'active';
         this.steps = [];
     }
 
