@@ -50,7 +50,7 @@ function MCExperimentOutlineComponentController(focus, $stateParams, experiments
         // toggle flag and then get its value so we know
         // what classes to add/remove.
         step.flags[whichFlag] = !step.flags[whichFlag];
-        let flagColorClass = getFlagColorClass(whichFlag);
+        let flagColorClass = 'mc-' + whichFlag + '-color';
         let flag = step.flags[whichFlag];
         if (flag) {
             // Toggled to on, remove dark grey and add in class for specific flag
@@ -99,9 +99,5 @@ function MCExperimentOutlineComponentController(focus, $stateParams, experiments
             ctrl.currentStep = null;
         }
         node.remove();
-    }
-
-    function getFlagColorClass(flag) {
-        return 'mc-' + flag + '-color';
     }
 }
