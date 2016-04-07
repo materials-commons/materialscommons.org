@@ -7,6 +7,7 @@ $mc-color-important: #3f51b5;
 $mc-color-done: #4caf50;
 $mc-step-detail-color: #e7e8ea;
 $mc-light-grey: #f4f5f7;
+$mc-dark-grey: #cecfd1;
 $mc-color-error-dark: #d32f2f;
 $mc-md-primary-color: #1565c0;
 
@@ -21,6 +22,18 @@ md-toast.md-error-theme .md-toast-content {
 
 .mc-light-grey-color {
   color: $mc-light-grey;
+}
+
+.mc-dark-grey-color {
+  color: $mc-dark-grey;
+}
+
+.mc-flag-not-set {
+  color: $mc-dark-grey;
+}
+
+.align-step-element {
+  margin-bottom: 14px;
 }
 
 .mc-experiment-outline-step {
@@ -86,15 +99,13 @@ md-toast.md-error-theme .md-toast-content {
 
 .mc-input-as-line {
   background-color: transparent;
-  border-style: solid;
-  border-width: 0px 0px 1px 0px;
-  border-color: #f4f5f7;
+  border: 0 solid #f4f5f7;
+  border-bottom-width: 1px;
 }
 
 .mc-input-no-border {
   background-color: transparent;
-  border-style: solid;
-  border-width: 0px 0px 0px 0px;
+  border: 0 solid;
   padding: 0;
 }
 

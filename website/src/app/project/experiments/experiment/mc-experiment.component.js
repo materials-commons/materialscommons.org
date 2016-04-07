@@ -18,6 +18,7 @@ function MCExperimentComponentController($scope, $stateParams, moveStep, current
             (e) => {
                 ctrl.experiment = e;
                 ctrl.experiment.steps.forEach((step) => toUIStep(step));
+                ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
                 currentStep.set(ctrl.experiment.steps[0]);
                 ctrl.currentStep = currentStep.get();
             },
