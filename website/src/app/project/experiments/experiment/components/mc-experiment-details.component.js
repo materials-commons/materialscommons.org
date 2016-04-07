@@ -20,6 +20,14 @@ function MCExperimentDetailsComponentController($scope, currentStep, $stateParam
     };
 
     ctrl.updateNotes = () => {
+        // Handle case where the editor is activating even though its in an ng-if.
+        if (!ctrl.step.displayState.open) {
+            return;
+        }
+
+        if (!ctrl.step.notes) {
+            ctrl.step.notes = '';
+        }
         experimentsService
             .updateStep($stateParams.project_id, $stateParams.experiment_id, ctrl.step.id, {notes: ctrl.step.notes})
             .then(
