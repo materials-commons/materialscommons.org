@@ -1,5 +1,5 @@
 <div layout="column">
-    <div layout="row" layout-align="end center" style="margin-bottom: 18px;">
+    <div layout="row" layout-align="end center" stylex="margin-bottom: 18px;">
         <md-button ng-if="!$ctrl.step.displayState.maximize" ng-click="$ctrl.maximize()" class="md-primary">
             Maximize
         </md-button>
@@ -9,48 +9,46 @@
         </md-button>
         <mc-new-process-menu button-name="ADD PROCESS"
                              button-class="md-primary md-raised"
-                             button-icon="fa-plus" style="color:black">
+                             button-icon="fa-plus">
         </mc-new-process-menu>
     </div>
 
-    <a class="md-subtitle"
-       ng-click="$ctrl.step.displayState.details.showTitle = !$ctrl.step.displayState.details.showTitle">
-        <i class="fa fa-fw"
-           ng-class="{'fa-chevron-right': !$ctrl.step.displayState.details.showTitle, 'fa-chevron-down': $ctrl.step.displayState.details.showTitle}"></i>
-        Title
-    </a>
-    <!--<div ng-show="$ctrl.step.details.showTitle" layout="column" flex layout-fill>-->
+    <!--<a class="md-subtitle"-->
+    <!--ng-click="$ctrl.step.displayState.details.showTitle = !$ctrl.step.displayState.details.showTitle">-->
+    <!--<i class="fa fa-fw"-->
+    <!--ng-class="{'fa-chevron-right': !$ctrl.step.displayState.details.showTitle, 'fa-chevron-down': $ctrl.step.displayState.details.showTitle}"></i>-->
+    <!--Title-->
+    <!--</a>-->
 
-    <md-input-container md-no-float ng-if="$ctrl.step.displayState.details.showTitle">
-        <input type="text" ng-model="$ctrl.step.name" placeholder="Title...">
-    </md-input-container>
-    <md-input-container md-no-float ng-if="$ctrl.step.displayState.details.showTitle">
-        <textarea type="text" ng-model="$ctrl.step.description" placeholder="Description..."></textarea>
-    </md-input-container>
+    <!--<md-input-container md-no-float ng-if="$ctrl.step.displayState.details.showTitle">-->
+    <!--<input type="text" ng-model="$ctrl.step.name" placeholder="Title...">-->
+    <!--</md-input-container>-->
+    <!--<md-input-container md-no-float ng-if="$ctrl.step.displayState.details.showTitle">-->
+    <!--<textarea type="text" ng-model="$ctrl.step.description" placeholder="Description..."></textarea>-->
+    <!--</md-input-container>-->
 
+    <!--<div ng-if="!$ctrl.step.displayState.details.showTitle" style="margin-bottom:18px"></div>-->
+
+    <!--<a class="md-subtitle" style="margin-bottom:18px;"-->
+    <!--ng-click="$ctrl.step.displayState.details.showStatus = !$ctrl.step.displayState.details.showStatus">-->
+    <!--<i class="fa fa-fw"-->
+    <!--ng-class="{'fa-chevron-right': !$ctrl.step.displayState.details.showStatus, 'fa-chevron-down': $ctrl.step.displayState.details.showStatus}"></i>-->
+    <!--Status-->
+    <!--</a>-->
+    <!--<div ng-show="$ctrl.step.displayState.details.showStatus">-->
+    <!--<md-checkbox data-nodrag class="mc-done" ng-model="$ctrl.step.flags.done">-->
+    <!--<span class="mc-done-color">Done</span>-->
+    <!--</md-checkbox>-->
+    <!--<md-checkbox data-nodrag class="mc-review" ng-model="$ctrl.step.flags.review">-->
+    <!--<span class="mc-review-color">Review</span>-->
+    <!--</md-checkbox>-->
+    <!--<md-checkbox data-nodrag class="mc-error" ng-model="$ctrl.step.flags.error">-->
+    <!--<span class="mc-error-color">Error</span>-->
+    <!--</md-checkbox>-->
+    <!--<md-checkbox data-nodrag class="mc-important" ng-model="$ctrl.step.flags.important">-->
+    <!--<span class="mc-important-color">Important</span>-->
+    <!--</md-checkbox>-->
     <!--</div>-->
-    <div ng-if="!$ctrl.step.displayState.details.showTitle" style="margin-bottom:18px"></div>
-
-    <a class="md-subtitle" style="margin-bottom:18px;"
-       ng-click="$ctrl.step.displayState.details.showStatus = !$ctrl.step.displayState.details.showStatus">
-        <i class="fa fa-fw"
-           ng-class="{'fa-chevron-right': !$ctrl.step.displayState.details.showStatus, 'fa-chevron-down': $ctrl.step.displayState.details.showStatus}"></i>
-        Status
-    </a>
-    <div ng-show="$ctrl.step.displayState.details.showStatus">
-        <md-checkbox data-nodrag class="mc-done" ng-model="$ctrl.step.flags.done">
-            <span class="mc-done-color">Done</span>
-        </md-checkbox>
-        <md-checkbox data-nodrag class="mc-review" ng-model="$ctrl.step.flags.review">
-            <span class="mc-review-color">Review</span>
-        </md-checkbox>
-        <md-checkbox data-nodrag class="mc-error" ng-model="$ctrl.step.flags.error">
-            <span class="mc-error-color">Error</span>
-        </md-checkbox>
-        <md-checkbox data-nodrag class="mc-important" ng-model="$ctrl.step.flags.important">
-            <span class="mc-important-color">Important</span>
-        </md-checkbox>
-    </div>
 
     <a class="md-subtitle" style="margin-bottom:18px; margin-top: 18px"
        ng-click="$ctrl.step.displayState.details.showNotes = !$ctrl.step.displayState.details.showNotes">
