@@ -30,6 +30,17 @@ function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
         console.log('onChange!', step);
     };
 
+    ctrl.toggleOpenDetails = (step, event) => {
+        step.displayState.open = !step.displayState.open;
+        if (step.displayState.open) {
+            $(event.target).removeClass('fa-angle-double-right');
+            $(event.target).addClass('fa-angle-double-down');
+        } else {
+            $(event.target).removeClass('fa-angle-double-down');
+            $(event.target).addClass('fa-angle-double-right');
+        }
+    };
+
     ctrl.toggleFlag = (flags, whichFlag, event) => {
         // toggle flag and then get its value so we know
         // what classes to add/remove.
