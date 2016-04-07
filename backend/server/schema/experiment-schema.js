@@ -66,13 +66,8 @@ module.exports = function(schema) {
             notes: {
                 type: 'string',
                 nullable: true
-            },
-
-            steps: {
-                type: 'array'
             }
         });
-        updateExperimentSchema.setDefaults({steps: []});
         updateExperimentSchema.validateAsync = promise.promisify(updateExperimentSchema.validate);
         return updateExperimentSchema;
     }
@@ -134,13 +129,10 @@ module.exports = function(schema) {
                     type: 'boolean',
                     nullable: true
                 }
-            },
-            steps: {
-                type: 'array'
             }
         });
 
-        updateExperimentStepSchema.setDefaults({steps: []});
+        updateExperimentStepSchema.setDefaults({parent_id: ''});
         updateExperimentStepSchema.validateAsync = promise.promisify(updateExperimentStepSchema.validate);
         return updateExperimentStepSchema;
     }
