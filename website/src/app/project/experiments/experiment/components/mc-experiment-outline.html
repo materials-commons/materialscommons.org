@@ -9,10 +9,7 @@
                 <div flex data-nodrag layout="row" layout-fill layout-align="start center"
                      class="no-outline">
                     <span>
-                        <md-checkbox data-nodrag
-                                     class="mc-done align-step-element"
-                                     ng-model="step.flags.done">
-                        </md-checkbox>
+                        <md-checkbox class="mc-done align-step-element" ng-model="step.flags.done"></md-checkbox>
                         <a data-nodrag ng-click="this.toggle()">
                             <i class="fa fa-fw"
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
@@ -20,9 +17,9 @@
                         <input ng-if="!step.flags.done"
                                size="40" type="text" data-nodrag
                                ng-model="step.name"
-                               ng-model-options="{debounce: 250}"
-                               ng-change="$ctrl.onChange(step)"
-                               placeholder="Title..."
+                               ng-model-options="{debounce: 1000}"
+                               ng-change="$ctrl.onNameChange(step)"
+                               placeholder="Untitled Item..."
                                class="mc-input-no-border"
                                id="{{step.id}}">
                         <span ng-if="step.flags.done"
@@ -37,15 +34,15 @@
                     </i>
                     <div flex="10" layout-fill layout="row" layout-align="start center" class="align-step-element">
                         <i class="fa fa-fw fa-flag cursor-pointer {{::step.displayState.flags.reviewClass}}"
-                           ng-click="$ctrl.toggleFlag(step.flags, 'review', $event)">
+                           ng-click="$ctrl.toggleFlag(step, 'review', $event)">
                             <md-tooltip md-delay="750" ng-autohide>Review</md-tooltip>
                         </i>
                         <i class="fa fa-fw fa-exclamation-triangle cursor-pointer {{::step.displayState.flags.errorClass}}"
-                           ng-click="$ctrl.toggleFlag(step.flags, 'error', $event)">
+                           ng-click="$ctrl.toggleFlag(step, 'error', $event)">
                             <md-tooltip md-delay="500" ng-autohide>Error</md-tooltip>
                         </i>
                         <i class="fa fa-fw fa-exclamation-circle cursor-pointer {{::step.displayState.flags.importantClass}}"
-                           ng-click="$ctrl.toggleFlag(step.flags, 'important', $event)">
+                           ng-click="$ctrl.toggleFlag(step, 'important', $event)">
                             <md-tooltip md-delay="500" ng-autohide>Important</md-tooltip>
                         </i>
                     </div>

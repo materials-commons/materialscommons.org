@@ -17,7 +17,7 @@ angular.module('materialscommons').component('mcExperimentOutline', {
 });
 
 /*@ngInject*/
-function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
+function MCExperimentOutlineComponentController(focus, $stateParams, experimentsService, toast, currentStep) {
     let lastID = 1;
     let ctrl = this;
 
@@ -26,8 +26,13 @@ function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
         width: '85vw'
     };
 
-    ctrl.onChange = (step) => {
-        console.log('onChange!', step);
+    ctrl.onNameChange = (step) => {
+        experimentsService
+            .updateStep($stateParams.project_id, $stateParams.experiment_id, step.id, {name: step.name})
+            .then(
+                (s) => console.dir(s),
+                (error) => toast.error('Failed to update step')
+            );
     };
 
     ctrl.toggleOpenDetails = (step, event) => {
@@ -41,12 +46,12 @@ function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
         }
     };
 
-    ctrl.toggleFlag = (flags, whichFlag, event) => {
+    ctrl.toggleFlag = (step, whichFlag, event) => {
         // toggle flag and then get its value so we know
         // what classes to add/remove.
-        flags[whichFlag] = !flags[whichFlag];
+        step.flags[whichFlag] = !step.flags[whichFlag];
         let flagColorClass = getFlagColorClass(whichFlag);
-        let flag = flags[whichFlag];
+        let flag = step.flags[whichFlag];
         if (flag) {
             // Toggled to on, remove dark grey and add in class for specific flag
             $(event.target).removeClass('mc-dark-grey-color');
@@ -55,6 +60,9 @@ function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
             $(event.target).removeClass(flagColorClass);
             $(event.target).addClass('mc-dark-grey-color');
         }
+
+        experimentsService
+            .updateStep($stateParams.project_id, $stateParams.experiment_id, step.id, {flags: step.flags});
     };
 
     ctrl.currentStep = currentStep.get();
@@ -84,7 +92,7 @@ function MCExperimentOutlineComponentController(focus, toastr, currentStep) {
 
     function remove(node) {
         if (node.depth() === 1 && ctrl.experiment.steps.length === 1) {
-            toastr.error('Cannot remove last step', 'Error', {closeButton: true});
+            toast.error('Cannot remove last step');
             return;
         }
         if (node.$modelValue == ctrl.currentStep) {

@@ -42,14 +42,16 @@ module.exports = function(model) {
     router.post('/projects/:project_id/shares', validateProjectAccess, shares.create);
     router.delete('/projects/:project_id/shares/:share_id', validateProjectAccess, shares.remove);
 
-    router.get('/projects/:project_id/experiments', validateProjectAccess, experiments.getAllForProject);
-    router.get('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.get);
-    router.get('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.getStep);
-    router.post('/projects/:project_id/experiments', validateProjectAccess, experiments.create);
-    router.post('/projects/:project_id/experiments/:experiment_id/step', validateProjectAccess, experiments.createStep);
-    router.post('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.createStep);
-    router.put('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.update);
-    router.put('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.updateStep);
+    router.get('/projects/:project_id/experiments', validateProjectAccess, experiments.getAllExperimentsForProject);
+    router.get('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.getExperiment);
+    router.get('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.getExperimentStep);
+    router.post('/projects/:project_id/experiments', validateProjectAccess, experiments.createExperiment);
+    router.delete('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.deleteExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/step', validateProjectAccess, experiments.createExperimentStep);
+    router.post('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.createExperimentStep);
+    router.put('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.updateExperiment);
+    router.put('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.updateExperimentStep);
+    router.delete('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.deleteExperimentStep);
 
     router.put('/users/:project_id', users.update);
 

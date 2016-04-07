@@ -10,6 +10,7 @@ module.exports = function(r) {
         update,
         createStep,
         getStep,
+        updateStep,
         experimentExistsInProject,
         experimentStepExistsInExperiment
     };
@@ -59,13 +60,7 @@ module.exports = function(r) {
     }
 
     function* update(experimentID, updateArgs) {
-        let steps = updateArgs.steps;
-        delete updateArgs.steps;
-
         yield db.update('experiments', experimentID, updateArgs);
-        if (steps.length) {
-            console.log('going to update steps');
-        }
         return yield get(experimentID);
     }
 
@@ -95,6 +90,11 @@ module.exports = function(r) {
         delete s.processes;
 
         return {val: s};
+    }
+
+    function* updateStep(stepID, updateArgs) {
+        yield db.update('experiment_steps', stepID, updateArgs);
+        return yield getStep(stepID);
     }
 
     function* experimentExistsInProject(projectID, experimentID) {

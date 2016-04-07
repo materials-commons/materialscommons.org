@@ -57,7 +57,7 @@ function MCExperimentComponentController($scope, $stateParams, moveStep, current
             .updateForProject($stateParams.project_id, $stateParams.experiment_id, {name: name})
             .then(
                 (experiment) => console.dir(experiment),
-                (error) => toast.error('Failed to update project name')
+                (error) => toast.error('Failed to update experiment name')
             );
     };
 
@@ -66,7 +66,7 @@ function MCExperimentComponentController($scope, $stateParams, moveStep, current
             .updateForProject($stateParams.project_id, $stateParams.experiment_id, {description: description})
             .then(
                 (experiment) => console.dir(experiment),
-                (error) => toast.error('Failed to update project description')
+                (error) => toast.error('Failed to update experiment description')
             );
     };
 
