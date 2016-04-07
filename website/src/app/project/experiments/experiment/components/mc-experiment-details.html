@@ -57,7 +57,7 @@
         Notes
     </a>
 
-    <textarea ng-if="$ctrl.step.displayState.details.showNotes" ckeditor="editorOptions"
+    <textarea ng-show="$ctrl.step.displayState.details.showNotes" ckeditor="editorOptions"
               ng-model="$ctrl.step.notes" ng-model-options="{debounce: 3000}" ng-change="$ctrl.updateNotes()">
     </textarea>
 
@@ -67,7 +67,7 @@
            ng-class="{'fa-chevron-right': !$ctrl.step.displayState.details.showSamples, 'fa-chevron-down': $ctrl.step.displayState.details.showSamples}"></i>
         Samples
     </a>
-    <div ng-if="$ctrl.step.displayState.details.showSamples">
+    <div ng-show="$ctrl.step.displayState.details.showSamples">
         <md-tabs md-selected="$ctrl.step.displayState.details.currentSamplesTab" md-border-bottom>
             <md-tab>
                 <md-tab-label>
@@ -94,7 +94,7 @@
            ng-class="{'fa-chevron-right': !$ctrl.step.displayState.details.showFiles, 'fa-chevron-down': $ctrl.step.displayState.details.showFiles}"></i>
         Files
     </a>
-    <div ng-if="$ctrl.step.displayState.details.showFiles">
+    <div ng-show="$ctrl.step.displayState.details.showFiles">
         <md-tabs md-selected="$ctrl.step.displayState.details.currentFilesTab" md-stretch-tabs
                  md-border-bottom>
             <md-tab>

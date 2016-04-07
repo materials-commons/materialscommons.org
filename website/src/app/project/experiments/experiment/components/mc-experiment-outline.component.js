@@ -1,4 +1,4 @@
-import {ExperimentStep} from '../experiment.model';
+import {ExperimentStep, toUIStep} from '../experiment.model';
 
 /*
  ** This component has to add and remove classes to show visual state. This is an expensive
@@ -92,15 +92,24 @@ function MCExperimentOutlineComponentController(focus, $stateParams, experiments
     }
 
     function addBlankStep(node) {
-        $('.mc-experiment-outline-step').removeClass('step-selected');
-        let newStep = new ExperimentStep('', '');
-        newStep.displayState.selectedClass = 'step-selected';
-        newStep.id = "simple" + lastID;
-        lastID++;
-        node.$parentNodesScope.$modelValue.push(newStep);
-        ctrl.currentStep = newStep;
-        currentStep.set(newStep);
-        focus(newStep.id);
+        let newStep = {
+            name: '',
+            description: '',
+            parent_id: ''
+        };
+        experimentsService.createStep($stateParams.project_id, $stateParams.experiment_id, newStep)
+            .then(
+                (step) => {
+                    $('.mc-experiment-outline-step').removeClass('step-selected');
+                    toUIStep(step);
+                    step.displayState.selectedClass = 'step-selected';
+                    node.$parentNodesScope.$modelValue.push(step);
+                    ctrl.currentStep = step;
+                    currentStep.set(step);
+                    focus(step.id);
+                },
+                () => toast.error('Unable to create new step')
+            );
     }
 
     function remove(node) {
