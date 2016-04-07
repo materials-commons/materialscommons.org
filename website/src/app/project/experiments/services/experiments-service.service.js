@@ -23,6 +23,10 @@ class ExperimentsService {
     createStep(projectID, experimentID, experimentStep) {
         return this.projectsAPI(projectID).one('experiments', experimentID).one('step').customPOST(experimentStep);
     }
+
+    updateStep(projectID, experimentID, stepID, step) {
+        return this.projectsAPI(projectID).one('experiments', experimentID).one('step', stepID).customPUT(step);
+    }
 }
 
 angular.module('materialscommons').service('experimentsService', ExperimentsService);
