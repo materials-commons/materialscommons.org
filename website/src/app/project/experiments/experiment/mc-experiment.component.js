@@ -1,4 +1,4 @@
-import {Experiment, ExperimentStep, toUIStep} from './experiment.model';
+import {toUIStep} from './experiment.model';
 
 angular.module('materialscommons').component('mcExperiment', {
     templateUrl: 'app/project/experiments/experiment/mc-experiment.html',
@@ -22,7 +22,7 @@ function MCExperimentComponentController($scope, $stateParams, moveStep, current
                 currentStep.set(ctrl.experiment.steps[0]);
                 ctrl.currentStep = currentStep.get();
             },
-            (error) => console.log('error', error)
+            () => toast.error('Failed to retrieve experiment')
         );
 
         ctrl.editorOptions = {
@@ -56,8 +56,8 @@ function MCExperimentComponentController($scope, $stateParams, moveStep, current
         experimentsService
             .updateForProject($stateParams.project_id, $stateParams.experiment_id, {name: name})
             .then(
-                (experiment) => console.dir(experiment),
-                (error) => toast.error('Failed to update experiment name')
+                () => null,
+                () => toast.error('Failed to update experiment name')
             );
     };
 
@@ -65,8 +65,8 @@ function MCExperimentComponentController($scope, $stateParams, moveStep, current
         experimentsService
             .updateForProject($stateParams.project_id, $stateParams.experiment_id, {description: description})
             .then(
-                (experiment) => console.dir(experiment),
-                (error) => toast.error('Failed to update experiment description')
+                () => null,
+                () => toast.error('Failed to update experiment description')
             );
     };
 

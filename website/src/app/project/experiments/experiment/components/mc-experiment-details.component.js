@@ -23,8 +23,8 @@ function MCExperimentDetailsComponentController($scope, currentStep, $stateParam
         experimentsService
             .updateStep($stateParams.project_id, $stateParams.experiment_id, ctrl.step.id, {notes: ctrl.step.notes})
             .then(
-                (s) => s,
-                (error) => toast.error('Failed to update step')
+                () => null,
+                () => toast.error('Failed to update step')
             );
     };
 }

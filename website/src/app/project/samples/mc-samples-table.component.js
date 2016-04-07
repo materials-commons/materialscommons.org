@@ -45,7 +45,6 @@ angular.module('materialscommons').component('mcSamplesTable', {
         </table>
     </md-table-container>
     `,
-    controller: MCSamplesTableComponentController,
     bindings: {
         showSample: '&',
         showProcesses: '&',
@@ -54,9 +53,3 @@ angular.module('materialscommons').component('mcSamplesTable', {
         projectId: '<'
     }
 });
-
-/*@ngInject*/
-function MCSamplesTableComponentController() {
-    var ctrl = this;
-
-}
