@@ -30,8 +30,8 @@ function MCExperimentOutlineComponentController(focus, $stateParams, experiments
         experimentsService
             .updateStep($stateParams.project_id, $stateParams.experiment_id, step.id, {name: step.name})
             .then(
-                (s) => s,
-                (error) => toast.error('Failed to update step')
+                () => null,
+                () => toast.error('Failed to update step')
             );
     };
 
@@ -39,8 +39,8 @@ function MCExperimentOutlineComponentController(focus, $stateParams, experiments
         experimentsService
             .updateStep($stateParams.project_id, $stateParams.experiment_id, step.id, {flags: step.flags})
             .then(
-                (s) => s,
-                (error) => toast.error('Failed to update step')
+                () => null,
+                () => toast.error('Failed to update step')
             );
     };
 
@@ -73,8 +73,8 @@ function MCExperimentOutlineComponentController(focus, $stateParams, experiments
         experimentsService
             .updateStep($stateParams.project_id, $stateParams.experiment_id, step.id, {flags: step.flags})
             .then(
-                (s) => s,
-                (error) => toast.error('Failed to update step')
+                () => null,
+                () => toast.error('Failed to update step')
             );
     };
 
