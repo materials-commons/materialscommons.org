@@ -1,15 +1,13 @@
 <script type="text/ng-template" id="experiment-simple-step.html">
     <div ui-tree-handle class="experiment-step tree-node-content simple-experiment-view" flex="95"
          layout="column">
-        <div flex layout="column" class="mc-experiment-outline-step {{::step.displayState.selectedClass}}"
-             style="outline:none"
-             ng-classx="{'step-selected': $ctrl.currentStep === step}"
+        <div flex layout="column" class="mc-experiment-outline-step no-outline {{::step.displayState.selectedClass}}"
              ng-click="$ctrl.setCurrent(step, this, $event)"
              on-enter="$ctrl.addBlankStep(this, $event)">
             <div flex layout-fill layout="row" style="padding-top: 9px; padding-left: 10px;">
                 <i class="fa fa-fw fa-reorder"></i>
                 <div flex data-nodrag layout="row" layout-fill layout-align="start center"
-                     style="outline: none">
+                     class="no-outline">
                     <span>
                         <md-checkbox data-nodrag
                                      class="mc-done align-step-element"
@@ -33,11 +31,10 @@
                         </span>
                     </span>
                     <span flex></span>
-                    <a class="md-primary" data-nodrag ng-click="step.displayState.open = !step.displayState.open"
-                       style="padding-bottom: 14px">
-                        <i class="fa fa-fw"
-                           ng-class="{'fa-angle-double-right': !step.displayState.open, 'fa-angle-double-down': step.displayState.open}"></i>
-                    </a>
+                    <i class="fa fa-fw align-step-element cursor-pointer no-outline fa-angle-double-right"
+                       ng-click="$ctrl.toggleOpenDetails(step, $event)">
+                        <md-tooltip md-delay="750" ng-autohide>Open Details</md-tooltip>
+                    </i>
                     <div flex="10" layout-fill layout="row" layout-align="start center" class="align-step-element">
                         <i class="fa fa-fw fa-flag cursor-pointer {{::step.displayState.flags.reviewClass}}"
                            ng-click="$ctrl.toggleFlag(step.flags, 'review', $event)">
