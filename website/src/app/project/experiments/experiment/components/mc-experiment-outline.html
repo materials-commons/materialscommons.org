@@ -9,7 +9,10 @@
                 <div flex data-nodrag layout="row" layout-fill layout-align="start center"
                      class="no-outline">
                     <span>
-                        <md-checkbox class="mc-done align-step-element" ng-model="step.flags.done"></md-checkbox>
+                        <md-checkbox class="mc-done align-step-element"
+                                     ng-change="$ctrl.updateDoneStatus(step)"
+                                     ng-model="step.flags.done">
+                        </md-checkbox>
                         <a data-nodrag ng-click="this.toggle()">
                             <i class="fa fa-fw"
                                ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
