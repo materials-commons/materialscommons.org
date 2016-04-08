@@ -4,16 +4,17 @@
         </mc-experiment-details>
     </md-content>
 </div>
-
-<div ng-if="!$ctrl.showStepMaximized()" layout="column" flex layout-margin style="overflow: hidden">
-    <div layout="row" flex>
-        <!--<md-sidenav flex="30" md-is-locked-open="$ctrl.showSidebar" style="max-height: 82vh; margin-right: 8px">-->
-        <!--<span style="text-align: center" class="md-subhead">Details</span>-->
-        <!--<md-content layout="column" layout-fill>-->
-        <!--<mc-experiment-details step="$ctrl.getCurrentStep()" editor-options="$ctrl.editorOptions">-->
-        <!--</mc-experiment-details>-->
-        <!--</md-content>-->
-        <!--</md-sidenav>-->
+<div ng-if="!$ctrl.showStepMaximized()" layout="column" layout-align="start stretch" flex layout-margin
+     style="overflow: hidden">
+    <div layout="row" flex layout-align="start stretch">
+        <md-sidenav flex="30" md-is-locked-open="$ctrl.showSidebar"
+                    style="max-height: 82vh; min-height: 82vh; margin-right: 8px">
+            <span style="text-align: center" class="md-subhead">Details</span>
+            <md-content layout="column" layout-fill>
+                <mc-experiment-step-details step="$ctrl.getCurrentStep()" editor-options="$ctrl.editorOptions">
+                </mc-experiment-step-details>
+            </md-content>
+        </md-sidenav>
 
         <div layout="column" flex md-whiteframe>
             <md-toolbar>
@@ -108,5 +109,38 @@
                 </mc-experiment-outline>
             </div>
         </div>
+        <md-sidenav md-is-locked-open="true" layout="column" class="experiment-tools-sidenav">
+            <md-content stylex="background-color: #e9e9e9;">
+                <div layout="column" layout-align="center center" class="experiment-tool">
+                    <i class="fa fa-fw fa-info-circle fa-2x"></i>
+                    <span>Details</span>
+                </div>
+
+                <div layout="column" layout-align="center center" class="experiment-tool active">
+                    <i class="fa fa-fw fa-tasks fa-2x"></i>
+                    <span>Tasks</span>
+                </div>
+
+                <div layout="column" layout-align="center center" class="experiment-tool">
+                    <i class="fa fa-fw fa-calendar fa-2x"></i>
+                    <span>Forecast</span>
+                </div>
+
+                <div layout="column" layout-align="center center" class="experiment-tool">
+                    <i class="fa fa-fw fa-flag-o fa-2x"></i>
+                    <span>Flagged</span>
+                </div>
+
+                <div layout="column" layout-align="center center" class="experiment-tool">
+                    <i class="fa fa-fw fa-cubes fa-2x"></i>
+                    <span>Samples</span>
+                </div>
+
+                <div layout="column" layout-align="center center" class="experiment-tool">
+                    <i class="fa fa-fw fa-files-o fa-2x"></i>
+                    <span>Files</span>
+                </div>
+            </md-content>
+        </md-sidenav>
     </div>
 </div>
