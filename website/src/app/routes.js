@@ -88,11 +88,69 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.experiment', {
             url: '/experiment/:experiment_id',
             abstract: true,
-            template: '<ui-view></ui-view>'
+            template: '<ui-view></ui-view>',
+            resolve: {
+                experiment: ['experimentsService', 'toast', 'toUIStep', '$stateParams',
+                    function(experimentsService, toast, toUIStep, $stateParams) {
+                        return experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id)
+                            .then(
+                                (e) => {
+                                    e.steps.forEach((step) => toUIStep(step));
+                                    return e;
+                                },
+                                () => toast.error('Failed to retrieve experiment')
+                            );
+                    }
+                ]
+            }
+        })
+        .state('project.experiment.details', {
+            url: '/details',
+            template: '<mc-experiment-details experiment="ctrl.experiment"></mc-experiment-details>',
+            controllerAs: 'ctrl',
+            controller: ['experiment', function(experiment) {
+                this.experiment = experiment;
+            }]
         })
         .state('project.experiment.tasks', {
-            url: '/experiment/:experiment_id',
-            template: '<mc-experiment-tasks></mc-experiment-tasks>'
+            url: '/tasks',
+            template: '<mc-experiment-tasks experiment="ctrl.experiment"></mc-experiment-tasks>',
+            controllerAs: 'ctrl',
+            controller: ['experiment', function(experiment) {
+                this.experiment = experiment;
+            }]
+        })
+        .state('project.experiment.forecast', {
+            url: '/forecast',
+            template: '<mc-experiment-forecast experiment="ctrl.experiment"></mc-experiment-forecast>',
+            controllerAs: 'ctrl',
+            controller: ['experiment', function(experiment) {
+                this.experiment = experiment;
+            }]
+        })
+        .state('project.experiment.flagged', {
+            url: '/flagged',
+            template: '<mc-experiment-flagged experiment="ctrl.experiment"></mc-experiment-flagged>',
+            controllerAs: 'ctrl',
+            controller: ['experiment', function(experiment) {
+                this.experiment = experiment;
+            }]
+        })
+        .state('project.experiment.samples', {
+            url: '/samples',
+            template: '<mc-experiment-samples experiment="ctrl.experiment"></mc-experiment-samples>',
+            controllerAs: 'ctrl',
+            controller: ['experiment', function(experiment) {
+                this.experiment = experiment;
+            }]
+        })
+        .state('project.experiment.files', {
+            url: '/files',
+            template: '<mc-experiment-files experiment="ctrl.experiment"></mc-experiment-files>',
+            controllerAs: 'ctrl',
+            controller: ['experiment', function(experiment) {
+                this.experiment = experiment;
+            }]
         })
         .state('project.create.process', {
             url: '/process/:template_id/:process_id',
