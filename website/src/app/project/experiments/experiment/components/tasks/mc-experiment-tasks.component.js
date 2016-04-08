@@ -1,12 +1,11 @@
-import {toUIStep} from './experiment.model';
-
 angular.module('materialscommons').component('mcExperimentTasks', {
     templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks.html',
     controller: MCExperimentTasksComponentController
 });
 
 /*@ngInject*/
-function MCExperimentTasksComponentController($scope, $stateParams, moveStep, currentStep, experimentsService, toast) {
+function MCExperimentTasksComponentController($scope, $stateParams, moveStep, currentStep,
+                                              experimentsService, toast, toUIStep) {
     let ctrl = this;
 
     ctrl.$onInit = () => {
