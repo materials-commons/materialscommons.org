@@ -103,10 +103,10 @@
             </md-toolbar>
 
             <div flex>
-                <mc-experiment-tasks current-step="$ctrl.currentStep"
-                                     current-node="$ctrl.currentNode"
-                                     experiment="$ctrl.experiment">
-                </mc-experiment-tasks>
+                <mc-experiment-tasks-list current-step="$ctrl.currentStep"
+                                          current-node="$ctrl.currentNode"
+                                          experiment="$ctrl.experiment">
+                </mc-experiment-tasks-list>
             </div>
         </div>
         <md-sidenav md-is-locked-open="true" layout="column" class="experiment-tools-sidenav">
@@ -126,8 +126,7 @@
                     <span>Forecast</span>
                 </div>
 
-                <div layout="column" layout-align="center center" class="experiment-tool"
-                     ng-click="$ctrl.gotoFlagged($event)">
+                <div layout="column" layout-align="center center" class="experiment-tool">
                     <i class="fa fa-fw fa-flag-o fa-2x"></i>
                     <span>Flagged</span>
                 </div>
