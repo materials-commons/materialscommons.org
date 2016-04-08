@@ -87,7 +87,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment', {
             url: '/experiment/:experiment_id',
-            template: '<mc-experiment></mc-experiment>'
+            template: '<mc-experiment-tasks></mc-experiment-tasks>'
         })
         .state('project.create.process', {
             url: '/process/:template_id/:process_id',
