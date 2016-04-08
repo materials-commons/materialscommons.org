@@ -7,9 +7,9 @@ import {ExperimentStep, toUIStep} from '../../experiment.model';
  ** manipulating the DOM.
  */
 
-angular.module('materialscommons').component('mcExperimentTasks', {
-    templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks.html',
-    controller: MCExperimentTasksComponentController,
+angular.module('materialscommons').component('mcExperimentTasksList', {
+    templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks-list.html',
+    controller: MCExperimentTasksListComponentController,
     bindings: {
         experiment: '=',
         currentNode: '='
@@ -17,8 +17,8 @@ angular.module('materialscommons').component('mcExperimentTasks', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksComponentController(focus, $stateParams, experimentsService, toast, currentStep) {
-    let lastID = 1;
+function MCExperimentTasksListComponentController(focus, $stateParams, experimentsService, toast, currentStep) {
+    //let lastID = 1;
     let ctrl = this;
 
     ctrl.editorOptions = {
