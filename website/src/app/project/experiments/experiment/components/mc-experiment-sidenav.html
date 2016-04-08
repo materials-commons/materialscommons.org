@@ -1,6 +1,7 @@
 <md-sidenav md-is-locked-open="true" layout="column" class="experiment-tools-sidenav">
     <md-content stylex="background-color: #e9e9e9;">
-        <div layout="column" layout-align="center center" class="experiment-tool">
+        <div layout="column" layout-align="center center" class="experiment-tool"
+             ui-sref-active="active" ui-sref="project.experiment.details">
             <i class="fa fa-fw fa-info-circle fa-2x"></i>
             <span>Details</span>
         </div>
@@ -11,22 +12,26 @@
             <span>Tasks</span>
         </div>
 
-        <div layout="column" layout-align="center center" class="experiment-tool">
+        <div layout="column" layout-align="center center" class="experiment-tool"
+             ui-sref-active="active" ui-sref="project.experiment.forecast">
             <i class="fa fa-fw fa-calendar fa-2x"></i>
             <span>Forecast</span>
         </div>
 
-        <div layout="column" layout-align="center center" class="experiment-tool">
+        <div layout="column" layout-align="center center" class="experiment-tool"
+             ui-sref-active="active" ui-sref="project.experiment.flagged">
             <i class="fa fa-fw fa-flag-o fa-2x"></i>
             <span>Flagged</span>
         </div>
 
-        <div layout="column" layout-align="center center" class="experiment-tool">
+        <div layout="column" layout-align="center center" class="experiment-tool"
+             ui-sref-active="active" ui-sref="project.experiment.samples">
             <i class="fa fa-fw fa-cubes fa-2x"></i>
             <span>Samples</span>
         </div>
 
-        <div layout="column" layout-align="center center" class="experiment-tool experiment-tool-border-bottom">
+        <div layout="column" layout-align="center center" class="experiment-tool experiment-tool-border-bottom"
+             ui-sref-active="active" ui-sref="project.experiment.files">
             <i class="fa fa-fw fa-files-o fa-2x"></i>
             <span>Files</span>
         </div>
