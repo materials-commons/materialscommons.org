@@ -1,28 +1,22 @@
 angular.module('materialscommons').component('mcExperimentTasks', {
     templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks.html',
-    controller: MCExperimentTasksComponentController
+    controller: MCExperimentTasksComponentController,
+    bindings: {
+        experiment: '='
+    }
 });
 
 /*@ngInject*/
 function MCExperimentTasksComponentController($scope, $stateParams, moveStep, currentStep,
-                                              experimentsService, toast, toUIStep) {
+                                              experimentsService, toast) {
     let ctrl = this;
 
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
         ctrl.showSidebar = false;
-        ctrl.experiment = null;
-
-        experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id).then(
-            (e) => {
-                ctrl.experiment = e;
-                ctrl.experiment.steps.forEach((step) => toUIStep(step));
-                ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
-                currentStep.set(ctrl.experiment.steps[0]);
-                ctrl.currentStep = currentStep.get();
-            },
-            () => toast.error('Failed to retrieve experiment')
-        );
+        ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
+        currentStep.set(ctrl.experiment.steps[0]);
+        ctrl.currentStep = currentStep.get();
 
         ctrl.editorOptions = {
             height: '20vh',

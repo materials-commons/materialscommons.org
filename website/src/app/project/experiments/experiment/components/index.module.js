@@ -1,3 +1,8 @@
+import './details/mc-experiment-details.component';
+import './files/mc-experiment-files.component';
+import './flagged/mc-experiment-flagged.component';
+import './forecast/mc-experiment-forecast.component';
+import './samples/mc-experiment-samples.component';
 import './tasks/mc-experiment-tasks-list.component';
 import './tasks/mc-experiment-task-details.component';
 import './tasks/move-step.service';
