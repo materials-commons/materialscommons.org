@@ -1,4 +1,4 @@
-import {ExperimentStep, toUIStep} from '../../experiment.model';
+import {toUIStep} from './experiment.model';
 
 /*
  ** This component has to add and remove classes to show visual state. This is an expensive
