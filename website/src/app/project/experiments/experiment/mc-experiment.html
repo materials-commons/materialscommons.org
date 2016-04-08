@@ -1,7 +1,7 @@
 <div style="overflow: auto; max-height: 80vh" ng-if="$ctrl.showStepMaximized()" layout-margin>
     <md-content layout="column" flex="95">
-        <mc-experiment-details step="$ctrl.getCurrentStep()" editor-options="$ctrl.editorOptionsMaximized">
-        </mc-experiment-details>
+        <mc-experiment-task-details step="$ctrl.getCurrentStep()" editor-options="$ctrl.editorOptionsMaximized">
+        </mc-experiment-task-details>
     </md-content>
 </div>
 <div ng-if="!$ctrl.showStepMaximized()" layout="column" layout-align="start stretch" flex layout-margin
@@ -22,7 +22,7 @@
                     <div flex="50" layout="row" layout="space-between center">
                         <md-menu-bar>
                             <md-menu>
-                                <md-button ng-click="$mdOpenMenu()">Organize</md-button>
+                                <button ng-click="$mdOpenMenu()" class="md-button">Organize</button>
                                 <md-menu-content width="3">
                                     <md-menu-item>
                                         <md-button ng-click="$ctrl.moveLeft()">
@@ -54,7 +54,7 @@
                                 </md-menu-content>
                             </md-menu>
                             <md-menu>
-                                <md-button ng-click="$mdOpenMenu()">View</md-button>
+                                <button class="md-button" ng-click="$mdOpenMenu()">View</button>
                                 <md-menu-content width="3">
                                     <md-menu-item>
                                         <md-button ng-click="$ctrl.expandAll()">
@@ -126,7 +126,8 @@
                     <span>Forecast</span>
                 </div>
 
-                <div layout="column" layout-align="center center" class="experiment-tool">
+                <div layout="column" layout-align="center center" class="experiment-tool"
+                     ng-click="$ctrl.gotoFlagged($event)">
                     <i class="fa fa-fw fa-flag-o fa-2x"></i>
                     <span>Flagged</span>
                 </div>
