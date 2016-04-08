@@ -1,6 +1,6 @@
-angular.module('materialscommons').component('mcExperimentDetails', {
-    templateUrl: 'app/project/experiments/experiment/components/mc-experiment-details.html',
-    controller: MCExperimentDetailsComponentController,
+angular.module('materialscommons').component('mcExperimentStepDetails', {
+    templateUrl: 'app/project/experiments/experiment/components/mc-experiment-step-details.html',
+    controller: MCExperimentStepDetailsComponentController,
     bindings: {
         step: '=',
         editorOptions: '<',
@@ -9,7 +9,7 @@ angular.module('materialscommons').component('mcExperimentDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentDetailsComponentController($scope, currentStep, $stateParams, experimentsService, toast) {
+function MCExperimentStepDetailsComponentController($scope, currentStep, $stateParams, experimentsService, toast) {
     let ctrl = this;
     ctrl.currentStep = currentStep.get();
     $scope.editorOptions = ctrl.editorOptions;
