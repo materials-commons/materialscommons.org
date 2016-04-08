@@ -56,8 +56,8 @@
             </div>
         </div>
         <div ng-if="step.displayState.open" data-nodrag flex-offset="5">
-            <mc-experiment-step-details step="step" editor-options="$ctrl.editorOptions" ng-cloak>
-            </mc-experiment-step-details>
+            <mc-experiment-task-details step="step" editor-options="$ctrl.editorOptions" ng-cloak>
+            </mc-experiment-task-details>
         </div>
     </div>
     <ol ui-tree-nodes="" ng-model="step.steps" ng-class="{hidden: collapsed}">

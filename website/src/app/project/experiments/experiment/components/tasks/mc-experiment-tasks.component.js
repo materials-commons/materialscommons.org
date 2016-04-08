@@ -1,4 +1,4 @@
-import {ExperimentStep, toUIStep} from '../experiment.model';
+import {ExperimentStep, toUIStep} from '../../experiment.model';
 
 /*
  ** This component has to add and remove classes to show visual state. This is an expensive
@@ -7,9 +7,9 @@ import {ExperimentStep, toUIStep} from '../experiment.model';
  ** manipulating the DOM.
  */
 
-angular.module('materialscommons').component('mcExperimentOutline', {
-    templateUrl: 'app/project/experiments/experiment/components/mc-experiment-outline.html',
-    controller: MCExperimentOutlineComponentController,
+angular.module('materialscommons').component('mcExperimentTasks', {
+    templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks.html',
+    controller: MCExperimentTasksComponentController,
     bindings: {
         experiment: '=',
         currentNode: '='
@@ -17,7 +17,7 @@ angular.module('materialscommons').component('mcExperimentOutline', {
 });
 
 /*@ngInject*/
-function MCExperimentOutlineComponentController(focus, $stateParams, experimentsService, toast, currentStep) {
+function MCExperimentTasksComponentController(focus, $stateParams, experimentsService, toast, currentStep) {
     let lastID = 1;
     let ctrl = this;
 
