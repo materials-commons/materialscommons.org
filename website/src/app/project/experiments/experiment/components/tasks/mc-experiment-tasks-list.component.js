@@ -1,5 +1,3 @@
-import {toUIStep} from './experiment.model';
-
 /*
  ** This component has to add and remove classes to show visual state. This is an expensive
  ** operation when ng-class is used as angular will call the checks on ng-class many times.
@@ -17,7 +15,8 @@ angular.module('materialscommons').component('mcExperimentTasksList', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksListComponentController(focus, $stateParams, experimentsService, toast, currentStep) {
+function MCExperimentTasksListComponentController(focus, $stateParams, experimentsService, toast,
+                                                  currentStep, toUIStep) {
     //let lastID = 1;
     let ctrl = this;
 
