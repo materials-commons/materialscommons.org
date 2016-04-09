@@ -145,4 +145,14 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 }
 
 function MCExperimentTasksListDirDirectiveController() {
+    let ctrl = this;
+    ctrl.setCurrent = setCurrent;
+
+    function setCurrent(step, node, event) {
+        $('.mc-experiment-outline-step').removeClass('step-selected');
+        $(event.currentTarget).addClass('step-selected');
+        //ctrl.currentStep = step;
+        //currentStep.set(step);
+        ctrl.currentNode = node;
+    }
 }
