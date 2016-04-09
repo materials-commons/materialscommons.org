@@ -6,7 +6,7 @@
  */
 
 angular.module('materialscommons').component('mcExperimentTasksList', {
-    templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks-list.html',
+    templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks-list2.html',
     controller: MCExperimentTasksListComponentController,
     bindings: {
         experiment: '=',
@@ -122,4 +122,27 @@ function MCExperimentTasksListComponentController(focus, $stateParams, experimen
         }
         node.remove();
     }
+}
+
+angular.module('materialscommons').directive('mcExperimentTasksListDir', MCExperimentTasksListDirDirective);
+/*@ngInject*/
+function MCExperimentTasksListDirDirective(RecursionHelper) {
+    return {
+        restrict: 'E',
+        scope: {
+            step: '='
+        },
+        controller: MCExperimentTasksListDirDirectiveController,
+        replace: true,
+        controllerAs: '$ctrl',
+        bindToController: true,
+        templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks-list-dir.html',
+        compile: function(element) {
+            return RecursionHelper.compile(element, function() {
+            });
+        }
+    }
+}
+
+function MCExperimentTasksListDirDirectiveController() {
 }
