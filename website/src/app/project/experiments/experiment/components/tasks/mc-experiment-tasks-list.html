@@ -24,7 +24,7 @@
                                ng-change="$ctrl.onNameChange(step)"
                                placeholder="Untitled Item..."
                                class="mc-input-no-border"
-                               id="{{step.id}}">
+                               id="{{::step.id}}">
                         <span ng-if="step.flags.done"
                               class="mark-text-done">
                             {{::step.name}}
