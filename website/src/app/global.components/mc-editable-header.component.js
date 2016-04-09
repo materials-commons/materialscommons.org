@@ -5,7 +5,7 @@ angular.module('materialscommons').component('mcEditableHeader', {
               ng-click="$ctrl.editField = true"
               ng-class="$ctrl.headerClasses"
               style="cursor: pointer">
-            {{$ctrl.header}}
+            {{::$ctrl.header}}
         </span>
         <input ng-if="$ctrl.editField"
                type="text" class="mc-input-as-line"
