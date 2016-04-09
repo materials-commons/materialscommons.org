@@ -45,6 +45,7 @@ function MCExperimentTasksListComponentController(focus, $stateParams, experimen
 
     ctrl.toggleOpenDetails = (step, event) => {
         step.displayState.open = !step.displayState.open;
+        step.displayState.details.loadEditor = false;
         if (step.displayState.open) {
             $(event.target).removeClass('fa-angle-double-right');
             $(event.target).addClass('fa-angle-double-down');

@@ -57,8 +57,15 @@
         Notes
     </a>
 
-    <textarea ng-show="$ctrl.step.displayState.details.showNotes" ckeditor="editorOptions"
-              ng-model="$ctrl.step.notes" ng-model-options="{debounce: 3000}" ng-change="$ctrl.updateNotes()">
+    <div ng-if="!$ctrl.step.displayState.details.loadEditor"
+         style="margin-bottom:18px; margin-top: 18px"
+         class="cursor-pointer"
+         ng-click="$ctrl.step.displayState.details.loadEditor = true"
+         ng-bind-html="$ctrl.step.notes || $ctrl.noNotes">
+    </div>
+    <textarea ng-if="$ctrl.step.displayState.details.loadEditor" ckeditor="editorOptions"
+              ng-bind-html="$ctrl.step.notes"
+              ng-model="$ctrl.step.notes" ng-model-options="{debounce: 1000}" ng-change="$ctrl.updateNotes()">
     </textarea>
 
     <a class="md-subtitle" style="margin-bottom:18px; margin-top: 18px"

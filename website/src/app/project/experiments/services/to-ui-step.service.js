@@ -9,7 +9,8 @@ function toUIStepService() {
                 showFiles: false,
                 showSamples: false,
                 currentFilesTab: 0,
-                currentSamplesTab: 0
+                currentSamplesTab: 0,
+                loadEditor: false
             },
             flags: {
                 errorClass: step.flags.error ? 'mc-error-color:' : 'mc-flag-not-set',

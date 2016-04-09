@@ -20,7 +20,7 @@ function MCProjectExperimentsComponentController($mdDialog, $state) {
             bindToController: true
         }).then(
             (e) => {
-                $state.go('project.experiment', {experiment_id: e.id});
+                $state.go('project.experiment.details', {experiment_id: e.id});
             }
         );
     };
