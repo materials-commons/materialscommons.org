@@ -50,8 +50,8 @@
     </div>
     <span flex></span>
     <div class="row" layout-margin>
-        <a class="md-title" style="color: white" ui-sref="project.home" tooltip="{{$ctrl.project.name}}">
-            {{$ctrl.project.name | truncate:30:'...'}}
+        <a class="md-title" style="color: white" ui-sref="project.home" tooltip="{{::$ctrl.project.name}}">
+            {{::$ctrl.project.name | truncate:30:'...'}}
         </a>
         <a style="color:white;" ui-sref="projects.list">change</a>
     </div>
