@@ -1,0 +1,74 @@
+<div flexx="95">
+    <div ui-tree-handle flex="90" layout="column"
+         class="tree-node-content mc-experiment-outline-step no-outline {{::$ctrl.step.displayState.selectedClass}}">
+        <div layoutx="row">
+            <i class="fa fa-fw fa-reorder"></i>
+            {{::$ctrl.step.name}}
+        </div>
+        <div ng-if="false" flex layout="column"
+             class="mc-experiment-outline-step no-outline {{::step.displayState.selectedClass}}"
+             ng-click="$ctrl.setCurrent(step, this, $event)"
+             on-enter="$ctrl.addBlankStep(this, $event)">
+            {{::step.name}}
+            <div ng-if="false" flex layout-fill layout="row" style="padding-top: 9px; padding-left: 10px;">
+                <i class="fa fa-fw fa-reorder"></i>
+                <div flex data-nodrag layout="row" layout-fill layout-align="start center"
+                     class="no-outline">
+                    <span>
+                        <md-checkbox class="mc-done align-step-element"
+                                     ng-change="$ctrl.updateDoneStatus(step)"
+                                     ng-model="step.flags.done">
+                        </md-checkbox>
+                        <a data-nodrag ng-click="this.toggle()">
+                            <i class="fa fa-fw"
+                               ng-class="{'fa-chevron-right': collapsed || !step.steps.length, 'fa-chevron-down': !collapsed && step.steps.length}"></i>
+                        </a>
+                        <input ng-if="!step.flags.done"
+                               size="40" type="text" data-nodrag
+                               ng-model="step.name"
+                               ng-model-options="{debounce: 1000}"
+                               ng-change="$ctrl.onNameChange(step)"
+                               placeholder="Untitled Item..."
+                               class="mc-input-no-border"
+                               id="{{::step.id}}">
+                        <span ng-if="step.flags.done"
+                              class="mark-text-done">
+                            {{::step.name}}
+                        </span>
+                    </span>
+                    <span flex></span>
+                    <i class="fa fa-fw align-step-element cursor-pointer no-outline fa-angle-double-right"
+                       ng-click="$ctrl.toggleOpenDetails(step, $event)">
+                        <md-tooltip md-delay="750" ng-autohide>Open Details</md-tooltip>
+                    </i>
+                    <div flex="10" layout-fill layout="row" layout-align="start center" class="align-step-element">
+                        <i class="fa fa-fw fa-flag cursor-pointer {{::step.displayState.flags.reviewClass}}"
+                           ng-click="$ctrl.toggleFlag(step, 'review', $event)">
+                            <md-tooltip md-delay="750" ng-autohide>Review</md-tooltip>
+                        </i>
+                        <i class="fa fa-fw fa-exclamation-triangle cursor-pointer {{::step.displayState.flags.errorClass}}"
+                           ng-click="$ctrl.toggleFlag(step, 'error', $event)">
+                            <md-tooltip md-delay="500" ng-autohide>Error</md-tooltip>
+                        </i>
+                        <i class="fa fa-fw fa-exclamation-circle cursor-pointer {{::step.displayState.flags.importantClass}}"
+                           ng-click="$ctrl.toggleFlag(step, 'important', $event)">
+                            <md-tooltip md-delay="500" ng-autohide>Important</md-tooltip>
+                        </i>
+                    </div>
+                </div>
+                <a class="mc-error-color" data-nodrag ng-click="$ctrl.remove(this)">
+                    <i class="fa fa-fw fa-remove"></i>
+                </a>
+                </divng-if>
+            </div>
+            <div ng-if="step.displayState.open" data-nodrag flex-offset="5">
+                <mc-experiment-task-details step="step" editor-options="$ctrl.editorOptions" ng-cloak>
+                </mc-experiment-task-details>
+            </div>
+        </div>
+    </div>
+    <ol ui-tree-nodes="" ng-model="step.steps" ng-class="{hidden: collapsed}">
+        <li ng-repeat="step in step.steps track by step.id" ui-tree-node ng-include="'experiment-simple-step.html'">
+        </li>
+    </ol>
+</div>
