@@ -67,10 +67,11 @@ function MCExperimentTasksComponentController($scope, $stateParams, moveStep, cu
         var treeModel = new TreeModel({childrenPropertyName: 'steps'}),
             root = treeModel.parse(ctrl.experiment);
         console.dir(root);
+        ctrl.experiment.steps.forEach((step) => step.displayState.open = true);
     }
 
     function closeAll() {
-
+        ctrl.experiment.steps.forEach((step) => step.displayState.open = false);
     }
 }
 
