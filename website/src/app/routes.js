@@ -87,8 +87,12 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment', {
             url: '/experiment/:experiment_id',
-            abstract: true,
-            template: '<ui-view></ui-view>',
+            template: `
+            <div layout="row" layout-fill layout-margin>
+                <mc-experiment-sidenav></mc-experiment-sidenav>
+                <ui-view flex layout-margin></ui-view>
+            </div>
+            `,
             resolve: {
                 experiment: ['experimentsService', 'toast', 'toUIStep', '$stateParams',
                     function(experimentsService, toast, toUIStep, $stateParams) {
@@ -147,6 +151,14 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.experiment.files', {
             url: '/files',
             template: '<mc-experiment-files experiment="ctrl.experiment"></mc-experiment-files>',
+            controllerAs: 'ctrl',
+            controller: ['experiment', function(experiment) {
+                this.experiment = experiment;
+            }]
+        })
+        .state('project.experiment.today', {
+            url: '/today',
+            template: '<mc-experiment-today experiment="ctrl.experiment"></mc-experiment-today>',
             controllerAs: 'ctrl',
             controller: ['experiment', function(experiment) {
                 this.experiment = experiment;
