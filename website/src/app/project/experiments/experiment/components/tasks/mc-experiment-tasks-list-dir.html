@@ -21,10 +21,7 @@
                placeholder="Untitled Item..."
                class="mc-input-no-border"
                id="{{::$ctrl.step.id}}">
-        <span ng-if="$ctrl.step.flags.done"
-              class="mark-text-done">
-            {{::$ctrl.step.name}}
-        </span>
+        <span ng-if="$ctrl.step.flags.done" class="mark-text-done">{{::$ctrl.step.name}}</span>
         <span flex="70"></span>
         <i class="fa fa-fw align-step-element cursor-pointer no-outline fa-angle-double-right"
            ng-click="$ctrl.toggleOpenDetails(step, $event)">
