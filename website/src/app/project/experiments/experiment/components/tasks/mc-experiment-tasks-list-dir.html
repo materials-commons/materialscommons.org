@@ -1,13 +1,14 @@
 <div>
     <div ui-tree-handle
          class="tree-node-content mc-experiment-outline-step no-outline {{::$ctrl.step.displayState.selectedClass}}"
-         ng-click="$ctrl.setCurrent($ctrl.step, this, $event)"
+         ng-click="$ctrl.setCurrent(this, $event)"
          on-enter="$ctrl.addBlankStep(this, $event)">
         <div layout="row" layout-fill layout-align="space-between center">
             <div>
                 <i class="fa fa-fw fa-reorder align-step-element"></i>
-                <md-checkbox class="mc-done align-step-element"
-                             ng-change="$ctrl.updateDoneStatus($ctrl.step)"
+                <md-checkbox class="mc-done align-step-element" data-nodrag
+                             aria-label="done"
+                             ng-change="$ctrl.updateDoneStatus()"
                              ng-model="$ctrl.step.flags.done">
                 </md-checkbox>
                 <a ng-click="this.toggle()">
@@ -15,35 +16,37 @@
                        ng-classx="{'fa-chevron-right': collapsed || !$ctrl.step.steps.length, 'fa-chevron-down': !collapsed && $ctrl.step.steps.length}"></i>
                 </a>
                 <input ng-show="!$ctrl.step.flags.done"
+                       data-nodrag
                        size="40" type="text"
                        ng-model="$ctrl.step.name"
                        ng-model-options="{debounce: 1000}"
-                       ng-change="$ctrl.onNameChange(step)"
-                       placeholder="Untitled Item..."
+                       ng-change="$ctrl.onNameChange()"
+                       placeholder="Untitled Task..."
                        class="mc-input-no-border align-step-element"
                        id="{{::$ctrl.step.id}}">
                 <span ng-if="$ctrl.step.flags.done"
                       class="mark-text-done align-step-element">{{::$ctrl.step.name}}</span>
             </div>
-            <div class="align-step-element">
+            <div class="align-step-element" data-nodrag>
                 <i class="fa fa-fw cursor-pointer no-outline fa-angle-double-right"
-                   ng-click="$ctrl.toggleOpenDetails(step, $event)">
-                    <md-tooltip md-delay="750" ng-autohide>Open Details</md-tooltip>
+                   ng-click="$ctrl.toggleOpenDetails($event)">
+                    <md-tooltip md-delay="750" ng-autohide>Open Task Details</md-tooltip>
                 </i>
                 <i class="fa fa-fw fa-flag cursor-pointer {{::$ctrl.step.displayState.flags.reviewClass}}"
-                   ng-click="$ctrl.toggleFlag($ctrl.step, 'review', $event)">
+                   ng-click="$ctrl.toggleFlag('review', $event)">
                     <md-tooltip md-delay="750" ng-autohide>Review</md-tooltip>
                 </i>
                 <i class="fa fa-fw fa-exclamation-triangle cursor-pointer {{::$ctrl.step.displayState.flags.errorClass}}"
-                   ng-click="$ctrl.toggleFlag($ctrl.step, 'error', $event)">
-                    <md-tooltip md-delay="500" ng-autohide>Error</md-tooltip>
+                   ng-click="$ctrl.toggleFlag('error', $event)">
+                    <md-tooltip md-delay="750" ng-autohide>Error</md-tooltip>
                 </i>
                 <i class="fa fa-fw fa-exclamation-circle cursor-pointer {{::$ctrl.step.displayState.flags.importantClass}}"
-                   ng-click="$ctrl.toggleFlag($ctrl.step, 'important', $event)">
-                    <md-tooltip md-delay="500" ng-autohide>Important</md-tooltip>
+                   ng-click="$ctrl.toggleFlag('important', $event)">
+                    <md-tooltip md-delay="750" ng-autohide>Important</md-tooltip>
                 </i>
                 <a class="mc-error-color" data-nodrag ng-click="$ctrl.remove(this)">
                     <i class="fa fa-fw fa-remove"></i>
+                    <md-tooltip md-delay="750" ng-autohide>Delete task</md-tooltip>
                 </a>
             </div>
         </div>
