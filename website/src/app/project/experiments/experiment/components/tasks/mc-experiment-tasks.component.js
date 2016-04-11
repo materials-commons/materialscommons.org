@@ -20,7 +20,7 @@ function MCExperimentTasksComponentController($scope, $stateParams, moveStep, cu
 
         $scope.editorOptions = {
             height: '68vh',
-            width: '40vw',
+            width: '35vw',
             uiColor: '#f4f5f7'
         };
 
