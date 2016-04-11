@@ -88,11 +88,20 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.experiment', {
             url: '/experiment/:experiment_id',
             template: `
-            <div layout="row" layout-fill layout-margin>
-                <mc-experiment-sidenav></mc-experiment-sidenav>
-                <ui-view flex></ui-view>
+            <div layout="column" layout-fill layout-margin>
+                <div layout="row" layout-align="center center" class="md-title">
+                    Experiment: {{ctrl.experiment.name}}
+                </div>
+                <div layout="row" layout-margin>
+                    <mc-experiment-sidenav></mc-experiment-sidenav>
+                    <ui-view flex></ui-view>
+                </div>
             </div>
             `,
+            controllerAs: 'ctrl',
+            controller: ['experiment', function(experiment) {
+                this.experiment = experiment;
+            }],
             resolve: {
                 experiment: ['experimentsService', 'toast', 'toUIStep', '$stateParams',
                     function(experimentsService, toast, toUIStep, $stateParams) {
