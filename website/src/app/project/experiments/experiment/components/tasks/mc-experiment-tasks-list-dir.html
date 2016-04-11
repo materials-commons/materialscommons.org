@@ -24,7 +24,7 @@
                        placeholder="Untitled Task..."
                        class="mc-input-no-border align-step-element"
                        id="{{::$ctrl.step.id}}">
-                <span ng-if="$ctrl.step.flags.done"
+                <span ng-show="$ctrl.step.flags.done"
                       class="mark-text-done align-step-element">{{::$ctrl.step.name}}</span>
             </div>
             <div class="align-step-element" data-nodrag>
@@ -55,10 +55,10 @@
             </div>
         </div>
     </div>
-    <div ng-if="$ctrl.step.displayState.open" data-nodrag flex-offset="5" layout="column">
-        <mc-experiment-task-details step="$ctrl.step" editor-options="$ctrl.editorOptions" ng-cloak>
-        </mc-experiment-task-details>
-    </div>
+    <!--<div ng-if="$ctrl.step.displayState.open" data-nodrag flex-offset="5" layout="column">-->
+    <!--<mc-experiment-task-details step="$ctrl.step" editor-options="$ctrl.editorOptions" ng-cloak>-->
+    <!--</mc-experiment-task-details>-->
+    <!--</div>-->
     <ol ui-tree-nodes="" ng-model="$ctrl.step.steps" ng-classx="{hidden: collapsed}">
         <li ng-repeat="step in $ctrl.step.steps track by step.id" ui-tree-node>
         </li>
