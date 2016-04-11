@@ -8,4 +8,5 @@ import './tasks/mc-experiment-task-details.component';
 import './tasks/move-step.service';
 import './tasks/mc-experiment-tasks.component';
 import './tasks/current-step.service';
+import './today/mc-experiment-today.component';
 import './mc-experiment-sidenav.component';
