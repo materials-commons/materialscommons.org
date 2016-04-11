@@ -36,7 +36,8 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
     return {
         restrict: 'E',
         scope: {
-            step: '='
+            step: '=',
+            experiment: '='
         },
         controller: MCExperimentTasksListDirDirectiveController,
         replace: true,
@@ -137,7 +138,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
                 },
                 () => toast.error('Unable to create new step')
             );
-    }
+    };
 
     ctrl.remove = (node) => {
         if (node.depth() === 1 && ctrl.experiment.steps.length === 1) {
@@ -148,5 +149,14 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
             ctrl.currentStep = null;
         }
         node.remove();
-    }
+    };
+
+    ctrl.addToExperimentNote = () => {
+        let html = `
+            <p>&nbsp;</p>
+            <p>${ctrl.step.name}</p>
+        `;
+
+        ctrl.experiment.notes = ctrl.experiment.notes + html;
+    };
 }

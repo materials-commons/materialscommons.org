@@ -32,6 +32,10 @@
                    ng-click="$ctrl.toggleOpenDetails($event)">
                     <md-tooltip md-delay="750" ng-autohide>Open Task Details</md-tooltip>
                 </i>
+                <a data-nodrag ng-click="$ctrl.addToExperimentNote()">
+                    <i class="fa fa-fw fa-plus"></i>
+                    <md-tooltip md-delay="750" ng-autohide>Add to experiment note</md-tooltip>
+                </a>
                 <i class="fa fa-fw fa-flag cursor-pointer {{::$ctrl.step.displayState.flags.reviewClass}}"
                    ng-click="$ctrl.toggleFlag('review', $event)">
                     <md-tooltip md-delay="750" ng-autohide>Review</md-tooltip>
