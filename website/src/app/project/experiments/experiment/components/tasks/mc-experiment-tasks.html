@@ -1,11 +1,10 @@
-<div style="overflow: auto; max-height: 80vh" ng-if="$ctrl.showStepMaximized()" layout-margin>
+<div style="overflow: auto; max-height: 80vh" ng-if="$ctrl.showStepMaximized()">
     <md-content layout="column" flex="95">
         <mc-experiment-task-details step="$ctrl.getCurrentStep()" editor-options="$ctrl.editorOptionsMaximized">
         </mc-experiment-task-details>
     </md-content>
 </div>
-<div ng-if="!$ctrl.showStepMaximized()" layout="column" layout-align="start stretch" flex layout-margin
-     style="overflow: hidden">
+<div ng-if="!$ctrl.showStepMaximized()" layout="column" layout-align="start stretch" flex stylex="overflow: hidden">
     <div layout="row" flex layout-align="start stretch">
         <md-sidenav flex="40" md-is-locked-open="$ctrl.showSidebar"
                     style="max-height: 82vh; min-height: 82vh; margin-right: 8px">
@@ -109,6 +108,5 @@
                 </mc-experiment-tasks-list>
             </div>
         </div>
-        <mc-experiment-sidenav></mc-experiment-sidenav>
     </div>
 </div>
