@@ -6,13 +6,14 @@
 </div>
 <div ng-if="!$ctrl.showStepMaximized()" layout="column" layout-align="start stretch" flex stylex="overflow: hidden">
     <div layout="row" flex layout-align="start stretch">
-        <md-sidenav flex="40" md-is-locked-open="$ctrl.showSidebar"
-                    style="max-height: 82vh; min-height: 82vh; margin-right: 8px">
-            <span style="text-align: center" class="md-subhead">Details</span>
-            <md-content layout="column" layout-fill>
-                <mc-experiment-task-details step="$ctrl.getCurrentStep()" editor-options="$ctrl.editorOptions">
-                </mc-experiment-task-details>
-            </md-content>
+        <md-sidenav flex="45" md-is-locked-open="true" ng-if="true"
+                    style="margin-right: 8px">
+            <!--<span style="text-align: center" class="md-subhead">Project Notes</span>-->
+            <textarea ckeditor="editorOptions" ng-model="$ctrl.experiment.notes"></textarea>
+            <!--<md-content layout="column" layout-fill>-->
+            <!--<mc-experiment-task-details step="$ctrl.getCurrentStep()" editor-options="$ctrl.editorOptions">-->
+            <!--</mc-experiment-task-details>-->
+            <!--</md-content>-->
         </md-sidenav>
 
         <div layout="column" flex md-whiteframe>
@@ -79,24 +80,6 @@
                                 </md-menu-content>
                             </md-menu>
                         </md-menu-bar>
-                        <div>
-                            <md-button class="md-primary text-white" ng-click="$ctrl.showSidebar = !$ctrl.showSidebar">
-                                <span class="text-white" ng-if="$ctrl.showSidebar">Hide Sidebar</span>
-                                <span class="text-white" ng-if="!$ctrl.showSidebar">Show Sidebar</span>
-                            </md-button>
-                        </div>
-                    </div>
-                    <md-divider class="md-vertical-divider"></md-divider>
-                    <div layout="column" flex>
-                        <mc-editable-header header="$ctrl.experiment.name"
-                                            on-change="$ctrl.updateName(what)"
-                                            input-classes="mc-input-as-line">
-                        </mc-editable-header>
-                        <mc-editable-header header-classes="md-subhead text-black"
-                                            on-change="$ctrl.updateDescription(what)"
-                                            input-classes="font-16 mc-input-line text-black"
-                                            header="$ctrl.experiment.description">
-                        </mc-editable-header>
                     </div>
                 </div>
             </md-toolbar>
