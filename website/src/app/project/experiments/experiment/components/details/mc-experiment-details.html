@@ -1,8 +1,49 @@
-<div layout="column" layout-align="start stretch" flex layout-margin>
-    <div layout="row" layout-align="start stretch" flex>
-        <md-content flex="95">
-            Experiment details for {{$ctrl.experiment.name}}
-        </md-content>
-        <mc-experiment-sidenav></mc-experiment-sidenav>
+<md-content flex layout="column" layout-align="start stretch" style="max-height:80vh">
+
+    <div layout="row" flex="grow">
+        <md-input-container flex="30">
+            <label>Name</label>
+            <input type="text" ng-model="$ctrl.experiment.name">
+        </md-input-container>
+        <md-input-container flex="65">
+            <label>Description</label>
+            <input type="text" ng-model="$ctrl.experiment.description">
+        </md-input-container>
     </div>
-</div>
+
+    <div layout="row" flex layout-align="start center">
+        <label flex="20">Aims</label>
+        <md-button class="md-primary">
+            <i class="fa fa-fw fa-plus"></i>
+            add aim
+        </md-button>
+    </div>
+
+    <div layout="row" flex layout-align="start center">
+        <label flex="20">Hypothesis</label>
+        <md-button class="md-primary">
+            <i class="fa fa-fw fa-plus"></i>
+            add hypothesis
+        </md-button>
+    </div>
+
+    <label>Notes</label>
+    <textarea ckeditor="editorOptions" ng-model="$ctrl.experiment.notes"></textarea>
+
+    <div layout="row" flex layout-align="start center">
+        <label flex="20">Publications From Experiment</label>
+        <md-button class="md-primary">
+            <i class="fa fa-fw fa-plus"></i>
+            add publication
+        </md-button>
+    </div>
+
+    <div layout="row" flex layout-align="start center">
+        <label flex="20">Related Publications</label>
+        <md-button class="md-primary">
+            <i class="fa fa-fw fa-plus"></i>
+            add related publication
+        </md-button>
+    </div>
+
+</md-content>
