@@ -63,14 +63,21 @@ module.exports = function(r) {
 
     // getList gets the details for the given file ids
     function* getList(projectID, fileIDs) {
-        let rql = r.table('datafiles').getAll(r.args(fileIDs)).eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).zip().filter({project_id: projectID}).merge(function(file) {
-            return {
-                tags: r.table('tag2item').getAll(file('datafile_id'), {index: 'item_id'}).orderBy('tag_id').pluck('tag_id').coerceTo('array'),
-                notes: r.table('note2item').getAll(file('datafile_id'), {index: 'item_id'}).eqJoin('note_id', r.table('notes')).zip().coerceTo('array'),
-                samples: r.table('sample2datafile').getAll(file('datafile_id'), {index: 'datafile_id'}).eqJoin('sample_id', r.table('samples')).zip().pluck('name', 'id').distinct().coerceTo('array'),
-                processes: r.table('process2file').getAll(file('datafile_id'), {index: 'datafile_id'}).eqJoin('process_id', r.table('processes')).zip().pluck('name', 'id').distinct().coerceTo('array')
-            }
-        });
+        let rql = r.table('datafiles').getAll(r.args(fileIDs))
+            .eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).zip()
+            .filter({project_id: projectID})
+            .merge(function(file) {
+                return {
+                    tags: r.table('tag2item').getAll(file('datafile_id'), {index: 'item_id'}).orderBy('tag_id').pluck(
+                        'tag_id').coerceTo('array'),
+                    notes: r.table('note2item').getAll(file('datafile_id'), {index: 'item_id'}).eqJoin('note_id',
+                        r.table('notes')).zip().coerceTo('array'),
+                    samples: r.table('sample2datafile').getAll(file('datafile_id'), {index: 'datafile_id'}).eqJoin(
+                        'sample_id', r.table('samples')).zip().pluck('name', 'id').distinct().coerceTo('array'),
+                    processes: r.table('process2file').getAll(file('datafile_id'), {index: 'datafile_id'}).eqJoin(
+                        'process_id', r.table('processes')).zip().pluck('name', 'id').distinct().coerceTo('array')
+                }
+            });
         return runQuery(rql);
     }
 
@@ -218,7 +225,9 @@ module.exports = function(r) {
         // and direction. This way we don't add a file in the same direction to a process when
         // that file and direction already exists for a process.
         processesForFile.forEach(p => processesMap[`${p.process_id}_${p.direction}`] = p);
-        let processesToAdd = processes.filter(p => p.command === 'add').filter(p => !(`${p.process_id}_${p.direction}` in processesMap)).map(p => new model.Process2File(p.process_id, fileID, p.direction));
+        let processesToAdd = processes.filter(p => p.command === 'add').filter(
+            p => !(`${p.process_id}_${p.direction}` in processesMap)).map(
+            p => new model.Process2File(p.process_id, fileID, p.direction));
         let processesToDelete = processes.filter(p => p.command === 'delete').map(p => p.process_id);
 
         if (processesToAdd.length) {
