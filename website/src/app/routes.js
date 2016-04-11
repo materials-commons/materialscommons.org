@@ -90,7 +90,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             template: `
             <div layout="row" layout-fill layout-margin>
                 <mc-experiment-sidenav></mc-experiment-sidenav>
-                <ui-view flex layout-margin></ui-view>
+                <ui-view flex></ui-view>
             </div>
             `,
             resolve: {
