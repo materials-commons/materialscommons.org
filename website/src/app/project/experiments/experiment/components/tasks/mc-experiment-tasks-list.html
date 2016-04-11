@@ -2,7 +2,7 @@
     <md-content ui-tree id="tree-root" ng-if="$ctrl.experiment.steps.length">
         <ol ui-tree-nodes ng-model="$ctrl.experiment.steps" style="list-style-type: none" flex="95">
             <li ng-repeat="step in $ctrl.experiment.steps track by step.id" ui-tree-node>
-                <mc-experiment-tasks-list-dir step="step"></mc-experiment-tasks-list-dir>
+                <mc-experiment-tasks-list-dir experiment="$ctrl.experiment" step="step"></mc-experiment-tasks-list-dir>
             </li>
         </ol>
     </md-content>
