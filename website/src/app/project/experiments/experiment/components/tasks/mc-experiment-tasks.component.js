@@ -18,9 +18,10 @@ function MCExperimentTasksComponentController($scope, $stateParams, moveStep, cu
         currentStep.set(ctrl.experiment.steps[0]);
         ctrl.currentStep = currentStep.get();
 
-        ctrl.editorOptions = {
-            height: '20vh',
-            width: '27vw'
+        $scope.editorOptions = {
+            height: '68vh',
+            width: '40vw',
+            uiColor: '#f4f5f7'
         };
 
         ctrl.editorOptionsMaximized = {
