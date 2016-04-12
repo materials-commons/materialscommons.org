@@ -8,11 +8,41 @@
                 <!--</li>-->
             <!--</md-virtual-repeat-container>-->
         <!--</ol>-->
-        <md-virtual-repeat-container style="height: 64vh">
-            <div md-virtual-repeat="step in $ctrl.experiment.steps" md-item-size="50">
+        <div ng-repeat="step in $ctrl.experiment.steps">
+            <!--<i class="fa fa-fw fa-reorder align-step-element"></i>-->
+            <!--<md-checkbox class="mc-done align-step-element"-->
+            <!--aria-label="done">-->
+            <!--</md-checkbox>-->
+            <!--<input-->
+            <!--size="40" type="text"-->
+            <!--ng-model="step.name"-->
+            <!--ng-model-options="{debounce: 1000}"-->
+            <!--ng-change="$ctrl.onNameChange()"-->
+            <!--placeholder="Untitled Task..."-->
+            <!--class="mc-input-no-border align-step-element"-->
+            <!--id="{{::step.id}}">-->
+            <!--&lt;!&ndash;<span ng-show="$ctrl.step.flags.done"&ndash;&gt;-->
+            <!--&lt;!&ndash;class="mark-text-done align-step-element">{{::$ctrl.step.name}}</span>&ndash;&gt;-->
+            <!--<i class="fa fa-fw cursor-pointer no-outline fa-angle-double-right"-->
+            <!--ng-click="$ctrl.toggleOpenDetails($event)">-->
+            <!--</i>-->
+            <!--<a data-nodrag ng-click="$ctrl.addToExperimentNote()">-->
+            <!--<i class="fa fa-fw fa-plus"></i>-->
+            <!--</a>-->
+            <!--<i class="fa fa-fw fa-flag cursor-pointer"-->
+            <!--ng-click="$ctrl.toggleFlag('review', $event)">-->
+            <!--</i>-->
+            <!--<i class="fa fa-fw fa-exclamation-triangle cursor-pointer"-->
+            <!--ng-click="$ctrl.toggleFlag('error', $event)">-->
+            <!--</i>-->
+            <!--<i class="fa fa-fw fa-exclamation-circle cursor-pointer"-->
+            <!--ng-click="$ctrl.toggleFlag('important', $event)">-->
+            <!--</i>-->
+            <!--<a class="mc-error-color" data-nodrag ng-click="$ctrl.remove(this)">-->
+            <!--<i class="fa fa-fw fa-remove"></i>-->
+            <!--</a>-->
                 <mc-experiment-tasks-list-dir experiment="$ctrl.experiment" step="step">
                 </mc-experiment-tasks-list-dir>
             </div>
-        </md-virtual-repeat-container>
     </md-content>
 </div>

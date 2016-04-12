@@ -12,21 +12,19 @@ import './user/index.module';
 
 angular.module('materialscommons')
     .constant('mcglobals', setupMCGlobals())
-    .config( appConfig)
+    .config(appConfig)
     .run(appRun)
     .controller('MCAppController', MCAppController);
 
-appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider'];
-function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider) {
-    'ngInject';
+appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$ariaProvider'];
+function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider) {
     setupMaterialsTheme($mdThemingProvider);
     setupRoutes($stateProvider, $urlRouterProvider);
+    $ariaProvider.config({ariaChecked: false, ariaInvalid: false});
 }
 
 appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals'];
 function appRun($rootScope, User, Restangular, $state, mcglobals) {
-    'ngInject';
-
     Restangular.setBaseUrl(mcglobals.apihost);
 
     // appRun will run when the application starts up and before any controllers have run.
