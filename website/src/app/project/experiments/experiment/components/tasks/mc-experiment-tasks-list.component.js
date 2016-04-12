@@ -38,11 +38,9 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
     return {
         restrict: 'E',
         scope: {
-            step: '=',
-            experiment: '='
+            step: '<',
         },
         controller: MCExperimentTasksListDirDirectiveController,
-        replace: true,
         controllerAs: '$ctrl',
         bindToController: true,
         templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks-list-dir.html',
@@ -55,12 +53,13 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 
 /*@ngInject*/
 function MCExperimentTasksListDirDirectiveController($stateParams, experimentsService, toast,
-                                                     currentStep, toUIStep, focus) {
+                                                     currentStep, toUIStep, focus, currentExperiment) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
+    ctrl.experiment = currentExperiment.get();
 
     function setCurrent(node, event) {
-        console.log('setCurent');
+        console.log('setCurrent');
         $('.mc-experiment-outline-step').removeClass('step-selected');
         $(event.currentTarget).addClass('step-selected');
         //ctrl.currentStep = step;
