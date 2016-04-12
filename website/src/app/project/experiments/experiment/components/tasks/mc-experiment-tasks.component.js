@@ -14,8 +14,6 @@ function MCExperimentTasksComponentController($scope, $stateParams, moveStep, cu
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
         ctrl.showSidebar = false;
-        console.log('MCExperimentTasksComponentController setting step selected to', ctrl.experiment.steps[0].name);
-        console.log('  at this point length is', ctrl.experiment.steps.length);
         ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
         currentStep.set(ctrl.experiment.steps[0]);
         ctrl.currentStep = currentStep.get();
@@ -69,12 +67,11 @@ function MCExperimentTasksComponentController($scope, $stateParams, moveStep, cu
     function openAll() {
         var treeModel = new TreeModel({childrenPropertyName: 'steps'}),
             root = treeModel.parse(ctrl.experiment);
-        console.dir(root);
-        ctrl.experiment.steps.forEach((step) => step.displayState.open = true);
+        //ctrl.experiment.steps.forEach((step) => step.displayState.open = true);
     }
 
     function closeAll() {
-        ctrl.experiment.steps.forEach((step) => step.displayState.open = false);
+        //ctrl.experiment.steps.forEach((step) => step.displayState.open = false);
     }
 }
 

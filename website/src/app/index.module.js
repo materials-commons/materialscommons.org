@@ -15,6 +15,7 @@ angular.module('materialscommons',
         'angularGrid',
         'toastr',
             'ngCkeditor',
+            'angularUtils.directives.dirPagination',
         'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
         'ct.ui.router.extras.previous'
     ]);
