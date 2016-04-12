@@ -36,7 +36,7 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
     return {
         restrict: 'E',
         scope: {
-            step: '=',
+            step: '='
         },
         controller: MCExperimentTasksListDirDirectiveController,
         controllerAs: '$ctrl',
@@ -121,10 +121,13 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
     };
 
     ctrl.addBlankStep = (node) => {
+        let csi = findCurrentStepIndex(node);
+
         let newStep = {
             name: '',
             description: '',
-            parent_id: ''
+            parent_id: '',
+            index: csi + 1
         };
         experimentsService.createStep($stateParams.project_id, $stateParams.experiment_id, newStep)
             .then(
@@ -133,7 +136,6 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
                     ctrl.step.displayState.selectedClass = '';
                     toUIStep(step);
                     step.displayState.selectedClass = 'step-selected';
-                    let csi = findCurrentStepIndex(node);
                     node.$nodeScope.$parentNodesScope.$modelValue.splice(csi + 1, 0, step);
                     currentStep.set(step);
                     gotoNewTasksPage(csi);
@@ -144,8 +146,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
     };
 
     function findCurrentStepIndex(node) {
-        let i = _.findIndex(node.$nodeScope.$parentNodesScope.$modelValue, (n) => n.id === ctrl.step.id);
-        return i;
+        return _.findIndex(node.$nodeScope.$parentNodesScope.$modelValue, (n) => n.id === ctrl.step.id);
     }
 
     function gotoNewTasksPage(taskIndex) {
@@ -166,10 +167,11 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
             return;
         }
 
-        if (node.$nodeScope.$modelValue == ctrl.currentStep) {
-            ctrl.currentStep = null;
-        }
-        node.$nodeScope.remove();
+        experimentsService.deleteStep($stateParams.project_id, $stateParams.experiment_id, ctrl.step.id)
+            .then(
+                () => node.$nodeScope.remove(),
+                () => toast.error('Unable to delete task')
+            );
     };
 
     ctrl.addToExperimentNote = () => {
