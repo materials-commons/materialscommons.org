@@ -25,8 +25,6 @@ function MCExperimentTasksListComponentController() {
                 node.model.displayState.selectedClass = '';
             }
         });
-        console.log('length = ', ctrl.experiment.steps.length);
-        console.log('$onInit setting selected step to', ctrl.experiment.steps[0].name);
         ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
     };
 }
@@ -38,7 +36,7 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
     return {
         restrict: 'E',
         scope: {
-            step: '<',
+            step: '=',
         },
         controller: MCExperimentTasksListDirDirectiveController,
         controllerAs: '$ctrl',
@@ -53,13 +51,13 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 
 /*@ngInject*/
 function MCExperimentTasksListDirDirectiveController($stateParams, experimentsService, toast,
-                                                     currentStep, toUIStep, focus, currentExperiment) {
+                                                     currentStep, toUIStep, focus, currentExperiment,
+                                                     paginationService) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
     ctrl.experiment = currentExperiment.get();
 
     function setCurrent(node, event) {
-        console.log('setCurrent');
         $('.mc-experiment-outline-step').removeClass('step-selected');
         $(event.currentTarget).addClass('step-selected');
         //ctrl.currentStep = step;
@@ -75,11 +73,13 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
         let flag = ctrl.step.flags[whichFlag];
         if (flag) {
             // Toggled to on, remove dark grey and add in class for specific flag
-            $(event.target).removeClass('mc-dark-grey-color');
+            ctrl.step.displayState.flags[whichFlag + 'Class'] = flagColorClass;
+            $(event.target).removeClass('mc-flag-not-set');
             $(event.target).addClass(flagColorClass);
         } else {
+            ctrl.step.displayState.flags[whichFlag + 'Class'] = 'mc-flag-not-set';
             $(event.target).removeClass(flagColorClass);
-            $(event.target).addClass('mc-dark-grey-color');
+            $(event.target).addClass('mc-flag-not-set');
         }
 
         experimentsService
@@ -133,24 +133,43 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
                     ctrl.step.displayState.selectedClass = '';
                     toUIStep(step);
                     step.displayState.selectedClass = 'step-selected';
-                    node.$nodeScope.$parentNodesScope.$modelValue.push(step);
-                    //ctrl.currentStep = step;
+                    let csi = findCurrentStepIndex(node);
+                    node.$nodeScope.$parentNodesScope.$modelValue.splice(csi + 1, 0, step);
                     currentStep.set(step);
+                    gotoNewTasksPage(csi);
                     focus(step.id);
                 },
                 () => toast.error('Unable to create new step')
             );
     };
 
+    function findCurrentStepIndex(node) {
+        let i = _.findIndex(node.$nodeScope.$parentNodesScope.$modelValue, (n) => n.id === ctrl.step.id);
+        return i;
+    }
+
+    function gotoNewTasksPage(taskIndex) {
+        let instanceId = paginationService.getLastInstanceId();
+        let currentPage = paginationService.getCurrentPage(instanceId);
+        let itemsPerPage = paginationService.getItemsPerPage(instanceId);
+        let remainder = (taskIndex + 1) % itemsPerPage;
+        if (!remainder) {
+            // On a page boundary, so new item will be created on the next page.
+            // Switch to that page.
+            paginationService.setCurrentPage(instanceId, currentPage + 1);
+        }
+    }
+
     ctrl.remove = (node) => {
-        if (node.depth() === 1 && ctrl.experiment.steps.length === 1) {
+        if (node.$nodeScope.depth() === 1 && ctrl.experiment.steps.length === 1) {
             toast.error('Cannot remove last step');
             return;
         }
-        if (node.$modelValue == ctrl.currentStep) {
+
+        if (node.$nodeScope.$modelValue == ctrl.currentStep) {
             ctrl.currentStep = null;
         }
-        node.remove();
+        node.$nodeScope.remove();
     };
 
     ctrl.addToExperimentNote = () => {
