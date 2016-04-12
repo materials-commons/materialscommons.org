@@ -232,7 +232,7 @@ module.exports = function(r) {
         let now = r.now();
         this.name = name;
         this.owner = owner;
-        this.placement = 0;
+        this.index = 0;
         this._type = 'experiment_step';
         this.description = '';
         this.notes = '';
@@ -247,6 +247,8 @@ module.exports = function(r) {
             error: false,
             done: false
         };
+        this.template_id = '';
+        this.process_id = '';
         this.parent_id = '';
         this.birthtime = now;
         this.mtime = now;
