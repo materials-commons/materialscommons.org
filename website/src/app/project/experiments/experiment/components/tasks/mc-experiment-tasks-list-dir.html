@@ -1,5 +1,5 @@
 <div>
-    <div ui-tree-handle
+    <div ui-tree-xx-handle
          class="tree-node-content mc-experiment-outline-step no-outline {{::$ctrl.step.displayState.selectedClass}}"
          ng-click="$ctrl.setCurrent(this, $event)"
          on-enter="$ctrl.addBlankStep(this, $event)">
@@ -15,7 +15,7 @@
                     <i class="fa fa-fw"
                        ng-classx="{'fa-chevron-right': collapsed || !$ctrl.step.steps.length, 'fa-chevron-down': !collapsed && $ctrl.step.steps.length}"></i>
                 </a>
-                <input ng-show="!$ctrl.step.flags.done"
+                <input
                        data-nodrag
                        size="40" type="text"
                        ng-model="$ctrl.step.name"
@@ -24,8 +24,8 @@
                        placeholder="Untitled Task..."
                        class="mc-input-no-border align-step-element"
                        id="{{::$ctrl.step.id}}">
-                <span ng-show="$ctrl.step.flags.done"
-                      class="mark-text-done align-step-element">{{::$ctrl.step.name}}</span>
+                <!--<span ng-show="$ctrl.step.flags.done"-->
+                      <!--class="mark-text-done align-step-element">{{::$ctrl.step.name}}</span>-->
             </div>
             <div class="align-step-element" data-nodrag>
                 <i class="fa fa-fw cursor-pointer no-outline fa-angle-double-right"
@@ -59,8 +59,8 @@
     <!--<mc-experiment-task-details step="$ctrl.step" editor-options="$ctrl.editorOptions" ng-cloak>-->
     <!--</mc-experiment-task-details>-->
     <!--</div>-->
-    <ol ui-tree-nodes="" ng-model="$ctrl.step.steps" ng-classx="{hidden: collapsed}">
-        <li ng-repeat="step in $ctrl.step.steps track by step.id" ui-tree-node>
+    <ol ui-tree-xx-nodes="" ng-model="$ctrl.step.steps" ng-classx="{hidden: collapsed}">
+        <li ng-repeat="step in $ctrl.step.steps track by step.id" ui-tree-xx-node>
         </li>
     </ol>
 </div>

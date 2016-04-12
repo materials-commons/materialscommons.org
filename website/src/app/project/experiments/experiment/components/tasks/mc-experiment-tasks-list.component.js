@@ -25,6 +25,8 @@ function MCExperimentTasksListComponentController() {
                 node.model.displayState.selectedClass = '';
             }
         });
+        console.log('length = ', ctrl.experiment.steps.length);
+        console.log('$onInit setting selected step to', ctrl.experiment.steps[0].name);
         ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
     };
 }
@@ -58,6 +60,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
     ctrl.setCurrent = setCurrent;
 
     function setCurrent(node, event) {
+        console.log('setCurent');
         $('.mc-experiment-outline-step').removeClass('step-selected');
         $(event.currentTarget).addClass('step-selected');
         //ctrl.currentStep = step;
