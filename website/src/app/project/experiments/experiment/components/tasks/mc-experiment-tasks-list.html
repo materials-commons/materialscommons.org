@@ -1,8 +1,51 @@
 <div layout="column" layout-margin style="max-height: 68vh;">
-    <md-content ui-tree id="tree-root" ng-if="$ctrl.experiment.steps.length">
-        <ol ui-tree-nodes ng-model="$ctrl.experiment.steps" style="list-style-type: none" flex="95">
-            <li ng-repeat="step in $ctrl.experiment.steps track by step.id" ui-tree-node>
-                <mc-experiment-tasks-list-dir experiment="$ctrl.experiment" step="step"></mc-experiment-tasks-list-dir>
+    <md-content ui-tree-xx id="tree-root" ng-if="$ctrl.experiment.steps.length">
+        <ol ui-tree-xx-nodes ng-model="$ctrl.experiment.steps" style="list-style-type: none" flex="95">
+            <li ng-repeat="step in $ctrl.experiment.steps track by step.id"
+                class="mc-experiment-outline-step"
+                ui-tree-xx-node>
+                <i class="fa fa-fw fa-reorder align-step-element"></i>
+                <md-checkbox class="mc-done align-step-element" data-nodrag-xx
+                             aria-label="done"
+                             ng-change="$ctrl.updateDoneStatus()"
+                             ng-model="step.flags.done">
+                </md-checkbox>
+                <input ng-show="!step.flags.done"
+                       data-nodrag-xx
+                       size="40" type="text"
+                       ng-model="step.name"
+                       ng-model-options="{debounce: 1000}"
+                       ng-change="$ctrl.onNameChange()"
+                       placeholder="Untitled Task..."
+                       class="mc-input-no-border align-step-element"
+                       id="{{::step.id}}">
+                <span ng-show="step.flags.done"
+                      class="mark-text-done align-step-element">{{::step.name}}</span>
+                <i class="fa fa-fw cursor-pointer no-outline fa-angle-double-right"
+                   ng-click="$ctrl.toggleOpenDetails($event)">
+                    <md-tooltip md-delay="750" ng-autohide>Open Task Details</md-tooltip>
+                </i>
+                <a data-nodrag-xx ng-click="$ctrl.addToExperimentNote()">
+                    <i class="fa fa-fw fa-plus"></i>
+                    <md-tooltip md-delay="750" ng-autohide>Add to experiment note</md-tooltip>
+                </a>
+                <i class="fa fa-fw fa-flag cursor-pointer {{::$ctrl.step.displayState.flags.reviewClass}}"
+                   ng-click="$ctrl.toggleFlag('review', $event)">
+                    <md-tooltip md-delay="750" ng-autohide>Review</md-tooltip>
+                </i>
+                <i class="fa fa-fw fa-exclamation-triangle cursor-pointer {{::$ctrl.step.displayState.flags.errorClass}}"
+                   ng-click="$ctrl.toggleFlag('error', $event)">
+                    <md-tooltip md-delay="750" ng-autohide>Error</md-tooltip>
+                </i>
+                <i class="fa fa-fw fa-exclamation-circle cursor-pointer {{::$ctrl.step.displayState.flags.importantClass}}"
+                   ng-click="$ctrl.toggleFlag('important', $event)">
+                    <md-tooltip md-delay="750" ng-autohide>Important</md-tooltip>
+                </i>
+                <a class="mc-error-color" data-nodrag-xx ng-click="$ctrl.remove(this)">
+                    <i class="fa fa-fw fa-remove"></i>
+                    <md-tooltip md-delay="750" ng-autohide>Delete task</md-tooltip>
+                </a>
+                <!--<mc-experiment-tasks-list-dir experiment="$ctrl.experiment" step="step"></mc-experiment-tasks-list-dir>-->
             </li>
         </ol>
     </md-content>
