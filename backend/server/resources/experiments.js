@@ -1,6 +1,7 @@
 module.exports = function(experiments, schema) {
     const parse = require('co-body');
     const status = require('http-status');
+    const _ = require('lodash');
 
     return {
         getAllExperimentsForProject,
@@ -11,7 +12,7 @@ module.exports = function(experiments, schema) {
         deleteExperimentStep,
         updateExperiment,
         createExperiment,
-        deleteExperiment: deleteExperiment
+        deleteExperiment
     };
 
     function* getAllExperimentsForProject(next) {
@@ -116,7 +117,7 @@ module.exports = function(experiments, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.updateStep(this.params.step_id, updateStepArgs);
+            let rv = yield experiments.updateStep(this.params.experiment_id, this.params.step_id, updateStepArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -133,6 +134,7 @@ module.exports = function(experiments, schema) {
         if (errors != null) {
             return errors;
         }
+
         let isInProject = yield experiments.experimentExistsInProject(projectID, experimentID);
         if (!isInProject) {
             return {error: 'No such experiment'};
@@ -149,11 +151,49 @@ module.exports = function(experiments, schema) {
                 return {error: 'Invalid parent step'};
             }
         }
+
+        if (_.has(args, 'index') && !_.has(args, 'parent_id')) {
+            return {error: 'index given without a parent_id'};
+        }
+
         return null;
     }
 
     function* deleteExperimentStep(next) {
+        let error = yield validateDeleteStep(this.params.project_id, this.params.experiment_id, this.params.step_id);
+        if (error != null) {
+            this.body = error;
+            this.status = status.BAD_REQUEST;
+        } else {
+            let rv = yield experiments.deleteStep(this.params.experiment_id, this.params.step_id);
+            if (rv.error) {
+                this.body = rv;
+                this.status = status.BAD_REQUEST;
+            } else {
+                this.body = rv.val;
+            }
+        }
+
         yield next;
+    }
+
+    function* validateDeleteStep(projectID, experimentID, stepID) {
+        let isInProject = yield experiments.experimentExistsInProject(projectID, experimentID);
+        if (!isInProject) {
+            return {error: 'No such experiment'};
+        }
+
+        let isValidStepId = yield experiments.experimentStepExistsInExperiment(experimentID, stepID);
+        if (!isValidStepId) {
+            return {error: 'Unknown experiment step'};
+        }
+
+        let isUsingProcess = yield experiments.stepIsUsingProcess(stepID);
+        if (isUsingProcess) {
+            return {error: `Cannot delete step associated with a process`};
+        }
+
+        return null;
     }
 
     function* updateExperiment(next) {
