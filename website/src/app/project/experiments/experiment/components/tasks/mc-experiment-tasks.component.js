@@ -14,6 +14,8 @@ function MCExperimentTasksComponentController($scope, $stateParams, moveStep, cu
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
         ctrl.showSidebar = false;
+        console.log('MCExperimentTasksComponentController setting step selected to', ctrl.experiment.steps[0].name);
+        console.log('  at this point length is', ctrl.experiment.steps.length);
         ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
         currentStep.set(ctrl.experiment.steps[0]);
         ctrl.currentStep = currentStep.get();
