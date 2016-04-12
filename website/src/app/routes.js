@@ -103,12 +103,13 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 this.experiment = experiment;
             }],
             resolve: {
-                experiment: ['experimentsService', 'toast', 'toUIStep', '$stateParams',
-                    function(experimentsService, toast, toUIStep, $stateParams) {
+                experiment: ['experimentsService', 'toast', 'toUIStep', '$stateParams', 'currentExperiment',
+                    function(experimentsService, toast, toUIStep, $stateParams, currentExperiment) {
                         return experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id)
                             .then(
                                 (e) => {
                                     e.steps.forEach((step) => toUIStep(step));
+                                    currentExperiment.set(e);
                                     return e;
                                 },
                                 () => toast.error('Failed to retrieve experiment')
