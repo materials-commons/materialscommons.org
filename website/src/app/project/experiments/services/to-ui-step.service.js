@@ -13,7 +13,7 @@ function toUIStepService() {
                 loadEditor: false
             },
             flags: {
-                errorClass: step.flags.error ? 'mc-error-color:' : 'mc-flag-not-set',
+                errorClass: step.flags.error ? 'mc-error-color' : 'mc-flag-not-set',
                 importantClass: step.flags.important ? 'mc-important-color' : 'mc-flag-not-set',
                 reviewClass: step.flags.review ? 'mc-review-color' : 'mc-flag-not-set'
             },
