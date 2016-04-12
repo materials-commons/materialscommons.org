@@ -85,6 +85,11 @@ module.exports = function(schema) {
             parent_id: {
                 type: 'string',
                 nullable: false
+            },
+            index: {
+                type: 'integer',
+                nullable: false,
+                min: 0
             }
         });
 
@@ -129,6 +134,11 @@ module.exports = function(schema) {
                     type: 'boolean',
                     nullable: true
                 }
+            },
+            index: {
+                type: 'integer',
+                nullable: true,
+                min: 0
             }
         });
 

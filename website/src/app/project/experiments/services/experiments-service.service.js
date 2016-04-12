@@ -27,6 +27,10 @@ class ExperimentsService {
     updateStep(projectID, experimentID, stepID, step) {
         return this.projectsAPI(projectID).one('experiments', experimentID).one('step', stepID).customPUT(step);
     }
+
+    deleteStep(projectID, experimentID, stepID) {
+        return this.projectsAPI(projectID).one('experiments', experimentID).one('step', stepID).customDELETE();
+    }
 }
 
 angular.module('materialscommons').service('experimentsService', ExperimentsService);
