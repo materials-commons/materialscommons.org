@@ -1,9 +1,9 @@
-<div layout="row" layout-margin>
-    <md-sidenav md-is-locked-open="true" flex="30">
+<div layout="row" layout-align="start stretch">
+    <md-sidenav md-is-locked-open="true" flex="30" layout-margin>
         {{$ctrl.project.name}}
         {{$ctrl.project.description}}
     </md-sidenav>
-    <div layout="column" flex layout-marginx>
+    <div layout="column" flex layout-margin>
         <div layout="row" layout-align="center center">
             <md-radio-group layout="row" class="text-uppercase" ng-model="$ctrl.whichExperiments">
                 <md-radio-button value="active" class="md-primary">Active Experiments</md-radio-button>
