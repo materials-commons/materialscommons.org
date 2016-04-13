@@ -87,29 +87,11 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment', {
             url: '/experiment/:experiment_id',
-            template: `
-            <div layout="column" layout-fill layout-margin>
-                <div layout="row" layout-align="center center" class="md-title">
-                    Experiment: {{ctrl.experiment.name}}
-                </div>
-                <div layout="row" layout-margin>
-                    <mc-experiment-sidenav></mc-experiment-sidenav>
-                    <md-sidenav flex="40" md-is-locked-open="true">
-                        <textarea ckeditor="editorOptions" ng-model="ctrl.experiment.notes"></textarea>
-                    </md-sidenav>
-                    <ui-view flex></ui-view>
-                </div>
-            </div>
-            `,
+            template: `<mc-experiment experiment="ctrl.experiment"></mc-experiment>`,
             controllerAs: 'ctrl',
-            controller: ['$scope', 'experiment', function($scope, experiment) {
+            controller: ['experiment', function(experiment) {
                 let ctrl = this;
                 ctrl.experiment = experiment;
-                $scope.editorOptions = {
-                    height: '68vh',
-                    width: '38vw',
-                    uiColor: '#f4f5f7'
-                };
             }],
             resolve: {
                 experiment: ['experimentsService', 'toast', 'toUIStep', '$stateParams', 'currentExperiment',
