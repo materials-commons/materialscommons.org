@@ -2,7 +2,6 @@ module.exports = function(r) {
     const dbExec = require('./run');
     const db = require('./db')(r);
     const model = require('./model')(r);
-    const _ = require('lodash');
 
     return {
         getAllForProject,
@@ -112,9 +111,25 @@ module.exports = function(r) {
         return {val: s};
     }
 
-    function* updateStep(experimentID, stepID, updateArgs) {
-        if (_.has(updateArgs, 'index')) {
-            yield updateIndexOfAllAffected(experimentID, updateArgs.parent_id, updateArgs.index);
+    function* updateStep(stepID, updateArgs) {
+        if (updateArgs.swap) {
+            let step = yield r.table('experiment_steps').get(stepID);
+            let swapStep = yield r.table('experiment_steps').get(updateArgs.swap.step_id);
+            if (swapStep.parent_id !== step.parent_id) {
+                return {error: 'Steps have different parents'};
+            }
+            let swapItems = [
+                {
+                    id: stepID,
+                    index: swapStep.index
+                },
+                {
+                    id: updateArgs.swap.step_id,
+                    index: step.index
+                }
+            ];
+            let updateRql = r.table('experiment_steps').insert(swapItems, {conflict: 'update'});
+            yield dbExec(updateRql);
         }
         yield db.update('experiment_steps', stepID, updateArgs);
         return yield getStep(stepID);
