@@ -1,109 +1,41 @@
-<md-content flex layout="row" layout-xs="column" layout-wrap layout-margin>
-    <div flex="100">
-        <div layout="row" layout-sm="column" layout-wrap layout-align="space-between center">
-            <div flex="25">
-                <md-card class="process-color-bg text-white">
-                    <md-card-title layout="column">
-                        <md-card-title-text layout-align="center center">
-                            <a class="md-headline text-white" ui-sref="project.processes">
-                                {{$ctrl.project.processes.length | number}} Processes
-                                <i class="fa fa-code-fork"></i>
-                            </a>
-                        </md-card-title-text>
-                        <md-card-actions layout="row" layout-align="end center">
-                            <mc-new-process-menu button-name='NEW PROCESS' button-class='' button-icon=''></mc-new-process-menu>
-                        </md-card-actions>
-                    </md-card-title>
-                </md-card>
-            </div>
-            <div flex="25">
-                <md-card class="sample-color-bg text-white">
-                    <md-card-title layout="column" class="mc-md-card-title-home-adj">
-                        <md-card-title-text layout-align="center center">
-                            <a class="md-headline text-white" ui-sref="project.samples">
-                                {{$ctrl.project.samples.length | number}} Samples
-                                <i class="fa fa-cubes"></i>
-                            </a>
-                        </md-card-title-text>
-                        <md-card-actions layout="row" layout-align="end center">
-                            <md-button ui-sref="project.create.process({template_id:'As Received', process_id:''})">
-                                New Sample
-                            </md-button>
-                        </md-card-actions>
-                    </md-card-title>
-                </md-card>
-            </div>
-            <div flex="25">
-                <md-card class="file-color-bg text-white">
-                    <md-card-title layout="column" class="mc-md-card-title-home-adj">
-                        <md-card-title-text layout-align="center center">
-                            <a class="md-headline text-white" ui-sref="project.files">
-                                {{$ctrl.project.file_count | number}} Files
-                                <i class="fa fa-files-o"></i>
-                            </a>
-                        </md-card-title-text>
-                        <md-card-actions layout="row" layout-align="end center">
-                            <md-button>Upload Files</md-button>
-                        </md-card-actions>
-                    </md-card-title>
-                </md-card>
-            </div>
-            <div flex="25">
-                <md-card class="review-color-bg text-white">
-                    <md-card-title layout="column" class="mc-md-card-title-home-adj">
-                        <md-card-title-text layout-align="center center">
-                            <span class="md-headline">
-                                {{$ctrl.project.reviews.length | number}} Reviews
-                                <i class="fa fa-comment"></i>
-                            </span>
-                        </md-card-title-text>
-                        <md-card-actions layout="row" layout-align="end center">
-                            <md-button>New Review</md-button>
-                        </md-card-actions>
-                    </md-card-title>
-                </md-card>
-            </div>
+<div layout="row" layout-margin>
+    <md-sidenav md-is-locked-open="true" flex="30">
+        {{$ctrl.project.name}}
+        {{$ctrl.project.description}}
+    </md-sidenav>
+    <div layout="column" flex layout-marginx>
+        <div layout="row" layout-align="center center">
+            <md-radio-group layout="row" class="text-uppercase" ng-model="$ctrl.whichExperiments">
+                <md-radio-button value="active" class="md-primary">Active Experiments</md-radio-button>
+                <md-radio-button value="done" class="md-primary">Completed Experiments</md-radio-button>
+                <md-radio-button value="on-hold" class="md-warn">On Hold Experiments</md-radio-button>
+            </md-radio-group>
         </div>
+        <md-content layout="column" layout-align="start stretch" flex>
+            <div layout="row">
+                <div flex="45" flex-md="60" flex-sm="60"
+                     ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.whichExperiments} | orderBy:'name'">
+                    <md-card class="experiment-card"
+                             ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
+                        <md-card-header>
+                            <md-card-avatar>
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x mc-md-primary-color"></i>
+                            <i class="fa fa-flask fa-stack-1x fa-inverse"></i>
+                        </span>
+                            </md-card-avatar>
+                            <md-card-header-text>
+                                <span class="md-title">{{experiment.name}}</span>
+                                <span class="md-subhead">{{experiment.description}}</span>
+                            </md-card-header-text>
+                        </md-card-header>
+                    </md-card>
+                </div>
+            </div>
+            <!--<md-divider></md-divider>-->
+            <!--<div>-->
+            <!--<mc-project-samples samples="$ctrl.project.samples"></mc-project-samples>-->
+            <!--</div>-->
+        </md-content>
     </div>
-    <div layout="row" layout-align="space-around start">
-        <div flex layout-align="start start">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Samples</th>
-                    <th>Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="sample in $ctrl.project.samples | filter:{is_grouped: false}">
-                    <td>
-                        <b><a ui-sref="project.samples({sample_id: sample.id})">{{sample.name}}</a></b>
-
-                        <div style="padding-bottom: 15px;">
-                            <p style="font-size: 12px;padding-bottom: 10px;">
-                                {{sample.birthtime | toDateString}}
-                                <span style="padding-left: 10px">{{sample.owner}}</span>
-                                <span ng-if="sample.has_group" style="padding-left: 10px">
-                                    Group size: {{sample.group_size}}
-                                </span>
-                            </p>
-
-                            <display-image-tab sample="sample"></display-image-tab>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="max-height: 200px;overflow-y: auto;">{{sample.description}}</div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div ng-if="$ctrl.project.samples.length === 0">
-                -- No Samples --
-            </div>
-        </div>
-        <div flex="5"></div>
-        <div flex>
-            <div ng-if="$ctrl.projectLoaded" home-calendar project="$ctrl.project"></div>
-        </div>
-    </div>
-</md-content>
+</div>
