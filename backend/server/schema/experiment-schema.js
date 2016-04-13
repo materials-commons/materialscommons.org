@@ -68,6 +68,7 @@ module.exports = function(schema) {
                 nullable: true
             }
         });
+        updateExperimentSchema.setDefaults({});
         updateExperimentSchema.validateAsync = promise.promisify(updateExperimentSchema.validate);
         return updateExperimentSchema;
     }
