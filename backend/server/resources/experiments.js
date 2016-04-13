@@ -1,7 +1,6 @@
 module.exports = function(experiments, schema) {
     const parse = require('co-body');
     const status = require('http-status');
-    const _ = require('lodash');
 
     return {
         getAllExperimentsForProject,
@@ -117,7 +116,7 @@ module.exports = function(experiments, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.updateStep(this.params.experiment_id, this.params.step_id, updateStepArgs);
+            let rv = yield experiments.updateStep(this.params.step_id, updateStepArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -152,8 +151,19 @@ module.exports = function(experiments, schema) {
             }
         }
 
-        if (_.has(args, 'index') && !_.has(args, 'parent_id')) {
-            return {error: 'index given without a parent_id'};
+        if (args.swap) {
+            if (!args.swap.step_id) {
+                return {error: 'No swap step identified'};
+            }
+
+            if (args.swap.step_id === stepID) {
+                return {error: 'Cannot swap step with itself'};
+            }
+
+            let swapIdExistsInExperiment = yield experiments.experimentStepExistsInExperiment(experimentID, args.swap.step_id);
+            if (!swapIdExistsInExperiment) {
+                return {error: 'Invalid swap step'};
+            }
         }
 
         return null;
