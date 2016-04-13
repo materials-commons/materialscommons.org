@@ -3,11 +3,17 @@
     <div layout="row" flex="grow">
         <md-input-container flex="30">
             <label>Name</label>
-            <input type="text" ng-model="$ctrl.experiment.name">
+            <input type="text"
+                   ng-model="$ctrl.experiment.name"
+                   ng-model-options="{debounce: 500}"
+                   ng-change="$ctrl.updateName()">
         </md-input-container>
         <md-input-container flex="65">
             <label>Description</label>
-            <input type="text" ng-model="$ctrl.experiment.description">
+            <input type="text"
+                   ng-model="$ctrl.experiment.description"
+                   ng-model-options="{debounce: 500}"
+                   ng-change="$ctrl.updateDescription()">
         </md-input-container>
     </div>
 
