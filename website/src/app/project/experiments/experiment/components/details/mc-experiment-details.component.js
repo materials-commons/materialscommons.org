@@ -7,9 +7,5 @@ angular.module('materialscommons').component('mcExperimentDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentDetailsComponentController($scope) {
-    $scope.editorOptions = {
-        height: '30vh',
-        width: '84vw'
-    };
+function MCExperimentDetailsComponentController() {
 }

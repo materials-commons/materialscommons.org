@@ -1,90 +1,75 @@
-<div style="overflow: auto; max-height: 80vh" ng-if="$ctrl.showStepMaximized()">
-    <md-content layout="column" flex="95">
-        <mc-experiment-task-details step="$ctrl.getCurrentStep()" editor-options="$ctrl.editorOptionsMaximized">
-        </mc-experiment-task-details>
-    </md-content>
-</div>
-<div ng-if="!$ctrl.showStepMaximized()" layout="column" layout-align="start stretch" flex stylex="overflow: hidden">
-    <div layout="row" flex layout-align="start stretch">
-        <md-sidenav flex="40" md-is-locked-open="true"
-                    style="margin-right: 8px">
-            <textarea ckeditor="editorOptions" ng-model="$ctrl.experiment.notes"></textarea>
-        </md-sidenav>
-
-        <div layout="column" flex md-whiteframe>
-            <md-toolbar>
-                <div layout="row" layout-align="start center" layout-padding>
-                    <div flex="50" layout="row" layout="space-between center">
-                        <md-menu-bar>
-                            <md-menu>
-                                <button ng-click="$mdOpenMenu()" class="md-button">Organize</button>
-                                <md-menu-content width="3">
-                                    <md-menu-item>
-                                        <md-button ng-click="$ctrl.moveLeft()">
+<div layout="column" flex md-whiteframe>
+    <md-toolbar>
+        <div layout="row" layout-align="start center" layout-padding>
+            <div flex="50" layout="row" layout="space-between center">
+                <md-menu-bar>
+                    <md-menu>
+                        <button ng-click="$mdOpenMenu()" class="md-button">Organize</button>
+                        <md-menu-content width="3">
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.moveLeft()">
                                         <span class="text-uppercase"><i
                                                 class="fa fa-fw fa-arrow-left"></i>Move Left</span>
-                                        </md-button>
-                                    </md-menu-item>
+                                </md-button>
+                            </md-menu-item>
 
-                                    <md-menu-item>
-                                        <md-button ng-click="$ctrl.moveRight()">
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.moveRight()">
                                         <span class="text-uppercase"><i
                                                 class="fa fa-fw fa-arrow-right"></i>Move Right</span>
-                                        </md-button>
-                                    </md-menu-item>
+                                </md-button>
+                            </md-menu-item>
 
-                                    <md-menu-item>
-                                        <md-button ng-click="$ctrl.moveUp()">
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.moveUp()">
                                             <span class="text-uppercase"><i
                                                     class="fa fa-fw fa-arrow-up"></i>Move Up</span>
-                                        </md-button>
-                                    </md-menu-item>
+                                </md-button>
+                            </md-menu-item>
 
-                                    <md-menu-item>
-                                        <md-button ng-click="$ctrl.moveDown()">
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.moveDown()">
                                         <span class="text-uppercase"><i
                                                 class="fa fa-fw fa-arrow-down"></i>Move Down</span>
-                                        </md-button>
-                                    </md-menu-item>
-                                </md-menu-content>
-                            </md-menu>
-                            <md-menu>
-                                <button class="md-button" ng-click="$mdOpenMenu()">View</button>
-                                <md-menu-content width="3">
-                                    <md-menu-item>
-                                        <md-button ng-click="$ctrl.expandAll()">
-                                            <span class="text-uppercase">Expand all</span>
-                                        </md-button>
-                                    </md-menu-item>
-                                    <md-menu-item>
-                                        <md-button ng-click="$ctrl.collapseAll()">
-                                            <span class="text-uppercase">Collapse all</span>
-                                        </md-button>
-                                    </md-menu-item>
-                                    <md-menu-divider></md-menu-divider>
-                                    <md-menu-item>
-                                        <md-button ng-click="$ctrl.openAll()">
-                                            <span class="text-uppercase">Open All</span>
-                                        </md-button>
-                                    </md-menu-item>
-                                    <md-menu-item>
-                                        <md-button ng-click="$ctrl.closeAll()">
-                                            <span class="text-uppercase">Close All</span>
-                                        </md-button>
-                                    </md-menu-item>
-                                </md-menu-content>
-                            </md-menu>
-                        </md-menu-bar>
-                    </div>
-                </div>
-            </md-toolbar>
-
-            <div flex>
-                <mc-experiment-tasks-list current-step="$ctrl.currentStep"
-                                          current-node="$ctrl.currentNode"
-                                          experiment="$ctrl.experiment">
-                </mc-experiment-tasks-list>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    <md-menu>
+                        <button class="md-button" ng-click="$mdOpenMenu()">View</button>
+                        <md-menu-content width="3">
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.expandAll()">
+                                    <span class="text-uppercase">Expand all</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.collapseAll()">
+                                    <span class="text-uppercase">Collapse all</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-divider></md-menu-divider>
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.openAll()">
+                                    <span class="text-uppercase">Open All</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.closeAll()">
+                                    <span class="text-uppercase">Close All</span>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </md-menu-bar>
             </div>
         </div>
+    </md-toolbar>
+
+    <div flex>
+        <mc-experiment-tasks-list current-step="$ctrl.currentStep"
+                                  current-node="$ctrl.currentNode"
+                                  experiment="$ctrl.experiment">
+        </mc-experiment-tasks-list>
     </div>
 </div>
