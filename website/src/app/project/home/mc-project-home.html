@@ -1,4 +1,4 @@
-<div layout="row" layout-align="start stretch">
+<div layout="row" layout-fill layout-align="start stretch">
     <md-sidenav md-is-locked-open="true" flex="30" layout-margin>
         {{$ctrl.project.name}}
         {{$ctrl.project.description}}
@@ -11,8 +11,8 @@
                 <md-radio-button value="on-hold" class="md-warn">On Hold Experiments</md-radio-button>
             </md-radio-group>
         </div>
-        <md-content layout="column" layout-align="start stretch" flex>
-            <div layout="row">
+        <md-column layout="column" layout-align="start stretch" flex>
+            <div layout="row" layout-wrap>
                 <div flex="45" flex-md="60" flex-sm="60"
                      ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.whichExperiments} | orderBy:'name'">
                     <md-card class="experiment-card"
@@ -36,6 +36,6 @@
             <!--<div>-->
             <!--<mc-project-samples samples="$ctrl.project.samples"></mc-project-samples>-->
             <!--</div>-->
-        </md-content>
+        </md-column>
     </div>
 </div>
