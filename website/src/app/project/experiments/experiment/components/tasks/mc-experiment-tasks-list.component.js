@@ -15,8 +15,12 @@ angular.module('materialscommons').component('mcExperimentTasksList', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksListComponentController() {
+function MCExperimentTasksListComponentController(experimentsService, toast, $stateParams) {
     let ctrl = this;
+    ctrl.treeOptions = {
+        dropped: onDrop
+    };
+
     ctrl.$onInit = () => {
         var treeModel = new TreeModel({childrenPropertyName: 'steps'}),
             root = treeModel.parse(ctrl.experiment);
@@ -27,6 +31,25 @@ function MCExperimentTasksListComponentController() {
         });
         ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
     };
+
+    function onDrop(event) {
+        let srcIndex = event.source.index,
+            dstStep = event.dest.nodesScope.$modelValue[srcIndex],
+            step = event.source.nodeScope.$modelValue,
+            srcStepIndex = step.index;
+        step.index = dstStep.index;
+        dstStep.index = srcStepIndex;
+        let swapArgs = {
+            step_id: dstStep.id
+        };
+        experimentsService
+            .updateStep($stateParams.project_id, $stateParams.experiment_id, step.id, {swap: swapArgs})
+            .then(
+                () => null,
+                () => toast.error('Failed to update step')
+            );
+
+    }
 }
 
 angular.module('materialscommons').directive('mcExperimentTasksListDir', MCExperimentTasksListDirDirective);
