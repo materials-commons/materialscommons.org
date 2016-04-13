@@ -135,10 +135,13 @@ module.exports = function(schema) {
                     nullable: true
                 }
             },
-            index: {
-                type: 'integer',
+
+            swap: {
                 nullable: true,
-                min: 0
+                step_id: {
+                    type: 'string',
+                    nullable: true
+                }
             }
         });
 
