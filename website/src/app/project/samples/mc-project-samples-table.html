@@ -14,7 +14,7 @@
             </thead>
             <tbody md-body>
             <tr md-row class="md-row-hover pointer"
-                ng-repeat="sample in $ctrl.samples | filter:$ctrl.query | orderBy:$ctrl.sortOrder">
+                ng-repeat="sample in $ctrl.samples | filter:$ctrl.filterBy | orderBy:$ctrl.sortOrder">
                 <td md-cell>
                     <a class="md-primary" ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
                 </td>
