@@ -16,6 +16,10 @@ md-toast.md-error-theme .md-toast-content {
   background-color: $mc-color-error-dark;
 }
 
+.mc-md-primary-color {
+  color: #1565c0;
+}
+
 .mc-light-grey-bg {
   background-color: $mc-light-grey;
 }
@@ -174,6 +178,15 @@ md-checkbox.md-checked.mc-done .md-icon {
   background-color: $mc-color-done;
 }
 
+// Attempt to set the radio-button color (not working)
+//.mc-radio-done md-radio-button, md-radio-button.md-checked ._md-off {
+//  border-color: $mc-color-done;
+//}
+//
+//.mc-radio-done md-radio-button, md-radio-button.md-checked ._md-on {
+//  background-color: $mc-color-done;
+//}
+
 .overflow-hidden {
   overflow: hidden;
 }
@@ -216,4 +229,10 @@ md-checkbox.md-checked.mc-done .md-icon {
   color: white;
   //background-color: $mc-md-primary-color;
   background-color: #2196f3;
+}
+
+.experiment-card {
+  border-left: 4px solid $mc-md-primary-color;
+  background-color: $mc-light-grey;
+  cursor: pointer;
 }
