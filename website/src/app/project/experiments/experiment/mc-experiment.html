@@ -1,0 +1,14 @@
+<div layout="column" layout-fill layout-margin>
+    <div layout="row" layout-align="start center">
+        <div flex-offset="20" class="md-title">
+            Experiment: {{$ctrl.experiment.name}}
+        </div>
+    </div>
+    <div layout="row" layout-margin>
+        <mc-experiment-sidenav></mc-experiment-sidenav>
+        <md-sidenav flex="40" md-is-locked-open="true">
+            <textarea ckeditor="editorOptions" ng-model="$ctrl.experiment.notes"></textarea>
+        </md-sidenav>
+        <ui-view flex></ui-view>
+    </div>
+</div>
