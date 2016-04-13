@@ -7,27 +7,14 @@ angular.module('materialscommons').component('mcExperimentTasks', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksComponentController($scope, $stateParams, moveStep, currentStep,
-                                              experimentsService, toast) {
+function MCExperimentTasksComponentController($scope, moveStep, currentStep) {
     let ctrl = this;
 
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
-        ctrl.showSidebar = false;
         ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
         currentStep.set(ctrl.experiment.steps[0]);
         ctrl.currentStep = currentStep.get();
-
-        $scope.editorOptions = {
-            height: '68vh',
-            width: '35vw',
-            uiColor: '#f4f5f7'
-        };
-
-        ctrl.editorOptionsMaximized = {
-            height: '55vh',
-            width: '93vw'
-        };
     };
 
     ctrl.moveLeft = () => moveStep.left(ctrl.currentNode, currentStep.get(), ctrl.experiment);
@@ -45,24 +32,6 @@ function MCExperimentTasksComponentController($scope, $stateParams, moveStep, cu
     ctrl.openAll = openAll;
     ctrl.closeAll = closeAll;
     ctrl.getCurrentStep = () => currentStep.get();
-
-    ctrl.updateName = (name) => {
-        experimentsService
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id, {name: name})
-            .then(
-                () => null,
-                () => toast.error('Failed to update experiment name')
-            );
-    };
-
-    ctrl.updateDescription = (description) => {
-        experimentsService
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id, {description: description})
-            .then(
-                () => null,
-                () => toast.error('Failed to update experiment description')
-            );
-    };
 
     function openAll() {
         var treeModel = new TreeModel({childrenPropertyName: 'steps'}),
