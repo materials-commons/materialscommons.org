@@ -37,7 +37,6 @@
     "angular-material-data-table": "~0.9.11",
     "angular-ui-tree": "~2.15.0",
     "angular-recursion": "~1.0.5",
-    "ckeditor": "~4.5.7",
     "ng-ckeditor": "~0.2.1",
     "angularUtils-pagination": "angular-utils-pagination#~0.11.1"
   }
