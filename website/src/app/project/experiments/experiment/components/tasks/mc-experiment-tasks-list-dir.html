@@ -24,11 +24,11 @@
             <div class="align-step-element" data-nodrag>
                 <i class="fa fa-fw cursor-pointer no-outline fa-angle-double-right"
                    ng-click="$ctrl.toggleOpenDetails($event)">
-                    <md-tooltip md-delay="750">Open Details</md-tooltip>
+                    <!--<md-tooltip md-delay="750">Open Details</md-tooltip>-->
                 </i>
                 <a ng-click="$ctrl.addToExperimentNote()">
                     <i class="fa fa-fw fa-plus"></i>
-                    <md-tooltip md-delay="750">Add To Experiment Note</md-tooltip>
+                    <!--<md-tooltip md-delay="750">Add To Experiment Note</md-tooltip>-->
                 </a>
                 <i class="fa fa-fw fa-flag cursor-pointer {{::$ctrl.step.displayState.flags.reviewClass}}"
                    ng-click="$ctrl.toggleFlag('review', $event)">
@@ -36,7 +36,7 @@
                 </i>
                 <i class="fa fa-fw fa-exclamation-triangle cursor-pointer {{::$ctrl.step.displayState.flags.errorClass}}"
                    ng-click="$ctrl.toggleFlag('error', $event)">
-                    <md-tooltip md-delay="500">Error</md-tooltip>
+                    <!--<md-tooltip md-delay="500">Error</md-tooltip>-->
                 </i>
                 <i class="fa fa-fw fa-exclamation-circle cursor-pointer {{::$ctrl.step.displayState.flags.importantClass}}"
                    ng-click="$ctrl.toggleFlag('important', $event)">
@@ -44,7 +44,7 @@
                 </i>
                 <a class="mc-error-color" ng-click="$ctrl.remove(this)">
                     <i class="fa fa-fw fa-remove"></i>
-                    <md-tooltip md-delay="500">Delete Task</md-tooltip>
+                    <!--<md-tooltip md-delay="500">Delete Task</md-tooltip>-->
                 </a>
             </div>
         </div>

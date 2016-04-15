@@ -1,17 +1,15 @@
 angular.module('materialscommons').component('mcExperimentTasks', {
     templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks.html',
-    controller: MCExperimentTasksComponentController,
-    bindings: {
-        experiment: '='
-    }
+    controller: MCExperimentTasksComponentController
 });
 
 /*@ngInject*/
-function MCExperimentTasksComponentController($scope, moveStep, currentStep) {
+function MCExperimentTasksComponentController($scope, moveStep, currentStep, currentExperiment) {
     let ctrl = this;
 
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
+        ctrl.experiment = currentExperiment.get();
         ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
         currentStep.set(ctrl.experiment.steps[0]);
         ctrl.currentStep = currentStep.get();
