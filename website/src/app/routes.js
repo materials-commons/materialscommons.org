@@ -87,11 +87,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment', {
             url: '/experiment/:experiment_id',
-            template: `<mc-experiment experiment="ctrl.experiment"></mc-experiment>`,
+            template: `<mc-experiment></mc-experiment>`,
             controllerAs: 'ctrl',
-            controller: ['experiment', function(experiment) {
-                let ctrl = this;
-                ctrl.experiment = experiment;
+            controller: ['experiment', 'currentExperiment', function(experiment, currentExperiment) {
+                currentExperiment.set(experiment);
             }],
             resolve: {
                 experiment: ['experimentsService', 'toast', 'toUIStep', '$stateParams', 'currentExperiment',
@@ -119,11 +118,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.tasks', {
             url: '/tasks',
-            template: '<mc-experiment-tasks experiment="ctrl.experiment"></mc-experiment-tasks>',
-            controllerAs: 'ctrl',
-            controller: ['experiment', function(experiment) {
-                this.experiment = experiment;
-            }]
+            template: '<mc-experiment-tasks></mc-experiment-tasks>'
         })
         .state('project.experiment.forecast', {
             url: '/forecast',
