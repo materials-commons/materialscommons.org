@@ -1,14 +1,12 @@
 angular.module('materialscommons').component('mcExperiment', {
     templateUrl: 'app/project/experiments/experiment/mc-experiment.html',
-    controller: MCExperimentComponentController,
-    bindings: {
-        experiment: '='
-    }
+    controller: MCExperimentComponentController
 });
 
 /*@ngInject*/
-function MCExperimentComponentController($scope, $stateParams, experimentsService, toast) {
+function MCExperimentComponentController($scope, $stateParams, experimentsService, currentExperiment, toast) {
     let ctrl = this;
+    ctrl.experiment = currentExperiment.get();
     let lastNotes = ctrl.experiment.notes;
 
     $scope.editorOptions = {

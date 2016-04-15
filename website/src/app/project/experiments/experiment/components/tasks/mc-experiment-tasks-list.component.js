@@ -9,17 +9,18 @@ angular.module('materialscommons').component('mcExperimentTasksList', {
     templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks-list.html',
     controller: MCExperimentTasksListComponentController,
     bindings: {
-        experiment: '=',
         currentNode: '='
     }
 });
 
 /*@ngInject*/
-function MCExperimentTasksListComponentController(experimentsService, toast, $stateParams) {
+function MCExperimentTasksListComponentController(experimentsService, toast, $stateParams, currentExperiment) {
     let ctrl = this;
     ctrl.treeOptions = {
         dropped: onDrop
     };
+
+    ctrl.experiment = currentExperiment.get();
 
     ctrl.$onInit = () => {
         var treeModel = new TreeModel({childrenPropertyName: 'steps'}),
