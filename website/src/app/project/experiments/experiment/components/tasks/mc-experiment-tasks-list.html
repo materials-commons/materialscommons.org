@@ -1,4 +1,8 @@
 <div layout="column" layout-margin style="max-height: 68vh;">
+    <div layout="row" layout-align="start center">
+        <span flex-offset="15">Task</span>
+        <span flex-offset="35">Template</span>
+    </div>
     <md-content ui-tree="$ctrl.treeOptions" id="tree-root" ng-if="$ctrl.experiment.steps.length">
         <ol ui-tree-nodes ng-model="$ctrl.experiment.steps">
             <li dir-paginate="step in $ctrl.experiment.steps | itemsPerPage:10" flex="95" ui-tree-node>
