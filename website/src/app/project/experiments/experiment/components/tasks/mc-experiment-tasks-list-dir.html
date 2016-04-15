@@ -11,37 +11,34 @@
                              ng-model="step.flags.done"
                              aria-label="done">
                 </md-checkbox>
-                <input size="40" type="text" data-nodrag
+                <input size="30" type="text" data-nodrag
                        ng-model="$ctrl.step.name"
                        ng-model-options="{debounce: 1000}"
                        ng-change="$ctrl.onNameChange()"
                        placeholder="Untitled Task..."
                        class="mc-input-no-border align-step-element"
                        id="{{::$ctrl.step.id}}">
+                <input size="20" type="text" placeholder="Template..." data-nodrag
+                       class="mc-input-no-border" disabled>
                 <!--<span ng-show="$ctrl.step.flags.done"-->
-                      <!--class="mark-text-done align-step-element">{{::$ctrl.step.name}}</span>-->
+                <!--class="mark-text-done align-step-element">{{::$ctrl.step.name}}</span>-->
             </div>
             <div class="align-step-element" data-nodrag>
-                <i class="fa fa-fw cursor-pointer no-outline fa-angle-double-right"
-                   ng-click="$ctrl.toggleOpenDetails($event)">
-                    <!--<md-tooltip md-delay="750">Open Details</md-tooltip>-->
-                </i>
                 <a ng-click="$ctrl.addToExperimentNote()">
                     <i class="fa fa-fw fa-plus"></i>
                     <!--<md-tooltip md-delay="750">Add To Experiment Note</md-tooltip>-->
                 </a>
                 <i class="fa fa-fw fa-flag cursor-pointer {{::$ctrl.step.displayState.flags.reviewClass}}"
                    ng-click="$ctrl.toggleFlag('review', $event)">
-                    <md-tooltip md-delay="750">Review</md-tooltip>
                 </i>
-                <i class="fa fa-fw fa-exclamation-triangle cursor-pointer {{::$ctrl.step.displayState.flags.errorClass}}"
-                   ng-click="$ctrl.toggleFlag('error', $event)">
-                    <!--<md-tooltip md-delay="500">Error</md-tooltip>-->
-                </i>
-                <i class="fa fa-fw fa-exclamation-circle cursor-pointer {{::$ctrl.step.displayState.flags.importantClass}}"
-                   ng-click="$ctrl.toggleFlag('important', $event)">
-                    <md-tooltip md-delay="500">Important</md-tooltip>
-                </i>
+                <!--<i class="fa fa-fw fa-exclamation-triangle cursor-pointer {{::$ctrl.step.displayState.flags.errorClass}}"-->
+                <!--ng-click="$ctrl.toggleFlag('error', $event)">-->
+                <!--&lt;!&ndash;<md-tooltip md-delay="500">Error</md-tooltip>&ndash;&gt;-->
+                <!--</i>-->
+                <!--<i class="fa fa-fw fa-exclamation-circle cursor-pointer {{::$ctrl.step.displayState.flags.importantClass}}"-->
+                <!--ng-click="$ctrl.toggleFlag('important', $event)">-->
+                <!--<md-tooltip md-delay="500">Important</md-tooltip>-->
+                <!--</i>-->
                 <a class="mc-error-color" ng-click="$ctrl.remove(this)">
                     <i class="fa fa-fw fa-remove"></i>
                     <!--<md-tooltip md-delay="500">Delete Task</md-tooltip>-->
@@ -49,12 +46,4 @@
             </div>
         </div>
     </div>
-    <!--<div ng-if="$ctrl.step.displayState.open" data-nodrag flex-offset="5" layout="column">-->
-    <!--<mc-experiment-task-details step="$ctrl.step" editor-options="$ctrl.editorOptions" ng-cloak>-->
-    <!--</mc-experiment-task-details>-->
-    <!--</div>-->
-    <!--<ol ui-tree-xx-nodes="" ng-model="$ctrl.step.steps" ng-classx="{hidden: collapsed}">-->
-    <!--<li ng-repeat="step in $ctrl.step.steps track by step.id" ui-tree-xx-node>-->
-    <!--</li>-->
-    <!--</ol>-->
 </div>
