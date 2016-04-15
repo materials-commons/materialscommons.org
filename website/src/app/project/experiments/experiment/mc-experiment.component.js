@@ -7,6 +7,8 @@ angular.module('materialscommons').component('mcExperiment', {
 function MCExperimentComponentController($scope, $stateParams, experimentsService, currentExperiment, toast) {
     let ctrl = this;
     ctrl.experiment = currentExperiment.get();
+    ctrl.show = 'task';
+
     let lastNotes = ctrl.experiment.notes;
 
     $scope.editorOptions = {

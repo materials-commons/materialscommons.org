@@ -1,11 +1,21 @@
 <div layout="column" layout-fill layout-margin>
-    <div layout="row" layout-align="start center">
-        <div flex-offset="20" class="md-title">
+    <div layout="row" flex="80" layout-align="start center">
+        <div class="md-title" flex-offset="20" style="margin-top:4px; margin-bottom:4px">
             Experiment: {{$ctrl.experiment.name}}
         </div>
+        <md-radio-group flex-offset="5" flex="25" layout="row" class="text-uppercase"
+                        ng-modelx="$ctrl.whichExperiments" ng-model="$ctrl.show">
+            <md-radio-button value="task" class="md-primary">View Task Details</md-radio-button>
+            <md-radio-button value="note" class="md-primary">View Note</md-radio-button>
+        </md-radio-group>
+        <md-button ng-show="$ctrl.show === 'note'" class="md-primary" flex-offset="20"
+                   style="margin-top:0; margin-bottom:0">
+            Select Note
+        </md-button>
     </div>
     <div layout="row" layout-margin>
         <mc-experiment-sidenav></mc-experiment-sidenav>
+        <ui-view flex></ui-view>
         <md-sidenav flex="40" md-is-locked-open="true">
             <textarea ckeditor="editorOptions"
                       ng-model="$ctrl.experiment.notes"
@@ -13,6 +23,5 @@
                       ng-change="$ctrl.updateNotes()">
             </textarea>
         </md-sidenav>
-        <ui-view flex></ui-view>
     </div>
 </div>
