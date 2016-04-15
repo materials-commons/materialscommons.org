@@ -1,7 +1,7 @@
 <div layout="column" flex md-whiteframe>
     <md-toolbar>
         <div layout="row" layout-align="start center">
-            <div flex="50" layout="row" layout="space-between center">
+
                 <md-menu-bar>
                     <md-menu>
                         <button ng-click="$mdOpenMenu()" class="md-button">Organize</button>
@@ -62,7 +62,17 @@
                         </md-menu-content>
                     </md-menu>
                 </md-menu-bar>
-            </div>
+
+            <md-radio-group layout="row" class="text-uppercase"
+                            ng-modelx="$ctrl.whichExperiments" ng-model="$ctrl.show">
+                <md-radio-button value="task" class="md-subhead">View Task Details</md-radio-button>
+                <md-radio-button value="note" class="md-subhead">View Note</md-radio-button>
+            </md-radio-group>
+            <span flex></span>
+            <md-button ng-show="$ctrl.show === 'note'" class="md-primary"
+                       stylex="margin-top:0; margin-bottom:0">
+                <span class="text-white">Select Note</span>
+            </md-button>
         </div>
     </md-toolbar>
 

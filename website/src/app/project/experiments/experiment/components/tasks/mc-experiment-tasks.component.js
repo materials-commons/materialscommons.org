@@ -6,6 +6,7 @@ angular.module('materialscommons').component('mcExperimentTasks', {
 /*@ngInject*/
 function MCExperimentTasksComponentController($scope, moveStep, currentStep, currentExperiment) {
     let ctrl = this;
+    ctrl.show = 'note';
 
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
