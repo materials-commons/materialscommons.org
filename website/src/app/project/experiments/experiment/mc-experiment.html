@@ -1,13 +1,13 @@
-<div layout="column" layout-fill layout-margin>
+<div layout="column" layout-fill style="margin-top:10px">
     <div layout="row" flex="80" layout-align="start center">
         <div class="md-title" flex-offset="20">
             Experiment: {{$ctrl.experiment.name}}
         </div>
     </div>
-    <div layout="row" layout-margin>
+    <div layout="row">
         <mc-experiment-sidenav></mc-experiment-sidenav>
-        <ui-view flex></ui-view>
-        <md-sidenav flex="40" md-is-locked-open="true">
+        <ui-view flex style="margin-left:10px; margin-right:10px"></ui-view>
+        <md-sidenav flex="45" md-is-locked-open="true">
             <textarea ckeditor="editorOptions"
                       ng-model="$ctrl.experiment.notes"
                       ng-model-options="{debounce: 1000}"
