@@ -11,8 +11,8 @@ function MCExperimentComponentController($scope, $stateParams, experimentsServic
     let lastNotes = ctrl.experiment.notes;
 
     $scope.editorOptions = {
-        height: '68vh',
-        width: '38vw',
+        height: '67vh',
+        width: '43vw',
         uiColor: '#f4f5f7'
     };
 

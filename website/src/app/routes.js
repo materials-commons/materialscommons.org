@@ -152,9 +152,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 this.experiment = experiment;
             }]
         })
-        .state('project.experiment.today', {
+        .state('project.experiment.notes', {
             url: '/today',
-            template: '<mc-experiment-today experiment="ctrl.experiment"></mc-experiment-today>',
+            template: '<mc-experiment-notes experiment="ctrl.experiment"></mc-experiment-notes>',
             controllerAs: 'ctrl',
             controller: ['experiment', function(experiment) {
                 this.experiment = experiment;
