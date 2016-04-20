@@ -7,8 +7,14 @@ angular.module('materialscommons').component('mcExperimentDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentDetailsComponentController($stateParams, experimentsService, toast) {
+function MCExperimentDetailsComponentController($stateParams, experimentsService, toast, $scope) {
     let ctrl = this;
+
+    $scope.editorOptions = {
+        height: '67vh',
+        width: '41vw',
+        uiColor: '#f4f5f7'
+    };
 
     ctrl.updateName = () => {
         experimentsService
@@ -27,6 +33,25 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment description')
+            );
+    };
+
+    let lastNote = ctrl.experiment.note;
+
+    ctrl.updateNote = () => {
+        if (!ctrl.experiment.note) {
+            ctrl.experiment.note = '';
+        }
+
+        if (lastNote === ctrl.experiment.note) {
+            return;
+        }
+
+        experimentsService
+            .updateForProject($stateParams.project_id, $stateParams.experiment_id, {note: ctrl.experiment.note})
+            .then(
+                () => null,
+                () => toast.error('Failed to update note')
             );
     };
 }

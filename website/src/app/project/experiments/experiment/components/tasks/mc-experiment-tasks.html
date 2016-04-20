@@ -1,90 +1,95 @@
-<div layout="column" flex md-whiteframe>
-    <md-toolbar layout="column">
-        <div layout="row" layout-align="start center">
-            <md-menu-bar>
-                <md-menu>
-                    <button ng-click="$mdOpenMenu()" class="md-button">Organize</button>
-                    <md-menu-content width="3">
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.moveLeft()">
+<div layout="row">
+    <div layout="column" flex md-whiteframe style="margin-right:10px">
+        <md-toolbar layout="column">
+            <div layout="row" layout-align="start center">
+                <md-menu-bar>
+                    <md-menu>
+                        <button ng-click="$mdOpenMenu()" class="md-button">Organize</button>
+                        <md-menu-content width="3">
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.moveLeft()">
                                         <span class="text-uppercase"><i
                                                 class="fa fa-fw fa-arrow-left"></i>Move Left</span>
-                            </md-button>
-                        </md-menu-item>
+                                </md-button>
+                            </md-menu-item>
 
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.moveRight()">
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.moveRight()">
                                         <span class="text-uppercase"><i
                                                 class="fa fa-fw fa-arrow-right"></i>Move Right</span>
-                            </md-button>
-                        </md-menu-item>
+                                </md-button>
+                            </md-menu-item>
 
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.moveUp()">
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.moveUp()">
                                             <span class="text-uppercase"><i
                                                     class="fa fa-fw fa-arrow-up"></i>Move Up</span>
-                            </md-button>
-                        </md-menu-item>
+                                </md-button>
+                            </md-menu-item>
 
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.moveDown()">
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.moveDown()">
                                         <span class="text-uppercase"><i
                                                 class="fa fa-fw fa-arrow-down"></i>Move Down</span>
-                            </md-button>
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
-                <md-menu>
-                    <button class="md-button" ng-click="$mdOpenMenu()">View</button>
-                    <md-menu-content width="3">
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.expandAll()">
-                                <span class="text-uppercase">Expand all</span>
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.collapseAll()">
-                                <span class="text-uppercase">Collapse all</span>
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-divider></md-menu-divider>
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.openAll()">
-                                <span class="text-uppercase">Open All</span>
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.closeAll()">
-                                <span class="text-uppercase">Close All</span>
-                            </md-button>
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
-            </md-menu-bar>
-            <md-button>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    <md-menu>
+                        <button class="md-button" ng-click="$mdOpenMenu()">View</button>
+                        <md-menu-content width="3">
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.expandAll()">
+                                    <span class="text-uppercase">Expand all</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.collapseAll()">
+                                    <span class="text-uppercase">Collapse all</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-divider></md-menu-divider>
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.openAll()">
+                                    <span class="text-uppercase">Open All</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.closeAll()">
+                                    <span class="text-uppercase">Close All</span>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </md-menu-bar>
+                <md-button>
                 <span class="text-white">
                     <i class="fa fa-fw fa-plus"></i>
                     Add Task
                 </span>
-            </md-button>
-            <md-button>
+                </md-button>
+                <md-button>
                 <span class="text-white">
                     <i class="fa fa-fw fa-sticky-note"></i>
                     Quick Note
                 </span>
-            </md-button>
-        </div>
-        <div layout="row" layout-align="start center" class="text-uppercase md-subhead task-filter">
-            <span class="md-button">Filter By:</span>
-            <i class="fa fa-fw fa-star-o"></i>
-            <i class="fa fa-fw fa-flag-o"></i>
-            <i class="fa fa-fw fa-check-square-o"></i>
-        </div>
-    </md-toolbar>
+                </md-button>
+            </div>
+            <div layout="row" layout-align="start center" class="text-uppercase md-subhead task-filter">
+                <span class="md-button">Filter By:</span>
+                <i class="fa fa-fw fa-star-o"></i>
+                <i class="fa fa-fw fa-flag-o"></i>
+                <i class="fa fa-fw fa-check-square-o"></i>
+            </div>
+        </md-toolbar>
 
-    <div flex>
-        <mc-experiment-tasks-list current-task="$ctrl.currentTask"
-                                  current-node="$ctrl.currentNode">
-        </mc-experiment-tasks-list>
+        <div layout="row" flex>
+            <mc-experiment-tasks-list current-task="$ctrl.currentTask"
+                                      current-node="$ctrl.currentNode">
+            </mc-experiment-tasks-list>
+        </div>
     </div>
+    <md-sidenav flex="45" md-is-locked-open="true">
+            Task details here
+    </md-sidenav>
 </div>

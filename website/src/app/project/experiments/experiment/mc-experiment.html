@@ -6,13 +6,6 @@
     </div>
     <div layout="row">
         <mc-experiment-sidenav></mc-experiment-sidenav>
-        <ui-view flex style="margin-left:10px; margin-right:10px"></ui-view>
-        <md-sidenav flex="45" md-is-locked-open="true">
-            <textarea ckeditor="editorOptions"
-                      ng-model="$ctrl.experiment.notes"
-                      ng-model-options="{debounce: 1000}"
-                      ng-change="$ctrl.updateNotes()">
-            </textarea>
-        </md-sidenav>
+        <ui-view flex style="margin-left:10px;"></ui-view>
     </div>
 </div>

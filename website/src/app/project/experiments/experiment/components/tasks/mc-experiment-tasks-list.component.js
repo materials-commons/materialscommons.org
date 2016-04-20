@@ -49,7 +49,6 @@ function MCExperimentTasksListComponentController(experimentsService, toast, $st
                 () => null,
                 () => toast.error('Failed to update task')
             );
-
     }
 }
 
