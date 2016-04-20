@@ -44,14 +44,14 @@ module.exports = function(model) {
 
     router.get('/projects/:project_id/experiments', validateProjectAccess, experiments.getAllExperimentsForProject);
     router.get('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.getExperiment);
-    router.get('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.getExperimentStep);
+    router.get('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.getExperimentTask);
     router.post('/projects/:project_id/experiments', validateProjectAccess, experiments.createExperiment);
     router.delete('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.deleteExperiment);
-    router.post('/projects/:project_id/experiments/:experiment_id/step', validateProjectAccess, experiments.createExperimentStep);
-    router.post('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.createExperimentStep);
+    router.post('/projects/:project_id/experiments/:experiment_id/tasks', validateProjectAccess, experiments.createExperimentTask);
+    router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.createExperimentTask);
     router.put('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.updateExperiment);
-    router.put('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.updateExperimentStep);
-    router.delete('/projects/:project_id/experiments/:experiment_id/step/:step_id', validateProjectAccess, experiments.deleteExperimentStep);
+    router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.updateExperimentTask);
+    router.delete('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.deleteExperimentTask);
 
     router.put('/users/:project_id', users.update);
 

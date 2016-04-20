@@ -23,31 +23,31 @@ function MCExperimentTasksListComponentController(experimentsService, toast, $st
     ctrl.experiment = currentExperiment.get();
 
     ctrl.$onInit = () => {
-        var treeModel = new TreeModel({childrenPropertyName: 'steps'}),
+        var treeModel = new TreeModel({childrenPropertyName: 'tasks'}),
             root = treeModel.parse(ctrl.experiment);
         root.walk((node) => {
             if (node.model.displayState) {
                 node.model.displayState.selectedClass = '';
             }
         });
-        ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
+        ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
     };
 
     function onDrop(event) {
         let srcIndex = event.source.index,
-            dstStep = event.dest.nodesScope.$modelValue[srcIndex],
-            step = event.source.nodeScope.$modelValue,
-            srcStepIndex = step.index;
-        step.index = dstStep.index;
-        dstStep.index = srcStepIndex;
+            dstTask = event.dest.nodesScope.$modelValue[srcIndex],
+            task = event.source.nodeScope.$modelValue,
+            srcTaskIndex = task.index;
+        task.index = dstTask.index;
+        dstTask.index = srcTaskIndex;
         let swapArgs = {
-            step_id: dstStep.id
+            task_id: dstTask.id
         };
         experimentsService
-            .updateStep($stateParams.project_id, $stateParams.experiment_id, step.id, {swap: swapArgs})
+            .updateTask($stateParams.project_id, $stateParams.experiment_id, task.id, {swap: swapArgs})
             .then(
                 () => null,
-                () => toast.error('Failed to update step')
+                () => toast.error('Failed to update task')
             );
 
     }
@@ -60,7 +60,7 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
     return {
         restrict: 'E',
         scope: {
-            step: '='
+            task: '='
         },
         controller: MCExperimentTasksListDirDirectiveController,
         controllerAs: '$ctrl',
@@ -75,67 +75,67 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 
 /*@ngInject*/
 function MCExperimentTasksListDirDirectiveController($stateParams, experimentsService, toast,
-                                                     currentStep, toUIStep, focus, currentExperiment,
+                                                     currentTask, toUITask, focus, currentExperiment,
                                                      paginationService) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
     ctrl.experiment = currentExperiment.get();
 
     function setCurrent(node, event) {
-        $('.mc-experiment-outline-step').removeClass('step-selected');
-        $(event.currentTarget).addClass('step-selected');
-        //ctrl.currentStep = step;
-        currentStep.set(ctrl.step);
+        $('.mc-experiment-outline-task').removeClass('task-selected');
+        $(event.currentTarget).addClass('task-selected');
+        //ctrl.currentTask = task;
+        currentTask.set(ctrl.task);
         //ctrl.currentNode = node;
     }
 
     ctrl.toggleFlag = (whichFlag, event) => {
         // toggle flag and then get its value so we know
         // what classes to add/remove.
-        ctrl.step.flags[whichFlag] = !ctrl.step.flags[whichFlag];
+        ctrl.task.flags[whichFlag] = !ctrl.task.flags[whichFlag];
         let flagColorClass = 'mc-' + whichFlag + '-color';
-        let flag = ctrl.step.flags[whichFlag];
+        let flag = ctrl.task.flags[whichFlag];
         if (flag) {
             // Toggled to on, remove dark grey and add in class for specific flag
-            ctrl.step.displayState.flags[whichFlag + 'Class'] = flagColorClass;
+            ctrl.task.displayState.flags[whichFlag + 'Class'] = flagColorClass;
             $(event.target).removeClass('mc-flag-not-set');
             $(event.target).addClass(flagColorClass);
         } else {
-            ctrl.step.displayState.flags[whichFlag + 'Class'] = 'mc-flag-not-set';
+            ctrl.task.displayState.flags[whichFlag + 'Class'] = 'mc-flag-not-set';
             $(event.target).removeClass(flagColorClass);
             $(event.target).addClass('mc-flag-not-set');
         }
 
         experimentsService
-            .updateStep($stateParams.project_id, $stateParams.experiment_id, ctrl.step.id, {flags: ctrl.step.flags})
+            .updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id, {flags: ctrl.task.flags})
             .then(
                 () => null,
-                () => toast.error('Failed to update step')
+                () => toast.error('Failed to update task')
             );
     };
 
     ctrl.onNameChange = () => {
         experimentsService
-            .updateStep($stateParams.project_id, $stateParams.experiment_id, ctrl.step.id, {name: ctrl.step.name})
+            .updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id, {name: ctrl.task.name})
             .then(
                 () => null,
-                () => toast.error('Failed to update step')
+                () => toast.error('Failed to update task')
             );
     };
 
     ctrl.updateDoneStatus = () => {
         experimentsService
-            .updateStep($stateParams.project_id, $stateParams.experiment_id, ctrl.step.id, {flags: ctrl.step.flags})
+            .updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id, {flags: ctrl.task.flags})
             .then(
                 () => null,
-                () => toast.error('Failed to update step')
+                () => toast.error('Failed to update task')
             );
     };
 
     ctrl.toggleOpenDetails = (event) => {
-        ctrl.step.displayState.open = !ctrl.step.displayState.open;
-        ctrl.step.displayState.details.loadEditor = false;
-        if (ctrl.step.displayState.open) {
+        ctrl.task.displayState.open = !ctrl.task.displayState.open;
+        ctrl.task.displayState.details.loadEditor = false;
+        if (ctrl.task.displayState.open) {
             $(event.target).removeClass('fa-angle-double-right');
             $(event.target).addClass('fa-angle-double-down');
         } else {
@@ -144,33 +144,33 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
         }
     };
 
-    ctrl.addBlankStep = (node) => {
-        let csi = findCurrentStepIndex(node);
+    ctrl.addBlankTask = (node) => {
+        let csi = findCurrentTaskIndex(node);
 
-        let newStep = {
+        let newTask = {
             name: '',
             description: '',
             parent_id: '',
             index: csi + 1
         };
-        experimentsService.createStep($stateParams.project_id, $stateParams.experiment_id, newStep)
+        experimentsService.createTask($stateParams.project_id, $stateParams.experiment_id, newTask)
             .then(
-                (step) => {
-                    $('.mc-experiment-outline-step').removeClass('step-selected');
-                    ctrl.step.displayState.selectedClass = '';
-                    toUIStep(step);
-                    step.displayState.selectedClass = 'step-selected';
-                    node.$nodeScope.$parentNodesScope.$modelValue.splice(csi + 1, 0, step);
-                    currentStep.set(step);
+                (task) => {
+                    $('.mc-experiment-outline-task').removeClass('task-selected');
+                    ctrl.task.displayState.selectedClass = '';
+                    toUITask(task);
+                    task.displayState.selectedClass = 'task-selected';
+                    node.$nodeScope.$parentNodesScope.$modelValue.splice(csi + 1, 0, task);
+                    currentTask.set(task);
                     gotoNewTasksPage(csi);
-                    focus(step.id);
+                    focus(task.id);
                 },
-                () => toast.error('Unable to create new step')
+                () => toast.error('Unable to create new task')
             );
     };
 
-    function findCurrentStepIndex(node) {
-        return _.findIndex(node.$nodeScope.$parentNodesScope.$modelValue, (n) => n.id === ctrl.step.id);
+    function findCurrentTaskIndex(node) {
+        return _.findIndex(node.$nodeScope.$parentNodesScope.$modelValue, (n) => n.id === ctrl.task.id);
     }
 
     function gotoNewTasksPage(taskIndex) {
@@ -186,12 +186,12 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
     }
 
     ctrl.remove = (node) => {
-        if (node.$nodeScope.depth() === 1 && ctrl.experiment.steps.length === 1) {
-            toast.error('Cannot remove last step');
+        if (node.$nodeScope.depth() === 1 && ctrl.experiment.tasks.length === 1) {
+            toast.error('Cannot remove last task');
             return;
         }
 
-        experimentsService.deleteStep($stateParams.project_id, $stateParams.experiment_id, ctrl.step.id)
+        experimentsService.deleteTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id)
             .then(
                 () => node.$nodeScope.remove(),
                 () => toast.error('Unable to delete task')
@@ -201,7 +201,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
     ctrl.addToExperimentNote = () => {
         let html = `
             <p>&nbsp;</p>
-            <p>${ctrl.step.name}</p>
+            <p>${ctrl.task.name}</p>
         `;
 
         ctrl.experiment.notes = ctrl.experiment.notes + html;

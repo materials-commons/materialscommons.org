@@ -4,42 +4,42 @@ angular.module('materialscommons').component('mcExperimentTasks', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksComponentController($scope, moveStep, currentStep, currentExperiment) {
+function MCExperimentTasksComponentController($scope, moveTask, currentTask, currentExperiment) {
     let ctrl = this;
     ctrl.show = 'note';
 
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
         ctrl.experiment = currentExperiment.get();
-        ctrl.experiment.steps[0].displayState.selectedClass = 'step-selected';
-        currentStep.set(ctrl.experiment.steps[0]);
-        ctrl.currentStep = currentStep.get();
+        ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
+        currentTask.set(ctrl.experiment.tasks[0]);
+        ctrl.currentTask = currentTask.get();
     };
 
-    ctrl.moveLeft = () => moveStep.left(ctrl.currentNode, currentStep.get(), ctrl.experiment);
-    ctrl.moveRight = () => moveStep.right(ctrl.currentNode, currentStep.get());
-    ctrl.moveUp = () => moveStep.up(ctrl.currentNode, currentStep.get());
-    ctrl.moveDown = () => moveStep.down(ctrl.currentNode, currentStep.get(), ctrl.experiment);
+    ctrl.moveLeft = () => moveTask.left(ctrl.currentNode, currentTask.get(), ctrl.experiment);
+    ctrl.moveRight = () => moveTask.right(ctrl.currentNode, currentTask.get());
+    ctrl.moveUp = () => moveTask.up(ctrl.currentNode, currentTask.get());
+    ctrl.moveDown = () => moveTask.down(ctrl.currentNode, currentTask.get(), ctrl.experiment);
     ctrl.expandAll = () => $scope.$broadcast('angular-ui-tree:expand-all');
     ctrl.collapseAll = () => $scope.$broadcast('angular-ui-tree:collapse-all');
-    ctrl.showStepMaximized = () => {
-        if (!currentStep.get()) {
+    ctrl.showTaskMaximized = () => {
+        if (!currentTask.get()) {
             return false;
         }
-        return currentStep.get().displayState.maximize;
+        return currentTask.get().displayState.maximize;
     };
     ctrl.openAll = openAll;
     ctrl.closeAll = closeAll;
-    ctrl.getCurrentStep = () => currentStep.get();
+    ctrl.getCurrentTask = () => currentTask.get();
 
     function openAll() {
-        var treeModel = new TreeModel({childrenPropertyName: 'steps'}),
+        var treeModel = new TreeModel({childrenPropertyName: 'tasks'}),
             root = treeModel.parse(ctrl.experiment);
-        //ctrl.experiment.steps.forEach((step) => step.displayState.open = true);
+        //ctrl.experiment.tasks.forEach((task) => task.displayState.open = true);
     }
 
     function closeAll() {
-        //ctrl.experiment.steps.forEach((step) => step.displayState.open = false);
+        //ctrl.experiment.tasks.forEach((task) => task.displayState.open = false);
     }
 }
 

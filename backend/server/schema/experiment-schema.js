@@ -4,8 +4,8 @@ module.exports = function(schema) {
     return {
         defineCreateExperimentSchema,
         defineUpdateExperimentSchema,
-        defineCreateExperimentStepSchema,
-        defineUpdateExperimentStepSchema
+        defineCreateExperimentTaskSchema,
+        defineUpdateExperimentTaskSchema
     };
 
     function defineCreateExperimentSchema() {
@@ -73,8 +73,8 @@ module.exports = function(schema) {
         return updateExperimentSchema;
     }
 
-    function defineCreateExperimentStepSchema() {
-        let createExperimentStepSchema = schema.defineSchema('CreateExperimentStep', {
+    function defineCreateExperimentTaskSchema() {
+        let createExperimentTaskSchema = schema.defineSchema('CreateExperimentTask', {
             name: {
                 type: 'string',
                 nullable: false
@@ -94,13 +94,13 @@ module.exports = function(schema) {
             }
         });
 
-        createExperimentStepSchema.setDefaults({parent_id: '', description: ''});
-        createExperimentStepSchema.validateAsync = promise.promisify(createExperimentStepSchema.validate);
-        return createExperimentStepSchema;
+        createExperimentTaskSchema.setDefaults({parent_id: '', description: ''});
+        createExperimentTaskSchema.validateAsync = promise.promisify(createExperimentTaskSchema.validate);
+        return createExperimentTaskSchema;
     }
 
-    function defineUpdateExperimentStepSchema() {
-        let updateExperimentStepSchema = schema.defineSchema('UpdateExperimentStep', {
+    function defineUpdateExperimentTaskSchema() {
+        let updateExperimentTaskSchema = schema.defineSchema('UpdateExperimentTask', {
             name: {
                 type: 'string',
                 nullable: true
@@ -139,15 +139,15 @@ module.exports = function(schema) {
 
             swap: {
                 nullable: true,
-                step_id: {
+                task_id: {
                     type: 'string',
                     nullable: true
                 }
             }
         });
 
-        updateExperimentStepSchema.setDefaults({parent_id: ''});
-        updateExperimentStepSchema.validateAsync = promise.promisify(updateExperimentStepSchema.validate);
-        return updateExperimentStepSchema;
+        updateExperimentTaskSchema.setDefaults({parent_id: ''});
+        updateExperimentTaskSchema.validateAsync = promise.promisify(updateExperimentTaskSchema.validate);
+        return updateExperimentTaskSchema;
     }
 };

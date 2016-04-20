@@ -74,7 +74,7 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     border: 8px solid #1565c0;
 }
 
-.current-step {
+.current-task {
     font-weight: bold;
 }
 
@@ -137,7 +137,7 @@ a {
     background-color: #d1d1d1;
 }
 
-.md-mc-step-card-header {
+.md-mc-task-card-header {
     background-color: #1565c0;
     color: white;
 }

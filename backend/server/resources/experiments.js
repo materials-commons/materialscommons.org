@@ -5,10 +5,10 @@ module.exports = function(experiments, schema) {
     return {
         getAllExperimentsForProject,
         getExperiment,
-        getExperimentStep,
-        createExperimentStep,
-        updateExperimentStep,
-        deleteExperimentStep,
+        getExperimentTask,
+        createExperimentTask,
+        updateExperimentTask,
+        deleteExperimentTask,
         updateExperiment,
         createExperiment,
         deleteExperiment
@@ -41,13 +41,13 @@ module.exports = function(experiments, schema) {
         yield next;
     }
 
-    function* getExperimentStep(next) {
-        let isValidStep = yield validateStep(this.params.project_id, this.params.experiment_id, this.params.step_id);
-        if (!isValidStep) {
+    function* getExperimentTask(next) {
+        let isValidTask = yield validateTask(this.params.project_id, this.params.experiment_id, this.params.task_id);
+        if (!isValidTask) {
             this.status = status.NOT_FOUND;
-            this.body = {error: 'Step not found'};
+            this.body = {error: 'Task not found'};
         }
-        let rv = yield experiments.getStep(this.params.step_id);
+        let rv = yield experiments.getTask(this.params.task_id);
         if (rv.error) {
             this.body = rv;
             this.status = status.NOT_FOUND;
@@ -57,25 +57,25 @@ module.exports = function(experiments, schema) {
         yield next;
     }
 
-    function* validateStep(projectID, experimentID, stepID) {
+    function* validateTask(projectID, experimentID, taskID) {
         let isInProject = yield experiments.experimentExistsInProject(projectID, experimentID);
         if (!isInProject) {
             return false;
         }
 
-        return yield experiments.experimentStepExistsInExperiment(experimentID, stepID);
+        return yield experiments.experimentTaskExistsInExperiment(experimentID, taskID);
     }
 
-    function* createExperimentStep(next) {
-        let stepArgs = yield parse(this);
-        schema.prepare(schema.createExperimentStep, stepArgs);
-        let errors = yield validateCreateStepArgs(stepArgs, this.params.project_id,
-                                                  this.params.experiment_id, this.params.step_id);
+    function* createExperimentTask(next) {
+        let taskArgs = yield parse(this);
+        schema.prepare(schema.createExperimentTask, taskArgs);
+        let errors = yield validateCreateTaskArgs(taskArgs, this.params.project_id,
+                                                  this.params.experiment_id, this.params.task_id);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.createStep(this.params.experiment_id, stepArgs, this.reqctx.user.id);
+            let rv = yield experiments.createTask(this.params.experiment_id, taskArgs, this.reqctx.user.id);
             if (rv.error) {
                 this.status = status.NOT_ACCEPTABLE;
                 this.body = rv;
@@ -86,8 +86,8 @@ module.exports = function(experiments, schema) {
         yield next;
     }
 
-    function* validateCreateStepArgs(stepArgs, projectID, experimentID, stepID) {
-        let errors = yield schema.validate(schema.createExperimentStep, stepArgs);
+    function* validateCreateTaskArgs(taskArgs, projectID, experimentID, taskID) {
+        let errors = yield schema.validate(schema.createExperimentTask, taskArgs);
         if (errors !== null) {
             return errors;
         }
@@ -97,26 +97,26 @@ module.exports = function(experiments, schema) {
             return {error: 'Unknown experiment'};
         }
 
-        if (stepID) {
-            let isValidStepId = yield experiments.experimentStepExistsInExperiment(experimentID, stepID);
-            if (!isValidStepId) {
-                return {error: 'Unknown experiment step'};
+        if (taskID) {
+            let isValidTaskId = yield experiments.experimentTaskExistsInExperiment(experimentID, taskID);
+            if (!isValidTaskId) {
+                return {error: 'Unknown experiment task'};
             }
-            stepArgs.parent_id = stepID;
+            taskArgs.parent_id = taskID;
         }
 
         return null;
     }
 
-    function* updateExperimentStep(next) {
-        let updateStepArgs = yield parse(this);
-        let errors = yield validateUpdateStepArgs(updateStepArgs, this.params.project_id,
-                                                  this.params.experiment_id, this.params.step_id);
+    function* updateExperimentTask(next) {
+        let updateTaskArgs = yield parse(this);
+        let errors = yield validateUpdateTaskArgs(updateTaskArgs, this.params.project_id,
+                                                  this.params.experiment_id, this.params.task_id);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.updateStep(this.params.step_id, updateStepArgs);
+            let rv = yield experiments.updateTask(this.params.task_id, updateTaskArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -127,9 +127,9 @@ module.exports = function(experiments, schema) {
         yield next;
     }
 
-    function* validateUpdateStepArgs(args, projectID, experimentID, stepID) {
-        schema.prepare(schema.updateExperimentStep, args);
-        let errors = yield schema.validate(schema.updateExperimentStep, args);
+    function* validateUpdateTaskArgs(args, projectID, experimentID, taskID) {
+        schema.prepare(schema.updateExperimentTask, args);
+        let errors = yield schema.validate(schema.updateExperimentTask, args);
         if (errors != null) {
             return errors;
         }
@@ -139,43 +139,43 @@ module.exports = function(experiments, schema) {
             return {error: 'No such experiment'};
         }
 
-        let isValidStepId = yield experiments.experimentStepExistsInExperiment(experimentID, stepID);
-        if (!isValidStepId) {
-            return {error: 'Unknown experiment step'};
+        let isValidTaskId = yield experiments.experimentTaskExistsInExperiment(experimentID, taskID);
+        if (!isValidTaskId) {
+            return {error: 'Unknown experiment task'};
         }
 
         if (args.parent_id !== '') {
-            let parentIdInExperiment = yield experiments.experimentStepExistsInExperiment(experimentID, args.parent_id);
+            let parentIdInExperiment = yield experiments.experimentTaskExistsInExperiment(experimentID, args.parent_id);
             if (!parentIdInExperiment) {
-                return {error: 'Invalid parent step'};
+                return {error: 'Invalid parent task'};
             }
         }
 
         if (args.swap) {
-            if (!args.swap.step_id) {
-                return {error: 'No swap step identified'};
+            if (!args.swap.task_id) {
+                return {error: 'No swap task identified'};
             }
 
-            if (args.swap.step_id === stepID) {
-                return {error: 'Cannot swap step with itself'};
+            if (args.swap.task_id === taskID) {
+                return {error: 'Cannot swap task with itself'};
             }
 
-            let swapIdExistsInExperiment = yield experiments.experimentStepExistsInExperiment(experimentID, args.swap.step_id);
+            let swapIdExistsInExperiment = yield experiments.experimentTaskExistsInExperiment(experimentID, args.swap.task_id);
             if (!swapIdExistsInExperiment) {
-                return {error: 'Invalid swap step'};
+                return {error: 'Invalid swap task'};
             }
         }
 
         return null;
     }
 
-    function* deleteExperimentStep(next) {
-        let error = yield validateDeleteStep(this.params.project_id, this.params.experiment_id, this.params.step_id);
+    function* deleteExperimentTask(next) {
+        let error = yield validateDeleteTask(this.params.project_id, this.params.experiment_id, this.params.task_id);
         if (error != null) {
             this.body = error;
             this.status = status.BAD_REQUEST;
         } else {
-            let rv = yield experiments.deleteStep(this.params.experiment_id, this.params.step_id);
+            let rv = yield experiments.deleteTask(this.params.experiment_id, this.params.task_id);
             if (rv.error) {
                 this.body = rv;
                 this.status = status.BAD_REQUEST;
@@ -187,20 +187,20 @@ module.exports = function(experiments, schema) {
         yield next;
     }
 
-    function* validateDeleteStep(projectID, experimentID, stepID) {
+    function* validateDeleteTask(projectID, experimentID, taskID) {
         let isInProject = yield experiments.experimentExistsInProject(projectID, experimentID);
         if (!isInProject) {
             return {error: 'No such experiment'};
         }
 
-        let isValidStepId = yield experiments.experimentStepExistsInExperiment(experimentID, stepID);
-        if (!isValidStepId) {
-            return {error: 'Unknown experiment step'};
+        let isValidTaskId = yield experiments.experimentTaskExistsInExperiment(experimentID, taskID);
+        if (!isValidTaskId) {
+            return {error: 'Unknown experiment task'};
         }
 
-        let isUsingProcess = yield experiments.stepIsUsingProcess(stepID);
+        let isUsingProcess = yield experiments.taskIsUsingProcess(taskID);
         if (isUsingProcess) {
-            return {error: `Cannot delete step associated with a process`};
+            return {error: `Cannot delete task associated with a process`};
         }
 
         return null;

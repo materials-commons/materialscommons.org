@@ -1,9 +1,9 @@
-export class ExperimentStep {
+export class ExperimentTask {
     constructor(name, _type) {
         this.id = '';
         this.name = name;
         this._type = _type;
-        this.steps = [];
+        this.tasks = [];
         this.description = '';
         this.flags = {
             important: false,
@@ -31,8 +31,8 @@ export class ExperimentStep {
         this.node = null;
     }
 
-    addStep(step) {
-        this.steps.push(step);
+    addTask(task) {
+        this.tasks.push(task);
     }
 }
 
@@ -43,12 +43,12 @@ export class Experiment {
         this.description = '';
         this.aim = '';
         this.status = 'active';
-        this.steps = [];
+        this.tasks = [];
     }
 
-    addStep(name, _type) {
-        let s = new ExperimentStep(name, _type);
-        this.steps.push(s);
+    addTask(name, _type) {
+        let task = new ExperimentTask(name, _type);
+        this.tasks.push(task);
     }
 }
 
