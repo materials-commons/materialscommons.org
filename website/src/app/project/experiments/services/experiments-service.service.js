@@ -20,16 +20,16 @@ class ExperimentsService {
         return this.projectsAPI(projectID).one('experiments', experimentID).customGET();
     }
 
-    createStep(projectID, experimentID, experimentStep) {
-        return this.projectsAPI(projectID).one('experiments', experimentID).one('step').customPOST(experimentStep);
+    createTask(projectID, experimentID, experimentTask) {
+        return this.projectsAPI(projectID).one('experiments', experimentID).one('tasks').customPOST(experimentTask);
     }
 
-    updateStep(projectID, experimentID, stepID, step) {
-        return this.projectsAPI(projectID).one('experiments', experimentID).one('step', stepID).customPUT(step);
+    updateTask(projectID, experimentID, taskID, task) {
+        return this.projectsAPI(projectID).one('experiments', experimentID).one('tasks', taskID).customPUT(task);
     }
 
-    deleteStep(projectID, experimentID, stepID) {
-        return this.projectsAPI(projectID).one('experiments', experimentID).one('step', stepID).customDELETE();
+    deleteTask(projectID, experimentID, taskID) {
+        return this.projectsAPI(projectID).one('experiments', experimentID).one('task', taskID).customDELETE();
     }
 }
 

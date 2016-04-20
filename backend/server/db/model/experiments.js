@@ -8,13 +8,13 @@ module.exports = function(r) {
         get,
         create,
         update,
-        createStep,
-        getStep,
-        updateStep,
+        createTask,
+        getTask,
+        updateTask,
         experimentExistsInProject,
-        experimentStepExistsInExperiment,
-        deleteStep,
-        stepIsUsingProcess
+        experimentTaskExistsInExperiment,
+        deleteTask,
+        taskIsUsingProcess
     };
 
     function* getAllForProject(projectID) {
@@ -22,9 +22,9 @@ module.exports = function(r) {
             .eqJoin('experiment_id', r.table('experiments')).zip()
             .merge((experiment) => {
                 return {
-                    steps: r.table('experiment2experiment_step')
+                    tasks: r.table('experiment2experimenttask')
                         .getAll(experiment('id'), {index: 'experiment_id'})
-                        .eqJoin('experiment_step_id', r.table('experiment_steps')).zip()
+                        .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
                         .filter({parent_id: ''})
                         .orderBy('index')
                         .coerceTo('array')
@@ -39,16 +39,16 @@ module.exports = function(r) {
         let rql = r.table('experiments').get(experimentID)
             .merge((experiment) => {
                 return {
-                    steps: r.table('experiment2experiment_step')
+                    tasks: r.table('experiment2experimenttask')
                         .getAll(experiment('id'), {index: 'experiment_id'})
-                        .eqJoin('experiment_step_id', r.table('experiment_steps')).zip()
+                        .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
                         .filter({parent_id: ''})
                         .orderBy('index')
                         .coerceTo('array')
                 }
             });
         let experiment = yield dbExec(rql);
-        experiment.steps.forEach((step) => step.steps = []);
+        experiment.tasks.forEach((task) => task.tasks = []);
         return {val: experiment};
     }
 
@@ -58,8 +58,8 @@ module.exports = function(r) {
         let newExperiment = yield db.insert('experiments', e);
         let proj2experiment = new model.Project2Experiment(experiment.project_id, newExperiment.id);
         yield db.insert('project2experiment', proj2experiment);
-        let estep = new model.ExperimentStep('', owner);
-        yield createStep(newExperiment.id, estep, owner);
+        let etask = new model.ExperimentTask('', owner);
+        yield createTask(newExperiment.id, etask, owner);
         return yield get(newExperiment.id);
     }
 
@@ -68,71 +68,71 @@ module.exports = function(r) {
         return yield get(experimentID);
     }
 
-    function* createStep(experimentID, step, owner) {
-        let estep = new model.ExperimentStep(step.name, owner);
-        estep.description = step.description;
-        estep.parent_id = step.parent_id;
-        estep.index = step.index;
-        yield updateIndexOfAllAffected(experimentID, step.parent_id, step.index);
-        let createdStep = yield db.insert('experiment_steps', estep);
-        let e2estep = new model.Experiment2ExperimentStep(experimentID, createdStep.id);
-        yield db.insert('experiment2experiment_step', e2estep);
-        return yield getStep(createdStep.id);
+    function* createTask(experimentID, task, owner) {
+        let etask = new model.ExperimentTask(task.name, owner);
+        etask.description = task.description;
+        etask.parent_id = task.parent_id;
+        etask.index = task.index;
+        yield updateIndexOfAllAffected(experimentID, task.parent_id, task.index);
+        let createdTask = yield db.insert('experimenttasks', etask);
+        let e2etask = new model.Experiment2ExperimentTask(experimentID, createdTask.id);
+        yield db.insert('experiment2experimenttask', e2etask);
+        return yield getTask(createdTask.id);
     }
 
     function* updateIndexOfAllAffected(experimentID, parentID, index) {
-        let rql = r.table('experiment2experiment_step')
+        let rql = r.table('experiment2experimenttask')
             .getAll(experimentID, {index: 'experiment_id'})
-            .eqJoin('experiment_step_id', r.table('experiment_steps')).zip()
+            .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
             .filter({parent_id: parentID})
             .filter(r.row('index').ge(index));
 
-        let matchingSteps = yield dbExec(rql);
-        let itemsToChange = matchingSteps.map((s) => { return {id: s.id, index: s.index + 1}; });
-        let updateRql = r.table('experiment_steps').insert(itemsToChange, {conflict: 'update'});
+        let matchingTasks = yield dbExec(rql);
+        let itemsToChange = matchingTasks.map((t) => { return {id: t.id, index: t.index + 1}; });
+        let updateRql = r.table('experimenttasks').insert(itemsToChange, {conflict: 'update'});
         yield dbExec(updateRql);
     }
 
-    function* getStep(stepID) {
-        let rql = r.table('experiment_steps').get(stepID)
-            .merge((step) => {
+    function* getTask(taskID) {
+        let rql = r.table('experimenttasks').get(taskID)
+            .merge((task) => {
                 return {
-                    processes: r.table('experiment_step2process').getAll(step('id'), {index: 'experiment_step_id'})
+                    processes: r.table('experimenttask2process').getAll(task('id'), {index: 'experiment_task_id'})
                         .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
-                    steps: r.table('experiment_steps').getAll(step('id'), {index: 'parent_id'}).coerceTo('array')
+                    tasks: r.table('experimenttasks').getAll(task('id'), {index: 'parent_id'}).coerceTo('array')
                 }
             });
-        let s = yield dbExec(rql);
+        let t = yield dbExec(rql);
 
-        // merge processes into steps and then remove the entry
-        s.steps.concat(s.processes);
-        delete s.processes;
+        // merge processes into tasks and then remove the entry
+        t.tasks.concat(t.processes);
+        delete t.processes;
 
-        return {val: s};
+        return {val: t};
     }
 
-    function* updateStep(stepID, updateArgs) {
+    function* updateTask(taskID, updateArgs) {
         if (updateArgs.swap) {
-            let step = yield r.table('experiment_steps').get(stepID);
-            let swapStep = yield r.table('experiment_steps').get(updateArgs.swap.step_id);
-            if (swapStep.parent_id !== step.parent_id) {
-                return {error: 'Steps have different parents'};
+            let task = yield r.table('experimenttasks').get(taskID);
+            let swapTask = yield r.table('experimenttasks').get(updateArgs.swap.task_id);
+            if (swapTask.parent_id !== task.parent_id) {
+                return {error: 'Tasks have different parents'};
             }
             let swapItems = [
                 {
-                    id: stepID,
-                    index: swapStep.index
+                    id: taskID,
+                    index: swapTask.index
                 },
                 {
-                    id: updateArgs.swap.step_id,
-                    index: step.index
+                    id: updateArgs.swap.task_id,
+                    index: task.index
                 }
             ];
-            let updateRql = r.table('experiment_steps').insert(swapItems, {conflict: 'update'});
+            let updateRql = r.table('experimenttasks').insert(swapItems, {conflict: 'update'});
             yield dbExec(updateRql);
         }
-        yield db.update('experiment_steps', stepID, updateArgs);
-        return yield getStep(stepID);
+        yield db.update('experimenttasks', taskID, updateArgs);
+        return yield getTask(taskID);
     }
 
     function* experimentExistsInProject(projectID, experimentID) {
@@ -141,38 +141,38 @@ module.exports = function(r) {
         return matches.length !== 0;
     }
 
-    function* experimentStepExistsInExperiment(experimentID, experimentStepID) {
-        let rql = r.table('experiment2experiment_step')
-            .getAll([experimentID, experimentStepID], {index: 'experiment_experiment_step'});
+    function* experimentTaskExistsInExperiment(experimentID, experimentTaskID) {
+        let rql = r.table('experiment2experimenttask')
+            .getAll([experimentID, experimentTaskID], {index: 'experiment_experiment_task'});
         let matches = yield dbExec(rql);
         return matches.length !== 0;
     }
 
-    function* deleteStep(experimentID, stepID) {
-        yield r.table('experiment2experiment_step').getAll([experimentID, stepID]).delete();
-        let old = yield r.table('experiment_steps').get(stepID).delete({returnChanges: true});
+    function* deleteTask(experimentID, taskID) {
+        yield r.table('experiment2experimenttask').getAll([experimentID, taskID]).delete();
+        let old = yield r.table('experimenttasks').get(taskID).delete({returnChanges: true});
         let oldParentID = old.changes[0].old_val.parent_id;
         let oldIndex = old.changes[0].old_val.index;
-        yield updateStepsAboveDeleted(experimentID, oldParentID, oldIndex);
+        yield updateTasksAboveDeleted(experimentID, oldParentID, oldIndex);
         return {val: old.changes[0].old_val};
     }
 
-    function* updateStepsAboveDeleted(experimentID, parentID, index) {
-        let rql = r.table('experiment2experiment_step')
+    function* updateTasksAboveDeleted(experimentID, parentID, index) {
+        let rql = r.table('experiment2experimenttask')
             .getAll(experimentID, {index: 'experiment_id'})
-            .eqJoin('experiment_step_id', r.table('experiment_steps')).zip()
+            .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
             .filter({parent_id: parentID})
             .filter(r.row('index').ge(index));
 
-        let matchingSteps = yield dbExec(rql);
-        let itemsToChange = matchingSteps.map((s) => { return {id: s.id, index: s.index - 1}; });
-        let updateRql = r.table('experiment_steps').insert(itemsToChange, {conflict: 'update'});
+        let matchingTasks = yield dbExec(rql);
+        let itemsToChange = matchingTasks.map((t) => { return {id: t.id, index: t.index - 1}; });
+        let updateRql = r.table('experimenttasks').insert(itemsToChange, {conflict: 'update'});
         yield dbExec(updateRql);
     }
 
-    function* stepIsUsingProcess(stepID) {
-        let rql = r.table('experiment_steps').get(stepID);
-        let step = yield dbExec(rql);
-        return step.process_id !== '';
+    function* taskIsUsingProcess(taskID) {
+        let rql = r.table('experimenttasks').get(taskID);
+        let task = yield dbExec(rql);
+        return task.process_id !== '';
     }
 };
