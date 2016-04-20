@@ -5,7 +5,9 @@ module.exports = function(schema) {
         defineCreateExperimentSchema,
         defineUpdateExperimentSchema,
         defineCreateExperimentTaskSchema,
-        defineUpdateExperimentTaskSchema
+        defineUpdateExperimentTaskSchema,
+        defineCreateExperimentNoteSchema,
+        defineUpdateExperimentNoteSchema
     };
 
     function defineCreateExperimentSchema() {
@@ -63,7 +65,7 @@ module.exports = function(schema) {
                 nullable: true
             },
 
-            notes: {
+            note: {
                 type: 'string',
                 nullable: true
             }
@@ -109,7 +111,7 @@ module.exports = function(schema) {
                 type: 'string',
                 nullable: true
             },
-            notes: {
+            note: {
                 type: 'string',
                 nullable: true
             },
@@ -149,5 +151,37 @@ module.exports = function(schema) {
         updateExperimentTaskSchema.setDefaults({parent_id: ''});
         updateExperimentTaskSchema.validateAsync = promise.promisify(updateExperimentTaskSchema.validate);
         return updateExperimentTaskSchema;
+    }
+
+    function defineCreateExperimentNoteSchema() {
+        let createExperimentNoteSchema = schema.defineSchema('CreateExperimentNote', {
+            name: {
+                type: 'string',
+                nullable: false
+            },
+            note: {
+                type: 'string',
+                nullable: false,
+            }
+        });
+
+        createExperimentNoteSchema.setDefaults({});
+        createExperimentNoteSchema.validateAsync = promise.promisify(createExperimentNoteSchema.validate);
+        return createExperimentNoteSchema;
+    }
+
+    function defineUpdateExperimentNoteSchema() {
+        let updateExperimentNoteSchema = schema.defineSchema('UpdateExperimentNote', {
+            name: {
+                type: 'string'
+            },
+            note: {
+                type: 'string'
+            }
+        });
+
+        updateExperimentNoteSchema.setDefaults({});
+        updateExperimentNoteSchema.validateAsync = promise.promisify(updateExperimentNoteSchema.validate);
+        return updateExperimentNoteSchema;
     }
 };
