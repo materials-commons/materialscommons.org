@@ -5,7 +5,7 @@ $mc-color-review: #ffc107;
 $mc-color-error: #ff5824;
 $mc-color-important: #3f51b5;
 $mc-color-done: #4caf50;
-$mc-step-detail-color: #e7e8ea;
+$mc-task-detail-color: #e7e8ea;
 $mc-light-grey: #f4f5f7;
 $mc-dark-grey: #cecfd1;
 $mc-color-error-dark: #d32f2f;
@@ -36,11 +36,11 @@ md-toast.md-error-theme .md-toast-content {
   color: $mc-dark-grey;
 }
 
-.align-step-element {
+.align-task-element {
   margin-bottom: 14px;
 }
 
-.mc-experiment-outline-step {
+.mc-experiment-outline-task {
   margin-top: 2px;
   padding-top: 14px;
   margin-bottom: 2px;
@@ -51,7 +51,7 @@ md-toast.md-error-theme .md-toast-content {
   border-right: 7px solid $mc-light-grey;
 }
 
-.step-selected {
+.task-selected {
   border-left-color: $mc-md-primary-color;
   border-right-color: $mc-md-primary-color;
 }
@@ -63,14 +63,14 @@ md-toast.md-error-theme .md-toast-content {
   text-transform: uppercase;
 }
 
-.step-toolbar-bg {
-  background-color: $mc-step-detail-color;
+.task-toolbar-bg {
+  background-color: $mc-task-detail-color;
 }
 
-.step-details-border {
-  border-left: 2px solid $mc-step-detail-color;
-  border-right: 2px solid $mc-step-detail-color;
-  border-bottom: 2px solid $mc-step-detail-color;
+.task-details-border {
+  border-left: 2px solid $mc-task-detail-color;
+  border-right: 2px solid $mc-task-detail-color;
+  border-bottom: 2px solid $mc-task-detail-color;
   padding-left: 10px;
   padding-right: 10px;
 }

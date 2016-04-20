@@ -93,12 +93,12 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 currentExperiment.set(experiment);
             }],
             resolve: {
-                experiment: ['experimentsService', 'toast', 'toUIStep', '$stateParams', 'currentExperiment',
-                    function(experimentsService, toast, toUIStep, $stateParams, currentExperiment) {
+                experiment: ['experimentsService', 'toast', 'toUITask', '$stateParams', 'currentExperiment',
+                    function(experimentsService, toast, toUITask, $stateParams, currentExperiment) {
                         return experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id)
                             .then(
                                 (e) => {
-                                    e.steps.forEach((step) => toUIStep(step));
+                                    e.tasks.forEach((task) => toUITask(task));
                                     currentExperiment.set(e);
                                     return e;
                                 },

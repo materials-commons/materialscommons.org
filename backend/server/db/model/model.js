@@ -228,12 +228,12 @@ module.exports = function(r) {
         this.mtime = now;
     }
 
-    function ExperimentStep(name, owner) {
+    function ExperimentTask(name, owner) {
         let now = r.now();
         this.name = name;
         this.owner = owner;
         this.index = 0;
-        this._type = 'experiment_step';
+        this._type = 'experiment_task';
         this.description = '';
         this.notes = '';
         this.estimate = {
@@ -242,9 +242,9 @@ module.exports = function(r) {
         };
         this.due_date = 0;
         this.flags = {
-            important: false,
-            review: false,
-            error: false,
+            starred: false,
+            flagged: false,
+            onhold: false,
             done: false
         };
         this.template_id = '';
@@ -254,9 +254,9 @@ module.exports = function(r) {
         this.mtime = now;
     }
 
-    function Experiment2ExperimentStep(experimentID, experimentStepID) {
+    function Experiment2ExperimentTask(experimentID, experimentTaskID) {
         this.experiment_id = experimentID;
-        this.experiment_step_id = experimentStepID;
+        this.experiment_task_id = experimentTaskID;
     }
 
     function Project2Experiment(project_id, experiment_id) {
@@ -295,7 +295,7 @@ module.exports = function(r) {
         User2Share: User2Share,
         Experiment: Experiment,
         Project2Experiment: Project2Experiment,
-        ExperimentStep,
-        Experiment2ExperimentStep
+        ExperimentTask,
+        Experiment2ExperimentTask
     };
 };

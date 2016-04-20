@@ -1,35 +1,35 @@
-class MoveStepService {
+class MoveTaskService {
     /*@ngInject*/
     constructor(focus) {
         this.focus = focus;
     }
 
-    static findCurrentStepIndex(node, currentStep) {
-        return _.findIndex(node.$parentNodesScope.$modelValue, (entry) => entry.id === currentStep.id);
+    static findCurrentTaskIndex(node, currentTask) {
+        return _.findIndex(node.$parentNodesScope.$modelValue, (entry) => entry.id === currentTask.id);
     }
 
-    static insertCurrentStepBetween(list, currentStep, idToAddAfter) {
+    static insertCurrentTaskBetween(list, currentTask, idToAddAfter) {
         let newList = [];
         if (!idToAddAfter) {
             // No id to add after, so add to first entry
-            newList.push(currentStep);
+            newList.push(currentTask);
         }
         for (let i = 0; i < list.length; i++) {
             newList.push(list[i]);
             if (list[i].id === idToAddAfter) {
-                newList.push(currentStep);
+                newList.push(currentTask);
             }
         }
 
         return newList;
     }
 
-    left(currentNode, currentStep, experiment) {
+    left(currentNode, currentTask, experiment) {
         if (currentNode.depth() === 1) {
             // Top level node - it can't be out dented.
             return;
         }
-        let index = MoveStepService.findCurrentStepIndex(currentNode, currentStep);
+        let index = MoveTaskService.findCurrentTaskIndex(currentNode, currentTask);
 
         // Get node to add after
         let nodeToAddAfter = currentNode.$parentNodeScope.$modelValue;
@@ -40,16 +40,16 @@ class MoveStepService {
         } else {
             nodeToAddAt = currentNode.$parentNodeScope.$parentNodeScope.$modelValue;
         }
-        // Rebuild step list adding node we just moved left into its proper position
-        nodeToAddAt.steps = MoveStepService.insertCurrentStepBetween(nodeToAddAt.steps, currentStep, nodeToAddAfter.id);
+        // Rebuild task list adding node we just moved left into its proper position
+        nodeToAddAt.tasks = MoveTaskService.insertCurrentTaskBetween(nodeToAddAt.tasks, currentTask, nodeToAddAfter.id);
 
         //// Remove node from current list
         currentNode.$parentNodesScope.$modelValue.splice(index, 1);
-        this.focus(currentStep.id);
+        this.focus(currentTask.id);
     }
 
-    right(currentNode, currentStep) {
-        let index = MoveStepService.findCurrentStepIndex(currentNode, currentStep);
+    right(currentNode, currentTask) {
+        let index = MoveTaskService.findCurrentTaskIndex(currentNode, currentTask);
         if (currentNode.depth() === 1 && index === 0) {
             // First node at top level - it can't be indented.
             return;
@@ -58,26 +58,26 @@ class MoveStepService {
         // Remove node from current list and append it to the node above us in the list.
         let nodeToAddTo = currentNode.$parentNodesScope.$modelValue[index - 1];
         currentNode.$parentNodesScope.$modelValue.splice(index, 1);
-        nodeToAddTo.steps.push(currentStep);
-        this.focus(currentStep.id)
+        nodeToAddTo.tasks.push(currentTask);
+        this.focus(currentTask.id)
     }
 
-    up(currentNode, currentStep) {
-        let index = MoveStepService.findCurrentStepIndex(currentNode, currentStep);
+    up(currentNode, currentTask) {
+        let index = MoveTaskService.findCurrentTaskIndex(currentNode, currentTask);
         if (index === 0) {
             // First entry, cannot move up
             return;
         }
 
         // Swap position of previous node and our node.
-        let previousStep = currentNode.$parentNodesScope.$modelValue[index - 1];
-        currentNode.$parentNodesScope.$modelValue[index] = previousStep;
-        currentNode.$parentNodesScope.$modelValue[index - 1] = currentStep;
-        this.focus(currentStep.id);
+        let previousTask = currentNode.$parentNodesScope.$modelValue[index - 1];
+        currentNode.$parentNodesScope.$modelValue[index] = previousTask;
+        currentNode.$parentNodesScope.$modelValue[index - 1] = currentTask;
+        this.focus(currentTask.id);
     }
 
-    down(currentNode, currentStep, experiment) {
-        let index = MoveStepService.findCurrentStepIndex(currentNode, currentStep);
+    down(currentNode, currentTask, experiment) {
+        let index = MoveTaskService.findCurrentTaskIndex(currentNode, currentTask);
         if (index === currentNode.$parentNodesScope.$modelValue.length - 1) {
             // Last entry, cannot move up
             return;
@@ -92,9 +92,9 @@ class MoveStepService {
         if (currentNode.$parentNodeScope) {
             nodeToAddAt = currentNode.$parentNodeScope.$modelValue;
         }
-        nodeToAddAt.steps = MoveStepService.insertCurrentStepBetween(nodeToAddAt.steps, currentStep, nodeToAddAfter.id);
-        this.focus(currentStep.id);
+        nodeToAddAt.tasks = MoveTaskService.insertCurrentTaskBetween(nodeToAddAt.tasks, currentTask, nodeToAddAfter.id);
+        this.focus(currentTask.id);
     }
 }
 
-angular.module('materialscommons').service('moveStep', MoveStepService);
+angular.module('materialscommons').service('moveTask', MoveTaskService);
