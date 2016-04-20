@@ -9,4 +9,5 @@ import './tasks/move-task.service';
 import './tasks/mc-experiment-tasks.component';
 import './tasks/current-task.service';
 import './notes/mc-experiment-notes.component';
+import './notes/mc-experiment-notes-list.component';
 import './mc-experiment-sidenav.component';

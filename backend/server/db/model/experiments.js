@@ -13,8 +13,13 @@ module.exports = function(r) {
         updateTask,
         experimentExistsInProject,
         experimentTaskExistsInExperiment,
+        experimentNoteExistsInExperiment,
         deleteTask,
-        taskIsUsingProcess
+        taskIsUsingProcess,
+        getExperimentNote,
+        createExperimentNote,
+        updateExperimentNote,
+        deleteExperimentNote
     };
 
     function* getAllForProject(projectID) {
@@ -27,6 +32,11 @@ module.exports = function(r) {
                         .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
                         .filter({parent_id: ''})
                         .orderBy('index')
+                        .coerceTo('array'),
+                    notes: r.table('experiment2experimentnote')
+                        .getAll(experiment('id'), {index: 'experiment_id'})
+                        .eqJoin('experiment_note_id', r.table('experimentnotes')).zip()
+                        .orderBy('name')
                         .coerceTo('array')
                 }
             });
@@ -148,6 +158,13 @@ module.exports = function(r) {
         return matches.length !== 0;
     }
 
+    function* experimentNoteExistsInExperiment(experimentID, experimentNoteID) {
+        let rql = r.table('experiment2experimentnote')
+            .getAll([experimentID, experimentNoteID], {index: 'experiment_experiment_note'});
+        let matches = yield dbExec(rql);
+        return matches.length !== 0;
+    }
+
     function* deleteTask(experimentID, taskID) {
         yield r.table('experiment2experimenttask').getAll([experimentID, taskID]).delete();
         let old = yield r.table('experimenttasks').get(taskID).delete({returnChanges: true});
@@ -174,5 +191,31 @@ module.exports = function(r) {
         let rql = r.table('experimenttasks').get(taskID);
         let task = yield dbExec(rql);
         return task.process_id !== '';
+    }
+
+    function* getExperimentNote(noteID) {
+        let rql = r.table('experimentnotes').get(noteID);
+        let note = yield dbExec(rql);
+        return {val: note};
+    }
+
+    function* createExperimentNote(experimentID, user, noteArgs) {
+        let note = new model.ExperimentNote(noteArgs.name, noteArgs.note, user);
+        let created = yield db.insert('experimentnotes', note);
+        let e2en = new model.Experiment2ExperimentNote(experimentID, created.id);
+        yield db.insert('experiment2experimentnote', e2en);
+        return {val: created};
+    }
+
+    function* updateExperimentNote(noteID, noteArgs) {
+        yield r.table('experimentnotes').get(noteID).update(noteArgs);
+        return yield getExperimentNote(noteID);
+    }
+
+    function* deleteExperimentNote(experimentID, noteID) {
+        yield r.table('experiment2experimentnote')
+            .getAll([experimentID, noteID], {index: 'experiment_experiment_note'}).delete();
+        let old = yield r.table('experimentnotes').get(noteID).delete({returnChanges: true});
+        return {val: old.changes[0].old_val};
     }
 };
