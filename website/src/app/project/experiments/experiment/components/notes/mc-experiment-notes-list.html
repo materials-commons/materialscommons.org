@@ -1,0 +1,10 @@
+<div layout="column" layout-margin style="max-height:68vh;">
+    <md-content ui-tree="$ctrl.treeOptions" id="notes-tree-root">
+        <ol ui-tree-nodes ng-model="$ctrl.experiment.notes" style="margin-right: 8px">
+            <li dir-paginate="note in $ctrl.experiment.notes | itemsPerPage:20" flex ui-tree-node>
+
+            </li>
+        </ol>
+        <dir-pagination-controls></dir-pagination-controls>
+    </md-content>
+</div>

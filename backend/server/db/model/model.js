@@ -222,7 +222,7 @@ module.exports = function(r) {
         this.goals = [];
         this.aims = [];
         this.hypothesis = [];
-        this.notes = '<h2>Experiment Notes</h2>';
+        this.note = '<h2>Experiment Notes</h2>';
         this.status = 'active';
         this.birthtime = now;
         this.mtime = now;
@@ -235,7 +235,7 @@ module.exports = function(r) {
         this.index = 0;
         this._type = 'experiment_task';
         this.description = '';
-        this.notes = '';
+        this.note = '';
         this.estimate = {
             value: 0,
             unit: ''
@@ -262,6 +262,20 @@ module.exports = function(r) {
     function Project2Experiment(project_id, experiment_id) {
         this.project_id = project_id;
         this.experiment_id = experiment_id;
+    }
+
+    function ExperimentNote(name, note, owner) {
+        let now = r.now();
+        this.name = name;
+        this.note = note;
+        this.owner = owner;
+        this.birthtime = now;
+        this.mtime = now;
+    }
+
+    function Experiment2ExperimentNote(experimentID, experimentNoteID) {
+        this.experiment_id = experimentID;
+        this.experiment_note_id = experimentNoteID;
     }
 
     return {
@@ -296,6 +310,8 @@ module.exports = function(r) {
         Experiment: Experiment,
         Project2Experiment: Project2Experiment,
         ExperimentTask,
-        Experiment2ExperimentTask
+        Experiment2ExperimentTask,
+        ExperimentNote,
+        Experiment2ExperimentNote
     };
 };

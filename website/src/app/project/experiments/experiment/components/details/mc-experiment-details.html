@@ -1,78 +1,90 @@
-<md-content flex layout="column" layout-align="start stretch"
-            style="max-height:80vh; min-height: 68vh; padding-top:4px">
+<div layout="row">
+    <md-content flex layout="column" layout-align="start stretch"
+                style="max-height:80vh; min-height: 68vh; padding-top:4px; margin-right:10px">
+        <div layout="row" layout-align="end center">
+            <md-button class="md-primary">Publish</md-button>
+        </div>
 
-    <div layout="row" flex="grow">
-        <md-input-container flex="30">
-            <label>Name</label>
-            <input type="text"
-                   ng-model="$ctrl.experiment.name"
-                   ng-model-options="{debounce: 500}"
-                   ng-change="$ctrl.updateName()">
-        </md-input-container>
-        <md-input-container flex="70">
-            <label>Description</label>
-            <input type="text"
-                   ng-model="$ctrl.experiment.description"
-                   ng-model-options="{debounce: 500}"
-                   ng-change="$ctrl.updateDescription()">
-        </md-input-container>
-    </div>
+        <div layout="row">
+            <md-input-container flex="30">
+                <label>Name</label>
+                <input type="text"
+                       ng-model="$ctrl.experiment.name"
+                       ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateName()">
+            </md-input-container>
+            <md-input-container flex="70">
+                <label>Description</label>
+                <input type="text"
+                       ng-model="$ctrl.experiment.description"
+                       ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateDescription()">
+            </md-input-container>
+        </div>
 
-    <div layout="row" flex layout-align="start center">
-        <label flex="30">Goals</label>
-        <md-button class="md-primary">
-            <i class="fa fa-fw fa-plus"></i>
-            add goal
-        </md-button>
-    </div>
+        <div layout="row" flex layout-align="start center">
+            <label flex="30">Goals</label>
+            <md-button class="md-primary">
+                <i class="fa fa-fw fa-plus"></i>
+                add goal
+            </md-button>
+        </div>
 
-    <md-divider class="divider-extra"></md-divider>
+        <md-divider class="divider-extra"></md-divider>
 
-    <div layout="row" flex layout-align="start center">
-        <label flex="30">Collaborators</label>
-        <md-button class="md-primary">
-            <i class="fa fa-fw fa-plus"></i>
-            add collaborator
-        </md-button>
-    </div>
+        <div layout="row" flex layout-align="start center">
+            <label flex="30">Collaborators</label>
+            <md-button class="md-primary">
+                <i class="fa fa-fw fa-plus"></i>
+                add collaborator
+            </md-button>
+        </div>
 
-    <div layout="row" flex layout-align="start center">
-        <label flex="30">Funding</label>
-        <md-button class="md-primary">
-            <i class="fa fa-fw fa-plus"></i>
-            add funder
-        </md-button>
-    </div>
+        <div layout="row" flex layout-align="start center">
+            <label flex="30">Funding</label>
+            <md-button class="md-primary">
+                <i class="fa fa-fw fa-plus"></i>
+                add funder
+            </md-button>
+        </div>
 
-    <md-divider class="divider-extra"></md-divider>
+        <md-divider class="divider-extra"></md-divider>
 
-    <div layout="row" flex layout-align="start center">
-        <label flex="30">Current working papers</label>
-    </div>
+        <div layout="row" flex layout-align="start center">
+            <label flex="30">Current working papers</label>
+        </div>
 
-    <md-divider class="divider-extra"></md-divider>
-    <div layout="row" flex layout-align="start center">
-        <label flex="30">Publications From Experiment</label>
-        <md-button class="md-primary">
-            <i class="fa fa-fw fa-plus"></i>
-            add publication
-        </md-button>
-    </div>
+        <md-divider class="divider-extra"></md-divider>
+        <div layout="row" flex layout-align="start center">
+            <label flex="30">Publications From Experiment</label>
+            <md-button class="md-primary">
+                <i class="fa fa-fw fa-plus"></i>
+                add publication
+            </md-button>
+        </div>
 
-    <div layout="row" flex layout-align="start center">
-        <label flex="30">Citations</label>
-        <md-button class="md-primary">
-            <i class="fa fa-fw fa-plus"></i>
-            add citation
-        </md-button>
-    </div>
+        <div layout="row" flex layout-align="start center">
+            <label flex="30">Citations</label>
+            <md-button class="md-primary">
+                <i class="fa fa-fw fa-plus"></i>
+                add citation
+            </md-button>
+        </div>
 
-    <div layout="row" flex layout-align="start center">
-        <label flex="30">Citings</label>
-        <md-button class="md-primary">
-            <i class="fa fa-fw fa-refresh"></i>
-            Refresh
-        </md-button>
-    </div>
+        <div layout="row" flex layout-align="start center">
+            <label flex="30">Citings</label>
+            <md-button class="md-primary">
+                <i class="fa fa-fw fa-refresh"></i>
+                Refresh
+            </md-button>
+        </div>
 
-</md-content>
+    </md-content>
+    <md-sidenav flex="45" md-is-locked-open="true">
+            <textarea ckeditor="editorOptions"
+                      ng-model="$ctrl.experiment.note"
+                      ng-model-options="{debounce: 1000}"
+                      ng-change="$ctrl.updateNote()">
+            </textarea>
+    </md-sidenav>
+</div>
