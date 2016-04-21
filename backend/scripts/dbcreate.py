@@ -113,8 +113,8 @@ def create_tables():
     create_compound_index("experiment2datafile", "experiment_datafile", ["experiment_id", "datafile_id"])
 
     create_table("experimentnotes")
-    create_table("experiment2note", "experiment_id", "experiment_note_id")
-    create_compound_index("experiment2note", "experiment_experiment_note", ["experiment_id", "experiment_note_id"])
+    create_table("experiment2experimentnote", "experiment_id", "experiment_note_id")
+    create_compound_index("experiment2experimentnote", "experiment_experiment_note", ["experiment_id", "experiment_note_id"])
 
 
 def create_table(table, *args):
