@@ -1,18 +1,16 @@
 <div layout="row">
     <div layout="column" flex md-whiteframe style="margin-right: 10px">
         <md-toolbar layout="row">
-            <md-button class="md-primary">
-                <i class="fa fa-fw fa-plus"></i>
-                add note
+            <md-button>
+                <span class="text-white"><i class="fa fa-fw fa-plus"></i>add note</span>
             </md-button>
-            <md-button class="md-primary">
-                <i class="fa fa-fw fa-tasks"></i>
-                quick task
+            <md-button>
+                <span class="text-white"><i class="fa fa-fw fa-tasks"></i>quick task</span>
             </md-button>
         </md-toolbar>
         <mc-experiment-notes-list></mc-experiment-notes-list>
     </div>
-    <md-sidenav flex="55" md-is-locked-open="true">
+    <md-sidenav flex="65" md-is-locked-open="true">
         Show current note here
     </md-sidenav>
 </div>
