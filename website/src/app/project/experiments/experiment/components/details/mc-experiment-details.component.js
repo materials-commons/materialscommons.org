@@ -7,7 +7,7 @@ angular.module('materialscommons').component('mcExperimentDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentDetailsComponentController($stateParams, experimentsService, toast, $scope) {
+function MCExperimentDetailsComponentController($stateParams, experimentsService, toast, $scope, $mdDialog) {
     let ctrl = this;
 
     $scope.editorOptions = {
@@ -19,7 +19,7 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
     ctrl.updateName = () => {
         experimentsService
             .updateForProject($stateParams.project_id, $stateParams.experiment_id,
-                              {name: ctrl.experiment.name})
+                {name: ctrl.experiment.name})
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment name')
@@ -29,7 +29,7 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
     ctrl.updateDescription = () => {
         experimentsService
             .updateForProject($stateParams.project_id, $stateParams.experiment_id,
-                              {description: ctrl.experiment.description})
+                {description: ctrl.experiment.description})
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment description')
@@ -54,4 +54,28 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
                 () => toast.error('Failed to update note')
             );
     };
+
+    ctrl.publishExperiment = () => {
+        $mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/details/publish-experiment-dialog.html',
+            controller: PublishExperimentDialogController,
+            controllerAs: 'ctrl',
+            bindToController: true
+        });
+    };
+}
+
+class PublishExperimentDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
 }
