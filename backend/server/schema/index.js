@@ -24,6 +24,8 @@ module.exports = function(model) {
         updateExperiment: experimentSchema.defineUpdateExperimentSchema(),
         createExperimentTask: experimentSchema.defineCreateExperimentTaskSchema(),
         updateExperimentTask: experimentSchema.defineUpdateExperimentTaskSchema(),
+        createExperimentNote: experimentSchema.defineCreateExperimentNoteSchema(),
+        updateExperimentNote: experimentSchema.defineUpdateExperimentNoteSchema(),
         validate,
         prepare,
         model: model
