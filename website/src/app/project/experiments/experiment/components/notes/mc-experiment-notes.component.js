@@ -1,12 +1,16 @@
 class MCExperimentNotesComponentController {
     /*@ngInject*/
-    constructor($scope, $mdDialog) {
+    constructor($scope, $mdDialog, notesService, $stateParams, toast) {
         $scope.editorOptions = {
             height: '67vh',
             width: '59vw',
             uiColor: '#f4f5f7'
         };
+        this.notesService = notesService;
         this.$mdDialog = $mdDialog;
+        this.toast = toast;
+        this.projectID = $stateParams.project_id;
+        this.experimentID = $stateParams.experiment_id;
         if (this.experiment.notes.length) {
             this.experiment.notes.forEach((n) => n.selectedClass = '');
             this.currentNote = this.experiment.notes[0];
@@ -30,6 +34,23 @@ class MCExperimentNotesComponentController {
                 this.currentNote = note;
             }
         );
+    }
+
+    updateNote() {
+        if (!this.projectID) {
+            return;
+        }
+
+        if (!this.currentNote.note) {
+            this.currentNote.note = '';
+        }
+
+        let note = this.currentNote;
+        this.notesService.updateNote(this.projectID, this.experimentID, note.id, {note: note.note})
+            .then(
+                () => null,
+                () => this.toast.error('Unable to update note')
+            );
     }
 
     setCurrent(note) {
