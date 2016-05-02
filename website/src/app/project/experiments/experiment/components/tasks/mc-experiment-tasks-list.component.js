@@ -113,6 +113,18 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
             );
     };
 
+    ctrl.toggleStar = (event) => {
+        if (ctrl.task.flags.starred) {
+            $(event.target).removeClass('fa-star');
+            $(event.target).addClass('fa-star-o');
+            ctrl.task.flags.starred = false;
+        } else {
+            $(event.target).removeClass('fa-star-o');
+            $(event.target).addClass('fa-star');
+            ctrl.task.flags.starred = true;
+        }
+    };
+
     ctrl.onNameChange = () => {
         experimentsService
             .updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id, {name: ctrl.task.name})
