@@ -6,6 +6,8 @@
         <div layout="row" layout-fill layout-align="space-between center">
             <div>
                 <i class="fa fa-fw fa-reorder align-task-element"></i>
+                <i class="fa fa-fw fa-star-o cursor-pointer" data-nodrag
+                   ng-click="$ctrl.toggleStar($event)" style="font-size: 20px"></i>
                 <md-checkbox class="mc-done align-task-element" data-nodrag
                              ng-change="$ctrl.updateDoneStatus(task)"
                              ng-model="task.flags.done"
@@ -18,16 +20,16 @@
                        placeholder="Untitled Task..."
                        class="mc-input-no-border align-task-element"
                        id="{{::$ctrl.task.id}}">
-                <input size="20" type="text" placeholder="No template..." data-nodrag
+                <input size="25" type="text" placeholder="No template..." data-nodrag
                        class="mc-input-no-border" disabled>
                 <!--<span ng-show="$ctrl.task.flags.done"-->
                 <!--class="mark-text-done align-task-element">{{::$ctrl.task.name}}</span>-->
             </div>
             <div class="align-task-element" data-nodrag>
-                <a ng-click="$ctrl.addToExperimentNote()">
-                    <i class="fa fa-fw fa-plus"></i>
+                <!--<a ng-click="$ctrl.addToExperimentNote()">-->
+                <!--<i class="fa fa-fw fa-plus"></i>-->
                     <!--<md-tooltip md-delay="750">Add To Experiment Note</md-tooltip>-->
-                </a>
+                <!--</a>-->
                 <i class="fa fa-fw fa-flag cursor-pointer {{::$ctrl.task.displayState.flags.reviewClass}}"
                    ng-click="$ctrl.toggleFlag('review', $event)">
                 </i>
