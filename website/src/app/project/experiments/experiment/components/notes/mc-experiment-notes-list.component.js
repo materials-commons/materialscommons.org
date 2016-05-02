@@ -1,8 +1,3 @@
-angular.module('materialscommons').component('mcExperimentNotesList', {
-    templateUrl: 'app/project/experiments/experiment/components/notes/mc-experiment-notes-list.html',
-    controller: MCExperimentNotesListComponentController
-});
-
 class MCExperimentNotesListComponentController {
     /*@ngInject*/
     constructor(currentExperiment) {
@@ -10,3 +5,8 @@ class MCExperimentNotesListComponentController {
         this.experiment = currentExperiment.get();
     }
 }
+
+angular.module('materialscommons').component('mcExperimentNotesList', {
+    templateUrl: 'app/project/experiments/experiment/components/notes/mc-experiment-notes-list.html',
+    controller: MCExperimentNotesListComponentController
+});
