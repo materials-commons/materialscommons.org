@@ -8,7 +8,9 @@ class MCExperimentNotesComponentController {
         };
         this.$mdDialog = $mdDialog;
         if (this.experiment.notes.length) {
+            this.experiment.notes.forEach((n) => n.selectedClass = '');
             this.currentNote = this.experiment.notes[0];
+            this.currentNote.selectedClass = 'task-selected';
         } else {
             this.currentNote = null;
         }
@@ -23,10 +25,17 @@ class MCExperimentNotesComponentController {
             bindToController: true
         }).then(
             (note) => {
+                this.setCurrent(note);
                 this.experiment.notes.push(note);
                 this.currentNote = note;
             }
         );
+    }
+
+    setCurrent(note) {
+        $('.mc-experiment-outline-task').removeClass('task-selected');
+        this.experiment.notes.forEach((n) => n.selectedClass = '');
+        note.selectedClass = 'task-selected';
     }
 }
 
