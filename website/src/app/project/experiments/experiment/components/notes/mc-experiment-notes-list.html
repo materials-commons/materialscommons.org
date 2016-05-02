@@ -2,7 +2,9 @@
     <md-content ui-tree="$ctrl.treeOptions" id="notes-tree-root">
         <ol ui-tree-nodes ng-model="$ctrl.experiment.notes" style="margin-right: 8px">
             <li dir-paginate="note in $ctrl.experiment.notes | itemsPerPage:20" flex ui-tree-node>
-                <div ui-tree-handle class="tree-node-content mc-experiment-outline-task no-outline">
+                <div ui-tree-handle
+                     ng-click="$ctrl.setCurrent(note, $event)"
+                     class="tree-node-content mc-experiment-outline-task no-outline {{::note.selectedClass}}">
                     <div layout="row" layout-fill layout-align="space-between center">
                         <div>
                             <i class="fa fa-fw fa-reorder align-task-element"></i>
