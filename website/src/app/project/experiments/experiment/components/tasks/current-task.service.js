@@ -1,6 +1,11 @@
 class CurrentTask {
     constructor() {
         this.currentTask = null;
+        this.onChangeFN = null;
+    }
+
+    setOnChange(fn) {
+        this.onChangeFN = fn;
     }
 
     get() {
@@ -9,6 +14,9 @@ class CurrentTask {
 
     set(task) {
         this.currentTask = task;
+        if (this.onChangeFN) {
+            this.onChangeFN();
+        }
     }
 }
 
