@@ -14,6 +14,7 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, cur
         ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
         currentTask.set(ctrl.experiment.tasks[0]);
         ctrl.currentTask = currentTask.get();
+        currentTask.setOnChange(() => ctrl.currentTask = currentTask.get());
     };
 
     ctrl.moveLeft = () => moveTask.left(ctrl.currentNode, currentTask.get(), ctrl.experiment);
