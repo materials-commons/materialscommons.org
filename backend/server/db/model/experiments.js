@@ -54,6 +54,11 @@ module.exports = function(r) {
                         .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
                         .filter({parent_id: ''})
                         .orderBy('index')
+                        .coerceTo('array'),
+                    notes: r.table('experiment2experimentnote')
+                        .getAll(experiment('id'), {index: 'experiment_id'})
+                        .eqJoin('experiment_note_id', r.table('experimentnotes')).zip()
+                        .orderBy('name')
                         .coerceTo('array')
                 }
             });
