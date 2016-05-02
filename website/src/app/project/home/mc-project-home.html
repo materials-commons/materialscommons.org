@@ -18,22 +18,24 @@
                 <md-card flex="45" flex-md="60" flex-sm="60"
                          ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.whichExperiments} | orderBy:'name'"
                          class="experiment-card"
-                             ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
-                        <md-card-header>
-                            <md-card-avatar>
+                         ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
+                    <md-card-header>
+                        <md-card-avatar>
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x mc-md-primary-color"></i>
                                     <i class="fa fa-flask fa-stack-1x fa-inverse"></i>
                                 </span>
-                            </md-card-avatar>
-                        </md-card-header>
+                        </md-card-avatar>
+                        <md-card-header-title>
+                            <span class="md-title">{{experiment.name}}</span>
+                        </md-card-header-title>
+                    </md-card-header>
                     <md-card-title>
                         <md-card-title-text>
-                                <span class="md-title">{{experiment.name}}</span>
-                                <span class="md-subhead">{{experiment.description}}</span>
+                            <span class="md-subhead">{{experiment.description}}</span>
                         </md-card-title-text>
                     </md-card-title>
-                    </md-card>
+                </md-card>
                 <!--</div>-->
             </div>
             <!--<md-divider></md-divider>-->
