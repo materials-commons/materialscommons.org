@@ -7,6 +7,10 @@ class NotesService {
     createNote(projectID, experimentID, note) {
         return this.projectsAPI(projectID).one('experiments', experimentID).one('notes').customPOST(note);
     }
+
+    updateNote(projectID, experimentID, noteID, noteArgs) {
+        return this.projectsAPI(projectID).one('experiments', experimentID).one('notes', noteID).customPUT(noteArgs);
+    }
 }
 
 angular.module('materialscommons').service('notesService', NotesService);
