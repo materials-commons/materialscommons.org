@@ -1,3 +1,12 @@
-<div layout="column">
-    Task details for {{$ctrl.task.name}}
-</div>
+<md-content layout="column" style="margin-right:10px;max-height: 77vh;">
+    <div layout="row" layout-align="space-between center">
+        <h3>{{$ctrl.task.name}}</h3>
+        <md-button class="md-primary">Set Process Template</md-button>
+    </div>
+
+    <md-input-container>
+        <textarea placeholder="Notes..."></textarea>
+    </md-input-container>
+
+    <mc-process-create></mc-process-create>
+</md-content>
