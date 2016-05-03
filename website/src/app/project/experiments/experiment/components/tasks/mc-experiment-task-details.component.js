@@ -11,6 +11,5 @@ function MCExperimentTaskDetailsComponentController(currentTask, templates, temp
     let ctrl = this;
     ctrl.currentTask = currentTask.get();
     var t = templates.getTemplate('As Received');
-    console.dir(t);
     template.set(t);
 }
