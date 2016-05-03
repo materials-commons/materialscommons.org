@@ -13,9 +13,8 @@ function toUITaskService() {
                 loadEditor: false
             },
             flags: {
-                errorClass: task.flags.error ? 'mc-error-color' : 'mc-flag-not-set',
-                importantClass: task.flags.important ? 'mc-important-color' : 'mc-flag-not-set',
-                reviewClass: task.flags.review ? 'mc-review-color' : 'mc-flag-not-set'
+                starredClass: task.flags.starred ? 'fa-star' : 'fa-star-o',
+                flaggedClass: task.flags.flagged ? 'mc-flagged-color' : 'mc-flag-not-set'
             },
             selectedClass: '',
             editTitle: true,
