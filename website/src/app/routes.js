@@ -212,22 +212,25 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     )
                 }]
         })
-        .state('project.processes.process', {
+        .state('project.process', {
             url: '/process/:process_id',
             template: '<mc-process></mc-process>',
             resolve: {
                 _process: ['process', 'projectsService', '$stateParams',
                     function(process, projectsService, $stateParams) {
+                        console.log('setting process');
                         return projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
                             .then(function(p) {
+                                console.log('got process', p);
                                 process.set(p);
+                                console.log('past process.set');
                                 return p;
                             });
                     }]
             }
         })
-        .state('project.processes.edit', {
-            url: '/edit/:process_id',
+        .state('project.process.edit', {
+            url: '/edit',
             template: '<mc-process-edit></mc-process-edit>',
             resolve: {
                 _process: ['process', 'projectsService', '$stateParams', 'processEdit', 'templates',
