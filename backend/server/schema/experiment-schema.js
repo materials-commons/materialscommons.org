@@ -81,7 +81,7 @@ module.exports = function(schema) {
                 type: 'string',
                 nullable: false
             },
-            description: {
+            note: {
                 type: 'string',
                 nullable: false
             },
@@ -96,7 +96,7 @@ module.exports = function(schema) {
             }
         });
 
-        createExperimentTaskSchema.setDefaults({parent_id: '', description: ''});
+        createExperimentTaskSchema.setDefaults({parent_id: '', note: ''});
         createExperimentTaskSchema.validateAsync = promise.promisify(createExperimentTaskSchema.validate);
         return createExperimentTaskSchema;
     }
@@ -104,10 +104,6 @@ module.exports = function(schema) {
     function defineUpdateExperimentTaskSchema() {
         let updateExperimentTaskSchema = schema.defineSchema('UpdateExperimentTask', {
             name: {
-                type: 'string',
-                nullable: true
-            },
-            description: {
                 type: 'string',
                 nullable: true
             },
@@ -121,19 +117,15 @@ module.exports = function(schema) {
             },
             flags: {
                 nullable: true,
+                flagged: {
+                    type: 'boolean',
+                    nullable: true
+                },
                 done: {
                     type: 'boolean',
                     nullable: true
                 },
-                important: {
-                    type: 'boolean',
-                    nullable: true
-                },
-                error: {
-                    type: 'boolean',
-                    nullable: true
-                },
-                review: {
+                starred: {
                     type: 'boolean',
                     nullable: true
                 }
@@ -161,7 +153,7 @@ module.exports = function(schema) {
             },
             note: {
                 type: 'string',
-                nullable: false,
+                nullable: false
             }
         });
 

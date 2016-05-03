@@ -1,7 +1,7 @@
 $fa-font-path: "../../bower_components/font-awesome/fonts";
 @import "../../bower_components/font-awesome/scss/font-awesome";
 
-$mc-color-review: #ffc107;
+$mc-color-flagged: #ffc107;
 $mc-color-error: #ff5824;
 $mc-color-important: #3f51b5;
 $mc-color-done: #4caf50;
@@ -142,16 +142,16 @@ md-checkbox.md-checked.mc-error .md-icon {
   background-color: $mc-color-error;
 }
 
-.mc-review-bg {
-  background-color: $mc-color-review;
+.mc-flagged-bg {
+  background-color: $mc-color-flagged;
 }
 
-.mc-review-color {
-  color: $mc-color-review;
+.mc-flagged-color {
+  color: $mc-color-flagged;
 }
 
-md-checkbox.md-checked.mc-review .md-icon {
-  background-color: $mc-color-review;
+md-checkbox.md-checked.mc-flagged .md-icon {
+  background-color: $mc-color-flagged;
 }
 
 .mc-important-bg {
