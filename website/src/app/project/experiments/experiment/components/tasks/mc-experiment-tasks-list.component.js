@@ -10,6 +10,9 @@ angular.module('materialscommons').component('mcExperimentTasksList', {
     controller: MCExperimentTasksListComponentController,
     bindings: {
         currentNode: '='
+    },
+    require: {
+        experimentTasks: '^mcExperimentTasks'
     }
 });
 
@@ -31,6 +34,7 @@ function MCExperimentTasksListComponentController(experimentsService, toast, $st
             }
         });
         ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
+        ctrl.filterBy = ctrl.experimentTasks.filterBy;
     };
 
     function onDrop(event) {
@@ -89,8 +93,6 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
     ctrl.toggleFlag = (whichFlag, event) => {
         // toggle flag and then get its value so we know
         // what classes to add/remove.
-        console.dir(ctrl.task.flags);
-        console.log('whichFlag:', whichFlag);
         ctrl.task.flags[whichFlag] = !ctrl.task.flags[whichFlag];
         let flagColorClass = 'mc-' + whichFlag + '-color';
         let flag = ctrl.task.flags[whichFlag];

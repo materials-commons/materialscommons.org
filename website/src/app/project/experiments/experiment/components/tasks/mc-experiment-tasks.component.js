@@ -8,7 +8,7 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, cur
     let ctrl = this;
     ctrl.show = 'note';
 
-    ctrl.filterBy = {flags: {}};
+    ctrl.filterBy = {flags: {done: false}};
 
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
@@ -22,12 +22,18 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, cur
     ctrl.toggleFilter = (filter, event) => {
         let setFlag = false;
         if (_.has(ctrl.filterBy.flags, filter)) {
-            delete ctrl.filterBy.flags[filter];
+            // The done flag is treated specially as, by default, we don't show
+            // done items.
+            if (filter === 'done') {
+                ctrl.filterBy.flags.done = !ctrl.filterBy.flags.done;
+                setFlag = ctrl.filterBy.flags.done;
+            } else {
+                delete ctrl.filterBy.flags[filter];
+            }
         } else {
             setFlag = true;
             ctrl.filterBy.flags[filter] = true;
         }
-        console.dir(ctrl.filterBy);
 
         switch (filter) {
             case "done":
