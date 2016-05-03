@@ -83,14 +83,14 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
     function setCurrent(node, event) {
         $('.mc-experiment-outline-task').removeClass('task-selected');
         $(event.currentTarget).addClass('task-selected');
-        //ctrl.currentTask = task;
         currentTask.set(ctrl.task);
-        //ctrl.currentNode = node;
     }
 
     ctrl.toggleFlag = (whichFlag, event) => {
         // toggle flag and then get its value so we know
         // what classes to add/remove.
+        console.dir(ctrl.task.flags);
+        console.log('whichFlag:', whichFlag);
         ctrl.task.flags[whichFlag] = !ctrl.task.flags[whichFlag];
         let flagColorClass = 'mc-' + whichFlag + '-color';
         let flag = ctrl.task.flags[whichFlag];
@@ -117,12 +117,21 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
         if (ctrl.task.flags.starred) {
             $(event.target).removeClass('fa-star');
             $(event.target).addClass('fa-star-o');
+            ctrl.task.displayState.flags.starredClass = 'fa-star-o';
             ctrl.task.flags.starred = false;
         } else {
             $(event.target).removeClass('fa-star-o');
             $(event.target).addClass('fa-star');
+            ctrl.task.displayState.flags.starredClass = 'fa-star';
             ctrl.task.flags.starred = true;
         }
+
+        experimentsService
+            .updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id, {flags: ctrl.task.flags})
+            .then(
+                () => null,
+                () => toast.error('Failed to update task')
+            );
     };
 
     ctrl.onNameChange = () => {
@@ -160,7 +169,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
 
         let newTask = {
             name: '',
-            description: '',
+            note: '',
             parent_id: '',
             index: csi + 1
         };

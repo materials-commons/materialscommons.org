@@ -69,7 +69,7 @@ module.exports = function(r) {
 
     function* create(experiment, owner) {
         let e = new model.Experiment(experiment.name, owner);
-        e.description = experiment.description;
+        e.note = experiment.note;
         let newExperiment = yield db.insert('experiments', e);
         let proj2experiment = new model.Project2Experiment(experiment.project_id, newExperiment.id);
         yield db.insert('project2experiment', proj2experiment);
@@ -85,7 +85,7 @@ module.exports = function(r) {
 
     function* createTask(experimentID, task, owner) {
         let etask = new model.ExperimentTask(task.name, owner);
-        etask.description = task.description;
+        etask.note = task.note;
         etask.parent_id = task.parent_id;
         etask.index = task.index;
         yield updateIndexOfAllAffected(experimentID, task.parent_id, task.index);
