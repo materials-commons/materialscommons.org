@@ -8,6 +8,8 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, cur
     let ctrl = this;
     ctrl.show = 'note';
 
+    ctrl.filterBy = {flags: {}};
+
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
         ctrl.experiment = currentExperiment.get();
@@ -16,6 +18,39 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, cur
         ctrl.currentTask = currentTask.get();
         currentTask.setOnChange(() => ctrl.currentTask = currentTask.get());
     };
+
+    ctrl.toggleFilter = (filter, event) => {
+        let setFlag = false;
+        if (_.has(ctrl.filterBy.flags, filter)) {
+            delete ctrl.filterBy.flags[filter];
+        } else {
+            setFlag = true;
+            ctrl.filterBy.flags[filter] = true;
+        }
+        console.dir(ctrl.filterBy);
+
+        switch (filter) {
+            case "done":
+                toggleFilterIcon(setFlag, event, 'fa-check-square', 'fa-check-square-o');
+                break;
+            case "starred":
+                toggleFilterIcon(setFlag, event, 'fa-star', 'fa-star-o');
+                break;
+            case "flagged":
+                toggleFilterIcon(setFlag, event, 'fa-flag', 'fa-flag-o');
+                break;
+        }
+    };
+
+    function toggleFilterIcon(isSet, event, setClass, unsetClass) {
+        if (isSet) {
+            $(event.target).removeClass(unsetClass);
+            $(event.target).addClass(setClass);
+        } else {
+            $(event.target).removeClass(setClass);
+            $(event.target).addClass(unsetClass);
+        }
+    }
 
     ctrl.moveLeft = () => moveTask.left(ctrl.currentNode, currentTask.get(), ctrl.experiment);
     ctrl.moveRight = () => moveTask.right(ctrl.currentNode, currentTask.get());
