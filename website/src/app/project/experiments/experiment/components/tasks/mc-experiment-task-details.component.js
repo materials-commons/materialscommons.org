@@ -10,7 +10,7 @@ angular.module('materialscommons').component('mcExperimentTaskDetails', {
 function MCExperimentTaskDetailsComponentController(currentTask, templates, template) {
     let ctrl = this;
     ctrl.currentTask = currentTask.get();
-    var t = templates.getTemplate('As Received');
+    var t = templates.getTemplate('APT');
     console.dir(t);
     template.set(t);
 }
