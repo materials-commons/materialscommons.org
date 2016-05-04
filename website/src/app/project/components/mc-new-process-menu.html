@@ -1,7 +1,7 @@
 <md-menu-bar>
     <md-menu>
         <md-button ng-class="$ctrl.buttonClass" ng-click="$mdOpenMenu($event)">
-            <i ng-if="$ctrl.buttonIcon !== ''" class="fa fa-fw" ng-class="$ctrl.buttonIcon"></i>
+            <i ng-if="$ctrl.buttonIcon" class="fa fa-fw" ng-class="$ctrl.buttonIcon"></i>
             {{$ctrl.buttonName}}
         </md-button>
         <md-menu-content>
