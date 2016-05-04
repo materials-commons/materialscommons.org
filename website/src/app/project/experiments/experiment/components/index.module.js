@@ -7,6 +7,7 @@ import './tasks/mc-experiment-tasks-list.component';
 import './tasks/mc-experiment-task-details.component';
 import './tasks/move-task.service';
 import './tasks/mc-experiment-tasks.component';
+import './tasks/components/mc-task-template.component';
 import './tasks/current-task.service';
 import './notes/mc-experiment-notes.component';
 import './notes/mc-experiment-notes-list.component';
