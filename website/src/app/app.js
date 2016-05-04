@@ -16,11 +16,12 @@ angular.module('materialscommons')
     .run(appRun)
     .controller('MCAppController', MCAppController);
 
-appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$ariaProvider'];
-function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider) {
+appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$ariaProvider', '$compileProvider'];
+function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider, $compileProvider) {
     setupMaterialsTheme($mdThemingProvider);
     setupRoutes($stateProvider, $urlRouterProvider);
     $ariaProvider.config({ariaChecked: false, ariaInvalid: false});
+    $compileProvider.debugInfoEnabled(false);
 }
 
 appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals'];
@@ -49,8 +50,6 @@ function appRun($rootScope, User, Restangular, $state, mcglobals) {
 }
 
 function setupMCGlobals() {
-    'ngInject';
-
     var mcglobals = {};
     if (window.location.hostname === 'localhost') {
         mcglobals.apihost = window.location.protocol + '//localhost:5002';
