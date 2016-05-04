@@ -1,7 +1,9 @@
 <md-content layout="column" style="margin-right:10px;max-height: 77vh;">
     <h3>{{$ctrl.task.name}}</h3>
     <div layout="row" layout-align="start center">
-        <md-button class="md-primary">Set Template</md-button>
+        <mc-new-process-menu button-name="SET TEMPLATE"
+                             button-class="md-primary">
+        </mc-new-process-menu>
         <md-button class="md-primary">Append To Note</md-button>
         <md-button class="md-primary">
             <i class="fa fa-fw fa-plus"></i>
