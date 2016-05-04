@@ -12,4 +12,8 @@ function MCExperimentTaskDetailsComponentController(currentTask, templates, temp
     ctrl.currentTask = currentTask.get();
     var t = templates.getTemplate('As Received');
     template.set(t);
+
+    ctrl.selectedTemplate = (templateId, processId) => {
+        console.log('selectedTemplate', templateId, processId);
+    };
 }

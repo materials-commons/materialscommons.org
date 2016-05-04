@@ -4,7 +4,8 @@ angular.module('materialscommons').component('mcNewProcessMenu', {
     bindings: {
         buttonName: '@',
         buttonClass: '@',
-        buttonIcon: '@'
+        buttonIcon: '@',
+        onSelected: '&'
     }
 });
 
@@ -21,7 +22,11 @@ function MCNewProcessMenuComponentController(templates, project, projectsService
     function chooseTemplate() {
         var proj = project.get();
         mcmodal.chooseTemplate(proj, ctrl.templates).then(function(processTemplateName) {
-            $state.go('project.create.process', {template_id: processTemplateName, process_id: ''});
+            if (ctrl.onSelected) {
+                ctrl.onSelected({templateID: processTemplateName, processID: ''})
+            } else {
+                $state.go('project.create.process', {template_id: processTemplateName, process_id: ''});
+            }
         });
     }
 
@@ -29,8 +34,12 @@ function MCNewProcessMenuComponentController(templates, project, projectsService
         var projectID = project.get().id;
         projectsService.getProjectProcesses(projectID).then(function(processes) {
             mcmodal.chooseExistingProcess(processes).then(function(existingProcess) {
-                $state.go('project.create.process',
-                    {template_id: existingProcess.process_name, process_id: existingProcess.id});
+                if (ctrl.onSelected) {
+                    ctrl.onSelected({templateId: existingProcess.process_name, processId: existingProcess.id})
+                } else {
+                    $state.go('project.create.process',
+                        {template_id: existingProcess.process_name, process_id: existingProcess.id});
+                }
             });
         });
     }
