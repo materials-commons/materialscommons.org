@@ -87,13 +87,15 @@ export function TemplatesModalController(project, templates, mcmodal, $modalInst
                         }
                     ]
                 }
-            }).then(function() {
-            if (command == 'add') {
-                User.addToFavorites(project.id, template.name);
-            } else {
-                User.removeFromFavorites(project.id, template.name);
-            }
-        });
+            })
+            .then(
+                function() {
+                    if (command == 'add') {
+                        User.addToFavorites(project.id, template.name);
+                    } else {
+                        User.removeFromFavorites(project.id, template.name);
+                    }
+                });
     }
 
     function selectTemplate(template) {
