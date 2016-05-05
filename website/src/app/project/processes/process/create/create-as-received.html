@@ -1,4 +1,5 @@
 <div layout="column">
+    <h3>Setup</h3>
     <div layout="column" flex="45">
         <md-input-container>
             <label>Sample name</label>
@@ -34,7 +35,7 @@
 
     <span flex></span>
 
-    <div layout="row" flex="100">
+    <div ng-if="false" layout="row" flex="100">
         <md-button class="md-primary md-raised" ng-click="$ctrl.chooseInputFiles()">
             <i class="fa fa-fw fa-plus"></i> Input Files
         </md-button>
