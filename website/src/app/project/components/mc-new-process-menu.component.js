@@ -23,7 +23,7 @@ function MCNewProcessMenuComponentController(templates, project, projectsService
         var proj = project.get();
         mcmodal.chooseTemplate(proj, ctrl.templates).then(function(processTemplateName) {
             if (ctrl.onSelected) {
-                ctrl.onSelected({templateID: processTemplateName, processID: ''})
+                ctrl.onSelected({templateId: processTemplateName, processId: ''});
             } else {
                 $state.go('project.create.process', {template_id: processTemplateName, process_id: ''});
             }
