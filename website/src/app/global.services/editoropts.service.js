@@ -6,7 +6,7 @@ function editorOptsService() {
             height: '' + heightWidthOpts.height + 'vh',
             width: '' + heightWidthOpts.width + 'vw',
             uiColor: '#f4f5f7',
-            extraPlugins: 'forms,mathjax,codesnippet,smiley,liststyle,templates,find',
+            extraPlugins: 'forms,mathjax,codesnippet,smiley,liststyle,templates,find,sourcedialog',
             mathJaxLib: 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
             toolbar: 'custom',
             //floatSpaceDockedOffsetX: 10,
@@ -31,7 +31,7 @@ function editorOptsService() {
                 {name: 'insert', items: ['Image', 'Table', 'SpecialChar']},
                 {name: 'forms', items: ['Outdent', 'Indent']},
                 {name: 'clipboard', items: ['Undo', 'Redo']},
-                {name: 'document', items: ['PageBreak', 'Source']}
+                {name: 'document', items: ['PageBreak', 'Sourcedialog']}
             ]
         };
     };
