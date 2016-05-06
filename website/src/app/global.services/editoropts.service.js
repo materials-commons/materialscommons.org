@@ -9,20 +9,15 @@ function editorOptsService() {
             extraPlugins: 'forms,mathjax,codesnippet,smiley,liststyle,templates,find,sourcedialog',
             mathJaxLib: 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
             toolbar: 'custom',
-            //floatSpaceDockedOffsetX: 10,
-            //floatSpaceDockedOffsetY:10,
             floatSpacePinnedOffsetY: 80,
             toolbar_custom: [
-                {
-                    name: 'basicstyles',
-                    items: ['Bold', 'Italic', 'Strike', 'Underline']
-                },
+                {name: 'basicstyles', items: ['Bold', 'Italic', 'Strike', 'Underline']},
                 {name: 'paragraph', items: ['BulletedList', 'NumberedList', 'Blockquote']},
                 {name: 'editing', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
                 {name: 'links', items: ['Link', 'Unlink', 'Anchor']},
-                {name: 'tools', items: ['SpellChecker', 'Maximize']},
                 {name: 'miscItems', items: ['Checkbox', 'Mathjax', 'CodeSnippet', 'Smiley', 'Templates']},
                 {name: 'find', items: ['Find', 'Replace']},
+                {name: 'tools', items: ['SpellChecker', 'Maximize']},
                 '/',
                 {
                     name: 'styles',
