@@ -1,11 +1,8 @@
 class MCExperimentNotesComponentController {
     /*@ngInject*/
-    constructor($scope, $mdDialog, notesService, $stateParams, toast) {
-        $scope.editorOptions = {
-            height: '67vh',
-            width: '59vw',
-            uiColor: '#f4f5f7'
-        };
+    constructor($scope, $mdDialog, notesService, $stateParams, toast, editorOpts) {
+        $scope.editorOptions = editorOpts({height: 67, width: 59});
+
         this.notesService = notesService;
         this.$mdDialog = $mdDialog;
         this.toast = toast;
