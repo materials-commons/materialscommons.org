@@ -1,6 +1,5 @@
+/*@ngInject*/
 export function projectsService(Restangular, modelProjects) {
-    'ngInject';
-
     var onChangeFn = null;
     var projectsAPI = _.partial(Restangular.one('v2').one, 'projects');
 
@@ -54,6 +53,10 @@ export function projectsService(Restangular, modelProjects) {
                 }
                 return p;
             });
+        },
+
+        updateProject: function(projectID, projectAttrs) {
+            return projectsAPI(projectID).customPUT(projectAttrs);
         },
 
         createProjectProcess: function(projectID, process) {

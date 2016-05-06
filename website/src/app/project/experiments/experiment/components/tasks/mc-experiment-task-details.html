@@ -16,9 +16,13 @@
         </md-button>
     </div>
 
-    <md-input-container>
-        <textarea placeholder="Notes..."></textarea>
-    </md-input-container>
+    <div md-whiteframe layout-margin>
+        <div ckeditor="editorOptions"
+             ng-model="$ctrl.task.note"
+             contenteditable="true">
+            {{$ctrl.task.note}}
+        </div>
+    </div>
 
     <mc-process-create></mc-process-create>
 </md-content>
