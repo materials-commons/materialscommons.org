@@ -16,9 +16,12 @@
         </md-button>
     </div>
 
+    <label>Note</label>
     <div md-whiteframe layout-margin>
         <div ckeditor="editorOptions"
              ng-model="$ctrl.task.note"
+             ng-model-options="{debounce: 500}"
+             ng-change="$ctrl.updateTaskNote()"
              contenteditable="true">
             {{$ctrl.task.note}}
         </div>

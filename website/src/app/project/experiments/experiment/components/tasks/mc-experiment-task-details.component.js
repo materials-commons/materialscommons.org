@@ -7,7 +7,8 @@ angular.module('materialscommons').component('mcExperimentTaskDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentTaskDetailsComponentController($scope, editorOpts, currentTask, templates, template) {
+function MCExperimentTaskDetailsComponentController($scope, editorOpts, currentTask, templates,
+                                                    template, experimentsService, $stateParams, toast) {
     let ctrl = this;
     ctrl.currentTask = currentTask.get();
     var t = templates.getTemplate('As Received');
@@ -17,5 +18,19 @@ function MCExperimentTaskDetailsComponentController($scope, editorOpts, currentT
 
     ctrl.selectedTemplate = (templateId, processId) => {
         console.log('selectedTemplate', templateId, processId);
+    };
+
+    ctrl.updateTaskNote = () => {
+        console.log('updateTaskNote');
+        if (ctrl.task.note === null) {
+            ctrl.task.note = "";
+        }
+
+        experimentsService.updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id,
+            {note: ctrl.task.note})
+            .then(
+                () => null,
+                () => toast.error('Unable to update task note.')
+            );
     };
 }
