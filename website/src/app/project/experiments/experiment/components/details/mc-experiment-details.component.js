@@ -7,14 +7,10 @@ angular.module('materialscommons').component('mcExperimentDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentDetailsComponentController($stateParams, experimentsService, toast, $scope, $mdDialog) {
+function MCExperimentDetailsComponentController($stateParams, experimentsService, toast, $scope, $mdDialog, editorOpts) {
     let ctrl = this;
 
-    $scope.editorOptions = {
-        height: '67vh',
-        width: '41vw',
-        uiColor: '#f4f5f7'
-    };
+    $scope.editorOptions = editorOpts({height: 67, width: 41});
 
     ctrl.updateName = () => {
         experimentsService

@@ -15,6 +15,7 @@ import { selectItemsService } from './select-items/select-items.service';
 import { modelProjectsService } from './model/projects-service';
 import { mcmodalService } from './mcmodal/mcmodal';
 import './toast.service';
+import './editoropts.service';
 
 
 angular.module('materialscommons')

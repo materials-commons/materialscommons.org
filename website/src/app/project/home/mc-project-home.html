@@ -1,7 +1,15 @@
 <div layout="row" layout-fill layout-align="start stretch">
-    <md-sidenav md-is-locked-open="true" flex="30" layout-margin>
-        {{$ctrl.project.name}}
-        {{$ctrl.project.description}}
+    <md-sidenav md-is-locked-open="true" flex="30" layout="column" layout-margin>
+        <label>Project Description</label>
+        <div md-whiteframe layout-margin>
+            <div ckeditor="editorOptions"
+                 ng-model="$ctrl.project.description"
+                 ng-model-options="{debounce: 500}"
+                 ng-change="$ctrl.updateProjectDescription()"
+                 contenteditable="true">
+                {{$ctrl.project.description}}
+            </div>
+        </div>
     </md-sidenav>
     <div layout="column" flex layout-margin>
         <div layout="row" layout-align="center center">

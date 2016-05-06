@@ -7,11 +7,13 @@ angular.module('materialscommons').component('mcExperimentTaskDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentTaskDetailsComponentController(currentTask, templates, template) {
+function MCExperimentTaskDetailsComponentController($scope, editorOpts, currentTask, templates, template) {
     let ctrl = this;
     ctrl.currentTask = currentTask.get();
     var t = templates.getTemplate('As Received');
     template.set(t);
+
+    $scope.editorOptions = editorOpts({height: 25, width: 20});
 
     ctrl.selectedTemplate = (templateId, processId) => {
         console.log('selectedTemplate', templateId, processId);
