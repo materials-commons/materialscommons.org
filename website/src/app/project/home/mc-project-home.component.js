@@ -6,7 +6,6 @@ angular.module('materialscommons').component('mcProjectHome', {
 /*@ngInject*/
 function MCProjectHomeComponentController($scope, project, experimentsService, toast,
                                           $stateParams, projectsService, editorOpts) {
-    console.log('MCProjectHomeComponentController');
     var ctrl = this;
     ctrl.project = project.get();
     ctrl.projectLoaded = true;
