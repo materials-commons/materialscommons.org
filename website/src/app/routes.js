@@ -60,8 +60,8 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.home', {
             url: '/home',
             template: '<mc-project-home></mc-project-home>',
-            // hack to update project view
             resolve: {
+                // hack to update project view
                 // Set the current project in the project service so all components
                 // will resolve without having to worry if a promise has resolved.
                 // The resolved object is ignored.
