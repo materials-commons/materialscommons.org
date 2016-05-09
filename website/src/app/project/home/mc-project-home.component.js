@@ -6,11 +6,13 @@ angular.module('materialscommons').component('mcProjectHome', {
 /*@ngInject*/
 function MCProjectHomeComponentController($scope, project, experimentsService, toast,
                                           $stateParams, projectsService, editorOpts) {
+    console.log('MCProjectHomeComponentController');
     var ctrl = this;
     ctrl.project = project.get();
     ctrl.projectLoaded = true;
     ctrl.whichExperiments = 'active';
     ctrl.experiments = [];
+    let projectDescription = ctrl.project.description;
 
     $scope.editorOptions = editorOpts({height: 25, width: 20});
 
@@ -20,13 +22,17 @@ function MCProjectHomeComponentController($scope, project, experimentsService, t
     );
 
     ctrl.updateProjectDescription = () => {
+        if (projectDescription === ctrl.project.description) {
+            return;
+        }
+
         if (ctrl.project.description === null) {
-            ctrl.project.description = "";
+            return;
         }
 
         projectsService.updateProject($stateParams.project_id, {description: ctrl.project.description})
             .then(
-                () => null,
+                () => projectDescription = ctrl.project.description,
                 () => toast.error('Unable to update project description')
             );
     };
