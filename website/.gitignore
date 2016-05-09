@@ -2,3 +2,4 @@ downloads
 prod
 .tmp
 dist
+dist.tar.gz
