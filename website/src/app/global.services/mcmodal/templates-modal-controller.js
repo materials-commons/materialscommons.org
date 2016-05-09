@@ -67,9 +67,7 @@ export function TemplatesModalController(project, templates, mcmodal, $modalInst
                         }
                     }
                 ]
-            }).then(function() {
-                ctrl.templates = processTemplates.add(ctrl.templates, t);
-            });
+            }).then(() => ctrl.templates = processTemplates.add(ctrl.templates, t));
         });
     }
 
@@ -88,14 +86,13 @@ export function TemplatesModalController(project, templates, mcmodal, $modalInst
                     ]
                 }
             })
-            .then(
-                function() {
-                    if (command == 'add') {
-                        User.addToFavorites(project.id, template.name);
-                    } else {
-                        User.removeFromFavorites(project.id, template.name);
-                    }
-                });
+            .then(() => {
+                if (command == 'add') {
+                    User.addToFavorites(project.id, template.name);
+                } else {
+                    User.removeFromFavorites(project.id, template.name);
+                }
+            });
     }
 
     function selectTemplate(template) {
