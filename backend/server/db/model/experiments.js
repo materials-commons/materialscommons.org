@@ -70,6 +70,7 @@ module.exports = function(r) {
     function* create(experiment, owner) {
         let e = new model.Experiment(experiment.name, owner);
         e.note = experiment.note;
+        e.description = experiment.description;
         let newExperiment = yield db.insert('experiments', e);
         let proj2experiment = new model.Project2Experiment(experiment.project_id, newExperiment.id);
         yield db.insert('project2experiment', proj2experiment);
