@@ -142,7 +142,10 @@ export function processTemplates(User) {
     self.templatesByName = _.indexBy(self.templates, 'name');
 
     function addProjectTemplates(templates, projectTemplates) {
-        var filledOutProjectTemplates = projectTemplates.map(function(processTemplate) {
+        var filledOutProjectTemplates = projectTemplates.filter((ptemplate) => {
+            // Remove templates that are no longer in the system.
+            return self.templatesByName[ptemplate.process_name];
+        }).map(function(processTemplate) {
             var templateCopy = angular.copy(self.templatesByName[processTemplate.process_name]);
             templateCopy.name = processTemplate.name;
             templateCopy.prefill = true;
