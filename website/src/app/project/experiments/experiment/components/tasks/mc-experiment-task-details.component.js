@@ -21,9 +21,8 @@ function MCExperimentTaskDetailsComponentController($scope, editorOpts, currentT
     };
 
     ctrl.updateTaskNote = () => {
-        console.log('updateTaskNote');
         if (ctrl.task.note === null) {
-            ctrl.task.note = "";
+            return;
         }
 
         experimentsService.updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id,
