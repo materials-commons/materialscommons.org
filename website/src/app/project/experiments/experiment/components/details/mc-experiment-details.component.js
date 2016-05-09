@@ -32,14 +32,8 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
             );
     };
 
-    let lastNote = ctrl.experiment.note;
-
     ctrl.updateNote = () => {
-        if (!ctrl.experiment.note) {
-            ctrl.experiment.note = '';
-        }
-
-        if (lastNote === ctrl.experiment.note) {
+        if (ctrl.experiment.note === null) {
             return;
         }
 
