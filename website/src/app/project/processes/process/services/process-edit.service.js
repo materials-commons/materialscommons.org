@@ -8,18 +8,18 @@ function processEdit() {
      */
     function setUp(template, process) {
         process.setup[0].properties.forEach(function(property) {
-            var i = _.indexOf(template.setup.settings[0].properties, function(template_property) {
+            var i = _.indexOf(template.setup[0].properties, function(template_property) {
                 return template_property.property.attribute === property.attribute
             });
             if (i > -1) {
-                template.setup.settings[0].properties[i].property.value = property.value;
-                template.setup.settings[0].properties[i].property.name = property.name;
-                template.setup.settings[0].properties[i].property.description = property.description;
-                template.setup.settings[0].properties[i].property.unit = property.unit;
-                template.setup.settings[0].properties[i].property.id = property.id;
-                template.setup.settings[0].properties[i].property.setup_id = property.setup_id;
-                template.setup.settings[0].properties[i].property._type = property._type;
-                template.setup.settings[0].properties[i].property.attribute = property.attribute;
+                template.setup[0].properties[i].property.value = property.value;
+                template.setup[0].properties[i].property.name = property.name;
+                template.setup[0].properties[i].property.description = property.description;
+                template.setup[0].properties[i].property.unit = property.unit;
+                template.setup[0].properties[i].property.id = property.id;
+                template.setup[0].properties[i].property.setup_id = property.setup_id;
+                template.setup[0].properties[i].property._type = property._type;
+                template.setup[0].properties[i].property.attribute = property.attribute;
             }
         });
         process.setup = template.setup;

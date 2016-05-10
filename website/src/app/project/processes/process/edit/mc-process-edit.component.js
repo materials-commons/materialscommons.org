@@ -37,7 +37,7 @@ function MCProcessEditComponentController(sampleLinker, process, toastr, process
             id: ctrl.process.id,
             what: ctrl.process.what,
             name: ctrl.process.name,
-            setup: ctrl.process.setup.settings[0].properties.map(function(p) {
+            setup: ctrl.process.setup[0].properties.map(function(p) {
                 p = p.property;
                 var prop = {
                     value: p.value,
