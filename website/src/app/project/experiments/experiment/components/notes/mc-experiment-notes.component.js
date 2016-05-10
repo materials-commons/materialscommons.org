@@ -34,7 +34,7 @@ class MCExperimentNotesComponentController {
     }
 
     updateNote() {
-        if (!this.projectID) {
+        if (!this.projectID || !this.currentNote.id) {
             return;
         }
 
