@@ -13,10 +13,7 @@ export function Apt() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -228,10 +225,7 @@ export function Sem() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -391,9 +385,8 @@ export function AsReceived() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
-    this.setup = {
-        files: [],
-        settings: [{
+    this.setup = [
+        {
             name: "Instrument",
             attribute: "instrument",
             properties: [
@@ -481,8 +474,8 @@ export function AsReceived() {
                     }
                 }
             ]
-        }]
-    };
+        }
+    ]
 }
 
 export function AptDataAnalysis() {
@@ -500,10 +493,7 @@ export function AptDataAnalysis() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "System Information",
             attribute: "system_information",
@@ -592,10 +582,7 @@ export function AptDataReconstruction() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -753,10 +740,7 @@ export function BroadIonBeamMilling() {
     this.why = "";
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -834,10 +818,7 @@ export function Cogging() {
     this.why = "";
     this.owner = "jfadams@umich.edu";
     this.does_transform = true;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -894,10 +875,7 @@ export function Compression() {
     this.why = "";
     this.owner = "";
     this.does_transform = true;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -1018,10 +996,7 @@ export function Computation() {
     this.why = "";
     this.owner = "bpuchala@umich.edu";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Job Settings",
             attribute: "job_settings",
@@ -1110,10 +1085,7 @@ export function Creep() {
     this.why = "";
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -1186,10 +1158,7 @@ export function DicPatterning() {
     this.why = "";
     this.owner = "agithens@umich.edu";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -1304,10 +1273,7 @@ export function DicStatisticalModelling() {
     this.why = "";
     this.owner = "agithens@umich.edu";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -1385,10 +1351,7 @@ export function Electropolishing() {
     this.why = "";
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -1477,10 +1440,7 @@ export function Etching() {
     this.why = "";
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -1569,10 +1529,7 @@ export function EbsdSemDataCollection() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -1725,10 +1682,7 @@ export function EpmaDataCollection() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -1869,10 +1823,7 @@ export function LowCycleFatigue() {
     this.why = "";
     this.owner = "";
     this.does_transform = true;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -2056,10 +2007,7 @@ export function UltrasonicFatigue() {
     this.why = "";
     this.owner = "";
     this.does_transform = true;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -2212,10 +2160,7 @@ export function TEM() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -2385,10 +2330,7 @@ export function HeatTreatment() {
     this.why = "";
     this.owner = "";
     this.does_transform = true;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -2482,10 +2424,7 @@ export function AsMeasured() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
@@ -2509,10 +2448,7 @@ export function Hardness1() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
-    this.setup = {
-        files: []
-    };
-    this.setup.settings = [
+    this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
