@@ -1,11 +1,14 @@
 angular.module('materialscommons').component('mcProcessCreate', {
     templateUrl: 'app/project/processes/process/create/mc-process-create.html',
-    controller: MCProcessCreateComponentController
+    controller: MCProcessCreateComponentController,
+    bindings: {
+        template: '='
+    }
 });
 
-function MCProcessCreateComponentController(template) {
+function MCProcessCreateComponentController() {
     'ngInject';
-
     var ctrl = this;
-    ctrl.template = template.get();
+    console.dir(ctrl.template);
+    //ctrl.template = template.get();
 }

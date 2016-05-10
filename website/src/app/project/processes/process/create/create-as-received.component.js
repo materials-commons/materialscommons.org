@@ -2,16 +2,18 @@ import { removeById } from '../../../../util/util';
 
 angular.module('materialscommons').component('mcProcessCreateAsReceived', {
     templateUrl: 'app/project/processes/process/create/create-as-received.html',
-    controller: MCProcessCreateAsReceivedComponentController
+    controller: MCProcessCreateAsReceivedComponentController,
+    bindings: {
+        template: '='
+    }
 });
 
-function MCProcessCreateAsReceivedComponentController(template, processSelections,
+/*@ngInject*/
+function MCProcessCreateAsReceivedComponentController(processSelections,
                                                       prepareCreatedSample, createProcess,
                                                       toastr, previousStateService, $state, $stateParams) {
-    'ngInject';
-
     var ctrl = this;
-    ctrl.process = template.get();
+    ctrl.process = ctr.template;
     ctrl.sample = {
         name: '',
         description: '',
@@ -30,9 +32,9 @@ function MCProcessCreateAsReceivedComponentController(template, processSelection
     ctrl.remove = removeById;
     ctrl.submit = submit;
     ctrl.submitAndAnother = submitAndAnother;
-    ctrl.cancel = _.partial(previousStateService.go, 'process_create_previous');
+    //ctrl.cancel = _.partial(previousStateService.go, 'process_create_previous');
 
-    previousStateService.setMemo('process_create_previous', 'project.processes.create');
+    //previousStateService.setMemo('process_create_previous', 'project.processes.create');
 
     /////////////////
 

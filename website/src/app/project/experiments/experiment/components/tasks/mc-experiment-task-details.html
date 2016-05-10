@@ -27,5 +27,5 @@
         </div>
     </div>
 
-    <mc-process-create></mc-process-create>
+    <mc-process-create ng-if="$ctrl.task.template" template="$ctrl.task.template"></mc-process-create>
 </md-content>
