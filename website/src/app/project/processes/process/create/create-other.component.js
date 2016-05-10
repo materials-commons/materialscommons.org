@@ -2,16 +2,18 @@ import { removeById } from '../../../../util/util';
 
 angular.module('materialscommons').component('mcProcessCreateOther', {
     templateUrl: 'app/project/processes/process/create/create-other.html',
-    controller: MCProcessCreateOtherComponentController
+    controller: MCProcessCreateOtherComponentController,
+    bindings: {
+        template: '='
+    }
 });
 
-function MCProcessCreateOtherComponentController(template, processSelections, createProcess, toastr,
+/*@ngInject*/
+function MCProcessCreateOtherComponentController(processSelections, createProcess, toastr,
                                                  previousStateService, $state, sampleLinker, processEdit,
                                                  $stateParams) {
-    'ngInject';
-
     var ctrl = this;
-    ctrl.process = template.get();
+    ctrl.process = ctrl.template;
 
     ctrl.remove = removeById;
     ctrl.chooseSamples = _.partial(processSelections.selectSamples, ctrl.process.input_samples);
@@ -22,9 +24,9 @@ function MCProcessCreateOtherComponentController(template, processSelections, cr
 
     ctrl.submit = submit;
     ctrl.submitAndAnother = submitAndAnother;
-    ctrl.cancel = _.partial(previousStateService.go, 'process_create_previous');
+    //ctrl.cancel = _.partial(previousStateService.go, 'process_create_previous');
 
-    previousStateService.setMemo('process_create_previous', 'project.processes.create');
+   // previousStateService.setMemo('process_create_previous', 'project.processes.create');
 
     function submitAndAnother() {
         var go = _.partial($state.go, 'project.processes.create', {
