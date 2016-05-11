@@ -13,7 +13,7 @@ function MCProcessCreateAsReceivedComponentController(processSelections,
                                                       prepareCreatedSample, createProcess,
                                                       toastr, previousStateService, $state, $stateParams) {
     var ctrl = this;
-    ctrl.process = ctr.template;
+    ctrl.process = ctrl.template;
     ctrl.sample = {
         name: '',
         description: '',
