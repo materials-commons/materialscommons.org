@@ -229,9 +229,9 @@ module.exports = function(experiments, schema) {
     }
 
     function* validateAddExperimentTaskRequest(params) {
-        let errors = yield validateTask(params.project_id, params.experiment_id, params.task_id);
-        if (errors != null) {
-            return errors;
+        let isValid = yield validateTask(params.project_id, params.experiment_id, params.task_id);
+        if (!isValid) {
+            return {error: 'Bad experiment or task'};
         }
 
         let templateExists = yield experiments.templateExists(params.template_id);
