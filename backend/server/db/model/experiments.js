@@ -2,6 +2,7 @@ module.exports = function(r) {
     const dbExec = require('./run');
     const db = require('./db')(r);
     const model = require('./model')(r);
+    const processes = require('./processes')(r);
 
     return {
         getAllForProject,
@@ -19,7 +20,9 @@ module.exports = function(r) {
         getExperimentNote,
         createExperimentNote,
         updateExperimentNote,
-        deleteExperimentNote
+        deleteExperimentNote,
+        templateExists,
+        addTemplateToTask
     };
 
     function* getAllForProject(projectID) {
@@ -223,5 +226,20 @@ module.exports = function(r) {
             .getAll([experimentID, noteID], {index: 'experiment_experiment_note'}).delete();
         let old = yield r.table('experimentnotes').get(noteID).delete({returnChanges: true});
         return {val: old.changes[0].old_val};
+    }
+
+    function* templateExists(templateId) {
+        let rql = r.table('templates').getAll(templateId);
+        let matches = yield dbExec(rql);
+        return matches.length !== 0;
+    }
+
+    function* addTemplateToTask(projectId, experimentId, taskId, templateId, owner) {
+        let template = yield r.table('templates').get(templateId);
+        let procId = processes.create(projectId, template, owner);
+        yield r.table('experimenttasks').get(taskId).update({process_id: procId});
+        let e2proc = new model.Experiment2Process(experimentId, procId);
+        yield r.table('experiment2process').insert(e2proc);
+        return yield getTask(taskId);
     }
 };
