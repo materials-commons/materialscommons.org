@@ -51,6 +51,8 @@ module.exports = function(model) {
     router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.createExperimentTask);
     router.put('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.updateExperiment);
     router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.updateExperimentTask);
+    router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id/template', validateProjectAccess, experiments.updateExperimentTaskTemplate);
+    router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id/template/:template_id', validateProjectAccess, experiments.addExperimentTaskTemplate);
     router.delete('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.deleteExperimentTask);
     router.get('/projects/:project_id/experiments/:experiment_id/notes', validateProjectAccess, experiments.getNotesForExperiment);
     router.get('/projects/:project_id/experiments/:experiment_id/notes/:note_id', validateProjectAccess, experiments.getExperimentNote);

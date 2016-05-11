@@ -10,6 +10,8 @@ module.exports = function(experiments, schema) {
         createExperimentTask,
         updateExperimentTask,
         deleteExperimentTask,
+        addExperimentTaskTemplate,
+        updateExperimentTaskTemplate,
         updateExperiment,
         createExperiment,
         deleteExperiment,
@@ -76,7 +78,7 @@ module.exports = function(experiments, schema) {
         let taskArgs = yield parse(this);
         schema.prepare(schema.createExperimentTask, taskArgs);
         let errors = yield validateCreateTaskArgs(taskArgs, this.params.project_id,
-                                                  this.params.experiment_id, this.params.task_id);
+            this.params.experiment_id, this.params.task_id);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
@@ -117,7 +119,7 @@ module.exports = function(experiments, schema) {
     function* updateExperimentTask(next) {
         let updateTaskArgs = yield parse(this);
         let errors = yield validateUpdateTaskArgs(updateTaskArgs, this.params.project_id,
-                                                  this.params.experiment_id, this.params.task_id);
+            this.params.experiment_id, this.params.task_id);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
@@ -205,6 +207,43 @@ module.exports = function(experiments, schema) {
         }
 
         return null;
+    }
+
+    function* addExperimentTaskTemplate(next) {
+        let errors = yield validateAddExperimentTaskRequest(this.params);
+        if (errors != null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield experiments.addTemplateToTask(this.params.project_id, this.params.experiment_id,
+                this.params.task_id, this.params.template_id, this.reqctx.user.id);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+
+        yield next;
+    }
+
+    function* validateAddExperimentTaskRequest(params) {
+        let errors = yield validateTask(params.project_id, params.experiment_id, params.task_id);
+        if (errors != null) {
+            return errors;
+        }
+
+        let templateExists = yield experiments.templateExists(params.template_id);
+        if (!templateExists) {
+            return {error: 'No such template'};
+        }
+
+        return null;
+    }
+
+    function* updateExperimentTaskTemplate(next) {
+        yield next;
     }
 
     function* updateExperiment(next) {
