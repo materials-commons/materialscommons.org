@@ -1,0 +1,73 @@
+<div layout="column">
+    <h3>Setup</h3>
+    <div layout="column" flex="45">
+        <md-input-container>
+            <label>Sample name</label>
+            <input type="text" ng-model="$ctrl.sample.name">
+        </md-input-container>
+        <md-input-container>
+            <label>Description</label>
+                <textarea rows="10" ng-model="$ctrl.sample.description">
+                </textarea>
+        </md-input-container>
+        <label>Composition</label>
+        <periodic-table composition="$ctrl.composition"></periodic-table>
+    </div>
+    <span flex></span>
+    <div layout="column" flex="45">
+        <md-checkbox ng-model="$ctrl.sampleGroup">Treat as sample group</md-checkbox>
+        <div ng-if="$ctrl.sampleGroup && $ctrl.sampleGroupSizing === 'set-size'">
+            <md-input-container>
+                <label>Sample group size</label>
+                <input type="number" ng-model="$ctrl.sampleGroupSize">
+            </md-input-container>
+        </div>
+        <!--<div ng-if="false">-->
+        <!--<div ng-if="ctrl.sampleGroup">-->
+        <!--<md-radio-group ng-model="$ctrl.sampleGroupSize">-->
+        <!--<md-radio-button value="set-size">Set sample group size</md-radio-button>-->
+        <!--<md-radio-button value="as-needed">Create samples as needed</md-radio-button>-->
+        <!--</md-radio-group>-->
+        <!--</div>-->
+        <!--</div>-->
+        <process-settings settings="$ctrl.process.setup[0].properties"></process-settings>
+    </div>
+
+    <span flex></span>
+
+    <div ng-if="false" layout="row" flex="100">
+        <md-button class="md-primary md-raised" ng-click="$ctrl.chooseInputFiles()">
+            <i class="fa fa-fw fa-plus"></i> Input Files
+        </md-button>
+    </div>
+
+    <md-divider></md-divider>
+
+    <div flex="100" layout-margin>
+        <md-table-container>
+            <table md-table
+                   ng-if="$ctrl.process.input_samples.length || $ctrl.process.input_files.length || $ctrl.process.output_files.length">
+                <thead md-head>
+                <tr md-row>
+                    <th md-column>Type</th>
+                    <th md-column>Name</th>
+                    <th md-column></th>
+                    <th md-column></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr md-row ng-repeat="file in $ctrl.process.input_files | orderBy:'name'">
+                    <td md-cell>Input File</td>
+                    <td md-cell>{{file.name}}</td>
+                    <td md-cell></td>
+                    <td md-cell>
+                        <md-button class="md-warn" ng-click="$ctrl.remove($ctrl.process.input_files, file)">
+                            <i class="fa fa-close"></i>
+                        </md-button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </div>
+</div>

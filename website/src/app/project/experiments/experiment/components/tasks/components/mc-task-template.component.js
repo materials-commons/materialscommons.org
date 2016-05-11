@@ -1,8 +1,14 @@
-class MCTaskTemplateComponentController {
-
-}
-
 angular.module('materialscommons').component('mcTaskTemplate', {
-    template: 'app/project/experiments/experiment/components/tasks/components/mc-task-template.html',
-    controller: MCTaskTemplateComponentController
+    templateUrl: 'app/project/experiments/experiment/components/tasks/components/mc-task-template.html',
+    controller: MCTaskTemplateComponentController,
+    bindings: {
+        template: '='
+    }
 });
+
+/*@ngInject*/
+function MCTaskTemplateComponentController() {
+    var ctrl = this;
+    console.dir(ctrl.template);
+    //ctrl.template = template.get();
+}
