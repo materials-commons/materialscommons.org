@@ -17,17 +17,14 @@ module.exports = function(r) {
         this._type = "sample";
     }
 
-    function Process(name, owner, ptype, what, why, transform, process_name) {
+    function Process(name, owner, templateId, transform) {
         this.name = name;
         this.owner = owner;
-        this.what = what;
-        this.why = why;
-        this.process_type = ptype;
+        this.template_id = templateId;
         this.birthtime = r.now();
         this.mtime = this.birthtime;
         this._type = "process";
         this.does_transform = transform;
-        this.process_name = process_name;
     }
 
     function Process2Setup(processID, setupID) {
@@ -277,6 +274,11 @@ module.exports = function(r) {
         this.experiment_note_id = experimentNoteID;
     }
 
+    function Experiment2Process(experimentID, processID) {
+        this.experiment_id = experimentID;
+        this.process_id = processID;
+    }
+
     return {
         Sample: Sample,
         Process: Process,
@@ -311,6 +313,7 @@ module.exports = function(r) {
         ExperimentTask,
         Experiment2ExperimentTask,
         ExperimentNote,
-        Experiment2ExperimentNote
+        Experiment2ExperimentNote,
+        Experiment2Process
     };
 };
