@@ -9,7 +9,7 @@
  *
  * @param {Object} r - The rethinkdbdash instance.
  */
-module.exports = function (r) {
+module.exports = function(r) {
     'use strict';
 
     const model = require('./model')(r);
@@ -83,8 +83,7 @@ module.exports = function (r) {
 
     // updateFiles adds or deletes files from the process
     function* updateFiles(processID, files, direction) {
-        let filesToAdd = files.filter(f => f.command == 'add').
-        map(f => new model.Process2File(processID, f.id, direction));
+        let filesToAdd = files.filter(f => f.command == 'add').map(f => new model.Process2File(processID, f.id, direction));
         if (filesToAdd.length) {
             yield addFilesToProcess(filesToAdd);
         }
@@ -120,8 +119,7 @@ module.exports = function (r) {
 
         let samplesToDelete = samples.filter(s => s.command == 'delete').map(s => [processID, s.id, s.property_set_id]);
         if (samplesToDelete.length) {
-            let deleteRql = r.table('process2sample').
-            getAll(r.args(samplesToDelete), {index: 'process_sample_property_set'}).delete();
+            let deleteRql = r.table('process2sample').getAll(r.args(samplesToDelete), {index: 'process_sample_property_set'}).delete();
             yield dbExec(deleteRql);
         }
     }
@@ -169,11 +167,11 @@ module.exports = function (r) {
     }
 
     function processDetailsRql(rql) {
-        return rql.merge(function (process) {
+        return rql.merge(function(process) {
             return {
                 setup: r.table('process2setup').getAll(process('id'), {index: 'process_id'})
                     .eqJoin('setup_id', r.table('setups')).zip()
-                    .merge(function (setup) {
+                    .merge(function(setup) {
                         return {
                             properties: r.table('setupproperties')
                                 .getAll(setup('setup_id'), {index: 'setup_id'})
@@ -183,13 +181,13 @@ module.exports = function (r) {
 
                 samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
                     .eqJoin('sample_id', r.table('samples')).zip()
-                    .merge(function (sample) {
+                    .merge(function(sample) {
                         return {
                             properties: r.table('propertyset2property')
                                 .getAll(sample('property_set_id'), {index: 'property_set_id'})
                                 .eqJoin('property_id', r.table('properties')).zip()
                                 .orderBy('name')
-                                .merge(function (property) {
+                                .merge(function(property) {
                                     return {
                                         best_measure: r.table('best_measure_history')
                                             .getAll(property('best_measure_id'))
@@ -219,29 +217,28 @@ module.exports = function (r) {
      * method assumes that the process passed in is valid. Validation of
      * the process must be done outside of this method.
      *
-     * @param {Object} process - The process definition to create the new
+     * @param {Object} template - The process definition to create the new
      *                           process from.
      * @returns {Object} - The new process created from the definition.
      */
-    function *create(process) {
-        let p = new model.Process(process.name, process.owner, process._type, process.what,
-            process.why, process.does_transform, process.process_name);
-        let proc = yield addProcess(process.project_id, p);
-        yield addProcessSetup(proc.id, process.setup);
-        yield addSampleMeasurements(proc.id, process.input_samples);
-        yield addCreatedSamples(process.output_samples, process.project_id, proc.id, process.owner);
-        yield addSampleMeasurements(proc.id, process.output_samples);
-        yield addTransformedSamples(process.transformed_samples, proc.id);
-        yield addSampleFiles(process.input_samples);
-        yield addSampleFiles(process.output_samples);
+    function *create(projectId, template, owner) {
+        let p = new model.Process(template.name, owner, template.id, template.does_transform);
+        let proc = yield addProcess(projectId, p);
+        yield createSetup(proc.id, template.setup);
+        //yield addSampleMeasurements(proc.id, process.input_samples);
+        //yield addCreatedSamples(process.output_samples, process.project_id, proc.id, process.owner);
+        //yield addSampleMeasurements(proc.id, process.output_samples);
+        //yield addTransformedSamples(process.transformed_samples, proc.id);
+        //yield addSampleFiles(process.input_samples);
+        //yield addSampleFiles(process.output_samples);
 
         // TODO: Do we need to add files for transformed_samples?
         // yield addSampleFiles(process.transformed_samples);
 
-        yield addFiles(proc.id, process.input_files, 'in');
-        yield addFiles(proc.id, process.output_files, 'out');
+        //yield addFiles(proc.id, process.input_files, 'in');
+        //yield addFiles(proc.id, process.output_files, 'out');
 
-        return yield get(proc.id);
+        return proc.id;
     }
 
     // addProcess inserts the process and add it to the project.
@@ -253,19 +250,18 @@ module.exports = function (r) {
     }
 
     // addProcessSetup adds the process setup settings
-    function *addProcessSetup(processID, setup) {
-        let settings = yield addSetupSettings(processID, setup.settings);
-        let setupFiles = yield addSetupFiles(processID, setup.files);
-        return {
-            settings: settings,
-            files: setupFiles
-        };
-    }
+    //function *addProcessSetup(processID, setup) {
+    //    let settings = yield addSetupSettings(processID, setup.settings);
+    //    let setupFiles = yield addSetupFiles(processID, setup.files);
+    //    return {
+    //        settings: settings,
+    //        files: setupFiles
+    //    };
+    //}
 
     // addSetupSettings will add each setting property for the process
     // to the database.
-    function *addSetupSettings(processID, settings) {
-        let created = [];
+    function *createSetup(processID, settings) {
         for (let i = 0; i < settings.length; i++) {
             let current = settings[i];
 
@@ -280,23 +276,15 @@ module.exports = function (r) {
             // Create each property for the setting. Add these to the
             // setting variable so we can return a setting object with
             // all of its properties.
-            setup.properties = [];
+            // TODO: Add into an array and then batch insert into setupproperties
             for (let j = 0; j < current.properties.length; j++) {
                 let p = current.properties[j].property;
-                if (p.value) {
-                    let val = p.value;
-                    if (p._type === "date") {
-                        val = new Date(p.value);
-                    }
-                    let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
-                        p._type, val, p.unit);
-                    let sprop = yield db.insert('setupproperties', prop);
-                    setup.properties.push(sprop);
-                }
+                let val = p.value;
+                let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
+                    p._type, val, p.unit);
+                yield db.insert('setupproperties', prop);
             }
-            created.push(setup);
         }
-        return created;
     }
 
     // addSetupFiles adds the files used in setup to the database.
@@ -498,7 +486,7 @@ module.exports = function (r) {
 
     function* createGroupedSamples(sample, owner, projectID, processID) {
         for (let i = 0; i < sample.group_size; i++) {
-            let s = yield addChildSample(`${sample.name}_${i+1}`, sample.description, owner, sample.property_set_id);
+            let s = yield addChildSample(`${sample.name}_${i + 1}`, sample.description, owner, sample.property_set_id);
             yield addSampleAssociations(s.id, sample.property_set_id, projectID, processID);
             let s2s = new model.Sample2Sample(sample.id, s.id);
             yield db.insert('sample2sample', s2s);
@@ -691,7 +679,7 @@ module.exports = function (r) {
         let rql = r.table('property2measurement').getAll(fromAttrID, {index: 'property_id'});
         let original = yield rql;
         // Change id to newAttrID and insert into table
-        original.forEach(function (m) {
+        original.forEach(function(m) {
             m.property_id = newAttrID;
             delete m['id'];
         });
@@ -711,7 +699,7 @@ module.exports = function (r) {
         let original = yield rql;
 
         // Change to newAttrID and insert
-        original.forEach(function (entry) {
+        original.forEach(function(entry) {
             entry.property_id = newAttrID;
             delete entry['id'];
         });
