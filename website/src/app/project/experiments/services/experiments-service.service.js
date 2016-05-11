@@ -28,6 +28,11 @@ class ExperimentsService {
         return this.projectsAPI(projectID).one('experiments', experimentID).one('tasks', taskID).customPUT(task);
     }
 
+    addTemplateToTask(projectID, experimentID, taskID, templateID) {
+        return this.projectsAPI(projectID).one('experiments', experimentID).one('tasks', taskID)
+            .one('template', templateID).customPOST({});
+    }
+
     deleteTask(projectID, experimentID, taskID) {
         return this.projectsAPI(projectID).one('experiments', experimentID).one('task', taskID).customDELETE();
     }
