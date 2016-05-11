@@ -104,7 +104,8 @@ def create_tables():
 
     create_table("experimenttasks", "parent_id")
 
-    create_table("experimenttask2process", "experiment_task_id", "process_id")
+    create_table("experiment2process", "experiment_id", "process_id")
+    create_compound_index("experiment2process", "experiment_process", ["experiment_id", "process_id"])
 
     create_table("experiment2sample", "experiment_id", "sample_id")
     create_compound_index("experiment2sample", "experiment_sample", ["experiment_id", "sample_id"])
