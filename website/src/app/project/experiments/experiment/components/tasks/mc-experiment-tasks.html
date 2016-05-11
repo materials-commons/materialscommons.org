@@ -20,6 +20,10 @@
                     <i class="fa fa-fw fa-flag-o cursor-pointer" ng-click="$ctrl.toggleFilter('flagged', $event)"></i>
                     <i class="fa fa-fw fa-check-square-o cursor-pointer"
                        ng-click="$ctrl.toggleFilter('done', $event)"></i>
+                    <span ng-if="false" class="cursor-pointer mc-light-grey-color" style="padding-left:8px"
+                          ng-click="$ctrl.toggleFilter('all', $event)">
+                        ALL
+                    </span>
                 </div>
             </div>
         </md-toolbar>
