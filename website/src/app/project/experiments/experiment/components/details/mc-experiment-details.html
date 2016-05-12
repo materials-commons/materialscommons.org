@@ -24,12 +24,19 @@
 
         <div layout="row" flex layout-align="start center">
             <label flex="30">Goals</label>
-            <md-button class="md-primary">
+            <md-button ng-click="$ctrl.addGoal()" class="md-primary">
                 <i class="fa fa-fw fa-plus"></i>
                 add goal
             </md-button>
         </div>
-
+        <md-list-item style="height:5px"  ng-repeat="goal in $ctrl.experiment.goals track by $index">
+            <md-input-container flex="60">
+                <input type="text"
+                       ng-model="goal"
+                       ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateName()">
+            </md-input-container>
+        </md-list-item>
         <md-divider class="divider-extra"></md-divider>
 
         <div layout="row" flex layout-align="start center">
