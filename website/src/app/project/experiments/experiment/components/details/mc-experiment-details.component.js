@@ -53,6 +53,10 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
             bindToController: true
         });
     };
+
+    ctrl.addGoal = () => {
+        ctrl.experiment.goals.push("");
+    };
 }
 
 class PublishExperimentDialogController {
