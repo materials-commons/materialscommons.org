@@ -29,12 +29,16 @@
                 add goal
             </md-button>
         </div>
-        <md-list-item style="height:5px"  ng-repeat="goal in $ctrl.experiment.goals track by $index">
-            <md-input-container flex="60">
+        <md-list-item ng-repeat="goal in $ctrl.experiment.goals track by $index">
+            <md-input-container flex="90">
+                <label> Goal {{$index}}</label>
                 <input type="text"
                        ng-model="goal"
                        ng-model-options="{debounce: 500}"
                        ng-change="$ctrl.updateName()">
+            </md-input-container>
+            <md-input-container flex="10">
+                <i ng-click="$ctrl.removeGoal($index)" class="pull-right fa fa-close"></i>
             </md-input-container>
         </md-list-item>
         <md-divider class="divider-extra"></md-divider>
@@ -82,7 +86,7 @@
             </md-button>
         </div>
 
-        <div layout="row" flex layout-align="start center">
+        <div ng-if="false" layout="row" flex layout-align="start center">
             <label flex="30">Citings</label>
             <md-button class="md-primary">
                 <i class="fa fa-fw fa-refresh"></i>

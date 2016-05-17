@@ -19,7 +19,8 @@ module.exports = function(experiments, schema) {
         getExperimentNote,
         updateExperimentNote,
         createExperimentNote,
-        deleteExperimentNote
+        deleteExperimentNote,
+        createExperimentGoal
     };
 
     function* getAllExperimentsForProject(next) {
@@ -417,5 +418,25 @@ module.exports = function(experiments, schema) {
         }
 
         return null;
+    }
+
+    function* createExperimentGoal(next) {
+        let goalArgs = yield parse(this);
+        schema.prepare(schema.createExperimentTask, taskArgs);
+        let errors = yield validateCreateTaskArgs(taskArgs, this.params.project_id,
+            this.params.experiment_id, this.params.task_id);
+        if (errors != null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield experiments.createTask(this.params.experiment_id, taskArgs, this.reqctx.user.id);
+            if (rv.error) {
+                this.status = status.NOT_ACCEPTABLE;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
     }
 };
