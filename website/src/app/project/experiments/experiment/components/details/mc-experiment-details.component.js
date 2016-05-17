@@ -57,6 +57,11 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
     ctrl.addGoal = () => {
         ctrl.experiment.goals.push("");
     };
+
+    ctrl.removeGoal = (index) => {
+        console.log(index);
+        ctrl.experiment.goals.splice(index,1);
+    };
 }
 
 class PublishExperimentDialogController {

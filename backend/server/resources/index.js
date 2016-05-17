@@ -59,6 +59,8 @@ module.exports = function(model) {
     router.delete('/projects/:project_id/experiments/:experiment_id/notes/:note_id', validateProjectAccess, experiments.deleteExperimentNote);
     router.put('/projects/:project_id/experiments/:experiment_id/notes/:note_id', validateProjectAccess, experiments.updateExperimentNote);
     router.post('/projects/:project_id/experiments/:experiment_id/notes', validateProjectAccess, experiments.createExperimentNote);
+    router.post('/projects/:project_id/experiments/:experiment_id/goals', validateProjectAccess, experiments.createExperimentGoal);
+
 
     router.put('/users/:project_id', users.update);
 
