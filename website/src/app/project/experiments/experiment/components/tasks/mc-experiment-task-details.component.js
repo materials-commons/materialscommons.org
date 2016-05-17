@@ -23,6 +23,7 @@ function MCExperimentTaskDetailsComponentController($scope, editorOpts, template
                         console.log(`templateName: '${templateName}'`);
                         var t = templates.getTemplate(templateName);
                         ctrl.task.template = processEdit.fillProcess(t, process);
+                        ctrl.task.template.template_name = templateName;
                         ctrl.task.loaded = true;
                     },
                     () => toast.error('Unable to retrieve task template')
