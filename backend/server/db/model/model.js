@@ -1,4 +1,4 @@
-module.exports = function(r) {
+module.exports = function (r) {
     'use strict';
 
     let db = require('./db')(r);
@@ -80,7 +80,7 @@ module.exports = function(r) {
         this.file = {};
     }
 
-    Measurement.prototype.setValue = function(value, units, _type, nvalue, nunits, element) {
+    Measurement.prototype.setValue = function (value, units, _type, nvalue, nunits, element) {
         this.value = value;
         this._type = _type;
         this.unit = units;
@@ -89,7 +89,7 @@ module.exports = function(r) {
         this.nunits = nunits ? nunits : units;
     };
 
-    Measurement.prototype.setFile = function(f) {
+    Measurement.prototype.setFile = function (f) {
         this.file = f;
     };
 
@@ -130,7 +130,7 @@ module.exports = function(r) {
     function Sample2PropertySet(sampleID, psetID, current) {
         this.property_set_id = psetID;
         this.sample_id = sampleID;
-        this.version  = '';
+        this.version = '';
         this.current = current;
     }
 
@@ -146,7 +146,7 @@ module.exports = function(r) {
         this._type = 'best_measure_history';
     }
 
-    function Sample2Datafile(sampleID, datafileID){
+    function Sample2Datafile(sampleID, datafileID) {
         this.datafile_id = datafileID;
         this.sample_id = sampleID;
     }
@@ -223,6 +223,11 @@ module.exports = function(r) {
         this.status = 'active';
         this.birthtime = now;
         this.mtime = now;
+        this.collaborators = [];
+        this.funding = [];
+        this.current_working_papers = [];
+        this.publications_from_experiment = [];
+        this.citations = [];
     }
 
     function ExperimentTask(name, owner) {
