@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcTaskTemplateOther', {
     templateUrl: 'app/project/experiments/experiment/components/tasks/components/mc-task-template-other.html',
     controller: MCTaskTemplateOtherComponentController,
     bindings: {
-        template: '='
+        task: '='
     }
 });
 
@@ -13,12 +13,10 @@ function MCTaskTemplateOtherComponentController(processSelections, createProcess
                                                 previousStateService, $state, sampleLinker, processEdit,
                                                 $stateParams) {
     var ctrl = this;
-    ctrl.process = ctrl.template;
-
     ctrl.remove = removeById;
-    ctrl.chooseSamples = _.partial(processSelections.selectSamples, ctrl.process.input_samples);
-    ctrl.chooseInputFiles = _.partial(processSelections.selectFiles, ctrl.process.input_files);
-    ctrl.chooseOutputFiles = _.partial(processSelections.selectFiles, ctrl.process.output_files);
+    ctrl.chooseSamples = _.partial(processSelections.selectSamples, ctrl.task.template.input_samples);
+    ctrl.chooseInputFiles = _.partial(processSelections.selectFiles, ctrl.task.template.input_files);
+    ctrl.chooseOutputFiles = _.partial(processSelections.selectFiles, ctrl.task.template.output_files);
 
     ctrl.linkFilesToSample = linkFilesToSample;
 
@@ -30,7 +28,7 @@ function MCTaskTemplateOtherComponentController(processSelections, createProcess
 
     function submitAndAnother() {
         var go = _.partial($state.go, 'project.processes.create', {
-            template_id: ctrl.process.process_name,
+            template_id: ctrl.task.template.process_name,
             process_id: ''
         });
         performSubmit(go);
