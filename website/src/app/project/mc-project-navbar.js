@@ -23,14 +23,12 @@ function MCProjectNavbarComponentController(project, $state, $rootScope, $scope)
             return 0;
         } else if ($state.includes('project.experiments') || $state.includes('project.experiment')) {
             return 1;
-        } else if ($state.includes('project.processes')) {
-            return 2;
         } else if ($state.includes('project.samples')) {
-            return 3;
+            return 2;
         } else if ($state.includes('project.files')) {
-            return 4;
+            return 3;
         } else if ($state.includes('project.settings')) {
-            return 5;
+            return 4;
         }
 
         return 0;
