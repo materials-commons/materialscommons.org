@@ -21,6 +21,7 @@ function toUITaskService() {
             open: false,
             maximize: false
         };
+        task.loaded = false;
         task.node = null;
     }
 }
