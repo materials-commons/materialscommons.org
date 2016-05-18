@@ -31,11 +31,11 @@
         </div>
         <md-list-item ng-repeat="goal in $ctrl.experiment.goals track by $index">
             <md-input-container flex="90">
-                <label> Goal {{$index}}</label>
+                <label> Goal {{$index + 1}}</label>
                 <input type="text"
                        ng-model="goal"
                        ng-model-options="{debounce: 500}"
-                       ng-change="$ctrl.updateName()">
+                       ng-change="$ctrl.updateGoal(goal, $index+1)">
             </md-input-container>
             <md-input-container flex="10">
                 <i ng-click="$ctrl.removeGoal($index)" class="pull-right fa fa-close"></i>

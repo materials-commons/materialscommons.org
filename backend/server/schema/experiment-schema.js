@@ -1,4 +1,4 @@
-module.exports = function(schema) {
+module.exports = function (schema) {
     const promise = require('bluebird');
 
     return {
@@ -68,6 +68,17 @@ module.exports = function(schema) {
             note: {
                 type: 'string',
                 nullable: true
+            },
+
+            goal: {
+                type: 'string',
+                nullable: false
+            },
+
+            index:{
+                type: 'integer',
+                nullable: false,
+                min: 0
             }
         });
         updateExperimentSchema.setDefaults({});
