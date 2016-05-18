@@ -66,7 +66,17 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
     ctrl.updateGoal = (goal, index) => {
         experimentsService
             .updateForProject($stateParams.project_id, $stateParams.experiment_id,
-                {'goal': goal, 'index': index - 1})
+                {'goal': goal, 'index': index - 1, action: 'add'})
+            .then(
+                () => null,
+                () => toast.error('Failed to update experiment description')
+            );
+    };
+
+    ctrl.removeGoal = (goal, index) => {
+        experimentsService
+            .updateForProject($stateParams.project_id, $stateParams.experiment_id,
+                {'goal': goal, 'index': index, action: 'remove'})
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment description')
