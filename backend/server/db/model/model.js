@@ -217,16 +217,14 @@ module.exports = function (r) {
         this._type = 'experiment';
         this.description = '';
         this.goals = [];
-        this.aims = [];
-        this.hypothesis = [];
         this.note = '<h2>Experiment Notes</h2>';
         this.status = 'active';
         this.birthtime = now;
         this.mtime = now;
         this.collaborators = [];
         this.funding = [];
-        this.current_working_papers = [];
-        this.publications_from_experiment = [];
+        this.working_papers = [];
+        this.publications = [];
         this.citations = [];
     }
 
