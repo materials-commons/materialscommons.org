@@ -254,6 +254,17 @@ module.exports = function(experiments, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
+            let exp = yield experiments.get(this.params.experiment_id);
+            if('goal' in updateArgs){
+                console.log('goals found');
+                console.log(updateArgs);
+                console.log(exp);
+                exp.val.goals[updateArgs['index']] = updateArgs['goal'];
+                updateArgs['goals'] = exp.val.goals;
+                delete updateArgs['goal'];
+                delete updateArgs['index'];
+                console.log(updateArgs);
+            }
             let rv = yield experiments.update(this.params.experiment_id, updateArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
