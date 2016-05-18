@@ -1,6 +1,5 @@
 <div layout="column">
     <h4 class="md-title">Setup</h4>
-
     <md-content layout-padding>
         <form name="processSettingsForm">
             <div ng-repeat="setting in ctrl.settings">
@@ -21,9 +20,9 @@
                                 {{::setting.property.unit}}
                             </span>
                             <span ng-if="setting.property.units.length !== 0">
-                                <md-select ng-model="setting.property.unit" class="units-align">
+                                <md-select ng-model="setting.property.unit" aria-label="units" class="units-align">
                                     <md-option ng-repeat="unit in setting.property.units"
-                                               ng-value="unit" ng-selected="$first">
+                                               ng-value="unit">
                                         {{unit}}
                                     </md-option>
                                 </md-select>
@@ -42,9 +41,10 @@
                         <div style="margin-top:45px">
                             <md-input-container class="md-block">
                                 <label>{{::setting.property.name}}</label>
-                                <md-select ng-model="setting.property.value">
+                                {{setting.property.value}}
+                                <md-select ng-model="setting.property.value" aria-label="x">
                                     <md-option ng-value="choice"
-                                               ng-repeat="choice in setting.property.choices" ng-selected="$first">
+                                               ng-repeat="choice in setting.property.choices">
                                         {{choice.name}}
                                     </md-option>
                                 </md-select>
