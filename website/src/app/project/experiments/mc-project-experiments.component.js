@@ -57,6 +57,3 @@ class CreateNewExperimentDialogController {
         this.$mdDialog.cancel();
     }
 }
-
-
-
