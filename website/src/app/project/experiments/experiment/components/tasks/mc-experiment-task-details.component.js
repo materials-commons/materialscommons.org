@@ -36,7 +36,10 @@ function MCExperimentTaskDetailsComponentController($scope, editorOpts, template
         experimentsService.addTemplateToTask($stateParams.project_id, $stateParams.experiment_id,
             ctrl.task.id, `global_${templateId}`)
             .then(
-                () => ctrl.task.template = templates.getTemplate(templateId),
+                () => {
+                    ctrl.task.template_name = templateId;
+                    ctrl.task.template = templates.getTemplate(templateId);
+                },
                 () => toast.error('Unable to associate template with task')
             );
     };
