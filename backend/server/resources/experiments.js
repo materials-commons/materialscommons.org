@@ -255,16 +255,8 @@ module.exports = function(experiments, schema) {
             this.body = errors;
         } else {
             let exp = yield experiments.get(this.params.experiment_id);
-            if('goal' in updateArgs){
-                console.log('goals found');
-                console.log(updateArgs);
-                console.log(exp);
-                exp.val.goals[updateArgs['index']] = updateArgs['goal'];
-                updateArgs['goals'] = exp.val.goals;
-                delete updateArgs['goal'];
-                delete updateArgs['index'];
-                console.log(updateArgs);
-            }
+            updateArgs = processArgs(exp, updateArgs, 'goal', 'goals');
+
             let rv = yield experiments.update(this.params.experiment_id, updateArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
@@ -274,6 +266,21 @@ module.exports = function(experiments, schema) {
             }
         }
         yield next;
+    }
+
+    function processArgs(exp, updateArgs, what, db_field){
+        if(what in updateArgs){
+            if(updateArgs['action'] === 'add'){
+                exp.val[db_field][updateArgs['index']] = updateArgs[what];
+            }else{
+                exp.val[db_field].splice(updateArgs['index'], 1);
+            }
+            updateArgs[db_field] = exp.val[db_field];
+            delete updateArgs[what];
+            delete updateArgs['index'];
+            delete updateArgs['action'];
+        }
+        return updateArgs;
     }
 
     function* validateUpdateExperimentArgs(experimentArgs, projectID, experimentID) {
