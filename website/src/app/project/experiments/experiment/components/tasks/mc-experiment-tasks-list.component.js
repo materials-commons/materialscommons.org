@@ -79,7 +79,8 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 /*@ngInject*/
 function MCExperimentTasksListDirDirectiveController($stateParams, experimentsService, toast,
                                                      currentTask, toUITask, focus, currentExperiment,
-                                                     paginationService) {
+                                                     paginationService, projectsService, templates,
+                                                     processEdit) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
     ctrl.experiment = currentExperiment.get();
@@ -88,6 +89,23 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
         $('.mc-experiment-outline-task').removeClass('task-selected');
         $(event.currentTarget).addClass('task-selected');
         currentTask.set(ctrl.task);
+        loadTaskTemplate();
+    }
+
+    function loadTaskTemplate() {
+        if (!ctrl.task.loaded && ctrl.task.process_id !== '') {
+            projectsService.getProjectProcess($stateParams.project_id, ctrl.task.process_id)
+                .then(
+                    (process) => {
+                        let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
+                        var t = templates.getTemplate(templateName);
+                        ctrl.task.template = processEdit.fillProcess(t, process);
+                        ctrl.task.template.template_name = templateName;
+                        ctrl.task.loaded = true;
+                    },
+                    () => toast.error('Unable to retrieve task template')
+                );
+        }
     }
 
     ctrl.toggleFlag = (whichFlag, event) => {
