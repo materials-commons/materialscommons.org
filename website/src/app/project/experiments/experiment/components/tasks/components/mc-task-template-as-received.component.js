@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcTaskTemplateAsReceived', {
     templateUrl: 'app/project/experiments/experiment/components/tasks/components/mc-task-template-as-received.html',
     controller: MCTaskTemplateAsReceivedComponentController,
     bindings: {
-        template: '='
+        task: '='
     }
 });
 
