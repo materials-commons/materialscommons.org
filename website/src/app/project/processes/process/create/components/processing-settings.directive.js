@@ -3,7 +3,8 @@ function processSettingsDirective() {
     return {
         restrict: 'E',
         scope: {
-            settings: '='
+            settings: '=',
+            taskId: '='
         },
         controller: ProcessSettingsDirectiveController,
         controllerAs: 'ctrl',
