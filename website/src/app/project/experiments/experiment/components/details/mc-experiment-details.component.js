@@ -55,12 +55,22 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
     };
 
     ctrl.addGoal = () => {
-        ctrl.experiment.goals.push("");
+        experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id).then(
+        (exp) => {
+            ctrl.experiment = exp;
+            ctrl.experiment.goals.push("");
+        }
+        );
     };
 
-    ctrl.removeGoal = (index) => {
-        console.log(index);
-        ctrl.experiment.goals.splice(index,1);
+    ctrl.updateGoal = (goal, index) => {
+        experimentsService
+            .updateForProject($stateParams.project_id, $stateParams.experiment_id,
+                {'goal': goal, 'index': index - 1})
+            .then(
+                () => null,
+                () => toast.error('Failed to update experiment description')
+            );
     };
 }
 
