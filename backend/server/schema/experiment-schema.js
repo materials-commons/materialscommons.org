@@ -79,6 +79,11 @@ module.exports = function (schema) {
                 type: 'integer',
                 nullable: false,
                 min: 0
+            },
+
+            action: {
+                type: 'string',
+                nullable: false
             }
         });
         updateExperimentSchema.setDefaults({});
