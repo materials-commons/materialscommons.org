@@ -236,7 +236,8 @@ module.exports = function(r) {
     function* addTemplateToTask(projectId, experimentId, taskId, templateId, owner) {
         let template = yield r.table('templates').get(templateId);
         let procId = yield createProcessFromTemplate(projectId, template, owner);
-        yield r.table('experimenttasks').get(taskId).update({process_id: procId});
+        let templateName = templateId.substring(7);
+        yield r.table('experimenttasks').get(taskId).update({process_id: procId, template_name: templateName});
         let e2proc = new model.Experiment2Process(experimentId, procId);
         yield r.table('experiment2process').insert(e2proc);
         return yield getTask(taskId);
