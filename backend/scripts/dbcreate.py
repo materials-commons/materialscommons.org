@@ -44,7 +44,7 @@ def create_tables():
 
     create_table("datadirs", "name", "project_id", "parent")
     create_table("project2datadir", "datadir_id", "project_id")
-    create_compound_index('project2datadir', 'project_datadir', 
+    create_compound_index('project2datadir', 'project_datadir',
                           ['project_id', 'datadir_id'])
     create_table("project2datafile", "project_id", "datafile_id")
     create_compound_index('project2datafile', 'project_datafile',
@@ -103,6 +103,8 @@ def create_tables():
                           ["experiment_id", "experiment_task_id"])
 
     create_table("experimenttasks", "parent_id")
+
+    create_table("experimenttask2process", "experiment_task_id", "process_id")
 
     create_table("experiment2process", "experiment_id", "process_id")
     create_compound_index("experiment2process", "experiment_process", ["experiment_id", "process_id"])
