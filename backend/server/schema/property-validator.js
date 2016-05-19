@@ -49,7 +49,22 @@ function isValidValue(propertyType, choices, value) {
 }
 
 function isValidSelectionValue(choices, value) {
-    return _.findIndex(choices, {value: value}) !== -1;
+    let hasOther = false;
+    let index = _.findIndex(choices, (c) => {
+        if (c.value === 'other') {
+            hasOther = true;
+        }
+        return c.value == value.value && c.name === value.name;
+    });
+
+    // If a selection has Other as a name then allow any value for
+    // its value field so that users can specify custom value if
+    // one of the existing choices doesn't work.
+    if (hasOther && value.name === 'Other') {
+        return true;
+    } else {
+        return index !== -1;
+    }
 }
 
 function isValidNumber(value) {
