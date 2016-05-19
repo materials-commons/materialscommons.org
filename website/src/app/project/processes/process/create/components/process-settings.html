@@ -21,7 +21,10 @@
                                 {{::setting.property.unit}}
                             </span>
                             <span ng-if="setting.property.units.length !== 0">
-                                <md-select ng-model="setting.property.unit" aria-label="units" class="units-align">
+                                <md-select ng-model="setting.property.unit"
+                                           ng-change="ctrl.updateSettingProperty(setting.property)"
+                                           aria-label="units"
+                                           class="units-align">
                                     <md-option ng-repeat="unit in setting.property.units"
                                                ng-value="unit">
                                         {{unit}}
@@ -42,7 +45,10 @@
                         <div style="margin-top:45px">
                             <md-input-container class="md-block">
                                 <label>{{::setting.property.name}}</label>
-                                <md-select ng-model="setting.property.value" aria-label="x">
+                                <md-select ng-model="setting.property.value"
+                                           ng-model-options="{trackBy: '$value.name'}"
+                                           ng-change="ctrl.updateSettingProperty(setting.property)"
+                                           aria-label="x">
                                     <md-option ng-value="choice"
                                                ng-repeat="choice in setting.property.choices">
                                         {{choice.name}}
@@ -54,7 +60,10 @@
                             <div style="margin-top:45px">
                                 <md-input-container class="md-block" md-no-float>
                                     <label>Specify {{setting.property.name}}...</label>
-                                    <input type="text" ng-model="setting.property.value.value">
+                                    <input ng-model="setting.property.value.value"
+                                           ng-model-options="{debounce: 500}"
+                                           ng-change="ctrl.updateSettingProperty(setting.property)"
+                                           type="text">
                                 </md-input-container>
                             </div>
                         </div>
@@ -66,6 +75,8 @@
                             <label>{{::setting.property.name}}</label>
                             <input type="text" name="stringInput"
                                    ng-required="setting.property.required"
+                                   ng-model-options="{debounce: 500}"
+                                   ng-change="ctrl.updateSettingProperty(setting.property)"
                                    ng-model="setting.property.value">
                         </md-input-container>
                     </div>
