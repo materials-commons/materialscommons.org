@@ -6,29 +6,32 @@ function isValidSetupProperty(template, property) {
         return false;
     }
 
-    let templateProperty = _.find(setupAttr.properties, {attribute: property.attribute});
+    let templateProperty = _.find(setupAttr.properties, (p) => p.property.attribute === property.attribute);
     if (!templateProperty) {
         return false;
     }
+    templateProperty = templateProperty.property;
 
     if (templateProperty._type !== property._type) {
         return false;
     }
 
-    if (!isValidUnit(templateProperty.units, property.unit)) {
+    if (!isValidUnit(templateProperty.unit, templateProperty.units, property.unit)) {
         return false;
     }
 
     return isValidValue(property._type, templateProperty.choices, property.value);
 }
 
-function isValidUnit(allowedUnits, unit) {
-    if (unit === "" && allowedUnits.length) {
+function isValidUnit(templateUnit, templateAllowedUnits, unit) {
+    if (templateUnit !== "" && templateUnit === unit) {
+        return true;
+    } else if (unit === "" && templateAllowedUnits.length) {
         return false;
-    } else if (unit === "" && !allowedUnits.length) {
+    } else if (unit === "" && !templateAllowedUnits.length) {
         return true;
     } else {
-        return _.findIndex(allowedUnits, unit) !== -1;
+        return _.findIndex(templateAllowedUnits, (u) => u === unit) !== -1;
     }
 }
 
@@ -40,6 +43,8 @@ function isValidValue(propertyType, choices, value) {
             return isValidNumber(value);
         case "string":
             return isValidString(value);
+        default:
+            return false;
     }
 }
 
@@ -55,4 +60,4 @@ function isValidString(value) {
     return _.isString(value);
 }
 
-module.exports = isValidSetupProperty;
+module.exports.isValidSetupProperty = isValidSetupProperty;
