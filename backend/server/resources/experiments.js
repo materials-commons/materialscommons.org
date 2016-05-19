@@ -250,7 +250,7 @@ module.exports = function(experiments, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.updateTaskTemplateProperties();
+            let rv = yield experiments.updateTaskTemplateProperties(params.task_id, updateArgs.properties);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -258,6 +258,7 @@ module.exports = function(experiments, schema) {
                 this.body = rv.val;
             }
         }
+
         yield next;
     }
 
