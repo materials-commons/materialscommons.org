@@ -54,29 +54,35 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
         });
     };
 
-    ctrl.addGoal = () => {
+    ctrl.add = (what) => {
         experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id).then(
-        (exp) => {
-            ctrl.experiment = exp;
-            ctrl.experiment.goals.push("");
-        }
+            (exp) => {
+                ctrl.experiment = exp;
+                ctrl.experiment[what].push("");
+            }
         );
     };
 
-    ctrl.updateGoal = (goal, index) => {
+    ctrl.update = (what, value, index) => {
+        var obj = {};
+        obj[what] = value;
+        obj['index'] = index - 1;
+        obj['action'] = 'add';
         experimentsService
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id,
-                {'goal': goal, 'index': index - 1, action: 'add'})
+            .updateForProject($stateParams.project_id, $stateParams.experiment_id, obj)
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment description')
             );
     };
 
-    ctrl.removeGoal = (goal, index) => {
+    ctrl.remove = (what, value, index) => {
+        var obj = {};
+        obj[what] = value;
+        obj['index'] = index;
+        obj['action'] = 'remove';
         experimentsService
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id,
-                {'goal': goal, 'index': index, action: 'remove'})
+            .updateForProject($stateParams.project_id, $stateParams.experiment_id, obj)
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment description')
