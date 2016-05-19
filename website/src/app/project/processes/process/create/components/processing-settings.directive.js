@@ -24,21 +24,6 @@ function ProcessSettingsDirectiveController(experimentsService, toast, $statePar
     };
     ctrl.openDatePicker = openDatePicker;
 
-    // Set default value on selections to first choice.
-    ctrl.settings.forEach(function(setting) {
-        // selection type
-        if (setting.property._type === 'selection') {
-            setting.property.value = setting.property.choices[0];
-        } else if (setting.property._type === 'date') {
-            setting.property.opened = false;
-        }
-
-        // unit selections
-        if (setting.property.units.length !== 0) {
-            setting.property.unit = setting.property.units[0];
-        }
-    });
-
     ctrl.updateSettingProperty = (property) => {
         if (!property.value) {
             return;
