@@ -62,7 +62,10 @@ def create_tables():
     create_table("processes", "template_id")
     create_table("project2process", "project_id", "process_id")
     create_table("setups")
+
     create_table("setupproperties", "setup_id")
+    create_compound_index("setupproperties", "id_setup_id", ["id", "setup_id"])
+
     create_table("process2setup", "process_id", "setup_id")
     create_table("process2setupfile")
     create_table("properties")
