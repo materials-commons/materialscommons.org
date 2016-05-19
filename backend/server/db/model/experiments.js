@@ -293,8 +293,37 @@ module.exports = function(r) {
         }
     }
 
-    function* updateTaskTemplateProperties() {
-        return {error: 'not implemented'};
+    function* updateTaskTemplateProperties(taskId, properties) {
+        // Validate that the retrieved property matches that we are updating
+        let errors = [];
+        for (let i = 0; i < properties.length; i++) {
+            let property = properties[i];
+            // getAll returns an array
+            let existingPropertyMatches = yield r.table('setupproperties')
+                .getAll([property.id, property.setup_id], {index: 'id_setup_id'});
+            if (!existingPropertyMatches.length) {
+                // Skip, bad property
+                errors.push({error: `No matching property/setup ${property.id}.${property.setup_id}`});
+                continue;
+            }
+            let existingProperty = existingPropertyMatches[0];
+            if (existingProperty.attribute !== property.attribute) {
+                errors.push({error: `Attributes don't match: ${property.id}/${property.attribute} doesn't match ${existingProperty.attribute}`});
+            } else if (existingProperty._type !== property._type) {
+                errors.push({error: `Types don't match: ${property.id}/${property._type} doesn't match ${existingProperty._type}`});
+            } else {
+                existingProperty.value = property.value;
+                existingProperty.unit = property.unit;
+                existingProperty.description = property.description;
+                yield r.table('setupproperties').get(property.id).update(existingProperty);
+            }
+        }
+
+        if (errors.length) {
+            return {errors: errors};
+        }
+
+        return yield getTask(taskId);
     }
 
     function* isTemplateForTask(templateId, taskId) {
