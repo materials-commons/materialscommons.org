@@ -8,7 +8,11 @@
     </div>
     <span flex></span>
     <div layout="column" flex="45">
-        <process-settings settings="$ctrl.task.template.setup[0].properties" task-id="$ctrl.task.id"></process-settings>
+        <process-settings settings="$ctrl.task.template.setup[0].properties"
+                          attribute="$ctrl.task.template.setup[0].attribute"
+                          template-id="$ctrl.task.template.template_id"
+                          task-id="$ctrl.task.id">
+        </process-settings>
     </div>
 
     <md-divider></md-divider>
