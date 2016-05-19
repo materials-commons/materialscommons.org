@@ -1,4 +1,4 @@
-module.exports = function(experiments, schema) {
+module.exports = function (experiments, schema) {
     const parse = require('co-body');
     const status = require('http-status');
     const _ = require('lodash');
@@ -256,6 +256,11 @@ module.exports = function(experiments, schema) {
         } else {
             let exp = yield experiments.get(this.params.experiment_id);
             updateArgs = processArgs(exp, updateArgs, 'goal', 'goals');
+            updateArgs = processArgs(exp, updateArgs, 'collaborator', 'collaborators');
+            updateArgs = processArgs(exp, updateArgs, 'funder', 'funding');
+            updateArgs = processArgs(exp, updateArgs, 'paper', 'working_papers');
+            updateArgs = processArgs(exp, updateArgs, 'publication', 'publications');
+            updateArgs = processArgs(exp, updateArgs, 'citation', 'citations');
 
             let rv = yield experiments.update(this.params.experiment_id, updateArgs);
             if (rv.error) {
@@ -268,11 +273,11 @@ module.exports = function(experiments, schema) {
         yield next;
     }
 
-    function processArgs(exp, updateArgs, what, db_field){
-        if(what in updateArgs){
-            if(updateArgs['action'] === 'add'){
+    function processArgs(exp, updateArgs, what, db_field) {
+        if (what in updateArgs) {
+            if (updateArgs['action'] === 'add') {
                 exp.val[db_field][updateArgs['index']] = updateArgs[what];
-            }else{
+            } else {
                 exp.val[db_field].splice(updateArgs['index'], 1);
             }
             updateArgs[db_field] = exp.val[db_field];
