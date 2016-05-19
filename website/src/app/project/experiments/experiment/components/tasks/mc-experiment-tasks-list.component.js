@@ -90,6 +90,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
         $(event.currentTarget).addClass('task-selected');
         currentTask.set(ctrl.task);
         loadTaskTemplate();
+        console.dir(ctrl.task);
     }
 
     function loadTaskTemplate() {
