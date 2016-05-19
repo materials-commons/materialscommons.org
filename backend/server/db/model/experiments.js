@@ -315,6 +315,7 @@ module.exports = function(r) {
                 existingProperty.value = property.value;
                 existingProperty.unit = property.unit;
                 existingProperty.description = property.description;
+                console.log(`updating existing setupproperty ${property.id}`);
                 yield r.table('setupproperties').get(property.id).update(existingProperty);
             }
         }

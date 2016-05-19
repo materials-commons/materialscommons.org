@@ -245,12 +245,12 @@ module.exports = function(experiments, schema) {
 
     function* updateExperimentTaskTemplate(next) {
         let updateArgs = yield parse(this);
-        let errors = yield validateUpdateExperimentTaskTemplateArgs(updateArgs, params);
+        let errors = yield validateUpdateExperimentTaskTemplateArgs(updateArgs, this.params);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.updateTaskTemplateProperties(params.task_id, updateArgs.properties);
+            let rv = yield experiments.updateTaskTemplateProperties(this.params.task_id, updateArgs.properties);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -273,7 +273,7 @@ module.exports = function(experiments, schema) {
             return {error: 'Incorrect template for task'};
         }
 
-        let template = experiments.getTemplate(updateArgs.template_id);
+        let template = yield experiments.getTemplate(updateArgs.template_id);
 
         for (let i = 0; i < updateArgs.properties.length; i++) {
             let property = updateArgs.properties[i];
