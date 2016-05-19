@@ -213,6 +213,11 @@ module.exports = function(schema) {
                 nullable: false
             },
 
+            setup_id: {
+                type: 'string',
+                nullable: false
+            },
+
             attribute: {
                 type: 'string',
                 nullable: false
