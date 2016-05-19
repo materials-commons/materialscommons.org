@@ -72,9 +72,18 @@ module.exports = function (schema) {
 
             goal: {
                 type: 'string',
-                nullable: false
+                nullable: true
             },
 
+            collaborator: {
+                type: 'string',
+                nullable: true
+            },
+
+            funder: {
+                type: 'string',
+                nullable: true
+            },
             index:{
                 type: 'integer',
                 nullable: false,
