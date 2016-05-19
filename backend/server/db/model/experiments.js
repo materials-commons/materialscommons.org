@@ -21,7 +21,10 @@ module.exports = function(r) {
         updateExperimentNote,
         deleteExperimentNote,
         templateExists,
-        addTemplateToTask
+        addTemplateToTask,
+        updateTaskTemplateProperties,
+        isTemplateForTask,
+        getTemplate
     };
 
     function* getAllForProject(projectID) {
@@ -237,13 +240,17 @@ module.exports = function(r) {
         let template = yield r.table('templates').get(templateId);
         let procId = yield createProcessFromTemplate(projectId, template, owner);
         let templateName = templateId.substring(7);
-        yield r.table('experimenttasks').get(taskId).update({process_id: procId, template_name: templateName});
+        yield r.table('experimenttasks').get(taskId).update({
+            process_id: procId,
+            template_name: templateName,
+            template_id: templateId
+        });
         let e2proc = new model.Experiment2Process(experimentId, procId);
         yield r.table('experiment2process').insert(e2proc);
         return yield getTask(taskId);
     }
 
-    function *createProcessFromTemplate(projectId, template, owner) {
+    function* createProcessFromTemplate(projectId, template, owner) {
         let p = new model.Process(template.name, owner, template.id, template.does_transform);
         // TODO: Fix ugly hack, template id is global_<name>, the substring removes the global_ part.
         p.template_name = template.id.substring(7);
@@ -253,14 +260,14 @@ module.exports = function(r) {
     }
 
     // addProcess inserts the process and add it to the project.
-    function *addProcess(projectID, process) {
+    function* addProcess(projectID, process) {
         let p = yield db.insert('processes', process);
         let p2proc = new model.Project2Process(projectID, p.id);
         yield db.insert('project2process', p2proc);
         return p;
     }
 
-    function *createSetup(processID, settings) {
+    function* createSetup(processID, settings) {
         for (let i = 0; i < settings.length; i++) {
             let current = settings[i];
 
@@ -284,5 +291,20 @@ module.exports = function(r) {
                 yield db.insert('setupproperties', prop);
             }
         }
+    }
+
+    function* updateTaskTemplateProperties() {
+        return {error: 'not implemented'};
+    }
+
+    function* isTemplateForTask(templateId, taskId) {
+        let rql = r.table('experimenttasks').get(taskId);
+        let task = yield dbExec(rql);
+        return task.template_id === templateId;
+    }
+
+    function* getTemplate(templateId) {
+        let rql = r.table('templates').get(templateId);
+        return yield dbExec(rql);
     }
 };
