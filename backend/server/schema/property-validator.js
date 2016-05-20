@@ -43,6 +43,8 @@ function isValidValue(propertyType, choices, value) {
             return isValidNumber(value);
         case "string":
             return isValidString(value);
+        case "date":
+            return isValidDate(value);
         default:
             return false;
     }
@@ -73,6 +75,24 @@ function isValidNumber(value) {
 
 function isValidString(value) {
     return _.isString(value);
+}
+
+// isValidDate will validate a date if it's not more than 1 year in the past
+// and isn't in the future.
+function isValidDate(value) {
+    let today = Date.now();
+    let oneYearAgo = getOneYearAgo();
+    if (_.isNumber(value) && (value >= oneYearAgo && value <= today)) {
+        return true;
+    }
+
+    return false;
+}
+
+function getOneYearAgo() {
+    let today = Date.now();
+    today.setFullYear(today.getFullYear() - 1);
+    return today;
 }
 
 module.exports.isValidSetupProperty = isValidSetupProperty;
