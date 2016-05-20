@@ -29,6 +29,11 @@ function ProcessSettingsDirectiveController(experimentsService, toast, $statePar
             return;
         }
 
+        if (property._type === "date") {
+            console.dir(property);
+            return;
+        }
+
         property.setup_attribute = ctrl.attribute;
         let propertyArgs = {
             template_id: ctrl.templateId,
