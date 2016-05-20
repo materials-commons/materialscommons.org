@@ -37,7 +37,9 @@
                     <!--------- date --------->
                     <div ng-switch-when="date">
                         <label>{{::setting.property.name}}</label>
-                        <md-datepicker ng-model="setting.property.value"></md-datepicker>
+                        <md-datepicker ng-model="setting.property.value"
+                                       ng-change="ctrl.updateSettingProperty(setting.property)">
+                        </md-datepicker>
                     </div>
 
                     <!--------- selection --------->
