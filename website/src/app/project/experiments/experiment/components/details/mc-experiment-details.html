@@ -22,104 +22,27 @@
             </md-input-container>
         </div>
 
-        <div layout="row" flex layout-align="start center">
-            <label flex="30">Goals</label>
-            <md-button ng-click="$ctrl.add('goals')" class="md-primary">
-                <i class="fa fa-fw fa-plus"></i>
-                add goal
-            </md-button>
-        </div>
-        <md-list-item ng-repeat="goal in $ctrl.experiment.goals track by $index">
-            <md-input-container flex="90">
-                <label> Goal {{$index + 1}}</label>
-                <input type="text"
-                       ng-model="goal"
-                       ng-model-options="{debounce: 500}"
-                       ng-change="$ctrl.update('goal', goal, $index+1)">
-            </md-input-container>
-            <md-input-container flex="10">
-                <i ng-click="$ctrl.remove('goal',goal, $index)" class="pull-right fa fa-close"></i>
-            </md-input-container>
-        </md-list-item>
+
+        <mc-experiment-field experiment="$ctrl.experiment" heading="Goals" label="Goal"
+                             what="goals"></mc-experiment-field>
         <md-divider class="divider-extra"></md-divider>
 
-        <div layout="row" flex layout-align="start center">
-            <label flex="30">Collaborators</label>
-            <md-button ng-click="$ctrl.add('collaborators')" class="md-primary">
-                <i class="fa fa-fw fa-plus"></i>
-                add Collaborator
-            </md-button>
-        </div>
-        <md-list-item ng-repeat="coll in $ctrl.experiment.collaborators track by $index">
-            <md-input-container flex="90">
-                <label> Collaborator {{$index + 1}}</label>
-                <input type="text"
-                       ng-model="coll"
-                       ng-model-options="{debounce: 500}"
-                       ng-change="$ctrl.update('collaborator', coll, $index+1)">
-            </md-input-container>
-            <md-input-container flex="10">
-                <i ng-click="$ctrl.remove('collaborator', coll, $index)" class="pull-right fa fa-close"></i>
-            </md-input-container>
-        </md-list-item>
-
-        <div layout="row" flex layout-align="start center">
-            <label flex="30">Funding</label>
-            <md-button ng-click="$ctrl.add('funding')" class="md-primary">
-                <i class="fa fa-fw fa-plus"></i>
-                add Funding
-            </md-button>
-        </div>
-        <md-list-item ng-repeat="fund in $ctrl.experiment.funding track by $index">
-            <md-input-container flex="90">
-                <label> Funder {{$index + 1}}</label>
-                <input type="text"
-                       ng-model="fund"
-                       ng-model-options="{debounce: 500}"
-                       ng-change="$ctrl.update('funder', fund, $index+1)">
-            </md-input-container>
-            <md-input-container flex="10">
-                <i ng-click="$ctrl.remove('funder', fund, $index)" class="pull-right fa fa-close"></i>
-            </md-input-container>
-        </md-list-item>
-        <md-divider class="divider-extra"></md-divider>
-
-        <div layout="row" flex layout-align="start center">
-            <label flex="30">Current Working Papers</label>
-            <md-button ng-click="$ctrl.add('working_papers')" class="md-primary">
-                <i class="fa fa-fw fa-plus"></i>
-                add Paper
-            </md-button>
-        </div>
-        <md-list-item ng-repeat="paper in $ctrl.experiment.working_papers track by $index">
-            <md-input-container flex="90">
-                <label> Paper {{$index + 1}}</label>
-                <input type="text"
-                       ng-model="paper"
-                       ng-model-options="{debounce: 500}"
-                       ng-change="$ctrl.update('paper', paper, $index+1)">
-            </md-input-container>
-            <md-input-container flex="10">
-                <i ng-click="$ctrl.remove('paper', paper, $index)" class="pull-right fa fa-close"></i>
-            </md-input-container>
-        </md-list-item>
+        <mc-experiment-field experiment="$ctrl.experiment" heading="Collaborators" label="Collaborator"
+                             what="collaborators"></mc-experiment-field>
+        <mc-experiment-field experiment="$ctrl.experiment" heading="Funding" label="funder"
+                             what="funding"></mc-experiment-field>
 
         <md-divider class="divider-extra"></md-divider>
-        <div layout="row" flex layout-align="start center">
-            <label flex="30">Publications From Experiment</label>
-            <md-button class="md-primary">
-                <i class="fa fa-fw fa-plus"></i>
-                add publication
-            </md-button>
-        </div>
+        <mc-experiment-field experiment="$ctrl.experiment" heading="Current Working Papers" label="paper"
+                             what="working_papers"></mc-experiment-field>
 
-        <div layout="row" flex layout-align="start center">
-            <label flex="30">Citations</label>
-            <md-button class="md-primary">
-                <i class="fa fa-fw fa-plus"></i>
-                add citation
-            </md-button>
-        </div>
+        <md-divider class="divider-extra"></md-divider>
+        <mc-experiment-field experiment="$ctrl.experiment" heading="Publications From Experiment" label="publication"
+                             what="publications"></mc-experiment-field>
+
+        <mc-experiment-field experiment="$ctrl.experiment" heading="Citations" label="citation"
+                             what="citations"></mc-experiment-field>
+
 
         <div ng-if="false" layout="row" flex layout-align="start center">
             <label flex="30">Citings</label>
