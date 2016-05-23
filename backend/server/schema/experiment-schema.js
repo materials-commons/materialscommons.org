@@ -84,7 +84,23 @@ module.exports = function (schema) {
                 type: 'string',
                 nullable: true
             },
-            index:{
+
+            citation: {
+                type: 'string',
+                nullable: true
+            },
+
+            paper: {
+                type: 'string',
+                nullable: true
+            },
+
+            publication: {
+                type: 'string',
+                nullable: true
+            },
+
+            index: {
                 type: 'integer',
                 nullable: false,
                 min: 0
