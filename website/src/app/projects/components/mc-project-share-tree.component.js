@@ -29,12 +29,16 @@ function MCProjectShareTreeComponentController(projectTreeService) {
     ctrl.nodropEnabled = false;
 
     ctrl.treeOptions = {
-        dragStart: function() {
+        dragStart: function(event) {
+            console.log(event);
+
+            console.log('drag started');
             ctrl.nodropEnabled = true;
             return true;
         },
 
-        beforeDrop: function() {
+        beforeDrop: function(event) {
+            console.log(event);
             ctrl.nodropEnabled = false;
             return true;
         }
@@ -73,6 +77,8 @@ function MCProjectShareTreeDirDirectiveController(gridFiles) {
     ////////////////////
 
     function setActive(component) {
+        console.log('on drag');
+        console.log(component);
         clearActiveStateInAllNodes();
         if (!component.data.childrenLoaded && component.data.id.startsWith('processes__')) {
             component.children = gridFiles.toGridChildren({children: ctrl.project.processes});
