@@ -91,7 +91,9 @@ module.exports = function(r) {
 
     function* createTask(experimentID, task, owner) {
         let etask = new model.ExperimentTask(task.name, owner);
-        etask.note = task.note;
+        if (task.note !== '') {
+            etask.note = task.note;
+        }
         etask.parent_id = task.parent_id;
         etask.index = task.index;
         yield updateIndexOfAllAffected(experimentID, task.parent_id, task.index);

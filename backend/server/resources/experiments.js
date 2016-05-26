@@ -418,6 +418,10 @@ module.exports = function(experiments, schema) {
             return errors;
         }
 
+        if (noteArgs.note === '') {
+            noteArgs.note = 'Notes here...';
+        }
+
         return yield validateExperimentNoteAccess(projectID, experimentID);
     }
 
