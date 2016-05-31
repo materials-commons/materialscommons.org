@@ -370,11 +370,11 @@ export function Sem() {
     ];
 }
 
-export function AsReceived() {
-    this.name = "As Received";
-    this.process_name = "As Received";
-    this.description = "As Received process is used to create new samples.";
-    this._type = "as_received";
+export function CreateSamples() {
+    this.name = "Create Samples";
+    this.process_name = "Create Samples";
+    this.description = "Create Samples process is used to create new samples.";
+    this._type = "create_samples";
     this.input_files = [];
     this.output_files = [];
     this.input_samples = [];
@@ -390,6 +390,19 @@ export function AsReceived() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
+                {
+                    property: {
+                        name: "Composition",
+                        attribute: "composition",
+                        description: "",
+                        value: [],
+                        units: [],
+                        unit: "at%",
+                        _type: "composition",
+                        required: false,
+                        choices: []
+                    }
+                },
                 {
                     property: {
                         name: "Manufacturer",
