@@ -34,6 +34,12 @@
                         </div>
                     </div>
 
+                    <!------ composition ----->
+                    <div ng-switch-when="composition">
+                        <label>Composition</label>
+                        <periodic-table composition="setting.property"></periodic-table>
+                    </div>
+
                     <!--------- date --------->
                     <div ng-switch-when="date">
                         <label>{{::setting.property.name}}</label>
