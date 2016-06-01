@@ -67,6 +67,7 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
             var src = event.source.nodeScope.$modelValue,
                 dest = event.dest.nodesScope.$nodeScope.$modelValue,
                 srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
+            console.dir(event);
             if (srcDir.data.id == dest.data.id) {
                 // Reject move - attempt to move the file/directory around under it's
                 // current directory;
@@ -120,6 +121,16 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $stat
     ctrl.placeholderName = placeholderName;
 
     ctrl.setActive = setActive;
+
+    ctrl.onMouseOver = (event, node) => {
+        if (event.buttons) {
+            console.log('onMouseOver', node.$nodeScope.$modelValue.data.name);
+        }
+    };
+
+    ctrl.onMouseLeave = (event, node) => {
+        console.log('onMouseLeave', node.$nodeScope.$modelValue.data.name);
+    };
 
     //////////////////////////
 
