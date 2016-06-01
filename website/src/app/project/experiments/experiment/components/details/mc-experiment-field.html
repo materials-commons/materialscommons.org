@@ -5,7 +5,7 @@
         add {{$ctrl.label}}
     </md-button>
 </div>
-<md-list-item ng-repeat="value in $ctrl.experiment[$ctrl.what] track by $index">
+<md-list-item layout="row" flex ng-repeat="value in $ctrl.experiment[$ctrl.what] track by $index">
     <md-input-container flex="90">
         <label> {{$ctrl.label}} {{$index + 1}}</label>
         <input type="text"
