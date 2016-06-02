@@ -234,7 +234,7 @@ module.exports = function (r) {
         this.owner = owner;
         this.index = 0;
         this._type = 'experiment_task';
-        this.note = '';
+        this.note = 'Notes here...';
         this.estimate = {
             value: 0,
             unit: ''

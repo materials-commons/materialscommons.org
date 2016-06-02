@@ -2,6 +2,7 @@ module.exports = function (experiments, schema) {
     const parse = require('co-body');
     const status = require('http-status');
     const _ = require('lodash');
+    const propertyValidator = require('../schema/property-validator');
 
     return {
         getAllExperimentsForProject,
@@ -244,7 +245,59 @@ module.exports = function (experiments, schema) {
     }
 
     function* updateExperimentTaskTemplate(next) {
+        let updateArgs = yield parse(this);
+        let errors = yield validateUpdateExperimentTaskTemplateArgs(updateArgs, this.params);
+        if (errors != null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield experiments.updateTaskTemplateProperties(this.params.task_id, updateArgs.properties);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+
         yield next;
+    }
+
+    function* validateUpdateExperimentTaskTemplateArgs(updateArgs, params) {
+        let isValid = yield validateTask(params.project_id, params.experiment_id, params.task_id);
+        if (!isValid) {
+            return {error: 'Bad experiment or task'};
+        }
+
+        let isTemplateForTask = yield experiments.isTemplateForTask(updateArgs.template_id, params.task_id);
+        if (!isTemplateForTask) {
+            return {error: 'Incorrect template for task'};
+        }
+
+        let template = yield experiments.getTemplate(updateArgs.template_id);
+
+        for (let i = 0; i < updateArgs.properties.length; i++) {
+            let property = updateArgs.properties[i];
+            let errors = yield validateProperty(template, property);
+            if (errors !== null) {
+                return errors;
+            }
+        }
+
+        return null;
+    }
+
+    function* validateProperty(template, property) {
+        let errors = yield schema.validate(schema.templateProperty, property);
+        if (errors !== null) {
+            return errors;
+        }
+
+        if (!propertyValidator.isValidSetupProperty(template, property)) {
+            return {error: `Invalid property ${property.attribute}`};
+        }
+
+        return null;
     }
 
     function* updateExperiment(next) {
@@ -385,6 +438,10 @@ module.exports = function (experiments, schema) {
         let errors = yield schema.validate(schema.createExperimentNote, noteArgs);
         if (errors !== null) {
             return errors;
+        }
+
+        if (noteArgs.note === '') {
+            noteArgs.note = 'Notes here...';
         }
 
         return yield validateExperimentNoteAccess(projectID, experimentID);
