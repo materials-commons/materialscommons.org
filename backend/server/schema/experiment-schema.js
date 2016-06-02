@@ -7,7 +7,9 @@ module.exports = function (schema) {
         defineCreateExperimentTaskSchema,
         defineUpdateExperimentTaskSchema,
         defineCreateExperimentNoteSchema,
-        defineUpdateExperimentNoteSchema
+        defineUpdateExperimentNoteSchema,
+        defineUpdateExperimentTaskTemplatePropsSchema,
+        defineTemplatePropertySchema
     };
 
     function defineCreateExperimentSchema() {
@@ -216,5 +218,74 @@ module.exports = function (schema) {
         updateExperimentNoteSchema.setDefaults({});
         updateExperimentNoteSchema.validateAsync = promise.promisify(updateExperimentNoteSchema.validate);
         return updateExperimentNoteSchema;
+    }
+
+    function defineUpdateExperimentTaskTemplatePropsSchema() {
+        let updateExperimentTaskTemplatePropsSchema = schema.defineSchema('updateExperimentTaskTemplatePropsSchema', {
+            properties: {
+                type: 'array',
+                nullable: false
+            },
+
+            template_id: {
+                type: 'string',
+                nullable: false
+            }
+        });
+        updateExperimentTaskTemplatePropsSchema.setDefaults({});
+        updateExperimentTaskTemplatePropsSchema.validateAsync = promise.promisify(updateExperimentTaskTemplatePropsSchema.validate);
+        return updateExperimentTaskTemplatePropsSchema;
+    }
+
+    function defineTemplatePropertySchema() {
+        let templatePropertySchema = schema.defineSchema('templatePropertySchema', {
+            id: {
+                type: 'string',
+                nullable: false
+            },
+
+            _type: {
+                type: 'string',
+                nullable: false
+            },
+
+            setup_attribute: {
+                type: 'string',
+                nullable: false
+            },
+
+            setup_id: {
+                type: 'string',
+                nullable: false
+            },
+
+            attribute: {
+                type: 'string',
+                nullable: false
+            },
+
+            description: {
+                type: 'string',
+                nullable: false
+            },
+
+            name: {
+                type: 'string',
+                nullable: false
+            },
+
+            unit: {
+                type: 'string',
+                nullable: false
+            },
+
+            value: {
+                nullable: false
+            }
+        });
+
+        templatePropertySchema.setDefaults({});
+        templatePropertySchema.validateAsync = promise.promisify(templatePropertySchema.validate);
+        return templatePropertySchema;
     }
 };
