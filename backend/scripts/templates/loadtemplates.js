@@ -300,10 +300,10 @@ function Sem() {
     ];
 }
 
-function AsReceived() {
-    this.name = "As Received";
-    this.process_name = "As Received";
-    this.description = "As Received process is used to create new samples.";
+function CreateSamples() {
+    this.name = "Create Samples";
+    this.process_name = "Create Samples";
+    this.description = "Create Sample process is used to create new samples.";
     this.category = "as_received";
     this.does_transform = false;
     this.setup = [
@@ -311,6 +311,19 @@ function AsReceived() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
+                {
+                    property: {
+                        name: "Composition",
+                        attribute: "composition",
+                        description: "",
+                        value: [],
+                        units: [],
+                        unit: "at%",
+                        _type: "composition",
+                        required: false,
+                        choices: []
+                    }
+                },
                 {
                     property: {
                         name: "Manufacturer",
@@ -1983,7 +1996,7 @@ var assert = require('assert');
 var globalTemplates = [
     Apt,
     Sem,
-    AsReceived,
+    CreateSamples,
     AptDataAnalysis,
     AptDataReconstruction,
     BroadIonBeamMilling,

@@ -21,7 +21,10 @@ module.exports = function(r) {
         updateExperimentNote,
         deleteExperimentNote,
         templateExists,
-        addTemplateToTask
+        addTemplateToTask,
+        updateTaskTemplateProperties,
+        isTemplateForTask,
+        getTemplate
     };
 
     function* getAllForProject(projectID) {
@@ -88,7 +91,9 @@ module.exports = function(r) {
 
     function* createTask(experimentID, task, owner) {
         let etask = new model.ExperimentTask(task.name, owner);
-        etask.note = task.note;
+        if (task.note !== '') {
+            etask.note = task.note;
+        }
         etask.parent_id = task.parent_id;
         etask.index = task.index;
         yield updateIndexOfAllAffected(experimentID, task.parent_id, task.index);
@@ -236,13 +241,18 @@ module.exports = function(r) {
     function* addTemplateToTask(projectId, experimentId, taskId, templateId, owner) {
         let template = yield r.table('templates').get(templateId);
         let procId = yield createProcessFromTemplate(projectId, template, owner);
-        yield r.table('experimenttasks').get(taskId).update({process_id: procId});
+        let templateName = templateId.substring(7);
+        yield r.table('experimenttasks').get(taskId).update({
+            process_id: procId,
+            template_name: templateName,
+            template_id: templateId
+        });
         let e2proc = new model.Experiment2Process(experimentId, procId);
         yield r.table('experiment2process').insert(e2proc);
         return yield getTask(taskId);
     }
 
-    function *createProcessFromTemplate(projectId, template, owner) {
+    function* createProcessFromTemplate(projectId, template, owner) {
         let p = new model.Process(template.name, owner, template.id, template.does_transform);
         // TODO: Fix ugly hack, template id is global_<name>, the substring removes the global_ part.
         p.template_name = template.id.substring(7);
@@ -252,14 +262,14 @@ module.exports = function(r) {
     }
 
     // addProcess inserts the process and add it to the project.
-    function *addProcess(projectID, process) {
+    function* addProcess(projectID, process) {
         let p = yield db.insert('processes', process);
         let p2proc = new model.Project2Process(projectID, p.id);
         yield db.insert('project2process', p2proc);
         return p;
     }
 
-    function *createSetup(processID, settings) {
+    function* createSetup(processID, settings) {
         for (let i = 0; i < settings.length; i++) {
             let current = settings[i];
 
@@ -283,5 +293,50 @@ module.exports = function(r) {
                 yield db.insert('setupproperties', prop);
             }
         }
+    }
+
+    function* updateTaskTemplateProperties(taskId, properties) {
+        // Validate that the retrieved property matches that we are updating
+        let errors = [];
+        for (let i = 0; i < properties.length; i++) {
+            let property = properties[i];
+            // getAll returns an array
+            let existingPropertyMatches = yield r.table('setupproperties')
+                .getAll([property.id, property.setup_id], {index: 'id_setup_id'});
+            if (!existingPropertyMatches.length) {
+                // Skip, bad property
+                errors.push({error: `No matching property/setup ${property.id}.${property.setup_id}`});
+                continue;
+            }
+            let existingProperty = existingPropertyMatches[0];
+            if (existingProperty.attribute !== property.attribute) {
+                errors.push({error: `Attributes don't match: ${property.id}/${property.attribute} doesn't match ${existingProperty.attribute}`});
+            } else if (existingProperty._type !== property._type) {
+                errors.push({error: `Types don't match: ${property.id}/${property._type} doesn't match ${existingProperty._type}`});
+            } else {
+                existingProperty.value = property.value;
+                existingProperty.unit = property.unit;
+                existingProperty.description = property.description;
+                console.log(`updating existing setupproperty ${property.id}`);
+                yield r.table('setupproperties').get(property.id).update(existingProperty);
+            }
+        }
+
+        if (errors.length) {
+            return {errors: errors};
+        }
+
+        return yield getTask(taskId);
+    }
+
+    function* isTemplateForTask(templateId, taskId) {
+        let rql = r.table('experimenttasks').get(taskId);
+        let task = yield dbExec(rql);
+        return task.template_id === templateId;
+    }
+
+    function* getTemplate(templateId) {
+        let rql = r.table('templates').get(templateId);
+        return yield dbExec(rql);
     }
 };

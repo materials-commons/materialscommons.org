@@ -15,12 +15,10 @@ function MCExperimentTaskDetailsComponentController($scope, editorOpts, template
 
     ctrl.$onInit = () => {
         if (!ctrl.task.loaded && ctrl.task.process_id !== '') {
-            console.log('I would load task template for process ', ctrl.task.process_id);
             projectsService.getProjectProcess($stateParams.project_id, ctrl.task.process_id)
                 .then(
                     (process) => {
                         let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
-                        console.log(`templateName: '${templateName}'`);
                         var t = templates.getTemplate(templateName);
                         ctrl.task.template = processEdit.fillProcess(t, process);
                         ctrl.task.template.template_name = templateName;
@@ -36,7 +34,10 @@ function MCExperimentTaskDetailsComponentController($scope, editorOpts, template
         experimentsService.addTemplateToTask($stateParams.project_id, $stateParams.experiment_id,
             ctrl.task.id, `global_${templateId}`)
             .then(
-                () => ctrl.task.template = templates.getTemplate(templateId),
+                () => {
+                    ctrl.task.template_name = templateId;
+                    ctrl.task.template = templates.getTemplate(templateId);
+                },
                 () => toast.error('Unable to associate template with task')
             );
     };

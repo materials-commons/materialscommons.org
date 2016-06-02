@@ -30,9 +30,9 @@ export function processTemplates(User) {
             does_transform: false
         },
         {
-            name: "As Received",
-            description: "As Received process is used to create new samples.",
-            fn: processes.AsReceived,
+            name: "Create Samples",
+            description: "Create Samples process is used to create new samples.",
+            fn: processes.CreateSamples,
             does_transform: false
         },
         {
