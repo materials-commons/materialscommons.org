@@ -2,7 +2,7 @@
     <ol ui-tree-nodes ng-model="ctrl.files">
         <li ng-repeat="file in ctrl.files track by file.data.id | orderBy:'data.name'" ui-tree-node>
             <div ui-tree-handle
-                 ng-mouseenter="ctrl.onMouseOver($event, this)"
+                 ng-mouseenter="ctrl.onMouseEnter($event, this)"
                  ng-mouseleave="ctrl.onMouseLeave($event, this)"
                  class="mc-active-tree-node" ng-class="{'angular-ui-tree-handle-active': file.active}">
                 <div ng-if="file.data._type === 'directory'">
