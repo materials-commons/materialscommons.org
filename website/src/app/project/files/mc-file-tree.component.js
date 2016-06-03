@@ -4,6 +4,7 @@ angular.module('materialscommons').component('mcFileTree', {
 });
 
 var placeholderName = '__$$placeholder$$__';
+var dropFolder = null;
 
 function loadEmptyPlaceHolder(dir) {
     dir.children.push({
@@ -42,18 +43,18 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
     ctrl.treeOptions = {
         dropped: function(event) {
             var src = event.source.nodeScope.$modelValue,
-                dest = event.dest.nodesScope.$nodeScope.$modelValue,
+                dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
                 srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
 
             if (src.data._type === 'directory') {
-                return fileTreeMoveService.moveDir(src.data.id, dest.data.id).then(function() {
+                return fileTreeMoveService.moveDir(src.data.id, dest.data.id).then(() => {
                     if (!srcDir.children.length) {
                         loadEmptyPlaceHolder(srcDir);
                     }
                     return true;
                 });
             } else {
-                return fileTreeMoveService.moveFile(src.data.id, srcDir.data.id, dest.data.id).then(function() {
+                return fileTreeMoveService.moveFile(src.data.id, srcDir.data.id, dest.data.id).then(() => {
                     if (!srcDir.children.length) {
                         loadEmptyPlaceHolder(srcDir);
                     }
@@ -65,9 +66,8 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
 
         beforeDrop: function(event) {
             var src = event.source.nodeScope.$modelValue,
-                dest = event.dest.nodesScope.$nodeScope.$modelValue,
+                dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
                 srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
-            console.dir(event);
             if (srcDir.data.id == dest.data.id) {
                 // Reject move - attempt to move the file/directory around under it's
                 // current directory;
@@ -81,7 +81,7 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
         }
     };
 
-    fileTreeProjectService.getProjectRoot(proj.id).then(function(files) {
+    fileTreeProjectService.getProjectRoot(proj.id).then((files) => {
         proj.files = files;
         ctrl.files = proj.files;
         ctrl.files[0].data.childrenLoaded = true;
@@ -122,21 +122,20 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $stat
 
     ctrl.setActive = setActive;
 
-    ctrl.onMouseOver = (event, node) => {
+    ctrl.onMouseEnter = (event, node) => {
         if (event.buttons) {
-            console.log('onMouseOver', node.$nodeScope.$modelValue.data.name);
+            dropFolder = node.$nodeScope.$modelValue;
         }
     };
 
-    ctrl.onMouseLeave = (event, node) => {
-        console.log('onMouseLeave', node.$nodeScope.$modelValue.data.name);
+    ctrl.onMouseLeave = () => {
+        dropFolder = null;
     };
 
     //////////////////////////
 
     function setActive(node, file) {
         clearActiveStateInAllNodes();
-
         if (file.data._type === 'file') {
             file.active = true;
             $state.go('project.files.file', {file_id: file.data.id});
@@ -199,7 +198,7 @@ function MCFileTreeDirControlsComponentController(fileTreeProjectService, fileTr
     function addFolder() {
         ctrl.promptForFolder = false;
         fileTreeProjectService.createProjectDir(ctrl.projectId, ctrl.file.data.id, ctrl.folderName)
-            .then(function(dir) {
+            .then((dir) => {
                 // Fix up the datastructure either on server or on client so its a grid file.
                 ctrl.file.children.push({
                     data: {
@@ -214,9 +213,7 @@ function MCFileTreeDirControlsComponentController(fileTreeProjectService, fileTr
 
     function renameFolder() {
         fileTreeProjectService.renameProjectDir(ctrl.projectId, ctrl.file.data.id, ctrl.file.data.name)
-            .then(function() {
-                ctrl.promptForRename = false;
-            });
+            .then(() => ctrl.promptForRename = false);
     }
 
     function deleteFolder() {
