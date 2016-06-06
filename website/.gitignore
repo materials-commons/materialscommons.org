@@ -3,3 +3,7 @@ prod
 .tmp
 dist
 dist.tar.gz
+mcpub
+mcpub.tar.gz
+mcapp
+mcapp.tar.gz
