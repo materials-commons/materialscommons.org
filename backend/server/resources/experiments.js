@@ -198,7 +198,7 @@ module.exports = function (experiments, schema) {
     }
 
     function* validateDeleteTask(projectID, experimentID, taskID) {
-        let errors = yield yield validateExperimentTaskAccess(projectID, experimentID, taskID);
+        let errors = yield validateExperimentTaskAccess(projectID, experimentID, taskID);
         if (errors !== null) {
             return errors;
         }
@@ -500,14 +500,14 @@ module.exports = function (experiments, schema) {
 
     function* createExperimentGoal(next) {
         let goalArgs = yield parse(this);
-        schema.prepare(schema.createExperimentTask, taskArgs);
-        let errors = yield validateCreateTaskArgs(taskArgs, this.params.project_id,
+        schema.prepare(schema.createExperimentTask, goalArgs);
+        let errors = yield validateCreateTaskArgs(goalArgs, this.params.project_id,
             this.params.experiment_id, this.params.task_id);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.createTask(this.params.experiment_id, taskArgs, this.reqctx.user.id);
+            let rv = yield experiments.createTask(this.params.experiment_id, goalArgs, this.reqctx.user.id);
             if (rv.error) {
                 this.status = status.NOT_ACCEPTABLE;
                 this.body = rv;
