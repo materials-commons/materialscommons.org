@@ -1,6 +1,6 @@
-angular.module('materialscommons').component('mcExperimentField', {
-    templateUrl: 'app/project/experiments/experiment/components/details/mc-experiment-field.html',
-    controller: MCExperimentFieldComponentController,
+angular.module('materialscommons').component('mcExperimentDetailsField', {
+    templateUrl: 'app/project/experiments/experiment/components/details/mc-experiment-details-field.html',
+    controller: MCExperimentDetailsFieldComponentController,
     bindings: {
         experiment: '=',
         heading: '@',
@@ -9,7 +9,7 @@ angular.module('materialscommons').component('mcExperimentField', {
     }
 });
 /*@ngInject*/
-function MCExperimentFieldComponentController(experimentsService, $stateParams, toast) {
+function MCExperimentDetailsFieldComponentController(experimentsService, $stateParams, toast) {
     let ctrl = this;
 
     ctrl.add = (field) => ctrl.experiment[field].push("");
