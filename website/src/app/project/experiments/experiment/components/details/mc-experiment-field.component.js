@@ -41,7 +41,7 @@ function MCExperimentFieldComponentController(experimentsService, $stateParams, 
         experimentsService
             .updateForProject($stateParams.project_id, $stateParams.experiment_id, obj)
             .then(
-                () => null,
+                () => ctrl.experiment[ctrl.what].splice(index, 1),
                 () => toast.error('Failed to update experiment description')
             );
     };
