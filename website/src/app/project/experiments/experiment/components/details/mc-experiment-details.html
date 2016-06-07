@@ -6,38 +6,33 @@
         </div>
 
         <div layout="row">
-            <md-input-container flex="30">
-                <label>Name</label>
-                <input type="text"
-                       ng-model="$ctrl.experiment.name"
-                       ng-model-options="{debounce: 500}"
-                       ng-change="$ctrl.updateName()">
-            </md-input-container>
-            <md-input-container flex="70">
+            <md-input-container flex="90">
                 <label>Description</label>
-                <input type="text"
+                <textarea
                        ng-model="$ctrl.experiment.description"
                        ng-model-options="{debounce: 500}"
-                       ng-change="$ctrl.updateDescription()">
+                       ng-change="$ctrl.updateDescription()"></textarea>
             </md-input-container>
-        </div><br><br><br>
+        </div>
+        <br><br><br>
 
         <mc-experiment-details-field experiment="$ctrl.experiment" heading="Goals" label="Goal"
-                             field="goals"></mc-experiment-details-field>
+                                     field="goals"></mc-experiment-details-field>
 
         <mc-experiment-details-field experiment="$ctrl.experiment" heading="Collaborators" label="Collaborator"
-                             field="collaborators"></mc-experiment-details-field>
+                                     field="collaborators"></mc-experiment-details-field>
         <mc-experiment-details-field experiment="$ctrl.experiment" heading="Funding" label="funder"
-                             field="funding"></mc-experiment-details-field>
+                                     field="funding"></mc-experiment-details-field>
 
         <mc-experiment-details-field experiment="$ctrl.experiment" heading="Current Working Papers" label="paper"
-                             field="papers"></mc-experiment-details-field>
+                                     field="papers"></mc-experiment-details-field>
 
-        <mc-experiment-details-field experiment="$ctrl.experiment" heading="Publications From Experiment" label="publication"
-                             field="publications"></mc-experiment-details-field>
+        <mc-experiment-details-field experiment="$ctrl.experiment" heading="Publications From Experiment"
+                                     label="publication"
+                                     field="publications"></mc-experiment-details-field>
 
         <mc-experiment-details-field experiment="$ctrl.experiment" heading="Citations" label="citation"
-                             field="citations"></mc-experiment-details-field>
+                                     field="citations"></mc-experiment-details-field>
 
 
         <div ng-if="false" layout="row" flex layout-align="start center">
