@@ -72,45 +72,34 @@ module.exports = function (schema) {
                 nullable: true
             },
 
-            goal: {
-                type: 'string',
+            goals: {
+                type: 'array',
                 nullable: true
             },
 
-            collaborator: {
-                type: 'string',
+            collaborators: {
+                type: 'array',
                 nullable: true
             },
 
-            funder: {
-                type: 'string',
+            funding: {
+                type: 'array',
                 nullable: true
             },
 
-            citation: {
-                type: 'string',
+            citations: {
+                type: 'array',
                 nullable: true
             },
 
-            paper: {
-                type: 'string',
+            papers: {
+                type: 'array',
                 nullable: true
             },
 
-            publication: {
-                type: 'string',
+            publications: {
+                type: 'array',
                 nullable: true
-            },
-
-            index: {
-                type: 'integer',
-                nullable: false,
-                min: 0
-            },
-
-            action: {
-                type: 'string',
-                nullable: false
             }
         });
         updateExperimentSchema.setDefaults({});
