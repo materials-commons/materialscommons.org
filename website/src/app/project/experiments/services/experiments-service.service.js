@@ -39,7 +39,7 @@ class ExperimentsService {
     }
 
     deleteTask(projectID, experimentID, taskID) {
-        return this.projectsAPI(projectID).one('experiments', experimentID).one('task', taskID).customDELETE();
+        return this.projectsAPI(projectID).one('experiments', experimentID).one('tasks', taskID).customDELETE();
     }
 
     addGoals(projectID, experimentID, experimentGoals) {
