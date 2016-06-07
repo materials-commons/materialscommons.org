@@ -1,4 +1,4 @@
-module.exports = function (experiments, schema) {
+module.exports = function(experiments, schema) {
     const parse = require('co-body');
     const status = require('http-status');
     const _ = require('lodash');
@@ -302,22 +302,12 @@ module.exports = function (experiments, schema) {
 
     function* updateExperiment(next) {
         let updateArgs = yield parse(this);
-        let updated_exp;
         let errors = yield validateUpdateExperimentArgs(updateArgs, this.params.project_id, this.params.experiment_id);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let exp = yield experiments.get(this.params.experiment_id);
-            delete exp.val['tasks'];
-            updated_exp = updateExp(exp, updateArgs, 'goal', 'goals');
-            updated_exp = updateExp(updated_exp, updateArgs, 'collaborator', 'collaborators');
-            updated_exp = updateExp(updated_exp, updateArgs, 'funder', 'funding');
-            updated_exp = updateExp(updated_exp, updateArgs, 'paper', 'working_papers');
-            updated_exp = updateExp(updated_exp, updateArgs, 'publication', 'publications');
-            updated_exp = updateExp(updated_exp, updateArgs, 'citation', 'citations');
-
-            let rv = yield experiments.update(this.params.experiment_id, updated_exp.val);
+            let rv = yield experiments.update(this.params.experiment_id, updateArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -328,25 +318,31 @@ module.exports = function (experiments, schema) {
         yield next;
     }
 
-    function updateExp(exp, updateArgs, what, db_field) {
-        if (what in updateArgs) {
-            if (updateArgs['action'] === 'add') {
-                exp.val[db_field][updateArgs['index']] = updateArgs[what];
-            } else {
-                exp.val[db_field].splice(updateArgs['index'], 1);
-            }
-        }
-        return exp;
-    }
-
     function* validateUpdateExperimentArgs(experimentArgs, projectID, experimentID) {
         schema.prepare(schema.updateExperiment, experimentArgs);
         let errors = yield schema.validate(schema.updateExperiment, experimentArgs);
         if (errors != null) {
             return errors;
         }
+        for (let prop in experimentArgs) {
+            if (prop !== 'name' || prop !== 'description' || prop !== 'note') {
+                if (!allEntriesAreStrings(experimentArgs[prop])) {
+                    return {error: `${prop} entries must all be of type string`};
+                }
+            }
+        }
         let isInProject = yield experiments.experimentExistsInProject(projectID, experimentID);
         return isInProject ? null : {error: 'No such experiment'};
+    }
+
+    function allEntriesAreStrings(items) {
+        for (let item in items) {
+            if (!_.isString(item)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     function* createExperiment(next) {

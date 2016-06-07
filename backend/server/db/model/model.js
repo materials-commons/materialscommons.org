@@ -216,14 +216,14 @@ module.exports = function (r) {
         this.owner = owner;
         this._type = 'experiment';
         this.description = '';
-        this.goals = [];
         this.note = '<h2>Experiment Notes</h2>';
         this.status = 'active';
         this.birthtime = now;
         this.mtime = now;
+        this.goals = [];
         this.collaborators = [];
         this.funding = [];
-        this.working_papers = [];
+        this.papers = [];
         this.publications = [];
         this.citations = [];
     }
