@@ -13,7 +13,8 @@
                ng-model-options="{debounce: 500}"
                ng-change="$ctrl.update($ctrl.label.toLowerCase(), value, $index+1)">
     </md-input-container>
-    <md-input-container flex="10">
-        <i ng-click="$ctrl.remove($ctrl.label.toLowerCase(), value, $index)" class="pull-right fa fa-close"></i>
-    </md-input-container>
+
+    <a class="mc-error-color" ng-click="$ctrl.remove($ctrl.label.toLowerCase(), value, $index)">
+        <i class="fa fa-fw fa-remove"></i>
+    </a>
 </md-list-item>
