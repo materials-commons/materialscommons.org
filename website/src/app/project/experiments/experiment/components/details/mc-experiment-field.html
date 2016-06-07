@@ -1,20 +1,20 @@
 <div layout="row" flex layout-align="start center">
     <label flex="30">{{$ctrl.heading}}</label>
-    <md-button ng-click="$ctrl.add($ctrl.what)" class="md-primary">
+    <md-button ng-click="$ctrl.add($ctrl.field)" class="md-primary">
         <i class="fa fa-fw fa-plus"></i>
         add {{$ctrl.label}}
     </md-button>
 </div>
-<md-list-item layout="row" flex ng-repeat="value in $ctrl.experiment[$ctrl.what] track by $index">
+<md-list-item layout="row" flex ng-repeat="value in $ctrl.experiment[$ctrl.field] track by $index">
     <md-input-container flex="90">
         <label> {{$ctrl.label}} {{$index + 1}}</label>
         <input type="text"
-               ng-model="value"
+               ng-model="$ctrl.experiment[$ctrl.field][$index]"
                ng-model-options="{debounce: 500}"
-               ng-change="$ctrl.update($ctrl.label.toLowerCase(), value, $index+1)">
+               ng-change="$ctrl.update($ctrl.field)">
     </md-input-container>
 
-    <a class="mc-error-color" ng-click="$ctrl.remove($ctrl.label.toLowerCase(), value, $index)">
+    <a class="mc-error-color" ng-click="$ctrl.remove($ctrl.field, $index)">
         <i class="fa fa-fw fa-remove"></i>
     </a>
 </md-list-item>
