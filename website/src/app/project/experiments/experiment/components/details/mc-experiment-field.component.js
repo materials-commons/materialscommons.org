@@ -33,13 +33,13 @@ function MCExperimentFieldComponentController(experimentsService, $stateParams, 
             );
     };
 
-    ctrl.remove = (what, value, index) => {
-        var obj = {};
-        obj[what] = value;
-        obj['index'] = index;
-        obj['action'] = 'remove';
+    ctrl.remove = (field, value, index) => {
+        var command = {};
+        command[field] = value;
+        command['index'] = index;
+        command['action'] = 'remove';
         experimentsService
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id, obj)
+            .updateForProject($stateParams.project_id, $stateParams.experiment_id, command)
             .then(
                 () => ctrl.experiment[ctrl.what].splice(index, 1),
                 () => toast.error('Failed to update experiment description')
