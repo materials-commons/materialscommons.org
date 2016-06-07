@@ -5,43 +5,35 @@ angular.module('materialscommons').component('mcExperimentField', {
         experiment: '=',
         heading: '@',
         label: '@',
-        what: '@'
+        field: '@'
     }
 });
 /*@ngInject*/
 function MCExperimentFieldComponentController(experimentsService, $stateParams, toast) {
     let ctrl = this;
-    ctrl.add = (what) => {
-        experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id).then(
-            (exp) => {
-                ctrl.experiment = exp;
-                ctrl.experiment[what].push("");
-            }
-        );
-    };
 
-    ctrl.update = (what, value, index) => {
-        var obj = {};
-        obj[what] = value;
-        obj['index'] = index - 1;
-        obj['action'] = 'add';
+    ctrl.add = (field) => ctrl.experiment[field].push("");
+
+    ctrl.update = (field) => {
+        let updateArgs = {};
+        updateArgs[field] = ctrl.experiment[field];
+        console.dir(updateArgs);
         experimentsService
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id, obj)
+            .updateForProject($stateParams.project_id, $stateParams.experiment_id, updateArgs)
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment description')
             );
     };
 
-    ctrl.remove = (field, value, index) => {
-        var command = {};
-        command[field] = value;
-        command['index'] = index;
-        command['action'] = 'remove';
+    ctrl.remove = (field, index) => {
+        ctrl.experiment[field].splice(index, 1);
+        let removeArgs = {};
+        removeArgs[field] = ctrl.experiment[field];
         experimentsService
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id, command)
+            .updateForProject($stateParams.project_id, $stateParams.experiment_id, removeArgs)
             .then(
-                () => ctrl.experiment[ctrl.what].splice(index, 1),
+                () => null,
                 () => toast.error('Failed to update experiment description')
             );
     };
