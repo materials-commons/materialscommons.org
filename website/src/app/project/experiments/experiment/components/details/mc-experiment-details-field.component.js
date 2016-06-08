@@ -17,7 +17,6 @@ function MCExperimentDetailsFieldComponentController(experimentsService, $stateP
     ctrl.update = (field) => {
         let updateArgs = {};
         updateArgs[field] = ctrl.experiment[field];
-        console.dir(updateArgs);
         experimentsService
             .updateForProject($stateParams.project_id, $stateParams.experiment_id, updateArgs)
             .then(
