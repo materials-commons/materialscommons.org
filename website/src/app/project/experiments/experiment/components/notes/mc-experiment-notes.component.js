@@ -18,7 +18,6 @@ class MCExperimentNotesComponentController {
     }
 
     addNote() {
-        console.log('addNote');
         this.$mdDialog.show({
             templateUrl: 'app/project/experiments/experiment/components/notes/new-note-dialog.html',
             controller: NewExperimentNoteDialogController,
