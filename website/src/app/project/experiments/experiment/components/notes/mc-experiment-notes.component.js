@@ -1,11 +1,12 @@
 class MCExperimentNotesComponentController {
     /*@ngInject*/
-    constructor($scope, $mdDialog, notesService, $stateParams, toast, editorOpts) {
+    constructor($scope, $mdDialog, notesService, $stateParams, toast, editorOpts, experimentsService, toUITask) {
         $scope.editorOptions = editorOpts({height: 67, width: 59});
-
+        this.experimentsService = experimentsService;
         this.notesService = notesService;
         this.$mdDialog = $mdDialog;
         this.toast = toast;
+        this.toUITask = toUITask;
         this.projectID = $stateParams.project_id;
         this.experimentID = $stateParams.experiment_id;
         if (this.experiment.notes.length) {
@@ -18,12 +19,30 @@ class MCExperimentNotesComponentController {
     }
 
     addTasks() {
-        this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/notes/quick-tasks.html',
-            controller: NewExperimentQuickTasksDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true
-        });
+        let newTask = {
+            name: '',
+            note: '',
+            parent_id: '',
+            index: this.experiment.tasks.length
+        };
+        this.experimentsService.createTask(this.projectID, this.experimentID, newTask)
+            .then(
+                (task) => {
+                    this.toUITask(task);
+                    this.experiment.tasks.push(task);
+                    this.$mdDialog.show({
+                        templateUrl: 'app/project/experiments/experiment/components/notes/quick-tasks.html',
+                        controller: NewExperimentQuickTasksDialogController,
+                        controllerAs: '$ctrl',
+                        bindToController: true,
+                        locals: {
+                            task: task,
+                            experiment: this.experiment
+                        }
+                    });
+                }
+            )
+
     }
 
     addNote() {
@@ -97,16 +116,32 @@ class NewExperimentNoteDialogController {
 
 class NewExperimentQuickTasksDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, toUITask, toast) {
         this.$mdDialog = $mdDialog;
-        this.task = {
-            name: "",
-            template_name: ""
-        }
+        this.toast = toast;
+        this.toUITask = toUITask;
     }
 
     done() {
         this.$mdDialog.hide();
+    }
+
+    addAnother() {
+        let newTask = {
+            name: '',
+            note: '',
+            parent_id: '',
+            index: this.experiment.tasks.length
+        };
+        this.experimentsService.createTask(this.projectID, this.experimentID, newTask)
+            .then(
+                (task) => {
+                    this.toUITask(task);
+                    this.experiments.tasks.push(task);
+                    this.task = task;
+                },
+                () => this.toast.error('Unable to create new task')
+            );
     }
 }
 
