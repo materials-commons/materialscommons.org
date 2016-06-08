@@ -9,6 +9,7 @@ import './tasks/mc-experiment-task-details.component';
 import './tasks/move-task.service';
 import './tasks/mc-experiment-tasks.component';
 import './tasks/current-task.service';
+import './tasks/current-node.service';
 import './tasks/components/mc-task-template.component';
 import './tasks/components/mc-task-template-as-received.component';
 import './tasks/components/mc-task-template-other.component';
