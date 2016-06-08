@@ -5,7 +5,7 @@ angular.module('materialscommons').component('mcExperimentTasks', {
 
 /*@ngInject*/
 function MCExperimentTasksComponentController($scope, moveTask, currentTask, currentExperiment, currentNode,
-                                              blankTaskService) {
+                                              blankTaskService, $mdDialog) {
     let ctrl = this;
     ctrl.show = 'note';
 
@@ -21,9 +21,21 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, cur
     };
 
     ctrl.addTask = () => {
-        let node = currentNode.get();
-        let task = currentTask.get();
+        let node = currentNode.get(),
+            task = currentTask.get();
         blankTaskService.addBlankTask(node, task);
+    };
+
+    ctrl.addQuickNote = () => {
+        $mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/tasks/quick-note-dialog.html',
+            controller: CreateExperimentQuickNoteDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                experiment: ctrl.experiment
+            }
+        });
     };
 
     ctrl.toggleFilter = (filter, event) => {
@@ -77,18 +89,60 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, cur
         }
         return currentTask.get().displayState.maximize;
     };
-    ctrl.openAll = openAll;
-    ctrl.closeAll = closeAll;
     ctrl.getCurrentTask = () => currentTask.get();
+}
 
-    function openAll() {
-        var treeModel = new TreeModel({childrenPropertyName: 'tasks'}),
-            root = treeModel.parse(ctrl.experiment);
-        //ctrl.experiment.tasks.forEach((task) => task.displayState.open = true);
+class CreateExperimentQuickNoteDialogController {
+
+    /*@ngInject*/
+    constructor($mdDialog, $scope, editorOpts, notesService, $stateParams, toast) {
+        this.$mdDialog = $mdDialog;
+        $scope.editorOptions = editorOpts({height: 40, width: 55});
+        this.note = {
+            name: " ",
+            note: " "
+        };
+        this.noteCreated = false;
+        this.noteId = "";
+        this.notesService = notesService;
+        this.$stateParams = $stateParams;
+        this.toast = toast;
     }
 
-    function closeAll() {
-        //ctrl.experiment.tasks.forEach((task) => task.displayState.open = false);
+    /*
+     * updateNote uses this.noteCreated to determine if the note needs to be created rather than updated.
+     * If the note is in the process of being created then this.noteId will equal "", and an update to the
+     * note will not occur. Once it has been created updates will start being made to the note.
+     */
+    updateNote() {
+        let projectId = this.$stateParams.project_id,
+            experimentId = this.$stateParams.experiment_id,
+            note = {
+                note: this.note.note ? this.note.note : " ",
+                name: this.note.name ? this.note.name : " "
+            };
+        if (!this.noteCreated) {
+            this.notesService.createNote(projectId, experimentId, note)
+                .then(
+                    (n) => {
+                        this.noteId = n.id;
+                        this.note = n;
+                        this.noteCreated = true;
+                        this.experiment.notes.push(n);
+                    },
+                    () => this.toast.error('Failed to create note')
+                );
+        } else if (this.noteId !== "") {
+            this.notesService.updateNote(projectId, experimentId, this.noteId, note)
+                .then(
+                    () => null,
+                    () => this.toast.error('Unable to update note')
+                );
+        }
+    }
+
+    done() {
+        this.$mdDialog.hide();
     }
 }
 
