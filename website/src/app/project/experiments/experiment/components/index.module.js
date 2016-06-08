@@ -16,3 +16,4 @@ import './notes/mc-experiment-notes.component';
 import './notes/mc-experiment-notes-list.component';
 import './notes/notes-service.service';
 import './mc-experiment-sidenav.component';
+import './tasks/blank-task-service.service';
