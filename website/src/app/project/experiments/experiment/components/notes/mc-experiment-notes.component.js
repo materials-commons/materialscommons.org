@@ -17,6 +17,15 @@ class MCExperimentNotesComponentController {
         }
     }
 
+    addTasks() {
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/notes/quick-tasks.html',
+            controller: NewExperimentQuickTasksDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true
+        });
+    }
+
     addNote() {
         this.$mdDialog.show({
             templateUrl: 'app/project/experiments/experiment/components/notes/new-note-dialog.html',
@@ -83,6 +92,21 @@ class NewExperimentNoteDialogController {
 
     cancel() {
         this.$mdDialog.cancel();
+    }
+}
+
+class NewExperimentQuickTasksDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.task = {
+            name: "",
+            template_name: ""
+        }
+    }
+
+    done() {
+        this.$mdDialog.hide();
     }
 }
 

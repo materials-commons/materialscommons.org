@@ -25,7 +25,9 @@ class BlankTaskService {
             .then(
                 (task) => {
                     $('.mc-experiment-outline-task').removeClass('task-selected');
-                    currentlySelectedTask.displayState.selectedClass = '';
+                    if (currentlySelectedTask) {
+                        currentlySelectedTask.displayState.selectedClass = '';
+                    }
                     this.toUITask(task);
                     task.displayState.selectedClass = 'task-selected';
                     if (node === null) {
