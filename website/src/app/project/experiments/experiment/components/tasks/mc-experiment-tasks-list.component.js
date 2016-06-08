@@ -77,10 +77,9 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 }
 
 /*@ngInject*/
-function MCExperimentTasksListDirDirectiveController($stateParams, experimentsService, toast,
-                                                     currentTask, toUITask, focus, currentExperiment,
-                                                     paginationService, projectsService, templates,
-                                                     processEdit) {
+function MCExperimentTasksListDirDirectiveController($stateParams, experimentsService, toast, currentTask,
+                                                     currentExperiment, projectsService, templates, processEdit,
+                                                     blankTaskService) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
     ctrl.experiment = currentExperiment.get();
@@ -90,7 +89,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
         $(event.currentTarget).addClass('task-selected');
         currentTask.set(ctrl.task);
         loadTaskTemplate();
-        console.dir(ctrl.task);
+        //console.dir(ctrl.task);
     }
 
     function loadTaskTemplate() {
@@ -186,45 +185,8 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
     };
 
     ctrl.addBlankTask = (node) => {
-        let csi = findCurrentTaskIndex(node);
-
-        let newTask = {
-            name: '',
-            note: '',
-            parent_id: '',
-            index: csi + 1
-        };
-        experimentsService.createTask($stateParams.project_id, $stateParams.experiment_id, newTask)
-            .then(
-                (task) => {
-                    $('.mc-experiment-outline-task').removeClass('task-selected');
-                    ctrl.task.displayState.selectedClass = '';
-                    toUITask(task);
-                    task.displayState.selectedClass = 'task-selected';
-                    node.$nodeScope.$parentNodesScope.$modelValue.splice(csi + 1, 0, task);
-                    currentTask.set(task);
-                    gotoNewTasksPage(csi);
-                    focus(task.id);
-                },
-                () => toast.error('Unable to create new task')
-            );
+        blankTaskService.addBlankTask(node, ctrl.task);
     };
-
-    function findCurrentTaskIndex(node) {
-        return _.findIndex(node.$nodeScope.$parentNodesScope.$modelValue, (n) => n.id === ctrl.task.id);
-    }
-
-    function gotoNewTasksPage(taskIndex) {
-        let instanceId = paginationService.getLastInstanceId();
-        let currentPage = paginationService.getCurrentPage(instanceId);
-        let itemsPerPage = paginationService.getItemsPerPage(instanceId);
-        let remainder = (taskIndex + 1) % itemsPerPage;
-        if (!remainder) {
-            // On a page boundary, so new item will be created on the next page.
-            // Switch to that page.
-            paginationService.setCurrentPage(instanceId, currentPage + 1);
-        }
-    }
 
     ctrl.remove = (node) => {
         if (node.$nodeScope.depth() === 1 && ctrl.experiment.tasks.length === 1) {
