@@ -1,5 +1,5 @@
 class BlankTaskService {
-    constructor(toUITask, focus, currentTask, paginationService, experimentsService, toast, $stateParams) {
+    constructor(toUITask, focus, currentTask, paginationService, experimentsService, toast, $stateParams, currentExperiment) {
         this.toUITask = toUITask;
         this.focus = focus;
         this.currentTask = currentTask;
@@ -7,10 +7,13 @@ class BlankTaskService {
         this.experimentsService = experimentsService;
         this.toast = toast;
         this.$stateParams = $stateParams;
+        this.currentExperiment = currentExperiment;
     }
 
     addBlankTask(node, currentlySelectedTask) {
-        let csi = this.findCurrentTaskIndex(node, currentlySelectedTask);
+        let csi = node == null ? 1 : this.findCurrentTaskIndex(node, currentlySelectedTask);
+        let experiment = this.currentExperiment.get();
+        let tasks = experiment.tasks;
 
         let newTask = {
             name: '',
@@ -25,7 +28,11 @@ class BlankTaskService {
                     currentlySelectedTask.displayState.selectedClass = '';
                     this.toUITask(task);
                     task.displayState.selectedClass = 'task-selected';
-                    node.$nodeScope.$parentNodesScope.$modelValue.splice(csi + 1, 0, task);
+                    if (node === null) {
+                        tasks.splice(csi + 1, 0, task);
+                    } else {
+                        node.$nodeScope.$parentNodesScope.$modelValue.splice(csi + 1, 0, task);
+                    }
                     this.currentTask.set(task);
                     this.gotoNewTasksPage(csi);
                     this.focus(task.id);
