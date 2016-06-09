@@ -2,8 +2,8 @@
     <h4 class="md-title">Setup</h4>
     <md-content layout-padding>
         <form name="processSettingsForm">
-            <div ng-repeat="setting in ctrl.settings">
-                <div ng-switch="setting.property._type">
+            <div ng-repeat="setting in ::ctrl.settings">
+                <div ng-switch="::setting.property._type">
 
                     <!--------- number --------->
                     <div ng-switch-when="number">
@@ -14,7 +14,7 @@
                                        name="numberInput"
                                        step="any"
                                        ng-change="ctrl.updateSettingProperty(setting.property)"
-                                       ng-required="setting.property.required"
+                                       ng-required="::setting.property.required"
                                        ng-model="setting.property.value">
                             </md-input-container>
                             <span ng-if="setting.property.units.length === 0" class="unit-align">
@@ -25,7 +25,7 @@
                                            ng-change="ctrl.updateSettingProperty(setting.property)"
                                            aria-label="units"
                                            class="units-align">
-                                    <md-option ng-repeat="unit in setting.property.units"
+                                    <md-option ng-repeat="unit in ::setting.property.units"
                                                ng-value="unit">
                                         {{unit}}
                                     </md-option>
@@ -58,8 +58,8 @@
                                            ng-change="ctrl.updateSettingProperty(setting.property)"
                                            aria-label="x">
                                     <md-option ng-value="choice"
-                                               ng-repeat="choice in setting.property.choices">
-                                        {{choice.name}}
+                                               ng-repeat="choice in ::setting.property.choices">
+                                        {{::choice.name}}
                                     </md-option>
                                 </md-select>
                             </md-input-container>
@@ -67,7 +67,7 @@
                         <div ng-if="setting.property.value.name === 'Other'">
                             <div style="margin-top:45px">
                                 <md-input-container class="md-block" md-no-float>
-                                    <label>Specify {{setting.property.name}}...</label>
+                                    <label>Specify {{::setting.property.name}}...</label>
                                     <input ng-model="setting.property.value.value"
                                            ng-model-options="{debounce: 500}"
                                            ng-change="ctrl.updateSettingProperty(setting.property)"
@@ -91,7 +91,7 @@
 
                     <!--------- unknown type --------->
                     <div ng-switch-default>
-                        <span>Unknown template type {{setting.property._type}}</span>
+                        <span>Unknown template type {{::setting.property._type}}</span>
                     </div>
                 </div>
             </div>
