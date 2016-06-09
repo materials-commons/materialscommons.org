@@ -116,10 +116,13 @@ class NewExperimentNoteDialogController {
 
 class NewExperimentQuickTasksDialogController {
     /*@ngInject*/
-    constructor($mdDialog, toUITask, toast) {
+    constructor($mdDialog, toUITask, toast, taskService, experimentsService, $stateParams) {
         this.$mdDialog = $mdDialog;
         this.toast = toast;
         this.toUITask = toUITask;
+        this.taskService = taskService;
+        this.experimentsService = experimentsService;
+        this.$stateParams = $stateParams;
     }
 
     done() {
@@ -127,22 +130,42 @@ class NewExperimentQuickTasksDialogController {
     }
 
     addAnother() {
-        let newTask = {
-            name: '',
-            note: '',
-            parent_id: '',
-            index: this.experiment.tasks.length
-        };
-        this.experimentsService.createTask(this.projectID, this.experimentID, newTask)
+        let projectId = this.$stateParams.project_id,
+            experimentId = this.$stateParams.experiment_id,
+            newTask = {
+                name: '',
+                note: '',
+                parent_id: '',
+                index: this.experiment.tasks.length
+            };
+        this.experimentsService.createTask(projectId, experimentId, newTask)
             .then(
                 (task) => {
                     this.toUITask(task);
-                    this.experiments.tasks.push(task);
+                    this.experiment.tasks.push(task);
                     this.task = task;
+                    console.dir(this.task);
                 },
                 () => this.toast.error('Unable to create new task')
             );
     }
+
+    toggleFlag(whichFlag, event) {
+        this.taskService.toggleFlag(whichFlag, event, this.task);
+    }
+
+    toggleStar(event) {
+        this.taskService.toggleStar(event, this.task);
+    }
+
+    onNameChange() {
+        this.taskService.updateName(this.task);
+    }
+
+    selectedTemplate(templateId, processId) {
+        this.taskService.setTemplate(templateId, processId, this.task);
+    }
+
 }
 
 angular.module('materialscommons').component('mcExperimentNotes', {

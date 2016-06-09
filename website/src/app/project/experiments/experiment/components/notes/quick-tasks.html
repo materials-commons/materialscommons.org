@@ -12,21 +12,30 @@
                 <input size="30" type="text"
                        ng-model="$ctrl.task.name"
                        ng-model-options="{debounce: 1000}"
-                       ngx-change="$ctrl.onNameChange()"
+                       ng-change="$ctrl.onNameChange()"
+                       on-enter="$ctrl.done()"
                        placeholder="Untitled Task..."
                        class="mc-input-no-border align-task-element">
                 <input size="25" type="text" placeholder="No template..."
                        ng-model="$ctrl.task.template_name"
                        class="mc-input-no-border" disabled>
-                <md-button ng-if="$ctrl.task.template_name === ''" class="md-primary">Set Template</md-button>
+                <!--<md-button ng-if="$ctrl.task.template_name === ''" class="md-primary">Set Template</md-button>-->
             </div>
             <div class="align-task-element">
-                <i class="fa fa-fw fa-flag cursor-pointer" ng-click="$ctrl.toggleFlag('flagged', $event)"></i>
+                <i class="fa fa-fw fa-flag cursor-pointer mc-flag-not-set"
+                   ng-click="$ctrl.toggleFlag('flagged', $event)"></i>
             </div>
         </div>
     </md-dialog-content>
-    <md-dialog-actions layout="row">
-        <md-button class="md-primary" ng-click="$ctrl.addAnother()">Add Another</md-button>
-        <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+    <md-dialog-actions layout="row" layout-align="space-between center">
+        <mc-new-process-menu ng-if="!$ctrl.task.template"
+                             button-name="SET TEMPLATE"
+                             button-class="md-primary text-white"
+                             on-selected="$ctrl.selectedTemplate(templateId, processId)">
+        </mc-new-process-menu>
+        <div>
+            <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+            <md-button class="md-primary" ng-click="$ctrl.addAnother()">Add Another</md-button>
+        </div>
     </md-dialog-actions>
 </md-dialog>
