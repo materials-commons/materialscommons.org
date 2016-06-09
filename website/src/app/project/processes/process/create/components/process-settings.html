@@ -82,7 +82,7 @@
                         <md-input-container class="md-block">
                             <label>{{::setting.property.name}}</label>
                             <input type="text" name="stringInput"
-                                   ng-required="setting.property.required"
+                                   ng-required="::setting.property.required"
                                    ng-model-options="{debounce: 500}"
                                    ng-change="ctrl.updateSettingProperty(setting.property)"
                                    ng-model="setting.property.value">
