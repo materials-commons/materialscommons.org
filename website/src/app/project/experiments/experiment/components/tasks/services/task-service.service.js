@@ -1,7 +1,8 @@
 class TaskService {
     /*@ngInject*/
-    constructor(experimentsService, $stateParams, toast) {
+    constructor(experimentsService, templates, $stateParams, toast) {
         this.experimentsService = experimentsService;
+        this.templates = templates;
         this.$stateParams = $stateParams;
         this.toast = toast;
     }
@@ -78,6 +79,21 @@ class TaskService {
             );
     }
 
+    updateNote(task) {
+        let projectId = this.$stateParams.project_id,
+            experimentId = this.$stateParams.experiment_id;
+
+        if (task.note === null) {
+            return;
+        }
+
+        this.experimentsService.updateTask(projectId, experimentId, task.id, {note: task.note})
+            .then(
+                () => null,
+                () => this.toast.error('Unable to update task note.')
+            );
+    }
+
     remove(node, task, tasks) {
         let projectId = this.$stateParams.project_id,
             experimentId = this.$stateParams.experiment_id;
@@ -89,7 +105,20 @@ class TaskService {
         this.experimentsService.deleteTask(projectId, experimentId, task.id)
             .then(
                 () => node.$nodeScope.remove(),
-                () => this.toast.error('Unable to delete task')
+                (err) => this.toast.error(`Unable to delete task: ${err.data.error}`)
+            );
+    }
+
+    setTemplate(templateId, processId, task) {
+        let projectId = this.$stateParams.project_id,
+            experimentId = this.$stateParams.experiment_id;
+        this.experimentsService.addTemplateToTask(projectId, experimentId, task.id, `global_${templateId}`)
+            .then(
+                () => {
+                    task.template_name = templateId;
+                    task.template = this.templates.getTemplate(templateId);
+                },
+                () => this.toast.error('Unable to associate template with task')
             );
     }
 }
