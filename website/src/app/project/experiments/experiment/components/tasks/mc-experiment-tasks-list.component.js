@@ -77,9 +77,9 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 }
 
 /*@ngInject*/
-function MCExperimentTasksListDirDirectiveController($stateParams, experimentsService, toast, currentTask,
+function MCExperimentTasksListDirDirectiveController($stateParams, toast, currentTask,
                                                      currentExperiment, projectsService, templates, processEdit,
-                                                     blankTaskService, currentNode) {
+                                                     blankTaskService, currentNode, taskService) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
     ctrl.experiment = currentExperiment.get();
@@ -109,69 +109,13 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
         }
     }
 
-    ctrl.toggleFlag = (whichFlag, event) => {
-        // toggle flag and then get its value so we know
-        // what classes to add/remove.
-        ctrl.task.flags[whichFlag] = !ctrl.task.flags[whichFlag];
-        let flagColorClass = 'mc-' + whichFlag + '-color';
-        let flag = ctrl.task.flags[whichFlag];
-        if (flag) {
-            // Toggled to on, remove dark grey and add in class for specific flag
-            ctrl.task.displayState.flags[whichFlag + 'Class'] = flagColorClass;
-            $(event.target).removeClass('mc-flag-not-set');
-            $(event.target).addClass(flagColorClass);
-        } else {
-            ctrl.task.displayState.flags[whichFlag + 'Class'] = 'mc-flag-not-set';
-            $(event.target).removeClass(flagColorClass);
-            $(event.target).addClass('mc-flag-not-set');
-        }
+    ctrl.toggleFlag = (whichFlag, event) => taskService.toggleFlag(whichFlag, event, ctrl.task);
 
-        experimentsService
-            .updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id, {flags: ctrl.task.flags})
-            .then(
-                () => null,
-                () => toast.error('Failed to update task')
-            );
-    };
+    ctrl.toggleStar = (event) => taskService.toggleStar(event, ctrl.task);
 
-    ctrl.toggleStar = (event) => {
-        if (ctrl.task.flags.starred) {
-            $(event.target).removeClass('fa-star');
-            $(event.target).addClass('fa-star-o');
-            ctrl.task.displayState.flags.starredClass = 'fa-star-o';
-            ctrl.task.flags.starred = false;
-        } else {
-            $(event.target).removeClass('fa-star-o');
-            $(event.target).addClass('fa-star');
-            ctrl.task.displayState.flags.starredClass = 'fa-star';
-            ctrl.task.flags.starred = true;
-        }
+    ctrl.onNameChange = () => taskService.updateName(ctrl.task);
 
-        experimentsService
-            .updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id, {flags: ctrl.task.flags})
-            .then(
-                () => null,
-                () => toast.error('Failed to update task')
-            );
-    };
-
-    ctrl.onNameChange = () => {
-        experimentsService
-            .updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id, {name: ctrl.task.name})
-            .then(
-                () => null,
-                () => toast.error('Failed to update task')
-            );
-    };
-
-    ctrl.updateDoneStatus = () => {
-        experimentsService
-            .updateTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id, {flags: ctrl.task.flags})
-            .then(
-                () => null,
-                () => toast.error('Failed to update task')
-            );
-    };
+    ctrl.updateDoneStatus = () => taskService.updateDoneStatus(ctrl.task);
 
     ctrl.toggleOpenDetails = (event) => {
         ctrl.task.displayState.open = !ctrl.task.displayState.open;
@@ -189,18 +133,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, experimentsSe
         blankTaskService.addBlankTask(node, ctrl.task);
     };
 
-    ctrl.remove = (node) => {
-        if (node.$nodeScope.depth() === 1 && ctrl.experiment.tasks.length === 1) {
-            toast.error('Cannot remove last task');
-            return;
-        }
-
-        experimentsService.deleteTask($stateParams.project_id, $stateParams.experiment_id, ctrl.task.id)
-            .then(
-                () => node.$nodeScope.remove(),
-                () => toast.error('Unable to delete task')
-            );
-    };
+    ctrl.remove = (node) => taskService.remove(node, ctrl.task, ctrl.experiment.tasks);
 
     ctrl.addToExperimentNote = () => {
         let html = `

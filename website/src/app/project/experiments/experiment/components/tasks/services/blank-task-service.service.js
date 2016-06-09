@@ -1,4 +1,5 @@
 class BlankTaskService {
+    /*@ngInject*/
     constructor(toUITask, focus, currentTask, paginationService, experimentsService, toast, $stateParams, currentExperiment) {
         this.toUITask = toUITask;
         this.focus = focus;
