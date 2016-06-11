@@ -11,7 +11,7 @@ import './tasks/mc-experiment-tasks.component';
 import './tasks/services/current-task.service';
 import './tasks/services/current-node.service';
 import './tasks/components/mc-task-template.component';
-import './tasks/components/mc-task-template-as-received.component';
+import './tasks/components/mc-task-template-create-samples.component';
 import './tasks/components/mc-task-template-other.component';
 import './notes/mc-experiment-notes.component';
 import './notes/mc-experiment-notes-list.component';

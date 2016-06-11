@@ -9,5 +9,6 @@ angular.module('materialscommons').component('mcTaskTemplate', {
 /*@ngInject*/
 function MCTaskTemplateComponentController() {
     var ctrl = this;
+    console.dir(ctrl.task);
     //ctrl.template = template.get();
 }
