@@ -41,14 +41,6 @@ class ExperimentsService {
     deleteTask(projectID, experimentID, taskID) {
         return this.projectsAPI(projectID).one('experiments', experimentID).one('tasks', taskID).customDELETE();
     }
-
-    addGoals(projectID, experimentID, experimentGoals) {
-        return this.projectsAPI(projectID).one('experiments', experimentID).one('goals').customPOST(experimentGoals);
-    }
-
-    removeGoal() {
-
-    }
 }
 
 angular.module('materialscommons').service('experimentsService', ExperimentsService);
