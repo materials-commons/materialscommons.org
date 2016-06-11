@@ -20,8 +20,7 @@ module.exports = function(experiments, schema) {
         getExperimentNote,
         updateExperimentNote,
         createExperimentNote,
-        deleteExperimentNote,
-        createExperimentGoal
+        deleteExperimentNote
     };
 
     function* getAllExperimentsForProject(next) {
@@ -264,6 +263,10 @@ module.exports = function(experiments, schema) {
     }
 
     function* validateUpdateExperimentTaskTemplateArgs(updateArgs, params) {
+        if (!updateArgs.properties || !_.isArray(updateArgs.properties)) {
+            return {error: `No properties or properties attribute isn't an array`};
+        }
+
         let isValid = yield validateTask(params.project_id, params.experiment_id, params.task_id);
         if (!isValid) {
             return {error: 'Bad experiment or task'};
@@ -494,23 +497,4 @@ module.exports = function(experiments, schema) {
         return null;
     }
 
-    function* createExperimentGoal(next) {
-        let goalArgs = yield parse(this);
-        schema.prepare(schema.createExperimentTask, goalArgs);
-        let errors = yield validateCreateTaskArgs(goalArgs, this.params.project_id,
-            this.params.experiment_id, this.params.task_id);
-        if (errors != null) {
-            this.status = status.BAD_REQUEST;
-            this.body = errors;
-        } else {
-            let rv = yield experiments.createTask(this.params.experiment_id, goalArgs, this.reqctx.user.id);
-            if (rv.error) {
-                this.status = status.NOT_ACCEPTABLE;
-                this.body = rv;
-            } else {
-                this.body = rv.val;
-            }
-        }
-        yield next;
-    }
 };
