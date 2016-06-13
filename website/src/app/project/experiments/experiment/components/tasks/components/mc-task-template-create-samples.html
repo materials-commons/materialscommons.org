@@ -1,15 +1,26 @@
 <div layout="column">
     <div layout="column" flex="45">
-        <div layout="row">
+        <div layout="row" layout-align="start center">
+            <h4 class="md-title">Samples</h4>
             <md-button class="md-primary" ng-click="$ctrl.addSample()">add sample</md-button>
             <md-button class="md-primary" ng-click="$ctrl.addMultipleSamples()">Add Multiple Samples</md-button>
         </div>
-        <md-content style="max-height:20vh; min-height:10vh">
+        <p>
+            The names of the samples you are creating will appear below. All samples will share the same setup
+            properties.
+        </p>
+        <md-content style="max-height:20vh; min-height:5vh">
             <div ng-repeat="sample in $ctrl.task.template.samples">
-                <input type="text" class="mc-input-as-line margin-top-10"
-                       flex="85" ng-model="sample.name"
-                       on-enter="$ctrl.addSample()"
-                       placeholder="Untitled Sample..." id="{{::sample.id}}">
+                <div layout="row">
+                    <label>{{::$index+1}}.</label>
+                    <input type="text" class="mc-input-as-line"
+                           flex="85" ng-model="sample.name"
+                           on-enter="$ctrl.addSample()"
+                           placeholder="Untitled Sample..." id="{{::sample.id}}">
+                    <a class="mc-error-color margin-top-10" ng-click="$ctrl.remove($index)">
+                        <i class="fa fa-fw fa-remove"></i>
+                    </a>
+                </div>
             </div>
         </md-content>
         <md-input-container>

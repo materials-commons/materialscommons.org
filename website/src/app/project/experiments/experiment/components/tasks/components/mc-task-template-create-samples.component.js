@@ -7,19 +7,26 @@ class MCTaskTemplateCreateSamplesComponentController {
         this.$mdDialog = $mdDialog;
 
         if (!this.task.template.samples) {
-            let id = 'sample_' + this.lastId++;
             this.task.template.samples = [];
         }
     }
 
     addSample() {
+        let lastItem = this.task.template.samples.length - 1;
+        // If there is no name for the last entry then do not add a new entry.
+        if (lastItem !== -1 && this.task.template.samples[lastItem].name === '') {
+            return;
+        }
         let id = 'sample_' + this.lastId++;
-
         this.task.template.samples.push({
             name: '',
             id: id
         });
         this.focus(id);
+    }
+
+    remove(index) {
+        this.task.template.samples.splice(index, 1);
     }
 
     addMultipleSamples() {
@@ -32,9 +39,9 @@ class MCTaskTemplateCreateSamplesComponentController {
                 lastId: this.lastId
             }
         }).then(
-            (addedSamples, nextId) => {
-                this.task.template.samples = this.task.template.samples.concat(addedSamples);
-                this.lastId = nextId;
+            (samples) => {
+                this.task.template.samples = this.task.template.samples.concat(samples.added);
+                this.lastId = samples.nextId;
             }
         )
     }
@@ -57,25 +64,32 @@ angular.module('materialscommons').component('mcTaskTemplateCreateSamples', {
 
 class AddMultipleSamplesDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, toast) {
         this.$mdDialog = $mdDialog;
+        this.toast = toast;
         this.nameTemplate = "";
         this.count = 2;
     }
 
     done() {
+        if (this.nameTemplate.indexOf('$INDEX') == -1) {
+            this.toast.error(`Template name doesn't contain $INDEX`);
+            return;
+        }
+
+        console.log(this.lastId);
         let addedSamples = [];
         for (let i = 0; i < this.count; i++) {
             let id = "sample_" + i,
+                name = this.nameTemplate.replace("$INDEX", "" + (this.lastId + i + 1)),
                 entry = {
-                    name: 'sample_' + (i + 1),
+                    name: name,
                     id: id
                 };
             addedSamples.push(entry);
         }
         let nextId = this.lastId + addedSamples.length;
-        console.log(addedSamples.length);
-        this.$mdDialog.hide(addedSamples);
+        this.$mdDialog.hide({added: addedSamples, nextId: nextId});
     }
 
     cancel() {
