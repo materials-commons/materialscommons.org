@@ -12,6 +12,7 @@ module.exports = function(model) {
     const users = require('./users')(model.users);
     const shares = require('./shares')(model.shares, schema);
     const experiments = require('./experiments')(model.experiments, schema);
+    const experimentSamples = require('./experiment-samples')(model.samples, schema);
 
     router.get('/projects', projects.all);
     router.put('/projects/:project_id', validateProjectAccess, projects.update);
@@ -44,21 +45,29 @@ module.exports = function(model) {
 
     router.get('/projects/:project_id/experiments', validateProjectAccess, experiments.getAllExperimentsForProject);
     router.get('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.getExperiment);
-    router.get('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.getExperimentTask);
+
     router.post('/projects/:project_id/experiments', validateProjectAccess, experiments.createExperiment);
     router.delete('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.deleteExperiment);
+    router.put('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.updateExperiment);
+
+    router.get('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.getExperimentTask);
     router.post('/projects/:project_id/experiments/:experiment_id/tasks', validateProjectAccess, experiments.createExperimentTask);
     router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.createExperimentTask);
-    router.put('/projects/:project_id/experiments/:experiment_id', validateProjectAccess, experiments.updateExperiment);
     router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.updateExperimentTask);
     router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id/template', validateProjectAccess, experiments.updateExperimentTaskTemplate);
     router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id/template/:template_id', validateProjectAccess, experiments.addExperimentTaskTemplate);
     router.delete('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', validateProjectAccess, experiments.deleteExperimentTask);
+
     router.get('/projects/:project_id/experiments/:experiment_id/notes', validateProjectAccess, experiments.getNotesForExperiment);
     router.get('/projects/:project_id/experiments/:experiment_id/notes/:note_id', validateProjectAccess, experiments.getExperimentNote);
     router.delete('/projects/:project_id/experiments/:experiment_id/notes/:note_id', validateProjectAccess, experiments.deleteExperimentNote);
     router.put('/projects/:project_id/experiments/:experiment_id/notes/:note_id', validateProjectAccess, experiments.updateExperimentNote);
     router.post('/projects/:project_id/experiments/:experiment_id/notes', validateProjectAccess, experiments.createExperimentNote);
+
+    router.post('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.addSamples);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples/:sample_id', experimentSamples.updateSample);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.updateMultipleSamples);
+    router.delete('/projects/:project_id/experiments/experiment_id/samples/:sample_id', experimentSamples.deleteSample);
 
     router.put('/users/:project_id', users.update);
 
