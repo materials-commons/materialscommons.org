@@ -73,6 +73,7 @@ class AddMultipleSamplesDialogController {
                 };
             addedSamples.push(entry);
         }
+        let nextId = this.lastId + addedSamples.length;
         console.log(addedSamples.length);
         this.$mdDialog.hide(addedSamples);
     }
