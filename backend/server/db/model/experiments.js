@@ -24,7 +24,8 @@ module.exports = function(r) {
         addTemplateToTask,
         updateTaskTemplateProperties,
         isTemplateForTask,
-        getTemplate
+        getTemplate,
+        addSamples
     };
 
     function* getAllForProject(projectID) {
@@ -337,5 +338,14 @@ module.exports = function(r) {
     function* getTemplate(templateId) {
         let rql = r.table('templates').get(templateId);
         return yield dbExec(rql);
+    }
+
+    function* addSamples(experimentId, samples) {
+        let samplesToAdd = [];
+        for (let i = 0; i < samples.length; i++) {
+            samplesToAdd.push({experiment_id: experimentId, sample_id: samples[i]});
+        }
+        yield r.table('experiment2sample').insert(samplesToAdd);
+        return {val: samplesToAdd};
     }
 };
