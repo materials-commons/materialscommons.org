@@ -5,15 +5,15 @@ module.exports = function(samples, schema) {
     const httpStatus = require('http-status');
 
     return {
-        getList: getList,
-        byID: byID,
-        create: create,
-        update: update
+        getAllSamplesForProject,
+        getSampleForProject,
+        createSample,
+        updateSample
     };
 
     ///////////////////////////////////////
 
-    function *getList(next) {
+    function *getAllSamplesForProject(next) {
         let rv = yield samples.getList(this.params.project_id);
         if (rv.error) {
             this.throw(httpStatus.BAD_REQUEST, rv.error);
@@ -23,14 +23,14 @@ module.exports = function(samples, schema) {
         yield next;
     }
 
-    function *byID(next) {
+    function *getSampleForProject(next) {
         yield next;
     }
 
     // create creates a new sample. It validates the submitted
     // entry and enters default values in for optional missing
     // attributes.
-    function *create(next) {
+    function *createSample(next) {
         try {
             let sample = prepareSample(yield parse(this));
             sample.project_id = this.params.project_id;
@@ -58,7 +58,7 @@ module.exports = function(samples, schema) {
         }
     }
 
-    function *update(next) {
+    function *updateSample(next) {
         'use strict';
         try {
             let fields = prepareSample(yield parse(this));
