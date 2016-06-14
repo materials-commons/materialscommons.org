@@ -46,7 +46,9 @@ module.exports = function(r) {
                             };
                         }).coerceTo('array')
                 }
-            })
+            });
+        let sample = dbExec(rql);
+        return {val: sample};
     }
 
     function* getAllSamplesForProject(projectID) {
