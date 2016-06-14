@@ -1,17 +1,19 @@
 module.exports = function(r) {
-    const run = require('./run');
-    const getSingle = require('./get-single');
+    const dbExec = require('./run');
+    const model = require('./model')(r);
+    const db = require('./db')(r);
+
     return {
-        get: function(id, index) {
-            return getSingle(r, 'samples', id, index);
-        },
-        getList,
-        createSamples
+        getSample,
+        getAllSamplesForProject,
+        createSamples,
+        sampleInProject,
+        isValidCreateSamplesProcess
     };
 
     /////////////////
 
-    function* get(sampleID) {
+    function* getSample(sampleID) {
         let rql = r.table('samples').getAll(sampleID)
             .merge(function(sample) {
                 return {
@@ -47,12 +49,12 @@ module.exports = function(r) {
             })
     }
 
-    function* getList(projectID) {
+    function* getAllSamplesForProject(projectID) {
         let rql = sampleDetailsRql(r.table('project2sample').getAll(projectID, {index: 'project_id'})
             .eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'})
             .zip().filter({'current': true})
             .eqJoin('sample_id', r.table('samples')).zip());
-        let samples = yield run(rql);
+        let samples = yield dbExec(rql);
         samples = samples.map(s => {
             s.transforms = s.processes.filter(p => p.does_transform).length;
             s.properties = s.properties.map(p => {
@@ -92,9 +94,38 @@ module.exports = function(r) {
         });
     }
 
-    //================================
+    function* sampleInProject(projectId, sampleId) {
+        let samples = yield r.table('project2sample').getAll([projectId, sampleId], {index: 'project_sample'});
+        return samples.length !== 0;
+    }
 
-    function* createSamples(projectId) {
+    function* createSamples(projectId, processId, samples, owner) {
+        let pset = new model.PropertySet(true);
+        let createdPSet = yield db.insert('propertysets', pset);
+        let createdSamples = [];
+        for (let i = 0; i < samples.length; i++) {
+            let sampleParams = samples[i];
+            let s = new model.Sample(sampleParams.name, sampleParams.description, owner);
+            let createdSample = yield db.insert('samples', s);
+            let s2ps = new model.Sample2PropertySet(createdSample.id, createdPSet.id, true);
+            yield db.insert('sample2propertyset', s2ps);
+            let proc2sample = new model.Process2Sample(processId, createdSample.id, createdPSet.id, 'out');
+            let proj2sample = new model.Project2Sample(projectId, createdSample.id);
+            yield db.insert('process2sample', proc2sample);
+            yield db.insert('project2sample', proj2sample);
+            createdSamples.push({name: s.name, sample_id: createdSample.id, property_set_id: createdPSet.id});
+        }
 
+        return {val: {samples: createdSamples}};
+    }
+
+    function* isValidCreateSamplesProcess(projectId, processId) {
+        let processes = yield r.table('project2process').getAll([projectId, processId], {index: 'project_process'});
+        if (processes.length === 0) {
+            return false;
+        }
+        let process = yield r.table('processes').get(processId)
+            .merge((p) => r.table('templates').get(p('template_id')).pluck('category'));
+        return process.category === 'create_sample';
     }
 };

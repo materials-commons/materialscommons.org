@@ -1,22 +1,21 @@
 module.exports = function(samples, schema) {
-    'use strict';
-    let ec = require('./error-code');
     let parse = require('co-body');
-    const httpStatus = require('http-status');
+    const status = require('http-status');
 
     return {
         getAllSamplesForProject,
         getSampleForProject,
-        createSample,
-        updateSample
+        createSamples,
+        updateSample,
+        updateSamples
     };
 
     ///////////////////////////////////////
 
     function *getAllSamplesForProject(next) {
-        let rv = yield samples.getList(this.params.project_id);
+        let rv = yield samples.getAllSamplesForProject(this.params.project_id);
         if (rv.error) {
-            this.throw(httpStatus.BAD_REQUEST, rv.error);
+            this.throw(status.BAD_REQUEST, rv.error);
         }
         this.body = rv.val;
         this.status = 200;
@@ -24,77 +23,85 @@ module.exports = function(samples, schema) {
     }
 
     function *getSampleForProject(next) {
+        let isIn = yield samples.sampleInProject(this.params.project_id, this.params.sample_id);
+        if (!isIn) {
+            this.status = status.BAD_REQUEST;
+            this.body = {error: `No such sample ${this.params.sample_id} in project ${this.params.project_id}`};
+        } else {
+            let rv = yield samples.getSample(this.params.sample_id);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+
         yield next;
     }
 
-    // create creates a new sample. It validates the submitted
-    // entry and enters default values in for optional missing
-    // attributes.
-    function *createSample(next) {
-        try {
-            let sample = prepareSample(yield parse(this));
-            sample.project_id = this.params.project_id;
-            sample.owner = this.reqctx.user.id;
-            yield validateSample(sample);
-            let inserted = yield samples.create(sample);
-            this.status = 200;
-            this.body = inserted;
-            yield next;
-        } catch (err) {
-            let e = ec(err);
-            this.status = e.status();
-            this.body = e.error();
-        }
-
-        /////////////////
-
-        // validateSample validates the sample and any properties
-        // included with the sample.
-        function *validateSample(sample) {
-            yield schema.samples.validateAsync(sample);
-            for (let i = 0; i < sample.properties.length; i++) {
-                yield schema.properties.validateAsync(sample.properties[i]);
+    function* createSamples(next) {
+        let createArgs = yield parse(this);
+        let errors = yield validateCreateSamplesArgs(this.params.project_id, createArgs);
+        if (errors != null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield samples.createSamples(this.params.project_id, createArgs.process_id, createArgs.samples,
+                this.reqctx.user.id);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
             }
         }
+        yield next;
+    }
+
+    function* validateCreateSamplesArgs(projectId, args) {
+        schema.prepare(schema.createSamples, args);
+        let errors = yield schema.validate(schema.createSamples, args);
+        if (errors !== null) {
+            return errors;
+        }
+
+        if (args.process_id === "") {
+            return {error: 'Unknown process'};
+        }
+
+        let isCreateProcess = yield samples.isValidCreateSamplesProcess(projectId, args.process_id);
+        if (!isCreateProcess) {
+            return {error: `Process isn't a create samples process`};
+        }
+
+        if (args.samples.length === 0) {
+            return {error: `No samples to be created`};
+        }
+
+        for (let i = 0; i < args.samples.length; i++) {
+            let s = args.samples[i];
+            if (!isValidSampleArg(s)) {
+                return {error: `Bad sample request: ${s}`};
+            }
+
+            if (!s.description) {
+                s.description = "";
+            }
+        }
+
+        return null;
+    }
+
+    function isValidSampleArg(sample) {
+        return !!(sample.name && sample.name !== "");
     }
 
     function *updateSample(next) {
-        'use strict';
-        try {
-            let fields = prepareSample(yield parse(this));
-            fields.project_id = this.params.project_id;
-            yield validateFields(fields);
-            let updated = yield samples.update(this.params.sample_id, fields);
-            this.status = 200;
-            this.body = updated;
-            yield next;
-        } catch (err) {
-            let e = ec(err);
-            this.status = e.status();
-            this.body = e.error();
-        }
-
-        //////////////
-
-        // validateFields will validate the individual fields sent for
-        // a sample and ignore missing fields.
-        function *validateFields(fields) {
-            yield schema.samples.validateAsync(fields, true);
-            if ('properties' in fields) {
-                for (let i = 0; i < fields.properties.length; i++) {
-                    yield schema.properties.validateAsync(fields.properties[i], true);
-                }
-            }
-        }
+        yield next;
     }
 
-    //////////////////////////////
-
-    // prepareSample strips out unknown attributes and adds
-    // default values for optional attributes.
-    function prepareSample(sample) {
-        schema.samples.stripNonSchemaAttrs(sample);
-        schema.samples.addDefaultsToTarget(sample);
-        return sample;
+    function* updateSamples(next) {
+        yield next;
     }
 };

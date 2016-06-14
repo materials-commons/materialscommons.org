@@ -28,10 +28,11 @@ module.exports = function(model) {
     router.get('/projects/:project_id/processes', validateProjectAccess, processes.getList);
     router.get('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.get);
 
-    router.post('/projects/:project_id/samples', validateProjectAccess, samples.createSample);
+    router.post('/projects/:project_id/samples', validateProjectAccess, samples.createSamples);
     router.get('/projects/:project_id/samples', validateProjectAccess, samples.getAllSamplesForProject);
     router.get('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.getSampleForProject);
     router.put('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.updateSample);
+    router.put('/projects/:project_id/samples', validateProjectAccess, samples.updateSamples);
 
     router.get('/projects/:project_id/files/:file_id', validateProjectAccess, files.get);
     router.get('/projects/:project_id/files/:file_id/versions', validateProjectAccess, files.getVersions);

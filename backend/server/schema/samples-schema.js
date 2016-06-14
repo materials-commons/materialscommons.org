@@ -2,39 +2,23 @@ module.exports = function(schema) {
     const promise = require('bluebird');
 
     return {
-        defineTransformedSamplesSchema: defineTransformedSamplesSchema,
-        defineSamplesSchema: defineSamplesSchema
+        defineCreateSamplesSchema
     };
 
-    function defineTransformedSamplesSchema() {
-        let transformed = schema.defineSchema('TransformedSamples', {
-            sample_id: {
+    function defineCreateSamplesSchema() {
+        let createSamplesSchema = schema.defineSchema('CreateSamplesSchema', {
+            process_id: {
                 type: 'string',
-                nullable: false,
-                mustExistInProject: 'samples:id'
+                nullable: false
             },
-            attribute_set_id: {
-                type: 'string',
-                nullable: false,
-                mustBelongToSample: true
-            },
-            uses: {
+            samples: {
                 type: 'array',
-                nullable: true,
-                mustBeForAttributeSet: true
-            },
-            shares: {
-                type: 'array',
-                nullable: true,
-                mustBeForAttributeSet: true
+                nullable: true
             }
         });
-        transformed.setDefaults({
-            uses: [],
-            shares: []
-        });
-        transformed.validateAsync = promise.promisify(transformed.validate);
-        return transformed;
+        createSamplesSchema.setDefaults({});
+        createSamplesSchema.validateAsync = promise.promisify(createSamplesSchema.validate);
+        return createSamplesSchema;
     }
 
     function defineSamplesSchema() {
