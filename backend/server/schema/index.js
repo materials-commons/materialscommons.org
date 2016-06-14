@@ -13,8 +13,7 @@ module.exports = function(model) {
     let measurementsSchema = require('./measurements-schema')(schema);
 
     return {
-        samples: samplesSchema.defineSamplesSchema(),
-        transformedSamples: samplesSchema.defineTransformedSamplesSchema(),
+        createSamples: samplesSchema.defineCreateSamplesSchema(),
         processes: processSchema.defineCreateProcessSchema(),
         measurements: measurementsSchema.defineMeasurementsSchema(),
         createDirectory: directorySchema.defineCreateDirectorySchema(),
