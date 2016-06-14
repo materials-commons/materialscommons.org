@@ -1,10 +1,14 @@
 class MCTaskTemplateCreateSamplesComponentController {
     /*@ngInject*/
-    constructor(prepareCreatedSample, focus, $mdDialog) {
+    constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast) {
         this.lastId = 0;
         this.prepareCreatedSample = prepareCreatedSample;
         this.focus = focus;
         this.$mdDialog = $mdDialog;
+        this.samplesService = samplesService;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.toast = toast;
 
         if (!this.task.template.samples) {
             this.task.template.samples = [];
@@ -17,12 +21,23 @@ class MCTaskTemplateCreateSamplesComponentController {
         if (lastItem !== -1 && this.task.template.samples[lastItem].name === '') {
             return;
         }
-        let id = 'sample_' + this.lastId++;
-        this.task.template.samples.push({
-            name: '',
-            id: id
-        });
-        this.focus(id);
+
+        this.samplesService.createSamplesInProjectForProcess(this.projectId, this.task.process_id, [{name: ''}])
+            .then(
+                (samples) => {
+                    let sampleIds = samples.samples.map((s) => s.id);
+                    this.samplesService.addSamplesToExperiment(this.projectId, this.experimentId, sampleIds)
+                        .then(
+                            () => {
+                                console.log('resolved promise2');
+                                this.task.template.samples.push(samples.samples[0]);
+                                this.focus(samples.samples[0].id);
+                            },
+                            () => this.toast.error('Failed to add sample to experiment')
+                        );
+                },
+                () => this.toast.error('Failed to add new sample')
+            );
     }
 
     remove(index) {

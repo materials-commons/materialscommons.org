@@ -8,6 +8,7 @@ module.exports = function(r) {
         getAllSamplesForProject,
         createSamples,
         sampleInProject,
+        allSamplesInProject,
         isValidCreateSamplesProcess
     };
 
@@ -101,6 +102,21 @@ module.exports = function(r) {
         return samples.length !== 0;
     }
 
+    function* allSamplesInProject(projectId, sampleIds) {
+        let indexArgs = [];
+        console.log('allSamplesInPrject', sampleIds);
+        for (let i = 0; i < sampleIds.length; i++) {
+            console.log('  sampleId', sampleIds[i]);
+            indexArgs.push([projectId, sampleIds[i]]);
+        }
+
+        console.log('indexArgs', indexArgs);
+
+        let samples = yield r.table('project2sample').getAll(r.args(indexArgs), {index: 'project_sample'});
+        console.log('allSamplesInProject', samples);
+        return samples.length === sampleIds.length;
+    }
+
     function* createSamples(projectId, processId, samples, owner) {
         let pset = new model.PropertySet(true);
         let createdPSet = yield db.insert('propertysets', pset);
@@ -115,7 +131,7 @@ module.exports = function(r) {
             let proj2sample = new model.Project2Sample(projectId, createdSample.id);
             yield db.insert('process2sample', proc2sample);
             yield db.insert('project2sample', proj2sample);
-            createdSamples.push({name: s.name, sample_id: createdSample.id, property_set_id: createdPSet.id});
+            createdSamples.push({name: s.name, id: createdSample.id, property_set_id: createdPSet.id});
         }
 
         return {val: {samples: createdSamples}};

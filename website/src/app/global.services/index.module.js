@@ -16,6 +16,7 @@ import { modelProjectsService } from './model/projects-service';
 import { mcmodalService } from './mcmodal/mcmodal';
 import './toast.service';
 import './editoropts.service';
+import './samples-service.service';
 
 
 angular.module('materialscommons')

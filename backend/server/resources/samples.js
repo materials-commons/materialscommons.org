@@ -1,6 +1,7 @@
 module.exports = function(samples, schema) {
-    let parse = require('co-body');
+    const parse = require('co-body');
     const status = require('http-status');
+    const _ = require('lodash');
 
     return {
         getAllSamplesForProject,
@@ -94,7 +95,7 @@ module.exports = function(samples, schema) {
     }
 
     function isValidSampleArg(sample) {
-        return !!(sample.name && sample.name !== "");
+        return _.has(sample, 'name');
     }
 
     function *updateSample(next) {
