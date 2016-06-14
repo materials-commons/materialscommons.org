@@ -28,9 +28,10 @@ module.exports = function(model) {
     router.get('/projects/:project_id/processes', validateProjectAccess, processes.getList);
     router.get('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.get);
 
-    router.post('/projects/:project_id/samples', validateProjectAccess, samples.create);
-    router.get('/projects/:project_id/samples', validateProjectAccess, samples.getList);
-    router.put('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.update);
+    router.post('/projects/:project_id/samples', validateProjectAccess, samples.createSample);
+    router.get('/projects/:project_id/samples', validateProjectAccess, samples.getAllSamplesForProject);
+    router.get('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.getSampleForProject);
+    router.put('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.updateSample);
 
     router.get('/projects/:project_id/files/:file_id', validateProjectAccess, files.get);
     router.get('/projects/:project_id/files/:file_id/versions', validateProjectAccess, files.getVersions);
@@ -64,10 +65,11 @@ module.exports = function(model) {
     router.put('/projects/:project_id/experiments/:experiment_id/notes/:note_id', validateProjectAccess, experiments.updateExperimentNote);
     router.post('/projects/:project_id/experiments/:experiment_id/notes', validateProjectAccess, experiments.createExperimentNote);
 
-    router.post('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.addSamples);
-    router.put('/projects/:project_id/experiments/:experiment_id/samples/:sample_id', experimentSamples.updateSample);
-    router.put('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.updateMultipleSamples);
-    router.delete('/projects/:project_id/experiments/experiment_id/samples/:sample_id', experimentSamples.deleteSample);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.addSamplesToExperiment);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples/:sample_id',
+        experimentSamples.updateExperimentSamples);
+    router.delete('/projects/:project_id/experiments/experiment_id/samples/:sample_id',
+        experimentSamples.deleteSamplesFromExperiment);
 
     router.put('/users/:project_id', users.update);
 

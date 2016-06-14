@@ -1,24 +1,19 @@
 module.exports = function(samples, schema) {
     return {
-        addSamples,
-        updateSample,
-        updateMultipleSamples,
-        deleteSample
-    }
+        addSamplesToExperiment,
+        updateExperimentSamples,
+        deleteSamplesFromExperiment
+    };
 
-    function* addSamples(next) {
+    function* addSamplesToExperiment(next) {
         yield next;
     }
 
-    function* updateSample(next) {
+    function* updateExperimentSamples(next) {
         yield next;
     }
 
-    function* updateMultipleSamples(next) {
-        yield next;
-    }
-
-    function* deleteSample(next) {
+    function* deleteSamplesFromExperiment(next) {
         yield next;
     }
 };
