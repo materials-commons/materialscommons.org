@@ -12,7 +12,7 @@ module.exports = function(model) {
     const users = require('./users')(model.users);
     const shares = require('./shares')(model.shares, schema);
     const experiments = require('./experiments')(model.experiments, schema);
-    const experimentSamples = require('./experiment-samples')(model.samples, schema);
+    const experimentSamples = require('./experiment-samples')(model.samples, model.experiments, schema);
 
     router.get('/projects', projects.all);
     router.put('/projects/:project_id', validateProjectAccess, projects.update);
