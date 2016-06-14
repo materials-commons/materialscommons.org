@@ -61,6 +61,8 @@ def create_tables():
     # Create samples model
     create_table("processes", "template_id")
     create_table("project2process", "project_id", "process_id")
+    create_compound_index("project2process", "project_process", ["project_id", "process_id"])
+    
     create_table("setups")
 
     create_table("setupproperties", "setup_id")
@@ -81,6 +83,8 @@ def create_tables():
                           ["process_id", "sample_id", "property_set_id"])
 
     create_table("project2sample", "sample_id", "project_id")
+    create_compound_index("project2sample", "project_sample", ["project_id", "sample_id"])
+
     create_table("best_measure_history", "process_id", "property_id")
     create_table("process2file", "process_id", "datafile_id", "_type")
     create_table("propertysets", "parent_id")
