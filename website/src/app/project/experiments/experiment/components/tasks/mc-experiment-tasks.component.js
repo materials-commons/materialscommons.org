@@ -14,10 +14,11 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, cur
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
         ctrl.experiment = currentExperiment.get();
-        ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
-        currentTask.set(ctrl.experiment.tasks[0]);
-        ctrl.currentTask = currentTask.get();
+        //ctrl.experiment.tasks[0].displayState.selectedClass = '';
+        //currentTask.set(ctrl.experiment.tasks[0]);
+        //ctrl.currentTask = currentTask.get();
         currentTask.setOnChange(() => ctrl.currentTask = currentTask.get());
+        console.dir(ctrl.experiment.tasks);
     };
 
     ctrl.addTask = () => {
