@@ -1,7 +1,7 @@
 <div layout="column">
     <div layout="column" flex="45">
         <div layout="row" layout-align="start center">
-            <h4 class="md-title">Samples</h4>
+            <h4 class="md-title">Samples ({{$ctrl.task.template.input_samples.length}})</h4>
             <md-button class="md-primary" ng-click="$ctrl.addSample()">add sample</md-button>
             <md-button class="md-primary" ng-click="$ctrl.addMultipleSamples()">Add Multiple Samples</md-button>
         </div>
@@ -10,7 +10,7 @@
             properties.
         </p>
         <md-content style="max-height:20vh; min-height:5vh">
-            <div ng-repeat="sample in $ctrl.task.template.samples">
+            <div ng-repeat="sample in $ctrl.task.template.input_samples">
                 <div layout="row">
                     <label>{{::$index+1}}.</label>
                     <input type="text" class="mc-input-as-line"

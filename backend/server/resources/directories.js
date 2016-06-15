@@ -20,7 +20,6 @@ module.exports = function(directories, schema) {
     function* create(next) {
         let dirArgs = yield parse(this);
         dirArgs = prepareDirArgs(this.params.project_id, dirArgs);
-        console.log('calling schema.createDirectory.validateAsync');
 
         let errors = yield validateDirArgs(dirArgs);
         if (errors != null) {
@@ -46,10 +45,8 @@ module.exports = function(directories, schema) {
 
     function validateDirArgs(dirArgs) {
         return schema.createDirectory.validateAsync(dirArgs).then(function() {
-            console.log('dirArgs validated');
             return null;
         }, function(errors) {
-            console.log('dirArgs did not validate', errors);
             return errors;
         });
     }

@@ -8,13 +8,12 @@ angular.module('materialscommons').component('mcSample', {
 });
 
 /*@ngInject*/
-function MCSampleComponentController(projectsService) {
+function MCSampleComponentController(projectsService, toast) {
     var ctrl = this;
     ctrl.sample = null;
-    console.log('MCSampleComponentController', ctrl.projectId, ctrl.sampleId);
     projectsService.getProjectSample(ctrl.projectId, ctrl.sampleId)
         .then(
             (sample) => ctrl.sample = sample,
-            () => console.log('failed to retrieve sample')
+            () => toast.error('failed to retrieve sample')
         );
 }

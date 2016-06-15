@@ -143,6 +143,7 @@ def get_process_details(process_id):
                 .eq_join('sample_id', r.table("samples"))
                 .without({"right": {"_type": True}})
                 .zip()
+                .order_by('name')
                 .merge(lambda sample: {
                     'properties': r.table('propertyset2property')
                     .get_all(sample['property_set_id'], index= 'property_set_id')

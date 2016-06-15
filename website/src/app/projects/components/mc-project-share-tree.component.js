@@ -17,9 +17,8 @@ function loadEmptyPlaceHolder(dir) {
     });
 }
 
+/*@ngInject*/
 function MCProjectShareTreeComponentController(projectTreeService) {
-    'ngInject';
-
     var ctrl = this;
 
     ctrl.project.components = projectTreeService.createProjectRoot(ctrl.project);
@@ -30,15 +29,11 @@ function MCProjectShareTreeComponentController(projectTreeService) {
 
     ctrl.treeOptions = {
         dragStart: function(event) {
-            console.log(event);
-
-            console.log('drag started');
             ctrl.nodropEnabled = true;
             return true;
         },
 
         beforeDrop: function(event) {
-            console.log(event);
             ctrl.nodropEnabled = false;
             return true;
         }
@@ -46,9 +41,9 @@ function MCProjectShareTreeComponentController(projectTreeService) {
 }
 
 angular.module('materialscommons').directive('mcProjectShareTreeDir', MCProjectShareTreeDirDirective);
-function MCProjectShareTreeDirDirective(RecursionHelper) {
-    'ngInject';
 
+/*@ngInject*/
+function MCProjectShareTreeDirDirective(RecursionHelper) {
     return {
         restrict: 'E',
         scope: {
@@ -66,9 +61,8 @@ function MCProjectShareTreeDirDirective(RecursionHelper) {
     }
 }
 
+/*@ngInject*/
 function MCProjectShareTreeDirDirectiveController(gridFiles) {
-    'ngInject';
-
     var ctrl = this;
     ctrl.components = ctrl.component.children;
     ctrl.setActive = setActive;
@@ -77,8 +71,6 @@ function MCProjectShareTreeDirDirectiveController(gridFiles) {
     ////////////////////
 
     function setActive(component) {
-        console.log('on drag');
-        console.log(component);
         clearActiveStateInAllNodes();
         if (!component.data.childrenLoaded && component.data.id.startsWith('processes__')) {
             component.children = gridFiles.toGridChildren({children: ctrl.project.processes});

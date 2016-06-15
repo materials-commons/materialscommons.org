@@ -15,6 +15,11 @@ class SamplesService {
     getProjectSamples(projectID) {
         return this.projectsAPI(projectID).one('samples').getList();
     }
+
+    deleteSamplesFromExperiment(projectId, experimentId, processId, sampleIds) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('samples').one('delete')
+            .customPOST({process_id: processId, samples: sampleIds});
+    }
 }
 
 angular.module('materialscommons').service('samplesService', SamplesService);

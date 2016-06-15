@@ -114,8 +114,9 @@ class TaskService {
             experimentId = this.$stateParams.experiment_id;
         this.experimentsService.addTemplateToTask(projectId, experimentId, task.id, `global_${templateId}`)
             .then(
-                () => {
+                (t) => {
                     task.template_name = templateId;
+                    task.process_id = t.process_id;
                     task.template = this.templates.getTemplate(templateId);
                 },
                 () => this.toast.error('Unable to associate template with task')

@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcProjects', {
 });
 
 /*@ngInject*/
-function MCProjectsComponentController(projectsService, $state, $mdSidenav, sharedProjectsList, toastr) {
+function MCProjectsComponentController(projectsService, $state, $mdSidenav, sharedProjectsList, toast) {
     var ctrl = this;
     ctrl.isOpen = true;
     ctrl.openProject = openProject;
@@ -24,11 +24,6 @@ function MCProjectsComponentController(projectsService, $state, $mdSidenav, shar
     projectsService.getAllProjects().then(function(projects) {
         ctrl.projects = projects;
     });
-
-    ctrl.items = [];
-    for (var i = 0; i < 1000; i++) {
-        ctrl.items.push(i);
-    }
 
     ///////////////////////
 
@@ -61,17 +56,13 @@ function MCProjectsComponentController(projectsService, $state, $mdSidenav, shar
         if (ctrl.newProjectName !== '') {
             projectsService.createProject(ctrl.newProjectName, ctrl.newProjectDescription)
                 .then(
-                    function success() {
+                    () => {
                         toggleSidenav();
                         clearNewProjectVars();
-                        projectsService.getAllProjects().then(function(projects) {
-                            ctrl.projects = projects;
-                        });
+                        projectsService.getAllProjects().then((projects) => ctrl.projects = projects);
                     },
 
-                    function error(err) {
-                        console.log('error', err);
-                    }
+                    () => toast.error('Unable to create project')
                 );
         }
     }
@@ -86,7 +77,7 @@ function MCProjectsComponentController(projectsService, $state, $mdSidenav, shar
 
     function gotoSharing() {
         if (sharedProjectsList.count() < 2) {
-            toastr.error('You must select at least 2 projects', 'Error', {closeButton: true});
+            toast.error('You must select at least 2 projects');
         } else {
             $state.go('projects.share');
             ctrl.sharingOn = false;
