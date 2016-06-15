@@ -52,7 +52,6 @@ function MCProcessCreateAsReceivedComponentController(processSelections,
     }
 
     function performSubmit(goFn) {
-        console.log('performSubmit');
         if (ctrl.sample.name === '') {
             toastr.error("You must specify a sample name", 'Error', {closeButton: true});
             return;
@@ -62,7 +61,6 @@ function MCProcessCreateAsReceivedComponentController(processSelections,
         createProcess($stateParams.project_id, ctrl.process)
             .then(
                 function success() {
-                    console.log('create process success');
                     ctrl.composition.value.length = 0;
                     goFn();
                 },

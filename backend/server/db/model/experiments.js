@@ -25,7 +25,9 @@ module.exports = function(r) {
         updateTaskTemplateProperties,
         isTemplateForTask,
         getTemplate,
-        addSamples
+        addSamples,
+        deleteSamplesFromExperiment,
+        allSamplesInExperiment
     };
 
     function* getAllForProject(projectID) {
@@ -317,7 +319,6 @@ module.exports = function(r) {
                 existingProperty.value = property.value;
                 existingProperty.unit = property.unit;
                 existingProperty.description = property.description;
-                console.log(`updating existing setupproperty ${property.id}`);
                 yield r.table('setupproperties').get(property.id).update(existingProperty);
             }
         }
@@ -341,11 +342,23 @@ module.exports = function(r) {
     }
 
     function* addSamples(experimentId, samples) {
-        let samplesToAdd = [];
-        for (let i = 0; i < samples.length; i++) {
-            samplesToAdd.push({experiment_id: experimentId, sample_id: samples[i]});
-        }
+        let samplesToAdd = samples.map((sampleId) => { return {experiment_id: experimentId, sample_id: sampleId}; });
         yield r.table('experiment2sample').insert(samplesToAdd);
         return {val: samplesToAdd};
+    }
+
+    function* deleteSamplesFromExperiment(experimentId, processId, sampleIds) {
+        let processSamplesToDelete = sampleIds.map((sampleId) => [processId, sampleId]);
+        yield r.table('process2sample').getAll(r.args(processSamplesToDelete), {index: 'process_sample'}).delete();
+
+        let experimentSamplesToDelete = sampleIds.map((sampleId) => [experimentId, sampleId]);
+        yield r.table('experiment2sample').getAll(r.args(experimentSamplesToDelete), {index: 'experiment_sample'}).delete();
+        return {val: sampleIds};
+    }
+
+    function* allSamplesInExperiment(experimentId, sampleIds) {
+        let indexArgs = sampleIds.map((sampleId) => [experimentId, sampleId]);
+        let samples = yield r.table('experiment2sample').getAll(r.args(indexArgs), {index: 'experiment_sample'});
+        return samples.length === sampleIds.length;
     }
 };

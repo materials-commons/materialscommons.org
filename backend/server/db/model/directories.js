@@ -282,13 +282,11 @@ module.exports = function(r) {
 
     function* remove(projectID, dirID) {
         let rv = yield r.table('datadirs').get(dirID).delete();
-        console.log('after dir id get rv', rv);
         if (!rv || !rv.deleted) {
             return {error: 'Unable to delete'};
         }
 
         rv = yield r.table('project2datadir').getAll([projectID, dirID], {index: 'project_datadir'}).delete();
-        console.log('after project2datadir get', rv);
         if (!rv || !rv.deleted) {
             return {error: 'Unable to delete'};
         }

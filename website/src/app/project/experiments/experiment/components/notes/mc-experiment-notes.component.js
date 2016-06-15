@@ -144,7 +144,6 @@ class NewExperimentQuickTasksDialogController {
                     this.toUITask(task);
                     this.experiment.tasks.push(task);
                     this.task = task;
-                    console.dir(this.task);
                 },
                 () => this.toast.error('Unable to create new task')
             );

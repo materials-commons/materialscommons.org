@@ -6,10 +6,9 @@ angular.module('materialscommons').component('mcProcessEdit', {
     controller: MCProcessEditComponentController
 });
 
+/*@ngInject*/
 function MCProcessEditComponentController(sampleLinker, process, toastr, processSelections,
                                           projectsService, $state, $stateParams, processEdit) {
-    'ngInject';
-
     var ctrl = this;
     ctrl.process = process.get();
     ctrl.process['updated_samples'] = [];
@@ -77,13 +76,10 @@ function MCProcessEditComponentController(sampleLinker, process, toastr, process
     function remove(from, item) {
         var whichUpdatedList = '';
         if (from === ctrl.process.input_samples) {
-            console.log('remove from input_samples');
             whichUpdatedList = 'updated_samples;'
         } else if (from === ctrl.process.input_files) {
-            console.log('remove from input_files');
             whichUpdatedList = 'updated_input_files';
         } else {
-            console.log('remove from output_files');
             whichUpdatedList = 'updated_output_files';
         }
 
