@@ -67,10 +67,8 @@ module.exports = function(model) {
     router.post('/projects/:project_id/experiments/:experiment_id/notes', validateProjectAccess, experiments.createExperimentNote);
 
     router.post('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.addSamplesToExperiment);
-    router.put('/projects/:project_id/experiments/:experiment_id/samples/:sample_id',
-        experimentSamples.updateExperimentSamples);
-    router.delete('/projects/:project_id/experiments/experiment_id/samples/:sample_id',
-        experimentSamples.deleteSamplesFromExperiment);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples/:sample_id', experimentSamples.updateExperimentSamples);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples/delete', experimentSamples.deleteSamplesFromExperiment);
 
     router.put('/users/:project_id', users.update);
 

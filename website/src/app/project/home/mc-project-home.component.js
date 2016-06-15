@@ -70,13 +70,11 @@ class CreateNewExperimentDialogController {
         }
         let e = new Experiment(this.name);
         e.description = this.description;
-        this.experimentsService.createForProject(this.projectID, e).then(
-            (createdExperiment) => {
-                this.$mdDialog.hide(createdExperiment)
-            },
-            (error) => {
-                console.log('create experiment failed', error);
-            });
+        this.experimentsService.createForProject(this.projectID, e)
+            .then(
+                (createdExperiment) => this.$mdDialog.hide(createdExperiment),
+                () => this.toast.error('create experiment failed')
+            );
     }
 
     cancel() {

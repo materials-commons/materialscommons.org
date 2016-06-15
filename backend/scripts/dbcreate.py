@@ -62,7 +62,7 @@ def create_tables():
     create_table("processes", "template_id")
     create_table("project2process", "project_id", "process_id")
     create_compound_index("project2process", "project_process", ["project_id", "process_id"])
-    
+
     create_table("setups")
 
     create_table("setupproperties", "setup_id")
@@ -77,10 +77,9 @@ def create_tables():
     create_table("process2measurement", "process_id", "measurement_id")
     create_table("sample2propertyset", "sample_id", "property_set_id")
 
-    create_table("process2sample", "sample_id", "process_id",
-                 "property_set_id", "_type")
-    create_compound_index("process2sample", "process_sample_property_set",
-                          ["process_id", "sample_id", "property_set_id"])
+    create_table("process2sample", "sample_id", "process_id", "property_set_id", "_type")
+    create_compound_index("process2sample", "process_sample_property_set", ["process_id", "sample_id", "property_set_id"])
+    create_compound_index("process2sample", "process_sample", ["process_id", "sample_id"])
 
     create_table("project2sample", "sample_id", "project_id")
     create_compound_index("project2sample", "project_sample", ["project_id", "sample_id"])

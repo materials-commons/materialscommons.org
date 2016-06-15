@@ -103,17 +103,8 @@ module.exports = function(r) {
     }
 
     function* allSamplesInProject(projectId, sampleIds) {
-        let indexArgs = [];
-        console.log('allSamplesInPrject', sampleIds);
-        for (let i = 0; i < sampleIds.length; i++) {
-            console.log('  sampleId', sampleIds[i]);
-            indexArgs.push([projectId, sampleIds[i]]);
-        }
-
-        console.log('indexArgs', indexArgs);
-
+        let indexArgs = sampleIds.map((sampleId) => [projectId, sampleId]);
         let samples = yield r.table('project2sample').getAll(r.args(indexArgs), {index: 'project_sample'});
-        console.log('allSamplesInProject', samples);
         return samples.length === sampleIds.length;
     }
 

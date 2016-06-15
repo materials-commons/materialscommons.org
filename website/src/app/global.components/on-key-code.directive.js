@@ -6,7 +6,6 @@ function onKeyCodeDirective() {
         restrict: 'A',
         link: function($scope, $element, $attrs) {
             $element.bind("keypress", function(event) {
-                console.log($attrs.keyCodes);
                 let keyCodes = $attrs.keyCodes ? $attrs.keyCodes.split(',') : [];
                 var keyCode = event.which || event.keyCode;
                 if (event.shiftKey) {

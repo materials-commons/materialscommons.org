@@ -48,8 +48,8 @@ class CreateNewExperimentDialogController {
             (createdExperiment) => {
                 this.$mdDialog.hide(createdExperiment)
             },
-            (error) => {
-                console.log('create experiment failed', error);
+            () => {
+                this.toast.error('Create experiment failed');
             });
     }
 

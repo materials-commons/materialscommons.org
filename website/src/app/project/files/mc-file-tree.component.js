@@ -31,7 +31,6 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
 
     flow.on('catchAll', () => {
         $timeout(() => {
-            console.log('got flow event', flow.files.length);
             if (!ctrl.showUploadsButton && flow.files.length) {
                 ctrl.showUploadsButton = true;
             } else if (!flow.files.length) {
@@ -238,7 +237,7 @@ angular.module('materialscommons').component('mcFileTreeFileControls', {
 });
 
 /*@ngInject*/
-function MCFileTreeFileControlsComponentController(fileTreeProjectService, fileTreeDeleteService, toastr) {
+function MCFileTreeFileControlsComponentController(fileTreeProjectService, fileTreeDeleteService, toast) {
     var ctrl = this;
     ctrl.promptForRename = false;
     ctrl.renameFile = renameFile;
@@ -254,9 +253,8 @@ function MCFileTreeFileControlsComponentController(fileTreeProjectService, fileT
                     ctrl.promptForRename = false;
                     ctrl.file.data.name = ctrl.newFileName;
                 },
-                (err) => {
-                    console.dir(err);
-                    toastr.error('Rename failed', 'Error', {closeButton: true});
+                () => {
+                    toast.error('Rename failed');
                 }
             );
     }

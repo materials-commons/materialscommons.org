@@ -200,15 +200,13 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/processes',
             template: '<mc-project-processes processes="ctrl.processes"></mc-project-processes>',
             controllerAs: 'ctrl',
-            controller: ['projectsService', '$stateParams', 'toastr',
-                function(projectsService, $stateParams, toastr) {
+            controller: ['projectsService', '$stateParams', 'toast',
+                function(projectsService, $stateParams, toast) {
                     var ctrl = this;
                     ctrl.processes = [];
                     projectsService.getProjectProcesses($stateParams.project_id).then(
-                        (processes) => {
-                            ctrl.processes = processes;
-                        },
-                        () => toastr.error('Unable to retrieve project processes', 'Error', {closeButton: true})
+                        (processes) => ctrl.processes = processes,
+                        () => toast.error('Unable to retrieve project processes')
                     )
                 }]
         })
@@ -218,14 +216,13 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             resolve: {
                 _process: ['process', 'projectsService', '$stateParams',
                     function(process, projectsService, $stateParams) {
-                        console.log('setting process');
                         return projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
-                            .then(function(p) {
-                                console.log('got process', p);
-                                process.set(p);
-                                console.log('past process.set');
-                                return p;
-                            });
+                            .then(
+                                (p) => {
+                                    process.set(p);
+                                    return p;
+                                }
+                            );
                     }]
             }
         })
@@ -249,16 +246,13 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/samples',
             template: '<mc-project-samples samples="ctrl.samples"></mc-project-samples>',
             controllerAs: 'ctrl',
-            controller: ['samplesService', '$stateParams', 'toastr',
-                function(samplesService, $stateParams, toastr) {
+            controller: ['samplesService', '$stateParams', 'toast',
+                function(samplesService, $stateParams, toast) {
                     var ctrl = this;
                     ctrl.samples = [];
                     samplesService.getProjectSamples($stateParams.project_id).then(
-                        (samples) => {
-                            //console.dir(samples);
-                            ctrl.samples = samples;
-                        },
-                        () => toastr.error('Error retrieving samples for project', 'Error', {closeButton: true})
+                        (samples) => ctrl.samples = samples,
+                        () => toast.error('Error retrieving samples for project')
                     );
                 }]
         })

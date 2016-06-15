@@ -21,7 +21,6 @@ function MCProjectSamplesTableComponentController($mdDialog) {
     }
 
     function showProcesses(processes) {
-        console.dir(processes);
         $mdDialog.show({
             template: `
                 <md-dialog>
@@ -84,5 +83,4 @@ function ShowProcessesDialogController($mdDialog) {
 function ShowSampleDialogController($stateParams) {
     var ctrl = this;
     ctrl.projectId = $stateParams.project_id;
-    console.log('ShowSampleDialogController', ctrl.projectId, ctrl.sampleId);
 }

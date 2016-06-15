@@ -11,7 +11,6 @@ angular.module('materialscommons').component('checkMdContent', {
 function CheckMDContentComponentController() {
     let ctrl = this;
     ctrl.items = [];
-    console.log('showing numbers');
     for (let i = 0; i < 1000; i++) {
         ctrl.items.push(i);
     }
