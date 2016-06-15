@@ -11,14 +11,14 @@
         <mc-experiment-notes-list></mc-experiment-notes-list>
     </div>
     <md-sidenav flex="65" md-is-locked-open="true">
-        <div ng-show="$ctrl.currentNote !== null">
+        <div ng-show="$ctrl.currentNote.note !== null">
             <textarea ckeditor="editorOptions"
                       ng-model="$ctrl.currentNote.note"
                       ng-model-options="{debounce: 1000}"
                       ng-change="$ctrl.updateNote()">
             </textarea>
         </div>
-        <span ng-show="$ctrl.currentNote === null">
+        <span ng-show="$ctrl.currentNote.note === null">
             <h4>No notes in project</h4>
         </span>
     </md-sidenav>
