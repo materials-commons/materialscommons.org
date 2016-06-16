@@ -33,7 +33,7 @@ function MCExperimentTasksListComponentController(experimentsService, toast, $st
                 node.model.displayState.selectedClass = '';
             }
         });
-        //ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
+        ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
         ctrl.filterBy = ctrl.experimentTasks.filterBy;
     };
 
