@@ -60,7 +60,35 @@ module.exports = function(samples, experiments, schema) {
     }
 
     function* updateExperimentSamples(next) {
+        let updateArgs = yield parse(this);
+        let errors = yield validateUpdateSamples(this.params.project_id, this.params.experiment_id, updateArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield samples.updateSamples(updateArgs.samples);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
         yield next;
+    }
+
+    function* validateUpdateSamples(projectId, experimentId, args) {
+        if (!args.process_id || !_.isString(args.process_id) || args.process_id === "") {
+            return {error: `Invalid process supplied`};
+        }
+
+        if (!args.samples || !_.isArray(args.samples)) {
+            return {error: `Invalid samples supplied`};
+        }
+
+        let sampleIds = args.samples.map((s) => s.id);
+
+        return yield validateSamples(projectId, experimentId, sampleIds);
     }
 
     function* deleteSamplesFromExperiment(next) {
@@ -97,17 +125,21 @@ module.exports = function(samples, experiments, schema) {
             }
         }
 
+        return yield validateSamples(projectId, experimentId, args.samples);
+    }
+
+    function* validateSamples(projectId, experimentId, sampleIds) {
         let isInProject = yield experiments.experimentExistsInProject(projectId, experimentId);
         if (!isInProject) {
             return {error: `No such experiment`};
         }
 
-        let allSamplesInProject = yield samples.allSamplesInProject(projectId, args.samples);
+        let allSamplesInProject = yield samples.allSamplesInProject(projectId, sampleIds);
         if (!allSamplesInProject) {
             return {error: `Some samples are not in project`};
         }
 
-        let allSamplesInExperiment = yield experiments.allSamplesInExperiment(experimentId, args.samples);
+        let allSamplesInExperiment = yield experiments.allSamplesInExperiment(experimentId, sampleIds);
         if (!allSamplesInExperiment) {
             return {error: `Some samples are not in experiment`};
         }

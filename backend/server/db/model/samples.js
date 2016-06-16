@@ -9,7 +9,8 @@ module.exports = function(r) {
         createSamples,
         sampleInProject,
         allSamplesInProject,
-        isValidCreateSamplesProcess
+        isValidCreateSamplesProcess,
+        updateSamples
     };
 
     /////////////////
@@ -136,5 +137,10 @@ module.exports = function(r) {
         let process = yield r.table('processes').get(processId)
             .merge((p) => r.table('templates').get(p('template_id')).pluck('category'));
         return process.category === 'create_sample';
+    }
+
+    function* updateSamples(samples) {
+        yield r.table('samples').insert(samples, {conflict: 'update'});
+        return {val: samples};
     }
 };

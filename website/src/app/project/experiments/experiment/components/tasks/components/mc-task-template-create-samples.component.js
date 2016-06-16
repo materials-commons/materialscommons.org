@@ -43,6 +43,17 @@ class MCTaskTemplateCreateSamplesComponentController {
             );
     }
 
+    updateSampleName(sample) {
+        this.samplesService.updateSampleInExperiment(this.projectId, this.experimentId, this.task.process_id, {
+                id: sample.id,
+                name: sample.name
+            })
+            .then(
+                () => null,
+                () => this.toast.error('Unable to update sample name')
+            );
+    }
+
     addMultipleSamples() {
         this.$mdDialog.show({
             templateUrl: 'app/project/experiments/experiment/components/tasks/components/add-multiple-samples-dialog.html',

@@ -6,6 +6,7 @@ function Apt() {
     this.description = "Atom Probe Tomography";
     this.category = "APT";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -179,6 +180,7 @@ function Sem() {
     this.description = "Stem Electron Microscopy";
     this.category = "SEM";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -306,24 +308,26 @@ function CreateSamples() {
     this.description = "Create Sample process is used to create new samples.";
     this.category = "create_sample";
     this.does_transform = false;
+    this.measurements = [
+        {
+            property: {
+                name: "Composition",
+                attribute: "composition",
+                description: "",
+                value: [],
+                units: [],
+                unit: "at%",
+                _type: "composition",
+                required: false,
+                choices: []
+            }
+        }
+    ];
     this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                    property: {
-                        name: "Composition",
-                        attribute: "composition",
-                        description: "",
-                        value: [],
-                        units: [],
-                        unit: "at%",
-                        _type: "composition",
-                        required: false,
-                        choices: []
-                    }
-                },
                 {
                     property: {
                         name: "Manufacturer",
@@ -406,6 +410,7 @@ function AptDataAnalysis() {
     this.description = "Atom Probe Tomography Data Analysis";
     this.category = "APT";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "System Information",
@@ -474,6 +479,7 @@ function AptDataReconstruction() {
     this.description = "Atom Probe Tomography Data Reconstruction";
     this.category = "APT";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -599,6 +605,7 @@ function BroadIonBeamMilling() {
     this.description = "Broad Ion Beam Milling";
     this.category = "OTHER";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -659,6 +666,7 @@ function Cogging() {
     this.description = "Cogging";
     this.category = "OTHER";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -701,6 +709,7 @@ function Compression() {
     this.description = "Compression";
     this.category = "OTHER";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -795,6 +804,7 @@ function Computation() {
     this.description = "Computation";
     this.category = "OTHER";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Job Settings",
@@ -863,6 +873,7 @@ function Creep() {
     this.description = "Creep";
     this.category = "OTHER";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -918,6 +929,7 @@ function DicPatterning() {
     this.description = "DIC Patterning";
     this.category = "DIC";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1009,6 +1021,7 @@ function DicStatisticalModelling() {
     this.description = "DIC Statistical Modelling";
     this.category = "DIC";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1069,6 +1082,7 @@ function Electropolishing() {
     this.description = "Electropolishing";
     this.category = "OTHER";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1137,6 +1151,7 @@ function Etching() {
     this.description = "Etching";
     this.category = "OTHER";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1205,6 +1220,7 @@ function EbsdSemDataCollection() {
     this.description = "EBSD SEM Data Collection";
     this.category = "SEM";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1325,6 +1341,7 @@ function EpmaDataCollection() {
     this.description = "EPMA Data Collection";
     this.category = "EPMA";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1436,6 +1453,7 @@ function LowCycleFatigue() {
     this.description = "Low Cycle Fatigue";
     this.category = "OTHER";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1584,6 +1602,7 @@ function UltrasonicFatigue() {
     this.description = "Ultrasonic Fatigue";
     this.category = "OTHER";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1704,6 +1723,7 @@ function TEM() {
     this.description = "Transmission Electron Microscope";
     this.category = "OTHER";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1841,6 +1861,7 @@ function HeatTreatment() {
     this.description = "HeatTreatment";
     this.category = "OTHER";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1914,6 +1935,7 @@ function AsMeasured() {
     this.description = "As Measured process allows you to add in all your As Received measurements";
     this.category = "OTHER";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1929,6 +1951,7 @@ function Hardness() {
     this.description = "Hardness";
     this.category = "OTHER";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
