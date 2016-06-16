@@ -25,14 +25,10 @@
                 </div>
             </div>
         </md-content>
-        <md-input-container>
-            <label>Description</label>
-                <textarea rows="10" ng-model="$ctrl.task.template.what">
-                </textarea>
-        </md-input-container>
     </div>
+
     <span flex></span>
-    <div layout="column" flex="45">
+    <div layout="column" flex="45" class="margin-top-10">
         <process-settings settings="$ctrl.task.template.setup[0].properties"
                           attribute="$ctrl.task.template.setup[0].attribute"
                           template-id="$ctrl.task.template.template_id"
@@ -40,9 +36,15 @@
         </process-settings>
     </div>
 
-    <md-divider></md-divider>
+    <span flex></span>
+    <div layout="column" flex="45" class="margin-top-10">
+        <process-measurements measurements="$ctrl.task.template.measurements"
+                              template-id="$ctrl.task.template.template_id"
+                              task-id="$ctrl.task.id">
+        </process-measurements>
+    </div>
 
-    <div flex="100" layout-margin>
+    <div flex="100" layout-margin ng-if="false">
         <md-table-container>
             <table md-table
                    ng-if="$ctrl.task.template.input_samples.length || $ctrl.task.template.input_files.length || $ctrl.task.template.output_files.length">
