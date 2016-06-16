@@ -15,6 +15,7 @@ export function Apt() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -229,6 +230,7 @@ export function Sem() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -392,24 +394,26 @@ export function CreateSamples() {
     this.owner = "";
     this.samples = [];
     this.does_transform = false;
+    this.measurements = [
+        {
+            property: {
+                name: "Composition",
+                attribute: "composition",
+                description: "",
+                value: [],
+                units: [],
+                unit: "at%",
+                _type: "composition",
+                required: false,
+                choices: []
+            }
+        }
+    ];
     this.setup = [
         {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                    property: {
-                        name: "Composition",
-                        attribute: "composition",
-                        description: "",
-                        value: [],
-                        units: [],
-                        unit: "at%",
-                        _type: "composition",
-                        required: false,
-                        choices: []
-                    }
-                },
                 {
                     property: {
                         name: "Manufacturer",
@@ -515,6 +519,7 @@ export function AptDataAnalysis() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "System Information",
@@ -606,6 +611,7 @@ export function AptDataReconstruction() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -766,6 +772,7 @@ export function BroadIonBeamMilling() {
     this.why = "";
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -846,6 +853,7 @@ export function Cogging() {
     this.why = "";
     this.owner = "jfadams@umich.edu";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -905,6 +913,7 @@ export function Compression() {
     this.why = "";
     this.owner = "";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1028,6 +1037,7 @@ export function Computation() {
     this.why = "";
     this.owner = "bpuchala@umich.edu";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Job Settings",
@@ -1119,6 +1129,7 @@ export function Creep() {
     this.why = "";
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1194,6 +1205,7 @@ export function DicPatterning() {
     this.why = "";
     this.owner = "agithens@umich.edu";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1311,6 +1323,7 @@ export function DicStatisticalModelling() {
     this.why = "";
     this.owner = "agithens@umich.edu";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1391,6 +1404,7 @@ export function Electropolishing() {
     this.why = "";
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1482,6 +1496,7 @@ export function Etching() {
     this.why = "";
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1573,6 +1588,7 @@ export function EbsdSemDataCollection() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1728,6 +1744,7 @@ export function EpmaDataCollection() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -1871,6 +1888,7 @@ export function LowCycleFatigue() {
     this.why = "";
     this.owner = "";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -2057,6 +2075,7 @@ export function UltrasonicFatigue() {
     this.why = "";
     this.owner = "";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -2212,6 +2231,7 @@ export function TEM() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -2384,6 +2404,7 @@ export function HeatTreatment() {
     this.why = "";
     this.owner = "";
     this.does_transform = true;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -2480,6 +2501,7 @@ export function AsMeasured() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
@@ -2506,6 +2528,7 @@ export function Hardness1() {
     this.why = "";
     this.owner = "";
     this.does_transform = false;
+    this.measurements = [];
     this.setup = [
         {
             name: "Instrument",
