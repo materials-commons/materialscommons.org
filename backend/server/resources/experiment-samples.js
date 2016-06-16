@@ -86,6 +86,14 @@ module.exports = function(samples, experiments, schema) {
             return {error: `Invalid samples supplied`};
         }
 
+        // Only support updating names at the moment
+        for (let i = 0; i < args.samples.length; i++) {
+            let s = args.samples[i];
+            if (!s.id || !s.name) {
+                return {error: `Invalid sample entry ${s}`};
+            }
+        }
+
         let sampleIds = args.samples.map((s) => s.id);
 
         return yield validateSamples(projectId, experimentId, sampleIds);
