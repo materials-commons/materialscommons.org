@@ -20,6 +20,14 @@ class SamplesService {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('samples').one('delete')
             .customPOST({process_id: processId, samples: sampleIds});
     }
+
+    updateSampleInExperiment(projectId, experimentId, processId, sample) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('samples')
+            .customPUT({
+                process_id: processId,
+                samples: [sample]
+            });
+    }
 }
 
 angular.module('materialscommons').service('samplesService', SamplesService);
