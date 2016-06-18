@@ -158,10 +158,48 @@ module.exports = function(samples, experiments, schema) {
     }
 
     function* addSamplesMeasurements(next) {
+        let addMeasurementsArgs = yield parse(this);
+        let errors = yield validateAddSamplesMeasurements(this.params.project_id, this.params.experiment_id, addMeasurementsArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield samples.addSamplesMeasurements(this.params.experiment_id, addMeasurementsArgs.process_id,
+                addMeasurementsArgs.samples);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
 
+    function* validateAddSamplesMeasurements() {
+        return null;
     }
 
     function* updateSamplesMeasurements(next) {
+        let updateMeasurementsArgs = yield parse(this);
+        let errors = yield validateUpdateSamplesMeasurements(this.params.project_id, this.params.experiment_id, updateMeasurementsArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield experiments.updateSamplesMeasurements(this.params.experiment_id, updateMeasurementsArgs.process_id,
+                updateMeasurementsArgs.samples);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
         yield next;
+    }
+
+    function* validateUpdateSamplesMeasurements() {
+        return null;
     }
 };

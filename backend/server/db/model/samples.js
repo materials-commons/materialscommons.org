@@ -10,7 +10,10 @@ module.exports = function(r) {
         sampleInProject,
         allSamplesInProject,
         isValidCreateSamplesProcess,
-        updateSamples
+        updateSamples,
+        addSamplesMeasurements,
+        updateSamplesMeasurements,
+        deleteSamplesMeasurements
     };
 
     /////////////////
@@ -142,5 +145,17 @@ module.exports = function(r) {
     function* updateSamples(samples) {
         yield r.table('samples').insert(samples, {conflict: 'update'});
         return {val: samples};
+    }
+
+    function* addSamplesMeasurements() {
+        return null;
+    }
+
+    function* updateSamplesMeasurements() {
+        return null;
+    }
+
+    function* deleteSamplesMeasurements() {
+        return null;
     }
 };
