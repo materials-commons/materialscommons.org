@@ -18,7 +18,6 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, cur
         currentTask.set(ctrl.experiment.tasks[0]);
         ctrl.currentTask = currentTask.get();
         currentTask.setOnChange(() => ctrl.currentTask = currentTask.get());
-        console.dir(ctrl.experiment.tasks);
     };
 
     ctrl.addTask = () => {
