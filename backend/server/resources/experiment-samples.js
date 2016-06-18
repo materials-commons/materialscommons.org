@@ -6,7 +6,9 @@ module.exports = function(samples, experiments, schema) {
     return {
         addSamplesToExperiment,
         updateExperimentSamples,
-        deleteSamplesFromExperiment
+        deleteSamplesFromExperiment,
+        addSamplesMeasurements,
+        updateSamplesMeasurements
     };
 
     function* addSamplesToExperiment(next) {
@@ -153,5 +155,13 @@ module.exports = function(samples, experiments, schema) {
         }
 
         return null;
+    }
+
+    function* addSamplesMeasurements(next) {
+
+    }
+
+    function* updateSamplesMeasurements(next) {
+        yield next;
     }
 };

@@ -69,6 +69,8 @@ module.exports = function(model) {
     router.post('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.addSamplesToExperiment);
     router.put('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.updateExperimentSamples);
     router.post('/projects/:project_id/experiments/:experiment_id/samples/delete', experimentSamples.deleteSamplesFromExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples/measurements', experimentSamples.addSamplesMeasurements);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements', experimentSamples.updateSamplesMeasurements);
 
     router.put('/users/:project_id', users.update);
 
