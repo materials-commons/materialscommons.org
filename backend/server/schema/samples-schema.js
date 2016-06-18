@@ -2,7 +2,10 @@ module.exports = function(schema) {
     const promise = require('bluebird');
 
     return {
-        defineCreateSamplesSchema
+        defineCreateSamplesSchema,
+        defineAddSamplesMeasurementsSchema,
+        defineSamplesMeasurementSchema,
+        defineMeasurementSchema
     };
 
     function defineCreateSamplesSchema() {
@@ -19,6 +22,88 @@ module.exports = function(schema) {
         createSamplesSchema.setDefaults({});
         createSamplesSchema.validateAsync = promise.promisify(createSamplesSchema.validate);
         return createSamplesSchema;
+    }
+
+    function defineAddSamplesMeasurementsSchema() {
+        let addSamplesMeasurementsSchema = schema.defineSchema('AddSamplesMeasurementsSchema', {
+            process_id: {
+                type: 'string',
+                nullable: false
+            },
+
+            measurements: {
+                type: 'array',
+                nullable: false
+            }
+        });
+        addSamplesMeasurementsSchema.setDefaults({});
+        addSamplesMeasurementsSchema.validateAsync = promise.promisify(addSamplesMeasurementsSchema.validate);
+        return addSamplesMeasurementsSchema;
+    }
+
+    function defineSamplesMeasurementSchema() {
+        let samplesMeasurementsSchema = schema.defineSchema('SamplesMeasurementsSchema', {
+            samples: {
+                type: 'array',
+                nullable: false
+            },
+
+            add_as: {
+                type: 'string', // 'shared' or 'separate' defaults to 'separate'
+                nullable: true
+            },
+
+            property: {
+                nullable: false,
+                attribute: {
+                    type: 'string',
+                    nullable: false
+                },
+                name: {
+                    type: 'string',
+                    nullable: false
+                }
+            },
+
+            measurements: {
+                type: 'array',
+                nullable: false
+            }
+        });
+        samplesMeasurementsSchema.setDefaults({});
+        samplesMeasurementsSchema.validateAsync = promise.promisify(samplesMeasurementsSchema.validate);
+        return samplesMeasurementsSchema;
+    }
+
+    function defineMeasurementSchema() {
+        let measurementSchema = schema.defineSchema('Measurement', {
+            _type: {
+                type: 'string',
+                nullable: false
+            },
+
+            attribute: {
+                type: 'string',
+                nullable: false
+            },
+
+            name: {
+                type: 'string',
+                nullable: false
+            },
+
+            unit: {
+                type: 'string',
+                nullable: 'false'
+            },
+
+            value: {
+                nullable: false
+            }
+        });
+        measurementSchema.setDefaults({});
+        measurementSchema.validateAsync = promise.promisify(measurementSchema.validate);
+        return measurementSchema;
     }
 
     function defineSamplesSchema() {

@@ -10,12 +10,14 @@ module.exports = function(model) {
     let experimentSchema = require('./experiment-schema')(schema);
     let samplesSchema = require('./samples-schema')(schema);
     let processSchema = require('./process-schema')(schema);
-    let measurementsSchema = require('./measurements-schema')(schema);
 
     return {
         createSamples: samplesSchema.defineCreateSamplesSchema(),
+        addSamplesMeasurements: samplesSchema.defineAddSamplesMeasurementsSchema(),
+        samplesMeasurement: samplesSchema.defineSamplesMeasurementSchema(),
+        measurement: samplesSchema.defineMeasurementSchema(),
         processes: processSchema.defineCreateProcessSchema(),
-        measurements: measurementsSchema.defineMeasurementsSchema(),
+        //measurements: measurementsSchema.defineMeasurementsSchema(),
         createDirectory: directorySchema.defineCreateDirectorySchema(),
         renameDirectory: directorySchema.defineRenameDirectorySchema(),
         moveDirectory: directorySchema.defineMoveDirectorySchema(),
