@@ -66,9 +66,11 @@ function processEdit() {
 
     return {
         fillProcess: function(template, process) {
+            console.log('fillProcess', template);
             process = setUp(template, process);
             process = samples(process);
             process = files(process);
+            process.measurements = template.measurements;
             if (!('output_samples' in process)) {
                 process.output_samples = [];
             }

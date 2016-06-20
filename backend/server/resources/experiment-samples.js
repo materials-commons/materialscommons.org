@@ -159,13 +159,13 @@ module.exports = function(samples, experiments, schema) {
 
     function* addSamplesMeasurements(next) {
         let addMeasurementsArgs = yield parse(this);
+        schema.prepare(schema.addSamplesMeasurements, addMeasurementsArgs);
         let errors = yield validateAddSamplesMeasurements(this.params.project_id, this.params.experiment_id, addMeasurementsArgs);
         if (errors !== null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield samples.addSamplesMeasurements(this.params.experiment_id, addMeasurementsArgs.process_id,
-                addMeasurementsArgs.samples);
+            let rv = yield samples.addSamplesMeasurements(addMeasurementsArgs.properties);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -176,7 +176,55 @@ module.exports = function(samples, experiments, schema) {
         yield next;
     }
 
-    function* validateAddSamplesMeasurements() {
+    function* validateAddSamplesMeasurements(projectId, experimentId, args) {
+        console.log('validateAddSamplesMeasurements', args);
+        let errors = yield schema.validate(schema.addSamplesMeasurements, args);
+        if (errors !== null) {
+            console.log('  errors 1', errors);
+            return errors;
+        }
+
+        let sampleIds = {};
+
+        for (let i = 0; i < args.properties.length; i++) {
+            let prop = args.properties[i];
+            schema.prepare(schema.samplesMeasurement, prop);
+            let e = yield schema.validate(schema.samplesMeasurement, prop);
+            if (e !== null) {
+                console.log('  errors 2', e);
+                return e;
+            }
+
+            for (let s = 0; s < prop.samples.length; s++) {
+                sampleIds[prop.samples[s].id] = true;
+            }
+
+            for (let j = 0; j < prop.measurements.length; j++) {
+                let measurement = prop.measurements[j];
+                schema.prepare(schema.measurement, measurement);
+                e = yield schema.validate(schema.measurement, measurement);
+                if (e !== null) {
+                    console.log('  errors 3', e);
+                    return e;
+                }
+                // Need to validate each of the measurement types... (that will be a bit of work)
+            }
+        }
+
+        // Need to validate that the process is in the project.
+
+        let isInProject = yield experiments.experimentExistsInProject(projectId, experimentId);
+        if (!isInProject) {
+            console.log('  !isInProject');
+            return {error: `No such experiment`};
+        }
+        let allSampleIds = _.keys(sampleIds);
+        let allSamplesInProject = yield samples.allSamplesInProject(projectId, allSampleIds);
+        if (!allSamplesInProject) {
+            console.log('  !allSamplesInProject');
+            return {error: `Some samples are not in project`};
+        }
+
         return null;
     }
 
