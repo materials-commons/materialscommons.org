@@ -31,7 +31,7 @@ module.exports = function(schema) {
                 nullable: false
             },
 
-            measurements: {
+            properties: {
                 type: 'array',
                 nullable: false
             }
@@ -70,7 +70,9 @@ module.exports = function(schema) {
                 nullable: false
             }
         });
-        samplesMeasurementsSchema.setDefaults({});
+        samplesMeasurementsSchema.setDefaults({
+            add_as: 'shared'
+        });
         samplesMeasurementsSchema.validateAsync = promise.promisify(samplesMeasurementsSchema.validate);
         return samplesMeasurementsSchema;
     }
@@ -87,6 +89,11 @@ module.exports = function(schema) {
                 nullable: false
             },
 
+            is_best_measure: {
+                type: 'boolean',
+                nullable: true
+            },
+
             name: {
                 type: 'string',
                 nullable: false
@@ -101,7 +108,9 @@ module.exports = function(schema) {
                 nullable: false
             }
         });
-        measurementSchema.setDefaults({});
+        measurementSchema.setDefaults({
+            is_best_measure: false
+        });
         measurementSchema.validateAsync = promise.promisify(measurementSchema.validate);
         return measurementSchema;
     }
