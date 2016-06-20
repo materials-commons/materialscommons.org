@@ -147,8 +147,72 @@ module.exports = function(r) {
         return {val: samples};
     }
 
-    function* addSamplesMeasurements() {
-        return null;
+    function* addSamplesMeasurements(properties) {
+        for (let i = 0; i < properties.length; i++) {
+            let prop = properties[i];
+            if (prop.add_as === 'shared') {
+                yield addSharedPropertyMeasurementsForSamples(prop);
+            } else {
+                yield addSeparatePropertyMeasurementsForSamples(prop);
+            }
+        }
+        return {value: true};
+    }
+
+    function* addSharedPropertyMeasurementsForSamples(prop) {
+        let p = new model.Property(prop.name, prop.attribute);
+        let insertedProperty = yield db.insert('properties', p);
+        yield addPropertyMeasurements(insertedProperty.id, "", prop.name, prop.attribute, prop.measurements);
+        for (let i = 0; i < prop.samples.length; i++) {
+            let s = prop.samples[i];
+            yield addPropertyToPropertySet(insertedProperty.id, s.property_set_id);
+        }
+    }
+
+    function* addSeparatePropertyMeasurementsForSamples(prop) {
+        for (let i = 0; i < prop.samples.length; i++) {
+            let s = prop.samples[i];
+            addNewPropertyMeasurements(s.id, s.property_set_id, prop.property, prop.measurements);
+        }
+    }
+
+    function* addPropertyToPropertySet(propertyId, psetId) {
+        let ps2p = new model.PropertySet2Property(propertyId, psetId);
+        yield db.insert('propertyset2property', ps2p);
+    }
+
+    function* addPropertyMeasurements(propertyId, sampleId, pName, pAttr, measurements) {
+        for (let i = 0; i < measurements.length; i++) {
+            let current = measurements[i];
+            let m = new model.Measurement(pName, pAttr, sampleId);
+            m.value = current.value;
+            m.unit = current.unit;
+            m._type = current._type;
+            let insertedMeasurement = yield db.insert('measurements', m);
+            if (current.is_best_measure) {
+                yield addAsBestMeasure(propertyId, insertedMeasurement.id)
+            }
+            yield addMeasurementToProperty(propertyId, insertedMeasurement.id)
+        }
+    }
+
+    function* addMeasurementToProperty(propID, mID) {
+        let a2m = new model.Property2Measurement(propID, mID);
+        yield db.insert('property2measurement', a2m);
+    }
+
+    function* addAsBestMeasure(propertyID, measurementID) {
+        let bmh = new model.BestMeasureHistory(propertyID, measurementID);
+        let inserted = yield db.insert('best_measure_history', bmh);
+        yield r.table('properties').get(propertyID).update({best_measure_id: inserted.id});
+    }
+
+    function *addNewPropertyMeasurements(sampleID, psetID, prop, measurements) {
+        let p = new model.Property(prop.name, prop.attribute);
+        let inserted = yield db.insert('properties', p);
+        let ps2p = new model.PropertySet2Property(inserted.id, psetID);
+        yield db.insert('propertyset2property', ps2p);
+        yield addPropertyMeasurements(inserted.id, sampleID, prop.name, prop.attribute, measurements);
     }
 
     function* updateSamplesMeasurements() {

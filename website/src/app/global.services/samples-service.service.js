@@ -28,6 +28,43 @@ class SamplesService {
                 samples: [sample]
             });
     }
+
+    addMeasurementsToSamples(projectId, experimentId, processId, samplesMeasurements) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('samples').one('measurements')
+            .customPOST({
+                process_id: processId,
+                properties: samplesMeasurements
+            });
+    }
+
+    createSamplesPropertyMeasurements(samples, addAs, property, measurements) {
+        if (addAs !== 'shared' && addAs !== 'separate') {
+            return null;
+        }
+        return {
+            samples: samples,
+            add_as: addAs,
+            property: property,
+            measurements: measurements
+        }
+    }
+
+    createProperty(name, attribute) {
+        return {
+            name: name,
+            attribute: attribute
+        }
+    }
+
+    createMeasurement(_type, property, unit, value) {
+        return {
+            name: property.name,
+            attribute: property.attribute,
+            _type: _type,
+            unit: unit,
+            value: value
+        }
+    }
 }
 
 angular.module('materialscommons').service('samplesService', SamplesService);

@@ -1,5 +1,5 @@
 <div layout="column">
-    <h4 class="md-title">Measurements</h4>
+    <h4 class="md-title">Properties</h4>
     <md-content layout-padding>
         <form name="measurementsForm">
             <div ng-repeat="measurement in $ctrl.measurements">
@@ -38,6 +38,9 @@
                     <div ng-switch-when="composition">
                         <label>Composition</label>
                         <periodic-table composition="measurement.property"></periodic-table>
+                        <md-button class="md-primary" ng-click="$ctrl.addPropertyMeasurement(measurement.property)">add
+                            composition
+                        </md-button>
                     </div>
 
                     <!--------- date --------->
