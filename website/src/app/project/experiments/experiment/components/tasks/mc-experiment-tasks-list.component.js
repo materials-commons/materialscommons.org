@@ -90,7 +90,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, toast, curren
         currentTask.set(ctrl.task);
         currentNode.set(node);
         loadTaskTemplate();
-        console.log(ctrl.task);
+        //console.log(ctrl.task);
     }
 
     function loadTaskTemplate() {
