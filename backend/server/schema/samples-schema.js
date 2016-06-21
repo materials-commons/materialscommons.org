@@ -4,6 +4,7 @@ module.exports = function(schema) {
     return {
         defineCreateSamplesSchema,
         defineAddSamplesMeasurementsSchema,
+        defineUpdateSamplesMeasurementsSchema,
         defineSamplesMeasurementSchema,
         defineMeasurementSchema
     };
@@ -39,6 +40,23 @@ module.exports = function(schema) {
         addSamplesMeasurementsSchema.setDefaults({});
         addSamplesMeasurementsSchema.validateAsync = promise.promisify(addSamplesMeasurementsSchema.validate);
         return addSamplesMeasurementsSchema;
+    }
+
+    function defineUpdateSamplesMeasurementsSchema() {
+        let updateSamplesMeasurementsSchema = schema.defineSchema('UpdateSamplesMeasurementsSchema', {
+            process_id: {
+                type: 'string',
+                nullable: false
+            },
+
+            properties: {
+                type: 'array',
+                nullable: false
+            }
+        });
+        updateSamplesMeasurementsSchema.setDefaults({});
+        updateSamplesMeasurementsSchema.validateAsync = promise.promisify(updateSamplesMeasurementsSchema.validate);
+        return updateSamplesMeasurementsSchema;
     }
 
     function defineSamplesMeasurementSchema() {
@@ -106,6 +124,11 @@ module.exports = function(schema) {
 
             value: {
                 nullable: false
+            },
+
+            id: {
+                type: 'string',
+                nullable: true
             }
         });
         measurementSchema.setDefaults({

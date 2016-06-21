@@ -37,6 +37,14 @@ class SamplesService {
             });
     }
 
+    updateMeasurementsToSamples(projectId, experimentId, processId, samplesMeasurements) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('samples').one('measurements')
+            .customPUT({
+                process_id: processId,
+                properties: samplesMeasurements
+            });
+    }
+
     createSamplesPropertyMeasurements(samples, addAs, property, measurements) {
         if (addAs !== 'shared' && addAs !== 'separate') {
             return null;

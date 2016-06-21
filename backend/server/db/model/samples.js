@@ -2,6 +2,7 @@ module.exports = function(r) {
     const dbExec = require('./run');
     const model = require('./model')(r);
     const db = require('./db')(r);
+    const _ = require('lodash');
 
     return {
         getSample,
@@ -216,7 +217,32 @@ module.exports = function(r) {
     }
 
     function* updateSamplesMeasurements() {
-        return null;
+        for (let i = 0; i < properties.length; i++) {
+            let prop = properties[i];
+            let measurementsToAdd = prop.measurements.filter((m) => !m.id);
+            let measurementsToUpdate = prop.measurements.filter((m) => m.id);
+            let propToAdd = _.clone(prop),
+                propToUpdate = _.clone(prop);
+            propToAdd.measurements = measurementsToAdd;
+            propToUpdate.measurements = measurementsToUpdate;
+            if (propToAdd.measurements.length) {
+                if (propToAdd.add_as === 'shared') {
+                    yield addSharedPropertyMeasurementsForSamples(propToAdd);
+                } else {
+                    yield addSeparatePropertyMeasurementsForSamples(propToAdd);
+                }
+            }
+            if (propToUpdate.measurements.length) {
+                yield updatedExistingPropertyMeasurementsForSamples(propToUpdate);
+            }
+        }
+
+        return {val: true};
+    }
+
+    function* updatedExistingPropertyMeasurementsForSamples(prop) {
+        let measurementsWithUpdates = prop.measurements.map((m) => { return {id: m.id, unit: m.unit, value: m.value}; });
+        yield r.table('measurements').insert(measurementsWithUpdates, {conflict: 'update'});
     }
 
     function* deleteSamplesMeasurements() {
