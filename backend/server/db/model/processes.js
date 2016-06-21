@@ -179,7 +179,7 @@ module.exports = function(r) {
                         }
                     }).coerceTo('array'),
 
-                samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
+                input_samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
                     .eqJoin('sample_id', r.table('samples')).zip()
                     .merge(function(sample) {
                         return {

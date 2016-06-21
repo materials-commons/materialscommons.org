@@ -177,7 +177,6 @@ module.exports = function(samples, experiments, schema) {
     }
 
     function* validateAddSamplesMeasurements(projectId, experimentId, args) {
-        console.log('validateAddSamplesMeasurements', args);
         let errors = yield schema.validate(schema.addSamplesMeasurements, args);
         if (errors !== null) {
             console.log('  errors 1', errors);

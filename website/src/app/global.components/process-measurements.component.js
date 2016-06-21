@@ -8,11 +8,12 @@ class ProcessMeasurementsComponentController2 {
     }
 
     $onInit() {
-        console.dir(this.measurements);
+        //console.dir(this.measurements);
     }
 
     addPropertyMeasurement(property) {
         if (!this.samples.length) {
+            this.toast.error('No samples to add measurements to.');
             return;
         }
 
@@ -23,7 +24,7 @@ class ProcessMeasurementsComponentController2 {
 
         console.dir(samplesMeasurements);
 
-        this.samplesService.addMeasurementsToSamples(this.projectId, this.experimentId, "fill-in-later", samplesMeasurements)
+        this.samplesService.addMeasurementsToSamples(this.projectId, this.experimentId, "fill-in-later", [samplesMeasurements])
             .then(
                 () => null,
                 () => this.toast('Failed to add measurements to samples')
