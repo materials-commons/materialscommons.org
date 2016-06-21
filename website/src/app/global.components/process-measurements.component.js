@@ -7,11 +7,15 @@ class ProcessMeasurementsComponentController2 {
         this.experimentId = $stateParams.experiment_id;
     }
 
+    $onInit() {
+        console.dir(this.measurements);
+    }
+
     addPropertyMeasurement(property) {
         if (!this.samples.length) {
-            console.log('no samples');
             return;
         }
+
         let samples = this.samples.map((s) => { return {id: s.id, property_set_id: s.property_set_id}; });
         let prop = this.samplesService.createProperty(property.name, property.attribute);
         let measurement = this.samplesService.createMeasurement(property._type, prop, property.unit, property.value);
