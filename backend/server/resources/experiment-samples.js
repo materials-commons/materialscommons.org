@@ -235,8 +235,7 @@ module.exports = function(samples, experiments, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.updateSamplesMeasurements(this.params.experiment_id, updateMeasurementsArgs.process_id,
-                updateMeasurementsArgs.samples);
+            let rv = yield samples.updateSamplesMeasurements(updateMeasurementsArgs.properties);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -247,7 +246,7 @@ module.exports = function(samples, experiments, schema) {
         yield next;
     }
 
-    function* validateUpdateSamplesMeasurements() {
-        return null;
+    function* validateUpdateSamplesMeasurements(projectId, experimentId, args) {
+        return yield validateAddSamplesMeasurements(projectId, experimentId, args); // Same as add for now
     }
 };
