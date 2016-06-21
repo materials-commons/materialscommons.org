@@ -5,10 +5,13 @@ class ProcessMeasurementsComponentController2 {
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
+        this.composition = null;
     }
 
     $onInit() {
-        //console.dir(this.measurements);
+        if (this.template.template_name === 'Create Samples') {
+
+        }
     }
 
     addPropertyMeasurement(property) {
@@ -20,9 +23,8 @@ class ProcessMeasurementsComponentController2 {
         let samples = this.samples.map((s) => { return {id: s.id, property_set_id: s.property_set_id}; });
         let prop = this.samplesService.createProperty(property.name, property.attribute);
         let measurement = this.samplesService.createMeasurement(property._type, prop, property.unit, property.value);
+        measurement.is_best_measure = true;
         let samplesMeasurements = this.samplesService.createSamplesPropertyMeasurements(samples, 'separate', prop, [measurement]);
-
-        console.dir(samplesMeasurements);
 
         this.samplesService.addMeasurementsToSamples(this.projectId, this.experimentId, "fill-in-later", [samplesMeasurements])
             .then(
@@ -41,6 +43,7 @@ angular.module('materialscommons').component('processMeasurements', {
     controller: ProcessMeasurementsComponentController2,
     bindings: {
         measurements: '<',
-        samples: '<'
+        samples: '<',
+        template: '<'
     }
 });

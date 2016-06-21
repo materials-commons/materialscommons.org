@@ -41,16 +41,7 @@ function processEdit() {
     }
 
     function samples(process) {
-        process.input_samples = process.input_samples.map(function(sample) {
-            return {
-                id: sample.id,
-                name: sample.name,
-                property_set_id: sample.property_set_id,
-                files: sample.linked_files,
-                old_properties: [],
-                new_properties: []
-            }
-        });
+        //process.input_samples = process.input_samples;
         return process;
     }
 
@@ -64,13 +55,44 @@ function processEdit() {
         return process;
     }
 
+    function addCompositionToMeasurements(prop, measurements) {
+        for (let i = 0; i < measurements.length; i++) {
+            let measurement = measurements[i];
+            if (measurement.property.attribute === 'composition') {
+                measurement.property.unit = prop.unit;
+                measurement.property.value = prop.value;
+                break;
+            }
+        }
+    }
+
+    function setupMeasurements(process, templateMeasurements, template) {
+        if (template.category === 'create_samples') {
+            // Hack, just extract the composition from one of the samples to display as the measurements.
+            let foundComposition = false;
+            for (let i = 0; i < process.input_samples.length; i++) {
+                let sample = process.input_samples[i];
+                for (let k = 0; k < sample.properties.length; k++) {
+                    let prop = sample.properties[k];
+                    if (prop.attribute === 'composition') {
+                        addCompositionToMeasurements(prop.best_measure[0], templateMeasurements);
+                        foundComposition = true;
+                    }
+                }
+                if (foundComposition) {
+                    break;
+                }
+            }
+        }
+        process.measurements = templateMeasurements;
+    }
+
     return {
         fillProcess: function(template, process) {
-            console.log('fillProcess', template);
             process = setUp(template, process);
             process = samples(process);
             process = files(process);
-            process.measurements = template.measurements;
+            setupMeasurements(process, template.measurements, template);
             if (!('output_samples' in process)) {
                 process.output_samples = [];
             }
