@@ -1,6 +1,6 @@
 class MCTaskTemplateCreateSamplesComponentController {
     /*@ngInject*/
-    constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast, selectItems) {
+    constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast, selectItems, experimentsService) {
         this.prepareCreatedSample = prepareCreatedSample;
         this.focus = focus;
         this.$mdDialog = $mdDialog;
@@ -9,12 +9,23 @@ class MCTaskTemplateCreateSamplesComponentController {
         this.experimentId = $stateParams.experiment_id;
         this.toast = toast;
         this.selectItems = selectItems;
+        this.experimentsService = experimentsService;
     }
 
     selectFiles() {
         this.selectItems.open('files').then(
             (selected) => {
-                console.log('selectFiles selected', selected);
+                let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
+                let filesArgs = {
+                    template_id: this.task.template.template_id,
+                    files: files,
+                    process_id: this.task.process_id
+                };
+                this.experimentsService.updateTaskTemplateFiles(this.projectId, this.experimentId, this.task.id, filesArgs)
+                    .then(
+                        () => this.task.template.input_files = selected.files,
+                        () => this.toast.error('Unable to add files')
+                    );
         });
     }
 
@@ -76,13 +87,6 @@ class MCTaskTemplateCreateSamplesComponentController {
         }).then(
             (samples) => this.task.template.input_samples = this.task.template.input_samples.concat(samples)
         )
-    }
-
-    prepareSample() {
-        this.prepareCreatedSample.filloutComposition(this.sample, this.composition);
-        this.prepareCreatedSample.setupSampleGroup(this.sample, this.sampleGroup, this.sampleGroupSizing,
-            this.sampleGroupSize);
-        this.prepareCreatedSample.addSampleInputFiles(this.sample, this.process.input_files);
     }
 }
 

@@ -282,6 +282,11 @@ module.exports = function (r) {
         this.process_id = processID;
     }
 
+    function Experiment2DataFile(experimentId, fileId) {
+        this.experiment_id = experimentId;
+        this.datafile_id = fileId;
+    }
+
     return {
         Sample: Sample,
         Process: Process,
@@ -317,6 +322,7 @@ module.exports = function (r) {
         Experiment2ExperimentTask,
         ExperimentNote,
         Experiment2ExperimentNote,
-        Experiment2Process
+        Experiment2Process,
+        Experiment2DataFile
     };
 };

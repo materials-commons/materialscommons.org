@@ -2,6 +2,7 @@ module.exports = function(r) {
     const dbExec = require('./run');
     const db = require('./db')(r);
     const model = require('./model')(r);
+    const _ = require('lodash');
 
     return {
         getAllForProject,
@@ -22,12 +23,13 @@ module.exports = function(r) {
         deleteExperimentNote,
         templateExists,
         addTemplateToTask,
-        updateTaskTemplateProperties,
+        updateTaskTemplate,
         isTemplateForTask,
         getTemplate,
         addSamples,
         deleteSamplesFromExperiment,
-        allSamplesInExperiment
+        allSamplesInExperiment,
+        fileInProject
     };
 
     function* getAllForProject(projectID) {
@@ -297,7 +299,25 @@ module.exports = function(r) {
         }
     }
 
-    function* updateTaskTemplateProperties(taskId, properties) {
+    function* updateTaskTemplate(taskId, experimentId, properties, processId, files) {
+        if (properties) {
+            let errors = yield updateTaskTemplateProperties(properties);
+            if (errors !== null) {
+                return {errors: errors};
+            }
+        }
+
+        if (files) {
+            let errors = yield updateTaskTemplateFiles(experimentId, processId, files);
+            if (errors !== null) {
+                return {errors: errors};
+            }
+        }
+
+        return yield getTask(taskId);
+    }
+
+    function* updateTaskTemplateProperties(properties) {
         // Validate that the retrieved property matches that we are updating
         let errors = [];
         for (let i = 0; i < properties.length; i++) {
@@ -327,7 +347,52 @@ module.exports = function(r) {
             return {errors: errors};
         }
 
-        return yield getTask(taskId);
+        return null;
+    }
+
+    function* updateTaskTemplateFiles(experimentId, processId, files) {
+        let filesToAddToProcess = files.filter(f => f.command === 'add').map(f => new model.Process2File(processId, f.id, ''));
+        filesToAddToProcess = yield removeExistingProcessFileEntries(filesToAddToProcess);
+        if (filesToAddToProcess.length) {
+            yield r.table('process2file').insert(filesToAddToProcess);
+        }
+
+        let filesToDeleteFromProcess = files.filter(f => f.command === 'delete').map(f => [processId, f.id]);
+        if (filesToDeleteFromProcess.length) {
+            yield r.table('process2file').getAll(r.args(filesToDeleteFromProcess, {index: 'process_data'})).delete();
+        }
+
+        let filesToAddToExperiment = files.filter(f => f.command === 'add').map(f => new model.Experiment2DataFile(experimentId, f.id));
+        filesToAddToExperiment = yield removeExistingExperimentFileEntries(filesToAddToExperiment);
+        if (filesToAddToExperiment.length) {
+            yield r.table('experiment2datafile').insert(filesToAddToExperiment);
+        }
+
+        // TODO: Delete files from experiment if the file is not used in any process associated with experiment.
+
+        return null;
+    }
+
+    function* removeExistingProcessFileEntries(files) {
+        if (files.length) {
+            let indexEntries = files.map(f => [f.process_id, f.datafile_id]);
+            let matchingEntries = yield r.table('process2file').getAll(r.args(indexEntries), {index: 'process_datafile'});
+            var byFileID = _.indexBy(matchingEntries, 'datafile_id');
+            return files.filter(f => (!(f.datafile_id in byFileID)));
+        }
+
+        return files;
+    }
+
+    function* removeExistingExperimentFileEntries(files) {
+        if (files.length) {
+            let indexEntries = files.map(f => [f.experiment_id, f.datafile_id]);
+            let matchingEntries = yield r.table('experiment2datafile').getAll(r.args(indexEntries), {index: 'experiment_datafile'});
+            var byFileID = _.indexBy(matchingEntries, 'datafile_id');
+            return files.filter(f => (!(f.datafile_id in byFileID)));
+        }
+
+        return files;
     }
 
     function* isTemplateForTask(templateId, taskId) {
@@ -360,5 +425,10 @@ module.exports = function(r) {
         let indexArgs = sampleIds.map((sampleId) => [experimentId, sampleId]);
         let samples = yield r.table('experiment2sample').getAll(r.args(indexArgs), {index: 'experiment_sample'});
         return samples.length === sampleIds.length;
+    }
+
+    function* fileInProject(fileId, projectId) {
+        let files = yield r.table('project2datafile').getAll([projectId, fileId], {index: 'project_datafile'});
+        return files.length !== 0;
     }
 };
