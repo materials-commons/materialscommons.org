@@ -7,7 +7,7 @@ angular.module('materialscommons').component('mcTaskTemplateOther', {
 });
 
 /*@ngInject*/
-function MCTaskTemplateOtherComponentController(sampleLinker, processEdit) {
+function MCTaskTemplateOtherComponentController(sampleLinker, processEdit, selectItems) {
     var ctrl = this;
     ctrl.linkFilesToSample = linkFilesToSample;
 
@@ -16,4 +16,20 @@ function MCTaskTemplateOtherComponentController(sampleLinker, processEdit) {
             sample = processEdit.refreshSample(linkedFiles, sample);
         });
     }
+
+    ctrl.selectFiles = () => {
+        selectItems.open('files').then(
+            (selected) => {
+                console.log('selectedFiles', selected);
+            }
+        );
+    };
+
+    ctrl.selectSamples = () => {
+        selectItems.open('samples').then(
+            (selected) => {
+                console.log('selectedSamples', selected);
+            }
+        );
+    };
 }

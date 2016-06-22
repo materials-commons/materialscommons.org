@@ -1,6 +1,6 @@
 class MCTaskTemplateCreateSamplesComponentController {
     /*@ngInject*/
-    constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast) {
+    constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast, selectItems) {
         this.prepareCreatedSample = prepareCreatedSample;
         this.focus = focus;
         this.$mdDialog = $mdDialog;
@@ -8,6 +8,14 @@ class MCTaskTemplateCreateSamplesComponentController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.toast = toast;
+        this.selectItems = selectItems;
+    }
+
+    selectFiles() {
+        this.selectItems.open('files').then(
+            (selected) => {
+                console.log('selectFiles selected', selected);
+        });
     }
 
     addSample() {
