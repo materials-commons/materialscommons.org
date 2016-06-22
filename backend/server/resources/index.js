@@ -11,7 +11,7 @@ module.exports = function(model) {
     const directories = require('./directories')(model.directories, schema);
     const users = require('./users')(model.users);
     const shares = require('./shares')(model.shares, schema);
-    const experiments = require('./experiments')(model.experiments, schema);
+    const experiments = require('./experiments')(model.experiments, model.samples, schema);
     const experimentSamples = require('./experiment-samples')(model.samples, model.experiments, schema);
 
     router.get('/projects', projects.all);

@@ -9,6 +9,7 @@ module.exports = function(r) {
         getAllSamplesForProject,
         createSamples,
         sampleInProject,
+        sampleHasPropertySet,
         allSamplesInProject,
         isValidCreateSamplesProcess,
         updateSamples,
@@ -104,6 +105,11 @@ module.exports = function(r) {
 
     function* sampleInProject(projectId, sampleId) {
         let samples = yield r.table('project2sample').getAll([projectId, sampleId], {index: 'project_sample'});
+        return samples.length !== 0;
+    }
+
+    function* sampleHasPropertySet(sampleId, propertySetId) {
+        let samples = yield r.table('sample2propertyset').getAll([sampleId, propertySetId], {index: 'sample_property_set'});
         return samples.length !== 0;
     }
 
