@@ -118,6 +118,7 @@ class TaskService {
                     task.template_name = templateId;
                     task.process_id = t.process_id;
                     task.template = this.templates.getTemplate(templateId);
+                    task.template.template_id = t.template_id;
                 },
                 () => this.toast.error('Unable to associate template with task')
             );
