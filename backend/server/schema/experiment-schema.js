@@ -10,7 +10,7 @@ module.exports = function (schema) {
         defineUpdateExperimentNoteSchema,
         defineUpdateExperimentTaskTemplatePropsSchema,
         defineTemplatePropertySchema,
-        defineTemplateFileCommandSchema
+        defineTemplateCommandSchema
     };
 
     function defineCreateExperimentSchema() {
@@ -279,11 +279,16 @@ module.exports = function (schema) {
         return templatePropertySchema;
     }
 
-    function defineTemplateFileCommandSchema() {
-        let templatefileCommandSchema = schema.defineSchema('templateFileCommandSchema', {
+    function defineTemplateCommandSchema() {
+        let templateCommandSchema = schema.defineSchema('templateCommandSchema', {
             id: {
                 type: 'string',
                 nullable: false
+            },
+
+            property_set_id: {
+                type: 'string',
+                nullable: true
             },
 
             command: {
@@ -292,8 +297,10 @@ module.exports = function (schema) {
             }
         });
 
-        templatefileCommandSchema.setDefaults({});
-        templatefileCommandSchema.validateAsync = promise.promisify(templatefileCommandSchema.validate);
-        return templatefileCommandSchema;
+        templateCommandSchema.setDefaults({
+            property_set_id: ''
+        });
+        templateCommandSchema.validateAsync = promise.promisify(templateCommandSchema.validate);
+        return templateCommandSchema;
     }
 };
