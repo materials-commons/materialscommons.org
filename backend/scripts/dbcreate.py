@@ -43,19 +43,21 @@ def create_tables():
         .index_create("mime", r.row["mediatype"]["mime"]))
 
     create_table("datadirs", "name", "project_id", "parent")
+
     create_table("project2datadir", "datadir_id", "project_id")
-    create_compound_index('project2datadir', 'project_datadir',
-                          ['project_id', 'datadir_id'])
+    create_compound_index('project2datadir', 'project_datadir', ['project_id', 'datadir_id'])
+
     create_table("project2datafile", "project_id", "datafile_id")
-    create_compound_index('project2datafile', 'project_datafile',
-                          ['project_id', 'datafile_id'])
+    create_compound_index('project2datafile', 'project_datafile', ['project_id', 'datafile_id'])
+
     create_table("tag2item", "tag_id", "item_id")
     create_table("comment2item", "comment_id", "item_id")
     create_table("note2item", "note_id", "item_id")
     create_table("review2item", "review_id", "item_id")
+
     create_table("datadir2datafile", "datadir_id", "datafile_id")
-    create_compound_index('datadir2datafile', 'datadir_datafile',
-                          ['datadir_id', 'datafile_id'])
+    create_compound_index('datadir2datafile', 'datadir_datafile',['datadir_id', 'datafile_id'])
+
     create_table("uploads", "uploads", "project_id")
 
     # Create samples model
@@ -85,7 +87,10 @@ def create_tables():
     create_compound_index("project2sample", "project_sample", ["project_id", "sample_id"])
 
     create_table("best_measure_history", "process_id", "property_id")
+
     create_table("process2file", "process_id", "datafile_id", "_type")
+    create_compound_index("process2file", "process_datafile", ["process_id", "datafile_id"])
+
     create_table("propertysets", "parent_id")
 
     create_table("sample2datafile", "sample_id", "datafile_id")

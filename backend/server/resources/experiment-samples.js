@@ -179,7 +179,6 @@ module.exports = function(samples, experiments, schema) {
     function* validateAddSamplesMeasurements(projectId, experimentId, args) {
         let errors = yield schema.validate(schema.addSamplesMeasurements, args);
         if (errors !== null) {
-            console.log('  errors 1', errors);
             return errors;
         }
 
@@ -190,7 +189,6 @@ module.exports = function(samples, experiments, schema) {
             schema.prepare(schema.samplesMeasurement, prop);
             let e = yield schema.validate(schema.samplesMeasurement, prop);
             if (e !== null) {
-                console.log('  errors 2', e);
                 return e;
             }
 
@@ -203,7 +201,6 @@ module.exports = function(samples, experiments, schema) {
                 schema.prepare(schema.measurement, measurement);
                 e = yield schema.validate(schema.measurement, measurement);
                 if (e !== null) {
-                    console.log('  errors 3', e);
                     return e;
                 }
                 // Need to validate each of the measurement types... (that will be a bit of work)
@@ -214,13 +211,11 @@ module.exports = function(samples, experiments, schema) {
 
         let isInProject = yield experiments.experimentExistsInProject(projectId, experimentId);
         if (!isInProject) {
-            console.log('  !isInProject');
             return {error: `No such experiment`};
         }
         let allSampleIds = _.keys(sampleIds);
         let allSamplesInProject = yield samples.allSamplesInProject(projectId, allSampleIds);
         if (!allSamplesInProject) {
-            console.log('  !allSamplesInProject');
             return {error: `Some samples are not in project`};
         }
 

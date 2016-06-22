@@ -250,7 +250,8 @@ module.exports = function(experiments, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.updateTaskTemplateProperties(this.params.task_id, updateArgs.properties);
+            let rv = yield experiments.updateTaskTemplate(this.params.task_id, this.params.experiment_id, updateArgs.properties,
+                updateArgs.process_id, updateArgs.files);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -263,8 +264,8 @@ module.exports = function(experiments, schema) {
     }
 
     function* validateUpdateExperimentTaskTemplateArgs(updateArgs, params) {
-        if (!updateArgs.properties || !_.isArray(updateArgs.properties)) {
-            return {error: `No properties or properties attribute isn't an array`};
+        if (updateArgs.properties && !_.isArray(updateArgs.properties)) {
+            return {error: `Properties attribute isn't an array`};
         }
 
         let isValid = yield validateTask(params.project_id, params.experiment_id, params.task_id);
@@ -274,16 +275,36 @@ module.exports = function(experiments, schema) {
 
         let isTemplateForTask = yield experiments.isTemplateForTask(updateArgs.template_id, params.task_id);
         if (!isTemplateForTask) {
-            return {error: 'Incorrect template for task'};
+            return {error: `Incorrect template for task; template: ${updateArgs.template_id} task: ${params.task_id}`};
         }
 
         let template = yield experiments.getTemplate(updateArgs.template_id);
 
-        for (let i = 0; i < updateArgs.properties.length; i++) {
-            let property = updateArgs.properties[i];
-            let errors = yield validateProperty(template, property);
-            if (errors !== null) {
-                return errors;
+        if (updateArgs.properties) {
+            for (let i = 0; i < updateArgs.properties.length; i++) {
+                let property = updateArgs.properties[i];
+                let errors = yield validateProperty(template, property);
+                if (errors !== null) {
+                    return errors;
+                }
+            }
+        }
+
+        if (updateArgs.files && !_.isArray(updateArgs.files)) {
+            return {error: `Files attribute isn't an array`};
+        }
+
+        if (updateArgs.files && !updateArgs.process_id) {
+            return {error: `Must supply a process when including files`};
+        }
+
+        if (updateArgs.files) {
+            for (let i = 0; i < updateArgs.files.length; i++) {
+                let f = updateArgs.files[i];
+                let errors = yield validateFile(params.project_id, f);
+                if (errors !== null) {
+                    return errors;
+                }
             }
         }
 
@@ -298,6 +319,24 @@ module.exports = function(experiments, schema) {
 
         if (!propertyValidator.isValidSetupProperty(template, property)) {
             return {error: `Invalid property ${property.attribute}`};
+        }
+
+        return null;
+    }
+
+    function* validateFile(projectId, file) {
+        let errors = yield schema.validate(schema.templateFileCommand, file);
+        if (errors !== null) {
+            return errors;
+        }
+
+        if (file.command !== 'add' && file.command !== 'delete') {
+            return {error: `Bad command '${file.command} for file ${file.id}`};
+        }
+
+        let fileInProject = yield experiments.fileInProject(file.id, projectId);
+        if (!fileInProject) {
+            return {error: `File ${file.id} not in project ${projectId}`};
         }
 
         return null;

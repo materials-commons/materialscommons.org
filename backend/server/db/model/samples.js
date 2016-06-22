@@ -196,10 +196,8 @@ module.exports = function(r) {
     }
 
     function* addSeparatePropertyMeasurementsForSamples(prop) {
-        console.log('addSeparatePropertyMeasurementsForSamples', prop.samples.length);
         for (let i = 0; i < prop.samples.length; i++) {
             let s = prop.samples[i];
-            console.log('  s = ', s);
             yield addNewPropertyMeasurements(s.id, s.property_set_id, prop.property, prop.measurements);
         }
     }
@@ -214,7 +212,6 @@ module.exports = function(r) {
         let p = new model.Property(prop.name, prop.attribute);
         let inserted = yield db.insert('properties', p);
         let ps2p = new model.PropertySet2Property(inserted.id, psetID);
-        console.log('addNewPropertyMeasurements', p, ps2p);
         yield db.insert('propertyset2property', ps2p);
         yield addPropertyMeasurements(inserted.id, sampleID, prop.name, prop.attribute, measurements);
     }
