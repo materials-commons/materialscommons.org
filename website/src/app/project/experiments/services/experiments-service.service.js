@@ -38,6 +38,11 @@ class ExperimentsService {
             .one('template').customPUT(updateArgs);
     }
 
+    updateTaskTemplateFiles(projectId, experimentId, taskId, updateFilesArgs) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('tasks', taskId)
+            .one('template').customPUT(updateFilesArgs);
+    }
+
     deleteTask(projectID, experimentID, taskID) {
         return this.projectsAPI(projectID).one('experiments', experimentID).one('tasks', taskID).customDELETE();
     }
