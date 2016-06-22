@@ -29,7 +29,7 @@ module.exports = function(model) {
         updateExperimentNote: experimentSchema.defineUpdateExperimentNoteSchema(),
         updateExperimentTaskTemplateProps: experimentSchema.defineUpdateExperimentTaskTemplatePropsSchema(),
         templateProperty: experimentSchema.defineTemplatePropertySchema(),
-        templateFileCommand: experimentSchema.defineTemplateFileCommandSchema(),
+        templateCommand: experimentSchema.defineTemplateCommandSchema(),
         validate,
         prepare,
         model: model

@@ -1,4 +1,4 @@
-module.exports = function(experiments, schema) {
+module.exports = function(experiments, samples, schema) {
     const parse = require('co-body');
     const status = require('http-status');
     const _ = require('lodash');
@@ -251,7 +251,7 @@ module.exports = function(experiments, schema) {
             this.body = errors;
         } else {
             let rv = yield experiments.updateTaskTemplate(this.params.task_id, this.params.experiment_id, updateArgs.properties,
-                updateArgs.process_id, updateArgs.files);
+                updateArgs.process_id, updateArgs.files, updateArgs.samples);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -308,6 +308,24 @@ module.exports = function(experiments, schema) {
             }
         }
 
+        if (updateArgs.samples && !_.isArray(updateArgs.samples)) {
+            return {error: `Samples attribute isn't an array`};
+        }
+
+        if (updateArgs.samples && !updateArgs.process_id) {
+            return {error: `Must supply a process when including samples`};
+        }
+
+        if (updateArgs.samples) {
+            for (let i = 0; i < updateArgs.samples.length; i++) {
+                let s = updateArgs.samples[i];
+                let errors = yield validateSample(params.project_id, s);
+                if (errors !== null) {
+                    return errors;
+                }
+            }
+        }
+
         return null;
     }
 
@@ -325,7 +343,7 @@ module.exports = function(experiments, schema) {
     }
 
     function* validateFile(projectId, file) {
-        let errors = yield schema.validate(schema.templateFileCommand, file);
+        let errors = yield schema.validate(schema.templateCommand, file);
         if (errors !== null) {
             return errors;
         }
@@ -337,6 +355,33 @@ module.exports = function(experiments, schema) {
         let fileInProject = yield experiments.fileInProject(file.id, projectId);
         if (!fileInProject) {
             return {error: `File ${file.id} not in project ${projectId}`};
+        }
+
+        return null;
+    }
+
+    function* validateSample(projectId, sample) {
+        let errors = yield schema.validate(schema.templateCommand, sample);
+        if (errors !== null) {
+            return errors;
+        }
+
+        if (sample.command !== 'add' && sample.command !== 'delete') {
+            return {error: `Bad command '${sample.command} for file ${sample.id}`}
+        }
+
+        if (sample.property_set_id === '') {
+            return {error: `A valid property set must be supplied`};
+        }
+
+        let sampleInProject = yield samples.sampleInProject(projectId, sample.id);
+        if (!sampleInProject) {
+            return {error: `Sample ${sample.id} not in project ${projectId}`}
+        }
+
+        let sampleHasPropertySet = yield samples.sampleHasPropertySet(sample.id, sample.property_set_id);
+        if (!sampleHasPropertySet) {
+            return {error: `Sample ${sample.id} doesn't have property set ${sample.property_set_id}`};
         }
 
         return null;
