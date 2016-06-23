@@ -132,23 +132,26 @@ def create_tables():
     create_table("experiment2experimentnote", "experiment_id", "experiment_note_id")
     create_compound_index("experiment2experimentnote", "experiment_experiment_note", ["experiment_id", "experiment_note_id"])
 
+    run(r.db('materialscommons').wait())
+
 
 def create_table(table, *args):
     run(r.db('materialscommons').table_create(table))
     run(r.db('materialscommons').table(table).wait())
     for index_name in args:
         create_index(table, index_name)
+    run(r.db('materialscommons').table(table).index_wait())
 
 
 def create_index(table, name):
     run(r.db('materialscommons').table(table).index_create(name))
-
 
 def create_compound_index(table, name, index_fields):
     fields = []
     for index_field_name in index_fields:
         fields.append(r.row[index_field_name])
     run(r.db('materialscommons').table(table).index_create(name, fields))
+    run(r.db('materialscommons').table(table).index_wait())
 
 
 def create_indices():
