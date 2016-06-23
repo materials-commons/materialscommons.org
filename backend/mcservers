@@ -26,16 +26,16 @@ function start_servers()
         echo "  Starting rethinkdb..."
         (cd $MCDB_DIR; rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon)
         sleep 5
+        echo "  Setting up database..."
+        scripts/dbcreate.py
         if [ $TESTSERVER != false ]; then
             if [ "$REINIT" = "t" ]; then
                 echo "  Restoring from file $MCDB_FILE..."
                 cp $MCDB_FILE $MCDB_DIR
                 FILE=$(basename $MCDB_FILE)
-                rethinkdb restore $MCDB_DIR/$FILE --connect localhost:$MCDB_PORT
+                rethinkdb restore $MCDB_DIR/$FILE --connect localhost:$MCDB_PORT --force
             fi
         fi
-        echo "  Setting up database..."
-        scripts/dbcreate.py
     fi
 
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
