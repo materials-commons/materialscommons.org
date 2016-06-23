@@ -135,6 +135,7 @@ def create_tables():
 
 def create_table(table, *args):
     run(r.db('materialscommons').table_create(table))
+    run(r.db('materialscommons').table(table).wait())
     for index_name in args:
         create_index(table, index_name)
 
