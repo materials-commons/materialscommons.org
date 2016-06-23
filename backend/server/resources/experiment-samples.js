@@ -8,7 +8,8 @@ module.exports = function(samples, experiments, schema) {
         updateExperimentSamples,
         deleteSamplesFromExperiment,
         addSamplesMeasurements,
-        updateSamplesMeasurements
+        updateSamplesMeasurements,
+        getSamplesForExperiment
     };
 
     function* addSamplesToExperiment(next) {
@@ -242,5 +243,22 @@ module.exports = function(samples, experiments, schema) {
 
     function* validateUpdateSamplesMeasurements(projectId, experimentId, args) {
         return yield validateAddSamplesMeasurements(projectId, experimentId, args); // Same as add for now
+    }
+
+    function* getSamplesForExperiment(next) {
+        let isInProject = yield experiments.experimentExistsInProject(this.params.project_id, this.params.experiment_id);
+        if (!isInProject) {
+            this.body = {error: `No such experiment`};
+            this.status = status.BAD_REQUEST;
+        } else {
+            let rv = yield samples.getAllSamplesForExperiment(this.params.experiment_id);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
     }
 };
