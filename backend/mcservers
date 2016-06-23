@@ -34,6 +34,9 @@ function start_servers()
                 cp $MCDB_FILE $MCDB_DIR
                 FILE=$(basename $MCDB_FILE)
                 rethinkdb restore $MCDB_DIR/$FILE --connect localhost:$MCDB_PORT --force
+                if [ $? -ne 0 ]; then
+                    rethinkdb restore $MCDB_DIR/$FILE --connect localhost:$MCDB_PORT --force
+                fi
             fi
         fi
     fi
