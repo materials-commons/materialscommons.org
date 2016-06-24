@@ -3,6 +3,7 @@ module.exports = function(r) {
     const db = require('./db')(r);
     const model = require('./model')(r);
     const _ = require('lodash');
+    const commonQueries = require('./common-queries');
 
     return {
         getAllForProject,
@@ -29,7 +30,8 @@ module.exports = function(r) {
         addSamples,
         deleteSamplesFromExperiment,
         allSamplesInExperiment,
-        fileInProject
+        fileInProject,
+        getProcessesForExperiment
     };
 
     function* getAllForProject(projectID) {
@@ -482,5 +484,12 @@ module.exports = function(r) {
     function* fileInProject(fileId, projectId) {
         let files = yield r.table('project2datafile').getAll([projectId, fileId], {index: 'project_datafile'});
         return files.length !== 0;
+    }
+
+    function* getProcessesForExperiment(experimentId) {
+        let rql = commonQueries.processDetailsRql(r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'})
+            .eqJoin('process_id', r.table('processes')).zip(), r);
+        let processes = yield dbExec(rql);
+        return {val: processes};
     }
 };
