@@ -136,8 +136,8 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         //        this.experiment = experiment;
         //    }]
         //})
-        .state('project.experiment.flagged', {
-            url: '/flagged',
+        .state('project.experiment.processes', {
+            url: '/processes',
             template: '<mc-project-processes processes="ctrl.processes"></mc-project-processes>',
             controllerAs: 'ctrl',
             controller: ['experimentsService', '$stateParams', 'toast',
