@@ -1,6 +1,15 @@
 angular.module('materialscommons').component('mcExperimentFiles', {
-    templateUrl: 'app/project/experiments/experiment/components/files/mc-experiment-files.html',
+    templateUrl: 'app/project/experiment/experiment/components/files/mc-experiment-files.html',
+    controller: MCExperimentFilesComponentController,
     bindings: {
-        experiment: '='
+        files: '='
     }
 });
+
+/*@ngInject*/
+function MCExperimentFilesComponentController() {
+    var ctrl = this;
+    ctrl.query = '';
+    ctrl.showTableView = true;
+}
+
