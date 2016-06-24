@@ -1,0 +1,39 @@
+<div>
+    <md-table-container>
+        <table md-table>
+            <thead md-head md-order="$ctrl.sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="name">Sample</th>
+                <th md-column>Description</th>
+                <th md-column md-order-by="mtime.epoch_time">Modified</th>
+                <th md-column md-order-by="samples.length"># Samples</th>
+                <th md-column md-order-by="processes.length"># Processes</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row class="md-row-hover pointer"
+                ng-repeat="file in $ctrl.files | filter:$ctrl.filterBy | orderBy:$ctrl.sortOrder">
+                <td md-cell>
+                    <a class="md-primary" ng-click="$ctrl.showSample(sample)">{{file.name}}</a>
+                </td>
+                <td md-cell style="width: 20%">
+                    {{file.description}}
+                </td>
+                <td md-cell>
+                    {{file.mtime | toDate}}
+                </td>
+                <td md-cell>
+                    <a ng-click="$ctrl.showSamples(file.samples)">
+                        {{file.samples.length}}
+                    </a>
+                </td>
+                <td md-cell>
+                    <a ng-click="$ctrl.showProcesses(file.processes)" class="md-primary">
+                        {{file.processes.length}}
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>
