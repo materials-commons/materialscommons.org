@@ -51,6 +51,14 @@ class ExperimentsService {
     deleteTask(projectID, experimentID, taskID) {
         return this.projectsAPI(projectID).one('experiments', experimentID).one('tasks', taskID).customDELETE();
     }
+
+    getSamplesForExperiment(projectId, experimentId) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('samples').customGET();
+    }
+
+    getProcessesForExperiment(projectId, experimentId) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('processes').customGET();
+    }
 }
 
 angular.module('materialscommons').service('experimentsService', ExperimentsService);

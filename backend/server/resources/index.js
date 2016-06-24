@@ -73,6 +73,8 @@ module.exports = function(model) {
     router.post('/projects/:project_id/experiments/:experiment_id/samples/measurements', experimentSamples.addSamplesMeasurements);
     router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements', experimentSamples.updateSamplesMeasurements);
 
+    router.get('/projects/:project_id/experiments/:experiment_id/processes', experiments.getProcessesForExperiment);
+
     router.put('/users/:project_id', users.update);
 
     return router;
