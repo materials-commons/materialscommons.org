@@ -140,11 +140,11 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/flagged',
             template: '<mc-project-processes processes="ctrl.processes"></mc-project-processes>',
             controllerAs: 'ctrl',
-            controller: ['projectsService', '$stateParams', 'toast',
-                function(projectsService, $stateParams, toast) {
+            controller: ['experimentsService', '$stateParams', 'toast',
+                function(experimentsService, $stateParams, toast) {
                     var ctrl = this;
                     ctrl.processes = [];
-                    projectsService.getProjectProcesses($stateParams.project_id).then(
+                    experimentsService.getProcessesForExperiment($stateParams.project_id, $stateParams.experiment_id).then(
                         (processes) => ctrl.processes = processes,
                         () => toast.error('Unable to retrieve project processes')
                     )
@@ -154,11 +154,11 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/samples',
             template: '<mc-project-samples samples="ctrl.samples"></mc-project-samples>',
             controllerAs: 'ctrl',
-            controller: ['samplesService', '$stateParams', 'toast',
-                function(samplesService, $stateParams, toast) {
+            controller: ['experimentsService', '$stateParams', 'toast',
+                function(experimentsService, $stateParams, toast) {
                     var ctrl = this;
                     ctrl.samples = [];
-                    samplesService.getProjectSamples($stateParams.project_id).then(
+                    experimentsService.getSamplesForExperiment($stateParams.project_id, $stateParams.experiment_id).then(
                         (samples) => ctrl.samples = samples,
                         () => toast.error('Error retrieving samples for project')
                     );
