@@ -21,7 +21,8 @@ module.exports = function(experiments, samples, schema) {
         updateExperimentNote,
         createExperimentNote,
         deleteExperimentNote,
-        getProcessesForExperiment
+        getProcessesForExperiment,
+        getFilesForExperiment
     };
 
     function* getAllExperimentsForProject(next) {
@@ -599,4 +600,20 @@ module.exports = function(experiments, samples, schema) {
         yield next;
     }
 
+    function *getFilesForExperiment(next) {
+        let isInProject = yield experiments.experimentExistsInProject(this.params.project_id, this.params.experiment_id);
+        if (!isInProject) {
+            this.body = {error: `No such experiment`};
+            this.status = status.BAD_REQUEST;
+        } else {
+            let rv = yield experiments.getFilesForExperiment(this.params.experiment_id);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
 };

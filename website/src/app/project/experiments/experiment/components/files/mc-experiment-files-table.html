@@ -14,7 +14,7 @@
             <tr md-row class="md-row-hover pointer"
                 ng-repeat="file in $ctrl.files | filter:$ctrl.filterBy | orderBy:$ctrl.sortOrder">
                 <td md-cell>
-                    <a class="md-primary" ng-click="$ctrl.showSample(sample)">{{file.name}}</a>
+                    <a class="md-primary" ng-click="$ctrl.showFile(file)">{{file.name}}</a>
                 </td>
                 <td md-cell style="width: 20%">
                     {{file.description}}
