@@ -59,6 +59,10 @@ class ExperimentsService {
     getProcessesForExperiment(projectId, experimentId) {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('processes').customGET();
     }
+
+    getFilesForExperiment(projectId, experimentId) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('files').customGET();
+    }
 }
 
 angular.module('materialscommons').service('experimentsService', ExperimentsService);

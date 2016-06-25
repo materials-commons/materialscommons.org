@@ -75,6 +75,8 @@ module.exports = function(model) {
 
     router.get('/projects/:project_id/experiments/:experiment_id/processes', experiments.getProcessesForExperiment);
 
+    router.get('/projects/:project_id/experiments/:experiment_id/files', experiments.getFilesForExperiment);
+
     router.put('/users/:project_id', users.update);
 
     return router;

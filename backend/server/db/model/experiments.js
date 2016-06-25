@@ -31,7 +31,8 @@ module.exports = function(r) {
         deleteSamplesFromExperiment,
         allSamplesInExperiment,
         fileInProject,
-        getProcessesForExperiment
+        getProcessesForExperiment,
+        getFilesForExperiment
     };
 
     function* getAllForProject(projectID) {
@@ -117,7 +118,9 @@ module.exports = function(r) {
             .filter(r.row('index').ge(index));
 
         let matchingTasks = yield dbExec(rql);
-        let itemsToChange = matchingTasks.map((t) => { return {id: t.id, index: t.index + 1}; });
+        let itemsToChange = matchingTasks.map((t) => {
+            return {id: t.id, index: t.index + 1};
+        });
         let updateRql = r.table('experimenttasks').insert(itemsToChange, {conflict: 'update'});
         yield dbExec(updateRql);
     }
@@ -201,7 +204,9 @@ module.exports = function(r) {
             .filter(r.row('index').ge(index));
 
         let matchingTasks = yield dbExec(rql);
-        let itemsToChange = matchingTasks.map((t) => { return {id: t.id, index: t.index - 1}; });
+        let itemsToChange = matchingTasks.map((t) => {
+            return {id: t.id, index: t.index - 1};
+        });
         let updateRql = r.table('experimenttasks').insert(itemsToChange, {conflict: 'update'});
         yield dbExec(updateRql);
     }
@@ -461,7 +466,9 @@ module.exports = function(r) {
     }
 
     function* addSamples(experimentId, samples) {
-        let samplesToAdd = samples.map((sampleId) => { return {experiment_id: experimentId, sample_id: sampleId}; });
+        let samplesToAdd = samples.map((sampleId) => {
+            return {experiment_id: experimentId, sample_id: sampleId};
+        });
         yield r.table('experiment2sample').insert(samplesToAdd);
         return {val: samplesToAdd};
     }
@@ -491,5 +498,12 @@ module.exports = function(r) {
             .eqJoin('process_id', r.table('processes')).zip(), r);
         let processes = yield dbExec(rql);
         return {val: processes};
+    }
+
+    function* getFilesForExperiment(experimentId) {
+        let rql = commonQueries.fileDetailsRql(r.table('experiment2datafile').getAll(experimentId, {index: 'experiment_id'})
+            .eqJoin('datafile_id', r.table('datafiles')).zip(), r);
+        let files = yield dbExec(rql);
+        return {val: files};
     }
 };
