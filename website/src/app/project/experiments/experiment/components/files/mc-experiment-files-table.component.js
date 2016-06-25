@@ -7,14 +7,18 @@ angular.module('materialscommons').component('mcExperimentFilesTable', {
     }
 });
 
+import { isImage } from '../../../../../util/util';
+
 /*@ngInject*/
-function MCExperimentFilesTableComponentController($mdDialog) {
+function MCExperimentFilesTableComponentController($mdDialog, mcfile) {
     var ctrl = this;
     ctrl.showFile = showFile;
     ctrl.showProcesses = showProcesses;
     ctrl.showExperiments = showExperiments;
     ctrl.showSample = showSample;
     ctrl.sortOrder = "name";
+    ctrl.fileSrc = mcfile.src;
+    ctrl.isImage = isImage;
 
     function showFile(file) {
         console.log('showFile', file);
