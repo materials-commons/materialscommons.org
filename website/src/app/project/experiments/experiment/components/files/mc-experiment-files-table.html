@@ -6,6 +6,7 @@
                 <th md-column md-order-by="name">Sample</th>
                 <th md-column>Description</th>
                 <th md-column md-order-by="mtime.epoch_time">Modified</th>
+                <th md-column>Thumbnail</th>
                 <th md-column md-order-by="samples.length"># Samples</th>
                 <th md-column md-order-by="processes.length"># Processes</th>
             </tr>
@@ -21,6 +22,14 @@
                 </td>
                 <td md-cell>
                     {{file.mtime | toDate}}
+                </td>
+                <td md-cell>
+                    <div ng-if="$ctrl.isImage(file.mediatype.mime)">
+                        <md-button class="md-primary" ui-sref="project.files.file({file_id: file.id})">
+                            <img class="img-thumbnail" height="140" width="140"
+                                 ng-src="{{$ctrl.fileSrc(file.id)}}">
+                        </md-button>
+                    </div>
                 </td>
                 <td md-cell>
                     <a ng-click="$ctrl.showSamples(file.samples)">
