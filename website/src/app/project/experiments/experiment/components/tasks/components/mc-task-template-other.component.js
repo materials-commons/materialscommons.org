@@ -8,12 +8,11 @@ class MCTaskTemplateOtherComponentController {
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
-
     }
 
     linkFilesToSample(sample, input_files, output_files) {
         this.sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function(linkedFiles) {
-            sample = processEdit.refreshSample(linkedFiles, sample);
+            sample = this.processEdit.refreshSample(linkedFiles, sample);
         });
     }
 
