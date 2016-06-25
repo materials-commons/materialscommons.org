@@ -10,7 +10,7 @@ class ProcessMeasurementsComponentController2 {
 
     $onInit() {
         if (this.template.template_name === 'Create Samples') {
-
+            console.log('Create samples');
         }
     }
 
@@ -34,7 +34,7 @@ class ProcessMeasurementsComponentController2 {
     }
 
     updatePropertyMeasurement(property) {
-
+        console.log('updatePropertyMeasurement', property.name);
     }
 }
 
