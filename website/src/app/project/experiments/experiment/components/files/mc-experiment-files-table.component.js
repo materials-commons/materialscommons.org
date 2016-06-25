@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentFilesTable', {
-    templateUrl: 'app/project/experiment/experiment/components/files/mc-experiment-files-table.html',
+    templateUrl: 'app/project/experiments/experiment/components/files/mc-experiment-files-table.html',
     controller: MCExperimentFilesTableComponentController,
     bindings: {
         files: '<',
@@ -10,14 +10,14 @@ angular.module('materialscommons').component('mcExperimentFilesTable', {
 /*@ngInject*/
 function MCExperimentFilesTableComponentController($mdDialog) {
     var ctrl = this;
-    ctrl.showFiles = showFiles;
+    ctrl.showFile = showFile;
     ctrl.showProcesses = showProcesses;
     ctrl.showExperiments = showExperiments;
     ctrl.showSample = showSample;
     ctrl.sortOrder = "name";
 
-    function showFiles() {
-
+    function showFile(file) {
+        console.log('showFile', file);
     }
 
     function showProcesses(processes) {

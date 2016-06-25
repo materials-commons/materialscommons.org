@@ -26,7 +26,7 @@
         <div layout="row" layout-align="center stretch">
             <md-content flex style="max-height:70vh">
                 <div ng-if="$ctrl.showTableView">
-                    <mc-experiment-files-table samples="$ctrl.samples" filter-by="$ctrl.query">
+                    <mc-experiment-files-table files="$ctrl.files" filter-by="$ctrl.query">
                     </mc-experiment-files-table>
                 </div>
                 <div ng-if="!$ctrl.showTableView">

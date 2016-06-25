@@ -128,14 +128,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 this.experiment = experiment;
             }]
         })
-        //.state('project.experiment.flagged', {
-        //    url: '/flagged',
-        //    template: '<mc-experiment-flagged experiment="ctrl.experiment"></mc-experiment-flagged>',
-        //    controllerAs: 'ctrl',
-        //    controller: ['experiment', function(experiment) {
-        //        this.experiment = experiment;
-        //    }]
-        //})
         .state('project.experiment.processes', {
             url: '/processes',
             template: '<mc-project-processes processes="ctrl.processes"></mc-project-processes>',
@@ -146,7 +138,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     ctrl.processes = [];
                     experimentsService.getProcessesForExperiment($stateParams.project_id, $stateParams.experiment_id).then(
                         (processes) => ctrl.processes = processes,
-                        () => toast.error('Unable to retrieve project processes')
+                        () => toast.error('Error retrieving processes for experiment')
                     )
                 }]
         })
@@ -160,25 +152,24 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     ctrl.samples = [];
                     experimentsService.getSamplesForExperiment($stateParams.project_id, $stateParams.experiment_id).then(
                         (samples) => ctrl.samples = samples,
-                        () => toast.error('Error retrieving samples for project')
+                        () => toast.error('Error retrieving samples for experiment')
                     );
                 }]
         })
-        //.state('project.experiment.samples', {
-        //    url: '/samples',
-        //    template: '<mc-experiment-samples experiment="ctrl.experiment"></mc-experiment-samples>',
-        //    controllerAs: 'ctrl',
-        //    controller: ['experiment', function(experiment) {
-        //        this.experiment = experiment;
-        //    }]
-        //})
         .state('project.experiment.files', {
             url: '/files',
-            template: '<mc-experiment-files experiment="ctrl.experiment"></mc-experiment-files>',
+            template: '<mc-experiment-files files="ctrl.files"></mc-experiment-files>',
             controllerAs: 'ctrl',
-            controller: ['experiment', function(experiment) {
-                this.experiment = experiment;
-            }]
+            controller: ['experimentsService', '$stateParams', 'toast',
+                function(experimentsService, $stateParams, toast) {
+                    var ctrl = this;
+                    ctrl.files = [];
+                    experimentsService.getFilesForExperiment($stateParams.project_id, $stateParams.experiment_id)
+                        .then(
+                            (files) => ctrl.files = files,
+                            () => toast.error('Error retrieving files for experiment')
+                        );
+                }]
         })
         .state('project.experiment.notes', {
             url: '/notes',

@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentFiles', {
-    templateUrl: 'app/project/experiment/experiment/components/files/mc-experiment-files.html',
+    templateUrl: 'app/project/experiments/experiment/components/files/mc-experiment-files.html',
     controller: MCExperimentFilesComponentController,
     bindings: {
         files: '='

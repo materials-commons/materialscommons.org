@@ -22,6 +22,19 @@ module.exports.sampleDetailsRql = function sampleDetailsRql(rql, r) {
     });
 };
 
+module.exports.fileDetailsRql = function fileDetailsRql(rql, r) {
+    return rql.merge(file => {
+        return {
+            samples: r.table('sample2datafile').getAll(file('id'), {index: 'datafile_id'})
+                .eqJoin('sample_id', r.table('samples')).zip().pluck('id', 'name')
+                .coerceTo('array'),
+            processes: r.table('process2file').getAll(file('id'), {index: 'datafile_id'})
+                .eqJoin('datafile_id', r.table('datafiles'))
+                .zip().coerceTo('array')
+        };
+    });
+};
+
 module.exports.processDetailsRql = function processDetailsRql(rql, r) {
     return rql.merge(function(process) {
         return {
