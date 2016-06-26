@@ -20,7 +20,7 @@ function MCProjectHomeComponentController($scope, project, experimentsService, t
     experimentsService.getAllForProject($stateParams.project_id).then(
         (experiments) => {
             ctrl.experiments = experiments;
-            for (let i = 0; i < experiments.length; i++) console.dir(experiments[i].plain());
+            //for (let i = 0; i < experiments.length; i++) console.dir(experiments[i].plain());
         },
         () => toast.error('Unable to retrieve experiments for project')
     );

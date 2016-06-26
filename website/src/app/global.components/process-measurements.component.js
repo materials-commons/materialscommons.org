@@ -8,12 +8,6 @@ class ProcessMeasurementsComponentController2 {
         this.composition = null;
     }
 
-    $onInit() {
-        if (this.template.template_name === 'Create Samples') {
-            console.log('Create samples');
-        }
-    }
-
     addPropertyMeasurement(property) {
         if (!this.samples.length) {
             this.toast.error('No samples to add measurements to.');
