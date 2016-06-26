@@ -17,6 +17,7 @@ import { mcmodalService } from './mcmodal/mcmodal';
 import './toast.service';
 import './editoropts.service';
 import './samples-service.service';
+import './search-query-text.service';
 
 
 angular.module('materialscommons')
