@@ -24,8 +24,8 @@ function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $aria
     $compileProvider.debugInfoEnabled(false);
 }
 
-appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals'];
-function appRun($rootScope, User, Restangular, $state, mcglobals) {
+appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText'];
+function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     // appRun will run when the application starts up and before any controllers have run.
@@ -43,6 +43,10 @@ function appRun($rootScope, User, Restangular, $state, mcglobals) {
         if (!User.isAuthenticated() && toState.url !== '/login') {
             event.preventDefault();
             $state.go('login');
+        }
+
+        if (!toState.name.startsWith('project.search')) {
+            searchQueryText.set("");
         }
     });
 

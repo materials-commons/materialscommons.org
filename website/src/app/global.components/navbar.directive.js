@@ -12,12 +12,16 @@ function navbarDirective() {
 }
 
 /*@ngInject*/
-function NavbarDirectiveController(User, $state, modelProjects) {
+function NavbarDirectiveController(User, $state, modelProjects, searchQueryText) {
     var ctrl = this;
 
     var inProjectsState = $state.includes('projects');
 
-    ctrl.query = '';
+    searchQueryText.setOnChange(() => {
+        ctrl.query = searchQueryText.get();
+    });
+
+    ctrl.query = searchQueryText.get();
     ctrl.placeholder = inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
 
     ctrl.toggleHelp = help;
