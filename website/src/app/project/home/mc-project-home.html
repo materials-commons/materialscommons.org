@@ -19,20 +19,18 @@
                 <md-radio-button value="on-hold" class="md-warn">On Hold Experiments</md-radio-button>
             </md-radio-group>
         </div>
-        <div layout="row" layout-align="center center">
+        <div layout="row" layout-align="start center">
             <md-button class="md-primary md-raised" ng-click="$ctrl.startNewExperiment()">
                 <i class="fa fa-fw fa-plus"></i> Start New Experiment
             </md-button>
         </div>
         <md-column layout="column" layout-align="start stretch" flex>
             <div layout="row" layout-wrap>
-                <!--<div flex="45" flex-md="60" flex-sm="60"-->
-                <!--ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.whichExperiments} | orderBy:'name'">-->
                 <md-card flex="45" flex-md="60" flex-sm="60"
                          ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.whichExperiments} | orderBy:'name'"
-                         class="experiment-card"
-                         ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
-                    <md-card-header>
+                         class="experiment-card">
+                    <md-card-header style="background-color:#d1d1d1; padding-bottom: 4px"
+                                    ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
                         <md-card-avatar>
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x mc-md-primary-color"></i>
@@ -43,18 +41,30 @@
                             <span class="md-title">{{experiment.name}}</span>
                         </md-card-header-title>
                     </md-card-header>
-                    <md-card-title>
+                    <md-card-title style="background-color:#d1d1d1; padding-top: 0; padding-bottom: 4px;"
+                                   ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
                         <md-card-title-text>
-                            <span class="md-subhead">{{experiment.description}}</span>
+                            <span class="md-subhead" style="padding-top:4px">{{experiment.description}}</span>
                         </md-card-title-text>
                     </md-card-title>
+                    <md-card-actions layout="row" layout-align="start center">
+                        <div class="md-subhead" layout="row" flex="60" layout-align="space-between center">
+                            <md-button class="md-primary" tooltip="tasks" ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
+                                <i class="fa fa-fw fa-tasks"></i>{{::experiment.tasks.length}}
+                            </md-button>
+                            <md-button class="md-primary" tooltip="samples" ui-sref="project.experiment.samples({experiment_id: experiment.id})">
+                                <i class="fa fa-fw fa-cubes"></i>{{::experiment.samples.length | number}}
+                            </md-button>
+                            <md-button class="md-primary" tooltip="processes" ui-sref="project.experiment.processes({experiment_id: experiment.id})">
+                                <i class="fa fa-fw fa-code-fork"></i>{{::experiment.processes.length | number}}
+                            </md-button>
+                            <md-button class="md-primary" tooltip="files" ui-sref="project.experiment.files({experiment_id: experiment.id})">
+                                <i class="fa fa-fw fa-files-o"></i>{{::experiment.files.length | number}}
+                            </md-button>
+                        </div>
+                    </md-card-actions>
                 </md-card>
-                <!--</div>-->
             </div>
-            <!--<md-divider></md-divider>-->
-            <!--<div>-->
-            <!--<mc-project-samples samples="$ctrl.project.samples"></mc-project-samples>-->
-            <!--</div>-->
         </md-column>
     </div>
 </div>
