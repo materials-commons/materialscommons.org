@@ -1,1 +1,1 @@
-
+import './mc-project-search.component';
