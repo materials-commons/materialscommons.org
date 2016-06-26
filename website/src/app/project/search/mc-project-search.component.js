@@ -5,9 +5,8 @@ angular.module('materialscommons').component('mcProjectSearch', {
     controller: MCProjectSearchComponentController
 });
 
+/*@ngInject*/
 function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state) {
-    'ngInject';
-
     var ctrl = this;
     var projectID = $stateParams.project_id;
     ctrl.isImage = isImage;
