@@ -13,18 +13,23 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
     $scope.editorOptions = editorOpts({height: 67, width: 41});
 
     ctrl.updateName = () => {
-        experimentsService
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id,
-                {name: ctrl.experiment.name})
+        experimentsService.updateForProject($stateParams.project_id, $stateParams.experiment_id, {name: ctrl.experiment.name})
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment name')
             );
     };
 
+    ctrl.updateStatus = () => {
+        experimentsService.updateForProject($stateParams.project_id, $stateParams.experiment_id, {status: ctrl.experiment.status})
+            .then(
+                () => null,
+                () => toast.error('Failed to update experiment status')
+            );
+    };
+
     ctrl.updateDescription = () => {
-        experimentsService
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id,
+        experimentsService.updateForProject($stateParams.project_id, $stateParams.experiment_id,
                 {description: ctrl.experiment.description})
             .then(
                 () => null,
@@ -37,8 +42,7 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
             return;
         }
 
-        experimentsService
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id, {note: ctrl.experiment.note})
+        experimentsService.updateForProject($stateParams.project_id, $stateParams.experiment_id, {note: ctrl.experiment.note})
             .then(
                 () => null,
                 () => toast.error('Failed to update note')

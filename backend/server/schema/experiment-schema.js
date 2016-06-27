@@ -101,6 +101,11 @@ module.exports = function (schema) {
             publications: {
                 type: 'array',
                 nullable: true
+            },
+
+            status: {
+                type: 'string',
+                nullable: true
             }
         });
         updateExperimentSchema.setDefaults({});
