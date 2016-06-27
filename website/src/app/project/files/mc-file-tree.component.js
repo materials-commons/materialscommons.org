@@ -27,7 +27,7 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
         flow = mcFlow.get(),
         proj = project.get();
     ctrl.projectID = proj.id;
-    ctrl.showUploadsButton = false;
+    ctrl.showUploadsButton = true;
 
     flow.on('catchAll', () => {
         $timeout(() => {
