@@ -419,7 +419,15 @@ module.exports = function(experiments, samples, schema) {
                     return {error: `${prop} entries must all be of type string`};
                 }
             }
+
+            if (prop === 'status') {
+                let status = experimentArgs.status;
+                if (status !== 'active' && status !== 'done' && status !== 'on-hold') {
+                    return {error: `Invalid experiment status ${status}`};
+                }
+            }
         }
+
         let isInProject = yield experiments.experimentExistsInProject(projectID, experimentID);
         return isInProject ? null : {error: 'No such experiment'};
     }
