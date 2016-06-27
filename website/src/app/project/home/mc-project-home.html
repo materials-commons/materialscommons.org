@@ -47,21 +47,22 @@
                             <span class="md-subhead" style="padding-top:4px">{{experiment.description}}</span>
                         </md-card-title-text>
                     </md-card-title>
-                    <md-card-actions layout="row" layout-align="start center">
-                        <div class="md-subhead" layout="row" flex="60" layout-align="space-between center">
-                            <md-button class="md-primary" tooltip="tasks" ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
+                    <md-card-actions layout="row" class="md-subhead" layout-align="space-between center">
+                        <a class="md-primary" tooltip="tasks" ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
                                 <i class="fa fa-fw fa-tasks"></i>{{::experiment.tasks.length}}
-                            </md-button>
-                            <md-button class="md-primary" tooltip="samples" ui-sref="project.experiment.samples({experiment_id: experiment.id})">
+                        </a>
+                        <a class="md-primary" tooltip="notes" ui-sref="project.experiment.notes({experiment_id: experiment.id})">
+                            <i class="fa fa-fw fa-book"></i>{{::experiment.notes.length}}
+                        </a>
+                        <a class="md-primary" tooltip="samples" ui-sref="project.experiment.samples({experiment_id: experiment.id})">
                                 <i class="fa fa-fw fa-cubes"></i>{{::experiment.samples.length | number}}
-                            </md-button>
-                            <md-button class="md-primary" tooltip="processes" ui-sref="project.experiment.processes({experiment_id: experiment.id})">
+                        </a>
+                        <a class="md-primary" tooltip="files" ui-sref="project.experiment.files({experiment_id: experiment.id})">
+                            <i class="fa fa-fw fa-files-o"></i>{{::experiment.files.length | number}}
+                        </a>
+                        <a class="md-primary" tooltip="processes" ui-sref="project.experiment.processes({experiment_id: experiment.id})">
                                 <i class="fa fa-fw fa-code-fork"></i>{{::experiment.processes.length | number}}
-                            </md-button>
-                            <md-button class="md-primary" tooltip="files" ui-sref="project.experiment.files({experiment_id: experiment.id})">
-                                <i class="fa fa-fw fa-files-o"></i>{{::experiment.files.length | number}}
-                            </md-button>
-                        </div>
+                        </a>
                     </md-card-actions>
                 </md-card>
             </div>
