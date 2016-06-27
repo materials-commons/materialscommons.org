@@ -4,16 +4,11 @@ angular.module('materialscommons').component('mcProjects', {
 });
 
 /*@ngInject*/
-function MCProjectsComponentController(projectsService, $state, $mdSidenav, sharedProjectsList, toast) {
+function MCProjectsComponentController(projectsService, $state, $mdDialog, sharedProjectsList, toast) {
     var ctrl = this;
     ctrl.isOpen = true;
     ctrl.openProject = openProject;
     ctrl.projects = [];
-    ctrl.toggleSidenav = toggleSidenav;
-    ctrl.newProjectName = '';
-    ctrl.newProjectDescription = '';
-    ctrl.cancel = cancel;
-    ctrl.create = create;
     ctrl.sharingOn = false;
     ctrl.cancelSharing = cancelSharing;
     ctrl.gotoSharing = gotoSharing;
@@ -24,6 +19,17 @@ function MCProjectsComponentController(projectsService, $state, $mdSidenav, shar
     projectsService.getAllProjects().then(function(projects) {
         ctrl.projects = projects;
     });
+
+    ctrl.createNewProject = () => {
+        $mdDialog.show({
+            templateUrl: 'app/projects/create-project-dialog.html',
+            controller: CreateNewProjectDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true
+        }).then(
+            () => projectsService.getAllProjects().then((projects) => ctrl.projects = projects)
+        );
+    };
 
     ///////////////////////
 
@@ -48,25 +54,6 @@ function MCProjectsComponentController(projectsService, $state, $mdSidenav, shar
         }
     }
 
-    function toggleSidenav() {
-        $mdSidenav('createProject').toggle();
-    }
-
-    function create() {
-        if (ctrl.newProjectName !== '') {
-            projectsService.createProject(ctrl.newProjectName, ctrl.newProjectDescription)
-                .then(
-                    () => {
-                        toggleSidenav();
-                        clearNewProjectVars();
-                        projectsService.getAllProjects().then((projects) => ctrl.projects = projects);
-                    },
-
-                    () => toast.error('Unable to create project')
-                );
-        }
-    }
-
     function cancelSharing() {
         sharedProjectsList.get().forEach(function(proj) {
             proj.selected = false;
@@ -83,14 +70,29 @@ function MCProjectsComponentController(projectsService, $state, $mdSidenav, shar
             ctrl.sharingOn = false;
         }
     }
+}
 
-    function cancel() {
-        toggleSidenav();
-        clearNewProjectVars();
+class CreateNewProjectDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, projectsService, toast) {
+        this.$mdDialog = $mdDialog;
+        this.name = '';
+        this.description = '';
+        this.projectsService = projectsService;
+        this.toast = toast;
     }
 
-    function clearNewProjectVars() {
-        ctrl.newProjectName = '';
-        ctrl.newProjectDescription = '';
+    submit() {
+        if (this.name !== '') {
+            this.projectsService.createProject(this.name, this.description)
+                .then(
+                    () => this.$mdDialog.hide(),
+                    () => this.toast.error('Unable to create project')
+                );
+        }
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
