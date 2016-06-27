@@ -39,6 +39,7 @@ def add_computed_attributes(projects, user):
         p['users'] = []
         p['notes'] = []
         p['events'] = []
+        p['experiments'] = []
         p['file_count'] = 0
         if 'process_templates' not in p:
             p['process_templates'] = []
@@ -53,6 +54,7 @@ def add_computed_attributes(projects, user):
         add_notes(projects_by_id, project_ids)
         add_events(projects_by_id, project_ids)
         add_file_counts(projects_by_id, project_ids)
+        add_experiments(projects_by_id, project_ids)
 
 
 def add_users(projects_by_id, project_ids):
@@ -60,6 +62,12 @@ def add_users(projects_by_id, project_ids):
                  .get_all(*project_ids, index='project_id')
                  .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, users, 'project_id', 'users')
+
+
+def add_experiments(projects_by_id, project_ids):
+    experiments = list(r.table('project2experiment').get_all(*project_ids, index='project_id')
+                       .eq_join('experiment_id', r.table('experiments')).zip().run(g.conn, time_format='raw'))
+    add_computed_items(projects_by_id, experiments, 'project_id', 'experiments')
 
 
 def add_reviews(projects_by_id, project_ids):
