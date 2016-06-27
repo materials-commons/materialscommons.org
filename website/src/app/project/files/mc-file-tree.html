@@ -1,10 +1,10 @@
 <div layout="row" flex layout-fill>
     <md-sidenav layout-fill flex="30" class="md-whiteframe-4dp" md-is-locked-open="true">
-        <div ng-if="$ctrl.showUploadsButton" layout="row" layout-align="center center">
-            <md-button class="md-primary" ui-sref="project.files.uploads">show uploads</md-button>
-        </div>
         <div flex layout-fill style="max-height: 99vh; height: 99vh">
             <md-content layout-margin flex layout-fill>
+                <div ng-if="$ctrl.showUploadsButton" layout="row" layout-align="center center">
+                    <md-button class="md-primary" ui-sref="project.files.uploads">show uploads</md-button>
+                </div>
                 <div ui-tree="$ctrl.treeOptions" flex data-empty-placeholder-enabled="true">
                     <ol ui-tree-nodes ng-model="$ctrl.files">
                         <li ng-repeat="file in $ctrl.files track by file.data.id" ui-tree-node>
@@ -33,7 +33,7 @@
             </md-content>
         </div>
     </md-sidenav>
-    <md-content flex layout-fill>
-        <div ui-view flex layout-fill></div>
+    <md-content flex>
+        <div ui-view flex></div>
     </md-content>
 </div>
