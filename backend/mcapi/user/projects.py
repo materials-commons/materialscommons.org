@@ -180,10 +180,12 @@ def create_project():
     j = request.get_json()
     user = access.get_user()
     name = dmutil.get_required('name', j)
+    description = dmutil.get_optional('description', j)
     if validate.project_name_exists(name, user):
         return get_project_toplevel_datadir(name, user)
     datadir_id = make_toplevel_datadir(j, user)
     proj = project.Project(name, datadir_id, user)
+    proj.description = description
     project_id = dmutil.insert_entry_id('projects', proj.__dict__)
     r.table("datadirs").get(datadir_id).update({
         "project": project_id
