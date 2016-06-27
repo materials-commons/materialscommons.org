@@ -9,7 +9,6 @@ function MCFileUploadsComponentController(mcFlow, $timeout) {
 
     ctrl.flow = mcFlow.get();
     ctrl.filesByDir = {};
-    ctrl.finishedUpload = false;
     loadFilesByDir();
 
     ctrl.flow.on('catchAll', (eventName) => {
@@ -18,7 +17,7 @@ function MCFileUploadsComponentController(mcFlow, $timeout) {
             if (eventName === 'filesAdded' || eventName === 'fileRemoved') {
                 loadFilesByDir();
             } else if (eventName === 'complete') {
-                ctrl.finishedUpload = true;
+                ctrl.flow.files.length = 0;
             }
         });
     });

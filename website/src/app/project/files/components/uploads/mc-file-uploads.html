@@ -1,5 +1,5 @@
 <div layout="column" layout-margin layout-fill>
-    <div ng-if="!$ctrl.finishedUpload" layout="row">
+    <div ng-if="$ctrl.flow.files.length" layout="row">
         <md-button class="md-primary"
                    ng-click="$ctrl.flow.resume()"
                    ng-show="!$ctrl.flow.isUploading()">
@@ -15,7 +15,7 @@
             Cancel All
         </md-button>
     </div>
-    <div ng-if="$ctrl.finishedUpload" layout="column">
+    <div ng-if="!$ctrl.flow.files.length" layout="column">
         <p class="md-headline">
             All uploads are finished. Click
             <a class="md-primary" ui-sref="project.files">Done</a>
@@ -23,8 +23,8 @@
         </p>
     </div>
 
-    <h4 ng-if="!$ctrl.finishedUpload" class="md-title">Files to upload:</h4>
-    <h4 ng-if="$ctrl.finishedUpload" class="md-title">Files uploaded:</h4>
+    <h4 ng-if="$ctrl.flow.files.length" class="md-title">Files to upload:</h4>
+    <h4 ng-if="!$ctrl.flow.files.length" class="md-title">Files uploaded:</h4>
 
     <md-content>
         <section ng-repeat="(dir, files) in $ctrl.filesByDir">

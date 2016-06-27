@@ -22,22 +22,11 @@ function loadEmptyPlaceHolder(dir) {
 
 /*@ngInject*/
 function MCFileTreeComponentController(project, $state, $stateParams, fileTreeProjectService,
-                                       fileTreeMoveService, toastr, mcFlow, $timeout) {
+                                       fileTreeMoveService, toastr, mcFlow) {
     var ctrl = this,
-        flow = mcFlow.get(),
         proj = project.get();
     ctrl.projectID = proj.id;
-    ctrl.showUploadsButton = true;
-
-    flow.on('catchAll', () => {
-        $timeout(() => {
-            if (!ctrl.showUploadsButton && flow.files.length) {
-                ctrl.showUploadsButton = true;
-            } else if (!flow.files.length) {
-                ctrl.showUploadsButton = false;
-            }
-        });
-    });
+    ctrl.flow = mcFlow.get();
 
     ctrl.treeOptions = {
         dropped: function(event) {
