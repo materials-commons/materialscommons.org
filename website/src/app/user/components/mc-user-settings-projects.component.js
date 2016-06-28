@@ -5,6 +5,7 @@ class MCUserSettingsProjectsComponentController {
         this.projectsService = projectsService;
         this.projects = [];
         this.defaultProject = "";
+        this.defaultExperiment = "";
         this.toast = toast;
     }
 
@@ -15,9 +16,17 @@ class MCUserSettingsProjectsComponentController {
         );
     }
 
-    updateDefaultProject() {
+    updateDefaultProjectSettings() {
         console.log('defaultProject set to', this.defaultProject.plain());
+        return;
+        this.User.updateDefaultProject(this.defaultProject.id, this.defaultExperiment.id)
+            .then(
+                () => null,
+                () => this.toast.error('Unable to set default project/experiment')
+            );
     }
+
+
 }
 
 angular.module('materialscommons').component('mcUserSettingsProjects', {
