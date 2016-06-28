@@ -1,3 +1,10 @@
-<div>
-    mc-user-settings-projects
+<div layout="row" flex="100" layout-margin>
+    <label style="margin-right: 15px">Default Project</label>
+    <md-select ng-model="$ctrl.defaultProject" flex="30"
+               ng-change="$ctrl.updateDefaultProject()"
+               aria-label="projects">
+        <md-option ng-repeat="project in $ctrl.projects" ng-value="project">
+            {{project.name}}
+        </md-option>
+    </md-select>
 </div>
