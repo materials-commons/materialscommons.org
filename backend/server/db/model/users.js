@@ -8,7 +8,9 @@ module.exports = function (r) {
         get: function (id, index) {
             return getSingle(r, 'users', id, index);
         },
-        update: update
+        updateProjectFavorites,
+        updateUserSettings,
+        userHasProjectAccess
     };
 
     ///////////
@@ -31,7 +33,7 @@ module.exports = function (r) {
         return yield r.table('users').get(id).run();
     }
 
-    function* update(userID, projectID, attrs) {
+    function* updateProjectFavorites(userID, projectID, attrs) {
         if (attrs.favorites) {
             // TODO: validate the projectID exists
             let user = yield r.table('users').get(userID);
@@ -57,5 +59,16 @@ module.exports = function (r) {
             yield r.table('users').get(userID).update({favorites: user.favorites});
         }
         return yield r.table('users').get(userID).without('admin', 'apikey', 'password');
+    }
+
+    function* updateUserSettings(userId, settings) {
+        yield r.table('users').get(userId).update(settings);
+        let user = yield r.table('users').get(userID).without('admin', 'apikey', 'password');
+        return {val: user};
+    }
+
+    function* userHasProjectAccess(userId, projectId) {
+        let accessEntries = yield r.table('access').getAll([userId, projectId], {index: 'user_project'});
+        return accessEntries.length !== 0;
     }
 };

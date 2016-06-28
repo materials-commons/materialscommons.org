@@ -34,11 +34,12 @@ def create_tables():
 
     create_table("samples", "project_id")
     create_table('access', "user_id", "project_id", "dataset")
+    create_compound_index("access", "user_project", ["user_id", "project_id"])
+
     create_table("elements")
     create_table("events", "project_id")
 
-    create_table("datafiles", "name", "owner",
-                 "checksum", "usesid", "mediatype")
+    create_table("datafiles", "name", "owner", "checksum", "usesid", "mediatype")
     run(r.db("materialscommons").table("datafiles")
         .index_create("mime", r.row["mediatype"]["mime"]))
 

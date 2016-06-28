@@ -9,7 +9,7 @@ module.exports = function(model) {
     const files = require('./files')(model.files);
     const processes = require('./processes')(model.processes, schema);
     const directories = require('./directories')(model.directories, schema);
-    const users = require('./users')(model.users);
+    const users = require('./users')(model.users, model.experiments);
     const shares = require('./shares')(model.shares, schema);
     const experiments = require('./experiments')(model.experiments, model.samples, schema);
     const experimentSamples = require('./experiment-samples')(model.samples, model.experiments, schema);
@@ -77,7 +77,8 @@ module.exports = function(model) {
 
     router.get('/projects/:project_id/experiments/:experiment_id/files', experiments.getFilesForExperiment);
 
-    router.put('/users/:project_id', users.update);
+    router.put('/users/:project_id', users.updateProjectFavorites);
+    router.put('/users', users.updateUserSettings);
 
     return router;
 };

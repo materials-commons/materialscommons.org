@@ -1,4 +1,4 @@
-export function UserService($window, $log) {
+export function UserService($window, $log, Restangular) {
     'ngInject';
 
     var self = this;
@@ -77,6 +77,11 @@ export function UserService($window, $log) {
             if (self.mcuser) {
                 $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
             }
+        },
+
+        updateDefaultProject: function(projectId, experimentId) {
+            return Restangular.one('v2').one('users')
+                .customPUT({default_project: projectId, default_experiment: experimentId});
         }
     };
 }
