@@ -23,6 +23,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<div ui-view></div>'
         })
+        .state('user.settings', {
+            url: '/settings',
+            template: '<mc-user-settings></mc-user-settings>'
+        })
         .state('user.apikey', {
             url: '/apikey',
             template: '<mc-user-apikey></mc-user-apikey>'
