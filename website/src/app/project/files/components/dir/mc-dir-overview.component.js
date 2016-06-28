@@ -9,15 +9,14 @@ angular.module('materialscommons').component('mcDirOverview', {
     }
 });
 
+/*@ngInject*/
 function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, project, toastr) {
-    'ngInject';
-
     var ctrl = this;
 
     ctrl.viewFiles = viewFiles;
     ctrl.fileSrc = mcfile.src;
     ctrl.isImage = isImage;
-    ctrl.overview = _.values(fileType.overview(ctrl.dir.children));
+    ctrl.overview = _.values(fileType.overview(ctrl.dir.children.filter(f => f.data._type === 'file' && f.data.id)));
     ctrl.allFiles = {
         files: allFiles()
     };
@@ -38,8 +37,8 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
     ////////////////
 
     function allFiles() {
-        return ctrl.dir.children.filter(function(f) { return f.data._type !== "directory"; })
-            .map(function(f) {
+        return ctrl.dir.children
+            .filter(f => f.data._type === 'file' && f.data.id).map(f => {
                 f.data.selected = false;
                 return f.data;
             });
