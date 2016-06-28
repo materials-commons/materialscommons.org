@@ -63,7 +63,7 @@ module.exports = function (r) {
 
     function* updateUserSettings(userId, settings) {
         yield r.table('users').get(userId).update(settings);
-        let user = yield r.table('users').get(userID).without('admin', 'apikey', 'password');
+        let user = yield r.table('users').get(userId).without('admin', 'apikey', 'password');
         return {val: user};
     }
 

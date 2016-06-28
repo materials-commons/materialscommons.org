@@ -10,7 +10,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr md-row class="md-row-hover" ng-repeat="user in $ctrl.project.users | orderBy: 'user_id'">
+            <tr md-row class="md-row-hover" ng-repeat="user in $ctrl.project.users | orderBy: 'id'">
                 <td md-cell>{{user.user_id}}</td>
                 <td md-cell ng-if="$ctrl.isOwner($ctrl.signedInUser)">
                     <div ng-if="$ctrl.signedInUser === user.user_id">
@@ -31,7 +31,7 @@
                 <md-input-container class="md-block">
                     <label>Add User</label>
                     <md-select ng-model="$ctrl.user" ng-model-options="{trackBy: '$value.email'}">
-                        <md-option ng-value="user" ng-repeat="user in $ctrl.allUsers | orderBy:'name'">
+                        <md-option ng-value="user" ng-repeat="user in $ctrl.allUsers | orderBy:'id'">
                             {{user.email}}
                         </md-option>
                     </md-select>
