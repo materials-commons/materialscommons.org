@@ -17,9 +17,15 @@ class MCUserSettingsProjectsComponentController {
     }
 
     updateDefaultProjectSettings() {
-        console.log('defaultProject set to', this.defaultProject.plain());
-        return;
-        this.User.updateDefaultProject(this.defaultProject.id, this.defaultExperiment.id)
+        let projectId = this.defaultProject.id ? this.defaultProject.id : "",
+            experimentId = this.defaultExperiment.id ? this.defaultExperiment.id : "";
+
+        if (projectId === "") {
+            // No project selected
+            return;
+        }
+
+        this.User.updateDefaultProject(projectId, experimentId)
             .then(
                 () => null,
                 () => this.toast.error('Unable to set default project/experiment')
