@@ -21,17 +21,14 @@
             <div layout="row" layout-align="space-between center"
                  style="color: black;background-color:#f4f5f7; padding-left:8px;padding-right:8px">
                 <h3 class="md-title" style="color:black">PROCESSES</h3>
-                <mc-new-process-menu button-name="CREATE NEW PROCESS"
-                                     button-class="md-primary md-raised"
-                                     button-icon="fa-plus" style="color:black">
-                </mc-new-process-menu>
             </div>
         </md-toolbar>
         <div layout="row" layout-align="center stretch">
             <md-content flex style="max-height:70vh">
                 <div ng-if="$ctrl.showTableView">
                     <mc-project-processes-table processes="$ctrl.processes"
-                                                filter-by="$ctrl.query"></mc-project-processes-table>
+                                                filter-by="$ctrl.query">
+                    </mc-project-processes-table>
                 </div>
                 <div ng-if="!$ctrl.showTableView">
                     Show card view
