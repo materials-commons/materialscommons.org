@@ -4,9 +4,8 @@ angular.module('materialscommons')
         controller: MCLoginController
     });
 
+/*@ngInject*/
 function MCLoginController($state, User, toastr, mcapi, Restangular) {
-    'ngInject';
-
     var ctrl = this;
 
     ctrl.message = "MCLoginController";
@@ -21,8 +20,18 @@ function MCLoginController($state, User, toastr, mcapi, Restangular) {
         mcapi('/user/%/apikey', ctrl.userLogin, ctrl.password)
             .success(function(u) {
                 User.setAuthenticated(true, u);
+                console.log('u', u);
                 Restangular.setDefaultRequestParams({apikey: User.apikey()});
-                $state.go('projects.list');
+                if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
+                    $state.go('project.experiment.tasks', {
+                        project_id: u.default_project,
+                        experiment_id: u.default_experiment
+                    });
+                } else if (u.default_project && u.default_project !== '') {
+                    $state.go('project.home', {project_id: u.default_project});
+                } else {
+                    $state.go('projects.list');
+                }
             })
             .error(function(reason) {
                 ctrl.message = "Incorrect Password/Username!";
