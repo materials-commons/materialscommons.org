@@ -20,7 +20,6 @@ function MCLoginController($state, User, toastr, mcapi, Restangular) {
         mcapi('/user/%/apikey', ctrl.userLogin, ctrl.password)
             .success(function(u) {
                 User.setAuthenticated(true, u);
-                console.log('u', u);
                 Restangular.setDefaultRequestParams({apikey: User.apikey()});
                 if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
                     $state.go('project.experiment.tasks', {
