@@ -2,7 +2,7 @@
     <div layout="column" flex>
         <div ng-if="!$ctrl.sharingOn" layout="row">
             <md-button class="md-primary md-raised" ng-click="$ctrl.createNewProject()">create project</md-button>
-            <md-button class="md-primary md-raised" ng-click="$ctrl.sharingOn = true">share</md-button>
+            <md-button ng-show="false" class="md-primary md-raised" ng-click="$ctrl.sharingOn = true">share</md-button>
         </div>
         <div ng-if="$ctrl.sharingOn" layout="row">
             <md-button class="md-primary md-raised" ng-click="$ctrl.gotoSharing()">done</md-button>
