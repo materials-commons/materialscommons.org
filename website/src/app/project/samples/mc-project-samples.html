@@ -21,7 +21,7 @@
             <div layout="row" layout-align="space-between center"
                  style="color: black;background-color:#f4f5f7; padding-left:8px;padding-right:8px">
                 <h3 class="md-title" style="color:black">SAMPLES</h3>
-                <md-button class="md-primary md-raised" ui-sref="project.create.sample">
+                <md-button ng-show="false" class="md-primary md-raised" ui-sref="project.create.sample">
                     <i class="fa fa-fw fa-plus"></i> Create New Sample
                 </md-button>
             </div>
@@ -30,7 +30,8 @@
             <md-content flex style="max-height:70vh">
                 <div ng-if="$ctrl.showTableView">
                     <mc-project-samples-table samples="$ctrl.samples"
-                                              filter-by="$ctrl.query"></mc-project-samples-table>
+                                              filter-by="$ctrl.query">
+                    </mc-project-samples-table>
                 </div>
                 <div ng-if="!$ctrl.showTableView">
                     Show card view
