@@ -4,8 +4,9 @@ module.exports = function(users, experiments) {
     const _ = require('lodash');
 
     return {
-        updateProjectFavorites: updateProjectFavorites,
-        updateUserSettings: updateUserSettings
+        updateProjectFavorites,
+        updateUserSettings,
+        createAccount
     };
 
     function* updateProjectFavorites(next) {
@@ -61,5 +62,27 @@ module.exports = function(users, experiments) {
         }
 
         return null;
+    }
+
+    function* createAccount(next) {
+        let accountArgs = yield parse(this);
+        let errors = yield validateCreateAccount(accountArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield users.createUnverifiedAccount(accountArgs);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
+
+    function* validateCreateAccount(accountArgs) {
+        return {error: `Not implemented`};
     }
 };

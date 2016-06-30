@@ -18,6 +18,7 @@ import './toast.service';
 import './editoropts.service';
 import './samples-service.service';
 import './search-query-text.service';
+import './api-service.service';
 
 
 angular.module('materialscommons')

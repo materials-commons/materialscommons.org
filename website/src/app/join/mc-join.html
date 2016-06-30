@@ -1,0 +1,54 @@
+<div>
+    <div id="top" class="row">
+        <header class="splash-header">
+            <div class="row">
+                <h1 style="color: white; padding: 30px;">Materials Commons</h1>
+            </div>
+            <div class="row">
+                <div class="login-splash">
+                    <form name="joinForm">
+                        <div class="row">
+                            <input ng-model="$ctrl.firstName" name="firstname" required class="form-control" type="string"
+                                   placeholder="First Name...">
+                        </div>
+
+                        <br>
+
+                        <div class="row">
+                            <input ng-model="$ctrl.lastName" name="lastname" required class="form-control" type="string" placeholder="Last Name...">
+                        </div>
+                        <br>
+                        <div class="row">
+                            <input ng-model="$ctrl.email" name="email" required="" class="form-control" placeholder="Email..." type="email">
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <input ng-model="$ctrl.password" required name="password" class="form-control" placeholder="Password..." type="password">
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <input ng-model="$ctrl.password2" required name="password2" class="form-control" placeholder="Re-enter Password..."
+                                   type="password">
+                        </div>
+                        <br>
+                        <p style="color:red;" ng-if="$ctrl.message">
+                            <b>{{$ctrl.message}}</b>
+                        </p>
+                        <br>
+
+                        <div class="row">
+                            <button class="btn btn-primary btn-lg" style="width: 100%;" ng-click="$ctrl.createAccount(joinForm)">
+                                Create Account
+                            </button>
+                            <button class="btn btn-warning btn-lg" style="width: 100%; margin-top: 10px" ui-sref="login">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </header>
+    </div>
+</div>
