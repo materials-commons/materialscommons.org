@@ -1,10 +1,12 @@
 class TaskService {
     /*@ngInject*/
-    constructor(experimentsService, templates, $stateParams, toast) {
+    constructor(experimentsService, templates, $stateParams, toast, projectsService, processEdit) {
         this.experimentsService = experimentsService;
         this.templates = templates;
         this.$stateParams = $stateParams;
         this.toast = toast;
+        this.projectsService = projectsService;
+        this.processEdit = processEdit;
     }
 
     toggleFlag(whichFlag, event, task) {
@@ -114,11 +116,17 @@ class TaskService {
             experimentId = this.$stateParams.experiment_id;
         this.experimentsService.addTemplateToTask(projectId, experimentId, task.id, `global_${templateId}`)
             .then(
-                (t) => {
-                    task.template_name = templateId;
-                    task.process_id = t.process_id;
-                    task.template = this.templates.getTemplate(templateId);
-                    task.template.template_id = t.template_id;
+                (template) => {
+                    this.projectsService.getProjectProcess(projectId, template.process_id).then(
+                        (process) => {
+                            let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
+                            var t = this.templates.getTemplate(templateName);
+                            task.template = this.processEdit.fillProcess(t, process);
+                            task.template.template_name = templateName;
+                            task.template.template_id = process.template_id;
+                            task.loaded = true;
+                        }
+                    );
                 },
                 () => this.toast.error('Unable to associate template with task')
             );
