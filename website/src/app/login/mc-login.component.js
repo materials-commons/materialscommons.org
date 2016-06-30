@@ -8,7 +8,7 @@ angular.module('materialscommons')
 function MCLoginController($state, User, toastr, mcapi, Restangular) {
     var ctrl = this;
 
-    ctrl.message = "MCLoginController";
+    ctrl.message = "";
     ctrl.userLogin = "";
     ctrl.password = "";
     ctrl.cancel = cancel;

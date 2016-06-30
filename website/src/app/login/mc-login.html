@@ -20,8 +20,8 @@
                                type="password">
                     </div>
                     <br>
-                    <p style="color:red;" ng-if="message">
-                        <b>{{message}}</b>
+                    <p style="color:red;" ng-if="$ctrl.message !== ''">
+                        <b>{{$ctrl.message}}</b>
                     </p>
                     <br>
 
@@ -32,6 +32,9 @@
                         <button class="btn btn-warning btn-lg" style="width: 100%; margin-top: 10px" ng-click="$ctrl.cancel()">
                             Cancel
                         </button>
+                    </div>
+                    <div class="row">
+                        Not a member? <a ui-sref="join">Join now</a>
                     </div>
                 </div>
             </div>
