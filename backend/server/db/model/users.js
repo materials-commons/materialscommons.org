@@ -10,7 +10,8 @@ module.exports = function (r) {
         },
         updateProjectFavorites,
         updateUserSettings,
-        userHasProjectAccess
+        userHasProjectAccess,
+        createUnverifiedAccount
     };
 
     ///////////
@@ -70,5 +71,9 @@ module.exports = function (r) {
     function* userHasProjectAccess(userId, projectId) {
         let accessEntries = yield r.table('access').getAll([userId, projectId], {index: 'user_project'});
         return accessEntries.length !== 0;
+    }
+
+    function* createUnverifiedAccount(account) {
+        return {error: `createUnverifiedAccount Not implemented`};
     }
 };

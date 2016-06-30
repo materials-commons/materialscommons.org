@@ -5,6 +5,7 @@ import './global.services/index.module';
 import './global.filters/index.module';
 import './global.components/index.module';
 import './login/index.module';
+import './join/index.module';
 import './model/index.module';
 import './project/index.module';
 import './projects/index.module';
@@ -40,7 +41,8 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
 
     var unregister = $rootScope.$on('$stateChangeStart', function(event, toState) {
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
-        if (!User.isAuthenticated() && toState.url !== '/login') {
+        if (!User.isAuthenticated() && (toState.name !== 'login' && toState.name !== 'join')) {
+            console.log('not authenticated heading back to login', toState.name);
             event.preventDefault();
             $state.go('login');
         }

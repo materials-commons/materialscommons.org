@@ -8,7 +8,8 @@ module.exports = function(users) {
     // whiteList contains paths that don't require
     // a valid apikey.
     let whiteList = {
-        "/login": true
+        "/login": true,
+        "/accounts": true
     };
     // validateAPIKey Looks up the apikey. If none is specified, or a
     // bad key is passed then abort the calls and send back an 401.
