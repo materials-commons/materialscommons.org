@@ -76,8 +76,12 @@ module.exports = function(r) {
         let apikey = yield r.uuid(),
             user = new model.User(account.email, account.fullname, apikey.replace(/-/g, ''));
         user.validate_uuid = yield r.uuid();
-        let rv = yield r.table('users').insert(user, {returnChanges: true});
-        if (rv.error) {
+        let u = yield r.table('users').get(account.email);
+        if (u) {
+            return {error: `User already exists`};
+        }
+        let rv = yield r.table('account_requests').insert(user, {returnChanges: true});
+        if (rv.errors) {
             return {error: `User already exists`};
         }
 

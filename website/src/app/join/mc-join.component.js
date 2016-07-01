@@ -1,11 +1,13 @@
 class MCJoinComponentController {
     /*@ngInject*/
-    constructor(accountsService) {
+    constructor(accountsService, $state) {
         this.accountsService = accountsService;
+        this.$state = $state;
         this.firstName = '';
         this.lastName = '';
         this.email = '';
         this.message = null;
+        this.showSuccessMsg = false;
     }
 
     createAccount(joinForm) {
@@ -19,10 +21,9 @@ class MCJoinComponentController {
 
         this.accountsService.createAccount(`${this.firstName} ${this.lastName}`, this.email)
             .then(
-                () => null,
-                (error) => {
-                    console.log('error', error);
-                    this.message = 'Failed to create account';
+                () => this.showSuccessMsg = true,
+                (e) => {
+                    this.message = `Failed to create account: ${e.data.error}`;
                 }
             );
     }
