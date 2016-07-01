@@ -121,6 +121,7 @@ class TaskService {
                         (process) => {
                             let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
                             var t = this.templates.getTemplate(templateName);
+                            task.process_id = template.process_id;
                             task.template = this.processEdit.fillProcess(t, process);
                             task.template.template_name = templateName;
                             task.template.template_id = process.template_id;
