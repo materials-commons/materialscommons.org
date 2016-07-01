@@ -73,7 +73,6 @@ module.exports = function(r) {
     }
 
     function* createUnverifiedAccount(account) {
-        console.log('model', model);
         let apikey = yield r.uuid(),
             user = new model.User(account.email, account.fullname, apikey.replace(/-/g, ''));
         user.validate_uuid = yield r.uuid();
