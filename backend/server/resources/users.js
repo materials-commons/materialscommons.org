@@ -1,4 +1,4 @@
-module.exports = function(users, experiments) {
+module.exports = function(users, experiments, schema) {
     const parse = require('co-body');
     const status = require('http-status');
     const _ = require('lodash');
@@ -66,6 +66,7 @@ module.exports = function(users, experiments) {
 
     function* createAccount(next) {
         let accountArgs = yield parse(this);
+        schema.prepare(schema.userAccountSchema, accountArgs);
         let errors = yield validateCreateAccount(accountArgs);
         if (errors !== null) {
             this.status = status.BAD_REQUEST;
@@ -83,6 +84,6 @@ module.exports = function(users, experiments) {
     }
 
     function* validateCreateAccount(accountArgs) {
-        return {error: `Not implemented`};
+        return yield schema.validate(schema.userAccountSchema, accountArgs);
     }
 };

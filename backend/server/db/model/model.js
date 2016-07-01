@@ -210,6 +210,28 @@ module.exports = function (r) {
         this.share_id = shareID;
     }
 
+    function User(email, fullname, apikey) {
+        let now = r.now();
+        this.name = email;
+        this.fullname = fullname;
+        this.email = email;
+        this.password = "";
+        this.id = email;
+        this.apikey = apikey;
+        this.birthtime = now;
+        this.mtime = now;
+        this.avatar = "";
+        this.description = "";
+        this.affiliation = "";
+        this.homepage = "";
+        this.admin = false;
+        this.preferences = {
+            tags: [],
+            templates: []
+        };
+        this.validate_uuid = "";
+    }
+
     function Experiment(name, owner) {
         let now = r.now();
         this.name = name;
@@ -329,6 +351,7 @@ module.exports = function (r) {
         Experiment2ExperimentNote,
         Experiment2Process,
         Experiment2DataFile,
-        Experiment2Sample
+        Experiment2Sample,
+        User
     };
 };
