@@ -10,6 +10,7 @@ module.exports = function(model) {
     let experimentSchema = require('./experiment-schema')(schema);
     let samplesSchema = require('./samples-schema')(schema);
     let processSchema = require('./process-schema')(schema);
+    let userSchema = require('./user-schema')(schema);
 
     return {
         createSamples: samplesSchema.defineCreateSamplesSchema(),
@@ -30,6 +31,7 @@ module.exports = function(model) {
         updateExperimentTaskTemplateProps: experimentSchema.defineUpdateExperimentTaskTemplatePropsSchema(),
         templateProperty: experimentSchema.defineTemplatePropertySchema(),
         templateCommand: experimentSchema.defineTemplateCommandSchema(),
+        userAccountSchema: userSchema.defineUserAccountSchema(),
         validate,
         prepare,
         model: model

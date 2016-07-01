@@ -1,11 +1,12 @@
-module.exports = function (r) {
+module.exports = function(r) {
     const _ = require('lodash');
     const getSingle = require('./get-single');
+    const model = require('./model')(r);
 
     return {
         getUsers: getUsers,
         getUser: getUser,
-        get: function (id, index) {
+        get: function(id, index) {
             return getSingle(r, 'users', id, index);
         },
         updateProjectFavorites,
@@ -48,10 +49,8 @@ module.exports = function (r) {
                 };
             }
 
-            let toAdd = attrs.favorites.processes.
-                filter(p => p.command === 'add').map(p => p.name);
-            let toDelete = attrs.favorites.processes.
-                filter(p => p.command === 'delete').map(p => p.name);
+            let toAdd = attrs.favorites.processes.filter(p => p.command === 'add').map(p => p.name);
+            let toDelete = attrs.favorites.processes.filter(p => p.command === 'delete').map(p => p.name);
             let projProcesses = user.favorites[projectID].processes;
             // remove deleted process favorites
             projProcesses = projProcesses.filter(p => _.indexOf(toDelete, name => name == p, null) === -1);
@@ -74,6 +73,15 @@ module.exports = function (r) {
     }
 
     function* createUnverifiedAccount(account) {
-        return {error: `createUnverifiedAccount Not implemented`};
+        console.log('model', model);
+        let apikey = yield r.uuid(),
+            user = new model.User(account.email, account.fullname, apikey.replace(/-/g, ''));
+        user.validate_uuid = yield r.uuid();
+        let rv = yield r.table('users').insert(user, {returnChanges: true});
+        if (rv.error) {
+            return {error: `User already exists`};
+        }
+
+        return {val: rv.changes[0].new_val};
     }
 };

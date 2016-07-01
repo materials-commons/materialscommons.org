@@ -4,11 +4,10 @@ class AccountsService {
         this.apiService = apiService;
     }
 
-    createAccount(fullname, email, password) {
+    createAccount(fullname, email) {
         return this.apiService('accounts').customPOST({
             fullname: fullname,
-            email: email,
-            password: password
+            email: email
         });
     }
 }

@@ -5,8 +5,6 @@ class MCJoinComponentController {
         this.firstName = '';
         this.lastName = '';
         this.email = '';
-        this.password = '';
-        this.password2 = '';
         this.message = null;
     }
 
@@ -19,19 +17,19 @@ class MCJoinComponentController {
             return;
         }
 
-        this.accountsService.createAccount(`${this.firstName} ${this.lastName}`, this.email, this.password)
+        this.accountsService.createAccount(`${this.firstName} ${this.lastName}`, this.email)
             .then(
                 () => null,
-                () => this.message = 'Failed to create account'
+                (error) => {
+                    console.log('error', error);
+                    this.message = 'Failed to create account';
+                }
             );
     }
 
     allFieldsValid() {
-        if (this.firstName === '' || this.lastName === '' || this.email === '' || this.password === '' || this.password2 === '') {
+        if (this.firstName === '' || this.lastName === '' || this.email === '') {
             this.message = 'All fields are required';
-            return false;
-        } else if (this.password !== this.password2) {
-            this.message = `Passwords don't match`;
             return false;
         }
 
