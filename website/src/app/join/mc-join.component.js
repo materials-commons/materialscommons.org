@@ -22,9 +22,7 @@ class MCJoinComponentController {
         this.accountsService.createAccount(`${this.firstName} ${this.lastName}`, this.email)
             .then(
                 () => this.showSuccessMsg = true,
-                (e) => {
-                    this.message = `Failed to create account: ${e.data.error}`;
-                }
+                (e) => this.message = `Failed to create account: ${e.data.error}`
             );
     }
 
