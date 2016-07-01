@@ -222,6 +222,15 @@ a {
     background-color: rgba(255, 255, 255, 0.3);
 }
 
+.join-success-splash {
+    margin-right: auto;
+    margin-left: auto;
+    padding: 50px;
+    width: 600px;
+    background-color: white;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
 .join-splash {
     padding-top: 25px;
 }
