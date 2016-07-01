@@ -21,6 +21,7 @@ function is_running()
 function start_servers()
 {
     echo Starting $SERVERTYPE servers...
+    mkdir $MC_LOG_DIR 2> /dev/null
     R=$(is_running "rethinkdb" "driver-port $MCDB_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting rethinkdb..."
@@ -44,27 +45,27 @@ function start_servers()
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting mcapiserver..."
-        ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapiserver.out.${SERVERTYPE} 2>&1&
+        ./mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
     fi
 
     R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting mcstored..."
-        mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > /tmp/mcstored.out.${SERVERTYPE} 2>&1&
+        mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
     fi
 
     R=$(is_running "sbin/mcapi.js" "p $MC_API_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting mcapi..."
         gulp build-server
-        node sbin/mcapi.js -p $MC_API_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&
+        node sbin/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
     fi
 
     if [ $TESTSERVER = "u" ]; then
         if [ $(hostname) != "materialscommons" ]; then
             R=$(is_running "web-server.js" 8000)
             if [ "$R" = "" ]; then
-                (cd ../website; ./web-server.js 8000 > /tmp/webserver.out.${SERVERTYPE} 2>&1&)
+                (cd ../website; ./web-server.js 8000 > ${MC_LOG_DIR}/webserver.out.${SERVERTYPE} 2>&1&)
             fi
         fi
     fi
@@ -148,18 +149,18 @@ function restart_named_server()
     case "$1" in
         mcapiserver)
             echo "  Starting mcapiserver..."
-            ./mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapiserver.out.${SERVERTYPE} 2>&1&
+            ./mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
             ;;
 
         mcstored)
             echo "  Starting mcstored..."
-            mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > /tmp/mcstored.out.${SERVERTYPE} 2>&1&
+            mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
             ;;
 
         mcapi)
             echo "  Starting mcapi..."
             gulp build-server
-            node sbin/mcapi.js -p $MC_API_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&
+            node sbin/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
             ;;
 
         *)
@@ -283,6 +284,7 @@ if [ $TESTSERVER = "t" ]; then
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
     export MC_ES_URL="http://localhost:9500"
+    export MC_LOG_DIR=/var/log/materialscommons/test
     if [ "$MCDB_FILE" = "" ]; then
         export MCDB_FILE=~/test_data/rethinkdb_dump_test_data.tar.gz
     fi
@@ -311,6 +313,7 @@ elif [ $TESTSERVER = "u" ]; then
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
     export MC_ES_URL="http://localhost:9500"
+    export MC_LOG_DIR=/tmp
     if [ "$MCDB_FILE" = "" ]; then
         export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
     fi
@@ -335,6 +338,7 @@ elif [ "$TESTSERVER" = "p" ]; then
     export RETHINKDB_CLUSTER_PORT=29015
     export MCDB_DIR=~
     export MC_ES_URL="http://localhost:9200"
+    export MC_LOG_DIR=/var/log/materialscommons/production
     if [ $(hostname) = "materialscommons" ]; then
         export MCDIR=/mcfs/data/materialscommons
     else
