@@ -27,11 +27,11 @@ module.exports = function(r) {
 
     function* createDatasetForExperiment(experimentId, userId, datasetArgs) {
         let dataset = new model.Dataset(datasetArgs.title, userId);
+        dataset.description = datasetArgs.description;
         let created = yield db.insert('datasets', dataset);
         let e2d = new model.Experiment2Dataset(experimentId, created.id);
         yield r.table('experiment2dataset').insert(e2d);
-        let ds = yield getDataset(created.id);
-        return {val: ds};
+        return yield getDataset(created.id);
     }
 
     function* modifyDataset(datasetId, datasetArgs) {

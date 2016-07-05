@@ -336,7 +336,7 @@ module.exports = function (r) {
 
     function Experiment2Dataset(experimentId, datasetId) {
         this.experiment_id = experimentId;
-        this.datasetId = datasetId;
+        this.dataset_id = datasetId;
     }
 
     function Dataset2Sample(datasetId, sampleId) {

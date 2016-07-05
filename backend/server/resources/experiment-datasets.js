@@ -11,7 +11,7 @@ module.exports = function(experimentDatasets, schema) {
     };
 
     function* getDatasetsForExperiment(next) {
-        let rv = experimentDatasets.getDatasetsForExperiment(this.params.experiment_id);
+        let rv = yield experimentDatasets.getDatasetsForExperiment(this.params.experiment_id);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
             this.body = rv;
@@ -22,7 +22,7 @@ module.exports = function(experimentDatasets, schema) {
     }
 
     function* getDatasetForExperiment(next) {
-        let rv = experimentDatasets.getDataset(this.params.dataset_id);
+        let rv = yield experimentDatasets.getDataset(this.params.dataset_id);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
             this.body = rv;
@@ -40,7 +40,7 @@ module.exports = function(experimentDatasets, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = experimentDatasets.createDatasetForExperiment(this.params.experiment_id, this.reqctx.user.id, datasetArgs);
+            let rv = yield experimentDatasets.createDatasetForExperiment(this.params.experiment_id, this.reqctx.user.id, datasetArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
