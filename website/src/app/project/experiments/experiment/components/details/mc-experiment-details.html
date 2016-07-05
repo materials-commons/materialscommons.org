@@ -1,15 +1,15 @@
 <div layout="row">
     <md-content flex layout="column" layout-align="start stretch"
                 style="max-height:80vh; min-height: 68vh; padding-top:4px; margin-right:10px">
-        <div layout="row" layout-align="space-between center">
+        <div layout="row" layout-align="space-between center" style="margin-bottom: 10px">
             <div>
-                <md-radio-group layout="row" class="text-uppercase" ng-change="$ctrl.updateStatus()" ng-model="$ctrl.experiment.status">
+                <md-radio-group layout="row" class="text-uppercase" ng-change="$ctrl.updateStatus()"
+                                ng-model="$ctrl.experiment.status">
                     <md-radio-button value="active" class="md-primary">Active</md-radio-button>
                     <md-radio-button value="done" class="md-primary">Completed</md-radio-button>
                     <md-radio-button value="on-hold" class="md-warn">On Hold</md-radio-button>
                 </md-radio-group>
             </div>
-            <md-button class="md-primary" ui-sref="project.experiment.publish">Publish</md-button>
         </div>
 
         <div layout="row">
