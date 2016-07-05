@@ -314,6 +314,46 @@ module.exports = function (r) {
         this.sample_id = sampleId;
     }
 
+    function Dataset(title, user) {
+        let now = r.now();
+        this.user = user;
+        this.title = title;
+        this.institution = "";
+        this.authors = [];
+        this.birthtime = now;
+        this.mtime = now;
+        this.publication = {
+            title: "",
+            abstract: "",
+            link: "",
+            doi: ""
+        };
+        this.doi = "";
+        this.description = "";
+        this.license = "";
+        this.published = false;
+    }
+
+    function Experiment2Dataset(experimentId, datasetId) {
+        this.experiment_id = experimentId;
+        this.datasetId = datasetId;
+    }
+
+    function Dataset2Sample(datasetId, sampleId) {
+        this.dataset_id = datasetId;
+        this.sample_id = sampleId;
+    }
+
+    function Dataset2Process(datasetId, processId) {
+        this.dataset_id = datasetId;
+        this.process_id = processId;
+    }
+
+    function Dataset2ExperimentNote(datasetId, experimentNoteId) {
+        this.dataset_id = datasetId;
+        this.experiment_note_id = experimentNoteId;
+    }
+
     return {
         Sample: Sample,
         Process: Process,
@@ -352,6 +392,11 @@ module.exports = function (r) {
         Experiment2Process,
         Experiment2DataFile,
         Experiment2Sample,
-        User
+        User,
+        Dataset,
+        Experiment2Dataset,
+        Dataset2Sample,
+        Dataset2Process,
+        Dataset2ExperimentNote
     };
 };
