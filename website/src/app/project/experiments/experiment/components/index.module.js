@@ -20,5 +20,5 @@ import './mc-experiment-sidenav.component';
 import './tasks/services/blank-task-service.service';
 import './tasks/services/task-service.service';
 import './publish/mc-experiment-publish.component';
-import './publish/mc-experiment-published-datasets.component';
+import './publish/mc-experiment-datasets.component';
 import './publish/dataset-service.service';

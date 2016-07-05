@@ -5,6 +5,19 @@ class MCExperimentPublishComponentController {
         this.experimentId = $stateParams.experiment_id;
         this.datasetService = datasetService;
         this.toast = toast;
+        this.publishedDatasets = [];
+        this.inprocessDatasets = [];
+    }
+
+    $onInit() {
+        this.datasetService.getDatasetsForExperiment(this.projectId, this.experimentId)
+            .then(
+                (datasets) => {
+                    this.publishedDatasets = datasets.filter(ds => ds.published);
+                    this.inprocessDatasets = datasets.filter(ds => !ds.published);
+                },
+                () => this.toast.error('Unable to retrieve datasets for experiment')
+            );
     }
 
     publishNewDataset() {
