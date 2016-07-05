@@ -2,7 +2,7 @@ module.exports = function(model) {
     'use strict';
 
     const validateProjectAccess = require('./project-access')(model.access);
-    const resourceAccess = require('./resource-access')(model.access);
+    const resourceAccess = require('./resource-access')(model.access, model.experiments);
     const schema = require('../schema')(model);
     const router = require('koa-router')();
     const projects = require('./projects')(model.projects);

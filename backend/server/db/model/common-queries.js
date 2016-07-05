@@ -42,7 +42,7 @@ module.exports.datasetDetailsRql = function datasetDetailsRql(rql, r) {
                 .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
             processes: r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
                 .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
-            files: r.table('dataset2file').getAll(ds('id'), {ndex: 'dataset_id'})
+            files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
                 .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array')
         };
     });
