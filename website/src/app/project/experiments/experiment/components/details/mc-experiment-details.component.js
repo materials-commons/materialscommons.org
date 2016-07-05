@@ -7,7 +7,7 @@ angular.module('materialscommons').component('mcExperimentDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentDetailsComponentController($stateParams, experimentsService, toast, $scope, $mdDialog, editorOpts) {
+function MCExperimentDetailsComponentController($stateParams, experimentsService, toast, $scope, $state, editorOpts) {
     let ctrl = this;
 
     $scope.editorOptions = editorOpts({height: 67, width: 41});
@@ -48,30 +48,5 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
                 () => toast.error('Failed to update note')
             );
     };
-
-    ctrl.publishExperiment = () => {
-        $mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/details/publish-experiment-dialog.html',
-            controller: PublishExperimentDialogController,
-            controllerAs: 'ctrl',
-            bindToController: true
-        });
-    };
-
-
 }
 
-class PublishExperimentDialogController {
-    /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
-
-    done() {
-        this.$mdDialog.hide();
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}

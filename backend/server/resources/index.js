@@ -2,6 +2,7 @@ module.exports = function(model) {
     'use strict';
 
     const validateProjectAccess = require('./project-access')(model.access);
+    const resourceAccess = require('./resource-access')(model.access);
     const schema = require('../schema')(model);
     const router = require('koa-router')();
     const projects = require('./projects')(model.projects);
@@ -13,6 +14,7 @@ module.exports = function(model) {
     const shares = require('./shares')(model.shares, schema);
     const experiments = require('./experiments')(model.experiments, model.samples, schema);
     const experimentSamples = require('./experiment-samples')(model.samples, model.experiments, schema);
+    const experimentDatasets = require('./experiment-datasets')(model.experimentDatasets, schema);
 
     router.get('/projects', projects.all);
     router.put('/projects/:project_id', validateProjectAccess, projects.update);
@@ -66,16 +68,31 @@ module.exports = function(model) {
     router.put('/projects/:project_id/experiments/:experiment_id/notes/:note_id', validateProjectAccess, experiments.updateExperimentNote);
     router.post('/projects/:project_id/experiments/:experiment_id/notes', validateProjectAccess, experiments.createExperimentNote);
 
-    router.post('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.addSamplesToExperiment);
-    router.put('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.updateExperimentSamples);
-    router.get('/projects/:project_id/experiments/:experiment_id/samples', experimentSamples.getSamplesForExperiment);
-    router.post('/projects/:project_id/experiments/:experiment_id/samples/delete', experimentSamples.deleteSamplesFromExperiment);
-    router.post('/projects/:project_id/experiments/:experiment_id/samples/measurements', experimentSamples.addSamplesMeasurements);
-    router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements', experimentSamples.updateSamplesMeasurements);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples', validateProjectAccess, experimentSamples.addSamplesToExperiment);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples', validateProjectAccess, experimentSamples.updateExperimentSamples);
+    router.get('/projects/:project_id/experiments/:experiment_id/samples', validateProjectAccess, experimentSamples.getSamplesForExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples/delete', validateProjectAccess, experimentSamples.deleteSamplesFromExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples/measurements', validateProjectAccess, experimentSamples.addSamplesMeasurements);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements', validateProjectAccess, experimentSamples.updateSamplesMeasurements);
 
-    router.get('/projects/:project_id/experiments/:experiment_id/processes', experiments.getProcessesForExperiment);
+    router.get('/projects/:project_id/experiments/:experiment_id/processes', validateProjectAccess, experiments.getProcessesForExperiment);
 
-    router.get('/projects/:project_id/experiments/:experiment_id/files', experiments.getFilesForExperiment);
+    router.get('/projects/:project_id/experiments/:experiment_id/files', validateProjectAccess, experiments.getFilesForExperiment);
+
+    router.get('/projects/:project_id/experiments/:experiment_id/datasets',
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, experimentDatasets.getDatasetsForExperiment);
+    router.get('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
+        experimentDatasets.getDatasetForExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/datasets',
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject,
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, experimentDatasets.createDatasetForExperiment);
+    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
+        experimentDatasets.modifyDatasetForExperiment);
+    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
+        experimentDatasets.publishDataset);
 
     router.put('/users/:project_id', users.updateProjectFavorites);
     router.put('/users', users.updateUserSettings);

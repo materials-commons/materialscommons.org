@@ -35,6 +35,19 @@ module.exports.fileDetailsRql = function fileDetailsRql(rql, r) {
     });
 };
 
+module.exports.datasetDetailsRql = function datasetDetailsRql(rql, r) {
+    return rql.merge(ds => {
+        return {
+            samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'})
+                .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
+            processes: r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
+                .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
+            files: r.table('dataset2file').getAll(ds('id'), {ndex: 'dataset_id'})
+                .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array')
+        };
+    });
+};
+
 module.exports.processDetailsRql = function processDetailsRql(rql, r) {
     return rql.merge(function(process) {
         return {

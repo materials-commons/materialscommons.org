@@ -11,6 +11,7 @@ module.exports = function(model) {
     let samplesSchema = require('./samples-schema')(schema);
     let processSchema = require('./process-schema')(schema);
     let userSchema = require('./user-schema')(schema);
+    let datasetSchema = require('./dataset-schema')(schema);
 
     return {
         createSamples: samplesSchema.defineCreateSamplesSchema(),
@@ -32,9 +33,11 @@ module.exports = function(model) {
         templateProperty: experimentSchema.defineTemplatePropertySchema(),
         templateCommand: experimentSchema.defineTemplateCommandSchema(),
         userAccountSchema: userSchema.defineUserAccountSchema(),
+        createDatasetSchema: datasetSchema.defineCreateDatasetSchema(),
+        updateDatasetSchema: datasetSchema.defineUpdateDatasetSchema(),
         validate,
         prepare,
-        model: model
+        model
     };
 
     function validate(schema, body) {
