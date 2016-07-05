@@ -19,3 +19,4 @@ import './notes/notes-service.service';
 import './mc-experiment-sidenav.component';
 import './tasks/services/blank-task-service.service';
 import './tasks/services/task-service.service';
+import './publish/mc-experiment-publish.component';

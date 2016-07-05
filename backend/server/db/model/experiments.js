@@ -32,7 +32,8 @@ module.exports = function(r) {
         allSamplesInExperiment,
         fileInProject,
         getProcessesForExperiment,
-        getFilesForExperiment
+        getFilesForExperiment,
+        experimentHasDataset
     };
 
     function* getAllForProject(projectID) {
@@ -517,5 +518,10 @@ module.exports = function(r) {
             .eqJoin('datafile_id', r.table('datafiles')).zip(), r);
         let files = yield dbExec(rql);
         return {val: files};
+    }
+
+    function* experimentHasDataset(experimentId, datasetId) {
+        let datasets = yield r.table('experiment2dataset').getAll([experimentId, datasetId], {index: 'experiment_dataset'});
+        return datasets.length !== 0;
     }
 };

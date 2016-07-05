@@ -9,6 +9,7 @@ module.exports = function models(r) {
         directories: require('./directories')(r),
         shares: require('./shares')(r),
         experiments: require('./experiments')(r),
+        experimentDatasets: require('./experiment-datasets')(r),
         r: r
     };
 };

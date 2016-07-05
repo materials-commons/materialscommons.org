@@ -33,7 +33,7 @@ def create_tables():
     create_table("ui")
 
     create_table("samples", "project_id")
-    create_table('access', "user_id", "project_id", "dataset")
+    create_table('access', "user_id", "project_id")
     create_compound_index("access", "user_project", ["user_id", "project_id"])
 
     create_table("elements")
@@ -132,6 +132,23 @@ def create_tables():
     create_table("experimentnotes")
     create_table("experiment2experimentnote", "experiment_id", "experiment_note_id")
     create_compound_index("experiment2experimentnote", "experiment_experiment_note", ["experiment_id", "experiment_note_id"])
+
+    create_table("datasets")
+
+    create_table("experiment2dataset", "experiment_id", "dataset_id")
+    create_compound_index("experiment2dataset", "experiment_dataset", ["experiment_id", "dataset_id"])
+
+    create_table("dataset2sample", "dataset_id", "sample_id")
+    create_compound_index("dataset2sample", "dataset_sample", ["dataset_id", "sample_id"])
+
+    create_table("dataset2process", "dataset_id", "process_id")
+    create_compound_index("dataset2process", "dataset_process", ["dataset_id", "process_id"])
+
+    create_table("dataset2datafile", "dataset_id", "datafile_id")
+    create_compound_index("dataset2datafile", "dataset_datafile", ["dataset_id", "datafile_id"])
+
+    create_table("dataset2experimentnote", "dataset_id", "experiment_note_id")
+    create_compound_index("dataset2experimentnote", "dataset_experiment_note", ["dataset_id", "experiment_note_id"])
 
     run(r.db('materialscommons').wait())
 
