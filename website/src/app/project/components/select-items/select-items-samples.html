@@ -1,9 +1,5 @@
 <div layout="column" layout-margin>
-    <md-checkbox ng-model="ctrl.showSamplesInGroup" ng-change="ctrl.showGroupsChanged()">
-        Show All Samples
-    </md-checkbox>
-
-    <md-table-container>
+    <md-table-container ng-if="ctrl.samples.length">
         <table md-table md-row-select ng-model="ctrl.selected">
             <thead md-head>
             <tr md-row>
@@ -22,4 +18,5 @@
             </tbody>
         </table>
     </md-table-container>
+    <span ng-if="!ctrl.samples.length">No samples</span>
 </div>
