@@ -30,6 +30,7 @@ module.exports = function(r) {
         addSamples,
         deleteSamplesFromExperiment,
         allSamplesInExperiment,
+        sampleInExperiment,
         fileInProject,
         getProcessesForExperiment,
         getFilesForExperiment,
@@ -499,6 +500,11 @@ module.exports = function(r) {
         let indexArgs = sampleIds.map((sampleId) => [experimentId, sampleId]);
         let samples = yield r.table('experiment2sample').getAll(r.args(indexArgs), {index: 'experiment_sample'});
         return samples.length === sampleIds.length;
+    }
+
+    function* sampleInExperiment(experimentId, sampleId) {
+        let samples = yield r.table('experiment2sample').getAll([experimentId, sampleId], {index: 'experiment_sample'});
+        return samples.length !== 0;
     }
 
     function* fileInProject(fileId, projectId) {
