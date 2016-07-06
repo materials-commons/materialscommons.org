@@ -1,4 +1,4 @@
-module.exports = function(experimentDatasets, schema) {
+module.exports = function(experimentDatasets, experiments, samples, schema) {
     const parse = require('co-body');
     const status = require('http-status');
 
@@ -7,6 +7,8 @@ module.exports = function(experimentDatasets, schema) {
         getDatasetForExperiment,
         createDatasetForExperiment,
         modifyDatasetForExperiment,
+        addSampleToDataset,
+        updateSamplesInDataset,
         publishDataset
     };
 
@@ -68,6 +70,73 @@ module.exports = function(experimentDatasets, schema) {
             }
         }
         yield next;
+    }
+
+    function* addSampleToDataset(next) {
+        let rv = yield experimentDatasets.addSampleToDataset(this.params.dataset_id, this.params.sample_id);
+        if (rv.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = rv;
+        } else {
+            this.body = rv.val;
+        }
+        yield next;
+    }
+
+    function* updateSamplesInDataset(next) {
+        let sampleArgs = yield parse(this);
+        let errors = yield validateUpdateSamplesInDataset(this.params.experiment_id, this.params.dataset_id, sampleArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let addSamples = sampleArgs.samples.filter(s => s.command === 'add');
+            let deleteSamples = sampleArgs.samples.filter(s => s.command === 'delete');
+            let rv = yield experimentDatasets.updateSamplesInDataset(this.params.dataset_id, addSamples, deleteSamples);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
+
+    function* validateUpdateSamplesInDataset(experimentId, datasetId, sampleArgs) {
+        if (!sampleArgs.samples || !_.isArray(sampleArgs.samples)) {
+            return {error: `Bad arguments`};
+        }
+        let idsToAdd = [];
+        let idsToDelete = [];
+        for (let i = 0; i < sampleArgs.samples.length; i++) {
+            let s = sampleArgs[i];
+            if (!_.isObject(s)) {
+                return {error: `Bad arguments`};
+            } else if (!s.command || !s.id) {
+                return {error: `Bad arguments`};
+            } else if (s.command === 'add') {
+                idsToAdd.push(s.id);
+            } else if (s.command === 'delete') {
+                idsToDelete.push(s.id);
+            }
+        }
+
+        if (idsToAdd.length) {
+            let allInExperiment = yield experiments.allSamplesInExperiment(experimentId, idsToAdd);
+            if (!allInExperiment) {
+                return {error: `Some samples not in experiment`};
+            }
+        }
+
+        if (idsToDelete.length) {
+            let allInDataset = yield experimentDatasets.allSamplesInDataset(datasetId, idsToDelete);
+            if (!allInDataset) {
+                return {error: `Some samples not in dataset`};
+            }
+        }
+
+        return null;
     }
 
     function* publishDataset(next) {

@@ -18,6 +18,10 @@ class DatasetService {
             description: description
         });
     }
+
+    addSampleToDataset(projectId, experimentId, datasetId, sampleId) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).one('samples', sampleId).customPUT();
+    }
 }
 
 angular.module('materialscommons').service('datasetService', DatasetService);

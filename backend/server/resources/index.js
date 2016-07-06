@@ -14,7 +14,7 @@ module.exports = function(model) {
     const shares = require('./shares')(model.shares, schema);
     const experiments = require('./experiments')(model.experiments, model.samples, schema);
     const experimentSamples = require('./experiment-samples')(model.samples, model.experiments, schema);
-    const experimentDatasets = require('./experiment-datasets')(model.experimentDatasets, schema);
+    const experimentDatasets = require('./experiment-datasets')(model.experimentDatasets, model.experiments, model.samples, schema);
 
     router.get('/projects', projects.all);
     router.put('/projects/:project_id', validateProjectAccess, projects.update);
@@ -93,6 +93,12 @@ module.exports = function(model) {
     router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
         experimentDatasets.publishDataset);
+    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/samples/:sample_id',
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject,
+        resourceAccess.validateDatasetInExperiment, resourceAccess.validateSampleInExperiment, experimentDatasets.addSampleToDataset);
+    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/samples',
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
+        experimentDatasets.updateSamplesInDataset);
 
     router.put('/users/:project_id', users.updateProjectFavorites);
     router.put('/users', users.updateUserSettings);

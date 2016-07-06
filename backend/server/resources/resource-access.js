@@ -5,7 +5,8 @@ module.exports = function(access, experiments) {
     return {
         validateProjectAccess,
         validateExperimentInProject,
-        validateDatasetInExperiment
+        validateDatasetInExperiment,
+        validateSampleInExperiment
     };
 
     function* validateProjectAccess(next) {
@@ -31,7 +32,7 @@ module.exports = function(access, experiments) {
     function* validateExperimentInProject(next) {
         let projectId = this.params.project_id;
         let experimentId = this.params.experiment_id;
-        let isInProject = experiments.experimentExistsInProject(projectId, experimentId);
+        let isInProject = yield experiments.experimentExistsInProject(projectId, experimentId);
         if (!isInProject) {
             this.status = httpStatus.BAD_REQUEST;
             this.body = {error: `No such experiment ${experimentId}`};
@@ -42,10 +43,19 @@ module.exports = function(access, experiments) {
     function* validateDatasetInExperiment(next) {
         let experimentId = this.params.experiment_id;
         let datasetId = this.params.dataset_id;
-        let isInExperiment = experiments.experimentHasDataset(experimentId, datasetId);
+        let isInExperiment = yield experiments.experimentHasDataset(experimentId, datasetId);
         if (!isInExperiment) {
             this.status = httpStatus.BAD_REQUEST;
             this.body = {error: `No such dataset ${datasetId}`};
+        }
+        yield next;
+    }
+
+    function* validateSampleInExperiment(next) {
+        let isInExperiment = yield experiments.sampleInExperiment(this.params.experiment_id, this.params.sample_id);
+        if (!isInExperiment) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: `No such sample in experiment ${this.params.sample_id}`};
         }
         yield next;
     }
