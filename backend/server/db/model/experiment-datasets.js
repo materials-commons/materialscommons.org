@@ -3,6 +3,7 @@ module.exports = function(r) {
     const db = require('./db')(r);
     const model = require('./model')(r);
     const commonQueries = require('./common-queries');
+    const _ = require('lodash');
 
     return {
         getDatasetsForExperiment,
@@ -62,7 +63,7 @@ module.exports = function(r) {
 
     function* removeExistingSampleEntriesInDataset(samplesToAdd) {
         if (samplesToAdd.length) {
-            let indexEntries = samplesToAdd.map(s => [s]);
+            let indexEntries = samplesToAdd.map(s => [s.dataset_id, s.sample_id]);
             let matchingEntries = yield r.table('dataset2sample').getAll(r.args(indexEntries), {index: 'dataset_sample'});
             let matchingEntriesBySampleId = _.indexBy(matchingEntries, 'sample_id');
             return samplesToAdd.filter(s => (!(s.sample_id in matchingEntriesBySampleId)));

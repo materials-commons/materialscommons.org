@@ -1,6 +1,7 @@
 module.exports = function(experimentDatasets, experiments, samples, schema) {
     const parse = require('co-body');
     const status = require('http-status');
+    const _ = require('lodash');
 
     return {
         getDatasetsForExperiment,
@@ -105,16 +106,16 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
 
     function* validateUpdateSamplesInDataset(experimentId, datasetId, sampleArgs) {
         if (!sampleArgs.samples || !_.isArray(sampleArgs.samples)) {
-            return {error: `Bad arguments`};
+            return {error: `Bad arguments samples is a required field`};
         }
         let idsToAdd = [];
         let idsToDelete = [];
         for (let i = 0; i < sampleArgs.samples.length; i++) {
-            let s = sampleArgs[i];
+            let s = sampleArgs.samples[i];
             if (!_.isObject(s)) {
-                return {error: `Bad arguments`};
+                return {error: `Bad arguments sample is not an object ${s}`};
             } else if (!s.command || !s.id) {
-                return {error: `Bad arguments`};
+                return {error: `Bad arguments no command or id ${s}`};
             } else if (s.command === 'add') {
                 idsToAdd.push(s.id);
             } else if (s.command === 'delete') {
@@ -134,6 +135,10 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
             if (!allInDataset) {
                 return {error: `Some samples not in dataset`};
             }
+        }
+
+        if (!idsToAdd.length && !idsToDelete.length) {
+            return {error: `No samples to add or delete from dataset`};
         }
 
         return null;
