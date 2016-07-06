@@ -1,0 +1,23 @@
+<md-dialog flex="40">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Create Dataset
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <form layout="column" class="dialog-form">
+            <md-input-container md-no-float>
+                <label>Title</label>
+                <input ng-model="$ctrl.title" type="text" on-enter="$ctrl.create()">
+            </md-input-container>
+            <md-input-container md-no-float>
+                <label>Description</label>
+                <textarea ng-model="$ctrl.description"></textarea>
+            </md-input-container>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.create()">Submit</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>
