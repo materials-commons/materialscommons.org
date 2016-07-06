@@ -22,6 +22,14 @@ class DatasetService {
     addSampleToDataset(projectId, experimentId, datasetId, sampleId) {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).one('samples', sampleId).customPUT();
     }
+
+    updateSamplesInDataset(projectId, experimentId, datasetId, sampleIdsToAdd, sampleIdsToDelete) {
+        let toAdd = sampleIdsToAdd.map(sid => { return {command: 'add', id: sid}; });
+        let toDelete = sampleIdsToDelete.map(sid => { return {command: 'delete', id: sid}; });
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).one('samples').customPUT({
+            samples: toAdd.concat(toDelete)
+        });
+    }
 }
 
 angular.module('materialscommons').service('datasetService', DatasetService);
