@@ -199,6 +199,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/publish',
             template: '<mc-experiment-publish></mc-experiment-publish>'
         })
+        .state('project.experiment.datasets', {
+            url: '/datasets',
+            template: '<mc-experiment-datasets></mc-experiment-datasets>'
+        })
         .state('project.create.process', {
             url: '/process/:template_id/:process_id',
             template: '<mc-process-create></mc-process-create>',
