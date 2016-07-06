@@ -203,6 +203,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/datasets',
             template: '<mc-experiment-datasets></mc-experiment-datasets>'
         })
+        .state('project.experiment.dataset', {
+            url: '/dataset/:dataset_id',
+            template: '<mc-experiment-dataset></mc-experiment-dataset>'
+        })
         .state('project.create.process', {
             url: '/process/:template_id/:process_id',
             template: '<mc-process-create></mc-process-create>',
