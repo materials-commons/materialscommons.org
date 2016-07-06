@@ -1,12 +1,13 @@
 class MCExperimentDatasetComponentController {
     /*@ngInject*/
-    constructor(datasetService, toast, $stateParams) {
+    constructor(datasetService, toast, $stateParams, selectItems) {
         this.datasetService = datasetService;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
         this.dataset = null;
+        this.selectItems = selectItems;
     }
 
     $onInit() {
@@ -15,6 +16,14 @@ class MCExperimentDatasetComponentController {
                 (dataset) => this.dataset = dataset,
                 () => this.toast.error('Unable to retrieve datasets for experiment')
             );
+    }
+
+    selectSamples() {
+        this.selectItems.open('samples', {experimentId: this.experimentId}).then(
+            (selected) => {
+                console.log('selected samples', selected);
+            }
+        );
     }
 }
 
