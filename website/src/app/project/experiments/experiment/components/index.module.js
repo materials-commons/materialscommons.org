@@ -22,3 +22,4 @@ import './tasks/services/task-service.service';
 import './publish/mc-experiment-publish.component';
 import './publish/dataset-service.service';
 import './datasets/mc-experiment-datasets.component';
+import './dataset/mc-experiment-dataset.component';
