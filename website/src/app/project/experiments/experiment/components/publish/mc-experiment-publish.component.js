@@ -20,7 +20,7 @@ class MCExperimentPublishComponentController {
             );
     }
 
-    publishNewDataset() {
+    createNewDataset() {
         this.datasetService.createDatasetForExperiment(this.projectId, this.experimentId, "new dataset", "my new dataset")
             .then(
                 (dataset) => {
