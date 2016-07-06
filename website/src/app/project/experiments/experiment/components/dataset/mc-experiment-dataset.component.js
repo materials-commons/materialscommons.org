@@ -22,10 +22,10 @@ class MCExperimentDatasetComponentController {
         this.selectItems.open('samples', {experimentId: this.experimentId}).then(
             (selected) => {
                 if (selected.samples.length) {
-                    let s = selected.samples[0];
-                    this.datasetService.addSampleToDataset(this.projectId, this.experimentId, this.datasetId, s.id)
+                    let samplesToAdd = selected.samples.map(s => s.id);
+                    this.datasetService.updateSamplesInDataset(this.projectId, this.experimentId, this.datasetId, samplesToAdd, [])
                         .then(
-                            () => console.log('added sample!'),
+                            (dataset) => this.dataset = dataset,
                             () => this.toast.error('Failed to add sample to dataset')
                         );
                 }
