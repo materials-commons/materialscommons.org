@@ -10,12 +10,20 @@ export function selectItemsService($modal) {
                 reviews: false
             };
 
+            let opts = {
+                experimentId: ''
+            };
+
             if (arguments.length === 0) {
                 throw "Invalid arguments to service selectItems:open()";
             }
 
             for (var i = 0; i < arguments.length; i++) {
-                tabs[arguments[i]] = true;
+                if ((arguments[i] in tabs)) {
+                    tabs[arguments[i]] = true;
+                } else if (_.isObject(arguments[i])) {
+                    opts.experimentId = arguments[i].experimentId;
+                }
             }
 
             var modal = $modal.open({
@@ -38,7 +46,9 @@ export function selectItemsService($modal) {
 
                     showReviews: function() {
                         return tabs.reviews;
-                    }
+                    },
+
+                    options: () => opts
                 }
             });
             return modal.result;
@@ -46,9 +56,9 @@ export function selectItemsService($modal) {
     };
 }
 
-function SelectItemsServiceModalController($modalInstance, showProcesses, showFiles, showSamples,
-                                           showReviews, projectsService, $stateParams, project) {
-    'ngInject';
+/*@ngInject*/
+function SelectItemsServiceModalController($modalInstance, showProcesses, showFiles, showSamples, options,
+                                           showReviews, projectsService, $stateParams, project, experimentsService) {
     var ctrl = this;
 
     ctrl.project = project.get();
@@ -119,16 +129,28 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
         var tabs = [];
         if (showProcesses) {
             tabs.push(newTab('processes', 'fa-code-fork'));
-            projectsService.getProjectProcesses($stateParams.project_id).then(function(processes) {
-                ctrl.processes = processes;
-            });
+            if (options.experimentId) {
+
+            } else {
+                projectsService.getProjectProcesses($stateParams.project_id).then(function(processes) {
+                    ctrl.processes = processes;
+                });
+            }
         }
 
         if (showSamples) {
             tabs.push(newTab('samples', 'fa-cubes'));
-            projectsService.getProjectSamples($stateParams.project_id).then(function(samples) {
-                ctrl.samples = samples;
-            });
+            if (options.experimentId && options.experimentId !== '') {
+                experimentsService.getSamplesForExperiment($stateParams.project_id, options.experimentId).then(
+                    (samples) => {
+                        ctrl.samples = samples;
+                    }
+                )
+            } else {
+                projectsService.getProjectSamples($stateParams.project_id).then(function(samples) {
+                    ctrl.samples = samples;
+                });
+            }
         }
 
         if (showFiles) {
