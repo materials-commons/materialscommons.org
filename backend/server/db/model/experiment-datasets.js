@@ -64,8 +64,8 @@ module.exports = function(r) {
         if (samplesToAdd.length) {
             let indexEntries = samplesToAdd.map(s => [s]);
             let matchingEntries = yield r.table('dataset2sample').getAll(r.args(indexEntries), {index: 'dataset_sample'});
-            let bySampleId = _.indexBy(matchingEntries, 'sample_id');
-            return samplesToAdd.filter(s => (!(s.sample_id in bySampleId)));
+            let matchingEntriesBySampleId = _.indexBy(matchingEntries, 'sample_id');
+            return samplesToAdd.filter(s => (!(s.sample_id in matchingEntriesBySampleId)));
         }
 
         return samplesToAdd;
