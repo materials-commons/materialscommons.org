@@ -2,7 +2,7 @@
     <div layout="row" layout-align="start center">
         <h3 class="md-title" style="padding-right: 30px">Dataset: {{$ctrl.dataset.title}}</h3>
         <md-button class="md-primary" ng-click="$ctrl.selectSamples()">add samples</md-button>
-        <md-button class="md-primary">add files</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.selectFiles()">add files</md-button>
         <md-button class="md-primary">add processes</md-button>
     </div>
 
@@ -11,8 +11,7 @@
 
             <mc-dataset-samples samples="$ctrl.dataset.samples"></mc-dataset-samples>
 
-            <!--<h4 class="md-subhead">Files</h4>-->
-            <!--<mc-dataset-files files="$ctrl.dataset.files"></mc-dataset-files>-->
+            <mc-dataset-files files="$ctrl.dataset.files"></mc-dataset-files>
 
             <mc-dataset-processes processes="$ctrl.dataset.processes"></mc-dataset-processes>
         </md-content>
