@@ -36,8 +36,12 @@ export function selectItemsService($modal) {
                         return tabs.processes;
                     },
 
-                    showFiles: function() {
-                        return tabs.files;
+                    showFilesTree: function() {
+                        return tabs.files && opts.experimentId === '';
+                    },
+
+                    showFilesTable: function() {
+                        return tabs.files && opts.experimentId !== '';
                     },
 
                     showSamples: function() {
@@ -57,7 +61,7 @@ export function selectItemsService($modal) {
 }
 
 /*@ngInject*/
-function SelectItemsServiceModalController($modalInstance, showProcesses, showFiles, showSamples, options,
+function SelectItemsServiceModalController($modalInstance, showProcesses, showFilesTree, showFilesTable, showSamples, options,
                                            showReviews, projectsService, $stateParams, project, experimentsService) {
     var ctrl = this;
 
@@ -100,25 +104,28 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
     }
 
     function getSelectedFiles() {
-        if (!showFiles) {
+        if (showFilesTree) {
+            var files = [],
+                treeModel = new TreeModel(),
+                root = treeModel.parse(project.get().files[0]);
+            // Walk the tree looking for selected files and adding them to the
+            // list of files. Also reset the selected flag so the next time
+            // the popup for files is used it doesn't show previously selected
+            // items.
+            root.walk({strategy: 'pre'}, function(node) {
+                if (node.model.data.selected) {
+                    node.model.data.selected = false;
+                    if (node.model.data._type === 'file') {
+                        files.push(node.model.data);
+                    }
+                }
+            });
+            return files;
+        } else if (showFilesTable) {
+            return [];
+        } else {
             return [];
         }
-        var files = [],
-            treeModel = new TreeModel(),
-            root = treeModel.parse(project.get().files[0]);
-        // Walk the tree looking for selected files and adding them to the
-        // list of files. Also reset the selected flag so the next time
-        // the popup for files is used it doesn't show previously selected
-        // items.
-        root.walk({strategy: 'pre'}, function(node) {
-            if (node.model.data.selected) {
-                node.model.data.selected = false;
-                if (node.model.data._type === 'file') {
-                    files.push(node.model.data);
-                }
-            }
-        });
-        return files;
     }
 
     function cancel() {
@@ -130,7 +137,7 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
         if (showProcesses) {
             tabs.push(newTab('processes', 'fa-code-fork'));
             if (options.experimentId) {
-
+                // get processes for experiment
             } else {
                 projectsService.getProjectProcesses($stateParams.project_id).then(function(processes) {
                     ctrl.processes = processes;
@@ -153,8 +160,12 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
             }
         }
 
-        if (showFiles) {
-            tabs.push(newTab('files', 'fa-files-o'));
+        if (showFilesTree) {
+            tabs.push(newTab('file tree', 'fa-files-o'));
+        }
+
+        if (showFilesTable) {
+            tabs.push(newTab('file table', 'fa-files-o'));
         }
 
         if (showReviews) {
