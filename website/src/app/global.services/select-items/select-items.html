@@ -15,8 +15,11 @@
                     <div ng-if="ctrl.isActive('processes')">
                         <select-items-processes processes="ctrl.processes"></select-items-processes>
                     </div>
-                    <div ng-if="ctrl.isActive('files')">
+                    <div ng-if="ctrl.isActive('file tree')">
                         <mc-files-select project="ctrl.project"></mc-files-select>
+                    </div>
+                    <div ng-if="ctrl.isActive('file table')">
+                        <mc-files-table-select files="ctrl.files"></mc-files-table-select>
                     </div>
                     <div ng-if="ctrl.isActive('reviews')">
                         reviews
