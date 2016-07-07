@@ -81,24 +81,34 @@ module.exports = function(model) {
 
     router.get('/projects/:project_id/experiments/:experiment_id/datasets',
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, experimentDatasets.getDatasetsForExperiment);
+
     router.get('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
         experimentDatasets.getDatasetForExperiment);
+
     router.post('/projects/:project_id/experiments/:experiment_id/datasets',
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject,
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, experimentDatasets.createDatasetForExperiment);
+
     router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
         experimentDatasets.modifyDatasetForExperiment);
+
     router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
         experimentDatasets.publishDataset);
+
     router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/samples/:sample_id',
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject,
         resourceAccess.validateDatasetInExperiment, resourceAccess.validateSampleInExperiment, experimentDatasets.addSampleToDataset);
+
     router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/samples',
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
         experimentDatasets.updateSamplesInDataset);
+
+    router.put('/projects/:project_id/experiments/experiment_id/datasets/:dataset_id/files',
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
+        experimentDatasets.updateFilesInDataset);
 
     router.put('/users/:project_id', users.updateProjectFavorites);
     router.put('/users', users.updateUserSettings);

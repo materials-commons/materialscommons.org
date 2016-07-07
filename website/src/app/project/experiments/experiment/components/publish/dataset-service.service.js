@@ -30,6 +30,11 @@ class DatasetService {
             samples: toAdd.concat(toDelete)
         });
     }
+
+    updateFilesInDataset(projectId, experimentId, datasetId, fileIdsToAdd, fileIdsToDelete) {
+        let toAdd = fileIdsToAdd.map(fid => ({command: 'add', id: fid}));
+        let toDelete = fileIdsToDelete.map(fid => ({command: 'delete', id: fid}));
+    }
 }
 
 angular.module('materialscommons').service('datasetService', DatasetService);

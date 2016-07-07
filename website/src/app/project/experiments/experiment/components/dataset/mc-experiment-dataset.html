@@ -9,11 +9,13 @@
     <div layout="row" flex style="max-height: 70vh">
         <md-content layout="row" layout-wrap layout-align="start stretch" flex>
 
-            <mc-dataset-samples samples="$ctrl.dataset.samples"></mc-dataset-samples>
+            <mc-dataset-samples ng-show="$ctrl.dataset.samples.length"
+                                samples="$ctrl.dataset.samples"></mc-dataset-samples>
 
-            <mc-dataset-files files="$ctrl.dataset.files"></mc-dataset-files>
+            <mc-dataset-files ng-show="$ctrl.dataset.samples.length" files="$ctrl.dataset.files"></mc-dataset-files>
 
-            <mc-dataset-processes processes="$ctrl.dataset.processes"></mc-dataset-processes>
+            <mc-dataset-processes ng-show="$ctrl.dataset.processes.length"
+                                  processes="$ctrl.dataset.processes"></mc-dataset-processes>
         </md-content>
     </div>
 </div>

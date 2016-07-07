@@ -20,6 +20,7 @@ import './samples-service.service';
 import './search-query-text.service';
 import './api-service.service';
 import './select-items/mc-files-select.component';
+import './select-items/mc-files-table-select.component';
 import './select-items/select-items-files';
 import './select-items/select-items-processes';
 import './select-items/select-items-samples';
