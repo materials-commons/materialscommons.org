@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcFilesSelect', {
-    templateUrl: 'app/project/components/select-items/mc-files-select.html',
+    templateUrl: 'app/global.services/select-items/mc-files-select.html',
     controller: MCFilesSelectComponentController,
     bindings: {
         project: '='
@@ -34,7 +34,7 @@ function MCFilesSelectDirDirective(RecursionHelper) {
         replace: true,
         controllerAs: 'ctrl',
         bindToController: true,
-        templateUrl: 'app/project/components/select-items/mc-files-select-dir.html',
+        templateUrl: 'app/global.services/select-items/mc-files-select-dir.html',
         compile: function(element) {
             return RecursionHelper.compile(element, function() {});
         }

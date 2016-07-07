@@ -8,7 +8,7 @@ function selectItemsSamplesDirective() {
         controller: SelectItemsSamplesDirectiveController,
         controllerAs: 'ctrl',
         bindToController: true,
-        templateUrl: 'app/project/components/select-items/select-items-samples.html'
+        templateUrl: 'app/global.services/select-items/select-items-samples.html'
     }
 }
 
