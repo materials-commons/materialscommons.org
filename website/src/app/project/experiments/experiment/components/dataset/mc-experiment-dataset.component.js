@@ -32,6 +32,13 @@ class MCExperimentDatasetComponentController {
             }
         );
     }
+
+    selectFiles() {
+        this.selectItems.open('files', {experimentId: this.experimentId})
+            .then(
+                (selected) => console.log('selectFiles', selected)
+            );
+    }
 }
 
 angular.module('materialscommons').component('mcExperimentDataset', {
