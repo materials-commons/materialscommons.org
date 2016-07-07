@@ -6,12 +6,15 @@
         <md-button class="md-primary">add processes</md-button>
     </div>
 
-    <h4 class="md-subhead">Samples</h4>
-    <mc-dataset-samples samples="$ctrl.dataset.samples"></mc-dataset-samples>
+    <div layout="row" flex style="max-height: 70vh">
+        <md-content layout="row" layout-wrap layout-align="start stretch" flex>
 
-    <h4 class="md-subhead">Files</h4>
-    <mc-dataset-files files="$ctrl.dataset.files"></mc-dataset-files>
+            <mc-dataset-samples samples="$ctrl.dataset.samples"></mc-dataset-samples>
 
-    <h4 class="md-subhead">Processes</h4>
-    <mc-dataset-processes processes="$ctrl.dataset.processes"></mc-dataset-processes>
+            <!--<h4 class="md-subhead">Files</h4>-->
+            <!--<mc-dataset-files files="$ctrl.dataset.files"></mc-dataset-files>-->
+
+            <mc-dataset-processes processes="$ctrl.dataset.processes"></mc-dataset-processes>
+        </md-content>
+    </div>
 </div>
