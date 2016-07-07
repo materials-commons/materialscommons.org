@@ -25,3 +25,4 @@ import './datasets/mc-experiment-datasets.component';
 import './dataset/mc-experiment-dataset.component';
 import './dataset/components/mc-dataset-samples.component';
 import './dataset/components/mc-dataset-processes.component';
+import './dataset/components/mc-dataset-files.component';
