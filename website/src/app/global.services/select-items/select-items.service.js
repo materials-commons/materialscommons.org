@@ -104,9 +104,9 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
     }
 
     function getSelectedFiles() {
+        var files = [];
         if (showFilesTree) {
-            var files = [],
-                treeModel = new TreeModel(),
+            var treeModel = new TreeModel(),
                 root = treeModel.parse(project.get().files[0]);
             // Walk the tree looking for selected files and adding them to the
             // list of files. Also reset the selected flag so the next time
@@ -122,7 +122,7 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
             });
             return files;
         } else if (showFilesTable) {
-            return [];
+            return ctrl.files.filter(f => f.selected);
         } else {
             return [];
         }
@@ -166,6 +166,12 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
 
         if (showFilesTable) {
             tabs.push(newTab('file table', 'fa-files-o'));
+            experimentsService.getFilesForExperiment($stateParams.project_id, options.experimentId)
+                .then(
+                    (files) => {
+                        ctrl.files = files;
+                    }
+                );
         }
 
         if (showReviews) {

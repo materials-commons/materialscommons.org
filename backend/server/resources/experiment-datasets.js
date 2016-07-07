@@ -10,6 +10,7 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
         modifyDatasetForExperiment,
         addSampleToDataset,
         updateSamplesInDataset,
+        updateFilesInDataset,
         publishDataset
     };
 
@@ -132,6 +133,66 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
 
         if (idsToDelete.length) {
             let allInDataset = yield experimentDatasets.allSamplesInDataset(datasetId, idsToDelete);
+            if (!allInDataset) {
+                return {error: `Some samples not in dataset`};
+            }
+        }
+
+        if (!idsToAdd.length && !idsToDelete.length) {
+            return {error: `No samples to add or delete from dataset`};
+        }
+
+        return null;
+    }
+
+    function* updateFilesInDataset(next) {
+        let fileArgs = yield parse(this);
+        let errors = yield validateUpdateFilesInDataset(this.params.experiment_id, this.params.dataset_id, fileArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let addFiles = fileArgs.samples.filter(s => s.command === 'add');
+            let deleteFiles = fileArgs.samples.filter(s => s.command === 'delete');
+            let rv = yield experimentDatasets.updateFilesInDataset(this.params.dataset_id, addFiles, deleteFiles);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
+
+    function* validateUpdateFilesInDataset(experimentId, datasetId, filesArgs) {
+        if (!filesArgs.files || !_.isArray(filesArgs.files)) {
+            return {error: `Bad arguments files is a required field`};
+        }
+        let idsToAdd = [];
+        let idsToDelete = [];
+        for (let i = 0; i < filesArgs.files.length; i++) {
+            let f = filesArgs.files[i];
+            if (!_.isObject(f)) {
+                return {error: `Bad arguments file is not an object ${f}`};
+            } else if (!f.command || !f.id) {
+                return {error: `Bad arguments no command or id ${f}`};
+            } else if (f.command === 'add') {
+                idsToAdd.push(f.id);
+            } else if (f.command === 'delete') {
+                idsToDelete.push(f.id);
+            }
+        }
+
+        if (idsToAdd.length) {
+            let allInExperiment = yield experiments.allFilesInExperiment(experimentId, idsToAdd);
+            if (!allInExperiment) {
+                return {error: `Some samples not in experiment`};
+            }
+        }
+
+        if (idsToDelete.length) {
+            let allInDataset = yield experimentDatasets.allFilesInDataset(datasetId, idsToDelete);
             if (!allInDataset) {
                 return {error: `Some samples not in dataset`};
             }

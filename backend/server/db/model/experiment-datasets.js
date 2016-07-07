@@ -4,6 +4,7 @@ module.exports = function(r) {
     const model = require('./model')(r);
     const commonQueries = require('./common-queries');
     const _ = require('lodash');
+    const util = require('./util');
 
     return {
         getDatasetsForExperiment,
@@ -11,7 +12,9 @@ module.exports = function(r) {
         createDatasetForExperiment,
         addSampleToDataset,
         updateSamplesInDataset,
+        updateFilesInDataset,
         allSamplesInDataset,
+        allFilesInDataset,
         modifyDataset,
         publishDataset
     };
@@ -110,10 +113,35 @@ module.exports = function(r) {
         return samplesToAdd;
     }
 
+    function* updateFilesInDataset(datasetId, filesToAdd, filesToDelete) {
+        if (filesToAdd.length) {
+            let add = filesToAdd.map(f => new model.Dataset2Datafile(datasetId, f.id));
+            let indexEntries = filesToAdd.map(f => [f.dataset_id, f.datafile_id]);
+            let matchingEntries = yield r.table('dataset2datafile').getAll(r.args(indexEntries), {index: 'dataset_datafile'});
+            add = util.removeExistingItemsIn(add, matchingEntries, 'datafile_id');
+            if (add.length) {
+                yield r.table('dataset2datafile').insert(add);
+            }
+        }
+
+        if (filesToDelete.length) {
+            let toDelete = filesToDelete.map(f => [datasetId, f.id]);
+            yield r.table('dataset2datafile').getAll(r.args(toDelete), {index: 'dataset_datafile'}).delete();
+        }
+
+        return yield getDataset(datasetId);
+    }
+
     function* allSamplesInDataset(datasetId, sampleIds) {
         let indexArgs = sampleIds.map(sid => [datasetId, sid]);
         let samples = yield r.table('dataset2sample').getAll(r.args(indexArgs), {index: 'dataset_sample'});
         return samples.length === sampleIds.length;
+    }
+
+    function* allFilesInDataset(datasetId, fileIds) {
+        let indexArgs = fileIds.map(fid => [datasetId, fid]);
+        let files = yield r.table('dataset2datafile').getAll(r.args(indexArgs), {index: 'dataset_datafile'});
+        return files.length === fileIds.length;
     }
 
     function* modifyDataset(datasetId, datasetArgs) {
