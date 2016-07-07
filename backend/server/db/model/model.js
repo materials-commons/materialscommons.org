@@ -354,6 +354,11 @@ module.exports = function (r) {
         this.experiment_note_id = experimentNoteId;
     }
 
+    function Dataset2Datafile(datasetId, datafileId) {
+        this.dataset_id = datasetId;
+        this.datafile_id = datafileId;
+    }
+
     return {
         Sample: Sample,
         Process: Process,
@@ -397,6 +402,7 @@ module.exports = function (r) {
         Experiment2Dataset,
         Dataset2Sample,
         Dataset2Process,
-        Dataset2ExperimentNote
+        Dataset2ExperimentNote,
+        Dataset2Datafile
     };
 };
