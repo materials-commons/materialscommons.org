@@ -116,7 +116,7 @@ module.exports = function(r) {
     function* updateFilesInDataset(datasetId, filesToAdd, filesToDelete) {
         if (filesToAdd.length) {
             let add = filesToAdd.map(f => new model.Dataset2Datafile(datasetId, f.id));
-            let indexEntries = filesToAdd.map(f => [f.dataset_id, f.datafile_id]);
+            let indexEntries = add.map(f => [f.dataset_id, f.datafile_id]);
             let matchingEntries = yield r.table('dataset2datafile').getAll(r.args(indexEntries), {index: 'dataset_datafile'});
             add = util.removeExistingItemsIn(add, matchingEntries, 'datafile_id');
             if (add.length) {

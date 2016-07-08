@@ -26,7 +26,7 @@ class MCExperimentDatasetComponentController {
                     this.datasetService.updateSamplesInDataset(this.projectId, this.experimentId, this.datasetId, samplesToAdd, [])
                         .then(
                             (dataset) => this.dataset = dataset,
-                            () => this.toast.error('Failed to add sample to dataset')
+                            () => this.toast.error('Failed to add samples to dataset')
                         );
                 }
             }
@@ -36,7 +36,16 @@ class MCExperimentDatasetComponentController {
     selectFiles() {
         this.selectItems.open('files', {experimentId: this.experimentId})
             .then(
-                (selected) => console.log('selectFiles', selected)
+                (selected) => {
+                    if (selected.files.length) {
+                        let filesToAdd = selected.files.map(f => f.id);
+                        this.datasetService.updateFilesInDataset(this.projectId, this.experimentId, this.datasetId, filesToAdd, [])
+                            .then(
+                                (dataset) => this.dataset = dataset,
+                                () => this.toast.error('Failed to add files to dataset')
+                            )
+                    }
+                }
             );
     }
 }

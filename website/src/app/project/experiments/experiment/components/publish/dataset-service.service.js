@@ -24,8 +24,8 @@ class DatasetService {
     }
 
     updateSamplesInDataset(projectId, experimentId, datasetId, sampleIdsToAdd, sampleIdsToDelete) {
-        let toAdd = sampleIdsToAdd.map(sid => { return {command: 'add', id: sid}; });
-        let toDelete = sampleIdsToDelete.map(sid => { return {command: 'delete', id: sid}; });
+        let toAdd = sampleIdsToAdd.map(sid => ({command: 'add', id: sid}));
+        let toDelete = sampleIdsToDelete.map(sid => ({command: 'delete', id: sid}));
         return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).one('samples').customPUT({
             samples: toAdd.concat(toDelete)
         });
@@ -34,6 +34,9 @@ class DatasetService {
     updateFilesInDataset(projectId, experimentId, datasetId, fileIdsToAdd, fileIdsToDelete) {
         let toAdd = fileIdsToAdd.map(fid => ({command: 'add', id: fid}));
         let toDelete = fileIdsToDelete.map(fid => ({command: 'delete', id: fid}));
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).one('files').customPUT({
+            files: toAdd.concat(toDelete)
+        });
     }
 }
 

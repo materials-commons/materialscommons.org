@@ -106,7 +106,7 @@ module.exports = function(model) {
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
         experimentDatasets.updateSamplesInDataset);
 
-    router.put('/projects/:project_id/experiments/experiment_id/datasets/:dataset_id/files',
+    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/files',
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
         experimentDatasets.updateFilesInDataset);
 
