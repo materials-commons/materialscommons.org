@@ -16,6 +16,10 @@ class SamplesService {
         return this.projectsAPI(projectID).one('samples').getList();
     }
 
+    getProjectSample(projectId, sampleId) {
+        return this.projectsAPI(projectId).one('samples', sampleId).get();
+    }
+
     deleteSamplesFromExperiment(projectId, experimentId, processId, sampleIds) {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('samples').one('delete')
             .customPOST({process_id: processId, samples: sampleIds});

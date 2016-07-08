@@ -23,7 +23,7 @@ module.exports = function(r) {
     /////////////////
 
     function* getSample(sampleID) {
-        let rql = r.table('samples').getAll(sampleID)
+        let rql = r.table('samples').get(sampleID)
             .merge(function(sample) {
                 return {
                     processes: r.table('process2sample').getAll(sample('property_set_id'), {index: 'property_set_id'})
@@ -48,15 +48,13 @@ module.exports = function(r) {
                                 best_measure: r.table('best_measure_history')
                                     .getAll(property('best_measure_id'))
                                     .eqJoin('measurement_id', r.table('measurements'))
-                                    .zip().coerceTo('array'),
-                                measurements: r.table('property2measurement')
-                                    .getAll(property('id'), {index: 'property_id'})
-                                    .eqJoin('measurement_id', r.table('measurements')).zip().coerceTo('array')
+                                    .zip().coerceTo('array')
                             };
                         }).coerceTo('array')
                 }
             });
         let sample = dbExec(rql);
+        console.log('getSample', sample);
         return {val: sample};
     }
 
