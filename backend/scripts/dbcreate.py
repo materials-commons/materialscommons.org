@@ -62,7 +62,7 @@ def create_tables():
     create_table("uploads", "uploads", "project_id")
 
     # Create samples model
-    create_table("processes", "template_id")
+    create_table("processes", "template_id", "birthtime")
     create_table("project2process", "project_id", "process_id")
     create_compound_index("project2process", "project_process", ["project_id", "process_id"])
 
