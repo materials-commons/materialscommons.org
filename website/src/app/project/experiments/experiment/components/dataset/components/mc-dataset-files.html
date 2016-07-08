@@ -1,7 +1,10 @@
 <div layout="column" layout-fill>
     <h4 class="md-subhead">Files</h4>
     <div layout="row" layout-wrap>
-        <md-card flex="30" flex-md="45" ng-repeat="file in $ctrl.files" class="experiment-card">
+        <md-card flex="30" flex-md="45"
+                 ng-repeat="file in $ctrl.files"
+                 class="experiment-card"
+                 ng-click="$ctrl.showFile(file)">
             <md-card-header style="background-color:#d1d1d1; padding-bottom: 4px">
                 <md-card-avatar>
                 <span class="fa-stack fa-lg">
@@ -13,8 +16,7 @@
                     <span class="md-title">{{file.name}}</span>
                 </md-card-header-title>
             </md-card-header>
-            <md-card-title style="background-color:#d1d1d1; padding-top: 0; padding-bottom: 4px;"
-                           ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
+            <md-card-title style="background-color:#d1d1d1; padding-top: 0; padding-bottom: 4px;">
                 <md-card-title-text>
                     <span class="md-subhead" style="padding-top:4px">{{file.description}}</span>
                 </md-card-title-text>

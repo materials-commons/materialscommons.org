@@ -1,7 +1,30 @@
 class MCDatasetProcessesComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
 
+    showProcess(process) {
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-process-dialog.html',
+            controllerAs: '$ctrl',
+            controller: ShowProcessDialogController,
+            bindToController: true,
+            locals: {
+                process: process
+            }
+        });
+    }
+}
+
+class ShowProcessDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.cancel();
     }
 }
 
