@@ -38,6 +38,7 @@
     "angular-ui-tree": "~2.15.0",
     "angular-recursion": "~1.0.5",
     "ng-ckeditor": "~0.2.1",
-    "angularUtils-pagination": "angular-utils-pagination#~0.11.1"
+    "angularUtils-pagination": "angular-utils-pagination#~0.11.1",
+    "angular-timeline": "^1.7.0"
   }
 }
