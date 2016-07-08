@@ -1,0 +1,13 @@
+<md-dialog flex="80">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            {{$ctrl.process.name}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        This is where the process will be displayed
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.done()">done</md-button>
+    </md-dialog-actions>
+</md-dialog>
