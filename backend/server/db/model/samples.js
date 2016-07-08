@@ -26,34 +26,20 @@ module.exports = function(r) {
         let rql = r.table('samples').get(sampleID)
             .merge(function(sample) {
                 return {
-                    processes: r.table('process2sample').getAll(sample('property_set_id'), {index: 'property_set_id'})
+                    processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
                         .eqJoin('process_id', r.table('processes')).zip()
-                        .pluck('process_id', 'name', 'does_transform', 'process_type', 'direction')
-                        .filter({direction: 'out'})
                         .merge(function(process) {
                             return {
                                 measurements: r.table('process2measurement')
                                     .getAll(process('process_id'), {index: 'process_id'})
                                     .eqJoin('measurement_id', r.table('measurements')).zip().coerceTo('array')
                             };
-                        }).coerceTo('array'),
+                        }).orderBy('birthtime').coerceTo('array'),
                     files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
-                        .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
-                    properties: r.table('propertyset2property')
-                        .getAll(sample('property_set_id'), {index: 'property_set_id'})
-                        .eqJoin('property_id', r.table('properties')).zip()
-                        .orderBy('name')
-                        .merge(function(property) {
-                            return {
-                                best_measure: r.table('best_measure_history')
-                                    .getAll(property('best_measure_id'))
-                                    .eqJoin('measurement_id', r.table('measurements'))
-                                    .zip().coerceTo('array')
-                            };
-                        }).coerceTo('array')
+                        .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array')
                 }
             });
-        let sample = dbExec(rql);
+        let sample = yield dbExec(rql);
         console.log('getSample', sample);
         return {val: sample};
     }
