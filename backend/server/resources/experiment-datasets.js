@@ -152,8 +152,8 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let addFiles = fileArgs.samples.filter(s => s.command === 'add');
-            let deleteFiles = fileArgs.samples.filter(s => s.command === 'delete');
+            let addFiles = fileArgs.files.filter(s => s.command === 'add');
+            let deleteFiles = fileArgs.files.filter(s => s.command === 'delete');
             let rv = yield experimentDatasets.updateFilesInDataset(this.params.dataset_id, addFiles, deleteFiles);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
