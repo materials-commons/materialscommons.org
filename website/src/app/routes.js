@@ -327,6 +327,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/dir/:dir_id',
             template: '<mc-dir></mc-dir>'
         })
+        .state('project.sample', {
+            url: '/sample/:sample_id',
+            template: '<mc-sample></mc-sample>'
+        })
         .state('project.settings', {
             url: '/settings',
             template: '<mc-project-settings></mc-project-settings>'
