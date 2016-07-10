@@ -8,16 +8,21 @@
     <h3 class="md-subhead">Files</h3>
 
     <h3 class="md-subhead">Timeline</h3>
-    <timeline>
-        <timeline-event ng-repeat="process in $ctrl.sample.processes">
-            <timeline-badge class="mc-md-primary-bg fa fa-2x fa-code-fork timeline-hidden" side="right"></timeline-badge>
-            <timeline-panel>
-                <timeline-heading>
-                    <h4 class="md-subhead">{{process.name}}</h4>
-                    <p>{{process.birthtime | toDate}}</p>
-                    <p>{{process.description}}</p>
-                </timeline-heading>
-            </timeline-panel>
-        </timeline-event>
-    </timeline>
+    <div ng-style="{'max-height':$ctrl.viewHeight}">
+        <md-content>
+            <timeline>
+                <timeline-event ng-repeat="process in $ctrl.sample.processes" ng-click="$ctrl.gotoProcess(process)" class="pointer">
+                    <timeline-badge class="mc-md-primary-bg fa fa-2x fa-code-fork timeline-hidden" style="padding-top: 10px"
+                                    side="right"></timeline-badge>
+                    <timeline-panel>
+                        <timeline-heading>
+                            <h4 class="md-subhead">{{process.name}}</h4>
+                            <span class="mc-md-primary-color">{{process.birthtime | toDate}}</span>
+                            <p>{{process.description}}</p>
+                        </timeline-heading>
+                    </timeline-panel>
+                </timeline-event>
+            </timeline>
+        </md-content>
+    </div>
 </div>
