@@ -7,9 +7,9 @@ class MCShowSampleComponentController {
     }
 
     $onInit() {
-        this.samplesService.getProjectSample(this.projectId, this.sample.id)
+        this.samplesService.getProjectSample(this.projectId, this.sampleId)
             .then(
-                (sample) => console.log('retrieved sample', sample.plain()),
+                (sample) => this.sample = sample,
                 () => this.toast.error('Unable to retrieve sample')
             )
     }
@@ -19,6 +19,6 @@ angular.module('materialscommons').component('mcShowSample', {
     templateUrl: 'app/global.components/mc-show-sample.html',
     controller: MCShowSampleComponentController,
     bindings: {
-        sample: '<'
+        sampleId: '<'
     }
 });
