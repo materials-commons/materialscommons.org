@@ -17,7 +17,11 @@ md-toast.md-error-theme .md-toast-content {
 }
 
 .mc-md-primary-color {
-  color: #1565c0;
+  color: $mc-md-primary-color;
+}
+
+.mc-md-primary-bg {
+  background-color: $mc-md-primary-color;
 }
 
 .mc-light-grey-bg {
