@@ -6,4 +6,18 @@
     <h3 class="md-subhead">Measurements</h3>
 
     <h3 class="md-subhead">Files</h3>
+
+    <h3 class="md-subhead">Timeline</h3>
+    <timeline>
+        <timeline-event ng-repeat="process in $ctrl.sample.processes">
+            <timeline-badge class="mc-md-primary-bg fa fa-2x fa-code-fork timeline-hidden" side="right"></timeline-badge>
+            <timeline-panel>
+                <timeline-heading>
+                    <h4 class="md-subhead">{{process.name}}</h4>
+                    <p>{{process.birthtime | toDate}}</p>
+                    <p>{{process.description}}</p>
+                </timeline-heading>
+            </timeline-panel>
+        </timeline-event>
+    </timeline>
 </div>
