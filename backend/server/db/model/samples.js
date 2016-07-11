@@ -40,7 +40,6 @@ module.exports = function(r) {
                 }
             });
         let sample = yield dbExec(rql);
-        console.log('getSample', sample);
         return {val: sample};
     }
 
