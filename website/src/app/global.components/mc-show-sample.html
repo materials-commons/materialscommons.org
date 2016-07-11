@@ -3,14 +3,15 @@
         <label>Name</label> <span>{{$ctrl.sample.name}}</span>
     </div>
 
-    <mc-files-table files="$ctrl.sample.files"></mc-files-table>
-
-    <h3 class="md-subhead">Process Timeline</h3>
-    <div ng-style="{'max-height':$ctrl.viewHeight}">
+    <div style="max-height: 75vh" layout="column">
         <md-content>
+            <mc-files-table files="$ctrl.sample.files"></mc-files-table>
+            <h3 class="md-subhead">Process Timeline</h3>
             <timeline>
-                <timeline-event ng-repeat="process in $ctrl.sample.processes" ng-click="$ctrl.gotoProcess(process)" class="pointer">
-                    <timeline-badge class="mc-md-primary-bg fa fa-2x fa-code-fork timeline-hidden" style="padding-top: 10px"
+                <timeline-event ng-repeat="process in $ctrl.sample.processes" ng-click="$ctrl.gotoProcess(process)"
+                                class="pointer">
+                    <timeline-badge class="mc-md-primary-bg fa fa-2x fa-code-fork timeline-hidden"
+                                    style="padding-top: 10px"
                                     side="right"></timeline-badge>
                     <timeline-panel>
                         <timeline-heading>
