@@ -9,7 +9,10 @@ class MCShowProcessComponentController {
     $onInit() {
         this.projectsService.getProjectProcess(this.projectId, this.process.id)
             .then(
-                (process) => this.process = process,
+                (process) => {
+                    this.process = process;
+                    this.files = process.input_files.concat(process.output_files);
+                },
                 () => this.toast.error('Unable to retrieve process details')
             );
     }

@@ -21,6 +21,10 @@
                     <span class="md-subhead" style="padding-top:4px">{{process.description}}</span>
                 </md-card-title-text>
             </md-card-title>
+            <md-card-actions layout="row" class="md-subhead" layout-align="start center">
+                <span tooltip="samples"><i class="fa fa-fw fa-cubes"></i>{{process.samples.length}}</span>
+                <span class="padding-left-30" tooltip="files"><i class="fa fa-fw fa-files-o"></i>{{process.files.length}}</span>
+            </md-card-actions>
         </md-card>
     </div>
 </div>
