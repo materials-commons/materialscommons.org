@@ -3,9 +3,7 @@
         <label>Name</label> <span>{{$ctrl.sample.name}}</span>
     </div>
 
-    <h3 class="md-subhead">Measurements</h3>
-
-    <h3 class="md-subhead">Files</h3>
+    <mc-files-tables files="$ctrl.sample.files"></mc-files-tables>
 
     <h3 class="md-subhead">Timeline</h3>
     <div ng-style="{'max-height':$ctrl.viewHeight}">
