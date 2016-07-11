@@ -207,6 +207,14 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/dataset/:dataset_id',
             template: '<mc-experiment-dataset></mc-experiment-dataset>'
         })
+        .state('project.experiment.sample', {
+            url: '/sample/:sample_id',
+            template: '<mc-show-sample sample-id="ctrl.sampleId"></mc-show-sample>',
+            controllerAs: 'ctrl',
+            controller: ['$stateParams', function($stateParams) {
+                this.sampleId = $stateParams.sample_id;
+            }]
+        })
         .state('project.create.process', {
             url: '/process/:template_id/:process_id',
             template: '<mc-process-create></mc-process-create>',
