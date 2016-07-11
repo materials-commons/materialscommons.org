@@ -4,8 +4,8 @@
         <md-card flex="30" flex-md="45"
                  ng-repeat="sample in $ctrl.samples"
                  class="experiment-card"
-                 ui-sref="project.experiment.sample({sample_id: sample.id})"
-                 ngx-clickx="$ctrl.showSample(sample)">
+                 ui-srefx="project.experiment.sample({sample_id: sample.id})"
+                 ng-click="$ctrl.showSample(sample)">
             <md-card-header style="background-color:#d1d1d1; padding-bottom: 4px">
                 <md-card-avatar>
                 <span class="fa-stack fa-lg">
