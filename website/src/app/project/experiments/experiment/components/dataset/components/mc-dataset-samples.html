@@ -21,6 +21,10 @@
                     <span class="md-subhead" style="padding-top:4px">{{sample.description}}</span>
                 </md-card-title-text>
             </md-card-title>
+            <md-card-actions layout="row" class="md-subhead" layout-align="start center">
+                <span tooltip="files"><i class="fa fa-fw fa-files-o"></i>{{sample.files.length}}</span>
+                <span class="padding-left-30" tooltip="processes"><i class="fa fa-fw fa-code-fork"></i>{{sample.processes.length}}</span>
+            </md-card-actions>
         </md-card>
     </div>
 </div>

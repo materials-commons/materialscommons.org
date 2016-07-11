@@ -5,6 +5,7 @@ class MCDatasetSamplesComponentController {
     }
 
     showSample(sample) {
+        console.log('showSample', sample);
         this.$mdDialog.show({
             templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-sample-dialog.html',
             controllerAs: '$ctrl',

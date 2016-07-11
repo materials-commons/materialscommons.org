@@ -1,4 +1,3 @@
-hello from mc-files-table
 <div ng-show="$ctrl.files.length">
     <h3 class="md-subhead">Files</h3>
     <md-table-container>
@@ -6,6 +5,8 @@ hello from mc-files-table
             <thead md-head>
             <tr md-row>
                 <th md-column>File</th>
+                <th md-column>Type</th>
+                <th md-column>Size</th>
                 <th md-column>Thumbnail</th>
             </tr>
             </thead>
@@ -18,10 +19,10 @@ hello from mc-files-table
                         <md-button class="md-primary" ui-sref="project.file({file_id: file.id})" aria-label="view file">
                             {{file.name}}
                         </md-button>
-                        {{file.mediatype.mime}}
-                        {{file.size | bytes}}
                     </div>
                 </td>
+                <td md-cell>{{file.mediatype.mime}}</td>
+                <td md-cell>{{file.size | bytes}}</td>
                 <td md-cell>
                     <div ng-if="$ctrl.isImage(file.mediatype.mime)">
                         <md-button class="md-primary" ui-sref="project.file({file_id: file.id})" aria-label="view file">
