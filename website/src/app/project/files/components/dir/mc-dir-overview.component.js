@@ -1,5 +1,3 @@
-import { isImage } from '../../../../util/util';
-
 angular.module('materialscommons').component('mcDirOverview', {
     templateUrl: 'app/project/files/components/dir/mc-dir-overview.html',
     controller: MCDirOverviewComponentController,
@@ -10,7 +8,7 @@ angular.module('materialscommons').component('mcDirOverview', {
 });
 
 /*@ngInject*/
-function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, project, toastr) {
+function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, project, toastr, isImage) {
     var ctrl = this;
 
     ctrl.viewFiles = viewFiles;

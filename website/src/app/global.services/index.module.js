@@ -24,6 +24,9 @@ import './select-items/mc-files-table-select.component';
 import './select-items/select-items-files';
 import './select-items/select-items-processes';
 import './select-items/select-items-samples';
+import './isimage.service';
+import './differencebyid.service';
+import './removebyid.service';
 
 angular.module('materialscommons')
     .factory('selectItems', selectItemsService)
