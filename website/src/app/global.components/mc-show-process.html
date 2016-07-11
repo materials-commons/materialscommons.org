@@ -1,2 +1,7 @@
-<div>
+<div layout="column">
+    <div layout="row">
+        <label>Name</label><span>{{$ctrl.process.name}}</span>
+    </div>
+
+    <mc-project-samples-table samples="$ctrl.process.input_samples"></mc-project-samples-table>
 </div>
