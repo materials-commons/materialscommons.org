@@ -8,6 +8,6 @@ export function focusService($timeout, $window) {
                 element.focus();
             }
         });
-    }
+    };
 }
 

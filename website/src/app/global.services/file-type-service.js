@@ -1,6 +1,5 @@
-import { isImage } from '../util/util';
-
-export function fileTypeService() {
+/*@ngInject*/
+export function fileTypeService(isImage) {
     'ngInject';
 
     var self = this;
