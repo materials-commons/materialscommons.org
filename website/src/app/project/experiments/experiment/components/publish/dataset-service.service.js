@@ -38,6 +38,14 @@ class DatasetService {
             files: toAdd.concat(toDelete)
         });
     }
+
+    updateProcessesInDataset(projectId, experimentId, datasetId, processIdsToAdd, processIdsToDelete) {
+        let toAdd = processIdsToAdd.map(id => ({command: 'add', id: id}));
+        let toDelete = processIdsToDelete.map(id => ({command: 'delete', id: id}));
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).one('processes').customPUT({
+            processes: toAdd.concat(toDelete)
+        });
+    }
 }
 
 angular.module('materialscommons').service('datasetService', DatasetService);

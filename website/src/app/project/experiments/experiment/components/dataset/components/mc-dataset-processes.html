@@ -2,21 +2,25 @@
     <h4 class="md-subhead">Processes</h4>
     <div layout="row" layout-wrap>
         <md-card flex="30" flex-md="45"
-                 ng-repeat="process in $ctrl.processes"
-                 class="experiment-card"
-                 ng-click="$ctrl.showProcess(process)">
+                 ng-repeat="process in $ctrl.processes | orderBy:'name'"
+                 class="experiment-card">
             <md-card-header style="background-color:#d1d1d1; padding-bottom: 4px">
-                <md-card-avatar>
-                <span class="fa-stack fa-lg">
-                    <i class="fa fa-circle fa-stack-2x mc-md-primary-color"></i>
-                    <i class="fa fa-code-fork fa-stack-1x fa-inverse"></i>
-                </span>
+                <md-card-avatar ng-click="$ctrl.showProcess(process)">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x mc-md-primary-color"></i>
+                        <i class="fa fa-code-fork fa-stack-1x fa-inverse"></i>
+                    </span>
                 </md-card-avatar>
-                <md-card-header-title>
+                <md-card-header-title ng-click="$ctrl.showProcess(process)">
                     <span class="md-title">{{process.name}}</span>
                 </md-card-header-title>
+                <span flex></span>
+                <a class="mc-error-color" ng-click="$ctrl.removeProcess(process)">
+                    <i class="fa fa-fw fa-remove"></i>
+                </a>
             </md-card-header>
-            <md-card-title style="background-color:#d1d1d1; padding-top: 0; padding-bottom: 4px;">
+            <md-card-title ng-click="$ctrl.showProcess(process)"
+                           style="background-color:#d1d1d1; padding-top: 0; padding-bottom: 4px;">
                 <md-card-title-text>
                     <span class="md-subhead" style="padding-top:4px">{{process.description}}</span>
                 </md-card-title-text>

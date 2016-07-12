@@ -31,6 +31,7 @@ module.exports = function(r) {
         deleteSamplesFromExperiment,
         allSamplesInExperiment,
         allFilesInExperiment,
+        allProcessesInExperiment,
         sampleInExperiment,
         fileInProject,
         getProcessesForExperiment,
@@ -507,6 +508,12 @@ module.exports = function(r) {
         let indexArgs = fileIds.map((fileId) => [experimentId, fileId]);
         let files = yield r.table('experiment2datafile').getAll(r.args(indexArgs), {index: 'experiment_datafile'});
         return files.length === fileIds.length;
+    }
+
+    function* allProcessesInExperiment(experimentId, processIds) {
+        let indexArgs = processIds.map((id) => [experimentId, id]);
+        let processes = yield r.table('experiment2process').getAll(r.args(indexArgs), {index: 'experiment_process'});
+        return processes.length === processIds.length;
     }
 
     function* sampleInExperiment(experimentId, sampleId) {
