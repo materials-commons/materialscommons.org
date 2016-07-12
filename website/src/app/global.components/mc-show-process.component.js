@@ -7,7 +7,7 @@ class MCShowProcessComponentController {
     }
 
     $onInit() {
-        this.projectsService.getProjectProcess(this.projectId, this.process.id)
+        this.projectsService.getProjectProcess(this.projectId, this.processId)
             .then(
                 (process) => {
                     this.process = process;
@@ -22,6 +22,6 @@ angular.module('materialscommons').component('mcShowProcess', {
     templateUrl: 'app/global.components/mc-show-process.html',
     controller: MCShowProcessComponentController,
     bindings: {
-        process: '<'
+        processId: '<'
     }
 });

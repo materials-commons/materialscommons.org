@@ -16,7 +16,7 @@
                     <div layout="row" layout-align="start center">
                         <b>{{$index+1}}.</b>
                         <i class="fa fa-files-o fa-fw file-color"></i>
-                        <md-button class="md-primary" ui-sref="project.file({file_id: file.id})" aria-label="view file">
+                        <md-button class="md-primary" ng-click="$ctrl.showFile(file)" aria-label="view file">
                             {{file.name}}
                         </md-button>
                     </div>
@@ -25,7 +25,7 @@
                 <td md-cell>{{file.size | bytes}}</td>
                 <td md-cell>
                     <div ng-if="$ctrl.isImage(file.mediatype.mime)">
-                        <md-button class="md-primary" ui-sref="project.file({file_id: file.id})" aria-label="view file">
+                        <md-button class="md-primary" ng-click="$ctrl.showFile(file)" aria-label="view file">
                             <img class="img-thumbnail" height="140" width="140"
                                  ng-src="{{$ctrl.fileSrc(file.id)}}">
                         </md-button>
