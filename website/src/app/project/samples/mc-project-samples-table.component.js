@@ -12,7 +12,6 @@ function MCProjectSamplesTableComponentController($mdDialog) {
     var ctrl = this;
     ctrl.showSample = showSample;
     ctrl.sortOrder = "name";
-    console.log('MCProjectSamplesTableComponentController', ctrl.samples);
 
     function showSample(sample) {
         $mdDialog.show({
