@@ -1,8 +1,9 @@
 class MCFilesTableComponentController {
     /*@ngInject*/
-    constructor(isImage, mcfile) {
+    constructor(isImage, mcfile, $mdDialog) {
         this.isFileImage = isImage;
         this.mcfile = mcfile;
+        this.$mdDialog = $mdDialog;
     }
 
     fileSrc(fileId) {
@@ -11,6 +12,29 @@ class MCFilesTableComponentController {
 
     isImage(mime) {
         return this.isFileImage(mime);
+    }
+
+    showFile(file) {
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
+            controllerAs: '$ctrl',
+            controller: ShowFileDialogController,
+            bindToController: true,
+            locals: {
+                file: file
+            }
+        });
+    }
+}
+
+class ShowFileDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.cancel();
     }
 }
 

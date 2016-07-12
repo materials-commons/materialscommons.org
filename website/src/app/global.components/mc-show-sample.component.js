@@ -1,9 +1,10 @@
 class MCShowSampleComponentController {
     /*@ngInject*/
-    constructor($stateParams, samplesService, toast) {
+    constructor($stateParams, samplesService, toast, $mdDialog) {
         this.projectId = $stateParams.project_id;
         this.samplesService = samplesService;
         this.toast = toast;
+        this.$mdDialog = $mdDialog;
         this.viewHeight = this.viewHeight ? this.viewHeight : "40vh";
     }
 
@@ -18,8 +19,27 @@ class MCShowSampleComponentController {
             )
     }
 
-    gotoProcess(process) {
-        console.log('gotoProcess', process);
+    showProcess(process) {
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-process-dialog.html',
+            controllerAs: '$ctrl',
+            controller: ShowProcessDialogController,
+            bindToController: true,
+            locals: {
+                process: process
+            }
+        });
+    }
+}
+
+class ShowProcessDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.cancel();
     }
 }
 
