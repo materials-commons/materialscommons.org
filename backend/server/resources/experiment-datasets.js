@@ -11,6 +11,7 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
         addSampleToDataset,
         updateSamplesInDataset,
         updateFilesInDataset,
+        updateProcessesInDataset,
         publishDataset
     };
 
@@ -187,19 +188,79 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
         if (idsToAdd.length) {
             let allInExperiment = yield experiments.allFilesInExperiment(experimentId, idsToAdd);
             if (!allInExperiment) {
-                return {error: `Some samples not in experiment`};
+                return {error: `Some files not in experiment`};
             }
         }
 
         if (idsToDelete.length) {
             let allInDataset = yield experimentDatasets.allFilesInDataset(datasetId, idsToDelete);
             if (!allInDataset) {
-                return {error: `Some samples not in dataset`};
+                return {error: `Some files not in dataset`};
             }
         }
 
         if (!idsToAdd.length && !idsToDelete.length) {
-            return {error: `No samples to add or delete from dataset`};
+            return {error: `No files to add or delete from dataset`};
+        }
+
+        return null;
+    }
+
+    function* updateProcessesInDataset(next) {
+        let processArgs = yield parse(this);
+        let errors = yield validateUpdateProcessesInDataset(this.params.experiment_id, this.params.dataset_id, processArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let addProcesses = processArgs.processes.filter(s => s.command === 'add');
+            let deleteProcesses = processArgs.processes.filter(s => s.command === 'delete');
+            let rv = yield experimentDatasets.updateProcessesInDataset(this.params.dataset_id, addProcesses, deleteProcesses);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
+
+    function* validateUpdateProcessesInDataset(experimentId, datasetId, processArgs) {
+        if (!processArgs.processes || !_.isArray(processArgs.processes)) {
+            return {error: `Bad arguments processes is a required field`};
+        }
+        let idsToAdd = [];
+        let idsToDelete = [];
+        for (let i = 0; i < processArgs.processes.length; i++) {
+            let p = processArgs.processes[i];
+            if (!_.isObject(p)) {
+                return {error: `Bad arguments process is not an object ${p}`};
+            } else if (!p.command || !p.id) {
+                return {error: `Bad arguments no command or id ${p}`};
+            } else if (p.command === 'add') {
+                idsToAdd.push(p.id);
+            } else if (p.command === 'delete') {
+                idsToDelete.push(p.id);
+            }
+        }
+
+        if (idsToAdd.length) {
+            let allInExperiment = yield experiments.allProcessesInExperiment(experimentId, idsToAdd);
+            if (!allInExperiment) {
+                return {error: `Some processes not in experiment`};
+            }
+        }
+
+        if (idsToDelete.length) {
+            let allInDataset = yield experimentDatasets.allProcessesInDataset(datasetId, idsToDelete);
+            if (!allInDataset) {
+                return {error: `Some processes not in dataset`};
+            }
+        }
+
+        if (!idsToAdd.length && !idsToDelete.length) {
+            return {error: `No processes to add or delete from dataset`};
         }
 
         return null;

@@ -1,7 +1,11 @@
 class MCDatasetProcessesComponentController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, datasetService, $stateParams) {
         this.$mdDialog = $mdDialog;
+        this.datasetService = datasetService;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.datasetId = $stateParams.dataset_id;
     }
 
     showProcess(process) {
@@ -14,6 +18,14 @@ class MCDatasetProcessesComponentController {
                 process: process
             }
         });
+    }
+
+    removeProcess(process) {
+        this.datasetService.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [], [process.id])
+            .then(
+                (dataset) => this.mcExperimentDataset.dataset = dataset,
+                () => this.toast.error('Failed to remove process from dataset')
+            );
     }
 }
 
@@ -33,5 +45,8 @@ angular.module('materialscommons').component('mcDatasetProcesses', {
     controller: MCDatasetProcessesComponentController,
     bindings: {
         processes: '<'
+    },
+    require: {
+        mcExperimentDataset: '^mcExperimentDataset'
     }
 });

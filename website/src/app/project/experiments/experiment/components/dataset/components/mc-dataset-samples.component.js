@@ -1,7 +1,11 @@
 class MCDatasetSamplesComponentController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, datasetService, $stateParams) {
         this.$mdDialog = $mdDialog;
+        this.datasetService = datasetService;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.datasetId = $stateParams.dataset_id;
     }
 
     showSample(sample) {
@@ -14,6 +18,14 @@ class MCDatasetSamplesComponentController {
                 sample: sample
             }
         });
+    }
+
+    removeSample(sample) {
+        this.datasetService.updateSamplesInDataset(this.projectId, this.experimentId, this.datasetId, [], [sample.id])
+            .then(
+                (dataset) => this.mcExperimentDataset.dataset = dataset,
+                () => this.toast.error('Failed to remove sample from dataset')
+            );
     }
 }
 
@@ -33,5 +45,8 @@ angular.module('materialscommons').component('mcDatasetSamples', {
     controller: MCDatasetSamplesComponentController,
     bindings: {
         samples: '<'
+    },
+    require: {
+        mcExperimentDataset: '^mcExperimentDataset'
     }
 });

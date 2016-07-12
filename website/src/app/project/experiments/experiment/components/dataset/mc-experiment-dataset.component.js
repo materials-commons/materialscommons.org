@@ -43,7 +43,7 @@ class MCExperimentDatasetComponentController {
                             .then(
                                 (dataset) => this.dataset = dataset,
                                 () => this.toast.error('Failed to add files to dataset')
-                            )
+                            );
                     }
                 }
             );
