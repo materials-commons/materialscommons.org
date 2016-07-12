@@ -17,13 +17,14 @@ function MCProjectHomeComponentController($scope, project, experimentsService, t
 
     $scope.editorOptions = editorOpts({height: 25, width: 20});
 
-    experimentsService.getAllForProject($stateParams.project_id).then(
-        (experiments) => {
-            ctrl.experiments = experiments;
-            //for (let i = 0; i < experiments.length; i++) console.dir(experiments[i].plain());
-        },
-        () => toast.error('Unable to retrieve experiments for project')
-    );
+    ctrl.$onInit = () => {
+        experimentsService.getAllForProject($stateParams.project_id).then(
+            (experiments) => {
+                ctrl.experiments = experiments;
+            },
+            () => toast.error('Unable to retrieve experiments for project')
+        );
+    };
 
     ctrl.updateProjectDescription = () => {
         if (projectDescription === ctrl.project.description) {
