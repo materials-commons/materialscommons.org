@@ -13,8 +13,10 @@ module.exports = function(r) {
         addSampleToDataset,
         updateSamplesInDataset,
         updateFilesInDataset,
+        updateProcessesInDataset,
         allSamplesInDataset,
         allFilesInDataset,
+        allProcessesInDataset,
         modifyDataset,
         publishDataset
     };
@@ -132,6 +134,25 @@ module.exports = function(r) {
         return yield getDataset(datasetId);
     }
 
+    function* updateProcessesInDataset(datasetId, processesToAdd, processesToDelete) {
+        if (processesToAdd.length) {
+            let add = processesToAdd.map(p => new model.Dataset2Process(datasetId, p.id));
+            let indexEntries = add.map(p => [p.dataset_id, p.process_id]);
+            let matchingEntries = yield r.table('dataset2process').getAll(r.args(indexEntries), {index: 'dataset_process'});
+            add = util.removeExistingItemsIn(add, matchingEntries, 'process_id');
+            if (add.length) {
+                yield r.table('dataset2process').insert(add);
+            }
+        }
+
+        if (processesToDelete.length) {
+            let toDelete = processesToDelete.map(p => [datasetId, p.id]);
+            yield r.table('dataset2process').getAll(r.args(toDelete), {index: 'dataset_process'}).delete();
+        }
+
+        return yield getDataset(datasetId);
+    }
+
     function* allSamplesInDataset(datasetId, sampleIds) {
         let indexArgs = sampleIds.map(sid => [datasetId, sid]);
         let samples = yield r.table('dataset2sample').getAll(r.args(indexArgs), {index: 'dataset_sample'});
@@ -142,6 +163,12 @@ module.exports = function(r) {
         let indexArgs = fileIds.map(fid => [datasetId, fid]);
         let files = yield r.table('dataset2datafile').getAll(r.args(indexArgs), {index: 'dataset_datafile'});
         return files.length === fileIds.length;
+    }
+
+    function* allProcessesInDataset(datasetId, processIds) {
+        let indexArgs = processIds.map(id => [datasetId, id]);
+        let processes = yield r.table('dataset2process').getAll(r.args(indexArgs), {index: 'dataset_process'});
+        return processes.length === processIds.length;
     }
 
     function* modifyDataset(datasetId, datasetArgs) {
