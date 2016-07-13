@@ -146,7 +146,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.processes', {
             url: '/processes',
-            template: '<mc-project-processes processes="ctrl.processes"></mc-project-processes>',
+            template: '<mc-experiment-processes processes="ctrl.processes"></mc-experiment-processes>',
             controllerAs: 'ctrl',
             controller: ['experimentsService', '$stateParams', 'toast',
                 function(experimentsService, $stateParams, toast) {

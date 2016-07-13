@@ -17,7 +17,7 @@
             <tr md-row class="md-row-hover pointer"
                 ng-repeat="process in $ctrl.processes | filter:$ctrl.filterBy | orderBy:$ctrl.sortOrder">
                 <td md-cell>
-                    <a class="md-primary" ui-sref="project.process.edit({process_id:process.id})">{{process.name}}</a>
+                    <a class="md-primary" ng-click="$ctrl.showProcess(process)">{{process.name}}</a>
                 </td>
                 <td md-cell>
                     {{process.process_name}}
@@ -32,19 +32,13 @@
                     {{process.mtime | toDate}}
                 </td>
                 <td md-cell>
-                    <a ng-click="$ctrl.showFiles(process.input_files)">
-                        {{process.input_files.length}}
-                    </a>
+                    {{process.input_files.length}}
                 </td>
                 <td md-cell>
-                    <a ng-click="$ctrl.showFiles(process.output_files)">
-                        {{process.output_files.length}}
-                    </a>
+                    {{process.output_files.length}}
                 </td>
                 <td md-cell>
-                    <a ng-click="$ctrl.showSamples(process.samples)" class="md-primary">
-                        {{process.samples.length}}
-                    </a>
+                    {{process.samples.length}}
                 </td>
             </tr>
             </tbody>
