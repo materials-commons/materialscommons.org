@@ -26,9 +26,9 @@
         <div layout="row" layout-align="center stretch">
             <md-content flex style="max-height:70vh">
                 <div ng-if="$ctrl.showTableView">
-                    <mc-project-processes-table processes="$ctrl.processes"
-                                                filter-by="$ctrl.query">
-                    </mc-project-processes-table>
+                    <mc-experiment-processes-table processes="$ctrl.processes"
+                                                   filter-by="$ctrl.query">
+                    </mc-experiment-processes-table>
                 </div>
                 <div ng-if="!$ctrl.showTableView">
                     Show card view
