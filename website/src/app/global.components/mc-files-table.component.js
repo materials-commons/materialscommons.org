@@ -1,12 +1,14 @@
 class MCFilesTableComponentController {
     /*@ngInject*/
     constructor(isImage, mcfile, $mdDialog) {
+        console.log('MCFilesTableComponentController');
         this.isFileImage = isImage;
         this.mcfile = mcfile;
         this.$mdDialog = $mdDialog;
     }
 
     fileSrc(fileId) {
+        console.log('fileSrc', this.mcfile.src(fileId));
         return this.mcfile.src(fileId);
     }
 
