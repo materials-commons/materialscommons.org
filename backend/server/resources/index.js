@@ -25,10 +25,8 @@ module.exports = function(model) {
     router.put('/projects/:project_id/directories/:directory_id', validateProjectAccess, directories.update);
     router.delete('/projects/:project_id/directories/:directory_id', validateProjectAccess, directories.remove);
 
-    router.post('/projects/:project_id/processes', validateProjectAccess, processes.create);
-    router.put('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.update);
-    router.get('/projects/:project_id/processes', validateProjectAccess, processes.getList);
-    router.get('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.get);
+    router.get('/projects/:project_id/processes', validateProjectAccess, processes.getProjectProcesses);
+    router.get('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.getProcess);
 
     router.post('/projects/:project_id/samples', validateProjectAccess, samples.createSamples);
     router.get('/projects/:project_id/samples', validateProjectAccess, samples.getAllSamplesForProject);
