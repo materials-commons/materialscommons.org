@@ -5,6 +5,11 @@
 
     <div style="max-height: 40vh">
         <md-content>
+            <process-settings settings="$ctrl.process.setup[0].properties"
+                              attribute="$ctrl.process.setup[0].attribute"
+                              template-id="$ctrl.process.template_id"
+                              task-id="">
+            </process-settings>
             <mc-project-samples-table samples="$ctrl.process.input_samples"></mc-project-samples-table>
             <mc-files-table files="$ctrl.files"></mc-files-table>
         </md-content>
