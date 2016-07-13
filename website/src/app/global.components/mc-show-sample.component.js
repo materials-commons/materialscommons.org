@@ -9,9 +9,6 @@ class MCShowSampleComponentController {
     }
 
     $onInit() {
-        if (this.viewHeight) {
-
-        }
         this.samplesService.getProjectSample(this.projectId, this.sampleId)
             .then(
                 (sample) => this.sample = sample,
