@@ -46,12 +46,12 @@ function processEdit() {
     }
 
     function files(process) {
-        process['input_files'] = process.input_files.map(function(file) {
-            return {id: file.id, name: file.name}
-        });
-        process['output_files'] = process.output_files.map(function(file) {
-            return {id: file.id, name: file.name}
-        });
+        //process['input_files'] = process.input_files.map(function(file) {
+        //    return {id: file.id, name: file.name}
+        //});
+        //process['output_files'] = process.output_files.map(function(file) {
+        //    return {id: file.id, name: file.name}
+        //});
         return process;
     }
 
