@@ -31,6 +31,10 @@ class DatasetService {
         });
     }
 
+    getSamplesForDataset(projectId, experimentId, datasetId) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).one('samples').getList();
+    }
+
     updateFilesInDataset(projectId, experimentId, datasetId, fileIdsToAdd, fileIdsToDelete) {
         let toAdd = fileIdsToAdd.map(fid => ({command: 'add', id: fid}));
         let toDelete = fileIdsToDelete.map(fid => ({command: 'delete', id: fid}));

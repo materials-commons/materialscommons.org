@@ -61,10 +61,10 @@ module.exports.datasetDetailsRql = function datasetDetailsRql(rql, r) {
             files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
                 .eqJoin('datafile_id', r.table('datafiles')).zip().merge(f => {
                     return {
-                        processes: r.table('process2file').getAll(f('dataset_id'), {index: 'dataset_id'})
+                        processes: r.table('process2file').getAll(f('datafile_id'), {index: 'datafile_id'})
                             .pluck('process_id').distinct()
                             .coerceTo('array'),
-                        files: r.table('process2file').getAll(f('dataset_id'), {index: 'dataset_id'})
+                        files: r.table('process2file').getAll(f('datafile_id'), {index: 'datafile_id'})
                             .pluck('datafile_id').distinct()
                             .coerceTo('array')
                     };
