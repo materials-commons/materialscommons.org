@@ -12,6 +12,7 @@ module.exports = function(r) {
         createDatasetForExperiment,
         addSampleToDataset,
         updateSamplesInDataset,
+        getSamplesForDataset,
         updateFilesInDataset,
         updateProcessesInDataset,
         allSamplesInDataset,
@@ -86,6 +87,12 @@ module.exports = function(r) {
         }
 
         return yield getDataset(datasetId);
+    }
+
+    function* getSamplesForDataset(datasetId) {
+        let samples = yield r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'})
+            .eqJoin('sample_id', r.table('samples')).zip();
+        return {val: samples};
     }
 
     function uniqByKey(items, key) {

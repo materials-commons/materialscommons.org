@@ -12,6 +12,7 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
         updateSamplesInDataset,
         updateFilesInDataset,
         updateProcessesInDataset,
+        getSamplesForDataset,
         publishDataset
     };
 
@@ -264,6 +265,17 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
         }
 
         return null;
+    }
+
+    function* getSamplesForDataset(next) {
+        let rv = yield experimentDatasets.getSamplesForDataset(this.params.dataset_id);
+        if (rv.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = rv;
+        } else {
+            this.body = rv.val;
+        }
+        yield next;
     }
 
     function* publishDataset(next) {

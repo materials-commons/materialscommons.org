@@ -27,6 +27,7 @@ import './select-items/select-items-samples';
 import './isimage.service';
 import './differencebyid.service';
 import './removebyid.service';
+import './show-sample-service.service';
 
 angular.module('materialscommons')
     .factory('selectItems', selectItemsService)

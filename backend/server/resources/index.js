@@ -104,6 +104,10 @@ module.exports = function(model) {
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
         experimentDatasets.updateSamplesInDataset);
 
+    router.get('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/samples',
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
+        experimentDatasets.getSamplesForDataset);
+
     router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/files',
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
         experimentDatasets.updateFilesInDataset);
