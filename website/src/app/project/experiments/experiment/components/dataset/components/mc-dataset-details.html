@@ -1,7 +1,10 @@
 <div layout="column" layout-fill flex="60" class="margin-top-10">
     <form layout="column">
-        <md-button class="md-primary md-raised" ng-click="$ctrl.publishDataset()">
+        <md-button ng-show="!$ctrl.dataset.published" class="md-primary md-raised" ng-click="$ctrl.publishDataset()">
             <i class="fa fa-fw fa-cloud-upload"></i> Publish Dataset
+        </md-button>
+        <md-button ng-show="$ctrl.dataset.published" class="md-warn md-raised" ng-disabled="true">
+            <span class="mc-error-color">Dataset already published</span>
         </md-button>
         <label class="md-subhead">Dataset</label>
         <div layout-margin>
