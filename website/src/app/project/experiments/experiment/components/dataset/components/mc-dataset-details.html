@@ -1,0 +1,43 @@
+<div layout="column" layout-fill flex="60" class="margin-top-10" md-theme="docs-dark">
+    <form layout="column">
+        <md-button class="md-primary md-raised" ng-click="$ctrl.publishDataset()">
+            <i class="fa fa-fw fa-cloud-upload"></i> Publish Dataset
+        </md-button>
+        <md-input-container class="md-block">
+            <label>Title</label>
+            <input>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Abstract</label>
+            <textarea></textarea>
+        </md-input-container>
+        <div layout="row">
+            <md-datepicker ng-model="$ctrl.dataset.publication_date" md-placeholder="Publication Date">
+            </md-datepicker>
+        </div>
+        <div layout="row" layout-align="start center" class="margin-top-20">
+            <label class="md-subhead">Authors</label>
+            <md-button ng-click="$ctrl.addAuthor()"
+                       class="md-primary margin-left-30">
+                add author
+            </md-button>
+        </div>
+        <div layout="row" ng-repeat="author in $ctrl.authors">
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Last Name</label>
+                <input>
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>First Name</label>
+                <input>
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Affiliation</label>
+                <input>
+            </md-input-container>
+            <a class="mc-error-color" ng-click="$ctrl.removeAuthor($index)">
+                <i class="fa fa-fw fa-remove"></i>
+            </a>
+        </div>
+    </form>
+</div>
