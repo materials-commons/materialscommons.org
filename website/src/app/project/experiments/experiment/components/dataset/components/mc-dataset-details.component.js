@@ -9,6 +9,20 @@ class MCDatasetDetailsComponentController {
                 affilliation: ''
             }
         ];
+        this.licenses = [
+            {
+                name: `Public Domain Dedication and License (PDDL)`,
+                link: "http://opendatacommons.org/licenses/pddl/summary/"
+            },
+            {
+                name: `Attribution License (ODC-By)`,
+                link: "http://opendatacommons.org/licenses/by/summary/"
+            },
+            {
+                name: `Open Database License (ODC-ODbL) `,
+                link: "http://opendatacommons.org/licenses/odbl/summary/"
+            }
+        ];
     }
 
     addAuthor() {

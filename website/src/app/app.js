@@ -69,5 +69,4 @@ function setupMCGlobals() {
 
 function setupMaterialsTheme($mdThemingProvider) {
     $mdThemingProvider.theme('default').primaryPalette('blue').accentPalette('red');
-    //$mdThemingProvider.theme('docs-dark', 'default').primaryPalette('yellow').dark();
 }
