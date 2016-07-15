@@ -1,19 +1,53 @@
-<div layout="column" layout-fill flex="60" class="margin-top-10" md-theme="docs-dark">
+<div layout="column" layout-fill flex="60" class="margin-top-10">
     <form layout="column">
         <md-button class="md-primary md-raised" ng-click="$ctrl.publishDataset()">
             <i class="fa fa-fw fa-cloud-upload"></i> Publish Dataset
         </md-button>
-        <md-input-container class="md-block">
-            <label>Title</label>
-            <input>
-        </md-input-container>
-        <md-input-container class="md-block">
-            <label>Abstract</label>
-            <textarea></textarea>
-        </md-input-container>
-        <div layout="row">
-            <md-datepicker ng-model="$ctrl.dataset.publication_date" md-placeholder="Publication Date">
-            </md-datepicker>
+        <label class="md-subhead">Dataset</label>
+        <div layout-margin>
+            <md-input-container class="md-block">
+                <label>Name</label>
+                <input>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Description</label>
+                <textarea></textarea>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Institution</label>
+                <input>
+            </md-input-container>
+            <div layout="row">
+                <md-datepicker ng-model="$ctrl.dataset.publication_date" md-placeholder="Publication Date">
+                </md-datepicker>
+            </div>
+            <md-input-container class="md-block margin-top-40">
+                <label>License</label>
+                <md-select ng-model="$ctrl.dataset.license">
+                    <md-option ng-repeat="license in ::$ctrl.licenses"
+                               ng-value="license">
+                        {{license.name}}
+                </md-select>
+            </md-input-container>
+        </div>
+        <label class="md-subhead margin-top-30">Paper</label>
+        <div layout-margin>
+            <md-input-container class="md-block">
+                <label>Title</label>
+                <input>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Abstract</label>
+                <textarea></textarea>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Link To Paper</label>
+                <input>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>DOI</label>
+                <input>
+            </md-input-container>
         </div>
         <div layout="row" layout-align="start center" class="margin-top-20">
             <label class="md-subhead">Authors</label>

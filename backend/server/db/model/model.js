@@ -322,6 +322,8 @@ module.exports = function (r) {
         this.authors = [];
         this.birthtime = now;
         this.mtime = now;
+        this.published_date = "";
+        this.embargo_date = "";
         this.publication = {
             title: "",
             abstract: "",
