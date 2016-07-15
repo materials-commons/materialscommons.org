@@ -12,7 +12,7 @@
     <div layout="row" flex style="max-height: 70vh">
         <md-content layout="row" layout-wrap layout-align="start stretch" flex>
             <div layout="column" flex>
-                <mc-dataset-details ng-show="!$ctrl.showDetailsSection"></mc-dataset-details>
+                <mc-dataset-details ng-show="!$ctrl.showDetailsSection" dataset=$ctrl.dataset></mc-dataset-details>
                 <mc-dataset-samples ng-show="$ctrl.dataset.samples.length"
                                     samples="$ctrl.dataset.samples"></mc-dataset-samples>
 
