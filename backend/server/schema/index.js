@@ -35,6 +35,7 @@ module.exports = function(model) {
         userAccountSchema: userSchema.defineUserAccountSchema(),
         createDatasetSchema: datasetSchema.defineCreateDatasetSchema(),
         updateDatasetSchema: datasetSchema.defineUpdateDatasetSchema(),
+        datasetAuthor: datasetSchema.defineDatasetAuthorSchema(),
         validate,
         prepare,
         model

@@ -18,7 +18,7 @@ module.exports = function(r) {
         allSamplesInDataset,
         allFilesInDataset,
         allProcessesInDataset,
-        modifyDataset,
+        updateDataset,
         publishDataset
     };
 
@@ -178,7 +178,7 @@ module.exports = function(r) {
         return processes.length === processIds.length;
     }
 
-    function* modifyDataset(datasetId, datasetArgs) {
+    function* updateDataset(datasetId, datasetArgs) {
         yield r.table('datasets').get(datasetId).update(datasetArgs);
         return yield getDataset(datasetId);
     }
