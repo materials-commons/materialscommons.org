@@ -3,7 +3,8 @@ module.exports = function(schema) {
 
     return {
         defineCreateDatasetSchema,
-        defineUpdateDatasetSchema
+        defineUpdateDatasetSchema,
+        defineDatasetAuthorSchema
     };
 
     function defineCreateDatasetSchema() {
@@ -22,6 +23,27 @@ module.exports = function(schema) {
         });
         createDatasetSchema.validateAsync = promise.promisify(createDatasetSchema.validate);
         return createDatasetSchema;
+    }
+
+    function defineDatasetAuthorSchema() {
+        let datasetAuthorSchema = schema.defineSchema('DatasetAuthor', {
+            lastname: {
+                type: 'string',
+                nullable: false
+            },
+            firstname: {
+                type: 'string',
+                nullable: false
+            },
+
+            affiliation: {
+                type: 'string',
+                nullable: false
+            }
+        });
+        datasetAuthorSchema.setDefaults({});
+        datasetAuthorSchema.validateAsync = promise.promisify(datasetAuthorSchema.validate);
+        return datasetAuthorSchema;
     }
 
     function defineUpdateDatasetSchema() {
@@ -63,6 +85,11 @@ module.exports = function(schema) {
                     type: 'string',
                     nullable: true
                 }
+            },
+
+            embargo_date: {
+                type: 'date',
+                nullable: true
             },
 
             doi: {

@@ -6,7 +6,7 @@ class MCDatasetDetailsComponentController {
             {
                 last_name: '',
                 first_name: '',
-                affilliation: ''
+                affiliation: ''
             }
         ];
         this.licenses = [
@@ -29,7 +29,7 @@ class MCDatasetDetailsComponentController {
         this.authors.push({
             last_name: '',
             first_name: '',
-            affilliation: ''
+            affiliation: ''
         });
     }
 
