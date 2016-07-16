@@ -7,7 +7,7 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
         getDatasetsForExperiment,
         getDatasetForExperiment,
         createDatasetForExperiment,
-        modifyDatasetForExperiment,
+        updateDatasetForExperiment,
         addSampleToDataset,
         updateSamplesInDataset,
         updateFilesInDataset,
@@ -57,15 +57,15 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
         yield next;
     }
 
-    function* modifyDatasetForExperiment(next) {
+    function* updateDatasetForExperiment(next) {
         let datasetArgs = yield parse(this);
         schema.prepare(schema.updateDatasetSchema, datasetArgs);
-        let errors = yield schema.validate(schema.updateDatasetSchema, datasetArgs);
+        let errors = yield validateUpdateDataset(datasetArgs);
         if (errors !== null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = experimentDatasets.modifyDataset(this.params.dataset_id, datasetArgs);
+            let rv = experimentDatasets.updateDataset(this.params.dataset_id, datasetArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -74,6 +74,27 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
             }
         }
         yield next;
+    }
+
+    function* validateUpdateDataset(datasetArgs) {
+        let errors = yield schema.validate(schema.updateDatasetSchema, datasetArgs);
+        if (errors !== null) {
+            return errors;
+        }
+
+        if (datasetArgs.authors && !_.isArray(datasetArgs.authors)) {
+            return {error: `authors field must be an array`};
+        }
+
+        for (let author of datasetArgs.authors) {
+            schema.prepare(schema.datasetAuthor, author);
+            let e = yield schema.validate(schema.datasetAuthor, author);
+            if (e !== null) {
+                return e;
+            }
+        }
+
+        return null;
     }
 
     function* addSampleToDataset(next) {
