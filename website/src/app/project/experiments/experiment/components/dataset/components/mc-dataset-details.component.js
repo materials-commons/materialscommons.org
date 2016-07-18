@@ -7,6 +7,7 @@ class MCDatasetDetailsComponentController {
         this.$mdDialog = $mdDialog;
         this.datasetService = datasetService;
         this.toast = toast;
+        this.pubDate = "";
         this.licenses = [
             {
                 name: `Public Domain Dedication and License (PDDL)`,
@@ -62,11 +63,8 @@ class MCDatasetDetailsComponentController {
     }
 
     updateDatasetPublicationDate() {
-
-    }
-
-    updateDatasetLicense() {
-        console.log('license', this.dataset.license);
+        console.log('Pub date', this.pubDate);
+        console.log('dataset', this.dataset.plain());
     }
 
     publishDataset() {

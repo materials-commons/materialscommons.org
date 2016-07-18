@@ -106,9 +106,7 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
             }
         }
 
-        if (datasetArgs.license && (!datasetArgs.license.name || !_.isString(datasetArgs.license.name))) {
-            return {error: `license.name field must be a string`};
-        } else if (datasetArgs.license && datasetArgs.license.name) {
+        if (datasetArgs.license) {
             let license;
             switch (datasetArgs.license.name) {
                 case `Public Domain Dedication and License (PDDL)`:
@@ -130,11 +128,16 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
                     };
                     break;
                 default:
-                    return {error: `Unknown license ${datasetArgs.license.name}`};
+                    if (datasetArgs.license.name === "") {
+                        license = {
+                            name: '',
+                            link: ''
+                        };
+                    } else {
+                        return {error: `Unknown license ${datasetArgs.license.name}`};
+                    }
             }
             datasetArgs.license = license;
-        } else if (datasetArgs.license) {
-            return {error: `license field requires a name`}
         }
 
         return null;

@@ -31,7 +31,7 @@ module.exports = function(r) {
 
     function* getDataset(datasetId) {
         let rql = commonQueries.datasetDetailsRql(r.table('datasets').get(datasetId), r);
-        let dataset = yield dbExec(rql);
+        let dataset = yield rql.run();
         return {val: dataset};
     }
 
