@@ -36,6 +36,7 @@ module.exports = function(model) {
         createDatasetSchema: datasetSchema.defineCreateDatasetSchema(),
         updateDatasetSchema: datasetSchema.defineUpdateDatasetSchema(),
         datasetAuthor: datasetSchema.defineDatasetAuthorSchema(),
+        datasetPaper: datasetSchema.defineDatasetPaperSchema(),
         validate,
         prepare,
         model

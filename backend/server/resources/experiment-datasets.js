@@ -65,7 +65,7 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = experimentDatasets.updateDataset(this.params.dataset_id, datasetArgs);
+            let rv = yield experimentDatasets.updateDataset(this.params.dataset_id, datasetArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -84,14 +84,57 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
 
         if (datasetArgs.authors && !_.isArray(datasetArgs.authors)) {
             return {error: `authors field must be an array`};
+        } else if (datasetArgs.authors) {
+            for (let author of datasetArgs.authors) {
+                schema.prepare(schema.datasetAuthor, author);
+                let e = yield schema.validate(schema.datasetAuthor, author);
+                if (e !== null) {
+                    return e;
+                }
+            }
         }
 
-        for (let author of datasetArgs.authors) {
-            schema.prepare(schema.datasetAuthor, author);
-            let e = yield schema.validate(schema.datasetAuthor, author);
-            if (e !== null) {
-                return e;
+        if (datasetArgs.papers && !_.isArray(datasetArgs.papers)) {
+            return {error: `papers field must be an array`};
+        } else if (datasetArgs.papers) {
+            for (let paper of datasetArgs.papers) {
+                schema.prepare(schema.datasetPaper, paper);
+                let e = yield schema.validate(schema.datasetPaper, paper);
+                if (e !== null) {
+                    return e;
+                }
             }
+        }
+
+        if (datasetArgs.license && (!datasetArgs.license.name || !_.isString(datasetArgs.license.name))) {
+            return {error: `license.name field must be a string`};
+        } else if (datasetArgs.license && datasetArgs.license.name) {
+            let license;
+            switch (datasetArgs.license.name) {
+                case `Public Domain Dedication and License (PDDL)`:
+                    license = {
+                        name: `Public Domain Dedication and License (PDDL)`,
+                        link: `http://opendatacommons.org/licenses/pddl/summary/`
+                    };
+                    break;
+                case `Attribution License (ODC-By)`:
+                    license = {
+                        name: `Attribution License (ODC-By)`,
+                        link: `http://opendatacommons.org/licenses/by/summary/`
+                    };
+                    break;
+                case `Open Database License (ODC-ODbL)`:
+                    license = {
+                        name: `Open Database License (ODC-ODbL)`,
+                        link: `http://opendatacommons.org/licenses/odbl/summary/`
+                    };
+                    break;
+                default:
+                    return {error: `Unknown license ${datasetArgs.license.name}`};
+            }
+            datasetArgs.license = license;
+        } else if (datasetArgs.license) {
+            return {error: `license field requires a name`}
         }
 
         return null;

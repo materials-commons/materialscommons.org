@@ -16,7 +16,7 @@
             </tr>
             </thead>
             <tbody md-body>
-            <tr md-row class="md-row-hover pointer" ng-repeat="ds in $ctrl.datasets"
+            <tr md-row class="md-row-hover pointer" ng-repeat="ds in $ctrl.datasets | orderBy:'title'"
                 ng-click="$ctrl.openDataset(ds.id)">
                 <td md-cell>{{::ds.title}}</td>
                 <td md-cell>{{::ds.description}}</td>
