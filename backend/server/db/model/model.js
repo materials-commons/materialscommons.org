@@ -324,12 +324,9 @@ module.exports = function (r) {
         this.mtime = now;
         this.published_date = "";
         this.embargo_date = "";
-        this.publication = {
-            title: "",
-            abstract: "",
-            link: "",
-            doi: ""
-        };
+        this.papers = [];
+        this.funding = "";
+        this.keywords = [];
         this.doi = "";
         this.description = "";
         this.license = "";

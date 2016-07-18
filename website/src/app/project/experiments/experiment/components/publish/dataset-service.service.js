@@ -50,6 +50,10 @@ class DatasetService {
             processes: toAdd.concat(toDelete)
         });
     }
+
+    updateDatasetDetails(projectId, experimentId, datasetId, details) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).customPUT(details);
+    }
 }
 
 angular.module('materialscommons').service('datasetService', DatasetService);
