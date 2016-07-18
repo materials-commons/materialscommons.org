@@ -322,14 +322,17 @@ module.exports = function (r) {
         this.authors = [];
         this.birthtime = now;
         this.mtime = now;
-        this.published_date = "";
+        this.published_date = now;
         this.embargo_date = "";
         this.papers = [];
         this.funding = "";
         this.keywords = [];
         this.doi = "";
         this.description = "";
-        this.license = "";
+        this.license = {
+            name: '',
+            link: ''
+        };
         this.published = false;
     }
 
