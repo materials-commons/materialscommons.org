@@ -1,7 +1,7 @@
 <div layout="column" layout-fill flex="60" class="margin-top-10">
     <form layout="column">
         <md-button ng-show="!$ctrl.dataset.published" class="md-primary md-raised" ng-click="$ctrl.publishDataset()">
-            <i class="fa fa-fw fa-cloud-upload"></i> Publish Dataset
+            <i class="fa fa-fw fa-cloud-upload"></i>Publish Dataset
         </md-button>
         <md-button ng-show="$ctrl.dataset.published" class="md-warn md-raised" ng-disabled="true">
             <span class="mc-error-color">Dataset already published</span>
@@ -10,47 +10,69 @@
         <div layout-margin>
             <md-input-container class="md-block">
                 <label>Name</label>
-                <input>
+                <input ng-model="$ctrl.dataset.title" ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Description</label>
-                <textarea></textarea>
+                <textarea ng-model="$ctrl.dataset.description" ng-model-options="{debounce: 500}"
+                          ng-change="$ctrl.updateDataset()"></textarea>
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Institution</label>
-                <input>
+                <input ng-model="$ctrl.dataset.institution" ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <div layout="row">
-                <md-datepicker ng-model="$ctrl.dataset.publication_date" md-placeholder="Publication Date">
+                <md-datepicker ng-model="$ctrl.dataset.publication_date"
+                               ng-change="$ctrl.updateDatasetPublicationDate()"
+                               md-placeholder="Publication Date">
                 </md-datepicker>
             </div>
             <md-input-container class="md-block margin-top-40">
                 <label>License</label>
-                <md-select ng-model="$ctrl.dataset.license">
+                <md-select ng-model="$ctrl.dataset.license"
+                           ng-model-options="{trackBy: '$value.name'}"
+                           ng-change="$ctrl.updateDataset()">
                     <md-option ng-repeat="license in ::$ctrl.licenses"
                                ng-value="license">
                         {{license.name}}
                 </md-select>
             </md-input-container>
+            <a ng-show="$ctrl.dataset.license"
+               class="padding-left-15" ng-href="{{$ctrl.dataset.license.link}}" target="_blank">
+                View License
+            </a>
         </div>
-        <label class="md-subhead margin-top-30">Paper</label>
-        <div layout-margin>
+        <div layout="row" layout-align="start center" class="margin-top-30">
+            <label class="md-subhead">Papers</label>
+            <md-button ng-click="$ctrl.addPaper()"
+                       class="md-primary margin-left-30">
+                add paper
+            </md-button>
+        </div>
+        <div layout-margin ng-repeat="paper in $ctrl.dataset.papers" class="mc-light-grey-bg padding-top-20">
             <md-input-container class="md-block">
                 <label>Title</label>
-                <input>
+                <input ng-model="paper.title" ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Abstract</label>
-                <textarea></textarea>
+                <textarea ng-model="$ctrl.dataset.publication.abstract" ng-model-options="{debounce: 500}"
+                          ng-change="$ctrl.updateDataset()"></textarea>
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Link To Paper</label>
-                <input>
+                <input ng-model="$ctrl.dataset.publication.link" ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block">
                 <label>DOI</label>
-                <input>
+                <input ng-model="$ctrl.dataset.publication.doi" ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateDataset()">
             </md-input-container>
+            <md-button class="md-warn" ng-click="$ctrl.removePaper($index)">delete paper</md-button>
         </div>
         <div layout="row" layout-align="start center" class="margin-top-20">
             <label class="md-subhead">Authors</label>
@@ -59,18 +81,21 @@
                 add author
             </md-button>
         </div>
-        <div layout="row" ng-repeat="author in $ctrl.authors">
+        <div layout="row" layout-margin ng-repeat="author in $ctrl.dataset.authors">
             <md-input-container class="md-block" flex-gt-sm>
                 <label>Last Name</label>
-                <input>
+                <input ng-model="author.lastname" ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block" flex-gt-sm>
                 <label>First Name</label>
-                <input>
+                <input ng-model="author.firstname" ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block" flex-gt-sm>
                 <label>Affiliation</label>
-                <input>
+                <input ng-model="author.affiliation" ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <a class="mc-error-color" ng-click="$ctrl.removeAuthor($index)">
                 <i class="fa fa-fw fa-remove"></i>

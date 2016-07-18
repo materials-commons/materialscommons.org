@@ -1,40 +1,72 @@
 class MCDatasetDetailsComponentController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($stateParams, $mdDialog, datasetService, toast) {
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.datasetId = $stateParams.dataset_id;
         this.$mdDialog = $mdDialog;
-        this.authors = [
-            {
-                last_name: '',
-                first_name: '',
-                affiliation: ''
-            }
-        ];
+        this.datasetService = datasetService;
+        this.toast = toast;
         this.licenses = [
             {
                 name: `Public Domain Dedication and License (PDDL)`,
-                link: "http://opendatacommons.org/licenses/pddl/summary/"
+                link: `http://opendatacommons.org/licenses/pddl/summary/`
             },
             {
                 name: `Attribution License (ODC-By)`,
-                link: "http://opendatacommons.org/licenses/by/summary/"
+                link: `http://opendatacommons.org/licenses/by/summary/`
             },
             {
-                name: `Open Database License (ODC-ODbL) `,
-                link: "http://opendatacommons.org/licenses/odbl/summary/"
+                name: `Open Database License (ODC-ODbL)`,
+                link: `http://opendatacommons.org/licenses/odbl/summary/`
             }
         ];
     }
 
     addAuthor() {
-        this.authors.push({
-            last_name: '',
-            first_name: '',
+        this.dataset.authors.push({
+            lastname: '',
+            firstname: '',
             affiliation: ''
         });
+        this.updateDataset();
     }
 
     removeAuthor(index) {
-        this.authors.splice(index, 1);
+        this.dataset.authors.splice(index, 1);
+        this.updateDataset();
+    }
+
+    addPaper() {
+        this.dataset.papers.push({
+            title: '',
+            abstract: '',
+            link: '',
+            doi: '',
+            authors: ''
+        });
+        this.updateDataset();
+    }
+
+    removePaper(index) {
+        this.dataset.papers.splice(index, 1);
+        this.updateDataset();
+    }
+
+    updateDataset() {
+        this.datasetService.updateDatasetDetails(this.projectId, this.experimentId, this.datasetId, this.dataset)
+            .then(
+                () => null,
+                () => this.toast.error('Unable to update dataset')
+            );
+    }
+
+    updateDatasetPublicationDate() {
+
+    }
+
+    updateDatasetLicense() {
+        console.log('license', this.dataset.license);
     }
 
     publishDataset() {

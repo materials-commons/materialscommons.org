@@ -4,7 +4,8 @@ module.exports = function(schema) {
     return {
         defineCreateDatasetSchema,
         defineUpdateDatasetSchema,
-        defineDatasetAuthorSchema
+        defineDatasetAuthorSchema,
+        defineDatasetPaperSchema
     };
 
     function defineCreateDatasetSchema() {
@@ -46,6 +47,37 @@ module.exports = function(schema) {
         return datasetAuthorSchema;
     }
 
+    function defineDatasetPaperSchema() {
+        let datasetPaperSchema = schema.defineSchema('DatasetPaper', {
+            title: {
+                type: 'string',
+                nullable: false
+            },
+            abstract: {
+                type: 'string',
+                nullable: false
+            },
+
+            authors: {
+                type: 'string',
+                nullable: false
+            },
+
+            link: {
+                type: 'string',
+                nullable: true
+            },
+
+            doi: {
+                type: 'string',
+                nullable: true
+            }
+        });
+        datasetPaperSchema.setDefaults({});
+        datasetPaperSchema.validateAsync = promise.promisify(datasetPaperSchema.validate);
+        return datasetPaperSchema;
+    }
+
     function defineUpdateDatasetSchema() {
         let updateDatasetSchema = schema.defineSchema('UpdateDataset', {
             title: {
@@ -63,28 +95,19 @@ module.exports = function(schema) {
                 nullable: true
             },
 
-            publication: {
-                nullable: true,
+            papers: {
+                type: 'array',
+                nullable: true
+            },
 
-                title: {
-                    type: 'string',
-                    nullable: true
-                },
+            keywords: {
+                type: 'array',
+                nullable: true
+            },
 
-                abstract: {
-                    type: 'string',
-                    nullable: true
-                },
-
-                link: {
-                    type: 'string',
-                    nullable: true
-                },
-
-                doi: {
-                    type: 'string',
-                    nullable: true
-                }
+            funding: {
+                type: 'string',
+                nullable: true
             },
 
             embargo_date: {
@@ -103,8 +126,11 @@ module.exports = function(schema) {
             },
 
             license: {
-                type: 'string',
-                nullable: true
+                nullable: true,
+                name: {
+                    type: 'string',
+                    nullable: false
+                }
             }
         });
         updateDatasetSchema.setDefaults({});
