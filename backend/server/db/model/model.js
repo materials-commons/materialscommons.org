@@ -327,6 +327,7 @@ module.exports = function (r) {
         this.papers = [];
         this.funding = "";
         this.keywords = [];
+        this.funding = "";
         this.doi = "";
         this.description = "";
         this.license = {
