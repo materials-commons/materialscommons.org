@@ -183,7 +183,8 @@ module.exports = function(r) {
         return yield getDataset(datasetId);
     }
 
-    function* publishDataset() {
-        return {error: `Not implemented`};
+    function* publishDataset(datasetId) {
+        yield r.table('datasets').get(datasetId).update({published: true})
+        return yield getDataset(datasetId);
     }
 };

@@ -82,11 +82,21 @@ class MCDatasetDetailsComponentController {
 
 class PublishDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, $stateParams, toast, datasetService) {
         this.$mdDialog = $mdDialog;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.datasetId = $stateParams.dataset_id;
+        this.toast = toast;
+        this.datasetService = datasetService;
     }
 
     publish() {
+        this.datasetService.publishDataset(this.projectId, this.experimentId, this.datasetId)
+            .then(
+                () => null,
+                () => this.toast.error('Unable to publish dataset')
+            );
         this.$mdDialog.hide();
     }
 
