@@ -184,7 +184,72 @@ module.exports = function(r) {
     }
 
     function* publishDataset(datasetId) {
-        yield r.table('datasets').get(datasetId).update({published: true})
+        yield publishDatasetProcesses(datasetId);
+        yield publishDatasetSamples(datasetId);
+        yield publishDatasetFiles(datasetId);
+        yield r.table('datasets').get(datasetId).update({published: true});
         return yield getDataset(datasetId);
+    }
+
+    function* publishDatasetProcesses(datasetId) {
+        let d2pEntries = yield r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'});
+        let processIds = d2pEntries.map(entry => entry.process_id);
+        let processes = yield r.table('processes').getAll(r.args(processIds));
+        processes.forEach(p => {
+            p.original_id = p.id;
+            delete p['id'];
+        });
+        let inserted = yield r.db('mcpub').table('processes').insert(processes, {returnChanges: 'always'});
+        let d2pToInsert = inserted.changes.map(e => new model.Dataset2Process(datasetId, e.new_val.id));
+        let newProcesses = inserted.changes.map(e => e.new_val);
+        yield r.db('mcpub').table('dataset2process').insert(d2pToInsert);
+        yield publishSetupForProcesses(newProcesses);
+    }
+
+    /*
+     * publishSetupForProcesses will go through the setup entries and the properties associated with the
+     * setup entries. It will create new setup entries from the old setup entries, and then update all the
+     * id mappings in the join tables and foreign indexes for the related tables.
+     */
+    function* publishSetupForProcesses(processes) {
+        let originalProcessIds = processes.map(p => p.original_id);
+        let p2sEntries = yield r.table('process2setup').getAll(r.args(originalProcessIds), {index: 'process_id'});
+        let setupIds = p2sEntries.map(e => e.setup_id);
+        let setupEntries = yield r.table('setups').getAll(r.args(setupIds));
+        let setupProperties = yield r.table('setupproperties').getAll(r.args(setupIds), {index: 'setup_id'});
+
+        // Insert setupEntries into new database by creating new ids for each setup entry, and update
+        // the setupproperties table to use the new ids.
+        setupEntries.forEach(e => {
+            e.original_id = e.id;
+            delete e['id'];
+        });
+        let insertedSetups = yield r.db('mcpub').table('setups').insert(setupEntries, {returnChanges: 'always'});
+        let setupsByOriginalId = _.indexBy(insertedSetups.changes.map(e => e.new_val), 'original_id');
+
+        // Modify setupproperties to point to the new ids for each setup.
+        setupProperties.forEach(prop => {
+            let setupEntry = setupsByOriginalId[prop.setup_id];
+            prop.setup_id = setupEntry.id;
+        });
+        yield r.db('mcpub').table('setupproperties').insert(setupProperties);
+
+        // Update process2setup to use the new process id and the new setup id
+        let processesByOriginalId = _.indexBy(processes, 'original_id');
+        p2sEntries.forEach(e => {
+            let process = processesByOriginalId[e.process_id];
+            let setup = setupsByOriginalId[e.setup_id];
+            e.setup_id = setup.id;
+            e.process_id = process.id;
+        });
+        yield r.db('mcpub').table('process2setup').insert(p2sEntries);
+    }
+
+    function* publishDatasetSamples(datasetId) {
+
+    }
+
+    function* publishDatasetFiles(datasetId) {
+
     }
 };

@@ -76,7 +76,9 @@ class MCDatasetDetailsComponentController {
             locals: {
                 dataset: this.dataset
             }
-        });
+        }).then(
+            () => this.dataset.published = true
+        );
     }
 }
 

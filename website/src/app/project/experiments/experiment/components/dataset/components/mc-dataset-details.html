@@ -1,11 +1,14 @@
-<div layout="column" layout-fill flex="60" class="margin-top-10">
+<div layout="column" flex="70" class="margin-top-10">
     <form layout="column">
         <md-button ng-show="!$ctrl.dataset.published" class="md-primary md-raised" ng-click="$ctrl.publishDataset()">
             <i class="fa fa-fw fa-cloud-upload"></i>Publish Dataset
         </md-button>
-        <md-button ng-show="$ctrl.dataset.published" class="md-warn md-raised" ng-disabled="true">
-            <span class="mc-done-color"><i class="fa fa-fw fa-check-circle-o"></i>Dataset published</span>
-        </md-button>
+        <div ng-show="$ctrl.dataset.published">
+            <md-button class="md-warn md-raised" ng-disabled="true">
+                <span class="mc-done-color"><i class="fa fa-fw fa-check-circle-o"></i>Dataset published</span>
+            </md-button>
+            <a href="http://www.google.com" target="_blank">View published dataset</a>
+        </div>
         <label class="md-subhead">Dataset</label>
         <div layout-margin layout="column">
             <md-input-container class="md-block">
