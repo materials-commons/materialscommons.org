@@ -4,10 +4,10 @@
             <i class="fa fa-fw fa-cloud-upload"></i>Publish Dataset
         </md-button>
         <md-button ng-show="$ctrl.dataset.published" class="md-warn md-raised" ng-disabled="true">
-            <span class="mc-error-color">Dataset already published</span>
+            <span class="mc-done-color"><i class="fa fa-fw fa-check-circle-o"></i>Dataset published</span>
         </md-button>
         <label class="md-subhead">Dataset</label>
-        <div layout-margin>
+        <div layout-margin layout="column">
             <md-input-container class="md-block">
                 <label>Name</label>
                 <input ng-model="$ctrl.dataset.title" ng-model-options="{debounce: 500}"
@@ -21,6 +21,11 @@
             <md-input-container class="md-block">
                 <label>Institution</label>
                 <input ng-model="$ctrl.dataset.institution" ng-model-options="{debounce: 500}"
+                       ng-change="$ctrl.updateDataset()">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Funding</label>
+                <input ng-model="$ctrl.dataset.funding" ng-model-options="{debounce: 500}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <div layout="row">
@@ -39,10 +44,18 @@
                         {{license.name}}
                 </md-select>
             </md-input-container>
-            <a ng-show="$ctrl.dataset.license"
+            <a ng-show="$ctrl.dataset.license.link"
                class="padding-left-15" ng-href="{{$ctrl.dataset.license.link}}" target="_blank">
                 View License
             </a>
+            <md-chips class="margin-top-20"
+                      ng-model="$ctrl.dataset.keywords"
+                      placeholder="Keywords"
+                      delete-button-label="Remove keyword"
+                      md-on-add="$ctrl.updateDataset()"
+                      md-on-remove="$ctrl.updateDataset()"
+                      secondary-placeholder="Add another keyword"
+                      md-enable-chip-edit="true"></md-chips>
         </div>
         <div layout="row" layout-align="start center" class="margin-top-30">
             <label class="md-subhead">Papers</label>

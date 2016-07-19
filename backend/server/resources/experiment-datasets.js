@@ -140,6 +140,14 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
             datasetArgs.license = license;
         }
 
+        if (datasetArgs.keywords) {
+            for (let i = 0; i < datasetArgs.keywords.length; i++) {
+                if (!_.isString(datasetArgs.keywords[i])) {
+                    return {error: `Keywords must be strings`};
+                }
+            }
+        }
+
         return null;
     }
 
