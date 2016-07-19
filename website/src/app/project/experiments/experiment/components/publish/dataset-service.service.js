@@ -54,6 +54,10 @@ class DatasetService {
     updateDatasetDetails(projectId, experimentId, datasetId, details) {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).customPUT(details);
     }
+
+    publishDataset(projectId, experimentId, datasetId) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).one('publish').customPUT({});
+    }
 }
 
 angular.module('materialscommons').service('datasetService', DatasetService);
