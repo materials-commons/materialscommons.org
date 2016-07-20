@@ -96,10 +96,13 @@ class PublishDatasetDialogController {
     publish() {
         this.datasetService.publishDataset(this.projectId, this.experimentId, this.datasetId)
             .then(
-                () => null,
-                () => this.toast.error('Unable to publish dataset')
+                () => this.$mdDialog.hide(),
+                () => {
+                    this.toast.error('Unable to publish dataset');
+                    this.$mdDialog.cancel();
+                }
             );
-        this.$mdDialog.hide();
+
     }
 
     cancel() {
