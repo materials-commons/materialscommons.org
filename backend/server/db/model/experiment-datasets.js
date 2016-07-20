@@ -246,6 +246,14 @@ module.exports = function(r) {
     }
 
     function* publishDatasetSamples(datasetId) {
+        let ds2sEntries = yield r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'});
+        let sampleIds = ds2sEntries.map(entry => entry.sample_id);
+        let samples = yield r.table('samples').getAll(r.args(sampleIds));
+        samples.forEach(s => {
+            s.original_id = s.id;
+            delete s['id'];
+        });
+        let insertedSamples = yield r.db('mcpub').table('samples').insert(samples, {returnChanges: 'always'});
 
     }
 
