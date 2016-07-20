@@ -254,10 +254,56 @@ module.exports = function(r) {
             delete s['id'];
         });
         let insertedSamples = yield r.db('mcpub').table('samples').insert(samples, {returnChanges: 'always'});
+        let ds2sToInsert = insertedSamples.changes.map(e => new model.Dataset2Sample(datasetId, e.new_val.id));
+        yield r.db('mcpub').table('dataset2sample').insert(ds2sToInsert);
 
+        // Update process2sample table
+        let newSamples = insertedSamples.changes.map(s => s.new_val);
+        let originalSampleIds = newSamples.map(s => s.original_id);
+        let p2sEntries = yield r.table('process2sample').getAll(r.args(originalSampleIds), {index: 'sample_id'});
+        let originalProcessIds = p2sEntries.map(e => e.process_id);
+        let mcPubProcesses = yield r.db('mcpub').table('processes').getAll(r.args(originalProcessIds), {index: 'original_id'});
+        let processesByOriginalId = _.indexBy(mcPubProcesses, 'original_id');
+        let samplesByOriginalId = _.indexBy(newSamples, 'original_id');
+        p2sEntries.forEach(e => {
+            let process = processesByOriginalId[e.process_id];
+            let sample = samplesByOriginalId[e.sample_id];
+            e.process_id = process.id;
+            e.sample_id = sample.id;
+        });
+        yield r.db('mcpub').table('process2sample').insert(p2sEntries);
     }
 
     function* publishDatasetFiles(datasetId) {
+        let ds2dfEntries = yield r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
+        if (!ds2dfEntries.length) {
+            return;
+        }
+        let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
+        let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
+        datafiles.forEach(f => {
+            f.original_id = f.id;
+            delete f['id'];
+        });
+        let insertedDatafiles = yield r.db('mcpub').table('datafiles').insert(datafiles, {returnChanges: 'always'});
+        let ds2dfToInsert = insertedDatafiles.changes.map(f => new model.Dataset2Datafile(datasetId, f.new_val.id));
+        yield r.db('mcpub').table('dataset2datafile').insert(ds2dfToInsert);
+
+        // Update process2file table
+        let newDatafiles = insertedDatafiles.changes.map(f => f.new_val);
+        let originalDFIds = newDatafiles.map(f => f.original_id);
+        let p2fEntries = yield r.table('process2file').getAll(r.args(originalDFIds), {index: 'datafile_id'});
+        let originalProcessIds = p2fEntries.map(e => e.process_id);
+        let mcPubProcesses = yield r.db('mcpub').table('processes').getAll(r.args(originalProcessIds), {index: 'original_id'});
+        let processesByOriginalId = _.indexBy(mcPubProcesses, 'original_id');
+        let datafilesByOriginalId = _.indexBy(newDatafiles, 'original_id');
+        p2fEntries.forEach(e => {
+            let process = processesByOriginalId[e.process_id];
+            let datafile = datafilesByOriginalId[e.datafile_id];
+            e.process_id = process.id;
+            e.datafile_id = datafile.id;
+        });
+        yield r.db('mcpub').table('process2file').insert(p2fEntries);
 
     }
 };
