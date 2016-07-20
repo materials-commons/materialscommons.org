@@ -8,7 +8,9 @@ module.exports = function(samples, schema) {
         getSampleForProject,
         createSamples,
         updateSample,
-        updateSamples
+        updateSamples,
+        addMeasurements,
+        updateMeasurements
     };
 
     ///////////////////////////////////////
@@ -103,6 +105,130 @@ module.exports = function(samples, schema) {
     }
 
     function* updateSamples(next) {
+        let updateArgs = yield parse(this);
+        let errors = yield validateUpdateSamples(this.params.project_id, updateArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield samples.updateSamples(updateArgs.samples);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
         yield next;
+    }
+
+    function* validateUpdateSamples(projectId, args) {
+        if (!args.process_id || !_.isString(args.process_id) || args.process_id === "") {
+            return {error: `Invalid process supplied`};
+        }
+
+        if (!args.samples || !_.isArray(args.samples)) {
+            return {error: `Invalid samples supplied`};
+        }
+
+        // Only support updating names at the moment
+        for (let i = 0; i < args.samples.length; i++) {
+            let s = args.samples[i];
+            if (!s.id || !s.name) {
+                return {error: `Invalid sample entry ${s}`};
+            }
+        }
+
+        let sampleIds = args.samples.map((s) => s.id);
+        let allSamplesInProject = yield samples.allSamplesInProject(projectId, sampleIds);
+
+        if (!allSamplesInProject) {
+            return {error: `Some samples are not in project`};
+        }
+
+        return null;
+    }
+
+    function* addMeasurements(next) {
+        let addMeasurementsArgs = yield parse(this);
+        schema.prepare(schema.addSamplesMeasurements, addMeasurementsArgs);
+        let errors = yield validateAddMeasurements(this.params.project_id, this.params.experiment_id, addMeasurementsArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield samples.addSamplesMeasurements(addMeasurementsArgs.properties);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
+
+    function* validateAddMeasurements(projectId, args) {
+        let errors = yield schema.validate(schema.addSamplesMeasurements, args);
+        if (errors !== null) {
+            return errors;
+        }
+
+        let sampleIds = {};
+
+        for (let i = 0; i < args.properties.length; i++) {
+            let prop = args.properties[i];
+            schema.prepare(schema.samplesMeasurement, prop);
+            let e = yield schema.validate(schema.samplesMeasurement, prop);
+            if (e !== null) {
+                return e;
+            }
+
+            for (let s = 0; s < prop.samples.length; s++) {
+                sampleIds[prop.samples[s].id] = true;
+            }
+
+            for (let j = 0; j < prop.measurements.length; j++) {
+                let measurement = prop.measurements[j];
+                schema.prepare(schema.measurement, measurement);
+                e = yield schema.validate(schema.measurement, measurement);
+                if (e !== null) {
+                    return e;
+                }
+                // Need to validate each of the measurement types... (that will be a bit of work)
+            }
+        }
+
+        // Need to validate that the process is in the project.
+
+        let allSampleIds = _.keys(sampleIds);
+        let allSamplesInProject = yield samples.allSamplesInProject(projectId, allSampleIds);
+        if (!allSamplesInProject) {
+            return {error: `Some samples are not in project`};
+        }
+
+        return null;
+    }
+
+    function* updateMeasurements(next) {
+        let updateMeasurementsArgs = yield parse(this);
+        let errors = yield validateUpdateMeasurements(this.params.project_id, this.params.experiment_id, updateMeasurementsArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield samples.updateSamplesMeasurements(updateMeasurementsArgs.properties);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
+
+    function* validateUpdateMeasurements(projectId, args) {
+        return yield validateAddMeasurements(projectId, args); // Same as add for now
     }
 };

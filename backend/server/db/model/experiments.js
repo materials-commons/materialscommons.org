@@ -267,7 +267,7 @@ module.exports = function(r) {
 
     function* addTemplateToTask(projectId, experimentId, taskId, templateId, owner) {
         let template = yield r.table('templates').get(templateId);
-        let procId = yield createProcessFromTemplate(projectId, template, owner);
+        let procId = yield processCommon.createProcessFromTemplate(projectId, template, owner);
         let templateName = templateId.substring(7);
         yield r.table('experimenttasks').get(taskId).update({
             process_id: procId,
@@ -277,49 +277,6 @@ module.exports = function(r) {
         let e2proc = new model.Experiment2Process(experimentId, procId);
         yield r.table('experiment2process').insert(e2proc);
         return yield getTask(taskId);
-    }
-
-    function* createProcessFromTemplate(projectId, template, owner) {
-        let p = new model.Process(template.name, owner, template.id, template.does_transform);
-        // TODO: Fix ugly hack, template id is global_<name>, the substring removes the global_ part.
-        p.template_name = template.id.substring(7);
-        let proc = yield addProcess(projectId, p);
-        yield createSetup(proc.id, template.setup);
-        return proc.id;
-    }
-
-    // addProcess inserts the process and add it to the project.
-    function* addProcess(projectID, process) {
-        let p = yield db.insert('processes', process);
-        let p2proc = new model.Project2Process(projectID, p.id);
-        yield db.insert('project2process', p2proc);
-        return p;
-    }
-
-    function* createSetup(processID, settings) {
-        for (let i = 0; i < settings.length; i++) {
-            let current = settings[i];
-
-            // Create the setting
-            let s = new model.Setups(current.name, current.attribute);
-            let setup = yield db.insert('setups', s);
-
-            // Associate it with the process
-            let p2s = new model.Process2Setup(processID, setup.id);
-            yield db.insert('process2setup', p2s);
-
-            // Create each property for the setting. Add these to the
-            // setting variable so we can return a setting object with
-            // all of its properties.
-            // TODO: Add into an array and then batch insert into setupproperties
-            for (let j = 0; j < current.properties.length; j++) {
-                let p = current.properties[j].property;
-                let val = p.value;
-                let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
-                    p._type, val, p.unit);
-                yield db.insert('setupproperties', prop);
-            }
-        }
     }
 
     function* updateTaskTemplate(taskId, experimentId, properties, processId, files, samples) {
