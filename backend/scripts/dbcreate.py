@@ -158,7 +158,7 @@ def create_mcpub_database():
 
 
 def create_mcpub_tables():
-    create_mcpub_table("samples", "project_id")
+    create_mcpub_table("samples", "original_id")
     create_mcpub_table("datasets")
     create_mcpub_table("dataset2sample", "dataset_id", "sample_id")
     create_compound_index("dataset2sample", "dataset_sample", ["dataset_id", "sample_id"], db='mcpub')
@@ -176,9 +176,9 @@ def create_mcpub_tables():
     create_mcpub_table("datafiles", "name", "owner", "checksum", "usesid", "mediatype")
     run(r.db('mcpub').table("datafiles").index_create("mime", r.row["mediatype"]["mime"]))
 
-    create_mcpub_table("processes", "template_id", "birthtime")
+    create_mcpub_table("processes", "template_id", "birthtime", "original_id")
 
-    create_mcpub_table("setups")
+    create_mcpub_table("setups", "original_id")
 
     create_mcpub_table("setupproperties", "setup_id")
     create_compound_index("setupproperties", "id_setup_id", ["id", "setup_id"], db='mcpub')
