@@ -27,12 +27,20 @@ module.exports = function(model) {
 
     router.get('/projects/:project_id/processes', validateProjectAccess, processes.getProjectProcesses);
     router.get('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.getProcess);
+    router.post('/projects/:project_id/processes', validateProjectAccess, processes.createProcessFromTemplate);
+
+    router.get('/templates', processes.getProcessTemplates);
 
     router.post('/projects/:project_id/samples', validateProjectAccess, samples.createSamples);
     router.get('/projects/:project_id/samples', validateProjectAccess, samples.getAllSamplesForProject);
     router.get('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.getSampleForProject);
-    router.put('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.updateSample);
+    //router.put('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.updateSample);
     router.put('/projects/:project_id/samples', validateProjectAccess, samples.updateSamples);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples/measurements', validateProjectAccess, samples.addMeasurements);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements', validateProjectAccess, samples.updateMeasurements);
+
+    router.post('/projects/:project_id/samples/measurements', validateProjectAccess, samples.addMeasurements);
+    router.put('/projects/:project_id/samples/measurements', validateProjectAccess, samples.updateMeasurements);
 
     router.get('/projects/:project_id/files/:file_id', validateProjectAccess, files.get);
     router.get('/projects/:project_id/files/:file_id/versions', validateProjectAccess, files.getVersions);
