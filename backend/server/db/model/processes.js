@@ -1,10 +1,14 @@
 module.exports = function(r) {
     const dbExec = require('./run');
     const commonQueries = require('./common-queries');
+    const processCommon = require('./process-common')(r);
 
     return {
         getProcess,
         getProjectProcesses,
+        getProcessTemplates,
+        createProcessFromTemplate,
+        processTemplateExists,
         r: r
     };
 
@@ -19,5 +23,21 @@ module.exports = function(r) {
             .eqJoin('process_id', r.table('processes')).zip().filter(r.row('process_type').ne('as_received')), r);
         let processes = yield dbExec(rql);
         return {val: processes};
+    }
+
+    function* getProcessTemplates() {
+        let templates = yield r.table('templates');
+        return {val: templates};
+    }
+
+    function* createProcessFromTemplate(projectId, templateId, owner) {
+        let template = yield r.table('templates').get(templateId);
+        let procId = yield processCommon.createProcessFromTemplate(projectId, template, owner);
+        return yield getProcess(procId);
+    }
+
+    function* processTemplateExists(templateId) {
+        let templates = yield r.table('templates').getAll(templateId);
+        return templates.length !== 0;
     }
 };
