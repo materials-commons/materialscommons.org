@@ -1,24 +1,26 @@
 class MCDatasetFilesComponentController {
     /*@ngInject*/
-    constructor($mdDialog, $stateParams, datasetService, mcfile) {
+    constructor($mdDialog, $stateParams, datasetService, mcfile, showFileService) {
         this.$mdDialog = $mdDialog;
         this.datasetService = datasetService;
         this.mcfile = mcfile;
+        this.showFileService = showFileService;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
     }
 
     showFile(file) {
-        this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
-            controllerAs: '$ctrl',
-            controller: ShowFileDialogController,
-            bindToController: true,
-            locals: {
-                file: file
-            }
-        });
+        //this.$mdDialog.show({
+        //    templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
+        //    controllerAs: '$ctrl',
+        //    controller: ShowFileDialogController,
+        //    bindToController: true,
+        //    locals: {
+        //        file: file
+        //    }
+        //});
+        this.showFileService.showFile(file);
     }
 
     removeFile(file) {
