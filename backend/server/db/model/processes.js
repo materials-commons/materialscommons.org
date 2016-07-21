@@ -9,6 +9,7 @@ module.exports = function(r) {
         getProcessTemplates,
         createProcessFromTemplate,
         processTemplateExists,
+        updateProcess,
         r: r
     };
 
@@ -39,5 +40,30 @@ module.exports = function(r) {
     function* processTemplateExists(templateId) {
         let templates = yield r.table('templates').getAll(templateId);
         return templates.length !== 0;
+    }
+
+    function* updateProcess(processId, properties, files, samples) {
+        if (properties) {
+            let errors = yield processCommon.updateProperties(properties);
+            if (errors !== null) {
+                return {error: errors};
+            }
+        }
+
+        if (files) {
+            let errors = yield processCommon.updateProcessFiles(processId, files);
+            if (errors !== null) {
+                return {error: errors};
+            }
+        }
+
+        if (samples) {
+            let errors = yield processCommon.updateProcessSamples(processId, samples);
+            if (errors !== null) {
+                return {error: errors};
+            }
+        }
+
+        return yield getProcess(processId);
     }
 };

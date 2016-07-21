@@ -8,7 +8,7 @@ module.exports = function(model) {
     const projects = require('./projects')(model.projects);
     const samples = require('./samples')(model.samples, schema);
     const files = require('./files')(model.files);
-    const processes = require('./processes')(model.processes, schema);
+    const processes = require('./processes')(model.processes, model.samples, model.experiments, schema);
     const directories = require('./directories')(model.directories, schema);
     const users = require('./users')(model.users, model.experiments, schema);
     const shares = require('./shares')(model.shares, schema);
@@ -28,6 +28,7 @@ module.exports = function(model) {
     router.get('/projects/:project_id/processes', validateProjectAccess, processes.getProjectProcesses);
     router.get('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.getProcess);
     router.post('/projects/:project_id/processes', validateProjectAccess, processes.createProcessFromTemplate);
+    router.put('/projects/:project_id/processes/:process_id', validateProjectAccess, processes.updateProcess);
 
     router.get('/templates', processes.getProcessTemplates);
 
