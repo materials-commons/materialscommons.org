@@ -57,8 +57,8 @@ function start_servers()
     R=$(is_running "sbin/mcapi.js" "p $MC_API_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting mcapi..."
-        gulp build-server
-        node sbin/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+        gulp build-mcapi-server
+        node sbin/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
     fi
 
     if [ $TESTSERVER = "u" ]; then
@@ -90,9 +90,9 @@ function stop_servers()
         kill $MCSTORED_PID
     fi
 
-    APPMC_PID=$(ps -eo "pid,command" | grep "mcapi.js" | grep "p $MC_API_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-    if [ "$APPMC_PID" != "" ]; then
-        kill $APPMC_PID
+    MCAPI_PID=$(ps -eo "pid,command" | grep "mcapi.js" | grep "p $MC_API_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$MCAPI_PID" != "" ]; then
+        kill $MCAPI_PID
     fi
 
     if [ $TESTSERVER = "u" ]; then
@@ -129,10 +129,10 @@ function stop_named_server()
 
         mcapi)
             echo Stopping mcapi...
-            APPMC_PID=$(ps -eo "pid,command" | grep "mcapi.js" | grep "p $MC_API_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-            if [ "$APPMC_PID" != "" ]; then
-                kill $APPMC_PID
-                echo Stopped mcapi with pid $APPMC_PID
+            MCAPI_PID=$(ps -eo "pid,command" | grep "mcapi.js" | grep "p $MC_API_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+            if [ "$MCAPI_PID" != "" ]; then
+                kill $MCAPI_PID
+                echo Stopped mcapi with pid $MCAPI_PID
             fi
             ;;
 
@@ -159,8 +159,8 @@ function restart_named_server()
 
         mcapi)
             echo "  Starting mcapi..."
-            gulp build-server
-            node sbin/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+            gulp build-mcapi-server
+            node sbin/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
             ;;
 
         *)
