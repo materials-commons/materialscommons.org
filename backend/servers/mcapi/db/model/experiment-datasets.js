@@ -77,7 +77,10 @@ module.exports = function(r) {
             add = yield removeExistingSampleEntriesInDataset(add);
             if (add.length) {
                 yield r.table('dataset2sample').insert(add);
-                yield addProcessesForSamplesToDataset(datasetId, samplesToAdd);
+                let uniqueSampleIds = add.map(d2s => d2s.sample_id);
+                let processes = yield addProcessesForSamplesToDataset(datasetId, uniqueSampleIds);
+                let processIds = processes.map(p => p.process_id);
+                yield addFilesForProcessesAndSamples(datasetId, processIds, uniqueSampleIds);
             }
         }
 
@@ -100,14 +103,23 @@ module.exports = function(r) {
         return Object.keys(uniqItems).map(key => uniqItems[key]);
     }
 
-    function* addProcessesForSamplesToDataset(datasetId, samples) {
-        let sampleIds = samples.map(s => s.id);
+    function* addProcessesForSamplesToDataset(datasetId, sampleIds) {
         let processes = yield r.table('process2sample').getAll(r.args(sampleIds), {index: 'sample_id'});
         let uniqProcesses = uniqByKey(processes, 'process_id');
         let processesToInsert = uniqProcesses.map(p => new model.Dataset2Process(datasetId, p.process_id));
         processesToInsert = yield removeExistingProcessEntries(processesToInsert);
         if (processesToInsert.length) {
             yield r.table('dataset2process').insert(processesToInsert);
+        }
+        return uniqProcesses;
+    }
+
+    function* addFilesForProcessesAndSamples(datasetId, processIds, sampleIds) {
+        let processFiles = yield r.table('process2file').getAll(r.args(processIds), {index: 'process_id'});
+        let sampleFiles = yield r.table('sample2datafile').getAll(r.args(sampleIds), {index: 'sample_id'});
+        let uniqFileIds = _.keys(_.indexBy(processFiles.concat(sampleFiles), 'datafile_id')).map(id => ({id: id}));
+        if (uniqFileIds.length) {
+            yield updateFilesInDataset(datasetId, uniqFileIds, []);
         }
     }
 

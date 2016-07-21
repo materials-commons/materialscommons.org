@@ -1,8 +1,9 @@
 class MCDatasetFilesComponentController {
     /*@ngInject*/
-    constructor($mdDialog, datasetService, $stateParams) {
+    constructor($mdDialog, $stateParams, datasetService, mcfile) {
         this.$mdDialog = $mdDialog;
         this.datasetService = datasetService;
+        this.mcfile = mcfile;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
@@ -26,6 +27,10 @@ class MCDatasetFilesComponentController {
                 (dataset) => this.mcExperimentDataset.dataset = dataset,
                 () => this.toast.error('Failed to remove file from dataset')
             );
+    }
+
+    fileSrc(fileId) {
+        return this.mcfile.src(fileId);
     }
 }
 

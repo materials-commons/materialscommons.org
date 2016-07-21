@@ -52,7 +52,7 @@ class MCTaskTemplateOtherComponentController {
                 this.experimentsService.updateTaskTemplateSamples(this.projectId, this.experimentId, this.task.id, samplesArgs)
                     .then(
                         () => this.task.template.input_samples = selected.samples,
-                        () => this.toast.error('Unable to add files')
+                        () => this.toast.error('Unable to add samples')
                     );
             }
         );
