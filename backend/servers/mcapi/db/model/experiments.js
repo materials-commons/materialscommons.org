@@ -4,6 +4,7 @@ module.exports = function(r) {
     const model = require('./model')(r);
     const commonQueries = require('./common-queries');
     const processCommon = require('./process-common')(r);
+    const _ = require('lodash');
 
     return {
         getAllForProject,
