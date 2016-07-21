@@ -279,29 +279,67 @@ module.exports = function(r) {
         return yield getTask(taskId);
     }
 
-    function* updateTaskTemplate(taskId, experimentId, properties, processId, files, samples) {
+    function* updateTaskTemplate(taskId, experimentId, processId, properties, files, samples) {
         if (properties) {
             let errors = yield processCommon.updateProperties(properties);
             if (errors !== null) {
-                return {errors: errors};
+                return {error: errors};
             }
         }
 
         if (files) {
-            let errors = yield processCommon.updateExperimentProcessFiles(experimentId, processId, files);
+            let errors = yield processCommon.updateProcessFiles(processId, files);
             if (errors !== null) {
-                return {errors: errors};
+                return {error: errors};
             }
+
+            let filesToAddToExperiment = files.filter(f => f.command === 'add').map(f => new model.Experiment2DataFile(experimentId, f.id));
+            filesToAddToExperiment = yield removeExistingExperimentFileEntries(experimentId, filesToAddToExperiment);
+            if (filesToAddToExperiment.length) {
+                yield r.table('experiment2datafile').insert(filesToAddToExperiment);
+            }
+
+            // TODO: Delete files from experiment if the file is not used in any process associated with experiment.
         }
 
         if (samples) {
-            let errors = yield processCommon.updateExperimentProcessSamples(experimentId, processId, samples);
+            let errors = yield processCommon.updateProcessSamples(processId, samples);
             if (errors !== null) {
-                return {errors: errors};
+                return {error: errors};
             }
+
+            let samplesToAddToExperiment = samples.filter(s => s.command === 'add').map(s => new model.Experiment2Sample(experimentId, s.id));
+            samplesToAddToExperiment = yield removeExistingExperimentSampleEntries(experimentId, samplesToAddToExperiment);
+            if (samplesToAddToExperiment.length) {
+                yield r.table('experiment2sample').insert(samplesToAddToExperiment);
+            }
+
+            // TODO: Delete samples from experiment if the sample is not used in any process associated with experiment.
         }
 
         return yield getTask(taskId);
+    }
+
+    function* removeExistingExperimentFileEntries(experimentId, files) {
+        if (files.length) {
+            let indexEntries = files.map(f => [experimentId, f.datafile_id]);
+            let matchingEntries = yield r.table('experiment2datafile').getAll(r.args(indexEntries), {index: 'experiment_datafile'});
+            var byFileID = _.indexBy(matchingEntries, 'datafile_id');
+            return files.filter(f => (!(f.datafile_id in byFileID)));
+        }
+
+        return files;
+    }
+
+    function* removeExistingExperimentSampleEntries(experimentId, samples) {
+        if (samples.length) {
+            let indexEntries = samples.map(s => [experimentId, s.sample_id]);
+            let matchingEntries = yield r.table('experiment2sample').getAll(r.args(indexEntries), {index: 'experiment_sample'});
+            var bySampleID = _.indexBy(matchingEntries, 'sample_id');
+            return samples.filter(s => (!(s.sample_id in bySampleID)));
+        }
+
+        return samples;
     }
 
     function* isTemplateForTask(templateId, taskId) {
