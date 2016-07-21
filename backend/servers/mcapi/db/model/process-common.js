@@ -1,6 +1,7 @@
 module.exports = function(r) {
     const model = require('./model')(r);
     const _ = require('lodash');
+    const db = require('./db')(r);
 
     return {
         updateProcessFiles,
