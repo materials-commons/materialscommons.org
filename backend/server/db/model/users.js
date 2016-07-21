@@ -78,11 +78,11 @@ module.exports = function(r) {
         user.validate_uuid = yield r.uuid();
         let u = yield r.table('users').get(account.email);
         if (u) {
-            return {error: `User already exists`};
+            return {error: "User account already exists: " + account.email};
         }
         let rv = yield r.table('account_requests').insert(user, {returnChanges: true});
         if (rv.errors) {
-            return {error: `User already exists`};
+            return {error: "Validation was already sent: " + account.email};
         }
 
         return {val: rv.changes[0].new_val};
