@@ -3,13 +3,13 @@ module.exports = function(r) {
     const _ = require('lodash');
 
     return {
-        updateExperimentProcessFiles,
+        updateProcessFiles,
         updateProperties,
-        updateExperimentProcessSamples,
+        updateProcessSamples,
         createProcessFromTemplate
     };
 
-    function* updateExperimentProcessFiles(experimentId, processId, files) {
+    function* updateProcessFiles(processId, files) {
         let filesToAddToProcess = files.filter(f => f.command === 'add').map(f => new model.Process2File(processId, f.id, ''));
         filesToAddToProcess = yield removeExistingProcessFileEntries(processId, filesToAddToProcess);
         if (filesToAddToProcess.length) {
@@ -20,14 +20,6 @@ module.exports = function(r) {
         if (filesToDeleteFromProcess.length) {
             yield r.table('process2file').getAll(r.args(filesToDeleteFromProcess, {index: 'process_data'})).delete();
         }
-
-        let filesToAddToExperiment = files.filter(f => f.command === 'add').map(f => new model.Experiment2DataFile(experimentId, f.id));
-        filesToAddToExperiment = yield removeExistingExperimentFileEntries(experimentId, filesToAddToExperiment);
-        if (filesToAddToExperiment.length) {
-            yield r.table('experiment2datafile').insert(filesToAddToExperiment);
-        }
-
-        // TODO: Delete files from experiment if the file is not used in any process associated with experiment.
 
         return null;
     }
@@ -43,16 +35,7 @@ module.exports = function(r) {
         return files;
     }
 
-    function* removeExistingExperimentFileEntries(experimentId, files) {
-        if (files.length) {
-            let indexEntries = files.map(f => [experimentId, f.datafile_id]);
-            let matchingEntries = yield r.table('experiment2datafile').getAll(r.args(indexEntries), {index: 'experiment_datafile'});
-            var byFileID = _.indexBy(matchingEntries, 'datafile_id');
-            return files.filter(f => (!(f.datafile_id in byFileID)));
-        }
 
-        return files;
-    }
 
     function* updateProperties(properties) {
         // Validate that the retrieved property matches that we are updating
@@ -87,7 +70,7 @@ module.exports = function(r) {
         return null;
     }
 
-    function* updateExperimentProcessSamples(experimentId, processId, samples) {
+    function* updateProcessSamples(processId, samples) {
         let samplesToAddToProcess = samples.filter(s => s.command === 'add').map(s => new model.Process2Sample(processId, s.id, s.property_set_id, ''));
         samplesToAddToProcess = yield removeExistingProcessSampleEntries(processId, samplesToAddToProcess);
         if (samplesToAddToProcess.length) {
@@ -98,14 +81,6 @@ module.exports = function(r) {
         if (samplesToDeleteFromProcess.length) {
             yield r.table('process2sample').getAll(r.args(samplesToDeleteFromProcess, {index: 'process_sample'})).delete();
         }
-
-        let samplesToAddToExperiment = samples.filter(s => s.command === 'add').map(s => new model.Experiment2Sample(experimentId, s.id));
-        samplesToAddToExperiment = yield removeExistingExperimentSampleEntries(experimentId, samplesToAddToExperiment);
-        if (samplesToAddToExperiment.length) {
-            yield r.table('experiment2sample').insert(samplesToAddToExperiment);
-        }
-
-        // TODO: Delete samples from experiment if the sample is not used in any process associated with experiment.
 
         return null;
     }
@@ -121,16 +96,7 @@ module.exports = function(r) {
         return samples;
     }
 
-    function* removeExistingExperimentSampleEntries(experimentId, samples) {
-        if (samples.length) {
-            let indexEntries = samples.map(s => [experimentId, s.sample_id]);
-            let matchingEntries = yield r.table('experiment2sample').getAll(r.args(indexEntries), {index: 'experiment_sample'});
-            var bySampleID = _.indexBy(matchingEntries, 'sample_id');
-            return samples.filter(s => (!(s.sample_id in bySampleID)));
-        }
 
-        return samples;
-    }
 
     function* createProcessFromTemplate(projectId, template, owner) {
         let p = new model.Process(template.name, owner, template.id, template.does_transform);

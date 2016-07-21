@@ -252,8 +252,8 @@ module.exports = function(experiments, samples, schema) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield experiments.updateTaskTemplate(this.params.task_id, this.params.experiment_id, updateArgs.properties,
-                updateArgs.process_id, updateArgs.files, updateArgs.samples);
+            let rv = yield experiments.updateTaskTemplate(this.params.task_id, this.params.experiment_id, updateArgs.process_id,
+                updateArgs.properties, updateArgs.files, updateArgs.samples);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
