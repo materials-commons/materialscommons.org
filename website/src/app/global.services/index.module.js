@@ -28,6 +28,7 @@ import './isimage.service';
 import './differencebyid.service';
 import './removebyid.service';
 import './show-sample-service.service';
+import './show-file-service.service';
 
 angular.module('materialscommons')
     .factory('selectItems', selectItemsService)
