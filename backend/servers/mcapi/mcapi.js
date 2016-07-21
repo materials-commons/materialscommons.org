@@ -7,7 +7,7 @@ require('koa-qs')(app);
 require('./init')();
 
 var model = require('./model-loader')(module.parent);
-var apikey = require('./apikey')(model.users);
+var apikey = require('../lib/apikey')(model.users);
 var resources = require('./resources')(model);
 
 app.use(apikey);
@@ -26,7 +26,7 @@ model.r.table('projects').changes().toStream().on('data', function() {
 
 // Look for changes on the users table. If a change it detected then invalidate
 // the apikey cache so it will be reloaded.
-const apikeyCache = require('./apikey-cache')(model.users);
+const apikeyCache = require('../lib/apikey-cache')(model.users);
 model.r.table('users').changes().toStream().on('data', function() {
     apikeyCache.clear()
 });
