@@ -77,7 +77,13 @@ module.exports = function(users, experiments, schema) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
             } else {
-                this.body = rv.val;
+                let evl = yield emailValidationLink(rv.val);
+                if (evl.error) {
+                    this.status = status.BAD_REQUEST;
+                    this.body = evl;
+                } else {
+                    this.body = evl.val;
+                }
             }
         }
         yield next;
@@ -85,5 +91,40 @@ module.exports = function(users, experiments, schema) {
 
     function* validateCreateAccount(accountArgs) {
         return yield schema.validate(schema.userAccountSchema, accountArgs);
+    }
+
+    function* emailValidationLink(userData) {
+        console.log("emailValidation 01");
+        var nodemailer = require('nodemailer');
+
+        console.log("emailValidation 02");
+
+        // create reusable transporter object using the default SMTP transport
+        var transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
+
+        console.log("emailValidation 03");
+
+        // setup e-mail data with unicode symbols
+        var mailOptions = {
+            from: '"Fred Foo 👥" <foo@blurdybloop.com>', // sender address
+            to: 'bar@blurdybloop.com, baz@blurdybloop.com', // list of receivers
+            subject: 'Hello ✔', // Subject line
+            text: 'Hello world 🐴', // plaintext body
+            html: '<b>Hello world 🐴</b>' // html body
+        };
+
+        console.log("emailValidation 04");
+
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                return console.log('Send error: ' + error);
+            }
+            console.log('Message sent: ' + info.response);
+        });
+
+        console.log("emailValidation 05");
+
+        return {val: userData}
     }
 };
