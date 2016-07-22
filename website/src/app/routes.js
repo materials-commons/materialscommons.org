@@ -51,6 +51,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/project/:project_id',
             abstract: true,
             template: '<ui-view flex="100" layout="column"></ui-view>',
+            //template:'<mc-project></mc-project>',
             resolve: {
                 // Set the current project in the project service so all components
                 // will resolve without having to worry if a promise has resolved.

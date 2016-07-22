@@ -12,15 +12,6 @@ class MCDatasetFilesComponentController {
     }
 
     showFile(file) {
-        //this.$mdDialog.show({
-        //    templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
-        //    controllerAs: '$ctrl',
-        //    controller: ShowFileDialogController,
-        //    bindToController: true,
-        //    locals: {
-        //        file: file
-        //    }
-        //});
         this.showFileService.showFile(file);
     }
 
@@ -34,17 +25,6 @@ class MCDatasetFilesComponentController {
 
     fileSrc(fileId) {
         return this.mcfile.src(fileId);
-    }
-}
-
-class ShowFileDialogController {
-    /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
-
-    done() {
-        this.$mdDialog.cancel();
     }
 }
 

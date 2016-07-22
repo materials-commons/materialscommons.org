@@ -1,4 +1,6 @@
-<div layout="row" flex="100" layout-fill>
+<div layout="column" flex="100">
+    <a ng-click="$ctrl.showQuickbar = true">Show Quickbar</a>
+    <mc-project-quickbar show-quickbar="$ctrl.showQuickbar"></mc-project-quickbar>
     <div layout="column" flex>
         <div ui-view flex></div>
     </div>
