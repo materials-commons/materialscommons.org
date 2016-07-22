@@ -60,11 +60,11 @@
         </div>
 
     </md-content>
-    <md-sidenav flex="45" md-is-locked-open="true">
+    <div flex="45">
             <textarea ckeditor="editorOptions"
                       ng-model="$ctrl.experiment.note"
                       ng-model-options="{debounce: 1000}"
                       ng-change="$ctrl.updateNote()">
             </textarea>
-    </md-sidenav>
+    </div>
 </div>

@@ -1,5 +1,5 @@
 <div layout="row" layout-fill layout-align="start stretch">
-    <md-sidenav md-is-locked-open="true" flex="30" layout="column" layout-margin>
+    <div flex="30" layout="column" layout-margin>
         <label>Project Description</label>
         <div md-whiteframe layout-margin>
             <div ckeditor="editorOptions"
@@ -10,7 +10,7 @@
                 {{$ctrl.project.description}}
             </div>
         </div>
-    </md-sidenav>
+    </div>
     <div layout="column" flex layout-margin>
         <div layout="row" layout-align="center center">
             <md-radio-group layout="row" class="text-uppercase" ng-model="$ctrl.whichExperiments">

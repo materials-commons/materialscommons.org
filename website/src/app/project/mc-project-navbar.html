@@ -49,6 +49,8 @@
         </md-tabs>
     </div>
     <span flex></span>
+    <a class="text-white" ng-click="$ctrl.toggleQuickbar()">QUICKBAR</a>
+    <span flex></span>
     <div class="row" layout-margin>
         <a class="md-title" style="color: white" ui-sref="project.home" tooltip="{{::$ctrl.project.name}}">
             {{::$ctrl.project.name | truncate:30:'...'}}
@@ -56,3 +58,8 @@
         <a style="color:white;" ui-sref="projects.list">switch</a>
     </div>
 </div>
+<mc-project-quickbar show-quickbar="$ctrl.showQuickbar"
+                     project-samples="$ctrl.projectSamples"
+                     experiment-samples="$ctrl.experimentSamples"
+                     dataset-samples="$ctrl.datasetSamples">
+</mc-project-quickbar>
