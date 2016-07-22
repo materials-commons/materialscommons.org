@@ -1,12 +1,10 @@
-import { isImage } from '../../util/util';
-
 angular.module('materialscommons').component('mcProjectSearch', {
     templateUrl: 'app/project/search/mc-project-search.html',
     controller: MCProjectSearchComponentController
 });
 
 /*@ngInject*/
-function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state) {
+function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state, isImage) {
     var ctrl = this;
     var projectID = $stateParams.project_id;
     ctrl.isImage = isImage;

@@ -3,9 +3,43 @@
         <div class="md-title" flex-offset="35">
             Experiment: {{$ctrl.experiment.name}}
         </div>
+        <span flex></span>
+        <a class="pad" ng-click="$ctrl.openSamplesSidenav()">Show Samples Bar</a>
+        <span flex="5"></span>
     </div>
     <div layout="row">
         <mc-experiment-sidenav></mc-experiment-sidenav>
         <ui-view flex style="margin-left:10px;"></ui-view>
+        <md-sidenav class="md-sidenav-right" flex="60"
+                    md-component-id="left"
+                    md-is-open="$ctrl.showSamplesSidenav"
+                    md-whiteframe="4">
+            <md-content layout-margin>
+                <md-button class="md-warn" ng-click="$ctrl.showSamplesSidenav = false">
+                    close samples bar
+                </md-button>
+                <h3 class="md-subhead">Project Samples</h3>
+                <ul>
+                    <li ng-repeat="sample in $ctrl.projectSamples | orderBy:'name'">
+                        <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
+                    </li>
+                </ul>
+
+                <h3 class="md-subhead">Experiment Samples</h3>
+                <ul>
+                    <li ng-repeat="sample in $ctrl.experimentSamples | orderBy:'name'">
+                        <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
+                    </li>
+                </ul>
+                <div ng-show="$ctrl.datasetId">
+                    <h3 class="md-subhead">Dataset Samples</h3>
+                    <ul>
+                        <li ng-repeat="sample in $ctrl.datasetSamples | orderBy:'name'">
+                            <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </md-content>
+        </md-sidenav>
     </div>
 </div>

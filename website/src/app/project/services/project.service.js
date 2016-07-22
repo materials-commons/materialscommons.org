@@ -6,7 +6,7 @@ function projectService() {
 
     return {
         set: function(proj) {
-            self.project = angular.copy(proj);
+            self.project = proj;
         },
 
         get: function() {

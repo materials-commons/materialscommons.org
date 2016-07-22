@@ -4,3 +4,7 @@ import './on-enter';
 import './on-key-code.directive';
 import './mc-editable-header.component';
 import './process-measurements.component';
+import './mc-show-file.component';
+import './mc-show-process.component';
+import './mc-show-sample.component';
+import './mc-files-table.component';

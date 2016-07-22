@@ -1,8 +1,6 @@
-import { differenceById } from '../../../../util/util';
-
 angular.module('materialscommons').factory('processSelections', processSelectionsService);
 
-function processSelectionsService(selectItems) {
+function processSelectionsService(selectItems, differenceById) {
     'ngInject';
     return {
         selectSamples: function(processSamples) {

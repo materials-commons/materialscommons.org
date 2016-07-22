@@ -1,0 +1,27 @@
+<div layout="column">
+    <div layout="row" layout-align="start center">
+        <h3 class="md-title" style="padding-right: 30px">Dataset: {{$ctrl.dataset.title}}</h3>
+        <md-button class="md-primary" ng-click="$ctrl.selectSamples()">add samples</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.selectFiles()">add files</md-button>
+        <md-button class="md-primary">add processes</md-button>
+        <md-button class="md-primary">add notes</md-button>
+        <span flex="10"></span>
+        <md-button class="md-primary" ng-click="$ctrl.showDetailsSection = !$ctrl.showDetailsSection">details</md-button>
+    </div>
+
+    <div layout="row" flex style="max-height: 70vh">
+        <md-content layout="row" layout-wrap layout-align="start stretch" flex>
+            <div layout="column" flex>
+                <mc-dataset-details ng-show="!$ctrl.showDetailsSection" dataset=$ctrl.dataset></mc-dataset-details>
+
+                <mc-dataset-samples ng-show="$ctrl.dataset.samples.length"
+                                    samples="$ctrl.dataset.samples"></mc-dataset-samples>
+
+                <mc-dataset-files ng-show="$ctrl.dataset.samples.length" files="$ctrl.dataset.files"></mc-dataset-files>
+
+                <mc-dataset-processes ng-show="$ctrl.dataset.processes.length"
+                                      processes="$ctrl.dataset.processes"></mc-dataset-processes>
+            </div>
+        </md-content>
+    </div>
+</div>

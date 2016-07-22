@@ -19,7 +19,16 @@ import './editoropts.service';
 import './samples-service.service';
 import './search-query-text.service';
 import './api-service.service';
-
+import './select-items/mc-files-select.component';
+import './select-items/mc-files-table-select.component';
+import './select-items/select-items-files';
+import './select-items/select-items-processes';
+import './select-items/select-items-samples';
+import './isimage.service';
+import './differencebyid.service';
+import './removebyid.service';
+import './show-sample-service.service';
+import './show-file-service.service';
 
 angular.module('materialscommons')
     .factory('selectItems', selectItemsService)
