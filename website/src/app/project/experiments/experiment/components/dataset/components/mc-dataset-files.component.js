@@ -1,9 +1,10 @@
 class MCDatasetFilesComponentController {
     /*@ngInject*/
-    constructor($mdDialog, $stateParams, datasetService, mcfile, showFileService) {
+    constructor($mdDialog, $stateParams, datasetService, mcfile, isImage, showFileService) {
         this.$mdDialog = $mdDialog;
         this.datasetService = datasetService;
         this.mcfile = mcfile;
+        this.isImage = isImage;
         this.showFileService = showFileService;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
