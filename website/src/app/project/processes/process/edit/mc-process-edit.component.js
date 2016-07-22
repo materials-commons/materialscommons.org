@@ -1,5 +1,3 @@
-import { removeById } from '../../../../util/util';
-
 angular.module('materialscommons').component('mcProcessEdit', {
     // Use the create process template
     templateUrl: 'app/project/processes/process/create/create-other.html',
@@ -8,7 +6,7 @@ angular.module('materialscommons').component('mcProcessEdit', {
 
 /*@ngInject*/
 function MCProcessEditComponentController(sampleLinker, process, toastr, processSelections,
-                                          projectsService, $state, $stateParams, processEdit) {
+                                          projectsService, $state, $stateParams, processEdit, removeById) {
     var ctrl = this;
     ctrl.process = process.get();
     ctrl.process['updated_samples'] = [];
