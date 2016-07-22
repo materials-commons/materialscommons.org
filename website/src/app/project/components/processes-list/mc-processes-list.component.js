@@ -11,8 +11,6 @@ function MCProcessesListComponentController() {
     var ctrl = this;
     ctrl.selectProcess = selectProcess;
 
-    //console.log('MCProcessesListComponentController', ctrl.processes.length);
-
     //////////////////////////
 
     function selectProcess(process) {

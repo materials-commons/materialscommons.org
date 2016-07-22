@@ -1,6 +1,6 @@
 import './process/mc-process.component';
 import './process/create/components/periodic-table.directive';
-import './process/create/components/processing-settings.directive';
+import './process/create/components/process-settings.directive';
 import './process/create/services/create-process.service';
 import './process/create/services/prepare-created-sample.service';
 import './process/create/create-as-received.component';
