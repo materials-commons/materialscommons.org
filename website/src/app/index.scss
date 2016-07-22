@@ -11,6 +11,7 @@ $mc-dark-grey: #cecfd1;
 $mc-color-error-dark: #d32f2f;
 $mc-md-primary-color: #1565c0;
 $mc-sidebar-color: #009688;
+$mc-md-light-primary-color: #2196F3;
 
 .mc-sidebar {
   background-color: $mc-sidebar-color;
@@ -279,6 +280,42 @@ md-checkbox.md-checked.mc-done .md-icon {
   margin-left: 30px;
 }
 
+.margin-left-15 {
+  margin-left: 15px;
+}
+
 .timeline-badge {
   padding-top: 10px;
+}
+
+.arrow_box {
+  position: relative;
+  background: $mc-md-primary-color;
+  border: 4px solid $mc-md-light-primary-color;
+  border-radius: 4px;
+}
+
+.arrow_box:after, .arrow_box:before {
+  left: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.arrow_box:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-left-color: $mc-md-primary-color;
+  border-width: 10px;
+  margin-top: -10px;
+}
+
+.arrow_box:before {
+  border-color: rgba(194, 225, 245, 0);
+  border-left-color: $mc-md-light-primary-color;
+  border-width: 16px;
+  margin-top: -16px;
 }

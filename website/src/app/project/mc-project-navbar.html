@@ -1,5 +1,5 @@
 <div layout="row" layout-align="center center" class="md-mc-primary-color-hue-2-bg">
-    <div flex="70">
+    <div flex="60">
         <md-tabs md-selected="$ctrl.currentTab" class="md-primary md-hue-2" md-dynamic-height md-border-bottom>
             <md-tab ui-sref="project.home">
                 <md-tab-label>
@@ -49,14 +49,15 @@
         </md-tabs>
     </div>
     <span flex></span>
-    <a class="text-white" ng-click="$ctrl.toggleQuickbar()">QUICKBAR</a>
-    <span flex></span>
     <div class="row" layout-margin>
         <a class="md-title" style="color: white" ui-sref="project.home" tooltip="{{::$ctrl.project.name}}">
             {{::$ctrl.project.name | truncate:30:'...'}}
         </a>
         <a style="color:white;" ui-sref="projects.list">switch</a>
     </div>
+    <span flex></span>
+    <a class="text-white" style="color:white" ng-click="$ctrl.toggleQuickbar()">QUICKBAR</a>
+    <span flex></span>
 </div>
 <mc-project-quickbar show-quickbar="$ctrl.showQuickbar"
                      project-samples="$ctrl.projectSamples"
