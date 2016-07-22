@@ -1,5 +1,3 @@
-import { removeById } from '../../../../util/util';
-
 angular.module('materialscommons').component('mcProcessCreateAsReceived', {
     templateUrl: 'app/project/processes/process/create/create-as-received.html',
     controller: MCProcessCreateAsReceivedComponentController,
@@ -9,7 +7,7 @@ angular.module('materialscommons').component('mcProcessCreateAsReceived', {
 });
 
 /*@ngInject*/
-function MCProcessCreateAsReceivedComponentController(processSelections,
+function MCProcessCreateAsReceivedComponentController(processSelections, removeById,
                                                       prepareCreatedSample, createProcess,
                                                       toastr, previousStateService, $state, $stateParams) {
     var ctrl = this;

@@ -42,11 +42,6 @@ export function projectsService(Restangular, modelProjects) {
             return projectsAPI(projectID).one('processes').getList();
         },
 
-        // TODO: Remove once we know the new REST API call does everything the old one did.
-        getProjectProcessOld: function(projectID, processID) {
-            return Restangular.one('process').one('details', processID).get();
-        },
-
         getProjectProcess: function(projectId, processId) {
             return projectsAPI(projectId).one('processes', processId).get();
         },

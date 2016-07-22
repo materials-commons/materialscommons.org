@@ -1,5 +1,3 @@
-import { _add_json_callback } from '../util/util';
-
 export function mcapiService($http, User, mcglobals, $log) {
     'ngInject';
 
@@ -7,6 +5,10 @@ export function mcapiService($http, User, mcglobals, $log) {
         this.url = this._makeUrl.apply(this, arguments);
         this.on_error = undefined;
         this.on_success = undefined;
+    }
+
+    function _add_json_callback(url) {
+        return url + "&callback=JSON_CALLBACK";
     }
 
     MCApi.prototype._makeUrl = function() {

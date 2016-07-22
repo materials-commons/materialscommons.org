@@ -150,7 +150,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.processes', {
             url: '/processes',
-            template: '<mc-project-processes processes="ctrl.processes"></mc-project-processes>',
+            template: '<mc-experiment-processes processes="ctrl.processes"></mc-experiment-processes>',
             controllerAs: 'ctrl',
             controller: ['experimentsService', '$stateParams', 'toast',
                 function(experimentsService, $stateParams, toast) {
@@ -197,6 +197,26 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             controllerAs: 'ctrl',
             controller: ['experiment', function(experiment) {
                 this.experiment = experiment;
+            }]
+        })
+        .state('project.experiment.publish', {
+            url: '/publish',
+            template: '<mc-experiment-publish></mc-experiment-publish>'
+        })
+        .state('project.experiment.datasets', {
+            url: '/datasets',
+            template: '<mc-experiment-datasets></mc-experiment-datasets>'
+        })
+        .state('project.experiment.dataset', {
+            url: '/dataset/:dataset_id',
+            template: '<mc-experiment-dataset></mc-experiment-dataset>'
+        })
+        .state('project.experiment.sample', {
+            url: '/sample/:sample_id',
+            template: '<mc-show-sample sample-id="ctrl.sampleId"></mc-show-sample>',
+            controllerAs: 'ctrl',
+            controller: ['$stateParams', function($stateParams) {
+                this.sampleId = $stateParams.sample_id;
             }]
         })
         .state('project.create.process', {
@@ -318,6 +338,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.files.dir', {
             url: '/dir/:dir_id',
             template: '<mc-dir></mc-dir>'
+        })
+        .state('project.sample', {
+            url: '/sample/:sample_id',
+            template: '<mc-sample></mc-sample>'
         })
         .state('project.settings', {
             url: '/settings',

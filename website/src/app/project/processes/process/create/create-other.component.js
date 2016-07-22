@@ -1,5 +1,3 @@
-import { removeById } from '../../../../util/util';
-
 angular.module('materialscommons').component('mcProcessCreateOther', {
     templateUrl: 'app/project/processes/process/create/create-other.html',
     controller: MCProcessCreateOtherComponentController,
@@ -11,7 +9,7 @@ angular.module('materialscommons').component('mcProcessCreateOther', {
 /*@ngInject*/
 function MCProcessCreateOtherComponentController(processSelections, createProcess, toastr,
                                                  previousStateService, $state, sampleLinker, processEdit,
-                                                 $stateParams) {
+                                                 $stateParams, removeById) {
     var ctrl = this;
     ctrl.process = ctrl.template;
 

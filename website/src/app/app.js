@@ -10,6 +10,7 @@ import './model/index.module';
 import './project/index.module';
 import './projects/index.module';
 import './user/index.module';
+import './util/util';
 
 angular.module('materialscommons')
     .constant('mcglobals', setupMCGlobals())

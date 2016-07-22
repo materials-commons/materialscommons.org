@@ -1,17 +1,3 @@
-export function isImage(mime) {
-    switch (mime) {
-    case "image/gif":
-    case "image/jpeg":
-    case "image/png":
-    case "image/tiff":
-    case "image/x-ms-bmp":
-    case "image/bmp":
-        return true;
-    default:
-        return false;
-    }
-}
-
 export function numberWithCommas(n) {
     n = n.toString();
     var pattern = /(-?\d+)(\d{3})/;
@@ -21,63 +7,12 @@ export function numberWithCommas(n) {
     return n;
 }
 
-export function bytesToSizeStr(bytes) {
-    if(bytes === 0) return '0 Byte';
-    var k = 1000;
-    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-    var i = Math.floor(Math.log(bytes) / Math.log(k));
-    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
-
-}
-
 export function endsWith(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
-export function _add_json_callback(url) {
-    return url + "&callback=JSON_CALLBACK";
-}
-
-export function _add_json_callback2(url) {
-    var qIndex = url.indexOf("?");
-    var argSeparator = "&";
-    if (qIndex == -1) {
-        argSeparator = "?";
-    }
-
-    return url + argSeparator + "callback=JSON_CALLBACK";
-}
-
-export function differenceById(from, others) {
-    var idsFrom = from.map(function(entry) {
-        return entry.id;
-    });
-    var idsOthers = others.map(function(entry) {
-        return entry.id;
-    });
-
-    var diff = _.difference(idsFrom, idsOthers);
-    return from.filter(function(entry) {
-        return _.indexOf(diff, function(e) {
-            return e == entry.id;
-        }) !== -1;
-    });
-}
-
-export function removeById(from, what) {
-    var i = _.indexOf(from, function(item) {
-        return item.id === what.id;
-    });
-
-    if (i !== -1) {
-        from.splice(i, 1);
-    }
-
-    return i;
-}
-
-String.prototype.capitalize = function () {
-    return this.replace(/(?:^|\s)\S/g, function (a) {
+String.prototype.capitalize = function() {
+    return this.replace(/(?:^|\s)\S/g, function(a) {
         return a.toUpperCase();
     });
 };
@@ -90,7 +25,7 @@ var indexOfValue = _.indexOf;
 _.mixin({
 
     // return the index of the first array element passing a test
-    indexOf: function (array, test) {
+    indexOf: function(array, test) {
         // delegate to standard indexOf if the test isn't a function
         if (!_.isFunction(test)) return indexOfValue(array, test);
         // otherwise, look for the index

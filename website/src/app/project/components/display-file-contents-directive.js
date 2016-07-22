@@ -1,5 +1,3 @@
-import { isImage } from '../../util/util';
-
 angular.module('materialscommons').directive("displayFileContents", displayFileContentsDirective);
 function displayFileContentsDirective() {
     return {
@@ -14,7 +12,7 @@ function displayFileContentsDirective() {
     };
 }
 
-function DisplayFileContentsDirectiveController(mcfile, mcmodal) {
+function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage) {
     'ngInject';
 
     var ctrl = this;
