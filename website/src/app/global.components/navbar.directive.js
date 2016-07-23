@@ -12,7 +12,7 @@ function navbarDirective() {
 }
 
 /*@ngInject*/
-function NavbarDirectiveController(User, $state, modelProjects, $stateParams, searchQueryText, project) {
+function NavbarDirectiveController(User, $state, modelProjects, $stateParams, searchQueryText, project, navbarOnChange, projectsService) {
     var ctrl = this;
 
     var inProjectsState = $state.includes('projects');
@@ -23,6 +23,14 @@ function NavbarDirectiveController(User, $state, modelProjects, $stateParams, se
     });
 
     ctrl.project = null;
+
+    navbarOnChange.setOnChange(() => {
+        // Hack, change this later
+        if ($stateParams.project_id) {
+            projectsService.getAllProjects()
+                .then(() => projectsService.getProject($stateParams.project_id).then((proj) => project.set(proj)));
+        }
+    });
 
     project.setOnChange(() => {
         ctrl.project = project.get();

@@ -29,6 +29,7 @@ import './differencebyid.service';
 import './removebyid.service';
 import './show-sample-service.service';
 import './show-file-service.service';
+import './navbar-on-change.service';
 
 angular.module('materialscommons')
     .factory('selectItems', selectItemsService)
