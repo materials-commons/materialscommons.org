@@ -17,6 +17,7 @@ function MCProjectsComponentController(projectsService, $state, $mdDialog, share
     sharedProjectsList.setMaxProjects(ctrl.maxSharedProjects);
 
     projectsService.getAllProjects().then(function(projects) {
+        console.log('projects', projects);
         ctrl.projects = projects;
     });
 
