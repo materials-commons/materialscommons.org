@@ -12,13 +12,23 @@ function navbarDirective() {
 }
 
 /*@ngInject*/
-function NavbarDirectiveController(User, $state, modelProjects, searchQueryText) {
+function NavbarDirectiveController(User, $state, modelProjects, $stateParams, searchQueryText, project) {
     var ctrl = this;
 
     var inProjectsState = $state.includes('projects');
+    ctrl.$stateParams = $stateParams;
 
     searchQueryText.setOnChange(() => {
         ctrl.query = searchQueryText.get();
+    });
+
+    ctrl.project = null;
+
+    project.setOnChange(() => {
+        ctrl.project = project.get();
+        ctrl.published = ctrl.project.datasets.filter(d => d.published);
+        ctrl.unusedSamples = ctrl.project.samples.filter(s => s.processes.length === 1);
+        ctrl.measuredSamples = ctrl.project.samples.filter(s => s.processes.length > 1);
     });
 
     ctrl.query = searchQueryText.get();

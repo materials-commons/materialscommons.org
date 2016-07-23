@@ -40,6 +40,7 @@ def add_computed_attributes(projects, user):
         p['notes'] = []
         p['events'] = []
         p['experiments'] = []
+        p['datasets'] = []
         p['file_count'] = 0
         if 'process_templates' not in p:
             p['process_templates'] = []
@@ -55,6 +56,7 @@ def add_computed_attributes(projects, user):
         add_events(projects_by_id, project_ids)
         add_file_counts(projects_by_id, project_ids)
         add_experiments(projects_by_id, project_ids)
+        add_datasets(projects_by_id, project_ids)
 
 
 def add_users(projects_by_id, project_ids):
@@ -98,14 +100,14 @@ def add_samples(projects_by_id, project_ids):
                                             .eq_join('measurement_id',
                             r.table('measurements')).zip().coerce_to('array')
                         }),
+
                     'linked_files': r.table('sample2datafile')
                     .get_all(sample['id'],
                     index='sample_id').eq_join('datafile_id',
                     r.table('datafiles')).zip().coerce_to('array'),
 
-                    'property_sets': r.table('sample2propertyset')
-                    .get_all(sample['id'], index='sample_id')
-                    .coerce_to('array')
+                    'property_sets': r.table('sample2propertyset').get_all(sample['id'], index='sample_id').coerce_to('array'),
+                    'processes': r.table('process2sample').get_all(sample['id'], index='sample_id').coerce_to('array')
                 }).coerce_to('array').run(g.conn, time_format='raw'))
     # for sample in samples:
     #     sample['properties'] = {}
@@ -132,6 +134,14 @@ def add_notes(projects_by_id, project_ids):
                  .order_by('mtime')
                  .run(g.conn, time_format='raw'))
     add_computed_items(projects_by_id, notes, 'project_id', 'notes')
+
+
+def add_datasets(projects_by_id, project_ids):
+    datasets = list(r.table('project2experiment').get_all(*project_ids, index='project_id')
+                    .eq_join('experiment_id', r.table('experiment2dataset'), index='experiment_id')
+                    .zip().pluck('project_id', 'dataset_id')
+                    .eq_join('dataset_id', r.table('datasets')).zip().run(g.conn, time_format='raw'))
+    add_computed_items(projects_by_id, datasets, 'project_id', 'datasets')
 
 
 def add_events(projects_by_id, project_ids):
