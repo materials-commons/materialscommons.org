@@ -1,12 +1,13 @@
 class MCDatasetDetailsComponentController {
     /*@ngInject*/
-    constructor($stateParams, $mdDialog, datasetService, toast) {
+    constructor($stateParams, $mdDialog, datasetService, toast, navbarOnChange) {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
         this.$mdDialog = $mdDialog;
         this.datasetService = datasetService;
         this.toast = toast;
+        this.navbarOnChange = navbarOnChange;
         this.pubDate = "";
         this.licenses = [
             {
@@ -77,7 +78,10 @@ class MCDatasetDetailsComponentController {
                 dataset: this.dataset
             }
         }).then(
-            () => this.dataset.published = true
+            () => {
+                this.dataset.published = true;
+                this.navbarOnChange.fireChange();
+            }
         );
     }
 }
