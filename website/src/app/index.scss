@@ -10,15 +10,17 @@ $mc-light-grey: #f4f5f7;
 $mc-dark-grey: #cecfd1;
 $mc-color-error-dark: #d32f2f;
 $mc-md-primary-color: #1565c0;
-$mc-sidebar-color: #009688;
+//$mc-sidebar-color: #009688;
+$mc-sidebar-color: #bbdefb;
 $mc-md-light-primary-color: #2196F3;
 
 .mc-sidebar {
   background-color: $mc-sidebar-color;
+  color: black;
 }
 
 .mc-sidebar a {
-  color: white;
+  color: #1976d2;
 }
 
 /* Customize md toast */
