@@ -94,36 +94,37 @@ module.exports = function(users, experiments, schema) {
     }
 
     function* emailValidationLink(userData) {
-        console.log("emailValidation 01");
         var nodemailer = require('nodemailer');
 
-        console.log("emailValidation 02");
+        var fromEmailAddress = process.env.MC_VERIFY_EMAIL;
+        var fromEmailPass = process.env.MC_VERIFY_PASS;
+        var mailURL = 'smtps://' + fromEmailAddress + ':' + fromEmailPass + '@smtp.gmail.com';
+        console.log(mailURL);
+        var transporter = nodemailer.createTransport(mailURL);
 
-        // create reusable transporter object using the default SMTP transport
-        var transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
+        var sendTo = userData.id;
+        var validationLink = "http://mctest.localhost/validate/" + userData.validate_uuid;
+        var planTextBody = "Validate with the URL: " + validationLink;
+        var htmlBody = "Validate with <a href='" + validationLink + "'>this<a/> link: " + validationLink;
 
-        console.log("emailValidation 03");
-
-        // setup e-mail data with unicode symbols
         var mailOptions = {
-            from: '"Fred Foo 👥" <foo@blurdybloop.com>', // sender address
-            to: 'bar@blurdybloop.com, baz@blurdybloop.com', // list of receivers
-            subject: 'Hello ✔', // Subject line
-            text: 'Hello world 🐴', // plaintext body
-            html: '<b>Hello world 🐴</b>' // html body
+            from: fromEmailAddress,
+            to: sendTo,
+            subject: 'MaterialCommons - login verification',
+            text: planTextBody,
+            html: htmlBody
         };
 
-        console.log("emailValidation 04");
+        console.log("emailValidation: " + sendTo);
 
         // send mail with defined transport object
         transporter.sendMail(mailOptions, function(error, info){
             if(error){
-                return console.log('Send error: ' + error);
+                console.log('Send error: ' + error);
+                return error;
             }
             console.log('Message sent: ' + info.response);
         });
-
-        console.log("emailValidation 05");
 
         return {val: userData}
     }
