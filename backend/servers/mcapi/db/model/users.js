@@ -87,4 +87,25 @@ module.exports = function(r) {
 
         return {val: rv.changes[0].new_val};
     }
+
+    function* getUserRegistrationFromUuid(uuid) {
+        colsole.log("getUserRegistrationFromUuid: " + uuid);
+        let results = yield r.table('account_requests').filter({uuid:uuid});
+        if (!results) {
+            return {error: "User validation record does not exists: " + uuid};
+        }
+        let userData = results[0];
+        colsole.log("getUserRegistrationFromUuid: " + userData.id);
+        return {val: userData};
+    }
+
+    function* setUserFromRegistration(id, password) {
+        colsole.log("setUserFromRegistration: " + userData.id);
+        let userData = yield r.table('account_requests').get(id);
+        if (!userData) {
+            return {error: "User validation record does not exists: " + uuid};
+        }
+        colsole.log("setUserFromRegistration: " + userData.id);
+        return {val: userData};
+    }
 };

@@ -6,13 +6,15 @@ module.exports = function(users, experiments, schema) {
     return {
         updateProjectFavorites,
         updateUserSettings,
-        createAccount
+        createAccount,
+        getUserRegistrationFromUuid,
+        updatePassword
     };
 
     function* updateProjectFavorites(next) {
         let attrs = yield parse(this);
         this.body = yield users.updateProjectFavorites(this.reqctx.user.id, this.params.project_id, attrs);
-        this.status = 200;
+        this.status = status.OK;
         yield next;
     }
 
@@ -34,6 +36,64 @@ module.exports = function(users, experiments, schema) {
             } else {
                 this.body = rv.val;
             }
+        }
+        yield next;
+    }
+
+    function* createAccount(next) {
+        let accountArgs = yield parse(this);
+        schema.prepare(schema.userAccountSchema, accountArgs);
+        let errors = yield validateCreateAccount(accountArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield users.createUnverifiedAccount(accountArgs);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                let evl = yield emailValidationLink(rv.val);
+                if (evl.error) {
+                    this.status = status.BAD_REQUEST;
+                    this.body = evl;
+                } else {
+                    this.body = evl.val;
+                }
+            }
+        }
+        yield next;
+    }
+
+    function* getUserRegistrationFromUuid(next) {
+        let verifyArgs = yield parse(this);
+        console.log("getUserDataForVerifyFromUuid: " + verifyArgs.uuid);
+        verifyArgs.uuid = '07c9404b-7bef-4183-820b-2b3c7524e3ac';
+        console.log("getUserDataForVerifyFromUuid - faking UUID " + verifyArgs.uuid);
+        let result = yield users.getUserRegistrationFromUuid(verifyArgs.uuid);
+        if (result.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = result;
+        } else {
+            this.status = status.OK;
+            this.body = result.val;
+        }
+        yield next;
+    }
+
+    function* setUserFromRegistration(next) {
+        let verifyArgs = yield parse(this);
+        console.log("setUserFromRegistration: " + verifyArgs.id + "," + verifyArgs.password);
+        verifyArgs.id = 'terry.weymouth@gmail.com';
+        verifyArgs.password = 'fizzbuzz';
+        console.log("setUserFromRegistration - faking data "  + verifyArgs.id + "," + verifyArgs.password);
+        let result = yield users.setUserFromRegistration(verifyArgs.id,verifyArgs.pasword);
+        if (result.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = result;
+        } else {
+            this.status = status.OK;
+            this.body = result.val;
         }
         yield next;
     }
@@ -64,31 +124,6 @@ module.exports = function(users, experiments, schema) {
         return null;
     }
 
-    function* createAccount(next) {
-        let accountArgs = yield parse(this);
-        schema.prepare(schema.userAccountSchema, accountArgs);
-        let errors = yield validateCreateAccount(accountArgs);
-        if (errors !== null) {
-            this.status = status.BAD_REQUEST;
-            this.body = errors;
-        } else {
-            let rv = yield users.createUnverifiedAccount(accountArgs);
-            if (rv.error) {
-                this.status = status.BAD_REQUEST;
-                this.body = rv;
-            } else {
-                let evl = yield emailValidationLink(rv.val);
-                if (evl.error) {
-                    this.status = status.BAD_REQUEST;
-                    this.body = evl;
-                } else {
-                    this.body = evl.val;
-                }
-            }
-        }
-        yield next;
-    }
-
     function* validateCreateAccount(accountArgs) {
         return yield schema.validate(schema.userAccountSchema, accountArgs);
     }
@@ -103,7 +138,7 @@ module.exports = function(users, experiments, schema) {
         var transporter = nodemailer.createTransport(mailURL);
 
         var sendTo = userData.id;
-        var validationLink = "http://mctest.localhost/validate/" + userData.validate_uuid;
+        var validationLink = "http://mctest.localhost/#/validate/" + userData.validate_uuid;
         var planTextBody = "Validate with the URL: " + validationLink;
         var htmlBody = "Validate with <a href='" + validationLink + "'>this<a/> link: " + validationLink;
 
@@ -128,4 +163,5 @@ module.exports = function(users, experiments, schema) {
 
         return {val: userData}
     }
+
 };

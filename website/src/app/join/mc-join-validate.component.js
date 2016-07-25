@@ -1,11 +1,31 @@
 class MCJoinValidateComponentController {
     /*@ngInject*/
-    constructor(accountsService, $stateParams, $state) {
-        this.accountsService = accountsService;
-        this.$stateParams = $stateParams;
-        this.$state = $state;
-        this.fullname = "Glenn Tarcea";
+    constructor(accountsService, toast, $stateParams, $state) {
+        var ctrl = this;
+        ctrl.uuid = $stateParams.validation_uuid;
+        ctrl.accountsService = accountsService;
+        ctrl.$stateParams = $stateParams;
+        ctrl.$state = $state;
+        ctrl.message = null;
+
+        ctrl.$onInit = () => {
+            accountsService.getUserDataForVerifyFromUuid(ctrl.uuid).then(
+                (userData) => {
+                    console.log('MCJoinValidateComponentController.$onInit' + userData.id);
+                    ctrl.userData = userData;
+                },
+                (error) => {
+                    console.log('MCJoinValidateComponentController.$onInit - error: ' + error);
+                    toast.error('Error: ' + error)
+                }
+            );
+        };
+
+        ctrl.setPassword = (setPasswordForm) => {
+            console.log('MCJoinValidateComponentController.setPassword');
+        };
     }
+
 }
 
 angular.module('materialscommons').component('mcJoinValidate', {
