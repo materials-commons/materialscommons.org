@@ -314,9 +314,9 @@ module.exports = function (r) {
         this.sample_id = sampleId;
     }
 
-    function Dataset(title, user) {
+    function Dataset(title, owner) {
         let now = r.now();
-        this.user = user;
+        this.owner = owner;
         this.title = title;
         this.institution = "";
         this.authors = [];
