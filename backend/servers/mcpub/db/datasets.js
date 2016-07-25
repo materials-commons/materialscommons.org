@@ -2,9 +2,9 @@ var r = require('./../dash');
 //var parse = require('co-body');
 
 module.exports.getAll = function*(next) {
-    this.body = yield r.table('datasets').merge(function(rel) {
+    this.body = yield r.db('materialscommons').table('datasets').merge(function(rel) {
         return {
-            'files': r.table('datafiles').getAll(r.args(rel('datafiles'))).coerceTo('array'),
+            'files': [], //r.table('datafiles').getAll(r.args(rel('datafiles'))).coerceTo('array'),
             'appreciations': r.table('appreciations').getAll(rel('id'), {index: 'dataset_id'}).count(),
             'views': r.table('views').getAll(rel('id'), {index: 'dataset_id'}).count()
         }
@@ -13,23 +13,24 @@ module.exports.getAll = function*(next) {
 };
 
 module.exports.getAllCount = function*(next) {
-    this.body = yield r.table('datasets').count();
+    this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).count();
     yield next;
 };
 
 module.exports.getRecent = function*(next) {
-    this.body = yield r.table('datasets').orderBy(r.desc('birthtime')).merge(function(rel) {
-        return {
-            'files': r.table('datafiles').getAll(r.args(rel('datafiles'))).coerceTo('array')
-        }
-    }).limit(10);
+    this.body = yield r.db('materialscommons').table('datasets').filter({published: true})
+        .orderBy(r.desc('birthtime')).merge(function(rel) {
+            return {
+                'files': [] //r.table('datafiles').getAll(r.args(rel('datafiles'))).coerceTo('array')
+            }
+        }).limit(10);
     yield next;
 };
 
 module.exports.getTopViews = function*(next) {
-    this.body = yield r.table('datasets').merge(function(rel) {
+    this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).merge(function(rel) {
         return {
-            'files': r.table('datafiles').getAll(r.args(rel('datafiles'))).coerceTo('array'),
+            'files': [], //r.table('datafiles').getAll(r.args(rel('datafiles'))).coerceTo('array'),
             'appreciations': r.table('appreciations').getAll(rel('id'), {index: 'dataset_id'}).count(),
             'views': r.table('views').getAll(rel('id'), {index: 'dataset_id'}).count()
         }
@@ -38,9 +39,9 @@ module.exports.getTopViews = function*(next) {
 };
 
 module.exports.getOne = function*(next) {
-    this.body = yield r.table('datasets').get(this.params.id).merge(function(rel) {
+    this.body = yield r.db('materialscommons').table('datasets').get(this.params.id).merge(function(rel) {
         return {
-            'files': r.table('datafiles').getAll(r.args(rel('datafiles'))).coerceTo('array'),
+            'files': [], //r.table('datafiles').getAll(r.args(rel('datafiles'))).coerceTo('array'),
             'other_datasets': r.table('datasets').getAll(rel('author'), {index: "author"}).merge(function(od) {
                 return {
                     'files': r.table('datafiles').getAll(r.args(od('datafiles'))).coerceTo('array')
