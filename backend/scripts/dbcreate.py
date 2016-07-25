@@ -133,7 +133,7 @@ def create_mc_tables():
     create_mc_table("experiment2experimentnote", "experiment_id", "experiment_note_id")
     create_compound_index("experiment2experimentnote", "experiment_experiment_note", ["experiment_id", "experiment_note_id"])
 
-    create_mc_table("datasets")
+    create_mc_table("datasets", "owner")
 
     create_mc_table("experiment2dataset", "experiment_id", "dataset_id")
     create_compound_index("experiment2dataset", "experiment_dataset", ["experiment_id", "dataset_id"])
@@ -158,10 +158,20 @@ def create_mcpub_database():
 
 
 def create_mcpub_tables():
-    create_mcpub_table("appreciations", "dataset_id")
+    create_mcpub_table("appreciations", "user_id", "dataset_id")
+    create_compound_index("appreciations", "user_dataset", ["user_id", "dataset_id"], db="mcpub")
+
+    create_mcpub_table("users")
+    create_mcpub_table("tags")
+
+    create_mcpub_table("tag2dataset", "tag", "dataset_id")
+    create_compound_index("tag2dataset", "tag_dataset", ["tag", "dataset_id"], db="mcpub")
+
+    create_mcpub_table("comments", "dataset_id", "user_id")
+
     create_mcpub_table("views", "dataset_id")
     create_mcpub_table("samples", "original_id")
-    create_mcpub_table("datasets")
+    create_mcpub_table("datasets", "owner")
     create_mcpub_table("dataset2sample", "dataset_id", "sample_id")
     create_compound_index("dataset2sample", "dataset_sample", ["dataset_id", "sample_id"], db='mcpub')
 
