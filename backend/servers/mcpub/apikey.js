@@ -8,21 +8,29 @@ module.exports = function() {
     // whiteList contains paths that don't require
     // a valid apikey.
     let whiteList = {
-        "/login": true
+        "/login": true,
+        "/datasets": true,
+        "/datasets/count": true,
+        "/tags": true,
+        "/authors/count": true,
+        "/datasets/views": true,
+        "/datasets/recent": true
     };
     // validateAPIKey Looks up the apikey. If none is specified, or a
     // bad key is passed then abort the calls and send back an 401.
     return function *validateAPIKey(next) {
-        if (!(this.path in whiteList)) {
-            let UNAUTHORIZED = httpStatus.UNAUTHORIZED;
-            let apikey = this.query.apikey || this.throw(UNAUTHORIZED, 'Not authorized');
-            let user = yield apikeyCache.find(apikey);
-            if (!user) {
-                this.throw(UNAUTHORIZED, 'Not authorized');
+        if (false) {
+            if (!(this.path in whiteList)) {
+                let UNAUTHORIZED = httpStatus.UNAUTHORIZED;
+                let apikey = this.query.apikey || this.throw(UNAUTHORIZED, 'Not authorized');
+                let user = yield apikeyCache.find(apikey);
+                if (!user) {
+                    this.throw(UNAUTHORIZED, 'Not authorized');
+                }
+                this.reqctx = {
+                    user: user
+                };
             }
-            this.reqctx = {
-                user: user
-            };
         }
         yield next;
     };

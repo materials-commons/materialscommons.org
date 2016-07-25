@@ -158,6 +158,8 @@ def create_mcpub_database():
 
 
 def create_mcpub_tables():
+    create_mcpub_table("appreciations", "dataset_id")
+    create_mcpub_table("views", "dataset_id")
     create_mcpub_table("samples", "original_id")
     create_mcpub_table("datasets")
     create_mcpub_table("dataset2sample", "dataset_id", "sample_id")

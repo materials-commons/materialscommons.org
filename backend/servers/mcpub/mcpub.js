@@ -1,7 +1,7 @@
 var cliArgs = require('command-line-args');
 var koa = require('koa');
 var router = require('koa-router')();
-var release = require('./db/release');
+var datasets = require('./db/datasets');
 var user = require('./db/user');
 var action = require('./db/actions');
 var appreciate = require('./db/appreciate');
@@ -28,11 +28,11 @@ r.db('materialscommons').table('users').changes().toStream().on('data', function
 
 var app = koa();
 app.use(apikey);
-router.get('/datasets', release.getAll);
-router.get('/datasets/count', release.getAllCount);
-router.get('/datasets/recent', release.getRecent);
-router.get('/datasets/views', release.getTopViews);
-router.get('/datasets/:id/user/:user_id', release.getOne);
+router.get('/datasets', datasets.getAll);
+router.get('/datasets/count', datasets.getAllCount);
+router.get('/datasets/recent', datasets.getRecent);
+router.get('/datasets/views', datasets.getTopViews);
+router.get('/datasets/:id/user/:user_id', datasets.getOne);
 router.get('/user/:email', user.get);
 router.get('/actions/:dataset_id', action.getAll);
 router.post('/appreciate', appreciate.addAppreciate);
