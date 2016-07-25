@@ -202,9 +202,18 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.datasets', {
             url: '/datasets',
+            template: '<div ui-view></div>',
+            controller: ['$stateParams', '$state', function($stateParams, $state) {
+                if (!$stateParams.dataset_id) {
+                    $state.go('project.experiment.datasets.list');
+                }
+            }]
+        })
+        .state('project.experiment.datasets.list', {
+            url: '/list',
             template: '<mc-experiment-datasets></mc-experiment-datasets>'
         })
-        .state('project.experiment.dataset', {
+        .state('project.experiment.datasets.dataset', {
             url: '/dataset/:dataset_id',
             template: '<mc-experiment-dataset></mc-experiment-dataset>'
         })
