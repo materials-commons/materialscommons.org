@@ -36,7 +36,7 @@ class MCExperimentDatasetsComponentController {
     }
 
     openDataset(datasetId) {
-        this.$state.go("project.experiment.dataset", {dataset_id: datasetId});
+        this.$state.go("project.experiment.datasets.dataset", {dataset_id: datasetId});
     }
 }
 
