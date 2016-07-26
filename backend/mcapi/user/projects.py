@@ -18,7 +18,7 @@ from .. import cache
 def get_all_group_projects():
     user = access.get_user()
     if access.is_administrator(user):
-        projects = list(r.table('projects').limit(30).order_by('name')
+        projects = list(r.table('projects').limit(50).order_by('name')
                         .filter(r.row["owner"].ne("delete@materialscommons.org"))
                         .run(g.conn, time_format='raw'))
     else:
