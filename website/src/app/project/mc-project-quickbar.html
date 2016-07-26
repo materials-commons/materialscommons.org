@@ -16,7 +16,7 @@
                 add new sample to experiment
             </md-button>
         </div>
-        <h3 class="md-subhead">Project Samples</h3>
+        <h3 class="md-subhead"><i class="fa fa-fw fa-rocket"></i>Project Samples</h3>
         <ul>
             <li ng-repeat="sample in $ctrl.projectSamples | orderBy:'name'">
                 <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
@@ -24,7 +24,7 @@
         </ul>
 
         <div ng-show="$ctrl.experimentSamples.length">
-            <h3 class="md-subhead">Experiment Samples</h3>
+            <h3 class="md-subhead"><i class="fa fa-fw fa-flask"></i>Experiment Samples</h3>
             <ul>
                 <li ng-repeat="sample in $ctrl.experimentSamples | orderBy:'name'">
                     <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
@@ -32,7 +32,7 @@
             </ul>
         </div>
         <div ng-show="$ctrl.datasetSamples.length">
-            <h3 class="md-subhead">Dataset Samples</h3>
+            <h3 class="md-subhead"><i class="fa fa-fw fa-database"></i>Dataset Samples</h3>
             <ul>
                 <li ng-repeat="sample in $ctrl.datasetSamples | orderBy:'name'">
                     <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
