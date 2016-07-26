@@ -50,6 +50,14 @@
     </div>
     <span flex></span>
     <div class="row" layout-margin>
+        <a ng-if="false" class="md-title text-white" style="color: white" tooltip="{{$ctrl.project.name}}"
+           ng-show="!$ctrl.editField"
+           ng-click="$ctrl.editField = true">
+            {{$ctrl.project.name | truncate:30:'...'}}
+        </a>
+        <input ng-if="false" ng-show="$ctrl.editField" ng-model="$ctrl.project.name"
+               ng-mouseleave="$ctrl.editField = false"
+               class="mc-input-as-line md-title text-white">
         <a class="md-title" style="color: white" ui-sref="project.home" tooltip="{{::$ctrl.project.name}}">
             {{::$ctrl.project.name | truncate:30:'...'}}
         </a>
