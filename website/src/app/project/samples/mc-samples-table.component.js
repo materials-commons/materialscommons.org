@@ -28,7 +28,6 @@ angular.module('materialscommons').component('mcSamplesTable', {
                     {{sample.mtime | toDate}}
                 </td>
                 <td md-cell>
-                    Last transformation
                 </td>
                 <td md-cell>
                     <a ng-click="$ctrl.showFiles({files: sample.files})">
