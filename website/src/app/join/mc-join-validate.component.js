@@ -4,6 +4,7 @@ class MCJoinValidateComponentController {
         var ctrl = this;
         ctrl.uuid = $stateParams.validation_uuid;
         ctrl.accountsService = accountsService;
+        ctrl.toast = toast;
         ctrl.$stateParams = $stateParams;
         ctrl.$state = $state;
         ctrl.message = null;
@@ -11,14 +12,14 @@ class MCJoinValidateComponentController {
         ctrl.$onInit = () => {
             accountsService.getUserDataForVerifyFromUuid(ctrl.uuid).then(
                 (userData) => {
-                    console.log('MCJoinValidateComponentController.$onInit' + userData.id);
+                    console.log('MCJoinValidateComponentController.$onInit - data' + userData.id);
                     ctrl.userData = userData;
                 },
                 (error) => {
-                    console.log('MCJoinValidateComponentController.$onInit - error: ' + error);
-                    toast.error('Error: ' + error)
+                    console.log('MCJoinValidateComponentController.$onInit - error: ' + error.data.error);
+                    this.message = 'getUserDataForVerifyFromUuid - failed'
                 }
-            );
+            )
         };
 
         ctrl.setPassword = (setPasswordForm) => {
