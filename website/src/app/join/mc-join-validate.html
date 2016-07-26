@@ -7,20 +7,20 @@
             <div class="row">
                 <div class="login-splash join-splash">
                     <form name="setPasswordForm">
-                        <h4>Welcome {{$ctrl.fullname}}!</h4>
+                        <h4>Welcome Back!</h4>
                         <p>Please enter a password to finish setting up your account.</p>
                         <br>
                         <div class="row">
-                            <input ng-model="$ctrl.password1" name="password1" class="form-control"
-                                   type="string"
+                            <input ng-model="$ctrl.password1" name="password1" required class="form-control"
+                                   type="password"
                                    placeholder="Password">
                         </div>
 
                         <br>
 
                         <div class="row">
-                            <input ng-model="$ctrl.password2" name="password1" class="form-control"
-                                   type="string"
+                            <input ng-model="$ctrl.password2" name="password2" required class="form-control"
+                                   type="password"
                                    placeholder="Re-Enter Password...">
                         </div>
 
