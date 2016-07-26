@@ -106,7 +106,6 @@ class PublishDatasetDialogController {
                     this.$mdDialog.cancel();
                 }
             );
-
     }
 
     cancel() {
