@@ -54,6 +54,10 @@
                         <a class="md-primary" tooltip="notes" ui-sref="project.experiment.notes({experiment_id: experiment.id})">
                             <i class="fa fa-fw fa-book"></i>{{::experiment.notes.length}}
                         </a>
+                        <a class="md-primary" tooltip="datasets"
+                           ui-sref="project.experiment.datasets({experiment_id: experiment.id})">
+                            <i class="fa fa-fw fa-database"></i>{{::experiment.datasets.length}}
+                        </a>
                         <a class="md-primary" tooltip="samples" ui-sref="project.experiment.samples({experiment_id: experiment.id})">
                                 <i class="fa fa-fw fa-cubes"></i>{{::experiment.samples.length | number}}
                         </a>
