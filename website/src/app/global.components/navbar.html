@@ -14,8 +14,14 @@
             <span class="md-subhead">{{ctrl.measuredSamples.length}} measured</span>
         </div>
         <div ng-show="ctrl.$stateParams.project_id" layout="column" layout-align="center center" class="margin-left-45">
-            <span ng-if="ctrl.project.users.length !== 1" class="md-headline" style="color:#4caf50"><b>{{ctrl.project.users.length}} Users</b></span>
-            <span ng-if="ctrl.project.users.length === 1" class="md-headline" style="color:#4caf50"><b>{{ctrl.project.users.length}} User</b></span>
+            <a ng-if="ctrl.project.users.length !== 1" class="md-headline" style="color:#4caf50"
+               ui-sref="project.settings">
+                <b>{{ctrl.project.users.length}} Users</b>
+            </a>
+            <a ng-if="ctrl.project.users.length === 1" class="md-headline" style="color:#4caf50"
+               ui-sref="project.settings">
+                <b>{{ctrl.project.users.length}} User</b>
+            </a>
         </div>
         <div ng-show="ctrl.$stateParams.project_id" layout="column" layout-align="center center" class="margin-left-45">
             <span class="md-headline" style="color: #ff9800"><b>{{ctrl.published.length}}</b></span>
