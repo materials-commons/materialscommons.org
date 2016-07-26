@@ -1,7 +1,8 @@
 class AccountsService {
     /*@ngInject*/
-    constructor(apiService) {
+    constructor(apiService,Restangular) {
         this.apiService = apiService;
+        this.Restangular = Restangular;
     }
 
     createAccount(fullname, email) {
@@ -12,11 +13,16 @@ class AccountsService {
     }
 
     getUserDataForVerifyFromUuid(uuid) {
-        console.log("AccountsService: getUserDataForVerifyFromUuid");
-//        return this.apiService('accounts').customPOST({
-//            uuid: uuid
-//        });
-        return {error: 'Umimplemented'}
+        console.log("AccountsService: getUserDataForVerifyFromUuid - uuid = " + uuid);
+        var userData = this.apiService('users').one('validate', uuid).get();
+        console.log("AccountsService: getUserDataForVerifyFromUuid - user data = " + userData);
+        return userData;
+    }
+
+    setUserFromRegistrationData(id,password){
+        return Restangular.one('user').one('complete',id).customPOST({
+            password: password
+        });
     }
 }
 

@@ -12,7 +12,8 @@ module.exports = function(r) {
         updateProjectFavorites,
         updateUserSettings,
         userHasProjectAccess,
-        createUnverifiedAccount
+        createUnverifiedAccount,
+        getUserRegistrationFromUuid
     };
 
     ///////////
@@ -89,23 +90,15 @@ module.exports = function(r) {
     }
 
     function* getUserRegistrationFromUuid(uuid) {
-        colsole.log("getUserRegistrationFromUuid: " + uuid);
-        let results = yield r.table('account_requests').filter({uuid:uuid});
-        if (!results) {
+        console.log("getUserRegistrationFromUuid: " + uuid);
+        let results = yield r.table('account_requests').getAll(uuid,{index:'validate_uuid'});
+        if (!results.length) {
             return {error: "User validation record does not exists: " + uuid};
         }
         let userData = results[0];
-        colsole.log("getUserRegistrationFromUuid: " + userData.id);
+        console.log("getUserRegistrationFromUuid: " + userData.id);
         return {val: userData};
     }
 
-    function* setUserFromRegistration(id, password) {
-        colsole.log("setUserFromRegistration: " + userData.id);
-        let userData = yield r.table('account_requests').get(id);
-        if (!userData) {
-            return {error: "User validation record does not exists: " + uuid};
-        }
-        colsole.log("setUserFromRegistration: " + userData.id);
-        return {val: userData};
-    }
+
 };

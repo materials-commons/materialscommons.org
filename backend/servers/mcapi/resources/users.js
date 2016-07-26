@@ -7,8 +7,7 @@ module.exports = function(users, experiments, schema) {
         updateProjectFavorites,
         updateUserSettings,
         createAccount,
-        getUserRegistrationFromUuid,
-        updatePassword
+        getUserRegistrationFromUuid
     };
 
     function* updateProjectFavorites(next) {
@@ -67,31 +66,14 @@ module.exports = function(users, experiments, schema) {
 
     function* getUserRegistrationFromUuid(next) {
         let verifyArgs = yield parse(this);
-        console.log("getUserDataForVerifyFromUuid: " + verifyArgs.uuid);
-        verifyArgs.uuid = '07c9404b-7bef-4183-820b-2b3c7524e3ac';
-        console.log("getUserDataForVerifyFromUuid - faking UUID " + verifyArgs.uuid);
+        console.log("setUserFromRegistration: " + verifyArgs.uuid);
         let result = yield users.getUserRegistrationFromUuid(verifyArgs.uuid);
         if (result.error) {
+            console.log("setUserFromRegistration: error " + error);
             this.status = status.BAD_REQUEST;
             this.body = result;
         } else {
-            this.status = status.OK;
-            this.body = result.val;
-        }
-        yield next;
-    }
-
-    function* setUserFromRegistration(next) {
-        let verifyArgs = yield parse(this);
-        console.log("setUserFromRegistration: " + verifyArgs.id + "," + verifyArgs.password);
-        verifyArgs.id = 'terry.weymouth@gmail.com';
-        verifyArgs.password = 'fizzbuzz';
-        console.log("setUserFromRegistration - faking data "  + verifyArgs.id + "," + verifyArgs.password);
-        let result = yield users.setUserFromRegistration(verifyArgs.id,verifyArgs.pasword);
-        if (result.error) {
-            this.status = status.BAD_REQUEST;
-            this.body = result;
-        } else {
+            console.log("setUserFromRegistration: OK " + result.val);
             this.status = status.OK;
             this.body = result.val;
         }
