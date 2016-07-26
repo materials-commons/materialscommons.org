@@ -7,7 +7,6 @@
                 <th md-column>Description</th>
                 <th md-column>Composition</th>
                 <th md-column md-order-by="mtime.epoch_time">Modified</th>
-                <th md-column>Last Transformation</th>
                 <th md-column md-order-by="files.length"># Files</th>
                 <th md-column md-order-by="processes.length"># Processes</th>
             </tr>
@@ -26,9 +25,6 @@
                 </td>
                 <td md-cell>
                     {{sample.mtime | toDate}}
-                </td>
-                <td md-cell>
-                    Last transformation
                 </td>
                 <td md-cell>
                     {{sample.files.length}}
