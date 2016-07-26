@@ -32,6 +32,25 @@ def get_api_key_for_user(user):
         return error.not_authorized("Bad username or password")
 
 
+@app.route(‘/user/complete/<id>/<validation_id>’, methods=[‘PUT’])
+def complete_registration(user_id, validation_id):
+    u = r.table(‘account_requests’).get(user_id).run(g.conn)
+    if u[‘validation_uuid’] != validation_id:
+        return error.not_authorized(‘You do not have permission to set the password’)
+    j = request.get_json()
+    password = dmutil.get_required(‘password’, j)
+    salt = uuid.uuid1().hex
+    pw_hash = crypt(password, salt, iterations=4000)
+    rv = r.table(‘account_requests’).get(user_id).update({‘password':  pw_hash}, return_changes=True).run(g.conn)
+    user = rv.changes[0].new_val
+    del user[‘validation_uuid’]
+    r.table(‘account_requests’).get(user_id).delete().run(g.conn)
+    r.table(‘users’).insert(user).run(g.conn)
+    ## Return something that doesn’t contain the password hash
+    del user[‘password’]
+    return json.dumps(user)
+
+
 @app.route('/user/<user>/password', methods=['PUT'])
 @apikey
 @crossdomain(origin='*')
