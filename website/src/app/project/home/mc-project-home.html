@@ -29,7 +29,7 @@
                 <md-card flex="45" flex-md="60" flex-sm="60"
                          ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.whichExperiments} | orderBy:'name'"
                          class="experiment-card">
-                    <md-card-header style="background-color:#d1d1d1; padding-bottom: 4px"
+                    <md-card-header class="project-card-header"
                                     ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
                         <md-card-avatar>
                                 <span class="fa-stack fa-lg">
@@ -41,7 +41,7 @@
                             <span class="md-title">{{experiment.name}}</span>
                         </md-card-header-title>
                     </md-card-header>
-                    <md-card-title style="background-color:#d1d1d1; padding-top: 0; padding-bottom: 4px;"
+                    <md-card-title style="padding-top: 0; padding-bottom: 4px;" class="project-card-header"
                                    ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
                         <md-card-title-text>
                             <span class="md-subhead" style="padding-top:4px">{{experiment.description}}</span>
