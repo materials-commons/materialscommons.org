@@ -12,15 +12,16 @@ class AccountsService {
         });
     }
 
-    getUserDataForVerifyFromUuid(uuid) {
-        console.log("AccountsService: getUserDataForVerifyFromUuid - uuid = " + uuid);
-        var userData = this.apiService('users').one('validate', uuid).get();
-        console.log("AccountsService: getUserDataForVerifyFromUuid - user data = " + userData);
-        return userData;
-    }
+//    getUserDataForVerifyFromUuid(uuid) {
+//        console.log("AccountsService: getUserDataForVerifyFromUuid - uuid = " + uuid);
+//        var userData = this.apiService('users').one('validate', uuid).get();
+//        console.log("AccountsService: getUserDataForVerifyFromUuid - user data = " + userData);
+//        return userData;
+//    }
 
-    setUserFromRegistrationData(id,password){
-        return Restangular.one('user').one('complete',id).customPOST({
+    setUserFromRegistrationData(uuid,password){
+        console.log("AccountsService: setUserFromRegistrationData - uuid = " + uuid + ", password = " + password);
+        return this.Restangular.one('user').one('complete',uuid).customPOST({
             password: password
         });
     }
