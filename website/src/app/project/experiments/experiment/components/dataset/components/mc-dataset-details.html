@@ -31,7 +31,7 @@
                 <input ng-model="$ctrl.dataset.funding" ng-model-options="{debounce: 500}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
-            <div layout="row">
+            <div ng-if="false" layout="row">
                 <md-datepicker ng-model="$ctrl.pubDate"
                                ng-change="$ctrl.updateDatasetPublicationDate()"
                                md-placeholder="Publication Date">
