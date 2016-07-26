@@ -64,11 +64,6 @@ md-tabs.mc-tabs md-ink-bar, md-tabs.mc-tabs md-ink-bar {
     padding-bottom: 18px;
 }
 
-.project-card:hover {
-    /*background-color: #2196f3;*/
-    box-shadow: 5px 5px 5px 0px #a3a3a3;
-}
-
 .project-selected {
     /*background-color: #1565c0;*/
     border: 8px solid #1565c0;
@@ -131,10 +126,6 @@ a {
 
 .md-mc-primary-hue-2-color {
     color: #1565c0;
-}
-
-.md-mc-project-card-header {
-    background-color: #d1d1d1;
 }
 
 .md-mc-task-card-header {
