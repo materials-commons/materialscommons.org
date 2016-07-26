@@ -14,6 +14,7 @@ $mc-md-primary-color: #1565c0;
 $mc-sidebar-color: #bbdefb;
 $mc-md-light-primary-color: #2196F3;
 $mc-bar-dark-color: #2c3e50;
+$mc-md-accent-color: #ff5252;
 
 .mc-sidebar {
   background-color: $mc-sidebar-color;
@@ -22,6 +23,20 @@ $mc-bar-dark-color: #2c3e50;
 
 .mc-sidebar a {
   color: #1976d2;
+}
+
+.project-card-header {
+  background-color: $mc-md-light-primary-color;
+  color: white;
+}
+
+.project-card {
+  background-color: $mc-light-grey;
+}
+
+.project-card:hover {
+  /*background-color: #2196f3;*/
+  box-shadow: 5px 5px 5px 0px #a3a3a3;
 }
 
 /* Customize md toast */
