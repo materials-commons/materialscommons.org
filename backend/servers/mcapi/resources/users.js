@@ -2,6 +2,7 @@ module.exports = function(users, experiments, schema) {
     const parse = require('co-body');
     const status = require('http-status');
     const _ = require('lodash');
+    const nodemailer = require('nodemailer');
 
     return {
         updateProjectFavorites,
@@ -52,7 +53,7 @@ module.exports = function(users, experiments, schema) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
             } else {
-                let evl = yield emailValidationLink(rv.val);
+                let evl = emailValidationLink(rv.val);
                 if (evl.error) {
                     this.status = status.BAD_REQUEST;
                     this.body = evl;
@@ -65,15 +66,11 @@ module.exports = function(users, experiments, schema) {
     }
 
     function* getUserRegistrationFromUuid(next) {
-        let verifyArgs = yield parse(this);
-        console.log("setUserFromRegistration: " + verifyArgs.uuid);
-        let result = yield users.getUserRegistrationFromUuid(verifyArgs.uuid);
+        let result = yield users.getUserRegistrationFromUuid(this.params.validation_id);
         if (result.error) {
-            console.log("setUserFromRegistration: error " + error);
             this.status = status.BAD_REQUEST;
             this.body = result;
         } else {
-            console.log("setUserFromRegistration: OK " + result.val);
             this.status = status.OK;
             this.body = result.val;
         }
@@ -110,25 +107,24 @@ module.exports = function(users, experiments, schema) {
         return yield schema.validate(schema.userAccountSchema, accountArgs);
     }
 
-    function* emailValidationLink(userData) {
-        var nodemailer = require('nodemailer');
-
-        var fromEmailAddress = process.env.MC_VERIFY_EMAIL;
-        var fromEmailPass = process.env.MC_VERIFY_PASS;
-        var mailURL = 'smtps://' + fromEmailAddress + ':' + fromEmailPass + '@smtp.gmail.com';
+    function emailValidationLink(userData) {
+        var mailURL = `smtps://${process.env.MC_VERIFY_EMAIL}:${process.env.MC_VERIFY_PASS}@${process.env.MC_SMTP_HOST}`;
         console.log(mailURL);
         var transporter = nodemailer.createTransport(mailURL);
 
         var sendTo = userData.id;
-        var validationLink = "http://mctest.localhost/#/validate/" + userData.validate_uuid;
-        var planTextBody = "Validate with the URL: " + validationLink;
-        var htmlBody = "Validate with <a href='" + validationLink + "'>this<a/> link: " + validationLink;
+        var validationLink = `${process.env.MC_VERIFY_LINK}/${userData.validate_uuid}`;
+        let emailMsg =
+            `Thank you for registering for an account with Materials Commons. To complete the registration
+            process please click on the given link or copy and paste in the url given below.`;
+        var plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
+        var htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following link link: ${validationLink}`;
 
         var mailOptions = {
-            from: fromEmailAddress,
+            from: process.env.MC_VERIFY_EMAIL,
             to: sendTo,
-            subject: 'MaterialCommons - login verification',
-            text: planTextBody,
+            subject: 'MaterialCommons - account verification',
+            text: plainTextBody,
             html: htmlBody
         };
 
@@ -138,7 +134,7 @@ module.exports = function(users, experiments, schema) {
         transporter.sendMail(mailOptions, function(error, info){
             if(error){
                 console.log('Send error: ' + error);
-                return error;
+                return {error: error};
             }
             console.log('Message sent: ' + info.response);
         });

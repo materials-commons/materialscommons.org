@@ -4,17 +4,19 @@ module.exports = function(users) {
     'use strict';
     let apikeyCache = require('./apikey-cache')(users);
     let httpStatus = require('http-status');
+    let _ = require('lodash');
 
     // whiteList contains paths that don't require
     // a valid apikey.
     let whiteList = {
         "/login": true,
-        "/accounts": true
+        "/accounts": true,
+        "/users/validate/": true
     };
     // validateAPIKey Looks up the apikey. If none is specified, or a
     // bad key is passed then abort the calls and send back an 401.
     return function *validateAPIKey(next) {
-        if (!(this.path in whiteList)) {
+        if (!(matchPathInWhiteList(this.path))) {
             let UNAUTHORIZED = httpStatus.UNAUTHORIZED;
             let apikey = this.query.apikey || this.throw(UNAUTHORIZED, 'Not authorized');
             let user = yield apikeyCache.find(apikey);
@@ -27,4 +29,18 @@ module.exports = function(users) {
         }
         yield next;
     };
+
+    function matchPathInWhiteList(path) {
+        if (path in whiteList) {
+            return true;
+        } else {
+            let keys = _.keys(whiteList);
+            for (let key of keys) {
+                if (path.startsWith(key)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 };
