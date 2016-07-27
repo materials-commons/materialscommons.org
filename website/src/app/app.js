@@ -42,7 +42,8 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
 
     var unregister = $rootScope.$on('$stateChangeStart', function(event, toState) {
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
-        if (!User.isAuthenticated() && (toState.name !== 'login' && toState.name !== 'join')) {
+        if (!User.isAuthenticated()
+            && (toState.name !== 'login' && toState.name !== 'join' && toState.name !== 'validate')) {
             event.preventDefault();
             $state.go('login');
         }
