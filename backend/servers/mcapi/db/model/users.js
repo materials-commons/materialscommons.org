@@ -90,13 +90,13 @@ module.exports = function(r) {
     }
 
     function* getUserRegistrationFromUuid(uuid) {
-        console.log("getUserRegistrationFromUuid: " + uuid);
-        let results = yield r.table('account_requests').getAll(uuid,{index:'validate_uuid'});
+        let results = yield r.table('account_requests').getAll(uuid, {index: 'validate_uuid'});
         if (!results.length) {
             return {error: "User validation record does not exists: " + uuid};
         }
         let userData = results[0];
-        console.log("getUserRegistrationFromUuid: " + userData.id);
+        delete userData['password'];
+        delete userData['apikey'];
         return {val: userData};
     }
 
