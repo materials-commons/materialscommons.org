@@ -9,7 +9,7 @@ function MCProjectComponentController(projectsService, $state, $stateParams, pro
 
     var ctrl = this;
 
-    ctrl.showSidebar = true;
+    ctrl.showQuickbar = false;
     ctrl.toggle = toggle;
     ctrl.openTree = openTree;
     ctrl.openFiles = openFiles;

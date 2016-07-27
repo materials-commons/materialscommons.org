@@ -19,11 +19,11 @@ module.exports = function() {
     }
 
     function getTag2Dataset(params) {
-        return r.table('tags2datasets').getAll([params.tag, params.dataset_id], {index: 'tag_dataset'});
+        return r.table('tag2dataset').getAll([params.tag, params.dataset_id], {index: 'tag_dataset'});
     }
 
     function addTag2Dataset(params) {
-        return r.table('tags2datasets').insert(params, {returnChanges: true});
+        return r.table('tag2dataset').insert(params, {returnChanges: true});
     }
 };
 

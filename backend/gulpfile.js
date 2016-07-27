@@ -41,7 +41,7 @@ gulp.task('build-mcapi-server', ['clean-mcapi', 'build-lib'], function() {
         .pipe(gulp.dest('sbin/mcapi'));
 });
 
-gulp.task('build-mcpub-server', ['clean-mcpub', 'clean-lib'], function() {
+gulp.task('build-mcpub-server', ['clean-mcpub', 'build-lib'], function() {
     return gulp.src([mcpubServerSrc])
         .pipe(babel({presets: ['es2015'], plugins: ['transform-runtime']}))
         .pipe(gulp.dest('sbin/mcpub'));

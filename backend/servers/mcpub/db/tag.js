@@ -37,7 +37,7 @@ module.exports.removeTag = function*(next) {
     var join = yield tag.getTag2Dataset(params);
     if (join.length > 0) {
         if (params.user_id === join[0].user_id) {
-            this.body = yield r.table('tags2datasets').get(join[0].id).delete();
+            this.body = yield r.table('tag2dataset').get(join[0].id).delete();
             this.status = 200;
         }
     } else {
@@ -50,7 +50,7 @@ module.exports.removeTag = function*(next) {
 module.exports.getTagsByCount = function*(next) {
     this.body = yield r.table('tags').merge(function(tag) {
         return {
-            count: r.table('tags2datasets').getAll(tag('id'), {index: 'tag'}).count()
+            count: r.table('tag2dataset').getAll(tag('id'), {index: 'tag'}).count()
         }
     }).orderBy(r.desc('count'));
     yield next;
@@ -60,7 +60,7 @@ module.exports.getAllTags = function*(next) {
     console.log(this.req.headers);
     this.body = yield r.table('tags').orderBy('id').merge(function(tag) {
         return {
-            count: r.table('tags2datasets').getAll(tag('id'), {index: 'tag'}).count()
+            count: r.table('tag2dataset').getAll(tag('id'), {index: 'tag'}).count()
         }
     });
     yield next;
@@ -72,10 +72,10 @@ module.exports.getAllCount = function*(next) {
 };
 
 module.exports.getDatasetsByTag = function*(next) {
-    this.body = yield r.table('tags2datasets').getAll(this.params.id, {index: 'tag'}).merge(function(row) {
+    this.body = yield r.table('tag2dataset').getAll(this.params.id, {index: 'tag'}).merge(function(row) {
         return r.table('datasets').get(row('dataset_id')).merge(function(ds) {
             return {
-                'tags': r.table('tags2datasets').getAll(ds('id'), {index: "dataset_id"}).coerceTo('array')
+                'tags': r.table('tag2dataset').getAll(ds('id'), {index: "dataset_id"}).coerceTo('array')
             }
         });
     });

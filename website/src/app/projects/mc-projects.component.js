@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcProjects', {
 });
 
 /*@ngInject*/
-function MCProjectsComponentController(projectsService, $state, $mdDialog, sharedProjectsList, toast) {
+function MCProjectsComponentController(projectsService, $state, $mdDialog, sharedProjectsList, toast, User) {
     var ctrl = this;
     ctrl.isOpen = true;
     ctrl.openProject = openProject;
@@ -13,11 +13,13 @@ function MCProjectsComponentController(projectsService, $state, $mdDialog, share
     ctrl.cancelSharing = cancelSharing;
     ctrl.gotoSharing = gotoSharing;
     ctrl.maxSharedProjects = 2;
+    ctrl.user = User.u();
     sharedProjectsList.clearSharedProjects();
     sharedProjectsList.setMaxProjects(ctrl.maxSharedProjects);
 
     projectsService.getAllProjects().then(function(projects) {
-        ctrl.projects = projects;
+        ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
+        ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
     });
 
     ctrl.createNewProject = () => {
@@ -27,7 +29,12 @@ function MCProjectsComponentController(projectsService, $state, $mdDialog, share
             controllerAs: '$ctrl',
             bindToController: true
         }).then(
-            () => projectsService.getAllProjects().then((projects) => ctrl.projects = projects)
+            () => projectsService.getAllProjects().then(
+                (projects) => {
+                    ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
+                    ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
+                }
+            )
         );
     };
 
