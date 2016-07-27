@@ -13,6 +13,9 @@ def create_mc_database():
 def create_mc_tables():
     create_mc_table("users", "apikey", "admin")
 
+    create_table("account_requests", "validate_uuid")
+    create_compound_index("account_requests", "id_validate", ["id", "validate_uuid"])
+
     # User groups should go away once mcstored is updated
     create_mc_table("usergroups", "owner", "name")
 
