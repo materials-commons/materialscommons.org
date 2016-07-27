@@ -247,8 +247,7 @@ md-checkbox.md-checked.mc-done .md-icon {
   padding-top: 10px;
   height: 70px;
   padding-bottom: 8px;
-  //color: #767676;
-  color: #ffffff;
+  color: $mc-md-light-primary-color;
   cursor: pointer;
   border-bottom: 2px solid #767676;
 }
@@ -263,9 +262,7 @@ md-checkbox.md-checked.mc-done .md-icon {
 
 .experiment-tool.active {
   color: white;
-  //color: $mc-bar-dark-color;
-  //background-color: $mc-md-primary-color;
-  background-color: #2196f3;
+  background-color: $mc-md-primary-color;
 }
 
 .experiment-card {
