@@ -9,4 +9,6 @@ import './samples/index.module';
 import './search/index.module';
 import './services/index.module';
 import './settings/index.module';
+import './mc-project-quickbar.component';
+import './quickbar-samples.service';
 

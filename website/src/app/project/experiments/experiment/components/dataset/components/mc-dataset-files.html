@@ -25,7 +25,8 @@
                     <span class="md-subhead" style="padding-top:4px">{{file.description}}</span>
                 </md-card-title-text>
             </md-card-title>
-            <img ng-src="{{$ctrl.fileSrc(file.id)}}" style="height: 140px width:140px" ng-click="$ctrl.showFile(file)">
+            <img ng-if="$ctrl.isImage(file.mediatype.mime)" ng-src="{{$ctrl.fileSrc(file.id)}}"
+                 style="height: 140px; width:140px" ng-click="$ctrl.showFile(file)">
             <md-card-actions layout="row" class="md-subhead" layout-align="start center">
                 <span tooltip="samples"><i class="fa fa-fw fa-cubes"></i>{{file.samples.length}}</span>
                 <span class="padding-left-30" tooltip="processes"><i class="fa fa-fw fa-code-fork"></i>{{file.processes.length}}</span>

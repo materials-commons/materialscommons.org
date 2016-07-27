@@ -55,6 +55,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/project/:project_id',
             abstract: true,
             template: '<ui-view flex="100" layout="column"></ui-view>',
+            //template:'<mc-project></mc-project>',
             resolve: {
                 // Set the current project in the project service so all components
                 // will resolve without having to worry if a promise has resolved.
@@ -205,9 +206,18 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.datasets', {
             url: '/datasets',
+            template: '<div ui-view></div>',
+            controller: ['$stateParams', '$state', function($stateParams, $state) {
+                if (!$stateParams.dataset_id) {
+                    $state.go('project.experiment.datasets.list');
+                }
+            }]
+        })
+        .state('project.experiment.datasets.list', {
+            url: '/list',
             template: '<mc-experiment-datasets></mc-experiment-datasets>'
         })
-        .state('project.experiment.dataset', {
+        .state('project.experiment.datasets.dataset', {
             url: '/dataset/:dataset_id',
             template: '<mc-experiment-dataset></mc-experiment-dataset>'
         })
