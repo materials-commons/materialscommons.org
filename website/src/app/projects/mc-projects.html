@@ -3,6 +3,10 @@
         <div ng-if="!$ctrl.sharingOn" layout="row">
             <md-button class="md-primary md-raised" ng-click="$ctrl.createNewProject()">create project</md-button>
             <md-button ng-show="false" class="md-primary md-raised" ng-click="$ctrl.sharingOn = true">share</md-button>
+            <input placeholder="Search projects..." type="text"
+                   class="mc-input-as-line margin-left-45 md-subhead"
+                   flex="30"
+                   ng-model="$ctrl.query">
         </div>
         <div ng-if="$ctrl.sharingOn" layout="row">
             <md-button class="md-primary md-raised" ng-click="$ctrl.gotoSharing()">done</md-button>
@@ -14,38 +18,80 @@
                 share between.</p>
         </div>
         <div layout="row" flex style="max-height: 80vh">
-            <md-content layout="row" layout-wrap layout-align="start stretch" flex>
-                <div flex="25" flex-md="33" flex-sm="60"
-                     ng-repeat="project in $ctrl.projects | orderBy:'name'">
-                    <md-card class="md-primary project-card"
-                             ng-class="{'project-selected': $ctrl.sharingOn && project.selected}">
-                        <md-card-header ng-click="$ctrl.openProject(project)"
-                                        class="cursor-pointer md-mc-project-card-header">
-                            <md-card-avatar>
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-bars fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </md-card-avatar>
-                            <md-card-header-text>
-                                <span class="md-title">{{::project.name | truncate:40:'...'}}</span>
-                                <span class="md-subhead">{{::project.owner | truncate:40:'...'}}</span>
-                            </md-card-header-text>
-                        </md-card-header>
-                        <img ng-if="project.image" ng-src="{{project.image}}" class="md-card-image">
-                        <md-card-actions layout="row" layout-align="start center">
-                            <md-button class="md-primary" ui-sref="project.settings({project_id: project.id})">
-                                Manage Access
-                            </md-button>
-                            <span flex></span>
-                            <div class="md-subhead" layout="row" flex="60" layout-align="space-between center">
-                                <span tooltip="experiments"><i class="fa fa-fw fa-flask"></i>{{project.experiments.length | number}}</span>
-                                <span tooltip="samples"><i class="fa fa-fw fa-cubes"></i>{{::project.samples.length | number}}</span>
-                                <span tooltip="files"><i class="fa fa-fw fa-files-o"></i>{{::project.file_count | number}}</span>
-                                <span tooltip="processes"><i class="fa fa-fw fa-code-fork"></i>{{::project.processes.length | number}}</span>
-                            </div>
-                        </md-card-actions>
-                    </md-card>
+            <md-content layout="column" layout-margin flex>
+                <div>
+                    <h3 class="md-title">My Projects:</h3>
+                    <div layout="row" layout-align="start start" layout-wrap flex>
+                        <div flex="25" flex-md="33" flex-sm="60"
+                             ng-repeat="project in $ctrl.myProjects | filter:$ctrl.query | orderBy:'name'">
+                            <md-card class="md-primary project-card"
+                                     ng-class="{'project-selected': $ctrl.sharingOn && project.selected}">
+                                <md-card-header ng-click="$ctrl.openProject(project)"
+                                                class="cursor-pointer project-card-header">
+                                    <md-card-avatar>
+                                        <span class="fa-stack fa-lg" style="color:black">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-rocket fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </md-card-avatar>
+                                    <md-card-header-text>
+                                        <span class="md-title"><b>{{::project.name | truncate:40:'...'}}</b></span>
+                                        <span class="md-subhead">{{::project.owner | truncate:40:'...'}}</span>
+                                    </md-card-header-text>
+                                </md-card-header>
+                                <img ng-if="project.image" ng-src="{{project.image}}" class="md-card-image">
+                                <md-card-actions layout="row" layout-align="start center">
+                                    <md-button class="md-primary" ui-sref="project.settings({project_id: project.id})">
+                                        Manage Access
+                                    </md-button>
+                                    <span flex></span>
+                                    <div class="md-subhead" layout="row" flex="60" layout-align="space-between center">
+                                        <span tooltip="experiments"><i class="fa fa-fw fa-flask"></i>{{project.experiments.length | number}}</span>
+                                        <span tooltip="samples"><i class="fa fa-fw fa-cubes"></i>{{::project.samples.length | number}}</span>
+                                        <span tooltip="files"><i class="fa fa-fw fa-files-o"></i>{{::project.file_count | number}}</span>
+                                        <span tooltip="processes"><i class="fa fa-fw fa-code-fork"></i>{{::project.processes.length | number}}</span>
+                                    </div>
+                                </md-card-actions>
+                            </md-card>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="md-title">Projects I'm a member of:</h3>
+                    <div layout="row" layout-align="start start" layout-wrap flex>
+                        <div flex="25" flex-md="33" flex-sm="60"
+                             ng-repeat="project in $ctrl.joinedProjects | filter:$ctrl.query | orderBy:'name'">
+                            <md-card class="md-primary project-card"
+                                     ng-class="{'project-selected': $ctrl.sharingOn && project.selected}">
+                                <md-card-header ng-click="$ctrl.openProject(project)"
+                                                class="cursor-pointer project-card-header">
+                                    <md-card-avatar>
+                                        <span class="fa-stack fa-lg" style="color:black">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-rocket fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </md-card-avatar>
+                                    <md-card-header-text>
+                                        <span class="md-title"><b>{{::project.name | truncate:40:'...'}}</b></span>
+                                        <span class="md-subhead">{{::project.owner | truncate:40:'...'}}</span>
+                                    </md-card-header-text>
+                                </md-card-header>
+                                <img ng-if="project.image" ng-src="{{project.image}}" class="md-card-image">
+                                <md-card-actions layout="row" layout-align="start center" style="">
+                                    <md-button class="md-primary" ui-sref="project.settings({project_id: project.id})">
+                                        Manage Access
+                                    </md-button>
+                                    <span flex></span>
+                                    <div class="md-subhead" layout="row" flex="60" layout-align="space-between center">
+                                        <span tooltip="experiments"><i class="fa fa-fw fa-flask"></i>{{project.experiments.length | number}}</span>
+                                        <span tooltip="samples"><i class="fa fa-fw fa-cubes"></i>{{::project.samples.length | number}}</span>
+                                        <span tooltip="files"><i class="fa fa-fw fa-files-o"></i>{{::project.file_count | number}}</span>
+                                        <span tooltip="processes"><i class="fa fa-fw fa-code-fork"></i>{{::project.processes.length | number}}</span>
+                                    </div>
+                                </md-card-actions>
+                            </md-card>
+                        </div>
+                    </div>
                 </div>
             </md-content>
         </div>
