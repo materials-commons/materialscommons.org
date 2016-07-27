@@ -20,6 +20,8 @@ def get_api_key_for_user(user):
     if u is None:
         return error.not_authorized("Bad username or password")
     dbpw = u['password']
+    if dbpw == '':
+        return error.not_authorized("Bad username")
     _i1, _i2,  _i3,  salt, _pwhash = dbpw.split('$')
     hash = make_salted_password_hash(password, salt)
     if hash == dbpw:
