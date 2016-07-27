@@ -39,11 +39,16 @@ function ProcessSettingsDirectiveController(experimentsService, toast, $statePar
             template_id: ctrl.templateId,
             properties: [property]
         };
-        experimentsService.updateTaskTemplateProperties($stateParams.project_id, $stateParams.experiment_id, ctrl.taskId, propertyArgs)
-            .then(
-                () => null,
-                () => toast.error('Unable to update property')
-            );
+
+        if (ctrl.taskId) {
+            experimentsService.updateTaskTemplateProperties($stateParams.project_id, $stateParams.experiment_id, ctrl.taskId, propertyArgs)
+                .then(
+                    () => null,
+                    () => toast.error('Unable to update property')
+                );
+        } else {
+            console.log('Update process setting here');
+        }
     };
 
     ///////////////////////////////////////
