@@ -12,7 +12,8 @@ module.exports = function(r) {
         updateProjectFavorites,
         updateUserSettings,
         userHasProjectAccess,
-        createUnverifiedAccount
+        createUnverifiedAccount,
+        getUserRegistrationFromUuid
     };
 
     ///////////
@@ -78,13 +79,26 @@ module.exports = function(r) {
         user.validate_uuid = yield r.uuid();
         let u = yield r.table('users').get(account.email);
         if (u) {
-            return {error: `User already exists`};
+            return {error: "User account already exists: " + account.email};
         }
         let rv = yield r.table('account_requests').insert(user, {returnChanges: true});
         if (rv.errors) {
-            return {error: `User already exists`};
+            return {error: "Validation was already sent: " + account.email};
         }
 
         return {val: rv.changes[0].new_val};
     }
+
+    function* getUserRegistrationFromUuid(uuid) {
+        console.log("getUserRegistrationFromUuid: " + uuid);
+        let results = yield r.table('account_requests').getAll(uuid,{index:'validate_uuid'});
+        if (!results.length) {
+            return {error: "User validation record does not exists: " + uuid};
+        }
+        let userData = results[0];
+        console.log("getUserRegistrationFromUuid: " + userData.id);
+        return {val: userData};
+    }
+
+
 };

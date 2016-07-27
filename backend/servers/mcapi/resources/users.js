@@ -6,13 +6,14 @@ module.exports = function(users, experiments, schema) {
     return {
         updateProjectFavorites,
         updateUserSettings,
-        createAccount
+        createAccount,
+        getUserRegistrationFromUuid
     };
 
     function* updateProjectFavorites(next) {
         let attrs = yield parse(this);
         this.body = yield users.updateProjectFavorites(this.reqctx.user.id, this.params.project_id, attrs);
-        this.status = 200;
+        this.status = status.OK;
         yield next;
     }
 
@@ -34,6 +35,47 @@ module.exports = function(users, experiments, schema) {
             } else {
                 this.body = rv.val;
             }
+        }
+        yield next;
+    }
+
+    function* createAccount(next) {
+        let accountArgs = yield parse(this);
+        schema.prepare(schema.userAccountSchema, accountArgs);
+        let errors = yield validateCreateAccount(accountArgs);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield users.createUnverifiedAccount(accountArgs);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                let evl = yield emailValidationLink(rv.val);
+                if (evl.error) {
+                    this.status = status.BAD_REQUEST;
+                    this.body = evl;
+                } else {
+                    this.body = evl.val;
+                }
+            }
+        }
+        yield next;
+    }
+
+    function* getUserRegistrationFromUuid(next) {
+        let verifyArgs = yield parse(this);
+        console.log("setUserFromRegistration: " + verifyArgs.uuid);
+        let result = yield users.getUserRegistrationFromUuid(verifyArgs.uuid);
+        if (result.error) {
+            console.log("setUserFromRegistration: error " + error);
+            this.status = status.BAD_REQUEST;
+            this.body = result;
+        } else {
+            console.log("setUserFromRegistration: OK " + result.val);
+            this.status = status.OK;
+            this.body = result.val;
         }
         yield next;
     }
@@ -64,26 +106,44 @@ module.exports = function(users, experiments, schema) {
         return null;
     }
 
-    function* createAccount(next) {
-        let accountArgs = yield parse(this);
-        schema.prepare(schema.userAccountSchema, accountArgs);
-        let errors = yield validateCreateAccount(accountArgs);
-        if (errors !== null) {
-            this.status = status.BAD_REQUEST;
-            this.body = errors;
-        } else {
-            let rv = yield users.createUnverifiedAccount(accountArgs);
-            if (rv.error) {
-                this.status = status.BAD_REQUEST;
-                this.body = rv;
-            } else {
-                this.body = rv.val;
-            }
-        }
-        yield next;
-    }
-
     function* validateCreateAccount(accountArgs) {
         return yield schema.validate(schema.userAccountSchema, accountArgs);
     }
+
+    function* emailValidationLink(userData) {
+        var nodemailer = require('nodemailer');
+
+        var fromEmailAddress = process.env.MC_VERIFY_EMAIL;
+        var fromEmailPass = process.env.MC_VERIFY_PASS;
+        var mailURL = 'smtps://' + fromEmailAddress + ':' + fromEmailPass + '@smtp.gmail.com';
+        console.log(mailURL);
+        var transporter = nodemailer.createTransport(mailURL);
+
+        var sendTo = userData.id;
+        var validationLink = "http://mctest.localhost/#/validate/" + userData.validate_uuid;
+        var planTextBody = "Validate with the URL: " + validationLink;
+        var htmlBody = "Validate with <a href='" + validationLink + "'>this<a/> link: " + validationLink;
+
+        var mailOptions = {
+            from: fromEmailAddress,
+            to: sendTo,
+            subject: 'MaterialCommons - login verification',
+            text: planTextBody,
+            html: htmlBody
+        };
+
+        console.log("emailValidation: " + sendTo);
+
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log('Send error: ' + error);
+                return error;
+            }
+            console.log('Message sent: ' + info.response);
+        });
+
+        return {val: userData}
+    }
+
 };

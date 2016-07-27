@@ -32,7 +32,7 @@
                         <br>
 
                         <div class="row">
-                            <button class="btn btn-primary btn-lg" style="width: 100%;" ng-click="$ctrl.createAccount(joinForm)">
+                            <button class="btn btn-primary btn-lg" style="width: 100%;" ng-click="$ctrl.requestValidationLink(joinForm)">
                                 Create Account
                             </button>
                             <button class="btn btn-warning btn-lg" style="width: 100%; margin-top: 10px" ui-sref="login">
@@ -42,7 +42,7 @@
                     </form>
                 </div>
                 <div class="join-success-splash" ng-if="$ctrl.showSuccessMsg">
-                    <h4 class="text-center">Welcome to Materials Commons!</h4>
+                    <h4 class="text-center">Next Step in Joining Materials Commons...</h4>
                     <br>
                     <p class="md-subhead">
                         You have successfully registered for an account. An email has been sent to {{$ctrl.email}}
