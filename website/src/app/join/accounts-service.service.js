@@ -1,6 +1,6 @@
 class AccountsService {
     /*@ngInject*/
-    constructor(apiService,Restangular) {
+    constructor(apiService, Restangular) {
         this.apiService = apiService;
         this.Restangular = Restangular;
     }
@@ -12,18 +12,14 @@ class AccountsService {
         });
     }
 
-//    getUserDataForVerifyFromUuid(uuid) {
-//        console.log("AccountsService: getUserDataForVerifyFromUuid - uuid = " + uuid);
-//        var userData = this.apiService('users').one('validate', uuid).get();
-//        console.log("AccountsService: getUserDataForVerifyFromUuid - user data = " + userData);
-//        return userData;
-//    }
-
-    setUserFromRegistrationData(uuid,password){
-        console.log("AccountsService: setUserFromRegistrationData - uuid = " + uuid + ", password = " + password);
-        return this.Restangular.one('user').one('complete',uuid).customPOST({
+    setUserFromRegistrationData(uuid, password) {
+        return this.Restangular.one('user').one('complete', uuid).customPOST({
             password: password
         });
+    }
+
+    getUserRegistrationAccount(uuid) {
+        return this.apiService('users').one('validate', uuid).get();
     }
 }
 
