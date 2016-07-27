@@ -3,6 +3,7 @@ module.exports = function(users, experiments, schema) {
     const status = require('http-status');
     const _ = require('lodash');
     const nodemailer = require('nodemailer');
+    const smtpTransport = require('nodemailer-smtp-transport');
 
     return {
         updateProjectFavorites,
@@ -108,10 +109,7 @@ module.exports = function(users, experiments, schema) {
     }
 
     function emailValidationLink(userData) {
-        var mailURL = `smtps://${process.env.MC_VERIFY_EMAIL}:${process.env.MC_VERIFY_PASS}@${process.env.MC_SMTP_HOST}`;
-        console.log(mailURL);
-        var transporter = nodemailer.createTransport(mailURL);
-
+        var transporter = nodemailer.createTransport(mailTransportConfig());
         var sendTo = userData.id;
         var validationLink = `${process.env.MC_VERIFY_LINK}/${userData.validate_uuid}`;
         let emailMsg =
@@ -140,6 +138,17 @@ module.exports = function(users, experiments, schema) {
         });
 
         return {val: userData}
+    }
+
+    function mailTransportConfig() {
+        if (process.env.MC_SMTP_HOST === 'localhost') {
+            console.log('Email Server - localhost:25');
+            return smtpTransport();
+        } else {
+            let mailURL = `smtps://${process.env.MC_VERIFY_EMAIL}:${process.env.MC_VERIFY_PASS}@${process.env.MC_SMTP_HOST}`;
+            console.log(`Email server - ${mailURL}`);
+            return mailURL;
+        }
     }
 
 };
