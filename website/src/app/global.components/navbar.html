@@ -9,25 +9,27 @@
                 <h3 class="md-title">Samples</h3>
             </div>
         </div>
-        <div ng-show="ctrl.$stateParams.project_id" layout="column" class="margin-left-15">
-            <span class="md-subhead" style="color:#ff5252">{{ctrl.unusedSamples.length}} unused</span>
-            <span class="md-subhead">{{ctrl.measuredSamples.length}} measured</span>
+        <div layout="row" layout-align="space-around" flex="30">
+            <div ng-show="ctrl.$stateParams.project_id" layout="column" class="margin-left-15">
+                <span class="md-subhead" style="color:#ff5252">{{ctrl.unusedSamples.length}} unused</span>
+                <span class="md-subhead">{{ctrl.measuredSamples.length}} measured</span>
+            </div>
+            <div hide-sm ng-show="ctrl.$stateParams.project_id" layout="column" layout-align="center center" classx="margin-left-15">
+                <a ng-if="ctrl.project.users.length !== 1" class="md-subhead" style="color:#4caf50"
+                   ui-sref="project.settings">
+                    <b>{{ctrl.project.users.length}} Users</b>
+                </a>
+                <a ng-if="ctrl.project.users.length === 1" class="md-subhead" style="color:#4caf50"
+                   ui-sref="project.settings">
+                    <b>{{ctrl.project.users.length}} User</b>
+                </a>
+            </div>
+            <div hide-md hide-sm ng-show="ctrl.$stateParams.project_id" layout="column" layout-align="center center" classx="margin-left-15">
+                <span class="md-subhead" style="color: #ff9800"><b>{{ctrl.published.length}}</b></span>
+                <span class="md-subhead" style="color:#ff9800"><i class="fa fa-fw fa-database"></i>Published</span>
+            </div>
         </div>
-        <div ng-show="ctrl.$stateParams.project_id" layout="column" layout-align="center center" class="margin-left-45">
-            <a ng-if="ctrl.project.users.length !== 1" class="md-headline" style="color:#4caf50"
-               ui-sref="project.settings">
-                <b>{{ctrl.project.users.length}} Users</b>
-            </a>
-            <a ng-if="ctrl.project.users.length === 1" class="md-headline" style="color:#4caf50"
-               ui-sref="project.settings">
-                <b>{{ctrl.project.users.length}} User</b>
-            </a>
-        </div>
-        <div ng-show="ctrl.$stateParams.project_id" layout="column" layout-align="center center" class="margin-left-45">
-            <span class="md-headline" style="color: #ff9800"><b>{{ctrl.published.length}}</b></span>
-            <span class="md-subhead" style="color:#ff9800"><i class="fa fa-fw fa-database"></i>Published</span>
-        </div>
-        <span flex-offset="5"></span>
+        <!--<span flex-offset="5"></span>-->
         <md-input-container ng-show="ctrl.$stateParams.project_id" md-no-float flex="20" class="md-input-bottom-0">
             <input placeholder="{{navbarSearchText}}" type="text"
                    ng-model="ctrl.query"
