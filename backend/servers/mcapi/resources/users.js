@@ -4,6 +4,7 @@ module.exports = function(users, experiments, schema) {
     const _ = require('lodash');
     const nodemailer = require('nodemailer');
     const smtpTransport = require('nodemailer-smtp-transport');
+    let mailTransport = mailTransportConfig();
 
     return {
         updateProjectFavorites,
@@ -109,7 +110,7 @@ module.exports = function(users, experiments, schema) {
     }
 
     function emailValidationLink(userData) {
-        var transporter = nodemailer.createTransport(mailTransportConfig());
+        var transporter = nodemailer.createTransport(mailTransport);
         var sendTo = userData.id;
         var validationLink = `${process.env.MC_VERIFY_LINK}/${userData.validate_uuid}`;
         let emailMsg =

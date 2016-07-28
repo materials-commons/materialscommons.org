@@ -46,6 +46,7 @@ if (!module.parent) {
         console.log('socket.io connection');
         socket.emit('event', {msg: 'you are connected'});
     });
+    console.log(`MC_SMTP_HOST: '${process.env.MC_SMTP_HOST}'`);
     console.log('MCAPI listening on port: ' + port + ' pid: ' + process.pid);
     server.listen(port);
 }
