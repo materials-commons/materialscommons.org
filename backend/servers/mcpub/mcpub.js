@@ -63,6 +63,6 @@ if (!module.parent) {
     var options = cli.parse();
     var port = options.port || 5006;
     console.log('MCPUB listening on port: ' + port + ' pid: ' + process.pid);
-    app.listen(5006);
+    app.listen(port);
 }
 
