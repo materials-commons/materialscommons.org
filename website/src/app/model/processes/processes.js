@@ -2484,6 +2484,213 @@ export function HeatTreatment() {
     ];
 }
 
+export function XRD() {
+    this.name = "XRD";
+    this.process_name = "XRD";
+    this.description = "XRD";
+    this.category = "OTHER";
+    this.template_name = "XRD";
+    this.does_transform = true;
+    this.measurements = [];
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.setup = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Type",
+                        attribute: "type",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Start Angle",
+                        attribute: "start_angle",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "degrees",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "End Angle",
+                        attribute: "end_angle",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "degrees",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Rate",
+                        attribute: "rate",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "degrees/minute",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Step Size",
+                        attribute: "step_size",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "degrees",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                }
+            ]
+        }
+    ];
+}
+
+export function Tension() {
+    this.name = "Tension";
+    this.process_name = "Tension";
+    this.description = "Tension";
+    this.template_name = "Tension";
+    this.category = "OTHER";
+    this.does_transform = true;
+    this.measurements = [];
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.setup = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Force type",
+                        attribute: "force_type",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [
+                            {name: "Screw", value: "screw"},
+                            {name: "Hydraulic", value: "hydraulic"}
+                        ]
+                    }
+                },
+                {
+                    property: {
+                        name: "Control Mode",
+                        attribute: "control_mode",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [
+                            {name: "Displacement", value: "displacement"},
+                            {name: "Force", value: "force"},
+                            {name: "Strain", value: "strain"}
+                        ]
+                    }
+                },
+                {
+                    property: {
+                        name: "Temperature",
+                        attribute: "temperature",
+                        description: "",
+                        value: "",
+                        units: ["C", "F", "K"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Test Rate",
+                        attribute: "test_rate",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Gage Length",
+                        attribute: "gage_length",
+                        description: "",
+                        value: "",
+                        units: ["mm", "cm"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Sample Geometry",
+                        attribute: "sample_geometry",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [
+                            {name: "Rectangular", value: "rectangular"},
+                            {name: "Cylindrical", value: "cylindrical"}
+                        ]
+                    }
+                }
+            ]
+        }
+    ];
+}
+
 export function AsMeasured() {
     this.name = "As Measured";
     this.process_name = "As Measured";

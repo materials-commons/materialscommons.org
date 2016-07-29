@@ -2006,6 +2006,193 @@ function Hardness() {
     ];
 }
 
+function XRD() {
+    this.name = "XRD";
+    this.process_name = "XRD";
+    this.description = "XRD";
+    this.category = "OTHER";
+    this.does_transform = true;
+    this.measurements = [];
+    this.setup = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Type",
+                        attribute: "type",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Start Angle",
+                        attribute: "start_angle",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "degrees",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "End Angle",
+                        attribute: "end_angle",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "degrees",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Rate",
+                        attribute: "rate",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "degrees/minute",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Step Size",
+                        attribute: "step_size",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "degrees",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                }
+            ]
+        }
+    ];
+}
+
+function Tension() {
+    this.name = "Tension";
+    this.process_name = "Tension";
+    this.description = "Tension";
+    this.category = "OTHER";
+    this.does_transform = true;
+    this.measurements = [];
+    this.setup = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Force type",
+                        attribute: "force_type",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [
+                            {name: "Screw", value: "screw"},
+                            {name: "Hydraulic", value: "hydraulic"}
+                        ]
+                    }
+                },
+                {
+                    property: {
+                        name: "Control Mode",
+                        attribute: "control_mode",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [
+                            {name: "Displacement", value: "displacement"},
+                            {name: "Force", value: "force"},
+                            {name: "Strain", value: "strain"}
+                        ]
+                    }
+                },
+                {
+                    property: {
+                        name: "Temperature",
+                        attribute: "temperature",
+                        description: "",
+                        value: "",
+                        units: ["C", "F", "K"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Test Rate",
+                        attribute: "test_rate",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Gage Length",
+                        attribute: "gage_length",
+                        description: "",
+                        value: "",
+                        units: ["mm", "cm"],
+                        unit: "",
+                        _type: "number",
+                        required: false,
+                        choices: []
+                    }
+                },
+                {
+                    property: {
+                        name: "Sample Geometry",
+                        attribute: "sample_geometry",
+                        description: "",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "selection",
+                        required: false,
+                        choices: [
+                            {name: "Rectangular", value: "rectangular"},
+                            {name: "Cylindrical", value: "cylindrical"}
+                        ]
+                    }
+                }
+            ]
+        }
+    ];
+}
+
 var ropts = {
     db: process.env.MCDB || 'materialscommons',
     port: process.env.MCDB_PORT || 30815
@@ -2038,7 +2225,9 @@ var globalTemplates = [
     TEM,
     HeatTreatment,
     AsMeasured,
-    Hardness
+    Hardness,
+    XRD,
+    Tension
 ];
 
 console.log("Inserting templates...");
