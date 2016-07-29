@@ -25,10 +25,13 @@ class MCExperimentDatasetsComponentController {
             controllerAs: '$ctrl',
             bindingToController: true
         }).then(
-            () => {
+            (dataset) => {
                 this.datasetService.getDatasetsForExperiment(this.projectId, this.experimentId)
                     .then(
-                        (datasets) => this.datasets = datasets,
+                        (datasets) => {
+                            this.datasets = datasets;
+                            this.$state.go("project.experiment.datasets.dataset", {dataset_id: dataset.id});
+                        },
                         () => this.toast.error('Unable to retrieve datasets for experiment')
                     )
             }
@@ -55,7 +58,7 @@ class NewExperimentDatasetDialogController {
         if (this.name !== '') {
             this.datasetService.createDatasetForExperiment(this.projectId, this.experimentId, this.title, this.description)
                 .then(
-                    () => this.$mdDialog.hide(),
+                    (dataset) => this.$mdDialog.hide(dataset),
                     () => this.toast.error('Unable to create new dataset')
                 );
         }
