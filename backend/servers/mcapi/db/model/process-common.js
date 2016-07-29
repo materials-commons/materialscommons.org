@@ -7,8 +7,19 @@ module.exports = function(r) {
         updateProcessFiles,
         updateProperties,
         updateProcessSamples,
-        createProcessFromTemplate
+        createProcessFromTemplate,
+        processIsUnused
     };
+
+    function* processIsUnused(processId) {
+        let filesInProcess = yield r.table('process2file').getAll(processId, {index: 'process_id'});
+        if (filesInProcess.length) {
+            return false;
+        }
+
+        let samplesInProcess = yield r.table('process2sample').getAll(processId, {index: 'process_id'});
+        return samplesInProcess.length === 0;
+    }
 
     function* updateProcessFiles(processId, files) {
         let filesToAddToProcess = files.filter(f => f.command === 'add').map(f => new model.Process2File(processId, f.id, ''));
