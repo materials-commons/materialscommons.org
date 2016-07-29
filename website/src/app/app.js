@@ -18,13 +18,26 @@ angular.module('materialscommons')
     .run(appRun)
     .controller('MCAppController', MCAppController);
 
-appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$ariaProvider', '$compileProvider'];
-function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider, $compileProvider) {
+appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$ariaProvider', '$compileProvider', 'hljsServiceProvider'];
+function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider, $compileProvider, hljsServiceProvider) {
     setupMaterialsTheme($mdThemingProvider);
     setupRoutes($stateProvider, $urlRouterProvider);
     $ariaProvider.config({ariaChecked: false, ariaInvalid: false});
     $compileProvider.debugInfoEnabled(false);
+    hljsServiceProvider.setOptions({
+        // replace tab with 4 spaces
+        tabReplace: '    '
+    });
 }
+
+/*
+ myApp.config(function (hljsServiceProvider) {
+ hljsServiceProvider.setOptions({
+ // replace tab with 4 spaces
+ tabReplace: '    '
+ });
+ });
+ */
 
 appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText'];
 function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText) {
