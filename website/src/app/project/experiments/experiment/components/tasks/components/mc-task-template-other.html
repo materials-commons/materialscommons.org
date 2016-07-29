@@ -60,6 +60,16 @@
                         </a>
                     </td>
                 </tr>
+                <tr md-row ng-repeat="file in $ctrl.task.template.input_files | orderBy:'name'">
+                    <td md-cell>Input File</td>
+                    <td md-cell>{{file.name}}</td>
+                    <td md-cell></td>
+                    <td md-cell>
+                        <a ng-click="$ctrl.remove($ctrl.task.template.input_files, file)">
+                            <i class="fa fa-close"></i>
+                        </a>
+                    </td>
+                </tr>
                 <tr md-row ng-repeat="file in $ctrl.task.template.output_files | orderBy:'name'">
                     <td md-cell>Output File</td>
                     <td md-cell>{{file.name}}</td>
