@@ -108,6 +108,8 @@ module.exports.processDetailsRql = function processDetailsRql(rql, r) {
                             .coerceTo('array')
                     }
                 }).coerceTo('array'),
+            files: r.table('process2file').getAll(process('id'), {index: 'process_id'})
+                .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
             input_files: r.table('process2file').getAll(process('id'), {index: 'process_id'})
                 .filter({direction: 'in'})
                 .eqJoin('datafile_id', r.table('datafiles'))

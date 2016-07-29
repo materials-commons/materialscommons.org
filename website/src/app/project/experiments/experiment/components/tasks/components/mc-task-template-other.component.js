@@ -11,6 +11,10 @@ class MCTaskTemplateOtherComponentController {
         this.navbarOnChange = navbarOnChange;
     }
 
+    $onInit() {
+        console.log('task = ', this.task);
+    }
+
     linkFilesToSample(sample, input_files, output_files) {
         this.sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function(linkedFiles) {
             sample = this.processEdit.refreshSample(linkedFiles, sample);
