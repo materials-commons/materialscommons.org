@@ -43,6 +43,9 @@ function MCExperimentTasksListComponentController(experimentsService, toast, $st
             task = event.source.nodeScope.$modelValue,
             srcTaskIndex = task.index;
         task.index = dstTask.index;
+        if (srcIndex === dstTask.index) {
+            return;
+        }
         dstTask.index = srcTaskIndex;
         let swapArgs = {
             task_id: dstTask.id
