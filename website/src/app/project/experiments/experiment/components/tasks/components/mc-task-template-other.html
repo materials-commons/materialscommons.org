@@ -50,7 +50,7 @@
                         </a>
                     </td>
                 </tr>
-                <tr md-row ng-repeat="file in $ctrl.task.template.input_files | orderBy:'name'">
+                <tr md-row ng-repeat="file in $ctrl.task.template.files | orderBy:'name'">
                     <td md-cell>Input File</td>
                     <td md-cell>{{file.name}}</td>
                     <td md-cell></td>
