@@ -136,6 +136,18 @@ export function processTemplates(User) {
             description: "Hardness",
             fn: processes.Hardness1,
             does_transform: true
+        },
+        {
+            name: "XRD",
+            description: "XRD",
+            fn: processes.XRD,
+            does_transform: false
+        },
+        {
+            name: "Tension",
+            description: "Tension",
+            fn: processes.Tension,
+            does_transform: false
         }
     ];
 
