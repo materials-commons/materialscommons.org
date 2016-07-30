@@ -19,7 +19,8 @@ module.exports = function(r) {
         allFilesInDataset,
         allProcessesInDataset,
         updateDataset,
-        publishDataset
+        publishDataset,
+        unpublishDataset
     };
 
     function* getDatasetsForExperiment(experimentId) {
@@ -316,6 +317,28 @@ module.exports = function(r) {
             e.datafile_id = datafile.id;
         });
         yield r.db('mcpub').table('process2file').insert(p2fEntries);
+    }
 
+    function* unpublishDataset(datasetId) {
+        yield r.table('datasets').get(datasetId).update({published: false});
+        yield unpublishDatasetProcesses(datasetId);
+        yield unpublishDatasetSamples(datasetId);
+        yield unpublishDatasetFiles(datasetId);
+        return yield getDataset(datasetId);
+    }
+
+    function* unpublishDatasetProcesses(datasetId) {
+        yield r.db('mcpub').table('dataset2process').getAll(datasetId, {index: 'dataset_id'}).delete();
+        // TODO: Delete processes that aren't used by any other dataset and their setup information
+    }
+
+    function* unpublishDatasetSamples(datasetId) {
+        yield r.db('mcpub').table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();
+        //TODO: Delete samples that aren't used by any other dataset plus all their associations
+    }
+
+    function* unpublishDatasetFiles(datasetId) {
+        yield r.db('mcpub').table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();
+        // TODO: Delete files that aren't used by any other dataset plus all their associations
     }
 };

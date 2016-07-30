@@ -13,7 +13,8 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
         updateFilesInDataset,
         updateProcessesInDataset,
         getSamplesForDataset,
-        publishDataset
+        publishDataset,
+        unpublishDataset
     };
 
     function* getDatasetsForExperiment(next) {
@@ -355,6 +356,17 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
 
     function* publishDataset(next) {
         let rv = yield experimentDatasets.publishDataset(this.params.dataset_id);
+        if (rv.error) {
+            this.status = status.UNAUTHORIZED;
+            this.body = rv;
+        } else {
+            this.body = rv.val;
+        }
+        yield next;
+    }
+
+    function* unpublishDataset(next) {
+        let rv = yield experimentDatasets.unpublishDataset(this.params.dataset_id);
         if (rv.error) {
             this.status = status.UNAUTHORIZED;
             this.body = rv;
