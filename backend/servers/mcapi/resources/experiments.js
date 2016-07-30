@@ -204,9 +204,9 @@ module.exports = function(experiments, samples, schema) {
             return errors;
         }
 
-        let isUsingProcess = yield experiments.taskIsUsingProcess(taskID);
-        if (isUsingProcess) {
-            return {error: `Cannot delete task associated with a process`};
+        let isUnused = yield experiments.taskProcessIsUnused(taskID);
+        if (!isUnused) {
+            return {error: `Cannot delete task associated with a process that is being used`};
         }
 
         return null;
