@@ -18,7 +18,12 @@ module.exports = function(r) {
         }
 
         let samplesInProcess = yield r.table('process2sample').getAll(processId, {index: 'process_id'});
-        return samplesInProcess.length === 0;
+        if (samplesInProcess.length) {
+            return false;
+        }
+
+        let processInDatasets = yield r.table('dataset2process').getAll(processId, {index: 'process_id'});
+        return processInDatasets.length === 0;
     }
 
     function* updateProcessFiles(processId, files) {

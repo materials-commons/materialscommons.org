@@ -37,7 +37,8 @@ module.exports = function(r) {
         fileInProject,
         getProcessesForExperiment,
         getFilesForExperiment,
-        experimentHasDataset
+        experimentHasDataset,
+        taskProcessIsUnused
     };
 
     function* getAllForProject(projectID) {
@@ -226,7 +227,20 @@ module.exports = function(r) {
         let oldParentID = old.changes[0].old_val.parent_id;
         let oldIndex = old.changes[0].old_val.index;
         yield updateTasksAboveDeleted(experimentID, oldParentID, oldIndex);
+        if (old.process_id) {
+            yield deleteProcess(experimentID, old.process_id);
+        }
         return {val: old.changes[0].old_val};
+    }
+
+    function* deleteProcess(experimentId, processId) {
+        let process2setupEntries = yield r.table('process2setup').getAll(r.args(processId), {index: 'process_id'});
+        let setupIds = process2setupEntries.map(e => e.setup_id);
+        yield r.table('processes').get(processId).delete();
+        yield r.table('setups').getAll(r.args(setupIds)).delete();
+        yield r.table('setupproperties').getAll(r.args(setupIds), {index: 'setup_id'}).delete();
+        yield r.table('process2setup').getAll(processId, {index: 'process_id'}).delete();
+        yield r.table('experiment2process').getAll([experimentId, processId], {index: 'experiment_process'}).delete();
     }
 
     function* updateTasksAboveDeleted(experimentID, parentID, index) {
@@ -435,5 +449,14 @@ module.exports = function(r) {
     function* experimentHasDataset(experimentId, datasetId) {
         let datasets = yield r.table('experiment2dataset').getAll([experimentId, datasetId], {index: 'experiment_dataset'});
         return datasets.length !== 0;
+    }
+
+    function* taskProcessIsUnused(taskId) {
+        let task = yield r.table('experimenttasks').get(taskId);
+        if (task.process_id === '') {
+            return true;
+        }
+
+        return yield processCommon.processIsUnused(task.process_id);
     }
 };
