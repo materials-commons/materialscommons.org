@@ -165,8 +165,8 @@ module.exports = function(r) {
     }
 
     function* updateTask(taskID, updateArgs) {
+        let task = yield r.table('experimenttasks').get(taskID);
         if (updateArgs.swap) {
-            let task = yield r.table('experimenttasks').get(taskID);
             let swapTask = yield r.table('experimenttasks').get(updateArgs.swap.task_id);
             if (swapTask.parent_id !== task.parent_id) {
                 return {error: 'Tasks have different parents'};
@@ -185,6 +185,18 @@ module.exports = function(r) {
             yield dbExec(updateRql);
         }
         yield db.update('experimenttasks', taskID, updateArgs);
+        if (task.process_id) {
+            let processUpdates = {};
+            if (updateArgs.name) {
+                processUpdates.name = updateArgs.name;
+            }
+            if (updateArgs.note) {
+                processUpdates.note = updateArgs.note;
+            }
+            if (processUpdates.name || processUpdates.note) {
+                yield r.table('processes').get(task.process_id).update(processUpdates);
+            }
+        }
         return yield getTask(taskID);
     }
 
@@ -321,6 +333,9 @@ module.exports = function(r) {
 
             // TODO: Delete samples from experiment if the sample is not used in any process associated with experiment.
         }
+
+        let task = yield r.table('experimenttasks').get(taskId);
+        yield r.table('processes').get(processId).update({name: task.name});
 
         return yield getTask(taskId);
     }
