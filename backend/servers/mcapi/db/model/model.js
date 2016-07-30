@@ -24,6 +24,7 @@ module.exports = function (r) {
         this.birthtime = r.now();
         this.mtime = this.birthtime;
         this._type = "process";
+        this.note = "";
         this.does_transform = transform;
     }
 
