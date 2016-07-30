@@ -10,6 +10,7 @@ import './model/index.module';
 import './project/index.module';
 import './projects/index.module';
 import './user/index.module';
+import './releasenotes/mc-release-notes.component';
 import './util/util';
 
 angular.module('materialscommons')
@@ -55,8 +56,7 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
 
     var unregister = $rootScope.$on('$stateChangeStart', function(event, toState) {
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
-        if (!User.isAuthenticated()
-            && (toState.name !== 'login' && toState.name !== 'join' && toState.name !== 'validate')) {
+        if (!User.isAuthenticated() && isStateRequiringALogin(toState.name)) {
             event.preventDefault();
             $state.go('login');
         }
@@ -67,6 +67,18 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
     });
 
     $rootScope.$on('$destroy', function() { unregister(); });
+}
+
+function isStateRequiringALogin(stateName) {
+    switch (stateName) {
+        case 'login':
+        case 'join':
+        case 'validate':
+        case 'releasenotes':
+            return false;
+        default:
+            return true;
+    }
 }
 
 function setupMCGlobals() {

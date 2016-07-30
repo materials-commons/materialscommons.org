@@ -9,6 +9,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/join',
             template: '<mc-join></mc-join>'
         })
+        .state('releasenotes', {
+            url: '/releasenotes',
+            template: '<mc-release-notes></mc-release-notes>'
+        })
         .state('validate', {
             url: '/validate/:validation_uuid',
             template: '<mc-join-validate></mc-join-validate>'
