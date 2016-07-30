@@ -8,7 +8,7 @@
                 <span class="mc-done-color"><i class="fa fa-fw fa-check-circle-o"></i>Dataset published</span>
             </md-button>
             <md-button class="md-warn" ng-click="$ctrl.unpublishDataset()">Unpublish Dataset</md-button>
-            <a ng-href="$ctrl.publishedLink" target="_blank">View published dataset</a>
+            <a ng-href="{{::$ctrl.publishedLink}}" target="_blank">View published dataset</a>
         </div>
         <label class="md-subhead">Dataset</label>
         <div layout-margin layout="column">

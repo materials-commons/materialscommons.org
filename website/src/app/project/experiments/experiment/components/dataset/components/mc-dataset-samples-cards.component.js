@@ -1,4 +1,4 @@
-class MCDatasetSamplesComponentController {
+class MCDatasetSamplesCardsComponentController {
     /*@ngInject*/
     constructor($mdDialog, datasetService, $stateParams) {
         this.$mdDialog = $mdDialog;
@@ -40,9 +40,9 @@ class ShowSampleDialogController {
     }
 }
 
-angular.module('materialscommons').component('mcDatasetSamples', {
-    templateUrl: 'app/project/experiments/experiment/components/dataset/components/mc-dataset-samples.html',
-    controller: MCDatasetSamplesComponentController,
+angular.module('materialscommons').component('mcDatasetSamplesCards', {
+    templateUrl: 'app/project/experiments/experiment/components/dataset/components/mc-dataset-samples-cards.html',
+    controller: MCDatasetSamplesCardsComponentController,
     bindings: {
         samples: '<'
     },

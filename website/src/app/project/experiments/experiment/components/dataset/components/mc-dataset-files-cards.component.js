@@ -1,4 +1,4 @@
-class MCDatasetFilesComponentController {
+class MCDatasetFilesCardsComponentController {
     /*@ngInject*/
     constructor($mdDialog, $stateParams, datasetService, mcfile, isImage, showFileService) {
         this.$mdDialog = $mdDialog;
@@ -28,9 +28,9 @@ class MCDatasetFilesComponentController {
     }
 }
 
-angular.module('materialscommons').component('mcDatasetFiles', {
-    templateUrl: 'app/project/experiments/experiment/components/dataset/components/mc-dataset-files.html',
-    controller: MCDatasetFilesComponentController,
+angular.module('materialscommons').component('mcDatasetFilesCards', {
+    templateUrl: 'app/project/experiments/experiment/components/dataset/components/mc-dataset-files-cards.html',
+    controller: MCDatasetFilesCardsComponentController,
     bindings: {
         files: '<'
     },
