@@ -1,6 +1,6 @@
 class MCDatasetDetailsComponentController {
     /*@ngInject*/
-    constructor($stateParams, $mdDialog, datasetService, toast, navbarOnChange) {
+    constructor($stateParams, $mdDialog, datasetService, toast, navbarOnChange, $window) {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
@@ -23,6 +23,7 @@ class MCDatasetDetailsComponentController {
                 link: `http://opendatacommons.org/licenses/odbl/summary/`
             }
         ];
+
     }
 
     addAuthor() {
@@ -84,6 +85,23 @@ class MCDatasetDetailsComponentController {
             }
         );
     }
+
+    unpublishDataset() {
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/unpublish-dataset-dialog.html',
+            controllerAs: '$ctrl',
+            controller: UnpublishDatasetDialogController,
+            bindToController: true,
+            locals: {
+                dataset: this.dataset
+            }
+        }).then(
+            () => {
+                this.dataset.published = false;
+                this.navbarOnChange.fireChange();
+            }
+        );
+    }
 }
 
 class PublishDatasetDialogController {
@@ -103,6 +121,33 @@ class PublishDatasetDialogController {
                 () => this.$mdDialog.hide(),
                 () => {
                     this.toast.error('Unable to publish dataset');
+                    this.$mdDialog.cancel();
+                }
+            );
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class UnpublishDatasetDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, $stateParams, toast, datasetService) {
+        this.$mdDialog = $mdDialog;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.datasetId = $stateParams.dataset_id;
+        this.toast = toast;
+        this.datasetService = datasetService;
+    }
+
+    unpublish() {
+        this.datasetService.unpublishDataset(this.projectId, this.experimentId, this.datasetId)
+            .then(
+                () => this.$mdDialog.hide(),
+                () => {
+                    this.toast.error('Unable to unpublish dataset');
                     this.$mdDialog.cancel();
                 }
             );
