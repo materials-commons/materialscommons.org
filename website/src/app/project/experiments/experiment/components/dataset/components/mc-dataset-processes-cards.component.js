@@ -1,4 +1,4 @@
-class MCDatasetProcessesComponentController {
+class MCDatasetProcessesCardsComponentController {
     /*@ngInject*/
     constructor($mdDialog, datasetService, $stateParams) {
         this.$mdDialog = $mdDialog;
@@ -40,9 +40,9 @@ class ShowProcessDialogController {
     }
 }
 
-angular.module('materialscommons').component('mcDatasetProcesses', {
-    templateUrl: 'app/project/experiments/experiment/components/dataset/components/mc-dataset-processes.html',
-    controller: MCDatasetProcessesComponentController,
+angular.module('materialscommons').component('mcDatasetProcessesCards', {
+    templateUrl: 'app/project/experiments/experiment/components/dataset/components/mc-dataset-processes-cards.html',
+    controller: MCDatasetProcessesCardsComponentController,
     bindings: {
         processes: '<'
     },
