@@ -18,7 +18,6 @@ class MCDatasetTableComponentController {
         });
         this.dataset.files.forEach(f => {
             f.processes.forEach(p => {
-                console.log('looking for process', p);
                 let process = this.processesById[p.process_id];
                 f.process_name = process.name;
                 process.processFiles.push(f);
