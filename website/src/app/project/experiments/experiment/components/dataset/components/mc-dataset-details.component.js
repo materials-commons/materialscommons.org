@@ -24,6 +24,14 @@ class MCDatasetDetailsComponentController {
             }
         ];
 
+        if ($window.location.hostname === 'mctest.localhost') {
+            let port = $window.location.port;
+            this.publishedLink = `http://mcpub.localhost:${port}/#//details/${this.datasetId}`;
+        } else {
+            let hostname = $window.location.hostname;
+            this.publishedLink = `https://${hostname}/mcpub/#//details/${this.datasetId}`;
+        }
+        //this.publishedLink = `https://materialscommons.org/mcpub/#//details/21267ca4-9480-4eb5-acf1-a1f7ee11f546`;
     }
 
     addAuthor() {

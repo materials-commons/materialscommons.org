@@ -1,4 +1,4 @@
-<div layout="column">
+<div layout="column" ng-if="$ctrl.dataset">
     <div layout="row" layout-align="start center">
         <h3 class="md-title" style="padding-right: 30px">Dataset: {{$ctrl.dataset.title}}</h3>
         <md-button class="md-primary" ng-click="$ctrl.selectSamples()">add samples</md-button>
@@ -7,6 +7,15 @@
         <!--<md-button class="md-primary">add notes</md-button>-->
         <span flex="10"></span>
         <md-button class="md-primary" ng-click="$ctrl.showDetailsSection = !$ctrl.showDetailsSection">details</md-button>
+        <span flex="5"></span>
+        <a ng-click="$ctrl.showTableView = false"
+           ng-style="$ctrl.showTableView && {'color': 'black'}">
+            <i class="fa fa-fw fa-th"></i>
+        </a>
+        <a ng-click="$ctrl.showTableView = true"
+           ng-style="!$ctrl.showTableView && {'color': 'black'}">
+            <i class="fa fa-fw fa-th-list"></i>
+        </a>
     </div>
 
     <div layout="row" flex style="max-height: 70vh">
@@ -14,13 +23,18 @@
             <div layout="column" flex>
                 <mc-dataset-details ng-show="!$ctrl.showDetailsSection" dataset=$ctrl.dataset></mc-dataset-details>
 
-                <mc-dataset-samples ng-show="$ctrl.dataset.samples.length"
-                                    samples="$ctrl.dataset.samples"></mc-dataset-samples>
+                <div ng-if="!$ctrl.showTableView">
+                    <mc-dataset-samples-cards ng-show="$ctrl.dataset.samples.length"
+                                              samples="$ctrl.dataset.samples"></mc-dataset-samples-cards>
 
-                <mc-dataset-files ng-show="$ctrl.dataset.samples.length" files="$ctrl.dataset.files"></mc-dataset-files>
+                    <mc-dataset-files-cards ng-show="$ctrl.dataset.samples.length" files="$ctrl.dataset.files"></mc-dataset-files-cards>
 
-                <mc-dataset-processes ng-show="$ctrl.dataset.processes.length"
-                                      processes="$ctrl.dataset.processes"></mc-dataset-processes>
+                    <mc-dataset-processes-cards ng-show="$ctrl.dataset.processes.length"
+                                                processes="$ctrl.dataset.processes"></mc-dataset-processes-cards>
+                </div>
+                <div ng-if="$ctrl.showTableView">
+                    <mc-dataset-table dataset="$ctrl.dataset"></mc-dataset-table>
+                </div>
             </div>
         </md-content>
     </div>

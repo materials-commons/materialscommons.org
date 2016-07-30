@@ -328,17 +328,30 @@ module.exports = function(r) {
     }
 
     function* unpublishDatasetProcesses(datasetId) {
+        let processes = yield r.db('mcpub').table('dataset2process').getAll(datasetId, {index: 'dataset_id'});
+        let processIds = processes.map(p => p.process_id);
+        let process2setupEntries = yield r.db('mcpub').table('process2setup').getAll(r.args(processIds), {index: 'process_id'});
+        let setupIds = process2setupEntries.map(e => e.setup_id);
+        yield r.db('mcpub').table('processes').getAll(r.args(processIds)).delete();
+        yield r.db('mcpub').table('setups').getAll(r.args(setupIds)).delete();
+        yield r.db('mcpub').table('setupproperties').getAll(r.args(setupIds), {index: 'setup_id'}).delete();
+        yield r.db('mcpub').table('process2setup').getAll(r.args(processIds), {index: 'process_id'}).delete();
         yield r.db('mcpub').table('dataset2process').getAll(datasetId, {index: 'dataset_id'}).delete();
-        // TODO: Delete processes that aren't used by any other dataset and their setup information
     }
 
     function* unpublishDatasetSamples(datasetId) {
+        let samples = yield r.db('mcpub').table('dataset2sample').getAll(datasetId, {index: 'dataset_id'});
+        let sampleIds = samples.map(s => s.sample_id);
+        yield r.db('mcpub').table('samples').getAll(r.args(sampleIds)).delete();
+        yield r.db('mcpub').table('process2sample').getAll(r.args(sampleIds), {index: 'sample_id'}).delete();
         yield r.db('mcpub').table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();
-        //TODO: Delete samples that aren't used by any other dataset plus all their associations
     }
 
     function* unpublishDatasetFiles(datasetId) {
-        yield r.db('mcpub').table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();
-        // TODO: Delete files that aren't used by any other dataset plus all their associations
+        let datafiles = yield r.db('mcpub').table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
+        let datafileIds = datafiles.map(d => d.datafile_id);
+        yield r.db('mcpub').table('datafiles').getAll(r.args(datafileIds)).delete();
+        yield r.db('mcpub').table('process2file').getAll(r.args(datafileIds), {index: 'datafile_id'}).delete();
+        yield r.db('mcpub').table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'}).delete();
     }
 };
