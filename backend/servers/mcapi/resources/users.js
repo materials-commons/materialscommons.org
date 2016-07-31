@@ -55,7 +55,7 @@ module.exports = function(users, experiments, schema) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
             } else {
-                let evl = emailValidationLink(rv.val);
+                let evl = emailValidationLink(rv.val, accountArgs.site);
                 if (evl.error) {
                     this.status = status.BAD_REQUEST;
                     this.body = evl;
@@ -109,10 +109,13 @@ module.exports = function(users, experiments, schema) {
         return yield schema.validate(schema.userAccountSchema, accountArgs);
     }
 
-    function emailValidationLink(userData) {
+    function emailValidationLink(userData, site) {
         var transporter = nodemailer.createTransport(mailTransport);
         var sendTo = userData.id;
         var validationLink = `${process.env.MC_VERIFY_LINK}/${userData.validate_uuid}`;
+        if (site === 'mcpub') {
+            validationLink = `${process.env.MCPUB_VERIFY_LINK}/${userData.validate_uuid}`
+        }
         let emailMsg =
             `Thank you for registering for an account with Materials Commons. To complete the registration
             process please click on the given link or copy and paste in the url given below.`;
