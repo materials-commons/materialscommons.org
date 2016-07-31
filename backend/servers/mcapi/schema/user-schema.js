@@ -15,9 +15,14 @@ module.exports = function(schema) {
             email: {
                 type: 'string',
                 nullable: false
+            },
+
+            site: {
+                type: 'string',
+                nullable: true
             }
         });
-        userAccountSchema.setDefaults({});
+        userAccountSchema.setDefaults({site: 'materialscommons'});
         userAccountSchema.validateAsync = promise.promisify(userAccountSchema.validate);
         return userAccountSchema;
     }
