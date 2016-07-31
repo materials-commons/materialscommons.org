@@ -3,4 +3,3 @@ export function projectsAPIService(Restangular) {
 
     return _.partial(Restangular.one('v2').one, 'projects');
 }
-
