@@ -16,7 +16,7 @@ class MCJoinValidateComponentController {
             .then(
                 (registration) => this.registration = registration,
                 (e) => this.message = e.data.error
-            )
+            );
     }
 
     setPassword(setPasswordForm) {
