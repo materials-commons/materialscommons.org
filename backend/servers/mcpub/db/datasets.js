@@ -2,7 +2,7 @@ var r = require('./../dash');
 //var parse = require('co-body');
 
 module.exports.getAll = function*(next) {
-    this.body = yield r.db('materialscommons').table('datasets').merge(function(ds) {
+    this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
         return {
             'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
                 .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
