@@ -41,6 +41,14 @@ class MCExperimentDatasetsComponentController {
     openDataset(datasetId) {
         this.$state.go("project.experiment.datasets.dataset", {dataset_id: datasetId});
     }
+
+    removeDataset(datasetId) {
+        this.datasetService.deleteDatasetFromExperiment(this.projectId, this.experimentId, datasetId)
+            .then(
+                () => this.datasets = this.datasets.filter(d => d.id !== datasetId),
+                () => this.toast.error("Unable to delete dataset from experiment")
+            );
+    }
 }
 
 class NewExperimentDatasetDialogController {

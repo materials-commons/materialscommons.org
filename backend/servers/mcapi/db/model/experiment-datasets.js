@@ -10,6 +10,7 @@ module.exports = function(r) {
         getDatasetsForExperiment,
         getDataset,
         createDatasetForExperiment,
+        deleteDataset,
         addSampleToDataset,
         updateSamplesInDataset,
         getSamplesForDataset,
@@ -43,6 +44,16 @@ module.exports = function(r) {
         let e2d = new model.Experiment2Dataset(experimentId, created.id);
         yield r.table('experiment2dataset').insert(e2d);
         return yield getDataset(created.id);
+    }
+
+    function* deleteDataset(datasetId) {
+        yield r.table('datasets').get(datasetId).delete();
+        yield r.table('experiment2dataset').getAll(datasetId, {index: 'dataset_id'}).delete();
+        yield r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();
+        yield r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'}).delete();
+        yield r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'}).delete();
+        yield r.table('dataset2experimentnote').getAll(datasetId, {index: 'dataset_id'}).delete();
+        return {val: true};
     }
 
     function* addSampleToDataset(datasetId, sampleId) {
