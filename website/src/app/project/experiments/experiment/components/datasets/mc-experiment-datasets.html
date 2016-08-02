@@ -16,9 +16,13 @@
             </tr>
             </thead>
             <tbody md-body>
-            <tr md-row class="md-row-hover pointer" ng-repeat="ds in $ctrl.datasets | orderBy:'title'"
-                ng-click="$ctrl.openDataset(ds.id)">
-                <td md-cell>{{::ds.title}}</td>
+            <tr md-row class="md-row-hover" ng-repeat="ds in $ctrl.datasets | orderBy:'title'">
+                <td md-cell>
+                    <a class="mc-error-color" ng-click="$ctrl.removeDataset(ds.id)">
+                        <i class="fa fa-fw fa-remove"></i>
+                    </a>
+                    <a ng-click="$ctrl.openDataset(ds.id)">{{::ds.title}}</a>
+                </td>
                 <td md-cell>{{::ds.description}}</td>
                 <td md-cell>{{::ds.samples.length}}</td>
                 <td md-cell>{{::ds.processes.length}}</td>
