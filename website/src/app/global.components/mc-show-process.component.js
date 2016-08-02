@@ -16,7 +16,7 @@ class MCShowProcessComponentController {
                     let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
                     var t = this.templates.getTemplate(templateName);
                     this.process = this.processEdit.fillProcess(t, process);
-                    this.files = process.input_files.concat(process.output_files);
+                    //this.files = process.input_files.concat(process.output_files);
                 },
                 () => this.toast.error('Unable to retrieve process details')
             );
