@@ -249,11 +249,16 @@ module.exports = function(r) {
 
         // Update process2setup to use the new process id and the new setup id
         let processesByOriginalId = _.indexBy(processes, 'original_id');
+
         p2sEntries.forEach(e => {
             let process = processesByOriginalId[e.process_id];
             let setup = setupsByOriginalId[e.setup_id];
-            e.setup_id = setup.id;
-            e.process_id = process.id;
+            if (process && setup) {
+                e.setup_id = setup.id;
+                e.process_id = process.id;
+            } else {
+                e.invalid = true;
+            }
         });
         yield r.db('mcpub').table('process2setup').insert(p2sEntries);
     }
@@ -281,8 +286,12 @@ module.exports = function(r) {
         p2sEntries.forEach(e => {
             let process = processesByOriginalId[e.process_id];
             let sample = samplesByOriginalId[e.sample_id];
-            e.process_id = process.id;
-            e.sample_id = sample.id;
+            if (process && sample) {
+                e.process_id = process.id;
+                e.sample_id = sample.id;
+            } else {
+                e.invalid = true;
+            }
         });
         yield r.db('mcpub').table('process2sample').insert(p2sEntries);
     }
@@ -313,8 +322,12 @@ module.exports = function(r) {
         p2fEntries.forEach(e => {
             let process = processesByOriginalId[e.process_id];
             let datafile = datafilesByOriginalId[e.datafile_id];
-            e.process_id = process.id;
-            e.datafile_id = datafile.id;
+            if (process && datafile) {
+                e.process_id = process.id;
+                e.datafile_id = datafile.id;
+            } else {
+                e.invalid = true;
+            }
         });
         yield r.db('mcpub').table('process2file').insert(p2fEntries);
     }
