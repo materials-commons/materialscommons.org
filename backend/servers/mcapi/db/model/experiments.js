@@ -348,8 +348,10 @@ module.exports = function(r) {
             // TODO: Delete samples from experiment if the sample is not used in any process associated with experiment.
         }
 
-        let task = yield r.table('experimenttasks').get(taskId);
-        yield r.table('processes').get(processId).update({name: task.name});
+        if (processId) {
+            let task = yield r.table('experimenttasks').get(taskId);
+            yield r.table('processes').get(processId).update({name: task.name});
+        }
 
         return yield getTask(taskId);
     }
