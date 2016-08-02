@@ -7,6 +7,7 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
         getDatasetsForExperiment,
         getDatasetForExperiment,
         createDatasetForExperiment,
+        deleteDatasetFromExperiment,
         updateDatasetForExperiment,
         addSampleToDataset,
         updateSamplesInDataset,
@@ -54,6 +55,17 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
             } else {
                 this.body = rv.val;
             }
+        }
+        yield next;
+    }
+
+    function* deleteDatasetFromExperiment(next) {
+        let rv = yield experimentDatasets.deleteDataset(this.params.dataset_id);
+        if (rv.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = rv;
+        } else {
+            this.body = rv.val;
         }
         yield next;
     }

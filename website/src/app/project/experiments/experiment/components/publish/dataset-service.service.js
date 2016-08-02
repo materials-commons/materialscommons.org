@@ -19,6 +19,10 @@ class DatasetService {
         });
     }
 
+    deleteDatasetFromExperiment(projectId, experimentId, datasetId) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).remove();
+    }
+
     addSampleToDataset(projectId, experimentId, datasetId, sampleId) {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('datasets', datasetId).one('samples', sampleId).customPUT();
     }

@@ -128,6 +128,10 @@ module.exports = function(model) {
         resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
         experimentDatasets.updateProcessesInDataset);
 
+    router.delete('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
+        resourceAccess.validateProjectAccess, resourceAccess.validateExperimentInProject, resourceAccess.validateDatasetInExperiment,
+        experimentDatasets.deleteDatasetFromExperiment);
+
     router.put('/users/:project_id', users.updateProjectFavorites);
     router.put('/users', users.updateUserSettings);
     router.post('/accounts', users.createAccount);
