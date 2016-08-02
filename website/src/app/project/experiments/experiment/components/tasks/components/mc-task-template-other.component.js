@@ -12,7 +12,7 @@ class MCTaskTemplateOtherComponentController {
     }
 
     $onInit() {
-        console.log('task = ', this.task);
+        //console.log('task = ', this.task);
     }
 
     linkFilesToSample(sample, input_files, output_files) {
