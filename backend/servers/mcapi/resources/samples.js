@@ -152,7 +152,7 @@ module.exports = function(samples, schema) {
     function* addMeasurements(next) {
         let addMeasurementsArgs = yield parse(this);
         schema.prepare(schema.addSamplesMeasurements, addMeasurementsArgs);
-        let errors = yield validateAddMeasurements(this.params.project_id, this.params.experiment_id, addMeasurementsArgs);
+        let errors = yield validateAddMeasurements(this.params.project_id, addMeasurementsArgs);
         if (errors !== null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
@@ -211,8 +211,9 @@ module.exports = function(samples, schema) {
     }
 
     function* updateMeasurements(next) {
+        console.log('updateMeasurements');
         let updateMeasurementsArgs = yield parse(this);
-        let errors = yield validateUpdateMeasurements(this.params.project_id, this.params.experiment_id, updateMeasurementsArgs);
+        let errors = yield validateUpdateMeasurements(this.params.project_id, updateMeasurementsArgs);
         if (errors !== null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;

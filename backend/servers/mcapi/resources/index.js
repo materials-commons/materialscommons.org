@@ -37,9 +37,6 @@ module.exports = function(model) {
     router.get('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.getSampleForProject);
     //router.put('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.updateSample);
     router.put('/projects/:project_id/samples', validateProjectAccess, samples.updateSamples);
-    router.post('/projects/:project_id/experiments/:experiment_id/samples/measurements', validateProjectAccess, samples.addMeasurements);
-    router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements', validateProjectAccess, samples.updateMeasurements);
-
     router.post('/projects/:project_id/samples/measurements', validateProjectAccess, samples.addMeasurements);
     router.put('/projects/:project_id/samples/measurements', validateProjectAccess, samples.updateMeasurements);
 
