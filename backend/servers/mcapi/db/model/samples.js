@@ -138,7 +138,7 @@ module.exports = function(r) {
                 yield addSeparatePropertyMeasurementsForSamples(prop);
             }
         }
-        return {value: true};
+        return {val: true};
     }
 
     function* addSharedPropertyMeasurementsForSamples(prop) {
