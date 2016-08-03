@@ -23,7 +23,7 @@ class ProcessMeasurementsComponentController2 {
         this.samplesService.addMeasurementsToSamples(this.projectId, this.experimentId, "fill-in-later", [samplesMeasurements])
             .then(
                 () => null,
-                () => this.toast('Failed to add measurements to samples')
+                () => this.toast.error('Failed to add measurements to samples')
             );
     }
 
