@@ -85,6 +85,10 @@ class TaskService {
         let projectId = this.$stateParams.project_id,
             experimentId = this.$stateParams.experiment_id;
 
+        if (task.deleted) {
+            return;
+        }
+
         if (task.note === null) {
             return;
         }
