@@ -136,7 +136,10 @@ function MCExperimentTasksListDirDirectiveController($stateParams, toast, curren
         blankTaskService.addBlankTask(node, ctrl.task);
     };
 
-    ctrl.remove = (node) => taskService.remove(node, ctrl.task, ctrl.experiment.tasks);
+    ctrl.remove = (node) => {
+        ctrl.task.deleted = true;
+        taskService.remove(node, ctrl.task, ctrl.experiment.tasks);
+    };
 
     ctrl.addToExperimentNote = () => {
         let html = `
