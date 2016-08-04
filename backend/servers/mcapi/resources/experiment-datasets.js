@@ -60,12 +60,18 @@ module.exports = function(experimentDatasets, experiments, samples, schema) {
     }
 
     function* deleteDatasetFromExperiment(next) {
-        let rv = yield experimentDatasets.deleteDataset(this.params.dataset_id);
-        if (rv.error) {
+        let dsrv = yield experimentDatasets.getDataset(this.params.dataset_id);
+        if (dsrv.val.published) {
             this.status = status.BAD_REQUEST;
-            this.body = rv;
+            this.body = {error: `You may only delete unpublished datasets`};
         } else {
-            this.body = rv.val;
+            let rv = yield experimentDatasets.deleteDataset(this.params.dataset_id);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
         }
         yield next;
     }
