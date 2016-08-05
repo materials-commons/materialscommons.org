@@ -13,7 +13,7 @@ class MCProcessesGraphComponentController {
             });
         });
         let elements = this.processes.map(p => {
-            console.log(p.name, p);
+            //console.log(p.name, p);
             return {
                 data: {
                     id: p.id,
