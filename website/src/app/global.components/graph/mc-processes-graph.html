@@ -1,0 +1,31 @@
+<div layout="column" style="margin-right:15px">
+    <div id="processesGraph">
+    </div>
+    <md-tabs flex-offset="70" md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
+        <md-tab>
+            <md-tab-label>
+                <span><i class="fa fa-fw fa-gears"></i>details</span>
+            </md-tab-label>
+            <md-tab-body>
+                details here
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span><i class="fa fa-fw fa-gears"></i>filters</span>
+            </md-tab-label>
+            <md-tab-body>
+                <md-content style="max-height: 70vh">
+                    <md-list>
+                        <md-list-item ng-repeat="sample in $ctrl.samples">
+                            <md-checkbox ng-model="sample.selected" ng-change="$ctrl.filterOnSample(sample)"></md-checkbox>
+                            <p>{{sample.name}}</p>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
+</div>
+
+</div>
