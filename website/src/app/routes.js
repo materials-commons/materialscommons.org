@@ -155,17 +155,23 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.processes', {
             url: '/processes',
-            template: '<mc-experiment-processes processes="ctrl.processes"></mc-experiment-processes>',
+            template: '<mc-processes-graph processes="ctrl.processes"></mc-processes-graph>',
             controllerAs: 'ctrl',
-            controller: ['experimentsService', '$stateParams', 'toast',
-                function(experimentsService, $stateParams, toast) {
-                    var ctrl = this;
-                    ctrl.processes = [];
-                    experimentsService.getProcessesForExperiment($stateParams.project_id, $stateParams.experiment_id).then(
-                        (processes) => ctrl.processes = processes,
-                        () => toast.error('Error retrieving processes for experiment')
-                    )
-                }]
+            controller: ['processes', function(processes) {
+                var ctrl = this;
+                ctrl.processes = processes;
+            }],
+            resolve: {
+                processes: ['experimentsService', '$stateParams', 'toast',
+                    function(experimentsService, $stateParams, toast) {
+                        var ctrl = this;
+                        ctrl.processes = [];
+                        return experimentsService.getProcessesForExperiment($stateParams.project_id, $stateParams.experiment_id).then(
+                            (processes) => processes,
+                            () => toast.error('Error retrieving processes for experiment')
+                        );
+                    }]
+            }
         })
         .state('project.experiment.samples', {
             url: '/samples',
