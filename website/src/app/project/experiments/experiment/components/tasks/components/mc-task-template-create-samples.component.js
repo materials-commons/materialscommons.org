@@ -31,9 +31,9 @@ class MCTaskTemplateCreateSamplesComponentController {
     }
 
     addSample() {
-        let lastItem = this.task.template.input_samples.length - 1;
+        let lastItem = this.task.template.output_samples.length - 1;
         // If there is no name for the last entry then do not add a new entry.
-        if (lastItem !== -1 && this.task.template.input_samples[lastItem].name === '') {
+        if (lastItem !== -1 && this.task.template.output_samples[lastItem].name === '') {
             return;
         }
 
@@ -45,7 +45,7 @@ class MCTaskTemplateCreateSamplesComponentController {
                     this.samplesService.addSamplesToExperiment(this.projectId, this.experimentId, sampleIds)
                         .then(
                             () => {
-                                this.task.template.input_samples.push(samples.samples[0]);
+                                this.task.template.output_samples.push(samples.samples[0]);
                                 this.focus(samples.samples[0].id);
                             },
                             () => this.toast.error('Failed to add sample to experiment')
@@ -56,10 +56,10 @@ class MCTaskTemplateCreateSamplesComponentController {
     }
 
     remove(index) {
-        let sample = this.task.template.input_samples[index];
+        let sample = this.task.template.output_samples[index];
         this.samplesService.deleteSamplesFromExperiment(this.projectId, this.experimentId, this.task.process_id, [sample.id])
             .then(
-                () => this.task.template.input_samples.splice(index, 1),
+                () => this.task.template.output_samples.splice(index, 1),
                 () => this.toast.error('Unable to delete remove sample')
             );
     }
@@ -87,7 +87,7 @@ class MCTaskTemplateCreateSamplesComponentController {
                 processId: this.task.process_id
             }
         }).then(
-            (samples) => this.task.template.input_samples = this.task.template.input_samples.concat(samples)
+            (samples) => this.task.template.output_samples = this.task.template.output_samples.concat(samples)
         )
     }
 }
