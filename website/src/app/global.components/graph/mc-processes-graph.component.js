@@ -91,7 +91,7 @@ class MCProcessesGraphComponentController {
             let target = event.cyTarget;
             console.log('node name is', target.data('name'));
         });
-        cy.layout({name: 'dagre'});
+        this.cy.layout({name: 'dagre'});
     }
 
     filterOnSample(sample) {
