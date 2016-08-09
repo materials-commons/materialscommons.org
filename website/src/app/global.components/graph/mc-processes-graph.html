@@ -19,7 +19,7 @@
                     <md-list>
                         <md-list-item ng-repeat="sample in $ctrl.samples">
                             <md-checkbox ng-model="sample.selected" ng-change="$ctrl.filterOnSample(sample)"></md-checkbox>
-                            <p>{{sample.name}}</p>
+                            <p>{{::sample.name}} (<i class="fa fa-fw fa-code-fork"></i>{{::sample.processes.length}})</p>
                         </md-list-item>
                     </md-list>
                 </md-content>

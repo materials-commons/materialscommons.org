@@ -88,6 +88,7 @@ module.exports.processDetailsRql = function processDetailsRql(rql, r) {
                 }).coerceTo('array'),
 
             input_samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
+                .filter({'direction': 'in'})
                 .eqJoin('sample_id', r.table('samples')).zip()
                 .merge(function(sample) {
                     return {
@@ -105,7 +106,35 @@ module.exports.processDetailsRql = function processDetailsRql(rql, r) {
                             }).coerceTo('array'),
                         files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
                             .eqJoin('datafile_id', r.table('datafiles')).zip().pluck('id', 'name')
-                            .coerceTo('array')
+                            .coerceTo('array'),
+                        processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
+                            .pluck('process_id', 'sample_id').distinct()
+                            .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
+                    }
+                }).coerceTo('array'),
+            output_samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
+                .filter({'direction': 'out'})
+                .eqJoin('sample_id', r.table('samples')).zip()
+                .merge(function(sample) {
+                    return {
+                        properties: r.table('propertyset2property')
+                            .getAll(sample('property_set_id'), {index: 'property_set_id'})
+                            .eqJoin('property_id', r.table('properties')).zip()
+                            .orderBy('name')
+                            .merge(function(property) {
+                                return {
+                                    best_measure: r.table('best_measure_history')
+                                        .getAll(property('best_measure_id'))
+                                        .eqJoin('measurement_id', r.table('measurements'))
+                                        .zip().coerceTo('array')
+                                }
+                            }).coerceTo('array'),
+                        files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
+                            .eqJoin('datafile_id', r.table('datafiles')).zip().pluck('id', 'name')
+                            .coerceTo('array'),
+                        processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
+                            .pluck('process_id', 'sample_id').distinct()
+                            .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
                     }
                 }).coerceTo('array'),
             files: r.table('process2file').getAll(process('id'), {index: 'process_id'})
