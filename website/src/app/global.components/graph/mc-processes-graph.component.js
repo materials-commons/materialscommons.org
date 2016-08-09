@@ -1,6 +1,7 @@
 class MCProcessesGraphComponentController {
     /*@ngInject*/
     constructor() {
+        this.cy = null;
     }
 
     $onInit() {
@@ -63,7 +64,7 @@ class MCProcessesGraphComponentController {
             });
         });
         this.samples = _.values(sampleName2Sample);
-        var cy = cytoscape({
+        this.cy = cytoscape({
             container: document.getElementById('processesGraph'),
             elements: elements,
             style: [
@@ -85,7 +86,7 @@ class MCProcessesGraphComponentController {
                 }
             ]
         });
-        cy.on('click', function(event) {
+        this.cy.on('click', function(event) {
             console.log('node or edge clicked', event);
             let target = event.cyTarget;
             console.log('node name is', target.data('name'));
@@ -94,7 +95,9 @@ class MCProcessesGraphComponentController {
     }
 
     filterOnSample(sample) {
-
+        console.log('filterOnSample', sample);
+        let matches = this.cy.nodes().filter(`[name = '${sample.name}']`);
+        console.log(sample);
     }
 }
 
