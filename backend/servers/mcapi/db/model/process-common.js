@@ -87,11 +87,27 @@ module.exports = function(r) {
         return null;
     }
 
-    function* updateProcessSamples(processId, samples) {
-        let samplesToAddToProcess = samples.filter(s => s.command === 'add').map(s => new model.Process2Sample(processId, s.id, s.property_set_id, ''));
+    function* updateProcessSamples(process, samples) {
+        let processId = process.id;
+        let samplesToAddToProcess = samples.filter(s => s.command === 'add').map(s => new model.Process2Sample(processId, s.id, s.property_set_id, 'in'));
         samplesToAddToProcess = yield removeExistingProcessSampleEntries(processId, samplesToAddToProcess);
         if (samplesToAddToProcess.length) {
             yield r.table('process2sample').insert(samplesToAddToProcess);
+        }
+
+        if (process.does_transform) {
+            for (let i = 0; i < samplesToAddToProcess.length; i++) {
+                let sampleEntry = samplesToAddToProcess[i];
+                let ps = new model.PropertySet(true, sampleEntry.property_set_id);
+                let added = yield db.insert('propertysets', ps);
+                yield r.table('sample2propertyset')
+                    .getAll([sampleEntry.sample_id, sampleEntry.property_set_id], {index: 'sample_property_set'})
+                    .update({current: false});
+                let s2ps = new model.Sample2PropertySet(sampleEntry.sample_id, added.id, true);
+                yield r.table('sample2propertyset').insert(s2ps);
+                let outp2s = new model.Process2Sample(processId, sampleEntry.sample_id, added.id, 'out');
+                yield r.table('process2sample').insert(outp2s);
+            }
         }
 
         let samplesToDeleteFromProcess = samples.filter(s => s.command === 'delete').map(s => [processId, s.id, s.property_set_id]);

@@ -318,6 +318,12 @@ module.exports = function(r) {
             }
         }
 
+        let process = null;
+
+        if (processId) {
+            process = yield r.table('processes').get(processId);
+        }
+
         if (files) {
             let errors = yield processCommon.updateProcessFiles(processId, files);
             if (errors !== null) {
@@ -334,7 +340,7 @@ module.exports = function(r) {
         }
 
         if (samples) {
-            let errors = yield processCommon.updateProcessSamples(processId, samples);
+            let errors = yield processCommon.updateProcessSamples(process, samples);
             if (errors !== null) {
                 return {error: errors};
             }
