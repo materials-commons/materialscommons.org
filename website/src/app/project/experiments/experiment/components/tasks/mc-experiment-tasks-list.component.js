@@ -105,6 +105,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, toast, curren
                         var t = templates.getTemplate(templateName);
                         ctrl.task.template = processEdit.fillProcess(t, process);
                         ctrl.task.template.template_name = templateName;
+                        ctrl.task.template_name = templateName;
                         ctrl.task.loaded = true;
                     },
                     () => toast.error('Unable to retrieve task template')
