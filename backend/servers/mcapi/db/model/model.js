@@ -43,6 +43,9 @@ module.exports = function (r) {
         this.process_id = processID;
         this.property_set_id = psetID;
         this.direction = direction;
+        if (!this.direction) {
+            this.direction = 'in';
+        }
     }
 
     function Process2Setupfile(processID, fileID) {

@@ -5,32 +5,48 @@ class MCProcessesGraphComponentController {
 
     $onInit() {
         let transformingProcesses = this.processes.filter(p => p.does_transform);
-        let sample2Process = {};
+        let sample2InputProcess = {};
+        let sample2OutputProcess = {};
         transformingProcesses.forEach(p => {
             p.input_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
-                sample2Process[id] = p;
+                sample2InputProcess[id] = p;
             });
+
+            p.output_samples.forEach(s => {
+                let id = `${s.id}/${s.property_set_id}`;
+                sample2OutputProcess[id] = p;
+            })
         });
         let elements = this.processes.map(p => {
-            //console.log(p.name, p);
+            console.log(p.name, p);
             return {
                 data: {
                     id: p.id,
-                    name: p.name
+                    name: p.name,
+                    color: p.does_transform ? 'red' : '#999999'
                 }
             }
         });
         this.processes.filter(p => !p.does_transform).forEach(p => {
             p.input_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
-                let process = sample2Process[id];
+                let process = sample2OutputProcess[id];
                 if (process) {
                     elements.push({
                         data: {
                             id: `${p.id}_${process.id}`,
                             source: process.id,
                             target: p.id
+                        }
+                    });
+                }
+                process = sample2InputProcess[id];
+                if (process) {
+                    elements.push({
+                        data: {
+                            source: p.id,
+                            target: process.id
                         }
                     });
                 }
@@ -41,7 +57,10 @@ class MCProcessesGraphComponentController {
         this.processes.forEach(p => {
             p.input_samples.forEach(s => {
                 sampleName2Sample[s.name] = s;
-            })
+            });
+            p.output_samples.forEach(s => {
+                sampleName2Sample[s.name] = s;
+            });
         });
         this.samples = _.values(sampleName2Sample);
         var cy = cytoscape({
@@ -51,7 +70,8 @@ class MCProcessesGraphComponentController {
                 {
                     selector: 'node',
                     style: {
-                        'label': 'data(name)'
+                        'label': 'data(name)',
+                        'background-color': 'data(color)'
                     }
                 },
                 {
@@ -64,6 +84,11 @@ class MCProcessesGraphComponentController {
                     }
                 }
             ]
+        });
+        cy.on('click', function(event) {
+            console.log('node or edge clicked', event);
+            let target = event.cyTarget;
+            console.log('node name is', target.data('name'));
         });
         cy.layout({name: 'dagre'});
     }
