@@ -38,7 +38,8 @@ module.exports = function(r) {
         getProcessesForExperiment,
         getFilesForExperiment,
         experimentHasDataset,
-        taskProcessIsUnused
+        taskProcessIsUnused,
+        addProcessFromTemplate
     };
 
     function* getAllForProject(projectID) {
@@ -308,6 +309,14 @@ module.exports = function(r) {
         let e2proc = new model.Experiment2Process(experimentId, procId);
         yield r.table('experiment2process').insert(e2proc);
         return yield getTask(taskId);
+    }
+
+    function* addProcessFromTemplate(projectId, experimentId, templateId, owner) {
+        let template = yield r.table('templates').get(templateId);
+        let procId = yield processCommon.createProcessFromTemplate(projectId, template, owner);
+        let e2proc = new model.Experiment2Process(experimentId, procId);
+        yield r.table('experiment2process').insert(e2proc);
+        return yield processCommon.getProcess(procId);
     }
 
     function* updateTaskTemplate(taskId, experimentId, processId, properties, files, samples) {
