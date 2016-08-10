@@ -80,6 +80,8 @@ module.exports = function(model) {
     router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements', validateProjectAccess, experimentSamples.updateSamplesMeasurements);
 
     router.get('/projects/:project_id/experiments/:experiment_id/processes', validateProjectAccess, experiments.getProcessesForExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/processes/templates/:template_id', validateProjectAccess,
+        resourceAccess.validateExperimentInProject, experiments.createProcessInExperimentFromTemplate);
 
     router.get('/projects/:project_id/experiments/:experiment_id/files', validateProjectAccess, experiments.getFilesForExperiment);
 

@@ -22,7 +22,8 @@ module.exports = function(experiments, samples, schema) {
         createExperimentNote,
         deleteExperimentNote,
         getProcessesForExperiment,
-        getFilesForExperiment
+        getFilesForExperiment,
+        createProcessInExperimentFromTemplate
     };
 
     function* getAllExperimentsForProject(next) {
@@ -623,5 +624,31 @@ module.exports = function(experiments, samples, schema) {
             }
         }
         yield next;
+    }
+
+    function* createProcessInExperimentFromTemplate(next) {
+        let errors = yield validateCreateProcessInExperimentRequest(this.params.template_id);
+        if (errors != null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield experiments.addProcessFromTemplate(this.params.project_id, this.params.experiment_id,
+                this.params.template_id, this.reqctx.user.id);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
+
+    function* validateCreateProcessInExperimentRequest(template_id) {
+        let templateExists = yield experiments.templateExists(template_id);
+        if (!templateExists) {
+            return {error: 'No such template'};
+        }
+        return null;
     }
 };

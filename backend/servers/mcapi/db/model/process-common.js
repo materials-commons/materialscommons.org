@@ -2,14 +2,23 @@ module.exports = function(r) {
     const model = require('./model')(r);
     const _ = require('lodash');
     const db = require('./db')(r);
+    const commonQueries = require('./common-queries');
+    const dbExec = require('./run');
 
     return {
+        getProcess,
         updateProcessFiles,
         updateProperties,
         updateProcessSamples,
         createProcessFromTemplate,
         processIsUnused
     };
+
+    function* getProcess(processID) {
+        let rql = commonQueries.processDetailsRql(r.table('processes').getAll(processID), r);
+        let process = yield dbExec(rql);
+        return process.length ? {val: process[0]} : {error: `No such process ${processID}`};
+    }
 
     function* processIsUnused(processId) {
         let filesInProcess = yield r.table('process2file').getAll(processId, {index: 'process_id'});

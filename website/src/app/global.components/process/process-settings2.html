@@ -1,0 +1,100 @@
+<div layout="column">
+    <h4 class="md-title">Setup</h4>
+    <md-content layout-padding>
+        <form name="processSettingsForm">
+            <div ng-repeat="setting in ctrl.settings">
+                <div ng-switch="::setting.property._type">
+
+                    <!--------- number --------->
+                    <div ng-switch-when="number">
+                        <div layout="row" layout-align="start center">
+                            <md-input-container md-no-float>
+                                <label>{{::setting.property.name}}</label>
+                                <input type="number"
+                                       name="numberInput"
+                                       step="any"
+                                       ng-change="ctrl.updateSettingProperty(setting.property)"
+                                       ng-required="::setting.property.required"
+                                       ng-model="setting.property.value">
+                            </md-input-container>
+                            <span ng-if="setting.property.units.length === 0" class="unit-align">
+                                {{::setting.property.unit}}
+                            </span>
+                            <span ng-if="setting.property.units.length !== 0">
+                                <md-select ng-model="setting.property.unit"
+                                           ng-change="ctrl.updateSettingProperty(setting.property)"
+                                           aria-label="units"
+                                           class="units-align">
+                                    <md-option ng-repeat="unit in ::setting.property.units"
+                                               ng-value="unit">
+                                        {{unit}}
+                                    </md-option>
+                                </md-select>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!------ composition ----->
+                    <div ng-switch-when="composition">
+                        <label>Composition</label>
+                        <periodic-table composition="setting.property"></periodic-table>
+                    </div>
+
+                    <!--------- date --------->
+                    <div ng-switch-when="date">
+                        <label>{{::setting.property.name}}</label>
+                        <md-datepicker ng-model="setting.property.value"
+                                       ng-change="ctrl.updateSettingProperty(setting.property)">
+                        </md-datepicker>
+                    </div>
+
+                    <!--------- selection --------->
+                    <div ng-switch-when="selection">
+                        <div style="margin-top:45px">
+                            <md-input-container class="md-block">
+                                <label>{{::setting.property.name}}</label>
+                                <md-select ng-model="setting.property.value"
+                                           ng-model-options="{trackBy: '$value.name'}"
+                                           ng-change="ctrl.updateSettingProperty(setting.property)"
+                                           aria-label="x">
+                                    <md-option ng-value="choice"
+                                               ng-repeat="choice in ::setting.property.choices">
+                                        {{::choice.name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <div ng-if="setting.property.value.name === 'Other'">
+                            <div style="margin-top:45px">
+                                <md-input-container class="md-block" md-no-float>
+                                    <label>Specify {{::setting.property.name}}...</label>
+                                    <input ng-model="setting.property.value.value"
+                                           ng-model-options="{debounce: 500}"
+                                           ng-change="ctrl.updateSettingProperty(setting.property)"
+                                           type="text">
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--------- string --------->
+                    <div ng-switch-when="string">
+                        <md-input-container class="md-block">
+                            <label>{{::setting.property.name}}</label>
+                            <input type="text" name="stringInput"
+                                   ng-required="::setting.property.required"
+                                   ng-model-options="{debounce: 500}"
+                                   ng-change="ctrl.updateSettingProperty(setting.property)"
+                                   ng-model="setting.property.value">
+                        </md-input-container>
+                    </div>
+
+                    <!--------- unknown type --------->
+                    <div ng-switch-default>
+                        <span>Unknown template type {{::setting.property._type}}</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </md-content>
+</div>

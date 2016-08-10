@@ -9,3 +9,6 @@ import './mc-show-process.component';
 import './mc-show-sample.component';
 import './mc-files-table.component';
 import './graph/mc-processes-graph.component';
+import './process/mc-process-template-create-samples.component';
+import './process/mc-process-template-other.component';
+import './process/mc-process-template.component';
