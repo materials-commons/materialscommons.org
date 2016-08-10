@@ -4,15 +4,22 @@
     <md-tabs flex-offset="70" md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
         <md-tab>
             <md-tab-label>
-                <span><i class="fa fa-fw fa-gears"></i>details</span>
+                <span><i class="fa fa-fw fa-gears"></i>controls</span>
             </md-tab-label>
             <md-tab-body>
-                details here
+                <md-content style="max-height: 70vh" class="margin-left-15">
+                    <h3 class="md-subhead">Graph To Display</h3>
+                    <md-radio-group ng-model="$ctrl.displayGraph" layout="column" ng-change="$ctrl.showSelectedGraph()">
+                        <md-radio-button value="all_processes">All Processes</md-radio-button>
+                        <md-radio-button value="only_transformations">Only Transformation Processes</md-radio-button>
+                        <md-radio-button value="sample_transformations">Sample Transformations</md-radio-button>
+                    </md-radio-group>
+                </md-content>
             </md-tab-body>
         </md-tab>
         <md-tab>
             <md-tab-label>
-                <span><i class="fa fa-fw fa-gears"></i>filters</span>
+                <span><i class="fa fa-fw fa-filter"></i>filters</span>
             </md-tab-label>
             <md-tab-body>
                 <md-content style="max-height: 70vh">
@@ -23,6 +30,14 @@
                         </md-list-item>
                     </md-list>
                 </md-content>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span><i class="fa fa-fw fa-gears"></i>details</span>
+            </md-tab-label>
+            <md-tab-body>
+                details here
             </md-tab-body>
         </md-tab>
     </md-tabs>
