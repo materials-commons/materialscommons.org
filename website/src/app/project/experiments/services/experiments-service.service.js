@@ -63,6 +63,11 @@ class ExperimentsService {
     getFilesForExperiment(projectId, experimentId) {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('files').customGET();
     }
+
+    createProcessFromTemplate(projectId, experimentId, templateId) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('processes').one('templates', templateId)
+            .customPOST();
+    }
 }
 
 angular.module('materialscommons').service('experimentsService', ExperimentsService);

@@ -2,9 +2,14 @@ class MCProcessesGraphComponentController {
     /*@ngInject*/
     constructor() {
         this.cy = null;
+        this.displayGraph = 'all_processes';
     }
 
     $onInit() {
+        this.allProcessesGraph();
+    }
+
+    allProcessesGraph() {
         let transformingProcesses = this.processes.filter(p => p.does_transform);
         let sample2InputProcess = {};
         let sample2OutputProcess = {};
@@ -94,6 +99,18 @@ class MCProcessesGraphComponentController {
         this.cy.layout({name: 'dagre'});
     }
 
+    showSelectedGraph() {
+        console.log('selected graph', this.displayGraph);
+    }
+
+    onlyTransformationProcessesGraph() {
+        console.log('onlyTransformationProcessesGraph');
+    }
+
+    sampleTransformationGraph() {
+        console.log('sampleTransformationGraph');
+    }
+
     filterOnSample(sample) {
         //console.log('filterOnSample', sample);
         let matches = [];
@@ -102,6 +119,8 @@ class MCProcessesGraphComponentController {
         });
         console.log('matches', matches);
     }
+
+
 }
 
 angular.module('materialscommons').component('mcProcessesGraph', {
