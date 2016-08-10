@@ -20,7 +20,7 @@ class MCProcessesGraphComponentController {
             })
         });
         let elements = this.processes.map(p => {
-            console.log(p.name, p);
+            //console.log(p.name, p);
             return {
                 data: {
                     id: p.id,
@@ -95,9 +95,12 @@ class MCProcessesGraphComponentController {
     }
 
     filterOnSample(sample) {
-        console.log('filterOnSample', sample);
-        let matches = this.cy.nodes().filter(`[name = '${sample.name}']`);
-        console.log(sample);
+        //console.log('filterOnSample', sample);
+        let matches = [];
+        this.cy.nodes().forEach(node => {
+            console.log(node.data('id'));
+        });
+        console.log('matches', matches);
     }
 }
 
