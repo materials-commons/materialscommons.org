@@ -5,7 +5,8 @@ function processSettings2Directive() {
         scope: {
             settings: '=',
             templateId: '=',
-            attribute: '='
+            attribute: '=',
+            processId: '='
         },
         controller: ProcessSettings2DirectiveController,
         controllerAs: 'ctrl',
@@ -22,7 +23,6 @@ function ProcessSettings2DirectiveController(experimentsService, toast, $statePa
         startingDay: 1
     };
     ctrl.openDatePicker = openDatePicker;
-    console.log('settings', ctrl.settings);
 
     ctrl.updateSettingProperty = (property) => {
         if (!property.value) {
@@ -40,15 +40,11 @@ function ProcessSettings2DirectiveController(experimentsService, toast, $statePa
             properties: [property]
         };
 
-        if (ctrl.taskId) {
-            experimentsService.updateTaskTemplateProperties($stateParams.project_id, $stateParams.experiment_id, ctrl.taskId, propertyArgs)
-                .then(
-                    () => null,
-                    () => toast.error('Unable to update property')
-                );
-        } else {
-            console.log('Update process setting here');
-        }
+        experimentsService.updateProcess($stateParams.project_id, $stateParams.experiment_id, ctrl.processId, propertyArgs)
+            .then(
+                () => null,
+                () => toast.error('Unable to update property')
+            );
     };
 
     ///////////////////////////////////////

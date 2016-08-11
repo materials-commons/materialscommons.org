@@ -23,7 +23,8 @@ module.exports = function(experiments, samples, schema) {
         deleteExperimentNote,
         getProcessesForExperiment,
         getFilesForExperiment,
-        createProcessInExperimentFromTemplate
+        createProcessInExperimentFromTemplate,
+        updateExperimentProcess
     };
 
     function* getAllExperimentsForProject(next) {
@@ -241,6 +242,90 @@ module.exports = function(experiments, samples, schema) {
         let templateExists = yield experiments.templateExists(params.template_id);
         if (!templateExists) {
             return {error: 'No such template'};
+        }
+
+        return null;
+    }
+
+    function* updateExperimentProcess(next) {
+        let updateArgs = yield parse(this);
+        updateArgs.process_id = this.params.process_id;
+        let errors = yield validateUpdateExperimentProcessTemplateArgs(updateArgs, this.params);
+        if (errors != null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield experiments.updateProcess(this.params.experiment_id, this.params.process_id,
+                updateArgs.properties, updateArgs.files, updateArgs.samples);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+
+        yield next;
+    }
+
+    function* validateUpdateExperimentProcessTemplateArgs(updateArgs, params) {
+        if (updateArgs.properties && !_.isArray(updateArgs.properties)) {
+            return {error: `Properties attribute isn't an array`};
+        }
+
+        if (updateArgs.process_id) {
+            let isTemplateForProcess = yield experiments.isTemplateForProcess(updateArgs.template_id, updateArgs.process_id);
+            if (!isTemplateForProcess) {
+                return {error: `Incorrect template for process; template: ${updateArgs.template_id} process: ${params.process_id}`};
+            }
+        }
+
+        let template = yield experiments.getTemplate(updateArgs.template_id);
+
+        if (updateArgs.properties) {
+            for (let i = 0; i < updateArgs.properties.length; i++) {
+                let property = updateArgs.properties[i];
+                let errors = yield validateProperty(template, property);
+                if (errors !== null) {
+                    return errors;
+                }
+            }
+        }
+
+        if (updateArgs.files && !_.isArray(updateArgs.files)) {
+            return {error: `Files attribute isn't an array`};
+        }
+
+        if (updateArgs.files && !updateArgs.process_id) {
+            return {error: `Must supply a process when including files`};
+        }
+
+        if (updateArgs.files) {
+            for (let i = 0; i < updateArgs.files.length; i++) {
+                let f = updateArgs.files[i];
+                let errors = yield validateFile(params.project_id, f);
+                if (errors !== null) {
+                    return errors;
+                }
+            }
+        }
+
+        if (updateArgs.samples && !_.isArray(updateArgs.samples)) {
+            return {error: `Samples attribute isn't an array`};
+        }
+
+        if (updateArgs.samples && !updateArgs.process_id) {
+            return {error: `Must supply a process when including samples`};
+        }
+
+        if (updateArgs.samples) {
+            for (let i = 0; i < updateArgs.samples.length; i++) {
+                let s = updateArgs.samples[i];
+                let errors = yield validateSample(params.project_id, s);
+                if (errors !== null) {
+                    return errors;
+                }
+            }
         }
 
         return null;

@@ -12,7 +12,7 @@ class MCProcessTemplateOtherComponentController {
     }
 
     $onInit() {
-        //console.log('task = ', this.task);
+        // console.log('process = ', this.process);
     }
 
     linkFilesToSample(sample, input_files, output_files) {
@@ -30,7 +30,7 @@ class MCProcessTemplateOtherComponentController {
                     files: files,
                     process_id: this.process.id
                 };
-                this.experimentsService.updateTaskTemplateFiles(this.projectId, this.experimentId, this.task.id, filesArgs)
+                this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
                     .then(
                         () => this.process.input_files = selected.files,
                         () => this.toast.error('Unable to add files')
@@ -54,7 +54,7 @@ class MCProcessTemplateOtherComponentController {
                     process_id: this.process.id
                 };
 
-                this.experimentsService.updateTaskTemplateSamples(this.projectId, this.experimentId, this.task.id, samplesArgs)
+                this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, samplesArgs)
                     .then(
                         () => {
                             this.process.input_samples = selected.samples;
@@ -74,31 +74,3 @@ angular.module('materialscommons').component('mcProcessTemplateOther', {
         process: '<'
     }
 });
-
-/*@ngInject*/
-//function MCTaskTemplateOtherComponentController2(sampleLinker, processEdit, selectItems) {
-//    var ctrl = this;
-//    ctrl.linkFilesToSample = linkFilesToSample;
-//
-//    function linkFilesToSample(sample, input_files, output_files) {
-//        sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function(linkedFiles) {
-//            sample = processEdit.refreshSample(linkedFiles, sample);
-//        });
-//    }
-//
-//    ctrl.selectFiles = () => {
-//        selectItems.open('files').then(
-//            (selected) => {
-//                console.log('selectedFiles', selected);
-//            }
-//        );
-//    };
-//
-//    ctrl.selectSamples = () => {
-//        selectItems.open('samples').then(
-//            (selected) => {
-//                console.log('selectedSamples', selected);
-//            }
-//        );
-//    };
-//}
