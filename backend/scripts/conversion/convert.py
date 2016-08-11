@@ -91,6 +91,13 @@ def fix_transform_process_directions(conn):
         }).run(conn)
 
 
+def fix_samples_from_create_samples(conn):
+    processes = list(r.table('processes').get_all('global_Create Samples', index='template_id').run(conn))
+    for process in processes:
+        r.table('process2sample').get_all(process['id'], index='process_id').update({'direction': 'out'}).run(conn)
+    r.table('processes').get_all('global_Create Samples', index='template_id').update({'does_transform': True}).run(conn)
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
@@ -101,8 +108,9 @@ def main():
     # remove_duplicates_in_sample2datafile(conn)
     # add_as_received_processes(conn)
     # set_specific_process_names(conn)
-    set_sample_direction_for_non_transform_processes(conn)
-    fix_transform_process_directions(conn)
+    # set_sample_direction_for_non_transform_processes(conn)
+    # fix_transform_process_directions(conn)
+    fix_samples_from_create_samples(conn)
     # change_processes_field_to_description(conn)
     # convert_setup_selections_to_name_value(conn)
 
