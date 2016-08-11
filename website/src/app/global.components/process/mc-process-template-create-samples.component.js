@@ -11,6 +11,7 @@ class MCProcessTemplateCreateSamplesComponentController {
         this.selectItems = selectItems;
         this.experimentsService = experimentsService;
         this.navbarOnChange = navbarOnChange;
+        console.log('MCProcessTemplate', this.process.plain());
     }
 
     selectFiles() {
