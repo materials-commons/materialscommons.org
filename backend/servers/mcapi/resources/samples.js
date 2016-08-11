@@ -211,7 +211,6 @@ module.exports = function(samples, schema) {
     }
 
     function* updateMeasurements(next) {
-        console.log('updateMeasurements');
         let updateMeasurementsArgs = yield parse(this);
         let errors = yield validateUpdateMeasurements(this.params.project_id, updateMeasurementsArgs);
         if (errors !== null) {
