@@ -22,6 +22,7 @@ function ProcessSettings2DirectiveController(experimentsService, toast, $statePa
         startingDay: 1
     };
     ctrl.openDatePicker = openDatePicker;
+    console.log('settings', ctrl.settings);
 
     ctrl.updateSettingProperty = (property) => {
         if (!property.value) {
