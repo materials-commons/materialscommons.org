@@ -12,3 +12,4 @@ import './graph/mc-processes-graph.component';
 import './process/mc-process-template-create-samples.component';
 import './process/mc-process-template-other.component';
 import './process/mc-process-template.component';
+import './process/process-settings2.directive';
