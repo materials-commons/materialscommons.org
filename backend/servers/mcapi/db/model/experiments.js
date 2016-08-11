@@ -331,7 +331,7 @@ module.exports = function(r) {
         return yield processCommon.getProcess(processId);
     }
 
-    function* updateTaskTemplate(experimentId, processId, properties, files, samples) {
+    function* updateTaskTemplate(taskId, experimentId, processId, properties, files, samples) {
         let errors = yield updateTemplateCommon(experimentId, processId, properties, files, samples);
 
         if (errors !== null) {
