@@ -27,6 +27,7 @@ module.exports = function(r) {
         addTemplateToTask,
         updateTaskTemplate,
         isTemplateForTask,
+        isTemplateForProcess,
         getTemplate,
         addSamples,
         deleteSamplesFromExperiment,
@@ -39,7 +40,8 @@ module.exports = function(r) {
         getFilesForExperiment,
         experimentHasDataset,
         taskProcessIsUnused,
-        addProcessFromTemplate
+        addProcessFromTemplate,
+        updateProcess
     };
 
     function* getAllForProject(projectID) {
@@ -319,7 +321,32 @@ module.exports = function(r) {
         return yield processCommon.getProcess(procId);
     }
 
-    function* updateTaskTemplate(taskId, experimentId, processId, properties, files, samples) {
+    function* updateProcess(experimentId, processId, properties, files, samples) {
+        let errors = yield updateTemplateCommon(experimentId, processId, properties, files, samples);
+
+        if (errors !== null) {
+            return errors;
+        }
+
+        return yield processCommon.getProcess(processId);
+    }
+
+    function* updateTaskTemplate(experimentId, processId, properties, files, samples) {
+        let errors = yield updateTemplateCommon(experimentId, processId, properties, files, samples);
+
+        if (errors !== null) {
+            return errors;
+        }
+
+        if (processId) {
+            let task = yield r.table('experimenttasks').get(taskId);
+            yield r.table('processes').get(processId).update({name: task.name});
+        }
+
+        return yield getTask(taskId);
+    }
+
+    function* updateTemplateCommon(experimentId, processId, properties, files, samples) {
         if (properties) {
             let errors = yield processCommon.updateProperties(properties);
             if (errors !== null) {
@@ -363,12 +390,7 @@ module.exports = function(r) {
             // TODO: Delete samples from experiment if the sample is not used in any process associated with experiment.
         }
 
-        if (processId) {
-            let task = yield r.table('experimenttasks').get(taskId);
-            yield r.table('processes').get(processId).update({name: task.name});
-        }
-
-        return yield getTask(taskId);
+        return null;
     }
 
     function* removeExistingExperimentFileEntries(experimentId, files) {
@@ -397,6 +419,11 @@ module.exports = function(r) {
         let rql = r.table('experimenttasks').get(taskId);
         let task = yield dbExec(rql);
         return task.template_id === templateId;
+    }
+
+    function* isTemplateForProcess(templateId, processId) {
+        let process = yield r.table('processes').get(processId);
+        return process.template_id === templateId;
     }
 
     function* getTemplate(templateId) {

@@ -11,7 +11,6 @@ class MCProcessTemplateCreateSamplesComponentController {
         this.selectItems = selectItems;
         this.experimentsService = experimentsService;
         this.navbarOnChange = navbarOnChange;
-        console.log('MCProcessTemplate', this.process.plain());
     }
 
     selectFiles() {
@@ -23,7 +22,7 @@ class MCProcessTemplateCreateSamplesComponentController {
                     files: files,
                     process_id: this.process.id
                 };
-                this.experimentsService.updateTaskTemplateFiles(this.projectId, this.experimentId, this.task.id, filesArgs)
+                this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
                     .then(
                         () => this.process.template.input_files = selected.files,
                         () => this.toast.error('Unable to add files')
@@ -57,8 +56,8 @@ class MCProcessTemplateCreateSamplesComponentController {
     }
 
     remove(index) {
-        let sample = this.task.template.output_samples[index];
-        this.samplesService.deleteSamplesFromExperiment(this.projectId, this.experimentId, this.task.process_id, [sample.id])
+        let sample = this.process.output_samples[index];
+        this.samplesService.deleteSamplesFromExperiment(this.projectId, this.experimentId, this.process.id, [sample.id])
             .then(
                 () => this.process.output_samples.splice(index, 1),
                 () => this.toast.error('Unable to delete remove sample')
@@ -66,7 +65,7 @@ class MCProcessTemplateCreateSamplesComponentController {
     }
 
     updateSampleName(sample) {
-        this.samplesService.updateSampleInExperiment(this.projectId, this.experimentId, this.task.process_id, {
+        this.samplesService.updateSampleInExperiment(this.projectId, this.experimentId, this.process.id, {
                 id: sample.id,
                 name: sample.name
             })
@@ -85,7 +84,7 @@ class MCProcessTemplateCreateSamplesComponentController {
             locals: {
                 projectId: this.projectId,
                 experimentId: this.experimentId,
-                processId: this.task.process_id
+                processId: this.process.id
             }
         }).then(
             (samples) => this.process.output_samples = this.process.output_samples.concat(samples)
