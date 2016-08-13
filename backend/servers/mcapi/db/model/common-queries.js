@@ -1,6 +1,10 @@
 module.exports.sampleDetailsRql = function sampleDetailsRql(rql, r) {
     return rql.merge(function(sample) {
         return {
+            versions: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
+                .filter({direction: 'out'})
+                .eqJoin('process_id', r.table('processes')).zip()
+                .coerceTo('array'),
             files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
                 .eqJoin('datafile_id', r.table('datafiles')).zip().pluck('id', 'name')
                 .coerceTo('array'),

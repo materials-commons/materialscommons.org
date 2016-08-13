@@ -39,6 +39,7 @@ function SelectItemsSamplesDirectiveController() {
 
     function toggleSampleSelected(sample) {
         sample.selected = !sample.selected;
+        console.log('sample', sample);
     }
 }
 
