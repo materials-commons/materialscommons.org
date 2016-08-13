@@ -42,11 +42,15 @@ class MCProcessTemplateOtherComponentController {
         this.selectItems.open('samples').then(
             (selected) => {
                 let samples = selected.samples.map(s => {
-                    return {
-                        id: s.id,
-                        property_set_id: s.property_set_id,
-                        command: 'add'
-                    };
+                    for (let i = 0; i < s.versions.length; i++) {
+                        if (s.versions[i].selected) {
+                            return {
+                                id: s.id,
+                                property_set_id: s.versions[i].property_set_id,
+                                command: 'add'
+                            };
+                        }
+                    }
                 });
                 let samplesArgs = {
                     template_id: this.process.template_id,

@@ -91,7 +91,12 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
         });
 
         var selectedSamples = ctrl.samples.filter(function(s) {
-            return s.selected;
+            for (let i = 0; i < s.versions.length; i++) {
+                if (s.versions[i].selected) {
+                    return true;
+                }
+            }
+            return false;
         });
 
         var selectedFiles = getSelectedFiles();
