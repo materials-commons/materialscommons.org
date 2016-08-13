@@ -1,12 +1,46 @@
 class MCProcessesGraphComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(experimentsService, templates, $stateParams, toast, $mdDialog) {
+        this.experimentsService = experimentsService;
+        this.templates = templates;
+        this.toast = toast;
         this.cy = null;
         this.displayGraph = 'all_processes';
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.$mdDialog = $mdDialog;
     }
 
     $onInit() {
         this.allProcessesGraph();
+    }
+
+    addProcess(templateId) {
+        this.experimentsService.createProcessFromTemplate(this.projectId, this.experimentId, `global_${templateId}`)
+            .then(
+                (process) => {
+                    let p = this.templates.loadTemplateFromProcess(process.template_name, process);
+                    this.$mdDialog.show({
+                        templateUrl: 'app/global.components/graph/new-process-dialog.html',
+                        controllerAs: '$ctrl',
+                        controller: NewProcessDialogController,
+                        bindToController: true,
+                        locals: {
+                            process: p
+                        }
+                    }).then(
+                        () => this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
+                            .then(
+                                (processes) => {
+                                    this.processes = processes;
+                                    this.allProcessesGraph();
+                                },
+                                () => toast.error('Error retrieving processes for experiment')
+                            )
+                    );
+                },
+                () => this.toast.error('Unable to add samples')
+            );
     }
 
     allProcessesGraph() {
@@ -120,7 +154,22 @@ class MCProcessesGraphComponentController {
         console.log('matches', matches);
     }
 
+}
 
+class NewProcessDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        console.log('NewSamplesDialogController', this.process.plain());
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
 }
 
 angular.module('materialscommons').component('mcProcessesGraph', {
