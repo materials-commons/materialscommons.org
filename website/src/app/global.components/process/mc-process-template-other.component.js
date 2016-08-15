@@ -63,6 +63,10 @@ class MCProcessTemplateOtherComponentController {
                         () => {
                             this.process.input_samples = selected.samples;
                             this.navbarOnChange.fireChange();
+                            console.log('this.onChange', this.onChange);
+                            if (this.onChange) {
+                                this.onChange();
+                            }
                         },
                         () => this.toast.error('Unable to add samples')
                     );
@@ -75,6 +79,7 @@ angular.module('materialscommons').component('mcProcessTemplateOther', {
     templateUrl: 'app/global.components/process/mc-process-template-other.html',
     controller: MCProcessTemplateOtherComponentController,
     bindings: {
-        process: '<'
+        process: '<',
+        onChange: '&'
     }
 });
