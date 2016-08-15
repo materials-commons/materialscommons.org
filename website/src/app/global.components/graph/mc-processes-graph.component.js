@@ -9,6 +9,7 @@ class MCProcessesGraphComponentController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.$mdDialog = $mdDialog;
+        this.selectedProcess = null;
     }
 
     $onInit() {
@@ -29,14 +30,16 @@ class MCProcessesGraphComponentController {
                             process: p
                         }
                     }).then(
-                        () => this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
-                            .then(
-                                (processes) => {
-                                    this.processes = processes;
-                                    this.allProcessesGraph();
-                                },
-                                () => toast.error('Error retrieving processes for experiment')
-                            )
+                        () => {
+                            this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
+                                .then(
+                                    (processes) => {
+                                        this.processes = processes;
+                                        this.allProcessesGraph();
+                                    },
+                                    () => toast.error('Error retrieving processes for experiment')
+                                );
+                        }
                     );
                 },
                 () => this.toast.error('Unable to add samples')
@@ -125,10 +128,21 @@ class MCProcessesGraphComponentController {
                 }
             ]
         });
-        this.cy.on('click', function(event) {
-            console.log('node or edge clicked', event);
+        this.cy.on('click', event => {
             let target = event.cyTarget;
-            console.log('node name is', target.data('name'));
+            if (target.isNode()) {
+                let processId = target.data('id');
+                this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
+                    .then(
+                        (process) => {
+                            this.currentProcess = this.templates.loadTemplateFromProcess(process.template_name, process);
+                        },
+                        () => {
+                            this.toast.error('Unable to retrieve process details');
+                            this.currentProcess = null;
+                        }
+                    );
+            }
         });
         this.cy.layout({name: 'dagre'});
     }
