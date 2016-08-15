@@ -1,10 +1,11 @@
 <div layout="column" layout-margin layout-fill layout-wrap>
     <div ng-switch='$ctrl.process.template_name'>
         <div ng-switch-when="Create Samples">
-            <mc-process-template-create-samples process="$ctrl.process"></mc-process-template-create-samples>
+            <mc-process-template-create-samples process="$ctrl.process"
+                                                on-change="$ctrl.onChange()"></mc-process-template-create-samples>
         </div>
         <div ng-switch-default>
-            <mc-process-template-other process="$ctrl.process"></mc-process-template-other>
+            <mc-process-template-other process="$ctrl.process" on-change="$ctrl.onChange()"></mc-process-template-other>
         </div>
     </div>
 </div>
