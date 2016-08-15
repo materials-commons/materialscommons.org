@@ -46,6 +46,17 @@ class MCProcessesGraphComponentController {
             );
     }
 
+    onChange() {
+        this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
+            .then(
+                (processes) => {
+                    this.processes = processes;
+                    this.allProcessesGraph();
+                },
+                () => toast.error('Error retrieving processes for experiment')
+            );
+    }
+
     allProcessesGraph() {
         let transformingProcesses = this.processes.filter(p => p.does_transform);
         let sample2InputProcess = {};

@@ -51,7 +51,9 @@
                 </div>
                 <div ng-show="$ctrl.currentProcess">
                     <md-content style="max-height: 70vh">
-                        <mc-process-template process="$ctrl.currentProcess"></mc-process-template>
+                        <mc-process-template process="$ctrl.currentProcess"
+                                             on-change="$ctrl.onChange()">
+                        </mc-process-template>
                     </md-content>
                 </div>
             </md-tab-body>
