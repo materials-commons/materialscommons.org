@@ -9,7 +9,7 @@
     <div id="processesGraph">
     </div>
     <md-tabs flex-offset="70" md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
-        <md-tab>
+        <md-tab ng-if="false">
             <md-tab-label>
                 <span><i class="fa fa-fw fa-gears"></i>controls</span>
             </md-tab-label>
@@ -24,7 +24,7 @@
                 </md-content>
             </md-tab-body>
         </md-tab>
-        <md-tab>
+        <md-tab ng-if="false">
             <md-tab-label>
                 <span><i class="fa fa-fw fa-filter"></i>filters</span>
             </md-tab-label>
@@ -46,7 +46,14 @@
                 <span><i class="fa fa-fw fa-gears"></i>details</span>
             </md-tab-label>
             <md-tab-body>
-                details here
+                <div ng-show="!$ctrl.currentProcess">
+                    No process selected
+                </div>
+                <div ng-show="$ctrl.currentProcess">
+                    <md-content style="max-height: 70vh">
+                        <mc-process-template process="$ctrl.currentProcess"></mc-process-template>
+                    </md-content>
+                </div>
             </md-tab-body>
         </md-tab>
     </md-tabs>

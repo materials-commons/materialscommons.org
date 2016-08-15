@@ -12,7 +12,7 @@ class MCProcessTemplateOtherComponentController {
     }
 
     $onInit() {
-        // console.log('process = ', this.process);
+        //console.log('process = ', this.process.plain());
     }
 
     linkFilesToSample(sample, input_files, output_files) {

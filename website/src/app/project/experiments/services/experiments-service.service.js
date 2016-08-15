@@ -64,6 +64,10 @@ class ExperimentsService {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('processes').customGET();
     }
 
+    getProcessForExperiment(projectId, experimentId, processId) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('processes', processId).customGET();
+    }
+
     getFilesForExperiment(projectId, experimentId) {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('files').customGET();
     }
