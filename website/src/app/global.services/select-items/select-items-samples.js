@@ -25,6 +25,13 @@ function SelectItemsSamplesDirectiveController() {
     };
     ctrl.toggleSampleSelected = toggleSampleSelected;
 
+    ctrl.samples.forEach(s => {
+        s.selected = false;
+        s.versions.forEach(v => {
+            v.selected = false;
+        });
+    });
+
     /////////////////////////
 
     function showGroupsChanged() {
@@ -39,7 +46,6 @@ function SelectItemsSamplesDirectiveController() {
 
     function toggleSampleSelected(sample) {
         sample.selected = !sample.selected;
-        console.log('sample', sample);
     }
 }
 
