@@ -159,7 +159,6 @@ class MCProcessesGraphComponentController {
 class NewProcessDialogController {
     /*@ngInject*/
     constructor($mdDialog) {
-        console.log('NewSamplesDialogController', this.process.plain());
         this.$mdDialog = $mdDialog;
     }
 
