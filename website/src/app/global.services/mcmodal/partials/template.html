@@ -19,7 +19,7 @@
                     All Processes
                 </a>
             </li>
-            <li>
+            <li ng-if="false">
                 <a data-target="#3" data-toggle="tab" class="text-uppercase">
                     <i class="fa fa-fw fa-pencil-square-o"></i>
                     Pre-filled Processes ({{(ctrl.templates | filter:{prefill:true}).length}})
@@ -29,7 +29,7 @@
         <div class="modal-body">
             <div class="tab-content">
                 <div class="tab-pane active" id="1">
-                    <div class="list-group">
+                    <div class="list-group" ng-if="false">
                         <h4>Favorites</h4>
 
                         <div ng-repeat="template in ctrl.templates | filter:{favorite:true} | filter:ctrl.search | orderBy:'name'"
@@ -74,7 +74,7 @@
                         </div>
                     </div>
 
-                    <div class="list-group">
+                    <div class="list-group" ng-if="false">
                         <h4>Prefilled</h4>
 
                         <div ng-repeat="template in ctrl.templates | filter:{prefill:true} | filter:ctrl.search | orderBy:'name'"
@@ -140,21 +140,21 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-5">
-                                    <a ng-click="ctrl.toggleFavorite(template)">
+                                    <a ng-click="ctrl.toggleFavorite(template)" ng-if="false">
                                         <i class="fa fa-fw fa-star pull-right"
                                            ng-class="{'fa-star' : template.favorite, 'fa-star-o': !template.favorite}">
                                         </i>
                                     </a>
 
                                     <div class="row">
-                                        <button class="btn btn-info" ng-click="ctrl.viewSetup(template)">
+                                        <button class="btn btn-info" ng-click="ctrl.viewSetup(template)" ng-if="false">
                                             <i class="fa fa-fw fa-gear"></i>Setup
                                         </button>
-                                        <button ng-if="template.prefill" class="btn btn-info"
+                                        <button ng-ifx="template.prefill" class="btn btn-info" ng-if="false"
                                                 ng-click="ctrl.editPrefill(template)">
                                             <i class="fa fa-fw fa-pencil-square-o"></i>Edit
                                         </button>
-                                        <button ng-if="!template.prefill" class="btn btn-info"
+                                        <button ng-ifx="!template.prefill" class="btn btn-info" ng-if="false"
                                                 ng-click="ctrl.addPrefill(template)">
                                             <i class="fa fa-fw fa-plus"></i>pre-fill
                                         </button>
