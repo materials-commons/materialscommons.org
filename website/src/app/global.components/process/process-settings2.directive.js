@@ -34,6 +34,10 @@ function ProcessSettings2DirectiveController(experimentsService, toast, $statePa
             return;
         }
 
+        if (property.units.length && !property.unit) {
+            return;
+        }
+
         property.setup_attribute = ctrl.attribute;
         let propertyArgs = {
             template_id: ctrl.templateId,
