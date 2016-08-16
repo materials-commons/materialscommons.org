@@ -58,20 +58,28 @@ class MCProcessesGraphComponentController {
     }
 
     allProcessesGraph() {
-        let transformingProcesses = this.processes.filter(p => p.does_transform);
-        let sample2InputProcess = {};
-        let sample2OutputProcess = {};
-        transformingProcesses.forEach(p => {
+        let sample2InputProcesses = {};
+        let sample2OutputProcesses = {};
+
+        this.processes.forEach(p => {
             p.input_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
-                sample2InputProcess[id] = p;
+                if (!(id in sample2InputProcesses)) {
+                    sample2InputProcesses[id] = [];
+                }
+                sample2InputProcesses[id].push(p);
             });
 
             p.output_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
-                sample2OutputProcess[id] = p;
+                if (!(id in sample2OutputProcesses)) {
+                    sample2OutputProcesses[id] = [];
+                }
+                sample2OutputProcesses[id].push(p);
             })
         });
+
+        // Draw all processes
         let elements = this.processes.map(p => {
             //console.log(p.name, p);
             return {
@@ -80,28 +88,21 @@ class MCProcessesGraphComponentController {
                     name: p.name,
                     color: p.does_transform ? 'red' : '#999999'
                 }
-            }
+            };
         });
-        this.processes.filter(p => !p.does_transform).forEach(p => {
-            p.input_samples.forEach(s => {
+        this.processes.filter(p => p.does_transform).forEach(p => {
+            p.output_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
-                let process = sample2OutputProcess[id];
-                if (process) {
-                    elements.push({
-                        data: {
-                            id: `${p.id}_${process.id}`,
-                            source: process.id,
-                            target: p.id
-                        }
-                    });
-                }
-                process = sample2InputProcess[id];
-                if (process) {
-                    elements.push({
-                        data: {
-                            source: p.id,
-                            target: process.id
-                        }
+                let processes = sample2InputProcesses[id];
+                if (processes && processes.length) {
+                    processes.forEach(proc => {
+                        elements.push({
+                            data: {
+                                id: `${proc.id}_${p.id}`,
+                                source: p.id,
+                                target: proc.id
+                            }
+                        });
                     });
                 }
             });
@@ -146,11 +147,11 @@ class MCProcessesGraphComponentController {
                 this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
                     .then(
                         (process) => {
-                            this.currentProcess = this.templates.loadTemplateFromProcess(process.template_name, process);
+                            this.selectedProcess = this.templates.loadTemplateFromProcess(process.template_name, process);
                         },
                         () => {
                             this.toast.error('Unable to retrieve process details');
-                            this.currentProcess = null;
+                            this.selectedProcess = null;
                         }
                     );
             }
