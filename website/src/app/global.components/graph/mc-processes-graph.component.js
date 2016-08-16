@@ -37,7 +37,7 @@ class MCProcessesGraphComponentController {
                                         this.processes = processes;
                                         this.allProcessesGraph();
                                     },
-                                    () => toast.error('Error retrieving processes for experiment')
+                                    () => this.toast.error('Error retrieving processes for experiment')
                                 );
                         }
                     );
@@ -53,7 +53,7 @@ class MCProcessesGraphComponentController {
                     this.processes = processes;
                     this.allProcessesGraph();
                 },
-                () => toast.error('Error retrieving processes for experiment')
+                () => this.toast.error('Error retrieving processes for experiment')
             );
     }
 

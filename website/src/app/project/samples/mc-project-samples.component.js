@@ -28,7 +28,7 @@ class MCProjectSamplesComponentController {
                         () => this.experimentsService.getSamplesForExperiment(this.projectId, this.experimentId)
                             .then(
                                 (samples) => this.samples = samples,
-                                () => toast.error('Error retrieving samples for experiment')
+                                () => this.toast.error('Error retrieving samples for experiment')
                             )
                     );
                 },
