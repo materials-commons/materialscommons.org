@@ -8,3 +8,8 @@ import './mc-show-file.component';
 import './mc-show-process.component';
 import './mc-show-sample.component';
 import './mc-files-table.component';
+import './graph/mc-processes-graph.component';
+import './process/mc-process-template-create-samples.component';
+import './process/mc-process-template-other.component';
+import './process/mc-process-template.component';
+import './process/process-settings2.directive';

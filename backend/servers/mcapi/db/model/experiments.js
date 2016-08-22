@@ -27,6 +27,7 @@ module.exports = function(r) {
         addTemplateToTask,
         updateTaskTemplate,
         isTemplateForTask,
+        isTemplateForProcess,
         getTemplate,
         addSamples,
         deleteSamplesFromExperiment,
@@ -34,11 +35,14 @@ module.exports = function(r) {
         allFilesInExperiment,
         allProcessesInExperiment,
         sampleInExperiment,
+        processInExperiment,
         fileInProject,
         getProcessesForExperiment,
         getFilesForExperiment,
         experimentHasDataset,
-        taskProcessIsUnused
+        taskProcessIsUnused,
+        addProcessFromTemplate,
+        updateProcess
     };
 
     function* getAllForProject(projectID) {
@@ -310,12 +314,51 @@ module.exports = function(r) {
         return yield getTask(taskId);
     }
 
+    function* addProcessFromTemplate(projectId, experimentId, templateId, owner) {
+        let template = yield r.table('templates').get(templateId);
+        let procId = yield processCommon.createProcessFromTemplate(projectId, template, owner);
+        let e2proc = new model.Experiment2Process(experimentId, procId);
+        yield r.table('experiment2process').insert(e2proc);
+        return yield processCommon.getProcess(procId);
+    }
+
+    function* updateProcess(experimentId, processId, properties, files, samples) {
+        let errors = yield updateTemplateCommon(experimentId, processId, properties, files, samples);
+
+        if (errors !== null) {
+            return errors;
+        }
+
+        return yield processCommon.getProcess(processId);
+    }
+
     function* updateTaskTemplate(taskId, experimentId, processId, properties, files, samples) {
+        let errors = yield updateTemplateCommon(experimentId, processId, properties, files, samples);
+
+        if (errors !== null) {
+            return errors;
+        }
+
+        if (processId) {
+            let task = yield r.table('experimenttasks').get(taskId);
+            yield r.table('processes').get(processId).update({name: task.name});
+        }
+
+        return yield getTask(taskId);
+    }
+
+    function* updateTemplateCommon(experimentId, processId, properties, files, samples) {
         if (properties) {
             let errors = yield processCommon.updateProperties(properties);
             if (errors !== null) {
                 return {error: errors};
             }
+        }
+
+        let process = null;
+
+        if (processId) {
+            process = yield r.table('processes').get(processId);
         }
 
         if (files) {
@@ -334,7 +377,7 @@ module.exports = function(r) {
         }
 
         if (samples) {
-            let errors = yield processCommon.updateProcessSamples(processId, samples);
+            let errors = yield processCommon.updateProcessSamples(process, samples);
             if (errors !== null) {
                 return {error: errors};
             }
@@ -348,12 +391,7 @@ module.exports = function(r) {
             // TODO: Delete samples from experiment if the sample is not used in any process associated with experiment.
         }
 
-        if (processId) {
-            let task = yield r.table('experimenttasks').get(taskId);
-            yield r.table('processes').get(processId).update({name: task.name});
-        }
-
-        return yield getTask(taskId);
+        return null;
     }
 
     function* removeExistingExperimentFileEntries(experimentId, files) {
@@ -382,6 +420,11 @@ module.exports = function(r) {
         let rql = r.table('experimenttasks').get(taskId);
         let task = yield dbExec(rql);
         return task.template_id === templateId;
+    }
+
+    function* isTemplateForProcess(templateId, processId) {
+        let process = yield r.table('processes').get(processId);
+        return process.template_id === templateId;
     }
 
     function* getTemplate(templateId) {
@@ -427,6 +470,11 @@ module.exports = function(r) {
     function* sampleInExperiment(experimentId, sampleId) {
         let samples = yield r.table('experiment2sample').getAll([experimentId, sampleId], {index: 'experiment_sample'});
         return samples.length !== 0;
+    }
+
+    function* processInExperiment(experimentId, processId) {
+        let processes = yield r.table('experiment2process').getAll([experimentId, processId], {index: 'experiment_process'});
+        return processes.length !== 0;
     }
 
     function* fileInProject(fileId, projectId) {

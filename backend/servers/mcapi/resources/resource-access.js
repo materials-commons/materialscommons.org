@@ -6,7 +6,8 @@ module.exports = function(access, experiments) {
         validateProjectAccess,
         validateExperimentInProject,
         validateDatasetInExperiment,
-        validateSampleInExperiment
+        validateSampleInExperiment,
+        validateProcessInExperiment
     };
 
     function* validateProjectAccess(next) {
@@ -56,6 +57,15 @@ module.exports = function(access, experiments) {
         if (!isInExperiment) {
             this.status = httpStatus.BAD_REQUEST;
             this.body = {error: `No such sample in experiment ${this.params.sample_id}`};
+        }
+        yield next;
+    }
+
+    function* validateProcessInExperiment(next) {
+        let isInExperiment = yield experiments.processInExperiment(this.params.experiment_id, this.params.process_id);
+        if (!isInExperiment) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: `No such process in experiment ${this.params.process_id}`};
         }
         yield next;
     }

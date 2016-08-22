@@ -14,9 +14,7 @@ module.exports = function(r) {
     };
 
     function* getProcess(processID) {
-        let rql = commonQueries.processDetailsRql(r.table('processes').getAll(processID), r);
-        let process = yield dbExec(rql);
-        return process.length ? {val: process[0]} : {error: `No such process ${processID}`};
+        return yield processCommon.getProcess(processID);
     }
 
     function* getProjectProcesses(projectID) {

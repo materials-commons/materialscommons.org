@@ -1,4 +1,4 @@
-class MCTaskTemplateCreateSamplesComponentController {
+class MCProcessTemplateCreateSamplesComponentController {
     /*@ngInject*/
     constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast, selectItems, experimentsService, navbarOnChange) {
         this.prepareCreatedSample = prepareCreatedSample;
@@ -18,26 +18,26 @@ class MCTaskTemplateCreateSamplesComponentController {
             (selected) => {
                 let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
                 let filesArgs = {
-                    template_id: this.task.template.template_id,
+                    template_id: this.process.template_id,
                     files: files,
-                    process_id: this.task.process_id
+                    process_id: this.process.id
                 };
-                this.experimentsService.updateTaskTemplateFiles(this.projectId, this.experimentId, this.task.id, filesArgs)
+                this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
                     .then(
-                        () => this.task.template.input_files = selected.files,
+                        () => this.process.template.input_files = selected.files,
                         () => this.toast.error('Unable to add files')
                     );
-        });
+            });
     }
 
     addSample() {
-        let lastItem = this.task.template.output_samples.length - 1;
+        let lastItem = this.process.output_samples.length - 1;
         // If there is no name for the last entry then do not add a new entry.
-        if (lastItem !== -1 && this.task.template.output_samples[lastItem].name === '') {
+        if (lastItem !== -1 && this.process.output_samples[lastItem].name === '') {
             return;
         }
 
-        this.samplesService.createSamplesInProjectForProcess(this.projectId, this.task.process_id, [{name: ''}])
+        this.samplesService.createSamplesInProjectForProcess(this.projectId, this.process.id, [{name: ''}])
             .then(
                 (samples) => {
                     let sampleIds = samples.samples.map((s) => s.id);
@@ -45,7 +45,7 @@ class MCTaskTemplateCreateSamplesComponentController {
                     this.samplesService.addSamplesToExperiment(this.projectId, this.experimentId, sampleIds)
                         .then(
                             () => {
-                                this.task.template.output_samples.push(samples.samples[0]);
+                                this.process.output_samples.push(samples.samples[0]);
                                 this.focus(samples.samples[0].id);
                             },
                             () => this.toast.error('Failed to add sample to experiment')
@@ -56,16 +56,16 @@ class MCTaskTemplateCreateSamplesComponentController {
     }
 
     remove(index) {
-        let sample = this.task.template.output_samples[index];
-        this.samplesService.deleteSamplesFromExperiment(this.projectId, this.experimentId, this.task.process_id, [sample.id])
+        let sample = this.process.output_samples[index];
+        this.samplesService.deleteSamplesFromExperiment(this.projectId, this.experimentId, this.process.id, [sample.id])
             .then(
-                () => this.task.template.output_samples.splice(index, 1),
+                () => this.process.output_samples.splice(index, 1),
                 () => this.toast.error('Unable to delete remove sample')
             );
     }
 
     updateSampleName(sample) {
-        this.samplesService.updateSampleInExperiment(this.projectId, this.experimentId, this.task.process_id, {
+        this.samplesService.updateSampleInExperiment(this.projectId, this.experimentId, this.process.id, {
                 id: sample.id,
                 name: sample.name
             })
@@ -77,26 +77,27 @@ class MCTaskTemplateCreateSamplesComponentController {
 
     addMultipleSamples() {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/tasks/components/add-multiple-samples-dialog.html',
+            templateUrl: 'app/global.components/process/add-multiple-samples-dialog.html',
             controller: AddMultipleSamplesDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
                 projectId: this.projectId,
                 experimentId: this.experimentId,
-                processId: this.task.process_id
+                processId: this.process.id
             }
         }).then(
-            (samples) => this.task.template.output_samples = this.task.template.output_samples.concat(samples)
+            (samples) => this.process.output_samples = this.process.output_samples.concat(samples)
         )
     }
 }
 
-angular.module('materialscommons').component('mcTaskTemplateCreateSamples', {
-    templateUrl: 'app/project/experiments/experiment/components/tasks/components/mc-task-template-create-samples.html',
-    controller: MCTaskTemplateCreateSamplesComponentController,
+angular.module('materialscommons').component('mcProcessTemplateCreateSamples', {
+    templateUrl: 'app/global.components/process/mc-process-template-create-samples.html',
+    controller: MCProcessTemplateCreateSamplesComponentController,
     bindings: {
-        task: '='
+        process: '=',
+        onChange: '&'
     }
 });
 
