@@ -128,6 +128,7 @@ class TaskService {
                             task.process_id = template.process_id;
                             task.template = this.processEdit.fillProcess(t, process);
                             task.template.template_name = templateName;
+                            task.template_name = templateName;
                             task.template.template_id = process.template_id;
                             task.loaded = true;
                         }

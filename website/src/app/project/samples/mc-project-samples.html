@@ -9,11 +9,11 @@
                              style="display:inline-block; color:grey; bottom: 23px"></md-icon>
                 </md-input-container>
                 <span flex></span>
-                <a ng-click="$ctrl.showTableView = true"
+                <a ng-click="$ctrl.showTableView = true" ng-if="false"
                    ng-style="!$ctrl.showTableView && {'color': 'black'}">
                     <i class="fa fa-fw fa-th-list" style="margin-bottom: 15px"></i>
                 </a>
-                <a ng-click="$ctrl.showTableView = false"
+                <a ng-click="$ctrl.showTableView = false" ng-if="false"
                    ng-style="$ctrl.showTableView && {'color': 'black'}">
                     <i class="fa fa-fw fa-th" style="margin-bottom: 15px"></i>
                 </a>
@@ -21,8 +21,8 @@
             <div layout="row" layout-align="space-between center"
                  style="color: black;background-color:#f4f5f7; padding-left:8px;padding-right:8px">
                 <h3 class="md-title" style="color:black">SAMPLES</h3>
-                <md-button ng-show="false" class="md-primary md-raised" ui-sref="project.create.sample">
-                    <i class="fa fa-fw fa-plus"></i> Create New Sample
+                <md-button class="md-primary md-raised" ng-click="$ctrl.newSamples()">
+                    <i class="fa fa-fw fa-plus"></i> New Samples
                 </md-button>
             </div>
         </md-toolbar>

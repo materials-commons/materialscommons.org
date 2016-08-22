@@ -307,7 +307,7 @@ function CreateSamples() {
     this.process_name = "Create Samples";
     this.description = "Create Sample process is used to create new samples.";
     this.category = "create_sample";
-    this.does_transform = false;
+    this.does_transform = true;
     this.measurements = [
         {
             property: {

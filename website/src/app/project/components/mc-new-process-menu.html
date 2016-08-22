@@ -5,7 +5,7 @@
             {{$ctrl.buttonName}}
         </md-button>
         <md-menu-content>
-            <md-menu-item>
+            <md-menu-item ng-if="false">
                 <md-menu>
                     <md-button ng-click="$mdOpenMenu()">
                         <!--<i ng-if="$ctrl.buttonIcon !== ''" class="fa fa-fw" ng-class="$ctrl.buttonClass"></i>-->
@@ -29,7 +29,7 @@
                     <span class="text-uppercase">Choose Template</span>
                 </md-button>
             </md-menu-item>
-            <md-menu-item>
+            <md-menu-item ng-if="false">
                 <md-button ng-click="$ctrl.chooseExistingProcess()">
                     <span class="text-uppercase">Choose from existing process</span>
                 </md-button>
