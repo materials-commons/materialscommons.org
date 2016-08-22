@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - '0.10.33'
+before_script:
+  - 'export MCDIR=/tmp/mcdir'
+  - 'export MCDB_CONNECTION=localhost:30815'
+  - 'export MCDB_TYPE=rethinkdb'
+  - 'export MCDB_NAME=materialscommons'
+  - 'export MCDB_FILE=$HOME/test-data/rethinkdb_dump_test_data.tar.gz'
+
+# nvm install v5.3.0
+# npm install -g bower
+# sudo npm install -g gulp-cli
