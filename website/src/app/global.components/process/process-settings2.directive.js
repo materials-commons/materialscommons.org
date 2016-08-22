@@ -1,22 +1,22 @@
-angular.module('materialscommons').directive('processSettings', processSettingsDirective);
-function processSettingsDirective() {
+angular.module('materialscommons').directive('processSettings2', processSettings2Directive);
+function processSettings2Directive() {
     return {
         restrict: 'E',
         scope: {
             settings: '=',
-            taskId: '=',
             templateId: '=',
-            attribute: '='
+            attribute: '=',
+            processId: '='
         },
-        controller: ProcessSettingsDirectiveController,
+        controller: ProcessSettings2DirectiveController,
         controllerAs: 'ctrl',
         bindToController: true,
-        templateUrl: 'app/project/processes/process/create/components/process-settings.html'
+        templateUrl: 'app/global.components/process/process-settings2.html'
     }
 }
 
 /*@ngInject*/
-function ProcessSettingsDirectiveController(experimentsService, toast, $stateParams) {
+function ProcessSettings2DirectiveController(experimentsService, toast, $stateParams) {
     var ctrl = this;
     ctrl.datePickerOptions = {
         formatYear: 'yy',
@@ -44,15 +44,11 @@ function ProcessSettingsDirectiveController(experimentsService, toast, $statePar
             properties: [property]
         };
 
-        if (ctrl.taskId) {
-            experimentsService.updateTaskTemplateProperties($stateParams.project_id, $stateParams.experiment_id, ctrl.taskId, propertyArgs)
-                .then(
-                    () => null,
-                    () => toast.error('Unable to update property')
-                );
-        } else {
-            console.log('Update process setting here');
-        }
+        experimentsService.updateProcess($stateParams.project_id, $stateParams.experiment_id, ctrl.processId, propertyArgs)
+            .then(
+                () => null,
+                () => toast.error('Unable to update property')
+            );
     };
 
     ///////////////////////////////////////

@@ -32,9 +32,29 @@ export function templatesService($filter, processEdit, $log) {
             var t = getTemplate(templateName);
             process.name = t.name;
             var p = processEdit.fillProcess(t, process);
-            p.input_samples = [];
-            p.input_files = [];
-            p.output_files = [];
+            if (process.input_samples) {
+                p.input_samples = process.input_samples;
+            } else {
+                p.input_samples = [];
+            }
+
+            if (process.output_samples) {
+                p.output_samples = process.output_samples;
+            } else {
+                p.output_samples = [];
+            }
+
+            if (process.input_files) {
+                p.input_files = process.input_files;
+            } else {
+                p.input_files = [];
+            }
+
+            if (process.output_files) {
+                p.output_files = process.output_files;
+            } else {
+                p.output_files = [];
+            }
             return p;
         },
 

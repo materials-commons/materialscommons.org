@@ -67,16 +67,50 @@ def set_specific_process_names(conn):
     print "Done"
 
 
+def set_sample_direction_for_non_transform_processes(conn):
+    processes = list(r.table('processes').filter({'does_transform': False}).run(conn))
+    for process in processes:
+        r.table('process2sample').get_all(process['id'], index='process_id').update({'direction': 'in'}).run(conn)
+
+
+def fix_transform_process_directions(conn):
+    p2s = list(r.table('processes').filter({'does_transform': True})
+               .eq_join('id', r.table('process2sample'), index='process_id').zip()
+               .pluck('name', 'process_id', 'property_set_id', 'sample_id', 'direction', 'id')
+               .filter({'direction': ''}).run(conn))
+    for p2s_entry in p2s:
+        r.table('process2sample').get(p2s_entry['id']).update({'direction': 'in'}).run(conn)
+        r.table('propertysets').get(p2s_entry['property_set_id']).update({'current': False}).run(conn)
+        inserted = r.table('propertysets').insert({'current': True, 'parent_id': p2s_entry['property_set_id']}).run(conn)
+        inserted_id = inserted['generated_keys'][0]
+        r.table('process2sample').insert({
+            'direction': 'out',
+            'property_set_id': inserted_id,
+            'process_id': p2s_entry['process_id'],
+            'sample_id': p2s_entry['sample_id']
+        }).run(conn)
+
+
+def fix_samples_from_create_samples(conn):
+    processes = list(r.table('processes').get_all('global_Create Samples', index='template_id').run(conn))
+    for process in processes:
+        r.table('process2sample').get_all(process['id'], index='process_id').update({'direction': 'out'}).run(conn)
+    r.table('processes').get_all('global_Create Samples', index='template_id').update({'does_transform': True}).run(conn)
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
                       help="rethinkdb port", default=30815)
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
-    remove_nulls_in_setup(conn)
-    remove_duplicates_in_sample2datafile(conn)
-    add_as_received_processes(conn)
-    set_specific_process_names(conn)
+    # remove_nulls_in_setup(conn)
+    # remove_duplicates_in_sample2datafile(conn)
+    # add_as_received_processes(conn)
+    # set_specific_process_names(conn)
+    # set_sample_direction_for_non_transform_processes(conn)
+    # fix_transform_process_directions(conn)
+    fix_samples_from_create_samples(conn)
     # change_processes_field_to_description(conn)
     # convert_setup_selections_to_name_value(conn)
 
