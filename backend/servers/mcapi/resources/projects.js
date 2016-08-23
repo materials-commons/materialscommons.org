@@ -4,14 +4,15 @@ module.exports = function(projects) {
     return {
         all: all,
         dirTree: dirTree,
-        update: update
+        update: update,
+        _allProjectsForUser: _allProjectsForUser
     };
 
     /////////////////
 
     function* all(next) {
         let user = this.reqctx.user;
-        this.body = yield projects.forUser(user);
+        this.body = _allProjectForUser(user);
         yield next;
     }
 
@@ -25,6 +26,10 @@ module.exports = function(projects) {
         let dirID = this.params.directory_id || 'top';
         this.body = yield projects.dirTree(this.params.project_id, dirID);
         yield next;
+    }
+
+    function* _allProjectsForUser(user) {
+        return yield projects.forUser(user);
     }
 
 };
