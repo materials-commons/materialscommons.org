@@ -100,7 +100,8 @@ class MCProcessesGraphComponentController {
                             data: {
                                 id: `${proc.id}_${p.id}`,
                                 source: p.id,
-                                target: proc.id
+                                target: proc.id,
+                                name: s.name
                             }
                         });
                     });
@@ -131,11 +132,10 @@ class MCProcessesGraphComponentController {
                         'background-color': 'data(color)',
                         color: 'black',
                         'text-outline-color': 'data(color)',
-                        'font-size': '16px',
+                        'font-size': '18px',
                         'font-weight': 'bold',
-                        'text-outline-width': '4px',
+                        'text-outline-width': '5px',
                         'text-outline-opacity': 1,
-                        'overlay-padding': '6px',
                         width: '80px',
                         height: '80px'
                     }
@@ -146,7 +146,12 @@ class MCProcessesGraphComponentController {
                         'width': 4,
                         'target-arrow-shape': 'triangle',
                         //'target-arrow-color': '#9dbaea',
-                        'curve-style': 'bezier'
+                        'curve-style': 'bezier',
+                        'content': 'data(name)',
+                        'font-weight': 'bold',
+                        'text-outline-color': '#555',
+                        'text-outline-width': '3px',
+                        'color': '#fff'
                     }
                 },
                 {
@@ -154,6 +159,13 @@ class MCProcessesGraphComponentController {
                     style: {
                         'border-width': '8px',
                         'border-color': '#1565c0',
+                        color: '#1565c0'
+                    }
+                },
+                {
+                    selector: 'edge:selected',
+                    style: {
+                        'background-color': '#1565c0',
                         'text-outline-color': '#1565c0'
                     }
                 }
@@ -174,6 +186,14 @@ class MCProcessesGraphComponentController {
                         }
                     );
             }
+        });
+        this.cy.on('mouseover', function(event) {
+            let target = event.cyTarget;
+            console.log('target', target.data('name'));
+            // Need to install qtip or some other
+            //target.qtip({
+            //    content: target.data('name')
+            //});
         });
         this.cy.layout({name: 'dagre'});
     }
