@@ -7,11 +7,11 @@ sudo: required
 env:
   global:
     - MCDIR=/tmp/mcdir
-    - MCDB_CONNECTION=localhost:30815
     - MCDB_TYPE=rethinkdb
     - MCDB_NAME=materialscommons
-    - MCDB_FILE=$HOME/test-data/rethinkdb_dump_test_data.tar.gz
+    - MCDB_FILE=test_data/rethinkdb_dump_test_data.tar.gz
     - MCDB_PORT=30815
+    - MCDB_CONNECTION=localhost:$MCDB_PORT
     - RETHINKDB_CLUSTER_PORT=31815
     - RETHINKDB_HTTP_PORT=8090
 
@@ -27,6 +27,9 @@ before_install:
 
 before_script:
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
+  - sleep 10
+  - rethinkdb restore $MCDB_FILE --connect $MCDB_CONNECTION --force
+
 script:
   - 'cd backend'
   - 'mocha "**/specs/*-spec.js"'
