@@ -19,8 +19,8 @@ describe('Test of db/model projects - ', function() {
     });
     describe('find project - ', function() {
         it ("project named 'Test' should exist" , function() {
-            let projectList = projects.all();
-            projectList.then(function(theList){
+            let projectListDeffered = projects.all();
+            projectListDeffered.then(function(theList){
                 let name = "not found";
                 assert.isNotNull(theList, "Project list should exist");
                 for (let project of theList) {
