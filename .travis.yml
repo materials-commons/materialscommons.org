@@ -23,7 +23,9 @@ before_install:
   - 'npm install -g chai'
 
 before_script:
-  - rethinkdb --driver-port 30815 --cluster-port 31815 --http-port 8090 --daemon
+  - pushd backend
+  - mcservers start -t -r
+  - popd
 
 script:
   - 'cd backend'
