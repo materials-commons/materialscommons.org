@@ -3,16 +3,17 @@ node_js:
   - '0.10.33'
 
 env:
-  - MCDIR=/tmp/mcdir
-  - MCDB_CONNECTION=localhost:30815
-  - MCDB_TYPE=rethinkdb
-  - MCDB_NAME=materialscommons
-  - MCDB_FILE=$HOME/test-data/rethinkdb_dump_test_data.tar.gz
+  global:
+    - MCDIR=/tmp/mcdir
+    - MCDB_CONNECTION=localhost:30815
+    - MCDB_TYPE=rethinkdb
+    - MCDB_NAME=materialscommons
+    - MCDB_FILE=$HOME/test-data/rethinkdb_dump_test_data.tar.gz
 
 install:
   - 'nvm install v5.3.0'
   - 'npm install -g bower'
-  - 'sudo npm install -g gulp-cli'
+  - 'npm install -g gulp-cli'
   - 'npm install'
 
 script:
