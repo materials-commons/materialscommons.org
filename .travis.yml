@@ -23,10 +23,7 @@ before_install:
   - 'npm install -g chai'
 
 before_script:
-  - pushd backend
-  - bash -c './mcservers start -t -r'
-  - popd
-
+  - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
 script:
   - 'cd backend'
   - 'mocha "**/specs/*-spec.js"'
