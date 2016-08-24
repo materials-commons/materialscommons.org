@@ -86,7 +86,7 @@ class MCProcessesGraphComponentController {
                 data: {
                     id: p.id,
                     name: p.name,
-                    color: p.does_transform ? 'red' : '#999999'
+                    color: p.does_transform ? 'red' : '#facd37'
                 }
             };
         });
@@ -125,8 +125,19 @@ class MCProcessesGraphComponentController {
                 {
                     selector: 'node',
                     style: {
-                        'label': 'data(name)',
-                        'background-color': 'data(color)'
+                        'content': 'data(name)',
+                        'text-valign': 'center',
+                        'text-halign': 'center',
+                        'background-color': 'data(color)',
+                        color: 'black',
+                        'text-outline-color': 'data(color)',
+                        'font-size': '16px',
+                        'font-weight': 'bold',
+                        'text-outline-width': '4px',
+                        'text-outline-opacity': 1,
+                        'overlay-padding': '6px',
+                        width: '80px',
+                        height: '80px'
                     }
                 },
                 {
@@ -136,6 +147,14 @@ class MCProcessesGraphComponentController {
                         'target-arrow-shape': 'triangle',
                         //'target-arrow-color': '#9dbaea',
                         'curve-style': 'bezier'
+                    }
+                },
+                {
+                    selector: 'node:selected',
+                    style: {
+                        'border-width': '8px',
+                        'border-color': '#1565c0',
+                        'text-outline-color': '#1565c0'
                     }
                 }
             ]
