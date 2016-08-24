@@ -24,7 +24,7 @@ before_install:
 
 before_script:
   - pushd backend
-  - mcservers start -t -r
+  - ./mcservers start -t -r
   - popd
 
 script:
