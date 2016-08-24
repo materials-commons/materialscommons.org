@@ -147,7 +147,7 @@ class MCProcessesGraphComponentController {
                 this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
                     .then(
                         (process) => {
-                            this.selectedProcess = this.templates.loadTemplateFromProcess(process.template_name, process);
+                            this.selectedProcess = this.templates.loadProcess(process);
                         },
                         () => {
                             this.toast.error('Unable to retrieve process details');

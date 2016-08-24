@@ -58,7 +58,13 @@ export function templatesService($filter, processEdit, $log) {
             return p;
         },
 
-        getTemplate: getTemplate
+        getTemplate: getTemplate,
+
+        loadProcess(process) {
+            let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
+            var t = getTemplate(templateName);
+            return processEdit.fillProcess(t, process);
+        }
     };
 }
 
