@@ -11,6 +11,9 @@ env:
     - MCDB_TYPE=rethinkdb
     - MCDB_NAME=materialscommons
     - MCDB_FILE=$HOME/test-data/rethinkdb_dump_test_data.tar.gz
+    - MCDB_PORT=30815
+    - RETHINKDB_CLUSTER_PORT=31815
+    - RETHINKDB_HTTP_PORT=8090
 
 before_install:
   - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
