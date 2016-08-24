@@ -28,6 +28,7 @@ before_install:
   - 'npm install -g mocha'
   - 'npm install -g chai'
   - sudo pip install rethinkdb
+  - node --version
 
 before_script:
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
