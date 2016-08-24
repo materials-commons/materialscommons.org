@@ -13,10 +13,14 @@ let projects = require('../projects')(connection);
 describe('Test of db/model projects - ', function() {
     describe('return all projects: ', function() {
         it("should not be null", function () {
-            let projectList = projects.all();
-            assert.isNotNull(projectList, "Project List should contain projects");
+            let projectListDeffered = projects.all();
+            projectListDeffered.then(function (theList) {
+                let name = "not found";
+                assert.isNotNull(theList, "Project list should exist");
+            });
         });
     });
+
     describe('find project - ', function() {
         it ("project named 'Test' should exist" , function() {
             let projectListDeffered = projects.all();
