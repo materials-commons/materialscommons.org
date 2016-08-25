@@ -98,19 +98,48 @@ def fix_samples_from_create_samples(conn):
     r.table('processes').get_all('global_Create Samples', index='template_id').update({'does_transform': True}).run(conn)
 
 
+def set_processes_destructive_flag(conn):
+    r.table('processes').update({'destructive': False}).run(conn)
+
+
+def set_process_type(conn):
+    processes_no_template = list(r.table('processes').filter(~r.row.has_fields('template_id')).run(conn))
+    for p in processes_no_template:
+        if p['process_name'] == 'Annealing':
+            p['template_id'] = 'global_Heat Treatment'
+        elif p['process_name'] == 'As Received':
+            p['template_id'] = 'global_Create Samples'
+        else:
+            p['template_id'] = 'global_' + p['process_name']
+        r.table('processes').get(p['id']).update({'template_id': p['template_id']}).run(conn)
+
+    all_processes = list(r.table('processes').run(conn))
+    for p in all_processes:
+        template = r.table('templates').get(p['template_id']).run(conn)
+        r.table('processes').get(p['id']).update({'process_type': template['process_type']}).run(conn)
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
                       help="rethinkdb port", default=30815)
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
+
+    # Not sure which of these apply:
     # remove_nulls_in_setup(conn)
     # remove_duplicates_in_sample2datafile(conn)
     # add_as_received_processes(conn)
     # set_specific_process_names(conn)
     # set_sample_direction_for_non_transform_processes(conn)
     # fix_transform_process_directions(conn)
-    fix_samples_from_create_samples(conn)
+
+    # These are valid steps:
+    # fix_samples_from_create_samples(conn)
+    set_processes_destructive_flag(conn)
+    set_process_type(conn)
+
+    # Note sure of these steps:
     # change_processes_field_to_description(conn)
     # convert_setup_selections_to_name_value(conn)
 
