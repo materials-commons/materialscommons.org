@@ -3,10 +3,12 @@
 function Apt() {
     this.name = "APT";
     this.process_name = "APT";
+    this.process_type = "measurement";
     this.description = "Atom Probe Tomography";
     this.category = "APT";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -177,10 +179,12 @@ function Apt() {
 function Sem() {
     this.name = "SEM";
     this.process_name = "SEM";
+    this.process_type = "measurement";
     this.description = "Stem Electron Microscopy";
     this.category = "SEM";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -305,6 +309,7 @@ function Sem() {
 function CreateSamples() {
     this.name = "Create Samples";
     this.process_name = "Create Samples";
+    this.process_type = "create";
     this.description = "Create Sample process is used to create new samples.";
     this.category = "create_sample";
     this.does_transform = true;
@@ -323,6 +328,7 @@ function CreateSamples() {
             }
         }
     ];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -407,10 +413,12 @@ function CreateSamples() {
 function AptDataAnalysis() {
     this.name = "APT Data Analysis";
     this.process_name = "APT Data Analysis";
+    this.process_type = "analysis";
     this.description = "Atom Probe Tomography Data Analysis";
     this.category = "APT";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "System Information",
@@ -476,10 +484,12 @@ function AptDataAnalysis() {
 function AptDataReconstruction() {
     this.name = "APT Data Reconstruction";
     this.process_name = "APT Data Reconstruction";
+    this.process_type = "analysis";
     this.description = "Atom Probe Tomography Data Reconstruction";
     this.category = "APT";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -602,10 +612,12 @@ function AptDataReconstruction() {
 function BroadIonBeamMilling() {
     this.name = "Broad Ion Beam Milling";
     this.process_name = "Broad Ion Beam Milling";
+    this.process_type = "measurement";
     this.description = "Broad Ion Beam Milling";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -663,10 +675,12 @@ function BroadIonBeamMilling() {
 function Cogging() {
     this.name = "Cogging";
     this.process_name = "Cogging";
+    this.process_type = "transform";
     this.description = "Cogging";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -706,10 +720,12 @@ function Cogging() {
 function Compression() {
     this.name = "Compression";
     this.process_name = "Compression";
+    this.process_type = "transform";
     this.description = "Compression";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -801,10 +817,12 @@ function Compression() {
 function Computation() {
     this.name = "Computation";
     this.process_name = "Computation";
+    this.process_type = "analysis";
     this.description = "Computation";
     this.category = "OTHER";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Job Settings",
@@ -870,10 +888,12 @@ function Computation() {
 function Creep() {
     this.name = "Creep";
     this.process_name = "Creep";
+    this.process_type = "transform";
     this.description = "Creep";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -926,10 +946,12 @@ function Creep() {
 function DicPatterning() {
     this.name = "DIC Patterning";
     this.process_name = "DIC Patterning";
+    this.process_type = "measurement";
     this.description = "DIC Patterning";
     this.category = "DIC";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1018,10 +1040,12 @@ function DicPatterning() {
 function DicStatisticalModelling() {
     this.name = "DIC Statistical Modelling";
     this.process_name = "DIC Statistical Modelling";
+    this.process_type = "analysis";
     this.description = "DIC Statistical Modelling";
     this.category = "DIC";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1079,10 +1103,12 @@ function DicStatisticalModelling() {
 function Electropolishing() {
     this.name = "Electropolishing";
     this.process_name = "Electropolishing";
+    this.process_type = "transform";
     this.description = "Electropolishing";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1148,10 +1174,12 @@ function Electropolishing() {
 function Etching() {
     this.name = "Etching";
     this.process_name = "Etching";
+    this.process_type = "transform";
     this.description = "Etching";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1217,10 +1245,12 @@ function Etching() {
 function EbsdSemDataCollection() {
     this.name = "EBSD SEM Data Collection";
     this.process_name = "EBSD SEM Data Collection";
+    this.process_type = "measurement";
     this.description = "EBSD SEM Data Collection";
     this.category = "SEM";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1338,10 +1368,12 @@ function EbsdSemDataCollection() {
 function EpmaDataCollection() {
     this.name = "EPMA Data Collection";
     this.process_name = "EPMA Data Collection";
+    this.process_type = "measurement";
     this.description = "EPMA Data Collection";
     this.category = "EPMA";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1450,10 +1482,12 @@ function EpmaDataCollection() {
 function LowCycleFatigue() {
     this.name = "Low Cycle Fatigue";
     this.process_name = "Low Cycle Fatigue";
+    this.process_type = "transform";
     this.description = "Low Cycle Fatigue";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1599,10 +1633,12 @@ function LowCycleFatigue() {
 function UltrasonicFatigue() {
     this.name = "Ultrasonic Fatigue";
     this.process_name = "Ultrasonic Fatigue";
+    this.process_type = "transform";
     this.description = "Ultrasonic Fatigue";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1720,10 +1756,12 @@ function UltrasonicFatigue() {
 function TEM() {
     this.name = "TEM";
     this.process_name = "TEM";
+    this.process_type = "measurement";
     this.description = "Transmission Electron Microscope";
     this.category = "OTHER";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1858,10 +1896,12 @@ function TEM() {
 function HeatTreatment() {
     this.name = "Heat Treatment";
     this.process_name = "Heat Treatment";
+    this.process_type = "transform";
     this.description = "HeatTreatment";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1932,10 +1972,12 @@ function HeatTreatment() {
 function AsMeasured() {
     this.name = "As Measured";
     this.process_name = "As Measured";
+    this.process_type = "measurement";
     this.description = "As Measured process allows you to add in all your As Received measurements";
     this.category = "OTHER";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1948,10 +1990,12 @@ function AsMeasured() {
 function Hardness() {
     this.name = "Hardness";
     this.process_name = "Hardness";
+    this.process_type = "measurement";
     this.description = "Hardness";
     this.category = "OTHER";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -2009,10 +2053,12 @@ function Hardness() {
 function XRD() {
     this.name = "XRD";
     this.process_name = "XRD";
+    this.process_type = "transform";
     this.description = "XRD";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -2091,10 +2137,12 @@ function XRD() {
 function Tension() {
     this.name = "Tension";
     this.process_name = "Tension";
+    this.process_type = "transform";
     this.description = "Tension";
     this.category = "OTHER";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
