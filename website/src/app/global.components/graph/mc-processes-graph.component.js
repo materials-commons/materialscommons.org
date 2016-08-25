@@ -81,12 +81,12 @@ class MCProcessesGraphComponentController {
 
         // Draw all processes
         let elements = this.processes.map(p => {
-            //console.log(p.name, p);
             return {
                 data: {
                     id: p.id,
                     name: p.name,
-                    color: p.does_transform ? 'red' : '#facd37'
+                    color: p.does_transform ? '#fbc02d' : '#4caf50',
+                    shape: p.does_transform ? 'triangle' : 'ellipse'
                 }
             };
         });
@@ -136,6 +136,7 @@ class MCProcessesGraphComponentController {
                         'font-weight': 'bold',
                         'text-outline-width': '5px',
                         'text-outline-opacity': 1,
+                        shape: 'data(shape)',
                         width: '80px',
                         height: '80px'
                     }
