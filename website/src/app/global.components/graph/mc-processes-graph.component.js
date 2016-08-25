@@ -80,13 +80,13 @@ class MCProcessesGraphComponentController {
         });
 
         // Draw all processes
-        let elements = this.processes.map(p => {
+        let elements = this.processes.filter(p => p.template_name !== 'Create Samples').map(p => {
             return {
                 data: {
                     id: p.id,
                     name: p.name,
-                    color: p.does_transform ? '#fbc02d' : '#4caf50',
-                    shape: p.does_transform ? 'triangle' : 'ellipse'
+                    color: MCProcessesGraphComponentController.processColor(p),
+                    shape: MCProcessesGraphComponentController.processShape(p)
                 }
             };
         });
@@ -197,6 +197,36 @@ class MCProcessesGraphComponentController {
             //});
         });
         this.cy.layout({name: 'dagre'});
+    }
+
+    static processColor(p) {
+        switch (p.process_type) {
+            case "transform":
+                return p.destructive ? "#d32f2f" : "#fbc02d";
+            case "measurement":
+                return p.destructive ? "#d32f2f" : "#4caf50";
+            case "analysis":
+                return "#c5cae9";
+            case "create":
+                return "#009688";
+            case "import":
+                return "#b2dfdb";
+        }
+    }
+
+    static processShape(p) {
+        switch (p.process_type) {
+            case "transform":
+                return "triangle";
+            case "measurement":
+                return "ellipse";
+            case "analysis":
+                return "roundrectangle";
+            case "create":
+                return "vee";
+            case "import":
+                return "vee";
+        }
     }
 
     showSelectedGraph() {

@@ -1,6 +1,7 @@
 export function Apt() {
     this.name = "APT";
     this.process_name = "APT";
+    this.process_type = "measurement";
     this.template_name = "APT";
     this.description = "Atom Probe Tomography";
     this._type = "APT";
@@ -16,6 +17,7 @@ export function Apt() {
     this.owner = "";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -216,6 +218,7 @@ export function Apt() {
 export function Sem() {
     this.name = "SEM";
     this.process_name = "SEM";
+    this.process_type = "measurement";
     this.template_name = "SEM";
     this.description = "Stem Electron Microscopy";
     this._type = "SEM";
@@ -231,6 +234,7 @@ export function Sem() {
     this.owner = "";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -379,6 +383,7 @@ export function Sem() {
 export function CreateSamples() {
     this.name = "Create Samples";
     this.process_name = "Create Samples";
+    this.process_type = "create";
     this.template_name = "Create Samples";
     this.description = "Create Samples process is used to create new samples.";
     this._type = "create_samples";
@@ -409,6 +414,7 @@ export function CreateSamples() {
             }
         }
     ];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -505,6 +511,7 @@ export function CreateSamples() {
 export function AptDataAnalysis() {
     this.name = "APT Data Analysis";
     this.process_name = "APT Data Analysis";
+    this.process_type = "analysis";
     this.template_name = "APT Data Analysis";
     this.description = "Atom Probe Tomography Data Analysis";
     this._type = "APT";
@@ -520,6 +527,7 @@ export function AptDataAnalysis() {
     this.owner = "";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "System Information",
@@ -597,6 +605,7 @@ export function AptDataAnalysis() {
 export function AptDataReconstruction() {
     this.name = "APT Data Reconstruction";
     this.process_name = "APT Data Reconstruction";
+    this.process_type = "analysis";
     this.template_name = "APT Data Reconstruction";
     this.description = "Atom Probe Tomography Data Reconstruction";
     this._type = "APT";
@@ -612,6 +621,7 @@ export function AptDataReconstruction() {
     this.owner = "";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -758,6 +768,7 @@ export function AptDataReconstruction() {
 export function BroadIonBeamMilling() {
     this.name = "Broad Ion Beam Milling";
     this.process_name = "Broad Ion Beam Milling";
+    this.process_type = "transform";
     this.template_name = "Broad Ion Beam Milling";
     this.description = "Broad Ion Beam Milling";
     this._type = "OTHER";
@@ -773,6 +784,7 @@ export function BroadIonBeamMilling() {
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -839,6 +851,7 @@ export function BroadIonBeamMilling() {
 export function Cogging() {
     this.name = "Cogging";
     this.process_name = "Cogging";
+    this.process_type = "transform";
     this.template_name = "Cogging";
     this.description = "Cogging";
     this._type = "OTHER";
@@ -854,6 +867,7 @@ export function Cogging() {
     this.owner = "jfadams@umich.edu";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -899,6 +913,7 @@ export function Cogging() {
 export function Compression() {
     this.name = "Compression";
     this.process_name = "Compression";
+    this.process_type = "transform";
     this.template_name = "Compression";
     this.description = "Compression";
     this._type = "OTHER";
@@ -914,6 +929,7 @@ export function Compression() {
     this.owner = "";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1023,6 +1039,7 @@ export function Compression() {
 export function Computation() {
     this.name = "Computation";
     this.process_name = "Computation";
+    this.process_type = "analysis";
     this.template_name = "Computation";
     this.description = "Computation";
     this._type = "OTHER";
@@ -1038,6 +1055,7 @@ export function Computation() {
     this.owner = "bpuchala@umich.edu";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Job Settings",
@@ -1115,6 +1133,7 @@ export function Computation() {
 export function Creep() {
     this.name = "Creep";
     this.process_name = "Creep";
+    this.process_type = "transform";
     this.template_name = "Creep";
     this.description = "Creep";
     this._type = "OTHER";
@@ -1130,6 +1149,7 @@ export function Creep() {
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1191,6 +1211,7 @@ export function Creep() {
 export function DicPatterning() {
     this.name = "DIC Patterning";
     this.process_name = "DIC Patterning";
+    this.process_type = "measurement";
     this.template_name = "DIC Patterning";
     this.description = "DIC Patterning";
     this._type = "DIC";
@@ -1206,6 +1227,7 @@ export function DicPatterning() {
     this.owner = "agithens@umich.edu";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1309,6 +1331,7 @@ export function DicPatterning() {
 export function DicStatisticalModelling() {
     this.name = "DIC Statistical Modelling";
     this.process_name = "DIC Statistical Modelling";
+    this.process_type = "analysis";
     this.template_name = "DIC Statistical Modelling";
     this.description = "DIC Statistical Modelling";
     this._type = "DIC";
@@ -1324,6 +1347,7 @@ export function DicStatisticalModelling() {
     this.owner = "agithens@umich.edu";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1390,6 +1414,7 @@ export function DicStatisticalModelling() {
 export function Electropolishing() {
     this.name = "Electropolishing";
     this.process_name = "Electropolishing";
+    this.process_type = "transform";
     this.template_name = "Electropolishing";
     this.description = "Electropolishing";
     this._type = "OTHER";
@@ -1405,6 +1430,7 @@ export function Electropolishing() {
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1482,6 +1508,7 @@ export function Electropolishing() {
 export function Etching() {
     this.name = "Etching";
     this.process_name = "Etching";
+    this.process_type = "transform";
     this.template_name = "Etching";
     this.description = "Etching";
     this._type = "OTHER";
@@ -1497,6 +1524,7 @@ export function Etching() {
     this.owner = "emarq@umich.edu";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1574,6 +1602,7 @@ export function Etching() {
 export function EbsdSemDataCollection() {
     this.name = "EBSD SEM Data Collection";
     this.process_name = "EBSD SEM Data Collection";
+    this.process_type = "measurement";
     this.template_name = "EBSD SEM Data Collection";
     this.description = "EBSD SEM Data Collection";
     this._type = "SEM";
@@ -1589,6 +1618,7 @@ export function EbsdSemDataCollection() {
     this.owner = "";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1730,6 +1760,7 @@ export function EbsdSemDataCollection() {
 export function EpmaDataCollection() {
     this.name = "EPMA Data Collection";
     this.process_name = "EPMA Data Collection";
+    this.process_type = "measurement";
     this.template_name = "EPMA Data Collection";
     this.description = "EPMA Data Collection";
     this._type = "EPMA";
@@ -1745,6 +1776,7 @@ export function EpmaDataCollection() {
     this.owner = "";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -1874,6 +1906,7 @@ export function EpmaDataCollection() {
 export function LowCycleFatigue() {
     this.name = "Low Cycle Fatigue";
     this.process_name = "Low Cycle Fatigue";
+    this.process_type = "transform";
     this.template_name = "Low Cycle Fatigue";
     this.description = "Low Cycle Fatigue";
     this._type = "OTHER";
@@ -1889,6 +1922,7 @@ export function LowCycleFatigue() {
     this.owner = "";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -2061,6 +2095,7 @@ export function LowCycleFatigue() {
 export function UltrasonicFatigue() {
     this.name = "Ultrasonic Fatigue";
     this.process_name = "Ultrasonic Fatigue";
+    this.process_type = "transform";
     this.template_name = "Ultrasonic Fatigue";
     this.description = "Ultrasonic Fatigue";
     this._type = "OTHER";
@@ -2076,6 +2111,7 @@ export function UltrasonicFatigue() {
     this.owner = "";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -2217,6 +2253,7 @@ export function UltrasonicFatigue() {
 export function TEM() {
     this.name = "TEM";
     this.process_name = "TEM";
+    this.process_type = "measurement";
     this.template_name = "TEM";
     this.description = "Transmission Electron Microscope";
     this._type = "OTHER";
@@ -2232,6 +2269,7 @@ export function TEM() {
     this.owner = "";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -2390,6 +2428,7 @@ export function TEM() {
 export function HeatTreatment() {
     this.name = "Heat Treatment";
     this.process_name = "Heat Treatment";
+    this.process_type = "transform";
     this.template_name = "Heat Treatment";
     this.description = "HeatTreatment";
     this._type = "OTHER";
@@ -2405,6 +2444,7 @@ export function HeatTreatment() {
     this.owner = "";
     this.does_transform = true;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -2487,6 +2527,7 @@ export function HeatTreatment() {
 export function XRD() {
     this.name = "XRD";
     this.process_name = "XRD";
+    this.process_type = "transform";
     this.description = "XRD";
     this.category = "OTHER";
     this.template_name = "XRD";
@@ -2501,6 +2542,7 @@ export function XRD() {
     this.what = "";
     this.why = "";
     this.owner = "";
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -2579,6 +2621,7 @@ export function XRD() {
 export function Tension() {
     this.name = "Tension";
     this.process_name = "Tension";
+    this.process_type = "transform";
     this.description = "Tension";
     this.template_name = "Tension";
     this.category = "OTHER";
@@ -2593,6 +2636,7 @@ export function Tension() {
     this.what = "";
     this.why = "";
     this.owner = "";
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -2694,6 +2738,7 @@ export function Tension() {
 export function AsMeasured() {
     this.name = "As Measured";
     this.process_name = "As Measured";
+    this.process_type = "measurement";
     this.template_name = "As Measured";
     this.description = "As Measured process allows you to add in all your As Received measurements";
     this._type = "OTHER";
@@ -2709,6 +2754,7 @@ export function AsMeasured() {
     this.owner = "";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
@@ -2721,6 +2767,7 @@ export function AsMeasured() {
 export function Hardness1() {
     this.name = "Hardness";
     this.process_name = "Hardness";
+    this.process_type = "measurement";
     this.template_name = "Hardness";
     this.description = "Hardness";
     this._type = "OTHER";
@@ -2736,6 +2783,7 @@ export function Hardness1() {
     this.owner = "";
     this.does_transform = false;
     this.measurements = [];
+    this.destructive = false;
     this.setup = [
         {
             name: "Instrument",
