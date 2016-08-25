@@ -10,8 +10,8 @@ let connection = require('rethinkdbdash')({
 
 let projects = require('../projects')(connection);
 
-describe('Test of db/model projects - ', function() {
-    describe('return all projects: ', function() {
+describe('Test of db/model projects - ', function () {
+    describe('return all projects: ', function () {
         it("should not be null", function () {
             let projectListDeffered = projects.all();
             projectListDeffered.then(function (theList) {
@@ -21,10 +21,10 @@ describe('Test of db/model projects - ', function() {
         });
     });
 
-    describe('find project - ', function() {
-        it ("project named 'Test' should exist" , function() {
+    describe('find project - ', function () {
+        it("project named 'Test' should exist", function () {
             let projectListDeffered = projects.all();
-            projectListDeffered.then(function(theList){
+            projectListDeffered.then(function (theList) {
                 let name = "not found";
                 assert.isNotNull(theList, "Project list should exist");
                 for (let project of theList) {
@@ -32,8 +32,18 @@ describe('Test of db/model projects - ', function() {
                         name = project.name;
                     }
                 }
-                assert.equal(name,"Test","missing 'Test' project");
+                assert.equal(name, "Test", "missing 'Test' project");
             });
+        });
+        it("project named 'Test' should exist - starred", function*() {
+            let projectsList = yield projects.all();
+            let name = "not found";
+            for (let project of projectsList) {
+                if (project.name == 'Test') {
+                    name = project.name;
+                }
+            }
+            assert.equal(name, "Test", "missing 'Test' project");
         });
     });
 });
