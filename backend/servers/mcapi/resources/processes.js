@@ -84,12 +84,13 @@ module.exports = function(processes, samples, experiments, schema) {
 
     function* updateProcess(next) {
         let updateArgs = yield parse(this);
+        schema.prepare(schema.updateProcess, updateArgs);
         let errors = yield validateUpdateProcess(updateArgs, this.params);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield processes.updateProcess(this.params.process_id, updateArgs.properties, updateArgs.files, updateArgs.samples);
+            let rv = yield processes.updateProcess(this.params.process_id, updateArgs);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -108,48 +109,56 @@ module.exports = function(processes, samples, experiments, schema) {
     // that are exactly the same.
 
     function* validateUpdateProcess(updateArgs, params) {
-        if (updateArgs.properties && !_.isArray(updateArgs.properties)) {
-            return {error: `Properties attribute isn't an array`};
+        let errors = yield schema.validate(schema.updateProcess, updateArgs);
+        if (errors !== null) {
+            return errors;
         }
 
-        // TODO: Validate that the template is the template originally used for the process.
+        if (updateArgs.properties || updateArgs.files || updateArgs.samples) {
 
-        let template = yield processes.getTemplate(updateArgs.template_id);
+            if (updateArgs.properties && !_.isArray(updateArgs.properties)) {
+                return {error: `Properties attribute isn't an array`};
+            }
 
-        if (updateArgs.properties) {
-            for (let i = 0; i < updateArgs.properties.length; i++) {
-                let property = updateArgs.properties[i];
-                let errors = yield validateProperty(template, property);
-                if (errors !== null) {
-                    return errors;
+            // TODO: Validate that the template is the template originally used for the process.
+
+            let template = yield processes.getTemplate(updateArgs.template_id);
+
+            if (updateArgs.properties) {
+                for (let i = 0; i < updateArgs.properties.length; i++) {
+                    let property = updateArgs.properties[i];
+                    let errors = yield validateProperty(template, property);
+                    if (errors !== null) {
+                        return errors;
+                    }
                 }
             }
-        }
 
-        if (updateArgs.files && !_.isArray(updateArgs.files)) {
-            return {error: `Files attribute isn't an array`};
-        }
+            if (updateArgs.files && !_.isArray(updateArgs.files)) {
+                return {error: `Files attribute isn't an array`};
+            }
 
-        if (updateArgs.files) {
-            for (let i = 0; i < updateArgs.files.length; i++) {
-                let f = updateArgs.files[i];
-                let errors = yield validateFile(params.project_id, f);
-                if (errors !== null) {
-                    return errors;
+            if (updateArgs.files) {
+                for (let i = 0; i < updateArgs.files.length; i++) {
+                    let f = updateArgs.files[i];
+                    let errors = yield validateFile(params.project_id, f);
+                    if (errors !== null) {
+                        return errors;
+                    }
                 }
             }
-        }
 
-        if (updateArgs.samples && !_.isArray(updateArgs.samples)) {
-            return {error: `Samples attribute isn't an array`};
-        }
+            if (updateArgs.samples && !_.isArray(updateArgs.samples)) {
+                return {error: `Samples attribute isn't an array`};
+            }
 
-        if (updateArgs.samples) {
-            for (let i = 0; i < updateArgs.samples.length; i++) {
-                let s = updateArgs.samples[i];
-                let errors = yield validateSample(params.project_id, s);
-                if (errors !== null) {
-                    return errors;
+            if (updateArgs.samples) {
+                for (let i = 0; i < updateArgs.samples.length; i++) {
+                    let s = updateArgs.samples[i];
+                    let errors = yield validateSample(params.project_id, s);
+                    if (errors !== null) {
+                        return errors;
+                    }
                 }
             }
         }
