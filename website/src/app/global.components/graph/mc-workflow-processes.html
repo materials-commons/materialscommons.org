@@ -1,0 +1,19 @@
+<div class="md-accordion" ng-repeat="processType in $ctrl.processTypes">
+    <md-toolbar ng-click="processType.expanded = !processType.expanded">
+        <div class="md-toolbar-tools">
+            <h2 ng-class="processType.cssClass">
+                <i class="fa fa-fw" ng-class="processType.icon"></i>{{processType.title}}
+            </h2>
+            <span flex=""></span>
+            <span ng-class="{expandCollapse:true, active:processType.expanded}"></span>
+        </div>
+    </md-toolbar>
+    <div ng-repeat="process in processType.processes" class="dataContent" ng-class="{activeContent:processType.expanded}">
+        {{process.title}}
+    </div>
+    <!--<div ng-class="{dataContent:true, activeContent:processType.expanded}" ng-repeat="process in processType.processes">-->
+    <!--Hello world-->
+    <!--</div>-->
+    <!--<div ng-class="{dataContent:true, activeContent:processType.expanded}">Hello world</div>-->
+    <!--<div ng-class="{dataContent:true, activeContent:processType.expanded}">Hellow world 2</div>-->
+</div>
