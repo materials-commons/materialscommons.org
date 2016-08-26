@@ -1,6 +1,6 @@
 class MCProcessesGraphComponentController {
     /*@ngInject*/
-    constructor(experimentsService, templates, $stateParams, toast, $mdDialog) {
+    constructor(experimentsService, templates, $stateParams, toast, $mdDialog, $timeout) {
         this.experimentsService = experimentsService;
         this.templates = templates;
         this.toast = toast;
@@ -9,6 +9,7 @@ class MCProcessesGraphComponentController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.$mdDialog = $mdDialog;
+        this.$timeout = $timeout;
         this.selectedProcess = null;
     }
 
@@ -90,7 +91,7 @@ class MCProcessesGraphComponentController {
                 }
             };
         });
-        this.processes.filter(p => p.does_transform).forEach(p => {
+        this.processes.filter(p => p.does_transform && p.template_name !== 'Create Samples').forEach(p => {
             p.output_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
                 let processes = sample2InputProcesses[id];
@@ -159,38 +160,50 @@ class MCProcessesGraphComponentController {
                     selector: 'node:selected',
                     style: {
                         'border-width': '8px',
-                        'border-color': '#1565c0',
-                        color: '#1565c0'
+                        'border-color': '#2196f3',
+                        color: '#2196f3'
                     }
                 },
                 {
                     selector: 'edge:selected',
                     style: {
-                        'background-color': '#1565c0',
-                        'text-outline-color': '#1565c0'
+                        'background-color': '#2196f3',
+                        'text-outline-color': '#2196f3'
                     }
                 }
             ]
         });
         this.cy.on('click', event => {
             let target = event.cyTarget;
-            if (target.isNode()) {
+            if (!target.isNode && !target.isEdge) {
+                this.$timeout(() => {
+                    this.selectedProcess = null;
+                });
+            } else if (target.isNode()) {
                 let processId = target.data('id');
                 this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
                     .then(
                         (process) => {
                             this.selectedProcess = this.templates.loadProcess(process);
+                            this.currentTab = 2;
                         },
                         () => {
                             this.toast.error('Unable to retrieve process details');
                             this.selectedProcess = null;
                         }
                     );
+            } else if (target.isEdge()) {
+                this.$timeout(() => {
+                    this.selectedProcess = null;
+                    this.currentTab = 2;
+                });
             }
         });
         this.cy.on('mouseover', function(event) {
             let target = event.cyTarget;
-            console.log('target', target.data('name'));
+            if (target.data) {
+                //console.log('target', target.data('name'));
+            }
             // Need to install qtip or some other
             //target.qtip({
             //    content: target.data('name')
@@ -204,9 +217,9 @@ class MCProcessesGraphComponentController {
             case "transform":
                 return p.destructive ? "#d32f2f" : "#fbc02d";
             case "measurement":
-                return p.destructive ? "#d32f2f" : "#4caf50";
+                return p.destructive ? "#d32f2f" : "#616161";
             case "analysis":
-                return "#c5cae9";
+                return "#512da8";
             case "create":
                 return "#009688";
             case "import":
