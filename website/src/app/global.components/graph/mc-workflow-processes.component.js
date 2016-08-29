@@ -1,54 +1,46 @@
 class MCWorkflowProcessesComponentController {
     /*@ngInit*/
-    constructor() {
-        this.processTypes = [
+    constructor(templates) {
+        this.templates = templates.get();
+        this.templateTypes = [
+            {
+                title: 'CREATE SAMPLES',
+                cssClass: 'mc-create-samples-color',
+                icon: 'fa-cubes',
+                templates: this.templates.filter(t => t.process_type === 'transform' && t.name === 'Create Samples')
+            },
             {
                 title: 'TRANSFORMATION',
                 cssClass: 'mc-transform-color',
                 icon: 'fa-exclamation-triangle',
-                processes: [
-                    {
-                        title: 'Heat Treatment'
-                    },
-                    {
-                        title: 'Ultrasonic Fatigue'
-                    },
-                    {
-                        title: 'Cogging'
-                    }
-                ]
+                templates: this.templates.filter(t => t.process_type === 'transform' && t.name !== 'Create Samples')
             },
             {
                 title: 'MEASUREMENT',
                 cssClass: 'mc-measurement-color',
                 icon: 'fa-circle',
-                processes: [
-                    {
-                        title: 'SEM'
-                    },
-                    {
-                        title: 'APT'
-                    }
-                ]
+                templates: this.templates.filter(t => t.process_type === 'measurement')
             },
             {
                 title: 'ANALYSIS',
                 cssClass: 'mc-analysis-color',
                 icon: 'fa-square',
-                processes: [
-                    {
-                        title: 'Graph it!'
-                    },
-                    {
-                        title: 'Plot it!'
-                    }
-                ]
+                templates: this.templates.filter(t => t.process_type === 'analysis')
             }
-        ]
+        ];
+    }
+
+    chooseTemplate(t) {
+        if (this.onSelected) {
+            this.onSelected({templateId: t.name, processId: ''});
+        }
     }
 }
 
 angular.module('materialscommons').component('mcWorkflowProcesses', {
     templateUrl: 'app/global.components/graph/mc-workflow-processes.html',
-    controller: MCWorkflowProcessesComponentController
+    controller: MCWorkflowProcessesComponentController,
+    bindings: {
+        onSelected: '&'
+    }
 });

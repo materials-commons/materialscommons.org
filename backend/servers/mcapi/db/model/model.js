@@ -21,6 +21,7 @@ module.exports = function (r) {
         this.name = name;
         this.owner = owner;
         this.template_id = templateId;
+        this.process_type = transform ? 'transform' : 'measurement';
         this.birthtime = r.now();
         this.mtime = this.birthtime;
         this._type = "process";

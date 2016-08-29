@@ -54,11 +54,17 @@
 }
 
 .md-accordion .dataContent {
-  background: #F2F2F2;
+  background: #ffffff;
+  border-bottom: 1px solid #f2f2f2;
   height: 0px;
   overflow: hidden;
   -webkit-transition: .3s all ease-out;
   transition: .3s all ease-out;
+}
+
+.md-accordion .dataContent:hover {
+  background: #f2f2f2;
+  cursor: pointer;
 }
 
 .md-accordion .activeContent {
