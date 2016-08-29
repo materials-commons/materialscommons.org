@@ -1,19 +1,20 @@
-<div class="md-accordion" ng-repeat="processType in $ctrl.processTypes">
-    <md-toolbar ng-click="processType.expanded = !processType.expanded">
+<div class="md-accordion" ng-repeat="templateType in $ctrl.templateTypes">
+    <md-toolbar ng-click="templateType.expanded = !templateType.expanded; templateType.searchBy = ''">
         <div class="md-toolbar-tools">
-            <h2 ng-class="processType.cssClass">
-                <i class="fa fa-fw" ng-class="processType.icon"></i>{{processType.title}}
+            <h2 ng-class="templateType.cssClass">
+                <i class="fa fa-fw" ng-class="templateType.icon"></i>{{templateType.title}}
             </h2>
             <span flex=""></span>
-            <span ng-class="{expandCollapse:true, active:processType.expanded}"></span>
+            <span ng-class="{expandCollapse:true, active:templateType.expanded}"></span>
         </div>
     </md-toolbar>
-    <div ng-repeat="process in processType.processes" class="dataContent" ng-class="{activeContent:processType.expanded}">
-        {{process.title}}
+    <div class="dataContent" ng-class="{activeContent:templateType.expanded}">
+        <input type="text" placeholder="Search..." class="mc-input-as-line" ng-model="templateType.searchBy">
     </div>
-    <!--<div ng-class="{dataContent:true, activeContent:processType.expanded}" ng-repeat="process in processType.processes">-->
-    <!--Hello world-->
-    <!--</div>-->
-    <!--<div ng-class="{dataContent:true, activeContent:processType.expanded}">Hello world</div>-->
-    <!--<div ng-class="{dataContent:true, activeContent:processType.expanded}">Hellow world 2</div>-->
+    <div ng-repeat="template in templateType.templates | filter:templateType.searchBy | orderBy:'name'"
+         ng-click="$ctrl.chooseTemplate(template)"
+         class="dataContent"
+         ng-class="{activeContent:templateType.expanded}">
+        {{template.name}}
+    </div>
 </div>

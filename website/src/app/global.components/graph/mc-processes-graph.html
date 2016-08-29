@@ -1,15 +1,8 @@
 <div layout="column" style="margin-right:15px">
-    <div flex-offset="70">
-        <mc-new-process-menu ng-if="!$ctrl.task.template"
-                             button-name="NEW PROCESS"
-                             button-class="md-primary"
-                             on-selected="$ctrl.addProcess(templateId, processId)">
-        </mc-new-process-menu>
-    </div>
     <div id="processesGraph">
     </div>
     <md-tabs flex-offset="70" md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
-        <md-tab>
+        <md-tab ng-if="false">
             <md-tab-label>
                 <span><i class="fa fa-fw fa-desktop"></i>Display</span>
             </md-tab-label>
@@ -34,14 +27,13 @@
         </md-tab>
         <md-tab>
             <md-tab-label>
-                <span><i class="fa fa-fw fa-pencil"></i>edit</span>
+                <span><i class="fa fa-fw fa-plus"></i>Add</span>
             </md-tab-label>
             <md-tab-body>
                 <md-content style="max-height: 70vh" class="margin-left-15">
-                    <h3 class="md-title">Samples</h3>
-                    <md-button class="md-primary">Create Samples</md-button>
                     <h3 class="md-title">Add To Workflow</h3>
-                    <mc-workflow-processes></mc-workflow-processes>
+                    <mc-workflow-processes
+                            on-selected="$ctrl.addProcess(templateId, processId)"></mc-workflow-processes>
                 </md-content>
             </md-tab-body>
         </md-tab>

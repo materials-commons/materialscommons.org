@@ -15,7 +15,6 @@ export function templatesService($filter, processEdit, $log) {
             return null;
         }
         var template = t.create();
-        template.name = createName(template.name);
         return template;
     }
 

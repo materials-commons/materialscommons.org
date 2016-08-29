@@ -81,7 +81,7 @@ class MCProcessesGraphComponentController {
         });
 
         // Draw all processes
-        let elements = this.processes.filter(p => p.template_name !== 'Create Samples').map(p => {
+        let elements = this.processes.map(p => {
             return {
                 data: {
                     id: p.id,
@@ -91,7 +91,7 @@ class MCProcessesGraphComponentController {
                 }
             };
         });
-        this.processes.filter(p => p.does_transform && p.template_name !== 'Create Samples').forEach(p => {
+        this.processes.filter(p => p.does_transform).forEach(p => {
             p.output_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
                 let processes = sample2InputProcesses[id];
@@ -213,15 +213,16 @@ class MCProcessesGraphComponentController {
     }
 
     static processColor(p) {
+        console.log(p.id, p);
         switch (p.process_type) {
             case "transform":
                 return p.destructive ? "#d32f2f" : "#fbc02d";
             case "measurement":
-                return p.destructive ? "#d32f2f" : "#616161";
+                return p.destructive ? "#d32f2f" : "#cfd8dc";
             case "analysis":
-                return "#512da8";
+                return "#d1c4e9";
             case "create":
-                return "#009688";
+                return "#ffecb3";
             case "import":
                 return "#b2dfdb";
         }

@@ -143,6 +143,7 @@ module.exports = function(r) {
     function* createProcessFromTemplate(projectId, template, owner) {
         let p = new model.Process(template.name, owner, template.id, template.does_transform);
         // TODO: Fix ugly hack, template id is global_<name>, the substring removes the global_ part.
+        p.process_type = template.process_type;
         p.template_name = template.id.substring(7);
         let proc = yield addProcess(projectId, p);
         yield createSetup(proc.id, template.setup);
