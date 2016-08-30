@@ -1,5 +1,4 @@
 // test/spec for backend/servers/mcapi/resources/project.js
-
 'use strict';
 
 let assert = require('chai').assert;
