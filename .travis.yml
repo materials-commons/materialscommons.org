@@ -36,4 +36,5 @@ before_script:
 
 script:
   - 'cd backend'
+  - which mocha
   - 'mocha "**/specs/*-spec.js"'
