@@ -10,6 +10,7 @@ module.exports = function(r) {
         createProcessFromTemplate,
         processTemplateExists,
         updateProcess,
+        getTemplate,
         r: r
     };
 
@@ -29,6 +30,11 @@ module.exports = function(r) {
         return {val: templates};
     }
 
+    function* getTemplate(templateId) {
+        let rql = r.table('templates').get(templateId);
+        return yield dbExec(rql);
+    }
+
     function* createProcessFromTemplate(projectId, templateId, owner) {
         let template = yield r.table('templates').get(templateId);
         let procId = yield processCommon.createProcessFromTemplate(projectId, template, owner);
@@ -40,26 +46,30 @@ module.exports = function(r) {
         return templates.length !== 0;
     }
 
-    function* updateProcess(processId, properties, files, samples) {
-        if (properties) {
+    function* updateProcess(processId, updateArgs) {
+        if (updateArgs.properties) {
             let errors = yield processCommon.updateProperties(properties);
             if (errors !== null) {
                 return {error: errors};
             }
         }
 
-        if (files) {
+        if (updateArgs.files) {
             let errors = yield processCommon.updateProcessFiles(processId, files);
             if (errors !== null) {
                 return {error: errors};
             }
         }
 
-        if (samples) {
+        if (updateArgs.samples) {
             let errors = yield processCommon.updateProcessSamples(processId, samples);
             if (errors !== null) {
                 return {error: errors};
             }
+        }
+
+        if (updateArgs.name) {
+            yield r.table('processes').get(processId).update({name: updateArgs.name});
         }
 
         return yield getProcess(processId);

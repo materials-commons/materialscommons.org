@@ -1,36 +1,20 @@
 <div layout="column" style="margin-right:15px">
-    <div flex-offset="70">
-        <mc-new-process-menu ng-if="!$ctrl.task.template"
-                             button-name="NEW PROCESS"
-                             button-class="md-primary"
-                             on-selected="$ctrl.addProcess(templateId, processId)">
-        </mc-new-process-menu>
-    </div>
     <div id="processesGraph">
     </div>
     <md-tabs flex-offset="70" md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
         <md-tab ng-if="false">
             <md-tab-label>
-                <span><i class="fa fa-fw fa-gears"></i>controls</span>
+                <span><i class="fa fa-fw fa-desktop"></i>Display</span>
             </md-tab-label>
             <md-tab-body>
-                <md-content style="max-height: 70vh" class="margin-left-15">
-                    <h3 class="md-subhead">Graph To Display</h3>
+                <md-content style="max-height: 70vh">
+                    <h3 class="md-title">Show</h3>
                     <md-radio-group ng-model="$ctrl.displayGraph" layout="column" ng-change="$ctrl.showSelectedGraph()">
                         <md-radio-button value="all_processes">All Processes</md-radio-button>
                         <md-radio-button value="only_transformations">Only Transformation Processes</md-radio-button>
                         <md-radio-button value="sample_transformations">Sample Transformations</md-radio-button>
                     </md-radio-group>
-                </md-content>
-            </md-tab-body>
-        </md-tab>
-        <md-tab ng-if="false">
-            <md-tab-label>
-                <span><i class="fa fa-fw fa-filter"></i>filters</span>
-            </md-tab-label>
-            <md-tab-body>
-                <md-content style="max-height: 70vh">
-                    <md-list>
+                    <md-list ng-if="false">
                         <md-list-item ng-repeat="sample in $ctrl.samples">
                             <md-checkbox ng-model="sample.selected"
                                          ng-change="$ctrl.filterOnSample(sample)"></md-checkbox>
@@ -38,6 +22,18 @@
                             </p>
                         </md-list-item>
                     </md-list>
+                </md-content>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span><i class="fa fa-fw fa-plus"></i>Add</span>
+            </md-tab-label>
+            <md-tab-body>
+                <md-content style="max-height: 70vh" class="margin-left-15">
+                    <h3 class="md-title">Add To Workflow</h3>
+                    <mc-workflow-processes
+                            on-selected="$ctrl.addProcess(templateId, processId)"></mc-workflow-processes>
                 </md-content>
             </md-tab-body>
         </md-tab>
@@ -51,7 +47,6 @@
                 </div>
                 <div ng-show="$ctrl.selectedProcess">
                     <md-content style="max-height: 70vh">
-                        <h3 class="md-title">{{$ctrl.selectedProcess.template_name}}</h3>
                         <mc-process-template process="$ctrl.selectedProcess"
                                              on-change="$ctrl.onChange()">
                         </mc-process-template>

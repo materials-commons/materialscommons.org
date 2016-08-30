@@ -1,6 +1,6 @@
 class MCProcessesGraphComponentController {
     /*@ngInject*/
-    constructor(experimentsService, templates, $stateParams, toast, $mdDialog) {
+    constructor(experimentsService, templates, $stateParams, toast, $mdDialog, $timeout) {
         this.experimentsService = experimentsService;
         this.templates = templates;
         this.toast = toast;
@@ -9,6 +9,7 @@ class MCProcessesGraphComponentController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.$mdDialog = $mdDialog;
+        this.$timeout = $timeout;
         this.selectedProcess = null;
     }
 
@@ -81,12 +82,12 @@ class MCProcessesGraphComponentController {
 
         // Draw all processes
         let elements = this.processes.map(p => {
-            //console.log(p.name, p);
             return {
                 data: {
                     id: p.id,
                     name: p.name,
-                    color: p.does_transform ? 'red' : '#999999'
+                    color: MCProcessesGraphComponentController.processColor(p),
+                    shape: MCProcessesGraphComponentController.processShape(p)
                 }
             };
         });
@@ -100,7 +101,8 @@ class MCProcessesGraphComponentController {
                             data: {
                                 id: `${proc.id}_${p.id}`,
                                 source: p.id,
-                                target: proc.id
+                                target: proc.id,
+                                name: s.name
                             }
                         });
                     });
@@ -125,8 +127,19 @@ class MCProcessesGraphComponentController {
                 {
                     selector: 'node',
                     style: {
-                        'label': 'data(name)',
-                        'background-color': 'data(color)'
+                        'content': 'data(name)',
+                        'text-valign': 'center',
+                        'text-halign': 'center',
+                        'background-color': 'data(color)',
+                        color: 'black',
+                        'text-outline-color': 'data(color)',
+                        'font-size': '18px',
+                        'font-weight': 'bold',
+                        'text-outline-width': '5px',
+                        'text-outline-opacity': 1,
+                        shape: 'data(shape)',
+                        width: '80px',
+                        height: '80px'
                     }
                 },
                 {
@@ -135,28 +148,99 @@ class MCProcessesGraphComponentController {
                         'width': 4,
                         'target-arrow-shape': 'triangle',
                         //'target-arrow-color': '#9dbaea',
-                        'curve-style': 'bezier'
+                        'curve-style': 'bezier',
+                        'content': 'data(name)',
+                        'font-weight': 'bold',
+                        'text-outline-color': '#555',
+                        'text-outline-width': '3px',
+                        'color': '#fff'
+                    }
+                },
+                {
+                    selector: 'node:selected',
+                    style: {
+                        'border-width': '8px',
+                        'border-color': '#2196f3',
+                        color: '#2196f3'
+                    }
+                },
+                {
+                    selector: 'edge:selected',
+                    style: {
+                        'background-color': '#2196f3',
+                        'text-outline-color': '#2196f3'
                     }
                 }
             ]
         });
         this.cy.on('click', event => {
             let target = event.cyTarget;
-            if (target.isNode()) {
+            if (!target.isNode && !target.isEdge) {
+                this.$timeout(() => {
+                    this.selectedProcess = null;
+                });
+            } else if (target.isNode()) {
                 let processId = target.data('id');
                 this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
                     .then(
                         (process) => {
-                            this.selectedProcess = this.templates.loadTemplateFromProcess(process.template_name, process);
+                            this.selectedProcess = this.templates.loadProcess(process);
+                            this.currentTab = 2;
                         },
                         () => {
                             this.toast.error('Unable to retrieve process details');
                             this.selectedProcess = null;
                         }
                     );
+            } else if (target.isEdge()) {
+                this.$timeout(() => {
+                    this.selectedProcess = null;
+                    this.currentTab = 2;
+                });
             }
         });
+        this.cy.on('mouseover', function(event) {
+            let target = event.cyTarget;
+            if (target.data) {
+                //console.log('target', target.data('name'));
+            }
+            // Need to install qtip or some other
+            //target.qtip({
+            //    content: target.data('name')
+            //});
+        });
         this.cy.layout({name: 'dagre'});
+    }
+
+    static processColor(p) {
+        console.log(p.id, p);
+        switch (p.process_type) {
+            case "transform":
+                return p.destructive ? "#d32f2f" : "#fbc02d";
+            case "measurement":
+                return p.destructive ? "#d32f2f" : "#cfd8dc";
+            case "analysis":
+                return "#d1c4e9";
+            case "create":
+                return "#ffecb3";
+            case "import":
+                return "#b2dfdb";
+        }
+    }
+
+    static processShape(p) {
+        switch (p.process_type) {
+            case "transform":
+                return "triangle";
+            case "measurement":
+                return "ellipse";
+            case "analysis":
+                return "roundrectangle";
+            case "create":
+                return "vee";
+            case "import":
+                return "vee";
+        }
     }
 
     showSelectedGraph() {
