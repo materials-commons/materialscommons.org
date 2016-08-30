@@ -35,6 +35,4 @@ before_script:
   - rethinkdb restore $MCDB_FILE --connect $MCDB_CONNECTION --force
 
 script:
-  - 'cd backend'
-  - which mocha
-  - 'mocha "**/specs/*-spec.js"'
+  - npm run-script server-side-components
