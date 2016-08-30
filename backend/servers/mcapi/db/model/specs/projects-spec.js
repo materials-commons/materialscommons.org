@@ -1,5 +1,4 @@
 // test/spec for backend/servers/mcapi/db/model/project.js
-
 'use strict';
 
 let assert = require('chai').assert;
@@ -11,15 +10,6 @@ let connection = require('rethinkdbdash')({
 let projects = require('../projects')(connection);
 
 describe('Test in backend/servers/mcapi/db/model/project.js - ', function () {
-    describe('return all projects: ', function () {
-        it("should not be null", function () {
-            let projectListDeffered = projects.all();
-            projectListDeffered.then(function (theList) {
-                let name = "not found";
-                assert.isNotNull(theList, "Project list should exist");
-            });
-        });
-    });
 
     describe('find project - ', function () {
         it("project named 'Test' should exist", function*() {
