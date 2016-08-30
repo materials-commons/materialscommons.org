@@ -70,8 +70,8 @@ function processEdit() {
         if (template.category === 'create_samples') {
             // Hack, just extract the composition from one of the samples to display as the measurements.
             let foundComposition = false;
-            for (let i = 0; i < process.input_samples.length; i++) {
-                let sample = process.input_samples[i];
+            for (let i = 0; i < process.output_samples.length; i++) {
+                let sample = process.output_samples[i];
                 for (let k = 0; k < sample.properties.length; k++) {
                     let prop = sample.properties[k];
                     if (prop.attribute === 'composition') {
