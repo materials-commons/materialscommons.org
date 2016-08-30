@@ -22,7 +22,20 @@ describe('Test in backend/servers/mcapi/db/model/project.js - ', function () {
     });
 
     describe('find project - ', function () {
-        it("project named 'Test' should exist", function*() {
+        it("project named 'Test' should exist", function () {
+            let projectListDeffered = projects.all();
+            projectListDeffered.then(function (theList) {
+                let name = "not found";
+                assert.isNotNull(theList, "Project list should exist");
+                for (let project of theList) {
+                    if (project.name == 'Test') {
+                        name = project.name;
+                    }
+                }
+                assert.equal(name, "Test", "missing 'Test' project");
+            });
+        });
+        it("project named 'Test' should exist - starred", function*() {
             let projectsList = yield projects.all();
             let name = "not found";
             for (let project of projectsList) {
