@@ -8,10 +8,10 @@ let connection = require('rethinkdbdash')({
     port: process.env.MCDB_PORT || 30815
 });
 
-var projectsModel = require('../../db/model/projects')(r);
-var projects = require('../resources/projects')(projectsModel);
+var projectsModel = require('../../db/model/projects')(connection);
+var projects = require('../projects')(projectsModel);
 
-describe.skip('Testing project.js - ', function (){ // does this also need to be function*
+describe('Testing in backend/servers/mcapi/resources/project.js - ', function (){ // does this also need to be function*
     describe('all projects', function () { // does this also need to be function*
         it('for user', function* () {
             var user='admin@mc.org';
