@@ -29,6 +29,7 @@ before_install:
 
 before_script:
   - npm list --depth=0
+  - which mocha
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
   - rethinkdb restore $MCDB_FILE --connect $MCDB_CONNECTION --force
