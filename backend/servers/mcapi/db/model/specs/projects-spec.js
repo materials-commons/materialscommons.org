@@ -10,7 +10,7 @@ let connection = require('rethinkdbdash')({
 
 let projects = require('../projects')(connection);
 
-describe('Test of db/model projects - ', function () {
+describe('Test in backend/servers/mcapi/db/model/project.js - ', function () {
     describe('return all projects: ', function () {
         it("should not be null", function () {
             let projectListDeffered = projects.all();
