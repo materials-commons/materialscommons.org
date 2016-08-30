@@ -63,7 +63,6 @@ class MCProcessTemplateOtherComponentController {
                         () => {
                             this.process.input_samples = selected.samples;
                             this.navbarOnChange.fireChange();
-                            console.log('this.onChange', this.onChange);
                             if (this.onChange) {
                                 this.onChange();
                             }

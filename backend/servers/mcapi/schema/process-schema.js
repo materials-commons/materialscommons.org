@@ -3,7 +3,8 @@ module.exports = function(schema) {
 
     return {
         defineCreateProcessSchema,
-        defineCreateProcessSetupSchema
+        defineCreateProcessSetupSchema,
+        defineUpdateProcessSchema
     };
 
     function defineCreateProcessSchema() {
@@ -83,6 +84,7 @@ module.exports = function(schema) {
         let createSetupSchema = schema.defineSchema('CreateProcessSetup', {
             name: {
                 type: 'string',
+                minLength: 1,
                 nullable: false
             },
 
@@ -104,29 +106,15 @@ module.exports = function(schema) {
 
     }
 
-    function defineCreateProcessSampleSchema() {
-        let createProcessSampleSchema = schema.defineSchema('CreateProcessSample', {});
-
-        createProcessSampleSchema.setDefaults({});
-        createProcessSampleSchema.validateAsync = promise.promisify(createProcessSampleSchema.validate);
-        return createProcessSampleSchema;
-
-    }
-
-    function defineCreateProcessTransformedSampleSchema() {
-        let createProcessTransformedSampleSchema = schema.defineSchema('CreateProcessTransformedSample', {});
-
-        createProcessTransformedSampleSchema.setDefaults({});
-        createProcessTransformedSampleSchema.validateAsync = promise.promisify(
-            createProcessTransformedSampleSchema.validate);
-        return createProcessTransformedSampleSchema;
-    }
-
-    function defineCreateProcessFilesSchema() {
-        let createProcessFileSchema = schema.defineSchema('CreateProcessFile', {});
-
-        createProcessFileSchema.setDefaults({});
-        createProcessFileSchema.validateAsync = promise.promisify(createProcessFileSchema.validate);
-        return createProcessFileSchema;
+    function defineUpdateProcessSchema() {
+        let updateProcessSchema = schema.defineSchema('UpdateProcess', {
+            name: {type: 'string', nullable: true},
+            properties: {type: 'array', nullable: true},
+            files: {type: 'array', nullable: true},
+            samples: {type: 'array', nullable: true}
+        });
+        updateProcessSchema.setDefaults({});
+        updateProcessSchema.validateAsync = promise.promisify(updateProcessSchema.validate);
+        return updateProcessSchema;
     }
 };
