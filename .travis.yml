@@ -1,0 +1,40 @@
+language: node_js
+node_js:
+  - '0.10.33'
+
+python:
+  - '2.7'
+
+sudo: required
+
+env:
+  global:
+    - MCDIR=/tmp/mcdir
+    - MCDB_TYPE=rethinkdb
+    - MCDB_NAME=materialscommons
+    - MCDB_FILE=test_data/rethinkdb_dump_test_data.tar.gz
+    - MCDB_PORT=30815
+    - MCDB_CONNECTION=localhost:$MCDB_PORT
+    - RETHINKDB_CLUSTER_PORT=31815
+    - RETHINKDB_HTTP_PORT=8090
+
+before_install:
+  - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
+  - wget -qO- https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
+  - sudo apt-get update
+  - sudo apt-get install rethinkdb
+  - 'nvm install v5.3.0'
+  - 'npm install -g mocha-co'
+  - 'npm install -g mocha'
+  - 'npm install -g chai'
+  - sudo pip install rethinkdb
+  - node --version
+
+before_script:
+  - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
+  - sleep 10
+  - rethinkdb restore $MCDB_FILE --connect $MCDB_CONNECTION --force
+
+script:
+  - 'cd backend'
+  - 'mocha "**/specs/*-spec.js"'
