@@ -35,4 +35,4 @@ before_script:
   - rethinkdb restore $MCDB_FILE --connect $MCDB_CONNECTION --force
 
 script:
-  - npm run-script server-side-components
+  - npm run-script server-test-components
