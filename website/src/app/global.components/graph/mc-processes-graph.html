@@ -1,7 +1,7 @@
 <div layout="column" style="margin-right:15px">
     <div id="processesGraph" ng-show="$ctrl.showGraphView">
     </div>
-    <mc-process-graph-outline ng-if="!$ctrl.showGraphView"></mc-process-graph-outline>
+    <mc-process-graph-outline ng-if="!$ctrl.showGraphView" processes="$ctrl.processes"></mc-process-graph-outline>
     <div flex-offset="70">
         <div layout="row">
             <a ng-click="$ctrl.showGraphView = true"
@@ -68,6 +68,4 @@
             </md-tab>
         </md-tabs>
     </div>
-</div>
-
 </div>
