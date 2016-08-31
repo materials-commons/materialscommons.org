@@ -11,6 +11,7 @@ class MCProcessesGraphComponentController {
         this.$mdDialog = $mdDialog;
         this.$timeout = $timeout;
         this.selectedProcess = null;
+        this.showGraphView = true;
     }
 
     $onInit() {
@@ -213,7 +214,6 @@ class MCProcessesGraphComponentController {
     }
 
     static processColor(p) {
-        console.log(p.id, p);
         switch (p.process_type) {
             case "transform":
                 return p.destructive ? "#d32f2f" : "#fbc02d";
