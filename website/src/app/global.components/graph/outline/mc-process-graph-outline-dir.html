@@ -1,0 +1,6 @@
+<ul>
+    <li ng-repeat="node in $ctrl.process.children">
+        {{node.model.name}}/{{node.model.id}}
+        <mc-process-graph-outline-dir process="node"></mc-process-graph-outline-dir>
+    </li>
+</ul>
