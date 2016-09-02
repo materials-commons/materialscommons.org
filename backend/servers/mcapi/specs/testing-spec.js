@@ -1,41 +1,46 @@
 // this file contains a few general specs for global testing of testing
 'use strict';
 
+require('co');
 require('mocha');
-//require('mocha-co');
+require('mocha-co');
 let chai = require('chai');
 let assert = require('chai').assert;
+let fs = require('fs')
+let filename = 'junk';
 
-describe('Place holder for testing of testing - top level', function () {
-    describe('Testing spec of acynchronous function (using promise): ', function () {
-        it('random test of sucess/fail on promise', function() {
-            let worker = function () {
-                return Math.floor(Math.random() * 2) + 1;
-            };
-
-            console.log('start');
-            var promise = new Promise(function (fulfill, reject) {
-                
-                var n = worker();
-                if (n === 1) {
-                    fulfill(n);
-                } else {
-                    reject(n);
-                }
-                console.log('run promise');
-            });
-
-            console.log('promise set');
-
-            return promise.then(function (x) {
-                console.log('success branch');
-                assert.equal(x,1);
-                console.log('after assert one');
-            }, function (x) {
-                console.log('fail branch');
-                assert.equal(x,2);
-                console.log('after assert two');
-            });
-        });
+describe('Testing-testing sync of acynchronous function:',function () {
+    it.skip('file reader with callback - error callback',function(done){
+        let fs = require('fs')
+        let filename = 'junk';
+        fs.readFile(filename, 'utf8',
+            function(res) {
+                console.log(res);
+                assert.is.not.null(res.value);
+                done();
+            },
+            function(err){
+                console.log(err);
+                let message = err.message;
+                assert.include(message,"no such file or directory");
+                done();
+            }
+        );
+    });
+    it.skip('generator does not work!', function* () {
+        console.log(start);
+        let res = "no data";
+        try {
+            res = yield fs.readFile(filename, 'utf8');
+            console.log(res);
+            assert.is.not.null(res.value);
+        }
+        catch(err) {
+            console.log(err);
+            let message = err.message;
+            assert.include(message,"no such file or directory");
+            assert.fail();
+        }
+        console.log(res);
     });
 });
