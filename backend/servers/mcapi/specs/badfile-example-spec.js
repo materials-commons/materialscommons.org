@@ -1,13 +1,14 @@
 'use strict';
 
-require('mocha-co');
+require('mocha');
+require('co-mocha');
 let chai = require('chai');
 let assert = require('chai').assert;
 let fs = require('fs')
 let filename = 'junk';
 
 describe('Testing-testing sync of acynchronous function:',function () {
-    it('generator does not work!', function* () {
+    it.skip('generator does not work!', function* () {
         console.log(start);
         let res = "no data";
         try {

@@ -1,9 +1,8 @@
 // this file contains a few general specs for global testing of testing
 'use strict';
 
-require('co');
 require('mocha');
-require('mocha-co');
+require('co-mocha');
 let chai = require('chai');
 let assert = require('chai').assert;
 let fs = require('fs')

@@ -1,6 +1,9 @@
 // test/spec for backend/servers/mcapi/db/model/project.js
 'use strict';
 
+require('mocha');
+require('co-mocha');
+
 let assert = require('chai').assert;
 let connection = require('rethinkdbdash')({
     db: process.env.MCDB || 'materialscommons',
@@ -15,7 +18,7 @@ describe('Test in backend/servers/mcapi/db/model/project.js - ', function () {
         it("project named 'Test' should exist", function*() {
             let projectsList = yield projects.all();
             let name = "not found";
-            console.log(projectsList);
+//            console.log(projectsList);
             for (let project of projectsList) {
                 if (project.name == 'Test') {
                     name = project.name;
