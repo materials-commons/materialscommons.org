@@ -13,8 +13,10 @@ let datasets = require('../experiment-datasets')(connection);
 describe('Test in backend/servers/mcapi/db/model/experiment-datasets.js - ', function () {
     describe('find dataset by id - ',function() {
         it('Should fail',function* () {
-            yield Promise.promisify(function(){
+            return yield new Promise(function(){
+                console.log("just before failing assert");
                 assert.equal(2,1);
+                console.log("just after failing assert");
             });
         });
     });
