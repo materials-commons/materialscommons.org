@@ -10,7 +10,7 @@ let promiseify = require('promise.ify');
 
 describe('General specs - top level', function () {
     describe('Testing general spec', function () {
-        it('should succeed', function () {
+        it.skip('should succeed', function () {
             assert.equal(0, 0, "zero is zero");
         });
         it.skip('should fail', function () {
@@ -18,7 +18,7 @@ describe('General specs - top level', function () {
         });
     });
     describe('Testing spec of acynchronous function',function(){
-        it('should succeed', function* (){
+        it.skip('should succeed', function* (){
 
         });
     });
