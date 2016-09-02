@@ -2,7 +2,7 @@
 'use strict';
 
 require('mocha');
-//require('mocha-co');
+//require('co-mocha');
 let chai = require('chai');
 let assert = require('chai').assert;
 
