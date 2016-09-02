@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server-test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec -r should --recursive backend/server",
-    "server-test-components": "./node_modules/.bin/_mocha --compilers js:babel-core/register \"backend/**/specs/*-spec.js\" "
+    "server-test-components": "./node_modules/.bin/_mocha --compilers js:babel-core/register \"backend/**/specs/*-spec.js\" --reporter mochawesome "
   },
   "author": "",
   "license": "ISC",
@@ -87,6 +87,7 @@
     "mocha": "^2.5.3",
     "mocha-co": "^1.17.1",
     "mocha-generators": "^1.2.0",
+    "mochawesome": "^1.5.2",
     "ng-annotate-loader": "0.0.10",
     "phantomjs": "~1.9.18",
     "should": "^5.2.0",
