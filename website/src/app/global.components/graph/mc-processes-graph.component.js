@@ -237,9 +237,9 @@ class MCProcessesGraphComponentController {
             case "analysis":
                 return "roundrectangle";
             case "create":
-                return "vee";
+                return "diamond";
             case "import":
-                return "vee";
+                return "diamond";
         }
     }
 
