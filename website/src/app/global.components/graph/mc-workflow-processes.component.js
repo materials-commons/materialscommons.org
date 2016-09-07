@@ -7,6 +7,7 @@ class MCWorkflowProcessesComponentController {
                 title: 'CREATE SAMPLES',
                 cssClass: 'mc-create-samples-color',
                 icon: 'fa-cubes',
+                margin: true,
                 templates: this.templates.filter(t => t.process_type === 'transform' && t.name === 'Create Samples')
             },
             {
