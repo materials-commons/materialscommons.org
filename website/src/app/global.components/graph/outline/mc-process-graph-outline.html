@@ -1,8 +1,38 @@
 <div>
-    <ul>
-        <li ng-repeat="node in $ctrl.rootNode.children">
-            {{node.model.name}}/{{node.model.id}}
-            <mc-process-graph-outline-dir process="node"></mc-process-graph-outline-dir>
-        </li>
-    </ul>
+    <md-content style="max-height: 70vh">
+        <ul>
+            <li ng-repeat="node in $ctrl.rootNode.children">
+                <h2 class="md-title"
+                    ng-class="{'has-children': node.children.length}"
+                    ng-click="node.model.show = !node.model.show">{{::node.model.name}}/{{::node.model.id}}</h2>
+                <div ng-if="::node.model.input_samples.length" style="margin-left:60px">
+                    <h4 class="md-subhead">Input Samples</h4>
+                    <ul>
+                        <li ng-repeat="sample in ::node.model.input_samples">
+                            {{::sample.name}}
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="::node.model.output_samples.length" style="margin-left:60px">
+                    <h4 class="md-subhead">Output Samples</h4>
+                    <ul>
+                        <li ng-repeat="sample in ::node.model.output_samples">
+                            {{::sample.name}}
+                        </li>
+                    </ul>
+                </div>
+                <div ng-if="::node.model.files.length" style="margin-left:60px">
+                    <h4 class="md-subhead">Files</h4>
+                    <ul>
+                        <li ng-repeat="file in ::node.model.files">
+                            {{::file.name}}
+                        </li>
+                    </ul>
+                </div>
+                <mc-process-graph-outline-dir process="node"
+                                              ng-if="node.model.show">
+                </mc-process-graph-outline-dir>
+            </li>
+        </ul>
+    </md-content>
 </div>

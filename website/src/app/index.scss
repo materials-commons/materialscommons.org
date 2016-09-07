@@ -66,6 +66,11 @@ $mc-import-samples-color: #b2bfdb;
   color: white;
 }
 
+.has-children {
+  cursor: pointer;
+  color: $mc-md-primary-color;
+}
+
 .project-card {
   background-color: $mc-light-grey;
 }
