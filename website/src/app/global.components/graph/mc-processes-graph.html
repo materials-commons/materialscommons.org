@@ -5,11 +5,11 @@
     <div flex-offset="70">
         <div layout="row">
             <a ng-click="$ctrl.showGraphView = true"
-               ng-style="!$ctrl.showGraphView && {'color': 'black'}">
+               ng-style="$ctrl.showGraphView && {'color': 'black'}">
                 <i class="fa fa-fw fa-sitemap" style="margin-bottom: 15px"></i>
             </a>
             <a ng-click="$ctrl.showGraphView = false"
-               ng-style="$ctrl.showGraphView && {'color': 'black'}">
+               ng-style="!$ctrl.showGraphView && {'color': 'black'}">
                 <i class="fa fa-fw fa-th-list" style="margin-bottom: 15px"></i>
             </a>
         </div>
