@@ -78,6 +78,7 @@ module.exports.getOne = function*(next) {
 };
 
 module.exports.getZipfile = function*(next) {
+    console.lot("Arrived at getZipfile: " + this.params.id);
     let ds = yield r.table('datasets').get(this.params.id);
     let fullPath = zipFileUtils.fullPathAndFilename(ds);
     console.log("Full path = " + fullPath);
