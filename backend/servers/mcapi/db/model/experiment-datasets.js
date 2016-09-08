@@ -351,25 +351,22 @@ module.exports = function(r) {
     }
 
     function* publishDatasetZipFile(datasetId){
-//        console.log("reached - publishDatasetZipFile: datasetId = " + datasetId);
         let ds = yield r.table('datasets').get(datasetId);
-        let baseDir = zipFileUtils.baseDir(ds);
-//        console.log("base zip dir = " + baseDir);
-        yield mkdirpAsync(baseDir);
-        var zipFilename = zipFileUtils.zipFilename(ds);
-        const landing = baseDir + zipFilename + ".zip";
-//        console.log("landing = " + landing);
+        let zipDirPath = zipFileUtils.zipDirPath(ds);
+        let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
+
+        yield mkdirpAsync(zipDirPath);
+
         let ds2dfEntries = yield r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
         if (!ds2dfEntries.length) {
-//            console.log("found no ds2dfEntries");
             return;
         }
-//        console.log("found ds2dfEntries: " + ds2dfEntries.length);
         let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
         let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
+
         return new Promise( function(resolve,reject) {
             var archive = archiver('zip');
-            var output = fs.createWriteStream(landing);
+            var output = fs.createWriteStream(fillPathAndFilename);
             output.on('close', function() {
 //                console.log(archive.pointer() + ' total bytes');
 //                console.log('archiver has been finalized and the output file descriptor has closed.');
