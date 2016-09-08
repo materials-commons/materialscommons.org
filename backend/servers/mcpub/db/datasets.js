@@ -82,7 +82,7 @@ module.exports.getZipfile = function*(next) {
     let ds = yield r.table('datasets').get(this.params.id);
     let fullPath = zipFileUtils.fullPathAndFilename(ds);
     console.log("Full path = " + fullPath);
-    this.body = "Nothing Yet";
+    this.body = yield fsa.readFile(fullPath);
     yield next;
 }
 
