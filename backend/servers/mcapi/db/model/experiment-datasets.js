@@ -1,5 +1,4 @@
 module.exports = function(r) {
-    const sanitize = require("sanitize-filename");
     const fs = require("fs");
     const Promise = require("bluebird");
     const mkdirpAsync = Promise.promisify(require('mkdirp'));
@@ -11,6 +10,7 @@ module.exports = function(r) {
     const commonQueries = require('./common-queries');
     const _ = require('lodash');
     const util = require('./util');
+    const zipFileUtils = require('../../../lib/zipFileUtils')
 
     return {
         getDatasetsForExperiment,
@@ -351,38 +351,28 @@ module.exports = function(r) {
     }
 
     function* publishDatasetZipFile(datasetId){
-        console.log("reached - publishDatasetZipFile: datasetId = " + datasetId);
-        const base = process.env.MCDIR;
-        if (!base) {
-            console.log("base - error = " + base);
-//            throw new Error({message: "Can not create zipfile for dataset: message to admin - 'No MCDIR' "});
-        }
-        let ds = yield r.table('datasets').get("72d11fe9-914b-4eeb-b477-944c134063e2");
-        let title = ds.title;
-        let filename = sanitize(title);
-        let zipDir = base + "/zipfiles/" + datasetId + "/";
-        console.log("zip dir = " + zipDir);
-        yield mkdirpAsync(zipDir);
-        const landing = zipDir + filename + ".zip";
-        console.log("landing = " + landing);
+//        console.log("reached - publishDatasetZipFile: datasetId = " + datasetId);
+        let ds = yield r.table('datasets').get(datasetId);
+        let baseDir = zipFileUtils.baseDir(ds);
+//        console.log("base zip dir = " + baseDir);
+        yield mkdirpAsync(baseDir);
+        var zipFilename = zipFileUtils.zipFilename(ds);
+        const landing = baseDir + zipFilename + ".zip";
+//        console.log("landing = " + landing);
         let ds2dfEntries = yield r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
         if (!ds2dfEntries.length) {
-            console.log("found no ds2dfEntries");
+//            console.log("found no ds2dfEntries");
             return;
         }
-        console.log("found ds2dfEntries: " + ds2dfEntries.length);
+//        console.log("found ds2dfEntries: " + ds2dfEntries.length);
         let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
         let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
-        let filenames = datafiles.map(fdesc => fdesc.id);
-        filenames.forEach(path => {
-            console.log(path);
-        });
         return new Promise( function(resolve,reject) {
-            let output = fs.createWriteStream(landing);
-            let archive = archiver('zip');
+            var archive = archiver('zip');
+            var output = fs.createWriteStream(landing);
             output.on('close', function() {
-                console.log(archive.pointer() + ' total bytes');
-                console.log('archiver has been finalized and the output file descriptor has closed.');
+//                console.log(archive.pointer() + ' total bytes');
+//                console.log('archiver has been finalized and the output file descriptor has closed.');
                 resolve();
             });
 
@@ -390,14 +380,12 @@ module.exports = function(r) {
 
             archive.pipe(output);
 
-            filenames.forEach(name => {
-                var parts = name.split("-");
-                var part = parts[1];
-                var partA = part.substring(0,2);
-                var partB = part.substring(2);
-                var path = base + "/" + partA + "/" + partB + "/" + name;
-                console.log("archiving " + path + " as" + name);
-                archive.append(fs.createReadStream(path),{name:name});
+            datafiles.forEach(df => {
+                let zipEntry = zipFileUtils.zipEntry(df); // sets fileName and sourcePath
+                let path = zipEntry.sourcePath;
+                let name = zipEntry.fileName;
+                console.log("archiving " + path + " as " + name);
+                archive.append(path,{ name: name });
             });
 
             archive.finalize();
