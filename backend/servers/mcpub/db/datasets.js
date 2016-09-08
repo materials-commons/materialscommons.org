@@ -1,4 +1,5 @@
 var r = require('./../dash');
+const zipFileUtils = require('../../lib/zipFileUtils');
 //var parse = require('co-body');
 
 module.exports.getAll = function*(next) {
@@ -76,5 +77,14 @@ module.exports.getOne = function*(next) {
 module.exports.getMockReleases = function*() {
     this.body = [{DOI: "ABC123"}, {DOI: "DEF123"}]
 };
+
+module.exports.getZipfilePath = function*(datasetId) {
+    let ds = yield r.table('datasets').get(datasetId);
+    let dsTitle = ds.title;
+    let baseDir = zipFileUtils.baseDir(ds);
+    let zipFilename = zipFileUtils.zipFilename(ds);
+    let landing = baseDir + zipFilename + ".zip";
+    return {title: dsTitle, path: landing};
+}
 
 
