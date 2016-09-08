@@ -32,7 +32,7 @@ router.get('/datasets', datasets.getAll);
 router.get('/datasets/count', datasets.getAllCount);
 router.get('/datasets/recent', datasets.getRecent);
 router.get('/datasets/views', datasets.getTopViews);
-router.get('/datasets/download/:id', datasets.)
+router.get('/datasets/download/:id', datasets.getZipfile);
 router.get('/datasets/:id', datasets.getOne);
 router.get('/user/:email', user.get);
 router.get('/actions/:dataset_id', action.getAll);
