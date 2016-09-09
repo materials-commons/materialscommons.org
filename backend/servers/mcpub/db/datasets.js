@@ -1,7 +1,7 @@
 var r = require('./../dash');
 const zipFileUtils = require('../../lib/zipFileUtils');
 const Promise = require('bluebird');
-const fsa = Promise.promisify(require('fs'));
+const fsa = Promise.promisifyAll(require('fs'));
 
 //var parse = require('co-body');
 
@@ -18,6 +18,7 @@ module.exports.getAll = function*(next) {
 };
 
 module.exports.getAllCount = function*(next) {
+    console.log("getAllCount");
     this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).count();
     yield next;
 };
@@ -78,11 +79,11 @@ module.exports.getOne = function*(next) {
 };
 
 module.exports.getZipfile = function*(next) {
-    console.lot("Arrived at getZipfile: " + this.params.id);
-    let ds = yield r.table('datasets').get(this.params.id);
+    // console.log("Arrived at getZipfile: " + this.params.id);
+    let ds = yield r.db('materialscommons').table('datasets').get(this.params.id);
     let fullPath = zipFileUtils.fullPathAndFilename(ds);
-    console.log("Full path = " + fullPath);
-    this.body = yield fsa.readFile(fullPath);
+    // console.log("Full path = " + fullPath);
+    this.body = yield fsa.readFileAsync(fullPath);
     yield next;
 }
 
