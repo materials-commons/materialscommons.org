@@ -18,7 +18,6 @@ module.exports.getAll = function*(next) {
 };
 
 module.exports.getAllCount = function*(next) {
-    console.log("getAllCount");
     this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).count();
     yield next;
 };
