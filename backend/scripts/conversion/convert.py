@@ -135,7 +135,7 @@ def main():
     # fix_transform_process_directions(conn)
 
     # These are valid steps:
-    # fix_samples_from_create_samples(conn)
+    fix_samples_from_create_samples(conn)
     set_processes_destructive_flag(conn)
     set_process_type(conn)
 
