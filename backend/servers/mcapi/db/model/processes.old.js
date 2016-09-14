@@ -16,7 +16,7 @@ module.exports = function(r) {
     const db = require('./db')(r);
     const dbExec = require('./run');
     const _ = require('lodash');
-    const commonQueries = require('./common-queries');
+    const commonQueries = require('../../../lib/common-queries');
 
     return {
         update: update,
