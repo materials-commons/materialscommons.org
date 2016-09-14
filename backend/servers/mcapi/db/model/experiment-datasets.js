@@ -1,10 +1,16 @@
 module.exports = function(r) {
+    const fs = require("fs");
+    const Promise = require("bluebird");
+    const mkdirpAsync = Promise.promisify(require('mkdirp'));
+    const archiver = require('archiver');
+
     const dbExec = require('./run');
     const db = require('./db')(r);
     const model = require('./model')(r);
     const commonQueries = require('../../../lib/common-queries');
     const _ = require('lodash');
     const util = require('./util');
+    const zipFileUtils = require('../../../lib/zipFileUtils')
 
     return {
         getDatasetsForExperiment,
@@ -211,6 +217,7 @@ module.exports = function(r) {
         yield publishDatasetProcesses(datasetId);
         yield publishDatasetSamples(datasetId);
         yield publishDatasetFiles(datasetId);
+        yield publishDatasetZipFile(datasetId);
         yield r.table('datasets').get(datasetId).update({published: true});
         return yield getDataset(datasetId);
     }
@@ -341,6 +348,46 @@ module.exports = function(r) {
             }
         });
         yield r.db('mcpub').table('process2file').insert(p2fEntries);
+    }
+
+    function* publishDatasetZipFile(datasetId) {
+        let ds = yield r.table('datasets').get(datasetId);
+        let zipDirPath = zipFileUtils.zipDirPath(ds);
+        let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
+
+        yield mkdirpAsync(zipDirPath);
+
+        let ds2dfEntries = yield r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
+        if (!ds2dfEntries.length) {
+            return;
+        }
+        let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
+        let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
+
+        return new Promise(function(resolve, reject) {
+            var archive = archiver('zip');
+            var output = fs.createWriteStream(fillPathAndFilename);
+            output.on('close', function() {
+//                console.log(archive.pointer() + ' total bytes');
+//                console.log('archiver has been finalized and the output file descriptor has closed.');
+                resolve();
+            });
+
+            archive.on('error', reject);
+
+            archive.pipe(output);
+
+            datafiles.forEach(df => {
+                let zipEntry = zipFileUtils.zipEntry(df); // sets fileName and sourcePath
+                let path = zipEntry.sourcePath;
+                let name = zipEntry.fileName;
+                console.log("archiving " + path + " as " + name);
+                archive.append(path, {name: name});
+            });
+
+            archive.finalize();
+
+        });
     }
 
     function* unpublishDataset(datasetId) {
