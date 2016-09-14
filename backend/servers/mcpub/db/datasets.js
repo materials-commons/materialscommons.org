@@ -1,5 +1,5 @@
-var r = require('./../dash');
-//var parse = require('co-body');
+const r = require('./../dash');
+const commonQueries = require('../../lib/common-queries');
 
 module.exports.getAll = function*(next) {
     this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
@@ -42,6 +42,9 @@ module.exports.getTopViews = function*(next) {
 };
 
 module.exports.getOne = function*(next) {
+    let processesRql = commonQueries.processDetailsRql(r.table('dataset2process')
+        .getAll(this.params.id, {index: 'dataset_id'})
+        .eqJoin('process_id', r.table('processes')).zip(), r)
     this.body = yield r.db('materialscommons').table('datasets').get(this.params.id).merge(function(ds) {
         return {
             'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
@@ -56,9 +59,7 @@ module.exports.getOne = function*(next) {
             'tags': r.table('tag2dataset').getAll(ds('id'), {index: "dataset_id"}).map(function(row) {
                 return r.table('tags').get(row('tag'));
             }).coerceTo('array'),
-            'processes': r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'}).map(function(row) {
-                return r.table('processes').get(row('process_id'))
-            }).coerceTo('array'),
+            processes: processesRql.coerceTo('array'),
             'samples': r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).map(function(row) {
                 return r.table('samples').get(row('sample_id'))
             }).coerceTo('array')

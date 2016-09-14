@@ -3,7 +3,7 @@ module.exports = function(r) {
     const model = require('./model')(r);
     const db = require('./db')(r);
     const _ = require('lodash');
-    const commonQueries = require('./common-queries');
+    const commonQueries = require('../../../lib/common-queries');
 
     return {
         getSample,
