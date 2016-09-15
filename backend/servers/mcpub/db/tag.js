@@ -13,7 +13,7 @@ module.exports.addTag = function*(next) {
     var rv;
     var err = yield tagSchema.validateAsync(params);
     if (err) {
-        this['throw'](httpStatus.BAD_GATEWAY, 'Validation error');
+        this['throw'](httpStatus.NOT_FOUND, 'Validation error: ' + err);
     }
     var is_tag = yield tag.getTag(params.tag);
     if (!is_tag) {
@@ -56,6 +56,7 @@ module.exports.getTagsByCount = function*(next) {
 };
 
 module.exports.getAllTags = function*(next) {
+    console.log("server: getAllTags");
     this.body = yield r.table('tags').orderBy('id').merge(function(tag) {
         return {
             count: r.table('tag2dataset').getAll(tag('id'), {index: 'tag'}).count()
