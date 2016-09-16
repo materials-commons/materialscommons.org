@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 
 import rethinkdb as r
-from optparse import OptionParser
+# Note: "optparse is deprecated; you should use argparse in both python2 and python3"
+# ref: http://stackoverflow.com/questions/4960880/understanding-optionparser
+# link: http://docs.python.org/library/argparse.html#module-argparse
+# rewiritten to comply - Fri Sep 16 07:54:54 EDT 2016
+# from optparse import OptionParser
+import argparse
+import tarfile
 import sys
 import os
 
@@ -16,33 +22,22 @@ def makePath(x):
     return s[:2] + "/" + s[2:] + "/" + x
 
 def getOptions():
-    parser = OptionParser()
-    parser.add_option("-i", "--id", dest="id",
-                      help="dataset id", type="string")
-    parser.add_option("-P", "--port",dest="port", type="int",
-                      help="rethinkdb port", default=30815)
-    parser.add_option("-B", "--base",dest="base", type='string');
-
-    (options, args) = parser.parse_args()
-
-    if options.id is None:
-        print "You must specify a dataset id"
-        sys.exit(1)
-
-    if options.base is None:
-        print "You must specify a base directory"
-        sys.exit(1)
-
-    return options
-
+    parser = argparse.ArgumentParser(description='Build Tar of files for a dataset.')
+    parser.add_argument("--base",dest="base", required=True,
+                        help="the 'base' file system path of the directory for dataset files")
+    parser.add_argument("--id",  dest="id", required=True,
+                    help='the database id of the dataset to use')
+    parser.add_argument("--port", dest="port", type=int,
+                    help="rethinkdb port", default=30815)
+    args = parser.parse_args()
+    return args
 
 if __name__ == "__main__":
 
-    options = getOptions()
-    dataset_id = options.id
-    base_dir = options.base
-    db_port = options.port
-
+    args = getOptions()
+    dataset_id = args.id
+    base_dir = args.base
+    db_port = args.port
 
     conn = r.connect('localhost', db_port, db='materialscommons')
 
@@ -59,7 +54,19 @@ if __name__ == "__main__":
         .eq_join('datafile_id',r.table('datafiles'))
         .zip().pluck('usesid', 'datafile_id').run(conn))
 
-    mapping = map(makePath,map(usesidRemap,entries))
+    targets = map(usesidRemap,entries)
 
-    for x in mapping:
-        print base_dir + "/" + x
+    paths = map(makePath, targets)
+
+    arcbase="tarbase/"
+    if (base_dir[-1:] != "/"): base_dir = base_dir + "/"
+    print "base is " + base_dir
+
+    tar = tarfile.open("sample.tar", "w")
+    for path in paths:
+        path_in = base_dir + path;
+        path_out = arcbase + path;
+        print "adding " + path_in + " as " + path_out
+        tar.add(path_in,arcname=path_out)
+    tar.close()
+
