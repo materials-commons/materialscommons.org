@@ -50,22 +50,23 @@ module.exports.getOne = function*(next) {
         .eqJoin('process_id', r.table('processes')).zip(), r)
     this.body = yield r.db('materialscommons').table('datasets').get(this.params.id).merge(function(ds) {
         return {
-            'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
+            files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
                 .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
-            'other_datasets': r.db('materialscommons').table('datasets').getAll(ds('owner'), {index: "owner"})
+            other_datasets: r.db('materialscommons').table('datasets').getAll(ds('owner'), {index: "owner"})
                 .filter({published: true}).merge(function(od) {
                 return {
                     'files': r.table('dataset2datafile').getAll(od('id'), {index: 'dataset_id'})
                         .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array')
                 }
             }).coerceTo('array'),
-            'tags': r.table('tag2dataset').getAll(ds('id'), {index: "dataset_id"}).map(function(row) {
+            tags: r.table('tag2dataset').getAll(ds('id'), {index: "dataset_id"}).map(function(row) {
                 return r.table('tags').get(row('tag'));
             }).coerceTo('array'),
             processes: processesRql.coerceTo('array'),
-            'samples': r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).map(function(row) {
+            samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).map(function(row) {
                 return r.table('samples').get(row('sample_id'))
-            }).coerceTo('array')
+            }).coerceTo('array'),
+            publisher: (!ds('owner'))?'unknown':r.db('materialscommons').table('users').get(ds('owner')).getField("fullname")
         }
     });
     if (this.params.user_id) {
