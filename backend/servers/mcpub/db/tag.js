@@ -56,7 +56,6 @@ module.exports.getTagsByCount = function*(next) {
 };
 
 module.exports.getAllTags = function*(next) {
-    console.log("server: getAllTags");
     this.body = yield r.table('tags').orderBy('id').merge(function(tag) {
         return {
             count: r.table('tag2dataset').getAll(tag('id'), {index: 'tag'}).count()
