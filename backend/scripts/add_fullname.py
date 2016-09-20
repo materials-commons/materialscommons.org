@@ -66,6 +66,6 @@ if __name__ == "__main__":
 
     for key in known_user_set:
         if (not known_user_name_dict[key]) and (key in supplied_user_name_dict):
-            
+##          r.db('materialscommons').table('users').get(key).update({"fullname":fullname}).run(comm)
             print "email, " + key + ", to be given the name: " + supplied_user_name_dict[key]
 
