@@ -381,7 +381,7 @@ module.exports = function(r) {
                 let zipEntry = zipFileUtils.zipEntry(df); // sets fileName and sourcePath
                 let path = zipEntry.sourcePath;
                 let name = zipEntry.fileName;
-                console.log("archiving " + path + " as " + name);
+//                console.log("archiving " + path + " as " + name);
                 archive.append(path, {name: name});
             });
 
