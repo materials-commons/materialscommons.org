@@ -15,6 +15,7 @@ module.exports.fullPathAndFilename = function(dataset) {
 module.exports.zipFilename = function(dataset) {
     var title = dataset.title;
     var filename = sanitize(title);
+    filename = cleanUpZipfileName(filename);
     return filename + ".zip";
 }
 
@@ -30,8 +31,25 @@ module.exports.zipEntry = function(datafile) {   // sets fileName and sourcePath
     var partA = part.substring(0, 2);
     var partB = part.substring(2);
     var path = base + "/" + partA + "/" + partB + "/" + readName;
-    return {fileName: writeName, sourcePath: path};
+    return {fileName: writeName, sourcePath: path, checksum: datafile.checksum};
 };
+
+let cleanUpZipfileNameLengthThreshold = 60;
+let cleanUpZipfileName = function(name){
+    // truncate, cleanly if possible
+    if (name.length > cleanUpZipfileNameLengthThreshold) {
+        // brake at last blank before cleanUpZipfileNameLengthThreshold
+        var pos = name.lastIndexOf(" ",cleanUpZipfileNameLengthThreshold);
+        if (pos > 11) {
+            name = name.substring(0,pos-1);
+        } else {
+            name = name.substring(0,cleanUpZipfileNameLengthThreshold);
+        }
+    }
+    // remove blanks
+    name = name.replace(/ /g,"_");
+    return name;
+}
 
 let getBase = function() {
     var base = process.env.MCDIR;
