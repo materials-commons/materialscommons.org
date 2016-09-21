@@ -214,12 +214,40 @@ module.exports = function(r) {
     }
 
     function* publishDataset(datasetId) {
+        yield publishDatasetKeywords(datasetId);
         yield publishDatasetProcesses(datasetId);
         yield publishDatasetSamples(datasetId);
         yield publishDatasetFiles(datasetId);
         yield publishDatasetZipFile(datasetId);
         yield r.table('datasets').get(datasetId).update({published: true});
         return yield getDataset(datasetId);
+    }
+    /*
+     * publishDatasetKeywords adds any dataset keywords to the tags in the published dataset
+     * and associated those keywords with the published document. Keywords that are already
+     * present are unchanged, association links that already exist are not added.
+     */
+    function* publishDatasetKeywords(datasetId) {
+        let dataset = yield r.db('materialscommons').table('datasets').get(datasetId);
+        let keywords = dataset['keywords'];
+        let tags = keywords.map(id => {
+            return {id:id};
+        });
+        let alreadyJoined = yield r.db('mcpub').table('tag2dataset').filter({dataset_id:  datasetId})
+        alreadyJoined = alreadyJoined.map(doc => {
+            return doc.tag;
+        });
+        alreadyJoined = new Set(alreadyJoined);
+        let tagsToJoin = keywords.filter(key => {
+            return  !alreadyJoined.has(key);
+        });
+        let joins = tagsToJoin.map(tag => {
+            return {tag: tag, dataset_id: datasetId};
+        });
+        yield r.db('mcpub').table('tags').insert( tags,{ conflict:'update'})
+        if (tagsToJoin.length > 0) {
+            yield r.db('mcpub').table('tag2dataset').insert( joins,{ conflict:'update'});
+        }
     }
 
     function* publishDatasetProcesses(datasetId) {
