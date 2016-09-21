@@ -10,7 +10,8 @@ module.exports = function(r) {
     const commonQueries = require('../../../lib/common-queries');
     const _ = require('lodash');
     const util = require('./util');
-    const zipFileUtils = require('../../../lib/zipFileUtils')
+    const zipFileUtils = require('../../../lib/zipFileUtils');
+    const path = require('path');
 
     return {
         getDatasetsForExperiment,
@@ -395,6 +396,7 @@ module.exports = function(r) {
         return new Promise(function(resolve, reject) {
             var archive = archiver('zip');
             var output = fs.createWriteStream(fillPathAndFilename);
+
             output.on('close', function() {
 //                console.log(archive.pointer() + ' total bytes');
 //                console.log('archiver has been finalized and the output file descriptor has closed.');
@@ -405,17 +407,53 @@ module.exports = function(r) {
 
             archive.pipe(output);
 
+            var seenThisOne = {};
+
             datafiles.forEach(df => {
-                let zipEntry = zipFileUtils.zipEntry(df); // sets fileName and sourcePath
+                let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, sourcePath
                 let path = zipEntry.sourcePath;
                 let name = zipEntry.fileName;
-//                console.log("archiving " + path + " as " + name);
-                archive.append(path, {name: name});
+                let checksum = zipEntry.checksum;
+                name = resolveZipfileFilenameDuplicates(seenThisOne,name,checksum);
+                if (name) {
+                    archive.append(path, {name: name});
+                }
             });
 
             archive.finalize();
 
         });
+    }
+
+    function resolveZipfileFilenameDuplicates(seenThisOne,name,checksum){
+        name = name.toLowerCase();
+
+        if (name.startsWith(".")) {
+            name = "dot" + name;
+        }
+
+        if (name in seenThisOne) {
+            var count = 0;
+            if (seenThisOne[name] == checksum) {
+                console.log("Seen this file before: " + name);
+                return null;
+            } else {
+                let newName = resolveZipfileFilenameUnique(name, count);
+                while (newName in seenThisOne) {
+                    count++;
+                    newName = resolveZipfileFilenameUnique(name, count);
+                }
+                // console.log(name + " --> " + newName);
+                name = newName;
+            }
+        }
+        seenThisOne[name] = checksum;
+        return name;
+    }
+
+    function resolveZipfileFilenameUnique(name, count) {
+        let parts = path.parse(name);
+        return parts.name + "_" + count + parts.ext;
     }
 
     function* unpublishDataset(datasetId) {
