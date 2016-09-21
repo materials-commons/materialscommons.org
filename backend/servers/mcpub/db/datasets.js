@@ -27,6 +27,8 @@ module.exports.getRecent = function*(next) {
             return {
                 'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
                     .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+                'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
+                'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
             }
         }).limit(10);
     yield next;
@@ -47,7 +49,7 @@ module.exports.getTopViews = function*(next) {
 module.exports.getOne = function*(next) {
     let processesRql = commonQueries.processDetailsRql(r.table('dataset2process')
         .getAll(this.params.id, {index: 'dataset_id'})
-        .eqJoin('process_id', r.table('processes')).zip(), r)
+        .eqJoin('process_id', r.table('processes')).zip(), r);
     this.body = yield r.db('materialscommons').table('datasets').get(this.params.id).merge(function(ds) {
         return {
             files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
@@ -85,7 +87,7 @@ module.exports.getZipfile = function*(next) {
     // console.log("Full path = " + fullPath);
     this.body = yield fsa.readFileAsync(fullPath);
     yield next;
-}
+};
 
 module.exports.getMockReleases = function*() {
     this.body = [{DOI: "ABC123"}, {DOI: "DEF123"}]
