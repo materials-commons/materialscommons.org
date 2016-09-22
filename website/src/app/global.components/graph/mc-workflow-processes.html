@@ -8,7 +8,8 @@
             <span ng-class="{expandCollapse:true, active:templateType.expanded}"></span>
         </div>
     </md-toolbar>
-    <div class="dataContent" ng-class="{activeContent:templateType.expanded}">
+    <div class="dataContent" ng-class="{activeContent:templateType.expanded}"
+         ng-style="templateType.margin && {'margin-bottom': '7px'}">
         <input type="text" placeholder="Search..." class="mc-input-as-line" ng-model="templateType.searchBy">
     </div>
     <div ng-repeat="template in templateType.templates | filter:templateType.searchBy | orderBy:'name'"

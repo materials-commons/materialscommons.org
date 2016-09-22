@@ -1,5 +1,8 @@
-var r = require('./../dash');
-//var parse = require('co-body');
+const r = require('./../dash');
+const commonQueries = require('../../lib/common-queries');
+const zipFileUtils = require('../../lib/zipFileUtils');
+const Promise = require('bluebird');
+const fsa = Promise.promisifyAll(require('fs'));
 
 module.exports.getAll = function*(next) {
     this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
@@ -24,6 +27,8 @@ module.exports.getRecent = function*(next) {
             return {
                 'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
                     .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+                'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
+                'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
             }
         }).limit(10);
     yield next;
@@ -42,26 +47,28 @@ module.exports.getTopViews = function*(next) {
 };
 
 module.exports.getOne = function*(next) {
+    let processesRql = commonQueries.processDetailsRql(r.table('dataset2process')
+        .getAll(this.params.id, {index: 'dataset_id'})
+        .eqJoin('process_id', r.table('processes')).zip(), r);
     this.body = yield r.db('materialscommons').table('datasets').get(this.params.id).merge(function(ds) {
         return {
-            'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
+            files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
                 .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
-            'other_datasets': r.db('materialscommons').table('datasets').getAll(ds('owner'), {index: "owner"})
+            other_datasets: r.db('materialscommons').table('datasets').getAll(ds('owner'), {index: "owner"})
                 .filter({published: true}).merge(function(od) {
                 return {
                     'files': r.table('dataset2datafile').getAll(od('id'), {index: 'dataset_id'})
                         .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array')
                 }
             }).coerceTo('array'),
-            'tags': r.table('tag2dataset').getAll(ds('id'), {index: "dataset_id"}).map(function(row) {
+            tags: r.table('tag2dataset').getAll(ds('id'), {index: "dataset_id"}).map(function(row) {
                 return r.table('tags').get(row('tag'));
             }).coerceTo('array'),
-            'processes': r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'}).map(function(row) {
-                return r.table('processes').get(row('process_id'))
-            }).coerceTo('array'),
-            'samples': r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).map(function(row) {
+            processes: processesRql.coerceTo('array'),
+            samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).map(function(row) {
                 return r.table('samples').get(row('sample_id'))
-            }).coerceTo('array')
+            }).coerceTo('array'),
+            publisher: (!ds('owner'))?'unknown':r.db('materialscommons').table('users').get(ds('owner')).getField("fullname")
         }
     });
     if (this.params.user_id) {
@@ -73,8 +80,18 @@ module.exports.getOne = function*(next) {
     yield next;
 };
 
+module.exports.getZipfile = function*(next) {
+    // console.log("Arrived at getZipfile: " + this.params.id);
+    let ds = yield r.db('materialscommons').table('datasets').get(this.params.id);
+    let fullPath = zipFileUtils.fullPathAndFilename(ds);
+    // console.log("Full path = " + fullPath);
+    this.body = yield fsa.readFileAsync(fullPath);
+    yield next;
+};
+
 module.exports.getMockReleases = function*() {
     this.body = [{DOI: "ABC123"}, {DOI: "DEF123"}]
 };
+
 
 

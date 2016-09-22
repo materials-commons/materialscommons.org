@@ -15,8 +15,8 @@ module.exports = function() {
     function defineCommentSchema() {
         var comment = schema.defineSchema('Comment', {
             message: {type: 'string', nullable: false},
-            user_id: {mustExist: 'users', type: 'string', nullable: false},
-            dataset_id: {mustExist: 'datasets', type: 'string', nullable: false}
+            user_id: {mustExist: ['users','materialscommons'], type: 'string', nullable: false},
+            dataset_id: {mustExist: ['datasets', 'materialscommons'], type: 'string', nullable: false}
         });
         comment.setDefaults({
             message: ''
@@ -28,7 +28,7 @@ module.exports = function() {
     function defineTagSchema() {
         var tagSchema = schema.defineSchema('Tag', {
             tag: {type: 'string', nullable: false},
-            user_id: {mustExist: 'users', type: 'string', nullable: false}
+            user_id: {mustExist: ['users','materialscommons'], type: 'string', nullable: false}
         });
         tagSchema.setDefaults({
             tag: ''
