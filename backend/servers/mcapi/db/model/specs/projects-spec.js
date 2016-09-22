@@ -13,7 +13,6 @@ let connection = require('rethinkdbdash')({
 let projects = require('../projects')(connection);
 
 describe('Test in backend/servers/mcapi/db/model/project.js - ', function () {
-
     describe('find project - ', function () {
         it("project named 'Test' should exist", function*() {
             let projectsList = yield projects.all();

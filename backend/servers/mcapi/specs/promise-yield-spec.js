@@ -13,23 +13,27 @@ const fsp = Promise.promisifyAll(fs);
 const filename = '/tmp/textfile.txt';
 const testContent = "Hello world.";
 
-before(function(){
+before(function() {
     helperMakeFileIfNeeded(filename);
 });
 
-describe('Testing-testing sync of acynchronous function:',function () {
-    it('general yield test', function* (){
+describe('Testing-testing sync of acynchronous function:', function() {
+    it('general yield test', function* () {
         var content = (yield fsp.readFileAsync(filename)).toString();
-        assert.equal(testContent,content);
+        assert.equal(testContent, content);
     });
 });
 
 function fileExists(filePath) {
-    try { return fs.statSync(filePath).isFile(); }
-    catch (err) { return false; }
+    try {
+        return fs.statSync(filePath).isFile();
+    }
+    catch (err) {
+        return false;
+    }
 };
 
-function helperMakeFileIfNeeded(path){
+function helperMakeFileIfNeeded(path) {
     if (!fileExists(path)) {
         fs.writeFileSync(path, testContent);
     }
