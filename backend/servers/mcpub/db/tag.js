@@ -61,11 +61,9 @@ module.exports.getAllTags = function*(next) {
             count: r.table('tag2dataset').getAll(tag('id'), {index: 'tag'}).count()
         }
     });
-    console.log(res);
     res = res.filter(tagAndCount => {
         return tagAndCount.count;
     });
-    console.log(res);
     this.body = res;
     yield next;
 };
@@ -76,13 +74,8 @@ module.exports.getAllCount = function*(next) {
 };
 
 module.exports.getDatasetsByTag = function*(next) {
-    this.body = yield r.table('tag2dataset').getAll(this.params.id, {index: 'tag'}).merge(function(row) {
-        return r.table('datasets').get(row('dataset_id')).merge(function(ds) {
-            return {
-                'tags': r.table('tag2dataset').getAll(ds('id'), {index: "dataset_id"}).coerceTo('array')
-            }
-        });
-    });
+    this.body = yield r.db('mcpub').table('tag2dataset').getAll(this.params.id, {index: 'tag'})
+        .eqJoin('dataset_id', r.db("materialscommons").table('datasets')).zip();
     yield next;
 };
 
