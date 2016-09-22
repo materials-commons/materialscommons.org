@@ -6,9 +6,11 @@ module.exports = function() {
         mustExist: mustExist
     };
 
-    function mustExist(id, table_name, cb) {
-        var query = r.table(table_name).get(id);
-        return run(query).then(function(item) {
+    function mustExist(id, tableAndDatabaseName, cb) {
+        var tableName = tableAndDatabaseName[0];
+        var databaseName = tableAndDatabaseName[1];
+        var query = r.db(databaseName).table(tableName).get(id);
+        return run(query).then(item => {
             var error = null;
             if (!item) {
                 error = {

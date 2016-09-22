@@ -1,6 +1,6 @@
 module.exports = function(r) {
     const dbExec = require('./run');
-    const commonQueries = require('./common-queries');
+    const commonQueries = require('../../../lib/common-queries');
     const processCommon = require('./process-common')(r);
 
     return {

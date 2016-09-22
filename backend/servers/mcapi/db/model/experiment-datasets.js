@@ -1,10 +1,17 @@
 module.exports = function(r) {
+    const fs = require("fs");
+    const Promise = require("bluebird");
+    const mkdirpAsync = Promise.promisify(require('mkdirp'));
+    const archiver = require('archiver');
+
     const dbExec = require('./run');
     const db = require('./db')(r);
     const model = require('./model')(r);
-    const commonQueries = require('./common-queries');
+    const commonQueries = require('../../../lib/common-queries');
     const _ = require('lodash');
     const util = require('./util');
+    const zipFileUtils = require('../../../lib/zipFileUtils');
+    const path = require('path');
 
     return {
         getDatasetsForExperiment,
@@ -208,11 +215,40 @@ module.exports = function(r) {
     }
 
     function* publishDataset(datasetId) {
+        yield publishDatasetKeywords(datasetId);
         yield publishDatasetProcesses(datasetId);
         yield publishDatasetSamples(datasetId);
         yield publishDatasetFiles(datasetId);
+        yield publishDatasetZipFile(datasetId);
         yield r.table('datasets').get(datasetId).update({published: true});
         return yield getDataset(datasetId);
+    }
+    /*
+     * publishDatasetKeywords adds any dataset keywords to the tags in the published dataset
+     * and associated those keywords with the published document. Keywords that are already
+     * present are unchanged, association links that already exist are not added.
+     */
+    function* publishDatasetKeywords(datasetId) {
+        let dataset = yield r.db('materialscommons').table('datasets').get(datasetId);
+        let keywords = dataset['keywords'];
+        let tags = keywords.map(id => {
+            return {id:id};
+        });
+        let alreadyJoined = yield r.db('mcpub').table('tag2dataset').filter({dataset_id:  datasetId})
+        alreadyJoined = alreadyJoined.map(doc => {
+            return doc.tag;
+        });
+        alreadyJoined = new Set(alreadyJoined);
+        let tagsToJoin = keywords.filter(key => {
+            return  !alreadyJoined.has(key);
+        });
+        let joins = tagsToJoin.map(tag => {
+            return {tag: tag, dataset_id: datasetId};
+        });
+        yield r.db('mcpub').table('tags').insert( tags,{ conflict:'update'})
+        if (tagsToJoin.length > 0) {
+            yield r.db('mcpub').table('tag2dataset').insert( joins,{ conflict:'update'});
+        }
     }
 
     function* publishDatasetProcesses(datasetId) {
@@ -341,6 +377,83 @@ module.exports = function(r) {
             }
         });
         yield r.db('mcpub').table('process2file').insert(p2fEntries);
+    }
+
+    function* publishDatasetZipFile(datasetId) {
+        let ds = yield r.table('datasets').get(datasetId);
+        let zipDirPath = zipFileUtils.zipDirPath(ds);
+        let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
+
+        yield mkdirpAsync(zipDirPath);
+
+        let ds2dfEntries = yield r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
+        if (!ds2dfEntries.length) {
+            return;
+        }
+        let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
+        let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
+
+        return new Promise(function(resolve, reject) {
+            var archive = archiver('zip');
+            var output = fs.createWriteStream(fillPathAndFilename);
+
+            output.on('close', function() {
+//                console.log(archive.pointer() + ' total bytes');
+//                console.log('archiver has been finalized and the output file descriptor has closed.');
+                resolve();
+            });
+
+            archive.on('error', reject);
+
+            archive.pipe(output);
+
+            var seenThisOne = {};
+
+            datafiles.forEach(df => {
+                let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, sourcePath
+                let path = zipEntry.sourcePath;
+                let name = zipEntry.fileName;
+                let checksum = zipEntry.checksum;
+                name = resolveZipfileFilenameDuplicates(seenThisOne,name,checksum);
+                if (name) {
+                    archive.append(path, {name: name});
+                }
+            });
+
+            archive.finalize();
+
+        });
+    }
+
+    function resolveZipfileFilenameDuplicates(seenThisOne,name,checksum){
+        name = name.toLowerCase();
+
+        if (name.startsWith(".")) {
+            name = "dot" + name;
+        }
+
+        if (name in seenThisOne) {
+            var count = 0;
+            if (seenThisOne[name] == checksum) {
+                console.log("Seen this file before: " + name);
+                return null;
+            } else {
+                let newName = resolveZipfileFilenameUnique(name, count);
+                while (newName in seenThisOne) {
+                    count++;
+                    newName = resolveZipfileFilenameUnique(name, count);
+                }
+                // console.log(name + " --> " + newName);
+                name = newName;
+            }
+        }
+        seenThisOne[name] = checksum;
+        return name;
+    }
+
+    function resolveZipfileFilenameUnique(name, count) {
+        let parts = path.parse(name);
+        return parts.name + "_" + count + parts.ext;
     }
 
     function* unpublishDataset(datasetId) {

@@ -5,9 +5,9 @@ require('mocha');
 let chai = require('chai');
 let assert = require('chai').assert;
 
-describe('General specs - top level', function () {
-    describe('Testing general spec', function () {
-        it('should succeed', function () {
+describe('General specs - top level', function() {
+    describe('Testing general spec', function() {
+        it('should succeed', function() {
             assert.equal(0, 0, "zero is zero");
         });
     });

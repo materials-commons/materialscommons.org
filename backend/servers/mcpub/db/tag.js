@@ -13,7 +13,7 @@ module.exports.addTag = function*(next) {
     var rv;
     var err = yield tagSchema.validateAsync(params);
     if (err) {
-        this['throw'](httpStatus.BAD_GATEWAY, 'Validation error');
+        this['throw'](httpStatus.NOT_FOUND, 'Validation error: ' + err);
     }
     var is_tag = yield tag.getTag(params.tag);
     if (!is_tag) {
@@ -22,7 +22,6 @@ module.exports.addTag = function*(next) {
     }
     var exists = yield tag.getTag2Dataset(copyParams);
     if (exists.length !== 0) {
-        console.log('duplicate');
         this['throw'](httpStatus.CONFLICT, 'Duplicate request');
     } else {
         rv = yield tag.addTag2Dataset(copyParams);
@@ -57,7 +56,6 @@ module.exports.getTagsByCount = function*(next) {
 };
 
 module.exports.getAllTags = function*(next) {
-    console.log(this.req.headers);
     this.body = yield r.table('tags').orderBy('id').merge(function(tag) {
         return {
             count: r.table('tag2dataset').getAll(tag('id'), {index: 'tag'}).count()
