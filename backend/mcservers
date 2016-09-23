@@ -29,6 +29,10 @@ function start_servers()
         sleep 5
         echo "  Setting up database..."
         scripts/dbcreate.py
+        while [ $? -ne 0 ]
+        do
+            scripts/dbcreate.py
+        done
         if [ $TESTSERVER != false ]; then
             if [ "$REINIT" = "t" ]; then
                 echo "  Restoring from file $MCDB_FILE..."
@@ -42,40 +46,56 @@ function start_servers()
         fi
     fi
 
-    R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
-    if [ "$R" = "" ]; then
-        echo "  Starting mcapiserver..."
-        ./mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
-    fi
-
-    R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
-    if [ "$R" = "" ]; then
-        echo "  Starting mcstored..."
-        mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
-    fi
-
-    R=$(is_running "sbin/mcapi/mcapi.js" "p $MC_API_SERVICE_PORT")
-    if [ "$R" = "" ]; then
-        echo "  Starting mcapi..."
-        gulp build-mcapi-server
-        node sbin/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
-    fi
-
-    R=$(is_running "sbin/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
-    if [ "$R" = "" ]; then
-        echo "  Starting mcpub..."
-        gulp build-mcpub-server
-        node sbin/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
-    fi
-
-    if [ $TESTSERVER = "u" ]; then
-        if [ $(hostname) != "materialscommons" ]; then
-            R=$(is_running "web-server.js" 8000)
-            if [ "$R" = "" ]; then
-                (cd ../website; ./web-server.js 8000 > ${MC_LOG_DIR}/webserver.out.${SERVERTYPE} 2>&1&)
-            fi
+    while true
+    do
+        R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
+        if [ "$R" = "" ]; then
+            echo "  Starting mcapiserver..."
+            ./mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
+            sleep 1
+        else
+            break
         fi
-    fi
+    done
+
+    while true
+    do
+        R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
+        if [ "$R" = "" ]; then
+            echo "  Starting mcstored..."
+            mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
+            sleep 1
+        else
+            break
+        fi
+    done
+
+    while true
+    do
+        R=$(is_running "sbin/mcapi/mcapi.js" "p $MC_API_SERVICE_PORT")
+        if [ "$R" = "" ]; then
+            echo "  Starting mcapi..."
+            gulp build-mcapi-server
+            node sbin/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+            sleep 1
+        else
+            break
+        fi
+    done
+
+    while true
+    do
+        R=$(is_running "sbin/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
+        if [ "$R" = "" ]; then
+            echo "  Starting mcpub..."
+            gulp build-mcpub-server
+            node sbin/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
+            sleep 1
+        else
+            break
+        fi
+    done
+
     disown -a
     echo Started $SERVERTYPE.
 }
@@ -242,11 +262,6 @@ function status_servers()
     echo
     echo "MCSTORED Server (test/unit):"
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
-    if [ $(hostname) != "materialscommons" ]; then
-        echo
-        echo "Webserver (test/unit):"
-        ps -ef | grep web-server.js | grep 8000 | grep -v grep
-    fi
     echo
 }
 
