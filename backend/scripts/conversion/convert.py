@@ -51,7 +51,7 @@ def convert_setup_selections_to_name_value(conn):
 
 
 def add_as_received_processes(conn):
-    print "Setting process name for all processes with type 'as_received'"
+    print "Setting process name for all processes with type 'as_received'..."
     r.table('processes').filter({'process_type': 'as_received'}).update({'process_name': 'As Received'}).run(conn)
     print "Done."
 
@@ -64,16 +64,19 @@ def set_specific_process_names(conn):
     r.table('processes').get('d6d19225-2f82-426b-8e2d-2961924c6fcc').update({'process_name': 'Heat Treatment'}).run(conn)
     r.table('processes').get('65348deb-d25c-46e8-83a8-179c61e2ab01').update({'process_name': 'Heat Treatment'}).run(conn)
     r.table('processes').get('3f16c122-7683-4a2f-9d94-92bc82765fe2').update({'process_name': 'TEM'}).run(conn)
-    print "Done"
+    print "Done."
 
 
 def set_sample_direction_for_non_transform_processes(conn):
+    print "Setting sample direction for non transform processes..."
     processes = list(r.table('processes').filter({'does_transform': False}).run(conn))
     for process in processes:
         r.table('process2sample').get_all(process['id'], index='process_id').update({'direction': 'in'}).run(conn)
+    print "Done."
 
 
 def fix_transform_process_directions(conn):
+    print "Fixing transform process directions..."
     p2s = list(r.table('processes').filter({'does_transform': True})
                .eq_join('id', r.table('process2sample'), index='process_id').zip()
                .pluck('name', 'process_id', 'property_set_id', 'sample_id', 'direction', 'id')
@@ -89,20 +92,26 @@ def fix_transform_process_directions(conn):
             'process_id': p2s_entry['process_id'],
             'sample_id': p2s_entry['sample_id']
         }).run(conn)
+    print "Done."
 
 
 def fix_samples_from_create_samples(conn):
+    print "Fixing samples that came from create samples template..."
     processes = list(r.table('processes').get_all('global_Create Samples', index='template_id').run(conn))
     for process in processes:
         r.table('process2sample').get_all(process['id'], index='process_id').update({'direction': 'out'}).run(conn)
     r.table('processes').get_all('global_Create Samples', index='template_id').update({'does_transform': True}).run(conn)
+    print "Done."
 
 
 def set_processes_destructive_flag(conn):
+    print "Adding destructive flag to processes"
     r.table('processes').update({'destructive': False}).run(conn)
+    print "Done."
 
 
 def set_process_type(conn):
+    print "Adding process_type field for processes..."
     processes_no_template = list(r.table('processes').filter(~r.row.has_fields('template_id')).run(conn))
     for p in processes_no_template:
         if p['process_name'] == 'Annealing':
@@ -117,6 +126,7 @@ def set_process_type(conn):
     for p in all_processes:
         template = r.table('templates').get(p['template_id']).run(conn)
         r.table('processes').get(p['id']).update({'process_type': template['process_type']}).run(conn)
+    print "Done."
 
 
 def main():
@@ -127,12 +137,12 @@ def main():
     conn = r.connect('localhost', options.port, db="materialscommons")
 
     # Not sure which of these apply:
-    # remove_nulls_in_setup(conn)
-    # remove_duplicates_in_sample2datafile(conn)
-    # add_as_received_processes(conn)
-    # set_specific_process_names(conn)
-    # set_sample_direction_for_non_transform_processes(conn)
-    # fix_transform_process_directions(conn)
+    remove_nulls_in_setup(conn)
+    remove_duplicates_in_sample2datafile(conn)
+    add_as_received_processes(conn)
+    set_specific_process_names(conn)
+    set_sample_direction_for_non_transform_processes(conn)
+    fix_transform_process_directions(conn)
 
     # These are valid steps:
     fix_samples_from_create_samples(conn)
