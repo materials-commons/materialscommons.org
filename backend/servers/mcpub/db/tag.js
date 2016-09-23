@@ -74,8 +74,16 @@ module.exports.getAllCount = function*(next) {
 };
 
 module.exports.getDatasetsByTag = function*(next) {
-    this.body = yield r.db('mcpub').table('tag2dataset').getAll(this.params.id, {index: 'tag'})
-        .eqJoin('dataset_id', r.db("materialscommons").table('datasets')).zip();
+    this.body = yield r.table('tag2dataset').getAll(this.params.id, {index: 'tag'})
+        .eqJoin('dataset_id', r.db("materialscommons").table('datasets')).zip()
+        .merge(function(ds) {
+            return {
+                'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
+                    .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+                'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
+                'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
+            }
+        });
     yield next;
 };
 
