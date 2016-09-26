@@ -1,7 +1,10 @@
+'use strict'
 const sanitize = require("sanitize-filename");
 
+var base;
+
 module.exports.zipDirPath = function(dataset) {
-    var base = getBase();
+    var base = module.exports.getBase();
     var zipDir = base + "/zipfiles/" + dataset.id + "/";
     return zipDir;
 };
@@ -20,7 +23,7 @@ module.exports.zipFilename = function(dataset) {
 }
 
 module.exports.zipEntry = function(datafile) {   // sets fileName and sourcePath
-    var base = getBase();
+    var base = module.exports.getBase();
     var writeName = sanitize(datafile.name);
     var readName = datafile.id;
     if (datafile.usesid) {
@@ -33,6 +36,19 @@ module.exports.zipEntry = function(datafile) {   // sets fileName and sourcePath
     var path = base + "/" + partA + "/" + partB + "/" + readName;
     return {fileName: writeName, sourcePath: path, checksum: datafile.checksum};
 };
+
+module.exports.getBase = function() {
+    if (base) return base;
+    base = process.env.MCDIR;
+    if (!base) {
+        throw new Error({message: "Can not create zipfile for dataset: please show this message to a site adminstrator - 'MCDIR is not set in environment' "});
+    }
+    return base;
+};
+
+module.exports.setBase = function(baseValue) {
+    base = baseValue;
+}
 
 let cleanUpZipfileNameLengthThreshold = 60;
 let cleanUpZipfileName = function(name){
@@ -51,10 +67,3 @@ let cleanUpZipfileName = function(name){
     return name;
 }
 
-let getBase = function() {
-    var base = process.env.MCDIR;
-    if (!base) {
-        throw new Error({message: "Can not create zipfile for dataset: please show this message to a site adminstrator - 'MCDIR is not set in environment' "});
-    }
-    return base;
-};
