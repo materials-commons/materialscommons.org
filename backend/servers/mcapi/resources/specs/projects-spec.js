@@ -14,8 +14,8 @@ var ropts = {
 //var r = require('rethinkdbdash')(ropts);
 //var projectsModel = require('../../db/model/projects')(r);
 
-var projectsModel = require('../../db/model/projects')(connection);
-var projects = require('../projects')(projectsModel);
+//var projectsModel = require('../../db/model/projects')(roots);
+//var projects = require('../projects')(projectsModel);
 // var projects = require('../resources/projects')(projectsModel);
 
 describe('Testing in backend/servers/mcapi/resources/project.js - ', function (){ // does this also need to be function*
