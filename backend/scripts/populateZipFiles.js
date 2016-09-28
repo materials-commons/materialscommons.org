@@ -7,7 +7,7 @@ const archiver = require('archiver');
 const path = require('path');
 
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
-const zipFileUtils = require('../../servers/lib/zipFileUtils.js');
+const zipFileUtils = require('../servers/lib/zipFileUtils.js');
 
 //const defaultPort =  29015; // true default
 const defaultPort =  30815; // localhost version
@@ -73,7 +73,6 @@ function* buildZipFiles() {
 
         for (var i = 0; i < idsToProcess.length; i++) {
             var id = idsToProcess[i];
-            console.log("starting process for: ", id);
             Promise.coroutine(
                 publishDatasetZipFile
             )(r, id);
@@ -88,26 +87,23 @@ function* publishDatasetZipFile(r, datasetId) {
     try {
         console.log("zip", datasetId);
         let ds = yield r.db('materialscommons').table('datasets').get(datasetId);
-        console.log(ds);
         let zipDirPath = zipFileUtils.zipDirPath(ds);
-        console.log(zipDirPath);
         let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
 
         console.log("full path and filename: ", fillPathAndFilename);
 
-        yield mkdirpAsync(zipDirPath);
-
         let ds2dfEntries = yield r.db('materialscommons').table('dataset2datafile')
             .getAll(datasetId, {index: 'dataset_id'}).coerceTo('array');
 
-        console.log(ds2dfEntries.length);
-
         if (!ds2dfEntries.length) {
             numberProcessed++;
-            console.log('no zip!');
+            console.log('no zip for id = ' + datasetId);
             console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
             return new Promise(function(resolve, reject){resolve()});
         }
+
+        yield mkdirpAsync(zipDirPath);
+
         let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
         let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
 
@@ -118,9 +114,7 @@ function* publishDatasetZipFile(r, datasetId) {
             var output = fs.createWriteStream(fillPathAndFilename);
 
             output.on('close', function () {
-                console.log('for dataset: ' + datasetId);
-                console.log(archive.pointer() + ' total bytes');
-                console.log('archiver has been finalized and the output file descriptor has closed.');
+                console.log('for dataset: ' + datasetId + " with " + archive.pointer() + ' total bytes');
                 numberProcessed++;
                 console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
                 resolve();
