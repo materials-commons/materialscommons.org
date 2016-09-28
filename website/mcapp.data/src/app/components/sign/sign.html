@@ -1,0 +1,20 @@
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-6" ng-class="{highlight:ctrl.isSet('login')}">
+      <h4 class="text-center"><a ng-click="ctrl.setTab('login')" ng-class="{theme: ctrl.isSet('login')}">Login</a>
+      </h4>
+    </div>
+    <div class="col-sm-6" ng-class="{highlight:ctrl.isSet('register')}">
+      <h4 class="text-center"><a ng-click="ctrl.setTab('register')"
+                                 ng-class="{theme: ctrl.isSet('register')}">Register</a></h4>
+    </div>
+  </div>
+  <div class="row">
+    <div ng-if="ctrl.tab === 'login'">
+        <login-directive></login-directive>
+      </div>
+    <div ng-if="ctrl.tab === 'register'">
+        <register-directive></register-directive>
+    </div>
+  </div>
+</div>
