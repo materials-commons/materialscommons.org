@@ -1,8 +1,8 @@
 #!/bin/sh
 
-if [[ ! $PWD =~ .mc-publish$ ]];
+if [[ ! $PWD =~ .mcapp.data$ ]];
 then
-    echo "Not in mc-publish"
+    echo "Not in mcapp.data"
     exit 1
 fi
 
