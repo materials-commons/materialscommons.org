@@ -1,0 +1,19 @@
+{ "index" : { "_index" : "disney", "_type" : "character", "_id" : "1" } }
+{"name": "Abby Mallard","original_voice_actor": "Joan Cusack","animated_debut": "Chicken Little"}
+{ "index" : { "_index" : "disney", "_type" : "character", "_id" : "2" } }
+{"name": "Abigail Gabble","original_voice_actor": "Monica Evans","animated_debut": "The Aristocats"}
+{ "index" : { "_index" : "disney", "_type" : "character", "_id" : "3" } }
+{"name": "Babyface Beagle","original_voice_actor": "Terry McGovern","animated_debut": "DuckTales"}
+{ "index" : { "_index" : "disney", "_type" : "character", "_id" : "4" } }
+{"name": "Cadpig","original_voice_actor": "Kath Soucie","animated_debut": "101 Dalmatians: The Series"}
+{ "index" : { "_index" : "disney", "_type" : "character", "_id" : "5" } }
+{"name": "Derek Blunt","original_voice_actor": "Peter Renaday","animated_debut": "Darkwing Duck"}
+{ "index" : { "_index" : "disney", "_type" : "character", "_id" : "6" } }
+{"name": "Duckworth","original_voice_actor": "Chuck McCann","animated_debut": "DuckTales"}
+{ "index" : { "_index" : "disney", "_type" : "character", "_id" : "7" } }
+{"name": "Dumbo","original_voice_actor": "None","animated_debut": "Dumbo"}
+{ "index" : { "_index" : "disney", "_type" : "character", "_id" : "8" } }
+{"name": "Nana","original_voice_actor": "None","animated_debut": "Peter Pan"}
+{ "index" : { "_index" : "disney", "_type" : "character", "_id" : "9" } }
+{"name": "Zazu","original_voice_actor": "Rowan Atkinson","animated_debut": "The Lion King"}
+{ "index" : { "_index" : "disney", "_type" : "character", "_id" : "10" } }
