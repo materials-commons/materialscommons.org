@@ -9,6 +9,7 @@ module.exports = function(processes, samples, experiments, schema) {
         getProjectProcesses,
         getProcessTemplates,
         createProcessFromTemplate,
+        deleteProcess,
         updateProcess
     };
 
@@ -78,8 +79,14 @@ module.exports = function(processes, samples, experiments, schema) {
         if (!found) {
             return {error: `No such template ${templateArgs.template_id}`};
         }
-
         return null;
+    }
+
+    function* deleteProcess(next) {
+        console.log("Server side delete: ",this.params.project_id,this.params.process_id);
+        // validate
+        yield processes.deleteProcess(this.params.project_id,this.params.process_id);
+        yield next;
     }
 
     function* updateProcess(next) {

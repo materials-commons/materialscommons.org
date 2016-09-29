@@ -1,7 +1,8 @@
 class MCProcessesGraphComponentController {
     /*@ngInject*/
-    constructor(experimentsService, templates, $stateParams, toast, $mdDialog, $timeout) {
+    constructor(experimentsService, processesService, templates, $stateParams, toast, $mdDialog, $timeout) {
         this.experimentsService = experimentsService;
+        this.processesService = processesService;
         this.templates = templates;
         this.toast = toast;
         this.cy = null;
@@ -57,6 +58,25 @@ class MCProcessesGraphComponentController {
                 },
                 () => this.toast.error('Error retrieving processes for experiment')
             );
+    }
+
+    processNodeIsDeletable(){
+        var process = this.selectedProcess;
+        var hasChildrenDefined = (!!process) && (typeof(process.hasChildren) != "undefined");
+        var hasChildren = process?process.hasChildren:false;
+        return hasChildrenDefined && !hasChildren;
+    }
+
+    deleteNodeAndProcess(){
+        //NOTE: currently the graph is redisplayed after the process is deleted;
+        // so, currently we do not delete the node from the graph; the problem
+        // with this approach is that redrawing the graph "blows away"
+        // any local layout that the user has created. Hence, this needs to be
+        // updated so that only the process is deleted, and the node is deleted
+        // from the graph without disturding the layout. Terry Weymouth - Sept 29, 2016
+        console.log("Deleting process: " + this.selectedProcess.id,this.projectId);
+        this.processesService.deleteProcess(this.projectId,this.selectedProcess.id);
+
     }
 
     allProcessesGraph() {
@@ -185,6 +205,7 @@ class MCProcessesGraphComponentController {
                 this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
                     .then(
                         (process) => {
+                            process.hasChildren = (target.outgoers().length > 0);
                             this.selectedProcess = this.templates.loadProcess(process);
                             this.currentTab = 2;
                         },
