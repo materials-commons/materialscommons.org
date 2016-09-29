@@ -64,6 +64,14 @@
                     </div>
                     <div ng-show="$ctrl.selectedProcess">
                         <md-content style="max-height: 70vh">
+                            <div layout="row" layout-margin layout-align="end">
+                                <md-button class="md-primary" ng-if="$ctrl.processNodeIsDeletable()" ng-click="$ctrl.deleteNodeAndProcess()">
+                                    Delete graph Node
+                                </md-button>
+                                <md-button class="md-warn" ng-disabled="true" ng-if="!$ctrl.processNodeIsDeletable()">
+                                    To delete: remove 'children' first
+                                </md-button>
+                            </div>
                             <mc-process-template process="$ctrl.selectedProcess"
                                                  on-change="$ctrl.onChange()">
                             </mc-process-template>
