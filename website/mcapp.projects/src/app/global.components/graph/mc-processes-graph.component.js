@@ -120,7 +120,16 @@ class MCProcessesGraphComponentController {
         console.log("Deleting process: " + this.selectedProcess.id,this.projectId);
         this.processesService.deleteProcess(this.projectId,this.selectedProcess.id)
             .then(ret => {
-                    console.log("deleteNodeAndProcess - return",ret);
+                    console.log("deleteNodeAndProcess - return:",ret);
+
+                    this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
+                        .then(
+                            (processes) => {
+                                this.processes = processes;
+                                this.allProcessesGraph();
+                            },
+                            () => this.toast.error('Error retrieving processes for experiment')
+                        );
                 },
                 error => {
                     console.log("deleteNodeAndProcess - error", error.data.error);
@@ -131,6 +140,7 @@ class MCProcessesGraphComponentController {
     }
 
     allProcessesGraph() {
+        console.log("all graph");
         let sample2InputProcesses = {};
         let sample2OutputProcesses = {};
 
