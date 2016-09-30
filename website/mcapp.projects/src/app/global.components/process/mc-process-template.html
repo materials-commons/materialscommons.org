@@ -1,6 +1,7 @@
 <div layout="column" layout-margin layout-fill layout-wrap>
     <md-input-container class="md-block">
         <input type="text" name="stringInput"
+               aria-label="Enter process name"
                ng-model-options="{debounce: 500}"
                ng-change="$ctrl.updateProcessName()"
                ng-model="$ctrl.process.name">
