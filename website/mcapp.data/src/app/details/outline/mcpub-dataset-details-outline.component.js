@@ -41,12 +41,15 @@ export class DatasetDetailsOutlineController {
                     let id = `${s.id}/${s.property_set_id}`;
                     let processes = sample2InputProcesses[id];
                     if (processes && processes.length) {
+                        let nodeProcessEntries = _.indexBy(n.model.children, 'id');
                         processes.forEach(p => {
-                            p.children = [];
-                            p.show = true;
-                            let node = treeModel.parse(p);
-                            n.addChild(node);
-                            newlyAdded.push(p.id);
+                            if (!(p.id in nodeProcessEntries)) {
+                                p.children = [];
+                                p.show = true;
+                                let node = treeModel.parse(p);
+                                n.addChild(node);
+                                newlyAdded.push(p.id);
+                            }
                         });
                     }
                 });
