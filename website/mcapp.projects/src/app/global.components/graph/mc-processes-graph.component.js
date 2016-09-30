@@ -67,6 +67,33 @@ class MCProcessesGraphComponentController {
         return hasChildrenDefined && !hasChildren;
     }
 
+    deleteNodeAndProcessConfirm() {
+
+        let container = this;
+
+        this.processesService.getDeleteProcessPreConditions(this.projectId,this.selectedProcess.id)
+            .then(ret => {
+                let info = ret;
+                console.log("deleteNodeAndProcessConfirm - return",ret);
+                var confirm = this.$mdDialog.confirm()
+                    .title('Do you really want to delete this process')
+                    .textContent('Process Info')
+                    .ok('Yes')
+                    .cancel('Cancel');
+
+                this.$mdDialog.show(confirm).then(function() {
+                    console.log("dalete ok");
+                    container.deleteNodeAndProcess();
+                }, function() {
+                    console.log("dalete rejected");
+                });
+
+            }, error => {
+                console.log("deleteNodeAndProcessConfirm - error", error.data.error);
+                this.toast.error(error.data.error)
+            });
+    }
+
     deleteNodeAndProcess(){
         //NOTE: currently the graph is redisplayed after the process is deleted;
         // so, currently we do not delete the node from the graph; the problem
@@ -75,7 +102,15 @@ class MCProcessesGraphComponentController {
         // updated so that only the process is deleted, and the node is deleted
         // from the graph without disturding the layout. Terry Weymouth - Sept 29, 2016
         console.log("Deleting process: " + this.selectedProcess.id,this.projectId);
-        this.processesService.deleteProcess(this.projectId,this.selectedProcess.id);
+        this.processesService.deleteProcess(this.projectId,this.selectedProcess.id)
+            .then(ret => {
+                    console.log("deleteNodeAndProcess - return",ret);
+                },
+                error => {
+                    console.log("deleteNodeAndProcess - error", error.data.error);
+                    this.toast.error(error.data.error)
+                }
+            );
 
     }
 

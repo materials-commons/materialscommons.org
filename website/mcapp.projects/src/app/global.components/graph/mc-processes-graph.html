@@ -65,7 +65,7 @@
                     <div ng-show="$ctrl.selectedProcess">
                         <md-content style="max-height: 70vh">
                             <div layout="row" layout-margin layout-align="end">
-                                <md-button class="md-primary" ng-if="$ctrl.processNodeIsDeletable()" ng-click="$ctrl.deleteNodeAndProcess()">
+                                <md-button class="md-primary" ng-if="$ctrl.processNodeIsDeletable()" ng-click="$ctrl.deleteNodeAndProcessConfirm()">
                                     Delete graph Node
                                 </md-button>
                                 <md-button class="md-warn" ng-disabled="true" ng-if="!$ctrl.processNodeIsDeletable()">
