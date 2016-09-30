@@ -1,16 +1,14 @@
-export class DatasetDetailsOutlineController {
+class ProcessTreeService {
+    /*@ngInject*/
     constructor() {
-        'ngInject';
-        this.processes = this.dataset.processes;
-        this.showOutline = true;
     }
 
-    $onInit() {
+    build(processes) {
         let treeModel = new TreeModel();
-        this.root = treeModel.parse({id: 1, children: []});
-        this.rootNode = this.root.first(node => node.model.id === 1);
+        let root = treeModel.parse({id: 1, children: []});
+        let rootNode = root.first(node => node.model.id === 1);
         let sample2InputProcesses = {};
-        this.processes.forEach(p => {
+        processes.forEach(p => {
             p.input_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
                 if (!(id in sample2InputProcesses)) {
@@ -20,14 +18,13 @@ export class DatasetDetailsOutlineController {
             });
         });
         let addedIds = [];
-        this.processes.forEach(p => {
+        processes.forEach(p => {
             if (!p.input_samples.length) {
                 // No inputs so top level node
                 p.children = [];
-                p.show = true;
                 let n = treeModel.parse(p);
                 addedIds.push(p.id);
-                this.rootNode.addChild(n);
+                rootNode.addChild(n);
             }
         });
 
@@ -36,7 +33,7 @@ export class DatasetDetailsOutlineController {
         let newlyAdded = [];
         while (true) {
             addedIds.forEach(id => {
-                let n = this.root.first(node => node.model.id === id);
+                let n = root.first(node => node.model.id === id);
                 n.model.output_samples.forEach(s => {
                     let id = `${s.id}/${s.property_set_id}`;
                     let processes = sample2InputProcesses[id];
@@ -45,7 +42,6 @@ export class DatasetDetailsOutlineController {
                         processes.forEach(p => {
                             if (!(p.id in nodeProcessEntries)) {
                                 p.children = [];
-                                p.show = true;
                                 let node = treeModel.parse(p);
                                 n.addChild(node);
                                 newlyAdded.push(p.id);
@@ -62,32 +58,8 @@ export class DatasetDetailsOutlineController {
                 break;
             }
         }
+        return {root, rootNode};
     }
 }
 
-class DatasetDetailsOutlineDirDirectiveController {
-    constructor() {
-        'ngInject';
-    }
-
-}
-
-export function mcpubDatasetDetailsOutlineDirDirective(RecursionHelper) {
-    'ngInject';
-    return {
-        restrict: 'E',
-        scope: {
-            process: '='
-        },
-        controller: DatasetDetailsOutlineDirDirectiveController,
-        replace: true,
-        controllerAs: '$ctrl',
-        bindToController: true,
-        templateUrl: 'app/details/outline/mcpub-dataset-details-outline-dir.html',
-        compile: function(element) {
-            return RecursionHelper.compile(element, function() {});
-        }
-    }
-}
-
-
+angular.module('materialscommons').service('processTree', ProcessTreeService);
