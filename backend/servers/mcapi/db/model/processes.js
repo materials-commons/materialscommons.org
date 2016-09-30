@@ -11,6 +11,7 @@ module.exports = function(r) {
         processTemplateExists,
         updateProcess,
         deleteProcess,
+        datasetsForProcess,
         getTemplate,
         r: r
     };
@@ -76,35 +77,42 @@ module.exports = function(r) {
         return yield getProcess(processId);
     }
 
+    function* datasetsForProcess(processId) {
+        let dataset2process = yield r.table('dataset2process').filter({process_id:processId}).coerceTo('array');
+        if (dataset2process.length == 0) return [];
+        let datasetIdValues = dataset2process.map(record => record.dataset_id);
+        console.log("DatasetsForProcess: ",datasetIdValues);
+        let datasets = yield r.expr(datasetIdValues).map(r.db('materialscommons').table('datasets').get(r.row)).coerceTo('array');
+        return datasets
+    }
+
     function* deleteProcess(projectId, processId){
         console.log("Backednd low level - delete process: ", projectId, processId);
         let project2process = yield r.table('project2process').filter({project_id:projectId, process_id:processId});
-        console.log(project2process.length);
-        //Note, because of validation there are no dataset2process records
-        let dataset2process = yield r.table('dataset2process').filter({process_id:processId});
-        console.log(dataset2process.length);
+        console.log('project2process',project2process.length);
         // remove project2process records with projectId, and processId
         //   if other records with processId exist, then there are other projects using the project, done!
         // remove experiment2process records with processId
         let experiment2process = yield r.table('experiment2process').filter({process_id:processId});
-        console.log(experiment2process.length);
+        console.log('experiment2process',experiment2process.length);
         // remove process2file records with processId
         let process2file = yield r.table('process2file').filter({process_id:processId});
-        console.log(process2file.length);
+        console.log('process2file',process2file.length);
         // remove experimentTask2Process records with processId
         //   for each such experimentTask, if there are no other records, delete experimentsTasks
         let experimentTask2Process = yield r.table('experimenttask2process').filter({process_id:processId});
-        console.log(experimentTask2Process.length);
+        console.log('experimentTask2Process',experimentTask2Process.length);
         // remove process2measurement records
         //   for each such measurement, if ther eare no other records, delete measurement
         let process2measurement = yield r.table('process2measurement').filter({process_id:processId});
-        console.log(process2measurement.length);
+        console.log('process2measurement',process2measurement.length);
         // remote process2Sample records with proceeeId
         //   for each such sample, if ther eare no other records, delete sample
         let process2Sample = yield r.table('process2sample').filter({process_id:processId});
-        console.log(process2Sample.length);
+        console.log('process2Sample',process2Sample.length);
         // remove process2setup records and all setups so linked
         let process2setup = yield r.table('process2setup').filter({process_id:processId});
-        console.log(process2setup.length);
+        console.log('process2setup',process2setup.length);
+        return {val: "Process Deleted"}
     }
 };
