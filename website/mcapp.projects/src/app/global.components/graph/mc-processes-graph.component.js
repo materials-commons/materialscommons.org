@@ -74,20 +74,28 @@ class MCProcessesGraphComponentController {
         this.processesService.getDeleteProcessPreConditions(this.projectId,this.selectedProcess.id)
             .then(ret => {
                 let info = ret;
-                console.log("deleteNodeAndProcessConfirm - return",ret);
-                var confirm = this.$mdDialog.confirm()
-                    .title('Do you really want to delete this process')
-                    .textContent('Process Info')
-                    .ok('Yes')
-                    .cancel('Cancel');
-
-                this.$mdDialog.show(confirm).then(function() {
-                    console.log("dalete ok");
+                let numberOfSamples = ret.output_samples.length;
+                if (numberOfSamples == 0) {
                     container.deleteNodeAndProcess();
-                }, function() {
-                    console.log("dalete rejected");
-                });
+                } else {
+                    let processName = ret.name;
+                    console.log("deleteNodeAndProcessConfirm - return", processName, numberOfSamples);
+                    let samples = " output sample" + ((numberOfSamples != 1) ? "s" : "");
+                    let processInfo = processName + " - has " + numberOfSamples + samples + ".";
+                    let confirm = container.$mdDialog.confirm()
+                        .title('This process has output samples: Delete node and Samples?')
+                        .textContent(processInfo)
+                        .ariaLabel('Please confirm - deleting node')
+                        .ok('Delete')
+                        .cancel('Cancel');
 
+                    container.$mdDialog.show(confirm).then(function () {
+                        console.log("delete ok");
+                        container.deleteNodeAndProcess();
+                    }, function () {
+                        console.log("delete rejected");
+                    });
+                }
             }, error => {
                 console.log("deleteNodeAndProcessConfirm - error", error.data.error);
                 this.toast.error(error.data.error)
