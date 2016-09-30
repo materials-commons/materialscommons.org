@@ -111,13 +111,15 @@ module.exports = function(r) {
             console.log('experimenttask2Process',experimenttask2process.length);
             let experimentTaskIdValues = experimenttask2process.map(record => record.experimentaltask_id);
             console.log('experimentTaskIdValues',experimentTaskIdValues);
+            let experimenttask2processDelete = yield r.table('experimenttask2process').filter({process_id:processId}).delete();
+            console.log('experimenttask2processDelete',experimenttask2processDelete);
             if (experimentTaskIdValues) {
                 for (i = 0; i < experimentTaskIdValues.length; i++) {
                     let id = experimentTaskIdValues[i];
                     console.log('experimentTaskIdValues: id',id);
                     let hits = yield r.table('experimenttask2process').filter({experimentaltask_id:id});
                     console.log('experimentTaskIdValues: hits',hits);
-                    if (!hits) {
+                    if (!hits || (hits && (hits.length == 0))) {
                         let del = yield r.table('experimenttasks').get(id).delete();
                         console.log('experimentTaskIdValues: del',del);
                     }
@@ -125,18 +127,20 @@ module.exports = function(r) {
             }
 
             // remove process2measurement records
-            //   for each such measurement, if ther eare no other records, delete measurement
+            //   for each such measurement, if there are no other records, delete measurement
             let process2measurement = yield r.table('process2measurement').filter({process_id:processId});
             console.log('process2measurement',process2measurement.length);
             let measurementIdValues = process2measurement.map(record => record.measurement_id);
             console.log('measurementIdValues',measurementIdValues);
+            let process2measurementDelete = yield r.table('process2measurement').filter({process_id:processId}).delete();
+            console.log('process2measurementDelete',process2measurementDelete);
             if (measurementIdValues) {
                 for (i = 0; i < measurementIdValues.length; i++) {
                     let id = measurementIdValues[i];
                     console.log('measurementIdValues: id',id);
                     let hits = yield r.table('process2measurement').filter({measurement_id:id});
                     console.log('measurementIdValues: hits',hits);
-                    if (!hits) {
+                    if (!hits || (hits && (hits.length == 0))) {
                         let del = yield r.table('measurements').get(id).delete();
                         console.log('measurementIdValues: del',del);
                     }
@@ -144,18 +148,20 @@ module.exports = function(r) {
             }
 
             // remote process2Sample records with proceeeId
-            //   for each such sample, if ther eare no other records, delete sample
+            //   for each such sample, if there are no other records, delete sample
             let process2Sample = yield r.table('process2sample').filter({process_id:processId});
             console.log('process2Sample',process2Sample.length);
             let sampleIdValues = process2Sample.map(record => record.sample_id);
             console.log('sampleIdValues',sampleIdValues);
+            let process2SampleDelete = yield r.table('process2sample').filter({process_id:processId}).delete();
+            console.log('process2SampleDelete',process2SampleDelete);
             if (sampleIdValues) {
                 for (i = 0; i < sampleIdValues.length; i++) {
                     let id = sampleIdValues[i];
                     console.log('sampleIdValues: id',id);
                     let hits = yield r.table('process2sample').filter({sample_id:id});
                     console.log('sampleIdValues: hits',hits);
-                    if (!hits) {
+                    if (!hits || (hits && (hits.length == 0))) {
                         let del = yield r.table('samples').get(id).delete();
                         console.log('sampleIdValues: del',del);
                     }
