@@ -112,7 +112,7 @@ class MCProcessesGraphComponentController {
 
     deleteNodeAndProcess(){
         //NOTE: currently the graph is redisplayed after the process is deleted;
-        // so, currently we do not delete the node from the graph; the problem
+        // so, currently we do not delete the node from the graph itself; the problem
         // with this approach is that redrawing the graph "blows away"
         // any local layout that the user has created. Hence, this needs to be
         // updated so that only the process is deleted, and the node is deleted
