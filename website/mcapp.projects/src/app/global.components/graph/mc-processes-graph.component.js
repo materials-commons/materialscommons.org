@@ -74,7 +74,7 @@ class MCProcessesGraphComponentController {
         this.processesService.getDeleteProcessPreConditions(this.projectId,this.selectedProcess.id)
             .then(ret => {
                 let process = ret;
-                console.log(ret);
+//                console.log(ret);
                 let numberOfSamples = ret.output_samples.length;
                 if (numberOfSamples == 0) {
                     container.deleteNodeAndProcess();
@@ -82,7 +82,7 @@ class MCProcessesGraphComponentController {
                     container.confirmAndDeleteProcess(process);
                 }
             }, error => {
-                console.log("deleteNodeAndProcessConfirm - error", error.data.error);
+//                console.log("deleteNodeAndProcessConfirm - error", error.data.error);
                 this.toast.error(error.data.error)
             });
     }
@@ -91,7 +91,7 @@ class MCProcessesGraphComponentController {
         let container = this;
         let processName = process.name;
         let numberOfSamples = process.output_samples.length;
-        console.log("confirmAndDeleteProcess", processName, numberOfSamples);
+//        console.log("confirmAndDeleteProcess", processName, numberOfSamples);
         let samples = " output sample" + ((numberOfSamples != 1) ? "s" : "");
         let processInfo = processName + " - has " + numberOfSamples + samples + ".";
         let confirm = container.$mdDialog.confirm()
@@ -102,10 +102,10 @@ class MCProcessesGraphComponentController {
             .cancel('Cancel');
 
         container.$mdDialog.show(confirm).then(function () {
-            console.log("delete ok");
+//            console.log("delete ok");
             container.deleteNodeAndProcess();
         }, function () {
-            console.log("delete rejected");
+//            console.log("delete rejected");
         });
 
     }
@@ -117,10 +117,10 @@ class MCProcessesGraphComponentController {
         // any local layout that the user has created. Hence, this needs to be
         // updated so that only the process is deleted, and the node is deleted
         // from the graph without disturding the layout. Terry Weymouth - Sept 29, 2016
-        console.log("Deleting process: " + this.selectedProcess.id,this.projectId);
+//        console.log("Deleting process: " + this.selectedProcess.id,this.projectId);
         this.processesService.deleteProcess(this.projectId,this.selectedProcess.id)
             .then(ret => {
-                    console.log("deleteNodeAndProcess - return:",ret);
+//                    console.log("deleteNodeAndProcess - return:",ret);
 
                     this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
                         .then(
@@ -132,7 +132,7 @@ class MCProcessesGraphComponentController {
                         );
                 },
                 error => {
-                    console.log("deleteNodeAndProcess - error", error.data.error);
+//                    console.log("deleteNodeAndProcess - error", error.data.error);
                     this.toast.error(error.data.error)
                 }
             );
@@ -140,7 +140,7 @@ class MCProcessesGraphComponentController {
     }
 
     allProcessesGraph() {
-        console.log("all graph");
+//        console.log("all graph");
         let sample2InputProcesses = {};
         let sample2OutputProcesses = {};
 
