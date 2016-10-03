@@ -382,6 +382,7 @@ module.exports = function(r) {
     function* publishDatasetZipFile(datasetId) {
         let ds = yield r.table('datasets').get(datasetId);
         let zipDirPath = zipFileUtils.zipDirPath(ds);
+        let zipFilename = zipFileUtils.zipFilename(ds);
         let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
 
         yield mkdirpAsync(zipDirPath);
@@ -393,14 +394,15 @@ module.exports = function(r) {
         let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
         let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             var archive = archiver('zip');
             var output = fs.createWriteStream(fillPathAndFilename);
 
             output.on('close', function() {
-//                console.log(archive.pointer() + ' total bytes');
-//                console.log('archiver has been finalized and the output file descriptor has closed.');
-                resolve();
+                var totalBytes = archive.pointer();
+                var filename = zipFilename;
+                r.table('datasets').get(datasetId).update({zipFilename:filename,zipSize:totalBytes})
+                    .then(resolve,reject);
             });
 
             archive.on('error', reject);
