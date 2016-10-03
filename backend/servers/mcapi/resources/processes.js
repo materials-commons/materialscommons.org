@@ -83,7 +83,7 @@ module.exports = function(processes, samples, experiments, schema) {
     }
 
     function* deleteProcess(next) {
-        console.log("Server side delete: ",this.params.project_id,this.params.process_id);
+//        console.log("Server side delete: ",this.params.project_id,this.params.process_id);
         let errors = yield validateDeleteProcess(this.params.project_id,this.params.process_id);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
@@ -101,14 +101,14 @@ module.exports = function(processes, samples, experiments, schema) {
     }
 
     function* validateDeleteProcess(project_id,process_id) {
-        console.log("Validate args for delete: ",project_id,process_id);
+//        console.log("Validate args for delete: ",project_id,process_id);
         let datasets = yield processes.datasetsForProcess(process_id);
-        console.log('dataset2process', datasets.length);
+//        console.log('dataset2process', datasets.length);
         if (datasets.length > 0) {
             let datasetNames = datasets.map(ds => ds.title);
             let message = "Process can not be deleted when it is in a dataset; remove from: " + datasetNames.join(", ");
             let error = {error: message};
-            console.log('dataset2process',error);
+//            console.log('dataset2process',error);
             return error;
         }
         return null;
