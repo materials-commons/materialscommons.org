@@ -190,10 +190,8 @@ module.exports = function (r) {
             return {error: error}
         }
 
+        console.log('---------------------------------------  delete process  --------------------------------------------');
+        return {val: "Process Deleted"}
     }
 
-    console.log('---------------------------------------  delete process  --------------------------------------------');
-    return {val: "Process Deleted"}
 }
-}
-;
