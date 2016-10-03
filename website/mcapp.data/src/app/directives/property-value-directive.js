@@ -49,15 +49,14 @@ class PropertyValueController {
 
     bytesMessageForDownload(dataset){
         var numberOfBytes = (dataset.zipSize)?dataset.zipSize:-1;
-        console.log("numberOfBytes", numberOfBytes);
-        if (numberOfBytes < 0) return "file size unknown";
-        if (numberOfBytes < 10245) return `${numberOfBytes} Bytes`;
-        numberOfBytes = numberOfBytes/1025;
-        if (numberOfBytes < 10245) return `${numberOfBytes} KB`;
-        numberOfBytes = numberOfBytes/1025;
-        if (numberOfBytes < 10245) return `${numberOfBytes} GB`;
-        numberOfBytes = numberOfBytes/1025;
-        return `${numberOfBytes} TB`;
+        if (numberOfBytes < 0) return "zip file size unknown";
+        if (numberOfBytes < 1024) return `${numberOfBytes} Bytes`;
+        numberOfBytes = numberOfBytes/1024;
+        if (numberOfBytes < 1024) return `${numberOfBytes.toFixed(2)} KB`;
+        numberOfBytes = numberOfBytes/1024;
+        if (numberOfBytes < 1024) return `${numberOfBytes.toFixed(2)} GB`;
+        numberOfBytes = numberOfBytes/1024;
+        return `${numberOfBytes.toFixed(2)} TB`;
     }
 
     filenameForDownload(dataset) {
