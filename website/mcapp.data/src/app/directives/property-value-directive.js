@@ -41,8 +41,26 @@ class PropertyValueController {
         return userId;
     }
 
-    urlForDownload(datasetId) {
+    urlForDownload(dataset) {
+        var datasetId = dataset.id;
         var baseURL = `${this.$window.location.protocol}//${this.$window.location.hostname}:${this.$window.location.port}/api`;
         return `${baseURL}/pub/datasets/download/${datasetId}?apikey=${this.userService.apikey()}`;
+    }
+
+    bytesMessageForDownload(dataset){
+        var numberOfBytes = (dataset.zipSize)?dataset.zipSize:-1;
+        console.log("numberOfBytes", numberOfBytes);
+        if (numberOfBytes < 0) return "file size unknown";
+        if (numberOfBytes < 10245) return `${numberOfBytes} Bytes`;
+        numberOfBytes = numberOfBytes/1025;
+        if (numberOfBytes < 10245) return `${numberOfBytes} KB`;
+        numberOfBytes = numberOfBytes/1025;
+        if (numberOfBytes < 10245) return `${numberOfBytes} GB`;
+        numberOfBytes = numberOfBytes/1025;
+        return `${numberOfBytes} TB`;
+    }
+
+    filenameForDownload(dataset) {
+        return (dataset.zipFilename)?(dataset.zipFilename):"FullDataset.zip";
     }
 }
