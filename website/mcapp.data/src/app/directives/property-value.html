@@ -17,8 +17,8 @@
             <label ng-if="!ctrl.user" class="col-sm-2 field-label">Files</label>
             <div class="col-sm-10 field-value text-left">
                 <span ng-if="!ctrl.user">{{ctrl.value.files.length}} files</span>
-                <a ng-if="ctrl.user" href="{{ctrl.urlForDownload(ctrl.value.id)}}" download="fullDataset.zip"
-                   class="theme">Download Dataset - {{ctrl.value.files.length}} files
+                <a ng-if="ctrl.user" href="{{ctrl.urlForDownload(ctrl.value)}}" download="{{ctrl.filenameForDownload(ctrl.value)}}"
+                   class="theme">Download Dataset - {{ctrl.value.files.length}} files ({{ctrl.bytesMessageForDownload(ctrl.value)}})
                     <i class="fa fa-fw fa-download"></i></a>
             </div>
         </div>
