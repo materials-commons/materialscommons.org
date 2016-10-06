@@ -213,7 +213,13 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.experiment.publish', {
             url: '/publish',
             template: '<mc-experiment-publish></mc-experiment-publish>'
-        })
+        });
+
+    // Not sure why, but the following generates an error in eslint:
+    // should use controllerAs syntax  angular/controller-as-route
+    // fixed (superficially) with the following -
+    /* eslint-disable angular/controller-as-route*/
+    $stateProvider
         .state('project.experiment.datasets', {
             url: '/datasets',
             template: '<div ui-view></div>',
@@ -222,7 +228,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     $state.go('project.experiment.datasets.list');
                 }
             }]
-        })
+        });
+    /* eslint-enable angular/controller-as-route*/
+
+    $stateProvider
         .state('project.experiment.datasets.list', {
             url: '/list',
             template: '<mc-experiment-datasets></mc-experiment-datasets>'
