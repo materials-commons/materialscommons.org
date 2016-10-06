@@ -19,7 +19,7 @@ export class DatasetDetailsVotesController {
     appreciate() {
         if (this.user) {
             this.dataset.appreciate = !this.dataset.appreciate;
-            this.actionsService.appreciate(this.dataset.id, this.user.id).then((res) => {
+            this.actionsService.appreciate(this.dataset.id, this.user.id).then(() => {
                 this.getActions();
             });
         } else {
@@ -30,7 +30,7 @@ export class DatasetDetailsVotesController {
 
     removeAppreciate() {
         if (this.user) {
-            this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then((res) => {
+            this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then(() => {
                 this.dataset.appreciate = false;
                 this.getActions();
             });
@@ -42,7 +42,7 @@ export class DatasetDetailsVotesController {
 
     addTag(params) {
         this.actionsService.addTag(this.dataset.id, this.user.id, params.id).then(
-            (tag) => this.dataset.tags = _.sortBy(this.dataset.tags, "id")
+            () => this.dataset.tags = _.sortBy(this.dataset.tags, "id")
         );
     }
 
