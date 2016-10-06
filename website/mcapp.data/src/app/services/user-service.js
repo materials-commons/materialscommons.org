@@ -9,9 +9,9 @@ export class userService {
 
         if (this.$window.sessionStorage.mcuser) {
             try {
-                this.mcuser = JSON.parse($window.sessionStorage.mcuser);
+                this.mcuser = angular.fromJSON($window.sessionStorage.mcuser);
             } catch (err) {
-                console.log("Error parsing mcuser in sessionStorage");
+                $log.log.error("Error parsing mcuser in sessionStorage");
                 this.mcuser = null;
             }
         }
