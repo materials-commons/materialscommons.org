@@ -1,4 +1,5 @@
 export function toDateStringFilter() {
+/* eslint-disable */
   return function(input) {
     if (input) {
       var t = input;

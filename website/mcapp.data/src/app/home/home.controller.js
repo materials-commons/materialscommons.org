@@ -18,7 +18,7 @@ export class HomeController {
   }
 
   orderByDatasetCount(samples) {
-    return _.sortBy(samples, 'dataset_count').reverse();
+    return _.sortBy(samples, 'dataset_count').reverse(); // eslint-disable-line no-undef
   }
 
   viewTagResults(tag) {

@@ -52,7 +52,7 @@ export class searchService {
 
     // If no match then return all choice
     findSearchChoiceByValue(value) {
-        let index = _.findIndex(this.searchChoices, c => c.value === value);
+        let index = _.findIndex(this.searchChoices, c => c.value === value); // eslint-disable-line no-undef
         if (index === -1) {
             return this.searchChoices[0];
         }

@@ -1,12 +1,13 @@
 export function templatesService($filter, processEdit, $log) {
     'ngInject';
-
     var self = this;
     self.templates = {};
 
-    function createName(templateName) {
+    /* eslint-disable no-unused-vars */
+    function createName(templateName) {  // the function is defined by not used
         return templateName + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
     }
+    /* eslint-enable no-unused-vars */
 
     function getTemplate(name) {
         var t = _.find(self.templates, {name: name});

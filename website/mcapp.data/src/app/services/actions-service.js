@@ -6,7 +6,7 @@ export class actionsService {
         this.toastr = toastr;
         this.pubAPI = pubAPI;
     }
-
+    /* eslint-disable */
     appreciate(dataset_id, user_id) {
         return this.pubAPI('appreciate').customPOST({
             user_id: user_id,

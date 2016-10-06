@@ -1,3 +1,4 @@
+/* eslint-disable */
 export class DatasetDetailsVotesController {
 
     constructor(userService, actionsService, toastr) {
@@ -18,9 +19,11 @@ export class DatasetDetailsVotesController {
     appreciate() {
         if (this.user) {
             this.dataset.appreciate = !this.dataset.appreciate;
-            this.actionsService.appreciate(this.dataset.id, this.user.id).then((res) => {
+            /* eslint-disable no-unused-vars */
+            this.actionsService.appreciate(this.dataset.id, this.user.id).then((res) => { // res not used
                 this.getActions();
             });
+            /* eslint-enable no-unused-vars */
         } else {
             this.toastr.options = {"positionClass": "toast-top-full-width", "closeButton": true};
             this.toastr.warning("Please sign in to appreciate the work");
@@ -29,10 +32,12 @@ export class DatasetDetailsVotesController {
 
     removeAppreciate() {
         if (this.user) {
-            this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then((res) => {
+            /* eslint-disable no-unused-vars */
+            this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then((res) => { //res not used
                 this.dataset.appreciate = false;
                 this.getActions();
             });
+            /* eslint-enable no-unused-vars */
         } else {
             this.toastr.options = {"positionClass": "toast-top-full-width", "closeButton": true};
             this.toastr.warning("Please sign in to appreciate the work");

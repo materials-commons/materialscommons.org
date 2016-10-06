@@ -5,7 +5,7 @@ export function DatasetDetailsSummaryDirective() {
     restrict: 'E',
     templateUrl: 'app/details/mcpub-dataset-details-summary.html',
     scope: {
-      dataset: "=",
+      dataset: "="
     },
   controller: DatasetDetailsSummaryController,
     controllerAs: 'ctrl',
@@ -28,9 +28,11 @@ class DatasetDetailsSummaryController {
   appreciate() {
     if (this.user) {
       this.dataset.appreciate = !this.dataset.appreciate;
-      this.actionsService.appreciate(this.dataset.id, this.user.id).then((res) => {
+      /* eslint-disable no-unused-vars */
+      this.actionsService.appreciate(this.dataset.id, this.user.id).then((res) => { //res never used
         this.getActions();
       });
+      /* eslint-enable no-unused-vars */
     } else {
       this.toastr.options = {"positionClass": "toast-top-full-width", "closeButton": true};
       this.toastr.warning("Please sign in to appreciate the work");
@@ -39,10 +41,12 @@ class DatasetDetailsSummaryController {
 
   removeAppreciate() {
     if (this.user) {
-      this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then((res) => {
+      /* eslint-disable no-unused-vars */
+      this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then((res) => { // res never used
         this.dataset.appreciate = false;
         this.getActions();
       });
+      /* eslint-enable no-unused-vars */
     } else {
       this.toastr.options = {"positionClass": "toast-top-full-width", "closeButton": true};
       this.toastr.warning("Please sign in to appreciate the work");

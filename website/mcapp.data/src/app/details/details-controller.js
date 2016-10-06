@@ -2,7 +2,7 @@ export class DetailsController {
     /*@ngInject*/
     constructor(dataset, actionsService, toastr, userService, $uibModal, $previousState) {
         this.dataset = dataset;
-        this.dataset.tags = _.sortBy(this.dataset.tags, "id");
+        this.dataset.tags = _.sortBy(this.dataset.tags, "id"); // eslint-disable-line no-undef
         this.toastr = toastr;
         this.userService = userService;
         this.actionsService = actionsService;
@@ -20,7 +20,7 @@ export class DetailsController {
     appreciate() {
         if (this.user) {
             this.dataset.appreciate = !this.dataset.appreciate;
-            this.actionsService.appreciate(this.dataset.id, this.user.id).then((res) => {
+            this.actionsService.appreciate(this.dataset.id, this.user.id).then((res) => { // eslint-disable-line no-unused-vars
                 this.getActions();
             });
         } else {
@@ -31,7 +31,7 @@ export class DetailsController {
 
     removeAppreciate() {
         if (this.user) {
-            this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then((res) => {
+            this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then((res) => { // eslint-disable-line no-unused-vars
                 this.dataset.appreciate = false;
                 this.getActions();
             });
@@ -70,7 +70,7 @@ export class DetailsController {
     }
 
     openImage(file) {
-        var modalInstance = this.$uibModal.open({
+        var modalInstance = this.$uibModal.open({ // eslint-disable-line no-unused-vars
             animation: true,
             templateUrl: 'app/details/pop-up.html',
             controller: 'PopUpController',

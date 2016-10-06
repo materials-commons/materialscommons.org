@@ -5,7 +5,7 @@ export class browseService {
     this.sample_results = [];
     this.$state = $state;
   }
-
+  /* eslint-disable */
   setProcessResults(browse_data) {
     this.process_results = browse_data;
   }

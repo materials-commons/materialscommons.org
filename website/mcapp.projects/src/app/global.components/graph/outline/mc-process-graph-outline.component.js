@@ -2,7 +2,6 @@ class MCProcessGraphOutlineComponentController {
     /*@ngInject*/
     constructor() {
     }
-
     $onInit() {
         let treeModel = new TreeModel();
         this.root = treeModel.parse({id: 1, children: []});
@@ -32,7 +31,8 @@ class MCProcessGraphOutlineComponentController {
         // Go through each node that has been added in the tree adding its immediate children.
         // Keep looping over newly added nodes until no more are added.
         let newlyAdded = [];
-        while (true) {
+        /* eslint-disable no-constant-condition */
+        while (true) {  //eslint treats true, here, as an unexpected constent
             addedIds.forEach(id => {
                 let n = this.root.first(node => node.model.id === id);
                 n.model.output_samples.forEach(s => {
@@ -59,6 +59,7 @@ class MCProcessGraphOutlineComponentController {
                 break;
             }
         }
+        /* eslint-enable no-constant-condition */
     }
 }
 

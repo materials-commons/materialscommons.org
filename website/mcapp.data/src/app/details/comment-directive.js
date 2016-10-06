@@ -32,12 +32,12 @@ class CommentController {
 
   addComment(){
     if (this.user) {
-      this.actionsService.addComment(this.comment, this.datasetId, this.user.id).then((res) => {
+      this.actionsService.addComment(this.comment, this.datasetId, this.user.id).then((res) => { // eslint-disable-line no-unused-vars
         this.getActions();
         this.comment= "";
       });
     }else{
-      toastr.warning("Please sign in to add comment");
+      toastr.warning("Please sign in to add comment"); // eslint-disable-line no-undef
     }
   }
 }

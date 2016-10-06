@@ -14,7 +14,6 @@ class MCProcessesGraphComponentController {
         this.selectedProcess = null;
         this.showGraphView = true;
     }
-
     $onInit() {
         this.allProcessesGraph();
     }
@@ -118,8 +117,10 @@ class MCProcessesGraphComponentController {
         // updated so that only the process is deleted, and the node is deleted
         // from the graph without disturding the layout. Terry Weymouth - Sept 29, 2016
 //        console.log("Deleting process: " + this.selectedProcess.id,this.projectId);
+
+        /* eslint-disable no-unused-vars */
         this.processesService.deleteProcess(this.projectId,this.selectedProcess.id)
-            .then(ret => {
+            .then(ret => {                                                          // return is not used
 //                    console.log("deleteNodeAndProcess - return:",ret);
 
                     this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
@@ -136,6 +137,7 @@ class MCProcessesGraphComponentController {
                     this.toast.error(error.data.error)
                 }
             );
+        /* eslint-enable no-unused-vars */
 
     }
 
@@ -202,7 +204,9 @@ class MCProcessesGraphComponentController {
             });
         });
         this.samples = _.values(sampleName2Sample);
-        this.cy = cytoscape({
+
+        let localCytoscape = cytoscape;  // eslint-disable-line no-undef
+        this.cy = localCytoscape({
             container: document.getElementById('processesGraph'),
             elements: elements,
             style: [
@@ -337,7 +341,8 @@ class MCProcessesGraphComponentController {
         console.log('sampleTransformationGraph');
     }
 
-    filterOnSample(sample) {
+    /* eslint-disable no-unused-vars */
+    filterOnSample(sample) {                    // sample is not used
         //console.log('filterOnSample', sample);
         let matches = [];
         this.cy.nodes().forEach(node => {
@@ -345,6 +350,7 @@ class MCProcessesGraphComponentController {
         });
         console.log('matches', matches);
     }
+    /* eslint-enable no-unused-vars */
 
 }
 

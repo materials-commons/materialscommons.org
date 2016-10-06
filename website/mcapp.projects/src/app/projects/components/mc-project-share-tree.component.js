@@ -26,17 +26,20 @@ function MCProjectShareTreeComponentController(projectTreeService) {
     ctrl.components[0].data.childrenLoaded = true;
     ctrl.components[0].expand = true;
     ctrl.nodropEnabled = false;
-
     ctrl.treeOptions = {
-        dragStart: function(event) {
+        /* eslint-disable no-unused-vars */
+        dragStart: function(event) { // event is unused
             ctrl.nodropEnabled = true;
             return true;
         },
+        /* eslint-enable no-unused-vars */
 
-        beforeDrop: function(event) {
+        /* eslint-disable no-unused-vars */
+        beforeDrop: function(event) { // event is unused
             ctrl.nodropEnabled = false;
             return true;
         }
+        /* eslint-enable no-unused-vars */
     };
 }
 
