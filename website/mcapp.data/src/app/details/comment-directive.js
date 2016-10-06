@@ -1,3 +1,4 @@
+/* global toastr:true */
 export function CommentDirective() {
   'ngInject';
 
@@ -37,7 +38,7 @@ class CommentController {
         this.comment= "";
       });
     }else{
-      toastr.warning("Please sign in to add comment");  // eslint-disable-line no-undef
+      toastr.warning("Please sign in to add comment");
     }
   }
 }
