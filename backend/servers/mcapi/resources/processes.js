@@ -9,6 +9,7 @@ module.exports = function(processes, samples, experiments, schema) {
         getProjectProcesses,
         getProcessTemplates,
         createProcessFromTemplate,
+        deleteProcess,
         updateProcess
     };
 
@@ -78,7 +79,38 @@ module.exports = function(processes, samples, experiments, schema) {
         if (!found) {
             return {error: `No such template ${templateArgs.template_id}`};
         }
+        return null;
+    }
 
+    function* deleteProcess(next) {
+//        console.log("Server side delete: ",this.params.project_id,this.params.process_id);
+        let errors = yield validateDeleteProcess(this.params.project_id,this.params.process_id);
+        if (errors != null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield processes.deleteProcess(this.params.project_id,this.params.process_id);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
+
+    function* validateDeleteProcess(project_id,process_id) {
+//        console.log("Validate args for delete: ",project_id,process_id);
+        let datasets = yield processes.datasetsForProcess(process_id);
+//        console.log('dataset2process', datasets.length);
+        if (datasets.length > 0) {
+            let datasetNames = datasets.map(ds => ds.title);
+            let message = "Process can not be deleted when it is in a dataset; remove from: " + datasetNames.join(", ");
+            let error = {error: message};
+//            console.log('dataset2process',error);
+            return error;
+        }
         return null;
     }
 
