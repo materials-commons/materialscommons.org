@@ -11,7 +11,6 @@ export class userService {
             try {
                 this.mcuser = angular.fromJSON($window.sessionStorage.mcuser);
             } catch (err) {
-                $log.log.error("Error parsing mcuser in sessionStorage");
                 this.mcuser = null;
             }
         }
@@ -59,7 +58,7 @@ export class userService {
 
         modalInstance.result.then(
             ()=> null,
-            () =>this.$log.info('Modal dismissed at : ' + new Date())
+            ()=>this.$log.info('Modal dismissed at : ' + new Date())
         );
     }
 }
