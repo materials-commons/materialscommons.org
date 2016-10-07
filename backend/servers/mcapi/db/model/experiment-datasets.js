@@ -463,6 +463,7 @@ module.exports = function(r) {
         yield unpublishDatasetProcesses(datasetId);
         yield unpublishDatasetSamples(datasetId);
         yield unpublishDatasetFiles(datasetId);
+        yield unpublishDatasetTags(datasetId);
         return yield getDataset(datasetId);
     }
 
@@ -492,5 +493,19 @@ module.exports = function(r) {
         yield r.db('mcpub').table('datafiles').getAll(r.args(datafileIds)).delete();
         yield r.db('mcpub').table('process2file').getAll(r.args(datafileIds), {index: 'datafile_id'}).delete();
         yield r.db('mcpub').table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'}).delete();
+    }
+
+    function* unpublishDatasetTags(datasetId) {
+        let tags = yield r.db('mcpub').table('tag2dataset').getAll(datasetId,{index: 'dataset_id'}).pluck(['tag']);
+        yield r.db('mcpub').table('tag2dataset').getAll(datasetId,{index: 'dataset_id'}).delete();
+        tags = tags.map(tag => tag.tag);
+        // not the best way? I'm convinced that this can be done with a single query, parhave in comibination
+        // with the above, but I could not figure it out, and this works. Terry Weymouth - 6 Oct 2016
+        for (var i = 0; i < tags.length; i++) {
+            let count = yield r.db('mcpub').table('tag2dataset').getAll(tags[i],{index: 'tag'}).count();
+            if (count == 0) {
+                yield  yield r.db('mcpub').table('tags').get(tags[i]).delete();
+            }
+        }
     }
 };
