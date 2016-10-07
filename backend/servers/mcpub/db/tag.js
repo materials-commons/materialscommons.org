@@ -35,14 +35,22 @@ module.exports.removeTag = function*(next) {
     var params = yield parse(this);
     var join = yield tag.getTag2Dataset(params);
     if (join.length > 0) {
-        if (params.user_id === join[0].user_id) {
-            this.body = yield r.table('tag2dataset').get(join[0].id).delete();
+        // removed user test - see issues #789 - Terry Weymouth Fri Oct 7, 2016
+        // if (params.user_id === join[0].user_id) {
+            this.body = yield tag.deleteTag2Dataset(join[0].id);
             this.status = 200;
-        }
+            // remove tag if no related databases
+            let hits = yield tag.getAllDatasetsForTag(params.tag);
+            if (hits.length == 0) {
+                let del = yield tag.deleteTag(params.tag);
+            }
+        // }
+        // else {
+        //    this.throw(httpStatus.FORBIDDEN, 'Unable to delete. User not author: ' + params.user_id);
+        // }
     } else {
-        this['throw'](httpStatus.BAD_REQUEST, 'Unable to delete');
+        this.throw(httpStatus.NOT_FOUND, 'Unable to delete. No such tag for dataset: ' + params.tag);
     }
-
     yield next;
 };
 
