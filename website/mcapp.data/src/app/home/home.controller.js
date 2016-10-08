@@ -1,3 +1,4 @@
+/* global _:true */
 export class HomeController {
   constructor(tags, count_authors, count_datasets, browseService, $state, userService) {
     'ngInject';

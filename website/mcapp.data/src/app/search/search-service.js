@@ -1,3 +1,4 @@
+/* global _:true */
 export class searchService {
     /*@ngInject*/
     constructor(Restangular, $filter) {

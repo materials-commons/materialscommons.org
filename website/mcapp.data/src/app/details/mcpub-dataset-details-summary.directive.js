@@ -5,7 +5,7 @@ export function DatasetDetailsSummaryDirective() {
     restrict: 'E',
     templateUrl: 'app/details/mcpub-dataset-details-summary.html',
     scope: {
-      dataset: "=",
+      dataset: "="
     },
   controller: DatasetDetailsSummaryController,
     controllerAs: 'ctrl',
@@ -28,7 +28,7 @@ class DatasetDetailsSummaryController {
   appreciate() {
     if (this.user) {
       this.dataset.appreciate = !this.dataset.appreciate;
-      this.actionsService.appreciate(this.dataset.id, this.user.id).then((res) => {
+      this.actionsService.appreciate(this.dataset.id, this.user.id).then(() => {
         this.getActions();
       });
     } else {
@@ -39,7 +39,7 @@ class DatasetDetailsSummaryController {
 
   removeAppreciate() {
     if (this.user) {
-      this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then((res) => {
+      this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then(() => {
         this.dataset.appreciate = false;
         this.getActions();
       });

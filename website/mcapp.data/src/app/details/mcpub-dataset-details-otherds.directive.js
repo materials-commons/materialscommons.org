@@ -5,7 +5,7 @@ export function DatasetDetailsOtherdsDirective() {
     restrict: 'E',
     templateUrl: 'app/details/mcpub-dataset-details-otherds.html',
     scope: {
-      dataset: "=",
+      dataset: "="
     },
     controller: DatasetDetailsOtherdsController,
     controllerAs: 'ctrl',
