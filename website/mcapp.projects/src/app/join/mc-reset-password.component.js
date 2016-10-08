@@ -1,22 +1,21 @@
-class MCJoinValidateComponentController {
+class MCResetPasswordComponentController {
     /*@ngInject*/
     constructor(accountsService, $stateParams, $state, $timeout) {
         this.uuid = $stateParams.validation_uuid;
         this.accountsService = accountsService;
         this.$state = $state;
+        this.email = '';
         this.message = null;
-        this.password1 = '';
-        this.password2 = '';
         this.showSuccessMsg = false;
-        this.$timeout = $timeout;
     }
 
     $onInit() {
+        console.log("uuid: ", this.uuid);
         this.accountsService.getUserRegistrationAccount(this.uuid)
             .then(
                 (registration) => {
                     this.registration = registration;
-                    console.log("this.registration")
+                    console.log("this.registration: ", registration);
                 },
                 (e) => this.message = e.data.error
             );
@@ -61,6 +60,7 @@ class MCJoinValidateComponentController {
 }
 
 angular.module('materialscommons').component('mcJoinValidate', {
-    templateUrl: 'app/join/mc-join-validate.html',
-    controller: MCJoinValidateComponentController
+    templateUrl: 'app/join/mc-reset-password.html',
+    controller: MCResetPasswordComponentController
 });
+
