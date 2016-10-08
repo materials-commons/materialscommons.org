@@ -32,7 +32,7 @@ class MCProcessGraphOutlineComponentController {
         // Go through each node that has been added in the tree adding its immediate children.
         // Keep looping over newly added nodes until no more are added.
         let newlyAdded = [];
-        while (true) {
+        while (true) {  // eslint-disable-line no-constant-condition
             addedIds.forEach(id => {
                 let n = this.root.first(node => node.model.id === id);
                 n.model.output_samples.forEach(s => {

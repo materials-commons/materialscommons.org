@@ -1,3 +1,4 @@
+/* global toastr:true */
 export function CommentDirective() {
   'ngInject';
 
@@ -32,7 +33,7 @@ class CommentController {
 
   addComment(){
     if (this.user) {
-      this.actionsService.addComment(this.comment, this.datasetId, this.user.id).then((res) => {
+      this.actionsService.addComment(this.comment, this.datasetId, this.user.id).then(() => {
         this.getActions();
         this.comment= "";
       });
