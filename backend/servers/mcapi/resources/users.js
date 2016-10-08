@@ -150,7 +150,7 @@ module.exports = function(users, experiments, schema) {
             return smtpTransport();
         } else {
             let mailURL = `smtps://${process.env.MC_VERIFY_EMAIL}:${process.env.MC_VERIFY_PASS}@${process.env.MC_SMTP_HOST}`;
-            //console.log(`Email server - ${mailURL}`);
+            console.log(`Email server - ${mailURL}`);
             return mailURL;
         }
     }

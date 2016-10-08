@@ -12,6 +12,13 @@ class AccountsService {
         });
     }
 
+    createResetPasswordRequest(email) {
+        return this.apiService('accounts').customPOST({
+            reset: true,
+            email: email
+        });
+    }
+
     setUserFromRegistrationData(uuid, password) {
         return this.Restangular.one('user').one('complete', uuid).customPOST({
             password: password

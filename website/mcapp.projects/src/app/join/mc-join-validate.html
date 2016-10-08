@@ -7,8 +7,9 @@
             <div class="row">
                 <div class="login-splash join-splash">
                     <form name="setPasswordForm">
-                        <h4>Welcome Back - {{$ctrl.registration.fullname}}!</h4>
-                        <p>Please enter a password to finish setting up your account.</p>
+                        <h4 ng-if="!$ctrl.registration.reset">Welcome Back - {{$ctrl.registration.fullname}}!</h4>
+                        <h4 ng-if="$ctrl.registration.reset">Reset your password - {{$ctrl.registration.fullname}}.</h4>
+                        <p ng-if="!$ctrl.registration.reset">Please enter a password to finish setting up your account.</p>
                         <br>
                         <div class="row">
                             <input ng-model="$ctrl.password1" name="password1" required class="form-control"
@@ -31,8 +32,11 @@
                         </p>
 
                         <div ng-if="$ctrl.showSuccessMsg">
-                            <p style="color:green">
+                            <p ng-if="!$ctrl.registration.reset" style="color:green">
                                 <b>You have successfully created your account on Materials Commons. Welcome aboard!</b>
+                            </p>
+                            <p ng-if="$ctrl.registration.reset" style="color:green">
+                                <b>You have successfully reset your password on Materials Commons.</b>
                             </p>
                             <p>
                                 You will be redirected to the login page where you can start using Materials Commons.
@@ -46,7 +50,8 @@
                         <div class="row">
                             <button class="btn btn-primary btn-lg" style="width: 100%;"
                                     ng-click="$ctrl.setPassword(setPasswordForm)">
-                                Finish Account Setup
+                                <span ng-if="!$ctrl.registration.reset">Finish Account Setup</span>
+                                <span ng-if="$ctrl.registration.reset">Reset Password</span>
                             </button>
                             <button class="btn btn-cancel btn-lg" style="width: 100%; margin-top: 10px"
                                     ui-sref="login">
