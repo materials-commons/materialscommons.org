@@ -6,7 +6,7 @@ export function runBlock($log, userService, $state, $rootScope, Restangular) {
         Restangular.setDefaultRequestParams(['get', 'post'], {apikey: userService.apikey()});
     }
 
-    $rootScope.$on('$stateChangeStart', function(event, toState) {
+    $rootScope.$on('$stateChangeStart', function(event, toState) {  // eslint-disable-line angular/on-watch
         $rootScope.email = userService.email();
         //$rootScope.image = userService.image();
         // search bar under the top navigation will show up only for certain routes
