@@ -10,6 +10,7 @@ module.exports = function(users, experiments, schema) {
         updateProjectFavorites,
         updateUserSettings,
         createAccount,
+        resetPasswordGenerateLink,
         getUserRegistrationFromUuid
     };
 
@@ -56,6 +57,32 @@ module.exports = function(users, experiments, schema) {
                 this.body = rv;
             } else {
                 let evl = emailValidationLink(rv.val, accountArgs.site);
+                if (evl.error) {
+                    this.status = status.BAD_REQUEST;
+                    this.body = evl;
+                } else {
+                    this.body = evl.val;
+                }
+            }
+        }
+        yield next;
+    }
+
+    function* resetPasswordGenerateLink(next) {
+        let resetArgs = yield parse(this);
+        let user = yield users.get(resetArgs.email);
+        if (!user) {
+            this.status = status.BAD_REQUEST;
+            this.body = {error: "No registered user for given email address: "+ resetArgs.email};
+        } else {
+            let rv = yield users.createPasswordResetRequest(user);
+            console.log(rv);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                schema.prepare(schema.userAccountSchema, user);
+                let evl = emailValidationLink(rv.val, user.site);
                 if (evl.error) {
                     this.status = status.BAD_REQUEST;
                     this.body = evl;
