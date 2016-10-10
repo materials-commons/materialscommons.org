@@ -4,9 +4,10 @@ export function templatesService($filter, processEdit, $log) {
     var self = this;
     self.templates = {};
 
-    function createName(templateName) {
-        return templateName + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
-    }
+    // defined but not used
+    //function createName(templateName) {
+    //    return templateName + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
+    //}
 
     function getTemplate(name) {
         var t = _.find(self.templates, {name: name});

@@ -34,7 +34,7 @@ export class actionsService {
             message: msg,
             user_id: user_id,
             dataset_id: dataset_id
-        }).then((result)=> {
+        }).then(()=> {
             this.toastr.success("Your comment has been registered");
         });
     }
@@ -46,7 +46,7 @@ export class actionsService {
             tag: tag
         }).then(
             result => result,
-            (error) => {
+            () => {
                 this.toastr.warning("Duplicate request");
             });
     }

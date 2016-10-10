@@ -1,3 +1,4 @@
+/* global cytoscape:true */
 class MCProcessesGraphComponentController {
     /*@ngInject*/
     constructor(experimentsService, processesService, templates, $stateParams, toast, $mdDialog, $timeout) {
@@ -117,11 +118,8 @@ class MCProcessesGraphComponentController {
         // any local layout that the user has created. Hence, this needs to be
         // updated so that only the process is deleted, and the node is deleted
         // from the graph without disturding the layout. Terry Weymouth - Sept 29, 2016
-//        console.log("Deleting process: " + this.selectedProcess.id,this.projectId);
         this.processesService.deleteProcess(this.projectId,this.selectedProcess.id)
-            .then(ret => {
-//                    console.log("deleteNodeAndProcess - return:",ret);
-
+            .then(() => {
                     this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
                         .then(
                             (processes) => {
@@ -140,7 +138,6 @@ class MCProcessesGraphComponentController {
     }
 
     allProcessesGraph() {
-//        console.log("all graph");
         let sample2InputProcesses = {};
         let sample2OutputProcesses = {};
 
@@ -337,8 +334,10 @@ class MCProcessesGraphComponentController {
         console.log('sampleTransformationGraph');
     }
 
-    filterOnSample(sample) {
-        //console.log('filterOnSample', sample);
+    filterOnSample(
+        // sample // not used
+    ) {
+        // console.log('filterOnSample', sample);
         let matches = [];
         this.cy.nodes().forEach(node => {
             console.log(node.data('id'));

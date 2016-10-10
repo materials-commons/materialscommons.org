@@ -28,12 +28,12 @@ function MCProjectShareTreeComponentController(projectTreeService) {
     ctrl.nodropEnabled = false;
 
     ctrl.treeOptions = {
-        dragStart: function(event) {
+        dragStart: function() {
             ctrl.nodropEnabled = true;
             return true;
         },
 
-        beforeDrop: function(event) {
+        beforeDrop: function() {
             ctrl.nodropEnabled = false;
             return true;
         }
