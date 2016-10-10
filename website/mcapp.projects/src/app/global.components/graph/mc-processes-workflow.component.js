@@ -1,26 +1,74 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
-    constructor(experimentsService, processesService, templates) {
+    constructor(experimentsService, processesService, templates, $stateParams, toast, $mdDialog, $timeout) {
         this.experimentsService = experimentsService;
         this.processesService = processesService;
         this.templates = templates;
-        this.deleteProcessCallback = null;
-        this.onChangeCallback = null;
+
+        // Initialize callbacks to functions that do nothing. This cleans up the code
+        // as we don't have to worry if its been set.
+        this.deleteProcessCallback = () => null;
+        this.onChangeCallback = () => null;
+        this.addProcessCallback = () => null;
+
+        this.toast = toast;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.$mdDialog = $mdDialog;
+        this.selectedProcess = null;
+        this.showGraphView = true;
+        this.currentTab = 0;
+        this.$timeout = $timeout;
+    }
+
+    addProcess(templateId) {
+        this.experimentsService.createProcessFromTemplate(this.projectId, this.experimentId, `global_${templateId}`)
+            .then(
+                (process) => {
+                    let p = this.templates.loadTemplateFromProcess(process.template_name, process);
+                    this.$mdDialog.show({
+                        templateUrl: 'app/global.components/graph/new-process-dialog.html',
+                        controllerAs: '$ctrl',
+                        controller: NewProcessDialogController,
+                        bindToController: true,
+                        locals: {
+                            process: p
+                        }
+                    }).then(
+                        () => {
+                            this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
+                                .then(
+                                    (processes) => {
+                                        this.processes = processes;
+                                        this.addProcessCallback(processes);
+                                    },
+                                    () => this.toast.error('Error retrieving processes for experiment')
+                                );
+                        }
+                    );
+                },
+                () => this.toast.error('Unable to add samples')
+            );
     }
 
     setSelectedProcess(processId, hasChildren) {
-        this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
-            .then(
-                (process) => {
-                    process.hasChildren = hasChildren;
-                    this.selectedProcess = this.templates.loadProcess(process);
-                    this.currentTab = 2;
-                },
-                () => {
-                    this.toast.error('Unable to retrieve process details');
-                    this.selectedProcess = null;
-                }
-            );
+        if (processId) {
+            this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
+                .then(
+                    (process) => {
+                        process.hasChildren = hasChildren;
+                        this.selectedProcess = this.templates.loadProcess(process);
+                        this.currentTab = 1;
+                    },
+                    () => {
+                        this.toast.error('Unable to retrieve process details');
+                        this.selectedProcess = null;
+                    }
+                );
+        } else {
+            this.selectedProcess = null;
+            this.currentTab = 0;
+        }
     }
 
     setDeleteProcessCallback(cb) {
@@ -31,21 +79,19 @@ class MCProcessesWorkflowComponentController {
         this.onChangeCallback = cb;
     }
 
+    setAddProcessCallback(cb) {
+        this.addProcessCallback = cb;
+    }
+
     onChange() {
         this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
             .then(
                 (processes) => {
                     this.processes = processes;
-                    if (this.onChangeCallback) {
-                        this.onChangeCallback();
-                    }
+                    this.onChangeCallback();
                 },
                 () => this.toast.error('Error retrieving processes for experiment')
             );
-    }
-
-    processNodeIsDeletable() {
-        return this.selectedProcess ? this.selectedProcess.hasChildren : false;
     }
 
     deleteNodeAndProcessConfirm() {
@@ -87,21 +133,37 @@ class MCProcessesWorkflowComponentController {
         // from the graph without disturding the layout. Terry Weymouth - Sept 29, 2016
         this.processesService.deleteProcess(this.projectId, this.selectedProcess.id)
             .then(
-                () =>
+                () => {
+                    this.selectedProcess = null;
+                    this.currentTab = 0;
                     this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
                         .then(
                             (processes) => {
                                 this.processes = processes;
-                                if (this.deleteProcessCallback) {
-                                    this.deleteProcessCallback(this.selectedProcess);
-                                }
+                                this.deleteProcessCallback(processes);
                             },
                             () => this.toast.error('Error retrieving processes for experiment')
-                        ),
+                        );
+                },
 
                 error => this.toast.error(error.data.error)
             );
 
+    }
+}
+
+class NewProcessDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 
