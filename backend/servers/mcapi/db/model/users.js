@@ -13,6 +13,7 @@ module.exports = function(r) {
         updateUserSettings,
         userHasProjectAccess,
         createUnverifiedAccount,
+        createPasswordResetRequest,
         getUserRegistrationFromUuid
     };
 
@@ -71,6 +72,17 @@ module.exports = function(r) {
     function* userHasProjectAccess(userId, projectId) {
         let accessEntries = yield r.table('access').getAll([userId, projectId], {index: 'user_project'});
         return accessEntries.length !== 0;
+    }
+
+    function* createPasswordResetRequest(user) {
+        user.validate_uuid = yield r.uuid();
+        user.reset = true;
+        let rv = yield r.table('account_requests').insert(user, {returnChanges: true});
+        if (rv.errors) {
+            return {error: "Validation was already sent: " + account.email};
+        }
+
+        return {val: rv.changes[0].new_val};
     }
 
     function* createUnverifiedAccount(account) {
