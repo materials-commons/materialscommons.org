@@ -6,8 +6,11 @@ module.exports = function() {
     return {
         insert: addTag,
         getTag: getTag,
+        deleteTag: deleteTag,
+        addTag2Dataset: addTag2Dataset,
         getTag2Dataset: getTag2Dataset,
-        addTag2Dataset: addTag2Dataset
+        deleteTag2Dataset: deleteTag2Dataset,
+        getAllDatasetsForTag: getAllDatasetsForTag
     };
 
     function addTag(params) {
@@ -18,12 +21,24 @@ module.exports = function() {
         return r.table('tags').get(tag)
     }
 
-    function getTag2Dataset(params) {
-        return r.table('tag2dataset').getAll([params.tag, params.dataset_id], {index: 'tag_dataset'});
+    function deleteTag(tag) {
+        return r.table('tags').get(tag).delete();
     }
 
     function addTag2Dataset(params) {
         return r.table('tag2dataset').insert(params, {returnChanges: true});
     }
-};
 
+    function getTag2Dataset(params) {
+        return r.table('tag2dataset').getAll(params.tag,{index: 'tag'}).filter({dataset_id:params.dataset_id});
+    }
+
+    function deleteTag2Dataset(id) {
+        return r.table('tag2dataset').get(id).delete();
+    }
+
+    function getAllDatasetsForTag(tag) {
+        return r.table('tag2dataset').getAll(tag,{index: 'tag'}).pluck('dataset_id');
+    }
+
+};

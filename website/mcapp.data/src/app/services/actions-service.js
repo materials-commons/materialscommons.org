@@ -56,7 +56,10 @@ export class actionsService {
             dataset_id: dataset_id,
             user_id: user_id,
             tag: tag
-        }).then(result => result);
+        }).then(
+            result => result,
+            error => this.toastr.error(error)
+        );
     }
 
 
