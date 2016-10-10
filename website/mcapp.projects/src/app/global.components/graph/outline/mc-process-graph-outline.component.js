@@ -1,64 +1,33 @@
 class MCProcessGraphOutlineComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(processTree) {
+        this.processTree = processTree;
     }
 
     $onInit() {
-        let treeModel = new TreeModel();
-        this.root = treeModel.parse({id: 1, children: []});
-        this.rootNode = this.root.first(node => node.model.id === 1);
-        let sample2InputProcesses = {};
-        console.log('processes', this.processes);
-        this.processes.forEach(p => {
-            p.input_samples.forEach(s => {
-                let id = `${s.id}/${s.property_set_id}`;
-                if (!(id in sample2InputProcesses)) {
-                    sample2InputProcesses[id] = [];
-                }
-                sample2InputProcesses[id].push(p);
-            });
-        });
-        let addedIds = [];
-        this.processes.forEach(p => {
-            if (!p.input_samples.length) {
-                // No inputs so top level node
-                p.children = [];
-                let n = treeModel.parse(p);
-                addedIds.push(p.id);
-                this.rootNode.addChild(n);
-            }
-        });
+        // To preserve this binding pass this.allProcessesGraph bound to an arrow function. Arrow
+        // functions lexically scope, so this in the arrow function is the this for
+        // MCProcessGraphOutlineComponentController
+        let cb = (processes) => {
+            this.processes = processes;
+            this.buildOutline();
+        };
 
-        // Go through each node that has been added in the tree adding its immediate children.
-        // Keep looping over newly added nodes until no more are added.
-        let newlyAdded = [];
-        while (true) {  // eslint-disable-line no-constant-condition
-            addedIds.forEach(id => {
-                let n = this.root.first(node => node.model.id === id);
-                n.model.output_samples.forEach(s => {
-                    let id = `${s.id}/${s.property_set_id}`;
-                    let processes = sample2InputProcesses[id];
-                    if (processes && processes.length) {
-                        let nodeProcessEntries = _.indexBy(n.model.children, 'id');
-                        processes.forEach(p => {
-                            if (!(p.id in nodeProcessEntries)) {
-                                p.children = [];
-                                let node = treeModel.parse(p);
-                                n.addChild(node);
-                                newlyAdded.push(p.id);
-                            }
-                        });
-                    }
-                });
-            });
-            if (newlyAdded.length) {
-                addedIds.length = 0;
-                addedIds = newlyAdded.slice(0);
-                newlyAdded.length = 0;
-            } else {
-                break;
-            }
-        }
+        this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
+        this.mcProcessesWorkflow.setOnChangeCallback(cb);
+        this.mcProcessesWorkflow.setAddProcessCallback(cb);
+
+        this.buildOutline();
+    }
+
+    buildOutline() {
+        let t = this.processTree.build(this.processes);
+        this.root = t.root;
+        this.rootNode = t.rootNode;
+    }
+
+    showDetails(p) {
+        this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
     }
 }
 
@@ -66,16 +35,25 @@ class MCProcessGraphOutlineDirDirectiveController {
     /*@ngInject*/
     constructor() {
     }
+
+    showDetails(p) {
+        console.log(this);
+        this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
+    }
 }
 
 function mcProcessGraphOutlineDirDirective(RecursionHelper) {
     return {
         restrict: 'E',
         scope: {
-            process: '='
+            process: '=',
+
+            // This needs to be passed in rather than required. It appears that RecursionHelper is
+            // preventing the link function from being called, so we can't require mcProcessesWorkflow
+            // and access it later.
+            mcProcessesWorkflow: '='
         },
         controller: MCProcessGraphOutlineDirDirectiveController,
-        replace: true,
         controllerAs: '$ctrl',
         bindToController: true,
         templateUrl: 'app/global.components/graph/outline/mc-process-graph-outline-dir.html',
@@ -92,5 +70,8 @@ angular.module('materialscommons').component('mcProcessGraphOutline', {
     controller: MCProcessGraphOutlineComponentController,
     bindings: {
         processes: '<'
+    },
+    require: {
+        mcProcessesWorkflow: '^mcProcessesWorkflow'
     }
 });
