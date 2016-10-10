@@ -1,3 +1,4 @@
+/* global _:true */
 export class DetailsController {
     /*@ngInject*/
     constructor(dataset, actionsService, toastr, userService, $uibModal, $previousState) {
@@ -20,7 +21,7 @@ export class DetailsController {
     appreciate() {
         if (this.user) {
             this.dataset.appreciate = !this.dataset.appreciate;
-            this.actionsService.appreciate(this.dataset.id, this.user.id).then((res) => {
+            this.actionsService.appreciate(this.dataset.id, this.user.id).then(() => {
                 this.getActions();
             });
         } else {
@@ -31,7 +32,7 @@ export class DetailsController {
 
     removeAppreciate() {
         if (this.user) {
-            this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then((res) => {
+            this.actionsService.removeAppreciation(this.dataset.id, this.user.id).then(() => {
                 this.dataset.appreciate = false;
                 this.getActions();
             });
@@ -70,7 +71,8 @@ export class DetailsController {
     }
 
     openImage(file) {
-        var modalInstance = this.$uibModal.open({
+        // var modalInstance =  // this var not used
+        this.$uibModal.open({
             animation: true,
             templateUrl: 'app/details/pop-up.html',
             controller: 'PopUpController',
