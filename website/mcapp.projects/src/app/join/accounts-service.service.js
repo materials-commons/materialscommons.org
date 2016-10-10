@@ -13,8 +13,8 @@ class AccountsService {
     }
 
     createResetPasswordRequest(email) {
-        return this.apiService('accounts').customPOST({
-            reset: true,
+        console.log("reset request: " + email);
+        return this.apiService('accounts').one('reset').customPOST({
             email: email
         });
     }

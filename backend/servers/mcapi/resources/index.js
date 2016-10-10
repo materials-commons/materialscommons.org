@@ -138,6 +138,7 @@ module.exports = function(model) {
     router.put('/users/:project_id', users.updateProjectFavorites);
     router.put('/users', users.updateUserSettings);
     router.post('/accounts', users.createAccount);
+    router.post('/accounts/reset', users.resetPasswordGenerateLink);
     router.get('/users/validate/:validation_id', users.getUserRegistrationFromUuid);
 
     return router;
