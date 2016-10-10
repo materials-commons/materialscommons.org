@@ -12,6 +12,8 @@
   "globals": {
     "angular": true,
     "module": true,
-    "inject": true
+    "inject": true,
+    "toastr": true,
+     "_":true
   }
 }
