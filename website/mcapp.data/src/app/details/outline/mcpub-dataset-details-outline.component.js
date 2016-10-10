@@ -1,3 +1,4 @@
+/* global _:true */
 export class DatasetDetailsOutlineController {
     constructor() {
         'ngInject';
@@ -6,7 +7,7 @@ export class DatasetDetailsOutlineController {
     }
 
     $onInit() {
-        let treeModel = new TreeModel();
+        let treeModel = new TreeModel();  // eslint-disable-line no-undef
         this.root = treeModel.parse({id: 1, children: []});
         this.rootNode = this.root.first(node => node.model.id === 1);
         let sample2InputProcesses = {};
@@ -34,7 +35,7 @@ export class DatasetDetailsOutlineController {
         // Go through each node that has been added in the tree adding its immediate children.
         // Keep looping over newly added nodes until no more are added.
         let newlyAdded = [];
-        while (true) {
+        while (true) {  // eslint-disable-line no-constant-condition
             addedIds.forEach(id => {
                 let n = this.root.first(node => node.model.id === id);
                 n.model.output_samples.forEach(s => {
