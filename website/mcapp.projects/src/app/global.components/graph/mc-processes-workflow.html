@@ -1,7 +1,7 @@
 <div layout="row" style="margin-right:15px">
     <div flex="65" style="border-right: solid 2px grey; min-height:75vh">
-        <div id="processesGraph" ng-show="$ctrl.showGraphView">
-        </div>
+        <mc-processes-workflow-graph ng-if="$ctrl.showGraphView"
+                                     processes="$ctrl.processes"></mc-processes-workflow-graph>
         <mc-process-graph-outline ng-if="!$ctrl.showGraphView" processes="$ctrl.processes"></mc-process-graph-outline>
     </div>
     <span flex></span>
@@ -65,10 +65,11 @@
                     <div ng-show="$ctrl.selectedProcess">
                         <md-content style="max-height: 70vh">
                             <div layout="row" layout-margin layout-align="end">
-                                <md-button class="md-primary" ng-if="$ctrl.processNodeIsDeletable()" ng-click="$ctrl.deleteNodeAndProcessConfirm()">
+                                <md-button class="md-primary" ng-if="!$ctrl.selectedProcess.hasChildren"
+                                           ng-click="$ctrl.deleteNodeAndProcessConfirm()">
                                     Delete graph Node
                                 </md-button>
-                                <md-button class="md-warn" ng-disabled="true" ng-if="!$ctrl.processNodeIsDeletable()">
+                                <md-button class="md-warn" ng-disabled="true" ng-if="$ctrl.selectedProcess.hasChildren">
                                     To delete: remove 'children' first
                                 </md-button>
                             </div>

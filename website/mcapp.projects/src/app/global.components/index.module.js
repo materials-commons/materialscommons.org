@@ -8,7 +8,7 @@ import './mc-show-file.component';
 import './mc-show-process.component';
 import './mc-show-sample.component';
 import './mc-files-table.component';
-import './graph/mc-processes-graph.component';
+import './graph/mc-processes-workflow-graph.component';
 import './graph/mc-workflow-processes.component';
 import './graph/outline/mc-process-graph-outline.component';
 import './graph/mc-processes-workflow.component';
