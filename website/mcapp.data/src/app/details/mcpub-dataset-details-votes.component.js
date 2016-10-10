@@ -1,4 +1,3 @@
-/* global _:true */
 export class DatasetDetailsVotesController {
 
     constructor(userService, actionsService, toastr) {

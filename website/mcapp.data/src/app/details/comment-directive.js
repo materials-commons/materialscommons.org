@@ -1,4 +1,4 @@
-/* global toastr:true */
+
 export function CommentDirective() {
   'ngInject';
 
