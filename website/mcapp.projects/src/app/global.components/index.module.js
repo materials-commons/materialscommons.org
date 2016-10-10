@@ -11,6 +11,7 @@ import './mc-files-table.component';
 import './graph/mc-processes-graph.component';
 import './graph/mc-workflow-processes.component';
 import './graph/outline/mc-process-graph-outline.component';
+import './graph/mc-processes-workflow.component';
 import './process/mc-process-template-create-samples.component';
 import './process/mc-process-template-other.component';
 import './process/mc-process-template.component';
