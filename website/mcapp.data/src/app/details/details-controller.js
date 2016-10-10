@@ -1,4 +1,3 @@
-/* global _:true */
 export class DetailsController {
     /*@ngInject*/
     constructor(dataset, actionsService, toastr, userService, $uibModal, $previousState) {
