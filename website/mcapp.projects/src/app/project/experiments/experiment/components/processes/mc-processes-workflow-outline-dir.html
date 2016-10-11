@@ -11,8 +11,9 @@
             </span>
             (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
         </div>
-        <mc-process-graph-outline-dir process="node" mc-process-graph-outline="$ctrl.mcProcessGraphOutline"
-                                      ng-if="node.model.show">
-        </mc-process-graph-outline-dir>
+        <mc-processes-workflow-outline-dir process="node"
+                                           mc-processes-workflow-outline="$ctrl.mcProcessesWorkflowOutline"
+                                           ng-if="node.model.show">
+        </mc-processes-workflow-outline-dir>
     </li>
 </ul>

@@ -27,7 +27,7 @@ class MCProcessesWorkflowComponentController {
                 (process) => {
                     let p = this.templates.loadTemplateFromProcess(process.template_name, process);
                     this.$mdDialog.show({
-                        templateUrl: 'app/global.components/graph/new-process-dialog.html',
+                        templateUrl: 'app/project/experiments/experiment/components/processes/new-process-dialog.html',
                         controllerAs: '$ctrl',
                         controller: NewProcessDialogController,
                         bindToController: true,
@@ -168,7 +168,7 @@ class NewProcessDialogController {
 }
 
 angular.module('materialscommons').component('mcProcessesWorkflow', {
-    templateUrl: 'app/global.components/graph/mc-processes-workflow.html',
+    templateUrl: 'app/project/experiments/experiment/components/processes/mc-processes-workflow.html',
     controller: MCProcessesWorkflowComponentController,
     bindings: {
         processes: '<'
