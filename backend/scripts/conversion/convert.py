@@ -129,6 +129,22 @@ def set_process_type(conn):
     print "Done."
 
 
+def add_dataset_processes_to_experiments(conn):
+    print "Adding missing processes to experiments (that are in datasets)"
+    datasets = list(r.table('datasets').merge(lambda dataset: {
+        'processes': r.table('dataset2process').get_all(dataset['id'], index='dataset_id').eq_join('process_id', r.table('processes')).zip().coerce_to('array'),
+        'experiments': r.table('experiment2dataset').get_all(dataset['id'], index='dataset_id').coerce_to('array')
+    }).run(conn))
+    for dataset in datasets:
+        for experiment in dataset['experiments']:
+            for dprocess in dataset['processes']:
+                p = list(r.table('experiment2process').get_all([experiment['experiment_id'], dprocess['id']], index='experiment_process').run(conn))
+                if len(p) == 0:
+                    print "Adding process to experiment %s/%s" % (experiment['experiment_id'], dprocess['id'])
+                    r.table('experiment2process').insert({'experiment_id': experiment['experiment_id'], 'process_id': dprocess['id']}).run(conn)
+    print "Done."
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
@@ -136,18 +152,17 @@ def main():
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
 
-    # Not sure which of these apply:
-    remove_nulls_in_setup(conn)
-    remove_duplicates_in_sample2datafile(conn)
-    add_as_received_processes(conn)
-    set_specific_process_names(conn)
-    set_sample_direction_for_non_transform_processes(conn)
-    fix_transform_process_directions(conn)
+    # remove_nulls_in_setup(conn)
+    # remove_duplicates_in_sample2datafile(conn)
+    # add_as_received_processes(conn)
+    # set_specific_process_names(conn)
+    # set_sample_direction_for_non_transform_processes(conn)
+    # fix_transform_process_directions(conn)
+    # fix_samples_from_create_samples(conn)
+    # set_processes_destructive_flag(conn)
+    # set_process_type(conn)
 
-    # These are valid steps:
-    fix_samples_from_create_samples(conn)
-    set_processes_destructive_flag(conn)
-    set_process_type(conn)
+    add_dataset_processes_to_experiments(conn)
 
     # Note sure of these steps:
     # change_processes_field_to_description(conn)

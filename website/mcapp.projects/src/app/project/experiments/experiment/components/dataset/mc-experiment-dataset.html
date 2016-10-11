@@ -22,19 +22,7 @@
         <md-content layout="row" layout-wrap layout-align="start stretch" flex>
             <div layout="column" flex>
                 <mc-dataset-details ng-show="!$ctrl.showDetailsSection" dataset=$ctrl.dataset></mc-dataset-details>
-
-                <div ng-if="!$ctrl.showTableView">
-                    <mc-dataset-samples-cards ng-show="$ctrl.dataset.samples.length"
-                                              samples="$ctrl.dataset.samples"></mc-dataset-samples-cards>
-
-                    <mc-dataset-files-cards ng-show="$ctrl.dataset.samples.length" files="$ctrl.dataset.files"></mc-dataset-files-cards>
-
-                    <mc-dataset-processes-cards ng-show="$ctrl.dataset.processes.length"
-                                                processes="$ctrl.dataset.processes"></mc-dataset-processes-cards>
-                </div>
-                <div ng-if="$ctrl.showTableView">
-                    <mc-dataset-table dataset="$ctrl.dataset"></mc-dataset-table>
-                </div>
+                <mc-dataset-outline dataset="$ctrl.dataset"></mc-dataset-outline>
             </div>
         </md-content>
     </div>
