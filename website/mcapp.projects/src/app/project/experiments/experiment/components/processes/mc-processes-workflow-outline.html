@@ -1,0 +1,28 @@
+<div style="margin-top: 20px">
+    <p flex="70">
+        <strong>Note:</strong>
+        The same process can appear in multiple places in the outline because multiple nodes may
+        have it as a child. This means that when selecting the node we will highlight all instances of it.
+    </p>
+    <md-content style="max-height: 75vh" class="padding-top-20">
+        <ul flex="90">
+            <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
+                <div ng-class="{'outline-node-selected': node.model.selected}">
+                    <a ng-if="node.children.length"
+                       ng-click="node.model.show = !node.model.show">
+                        <i class="primary-color fa fa-fw"
+                           ng-class="{'fa-folder': !node.model.show, 'fa-folder-open': node.model.show}"></i>
+                        {{::node.model.name}}
+                    </a>
+                    <span ng-if="!node.children.length">
+                        <i class="primary-color fa fa-fw fa-file"></i> {{::node.model.name}}
+                    </span>
+                    (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
+                </div>
+                <mc-processes-workflow-outline-dir process="node" mc-processes-workflow-outline="$ctrl"
+                                                   ng-if="node.model.show">
+                </mc-processes-workflow-outline-dir>
+            </li>
+        </ul>
+    </md-content>
+</div>
