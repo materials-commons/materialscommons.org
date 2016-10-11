@@ -75,13 +75,28 @@ module.exports = function(r) {
     }
 
     function* createPasswordResetRequest(user) {
-        user.validate_uuid = yield r.uuid();
-        user.reset = true;
+        let validate_uuid = yield r.uuid();
+        let validate_doc = {
+            email: user.email,
+
+        };
+        let accountRequest = yield r.table('account_requests').get(user.email);
+        if (accountRequest) {
+            console.log('User acount request allready posted', user.email);
+            console.log(accountRequest.birthtime);
+            console.log(user);
+
+            let update = yield r.table('account_requests').get(user.email)
+                .update({validate_uuid: validate_uuid, reset_password:true}, {returnChanges: true});
+            console.log(update.replaced);
+            console.log(update.changes[0].new_val);
+//            return {val: update.changes[0].new_val};
+        }
         let rv = yield r.table('account_requests').insert(user, {returnChanges: true});
         if (rv.errors) {
-            return {error: "Validation was already sent: " + account.email};
+            return {error: "Validation was already sent: " + user.email};
         }
-
+        console.log(rv.changes[0].new_val);
         return {val: rv.changes[0].new_val};
     }
 
