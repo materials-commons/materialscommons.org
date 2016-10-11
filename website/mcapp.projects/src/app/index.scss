@@ -413,3 +413,8 @@ a {
 .outline-node-selected {
   background-color: $mc-dark-grey;
 }
+
+.view-selected {
+  color: black;
+  border-bottom: solid $mc-dark-grey 2px;
+}
