@@ -1,4 +1,4 @@
-class MCProcessGraphOutlineComponentController {
+class MCProcessesWorkflowOutlineComponentController {
     /*@ngInject*/
     constructor(processTree) {
         this.processTree = processTree;
@@ -33,20 +33,17 @@ class MCProcessGraphOutlineComponentController {
     }
 }
 
-class MCProcessGraphOutlineDirDirectiveController {
+class MCProcessesWorkflowOutlineDirDirectiveController {
     /*@ngInject*/
     constructor() {
     }
 
     showDetails(p) {
-        this.mcProcessGraphOutline.showDetails(p);
-        //this.processTree.clearSelected(this.root);
-        //p.selected = true;
-        //this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
+        this.mcProcessesWorkflowOutline.showDetails(p);
     }
 }
 
-function mcProcessGraphOutlineDirDirective(RecursionHelper) {
+function mcProcessesWorkflowOutlineDirDirective(RecursionHelper) {
     return {
         restrict: 'E',
         scope: {
@@ -55,23 +52,23 @@ function mcProcessGraphOutlineDirDirective(RecursionHelper) {
             // This needs to be passed in rather than required. It appears that RecursionHelper is
             // preventing the link function from being called, so we can't require mcProcessesWorkflow
             // and access it later.
-            mcProcessGraphOutline: '='
+            mcProcessesWorkflowOutline: '='
         },
-        controller: MCProcessGraphOutlineDirDirectiveController,
+        controller: MCProcessesWorkflowOutlineDirDirectiveController,
         controllerAs: '$ctrl',
         bindToController: true,
-        templateUrl: 'app/global.components/graph/outline/mc-process-graph-outline-dir.html',
+        templateUrl: 'app/project/experiments/experiment/components/processes/mc-processes-workflow-outline-dir.html',
         compile: function(element) {
             return RecursionHelper.compile(element, function() {});
         }
     }
 }
 
-angular.module('materialscommons').directive('mcProcessGraphOutlineDir', mcProcessGraphOutlineDirDirective);
+angular.module('materialscommons').directive('mcProcessesWorkflowOutlineDir', mcProcessesWorkflowOutlineDirDirective);
 
-angular.module('materialscommons').component('mcProcessGraphOutline', {
-    templateUrl: 'app/global.components/graph/outline/mc-process-graph-outline.html',
-    controller: MCProcessGraphOutlineComponentController,
+angular.module('materialscommons').component('mcProcessesWorkflowOutline', {
+    templateUrl: 'app/project/experiments/experiment/components/processes/mc-processes-workflow-outline.html',
+    controller: MCProcessesWorkflowOutlineComponentController,
     bindings: {
         processes: '<'
     },

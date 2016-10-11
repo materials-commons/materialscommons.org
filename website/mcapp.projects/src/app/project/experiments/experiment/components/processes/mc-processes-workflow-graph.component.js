@@ -194,7 +194,7 @@ class MCProcessesWorkflowGraphComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessesWorkflowGraph', {
-    templateUrl: 'app/global.components/graph/mc-processes-workflow-graph.html',
+    templateUrl: 'app/project/experiments/experiment/components/processes/mc-processes-workflow-graph.html',
     controller: MCProcessesWorkflowGraphComponentController,
     bindings: {
         processes: '<'
