@@ -43,6 +43,7 @@ class MCProcessesWorkflowOutlineDirDirectiveController {
     }
 }
 
+/*@ngInject*/
 function mcProcessesWorkflowOutlineDirDirective(RecursionHelper) {
     return {
         restrict: 'E',
