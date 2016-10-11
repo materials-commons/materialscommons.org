@@ -2,7 +2,8 @@
     <div flex="65" style="border-right: solid 2px grey; min-height:75vh">
         <mc-processes-workflow-graph ng-if="$ctrl.showGraphView"
                                      processes="$ctrl.processes"></mc-processes-workflow-graph>
-        <mc-process-graph-outline ng-if="!$ctrl.showGraphView" processes="$ctrl.processes"></mc-process-graph-outline>
+        <mc-processes-workflow-outline ng-if="!$ctrl.showGraphView"
+                                       processes="$ctrl.processes"></mc-processes-workflow-outline>
     </div>
     <span flex></span>
     <div flex="30">
@@ -49,8 +50,8 @@
                 <md-tab-body>
                     <md-content style="max-height: 70vh" class="margin-left-15">
                         <h3 class="md-title">Add To Workflow</h3>
-                        <mc-workflow-processes
-                                on-selected="$ctrl.addProcess(templateId, processId)"></mc-workflow-processes>
+                        <mc-workflow-process-templates
+                                on-selected="$ctrl.addProcess(templateId, processId)"></mc-workflow-process-templates>
                     </md-content>
                 </md-tab-body>
             </md-tab>
