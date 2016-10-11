@@ -1,6 +1,6 @@
 <ul>
     <li ng-repeat="node in ::$ctrl.process.children" layout="column">
-        <div>
+        <div ng-class="{'outline-node-selected': node.model.selected}">
             <a ng-if="node.children.length" ng-click="node.model.show = !node.model.show">
                 <i class="primary-color fa fa-fw"
                    ng-class="{'fa-folder': !node.model.show, 'fa-folder-open': node.model.show}"></i>
@@ -11,7 +11,7 @@
             </span>
             (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
         </div>
-        <mc-process-graph-outline-dir process="node" mc-processes-workflow="$ctrl.mcProcessesWorkflow"
+        <mc-process-graph-outline-dir process="node" mc-process-graph-outline="$ctrl.mcProcessGraphOutline"
                                       ng-if="node.model.show">
         </mc-process-graph-outline-dir>
     </li>
