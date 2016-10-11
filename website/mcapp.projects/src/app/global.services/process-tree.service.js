@@ -33,7 +33,7 @@ class ProcessTreeService {
         // Go through each node that has been added in the tree adding its immediate children.
         // Keep looping over newly added nodes until no more are added.
         let newlyAdded = [];
-        while (true) {
+        for (; ;) {
             addedIds.forEach(id => {
                 let n = root.first(node => node.model.id === id);
                 n.model.output_samples.forEach(s => {
