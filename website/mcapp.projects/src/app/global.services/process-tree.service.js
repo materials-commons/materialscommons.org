@@ -23,7 +23,7 @@ class ProcessTreeService {
                 // No inputs so top level node
                 p.children = [];
                 p.show = true;
-                p.details = false;
+                p.selected = false;
                 let n = treeModel.parse(p);
                 addedIds.push(p.id);
                 rootNode.addChild(n);
@@ -45,7 +45,7 @@ class ProcessTreeService {
                             if (!(p.id in nodeProcessEntries)) {
                                 p.children = [];
                                 p.show = true;
-                                p.details = false;
+                                p.selected = false;
                                 let node = treeModel.parse(p);
                                 n.addChild(node);
                                 newlyAdded.push(p.id);
@@ -65,8 +65,8 @@ class ProcessTreeService {
         return {root, rootNode};
     }
 
-    clearDetails(root) {
-        root.walk((node) => { node.model.details = false; });
+    clearSelected(root) {
+        root.walk((node) => { node.model.selected = false; });
     }
 }
 

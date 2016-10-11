@@ -27,6 +27,8 @@ class MCProcessGraphOutlineComponentController {
     }
 
     showDetails(p) {
+        this.processTree.clearSelected(this.root);
+        p.selected = true;
         this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
     }
 }
@@ -37,8 +39,10 @@ class MCProcessGraphOutlineDirDirectiveController {
     }
 
     showDetails(p) {
-        console.log(this);
-        this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
+        this.mcProcessGraphOutline.showDetails(p);
+        //this.processTree.clearSelected(this.root);
+        //p.selected = true;
+        //this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
     }
 }
 
@@ -51,7 +55,7 @@ function mcProcessGraphOutlineDirDirective(RecursionHelper) {
             // This needs to be passed in rather than required. It appears that RecursionHelper is
             // preventing the link function from being called, so we can't require mcProcessesWorkflow
             // and access it later.
-            mcProcessesWorkflow: '='
+            mcProcessGraphOutline: '='
         },
         controller: MCProcessGraphOutlineDirDirectiveController,
         controllerAs: '$ctrl',
