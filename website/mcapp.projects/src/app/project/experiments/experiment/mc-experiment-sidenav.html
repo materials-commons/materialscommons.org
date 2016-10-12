@@ -20,7 +20,8 @@
         </div>
 
         <div layout="column" layout-align="center center" class="experiment-tool"
-             ui-sref-active="active" ui-sref="project.experiment.datasets" ui-sref-opts="{reload: true}">
+             ng-class="{active: $ctrl.$state.includes('project.experiment.datasets')}"
+             ui-sref="project.experiment.datasets.list">
             <i class="fa fa-fw fa-database fa-2x"></i>
             <span>Datasets</span>
         </div>
