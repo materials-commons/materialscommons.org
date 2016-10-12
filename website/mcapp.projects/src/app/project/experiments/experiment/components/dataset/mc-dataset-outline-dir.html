@@ -9,8 +9,9 @@
             <span ng-if="!node.children.length">
                 <i class="primary-color fa fa-fw fa-file"></i> {{::node.model.name}}
             </span>
-            (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
+            (<a ng-click="node.model.showDetails = !node.model.showDetails">Details</a>)
         </div>
+        <mc-dataset-process-details process="node.model" ng-if="node.model.showDetails"></mc-dataset-process-details>
         <mc-dataset-outline-dir process="node"
                                 mc-processes-workflow-outline="$ctrl.mcProcessesWorkflowOutline"
                                 ng-if="node.model.show">
