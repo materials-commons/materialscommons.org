@@ -4,7 +4,7 @@
         The same process can appear in multiple places in the outline because multiple nodes may
         have it as a child. This means that when selecting the node we will highlight all instances of it.
     </p>
-    <md-content style="max-height: 75vh" class="padding-top-20">
+    <md-content>
         <ul flex="90">
             <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
                 <div ng-class="{'outline-node-selected': node.model.selected}">
@@ -17,8 +17,10 @@
                     <span ng-if="!node.children.length">
                         <i class="primary-color fa fa-fw fa-file"></i> {{::node.model.name}}
                     </span>
-                    (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
+                    (<a ng-click="node.model.showDetails = !node.model.showDetails">Details</a>)
                 </div>
+                <mc-dataset-process-details process="node.model"
+                                            ng-if="node.model.showDetails"></mc-dataset-process-details>
                 <mc-dataset-outline-dir process="node" mc-processes-workflow-outline="$ctrl"
                                         ng-if="node.model.show">
                 </mc-dataset-outline-dir>
