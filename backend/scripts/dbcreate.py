@@ -226,7 +226,7 @@ def create_mcpub_tables():
 
     create_mcpub_table("sample2sample", "parent_sample_id", "sample_id")
 
-    run(r.db('mcpub').wait())
+    # run(r.db('mcpub').wait())
 
 
 def create_mc_table(table, *args):
