@@ -56,7 +56,7 @@ module.exports = function(users, experiments, schema) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
             } else {
-                let evl = emailValidationLink(rv.val, accountArgs.site);
+                let evl = emailValidationLinkToUser(rv.val, accountArgs.site);
                 if (evl.error) {
                     this.status = status.BAD_REQUEST;
                     this.body = evl;
@@ -73,16 +73,16 @@ module.exports = function(users, experiments, schema) {
         let user = yield users.get(resetArgs.email);
         if (!user) {
             this.status = status.BAD_REQUEST;
-            this.body = {error: "No registered user for given email address: "+ resetArgs.email};
+            let errorMessage = "No registered user for given email address: "+ resetArgs.email + ". Please register anew.";
+            this.body = {error: errorMessage};
         } else {
             let rv = yield users.createPasswordResetRequest(user);
-            console.log(rv);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
             } else {
                 schema.prepare(schema.userAccountSchema, user);
-                let evl = emailValidationLink(rv.val.email, rv.val., user.site);
+                let evl = emailValidationLinkToUser(rv.val, user.site);
                 if (evl.error) {
                     this.status = status.BAD_REQUEST;
                     this.body = evl;
@@ -136,13 +136,12 @@ module.exports = function(users, experiments, schema) {
         return yield schema.validate(schema.userAccountSchema, accountArgs);
     }
 
-    function emailValidationLink(email,validate_uuid,site) {
-        console.log('emailValidationLink',email,validate_uuid,,site)
+    function emailValidationLinkToUser(userData, site) {
         var transporter = nodemailer.createTransport(mailTransport);
-        var sendTo = email;
-        var validationLink = `${process.env.MC_VERIFY_LINK}/${validate_uuid}`;
+        var sendTo = userData.id;
+        var validationLink = `${process.env.MC_VERIFY_LINK}/${userData.validate_uuid}`;
         if (site === 'mcpub') {
-            validationLink = `${process.env.MCPUB_VERIFY_LINK}/${validate_uuid}`
+            validationLink = `${process.env.MCPUB_VERIFY_LINK}/${userData.validate_uuid}`
         }
         let emailMsg =
             `Thank you for registering for an account with Materials Commons. To complete the registration
