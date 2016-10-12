@@ -145,6 +145,10 @@ def add_dataset_processes_to_experiments(conn):
     print "Done."
 
 
+def fix_as_received_process_name(conn):
+    r.table('processes').filter({'process_name': 'As Received'}).update({'process_name': 'Create Samples'}).run(conn)
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
@@ -163,8 +167,9 @@ def main():
     # set_process_type(conn)
 
     add_dataset_processes_to_experiments(conn)
+    fix_as_received_process_name(conn)
 
-    # Note sure of these steps:
+    # Not sure of these steps:
     # change_processes_field_to_description(conn)
     # convert_setup_selections_to_name_value(conn)
 
