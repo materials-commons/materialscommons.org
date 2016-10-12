@@ -27,11 +27,14 @@ class AccountsService {
     }
 
     getUserRegistrationAccount(uuid) {
+        console.log("client - account-service - getUserRegistrationAccount: " + uuid);
         return this.apiService('users').one('validate', uuid).get();
     }
 
     resetUserPasswordWithValidate(uuid,id,password) {
-        return this.apiService('user',id).one('validate',uuid).one('password').customPOST({
+        console.log("client - account-service - resetUserPasswordWithValidate: " + uuid
+            + ", " + id + ", " + password);
+        return this.Restangular.one('user',id).one('validate',uuid).one('password').customPOST({
             password: password
         });
     }

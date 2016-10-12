@@ -118,19 +118,10 @@ module.exports = function(r) {
             return {error: "User validation record does not exists: " + uuid};
         }
         let registration = results[0];
-        let userData = null;
-        if (registration.reset_password) {
-            userData = yield yield r.table('users').get(registration.id);
-        } else {
-            userData = registration;
-        }
-        if (!userData){
-            return {error: "user record not found"};
-        }
-        delete userData['password'];
-        delete userData['apikey'];
-        console.log(userData);
-        return {val: userData};
+        delete registration['password'];
+        delete registration['apikey'];
+        console.log("backend - db/model/user - registration: ",registration);
+        return {val: registration};
     }
 
 
