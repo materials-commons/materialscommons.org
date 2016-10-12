@@ -75,7 +75,6 @@ module.exports = function(r) {
     }
 
     function* createPasswordResetRequest(user) {
-        console.log("model/users createPasswordResetRequest: " + user.id);
         let validate_uuid = yield r.uuid();
         let validate_doc = {
             id: user.id,
@@ -86,8 +85,6 @@ module.exports = function(r) {
         };
         let accountRequest = yield r.table('account_requests').get(user.id);
         if (accountRequest) {
-            console.log('User acount request allready posted', user.email);
-
             let update = yield r.table('account_requests').get(user.email)
                 .update(validate_doc, {returnChanges: true});
             return {val: update.changes[0].new_val};
@@ -120,7 +117,6 @@ module.exports = function(r) {
         let registration = results[0];
         delete registration['password'];
         delete registration['apikey'];
-        console.log("backend - db/model/user - registration: ",registration);
         return {val: registration};
     }
 

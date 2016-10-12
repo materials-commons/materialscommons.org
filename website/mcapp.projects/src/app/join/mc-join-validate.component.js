@@ -36,9 +36,6 @@ class MCJoinValidateComponentController {
             return;
         }
 
-        console.log('client mc-join-validate setPassword',this.uuid,this.password1);
-        console.log('  reset_password', this.registration.reset_password);
-
         if (this.registration.reset_password) {
             this.accountsService.resetUserPasswordWithValidate(this.uuid,this.registration.id,this.password1)
                 .then(
