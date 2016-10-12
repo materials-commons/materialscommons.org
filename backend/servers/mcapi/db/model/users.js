@@ -75,28 +75,24 @@ module.exports = function(r) {
     }
 
     function* createPasswordResetRequest(user) {
+        console.log("model/users createPasswordResetRequest: " + user.id);
         let validate_uuid = yield r.uuid();
         let validate_doc = {
+            id: user.id,
             email: user.email,
-
+            fullname: user.fullname,
+            validate_uuid: validate_uuid,
+            reset_password:true
         };
-        let accountRequest = yield r.table('account_requests').get(user.email);
+        let accountRequest = yield r.table('account_requests').get(user.id);
         if (accountRequest) {
             console.log('User acount request allready posted', user.email);
-            console.log(accountRequest.birthtime);
-            console.log(user);
 
             let update = yield r.table('account_requests').get(user.email)
-                .update({validate_uuid: validate_uuid, reset_password:true}, {returnChanges: true});
-            console.log(update.replaced);
-            console.log(update.changes[0].new_val);
-//            return {val: update.changes[0].new_val};
+                .update(validate_doc, {returnChanges: true});
+            return {val: update.changes[0].new_val};
         }
-        let rv = yield r.table('account_requests').insert(user, {returnChanges: true});
-        if (rv.errors) {
-            return {error: "Validation was already sent: " + user.email};
-        }
-        console.log(rv.changes[0].new_val);
+        let rv = yield r.table('account_requests').insert(validate_doc, {returnChanges: true});
         return {val: rv.changes[0].new_val};
     }
 
@@ -121,9 +117,19 @@ module.exports = function(r) {
         if (!results.length) {
             return {error: "User validation record does not exists: " + uuid};
         }
-        let userData = results[0];
+        let registration = results[0];
+        let userData = null;
+        if (registration.reset_password) {
+            userData = yield yield r.table('users').get(registration.id);
+        } else {
+            userData = registration;
+        }
+        if (!userData){
+            return {error: "user record not found"};
+        }
         delete userData['password'];
         delete userData['apikey'];
+        console.log(userData);
         return {val: userData};
     }
 

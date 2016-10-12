@@ -66,6 +66,24 @@ def change_password(user):
     rv = r.table('users').get(user).update({'password': hash}).run(g.conn)
     return jsonify(rv)
 
+@app.route('/user/<user>/validate/<validation_id>/password', methods=['PUT'])
+@apikey
+@crossdomain(origin='*')
+def change_password(user):
+    cursor = r.table("account_requests").get_all(validation_id,index='validate_uuid').run(g.conn)
+    u = ''
+    for document in cursor:
+        u = document
+    if not u:
+        return error.not_authorized('No record of this registration was found')
+    user_id = u['id']
+    if not user_id:
+        return error.not_authorized('No valid user was found')
+    j = request.get_json()
+    newpw = dmutil.get_required('password', j)
+    hash = make_password_hash(newpw)
+    rv = r.table('users').get(user_id).update({'password': hash}).run(g.conn)
+    return jsonify(rv)
 
 @app.route('/user/<user>/apikey/reset', methods=['PUT'])
 @apikey
