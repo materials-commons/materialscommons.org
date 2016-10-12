@@ -1,6 +1,6 @@
 class MCResetPasswordComponentController {
     /*@ngInject*/
-    constructor(accountsService, $state) {
+    constructor(accountsService) {
         this.accountsService = accountsService;
         this.email = '';
         this.message = null;
