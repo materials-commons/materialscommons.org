@@ -8,7 +8,7 @@ class MCExperimentDatasetComponentController {
         this.datasetId = $stateParams.dataset_id;
         this.dataset = null;
         this.selectItems = selectItems;
-        this.showTableView = false;
+        this.showDetailsSection = true;
     }
 
     $onInit() {
