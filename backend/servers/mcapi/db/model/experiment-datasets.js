@@ -32,8 +32,15 @@ module.exports = function(r) {
     };
 
     function* getDatasetsForExperiment(experimentId) {
-        let rql = commonQueries.datasetDetailsRql(r.table('experiment2dataset').getAll(experimentId, {index: 'experiment_id'})
-            .eqJoin('dataset_id', r.table('datasets')).zip(), r);
+        let rql = r.table('experiment2dataset').getAll(experimentId, {index: 'experiment_id'})
+            .eqJoin('dataset_id', r.table('datasets')).zip()
+            .merge((ds) => {
+                return {
+                    samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).count(),
+                    processes: r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'}).count(),
+                    files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count()
+                }
+            });
         let dataset = yield dbExec(rql);
         return {val: dataset};
     }
@@ -223,6 +230,7 @@ module.exports = function(r) {
         yield r.table('datasets').get(datasetId).update({published: true});
         return yield getDataset(datasetId);
     }
+
     /*
      * publishDatasetKeywords adds any dataset keywords to the tags in the published dataset
      * and associated those keywords with the published document. Keywords that are already
@@ -232,22 +240,22 @@ module.exports = function(r) {
         let dataset = yield r.db('materialscommons').table('datasets').get(datasetId);
         let keywords = dataset['keywords'];
         let tags = keywords.map(id => {
-            return {id:id};
+            return {id: id};
         });
-        let alreadyJoined = yield r.db('mcpub').table('tag2dataset').filter({dataset_id:  datasetId})
+        let alreadyJoined = yield r.db('mcpub').table('tag2dataset').filter({dataset_id: datasetId});
         alreadyJoined = alreadyJoined.map(doc => {
             return doc.tag;
         });
         alreadyJoined = new Set(alreadyJoined);
         let tagsToJoin = keywords.filter(key => {
-            return  !alreadyJoined.has(key);
+            return !alreadyJoined.has(key);
         });
         let joins = tagsToJoin.map(tag => {
             return {tag: tag, dataset_id: datasetId};
         });
-        yield r.db('mcpub').table('tags').insert( tags,{ conflict:'update'})
+        yield r.db('mcpub').table('tags').insert(tags, {conflict: 'update'});
         if (tagsToJoin.length > 0) {
-            yield r.db('mcpub').table('tag2dataset').insert( joins,{ conflict:'update'});
+            yield r.db('mcpub').table('tag2dataset').insert(joins, {conflict: 'update'});
         }
     }
 
@@ -394,15 +402,15 @@ module.exports = function(r) {
         let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
         let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
 
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             var archive = archiver('zip');
             var output = fs.createWriteStream(fillPathAndFilename);
 
             output.on('close', function() {
                 var totalBytes = archive.pointer();
                 var filename = zipFilename;
-                r.table('datasets').get(datasetId).update({zipFilename:filename,zipSize:totalBytes})
-                    .then(resolve,reject);
+                r.table('datasets').get(datasetId).update({zipFilename: filename, zipSize: totalBytes})
+                    .then(resolve, reject);
             });
 
             archive.on('error', reject);
@@ -416,7 +424,7 @@ module.exports = function(r) {
                 let path = zipEntry.sourcePath;
                 let name = zipEntry.fileName;
                 let checksum = zipEntry.checksum;
-                name = resolveZipfileFilenameDuplicates(seenThisOne,name,checksum);
+                name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
                 if (name) {
                     archive.append(path, {name: name});
                 }
@@ -427,7 +435,7 @@ module.exports = function(r) {
         });
     }
 
-    function resolveZipfileFilenameDuplicates(seenThisOne,name,checksum){
+    function resolveZipfileFilenameDuplicates(seenThisOne, name, checksum) {
         name = name.toLowerCase();
 
         if (name.startsWith(".")) {
@@ -496,13 +504,13 @@ module.exports = function(r) {
     }
 
     function* unpublishDatasetTags(datasetId) {
-        let tags = yield r.db('mcpub').table('tag2dataset').getAll(datasetId,{index: 'dataset_id'}).pluck(['tag']);
-        yield r.db('mcpub').table('tag2dataset').getAll(datasetId,{index: 'dataset_id'}).delete();
+        let tags = yield r.db('mcpub').table('tag2dataset').getAll(datasetId, {index: 'dataset_id'}).pluck(['tag']);
+        yield r.db('mcpub').table('tag2dataset').getAll(datasetId, {index: 'dataset_id'}).delete();
         tags = tags.map(tag => tag.tag);
         // not the best way? I'm convinced that this can be done with a single query, parhave in comibination
         // with the above, but I could not figure it out, and this works. Terry Weymouth - 6 Oct 2016
         for (var i = 0; i < tags.length; i++) {
-            let count = yield r.db('mcpub').table('tag2dataset').getAll(tags[i],{index: 'tag'}).count();
+            let count = yield r.db('mcpub').table('tag2dataset').getAll(tags[i], {index: 'tag'}).count();
             if (count == 0) {
                 yield  yield r.db('mcpub').table('tags').get(tags[i]).delete();
             }
