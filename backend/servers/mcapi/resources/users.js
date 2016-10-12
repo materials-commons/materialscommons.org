@@ -95,9 +95,7 @@ module.exports = function(users, experiments, schema) {
     }
 
     function* getUserRegistrationFromUuid(next) {
-        console.log("backend - getUserRegistrationFromUuid")
         let result = yield users.getUserRegistrationFromUuid(this.params.validation_id);
-        console.log("results ", result);
         if (result.error) {
             this.status = status.BAD_REQUEST;
             this.body = result;
@@ -159,15 +157,11 @@ module.exports = function(users, experiments, schema) {
             html: htmlBody
         };
 
-        console.log("emailValidation: " + sendTo);
-
         // send mail with defined transport object
         transporter.sendMail(mailOptions, function(error, info){
             if(error){
-                console.log('Send error: ' + error);
                 return {error: error};
             }
-            console.log('Message sent: ' + info.response);
         });
 
         return {val: userData}
@@ -175,11 +169,9 @@ module.exports = function(users, experiments, schema) {
 
     function mailTransportConfig() {
         if (process.env.MC_SMTP_HOST === 'localhost') {
-            console.log('Email Server - localhost:25');
             return smtpTransport();
         } else {
             let mailURL = `smtps://${process.env.MC_VERIFY_EMAIL}:${process.env.MC_VERIFY_PASS}@${process.env.MC_SMTP_HOST}`;
-            console.log(`Email server - ${mailURL}`);
             return mailURL;
         }
     }

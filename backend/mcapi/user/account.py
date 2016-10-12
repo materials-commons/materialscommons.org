@@ -80,7 +80,7 @@ def reset_password_validate(user,validation_id):
     j = request.get_json()
     newpw = dmutil.get_required('password', j)
     hash = make_password_hash(newpw)
-    # r.table('account_requests').get(user_id).delete().run(g.conn)
+    r.table('account_requests').get(user_id).delete().run(g.conn)
     rv = r.table('users').get(user_id).update({'password': hash}).run(g.conn)
     return jsonify(rv)
 
