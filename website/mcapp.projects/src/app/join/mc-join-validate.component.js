@@ -23,7 +23,7 @@ class MCJoinValidateComponentController {
     }
 
     setPassword(setPasswordForm) {
-        if (!registration) {
+        if (!this.registration) {
             this.message = "No validated user request. Please retry.";
             return;
         }

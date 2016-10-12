@@ -95,7 +95,9 @@ module.exports = function(users, experiments, schema) {
     }
 
     function* getUserRegistrationFromUuid(next) {
+        console.log("backend - getUserRegistrationFromUuid")
         let result = yield users.getUserRegistrationFromUuid(this.params.validation_id);
+        console.log("results ", result);
         if (result.error) {
             this.status = status.BAD_REQUEST;
             this.body = result;
