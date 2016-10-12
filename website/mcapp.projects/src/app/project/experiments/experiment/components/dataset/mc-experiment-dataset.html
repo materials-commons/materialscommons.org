@@ -3,16 +3,16 @@
         <h3 class="md-title" style="padding-right: 30px">Dataset: {{$ctrl.dataset.title}}</h3>
         <md-button class="md-primary" ng-click="$ctrl.selectSamples()">add samples</md-button>
         <md-button class="md-primary" ng-click="$ctrl.selectFiles()">add files</md-button>
-        <md-button ng-class="{'md-primary': $ctrl.showDetailsSection, 'md-warn': !$ctrl.showDetailsSection}"
+        <md-button ng-class="{'md-primary': !$ctrl.showDetailsSection, 'md-warn': $ctrl.showDetailsSection}"
                    ng-click="$ctrl.showDetailsSection = !$ctrl.showDetailsSection">
-            {{$ctrl.showDetailsSection ? "show details" : "hide details"}}
+            {{$ctrl.showDetailsSection ? "hide details" : "show details"}}
         </md-button>
     </div>
 
     <div layout="row" flex style="max-height: 70vh">
         <md-content layout="row" layout-wrap layout-align="start stretch" flex>
             <div layout="column" flex>
-                <mc-dataset-details ng-show="!$ctrl.showDetailsSection" dataset=$ctrl.dataset></mc-dataset-details>
+                <mc-dataset-details ng-show="$ctrl.showDetailsSection" dataset=$ctrl.dataset></mc-dataset-details>
                 <mc-dataset-outline dataset="$ctrl.dataset"></mc-dataset-outline>
             </div>
         </md-content>
