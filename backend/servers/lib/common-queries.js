@@ -39,6 +39,9 @@ module.exports.fileDetailsRql = function fileDetailsRql(rql, r) {
     });
 };
 
+
+//commonQueries.processDetailsRql(r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'})
+//    .eqJoin('process_id', r.table('processes')).zip(), r)
 module.exports.datasetDetailsRql = function datasetDetailsRql(rql, r) {
     return rql.merge(ds => {
         return {
@@ -52,16 +55,8 @@ module.exports.datasetDetailsRql = function datasetDetailsRql(rql, r) {
                     };
                 })
                 .coerceTo('array'),
-            processes: r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
-                .eqJoin('process_id', r.table('processes')).zip().merge(p => {
-                    return {
-                        files: r.table('process2file').getAll(p('process_id'), {index: 'process_id'})
-                            .coerceTo('array'),
-                        samples: r.table('process2sample').getAll(p('process_id'), {index: 'process_id'})
-                            .coerceTo('array')
-                    };
-                })
-                .coerceTo('array'),
+            processes: processDetailsRql(r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
+                .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array'),
             files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
                 .eqJoin('datafile_id', r.table('datafiles')).zip().merge(f => {
                     return {
@@ -78,7 +73,7 @@ module.exports.datasetDetailsRql = function datasetDetailsRql(rql, r) {
     });
 };
 
-module.exports.processDetailsRql = function processDetailsRql(rql, r) {
+function processDetailsRql(rql, r) {
     return rql.merge(function(process) {
         return {
             setup: r.table('process2setup').getAll(process('id'), {index: 'process_id'})
@@ -153,4 +148,6 @@ module.exports.processDetailsRql = function processDetailsRql(rql, r) {
                 .zip().coerceTo('array')
         }
     });
-};
+}
+
+module.exports.processDetailsRql = processDetailsRql;
