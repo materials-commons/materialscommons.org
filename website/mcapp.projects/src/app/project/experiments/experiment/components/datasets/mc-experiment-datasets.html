@@ -24,9 +24,9 @@
                     <a ng-click="$ctrl.openDataset(ds.id)">{{::ds.title}}</a>
                 </td>
                 <td md-cell>{{::ds.description}}</td>
-                <td md-cell>{{::ds.samples.length}}</td>
-                <td md-cell>{{::ds.processes.length}}</td>
-                <td md-cell>{{::ds.files.length}}</td>
+                <td md-cell>{{::ds.samples}}</td>
+                <td md-cell>{{::ds.processes}}</td>
+                <td md-cell>{{::ds.files}}</td>
                 <td md-cell>{{ds.published ? 'Yes' : 'No'}}</td>
             </tr>
             </tbody>
