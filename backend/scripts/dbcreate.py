@@ -11,7 +11,6 @@ def create_mc_database():
 
 
 def create_mc_tables():
-    print "Creating tables"
     create_mc_table("users", "apikey", "admin")
 
     create_mc_table("account_requests", "validate_uuid")
@@ -154,8 +153,7 @@ def create_mc_tables():
     create_mc_table("dataset2experimentnote", "dataset_id", "experiment_note_id")
     create_compound_index("dataset2experimentnote", "dataset_experiment_note", ["dataset_id", "experiment_note_id"])
 
-    print "Done creating tables waiting on db"
-    # run(r.db('materialscommons').wait())
+    run(r.db('materialscommons').wait())
 
 
 def create_mcpub_database():
