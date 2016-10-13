@@ -73,6 +73,7 @@ module.exports = function(users, experiments, schema) {
     function* resetPasswordGenerateLink(next) {
         let resetArgs = yield parse(this);
         let user = yield users.get(resetArgs.email);
+        let userId = user.id;
         if (!user) {
             this.status = status.BAD_REQUEST;
             let errorMessage = "No registered user for given email address: "+ resetArgs.email + ". Please register anew.";
@@ -84,12 +85,16 @@ module.exports = function(users, experiments, schema) {
                 this.body = rv;
             } else {
                 schema.prepare(schema.userAccountSchema, user);
-                let evl = emailValidationLinkToUser(rv.val, user.site);
+                let finalUser = yield users.get(userId);
+                console.log("resetPasswordGenerateLink 2a - ",finalUser?finalUser.id:"none");
+                console.log("resetPasswordGenerateLink 2b - ",finalUser?finalUser.site:"none");
+                let evl = emailResetLinkToUser(finalUser, finalUser.site);
                 if (evl.error) {
                     this.status = status.BAD_REQUEST;
                     this.body = evl;
                 } else {
-                    this.body = evl.val;
+                    console.log("resetPasswordGenerateLink 3 - ",finalUser);
+                    this.body = finalUser;
                 }
             }
         }
@@ -163,12 +168,43 @@ module.exports = function(users, experiments, schema) {
         return yield schema.validate(schema.userAccountSchema, accountArgs);
     }
 
+    function emailResetLinkToUser(userData,site) {
+        var transporter = nodemailer.createTransport(mailTransport);
+        var sendTo = userData.id;
+        var validationLink = `${process.env.MC_BASE_API_LINK}/reset-validate/${userData.validate_uuid}`;
+        if (site === 'mcpub') {
+            validationLink = `${process.env.MCPUB_BASE_API_LINK}/reset-validate/${userData.validate_uuid}`
+        }
+        let emailMsg =
+            `Thank you for registering for an account with Materials Commons. To complete the registration
+            process please click on the given link or copy and paste in the url given below.`;
+        var plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
+        var htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following link link: ${validationLink}`;
+
+        var mailOptions = {
+            from: process.env.MC_VERIFY_EMAIL,
+            to: sendTo,
+            subject: 'MaterialCommons - account verification',
+            text: plainTextBody,
+            html: htmlBody
+        };
+
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                return {error: error};
+            }
+        });
+
+        return {val: userData}
+    }
+
     function emailValidationLinkToUser(userData, site) {
         var transporter = nodemailer.createTransport(mailTransport);
         var sendTo = userData.id;
-        var validationLink = `${process.env.MC_VERIFY_LINK}/${userData.validate_uuid}`;
+        var validationLink = `${process.env.MC_BASE_API_LINK}/validate/${userData.validate_uuid}`;
         if (site === 'mcpub') {
-            validationLink = `${process.env.MCPUB_VERIFY_LINK}/${userData.validate_uuid}`
+            validationLink = `${process.env.MCPUB_BASE_API_LINK}/validate/${userData.validate_uuid}`
         }
         let emailMsg =
             `Thank you for registering for an account with Materials Commons. To complete the registration

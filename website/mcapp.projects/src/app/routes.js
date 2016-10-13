@@ -21,6 +21,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/reset',
             template: '<mc-reset-password></mc-reset-password>'
         })
+        .state('reset.validate', {
+            url: '/resetvalidate/:validation_uuid',
+            template: '<mc-reset-validate></mc-reset-validate>'
+        })
         .state('projects', {
             url: '/projects',
             abstract: true,

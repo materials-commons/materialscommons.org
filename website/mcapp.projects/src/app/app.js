@@ -75,6 +75,7 @@ function isStateRequiringALogin(stateName) {
         case 'join':
         case 'reset':
         case 'validate':
+        case 'resetvalidate':
         case 'releasenotes':
             return false;
         default:
