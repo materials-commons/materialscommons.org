@@ -93,6 +93,10 @@ module.exports = function(r) {
         return {val: rv.changes[0].new_val};
     }
 
+    function* clearResetPassword(userId) {
+        let user = yield r.table('users').get(userId).replace(r.row.without('key'));
+    }
+
     function* createUnverifiedAccount(account) {
         let apikey = yield r.uuid(),
             user = new model.User(account.email, account.fullname, apikey.replace(/-/g, ''));
