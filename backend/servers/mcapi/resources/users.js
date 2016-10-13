@@ -106,6 +106,19 @@ module.exports = function(users, experiments, schema) {
         yield next;
     }
 
+    function* clearResetPassword(next) {
+        yield user.clearResetPassword(this.params.user_id);
+        if (result.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = result;
+        } else {
+            this.status = status.OK;
+            this.body = result.val;
+        }
+        yield next;
+    }
+
+
     function* validateUserSettingsArgs(args, userId) {
         if (!args.default_project || !_.isString(args.default_project)) {
             return {error: `Bad argument for default_project`};
