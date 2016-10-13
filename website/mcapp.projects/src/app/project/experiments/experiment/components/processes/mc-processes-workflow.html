@@ -68,15 +68,24 @@
                     </div>
                     <div ng-show="$ctrl.selectedProcess">
                         <md-content style="max-height: 70vh">
-                            <div layout="row" layout-margin layout-align="end">
+                            <div layout="row" layout-margin layout-wrap layout-align="end">
                                 <md-button class="md-primary" ng-if="!$ctrl.selectedProcess.hasChildren"
                                            ng-click="$ctrl.deleteNodeAndProcessConfirm()">
-                                    Delete graph Node
+                                    Delete process
                                 </md-button>
-                                <md-button class="md-warn" ng-disabled="true" ng-if="$ctrl.selectedProcess.hasChildren">
+                                <md-button ng-disabled="true" ng-if="$ctrl.selectedProcess.hasChildren"
+                                           tooltip="hello world">
                                     To delete: remove 'children' first
                                 </md-button>
+
+                                <md-button class="md-primary" ng-if="$ctrl.dataset && !$ctrl.inDataset()">
+                                    add to dataset
+                                </md-button>
+                                <md-button class="md-warn" ng-if="$ctrl.dataset && $ctrl.inDataset()">
+                                    remove from dataset
+                                </md-button>
                             </div>
+
                             <mc-process-template process="$ctrl.selectedProcess"
                                                  on-change="$ctrl.onChange()">
                             </mc-process-template>
@@ -86,7 +95,7 @@
             </md-tab>
             <md-tab>
                 <md-tab-label>
-                    <span><i class="fa fa-fw fa-filter""></i>filters</span>
+                    <span><i class="fa fa-fw fa-filter"></i>filters</span>
                 </md-tab-label>
                 <md-tab-body>
                     filters here
