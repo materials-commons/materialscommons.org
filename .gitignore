@@ -1,6 +1,7 @@
 .DS_Store
 .idea
 *.dump
+.cache
 nohup.out
 test
 apitest
