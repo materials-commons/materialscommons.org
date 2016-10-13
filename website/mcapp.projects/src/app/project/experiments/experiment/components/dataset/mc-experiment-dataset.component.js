@@ -1,53 +1,44 @@
 class MCExperimentDatasetComponentController {
     /*@ngInject*/
-    constructor(datasetService, toast, $stateParams, selectItems) {
+    constructor(datasetService, experimentsService, toast, $stateParams) {
         this.datasetService = datasetService;
+        this.experimentsService = experimentsService;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
         this.dataset = null;
-        this.selectItems = selectItems;
         this.showDetailsSection = true;
+        this.processes = [];
+        this.showAll = true;
+        this.swap = true;
     }
 
     $onInit() {
+        this.load();
+    }
+
+    load() {
         this.datasetService.getDataset(this.projectId, this.experimentId, this.datasetId)
             .then(
                 (dataset) => this.dataset = dataset,
                 () => this.toast.error('Unable to retrieve datasets for experiment')
             );
-    }
-
-    selectSamples() {
-        this.selectItems.open('samples', {experimentId: this.experimentId}).then(
-            (selected) => {
-                if (selected.samples.length) {
-                    let samplesToAdd = selected.samples.map(s => s.id);
-                    this.datasetService.updateSamplesInDataset(this.projectId, this.experimentId, this.datasetId, samplesToAdd, [])
-                        .then(
-                            (dataset) => this.dataset = dataset,
-                            () => this.toast.error('Failed to add samples to dataset')
-                        );
-                }
-            }
+        this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId).then(
+            (processes) => this.processes = processes,
+            () => this.toast.error('Error retrieving processes for experiment')
         );
     }
 
-    selectFiles() {
-        this.selectItems.open('files', {experimentId: this.experimentId})
-            .then(
-                (selected) => {
-                    if (selected.files.length) {
-                        let filesToAdd = selected.files.map(f => f.id);
-                        this.datasetService.updateFilesInDataset(this.projectId, this.experimentId, this.datasetId, filesToAdd, [])
-                            .then(
-                                (dataset) => this.dataset = dataset,
-                                () => this.toast.error('Failed to add files to dataset')
-                            );
-                    }
-                }
-            );
+    showNodes() {
+        this.showAll = !this.showAll;
+        this.swap = this.showAll;
+        if (this.showAll) {
+            this.load();
+        } else {
+            this.processes = this.dataset.processes;
+            this.dataset.processes = null;
+        }
     }
 }
 

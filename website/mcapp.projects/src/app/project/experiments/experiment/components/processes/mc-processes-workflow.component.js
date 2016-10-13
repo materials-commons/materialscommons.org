@@ -171,6 +171,7 @@ angular.module('materialscommons').component('mcProcessesWorkflow', {
     templateUrl: 'app/project/experiments/experiment/components/processes/mc-processes-workflow.html',
     controller: MCProcessesWorkflowComponentController,
     bindings: {
-        processes: '<'
+        processes: '<',
+        highlightProcesses: '<'
     }
 });

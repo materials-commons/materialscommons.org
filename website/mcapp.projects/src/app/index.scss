@@ -12,7 +12,8 @@ $mc-dark-grey: #cecfd1;
 $mc-color-error-dark: #d32f2f;
 $mc-md-primary-color: #1565c0;
 //$mc-sidebar-color: #009688;
-$mc-sidebar-color: #bbdefb;
+$mc-light-blue: #bbdefb;
+$mc-sidebar-color: $mc-light-blue;
 $mc-md-light-primary-color: #2196F3;
 $mc-bar-dark-color: #2c3e50;
 $mc-md-accent-color: #ff5252;
@@ -412,6 +413,10 @@ a {
 
 .outline-node-selected {
   background-color: $mc-dark-grey;
+}
+
+.outline-node-highlight {
+  background-color: $mc-light-blue;
 }
 
 .view-selected {

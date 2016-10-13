@@ -7,7 +7,7 @@
     <md-content style="max-height: 75vh" class="padding-top-20">
         <ul flex="90">
             <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
-                <div ng-class="{'outline-node-selected': node.model.selected}">
+                <div ng-class="{'outline-node-selected': node.model.selected, 'outline-node-highlight': !node.model.selected && node.model.highlight}">
                     <a ng-if="node.children.length"
                        ng-click="node.model.show = !node.model.show">
                         <i class="primary-color fa fa-fw"
@@ -20,6 +20,7 @@
                     (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
                 </div>
                 <mc-processes-workflow-outline-dir process="node" mc-processes-workflow-outline="$ctrl"
+                                                   highlight-processes="$ctrl.highlightProcesses"
                                                    ng-if="node.model.show">
                 </mc-processes-workflow-outline-dir>
             </li>
