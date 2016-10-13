@@ -1,3 +1,7 @@
-export MC_VERIFY_EMAIL=weymouth.test@gmail.com
-export MC_VERIFY_PASS=11terThenA1r
-export MC_SMTP_HOST=smtp.gmail.com
+export MC_VERIFY_LINK=http://mctest.localhost/#/validate
+export MCPUB_VERIFY_LINK=http://mcpub.localhost/#/validate
+export MC_BASE_API_LINK=http://mctest.localhost/mcapp/#
+export MCPUB_BASE_API_LINK=http://mcpub.localhost/#
+export MC_VERIFY_EMAIL=register@materialscommons.org
+export MC_VERIFY_PASS=if.a.password.is.reguired.for.access
+export MC_SMTP_HOST=smtp.host.com
