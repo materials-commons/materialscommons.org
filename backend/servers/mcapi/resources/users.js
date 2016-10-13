@@ -12,7 +12,8 @@ module.exports = function(users, experiments, schema) {
         createAccount,
         resetPasswordGenerateLink,
         getUserRegistrationFromUuid,
-        clearResetPassword
+        setUserResetPasswordFlag,
+        clearUserResetPasswordFlag
     };
 
     function* updateProjectFavorites(next) {
@@ -107,8 +108,20 @@ module.exports = function(users, experiments, schema) {
         yield next;
     }
 
-    function* clearResetPassword(next) {
-        yield user.clearResetPassword(this.params.user_id);
+    function* setUserResetPasswordFlag(next) {
+        let result = yield user.clearResetPassword(this.params.user_id);
+        if (result.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = result;
+        } else {
+            this.status = status.OK;
+            this.body = result.val;
+        }
+        yield next;
+    }
+
+    function* clearUserResetPasswordFlag(next) {
+        let result = yield user.clearResetPassword(this.params.user_id);
         if (result.error) {
             this.status = status.BAD_REQUEST;
             this.body = result;

@@ -14,6 +14,8 @@ module.exports = function(r) {
         userHasProjectAccess,
         createUnverifiedAccount,
         createPasswordResetRequest,
+        setUserPasswordResetFlag,
+        clearUserPasswordResetFlag,
         getUserRegistrationFromUuid
     };
 
@@ -93,8 +95,12 @@ module.exports = function(r) {
         return {val: rv.changes[0].new_val};
     }
 
-    function* clearResetPassword(userId) {
-        let user = yield r.table('users').get(userId).replace(r.row.without('key'));
+    function* setUserPasswordResetFlag(userId) {
+        return yield r.table('users').get(userId).update({reset_password:true});
+    }
+
+    function* clearUserPasswordResetFlag(userId) {
+        return yield r.table('users').get(userId).replace(r.row.without('reset_password'));
     }
 
     function* createUnverifiedAccount(account) {
