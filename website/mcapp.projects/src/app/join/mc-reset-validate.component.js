@@ -1,6 +1,7 @@
 class MCResetValidateComponentController {
     /*@ngInject*/
     constructor(accountsService, $stateParams, $state, $timeout) {
+        console.log('MCResetValidateComponentController: constructor')
         this.uuid = $stateParams.validation_uuid;
         this.accountsService = accountsService;
         this.$state = $state;
