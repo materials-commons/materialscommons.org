@@ -1,4 +1,4 @@
-class MCWorkflowProcessesComponentController {
+class MCWorkflowProcessTemplatesComponentController {
     /*@ngInit*/
     constructor(templates) {
         this.templates = templates.get();
@@ -38,9 +38,9 @@ class MCWorkflowProcessesComponentController {
     }
 }
 
-angular.module('materialscommons').component('mcWorkflowProcesses', {
-    templateUrl: 'app/global.components/graph/mc-workflow-processes.html',
-    controller: MCWorkflowProcessesComponentController,
+angular.module('materialscommons').component('mcWorkflowProcessTemplates', {
+    templateUrl: 'app/project/experiments/experiment/components/processes/mc-workflow-process-templates.html',
+    controller: MCWorkflowProcessTemplatesComponentController,
     bindings: {
         onSelected: '&'
     }

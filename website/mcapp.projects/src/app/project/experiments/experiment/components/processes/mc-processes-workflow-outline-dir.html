@@ -1,0 +1,19 @@
+<ul>
+    <li ng-repeat="node in ::$ctrl.process.children" layout="column">
+        <div ng-class="{'outline-node-selected': node.model.selected}">
+            <a ng-if="node.children.length" ng-click="node.model.show = !node.model.show">
+                <i class="primary-color fa fa-fw"
+                   ng-class="{'fa-folder': !node.model.show, 'fa-folder-open': node.model.show}"></i>
+                {{::node.model.name}}
+            </a>
+            <span ng-if="!node.children.length">
+                <i class="primary-color fa fa-fw fa-file"></i> {{::node.model.name}}
+            </span>
+            (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
+        </div>
+        <mc-processes-workflow-outline-dir process="node"
+                                           mc-processes-workflow-outline="$ctrl.mcProcessesWorkflowOutline"
+                                           ng-if="node.model.show">
+        </mc-processes-workflow-outline-dir>
+    </li>
+</ul>
