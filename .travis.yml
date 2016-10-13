@@ -25,6 +25,7 @@ before_install:
   - sudo apt-get install rethinkdb
   - 'nvm install v5.3.0'
   - sudo pip install rethinkdb
+  - pip instal pytest -U
   - node --version
 
 before_script:
