@@ -78,29 +78,15 @@ module.exports = function(r) {
 
     function* createPasswordResetRequest(user) {
         let validate_uuid = yield r.uuid();
-        let validate_doc = {
-            id: user.id,
-            email: user.email,
-            fullname: user.fullname,
-            validate_uuid: validate_uuid,
-            reset_password:true
-        };
-        let accountRequest = yield r.table('account_requests').get(user.id);
-        if (accountRequest) {
-            let update = yield r.table('account_requests').get(user.email)
-                .update(validate_doc, {returnChanges: true});
-            return {val: update.changes[0].new_val};
-        }
-        let rv = yield r.table('account_requests').insert(validate_doc, {returnChanges: true});
-        return {val: rv.changes[0].new_val};
+        return yield setUserPasswordResetFlag(user.id,validate_uuid);
     }
 
-    function* setUserPasswordResetFlag(userId) {
-        return yield r.table('users').get(userId).update({reset_password:true});
+    function* setUserPasswordResetFlag(userId,validate_uuid) {
+        return yield r.table('users').get(userId).update({reset_password:true,validate_uuid:validate_uuid});
     }
 
     function* clearUserPasswordResetFlag(userId) {
-        return yield r.table('users').get(userId).replace(r.row.without('reset_password'));
+        return yield r.table('users').get(userId).replace(r.row.without('reset_password','validate_uuid'));
     }
 
     function* createUnverifiedAccount(account) {
