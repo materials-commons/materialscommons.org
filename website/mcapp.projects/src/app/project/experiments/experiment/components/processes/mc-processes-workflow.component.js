@@ -19,6 +19,8 @@ class MCProcessesWorkflowComponentController {
         this.showGraphView = true;
         this.currentTab = 0;
         this.$timeout = $timeout;
+
+        this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
     }
 
     addProcess(templateId) {
@@ -148,7 +150,17 @@ class MCProcessesWorkflowComponentController {
 
                 error => this.toast.error(error.data.error)
             );
+    }
 
+    inDataset() {
+        if (!this.selectedProcess) {
+            return false;
+        }
+        if (this.selectedProcess.id in this.datasetProcesses) {
+            return true;
+        }
+
+        return false;
     }
 }
 
@@ -172,6 +184,7 @@ angular.module('materialscommons').component('mcProcessesWorkflow', {
     controller: MCProcessesWorkflowComponentController,
     bindings: {
         processes: '<',
-        highlightProcesses: '<'
+        highlightProcesses: '<',
+        dataset: '='
     }
 });

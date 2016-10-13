@@ -20,6 +20,7 @@
             {{$ctrl.showAll ? "show only dataset" : "show all"}}
         </md-button>
         <mc-processes-workflow processes="$ctrl.processes"
+                               dataset="$ctrl.dataset"
                                highlight-processes="$ctrl.dataset.processes">
         </mc-processes-workflow>
     </div>
