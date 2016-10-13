@@ -11,7 +11,8 @@ module.exports = function(users, experiments, schema) {
         updateUserSettings,
         createAccount,
         resetPasswordGenerateLink,
-        getUserRegistrationFromUuid
+        getUserRegistrationFromUuid,
+        clearResetPassword
     };
 
     function* updateProjectFavorites(next) {
