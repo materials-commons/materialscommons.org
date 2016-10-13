@@ -23,16 +23,7 @@ import './publish/dataset-service.service';
 
 import './datasets/mc-experiment-datasets.component';
 import './dataset/mc-experiment-dataset.component';
-import './dataset/components/mc-dataset-samples-cards.component';
-import './dataset/components/mc-dataset-processes-cards.component';
-import './dataset/components/mc-dataset-files-cards.component';
-import './dataset/components/mc-dataset-table.component';
 import './dataset/components/mc-dataset-details.component';
-
-import './dataset/mc-dataset-outline.component';
-import './dataset/mc-dataset-process-details.component';
-import './dataset/mc-dataset-process-details-setup.component';
-import './dataset/mc-dataset-setup-property-value.component';
 
 import './processes/mc-experiment-processes.component';
 import './processes/mc-experiment-processes-table.component';

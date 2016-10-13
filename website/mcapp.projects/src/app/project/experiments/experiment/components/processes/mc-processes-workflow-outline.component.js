@@ -16,12 +16,21 @@ class MCProcessesWorkflowOutlineComponentController {
         this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
         this.mcProcessesWorkflow.setOnChangeCallback(cb);
         this.mcProcessesWorkflow.setAddProcessCallback(cb);
+    }
 
+    // This method will be called implicitly when the component is loaded.
+    $onChanges(changes) {
+        if (changes.processes) {
+            this.processes = changes.processes.currentValue;
+        }
+        if (changes.highlightProcesses) {
+            this.highlightProcesses = changes.highlightProcesses.currentValue;
+        }
         this.buildOutline();
     }
 
     buildOutline() {
-        let t = this.processTree.build(this.processes);
+        let t = this.processTree.build(this.processes, this.highlightProcesses);
         this.root = t.root;
         this.rootNode = t.rootNode;
     }
@@ -49,6 +58,7 @@ function mcProcessesWorkflowOutlineDirDirective(RecursionHelper) {
         restrict: 'E',
         scope: {
             process: '=',
+            highlightProcesses: '=',
 
             // This needs to be passed in rather than required. It appears that RecursionHelper is
             // preventing the link function from being called, so we can't require mcProcessesWorkflow
@@ -71,7 +81,8 @@ angular.module('materialscommons').component('mcProcessesWorkflowOutline', {
     templateUrl: 'app/project/experiments/experiment/components/processes/mc-processes-workflow-outline.html',
     controller: MCProcessesWorkflowOutlineComponentController,
     bindings: {
-        processes: '<'
+        processes: '<',
+        highlightProcesses: '<'
     },
     require: {
         mcProcessesWorkflow: '^mcProcessesWorkflow'

@@ -18,13 +18,21 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
         this.mcProcessesWorkflow.setOnChangeCallback(cb);
         this.mcProcessesWorkflow.setAddProcessCallback(cb);
+    }
 
-        // Draw graph
+    // This method will be called implicitly when the component is loaded.
+    $onChanges(changes) {
+        if (changes.processes) {
+            this.processes = changes.processes.currentValue;
+        }
+        if (changes.highlightProcesses) {
+            this.highlightProcesses = changes.highlightProcesses.currentValue;
+        }
         this.allProcessesGraph();
     }
 
     allProcessesGraph() {
-        let g = this.processGraph.build(this.processes);
+        let g = this.processGraph.build(this.processes, this.highlightProcesses);
         this.samples = g.samples;
         this.cy = cytoscape({
             container: document.getElementById('processesGraph'),
@@ -43,6 +51,8 @@ class MCProcessesWorkflowGraphComponentController {
                         'font-weight': 'bold',
                         'text-outline-width': '5px',
                         'text-outline-opacity': 1,
+                        'border-width': '4px',
+                        'border-color': 'data(highlight)',
                         shape: 'data(shape)',
                         width: '80px',
                         height: '80px'
@@ -109,7 +119,8 @@ angular.module('materialscommons').component('mcProcessesWorkflowGraph', {
     templateUrl: 'app/project/experiments/experiment/components/processes/mc-processes-workflow-graph.html',
     controller: MCProcessesWorkflowGraphComponentController,
     bindings: {
-        processes: '<'
+        processes: '<',
+        highlightProcesses: '<'
     },
     require: {
         mcProcessesWorkflow: '^mcProcessesWorkflow'

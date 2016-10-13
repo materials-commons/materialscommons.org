@@ -2,9 +2,10 @@ class ProcessGraphService {
     /*@ngInject*/
     constructor() {}
 
-    build(processes) {
+    build(processes, highlight) {
         let sample2InputProcesses = {};
         let sample2OutputProcesses = {};
+        let highlightedProcesses = ProcessGraphService.buildHighlightedProcesses(highlight);
 
         processes.forEach(p => {
             p.input_samples.forEach(s => {
@@ -31,7 +32,8 @@ class ProcessGraphService {
                     id: p.id,
                     name: p.name,
                     color: ProcessGraphService.processColor(p),
-                    shape: ProcessGraphService.processShape(p)
+                    shape: ProcessGraphService.processShape(p),
+                    highlight: ProcessGraphService.highlightColor(p, highlightedProcesses)
                 }
             };
         });
@@ -96,6 +98,22 @@ class ProcessGraphService {
                 return "diamond";
             case "import":
                 return "diamond";
+        }
+    }
+
+    static highlightColor(p, highlightProcesses) {
+        if (p.id in highlightProcesses) {
+            return '#bbdefb';
+        } else {
+            return ProcessGraphService.processColor(p);
+        }
+    }
+
+    static buildHighlightedProcesses(highlightProcesses) {
+        if (!highlightProcesses) {
+            return {};
+        } else {
+            return _.indexBy(highlightProcesses, 'id');
         }
     }
 }
