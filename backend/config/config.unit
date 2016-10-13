@@ -1,0 +1,3 @@
+export MC_VERIFY_EMAIL=weymouth.test@gmail.com
+export MC_VERIFY_PASS=11terThenA1r
+export MC_SMTP_HOST=smtp.gmail.com
