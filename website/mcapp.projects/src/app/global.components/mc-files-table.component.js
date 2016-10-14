@@ -34,7 +34,7 @@ class ShowFileDialogController {
     }
 
     done() {
-        this.$mdDialog.cancel();
+        this.$mdDialog.hide();
     }
 }
 

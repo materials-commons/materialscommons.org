@@ -32,6 +32,7 @@ import './show-file-service.service';
 import './navbar-on-change.service';
 import './processes-service.service';
 import './process-tree.service';
+import './process-graph.service';
 
 angular.module('materialscommons')
     .factory('selectItems', selectItemsService)
