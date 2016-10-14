@@ -2,6 +2,7 @@ class MCProcessesWorkflowOutlineComponentController {
     /*@ngInject*/
     constructor(processTree) {
         this.processTree = processTree;
+        this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
     }
 
     $onInit() {
@@ -45,6 +46,7 @@ class MCProcessesWorkflowOutlineComponentController {
 class MCProcessesWorkflowOutlineDirDirectiveController {
     /*@ngInject*/
     constructor() {
+        this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
     }
 
     showDetails(p) {
@@ -59,6 +61,7 @@ function mcProcessesWorkflowOutlineDirDirective(RecursionHelper) {
         scope: {
             process: '=',
             highlightProcesses: '=',
+            dataset: '=',
 
             // This needs to be passed in rather than required. It appears that RecursionHelper is
             // preventing the link function from being called, so we can't require mcProcessesWorkflow
@@ -82,7 +85,8 @@ angular.module('materialscommons').component('mcProcessesWorkflowOutline', {
     controller: MCProcessesWorkflowOutlineComponentController,
     bindings: {
         processes: '<',
-        highlightProcesses: '<'
+        highlightProcesses: '<',
+        dataset: '<'
     },
     require: {
         mcProcessesWorkflow: '^mcProcessesWorkflow'
