@@ -14,9 +14,7 @@ describe('Test in backend/servers/mcapi/db/model/experiment-datasets.js - ', fun
     describe('find dataset by id - ', function() {
         it.skip('Should fail', function* () {
             return yield new Promise(function() {
-                console.log("just before failing assert");
                 assert.equal(2, 1);
-                console.log("just after failing assert");
             });
         });
     });
@@ -28,7 +26,6 @@ describe('Test in backend/servers/mcapi/db/model/experiment-datasets.js - ', fun
             assert.isNull(tape);
 
             tape.append('test.txt', 'Woohoo!! Tar me up Scotty!', function() {
-                console.log("close called");
                 tape.close();
             });
         });

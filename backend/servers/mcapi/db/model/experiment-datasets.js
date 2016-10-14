@@ -445,7 +445,6 @@ module.exports = function(r) {
         if (name in seenThisOne) {
             var count = 0;
             if (seenThisOne[name] == checksum) {
-                console.log("Seen this file before: " + name);
                 return null;
             } else {
                 let newName = resolveZipfileFilenameUnique(name, count);
@@ -453,7 +452,6 @@ module.exports = function(r) {
                     count++;
                     newName = resolveZipfileFilenameUnique(name, count);
                 }
-                // console.log(name + " --> " + newName);
                 name = newName;
             }
         }
