@@ -1,6 +1,7 @@
 class MCProcessTemplateOtherComponentController {
     /*@ngInject*/
-    constructor(sampleLinker, processEdit, selectItems, experimentsService, toast, $stateParams, navbarOnChange) {
+    constructor(sampleLinker, processEdit, selectItems, experimentsService, toast, $stateParams, navbarOnChange,
+                isImage, mcfile, $mdDialog) {
         this.sampleLinker = sampleLinker;
         this.processEdit = processEdit;
         this.selectItems = selectItems;
@@ -9,6 +10,9 @@ class MCProcessTemplateOtherComponentController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.navbarOnChange = navbarOnChange;
+        this.isImage = isImage;
+        this.fileSrc = mcfile.src;
+        this.$mdDialog = $mdDialog;
     }
 
     $onInit() {
@@ -71,6 +75,29 @@ class MCProcessTemplateOtherComponentController {
                     );
             }
         );
+    }
+
+    showFile(file) {
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
+            controllerAs: '$ctrl',
+            controller: ShowFileDialogController,
+            bindToController: true,
+            locals: {
+                file: file
+            }
+        });
+    }
+}
+
+class ShowFileDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.hide();
     }
 }
 
