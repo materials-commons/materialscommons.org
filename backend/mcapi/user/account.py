@@ -55,6 +55,26 @@ def complete_registration(validation_id):
     del user['password']
     return json.dumps(j)
 
+@app.route('/user/rvalidate/<validation_id>/finish', methods=['POST'])
+def finish_reset_password(validation_id):
+    cursor = r.table("users").get_all(validation_id,index='validate_uuid').run(g.conn)
+    u = ''
+    for document in cursor:
+        u = document
+    if not u:
+        return error.not_authorized('There is no validated user record. Please retry');
+    user_id = u['id']
+    j = request.get_json()
+    password = dmutil.get_required('password', j)
+    hash = make_password_hash(password)
+    rv = r.table('users').get(user_id).update({'password':  hash}, return_changes=True).run(g.conn)
+    user = rv['changes'][0]['new_val']
+    r.table('users').get(user_id).replace(r.row.without('reset_password','validate_uuid'))
+    ## Return something that doesn't contain the password hash, uuid, and flag
+    del user['password']
+    del user['validate_uuid']
+    del user['reset_password']
+    return jsonify({'data': user})
 
 @app.route('/user/<user>/password', methods=['PUT'])
 @apikey
