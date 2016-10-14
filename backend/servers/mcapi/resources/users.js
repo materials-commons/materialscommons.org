@@ -181,15 +181,15 @@ module.exports = function(users, experiments, schema) {
     function emailResetLinkToUser(userData,site) {
         var transporter = nodemailer.createTransport(mailTransport);
         var sendTo = userData.id;
-        var validationLink = `${process.env.MC_BASE_API_LINK}/reset-validate/${userData.validate_uuid}`;
+        var validationLink = `${process.env.MC_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`;
         if (site === 'mcpub') {
-            validationLink = `${process.env.MCPUB_BASE_API_LINK}/reset-validate/${userData.validate_uuid}`
+            validationLink = `${process.env.MCPUB_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`
         }
         let emailMsg =
-            `Thank you for registering for an account with Materials Commons. To complete the registration
-            process please click on the given link or copy and paste in the url given below.`;
+            `You have requested a password reset at Materials Commons reset in the account for this email. 
+            To complete this process please click on the given link or copy and paste in the url given below.`;
         var plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
-        var htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following link link: ${validationLink}`;
+        var htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`;
 
         var mailOptions = {
             from: process.env.MC_VERIFY_EMAIL,
@@ -220,7 +220,7 @@ module.exports = function(users, experiments, schema) {
             `Thank you for registering for an account with Materials Commons. To complete the registration
             process please click on the given link or copy and paste in the url given below.`;
         var plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
-        var htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following link link: ${validationLink}`;
+        var htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`;
 
         var mailOptions = {
             from: process.env.MC_VERIFY_EMAIL,
