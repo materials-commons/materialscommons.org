@@ -12,6 +12,12 @@ class AccountsService {
         });
     }
 
+    createResetPasswordRequest(email) {
+        return this.apiService('accounts').one('reset').customPOST({
+            email: email
+        });
+    }
+
     setUserFromRegistrationData(uuid, password) {
         return this.Restangular.one('user').one('complete', uuid).customPOST({
             password: password
@@ -20,6 +26,16 @@ class AccountsService {
 
     getUserRegistrationAccount(uuid) {
         return this.apiService('users').one('validate', uuid).get();
+    }
+
+    getUserForResetPassword(uuid){
+        return this.apiService("users").one('rvalidate',uuid).get();
+    }
+
+    resetUserPasswordWithValidate(uuid,password) {
+        return this.Restangular.one('user').one('rvalidate',uuid).one('finish').customPOST({
+            password: password
+        });
     }
 }
 

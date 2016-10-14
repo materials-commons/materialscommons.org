@@ -25,7 +25,10 @@ before_install:
   - sudo apt-get install rethinkdb
   - 'nvm install v5.3.0'
   - sudo pip install rethinkdb
+  - sudo pip install Flask
+  - sudo pip install pytest
   - node --version
+  - pip list
 
 before_script:
   - npm list --depth=0
@@ -36,3 +39,4 @@ before_script:
 
 script:
   - npm run-script test
+  - pytest --ignore=node_modules/

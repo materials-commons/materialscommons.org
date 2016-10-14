@@ -73,7 +73,9 @@ function isStateRequiringALogin(stateName) {
     switch (stateName) {
         case 'login':
         case 'join':
+        case 'reset':
         case 'validate':
+        case 'rvalidate':
         case 'releasenotes':
             return false;
         default:
