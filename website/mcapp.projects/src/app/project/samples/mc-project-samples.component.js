@@ -40,7 +40,7 @@ class MCProjectSamplesComponentController {
 class NewSamplesDialogController {
     /*@ngInject*/
     constructor($mdDialog) {
-        console.log('NewSamplesDialogController', this.process.plain());
+        //console.log('NewSamplesDialogController', this.process.plain());
         this.$mdDialog = $mdDialog;
     }
 

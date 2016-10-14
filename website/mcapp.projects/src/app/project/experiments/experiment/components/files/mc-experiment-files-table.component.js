@@ -19,7 +19,7 @@ function MCExperimentFilesTableComponentController($mdDialog, mcfile, isImage) {
     ctrl.isImage = isImage;
 
     function showFile(file) {
-        console.log('showFile', file);
+        //console.log('showFile', file);
     }
 
     function showProcesses(processes) {

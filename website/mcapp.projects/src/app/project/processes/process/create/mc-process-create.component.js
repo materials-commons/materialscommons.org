@@ -9,6 +9,6 @@ angular.module('materialscommons').component('mcProcessCreate', {
 function MCProcessCreateComponentController() {
     'ngInject';
     var ctrl = this;
-    console.dir(ctrl.template);
+    //console.dir(ctrl.template);
     //ctrl.template = template.get();
 }
