@@ -44,5 +44,6 @@ function MCLoginController($state, User, toastr, mcapi, Restangular) {
         ctrl.userLogin = "";
         ctrl.password = "";
     }
+
 }
 

@@ -11,7 +11,8 @@ module.exports = function(users) {
     let whiteList = {
         "/login": true,
         "/accounts": true,
-        "/users/validate/": true
+        "/users/validate/": true,
+        "/users/rvalidate/": true
     };
     // validateAPIKey Looks up the apikey. If none is specified, or a
     // bad key is passed then abort the calls and send back an 401.

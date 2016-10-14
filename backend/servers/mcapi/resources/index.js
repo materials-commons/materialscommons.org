@@ -137,8 +137,11 @@ module.exports = function(model) {
 
     router.put('/users/:project_id', users.updateProjectFavorites);
     router.put('/users', users.updateUserSettings);
-    router.post('/accounts', users.createAccount);
     router.get('/users/validate/:validation_id', users.getUserRegistrationFromUuid);
+    router.get('/users/rvalidate/:validation_id', users.getUserForPasswordResetFromUuid);
+    router.put('/users/:user_id/clear-reset-password', users.clearUserResetPasswordFlag);
+    router.post('/accounts', users.createAccount);
+    router.post('/accounts/reset', users.resetPasswordGenerateLink);
 
     return router;
 };

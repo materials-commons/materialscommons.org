@@ -1,6 +1,7 @@
 module.exports = function(r) {
     const model = require('./model')(r);
     const _ = require('lodash');
+    const promise = require('bluebird');
     const db = require('./db')(r);
     const commonQueries = require('../../../lib/common-queries');
     const dbExec = require('./run');

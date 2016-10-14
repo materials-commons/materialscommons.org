@@ -1,0 +1,7 @@
+export MC_VERIFY_LINK=https://test.materialscommons.org/mcapp/#/validate
+export MCPUB_VERIFY_LINK=https://test.materialscommons.org/mcpub/#/validate
+export MC_BASE_API_LINK=https://test.materialscommons.org/mcapp/#
+export MCPUB_BASE_API_LINK=https://test.materialscommons.org/mcpub/#
+export MC_VERIFY_EMAIL=register@materialscommons.org
+export MC_VERIFY_PASS=if.a.password.is.reguired.for.access
+export MC_SMTP_HOST=smtp.host.com

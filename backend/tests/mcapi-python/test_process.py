@@ -2,11 +2,11 @@ import pytest
 import rethinkdb as r
 
 
-conn = r.connect('localhost', 201815, db='materialscommons')
+conn = r.connect('localhost', 30815, db='materialscommons')
+p_id = 12345
 
-# content of test_sample.py
 def get_processes(id):
-    return x + 1
+    return [1]
 
 
 def test_get_processes_for_project():
