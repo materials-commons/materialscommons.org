@@ -8,6 +8,7 @@
         <ul flex="90">
             <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
                 <div ng-class="{'outline-node-selected': node.model.selected, 'outline-node-highlight': !node.model.selected && node.model.highlight}">
+                    <!--<input type="checkbox" ng-model="node.model.inds" ng-if="$ctrl.dataset">-->
                     <a ng-if="node.children.length"
                        ng-click="node.model.show = !node.model.show">
                         <i class="primary-color fa fa-fw"
@@ -21,6 +22,7 @@
                 </div>
                 <mc-processes-workflow-outline-dir process="node" mc-processes-workflow-outline="$ctrl"
                                                    highlight-processes="$ctrl.highlightProcesses"
+                                                   dataset="$ctrl.dataset"
                                                    ng-if="node.model.show">
                 </mc-processes-workflow-outline-dir>
             </li>
