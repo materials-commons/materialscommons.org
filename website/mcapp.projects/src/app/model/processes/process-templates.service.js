@@ -76,6 +76,14 @@ export function processTemplates(User) {
             does_transform: true
         },
         {
+            name: "Sectioning",
+            description: "Sectioning of a sample",
+            process_type: 'transform',
+            fn: processes.Sectioning,
+            does_transform: false
+
+        },
+        {
             name: "DIC Patterning",
             description: "DIC Patterning",
             process_type: 'measurement',
