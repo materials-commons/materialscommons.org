@@ -34,7 +34,7 @@ function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state,
     }
 
     function openFilePopup(file) {
-        console.log('openFilePopup', file);
+        //console.log('openFilePopup', file);
         //var f = file;
         //if ('datafile_id' in file) {
         //    // We don't have a full file object, so find it in projectFiles
