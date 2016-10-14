@@ -1,7 +1,0 @@
-* meta-loader
-
-MetaData Loader for content and conversion.
-api.materialscommons.org
-========================
-
-Web Services for MaterialsCommons.org site

@@ -14,12 +14,19 @@ class MCJoinValidateComponentController {
     $onInit() {
         this.accountsService.getUserRegistrationAccount(this.uuid)
             .then(
-                (registration) => this.registration = registration,
+                (registration) => {
+                    this.registration = registration;
+                },
                 (e) => this.message = e.data.error
             );
     }
 
     setPassword(setPasswordForm) {
+        if (!this.registration) {
+            this.message = "No validated user request. Please retry.";
+            return;
+        }
+
         if (setPasswordForm.$invalid) {
             return;
         }
@@ -28,14 +35,25 @@ class MCJoinValidateComponentController {
             return;
         }
 
-        this.accountsService.setUserFromRegistrationData(this.uuid, this.password1)
-            .then(
-                () => {
-                    this.showSuccessMsg = true;
-                    this.$timeout(() => this.$state.go('login'), 5000);
-                },
-                (e) => this.message = `${e.data.error}`
-            );
+        if (this.registration.reset_password) {
+            this.accountsService.resetUserPasswordWithValidate(this.uuid,this.registration.id,this.password1)
+                .then(
+                    () => {
+                        this.showSuccessMsg = true;
+                        this.$timeout(() => this.$state.go('login'), 5000);
+                    },
+                    (e) => this.message = `${e.data.error}`
+                );
+        } else {
+            this.accountsService.setUserFromRegistrationData(this.uuid, this.password1)
+                .then(
+                    () => {
+                        this.showSuccessMsg = true;
+                        this.$timeout(() => this.$state.go('login'), 5000);
+                    },
+                    (e) => this.message = `${e.data.error}`
+                );
+        }
     }
 
 

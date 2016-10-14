@@ -13,7 +13,11 @@ module.exports = function(r) {
         updateUserSettings,
         userHasProjectAccess,
         createUnverifiedAccount,
-        getUserRegistrationFromUuid
+        createPasswordResetRequest,
+        getUserRegistrationFromUuid,
+        setUserPasswordResetFlag,
+        clearUserPasswordResetFlag,
+        getUserForPasswordResetFromUuid
     };
 
     ///////////
@@ -73,6 +77,29 @@ module.exports = function(r) {
         return accessEntries.length !== 0;
     }
 
+    function* createPasswordResetRequest(user) {
+        let validate_uuid = yield r.uuid();
+        return yield setUserPasswordResetFlag(user.id,validate_uuid);
+    }
+
+    function* setUserPasswordResetFlag(userId,validate_uuid) {
+        return yield r.table('users').get(userId).update({reset_password:true,validate_uuid:validate_uuid});
+    }
+
+    function* clearUserPasswordResetFlag(userId) {
+        return yield r.table('users').get(userId).replace(r.row.without('reset_password','validate_uuid'));
+    }
+
+    function* getUserForPasswordResetFromUuid(uuid) {
+        let results = yield r.table('users')
+            .getAll(uuid, {index: 'validate_uuid'}).without('apikey','password');
+        if (!results.length) {
+            return {error: "No validated user record. Please retry."};
+        }
+        let user = results[0];
+        return {val: user};
+    }
+
     function* createUnverifiedAccount(account) {
         let apikey = yield r.uuid(),
             user = new model.User(account.email, account.fullname, apikey.replace(/-/g, ''));
@@ -94,10 +121,10 @@ module.exports = function(r) {
         if (!results.length) {
             return {error: "User validation record does not exists: " + uuid};
         }
-        let userData = results[0];
-        delete userData['password'];
-        delete userData['apikey'];
-        return {val: userData};
+        let registration = results[0];
+        delete registration['password'];
+        delete registration['apikey'];
+        return {val: registration};
     }
 
 
