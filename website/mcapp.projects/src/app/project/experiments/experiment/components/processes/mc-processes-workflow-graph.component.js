@@ -1,8 +1,9 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(processGraph) {
         this.cy = null;
+        this.processGraph = processGraph;
     }
 
     $onInit() {
@@ -17,76 +18,25 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
         this.mcProcessesWorkflow.setOnChangeCallback(cb);
         this.mcProcessesWorkflow.setAddProcessCallback(cb);
+    }
 
-        // Draw graph
+    // This method will be called implicitly when the component is loaded.
+    $onChanges(changes) {
+        if (changes.processes) {
+            this.processes = changes.processes.currentValue;
+        }
+        if (changes.highlightProcesses) {
+            this.highlightProcesses = changes.highlightProcesses.currentValue;
+        }
         this.allProcessesGraph();
     }
 
     allProcessesGraph() {
-        let sample2InputProcesses = {};
-        let sample2OutputProcesses = {};
-
-        this.processes.forEach(p => {
-            p.input_samples.forEach(s => {
-                let id = `${s.id}/${s.property_set_id}`;
-                if (!(id in sample2InputProcesses)) {
-                    sample2InputProcesses[id] = [];
-                }
-                sample2InputProcesses[id].push(p);
-            });
-
-            p.output_samples.forEach(s => {
-                let id = `${s.id}/${s.property_set_id}`;
-                if (!(id in sample2OutputProcesses)) {
-                    sample2OutputProcesses[id] = [];
-                }
-                sample2OutputProcesses[id].push(p);
-            })
-        });
-
-        // Draw all processes
-        let elements = this.processes.map(p => {
-            return {
-                data: {
-                    id: p.id,
-                    name: p.name,
-                    color: MCProcessesWorkflowGraphComponentController.processColor(p),
-                    shape: MCProcessesWorkflowGraphComponentController.processShape(p)
-                }
-            };
-        });
-        this.processes.filter(p => p.does_transform).forEach(p => {
-            p.output_samples.forEach(s => {
-                let id = `${s.id}/${s.property_set_id}`;
-                let processes = sample2InputProcesses[id];
-                if (processes && processes.length) {
-                    processes.forEach(proc => {
-                        elements.push({
-                            data: {
-                                id: `${proc.id}_${p.id}`,
-                                source: p.id,
-                                target: proc.id,
-                                name: s.name
-                            }
-                        });
-                    });
-                }
-            });
-        });
-
-        let sampleName2Sample = {};
-        this.processes.forEach(p => {
-            p.input_samples.forEach(s => {
-                sampleName2Sample[s.name] = s;
-            });
-            p.output_samples.forEach(s => {
-                sampleName2Sample[s.name] = s;
-            });
-        });
-        this.samples = _.values(sampleName2Sample);
+        let g = this.processGraph.build(this.processes, this.highlightProcesses);
+        this.samples = g.samples;
         this.cy = cytoscape({
             container: document.getElementById('processesGraph'),
-            elements: elements,
+            elements: g.elements,
             style: [
                 {
                     selector: 'node',
@@ -101,6 +51,8 @@ class MCProcessesWorkflowGraphComponentController {
                         'font-weight': 'bold',
                         'text-outline-width': '5px',
                         'text-outline-opacity': 1,
+                        'border-width': '4px',
+                        'border-color': 'data(highlight)',
                         shape: 'data(shape)',
                         width: '80px',
                         height: '80px'
@@ -161,43 +113,14 @@ class MCProcessesWorkflowGraphComponentController {
         this.cy.layout({name: 'dagre'});
     }
 
-    static processColor(p) {
-        switch (p.process_type) {
-            case "transform":
-                return p.destructive ? "#d32f2f" : "#fbc02d";
-            case "measurement":
-                return p.destructive ? "#d32f2f" : "#cfd8dc";
-            case "analysis":
-                return "#d1c4e9";
-            case "create":
-                return "#ffecb3";
-            case "import":
-                return "#b2dfdb";
-        }
-    }
-
-    static processShape(p) {
-        switch (p.process_type) {
-            case "transform":
-                return "triangle";
-            case "measurement":
-                return "ellipse";
-            case "analysis":
-                return "roundrectangle";
-            case "create":
-                return "diamond";
-            case "import":
-                return "diamond";
-        }
-    }
-
 }
 
 angular.module('materialscommons').component('mcProcessesWorkflowGraph', {
     templateUrl: 'app/project/experiments/experiment/components/processes/mc-processes-workflow-graph.html',
     controller: MCProcessesWorkflowGraphComponentController,
     bindings: {
-        processes: '<'
+        processes: '<',
+        highlightProcesses: '<'
     },
     require: {
         mcProcessesWorkflow: '^mcProcessesWorkflow'

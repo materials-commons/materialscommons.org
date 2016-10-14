@@ -45,30 +45,8 @@ module.exports.fileDetailsRql = function fileDetailsRql(rql, r) {
 module.exports.datasetDetailsRql = function datasetDetailsRql(rql, r) {
     return rql.merge(ds => {
         return {
-            samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'})
-                .eqJoin('sample_id', r.table('samples')).zip().merge(s => {
-                    return {
-                        files: r.table('sample2datafile').getAll(s('sample_id'), {index: 'sample_id'})
-                            .coerceTo('array'),
-                        processes: r.table('process2sample').getAll(s('sample_id'), {index: 'sample_id'})
-                            .coerceTo('array')
-                    };
-                })
-                .coerceTo('array'),
             processes: processDetailsRql(r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
-                .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array'),
-            files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
-                .eqJoin('datafile_id', r.table('datafiles')).zip().merge(f => {
-                    return {
-                        processes: r.table('process2file').getAll(f('datafile_id'), {index: 'datafile_id'})
-                            .pluck('process_id').distinct()
-                            .coerceTo('array'),
-                        files: r.table('process2file').getAll(f('datafile_id'), {index: 'datafile_id'})
-                            .pluck('datafile_id').distinct()
-                            .coerceTo('array')
-                    };
-                })
-                .coerceTo('array')
+                .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array')
         };
     });
 };

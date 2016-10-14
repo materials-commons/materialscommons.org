@@ -1,6 +1,6 @@
 <ul>
     <li ng-repeat="node in ::$ctrl.process.children" layout="column">
-        <div ng-class="{'outline-node-selected': node.model.selected}">
+        <div ng-class="{'outline-node-selected': node.model.selected, 'outline-node-highlight': !node.model.selected && node.model.highlight}">
             <a ng-if="node.children.length" ng-click="node.model.show = !node.model.show">
                 <i class="primary-color fa fa-fw"
                    ng-class="{'fa-folder': !node.model.show, 'fa-folder-open': node.model.show}"></i>

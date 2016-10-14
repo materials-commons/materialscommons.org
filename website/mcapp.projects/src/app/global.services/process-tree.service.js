@@ -3,11 +3,12 @@ class ProcessTreeService {
     constructor() {
     }
 
-    build(processes) {
+    build(processes, highlight) {
         let treeModel = new TreeModel();
         let root = treeModel.parse({id: 1, children: []});
         let rootNode = root.first(node => node.model.id === 1);
         let sample2InputProcesses = {};
+        let highlightedProcesses = ProcessTreeService.buildHighlightedProcesses(highlight);
         processes.forEach(p => {
             p.input_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
@@ -24,6 +25,10 @@ class ProcessTreeService {
                 p.children = [];
                 p.show = true;
                 p.selected = false;
+                p.highlight = false;
+                if (p.id in highlightedProcesses) {
+                    p.highlight = true;
+                }
                 let n = treeModel.parse(p);
                 addedIds.push(p.id);
                 rootNode.addChild(n);
@@ -46,6 +51,10 @@ class ProcessTreeService {
                                 p.children = [];
                                 p.show = true;
                                 p.selected = false;
+                                p.highlight = false;
+                                if (p.id in highlightedProcesses) {
+                                    p.highlight = true;
+                                }
                                 let node = treeModel.parse(p);
                                 n.addChild(node);
                                 newlyAdded.push(p.id);
@@ -67,6 +76,14 @@ class ProcessTreeService {
 
     clearSelected(root) {
         root.walk((node) => { node.model.selected = false; });
+    }
+
+    static buildHighlightedProcesses(highlightProcesses) {
+        if (!highlightProcesses) {
+            return {};
+        } else {
+            return _.indexBy(highlightProcesses, 'id');
+        }
     }
 }
 
