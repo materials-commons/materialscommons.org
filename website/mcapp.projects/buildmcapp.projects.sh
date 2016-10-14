@@ -1,8 +1,8 @@
 #!/bin/sh
 
-if [[ ! $PWD =~ .materialscommons.org/website$ ]];
+if [[ ! $PWD =~ .mcapp.projects$ ]];
 then
-    echo "Not in materialscommons.org/website"
+    echo "Not in mcapp.projects"
     exit 1
 fi
 
