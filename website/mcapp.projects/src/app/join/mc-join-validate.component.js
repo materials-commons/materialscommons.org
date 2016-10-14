@@ -15,7 +15,6 @@ class MCJoinValidateComponentController {
         this.accountsService.getUserRegistrationAccount(this.uuid)
             .then(
                 (registration) => {
-                    console.log("registration: ", registration);
                     this.registration = registration;
                 },
                 (e) => this.message = e.data.error

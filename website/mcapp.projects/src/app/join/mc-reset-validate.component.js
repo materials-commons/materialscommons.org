@@ -12,11 +12,9 @@ class MCResetValidateComponentController {
     }
 
     $onInit() {
-        console.log('MCResetValidateComponentController init');
         this.accountsService.getUserForResetPassword(this.uuid)
             .then(
                 (user) => {
-                    console.log("user: ", user.id);
                     this.user = user;
                 },
                 (e) => this.message = e.data.error

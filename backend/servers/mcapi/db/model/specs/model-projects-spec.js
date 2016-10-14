@@ -17,13 +17,11 @@ describe('Test in backend/servers/mcapi/db/model/project.js - ', function () {
         it("project named 'Test' should exist", function*() {
             let projectsList = yield projects.all();
             let name = "not found";
-//            console.log(projectsList);
             for (let project of projectsList) {
                 if (project.name == 'Test') {
                     name = project.name;
                 }
             }
-            console.log("Name is " + name);
             assert.equal(name, "Test", "missing 'Test' project");
         });
     });

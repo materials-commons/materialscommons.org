@@ -87,14 +87,11 @@ module.exports = function(users, experiments, schema) {
             } else {
                 schema.prepare(schema.userAccountSchema, user);
                 let finalUser = yield users.get(userId);
-                console.log("resetPasswordGenerateLink 2a - ",finalUser?finalUser.id:"none");
-                console.log("resetPasswordGenerateLink 2b - ",finalUser?finalUser.site:"none");
                 let evl = emailResetLinkToUser(finalUser, finalUser.site);
                 if (evl.error) {
                     this.status = status.BAD_REQUEST;
                     this.body = evl;
                 } else {
-                    console.log("resetPasswordGenerateLink 3 - ",finalUser);
                     this.body = finalUser;
                 }
             }
@@ -115,7 +112,6 @@ module.exports = function(users, experiments, schema) {
     }
 
     function* getUserForPasswordResetFromUuid(next) {
-        console.log("resource - getUserForPasswordResetFromUuid");
         let result = yield users.getUserForPasswordResetFromUuid(this.params.validation_id);
         if (result.error) {
             this.status = status.BAD_REQUEST;
