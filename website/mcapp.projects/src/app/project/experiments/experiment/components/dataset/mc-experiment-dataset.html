@@ -19,6 +19,7 @@
         <md-button class="md-primary" ng-click="$ctrl.showNodes()">
             {{$ctrl.showAll ? "show only dataset" : "show all"}}
         </md-button>
+        <label>{{$ctrl.showAll ? "Showing entire workflow" : "Showing only workflow for dataset"}}</label>
         <mc-processes-workflow processes="$ctrl.processes"
                                dataset="$ctrl.dataset"
                                highlight-processes="$ctrl.dataset.processes">
