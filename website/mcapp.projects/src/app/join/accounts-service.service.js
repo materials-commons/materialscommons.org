@@ -13,7 +13,6 @@ class AccountsService {
     }
 
     createResetPasswordRequest(email) {
-        console.log("Client - accounts-service - createResetPasswordRequest",email);
         return this.apiService('accounts').one('reset').customPOST({
             email: email
         });
@@ -30,7 +29,6 @@ class AccountsService {
     }
 
     getUserForResetPassword(uuid){
-        console.log("getUserForResetPassword: ", uuid);
         return this.apiService("users").one('rvalidate',uuid).get();
     }
 

@@ -11,7 +11,6 @@ class MCResetPasswordComponentController {
         if (resetForm.$invalid) {
             return;
         }
-        console.log("client - requestResetLink", this.email);
         this.accountsService.createResetPasswordRequest(this.email)
             .then(
                 () => this.showSuccessMsg = true,
