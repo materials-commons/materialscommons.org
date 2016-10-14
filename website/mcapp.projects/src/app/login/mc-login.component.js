@@ -5,10 +5,8 @@ angular.module('materialscommons')
     });
 
 /*@ngInject*/
-function MCLoginController($state, User, toastr, mcapi, Restangular, loginSupportService) {
+function MCLoginController($state, User, toastr, mcapi, Restangular) {
     var ctrl = this;
-
-    ctrl.loginSupportService = loginSupportService;
 
     ctrl.message = "";
     ctrl.userLogin = "";
@@ -23,7 +21,6 @@ function MCLoginController($state, User, toastr, mcapi, Restangular, loginSuppor
             .success(function(u) {
                 User.setAuthenticated(true, u);
                 Restangular.setDefaultRequestParams({apikey: User.apikey()});
-                if (u.reset_password) ctrl.loginSupportService.clearPasswordResetRequest(u);
                 if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
                     $state.go('project.experiment.tasks', {
                         project_id: u.default_project,

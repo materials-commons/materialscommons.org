@@ -48,10 +48,12 @@ describe('Feature - reset lost password: ', function() {
         it('User with the reset password flag set', function*() {
             let user =  yield dbModelUsers.getUser(user1Id);
             assert.isNotNull(user,"test user is not null");
-            let result = yield dbModelUsers.setUserPasswordResetFlag(user1Id);
+            let validate_uuid = yield r.uuid();
+            let result = yield dbModelUsers.setUserPasswordResetFlag(user1Id,validate_uuid);
             assert.equal(result.replaced,1, "The flag was correctly added to the user");
             user =  yield dbModelUsers.getUser(user1Id);
             assert.isTrue(user.reset_password,"The flag is set");
+            assert.equal(user.validate_uuid,validate_uuid);
         });
         it('User reset password flag set cleared', function*() {
             let user =  yield dbModelUsers.getUser(user1Id);
@@ -64,6 +66,7 @@ describe('Feature - reset lost password: ', function() {
             assert.equal(result.replaced,1, "The flag was correctly cleared from the user");
             user =  yield dbModelUsers.getUser(user1Id);
             assert.isUndefined(user.reset_password,"The flag is cleared");
+            assert.isUndefined(user.validate_uuid,"The flag is cleared");
         });
     });
 });

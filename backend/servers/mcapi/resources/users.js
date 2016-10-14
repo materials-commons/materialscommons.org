@@ -12,6 +12,7 @@ module.exports = function(users, experiments, schema) {
         createAccount,
         resetPasswordGenerateLink,
         getUserRegistrationFromUuid,
+        getUserForPasswordResetFromUuid,
         setUserResetPasswordFlag,
         clearUserResetPasswordFlag
     };
@@ -103,6 +104,19 @@ module.exports = function(users, experiments, schema) {
 
     function* getUserRegistrationFromUuid(next) {
         let result = yield users.getUserRegistrationFromUuid(this.params.validation_id);
+        if (result.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = result;
+        } else {
+            this.status = status.OK;
+            this.body = result.val;
+        }
+        yield next;
+    }
+
+    function* getUserForPasswordResetFromUuid(next) {
+        console.log("resource - getUserForPasswordResetFromUuid");
+        let result = yield users.getUserForPasswordResetFromUuid(this.params.validation_id);
         if (result.error) {
             this.status = status.BAD_REQUEST;
             this.body = result;

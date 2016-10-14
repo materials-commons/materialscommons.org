@@ -14,9 +14,10 @@ module.exports = function(r) {
         userHasProjectAccess,
         createUnverifiedAccount,
         createPasswordResetRequest,
+        getUserRegistrationFromUuid,
         setUserPasswordResetFlag,
         clearUserPasswordResetFlag,
-        getUserRegistrationFromUuid
+        getUserForPasswordResetFromUuid
     };
 
     ///////////
@@ -87,6 +88,16 @@ module.exports = function(r) {
 
     function* clearUserPasswordResetFlag(userId) {
         return yield r.table('users').get(userId).replace(r.row.without('reset_password','validate_uuid'));
+    }
+
+    function* getUserForPasswordResetFromUuid(uuid) {
+        let results = yield r.table('users')
+            .getAll(uuid, {index: 'validate_uuid'}).without('apikey','password');
+        if (!results.length) {
+            return {error: "No validated user record. Please retry."};
+        }
+        let user = results[0];
+        return {val: user};
     }
 
     function* createUnverifiedAccount(account) {
