@@ -4,7 +4,7 @@
         The same process can appear in multiple places in the outline because multiple nodes may
         have it as a child. This means that when selecting the node we will highlight all instances of it.
     </p>
-    <md-content style="max-height: 70vh" class="padding-top-20">
+    <md-content style="max-height: 60vh" class="padding-top-20">
         <ul flex="90">
             <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
                 <div ng-class="{'outline-node-selected': node.model.selected, 'outline-node-highlight': !node.model.selected && node.model.highlight}">
