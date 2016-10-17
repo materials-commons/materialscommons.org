@@ -134,7 +134,7 @@ export function processTemplates(User) {
         {
             name: "Sectioning",
             description: "Sectioning of a sample",
-            process_type: 'create sample',
+            process_type: 'transform',
             fn: processes.Sectioning,
             does_transform: true
 
