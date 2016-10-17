@@ -25,6 +25,7 @@ class MCProcessesWorkflowOutlineComponentController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
+        this.toast = toast;
     }
 
     $onInit() {
@@ -58,11 +59,7 @@ class MCProcessesWorkflowOutlineComponentController {
         this.rootNode = t.rootNode;
         if (this.dataset) {
             this.root.walk((node) => {
-                if (node.model.id in this.datasetProcesses) {
-                    node.model.inds = true;
-                } else {
-                    node.model.inds = false;
-                }
+                node.model.inds = !!(node.model.id in this.datasetProcesses);
             });
         }
     }
@@ -92,12 +89,13 @@ class MCProcessesWorkflowOutlineComponentController {
 
 class MCProcessesWorkflowOutlineDirDirectiveController {
     /*@ngInject*/
-    constructor(datasetService, $stateParams) {
+    constructor(datasetService, $stateParams, toast) {
         this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
         this.datasetService = datasetService;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
+        this.toast = toast;
     }
 
     showDetails(p) {
