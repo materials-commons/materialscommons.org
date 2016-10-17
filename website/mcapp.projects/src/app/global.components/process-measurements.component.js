@@ -27,7 +27,7 @@ class ProcessMeasurementsComponentController2 {
             );
     }
 
-    updatePropertyMeasurement(property) {
+    updatePropertyMeasurement(property) { // eslint-disable-line no-unused-vars
         // log('updatePropertyMeasurement', property.name);
     }
 }
