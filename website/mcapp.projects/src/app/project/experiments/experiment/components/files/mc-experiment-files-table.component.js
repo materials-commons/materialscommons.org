@@ -18,7 +18,8 @@ function MCExperimentFilesTableComponentController($mdDialog, mcfile, isImage) {
     ctrl.fileSrc = mcfile.src;
     ctrl.isImage = isImage;
 
-    function showFile(file) {
+    function showFile() {
+    // function showFile(file) { // when log statement commented out - file defined and not used
         // log('showFile', file);
     }
 
