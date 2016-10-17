@@ -51,7 +51,7 @@ function ProcessSettingsDirectiveController(experimentsService, toast, $statePar
                     () => toast.error('Unable to update property')
                 );
         } else {
-            console.log('Update process setting here');
+            // log('Update process setting here');
         }
     };
 

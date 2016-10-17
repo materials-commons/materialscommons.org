@@ -12,7 +12,7 @@ class MCTaskTemplateOtherComponentController {
     }
 
     $onInit() {
-        //console.log('task = ', this.task);
+        // log('task = ', this.task);
     }
 
     linkFilesToSample(sample, input_files, output_files) {
@@ -89,7 +89,7 @@ angular.module('materialscommons').component('mcTaskTemplateOther', {
 //    ctrl.selectFiles = () => {
 //        selectItems.open('files').then(
 //            (selected) => {
-//                console.log('selectedFiles', selected);
+//                // log('selectedFiles', selected);
 //            }
 //        );
 //    };
@@ -97,7 +97,7 @@ angular.module('materialscommons').component('mcTaskTemplateOther', {
 //    ctrl.selectSamples = () => {
 //        selectItems.open('samples').then(
 //            (selected) => {
-//                console.log('selectedSamples', selected);
+//                // log('selectedSamples', selected);
 //            }
 //        );
 //    };
