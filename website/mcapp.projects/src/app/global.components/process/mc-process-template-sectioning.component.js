@@ -94,7 +94,7 @@ class MCProcessTemplateSectioningComponentController {
 
 angular.module('materialscommons').component('mcProcessTemplateSectioning', {
     templateUrl: 'app/global.components/process/mc-process-template-sectioning.html',
-    controller: MCProcessTemplateCreateSectioningController,
+    controller: MCProcessTemplateSectioningComponentController,
     bindings: {
         process: '=',
         onChange: '&'
