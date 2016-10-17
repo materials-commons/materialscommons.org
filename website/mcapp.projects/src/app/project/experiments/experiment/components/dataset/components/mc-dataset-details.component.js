@@ -76,8 +76,7 @@ class MCDatasetDetailsComponentController {
     }
 
     updateDatasetPublicationDate() {
-        console.log('Pub date', this.pubDate);
-        console.log('dataset', this.dataset.plain());
+        //TODO: this needed?
     }
 
     publishDataset() {

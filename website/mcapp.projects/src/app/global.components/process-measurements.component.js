@@ -28,7 +28,7 @@ class ProcessMeasurementsComponentController2 {
     }
 
     updatePropertyMeasurement(property) {
-        //console.log('updatePropertyMeasurement', property.name);
+        // log('updatePropertyMeasurement', property.name);
     }
 }
 

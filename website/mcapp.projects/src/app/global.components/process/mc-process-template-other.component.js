@@ -15,10 +15,6 @@ class MCProcessTemplateOtherComponentController {
         this.$mdDialog = $mdDialog;
     }
 
-    $onInit() {
-        //console.log('process = ', this.process.plain());
-    }
-
     linkFilesToSample(sample, input_files, output_files) {
         this.sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function(linkedFiles) {
             sample = this.processEdit.refreshSample(linkedFiles, sample);

@@ -30,6 +30,41 @@ class MCProcessTemplateSectioningComponentController {
             });
     }
 
+    selectSamples() {
+        this.selectItems.open('samples').then(
+            (selected) => {
+                let samples = selected.samples.map(s => {
+                    for (let i = 0; i < s.versions.length; i++) {
+                        if (s.versions[i].selected) {
+                            return {
+                                id: s.id,
+                                property_set_id: s.versions[i].property_set_id,
+                                command: 'add'
+                            };
+                        }
+                    }
+                });
+                let samplesArgs = {
+                    template_id: this.process.template_id,
+                    samples: samples,
+                    process_id: this.process.id
+                };
+
+                this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, samplesArgs)
+                    .then(
+                        () => {
+                            this.process.input_samples = selected.samples;
+                            this.navbarOnChange.fireChange();
+                            if (this.onChange) {
+                                this.onChange();
+                            }
+                        },
+                        () => this.toast.error('Unable to add samples')
+                    );
+            }
+        );
+    }
+
     addSample() {
         let lastItem = this.process.output_samples.length - 1;
         // If there is no name for the last entry then do not add a new entry.
