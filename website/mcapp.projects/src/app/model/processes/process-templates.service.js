@@ -132,6 +132,14 @@ export function processTemplates(User) {
             does_transform: true
         },
         {
+            name: "Sectioning",
+            description: "Sectioning of a sample",
+            process_type: 'transform',
+            fn: processes.Sectioning,
+            does_transform: true
+
+        },
+        {
             name: "TEM",
             description: "TEM",
             process_type: 'measurement',

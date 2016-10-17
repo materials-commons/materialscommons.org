@@ -12,6 +12,10 @@
             <mc-process-template-create-samples process="$ctrl.process"
                                                 on-change="$ctrl.onChange()"></mc-process-template-create-samples>
         </div>
+        <div ng-switch-when="Sectioning">
+            <mc-process-template-sectioning process="$ctrl.process"
+                                            on-change="$ctrl.onChange()"></mc-process-template-sectioning>
+        </div>
         <div ng-switch-default>
             <mc-process-template-other process="$ctrl.process" on-change="$ctrl.onChange()"></mc-process-template-other>
         </div>

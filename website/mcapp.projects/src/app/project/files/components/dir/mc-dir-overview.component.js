@@ -97,8 +97,8 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
         var toUserName = function(u) { return u.user_id;};
         var proj = project.get();
         var users = proj.users.map(toUserName);
-        mcmodal.chooseUsers(users).then(function(chosenUsers) {
-            console.log('users chosen', chosenUsers);
+        mcmodal.chooseUsers(users).then(function(chosenUsers) { // eslint-disable-line no-unused-vars
+            // log('users chosen', chosenUsers);
         });
     }
 }

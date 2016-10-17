@@ -8,7 +8,7 @@ angular.module('materialscommons').component('mcProcessCreate', {
 
 function MCProcessCreateComponentController() {
     'ngInject';
-    var ctrl = this;
+    var ctrl = this;  // eslint-disable-line no-unused-vars
     //console.dir(ctrl.template);
     //ctrl.template = template.get();
 }

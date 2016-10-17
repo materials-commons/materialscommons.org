@@ -23,8 +23,9 @@ class MCExperimentPublishComponentController {
     createNewDataset() {
         this.datasetService.createDatasetForExperiment(this.projectId, this.experimentId, "new dataset", "my new dataset")
             .then(
-                (dataset) => {
-                    console.log('dataset', dataset.plain());
+                () => {
+                // (dataset) => {  // dataset defined but not used - when log statement commented out
+                    // ?.log('dataset', dataset.plain());
                 },
                 () => this.toast.error('Unable to create new dataset')
             );
