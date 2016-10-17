@@ -121,7 +121,8 @@ module.exports = function(r) {
         }
         let process = yield r.table('processes').get(processId)
             .merge((p) => r.table('templates').get(p('template_id')).pluck('category'));
-        return process.category === 'create_sample';
+        console.log(process.category);
+        return (process.category === 'create_sample') || (process.category === 'sectioning');
     }
 
     function* updateSamples(samples) {
