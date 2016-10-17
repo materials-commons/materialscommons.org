@@ -514,8 +514,8 @@ export function Sectioning() {
     this.process_type = "transformation";
     this.template_name = "Sectioning";
     this.description = "Sectioning a sample";
-    this._type = "OTHER";
-    this.category = "OTHER";
+    this._type = "Create Sample";
+    this.category = "Create Sample";
     this.input_files = [];
     this.output_files = [];
     this.input_samples = [];

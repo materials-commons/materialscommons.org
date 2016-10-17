@@ -76,14 +76,6 @@ export function processTemplates(User) {
             does_transform: true
         },
         {
-            name: "Sectioning",
-            description: "Sectioning of a sample",
-            process_type: 'transform',
-            fn: processes.Sectioning,
-            does_transform: false
-
-        },
-        {
             name: "DIC Patterning",
             description: "DIC Patterning",
             process_type: 'measurement',
@@ -138,6 +130,14 @@ export function processTemplates(User) {
             process_type: 'transform',
             fn: processes.UltrasonicFatigue,
             does_transform: true
+        },
+        {
+            name: "Sectioning",
+            description: "Sectioning of a sample",
+            process_type: 'create sample',
+            fn: processes.Sectioning,
+            does_transform: true
+
         },
         {
             name: "TEM",
