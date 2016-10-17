@@ -415,7 +415,7 @@ function Sectioning() {
     this.process_name = "Sectioning";
     this.process_type = "transform";
     this.description = "Sectioning";
-    this.category = "OTHER";
+    this.category = "create_sample";
     this.does_transform = true;
     this.measurements = [];
     this.destructive = false;
