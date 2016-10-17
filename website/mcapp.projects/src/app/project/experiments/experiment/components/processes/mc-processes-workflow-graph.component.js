@@ -103,7 +103,7 @@ class MCProcessesWorkflowGraphComponentController {
         //this.cy.on('mouseover', function(event) {
         //    let target = event.cyTarget;
         //    if (target.data) {
-        //        //console.log('target', target.data('name'));
+        //        //log('target', target.data('name'));
         //    }
         //    // Need to install qtip or some other
         //    //target.qtip({

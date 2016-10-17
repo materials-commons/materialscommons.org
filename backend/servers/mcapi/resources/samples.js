@@ -44,11 +44,8 @@ module.exports = function(samples, schema) {
     }
 
     function* createSamples(next) {
-        console.log("createSamples");
         let createArgs = yield parse(this);
-        console.log("createSamples", createArgs);
         let errors = yield validateCreateSamplesArgs(this.params.project_id, createArgs);
-        console.log("createSamples", errors);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
