@@ -8,8 +8,9 @@
         <ul flex="90">
             <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
                 <div ng-class="{'outline-node-selected': node.model.selected, 'outline-node-highlight': !node.model.selected && node.model.highlight}">
-                    <md-checkbox class="md-checkbox-small"
-                                 ng-model="node.model.inds" ng-if="$ctrl.dataset"></md-checkbox>
+                    <input aria-label="In dataset" type="checkbox"
+                           ng-change="$ctrl.toggle(node.model)"
+                           ng-model="node.model.inds" ng-if="$ctrl.dataset">
                     <a ng-if="node.children.length"
                        ng-click="node.model.show = !node.model.show">
                         <i class="primary-color fa fa-fw"

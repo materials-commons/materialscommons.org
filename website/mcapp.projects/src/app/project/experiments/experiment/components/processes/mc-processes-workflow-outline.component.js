@@ -1,8 +1,30 @@
+function addProcessToDataset(p, dataset, datasetProcesses) {
+    p.inds = true;
+    p.highlight = true;
+    datasetProcesses[p.id] = p;
+    dataset.processes.push(p);
+}
+
+function removeProcesssFromDataset(p, dataset, datasetProcesses) {
+    p.inds = false;
+    p.highlight = false;
+    delete datasetProcesses[p.id];
+    let i = _.findIndex(dataset.processes, (proc) => proc.id === p.id);
+    if (i !== -1) {
+        dataset.processes.splice(i, 1);
+    }
+}
+
+
 class MCProcessesWorkflowOutlineComponentController {
     /*@ngInject*/
-    constructor(processTree) {
+    constructor(processTree, datasetService, $stateParams, toast) {
         this.processTree = processTree;
         this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
+        this.datasetService = datasetService;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.datasetId = $stateParams.dataset_id;
     }
 
     $onInit() {
@@ -34,6 +56,15 @@ class MCProcessesWorkflowOutlineComponentController {
         let t = this.processTree.build(this.processes, this.highlightProcesses);
         this.root = t.root;
         this.rootNode = t.rootNode;
+        if (this.dataset) {
+            this.root.walk((node) => {
+                if (node.model.id in this.datasetProcesses) {
+                    node.model.inds = true;
+                } else {
+                    node.model.inds = false;
+                }
+            });
+        }
     }
 
     showDetails(p) {
@@ -41,16 +72,52 @@ class MCProcessesWorkflowOutlineComponentController {
         p.selected = true;
         this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
     }
+
+    toggle(p) {
+        if (p.inds) {
+            addProcessToDataset(p, this.dataset, this.datasetProcesses);
+            this.datasetService.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [p.id], []).then(
+                () => null,
+                () => this.toast.error(`Unable to add process to dataset ${p.name}`)
+            );
+        } else {
+            removeProcesssFromDataset(p, this.dataset, this.datasetProcesses);
+            this.datasetService.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [], [p.id]).then(
+                () => null,
+                () => this.toast.error(`Unable to remove process from dataset ${p.name}`)
+            );
+        }
+    }
 }
 
 class MCProcessesWorkflowOutlineDirDirectiveController {
     /*@ngInject*/
-    constructor() {
+    constructor(datasetService, $stateParams) {
         this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
+        this.datasetService = datasetService;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.datasetId = $stateParams.dataset_id;
     }
 
     showDetails(p) {
         this.mcProcessesWorkflowOutline.showDetails(p);
+    }
+
+    toggle(p) {
+        if (p.inds) {
+            addProcessToDataset(p, this.dataset, this.datasetProcesses);
+            this.datasetService.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [p.id], []).then(
+                () => null,
+                () => this.toast.error(`Unable to add process to dataset ${p.name}`)
+            );
+        } else {
+            removeProcesssFromDataset(p, this.dataset, this.datasetProcesses);
+            this.datasetService.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [], [p.id]).then(
+                () => null,
+                () => this.toast.error(`Unable to remove process from dataset ${p.name}`)
+            );
+        }
     }
 }
 
