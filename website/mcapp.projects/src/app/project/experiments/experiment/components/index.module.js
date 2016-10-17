@@ -27,6 +27,7 @@ import './dataset/components/mc-dataset-details.component';
 
 import './processes/mc-experiment-processes.component';
 import './processes/mc-experiment-processes-table.component';
+import './processes/experiment-processes.service';
 
 import './processes/mc-processes-workflow.component';
 import './processes/mc-workflow-process-templates.component';
