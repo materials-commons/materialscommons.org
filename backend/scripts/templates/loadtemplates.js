@@ -410,6 +410,40 @@ function CreateSamples() {
     ]
 }
 
+function Sectioning() {
+    this.name = "Sectioning";
+    this.process_name = "Sectioning";
+    this.process_type = "transform";
+    this.description = "Sectioning";
+    this.category = "create_sample";
+    this.does_transform = true;
+    this.measurements = [];
+    this.destructive = false;
+    this.setup = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Notes",
+                        attribute: "notes",
+                        description: "Use these Notes to indicate properties of the sectioning: type of cuts, extraction, dimensions, etc.",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    }
+                }
+            ]
+        }
+    ];
+}
+
+
+
 function AptDataAnalysis() {
     this.name = "APT Data Analysis";
     this.process_name = "APT Data Analysis";
@@ -2255,6 +2289,7 @@ var globalTemplates = [
     Apt,
     Sem,
     CreateSamples,
+    Sectioning,
     AptDataAnalysis,
     AptDataReconstruction,
     BroadIonBeamMilling,

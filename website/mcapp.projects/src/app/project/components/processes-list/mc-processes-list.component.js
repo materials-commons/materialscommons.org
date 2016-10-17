@@ -13,7 +13,6 @@ function MCProcessesListComponentController() {
 
     //////////////////////////
 
-    function selectProcess(process) {
-        console.log('selectProcess', process);
+    function selectProcess(process) { // eslint-disable-line no-unused-vars
     }
 }

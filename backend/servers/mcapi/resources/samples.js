@@ -73,9 +73,9 @@ module.exports = function(samples, schema) {
             return {error: 'Unknown process'};
         }
 
-        let isCreateProcess = yield samples.isValidCreateSamplesProcess(projectId, args.process_id);
-        if (!isCreateProcess) {
-            return {error: `Process isn't a create samples process`};
+        let isCreateProcessOrSectioningProcee = yield samples.isValidCreateSamplesProcess(projectId, args.process_id);
+        if (!isCreateProcessOrSectioningProcee) {
+            return {error: `Process isn't one of: a create samples process or a sectioning process`};
         }
 
         if (args.samples.length === 0) {

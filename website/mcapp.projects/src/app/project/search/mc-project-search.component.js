@@ -33,8 +33,9 @@ function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state,
         $state.go('project.files.file', {file_id: f.id});
     }
 
-    function openFilePopup(file) {
-        //console.log('openFilePopup', file);
+    function openFilePopup() {
+//  function openFilePopup(file) {  == 'error - file defined but not used
+        // log('openFilePopup', file);
         //var f = file;
         //if ('datafile_id' in file) {
         //    // We don't have a full file object, so find it in projectFiles

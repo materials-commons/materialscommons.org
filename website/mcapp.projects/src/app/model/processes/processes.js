@@ -508,6 +508,49 @@ export function CreateSamples() {
     ]
 }
 
+export function Sectioning() {
+    this.name = "Sectioning";
+    this.process_name = "Sectioning";
+    this.process_type = "transformation";
+    this.template_name = "Sectioning";
+    this.description = "Sectioning a sample";
+    this._type = "Create Sample";
+    this.category = "Create Sample";
+    this.input_files = [];
+    this.output_files = [];
+    this.input_samples = [];
+    this.output_samples = [];
+    this.transformed_samples = [];
+    this.project_id = "";
+    this.what = "";
+    this.why = "";
+    this.owner = "";
+    this.does_transform = true;
+    this.measurements = [];
+    this.destructive = true;
+    this.setup = [
+        {
+            name: "Instrument",
+            attribute: "instrument",
+            properties: [
+                {
+                    property: {
+                        name: "Notes",
+                        attribute: "notes",
+                        description: "Use these Notes to indicate properties of the sectioning: type of cuts, extraction, dimensions, etc.",
+                        value: "",
+                        units: [],
+                        unit: "",
+                        _type: "string",
+                        required: false,
+                        choices: []
+                    }
+                }
+            ]
+        }
+    ];
+}
+
 export function AptDataAnalysis() {
     this.name = "APT Data Analysis";
     this.process_name = "APT Data Analysis";
