@@ -18,6 +18,7 @@ export class SignController {
         this.accountsService = accountsService;
         this.showSuccessMsg = false;
         this.$timeout = $timeout;
+        this.second = 1000;
     }
 
     setTab(tab) {
@@ -50,13 +51,18 @@ export class SignController {
             .then(
                 () => {
                     this.showSuccessMsg = true;
-                    this.$timeout(() => this.$uibModalInstance.close(), 5000);
+                    this.$timeout(() => this.$uibModalInstance.close(), 20*this.second);
                 },
                 (e) => {
                     this.toastr.options = {"closeButton": true};
                     this.toastr.error(e.data.error, this.user.email);
                 }
             );
+    }
+
+    resetPassword() {
+        this.showSuccessMsg = true;
+        this.$timeout(() => this.$uibModalInstance.close(), 20*this.second);
     }
 }
 
