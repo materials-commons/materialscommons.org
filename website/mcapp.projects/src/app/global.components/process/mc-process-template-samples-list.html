@@ -1,0 +1,36 @@
+<md-list>
+    <div ng-if="$ctrl.inputSamples.length">
+        <md-subheader class="md-no-sticky no-inner-padding"><h4>Input Samples</h4></md-subheader>
+        <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.inputSamples">
+            <div class="md-list-item-text md-whiteframe-2dp" layout="column">
+                <div class="padding-left-15 padding-top-10">
+                    <a>{{sample.name}}</a>
+                    <div layout="row" layout-align="start layout-wrap">
+                        <md-button class="md-primary">Link Files</md-button>
+                        <md-button class="md-warn">Remove</md-button>
+                    </div>
+                </div>
+            </div>
+        </md-list-item>
+    </div>
+
+    <div ng-if="$ctrl.outputSamples.length">
+        <md-subheader class="md-no-sticky no-inner-padding"><h4>Output Samples</h4></md-subheader>
+        <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.outputSamples">
+            <div class="md-list-item-text md-whiteframe-2dp" layout="column">
+                <div class="padding-left-15 padding-top-10">
+                    <a>{{sample.name}}</a>
+                    <div layout="row" layout-align="start layout-wrap">
+                        <md-button class="md-primary">Link Files</md-button>
+                        <md-button class="md-warn">Remove</md-button>
+                    </div>
+                </div>
+            </div>
+        </md-list-item>
+    </div>
+</md-list>
+
+<!--<a ng-if="$ctrl.process.input_files.length || $ctrl.process.output_files.length"-->
+<!--ng-click="$ctrl.linkFilesToSample(sample, $ctrl.process.input_files, $ctrl.process.output_files)">-->
+<!--Link Files-->
+<!--</a>-->

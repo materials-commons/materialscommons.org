@@ -17,84 +17,10 @@
         </process-settings2>
     </div>
 
-    <div flex="100" layout-margin>
-        <md-table-container>
-            <table md-table
-                   ng-if="$ctrl.process.input_samples.length || $ctrl.process.input_files.length || $ctrl.process.output_files.length">
-                <thead md-head>
-                <tr md-row>
-                    <th md-column>Type</th>
-                    <th md-column>Name</th>
-                    <th md-column></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr md-row ng-repeat="sample in $ctrl.process.input_samples | orderBy:'name'">
-                    <td md-cell>
-                        <a ng-click="$ctrl.remove($ctrl.process.input_samples, sample)">
-                            <i class="fa fa-close"></i>
-                        </a>
-                        Sample
-                    </td>
-                    <td md-cell>{{sample.name}}</td>
-                    <td md-cell>
-                        <a ng-if="$ctrl.process.input_files.length || $ctrl.process.output_files.length"
-                           ng-click="$ctrl.linkFilesToSample(sample, $ctrl.process.input_files, $ctrl.process.output_files)">
-                            Link Files
-                        </a>
-                        <ul class="list-unstyled">
-                            <li ng-repeat="file in sample.files">
-                                {{file.name}}
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <tr md-row ng-repeat="file in $ctrl.process.files | orderBy:'name'">
-                    <td md-cell>
-                        <a ng-click="$ctrl.remove($ctrl.process.input_files, file)">
-                            <i class="fa fa-close"></i>
-                        </a>
-                        Input File
-                    </td>
-                    <td md-cell>{{file.name}}</td>
-                    <td md-cell>
-                        <div ng-if="$ctrl.isImage(file.mediatype.mime)">
-                            <md-button class="md-primary" ng-click="$ctrl.showFile(file)" aria-label="view file">
-                                <img class="img-thumbnail" height="140" width="140"
-                                     ng-src="{{$ctrl.fileSrc(file.id)}}">
-                            </md-button>
-                        </div>
-                    </td>
-                </tr>
-                <tr md-row ng-repeat="file in $ctrl.process.input_files | orderBy:'name'">
-                    <td md-cell>
-                        <a ng-click="$ctrl.remove($ctrl.process.input_files, file)">
-                            <i class="fa fa-close"></i>
-                        </a>
-                        Input File
-                    </td>
-                    <td md-cell>{{file.name}}</td>
-                    <td md-cell>
-                        <div ng-if="$ctrl.isImage(file.mediatype.mime)">
-                            <md-button class="md-primary" ng-click="$ctrl.showFile(file)" aria-label="view file">
-                                <img class="img-thumbnail" height="140" width="140"
-                                     ng-src="{{$ctrl.fileSrc(file.id)}}">
-                            </md-button>
-                        </div>
-                    </td>
-                </tr>
-                <tr md-row ng-repeat="file in $ctrl.process.output_files | orderBy:'name'">
-                    <td md-cell>
-                        <a ng-click="$ctrl.remove($ctrl.process.output_files, file)">
-                            <i class="fa fa-close"></i>
-                        </a>
-                        Output File
-                    </td>
-                    <td md-cell>{{file.name}}</td>
-                    <td md-cell></td>
-                </tr>
-                </tbody>
-            </table>
-        </md-table-container>
-    </div>
+    <mc-process-template-samples-list input-samples="$ctrl.process.input_samples"
+                                      output-samples="$ctrl.process.output_samples">
+    </mc-process-template-samples-list>
+
+    <mc-process-template-files-list files="$ctrl.process.files">
+    </mc-process-template-files-list>
 </div>
