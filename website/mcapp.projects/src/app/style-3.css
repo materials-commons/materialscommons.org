@@ -1385,6 +1385,10 @@ li.dashboard-item div p {
     padding-top: 20px;
 }
 
+.padding-top-10 {
+    padding-top: 10px;
+}
+
 .child-div-selector > div {
     height: 100%;
 }
