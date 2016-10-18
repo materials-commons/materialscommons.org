@@ -6,6 +6,7 @@ import {HomeController} from './home/home.controller';
 import {SignController} from '../app/components/sign/sign-controller';
 import {LoginDirective} from '../app/components/sign/login/login.directive';
 import {RegisterDirective} from '../app/components/sign/register/register-directive';
+import {ResetPasswordDirective} from '../app/components/sign/reset/reset-password.directive'
 import {SearchController} from './search/search-controller';
 import {RecentDatasetsController} from './home/datasets/recent-datasets-controller';
 import {TopDatasetsController} from './home/datasets/top-datasets-controller';
@@ -75,6 +76,7 @@ angular.module('mcpub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngM
     .directive('displayImage', DisplayImageDirective)
     .directive('loginDirective', LoginDirective)
     .directive('registerDirective', RegisterDirective)
+    .directive('resetPasswordDirective', ResetPasswordDirective)
     .directive('commentDirective', CommentDirective)
     .directive('mcpubDatasetDetailsSummary', DatasetDetailsSummaryDirective)
     .directive('mcpubDatasetDetailsOtherds', DatasetDetailsOtherdsDirective)
