@@ -44,6 +44,7 @@ import {pubAPIService} from './services/pub-api.service';
 import {mcapiService} from './services/mc-api.service';
 import {AccountsService} from './services/accounts-service.service';
 import {ValidateController} from './components/sign/validate/validate.controller';
+import {ResetValidateController} from './components/sign/rvalidate/resetValidate.controller';
 import {SearchModel} from './services/search-model.service';
 import {focusService} from './services/focus.service';
 import {onEnterDirective} from './directives/on-enter.directive';
@@ -69,6 +70,7 @@ angular.module('mcpub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngM
     .controller('BrowseTagsController', BrowseTagsController)
     .controller('BrowseAuthorsController', BrowseAuthorsController)
     .controller('ValidateController', ValidateController)
+    .controller('ResetValidateController',ResetValidateController)
     .directive('mcpubNavbar', NavbarDirective)
     .directive('homeTabDirective', HomeTabDirective)
     .directive('mcpubSearchbar', MCPubSearchbarDirective)

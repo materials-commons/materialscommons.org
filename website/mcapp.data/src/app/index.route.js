@@ -148,6 +148,12 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             templateUrl: 'app/components/sign/validate/validate.html',
             controller: 'ValidateController',
             controllerAs: 'ctrl'
+        })
+        .state('rvalidate', {
+            url: '/rvalidate/:validation_id',
+            templateUrl: 'app/components/sign/rvalidate/reset-validate.html',
+            controller: 'ResetValidateController',
+            controllerAs: 'ctrl'
         });
     $urlRouterProvider.otherwise('/home/top');
 }
