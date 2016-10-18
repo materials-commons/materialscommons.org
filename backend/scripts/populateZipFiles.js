@@ -109,6 +109,26 @@ function* publishDatasetZipFile(r, datasetId) {
 
         console.log("For id = " + datasetId + ", there are " + datafileIds.length + " files");
 
+        let nameSourceList = [];
+        var seenThisOne = {};
+
+        for (var i=0; i < datafiles.length; i++) {
+            let df = datafiles[i];
+
+            let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, sourcePath
+            let path = zipEntry.sourcePath;
+            let name = zipEntry.fileName;
+            let checksum = zipEntry.checksum;
+            name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
+
+            if (name) {
+                if (yield fileExists(path)) {
+                    let stream = yield fs.createReadStream(path);
+                    nameSourceList.push({name: name, source: source});
+                }
+            }
+        }
+
         return new Promise(function (resolve, reject) {
             var archive = archiver('zip');
             var output = fs.createWriteStream(fillPathAndFilename);
@@ -124,17 +144,9 @@ function* publishDatasetZipFile(r, datasetId) {
 
             archive.pipe(output);
 
-            var seenThisOne = {};
-
-            datafiles.forEach(df => {
-                let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, sourcePath
-                let path = zipEntry.sourcePath;
-                let name = zipEntry.fileName;
-                let checksum = zipEntry.checksum;
-                name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
-                if (name) {
-                    archive.append(path, {name: name});
-                }
+            nameSourceList.forEach(ns => {
+                console.log("name: ", ns.name);
+                archive.append(ns.source, {name:ns.name} );
             });
 
             archive.finalize();
@@ -169,6 +181,20 @@ function resolveZipfileFilenameDuplicates(seenThisOne,name,checksum){
     }
     seenThisOne[name] = checksum;
     return name;
+}
+
+function fileExists (filePath) {
+    return new Promise(function (resolve,reject){
+        fs.stat(filePath, function(err, stat) {
+            if(err == null) {
+                resolve(true);
+            } else if(err.code == 'ENOENT') {
+                resolve(false);
+            } else {
+                reject('unexpected file exists error: ', err.code);
+            }
+        });
+    });
 }
 
 function resolveZipfileFilenameUnique(name, count) {
