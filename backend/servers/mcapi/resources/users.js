@@ -74,12 +74,13 @@ module.exports = function(users, experiments, schema) {
     function* resetPasswordGenerateLink(next) {
         let resetArgs = yield parse(this);
         let user = yield users.get(resetArgs.email);
-        let userId = user.id;
         if (!user) {
             this.status = status.BAD_REQUEST;
             let errorMessage = "No registered user for given email address: "+ resetArgs.email + ". Please register anew.";
             this.body = {error: errorMessage};
         } else {
+            let userId = user.id;
+            let site = resetArgs.site;
             let rv = yield users.createPasswordResetRequest(user);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
@@ -87,7 +88,7 @@ module.exports = function(users, experiments, schema) {
             } else {
                 schema.prepare(schema.userAccountSchema, user);
                 let finalUser = yield users.get(userId);
-                let evl = emailResetLinkToUser(finalUser, finalUser.site);
+                let evl = emailResetLinkToUser(finalUser, site);
                 if (evl.error) {
                     this.status = status.BAD_REQUEST;
                     this.body = evl;
