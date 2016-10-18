@@ -423,3 +423,15 @@ a {
   color: black;
   border-bottom: solid $mc-dark-grey 2px;
 }
+
+md-checkbox.md-checkbox-small {
+  .md-icon {
+    transform: scale(.7);
+  }
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.no-inner-padding .md-subheader-inner {
+  padding-left: 0;
+}
