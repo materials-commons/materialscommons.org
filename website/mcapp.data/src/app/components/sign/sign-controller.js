@@ -47,7 +47,6 @@ export class SignController {
     }
 
     register() {
-        console.log("client - SignController - register() ", this.user);
         this.accountsService.createAccount(`${this.user.firstName} ${this.user.lastName}`, this.user.email)
             .then(
                 () => {
@@ -55,17 +54,25 @@ export class SignController {
                     this.$timeout(() => this.$uibModalInstance.close(), 20*this.second);
                 },
                 (e) => {
-                    this.toastr.options = {"closeButton": true};
-                    this.toastr.error(e.data.error, this.user.email);
+                    let options = {closeButton: true, timeOut: 0};
+                    this.toastr.error(e.data.error, this.user.email, options);
                 }
             );
     }
 
     resetPassword() {
-        console.log("client - SignController - resetPassword() ", this.user);
-        this.accountsService.resetPassword(this.user.email);
-        this.showSuccessMsg = true;
-        this.$timeout(() => this.$uibModalInstance.close(), 20*this.second);
+        this.accountsService.resetPassword(this.user.email)
+            .then(
+                () => {
+                    this.showSuccessMsg = true;
+                    this.$timeout(() => this.$uibModalInstance.close(), 20*this.second);
+                },
+                (e)=>{
+                    let options = {closeButton: true, timeOut: 0};
+                    this.toastr.error(e.data.error, this.user.email, options);
+
+                }
+            );
     }
 }
 

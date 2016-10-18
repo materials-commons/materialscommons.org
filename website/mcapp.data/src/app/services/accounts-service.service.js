@@ -14,7 +14,10 @@ export class AccountsService {
     }
 
     resetPassword(email) {
-        console.log("client - AccountsService - resetPassword",email);
+        return this.mcapi('accounts').one('reset').customPOST({
+            email: email,
+            site: 'mcpub'
+        });
     }
 
     setUserFromRegistrationData(uuid, password) {
@@ -26,4 +29,15 @@ export class AccountsService {
     getUserRegistrationAccount(uuid) {
         return this.mcapi('users').one('validate', uuid).get();
     }
+
+    getUserForResetPassword(uuid){
+        return this.mcapi("users").one('rvalidate',uuid).get();
+    }
+
+    resetUserPasswordWithValidate(uuid,password) {
+        return this.Restangular.one('user').one('rvalidate',uuid).one('finish').customPOST({
+            password: password
+        });
+    }
+
 }

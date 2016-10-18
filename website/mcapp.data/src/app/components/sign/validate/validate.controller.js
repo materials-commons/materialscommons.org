@@ -66,10 +66,10 @@ export class ValidateController {
             this.message = "Password entries do not match";
             return false;
         }
-        //if (this.password1.length < 6) {
-        //    this.message = "Password must be at least 6 character in length";
-        //    return false;
-        //}
+        if (this.password1.length < 6) {
+            this.message = "Password must be at least 6 character in length";
+            return false;
+        }
         this.message = null;
         return true;
     }
