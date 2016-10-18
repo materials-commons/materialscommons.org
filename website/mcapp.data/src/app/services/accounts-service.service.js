@@ -13,6 +13,10 @@ export class AccountsService {
         });
     }
 
+    resetPassword(email) {
+        console.log("client - AccountsService - resetPassword",email);
+    }
+
     setUserFromRegistrationData(uuid, password) {
         return this.Restangular.one('user').one('complete', uuid).customPOST({
             password: password
