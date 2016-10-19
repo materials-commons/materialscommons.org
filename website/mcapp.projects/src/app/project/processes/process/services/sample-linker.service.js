@@ -1,126 +1,90 @@
-angular.module('materialscommons').factory('sampleLinker', sampleLinkerService);
-function sampleLinkerService($modal) {
-    'ngInject';
+class SampleLinkerService {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
 
-    return {
-        linkFilesToSample: function(sample, input_files, output_files) {
-            var modal = $modal.open({
-                templateUrl: 'app/project/processes/process/services/link-files-to-sample.html',
-                controller: LinkFilesToSampleController,
-                controllerAs: 'sample',
-                resolve: {
-                    files: function() {
-                        var files = input_files.concat(output_files);
-                        var linkedFilesById = _.indexBy(sample.files, 'id');
-                        var setLinked = function(f) {
-                            f.linked = (f.id in linkedFilesById);
-                            return f;
-                        };
+    }
 
-                        return files.map(setLinked);
-                    },
-
-                    sample: function() {
-                        return sample;
-                    },
-
-                    project: function() {
-                        return {};
-                    }
-                }
-            });
-            return modal.result;
-        }
+    linkFilesToSample(sample, input_files, output_files) {
+        let allFiles = input_files.concat(output_files);
+        let linkedFilesById = _.indexBy(sample.files, 'id');
+        let files = allFiles.map(f => {
+            f.linked = (f.id in linkedFilesById);
+            return f;
+        });
+        return this.$mdDialog.show({
+            templateUrl: 'app/project/processes/process/services/link-files-to-sample.html',
+            controller: LinkFilesToSampleController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                sample: sample,
+                files: files
+            }
+        });
     }
 }
 
-function LinkFilesToSampleController($modalInstance, files, sample, mcmodal) {
-    'ngInject';
-
-    var ctrl = this;
-    ctrl.name = sample.name;
-    ctrl.sample_id = sample.id;
-    ctrl.files = files;
-    ctrl.ok = ok;
-    ctrl.cancel = cancel;
-    ctrl.filesToLink = [];
-    ctrl.linkFile = linkFile;
-    ctrl.unlinkFile = unlinkFile;
-    ctrl.linkAllFiles = linkAllFiles;
-    ctrl.unlinkAllFiles = unlinkAllFiles;
-    ctrl.openFile = openFile;
-    files.forEach(function(f) {
-        ctrl.filesToLink.push({id: f.id, name: f.name, linked: f.linked});
-    });
-
-    /////////////////////////////////////////
-
-    function ok() {
-        $modalInstance.close(ctrl.filesToLink);
+class LinkFilesToSampleController {
+    /*@ngInject*/
+    constructor($mdDialog, isImage, mcfile) {
+        this.$mdDialog = $mdDialog;
+        this.isImage = isImage;
+        this.fileSrc = mcfile.src;
+        this.filesToLink = this.files.map(f => ({id: f.id, name: f.name, linked: f.linked, mediatype: f.mediatype}));
+        this.selected = [];
     }
 
-    function cancel() {
-        $modalInstance.dismiss('cancel');
+    done() {
+        this.$mdDialog.hide(this.filesToLink);
     }
 
-    function linkFile(file) {
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+
+    linkFile(file) {
         file.linked = true;
-        var i = _.indexOf(ctrl.filesToLink, function(f) {
-            return (f.id == file.id && f.sample_id == file.sample_id);
-        });
+        let i = _.findIndex(this.filesToLink, f => f.id == file.id && f.sample_id == file.sample_id);
         if (i !== -1) {
-            ctrl.filesToLink.splice(i, 1);
-            ctrl.filesToLink.push({
-                id: file.id,
-                command: 'add',
-                name: file.name,
-                linked: file.linked,
-                sample_id: ctrl.sample_id
-            });
+            let f = this.filesToLink[i];
+            f.id = file.id;
+            f.command = 'add';
+            f.name = file.name;
+            f.linked = file.linked;
+            f.sample_id = this.sample.id;
         } else {
-            ctrl.filesToLink.push({
+            this.filesToLink.push({
                 id: file.id,
                 command: 'add',
                 name: file.name,
                 linked: file.linked,
-                sample_id: ctrl.sample_id
+                sample_id: this.sample_id
             });
         }
     }
 
-    function unlinkFile(file) {
+    unlinkFile(file) {
         file.linked = false;
-        var i = _.indexOf(ctrl.filesToLink, function(f) {
-            return (f.id == file.id && f.sample_id == file.sample_id);
-        });
+        let i = _.findIndex(this.filesToLink, f => f.id == file.id && f.sample_id == file.sample_id);
         if (i !== -1) {
-            ctrl.filesToLink.splice(i, 1);
-            ctrl.filesToLink.push({
-                id: file.id,
-                command: 'delete',
-                name: file.name,
-                linked: file.linked,
-                sample_id: ctrl.sample_id
-            });
+            let f = this.filesToLink[i];
+            f.id = file.id;
+            f.command = 'delete';
+            f.name = file.name;
+            f.linked = file.linked;
+            f.sample_id = this.sample.id;
         }
     }
 
-    function linkAllFiles() {
-        ctrl.filesToLink = [];
-        ctrl.files.forEach(function(f) {
-            linkFile(f);
-        });
+    linkAllFiles() {
+        this.filesToLink = [];
+        this.files.forEach(f => this.linkFile(f));
     }
 
-    function unlinkAllFiles() {
-        ctrl.files.forEach(function(f) {
-            unlinkFile(f);
-        });
-    }
-
-    function openFile(file) {
-        // TODO: Can we open a file and where to get the project from?
-        var project = {};
-        mcmodal.openModal(file, 'datafile', project);
+    unlinkAllFiles() {
+        this.files.forEach(f => this.unlinkFile(f));
     }
 }
+
+angular.module('materialscommons').service('sampleLinker', SampleLinkerService);
