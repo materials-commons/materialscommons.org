@@ -160,11 +160,7 @@ function* publishDatasetZipFile(r, datasetId) {
         });
 
         console.log("Got return promise");
-
-        let retP = new Promise(function (resolve, reject) {
-            resolve("Testing - done");
-        });
-
+        
         return retP;
 
     } catch (error) {
