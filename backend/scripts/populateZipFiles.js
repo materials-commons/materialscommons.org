@@ -133,33 +133,33 @@ function* publishDatasetZipFile(r, datasetId) {
 
         console.log("got files to add: " + nameSourceList.length);
 
-        // var output = yield fsa.createWriteStreamAsync(fillPathAndFilename,{});
-        //
-        // console.log("output stream set");
-        //
-        // let retP =  new Promise(function (resolve, reject) {
-        //     var archive = archiver('zip');
-        //
-        //     output.on('close', function () {
-        //         console.log('for dataset: ' + datasetId + " with " + archive.pointer() + ' total bytes');
-        //         numberProcessed++;
-        //         console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
-        //         resolve();
-        //     });
-        //
-        //     archive.on('error', reject);
-        //
-        //     archive.pipe(output);
-        //
-        //     nameSourceList.forEach(ns => {
-        //         console.log("name: ", ns.name);
-        //         archive.append(ns.source, {name:ns.name} );
-        //     });
-        //
-        //     archive.finalize();
-        // });
-        //
-        // console.log("Got return promise");
+        var output = yield fsa.createWriteStreamAsync(fillPathAndFilename,{});
+
+        console.log("output stream set");
+
+        let retP =  new Promise(function (resolve, reject) {
+            var archive = archiver('zip');
+
+            output.on('close', function () {
+                console.log('for dataset: ' + datasetId + " with " + archive.pointer() + ' total bytes');
+                numberProcessed++;
+                console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
+                resolve();
+            });
+
+            archive.on('error', reject);
+
+            archive.pipe(output);
+
+            nameSourceList.forEach(ns => {
+                console.log("name: ", ns.name);
+                archive.append(ns.source, {name:ns.name} );
+            });
+
+            archive.finalize();
+        });
+
+        console.log("Got return promise");
 
         let retP = new Promise(function (resolve, reject) {
             resolve("Testing - done");
