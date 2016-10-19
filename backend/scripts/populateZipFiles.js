@@ -38,9 +38,7 @@ function main() {
         zipFileUtils.setZipDirPath(zipbase);
     }
 
-    Promise.all(Promise.coroutine(buildZipFiles)).then(
-        () => os.exit(0));
-    );
+    Promise.coroutine(buildZipFiles)();
 }
 
 function* buildZipFiles() {
@@ -156,6 +154,8 @@ function* publishDatasetZipFile(r, datasetId) {
             });
 
             archive.on('error', reject);
+            
+            archive.on('close',function() {console.log('archive close');});
 
             archive.pipe(output);
 
