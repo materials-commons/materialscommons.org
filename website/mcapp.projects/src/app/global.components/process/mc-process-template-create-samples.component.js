@@ -60,7 +60,7 @@ class MCProcessTemplateCreateSamplesComponentController {
         this.samplesService.deleteSamplesFromExperiment(this.projectId, this.experimentId, this.process.id, [sample.id])
             .then(
                 () => this.process.output_samples.splice(index, 1),
-                () => this.toast.error('Unable to delete remove sample')
+                () => this.toast.error('Unable to remove sample')
             );
     }
 
