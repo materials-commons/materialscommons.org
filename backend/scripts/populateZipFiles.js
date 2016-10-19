@@ -126,7 +126,13 @@ function* publishDatasetZipFile(r, datasetId) {
             let checksum = zipEntry.checksum;
             name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
             console.log("before read stream");
-            let stream = yield fsa.createReadStreamAsync(path);
+            let stream = yield fsa.createReadStreamAsync(path,{
+                flags: 'r',
+                encoding: null,
+                fd: null,
+                mode: 0o666,
+                autoClose: true
+            });
             console.log("after read stream: ", path);
             nameSourceList.push({name: name, source: source});
         }
