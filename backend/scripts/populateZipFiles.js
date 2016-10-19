@@ -39,7 +39,7 @@ function main() {
     }
 
     Promise.all(Promise.coroutine(buildZipFiles)).then(
-        () => os.exit(0);
+        () => os.exit(0));
     );
 }
 
