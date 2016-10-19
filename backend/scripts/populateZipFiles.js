@@ -16,6 +16,7 @@ let parameters = getControlParameters();
 
 var port = parameters.port;
 var base = parameters.base;
+var zipbase = parameters.zipbase;
 var replace = !!parameters.replace;
 var idList = parameters.id;
 var all = !!parameters.all;
@@ -33,8 +34,11 @@ function main() {
     if (base) {
         zipFileUtils.setBase(base);
     }
+    if (zipbase){
+        zipFileUtils.setZipDirPath(zipbase);
+    }
 
-    Promise.coroutine(buildZipFiles)();
+//    Promise.coroutine(buildZipFiles)();
 }
 
 function* buildZipFiles() {
@@ -122,7 +126,7 @@ function* publishDatasetZipFile(r, datasetId) {
             let checksum = zipEntry.checksum;
             name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
             console.log("before read stream");
-//            let stream = yield fsa.createReadStreamAsync(path,{});
+            let stream = yield fsa.createReadStreamAsync(path,{});
             console.log("after read stream: ", path);
             nameSourceList.push({name: name, source: source});
         }
@@ -225,6 +229,7 @@ function reportParameters() {
     console.log("use --help for list of parameter options");
     console.log("port = " + port);
     console.log("base = " + base);
+    console.log("zipbase = " + zipbase);
     console.log("replace = " + replace);
     if (all) {
         console.log("process all")
@@ -245,6 +250,7 @@ function getControlParameters() {
     return program
         .option('-p, --port [port]', 'The RethinkDB port; defaults to ' + defaultPort,defaultPort)
         .option('-b, --base [base]', 'The base path of the datasets directory, optional')
+        .option('-z, --zipbase [zipbase]', 'The base path for the zipfile directory, optional')
         .option('-i, --id [id]', 'If given, the id of the dataset to copy, can be repeated',accumulateIds,[])
         .option('-a, --all', 'If given, and no id(s), then copy all datasets, \n\t\tone of --id or --all required')
         .option('-r, --replace','If given, then replace files already generaåted, \n\t\totherwise not; optional')
