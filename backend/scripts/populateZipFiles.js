@@ -22,6 +22,7 @@ var idList = parameters.id;
 var all = !!parameters.all;
 var numberProcessed = 0;
 var totalNumberToProcess = 0;
+var pathForFileInZip = "Dataset/";
 
 main();
 
@@ -163,8 +164,9 @@ function* publishDatasetZipFile(r, datasetId) {
             archive.pipe(output);
 
             nameSourceList.forEach(ns => {
-                console.log("name: ", ns.name);
-                archive.append(ns.source, {name:ns.name} );
+                let pathAndName = pathForFileInZip + ns.name;
+                console.log("name: ", pathAndName);
+                archive.append(ns.source, {name:pathAndName} );
             });
 
             archive.finalize();
@@ -183,7 +185,7 @@ function resolveZipfileFilenameDuplicates(seenThisOne,name,checksum){
     name = name.toLowerCase();
 
     if (name.startsWith(".")) {
-        name = "dot" + name;
+        name = "dot_" + name;
     }
 
     if (name in seenThisOne) {
