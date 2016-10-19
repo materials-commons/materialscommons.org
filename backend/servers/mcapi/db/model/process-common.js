@@ -45,7 +45,7 @@ module.exports = function(r) {
 
         let filesToDeleteFromProcess = files.filter(f => f.command === 'delete').map(f => [processId, f.id]);
         if (filesToDeleteFromProcess.length) {
-            yield r.table('process2file').getAll(r.args(filesToDeleteFromProcess, {index: 'process_data'})).delete();
+            yield r.table('process2file').getAll(r.args(filesToDeleteFromProcess), {index: 'process_datafile'}).delete();
         }
 
         return null;
