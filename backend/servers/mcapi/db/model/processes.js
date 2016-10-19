@@ -64,7 +64,8 @@ module.exports = function(r) {
         }
 
         if (updateArgs.samples.length) {
-            let errors = yield processCommon.updateProcessSamples(processId, updateArgs.samples);
+            let process = yield r.table('processes').get(processId);
+            let errors = yield processCommon.updateProcessSamples(process, updateArgs.samples);
             if (errors !== null) {
                 return {error: errors};
             }

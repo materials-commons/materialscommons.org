@@ -22,6 +22,14 @@ class ProcessesService {
             files: toAdd.concat(toDelete)
         });
     }
+
+    updateSamplesInProcess(projectId, processId, samplesToAdd, samplesToDelete) {
+        let toAdd = samplesToAdd.map(s => ({command: 'add', id: s.id, property_set_id: s.property_set_id}));
+        let toDelete = samplesToDelete.map(s => ({command: 'delete', id: s.id, property_set_id: s.property_set_id}));
+        return this.projectsAPI(projectId).one('processes', processId).customPUT({
+            samples: toAdd.concat(toDelete)
+        });
+    }
 }
 
 angular.module('materialscommons').service('processesService', ProcessesService);

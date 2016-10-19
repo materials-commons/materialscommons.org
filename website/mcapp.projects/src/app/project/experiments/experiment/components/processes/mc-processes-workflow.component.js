@@ -94,7 +94,7 @@ class MCProcessesWorkflowComponentController {
             .then(
                 (processes) => {
                     this.processes = processes;
-                    this.onChangeCallback();
+                    this.onChangeCallback(processes);
                 },
                 () => this.toast.error('Error retrieving processes for experiment')
             );
