@@ -1,34 +1,39 @@
-<div>
-    <div class="modal-header">
-        <h3 class="modal-title">Sample: {{sample.name}}</h3>
-    </div>
-    <div class="modal-body">
-        <span>
-            <a class="file" ng-click="sample.linkAllFiles()">
-                Link all files
-            </a>
-            <a ng-click="sample.unlinkAllFiles()"
-               class="file col-xs-offset-1">
-                Unlink all files
-            </a>
-        </span>
-        <div class="row" ng-repeat="file in sample.files">
-            <span ng-if="!file.linked">
-                <a class="file" ng-click="sample.linkFile(file)">
-                    Link
-                </a>
-                <a class="col-xs-offset-1" ng-click="sample.openFile(file)">{{file.name}}</a>
-            </span>
-            <span ng-if="file.linked">
-                <a class="file" ng-click="sample.unlinkFile(file)">
-                    <b>Unlink</b>
-                </a>
-                <a class="col-xs-offset-1" ng-click="sample.openFile(file)">{{file.name}}</a>
-            </span>
+<md-dialog flex="50">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Link files to {{$ctrl.sample.name}}
         </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="sample.ok()">Ok</button>
-        <button class="btn btn-warning" ng-click="sample.cancel()">Cancel</button>
-    </div>
-</div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-row>Linked</th>
+                    <th md-column>File</th>
+                    <th md-column>Image</th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="file in $ctrl.files | orderBy:'name'">
+                    <td md-cell>
+                        <md-checkbox aria-label="linked" ng-model="file.linked"></md-checkbox>
+                    </td>
+                    <td md-cell>{{file.name}}</td>
+                    <td md-cell>
+                        <a ng-if="$ctrl.isImage(file.mediatype.mime)"
+                           class="md-primary" ng-click="$ctrl.showFile(file)" aria-label="view file">
+                            <img class="img-thumbnail" height="140" width="140"
+                                 ng-src="{{$ctrl.fileSrc(file.id)}}">
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()">done</md-button>
+    </md-dialog-actions>
+</md-dialog>

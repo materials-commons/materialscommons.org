@@ -1,9 +1,11 @@
 class MCProcessTemplateSamplesListComponentController {
     /*@ngInject*/
-    constructor(processesService, toast, $stateParams) {
+    constructor(processesService, toast, $stateParams, sampleLinker, processEdit) {
         this.processesService = processesService;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
+        this.sampleLinker = sampleLinker;
+        this.processEdit = processEdit;
     }
 
     removeSample(s) {
@@ -14,6 +16,16 @@ class MCProcessTemplateSamplesListComponentController {
         this.processesService.updateSamplesInProcess(this.projectId, this.process.id, [], [sampleArg]).then(
             () => this.removeSampleFromProcess(s),
             () => this.toast.error('Unable to remove file from process')
+        );
+    }
+
+    linkFilesToSample(sample) {
+        console.log('linkFilesToSample');
+        this.sampleLinker.linkFilesToSample(sample, this.process.files, []).then(
+            (linkedFiles) => {
+                console.log('linkedFiles', linkedFiles);
+                //sample = this.processEdit.refreshSample(linkedFiles, sample);
+            }
         );
     }
 
