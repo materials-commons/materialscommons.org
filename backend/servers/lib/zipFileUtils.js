@@ -19,6 +19,9 @@ module.exports.setZipDirPath = function(zipDirPath){
 module.exports.fullPathAndFilename = function(dataset) {
     var zipFilename = module.exports.zipFilename(dataset);
     var zipDir = module.exports.zipDirPath(dataset);
+    if (!zipDir.endsWith('/')) {
+        zipDir += '/';
+    }
     return zipDir + zipFilename;
 };
 
