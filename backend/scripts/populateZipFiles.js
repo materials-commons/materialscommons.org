@@ -151,10 +151,13 @@ function* publishDatasetZipFile(r, datasetId) {
                 numberProcessed++;
                 console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
                 resolve();
+                if (numberProcessed == totalNumberToProcess) {
+                    process.exit(0);
+                }
             });
 
             archive.on('error', reject);
-            
+
             archive.on('close',function() {console.log('archive close');});
 
             archive.pipe(output);
