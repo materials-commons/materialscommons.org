@@ -38,7 +38,9 @@ function main() {
         zipFileUtils.setZipDirPath(zipbase);
     }
 
-    Promise.coroutine(buildZipFiles)();
+    Promise.all(Promise.coroutine(buildZipFiles)).then(
+        () => os.exit(0);
+    );
 }
 
 function* buildZipFiles() {
