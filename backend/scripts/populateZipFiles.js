@@ -2,7 +2,7 @@
 
 const program = require('commander');
 const Promise = require("bluebird");
-const fs = require("fs");
+const fsa = Promise.promisifyAll(require("fs"));
 const archiver = require('archiver');
 const path = require('path');
 
@@ -116,44 +116,55 @@ function* publishDatasetZipFile(r, datasetId) {
             let df = datafiles[i];
 
             let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, sourcePath
+            console.log("zipEntry: ", zipEntry);
             let path = zipEntry.sourcePath;
             let name = zipEntry.fileName;
             let checksum = zipEntry.checksum;
             name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
-
-            if (name) {
-                if (yield fileExists(path)) {
-                    let stream = yield fs.createReadStream(path);
-                    nameSourceList.push({name: name, source: source});
-                }
-            }
+            console.log("before read stream");
+//            let stream = yield fsa.createReadStreamAsync(path,{});
+            console.log("after read stream: ", path);
+            nameSourceList.push({name: name, source: source});
         }
 
-        return new Promise(function (resolve, reject) {
-            var archive = archiver('zip');
-            var output = fs.createWriteStream(fillPathAndFilename);
+        console.log("got files to add: " + nameSourceList.length);
 
-            output.on('close', function () {
-                console.log('for dataset: ' + datasetId + " with " + archive.pointer() + ' total bytes');
-                numberProcessed++;
-                console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
-                resolve();
-            });
+        // var output = yield fsa.createWriteStreamAsync(fillPathAndFilename,{});
+        //
+        // console.log("output stream set");
+        //
+        // let retP =  new Promise(function (resolve, reject) {
+        //     var archive = archiver('zip');
+        //
+        //     output.on('close', function () {
+        //         console.log('for dataset: ' + datasetId + " with " + archive.pointer() + ' total bytes');
+        //         numberProcessed++;
+        //         console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
+        //         resolve();
+        //     });
+        //
+        //     archive.on('error', reject);
+        //
+        //     archive.pipe(output);
+        //
+        //     nameSourceList.forEach(ns => {
+        //         console.log("name: ", ns.name);
+        //         archive.append(ns.source, {name:ns.name} );
+        //     });
+        //
+        //     archive.finalize();
+        // });
+        //
+        // console.log("Got return promise");
 
-            archive.on('error', reject);
-
-            archive.pipe(output);
-
-            nameSourceList.forEach(ns => {
-                console.log("name: ", ns.name);
-                archive.append(ns.source, {name:ns.name} );
-            });
-
-            archive.finalize();
-
+        let retP = new Promise(function (resolve, reject) {
+            resolve("Testing - done");
         });
+
+        return retP;
+
     } catch (error) {
-        return yield Promise.reject("Error: " +  error.message);
+        return yield Promise.reject("Error in publishDatasetZipFile: " +  error.message);
     }
 }
 
@@ -181,20 +192,6 @@ function resolveZipfileFilenameDuplicates(seenThisOne,name,checksum){
     }
     seenThisOne[name] = checksum;
     return name;
-}
-
-function fileExists (filePath) {
-    return new Promise(function (resolve,reject){
-        fs.stat(filePath, function(err, stat) {
-            if(err == null) {
-                resolve(true);
-            } else if(err.code == 'ENOENT') {
-                resolve(false);
-            } else {
-                reject('unexpected file exists error: ', err.code);
-            }
-        });
-    });
 }
 
 function resolveZipfileFilenameUnique(name, count) {
