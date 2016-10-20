@@ -49,22 +49,23 @@ module.exports = function(r) {
     }
 
     function* updateProcess(processId, updateArgs) {
-        if (updateArgs.properties) {
-            let errors = yield processCommon.updateProperties(properties);
+        if (updateArgs.properties.length) {
+            let errors = yield processCommon.updateProperties(updateArgs.properties);
             if (errors !== null) {
                 return {error: errors};
             }
         }
 
-        if (updateArgs.files) {
-            let errors = yield processCommon.updateProcessFiles(processId, files);
+        if (updateArgs.files.length) {
+            let errors = yield processCommon.updateProcessFiles(processId, updateArgs.files);
             if (errors !== null) {
                 return {error: errors};
             }
         }
 
-        if (updateArgs.samples) {
-            let errors = yield processCommon.updateProcessSamples(processId, samples);
+        if (updateArgs.samples.length) {
+            let process = yield r.table('processes').get(processId);
+            let errors = yield processCommon.updateProcessSamples(process, updateArgs.samples);
             if (errors !== null) {
                 return {error: errors};
             }

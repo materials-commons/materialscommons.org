@@ -83,12 +83,12 @@ module.exports = function(processes, samples, experiments, schema) {
     }
 
     function* deleteProcess(next) {
-        let errors = yield validateDeleteProcess(this.params.project_id,this.params.process_id);
+        let errors = yield validateDeleteProcess(this.params.project_id, this.params.process_id);
         if (errors != null) {
             this.status = status.BAD_REQUEST;
             this.body = errors;
         } else {
-            let rv = yield processes.deleteProcess(this.params.project_id,this.params.process_id);
+            let rv = yield processes.deleteProcess(this.params.project_id, this.params.process_id);
             if (rv.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = rv;
@@ -99,7 +99,7 @@ module.exports = function(processes, samples, experiments, schema) {
         yield next;
     }
 
-    function* validateDeleteProcess(project_id,process_id) {
+    function* validateDeleteProcess(project_id, process_id) {
         let datasets = yield processes.datasetsForProcess(process_id);
         if (datasets.length > 0) {
             let datasetNames = datasets.map(ds => ds.title);
@@ -142,13 +142,14 @@ module.exports = function(processes, samples, experiments, schema) {
             return errors;
         }
 
-        if (updateArgs.properties || updateArgs.files || updateArgs.samples) {
-
-            if (updateArgs.properties && !_.isArray(updateArgs.properties)) {
-                return {error: `Properties attribute isn't an array`};
-            }
-
+        if (updateArgs.properties && !_.isArray(updateArgs.properties)) {
+            return {error: `Properties attribute isn't an array`};
+        } else if (updateArgs.properties.length) {
             // TODO: Validate that the template is the template originally used for the process.
+
+            if (!updateArgs.template_id || updateArgs.template_id === "") {
+                return {error: `A template id must be specified when properties are given`};
+            }
 
             let template = yield processes.getTemplate(updateArgs.template_id);
 
@@ -161,32 +162,28 @@ module.exports = function(processes, samples, experiments, schema) {
                     }
                 }
             }
+        }
 
-            if (updateArgs.files && !_.isArray(updateArgs.files)) {
-                return {error: `Files attribute isn't an array`};
-            }
-
-            if (updateArgs.files) {
-                for (let i = 0; i < updateArgs.files.length; i++) {
-                    let f = updateArgs.files[i];
-                    let errors = yield validateFile(params.project_id, f);
-                    if (errors !== null) {
-                        return errors;
-                    }
+        if (updateArgs.files && !_.isArray(updateArgs.files)) {
+            return {error: `Files attribute isn't an array`};
+        } else if (updateArgs.files.length) {
+            for (let i = 0; i < updateArgs.files.length; i++) {
+                let f = updateArgs.files[i];
+                let errors = yield validateFile(params.project_id, f);
+                if (errors !== null) {
+                    return errors;
                 }
             }
+        }
 
-            if (updateArgs.samples && !_.isArray(updateArgs.samples)) {
-                return {error: `Samples attribute isn't an array`};
-            }
-
-            if (updateArgs.samples) {
-                for (let i = 0; i < updateArgs.samples.length; i++) {
-                    let s = updateArgs.samples[i];
-                    let errors = yield validateSample(params.project_id, s);
-                    if (errors !== null) {
-                        return errors;
-                    }
+        if (updateArgs.samples && !_.isArray(updateArgs.samples)) {
+            return {error: `Samples attribute isn't an array`};
+        } else if (updateArgs.samples.length) {
+            for (let i = 0; i < updateArgs.samples.length; i++) {
+                let s = updateArgs.samples[i];
+                let errors = yield validateSample(params.project_id, s);
+                if (errors !== null) {
+                    return errors;
                 }
             }
         }
