@@ -1,9 +1,9 @@
 <div layout="column" ng-if="$ctrl.dataset">
     <div layout="row" layout-align="start center">
         <h3 class="md-title" style="padding-right: 30px">Dataset: {{$ctrl.dataset.title}}</h3>
-        <md-button ng-class="{'md-primary': !$ctrl.showDetailsSection, 'md-warn': $ctrl.showDetailsSection}"
+        <md-button class="md-primary"
                    ng-click="$ctrl.showDetailsSection = !$ctrl.showDetailsSection">
-            {{$ctrl.showDetailsSection ? "hide details" : "show details"}}
+            {{$ctrl.showDetailsSection ? "show processes" : "show details"}}
         </md-button>
     </div>
 

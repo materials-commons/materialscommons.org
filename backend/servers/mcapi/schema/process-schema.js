@@ -109,11 +109,16 @@ module.exports = function(schema) {
     function defineUpdateProcessSchema() {
         let updateProcessSchema = schema.defineSchema('UpdateProcess', {
             name: {type: 'string', nullable: true},
+            template_id: {type: 'string', nullable: true},
             properties: {type: 'array', nullable: true},
             files: {type: 'array', nullable: true},
             samples: {type: 'array', nullable: true}
         });
-        updateProcessSchema.setDefaults({});
+        updateProcessSchema.setDefaults({
+            properties: [],
+            files: [],
+            samples: []
+        });
         updateProcessSchema.validateAsync = promise.promisify(updateProcessSchema.validate);
         return updateProcessSchema;
     }
