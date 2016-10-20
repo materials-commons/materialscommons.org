@@ -1,7 +1,6 @@
 module.exports = function(r) {
     const model = require('./model')(r);
     const _ = require('lodash');
-    const promise = require('bluebird');
     const db = require('./db')(r);
     const commonQueries = require('../../../lib/common-queries');
     const dbExec = require('./run');
@@ -45,7 +44,7 @@ module.exports = function(r) {
 
         let filesToDeleteFromProcess = files.filter(f => f.command === 'delete').map(f => [processId, f.id]);
         if (filesToDeleteFromProcess.length) {
-            yield r.table('process2file').getAll(r.args(filesToDeleteFromProcess, {index: 'process_data'})).delete();
+            yield r.table('process2file').getAll(r.args(filesToDeleteFromProcess), {index: 'process_datafile'}).delete();
         }
 
         return null;
@@ -122,7 +121,7 @@ module.exports = function(r) {
 
         let samplesToDeleteFromProcess = samples.filter(s => s.command === 'delete').map(s => [processId, s.id, s.property_set_id]);
         if (samplesToDeleteFromProcess.length) {
-            yield r.table('process2sample').getAll(r.args(samplesToDeleteFromProcess, {index: 'process_sample'})).delete();
+            yield r.table('process2sample').getAll(r.args(samplesToDeleteFromProcess), {index: 'process_sample_property_set'}).delete();
         }
 
         return null;
