@@ -2,25 +2,35 @@
 const sanitize = require("sanitize-filename");
 
 var base;
+var zipDir;
 
 module.exports.zipDirPath = function(dataset) {
     var base = module.exports.getBase();
-    var zipDir = base + "/zipfiles/" + dataset.id + "/";
+    if (!zipDir) {
+        zipDir = base + "/zipfiles/" + dataset.id + "/";
+    }
     return zipDir;
 };
+
+module.exports.setZipDirPath = function(zipDirPath){
+    zipDir = zipDirPath;
+}
 
 module.exports.fullPathAndFilename = function(dataset) {
     var zipFilename = module.exports.zipFilename(dataset);
     var zipDir = module.exports.zipDirPath(dataset);
+    if (!zipDir.endsWith('/')) {
+        zipDir += '/';
+    }
     return zipDir + zipFilename;
-}
+};
 
 module.exports.zipFilename = function(dataset) {
     var title = dataset.title;
     var filename = sanitize(title);
     filename = cleanUpZipfileName(filename);
     return filename + ".zip";
-}
+};
 
 module.exports.zipEntry = function(datafile) {   // sets fileName and sourcePath
     var base = module.exports.getBase();
@@ -48,7 +58,7 @@ module.exports.getBase = function() {
 
 module.exports.setBase = function(baseValue) {
     base = baseValue;
-}
+};
 
 let cleanUpZipfileNameLengthThreshold = 60;
 let cleanUpZipfileName = function(name){
@@ -65,5 +75,5 @@ let cleanUpZipfileName = function(name){
     // remove blanks
     name = name.replace(/ /g,"_");
     return name;
-}
+};
 

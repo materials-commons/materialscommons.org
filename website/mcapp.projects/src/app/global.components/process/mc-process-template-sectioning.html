@@ -54,10 +54,6 @@
         </process-measurements>
     </div>
 
-    <mc-process-template-samples-list input-samples="$ctrl.process.input_samples"
-                                      output-samples="$ctrl.process.output_samples">
-    </mc-process-template-samples-list>
-
-    <mc-process-template-files-list files="$ctrl.process.files">
-    </mc-process-template-files-list>
+    <mc-process-template-samples-list process="$ctrl.process"></mc-process-template-samples-list>
+    <mc-process-template-files-list process="$ctrl.process"></mc-process-template-files-list>
 </div>
