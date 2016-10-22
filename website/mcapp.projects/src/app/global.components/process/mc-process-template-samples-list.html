@@ -1,28 +1,28 @@
 <md-list>
-    <div ng-if="$ctrl.inputSamples.length">
+    <div ng-if="$ctrl.process.input_samples.length">
         <md-subheader class="md-no-sticky no-inner-padding"><h4>Input Samples</h4></md-subheader>
-        <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.inputSamples">
+        <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.process.input_samples | orderBy:'name'">
             <div class="md-list-item-text md-whiteframe-2dp" layout="column">
                 <div class="padding-left-15 padding-top-10">
                     <a>{{sample.name}}</a>
                     <div layout="row" layout-align="start layout-wrap">
                         <md-button class="md-primary">Link Files</md-button>
-                        <md-button class="md-warn">Remove</md-button>
+                        <md-button ng-click="$ctrl.removeSample(sample)" class="md-warn">Remove</md-button>
                     </div>
                 </div>
             </div>
         </md-list-item>
     </div>
 
-    <div ng-if="$ctrl.outputSamples.length">
+    <div ng-if="$ctrl.process.output_samples.length">
         <md-subheader class="md-no-sticky no-inner-padding"><h4>Output Samples</h4></md-subheader>
-        <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.outputSamples">
+        <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.process.output_samples | orderBy:'name'">
             <div class="md-list-item-text md-whiteframe-2dp" layout="column">
                 <div class="padding-left-15 padding-top-10">
                     <a>{{sample.name}}</a>
                     <div layout="row" layout-align="start layout-wrap">
                         <md-button class="md-primary">Link Files</md-button>
-                        <md-button class="md-warn">Remove</md-button>
+                        <md-button ng-click="$ctrl.removeSample(sample)" class="md-warn">Remove</md-button>
                     </div>
                 </div>
             </div>
