@@ -39,6 +39,7 @@ module.exports.getAuthors = function*(next) {
 };
 
 module.exports.getAllAuthorsCount = function*(next) {
-    this.body = yield r.table('users').count();
+    let count = yield r.table('users').count();
+    this.body = {count: count};
     yield next;
 };
