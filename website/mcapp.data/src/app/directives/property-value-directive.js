@@ -54,9 +54,9 @@ class PropertyValueController {
         numberOfBytes = numberOfBytes/1024;
         if (numberOfBytes < 1024) return `${numberOfBytes.toFixed(2)} KB`;
         numberOfBytes = numberOfBytes/1024;
-        if (numberOfBytes < 1024) return `${numberOfBytes.toFixed(2)} GB`;
+        if (numberOfBytes < 1024) return `${numberOfBytes.toFixed(2)} MB`;
         numberOfBytes = numberOfBytes/1024;
-        return `${numberOfBytes.toFixed(2)} TB`;
+        return `${numberOfBytes.toFixed(2)} GB`;
     }
 
     filenameForDownload(dataset) {
