@@ -48,7 +48,8 @@ class PropertyValueController {
     }
 
     bytesMessageForDownload(dataset){
-        var numberOfBytes = (dataset.zipSize)?dataset.zipSize:-1;
+        var numberOfBytes = (dataset.zip && dataset.zip.size)?dataset.zip.size:-1;
+        console.log('Zipfile Size', numberOfBytes);
         if (numberOfBytes < 0) return "zip file size unknown";
         if (numberOfBytes < 1024) return `${numberOfBytes} Bytes`;
         numberOfBytes = numberOfBytes/1024;
@@ -60,6 +61,8 @@ class PropertyValueController {
     }
 
     filenameForDownload(dataset) {
-        return (dataset.zipFilename)?(dataset.zipFilename):"FullDataset.zip";
+        var name = (dataset.zip && dataset.zip.filename)?(dataset.zip.filename):"FullDataset.zip";
+        console.log("zipfile name: ", name);
+        return name;
     }
 }
