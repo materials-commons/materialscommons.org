@@ -50,6 +50,7 @@ module.exports.zipEntry = function(datafile) {   // sets fileName and sourcePath
 module.exports.getBase = function() {
     if (base) return base;
     base = process.env.MCDIR;
+    base = base.split(':')[0];
     if (!base) {
         throw new Error({message: "Can not create zipfile for dataset: please show this message to a site adminstrator - 'MCDIR is not set in environment' "});
     }
