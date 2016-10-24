@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 'use strict';
 
 const program = require('commander');
@@ -93,6 +94,7 @@ function* publishDatasetZipFile(r, datasetId) {
         console.log("zip", datasetId);
         let ds = yield r.db('materialscommons').table('datasets').get(datasetId);
         let zipDirPath = zipFileUtils.zipDirPath(ds);
+        let zipFileName = zipFileUtils.zipFilename(ds);
         let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
 
         console.log("full path and filename: ", fillPathAndFilename);
@@ -112,8 +114,6 @@ function* publishDatasetZipFile(r, datasetId) {
         let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
         let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
 
-        console.log("For id = " + datasetId + ", there are " + datafileIds.length + " files");
-
         let nameSourceList = [];
         var seenThisOne = {};
 
@@ -121,12 +121,10 @@ function* publishDatasetZipFile(r, datasetId) {
             let df = datafiles[i];
 
             let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, sourcePath
-            console.log("zipEntry: ", zipEntry);
             let path = zipEntry.sourcePath;
             let name = zipEntry.fileName;
             let checksum = zipEntry.checksum;
             name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
-            console.log("before read stream");
             let stream = fsa.createReadStream(path,{
                 flags: 'r',
                 encoding: null,
@@ -134,27 +132,28 @@ function* publishDatasetZipFile(r, datasetId) {
                 mode: 0o666,
                 autoClose: true
             });
-            console.log("after read stream: ", path);
             nameSourceList.push({name: name, source: stream});
         }
 
-        console.log("got files to add: " + nameSourceList.length);
+        console.log("For id = " + datasetId + ", there are " + nameSourceList.length + " files");
 
         var output = fsa.createWriteStream(fillPathAndFilename);
-
-        console.log("output stream set");
 
         let retP =  new Promise(function (resolve, reject) {
             var archive = archiver('zip');
 
             output.on('close', function () {
-                console.log('for dataset: ' + datasetId + " with " + archive.pointer() + ' total bytes');
+                let zipfileSize = archive.pointer();
+                console.log('for dataset: ' + datasetId + " with " +zipfileSize + ' total bytes');
                 numberProcessed++;
                 console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
-                resolve();
-                if (numberProcessed == totalNumberToProcess) {
-                    process.exit(0);
-                }
+                let zip = {size: zipfileSize, filename: zipFileName};
+                r.db('materialscommons').table('datasets').get(datasetId).update({zip: zip}).then(() =>{
+                    resolve();
+                    if (numberProcessed == totalNumberToProcess) {
+                        process.exit(0);
+                    }
+                });
             });
 
             archive.on('error', reject);
@@ -165,14 +164,13 @@ function* publishDatasetZipFile(r, datasetId) {
 
             nameSourceList.forEach(ns => {
                 let pathAndName = pathForFileInZip + ns.name;
-                console.log("name: ", pathAndName);
                 archive.append(ns.source, {name:pathAndName} );
             });
 
             archive.finalize();
         });
 
-        console.log("Got return promise");
+        console.log("Starting of zip file For id = " + datasetId + "... (wait)");
 
         return retP;
 
