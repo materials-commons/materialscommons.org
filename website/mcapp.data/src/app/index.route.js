@@ -18,10 +18,10 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
                 tags: ["actionsService", function(actionsService) {
                     return actionsService.getAllTags();
                 }],
-                count_datasets: ["releaseService", function(releaseService) {
+                datasetsCount: ["releaseService", function(releaseService) {
                     return releaseService.getAllCount();
                 }],
-                count_authors: ["actionsService", function(actionsService) {
+                authorsCount: ["actionsService", function(actionsService) {
                     return actionsService.getAllAuthorsCount();
                 }]
             }
@@ -83,13 +83,13 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'BrowseController',
             controllerAs: 'ctrl',
             resolve: {
-                count_tags: ["actionsService", function(actionsService) {
+                tagsCount: ["actionsService", function(actionsService) {
                     return actionsService.getAllTagsCount();
                 }],
-                count_datasets: ["releaseService", function(releaseService) {
+                datasetsCount: ["releaseService", function(releaseService) {
                     return releaseService.getAllCount();
                 }],
-                count_authors: ["actionsService", function(actionsService) {
+                authorsCount: ["actionsService", function(actionsService) {
                     return actionsService.getAllAuthorsCount();
                 }]
             },

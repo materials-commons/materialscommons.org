@@ -77,7 +77,7 @@ export class actionsService {
 
     getAllTagsCount() {
         return this.pubAPI('tags').one('count').get().then(function(tags) {
-            return tags;
+            return tags.count;
         });
     }
 
@@ -109,7 +109,7 @@ export class actionsService {
 
     getAllAuthorsCount() {
         return this.pubAPI('authors').one('count').get().then(function(authors) {
-            return authors;
+            return authors.count;
         });
     }
 }

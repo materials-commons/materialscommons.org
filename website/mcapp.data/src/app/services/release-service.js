@@ -16,7 +16,7 @@ export class releaseService {
 
     getAllCount() {
         return this.pubAPI('datasets').one('count').get().then(function(releases) {
-            return releases
+            return releases.count;
         });
     }
 
