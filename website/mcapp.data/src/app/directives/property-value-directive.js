@@ -61,7 +61,6 @@ class PropertyValueController {
 
     filenameForDownload(dataset) {
         var name = (dataset.zip && dataset.zip.filename)?(dataset.zip.filename):"FullDataset.zip";
-        console.log("zipfile name: ", name);
         return name;
     }
 }
