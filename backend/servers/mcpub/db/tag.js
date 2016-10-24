@@ -77,7 +77,8 @@ module.exports.getAllTags = function*(next) {
 };
 
 module.exports.getAllCount = function*(next) {
-    this.body = yield r.table('tags').count();
+    let c = yield r.table('tags').count();
+    this.body = {count: c};
     yield next;
 };
 

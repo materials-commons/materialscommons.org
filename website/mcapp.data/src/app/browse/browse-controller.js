@@ -1,14 +1,14 @@
 export class BrowseController {
-  constructor(browseService, count_tags, count_authors, count_datasets) {
-    'ngInject';
-    this.browseService = browseService;
-    this.count_tags = count_tags;
-    this.count_authors = count_authors;
-    this.count_datasets = count_datasets;
-  }
+    constructor(browseService, tagsCount, authorsCount, datasetsCount) {
+        'ngInject';
+        this.browseService = browseService;
+        this.tagsCount = tagsCount;
+        this.authorsCount = authorsCount;
+        this.datasetsCount = datasetsCount;
+    }
 
-  isRouteActive(route){
-    return this.browseService.isRouteActive(route);
-  }
+    isRouteActive(route) {
+        return this.browseService.isRouteActive(route);
+    }
 }
 
