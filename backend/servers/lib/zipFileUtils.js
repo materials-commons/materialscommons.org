@@ -5,23 +5,23 @@ var base;
 var zipDir;
 
 module.exports.zipDirPath = function(dataset) {
-    var base = module.exports.getBase();
     if (!zipDir) {
-        zipDir = base + "/zipfiles/" + dataset.id + "/";
+        var base = module.exports.getBase();
+        zipDir = base + "zipfiles/";
     }
-    return zipDir;
+    if (!zipDir.endsWith('/')) {
+        zipDir += '/';
+    }
+    return zipDir + dataset.id + "/";
 };
 
-module.exports.setZipDirPath = function(zipDirPath){
+module.exports.setZipDirPath = function(zipDirPath) {
     zipDir = zipDirPath;
-}
+};
 
 module.exports.fullPathAndFilename = function(dataset) {
     var zipFilename = module.exports.zipFilename(dataset);
     var zipDir = module.exports.zipDirPath(dataset);
-    if (!zipDir.endsWith('/')) {
-        zipDir += '/';
-    }
     return zipDir + zipFilename;
 };
 
@@ -49,10 +49,16 @@ module.exports.zipEntry = function(datafile) {   // sets fileName and sourcePath
 
 module.exports.getBase = function() {
     if (base) return base;
+
     base = process.env.MCDIR;
     base = base.split(':')[0];
+
     if (!base) {
         throw new Error({message: "Can not create zipfile for dataset: please show this message to a site adminstrator - 'MCDIR is not set in environment' "});
+    }
+
+    if (!base.endsWith('/')) {
+        base += '/';
     }
     return base;
 };
@@ -62,19 +68,19 @@ module.exports.setBase = function(baseValue) {
 };
 
 let cleanUpZipfileNameLengthThreshold = 60;
-let cleanUpZipfileName = function(name){
+let cleanUpZipfileName = function(name) {
     // truncate, cleanly if possible
     if (name.length > cleanUpZipfileNameLengthThreshold) {
         // brake at last blank before cleanUpZipfileNameLengthThreshold
-        var pos = name.lastIndexOf(" ",cleanUpZipfileNameLengthThreshold);
+        var pos = name.lastIndexOf(" ", cleanUpZipfileNameLengthThreshold);
         if (pos > 11) {
-            name = name.substring(0,pos-1);
+            name = name.substring(0, pos - 1);
         } else {
-            name = name.substring(0,cleanUpZipfileNameLengthThreshold);
+            name = name.substring(0, cleanUpZipfileNameLengthThreshold);
         }
     }
     // remove blanks
-    name = name.replace(/ /g,"_");
+    name = name.replace(/ /g, "_");
     return name;
 };
 
