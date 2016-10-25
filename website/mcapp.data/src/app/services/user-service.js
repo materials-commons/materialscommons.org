@@ -11,7 +11,6 @@ export class userService {
             try {
                 this.mcuser = angular.fromJson($window.sessionStorage.mcuser);
             } catch (err) {
-                console.log('  loading mcuser failed', err);
                 this.mcuser = null;
             }
         }
