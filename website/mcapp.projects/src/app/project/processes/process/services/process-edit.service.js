@@ -92,9 +92,7 @@ function processEdit() {
             process = setUp(template, process);
             process = samples(process);
             process = files(process);
-            console.log("process-edit.service - fillProcess - just before setupMeasurements",process);
             setupMeasurements(process, template.measurements, template);
-            console.log("process-edit.service - fillProcess - just after setupMeasurements",process);
             if (!('output_samples' in process)) {
                 process.output_samples = [];
             }
