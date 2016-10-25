@@ -4,6 +4,7 @@ module.exports = function(r) {
     const db = require('./db')(r);
     const commonQueries = require('../../../lib/common-queries');
     const dbExec = require('./run');
+    const sampleCommon = require('./sample-common')(r);
 
     return {
         getProcess,
@@ -123,6 +124,9 @@ module.exports = function(r) {
         if (samplesToDeleteFromProcess.length) {
             yield r.table('process2sample').getAll(r.args(samplesToDeleteFromProcess), {index: 'process_sample_property_set'}).delete();
         }
+
+        let sampleIds = samples.filter(s => s.command === 'delete').map(s => s.id);
+        yield sampleCommon.removeUnusedSamples(sampleIds);
 
         return null;
     }
