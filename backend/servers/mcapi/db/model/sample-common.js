@@ -1,6 +1,7 @@
 module.exports = function(r) {
     return {
-        removeUnusedSamples
+        removeUnusedSamples,
+        canDeleteSamples
     };
 
     function* removeUnusedSamples(sampleIds) {
@@ -24,5 +25,50 @@ module.exports = function(r) {
 
 
         yield r.table('sample2datafile').getAll(sampleId, {index: 'sample_id'}).delete();
+    }
+
+    function* canDeleteSamples(sampleIds, processId) {
+        console.log('canDeleteSamples', sampleIds, processId);
+        if (yield samplesOnlyInputInProcess(sampleIds, processId)) {
+            console.log("  Allow delete samplesOnlyInputInProcess");
+            return true;
+        } else if (yield samplesUsedInOtherProcesses(sampleIds, processId)) {
+            console.log("  Don't allow delete samplesUsedInOtherProcesses");
+            return false;
+        }
+
+        console.log('  Allow delete other checks passed');
+        return true;
+    }
+
+    function* samplesOnlyInputInProcess(sampleIds, processId) {
+        let toLookup = sampleIds.map(id => [processId, id]);
+        let p2s = yield r.table('process2sample').getAll(r.args(toLookup), {index: 'process_sample'});
+        let onlyInput = true;
+        p2s.forEach(entry => {
+            if (entry.direction !== 'in') {
+                onlyInput = false;
+            }
+        });
+
+        return onlyInput;
+    }
+
+    function* samplesUsedInOtherProcesses(sampleIds, processId) {
+        // Only need to check output samples that are used as inputs
+        let outputSampleEntries = yield r.table('process2sample').getAll(r.args(sampleIds), {index: 'sample_id'})
+            .filter({direction: 'out'});
+        let samplesToLookup = outputSampleEntries.map(entry => entry.sample_id);
+
+        let p2s = yield r.table('process2sample').getAll(r.args(samplesToLookup), {index: 'sample_id'}).filter({direction: 'in'});
+        let foundOther = false;
+        p2s.forEach(e => {
+            if (e.process_id !== processId) {
+                console.log('sample used in other process', e, processId);
+                foundOther = true;
+            }
+        });
+
+        return foundOther;
     }
 };
