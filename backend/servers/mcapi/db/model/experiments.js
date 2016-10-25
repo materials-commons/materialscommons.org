@@ -4,6 +4,7 @@ module.exports = function(r) {
     const model = require('./model')(r);
     const commonQueries = require('../../../lib/common-queries');
     const processCommon = require('./process-common')(r);
+    const sampleCommon = require('./sample-common')(r);
     const _ = require('lodash');
 
     return {
@@ -446,6 +447,9 @@ module.exports = function(r) {
 
         let experimentSamplesToDelete = sampleIds.map((sampleId) => [experimentId, sampleId]);
         yield r.table('experiment2sample').getAll(r.args(experimentSamplesToDelete), {index: 'experiment_sample'}).delete();
+
+        yield sampleCommon.removeUnusedSamples(sampleIds);
+
         return {val: sampleIds};
     }
 
