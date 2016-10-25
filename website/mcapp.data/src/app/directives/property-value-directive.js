@@ -47,6 +47,10 @@ class PropertyValueController {
         return `${baseURL}/pub/datasets/download/${datasetId}?apikey=${this.userService.apikey()}`;
     }
 
+    isDownloadAvaiable(dataset) {
+        return (dataset.zip && dataset.zip.size && (dataset.zip.size > 0));
+    }
+
     bytesMessageForDownload(dataset){
         var numberOfBytes = (dataset.zip && dataset.zip.size)?dataset.zip.size:-1;
         if (numberOfBytes < 0) return "zip file size unknown";
