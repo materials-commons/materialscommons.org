@@ -121,15 +121,21 @@ module.exports = function(r) {
         }
 
         let samplesToDeleteFromProcess = samples.filter(s => s.command === 'delete').map(s => [processId, s.id, s.property_set_id]);
+        let sampleIds = samples.filter(s => s.command === 'delete').map(s => s.id);
+        let canBeDeleted = yield sampleCommon.canDeleteSamples(sampleIds, processId);
+        if (!canBeDeleted) {
+            // Ugh... work around - don't delete if used in other processes.
+            return 'Some samples used in other processes - cannot be deleted.';
+        }
         if (samplesToDeleteFromProcess.length) {
             yield r.table('process2sample').getAll(r.args(samplesToDeleteFromProcess), {index: 'process_sample_property_set'}).delete();
         }
 
-        let sampleIds = samples.filter(s => s.command === 'delete').map(s => s.id);
         yield sampleCommon.removeUnusedSamples(sampleIds);
 
         return null;
     }
+
 
     function* removeExistingProcessSampleEntries(processId, samples) {
         if (samples.length) {
