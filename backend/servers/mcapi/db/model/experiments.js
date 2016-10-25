@@ -442,6 +442,12 @@ module.exports = function(r) {
     }
 
     function* deleteSamplesFromExperiment(experimentId, processId, sampleIds) {
+        let canDelete = yield sampleCommon.canDeleteSamples(sampleIds, processId);
+        // If any samples are used in other processes then stop and return an error.
+        if (!canDelete) {
+            return {error: 'Some or all samples are used in other processes'};
+        }
+
         let processSamplesToDelete = sampleIds.map((sampleId) => [processId, sampleId]);
         yield r.table('process2sample').getAll(r.args(processSamplesToDelete), {index: 'process_sample'}).delete();
 
