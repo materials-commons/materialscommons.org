@@ -11,7 +11,7 @@ class MCShowSampleComponentController {
     $onInit() {
         this.samplesService.getProjectSample(this.projectId, this.sampleId)
             .then(
-                (sample) => this.sample = sample,
+                (sample) => this.processSample(sample),
                 () => this.toast.error('Unable to retrieve sample')
             )
     }
@@ -26,6 +26,20 @@ class MCShowSampleComponentController {
                 process: process
             }
         });
+    }
+
+    processSample(sample) {
+        this.sample = sample;
+
+        // Create a list of unique processes. Some processes will appear twice if the sample was both an
+        // input and output. Here we show processes once by storing all processes in a map indexed by their
+        // id. This means that each process will only appear once. Then we filter the list to keep the order
+        // by only returning processes we find that have the same property_set_id (processes that have both an
+        // input and output will be associated with a different property_set_id).
+        let processes = _.indexBy(this.sample.processes, 'process_id');
+        this.sample.processesInTimeline = this.sample.processes.filter(
+            (p) => processes[p.process_id].property_set_id === p.property_set_id
+        );
     }
 }
 
