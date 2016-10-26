@@ -28,12 +28,12 @@ module.exports = function(r) {
     }
 
     function* canDeleteSamples(sampleIds, processId) {
-        console.log('canDeleteSamples', sampleIds, processId);
+        //console.log('canDeleteSamples', sampleIds, processId);
         if (yield samplesOnlyInputInProcess(sampleIds, processId)) {
-            console.log("  Allow delete samplesOnlyInputInProcess");
+            //console.log("  Allow delete samplesOnlyInputInProcess");
             return true;
         } else if (yield samplesUsedInOtherProcesses(sampleIds, processId)) {
-            console.log("  Don't allow delete samplesUsedInOtherProcesses");
+            //console.log("  Don't allow delete samplesUsedInOtherProcesses");
             return false;
         }
 
