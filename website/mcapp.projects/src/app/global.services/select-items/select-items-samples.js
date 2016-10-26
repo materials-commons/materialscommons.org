@@ -3,7 +3,8 @@ function selectItemsSamplesDirective() {
     return {
         restrict: 'E',
         scope: {
-            samples: '='
+            samples: '=',
+            options: '='
         },
         controller: SelectItemsSamplesDirectiveController,
         controllerAs: 'ctrl',
@@ -24,6 +25,9 @@ function SelectItemsSamplesDirectiveController() {
         is_grouped: false
     };
     ctrl.toggleSampleSelected = toggleSampleSelected;
+    ctrl.onChange = onChange;
+
+    ctrl.itemSelected = false;
 
     ctrl.samples.forEach(s => {
         s.selected = false;
@@ -46,6 +50,12 @@ function SelectItemsSamplesDirectiveController() {
 
     function toggleSampleSelected(sample) {
         sample.selected = !sample.selected;
+    }
+
+    function onChange(selected) {
+        if (ctrl.options.singleSelection) {
+            ctrl.itemSelected = selected;
+        }
     }
 }
 
