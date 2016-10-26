@@ -4,23 +4,30 @@
             <i class="fa fa-fw fa-plus"></i>
             files
         </md-button>
-        <md-button class="md-primary" ng-click="$ctrl.selectSamples()">
+        <md-button class="md-primary" ng-click="$ctrl.selectSamples()"
+                   ng-disabled="$ctrl.process.input_samples.length === 1">
             <i class="fa fa-fw fa-plus"></i>
-            Set input samples
+            Set input sample
         </md-button>
     </div>
     <div layout="column" flex="45">
         <div layout="row" layout-align="start center">
             <h4 class="md-title">Sections ({{$ctrl.process.output_samples.length}})</h4>
-            <md-button class="md-primary" ng-click="$ctrl.addSample()">Add Section</md-button>
-            <md-button class="md-primary" ng-click="$ctrl.addMultipleSamples()">Add Multiple Sections</md-button>
+            <md-button class="md-primary" ng-disabled="!$ctrl.process.input_samples.length"
+                       ng-click="$ctrl.addSample()">
+                Add Section
+            </md-button>
+            <md-button class="md-primary" ng-disabled="!$ctrl.process.input_samples.length"
+                       ng-click="$ctrl.addMultipleSamples()">
+                Add Multiple Sections
+            </md-button>
         </div>
         <p>
             The names of the sections that you are creating will appear below. All sections will share the same setup
             properties.
         </p>
         <md-content style="max-height:20vh; min-height:5vh">
-            <div ng-repeat="sample in $ctrl.process.output_samples">
+            <div ng-repeat="sample in $ctrl.outputSamples">
                 <div layout="row">
                     <label>{{::$index+1}}.</label>
                     <input type="text" class="mc-input-as-line"

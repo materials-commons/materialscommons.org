@@ -11,7 +11,8 @@ export function selectItemsService($modal) {
             };
 
             let opts = {
-                experimentId: ''
+                experimentId: '',
+                singleSelection: false
             };
 
             if (arguments.length === 0) {
@@ -23,6 +24,7 @@ export function selectItemsService($modal) {
                     tabs[arguments[i]] = true;
                 } else if (_.isObject(arguments[i])) {
                     opts.experimentId = arguments[i].experimentId;
+                    opts.singleSelection = arguments[i].singleSelection;
                 }
             }
 
@@ -74,6 +76,7 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
     ctrl.cancel = cancel;
     ctrl.processes = [];
     ctrl.samples = [];
+    ctrl.options = options;
 
     /////////////////////////
 
