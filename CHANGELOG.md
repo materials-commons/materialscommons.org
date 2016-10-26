@@ -3,7 +3,7 @@
 ## 31 October 2016
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 - :star: **New Feature:** Added template for sample sectioning
-- :star: **New Feature:** Add reset password link so users can reset their password
+- :star: **New Feature:** Add reset password link so users who forgot their password can reset it.
 - :star: **New Feature:** Completely redesigned the dataset interface. Added the ability to choose processes from a graph or outline.
 - :star: **New Feature:** Added outline view to the workflow editor.
 - :star: **New Feature:** Allow users to delete processes in the workflow editor. Ensure that the provenance graph is never made invalid.
@@ -12,7 +12,7 @@
 - :boom: **Fixed:** Other bug fixes
 
 ### [Materials Commons Data](https://materialscommons.org/mcpub)
-- :star: **New Feature:** Add reset password link so users can reset their password
+- :star: **New Feature:** Add reset password link so users who forgot their password can reset it.
 - :boom: **Fixed:** Dataset download files were not built correctly.
 - :boom: **Fixed:** Browse by tag wasn't showing all tags
 - :boom: **Fixed:** Other bug fixes
