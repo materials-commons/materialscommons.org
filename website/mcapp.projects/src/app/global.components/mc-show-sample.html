@@ -8,7 +8,8 @@
             <mc-files-table files="$ctrl.sample.files"></mc-files-table>
             <h3 class="md-subhead">Process Timeline</h3>
             <timeline>
-                <timeline-event ng-repeat="process in $ctrl.sample.processes" ng-click="$ctrl.showProcess(process)"
+                <timeline-event ng-repeat="process in $ctrl.sample.processesInTimeline"
+                                ng-click="$ctrl.showProcess(process)"
                                 class="pointer">
                     <timeline-badge class="mc-md-primary-bg fa fa-2x fa-code-fork timeline-hidden"
                                     style="padding-top: 10px"
