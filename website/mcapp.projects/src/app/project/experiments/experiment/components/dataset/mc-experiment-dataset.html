@@ -3,9 +3,19 @@
         <h3 class="md-title" style="padding-right: 30px">Dataset: {{$ctrl.dataset.title}}</h3>
         <md-button class="md-primary"
                    ng-click="$ctrl.showDetailsSection = !$ctrl.showDetailsSection">
-            {{$ctrl.showDetailsSection ? "show processes" : "show details"}}
+            {{$ctrl.showDetailsSection ? "add/show processes" : "show details"}}
         </md-button>
     </div>
+    <p ng-show="$ctrl.showDetailsSection">
+        <strong class="mc-error-color">Note:</strong> To add processes to the dataset click on show processes. You can
+        then use the graph or
+        outline view to add processes. In the outline view you can add processes by selecting
+        their checkbox.
+    </p>
+    <p ng-show="!$ctrl.showDetailsSection">
+        In outline view (<i class="fa fa-fw fa-th-list"></i>) select/unselect processes using the checkbox. In both
+        views you can add or remove a process by clicking on it and choosing add or remove button in the details tab.
+    </p>
 
     <div layout="row" flex style="max-height: 70vh" ng-if="$ctrl.showDetailsSection">
         <md-content layout="row" layout-wrap layout-align="start stretch" flex>
