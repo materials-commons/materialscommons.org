@@ -19,7 +19,11 @@
                 <td md-cell>
                 </td>
                 <td md-cell>
-                    <md-checkbox ng-model="sampleps.selected">{{sampleps.name}}</md-checkbox>
+                    <md-checkbox ng-model="sampleps.selected"
+                                 ng-change="ctrl.onChange(sampleps.selected)"
+                                 ng-disabled="ctrl.options.singleSelection && ctrl.itemSelected && (!sampleps.selected)">
+                        {{sampleps.name}}
+                    </md-checkbox>
                 </td>
             </tr>
             </tbody>
