@@ -5,13 +5,10 @@ node_js:
 python:
   - '2.7'
 
-# blocklist - branches not used for testing
+# blocklist - branches not used for testing: any branch starting with 'spike'
 branches:
   except:
-  - spike-admin-page
-  - spike-md-sharing
-  - spike-md-template
-  - spike-publish-zipfile
+  - /^spike-.*$/
 
 sudo: required
 
