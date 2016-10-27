@@ -5,6 +5,14 @@ node_js:
 python:
   - '2.7'
 
+# blocklist - branches not used for testing
+branches:
+  except:
+  - spike-admin-page
+  - spike-md-sharing
+  - spike-md-template
+  - spike-publish-zipfile
+
 sudo: required
 
 env:
