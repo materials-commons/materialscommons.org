@@ -15,6 +15,14 @@ export function projectsService(Restangular, modelProjects) {
             });
         },
 
+        getAllProjects2: function() {
+            return projectsAPI().getList();
+        },
+
+        getProject2: function(projectId) {
+            return projectsAPI(projectId).get();
+        },
+
         createProject: function(projectName, projectDescription) {
             return Restangular.one('projects').customPOST({
                 name: projectName,
