@@ -1,4 +1,4 @@
-module.exports = function (r) {
+module.exports = function(r) {
     'use strict';
     const run = require('./run');
     const getSingle = require('./get-single');
@@ -7,14 +7,33 @@ module.exports = function (r) {
     return {
         all: all,
         forUser: forUser,
-        get: function (id, index) {
+        get: function(id, index) {
             return getSingle(r, 'projects', id, index);
         },
+        getProject: getProject,
         update: update,
         r: r
     };
 
     ///////////////
+
+    function* getProject(projectId) {
+        let p = yield r.table('projects').get(projectId).merge(function(project) {
+            return {
+                datasets: r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
+                    .eqJoin('experiment_id', r.table('experiment2dataset'), {index: 'experiment_id'})
+                    .zip().pluck('project_id', 'dataset_id')
+                    .eqJoin('dataset_id', r.table('datasets')).zip().coerceTo('array'),
+                samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).merge(function(sample) {
+                    return {
+                        processes: r.table('process2sample').getAll(sample('sample_id'), {index: 'sample_id'})
+                            .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
+                    }
+                }).coerceTo('array')
+            }
+        });
+        return {val: p};
+    }
 
 
     // all returns all the projects in the database. It only returns the
@@ -30,12 +49,11 @@ module.exports = function (r) {
     function forUser(user) {
         let rql;
         if (user.isAdmin) {
-            rql = r.table('projects')
-                .filter(r.row('owner').ne('delete@materialscommons.org'));
+            rql = r.table('projects').limit(75).orderBy('name');
         } else {
             rql = r.table('access').getAll(user.id, {index: 'user_id'})
                 .eqJoin('project_id', r.table('projects'))
-                .zip();
+                .zip().orderBy('name');
         }
 
         rql = transformDates(rql);
@@ -47,7 +65,7 @@ module.exports = function (r) {
     // transformDates removes the rethinkdb specific date
     // fields
     function transformDates(rql) {
-        rql = rql.merge(function (project) {
+        rql = rql.merge(function(project) {
             return {
                 mtime: project('mtime').toEpochTime(),
                 birthtime: project('birthtime').toEpochTime()
@@ -59,35 +77,29 @@ module.exports = function (r) {
     // addComputed adds additional attributes to the rql that
     // that are computed from other tables.
     function addComputed(rql) {
-        rql = rql.merge(function (project) {
+        rql = rql.merge(function(project) {
             return {
                 users: r.table('access')
                     .getAll(project('id'), {index: 'project_id'})
-                    .map(function (entry) {
+                    .map(function(entry) {
                         return entry.merge({
                             'user': entry('user_id')
                         });
                     })
                     .pluck('user', 'permissions')
                     .coerceTo('array'),
-                reviews: r.table('reviews')
-                    .getAll(project('id'), {index: 'project_id'})
-                    .coerceTo('array'),
-                notes: r.table('notes')
-                    .getAll(project('id'), {index: 'project_id'})
-                    .coerceTo('array'),
                 events: r.table('events')
                     .getAll(project('id'), {index: 'project_id'})
                     .coerceTo('array'),
-                processes: [],
-                samples: [],
-                drafts: []
+                experiments: r.table('project2experiment').getAll(project('id'), {index: 'project_id'}).count(),
+                processes: r.table('project2process').getAll(project('id'), {index: 'project_id'}).count(),
+                samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).count(),
+                files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count()
             };
         });
 
         return rql;
     }
-
 
 
     function* update(projectID, attrs) {
@@ -112,13 +124,11 @@ module.exports = function (r) {
                 project.process_templates = [];
             }
             // remove deleted templates
-            project.process_templates = project.process_templates.
-                filter(p => _.indexOf(deleteTemplates, t => t.name === p.name, null) === -1);
+            project.process_templates = project.process_templates.filter(p => _.indexOf(deleteTemplates, t => t.name === p.name, null) === -1);
 
             // remove templates to update. They will be added back with their new values in
             // the add step.
-            project.process_templates = project.process_templates.
-                filter(p => _.indexOf(updateTemplates, t => t.name === p.name, null) === -1);
+            project.process_templates = project.process_templates.filter(p => _.indexOf(updateTemplates, t => t.name === p.name, null) === -1);
 
             // add new templates if they don't exist
             var toAdd = differenceByField(addTemplates, project.process_templates, 'name');
