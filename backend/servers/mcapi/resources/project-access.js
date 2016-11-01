@@ -1,24 +1,25 @@
-module.exports = function(access) {
-    'use strict';
-    let httpStatus = require('http-status');
-    let projectAccessCache = require('./project-access-cache')(access);
-    return function *validateProject(next) {
-        let projectID = this.params.project_id;
-        let projects = yield projectAccessCache.find(projectID);
+const access = require('../db/model/access');
+let httpStatus = require('http-status');
+let projectAccessCache = require('./project-access-cache')(access);
 
-        if (! projects) {
-            this.throw(httpStatus.BAD_REQUEST, "Unknown project");
-        }
+function *validateProject(next) {
+    let projectID = this.params.project_id;
+    let projects = yield projectAccessCache.find(projectID);
 
-        if (!projectAccessCache.validateAccess(projectID, this.reqctx.user)) {
-            this.throw(httpStatus.UNAUTHORIZED, `No access to project ${projectID}`);
-        }
+    if (!projects) {
+        this.throw(httpStatus.BAD_REQUEST, "Unknown project");
+    }
 
-        this.reqctx.project = {
-            id: projectID,
-            name: projects[0].project_name
-        };
+    if (!projectAccessCache.validateAccess(projectID, this.reqctx.user)) {
+        this.throw(httpStatus.UNAUTHORIZED, `No access to project ${projectID}`);
+    }
 
-        yield next;
+    this.reqctx.project = {
+        id: projectID,
+        name: projects[0].project_name
     };
-};
+
+    yield next;
+}
+
+module.exports.validateProject = validateProject;
