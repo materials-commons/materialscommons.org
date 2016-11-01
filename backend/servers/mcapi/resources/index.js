@@ -1,21 +1,19 @@
-module.exports = function(model) {
-    'use strict';
+const validateProjectAccess = require('./project-access');
+const resourceAccess = require('./resource-access');
+const schema = require('../schema');
+const router = require('koa-router')();
+const projects = require('./projects');
+const samples = require('./samples');
+const files = require('./files');
+const processes = require('./processes');
+const directories = require('./directories');
+const users = require('./users');
+const shares = require('./shares');
+const experiments = require('./experiments');
+const experimentSamples = require('./experiment-samples');
+const experimentDatasets = require('./experiment-datasets');
 
-    const validateProjectAccess = require('./project-access')(model.access);
-    const resourceAccess = require('./resource-access')(model.access, model.experiments, model.samples);
-    const schema = require('../schema')(model);
-    const router = require('koa-router')();
-    const projects = require('./projects')(model.projects);
-    const samples = require('./samples')(model.samples, model.files, schema);
-    const files = require('./files')(model.files);
-    const processes = require('./processes')(model.processes, model.samples, model.experiments, schema);
-    const directories = require('./directories')(model.directories, schema);
-    const users = require('./users')(model.users, model.experiments, schema);
-    const shares = require('./shares')(model.shares, schema);
-    const experiments = require('./experiments')(model.experiments, model.samples, schema);
-    const experimentSamples = require('./experiment-samples')(model.samples, model.experiments, schema);
-    const experimentDatasets = require('./experiment-datasets')(model.experimentDatasets, model.experiments, model.samples, schema);
-
+function create() {
     router.get('/projects', projects.all);
     router.put('/projects/:project_id', validateProjectAccess, projects.update);
     router.get('/projects/:project_id', validateProjectAccess, projects.getProject);
@@ -147,4 +145,7 @@ module.exports = function(model) {
     router.post('/accounts/reset', users.resetPasswordGenerateLink);
 
     return router;
-};
+}
+
+module.exports.create = create;
+
