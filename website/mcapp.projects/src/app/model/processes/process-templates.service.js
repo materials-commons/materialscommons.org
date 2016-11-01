@@ -222,7 +222,7 @@ export function processTemplates(User) {
     }
 
     return {
-        templates: function(projectTemplates, projectID) {
+        templates: function(projectTemplates) {
             var templates = angular.copy(self.templates);
             templates.forEach(function(t) {
                 t.create = function() {
@@ -231,7 +231,7 @@ export function processTemplates(User) {
             });
             projectTemplates = projectTemplates || [];
             templates = addProjectTemplates(templates, projectTemplates);
-            markFavorites(templates, User.favorites(projectID).processes);
+            //markFavorites(templates, User.favorites(projectID).processes);
             return templates;
         },
 
