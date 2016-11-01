@@ -1,4 +1,4 @@
-module.exports = function(access, experiments) {
+module.exports = function(access, experiments, samples) {
     let httpStatus = require('http-status');
     let projectAccessCache = require('./project-access-cache')(access);
 
@@ -7,7 +7,8 @@ module.exports = function(access, experiments) {
         validateExperimentInProject,
         validateDatasetInExperiment,
         validateSampleInExperiment,
-        validateProcessInExperiment
+        validateProcessInExperiment,
+        validateSampleInProject
     };
 
     function* validateProjectAccess(next) {
@@ -66,6 +67,15 @@ module.exports = function(access, experiments) {
         if (!isInExperiment) {
             this.status = httpStatus.BAD_REQUEST;
             this.body = {error: `No such process in experiment ${this.params.process_id}`};
+        }
+        yield next;
+    }
+
+    function* validateSampleInProject(next) {
+        let isInProject = yield samples.sampleInProject(this.params.project_id, this.params.sample_id);
+        if (!isInProject) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: `No such sample in project ${this.params.sample_id}`};
         }
         yield next;
     }

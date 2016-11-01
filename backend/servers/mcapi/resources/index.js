@@ -2,11 +2,11 @@ module.exports = function(model) {
     'use strict';
 
     const validateProjectAccess = require('./project-access')(model.access);
-    const resourceAccess = require('./resource-access')(model.access, model.experiments);
+    const resourceAccess = require('./resource-access')(model.access, model.experiments, model.samples);
     const schema = require('../schema')(model);
     const router = require('koa-router')();
     const projects = require('./projects')(model.projects);
-    const samples = require('./samples')(model.samples, schema);
+    const samples = require('./samples')(model.samples, model.files, schema);
     const files = require('./files')(model.files);
     const processes = require('./processes')(model.processes, model.samples, model.experiments, schema);
     const directories = require('./directories')(model.directories, schema);
@@ -39,6 +39,8 @@ module.exports = function(model) {
     router.get('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.getSampleForProject);
     //router.put('/projects/:project_id/samples/:sample_id', validateProjectAccess, samples.updateSample);
     router.put('/projects/:project_id/samples', validateProjectAccess, samples.updateSamples);
+    router.put('/projects/:project_id/samples/:sample_id/files',
+        validateProjectAccess, resourceAccess.validateSampleInProject, samples.updateSampleFiles);
     router.post('/projects/:project_id/samples/measurements', validateProjectAccess, samples.addMeasurements);
     router.put('/projects/:project_id/samples/measurements', validateProjectAccess, samples.updateMeasurements);
 

@@ -17,7 +17,8 @@ module.exports = function(r) {
         updateSamples,
         addSamplesMeasurements,
         updateSamplesMeasurements,
-        deleteSamplesMeasurements
+        deleteSamplesMeasurements,
+        updateSampleFiles
     };
 
     /////////////////
@@ -213,6 +214,7 @@ module.exports = function(r) {
                     yield addSeparatePropertyMeasurementsForSamples(propToAdd);
                 }
             }
+
             if (propToUpdate.measurements.length) {
                 yield updatedExistingPropertyMeasurementsForSamples(propToUpdate);
             }
@@ -230,5 +232,31 @@ module.exports = function(r) {
 
     function* deleteSamplesMeasurements() {
         return null;
+    }
+
+    function* updateSampleFiles(sampleId, sampleFiles) {
+        let fileSamplesToAdd = sampleFiles.filter(s2d => s2d.command === 'add')
+            .map(s2d => new model.Sample2Datafile(sampleId, s2d.id));
+        fileSamplesToAdd = yield removeExistingSampleFileEntries(fileSamplesToAdd);
+        if (fileSamplesToAdd.length) {
+            yield r.table('sample2datafile').insert(fileSamplesToAdd);
+        }
+
+        let fileSamplesToDelete = sampleFiles.filter(s2d => s2d.command === 'delete').map(s2d => [sampleId, s2d.id]);
+        if (fileSamplesToDelete.length) {
+            yield r.table('sample2datafile').getAll(r.args(fileSamplesToDelete), {index: 'sample_file'}).delete();
+        }
+
+        return {val: true};
+    }
+
+    function* removeExistingSampleFileEntries(sampleFileEntries) {
+        if (sampleFileEntries.length) {
+            let indexEntries = sampleFileEntries.map(entry => [entry.sample_id, entry.datafile_id]);
+            let matchingEntries = yield r.table('sample2datafile').getAll(r.args(indexEntries), {index: 'sample_file'});
+            var byFileID = _.indexBy(matchingEntries, 'datafile_id');
+            return sampleFileEntries.filter(entry => (!(entry.datafile_id in byFileID)));
+        }
+        return sampleFileEntries;
     }
 };
