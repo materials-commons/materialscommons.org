@@ -5,6 +5,11 @@ node_js:
 python:
   - '2.7'
 
+# blocklist - branches not used for testing: any branch starting with 'spike'
+branches:
+  except:
+  - /^spike-.*$/
+
 sudo: required
 
 env:

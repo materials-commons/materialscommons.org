@@ -17,7 +17,8 @@ module.exports.getAll = function*(next) {
 };
 
 module.exports.getAllCount = function*(next) {
-    this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).count();
+    let count = yield r.db('materialscommons').table('datasets').filter({published: true}).count();
+    this.body = {count: count};
     yield next;
 };
 
