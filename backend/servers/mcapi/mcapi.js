@@ -6,10 +6,11 @@ var app = module.exports = koa();
 require('koa-qs')(app);
 require('./init')();
 
-var users = require('db/model/users');
+var users = require('./db/model/users');
 var apikey = require('../lib/apikey')(users);
 var resources = require('./resources').create();
-var access = require('db/mode/access');
+var access = require('./db/model/access');
+var r = require('./db/r');
 
 app.use(apikey);
 //app.use(bodyParser());
@@ -18,17 +19,17 @@ app.use(mount('/', resources.routes())).use(resources.allowedMethods());
 // Look for changes on the access and projects tables. If a change is detected
 // then invalidate the project access cache so that it will be reloaded.
 const projectAccessCache = require('./resources/project-access-cache')(access);
-model.r.table('access').changes().toStream().on('data', function() {
+r.table('access').changes().toStream().on('data', function() {
     projectAccessCache.clear();
 });
-model.r.table('projects').changes().toStream().on('data', function() {
+r.table('projects').changes().toStream().on('data', function() {
     projectAccessCache.clear();
 });
 
 // Look for changes on the users table. If a change it detected then invalidate
 // the apikey cache so it will be reloaded.
 const apikeyCache = require('../lib/apikey-cache')(users);
-model.r.table('users').changes().toStream().on('data', function() {
+r.table('users').changes().toStream().on('data', function() {
     apikeyCache.clear()
 });
 
