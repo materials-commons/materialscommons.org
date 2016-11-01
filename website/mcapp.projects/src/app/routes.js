@@ -67,6 +67,13 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/project/:project_id',
             abstract: true,
             template: '<ui-view flex="100" layout="column"></ui-view>',
+            resolve: {
+                _templates: ["processTemplates", "templates", function(processTemplates, templates) {
+                    let projectTemplates = processTemplates.templates();
+                    templates.set(projectTemplates);
+                    return projectTemplates;
+                }]
+            }
         })
         .state('project.home', {
             url: '/home',
