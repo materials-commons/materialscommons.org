@@ -1,4 +1,4 @@
-module.exports = function(samples, schema) {
+module.exports = function(samples, files, schema) {
     const parse = require('co-body');
     const status = require('http-status');
     const _ = require('lodash');
@@ -10,7 +10,8 @@ module.exports = function(samples, schema) {
         updateSample,
         updateSamples,
         addMeasurements,
-        updateMeasurements
+        updateMeasurements,
+        updateSampleFiles
     };
 
     ///////////////////////////////////////
@@ -231,4 +232,57 @@ module.exports = function(samples, schema) {
     function* validateUpdateMeasurements(projectId, args) {
         return yield validateAddMeasurements(projectId, args); // Same as add for now
     }
+
+    function* updateSampleFiles(next) {
+        let updateArgs = yield parse(this);
+        let errors = yield validateUpdateSampleFiles(this.params.project_id, updateArgs.files);
+        if (errors !== null) {
+            this.status = status.BAD_REQUEST;
+            this.body = errors;
+        } else {
+            let rv = yield samples.updateSampleFiles(this.params.sample_id, updateArgs.files);
+            if (rv.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = rv;
+            } else {
+                this.body = rv.val;
+            }
+        }
+        yield next;
+    }
+
+    function* validateUpdateSampleFiles(projectId, updateArgs) {
+        if (updateArgs.files) {
+            for (let i = 0; i < updateArgs.files.length; i++) {
+                let f = updateArgs.files[i];
+                let errors = yield validateFile(projectId, f);
+                if (errors !== null) {
+                    return errors;
+                }
+            }
+        } else {
+            return {error: 'No files specified'};
+        }
+
+        return null;
+    }
+
+    function* validateFile(projectId, file) {
+        let errors = yield schema.validate(schema.templateCommand, file);
+        if (errors !== null) {
+            return errors;
+        }
+
+        if (file.command !== 'add' && file.command !== 'delete') {
+            return {error: `Bad command '${file.command} for file ${file.id}`};
+        }
+
+        let fileInProject = files.isInProject(file.id, projectId);
+        if (!fileInProject) {
+            return {error: `File ${file.id} not in project ${projectId}`};
+        }
+
+        return null;
+    }
+
 };

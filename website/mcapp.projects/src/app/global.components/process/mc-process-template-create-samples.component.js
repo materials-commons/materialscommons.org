@@ -24,7 +24,7 @@ class MCProcessTemplateCreateSamplesComponentController {
                 };
                 this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
                     .then(
-                        () => this.process.template.input_files = selected.files,
+                        () => this.process.input_files = selected.files,
                         () => this.toast.error('Unable to add files')
                     );
             });
