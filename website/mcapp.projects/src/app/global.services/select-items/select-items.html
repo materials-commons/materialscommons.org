@@ -10,7 +10,7 @@
                 </md-tab-label>
                 <md-tab-body>
                     <div ng-if="ctrl.isActive('samples')">
-                        <select-items-samples samples="ctrl.samples"></select-items-samples>
+                        <select-items-samples samples="ctrl.samples" options="ctrl.options"></select-items-samples>
                     </div>
                     <div ng-if="ctrl.isActive('processes')">
                         <select-items-processes processes="ctrl.processes"></select-items-processes>

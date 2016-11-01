@@ -1,4 +1,4 @@
-export function runBlock($log, userService, $state, $rootScope, Restangular) {
+export function runBlock(userService, $rootScope, Restangular) {
     'ngInject';
     if (userService.isAuthenticated()) {
         Restangular.setDefaultRequestParams(['post', 'get', 'put', 'remove'], {apikey: userService.apikey()});
@@ -14,10 +14,6 @@ export function runBlock($log, userService, $state, $rootScope, Restangular) {
     });
 
     function checkNavigationSearchBar(toState) {
-        if (toState.name.match(/(home)/g) || toState.name.match(/(search)/g)) {
-            $rootScope.showSearchBar = false;
-        } else {
-            $rootScope.showSearchBar = true;
-        }
+        $rootScope.showSearchBar = !(toState.name.match(/(home)/g) || toState.name.match(/(search)/g));
     }
 }

@@ -67,28 +67,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/project/:project_id',
             abstract: true,
             template: '<ui-view flex="100" layout="column"></ui-view>',
-            //template:'<mc-project></mc-project>',
-            resolve: {
-                // Set the current project in the project service so all components
-                // will resolve without having to worry if a promise has resolved.
-                // The resolved object is ignored.
-                _project: ["$stateParams", "projectsService", "project",
-                    // Inject projects so that it resolves before looking up the project.
-                    function($stateParams, projectsService, project) {
-                        return projectsService.getProject($stateParams.project_id)
-                            .then(function(proj) {
-                                project.set(proj);
-                                return proj;
-                            });
-                    }],
-
-                _templates: ["processTemplates", "templates", "_project",
-                    function(processTemplates, templates, project) {
-                        var projectTemplates = processTemplates.templates(project.process_templates, project.id);
-                        templates.set(projectTemplates);
-                        return projectTemplates;
-                    }]
-            }
         })
         .state('project.home', {
             url: '/home',
@@ -101,7 +79,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 _project: ["$stateParams", "projectsService", "project",
                     // Inject projects so that it resolves before looking up the project.
                     function($stateParams, projectsService, project) {
-                        return projectsService.getProject($stateParams.project_id)
+                        return projectsService.getProject2($stateParams.project_id)
                             .then(function(proj) {
                                 project.set(proj);
                                 return proj;

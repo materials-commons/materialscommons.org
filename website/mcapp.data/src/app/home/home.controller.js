@@ -1,16 +1,16 @@
 export class HomeController {
-  constructor(tags, count_authors, count_datasets, browseService, $state, userService) {
+  constructor(tags, authorsCount, datasetsCount, browseService, $state, userService) {
     'ngInject';
 
     this.browseService = browseService;
     this.userService = userService;
     this.$state = $state;
     this.tags = tags;
-    this.count_tags = tags.length;
-    this.count_authors = count_authors;
-    this.count_datasets = count_datasets;
+    this.tagsCount = tags.length;
+    this.authorsCount = authorsCount;
+    this.datasetsCount = datasetsCount;
     this.tagPlaceholder = " ";
-    if (this.count_tags === 0) {
+    if (this.tagsCount === 0) {
       this.tagPlaceholder = 'No Tags';
     } else {
       this.tagPlaceholder = ' ';

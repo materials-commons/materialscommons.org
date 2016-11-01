@@ -1,8 +1,9 @@
+#!/usr/bin/env node
 'use strict';
 
 const program = require('commander');
 const Promise = require("bluebird");
-const fs = require("fs");
+const fsa = Promise.promisifyAll(require("fs"));
 const archiver = require('archiver');
 const path = require('path');
 
@@ -16,11 +17,13 @@ let parameters = getControlParameters();
 
 var port = parameters.port;
 var base = parameters.base;
+var zipbase = parameters.zipbase;
 var replace = !!parameters.replace;
 var idList = parameters.id;
 var all = !!parameters.all;
 var numberProcessed = 0;
 var totalNumberToProcess = 0;
+var pathForFileInZip = "Dataset/";
 
 main();
 
@@ -32,6 +35,9 @@ function main() {
 
     if (base) {
         zipFileUtils.setBase(base);
+    }
+    if (zipbase){
+        zipFileUtils.setZipDirPath(zipbase);
     }
 
     Promise.coroutine(buildZipFiles)();
@@ -88,6 +94,7 @@ function* publishDatasetZipFile(r, datasetId) {
         console.log("zip", datasetId);
         let ds = yield r.db('materialscommons').table('datasets').get(datasetId);
         let zipDirPath = zipFileUtils.zipDirPath(ds);
+        let zipFileName = zipFileUtils.zipFilename(ds);
         let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
 
         console.log("full path and filename: ", fillPathAndFilename);
@@ -107,41 +114,68 @@ function* publishDatasetZipFile(r, datasetId) {
         let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
         let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
 
-        console.log("For id = " + datasetId + ", there are " + datafileIds.length + " files");
+        let nameSourceList = [];
+        var seenThisOne = {};
 
-        return new Promise(function (resolve, reject) {
+        for (var i=0; i < datafiles.length; i++) {
+            let df = datafiles[i];
+
+            let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, sourcePath
+            let path = zipEntry.sourcePath;
+            let name = zipEntry.fileName;
+            let checksum = zipEntry.checksum;
+            name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
+            let stream = fsa.createReadStream(path,{
+                flags: 'r',
+                encoding: null,
+                fd: null,
+                mode: 0o666,
+                autoClose: true
+            });
+            nameSourceList.push({name: name, source: stream});
+        }
+
+        console.log("For id = " + datasetId + ", there are " + nameSourceList.length + " files");
+
+        var output = fsa.createWriteStream(fillPathAndFilename);
+
+        let retP =  new Promise(function (resolve, reject) {
             var archive = archiver('zip');
-            var output = fs.createWriteStream(fillPathAndFilename);
 
             output.on('close', function () {
-                console.log('for dataset: ' + datasetId + " with " + archive.pointer() + ' total bytes');
+                let zipfileSize = archive.pointer();
+                console.log('for dataset: ' + datasetId + " with " +zipfileSize + ' total bytes');
                 numberProcessed++;
                 console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
-                resolve();
+                let zip = {size: zipfileSize, filename: zipFileName};
+                r.db('materialscommons').table('datasets').get(datasetId).update({zip: zip}).then(() =>{
+                    resolve();
+                    if (numberProcessed == totalNumberToProcess) {
+                        process.exit(0);
+                    }
+                });
             });
 
             archive.on('error', reject);
 
+            archive.on('close',function() {console.log('archive close');});
+
             archive.pipe(output);
 
-            var seenThisOne = {};
-
-            datafiles.forEach(df => {
-                let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, sourcePath
-                let path = zipEntry.sourcePath;
-                let name = zipEntry.fileName;
-                let checksum = zipEntry.checksum;
-                name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
-                if (name) {
-                    archive.append(path, {name: name});
-                }
+            nameSourceList.forEach(ns => {
+                let pathAndName = pathForFileInZip + ns.name;
+                archive.append(ns.source, {name:pathAndName} );
             });
 
             archive.finalize();
-
         });
+
+        console.log("Starting of zip file For id = " + datasetId + "... (wait)");
+
+        return retP;
+
     } catch (error) {
-        return yield Promise.reject("Error: " +  error.message);
+        return yield Promise.reject("Error in publishDatasetZipFile: " +  error.message);
     }
 }
 
@@ -149,7 +183,7 @@ function resolveZipfileFilenameDuplicates(seenThisOne,name,checksum){
     name = name.toLowerCase();
 
     if (name.startsWith(".")) {
-        name = "dot" + name;
+        name = "dot_" + name;
     }
 
     if (name in seenThisOne) {
@@ -202,6 +236,7 @@ function reportParameters() {
     console.log("use --help for list of parameter options");
     console.log("port = " + port);
     console.log("base = " + base);
+    console.log("zipbase = " + zipbase);
     console.log("replace = " + replace);
     if (all) {
         console.log("process all")
@@ -222,6 +257,7 @@ function getControlParameters() {
     return program
         .option('-p, --port [port]', 'The RethinkDB port; defaults to ' + defaultPort,defaultPort)
         .option('-b, --base [base]', 'The base path of the datasets directory, optional')
+        .option('-z, --zipbase [zipbase]', 'The base path for the zipfile directory, optional')
         .option('-i, --id [id]', 'If given, the id of the dataset to copy, can be repeated',accumulateIds,[])
         .option('-a, --all', 'If given, and no id(s), then copy all datasets, \n\t\tone of --id or --all required')
         .option('-r, --replace','If given, then replace files already generaåted, \n\t\totherwise not; optional')

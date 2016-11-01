@@ -18,6 +18,7 @@ module.exports = function(model) {
 
     router.get('/projects', projects.all);
     router.put('/projects/:project_id', validateProjectAccess, projects.update);
+    router.get('/projects/:project_id', validateProjectAccess, projects.getProject);
 
     router.get('/projects/:project_id/directories', validateProjectAccess, directories.get);
     router.get('/projects/:project_id/directories/:directory_id', validateProjectAccess, directories.get);

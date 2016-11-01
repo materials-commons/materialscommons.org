@@ -4,6 +4,7 @@ module.exports = function(r) {
     const model = require('./model')(r);
     const commonQueries = require('../../../lib/common-queries');
     const processCommon = require('./process-common')(r);
+    const sampleCommon = require('./sample-common')(r);
     const _ = require('lodash');
 
     return {
@@ -441,11 +442,20 @@ module.exports = function(r) {
     }
 
     function* deleteSamplesFromExperiment(experimentId, processId, sampleIds) {
+        let canDelete = yield sampleCommon.canDeleteSamples(sampleIds, processId);
+        // If any samples are used in other processes then stop and return an error.
+        if (!canDelete) {
+            return {error: 'Some or all samples are used in other processes'};
+        }
+
         let processSamplesToDelete = sampleIds.map((sampleId) => [processId, sampleId]);
         yield r.table('process2sample').getAll(r.args(processSamplesToDelete), {index: 'process_sample'}).delete();
 
         let experimentSamplesToDelete = sampleIds.map((sampleId) => [experimentId, sampleId]);
         yield r.table('experiment2sample').getAll(r.args(experimentSamplesToDelete), {index: 'experiment_sample'}).delete();
+
+        yield sampleCommon.removeUnusedSamples(sampleIds);
+
         return {val: sampleIds};
     }
 

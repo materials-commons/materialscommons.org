@@ -69,7 +69,7 @@ def finish_reset_password(validation_id):
     hash = make_password_hash(password)
     rv = r.table('users').get(user_id).update({'password':  hash}, return_changes=True).run(g.conn)
     user = rv['changes'][0]['new_val']
-    r.table('users').get(user_id).replace(r.row.without('reset_password','validate_uuid'))
+    r.table('users').get(user_id).replace(r.row.without('reset_password','validate_uuid')).run(g.conn)
     ## Return something that doesn't contain the password hash, uuid, and flag
     del user['password']
     del user['validate_uuid']
