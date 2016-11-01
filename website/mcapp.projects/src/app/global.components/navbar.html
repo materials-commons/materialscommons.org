@@ -38,7 +38,7 @@
         </md-input-container>
         <span flex></span>
         <div layout="row" flex layout-sm="column" layout-align="space-between">
-            <md-button>Help</md-button>
+            <md-button ng-show="false">Help</md-button>
             <md-menu>
                 <md-button ng-click="$mdOpenMenu($event)">
                     <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>
@@ -65,7 +65,9 @@
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
                     <md-men-item>
-                        <md-button ui-sref="releasenotes">
+                        <md-button
+                                href="https://github.com/materials-commons/materialscommons.org/blob/master/CHANGELOG.md"
+                                target="_blank">
                             <md-icon md-font-icon="fa-file-text-o" class="fa fa-md-icon"></md-icon>
                             <span class="text-uppercase">Release Notes</span>
                         </md-button>

@@ -1,10 +1,12 @@
 module.exports = function(projects) {
-    'use strict';
     const parse = require('co-body');
+    const status = require('http-status');
+
     return {
         all: all,
         dirTree: dirTree,
-        update: update
+        update: update,
+        getProject: getProject
     };
 
     /////////////////
@@ -12,6 +14,17 @@ module.exports = function(projects) {
     function* all(next) {
         let user = this.reqctx.user;
         this.body = yield projects.forUser(user);
+        yield next;
+    }
+
+    function* getProject(next) {
+        let rv = yield projects.getProject(this.params.project_id);
+        if (rv.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = rv;
+        } else {
+            this.body = rv.val;
+        }
         yield next;
     }
 

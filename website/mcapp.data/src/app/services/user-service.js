@@ -9,7 +9,7 @@ export class userService {
 
         if (this.$window.sessionStorage.mcuser) {
             try {
-                this.mcuser = angular.fromJSON($window.sessionStorage.mcuser);
+                this.mcuser = angular.fromJson($window.sessionStorage.mcuser);
             } catch (err) {
                 this.mcuser = null;
             }

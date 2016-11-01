@@ -59,7 +59,7 @@ class MCProcessesWorkflowOutlineComponentController {
 
     toggle(p) {
         if (p.inds) {
-            this.experimentId.addProcessToDataset(p, this.dataset, this.datasetProcesses);
+            this.experimentProcessesService.addProcessToDataset(p, this.dataset, this.datasetProcesses);
             this.datasetService.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [p.id], []).then(
                 () => null,
                 () => this.toast.error(`Unable to add process to dataset ${p.name}`)

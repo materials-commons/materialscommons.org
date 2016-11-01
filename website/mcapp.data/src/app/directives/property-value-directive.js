@@ -47,19 +47,24 @@ class PropertyValueController {
         return `${baseURL}/pub/datasets/download/${datasetId}?apikey=${this.userService.apikey()}`;
     }
 
+    isDownloadAvaiable(dataset) {
+        return (dataset.zip && dataset.zip.size && (dataset.zip.size > 0));
+    }
+
     bytesMessageForDownload(dataset){
-        var numberOfBytes = (dataset.zipSize)?dataset.zipSize:-1;
+        var numberOfBytes = (dataset.zip && dataset.zip.size)?dataset.zip.size:-1;
         if (numberOfBytes < 0) return "zip file size unknown";
         if (numberOfBytes < 1024) return `${numberOfBytes} Bytes`;
         numberOfBytes = numberOfBytes/1024;
         if (numberOfBytes < 1024) return `${numberOfBytes.toFixed(2)} KB`;
         numberOfBytes = numberOfBytes/1024;
-        if (numberOfBytes < 1024) return `${numberOfBytes.toFixed(2)} GB`;
+        if (numberOfBytes < 1024) return `${numberOfBytes.toFixed(2)} MB`;
         numberOfBytes = numberOfBytes/1024;
-        return `${numberOfBytes.toFixed(2)} TB`;
+        return `${numberOfBytes.toFixed(2)} GB`;
     }
 
     filenameForDownload(dataset) {
-        return (dataset.zipFilename)?(dataset.zipFilename):"FullDataset.zip";
+        var name = (dataset.zip && dataset.zip.filename)?(dataset.zip.filename):"FullDataset.zip";
+        return name;
     }
 }
