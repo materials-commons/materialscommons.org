@@ -1,4 +1,4 @@
-const validateProjectAccess = require('./project-access');
+const validateProjectAccess = require('./project-access').validateProject;
 const resourceAccess = require('./resource-access');
 const schema = require('../schema');
 const router = require('koa-router')();
