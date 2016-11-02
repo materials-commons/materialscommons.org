@@ -60,23 +60,6 @@ function* getAllSamplesFromQuery(query) {
     return {val: samples};
 }
 
-
-function* sampleInProject(projectId, sampleId) {
-    let samples = yield r.table('project2sample').getAll([projectId, sampleId], {index: 'project_sample'});
-    return samples.length !== 0;
-}
-
-function* sampleHasPropertySet(sampleId, propertySetId) {
-    let samples = yield r.table('sample2propertyset').getAll([sampleId, propertySetId], {index: 'sample_property_set'});
-    return samples.length !== 0;
-}
-
-function* allSamplesInProject(projectId, sampleIds) {
-    let indexArgs = sampleIds.map((sampleId) => [projectId, sampleId]);
-    let samples = yield r.table('project2sample').getAll(r.args(indexArgs), {index: 'project_sample'});
-    return samples.length === sampleIds.length;
-}
-
 function* createSamples(projectId, processId, samples, owner) {
     let pset = new model.PropertySet(true);
     let createdPSet = yield db.insert('propertysets', pset);
@@ -247,9 +230,8 @@ module.exports = {
     getAllSamplesForProject,
     getAllSamplesForExperiment,
     createSamples,
-    sampleInProject,
-    sampleHasPropertySet,
-    allSamplesInProject,
+
+
     isValidCreateSamplesProcess,
     updateSamples,
     addSamplesMeasurements,

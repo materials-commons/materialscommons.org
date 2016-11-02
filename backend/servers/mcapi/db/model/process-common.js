@@ -54,7 +54,6 @@ function* removeExistingProcessFileEntries(processId, files) {
     return files;
 }
 
-
 function* updateProperties(properties) {
     // Validate that the retrieved property matches that we are updating
     let errors = [];
@@ -138,7 +137,6 @@ function* removeExistingProcessSampleEntries(processId, samples) {
 
     return samples;
 }
-
 
 function* createProcessFromTemplate(projectId, template, owner) {
     let p = new model.Process(template.name, owner, template.id, template.does_transform);
