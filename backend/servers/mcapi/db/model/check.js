@@ -124,6 +124,11 @@ function* userHasProjectAccess(userId, projectId) {
     return accessEntries.length !== 0;
 }
 
+function* directoryInProject(projectId, directoryId) {
+    let matches = yield r.table('project2datadir').getAll([projectId, directoryId], {index: 'project_datadir'});
+    return matches.length !== 0;
+}
+
 module.exports = {
     allSamplesInDataset,
     allFilesInDataset,
@@ -147,4 +152,5 @@ module.exports = {
     sampleHasPropertySet,
     allSamplesInProject,
     userHasProjectAccess,
+    directoryInProject
 };
