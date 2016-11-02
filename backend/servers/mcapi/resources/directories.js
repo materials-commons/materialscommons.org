@@ -2,6 +2,7 @@ const directories = require('../db/model/directories');
 const schema = require('../schema');
 const parse = require('co-body');
 const httpStatus = require('http-status');
+const ra = require('./resource-access');
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';
@@ -116,9 +117,16 @@ function* remove(next) {
     yield next;
 }
 
+function createResources(router) {
+    router.get('/projects/:project_id/directories', ra.validateProjectAccess, get);
+    router.get('/projects/:project_id/directories/:directory_id', ra.validateProjectAccess, get);
+    router.post('/projects/:project_id/directories', ra.validateProjectAccess, create);
+    router.put('/projects/:project_id/directories/:directory_id',
+        ra.validateProjectAccess, ra.validateDirectoryInProject, update);
+    router.delete('/projects/:project_id/directories/:directory_id',
+        ra.validateProjectAccess, ra.validateDirectoryInProject, remove);
+}
+
 module.exports = {
-    get,
-    create,
-    update,
-    remove
+    createResources
 };

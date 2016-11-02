@@ -89,7 +89,7 @@ function* deleteExperimentNote(next) {
     yield next;
 }
 
-function createRoutes(router) {
+function createResources(router) {
     //router.get('/projects/:project_id/experiments/:experiment_id/notes',
     //    ra.validateProjectAccess, ra.validateExperimentInProject, experiments.getNotesForExperiment);
     //router.get('/projects/:project_id/experiments/:experiment_id/notes/:note_id',
@@ -105,5 +105,5 @@ function createRoutes(router) {
 }
 
 module.exports = {
-    createRoutes
+    createResources
 };

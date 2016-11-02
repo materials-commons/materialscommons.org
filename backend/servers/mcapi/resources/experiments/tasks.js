@@ -221,7 +221,7 @@ function* validateUpdateExperimentTaskTemplateArgs(updateArgs, params) {
     return null;
 }
 
-function createRoutes(router) {
+function createResources(router) {
     router.get('/projects/:project_id/experiments/:experiment_id/tasks/:task_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
         getExperimentTask);
@@ -246,5 +246,5 @@ function createRoutes(router) {
 }
 
 module.exports = {
-    createRoutes
+    createResources
 };

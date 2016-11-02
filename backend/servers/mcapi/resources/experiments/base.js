@@ -116,7 +116,7 @@ function *getFilesForExperiment(next) {
     yield next;
 }
 
-function createRoutes(router) {
+function createResources(router) {
     router.get('/projects/:project_id/experiments', ra.validateProjectAccess,
         getAllExperimentsForProject);
     router.get('/projects/:project_id/experiments/:experiment_id',
@@ -131,5 +131,5 @@ function createRoutes(router) {
 }
 
 module.exports = {
-    createRoutes
+    createResources
 };
