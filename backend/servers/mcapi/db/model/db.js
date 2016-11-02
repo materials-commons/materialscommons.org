@@ -38,7 +38,7 @@ function *insert(table, json, options) {
     }
 }
 
-module.export = {
+module.exports = {
     insert: insert,
     update: update,
     updateAll: updateAll
