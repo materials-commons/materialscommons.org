@@ -1,4 +1,5 @@
 const files = require('../db/model/files');
+const check = require('../db/model/check');
 const parse = require('co-body');
 const httpStatus = require('http-status');
 
@@ -15,7 +16,7 @@ function* getList(next) {
 }
 
 function* getVersions(next) {
-    if (yield files.isInProject(this.params.project_id, this.params.file_id)) {
+    if (yield check.fileInProject(this.params.file_id, this.params.project_id)) {
         let rv = yield files.getVersions(this.params.file_id);
         if (rv.error) {
             this.status = httpStatus.BAD_REQUEST;

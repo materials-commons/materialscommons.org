@@ -1,5 +1,5 @@
 const users = require('../db/model/users');
-const experiments = require('../db/model/experiments');
+const check = require('../db/model/check');
 const schema = require('../schema');
 const parse = require('co-body');
 const status = require('http-status');
@@ -145,7 +145,7 @@ function* validateUserSettingsArgs(args, userId) {
         return {error: `Bad argument for default_project`};
     }
 
-    let isValidProject = yield users.userHasProjectAccess(userId, args.default_project);
+    let isValidProject = yield check.userHasProjectAccess(userId, args.default_project);
     if (!isValidProject) {
         return {error: `No such project: ${args.default_project}`};
     }
@@ -155,7 +155,7 @@ function* validateUserSettingsArgs(args, userId) {
     }
 
     if (args.default_experiment) {
-        let experimentInProject = yield experiments.experimentExistsInProject(args.default_project, args.default_experiment);
+        let experimentInProject = yield check.experimentExistsInProject(args.default_project, args.default_experiment);
         if (!experimentInProject) {
             return {error: `No such experiment ${args.default_experiment} in project ${args.default_project}`};
         }

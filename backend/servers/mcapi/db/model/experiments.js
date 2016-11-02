@@ -167,26 +167,6 @@ function* updateTask(taskID, updateArgs) {
     return yield getTask(taskID);
 }
 
-function* experimentExistsInProject(projectID, experimentID) {
-    let rql = r.table('project2experiment').getAll([projectID, experimentID], {index: 'project_experiment'});
-    let matches = yield dbExec(rql);
-    return matches.length !== 0;
-}
-
-function* experimentTaskExistsInExperiment(experimentID, experimentTaskID) {
-    let rql = r.table('experiment2experimenttask')
-        .getAll([experimentID, experimentTaskID], {index: 'experiment_experiment_task'});
-    let matches = yield dbExec(rql);
-    return matches.length !== 0;
-}
-
-function* experimentNoteExistsInExperiment(experimentID, experimentNoteID) {
-    let rql = r.table('experiment2experimentnote')
-        .getAll([experimentID, experimentNoteID], {index: 'experiment_experiment_note'});
-    let matches = yield dbExec(rql);
-    return matches.length !== 0;
-}
-
 function* deleteTask(experimentID, taskID) {
     yield r.table('experiment2experimenttask').getAll([experimentID, taskID]).delete();
     let old = yield r.table('experimenttasks').get(taskID).delete({returnChanges: true});
@@ -224,12 +204,6 @@ function* updateTasksAboveDeleted(experimentID, parentID, index) {
     yield dbExec(updateRql);
 }
 
-function* taskIsUsingProcess(taskID) {
-    let rql = r.table('experimenttasks').get(taskID);
-    let task = yield dbExec(rql);
-    return task.process_id !== '';
-}
-
 function* getExperimentNote(noteID) {
     let rql = r.table('experimentnotes').get(noteID);
     let note = yield dbExec(rql);
@@ -254,12 +228,6 @@ function* deleteExperimentNote(experimentID, noteID) {
         .getAll([experimentID, noteID], {index: 'experiment_experiment_note'}).delete();
     let old = yield r.table('experimentnotes').get(noteID).delete({returnChanges: true});
     return {val: old.changes[0].old_val};
-}
-
-function* templateExists(templateId) {
-    let rql = r.table('templates').getAll(templateId);
-    let matches = yield dbExec(rql);
-    return matches.length !== 0;
 }
 
 function* addTemplateToTask(projectId, experimentId, taskId, templateId, owner) {
@@ -378,17 +346,6 @@ function* removeExistingExperimentSampleEntries(experimentId, samples) {
     return samples;
 }
 
-function* isTemplateForTask(templateId, taskId) {
-    let rql = r.table('experimenttasks').get(taskId);
-    let task = yield dbExec(rql);
-    return task.template_id === templateId;
-}
-
-function* isTemplateForProcess(templateId, processId) {
-    let process = yield r.table('processes').get(processId);
-    return process.template_id === templateId;
-}
-
 function* getTemplate(templateId) {
     let rql = r.table('templates').get(templateId);
     return yield dbExec(rql);
@@ -420,39 +377,6 @@ function* deleteSamplesFromExperiment(experimentId, processId, sampleIds) {
     return {val: sampleIds};
 }
 
-function* allSamplesInExperiment(experimentId, sampleIds) {
-    let indexArgs = sampleIds.map((sampleId) => [experimentId, sampleId]);
-    let samples = yield r.table('experiment2sample').getAll(r.args(indexArgs), {index: 'experiment_sample'});
-    return samples.length === sampleIds.length;
-}
-
-function* allFilesInExperiment(experimentId, fileIds) {
-    let indexArgs = fileIds.map((fileId) => [experimentId, fileId]);
-    let files = yield r.table('experiment2datafile').getAll(r.args(indexArgs), {index: 'experiment_datafile'});
-    return files.length === fileIds.length;
-}
-
-function* allProcessesInExperiment(experimentId, processIds) {
-    let indexArgs = processIds.map((id) => [experimentId, id]);
-    let processes = yield r.table('experiment2process').getAll(r.args(indexArgs), {index: 'experiment_process'});
-    return processes.length === processIds.length;
-}
-
-function* sampleInExperiment(experimentId, sampleId) {
-    let samples = yield r.table('experiment2sample').getAll([experimentId, sampleId], {index: 'experiment_sample'});
-    return samples.length !== 0;
-}
-
-function* processInExperiment(experimentId, processId) {
-    let processes = yield r.table('experiment2process').getAll([experimentId, processId], {index: 'experiment_process'});
-    return processes.length !== 0;
-}
-
-function* fileInProject(fileId, projectId) {
-    let files = yield r.table('project2datafile').getAll([projectId, fileId], {index: 'project_datafile'});
-    return files.length !== 0;
-}
-
 function* getProcessesForExperiment(experimentId) {
     let rql = commonQueries.processDetailsRql(r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'})
         .eqJoin('process_id', r.table('processes')).zip(), r);
@@ -467,19 +391,8 @@ function* getFilesForExperiment(experimentId) {
     return {val: files};
 }
 
-function* experimentHasDataset(experimentId, datasetId) {
-    let datasets = yield r.table('experiment2dataset').getAll([experimentId, datasetId], {index: 'experiment_dataset'});
-    return datasets.length !== 0;
-}
 
-function* taskProcessIsUnused(taskId) {
-    let task = yield r.table('experimenttasks').get(taskId);
-    if (task.process_id === '') {
-        return true;
-    }
 
-    return yield processCommon.processIsUnused(task.process_id);
-}
 
 
 module.exports = {
@@ -490,33 +403,18 @@ module.exports = {
     createTask,
     getTask,
     updateTask,
-    experimentExistsInProject,
-    experimentTaskExistsInExperiment,
-    experimentNoteExistsInExperiment,
     deleteTask,
-    taskIsUsingProcess,
     getExperimentNote,
     createExperimentNote,
     updateExperimentNote,
     deleteExperimentNote,
-    templateExists,
     addTemplateToTask,
     updateTaskTemplate,
-    isTemplateForTask,
-    isTemplateForProcess,
     getTemplate,
     addSamples,
     deleteSamplesFromExperiment,
-    allSamplesInExperiment,
-    allFilesInExperiment,
-    allProcessesInExperiment,
-    sampleInExperiment,
-    processInExperiment,
-    fileInProject,
     getProcessesForExperiment,
     getFilesForExperiment,
-    experimentHasDataset,
-    taskProcessIsUnused,
     addProcessFromTemplate,
     updateProcess
 };

@@ -30,11 +30,6 @@ function* createProcessFromTemplate(projectId, templateId, owner) {
     return yield getProcess(procId);
 }
 
-function* processTemplateExists(templateId) {
-    let templates = yield r.table('templates').getAll(templateId);
-    return templates.length !== 0;
-}
-
 function* updateProcess(processId, updateArgs) {
     if (updateArgs.properties.length) {
         let errors = yield processCommon.updateProperties(updateArgs.properties);
@@ -156,7 +151,6 @@ module.exports = {
     getProjectProcesses,
     getProcessTemplates,
     createProcessFromTemplate,
-    processTemplateExists,
     updateProcess,
     deleteProcess,
     datasetsForProcess,
