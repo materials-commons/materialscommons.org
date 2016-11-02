@@ -26,28 +26,35 @@ function create() {
         ra.validateProjectAccess, ra.validateDirectoryInProject, directories.remove);
 
     router.get('/projects/:project_id/processes', ra.validateProjectAccess, processes.getProjectProcesses);
-    router.get('/projects/:project_id/processes/:process_id', ra.validateProjectAccess, processes.getProcess);
+    router.get('/projects/:project_id/processes/:process_id',
+        ra.validateProjectAccess, ra.validateProcessInProject, processes.getProcess);
     router.post('/projects/:project_id/processes', ra.validateProjectAccess, processes.createProcessFromTemplate);
-    router.put('/projects/:project_id/processes/:process_id', ra.validateProjectAccess, processes.updateProcess);
-    router.delete('/projects/:project_id/processes/:process_id', ra.validateProjectAccess, processes.deleteProcess);
+    router.put('/projects/:project_id/processes/:process_id',
+        ra.validateProjectAccess, ra.validateProcessInProject, processes.updateProcess);
+    router.delete('/projects/:project_id/processes/:process_id',
+        ra.validateProjectAccess, ra.validateProcessInProject, processes.deleteProcess);
 
     router.get('/templates', processes.getProcessTemplates);
 
     router.post('/projects/:project_id/samples', ra.validateProjectAccess, samples.createSamples);
     router.get('/projects/:project_id/samples', ra.validateProjectAccess, samples.getAllSamplesForProject);
-    router.get('/projects/:project_id/samples/:sample_id', ra.validateProjectAccess, samples.getSampleForProject);
-    //router.put('/projects/:project_id/samples/:sample_id', ra.validateProjectAccess, samples.updateSample);
+    router.get('/projects/:project_id/samples/:sample_id',
+        ra.validateProjectAccess, ra.validateSampleInProject, samples.getSampleForProject);
     router.put('/projects/:project_id/samples', ra.validateProjectAccess, samples.updateSamples);
     router.put('/projects/:project_id/samples/:sample_id/files',
         ra.validateProjectAccess, ra.validateSampleInProject, samples.updateSampleFiles);
     router.post('/projects/:project_id/samples/measurements', ra.validateProjectAccess, samples.addMeasurements);
     router.put('/projects/:project_id/samples/measurements', ra.validateProjectAccess, samples.updateMeasurements);
 
-    router.get('/projects/:project_id/files/:file_id', ra.validateProjectAccess, files.get);
-    router.get('/projects/:project_id/files/:file_id/versions', ra.validateProjectAccess, files.getVersions);
-    router.put('/projects/:project_id/files/:file_id', ra.validateProjectAccess, files.update);
+    router.get('/projects/:project_id/files/:file_id',
+        ra.validateProjectAccess, ra.validateFileInProject, files.get);
+    router.get('/projects/:project_id/files/:file_id/versions',
+        ra.validateProjectAccess, ra.validateFileInProject, files.getVersions);
+    router.put('/projects/:project_id/files/:file_id',
+        ra.validateProjectAccess, ra.validateFileInProject, files.update);
     router.post('/projects/:project_id/files', ra.validateProjectAccess, files.getList);
-    router.delete('/projects/:project_id/files/:file_id', ra.validateProjectAccess, files.deleteFile);
+    router.delete('/projects/:project_id/files/:file_id',
+        ra.validateProjectAccess, ra.validateFileInProject, files.deleteFile);
     router.put('/projects/:project_id/files_by_path', ra.validateProjectAccess, files.byPath);
 
     router.get('/projects/:project_id/shares', ra.validateProjectAccess, shares.getList);
@@ -55,41 +62,67 @@ function create() {
     router.delete('/projects/:project_id/shares/:share_id', ra.validateProjectAccess, shares.remove);
 
     router.get('/projects/:project_id/experiments', ra.validateProjectAccess, experiments.getAllExperimentsForProject);
-    router.get('/projects/:project_id/experiments/:experiment_id', ra.validateProjectAccess, experiments.getExperiment);
+    router.get('/projects/:project_id/experiments/:experiment_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experiments.getExperiment);
 
     router.post('/projects/:project_id/experiments', ra.validateProjectAccess, experiments.createExperiment);
-    router.delete('/projects/:project_id/experiments/:experiment_id', ra.validateProjectAccess, experiments.deleteExperiment);
-    router.put('/projects/:project_id/experiments/:experiment_id', ra.validateProjectAccess, experiments.updateExperiment);
+    router.delete('/projects/:project_id/experiments/:experiment_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experiments.deleteExperiment);
+    router.put('/projects/:project_id/experiments/:experiment_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experiments.updateExperiment);
 
-    router.get('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', ra.validateProjectAccess, experiments.getExperimentTask);
-    router.post('/projects/:project_id/experiments/:experiment_id/tasks', ra.validateProjectAccess, experiments.createExperimentTask);
-    router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', ra.validateProjectAccess, experiments.createExperimentTask);
-    router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', ra.validateProjectAccess, experiments.updateExperimentTask);
-    router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id/template', ra.validateProjectAccess, experiments.updateExperimentTaskTemplate);
-    router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id/template/:template_id', ra.validateProjectAccess, experiments.addExperimentTaskTemplate);
-    router.delete('/projects/:project_id/experiments/:experiment_id/tasks/:task_id', ra.validateProjectAccess, experiments.deleteExperimentTask);
+    router.get('/projects/:project_id/experiments/:experiment_id/tasks/:task_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment, experiments.getExperimentTask);
+    router.post('/projects/:project_id/experiments/:experiment_id/tasks',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experiments.createExperimentTask);
+    router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment, experiments.createExperimentTask);
+    router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment, experiments.updateExperimentTask);
+    router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id/template',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment, experiments.updateExperimentTaskTemplate);
+    router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id/template/:template_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment, ra.validateTemplateExists,
+        experiments.addExperimentTaskTemplate);
+    router.delete('/projects/:project_id/experiments/:experiment_id/tasks/:task_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment, experiments.deleteExperimentTask);
 
-    router.get('/projects/:project_id/experiments/:experiment_id/notes', ra.validateProjectAccess, experiments.getNotesForExperiment);
-    router.get('/projects/:project_id/experiments/:experiment_id/notes/:note_id', ra.validateProjectAccess, experiments.getExperimentNote);
-    router.delete('/projects/:project_id/experiments/:experiment_id/notes/:note_id', ra.validateProjectAccess, experiments.deleteExperimentNote);
-    router.put('/projects/:project_id/experiments/:experiment_id/notes/:note_id', ra.validateProjectAccess, experiments.updateExperimentNote);
-    router.post('/projects/:project_id/experiments/:experiment_id/notes', ra.validateProjectAccess, experiments.createExperimentNote);
+    //router.get('/projects/:project_id/experiments/:experiment_id/notes',
+    //    ra.validateProjectAccess, ra.validateExperimentInProject, experiments.getNotesForExperiment);
+    //router.get('/projects/:project_id/experiments/:experiment_id/notes/:note_id',
+    //    ra.validateProjectAccess, experiments.getExperimentNote);
+    router.delete('/projects/:project_id/experiments/:experiment_id/notes/:note_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateNoteInExperiment, experiments.deleteExperimentNote);
+    router.put('/projects/:project_id/experiments/:experiment_id/notes/:note_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateNoteInExperiment, experiments.updateExperimentNote);
+    router.post('/projects/:project_id/experiments/:experiment_id/notes',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experiments.createExperimentNote);
 
-    router.post('/projects/:project_id/experiments/:experiment_id/samples', ra.validateProjectAccess, experimentSamples.addSamplesToExperiment);
-    router.put('/projects/:project_id/experiments/:experiment_id/samples', ra.validateProjectAccess, experimentSamples.updateExperimentSamples);
-    router.get('/projects/:project_id/experiments/:experiment_id/samples', ra.validateProjectAccess, experimentSamples.getSamplesForExperiment);
-    router.post('/projects/:project_id/experiments/:experiment_id/samples/delete', ra.validateProjectAccess, experimentSamples.deleteSamplesFromExperiment);
-    router.post('/projects/:project_id/experiments/:experiment_id/samples/measurements', ra.validateProjectAccess, experimentSamples.addSamplesMeasurements);
-    router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements', ra.validateProjectAccess, experimentSamples.updateSamplesMeasurements);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experimentSamples.addSamplesToExperiment);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experimentSamples.updateExperimentSamples);
+    router.get('/projects/:project_id/experiments/:experiment_id/samples',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experimentSamples.getSamplesForExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples/delete',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experimentSamples.deleteSamplesFromExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples/measurements',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experimentSamples.addSamplesMeasurements);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experimentSamples.updateSamplesMeasurements);
 
-    router.get('/projects/:project_id/experiments/:experiment_id/processes', ra.validateProjectAccess, experiments.getProcessesForExperiment);
-    router.post('/projects/:project_id/experiments/:experiment_id/processes/templates/:template_id', ra.validateProjectAccess,
-        ra.validateExperimentInProject, experiments.createProcessInExperimentFromTemplate);
-    router.put('/projects/:project_id/experiments/:experiment_id/processes/:process_id', ra.validateProjectAccess, experiments.updateExperimentProcess);
-    router.get('/projects/:project_id/experiments/:experiment_id/processes/:process_id', ra.validateProjectAccess,
-        ra.validateExperimentInProject, ra.validateProcessInExperiment, processes.getProcess);
+    router.get('/projects/:project_id/experiments/:experiment_id/processes',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experiments.getProcessesForExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/processes/templates/:template_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTemplateExists,
+        experiments.createProcessInExperimentFromTemplate);
+    router.put('/projects/:project_id/experiments/:experiment_id/processes/:process_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateProcessInExperiment, experiments.updateExperimentProcess);
+    router.get('/projects/:project_id/experiments/:experiment_id/processes/:process_id',
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateProcessInExperiment, processes.getProcess);
 
-    router.get('/projects/:project_id/experiments/:experiment_id/files', ra.validateProjectAccess, experiments.getFilesForExperiment);
+    router.get('/projects/:project_id/experiments/:experiment_id/files',
+        ra.validateProjectAccess, ra.validateExperimentInProject, experiments.getFilesForExperiment);
 
     router.get('/projects/:project_id/experiments/:experiment_id/datasets',
         ra.validateProjectAccess, ra.validateExperimentInProject, experimentDatasets.getDatasetsForExperiment);
@@ -99,7 +132,6 @@ function create() {
         experimentDatasets.getDatasetForExperiment);
 
     router.post('/projects/:project_id/experiments/:experiment_id/datasets',
-        ra.validateProjectAccess, ra.validateExperimentInProject,
         ra.validateProjectAccess, ra.validateExperimentInProject, experimentDatasets.createDatasetForExperiment);
 
     router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
@@ -114,8 +146,8 @@ function create() {
         experimentDatasets.unpublishDataset);
 
     router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/samples/:sample_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject,
-        ra.validateDatasetInExperiment, ra.validateSampleInExperiment, experimentDatasets.addSampleToDataset);
+        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
+        ra.validateSampleInExperiment, experimentDatasets.addSampleToDataset);
 
     router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/samples',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,

@@ -18,27 +18,17 @@ function* getAllExperimentsForProject(next) {
 }
 
 function* getExperiment(next) {
-    let isInProject = yield check.experimentExistsInProject(this.params.project_id, this.params.experiment_id);
-    if (!isInProject) {
+    let rv = yield experiments.get(this.params.experiment_id);
+    if (rv.error) {
+        this.body = rv;
         this.status = status.NOT_FOUND;
     } else {
-        let rv = yield experiments.get(this.params.experiment_id);
-        if (rv.error) {
-            this.body = rv;
-            this.status = status.NOT_FOUND;
-        } else {
-            this.body = rv.val;
-        }
+        this.body = rv.val;
     }
     yield next;
 }
 
 function* getExperimentTask(next) {
-    let isValidTask = yield validateTask(this.params.project_id, this.params.experiment_id, this.params.task_id);
-    if (!isValidTask) {
-        this.status = status.NOT_FOUND;
-        this.body = {error: 'Task not found'};
-    }
     let rv = yield experiments.getTask(this.params.task_id);
     if (rv.error) {
         this.body = rv;
@@ -55,14 +45,13 @@ function* validateTask(projectID, experimentID, taskID) {
         return false;
     }
 
-    return yield check.experimentTaskExistsInExperiment(experimentID, taskID);
+    return yield check.taskInExperiment(experimentID, taskID);
 }
 
 function* createExperimentTask(next) {
     let taskArgs = yield parse(this);
     schema.prepare(schema.createExperimentTask, taskArgs);
-    let errors = yield validateCreateTaskArgs(taskArgs, this.params.project_id,
-        this.params.experiment_id, this.params.task_id);
+    let errors = yield validateCreateTaskArgs(taskArgs, this.params.task_id);
     if (errors != null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
@@ -78,22 +67,13 @@ function* createExperimentTask(next) {
     yield next;
 }
 
-function* validateCreateTaskArgs(taskArgs, projectID, experimentID, taskID) {
+function* validateCreateTaskArgs(taskArgs, taskID) {
     let errors = yield schema.validate(schema.createExperimentTask, taskArgs);
     if (errors !== null) {
         return errors;
     }
 
-    let isInProject = yield check.experimentExistsInProject(projectID, experimentID);
-    if (!isInProject) {
-        return {error: 'Unknown experiment'};
-    }
-
     if (taskID) {
-        let isValidTaskId = yield check.experimentTaskExistsInExperiment(experimentID, taskID);
-        if (!isValidTaskId) {
-            return {error: 'Unknown experiment task'};
-        }
         taskArgs.parent_id = taskID;
     }
 
@@ -102,8 +82,7 @@ function* validateCreateTaskArgs(taskArgs, projectID, experimentID, taskID) {
 
 function* updateExperimentTask(next) {
     let updateTaskArgs = yield parse(this);
-    let errors = yield validateUpdateTaskArgs(updateTaskArgs, this.params.project_id,
-        this.params.experiment_id, this.params.task_id);
+    let errors = yield validateUpdateTaskArgs(updateTaskArgs, this.params.experiment_id, this.params.task_id);
     if (errors != null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
@@ -119,25 +98,15 @@ function* updateExperimentTask(next) {
     yield next;
 }
 
-function* validateUpdateTaskArgs(args, projectID, experimentID, taskID) {
+function* validateUpdateTaskArgs(args, experimentID, taskID) {
     schema.prepare(schema.updateExperimentTask, args);
     let errors = yield schema.validate(schema.updateExperimentTask, args);
     if (errors != null) {
         return errors;
     }
 
-    let isInProject = yield check.experimentExistsInProject(projectID, experimentID);
-    if (!isInProject) {
-        return {error: 'No such experiment'};
-    }
-
-    let isValidTaskId = yield check.experimentTaskExistsInExperiment(experimentID, taskID);
-    if (!isValidTaskId) {
-        return {error: 'Unknown experiment task'};
-    }
-
     if (args.parent_id !== '') {
-        let parentIdInExperiment = yield check.experimentTaskExistsInExperiment(experimentID, args.parent_id);
+        let parentIdInExperiment = yield check.taskInExperiment(experimentID, args.parent_id);
         if (!parentIdInExperiment) {
             return {error: 'Invalid parent task'};
         }
@@ -152,7 +121,7 @@ function* validateUpdateTaskArgs(args, projectID, experimentID, taskID) {
             return {error: 'Cannot swap task with itself'};
         }
 
-        let swapIdExistsInExperiment = yield check.experimentTaskExistsInExperiment(experimentID, args.swap.task_id);
+        let swapIdExistsInExperiment = yield check.taskInExperiment(experimentID, args.swap.task_id);
         if (!swapIdExistsInExperiment) {
             return {error: 'Invalid swap task'};
         }
@@ -162,7 +131,7 @@ function* validateUpdateTaskArgs(args, projectID, experimentID, taskID) {
 }
 
 function* deleteExperimentTask(next) {
-    let error = yield validateDeleteTask(this.params.project_id, this.params.experiment_id, this.params.task_id);
+    let error = yield validateDeleteTask(this.params.task_id);
     if (error != null) {
         this.body = error;
         this.status = status.BAD_REQUEST;
@@ -179,12 +148,7 @@ function* deleteExperimentTask(next) {
     yield next;
 }
 
-function* validateDeleteTask(projectID, experimentID, taskID) {
-    let errors = yield validateExperimentTaskAccess(projectID, experimentID, taskID);
-    if (errors !== null) {
-        return errors;
-    }
-
+function* validateDeleteTask(taskID) {
     let isUnused = yield check.taskProcessIsUnused(taskID);
     if (!isUnused) {
         return {error: `Cannot delete task associated with a process that is being used`};
@@ -543,7 +507,7 @@ function* getExperimentNote(next) {
 function* updateExperimentNote(next) {
     let noteArgs = yield parse(this);
     schema.prepare(schema.updateExperimentNote, noteArgs);
-    let errors = yield validateUpdateNoteArgs(noteArgs, this.params.project_id, this.params.experiment_id, this.params.note_id);
+    let errors = yield validateUpdateNoteArgs(noteArgs);
     if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
@@ -559,7 +523,7 @@ function* updateExperimentNote(next) {
     yield next;
 }
 
-function* validateUpdateNoteArgs(noteArgs, projectID, experimentID, noteID) {
+function* validateUpdateNoteArgs(noteArgs) {
     schema.prepare(schema.updateExperimentNote, noteArgs);
     let errors = yield schema.validate(schema.updateExperimentTask, noteArgs);
     if (errors != null) {
@@ -570,13 +534,13 @@ function* validateUpdateNoteArgs(noteArgs, projectID, experimentID, noteID) {
         return {error: 'At least a note or name field must be included'};
     }
 
-    return yield validateExperimentNoteAccess(projectID, experimentID, noteID);
+    return null;
 }
 
 function* createExperimentNote(next) {
     let noteArgs = yield parse(this);
     schema.prepare(schema.createExperimentNote, noteArgs);
-    let errors = yield validateCreateNoteArgs(noteArgs, this.params.project_id, this.params.experiment_id);
+    let errors = yield validateCreateNoteArgs(noteArgs);
     if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
@@ -592,7 +556,7 @@ function* createExperimentNote(next) {
     yield next;
 }
 
-function* validateCreateNoteArgs(noteArgs, projectID, experimentID) {
+function* validateCreateNoteArgs(noteArgs) {
     let errors = yield schema.validate(schema.createExperimentNote, noteArgs);
     if (errors !== null) {
         return errors;
@@ -602,118 +566,52 @@ function* validateCreateNoteArgs(noteArgs, projectID, experimentID) {
         noteArgs.note = 'Notes here...';
     }
 
-    return yield validateExperimentNoteAccess(projectID, experimentID);
+    return null;
 }
 
 function* deleteExperimentNote(next) {
-    let errors = yield validateExperimentNoteAccess(this.params.project_id, this.params.experiment_id, this.params.note_id);
-    if (errors != null) {
-        this.status = status.BAD_REQUEST;
-        this.body = errors;
+    let rv = yield experiments.deleteExperimentNote(this.params.note_id);
+    if (rv.error) {
+        this.status = status.NOT_ACCEPTABLE;
+        this.body = rv;
     } else {
-        let rv = yield experiments.deleteExperimentNote(this.params.note_id);
-        if (rv.error) {
-            this.status = status.NOT_ACCEPTABLE;
-            this.body = rv;
-        } else {
-            this.body = rv.val;
-        }
+        this.body = rv.val;
     }
     yield next;
 }
 
-///////////////////////////
-
-function* validateExperimentNoteAccess(projectID, experimentID, noteID) {
-    let isInProject = yield check.experimentExistsInProject(projectID, experimentID);
-    if (!isInProject) {
-        return {error: 'Unknown experiment'};
-    }
-
-    if (noteID) {
-        let isValidNoteId = yield check.experimentNoteExistsInExperiment(experimentID, noteID);
-        if (!isValidNoteId) {
-            return {error: 'Unknown experiment note'};
-        }
-    }
-
-    return null;
-}
-
-function* validateExperimentTaskAccess(projectID, experimentID, taskID) {
-    let isInProject = yield check.experimentExistsInProject(projectID, experimentID);
-    if (!isInProject) {
-        return {error: 'Unknown experiment'};
-    }
-
-    if (taskID) {
-        let isValidTaskId = yield check.experimentTaskExistsInExperiment(experimentID, taskID);
-        if (!isValidTaskId) {
-            return {error: 'Unknown experiment task'};
-        }
-    }
-
-    return null;
-}
-
 function *getProcessesForExperiment(next) {
-    let isInProject = yield check.experimentExistsInProject(this.params.project_id, this.params.experiment_id);
-    if (!isInProject) {
-        this.body = {error: `No such experiment`};
+    let rv = yield experiments.getProcessesForExperiment(this.params.experiment_id);
+    if (rv.error) {
         this.status = status.BAD_REQUEST;
+        this.body = rv;
     } else {
-        let rv = yield experiments.getProcessesForExperiment(this.params.experiment_id);
-        if (rv.error) {
-            this.status = status.BAD_REQUEST;
-            this.body = rv;
-        } else {
-            this.body = rv.val;
-        }
+        this.body = rv.val;
     }
     yield next;
 }
 
 function *getFilesForExperiment(next) {
-    let isInProject = yield check.experimentExistsInProject(this.params.project_id, this.params.experiment_id);
-    if (!isInProject) {
-        this.body = {error: `No such experiment`};
+    let rv = yield experiments.getFilesForExperiment(this.params.experiment_id);
+    if (rv.error) {
         this.status = status.BAD_REQUEST;
+        this.body = rv;
     } else {
-        let rv = yield experiments.getFilesForExperiment(this.params.experiment_id);
-        if (rv.error) {
-            this.status = status.BAD_REQUEST;
-            this.body = rv;
-        } else {
-            this.body = rv.val;
-        }
+        this.body = rv.val;
     }
     yield next;
 }
 
 function* createProcessInExperimentFromTemplate(next) {
-    let errors = yield validateCreateProcessInExperimentRequest(this.params.template_id);
-    if (errors != null) {
+    let rv = yield experiments.addProcessFromTemplate(this.params.project_id, this.params.experiment_id,
+        this.params.template_id, this.reqctx.user.id);
+    if (rv.error) {
         this.status = status.BAD_REQUEST;
-        this.body = errors;
+        this.body = rv;
     } else {
-        let rv = yield experiments.addProcessFromTemplate(this.params.project_id, this.params.experiment_id,
-            this.params.template_id, this.reqctx.user.id);
-        if (rv.error) {
-            this.status = status.BAD_REQUEST;
-            this.body = rv;
-        } else {
-            this.body = rv.val;
-        }
+        this.body = rv.val;
     }
     yield next;
-}
-
-function* validateCreateProcessInExperimentRequest(template_id) {
-    let templateExists = yield check.templateExists(template_id);
-    if (!templateExists) {
-        return {error: 'No such template'};
-    }
-    return null;
 }
 
 module.exports = {

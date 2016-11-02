@@ -24,13 +24,13 @@ function* experimentExistsInProject(projectID, experimentID) {
     return matches.length !== 0;
 }
 
-function* experimentTaskExistsInExperiment(experimentID, experimentTaskID) {
+function* taskInExperiment(experimentID, taskId) {
     let matches = yield r.table('experiment2experimenttask')
-        .getAll([experimentID, experimentTaskID], {index: 'experiment_experiment_task'});
+        .getAll([experimentID, taskId], {index: 'experiment_experiment_task'});
     return matches.length !== 0;
 }
 
-function* experimentNoteExistsInExperiment(experimentID, experimentNoteID) {
+function* noteInExperiment(experimentID, experimentNoteID) {
     let matches = yield r.table('experiment2experimentnote')
         .getAll([experimentID, experimentNoteID], {index: 'experiment_experiment_note'});
     return matches.length !== 0;
@@ -129,13 +129,18 @@ function* directoryInProject(projectId, directoryId) {
     return matches.length !== 0;
 }
 
+function* processInProject(projectId, processId) {
+    let matches = yield r.table('project2process').getAll([projectId, processId], {index: 'project_process'});
+    return matches.length !== 0;
+}
+
 module.exports = {
     allSamplesInDataset,
     allFilesInDataset,
     allProcessesInDataset,
     experimentExistsInProject,
-    experimentTaskExistsInExperiment,
-    experimentNoteExistsInExperiment,
+    taskInExperiment,
+    noteInExperiment,
     taskIsUsingProcess,
     templateExists,
     isTemplateForTask,
@@ -152,5 +157,6 @@ module.exports = {
     sampleHasPropertySet,
     allSamplesInProject,
     userHasProjectAccess,
-    directoryInProject
+    directoryInProject,
+    processInProject
 };

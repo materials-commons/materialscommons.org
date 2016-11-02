@@ -8,7 +8,7 @@ const _ = require('lodash');
 
 function* addSamplesToExperiment(next) {
     let addArgs = yield parse(this);
-    let errors = yield validateAddSamples(this.params.project_id, this.params.experiment_id, addArgs);
+    let errors = yield validateAddSamples(this.params.project_id, addArgs);
     if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
@@ -24,12 +24,7 @@ function* addSamplesToExperiment(next) {
     yield next;
 }
 
-function* validateAddSamples(projectId, experimentId, addArgs) {
-    let experimentInProject = yield check.experimentExistsInProject(projectId, experimentId);
-    if (!experimentInProject) {
-        return {error: 'No such experiment'};
-    }
-
+function* validateAddSamples(projectId, addArgs) {
     if (!validAddSampleArgs(addArgs)) {
         return {error: `Badly formed list of samples`};
     }
@@ -134,11 +129,6 @@ function* validateDeleteSamples(projectId, experimentId, args) {
 }
 
 function* validateSamples(projectId, experimentId, sampleIds) {
-    let isInProject = yield check.experimentExistsInProject(projectId, experimentId);
-    if (!isInProject) {
-        return {error: `No such experiment`};
-    }
-
     let allSamplesInProject = yield check.allSamplesInProject(projectId, sampleIds);
     if (!allSamplesInProject) {
         return {error: `Some samples are not in project`};
@@ -155,7 +145,7 @@ function* validateSamples(projectId, experimentId, sampleIds) {
 function* addSamplesMeasurements(next) {
     let addMeasurementsArgs = yield parse(this);
     schema.prepare(schema.addSamplesMeasurements, addMeasurementsArgs);
-    let errors = yield validateAddSamplesMeasurements(this.params.project_id, this.params.experiment_id, addMeasurementsArgs);
+    let errors = yield validateAddSamplesMeasurements(this.params.project_id, addMeasurementsArgs);
     if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
@@ -171,7 +161,7 @@ function* addSamplesMeasurements(next) {
     yield next;
 }
 
-function* validateAddSamplesMeasurements(projectId, experimentId, args) {
+function* validateAddSamplesMeasurements(projectId, args) {
     let errors = yield schema.validate(schema.addSamplesMeasurements, args);
     if (errors !== null) {
         return errors;
@@ -202,12 +192,6 @@ function* validateAddSamplesMeasurements(projectId, experimentId, args) {
         }
     }
 
-    // Need to validate that the process is in the project.
-
-    let isInProject = yield check.experimentExistsInProject(projectId, experimentId);
-    if (!isInProject) {
-        return {error: `No such experiment`};
-    }
     let allSampleIds = _.keys(sampleIds);
     let allSamplesInProject = yield check.allSamplesInProject(projectId, allSampleIds);
     if (!allSamplesInProject) {
@@ -219,7 +203,7 @@ function* validateAddSamplesMeasurements(projectId, experimentId, args) {
 
 function* updateSamplesMeasurements(next) {
     let updateMeasurementsArgs = yield parse(this);
-    let errors = yield validateUpdateSamplesMeasurements(this.params.project_id, this.params.experiment_id, updateMeasurementsArgs);
+    let errors = yield validateUpdateSamplesMeasurements(this.params.project_id, updateMeasurementsArgs);
     if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
@@ -235,23 +219,17 @@ function* updateSamplesMeasurements(next) {
     yield next;
 }
 
-function* validateUpdateSamplesMeasurements(projectId, experimentId, args) {
-    return yield validateAddSamplesMeasurements(projectId, experimentId, args); // Same as add for now
+function* validateUpdateSamplesMeasurements(projectId, args) {
+    return yield validateAddSamplesMeasurements(projectId, args); // Same as add for now
 }
 
 function* getSamplesForExperiment(next) {
-    let isInProject = yield check.experimentExistsInProject(this.params.project_id, this.params.experiment_id);
-    if (!isInProject) {
-        this.body = {error: `No such experiment`};
+    let rv = yield samples.getAllSamplesForExperiment(this.params.experiment_id);
+    if (rv.error) {
         this.status = status.BAD_REQUEST;
+        this.body = rv;
     } else {
-        let rv = yield samples.getAllSamplesForExperiment(this.params.experiment_id);
-        if (rv.error) {
-            this.status = status.BAD_REQUEST;
-            this.body = rv;
-        } else {
-            this.body = rv.val;
-        }
+        this.body = rv.val;
     }
     yield next;
 }
