@@ -1,6 +1,5 @@
-const samples = require('../db/model/samples');
-const experiments = require('../db/model/experiments');
 const processes = require('../db/model/processes');
+const check = require('../db/model/check');
 const schema = require('../schema');
 const status = require('http-status');
 const parse = require('co-body');
@@ -67,7 +66,7 @@ function* validateCreateProcessFromTemplate(templateArgs) {
         return {error: `template_id must be a string`};
     }
 
-    let found = yield processes.processTemplateExists(templateArgs.template_id);
+    let found = yield check.templateExists(templateArgs.template_id);
     if (!found) {
         return {error: `No such template ${templateArgs.template_id}`};
     }
@@ -123,9 +122,7 @@ function* updateProcess(next) {
 
 // =================================================================================================================
 // TODO: All the validate code below is shared with resources/experiments.js. It should be moved into a
-// common module. Also, the call experiments.fileInProject() has the call in the wrong module. It should be
-// extracted from the experiments module. All there is experiments.getTemplate() and processes.getTemplate()
-// that are exactly the same.
+// common module.
 
 function* validateUpdateProcess(updateArgs, params) {
     let errors = yield schema.validate(schema.updateProcess, updateArgs);
@@ -205,7 +202,7 @@ function* validateFile(projectId, file) {
         return {error: `Bad command '${file.command} for file ${file.id}`};
     }
 
-    let fileInProject = yield experiments.fileInProject(file.id, projectId);
+    let fileInProject = yield check.fileInProject(file.id, projectId);
     if (!fileInProject) {
         return {error: `File ${file.id} not in project ${projectId}`};
     }
@@ -227,12 +224,12 @@ function* validateSample(projectId, sample) {
         return {error: `A valid property set must be supplied`};
     }
 
-    let sampleInProject = yield samples.sampleInProject(projectId, sample.id);
+    let sampleInProject = yield check.sampleInProject(projectId, sample.id);
     if (!sampleInProject) {
         return {error: `Sample ${sample.id} not in project ${projectId}`}
     }
 
-    let sampleHasPropertySet = yield samples.sampleHasPropertySet(sample.id, sample.property_set_id);
+    let sampleHasPropertySet = yield check.sampleHasPropertySet(sample.id, sample.property_set_id);
     if (!sampleHasPropertySet) {
         return {error: `Sample ${sample.id} doesn't have property set ${sample.property_set_id}`};
     }

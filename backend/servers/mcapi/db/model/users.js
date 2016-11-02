@@ -53,11 +53,6 @@ function* updateUserSettings(userId, settings) {
     return {val: user};
 }
 
-function* userHasProjectAccess(userId, projectId) {
-    let accessEntries = yield r.table('access').getAll([userId, projectId], {index: 'user_project'});
-    return accessEntries.length !== 0;
-}
-
 function* createPasswordResetRequest(user) {
     let validate_uuid = yield r.uuid();
     return yield setUserPasswordResetFlag(user.id, validate_uuid);
@@ -116,7 +111,6 @@ module.exports = {
     },
     updateProjectFavorites,
     updateUserSettings,
-    userHasProjectAccess,
     createUnverifiedAccount,
     createPasswordResetRequest,
     getUserRegistrationFromUuid,

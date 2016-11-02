@@ -1,5 +1,5 @@
 const samples = require('../db/model/samples');
-const files = require('../db/model/files');
+const check = require('../db/model/check');
 const schema = require('../schema');
 const parse = require('co-body');
 const status = require('http-status');
@@ -16,7 +16,7 @@ function *getAllSamplesForProject(next) {
 }
 
 function *getSampleForProject(next) {
-    let isIn = yield samples.sampleInProject(this.params.project_id, this.params.sample_id);
+    let isIn = yield check.sampleInProject(this.params.project_id, this.params.sample_id);
     if (!isIn) {
         this.status = status.BAD_REQUEST;
         this.body = {error: `No such sample ${this.params.sample_id} in project ${this.params.project_id}`};
@@ -130,7 +130,7 @@ function* validateUpdateSamples(projectId, args) {
     }
 
     let sampleIds = args.samples.map((s) => s.id);
-    let allSamplesInProject = yield samples.allSamplesInProject(projectId, sampleIds);
+    let allSamplesInProject = yield check.allSamplesInProject(projectId, sampleIds);
 
     if (!allSamplesInProject) {
         return {error: `Some samples are not in project`};
@@ -192,7 +192,7 @@ function* validateAddMeasurements(projectId, args) {
     // Need to validate that the process is in the project.
 
     let allSampleIds = _.keys(sampleIds);
-    let allSamplesInProject = yield samples.allSamplesInProject(projectId, allSampleIds);
+    let allSamplesInProject = yield check.allSamplesInProject(projectId, allSampleIds);
     if (!allSamplesInProject) {
         return {error: `Some samples are not in project`};
     }
@@ -266,7 +266,7 @@ function* validateFile(projectId, file) {
         return {error: `Bad command '${file.command} for file ${file.id}`};
     }
 
-    let fileInProject = files.isInProject(file.id, projectId);
+    let fileInProject = check.fileInProject(file.id, projectId);
     if (!fileInProject) {
         return {error: `File ${file.id} not in project ${projectId}`};
     }

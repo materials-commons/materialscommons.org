@@ -1,6 +1,5 @@
 const experimentDatasets = require('../db/model/experiment-datasets');
-const experiments = require('../db/model/experiments');
-const samples = require('../db/model/samples');
+const check = require('../db/model/check');
 const schema = require('../schema');
 const parse = require('co-body');
 const status = require('http-status');
@@ -210,14 +209,14 @@ function* validateUpdateSamplesInDataset(experimentId, datasetId, sampleArgs) {
     }
 
     if (idsToAdd.length) {
-        let allInExperiment = yield experiments.allSamplesInExperiment(experimentId, idsToAdd);
+        let allInExperiment = yield check.allSamplesInExperiment(experimentId, idsToAdd);
         if (!allInExperiment) {
             return {error: `Some samples not in experiment`};
         }
     }
 
     if (idsToDelete.length) {
-        let allInDataset = yield experimentDatasets.allSamplesInDataset(datasetId, idsToDelete);
+        let allInDataset = yield check.allSamplesInDataset(datasetId, idsToDelete);
         if (!allInDataset) {
             return {error: `Some samples not in dataset`};
         }
@@ -270,14 +269,14 @@ function* validateUpdateFilesInDataset(experimentId, datasetId, filesArgs) {
     }
 
     if (idsToAdd.length) {
-        let allInExperiment = yield experiments.allFilesInExperiment(experimentId, idsToAdd);
+        let allInExperiment = yield check.allFilesInExperiment(experimentId, idsToAdd);
         if (!allInExperiment) {
             return {error: `Some files not in experiment`};
         }
     }
 
     if (idsToDelete.length) {
-        let allInDataset = yield experimentDatasets.allFilesInDataset(datasetId, idsToDelete);
+        let allInDataset = yield check.allFilesInDataset(datasetId, idsToDelete);
         if (!allInDataset) {
             return {error: `Some files not in dataset`};
         }
@@ -330,14 +329,14 @@ function* validateUpdateProcessesInDataset(experimentId, datasetId, processArgs)
     }
 
     if (idsToAdd.length) {
-        let allInExperiment = yield experiments.allProcessesInExperiment(experimentId, idsToAdd);
+        let allInExperiment = yield check.allProcessesInExperiment(experimentId, idsToAdd);
         if (!allInExperiment) {
             return {error: `Some processes not in experiment`};
         }
     }
 
     if (idsToDelete.length) {
-        let allInDataset = yield experimentDatasets.allProcessesInDataset(datasetId, idsToDelete);
+        let allInDataset = yield check.allProcessesInDataset(datasetId, idsToDelete);
         if (!allInDataset) {
             return {error: `Some processes not in dataset`};
         }

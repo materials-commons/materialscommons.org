@@ -180,24 +180,6 @@ function* updateProcessesInDataset(datasetId, processesToAdd, processesToDelete)
     return yield getDataset(datasetId);
 }
 
-function* allSamplesInDataset(datasetId, sampleIds) {
-    let indexArgs = sampleIds.map(sid => [datasetId, sid]);
-    let samples = yield r.table('dataset2sample').getAll(r.args(indexArgs), {index: 'dataset_sample'});
-    return samples.length === sampleIds.length;
-}
-
-function* allFilesInDataset(datasetId, fileIds) {
-    let indexArgs = fileIds.map(fid => [datasetId, fid]);
-    let files = yield r.table('dataset2datafile').getAll(r.args(indexArgs), {index: 'dataset_datafile'});
-    return files.length === fileIds.length;
-}
-
-function* allProcessesInDataset(datasetId, processIds) {
-    let indexArgs = processIds.map(id => [datasetId, id]);
-    let processes = yield r.table('dataset2process').getAll(r.args(indexArgs), {index: 'dataset_process'});
-    return processes.length === processIds.length;
-}
-
 function* updateDataset(datasetId, datasetArgs) {
     yield r.table('datasets').get(datasetId).update(datasetArgs);
     return yield getDataset(datasetId);
@@ -507,9 +489,6 @@ module.exports = {
     getSamplesForDataset,
     updateFilesInDataset,
     updateProcessesInDataset,
-    allSamplesInDataset,
-    allFilesInDataset,
-    allProcessesInDataset,
     updateDataset,
     publishDataset,
     unpublishDataset

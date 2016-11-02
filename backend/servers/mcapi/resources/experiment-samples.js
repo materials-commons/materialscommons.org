@@ -1,5 +1,6 @@
 const samples = require('../db/model/samples');
 const experiments = require('../db/model/experiments');
+const check = require('../db/model/check');
 const schema = require('../schema');
 const parse = require('co-body');
 const status = require('http-status');
@@ -24,7 +25,7 @@ function* addSamplesToExperiment(next) {
 }
 
 function* validateAddSamples(projectId, experimentId, addArgs) {
-    let experimentInProject = yield experiments.experimentExistsInProject(projectId, experimentId);
+    let experimentInProject = yield check.experimentExistsInProject(projectId, experimentId);
     if (!experimentInProject) {
         return {error: 'No such experiment'};
     }
@@ -33,7 +34,7 @@ function* validateAddSamples(projectId, experimentId, addArgs) {
         return {error: `Badly formed list of samples`};
     }
 
-    let allSamplesInProject = yield samples.allSamplesInProject(projectId, addArgs.samples);
+    let allSamplesInProject = yield check.allSamplesInProject(projectId, addArgs.samples);
     if (!allSamplesInProject) {
         return {error: `Some samples are not in project`};
     }
@@ -133,17 +134,17 @@ function* validateDeleteSamples(projectId, experimentId, args) {
 }
 
 function* validateSamples(projectId, experimentId, sampleIds) {
-    let isInProject = yield experiments.experimentExistsInProject(projectId, experimentId);
+    let isInProject = yield check.experimentExistsInProject(projectId, experimentId);
     if (!isInProject) {
         return {error: `No such experiment`};
     }
 
-    let allSamplesInProject = yield samples.allSamplesInProject(projectId, sampleIds);
+    let allSamplesInProject = yield check.allSamplesInProject(projectId, sampleIds);
     if (!allSamplesInProject) {
         return {error: `Some samples are not in project`};
     }
 
-    let allSamplesInExperiment = yield experiments.allSamplesInExperiment(experimentId, sampleIds);
+    let allSamplesInExperiment = yield check.allSamplesInExperiment(experimentId, sampleIds);
     if (!allSamplesInExperiment) {
         return {error: `Some samples are not in experiment`};
     }
@@ -203,12 +204,12 @@ function* validateAddSamplesMeasurements(projectId, experimentId, args) {
 
     // Need to validate that the process is in the project.
 
-    let isInProject = yield experiments.experimentExistsInProject(projectId, experimentId);
+    let isInProject = yield check.experimentExistsInProject(projectId, experimentId);
     if (!isInProject) {
         return {error: `No such experiment`};
     }
     let allSampleIds = _.keys(sampleIds);
-    let allSamplesInProject = yield samples.allSamplesInProject(projectId, allSampleIds);
+    let allSamplesInProject = yield check.allSamplesInProject(projectId, allSampleIds);
     if (!allSamplesInProject) {
         return {error: `Some samples are not in project`};
     }
@@ -239,7 +240,7 @@ function* validateUpdateSamplesMeasurements(projectId, experimentId, args) {
 }
 
 function* getSamplesForExperiment(next) {
-    let isInProject = yield experiments.experimentExistsInProject(this.params.project_id, this.params.experiment_id);
+    let isInProject = yield check.experimentExistsInProject(this.params.project_id, this.params.experiment_id);
     if (!isInProject) {
         this.body = {error: `No such experiment`};
         this.status = status.BAD_REQUEST;

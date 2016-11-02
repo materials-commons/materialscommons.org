@@ -285,12 +285,6 @@ function *moveFile(fileID, projectID, moveArgs) {
     return {val: true};
 }
 
-function* isInProject(projectID, fileID) {
-    let rql = r.table('project2datafile').getAll([projectID, fileID], {index: 'project_datafile'});
-    let matches = yield runQuery(rql);
-    return matches.length !== 0;
-}
-
 function* getVersions(fileID) {
     // get original file
     let f = yield runQuery(r.table('datafiles').get(fileID));
@@ -337,6 +331,5 @@ module.exports = {
     update,
     deleteFile,
     byPath,
-    isInProject,
     getVersions
 };
