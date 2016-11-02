@@ -158,7 +158,7 @@ function* getProcess(next) {
     yield next;
 }
 
-function createRoutes(router) {
+function createResources(router) {
     router.get('/projects/:project_id/experiments/:experiment_id/processes',
         ra.validateProjectAccess, ra.validateExperimentInProject, getProcessesForExperiment);
     router.post('/projects/:project_id/experiments/:experiment_id/processes/templates/:template_id',
@@ -173,5 +173,5 @@ function createRoutes(router) {
 }
 
 module.exports = {
-    createRoutes
+    createResources
 };

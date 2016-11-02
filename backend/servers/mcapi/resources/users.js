@@ -6,7 +6,8 @@ const status = require('http-status');
 const _ = require('lodash');
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
-let mailTransport = mailTransportConfig();
+const mailTransport = mailTransportConfig();
+const ra = require('./resource-access');
 
 function* updateProjectFavorites(next) {
     let attrs = yield parse(this);
@@ -240,13 +241,16 @@ function mailTransportConfig() {
     }
 }
 
+function createResources(router) {
+    router.put('/users/:project_id', ra.validateProjectAccess, updateProjectFavorites);
+    router.put('/users', users.updateUserSettings);
+    router.get('/users/validate/:validation_id', getUserRegistrationFromUuid);
+    router.get('/users/rvalidate/:validation_id', getUserForPasswordResetFromUuid);
+    router.put('/users/:user_id/clear-reset-password', clearUserResetPasswordFlag);
+    router.post('/accounts', createAccount);
+    router.post('/accounts/reset', resetPasswordGenerateLink);
+}
+
 module.exports = {
-    updateProjectFavorites,
-    updateUserSettings,
-    createAccount,
-    resetPasswordGenerateLink,
-    getUserRegistrationFromUuid,
-    getUserForPasswordResetFromUuid,
-    setUserResetPasswordFlag,
-    clearUserResetPasswordFlag
+    createResources
 };

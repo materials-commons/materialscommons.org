@@ -382,7 +382,7 @@ function* unpublishDataset(next) {
     yield next;
 }
 
-function createRoutes(router) {
+function createResources(router) {
     router.get('/projects/:project_id/experiments/:experiment_id/datasets',
         ra.validateProjectAccess, ra.validateExperimentInProject, getDatasetsForExperiment);
 
@@ -430,5 +430,5 @@ function createRoutes(router) {
 }
 
 module.exports = {
-    createRoutes
+    createResources
 };

@@ -8,7 +8,7 @@ require('./init')();
 
 var users = require('./db/model/users');
 var apikey = require('../lib/apikey')(users);
-var resources = require('./resources').create();
+var resources = require('./resources').createResources();
 var access = require('./db/model/access');
 var r = require('./db/r');
 

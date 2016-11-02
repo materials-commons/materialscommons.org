@@ -4,6 +4,7 @@ const schema = require('../schema');
 const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
+const ra = require('./resource-access');
 
 function *getAllSamplesForProject(next) {
     let rv = yield samples.getAllSamplesForProject(this.params.project_id);
@@ -268,13 +269,18 @@ function* validateFile(projectId, file) {
     return null;
 }
 
+function createResources(router) {
+    router.post('/projects/:project_id/samples', ra.validateProjectAccess, createSamples);
+    router.get('/projects/:project_id/samples', ra.validateProjectAccess, getAllSamplesForProject);
+    router.get('/projects/:project_id/samples/:sample_id',
+        ra.validateProjectAccess, ra.validateSampleInProject, getSampleForProject);
+    router.put('/projects/:project_id/samples', ra.validateProjectAccess, updateSamples);
+    router.put('/projects/:project_id/samples/:sample_id/files',
+        ra.validateProjectAccess, ra.validateSampleInProject, updateSampleFiles);
+    router.post('/projects/:project_id/samples/measurements', ra.validateProjectAccess, addMeasurements);
+    router.put('/projects/:project_id/samples/measurements', ra.validateProjectAccess, updateMeasurements);
+}
+
 module.exports = {
-    getAllSamplesForProject,
-    getSampleForProject,
-    createSamples,
-    updateSample,
-    updateSamples,
-    addMeasurements,
-    updateMeasurements,
-    updateSampleFiles
+    createResources
 };
