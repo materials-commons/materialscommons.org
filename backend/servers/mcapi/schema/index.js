@@ -1,9 +1,9 @@
 const Schema = require('js-data-schema');
 const schema = new Schema();
 
-//let schemaRules = require('./schema-rules')(model);
+let schemaRules = require('./schema-rules');
 //let dataTypes = require('./schema-data-types');
-//defineRules();
+defineRules();
 
 let directorySchema = require('./directory-schema')(schema);
 let experimentSchema = require('./experiment-schema')(schema);
@@ -40,31 +40,55 @@ function defineRules() {
     schema.defineRule('mustNotExistInParentDirectory', schemaRules.mustNotExistInParentDirectory, true);
 }
 
+const createSamples = samplesSchema.defineCreateSamplesSchema();
+const addSamplesMeasurements = samplesSchema.defineAddSamplesMeasurementsSchema();
+const samplesMeasurement = samplesSchema.defineSamplesMeasurementSchema();
+const measurement = samplesSchema.defineMeasurementSchema();
+const processes = processSchema.defineCreateProcessSchema();
+const updateProcess = processSchema.defineUpdateProcessSchema();
+const createDirectory = directorySchema.defineCreateDirectorySchema();
+const renameDirectory = directorySchema.defineRenameDirectorySchema();
+const moveDirectory = directorySchema.defineMoveDirectorySchema();
+const createExperiment = experimentSchema.defineCreateExperimentSchema();
+const updateExperiment = experimentSchema.defineUpdateExperimentSchema();
+const createExperimentTask = experimentSchema.defineCreateExperimentTaskSchema();
+const updateExperimentTask = experimentSchema.defineUpdateExperimentTaskSchema();
+const createExperimentNote = experimentSchema.defineCreateExperimentNoteSchema();
+const updateExperimentNote = experimentSchema.defineUpdateExperimentNoteSchema();
+const updateExperimentTaskTemplateProps = experimentSchema.defineUpdateExperimentTaskTemplatePropsSchema();
+const templateProperty = experimentSchema.defineTemplatePropertySchema();
+const templateCommand = experimentSchema.defineTemplateCommandSchema();
+const userAccountSchema = userSchema.defineUserAccountSchema();
+const createDatasetSchema = datasetSchema.defineCreateDatasetSchema();
+const updateDatasetSchema = datasetSchema.defineUpdateDatasetSchema();
+const datasetAuthor = datasetSchema.defineDatasetAuthorSchema();
+const datasetPaper = datasetSchema.defineDatasetPaperSchema();
+
 module.exports = {
-    createSamples: samplesSchema.defineCreateSamplesSchema(),
-    addSamplesMeasurements: samplesSchema.defineAddSamplesMeasurementsSchema(),
-    samplesMeasurement: samplesSchema.defineSamplesMeasurementSchema(),
-    measurement: samplesSchema.defineMeasurementSchema(),
-    processes: processSchema.defineCreateProcessSchema(),
-    updateProcess: processSchema.defineUpdateProcessSchema(),
+    createSamples,
+    addSamplesMeasurements,
+    samplesMeasurement,
+    measurement,
+    processes,
+    updateProcess,
     //measurements: measurementsSchema.defineMeasurementsSchema(),
-    createDirectory: directorySchema.defineCreateDirectorySchema(),
-    renameDirectory: directorySchema.defineRenameDirectorySchema(),
-    moveDirectory: directorySchema.defineMoveDirectorySchema(),
-    createExperiment: experimentSchema.defineCreateExperimentSchema(),
-    updateExperiment: experimentSchema.defineUpdateExperimentSchema(),
-    createExperimentTask: experimentSchema.defineCreateExperimentTaskSchema(),
-    updateExperimentTask: experimentSchema.defineUpdateExperimentTaskSchema(),
-    createExperimentNote: experimentSchema.defineCreateExperimentNoteSchema(),
-    updateExperimentNote: experimentSchema.defineUpdateExperimentNoteSchema(),
-    updateExperimentTaskTemplateProps: experimentSchema.defineUpdateExperimentTaskTemplatePropsSchema(),
-    templateProperty: experimentSchema.defineTemplatePropertySchema(),
-    templateCommand: experimentSchema.defineTemplateCommandSchema(),
-    userAccountSchema: userSchema.defineUserAccountSchema(),
-    createDatasetSchema: datasetSchema.defineCreateDatasetSchema(),
-    updateDatasetSchema: datasetSchema.defineUpdateDatasetSchema(),
-    datasetAuthor: datasetSchema.defineDatasetAuthorSchema(),
-    datasetPaper: datasetSchema.defineDatasetPaperSchema(),
+    createDirectory,
+    renameDirectory,
+    moveDirectory,
+    createExperiment,
+    updateExperiment,
+    createExperimentTask,
+    updateExperimentTask,
+    createExperimentNote,
+    updateExperimentNote,
+    updateExperimentTaskTemplateProps,
+    templateProperty,
+    templateCommand,
+    userAccountSchema,
+    createDatasetSchema,
+    updateDatasetSchema,
+    datasetAuthor,
+    datasetPaper,
     validate,
     prepare
 };

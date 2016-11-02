@@ -36,7 +36,7 @@ function* remove(userID, shareID) {
     return {val: true};
 }
 
-module.export = {
+module.exports = {
     getList: getList,
     create: create,
     remove: remove
