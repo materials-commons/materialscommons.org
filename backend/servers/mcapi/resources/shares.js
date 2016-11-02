@@ -1,6 +1,7 @@
 const shares = require('../db/model/shares');
 const httpStatus = require('http-status');
 const parse = require('co-body');
+const ra = require('./resource-access');
 
 function* getList(next) {
     const user = this.reqctx.user.id;
@@ -38,8 +39,12 @@ function* remove(next) {
     yield next;
 }
 
+function createResources(router) {
+    router.get('/projects/:project_id/shares', ra.validateProjectAccess, getList);
+    router.post('/projects/:project_id/shares', ra.validateProjectAccess, create);
+    router.delete('/projects/:project_id/shares/:share_id', ra.validateProjectAccess, remove);
+}
+
 module.exports = {
-    getList: getList,
-    create: create,
-    remove: remove
+    createResources
 };

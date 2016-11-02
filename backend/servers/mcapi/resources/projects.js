@@ -1,6 +1,7 @@
 const projects = require('../db/model/projects');
 const parse = require('co-body');
 const status = require('http-status');
+const ra = require('./resource-access');
 
 function* all(next) {
     let user = this.reqctx.user;
@@ -31,9 +32,12 @@ function* dirTree(next) {
     yield next;
 }
 
+function createResources(router) {
+    router.get('/projects', all);
+    router.put('/projects/:project_id', ra.validateProjectAccess, update);
+    router.get('/projects/:project_id', ra.validateProjectAccess, getProject);
+}
+
 module.exports = {
-    all: all,
-    dirTree: dirTree,
-    update: update,
-    getProject: getProject
+    createResources
 };

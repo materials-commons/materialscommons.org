@@ -235,7 +235,7 @@ function* getSamplesForExperiment(next) {
     yield next;
 }
 
-function createRoutes(router) {
+function createResources(router) {
     router.post('/projects/:project_id/experiments/:experiment_id/samples',
         ra.validateProjectAccess, ra.validateExperimentInProject, addSamplesToExperiment);
     router.put('/projects/:project_id/experiments/:experiment_id/samples',
@@ -251,5 +251,5 @@ function createRoutes(router) {
 }
 
 module.exports = {
-    createRoutes
+    createResources
 };

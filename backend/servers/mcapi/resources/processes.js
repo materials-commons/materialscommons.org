@@ -5,6 +5,7 @@ const status = require('http-status');
 const parse = require('co-body');
 const _ = require('lodash');
 const propertyValidator = require('../schema/property-validator');
+const ra = require('./resource-access');
 
 function* getProcess(next) {
     let rv = yield processes.getProcess(this.params.process_id);
@@ -237,11 +238,18 @@ function* validateSample(projectId, sample) {
     return null;
 }
 
+function createResources(router) {
+    router.get('/projects/:project_id/processes', ra.validateProjectAccess, getProjectProcesses);
+    router.get('/projects/:project_id/processes/:process_id',
+        ra.validateProjectAccess, ra.validateProcessInProject, getProcess);
+    router.post('/projects/:project_id/processes', ra.validateProjectAccess, createProcessFromTemplate);
+    router.put('/projects/:project_id/processes/:process_id',
+        ra.validateProjectAccess, ra.validateProcessInProject, updateProcess);
+    router.delete('/projects/:project_id/processes/:process_id',
+        ra.validateProjectAccess, ra.validateProcessInProject, deleteProcess);
+    router.get('/templates', getProcessTemplates);
+}
+
 module.exports = {
-    getProcess,
-    getProjectProcesses,
-    getProcessTemplates,
-    createProcessFromTemplate,
-    deleteProcess,
-    updateProcess
+    createResources
 };

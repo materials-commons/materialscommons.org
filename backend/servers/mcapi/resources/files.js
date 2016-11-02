@@ -2,6 +2,7 @@ const files = require('../db/model/files');
 const check = require('../db/model/check');
 const parse = require('co-body');
 const httpStatus = require('http-status');
+const ra = require('./resource-access');
 
 // get retrieves a file.
 function* get(next) {
@@ -64,11 +65,19 @@ function* byPath(next) {
     yield next;
 }
 
+function createResources(router) {
+    router.get('/projects/:project_id/files/:file_id',
+        ra.validateProjectAccess, ra.validateFileInProject, get);
+    router.get('/projects/:project_id/files/:file_id/versions',
+        ra.validateProjectAccess, ra.validateFileInProject, getVersions);
+    router.put('/projects/:project_id/files/:file_id',
+        ra.validateProjectAccess, ra.validateFileInProject, update);
+    router.post('/projects/:project_id/files', ra.validateProjectAccess, getList);
+    router.delete('/projects/:project_id/files/:file_id',
+        ra.validateProjectAccess, ra.validateFileInProject, deleteFile);
+    router.put('/projects/:project_id/files_by_path', ra.validateProjectAccess, byPath);
+}
+
 module.exports = {
-    get,
-    getList,
-    update,
-    deleteFile,
-    byPath,
-    getVersions
+    createResources
 };
