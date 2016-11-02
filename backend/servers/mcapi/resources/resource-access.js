@@ -3,7 +3,6 @@ const check = require('../db/model/check');
 let httpStatus = require('http-status');
 let projectAccessCache = require('./project-access-cache')(access);
 
-
 function* validateProjectAccess(next) {
     let projectID = this.params.project_id;
     let projects = yield projectAccessCache.find(projectID);
@@ -73,11 +72,21 @@ function* validateSampleInProject(next) {
     yield next;
 }
 
+function* validateDirectoryInProject(next) {
+    let isInProject = yield check.directoryInProject(this.params.project_id, this.params.directory_id);
+    if (!isInProject) {
+        this.status = httpStatus.BAD_REQUEST;
+        this.body = {error: `No such directory in project ${this.params.directory_id}`};
+    }
+    yield next;
+}
+
 module.exports = {
     validateProjectAccess,
     validateExperimentInProject,
     validateDatasetInExperiment,
     validateSampleInExperiment,
     validateProcessInExperiment,
-    validateSampleInProject
+    validateSampleInProject,
+    validateDirectoryInProject
 };
