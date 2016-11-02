@@ -1,10 +1,11 @@
-const samples = require('../db/model/samples');
-const experiments = require('../db/model/experiments');
-const check = require('../db/model/check');
-const schema = require('../schema');
+const samples = require('../../db/model/samples');
+const experiments = require('../../db/model/experiments');
+const check = require('../../db/model/check');
+const schema = require('../../schema');
 const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
+const ra = require('../resource-access');
 
 function* addSamplesToExperiment(next) {
     let addArgs = yield parse(this);
@@ -234,11 +235,21 @@ function* getSamplesForExperiment(next) {
     yield next;
 }
 
+function createRoutes(router) {
+    router.post('/projects/:project_id/experiments/:experiment_id/samples',
+        ra.validateProjectAccess, ra.validateExperimentInProject, addSamplesToExperiment);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples',
+        ra.validateProjectAccess, ra.validateExperimentInProject, updateExperimentSamples);
+    router.get('/projects/:project_id/experiments/:experiment_id/samples',
+        ra.validateProjectAccess, ra.validateExperimentInProject, getSamplesForExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples/delete',
+        ra.validateProjectAccess, ra.validateExperimentInProject, deleteSamplesFromExperiment);
+    router.post('/projects/:project_id/experiments/:experiment_id/samples/measurements',
+        ra.validateProjectAccess, ra.validateExperimentInProject, addSamplesMeasurements);
+    router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements',
+        ra.validateProjectAccess, ra.validateExperimentInProject, updateSamplesMeasurements);
+}
+
 module.exports = {
-    addSamplesToExperiment,
-    updateExperimentSamples,
-    deleteSamplesFromExperiment,
-    addSamplesMeasurements,
-    updateSamplesMeasurements,
-    getSamplesForExperiment
+    createRoutes
 };
