@@ -4,4 +4,3 @@ let ropts = {
 };
 
 module.exports = require('rethinkdbdash')(ropts);
-

@@ -482,7 +482,7 @@ function* taskProcessIsUnused(taskId) {
 }
 
 
-module.export = {
+module.exports = {
     getAllForProject,
     get,
     create,
