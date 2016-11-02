@@ -16,18 +16,12 @@ function *getAllSamplesForProject(next) {
 }
 
 function *getSampleForProject(next) {
-    let isIn = yield check.sampleInProject(this.params.project_id, this.params.sample_id);
-    if (!isIn) {
+    let rv = yield samples.getSample(this.params.sample_id);
+    if (rv.error) {
         this.status = status.BAD_REQUEST;
-        this.body = {error: `No such sample ${this.params.sample_id} in project ${this.params.project_id}`};
+        this.body = rv;
     } else {
-        let rv = yield samples.getSample(this.params.sample_id);
-        if (rv.error) {
-            this.status = status.BAD_REQUEST;
-            this.body = rv;
-        } else {
-            this.body = rv.val;
-        }
+        this.body = rv.val;
     }
 
     yield next;
