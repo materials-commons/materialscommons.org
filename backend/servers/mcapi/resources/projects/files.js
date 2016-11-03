@@ -68,16 +68,16 @@ function* byPath(next) {
 
 function createResource() {
     const router = new Router();
-    router.get('/:file_id',
-        ra.validateProjectAccess, ra.validateFileInProject, get);
-    router.get('/:file_id/versions',
-        ra.validateProjectAccess, ra.validateFileInProject, getVersions);
-    router.put('/:file_id',
-        ra.validateProjectAccess, ra.validateFileInProject, update);
-    router.post('/', ra.validateProjectAccess, getList);
-    router.delete('/:file_id',
-        ra.validateProjectAccess, ra.validateFileInProject, deleteFile);
+
+    router.post('/', getList);
     router.put('/by_path', ra.validateProjectAccess, byPath);
+
+    router.use('/:file_id', ra.validateFileInProject);
+    router.get('/:file_id', get);
+    router.get('/:file_id/versions', getVersions);
+    router.put('/:file_id', update);
+    router.delete('/:file_id', deleteFile);
+
     return router;
 }
 

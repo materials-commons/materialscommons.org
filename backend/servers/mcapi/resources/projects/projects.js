@@ -36,17 +36,12 @@ function* update(next) {
     yield next;
 }
 
-function* dirTree(next) {
-    let dirID = this.params.directory_id || 'top';
-    this.body = yield projects.dirTree(this.params.project_id, dirID);
-    yield next;
-}
-
 function createResource() {
     const router = new Router();
     router.get('/', all);
-    router.put('/:project_id', ra.validateProjectAccess, update);
-    router.get('/:project_id', ra.validateProjectAccess, getProject);
+    router.use('/:project_id', ra.validateProjectAccess);
+    router.put('/:project_id', update);
+    router.get('/:project_id', getProject);
 
     let samplesResource = samples.createResource();
     router.use('/:project_id/samples', samplesResource.routes(), samplesResource.allowedMethods());
