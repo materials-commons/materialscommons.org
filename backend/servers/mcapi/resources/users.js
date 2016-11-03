@@ -241,9 +241,9 @@ function mailTransportConfig() {
     }
 }
 
-function createResources(router) {
+function createResource(router) {
     router.put('/users/:project_id', ra.validateProjectAccess, updateProjectFavorites);
-    router.put('/users', users.updateUserSettings);
+    router.put('/users', updateUserSettings);
     router.get('/users/validate/:validation_id', getUserRegistrationFromUuid);
     router.get('/users/rvalidate/:validation_id', getUserForPasswordResetFromUuid);
     router.put('/users/:user_id/clear-reset-password', clearUserResetPasswordFlag);
@@ -252,5 +252,5 @@ function createResources(router) {
 }
 
 module.exports = {
-    createResources
+    createResource
 };

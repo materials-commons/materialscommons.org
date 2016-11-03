@@ -4,8 +4,6 @@ let httpStatus = require('http-status');
 let projectAccessCache = require('./project-access-cache')(access);
 
 function* validateProjectAccess(next) {
-    console.log('validateProjectAccess called this.params', this.params, this.request.url);
-    console.log('\n=============================\n');
     let projectID = this.params.project_id;
     if (projectID) {
         let projects = yield projectAccessCache.find(projectID);

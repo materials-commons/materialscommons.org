@@ -1,10 +1,9 @@
 const projects = require('./projects');
 
-function createResources(router) {
-    let resource = projects.createResource();
-    router.use('/projects', resource.routes(), resource.allowedMethods());
+function createResource() {
+    return projects.createResource();
 }
 
 module.exports = {
-    createResources
+    createResource
 };

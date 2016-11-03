@@ -12,14 +12,12 @@ const shares = require('./shares');
 const experiments = require('./experiments');
 
 function* all(next) {
-    console.log('calling all');
     let user = this.reqctx.user;
     this.body = yield projects.forUser(user);
     yield next;
 }
 
 function* getProject(next) {
-    console.log('calling getProject');
     let rv = yield projects.getProject(this.params.project_id);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
