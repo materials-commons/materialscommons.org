@@ -6,6 +6,7 @@ const schema = require('../../../schema');
 const parse = require('co-body');
 const _ = require('lodash');
 const ra = require('../../resource-access');
+const Router = require('koa-router');
 
 function* getExperimentTask(next) {
     let rv = yield experiments.getTask(this.params.task_id);
@@ -221,30 +222,32 @@ function* validateUpdateExperimentTaskTemplateArgs(updateArgs, params) {
     return null;
 }
 
-function createResources(router) {
-    router.get('/projects/:project_id/experiments/:experiment_id/tasks/:task_id',
+function createResource() {
+    const router = new Router();
+    router.get('/:task_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
         getExperimentTask);
-    router.post('/projects/:project_id/experiments/:experiment_id/tasks',
+    router.post('/',
         ra.validateProjectAccess, ra.validateExperimentInProject,
         createExperimentTask);
-    router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id',
+    router.post('/:task_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
         createExperimentTask);
-    router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id',
+    router.put('/:task_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
         updateExperimentTask);
-    router.put('/projects/:project_id/experiments/:experiment_id/tasks/:task_id/template',
+    router.put('/:task_id/template',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
         updateExperimentTaskTemplate);
-    router.post('/projects/:project_id/experiments/:experiment_id/tasks/:task_id/template/:template_id',
+    router.post('/:task_id/template/:template_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment, ra.validateTemplateExists,
         addExperimentTaskTemplate);
-    router.delete('/projects/:project_id/experiments/:experiment_id/tasks/:task_id',
+    router.delete('/:task_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
         deleteExperimentTask);
+    return router;
 }
 
 module.exports = {
-    createResources
+    createResource
 };

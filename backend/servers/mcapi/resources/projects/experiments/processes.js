@@ -8,6 +8,7 @@ const _ = require('lodash');
 const propertyValidator = require('../../../schema/property-validator');
 const validators = require('./validators');
 const ra = require('../../resource-access');
+const Router = require('koa-router');
 
 function *getProcessesForExperiment(next) {
     let rv = yield experiments.getProcessesForExperiment(this.params.experiment_id);
@@ -158,20 +159,22 @@ function* getProcess(next) {
     yield next;
 }
 
-function createResources(router) {
-    router.get('/projects/:project_id/experiments/:experiment_id/processes',
+function createResource() {
+    const router = new Router();
+    router.get('/',
         ra.validateProjectAccess, ra.validateExperimentInProject, getProcessesForExperiment);
-    router.post('/projects/:project_id/experiments/:experiment_id/processes/templates/:template_id',
+    router.post('/templates/:template_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTemplateExists,
         createProcessInExperimentFromTemplate);
-    router.put('/projects/:project_id/experiments/:experiment_id/processes/:process_id',
+    router.put('/:process_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateProcessInExperiment,
         updateExperimentProcess);
-    router.get('/projects/:project_id/experiments/:experiment_id/processes/:process_id',
+    router.get('/:process_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateProcessInExperiment,
         getProcess);
+    return router;
 }
 
 module.exports = {
-    createResources
+    createResource
 };

@@ -4,21 +4,24 @@ let httpStatus = require('http-status');
 let projectAccessCache = require('./project-access-cache')(access);
 
 function* validateProjectAccess(next) {
+    console.log('this.params.project_id', this.params);
     let projectID = this.params.project_id;
-    let projects = yield projectAccessCache.find(projectID);
+    if (projectID) {
+        let projects = yield projectAccessCache.find(projectID);
 
-    if (!projects) {
-        this.throw(httpStatus.BAD_REQUEST, "Unknown project");
+        if (!projects) {
+            this.throw(httpStatus.BAD_REQUEST, "Unknown project");
+        }
+
+        if (!projectAccessCache.validateAccess(projectID, this.reqctx.user)) {
+            this.throw(httpStatus.UNAUTHORIZED, `No access to project ${projectID}`);
+        }
+
+        this.reqctx.project = {
+            id: projectID,
+            name: projects[0].project_name
+        };
     }
-
-    if (!projectAccessCache.validateAccess(projectID, this.reqctx.user)) {
-        this.throw(httpStatus.UNAUTHORIZED, `No access to project ${projectID}`);
-    }
-
-    this.reqctx.project = {
-        id: projectID,
-        name: projects[0].project_name
-    };
 
     yield next;
 }
