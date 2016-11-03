@@ -1,11 +1,11 @@
-const experiments = require('../../db/model/experiments');
-const check = require('../../db/model/check');
+const experiments = require('../../../db/model/experiments');
+const check = require('../../../db/model/check');
 const validators = require('./validators');
 const status = require('http-status');
-const schema = require('../../schema');
+const schema = require('../../../schema');
 const parse = require('co-body');
 const _ = require('lodash');
-const ra = require('../resource-access');
+const ra = require('../../resource-access');
 
 function* getExperimentTask(next) {
     let rv = yield experiments.getTask(this.params.task_id);

@@ -1,5 +1,5 @@
-const check = require('../../db/model/check');
-const schema = require('../../schema');
+const check = require('../../../db/model/check');
+const schema = require('../../../schema');
 
 function* validateSample(projectId, sample) {
     let errors = yield schema.validate(schema.templateCommand, sample);

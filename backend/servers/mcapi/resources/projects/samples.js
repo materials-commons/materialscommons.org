@@ -1,10 +1,10 @@
-const samples = require('../db/model/samples');
-const check = require('../db/model/check');
-const schema = require('../schema');
+const samples = require('../../db/model/samples');
+const check = require('../../db/model/check');
+const schema = require('../../schema');
 const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
-const ra = require('./resource-access');
+const ra = require('../resource-access');
 
 function *getAllSamplesForProject(next) {
     let rv = yield samples.getAllSamplesForProject(this.params.project_id);
