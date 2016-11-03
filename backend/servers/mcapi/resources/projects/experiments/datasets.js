@@ -5,6 +5,7 @@ const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
 const ra = require('../../resource-access');
+const Router = require('koa-router');
 
 function* getDatasetsForExperiment(next) {
     let rv = yield experimentDatasets.getDatasetsForExperiment(this.params.experiment_id);
@@ -382,53 +383,55 @@ function* unpublishDataset(next) {
     yield next;
 }
 
-function createResources(router) {
-    router.get('/projects/:project_id/experiments/:experiment_id/datasets',
+function createResource() {
+    const router = new Router();
+    router.get('/',
         ra.validateProjectAccess, ra.validateExperimentInProject, getDatasetsForExperiment);
 
-    router.get('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
+    router.get('/:dataset_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
         getDatasetForExperiment);
 
-    router.post('/projects/:project_id/experiments/:experiment_id/datasets',
+    router.post('/datasets',
         ra.validateProjectAccess, ra.validateExperimentInProject, createDatasetForExperiment);
 
-    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
+    router.put('/:dataset_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
         updateDatasetForExperiment);
 
-    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/publish',
+    router.put('/:dataset_id/publish',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
         publishDataset);
-    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/unpublish',
+    router.put('/:dataset_id/unpublish',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
         unpublishDataset);
 
-    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/samples/:sample_id',
+    router.put('/:dataset_id/samples/:sample_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
         ra.validateSampleInExperiment, addSampleToDataset);
 
-    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/samples',
+    router.put('/:dataset_id/samples',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
         updateSamplesInDataset);
 
-    router.get('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/samples',
+    router.get('/:dataset_id/samples',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
         getSamplesForDataset);
 
-    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/files',
+    router.put('/:dataset_id/files',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
         updateFilesInDataset);
 
-    router.put('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id/processes',
+    router.put('/:dataset_id/processes',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
         updateProcessesInDataset);
 
-    router.delete('/projects/:project_id/experiments/:experiment_id/datasets/:dataset_id',
+    router.delete('/:dataset_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateDatasetInExperiment,
         deleteDatasetFromExperiment);
+    return router;
 }
 
 module.exports = {
-    createResources
+    createResource
 };
