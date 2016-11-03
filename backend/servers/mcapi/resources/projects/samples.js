@@ -86,10 +86,6 @@ function isValidSampleArg(sample) {
     return _.has(sample, 'name');
 }
 
-function *updateSample(next) {
-    yield next;
-}
-
 function* updateSamples(next) {
     let updateArgs = yield parse(this);
     let errors = yield validateUpdateSamples(this.params.project_id, updateArgs);
@@ -272,15 +268,17 @@ function* validateFile(projectId, file) {
 
 function createResource() {
     const router = new Router();
-    router.post('/', ra.validateProjectAccess, createSamples);
-    router.get('/', ra.validateProjectAccess, getAllSamplesForProject);
-    router.get('/:sample_id',
-        ra.validateProjectAccess, ra.validateSampleInProject, getSampleForProject);
-    router.put('/', ra.validateProjectAccess, updateSamples);
-    router.put('/:sample_id/files',
-        ra.validateProjectAccess, ra.validateSampleInProject, updateSampleFiles);
-    router.post('/measurements', ra.validateProjectAccess, addMeasurements);
-    router.put('/measurements', ra.validateProjectAccess, updateMeasurements);
+
+    router.post('/', createSamples);
+    router.get('/', getAllSamplesForProject);
+    router.put('/', updateSamples);
+    router.post('/measurements', addMeasurements);
+    router.put('/measurements', updateMeasurements);
+
+    router.use('/:sample_id', ra.validateSampleInProject);
+    router.get('/:sample_id', getSampleForProject);
+    router.put('/:sample_id/files', updateSampleFiles);
+
     return router;
 }
 

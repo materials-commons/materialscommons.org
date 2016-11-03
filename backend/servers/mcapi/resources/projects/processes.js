@@ -76,7 +76,7 @@ function* validateCreateProcessFromTemplate(templateArgs) {
 }
 
 function* deleteProcess(next) {
-    let errors = yield validateDeleteProcess(this.params.project_id, this.params.process_id);
+    let errors = yield validateDeleteProcess(this.params.process_id);
     if (errors != null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
@@ -92,7 +92,7 @@ function* deleteProcess(next) {
     yield next;
 }
 
-function* validateDeleteProcess(project_id, process_id) {
+function* validateDeleteProcess(process_id) {
     let datasets = yield processes.datasetsForProcess(process_id);
     if (datasets.length > 0) {
         let datasetNames = datasets.map(ds => ds.title);
@@ -146,7 +146,7 @@ function* validateUpdateProcess(updateArgs, params) {
         if (updateArgs.properties) {
             for (let i = 0; i < updateArgs.properties.length; i++) {
                 let property = updateArgs.properties[i];
-                let errors = yield validateProperty(template, property);
+                errors = yield validateProperty(template, property);
                 if (errors !== null) {
                     return errors;
                 }
@@ -159,7 +159,7 @@ function* validateUpdateProcess(updateArgs, params) {
     } else if (updateArgs.files.length) {
         for (let i = 0; i < updateArgs.files.length; i++) {
             let f = updateArgs.files[i];
-            let errors = yield validateFile(params.project_id, f);
+            errors = yield validateFile(params.project_id, f);
             if (errors !== null) {
                 return errors;
             }
@@ -171,7 +171,7 @@ function* validateUpdateProcess(updateArgs, params) {
     } else if (updateArgs.samples.length) {
         for (let i = 0; i < updateArgs.samples.length; i++) {
             let s = updateArgs.samples[i];
-            let errors = yield validateSample(params.project_id, s);
+            errors = yield validateSample(params.project_id, s);
             if (errors !== null) {
                 return errors;
             }
@@ -241,15 +241,16 @@ function* validateSample(projectId, sample) {
 
 function createResource() {
     const router = new Router();
-    router.get('/', ra.validateProjectAccess, getProjectProcesses);
-    router.get('/:process_id',
-        ra.validateProjectAccess, ra.validateProcessInProject, getProcess);
-    router.post('/', ra.validateProjectAccess, createProcessFromTemplate);
-    router.put('/:process_id',
-        ra.validateProjectAccess, ra.validateProcessInProject, updateProcess);
-    router.delete('/:process_id',
-        ra.validateProjectAccess, ra.validateProcessInProject, deleteProcess);
+
+    router.get('/', getProjectProcesses);
+    router.post('/', createProcessFromTemplate);
     router.get('/templates', getProcessTemplates);
+
+    router.use('/:process_id', ra.validateProcessInProject);
+    router.get('/:process_id', getProcess);
+    router.put('/:process_id', updateProcess);
+    router.delete('/:process_id', deleteProcess);
+
     return router;
 }
 

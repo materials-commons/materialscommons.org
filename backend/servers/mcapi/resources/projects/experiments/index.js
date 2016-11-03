@@ -124,17 +124,15 @@ function *getFilesForExperiment(next) {
 
 function createResource() {
     const router = new Router();
-    router.get('/', ra.validateProjectAccess,
-        getAllExperimentsForProject);
-    router.get('/:experiment_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, getExperiment);
-    router.post('/', ra.validateProjectAccess, createExperiment);
-    router.delete('/:experiment_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, deleteExperiment);
-    router.put('/:experiment_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, updateExperiment);
-    router.get('/:experiment_id/files',
-        ra.validateProjectAccess, ra.validateExperimentInProject, getFilesForExperiment);
+    router.get('/', getAllExperimentsForProject);
+    router.post('/', createExperiment);
+
+    router.use('/:experiment_id', ra.validateExperimentInProject);
+
+    router.get('/:experiment_id', getExperiment);
+    router.delete('/:experiment_id', deleteExperiment);
+    router.put('/:experiment_id', updateExperiment);
+    router.get('/:experiment_id/files', getFilesForExperiment);
 
     let datasetsResource = datasets.createResource();
     router.use('/:experiment_id/datasets', datasetsResource.routes(), datasetsResource.allowedMethods());

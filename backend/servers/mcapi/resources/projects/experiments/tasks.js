@@ -224,27 +224,18 @@ function* validateUpdateExperimentTaskTemplateArgs(updateArgs, params) {
 
 function createResource() {
     const router = new Router();
-    router.get('/:task_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
-        getExperimentTask);
-    router.post('/',
-        ra.validateProjectAccess, ra.validateExperimentInProject,
-        createExperimentTask);
-    router.post('/:task_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
-        createExperimentTask);
-    router.put('/:task_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
-        updateExperimentTask);
-    router.put('/:task_id/template',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
-        updateExperimentTaskTemplate);
-    router.post('/:task_id/template/:template_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment, ra.validateTemplateExists,
-        addExperimentTaskTemplate);
-    router.delete('/:task_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTaskInExperiment,
-        deleteExperimentTask);
+
+    router.post('/', createExperimentTask);
+
+    router.use('/:task_id', ra.validateTaskInExperiment);
+
+    router.get('/:task_id', getExperimentTask);
+    router.post('/:task_id', createExperimentTask);
+    router.put('/:task_id', updateExperimentTask);
+    router.put('/:task_id/template', updateExperimentTaskTemplate);
+    router.post('/:task_id/template/:template_id', ra.validateTemplateExists, addExperimentTaskTemplate);
+    router.delete('/:task_id', deleteExperimentTask);
+
     return router;
 }
 

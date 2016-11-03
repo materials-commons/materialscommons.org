@@ -4,7 +4,8 @@ let httpStatus = require('http-status');
 let projectAccessCache = require('./project-access-cache')(access);
 
 function* validateProjectAccess(next) {
-    console.log('this.params.project_id', this.params);
+    console.log('validateProjectAccess called this.params', this.params, this.request.url);
+    console.log('\n=============================\n');
     let projectID = this.params.project_id;
     if (projectID) {
         let projects = yield projectAccessCache.find(projectID);
@@ -76,10 +77,12 @@ function* validateSampleInProject(next) {
 }
 
 function* validateDirectoryInProject(next) {
-    let isInProject = yield check.directoryInProject(this.params.project_id, this.params.directory_id);
-    if (!isInProject) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such directory in project ${this.params.directory_id}`};
+    if (this.params.directory_id !== 'top') {
+        let isInProject = yield check.directoryInProject(this.params.project_id, this.params.directory_id);
+        if (!isInProject) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: `No such directory in project ${this.params.directory_id}`};
+        }
     }
     yield next;
 }
