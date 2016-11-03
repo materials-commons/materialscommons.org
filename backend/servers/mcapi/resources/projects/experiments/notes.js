@@ -4,6 +4,7 @@ const schema = require('../../../schema');
 const parse = require('co-body');
 const _ = require('lodash');
 const ra = require('../../resource-access');
+const Router = require('koa-router');
 
 function* getNotesForExperiment(next) {
     yield next;
@@ -89,21 +90,22 @@ function* deleteExperimentNote(next) {
     yield next;
 }
 
-function createResources(router) {
+function createResource() {
+    const router = new Router();
     //router.get('/projects/:project_id/experiments/:experiment_id/notes',
     //    ra.validateProjectAccess, ra.validateExperimentInProject, experiments.getNotesForExperiment);
     //router.get('/projects/:project_id/experiments/:experiment_id/notes/:note_id',
     //    ra.validateProjectAccess, experiments.getExperimentNote);
-    router.delete('/projects/:project_id/experiments/:experiment_id/notes/:note_id',
+    router.delete('/:note_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateNoteInExperiment,
         deleteExperimentNote);
-    router.put('/projects/:project_id/experiments/:experiment_id/notes/:note_id',
+    router.put('/:note_id',
         ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateNoteInExperiment, updateExperimentNote);
-    router.post('/projects/:project_id/experiments/:experiment_id/notes',
+    router.post('/',
         ra.validateProjectAccess, ra.validateExperimentInProject, createExperimentNote);
-
+    return router;
 }
 
 module.exports = {
-    createResources
+    createResource
 };

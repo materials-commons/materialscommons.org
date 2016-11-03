@@ -3,6 +3,7 @@ const check = require('../../db/model/check');
 const parse = require('co-body');
 const httpStatus = require('http-status');
 const ra = require('../resource-access');
+const Router = require('koa-router');
 
 // get retrieves a file.
 function* get(next) {
@@ -65,19 +66,21 @@ function* byPath(next) {
     yield next;
 }
 
-function createResources(router) {
-    router.get('/projects/:project_id/files/:file_id',
+function createResource() {
+    const router = new Router();
+    router.get('/:file_id',
         ra.validateProjectAccess, ra.validateFileInProject, get);
-    router.get('/projects/:project_id/files/:file_id/versions',
+    router.get('/:file_id/versions',
         ra.validateProjectAccess, ra.validateFileInProject, getVersions);
-    router.put('/projects/:project_id/files/:file_id',
+    router.put('/:file_id',
         ra.validateProjectAccess, ra.validateFileInProject, update);
-    router.post('/projects/:project_id/files', ra.validateProjectAccess, getList);
-    router.delete('/projects/:project_id/files/:file_id',
+    router.post('/', ra.validateProjectAccess, getList);
+    router.delete('/:file_id',
         ra.validateProjectAccess, ra.validateFileInProject, deleteFile);
-    router.put('/projects/:project_id/files_by_path', ra.validateProjectAccess, byPath);
+    router.put('/by_path', ra.validateProjectAccess, byPath);
+    return router;
 }
 
 module.exports = {
-    createResources
+    createResource
 };

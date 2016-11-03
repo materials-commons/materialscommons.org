@@ -6,6 +6,7 @@ const parse = require('co-body');
 const _ = require('lodash');
 const propertyValidator = require('../../schema/property-validator');
 const ra = require('../resource-access');
+const Router = require('koa-router');
 
 function* getProcess(next) {
     let rv = yield processes.getProcess(this.params.process_id);
@@ -238,18 +239,20 @@ function* validateSample(projectId, sample) {
     return null;
 }
 
-function createResources(router) {
-    router.get('/projects/:project_id/processes', ra.validateProjectAccess, getProjectProcesses);
-    router.get('/projects/:project_id/processes/:process_id',
+function createResource() {
+    const router = new Router();
+    router.get('/', ra.validateProjectAccess, getProjectProcesses);
+    router.get('/:process_id',
         ra.validateProjectAccess, ra.validateProcessInProject, getProcess);
-    router.post('/projects/:project_id/processes', ra.validateProjectAccess, createProcessFromTemplate);
-    router.put('/projects/:project_id/processes/:process_id',
+    router.post('/', ra.validateProjectAccess, createProcessFromTemplate);
+    router.put('/:process_id',
         ra.validateProjectAccess, ra.validateProcessInProject, updateProcess);
-    router.delete('/projects/:project_id/processes/:process_id',
+    router.delete('/:process_id',
         ra.validateProjectAccess, ra.validateProcessInProject, deleteProcess);
     router.get('/templates', getProcessTemplates);
+    return router;
 }
 
 module.exports = {
-    createResources
+    createResource
 };

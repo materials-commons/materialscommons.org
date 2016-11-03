@@ -3,6 +3,7 @@ const schema = require('../../schema');
 const parse = require('co-body');
 const httpStatus = require('http-status');
 const ra = require('../resource-access');
+const Router = require('koa-router');
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';
@@ -117,16 +118,18 @@ function* remove(next) {
     yield next;
 }
 
-function createResources(router) {
-    router.get('/projects/:project_id/directories', ra.validateProjectAccess, get);
-    router.get('/projects/:project_id/directories/:directory_id', ra.validateProjectAccess, get);
-    router.post('/projects/:project_id/directories', ra.validateProjectAccess, create);
-    router.put('/projects/:project_id/directories/:directory_id',
+function createResource() {
+    const router = new Router();
+    router.get('/', ra.validateProjectAccess, get);
+    router.get('/:directory_id', ra.validateProjectAccess, get);
+    router.post('/', ra.validateProjectAccess, create);
+    router.put('/:directory_id',
         ra.validateProjectAccess, ra.validateDirectoryInProject, update);
-    router.delete('/projects/:project_id/directories/:directory_id',
+    router.delete('/:directory_id',
         ra.validateProjectAccess, ra.validateDirectoryInProject, remove);
+    return router;
 }
 
 module.exports = {
-    createResources
+    createResource
 };

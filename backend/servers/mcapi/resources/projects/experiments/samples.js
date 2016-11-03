@@ -6,6 +6,7 @@ const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
 const ra = require('../../resource-access');
+const Router = require('koa-router');
 
 function* addSamplesToExperiment(next) {
     let addArgs = yield parse(this);
@@ -235,21 +236,23 @@ function* getSamplesForExperiment(next) {
     yield next;
 }
 
-function createResources(router) {
-    router.post('/projects/:project_id/experiments/:experiment_id/samples',
+function createResource() {
+    const router = new Router();
+    router.post('/',
         ra.validateProjectAccess, ra.validateExperimentInProject, addSamplesToExperiment);
-    router.put('/projects/:project_id/experiments/:experiment_id/samples',
+    router.put('/',
         ra.validateProjectAccess, ra.validateExperimentInProject, updateExperimentSamples);
-    router.get('/projects/:project_id/experiments/:experiment_id/samples',
+    router.get('/',
         ra.validateProjectAccess, ra.validateExperimentInProject, getSamplesForExperiment);
-    router.post('/projects/:project_id/experiments/:experiment_id/samples/delete',
+    router.post('/delete',
         ra.validateProjectAccess, ra.validateExperimentInProject, deleteSamplesFromExperiment);
-    router.post('/projects/:project_id/experiments/:experiment_id/samples/measurements',
+    router.post('/measurements',
         ra.validateProjectAccess, ra.validateExperimentInProject, addSamplesMeasurements);
-    router.put('/projects/:project_id/experiments/:experiment_id/samples/measurements',
+    router.put('/measurements',
         ra.validateProjectAccess, ra.validateExperimentInProject, updateSamplesMeasurements);
+    return router;
 }
 
 module.exports = {
-    createResources
+    createResource
 };
