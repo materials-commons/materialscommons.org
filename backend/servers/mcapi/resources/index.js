@@ -3,8 +3,9 @@ const projects = require('./projects');
 const users = require('./users');
 
 function createResources() {
-    projects.createResources(router);
-    users.createResources(router);
+    let projectsResource = projects.createResource();
+    router.use('/projects', projectsResource.routes(), projectsResource.allowedMethods());
+    users.createResource(router);
     return router;
 }
 
