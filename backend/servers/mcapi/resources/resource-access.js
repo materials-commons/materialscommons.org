@@ -91,7 +91,7 @@ function* validateProcessInProject(next) {
 }
 
 function* validateFileInProject(next) {
-    let isInProject = yield check.fileInProject(this.params.file_id, this.param.project_id);
+    let isInProject = yield check.fileInProject(this.params.file_id, this.params.project_id);
     if (!isInProject) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such file in project ${this.params.file_id}`};
@@ -100,7 +100,7 @@ function* validateFileInProject(next) {
 }
 
 function* validateTaskInExperiment(next) {
-    let isInExperiment = yield check.taskInExperiment(this.params.experiment_id, this.param.task_id);
+    let isInExperiment = yield check.taskInExperiment(this.params.experiment_id, this.params.task_id);
     if (!isInExperiment) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such task in experiment ${this.params.task_id}`};
@@ -118,7 +118,7 @@ function* validateTemplateExists(next) {
 }
 
 function* validateNoteInExperiment(next) {
-    let isInExperiment = yield check.noteInExperiment(this.params.experiment_id, this.param.note_id);
+    let isInExperiment = yield check.noteInExperiment(this.params.experiment_id, this.params.note_id);
     if (!isInExperiment) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such note in experiment ${this.params.note_id}`};
