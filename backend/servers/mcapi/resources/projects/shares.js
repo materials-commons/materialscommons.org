@@ -1,7 +1,6 @@
 const shares = require('../../db/model/shares');
 const httpStatus = require('http-status');
 const parse = require('co-body');
-const ra = require('../resource-access');
 const Router = require('koa-router');
 
 function* getList(next) {
@@ -42,9 +41,9 @@ function* remove(next) {
 
 function createResource() {
     const router = new Router();
-    router.get('/', ra.validateProjectAccess, getList);
-    router.post('/', ra.validateProjectAccess, create);
-    router.delete('/:share_id', ra.validateProjectAccess, remove);
+    router.get('/', getList);
+    router.post('/', create);
+    router.delete('/:share_id', remove);
     return router;
 }
 

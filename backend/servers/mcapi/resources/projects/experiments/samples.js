@@ -5,7 +5,6 @@ const schema = require('../../../schema');
 const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
-const ra = require('../../resource-access');
 const Router = require('koa-router');
 
 function* addSamplesToExperiment(next) {
@@ -238,18 +237,14 @@ function* getSamplesForExperiment(next) {
 
 function createResource() {
     const router = new Router();
-    router.post('/',
-        ra.validateProjectAccess, ra.validateExperimentInProject, addSamplesToExperiment);
-    router.put('/',
-        ra.validateProjectAccess, ra.validateExperimentInProject, updateExperimentSamples);
-    router.get('/',
-        ra.validateProjectAccess, ra.validateExperimentInProject, getSamplesForExperiment);
-    router.post('/delete',
-        ra.validateProjectAccess, ra.validateExperimentInProject, deleteSamplesFromExperiment);
-    router.post('/measurements',
-        ra.validateProjectAccess, ra.validateExperimentInProject, addSamplesMeasurements);
-    router.put('/measurements',
-        ra.validateProjectAccess, ra.validateExperimentInProject, updateSamplesMeasurements);
+
+    router.post('/', addSamplesToExperiment);
+    router.put('/', updateExperimentSamples);
+    router.get('/', getSamplesForExperiment);
+    router.post('/delete', deleteSamplesFromExperiment);
+    router.post('/measurements', addSamplesMeasurements);
+    router.put('/measurements', updateSamplesMeasurements);
+
     return router;
 }
 

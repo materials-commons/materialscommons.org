@@ -6,14 +6,6 @@ const _ = require('lodash');
 const ra = require('../../resource-access');
 const Router = require('koa-router');
 
-function* getNotesForExperiment(next) {
-    yield next;
-}
-
-function* getExperimentNote(next) {
-    yield next;
-}
-
 function* updateExperimentNote(next) {
     let noteArgs = yield parse(this);
     schema.prepare(schema.updateExperimentNote, noteArgs);
@@ -92,17 +84,14 @@ function* deleteExperimentNote(next) {
 
 function createResource() {
     const router = new Router();
-    //router.get('/projects/:project_id/experiments/:experiment_id/notes',
-    //    ra.validateProjectAccess, ra.validateExperimentInProject, experiments.getNotesForExperiment);
-    //router.get('/projects/:project_id/experiments/:experiment_id/notes/:note_id',
-    //    ra.validateProjectAccess, experiments.getExperimentNote);
-    router.delete('/:note_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateNoteInExperiment,
-        deleteExperimentNote);
-    router.put('/:note_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateNoteInExperiment, updateExperimentNote);
-    router.post('/',
-        ra.validateProjectAccess, ra.validateExperimentInProject, createExperimentNote);
+
+    router.post('/', createExperimentNote);
+
+    router.use('/:note_id', ra.validateNoteInExperiment);
+
+    router.delete('/:note_id', deleteExperimentNote);
+    router.put('/:note_id', updateExperimentNote);
+
     return router;
 }
 

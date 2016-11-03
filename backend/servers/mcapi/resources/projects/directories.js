@@ -120,13 +120,14 @@ function* remove(next) {
 
 function createResource() {
     const router = new Router();
-    router.get('/', ra.validateProjectAccess, get);
-    router.get('/:directory_id', ra.validateProjectAccess, get);
-    router.post('/', ra.validateProjectAccess, create);
-    router.put('/:directory_id',
-        ra.validateProjectAccess, ra.validateDirectoryInProject, update);
-    router.delete('/:directory_id',
-        ra.validateProjectAccess, ra.validateDirectoryInProject, remove);
+
+    router.get('/', get);
+    router.post('/', create);
+
+    router.use('/:directory_id', ra.validateDirectoryInProject);
+    router.get('/:directory_id', get);
+    router.put('/:directory_id', update);
+    router.delete('/:directory_id', remove);
     return router;
 }
 

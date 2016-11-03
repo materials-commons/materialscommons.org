@@ -161,17 +161,15 @@ function* getProcess(next) {
 
 function createResource() {
     const router = new Router();
-    router.get('/',
-        ra.validateProjectAccess, ra.validateExperimentInProject, getProcessesForExperiment);
-    router.post('/templates/:template_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateTemplateExists,
-        createProcessInExperimentFromTemplate);
-    router.put('/:process_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateProcessInExperiment,
-        updateExperimentProcess);
-    router.get('/:process_id',
-        ra.validateProjectAccess, ra.validateExperimentInProject, ra.validateProcessInExperiment,
-        getProcess);
+
+    router.get('/', getProcessesForExperiment);
+    router.post('/templates/:template_id', ra.validateTemplateExists, createProcessInExperimentFromTemplate);
+
+    router.use('/:process_id', ra.validateProcessInExperiment);
+
+    router.put('/:process_id', updateExperimentProcess);
+    router.get('/:process_id', getProcess);
+
     return router;
 }
 
