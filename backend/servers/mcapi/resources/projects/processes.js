@@ -1,11 +1,11 @@
-const processes = require('../db/model/processes');
-const check = require('../db/model/check');
-const schema = require('../schema');
+const processes = require('../../db/model/processes');
+const check = require('../../db/model/check');
+const schema = require('../../schema');
 const status = require('http-status');
 const parse = require('co-body');
 const _ = require('lodash');
-const propertyValidator = require('../schema/property-validator');
-const ra = require('./resource-access');
+const propertyValidator = require('../../schema/property-validator');
+const ra = require('../resource-access');
 
 function* getProcess(next) {
     let rv = yield processes.getProcess(this.params.process_id);

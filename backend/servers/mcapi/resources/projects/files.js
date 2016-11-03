@@ -1,8 +1,8 @@
-const files = require('../db/model/files');
-const check = require('../db/model/check');
+const files = require('../../db/model/files');
+const check = require('../../db/model/check');
 const parse = require('co-body');
 const httpStatus = require('http-status');
-const ra = require('./resource-access');
+const ra = require('../resource-access');
 
 // get retrieves a file.
 function* get(next) {

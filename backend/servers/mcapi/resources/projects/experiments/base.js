@@ -1,10 +1,10 @@
-const experiments = require('../../db/model/experiments');
-const check = require('../../db/model/check');
-const schema = require('../../schema');
+const experiments = require('../../../db/model/experiments');
+const check = require('../../../db/model/check');
+const schema = require('../../../schema');
 const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
-const ra = require('../resource-access');
+const ra = require('../../resource-access');
 
 function* getAllExperimentsForProject(next) {
     let rv = yield experiments.getAllForProject(this.params.project_id);

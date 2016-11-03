@@ -1,7 +1,7 @@
-const shares = require('../db/model/shares');
+const shares = require('../../db/model/shares');
 const httpStatus = require('http-status');
 const parse = require('co-body');
-const ra = require('./resource-access');
+const ra = require('../resource-access');
 
 function* getList(next) {
     const user = this.reqctx.user.id;

@@ -1,13 +1,13 @@
-const experiments = require('../../db/model/experiments');
-const processes = require('../../db/model/processes');
-const check = require('../../db/model/check');
-const schema = require('../../schema');
+const experiments = require('../../../db/model/experiments');
+const processes = require('../../../db/model/processes');
+const check = require('../../../db/model/check');
+const schema = require('../../../schema');
 const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
-const propertyValidator = require('../../schema/property-validator');
+const propertyValidator = require('../../../schema/property-validator');
 const validators = require('./validators');
-const ra = require('../resource-access');
+const ra = require('../../resource-access');
 
 function *getProcessesForExperiment(next) {
     let rv = yield experiments.getProcessesForExperiment(this.params.experiment_id);
