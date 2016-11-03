@@ -1,8 +1,8 @@
-const directories = require('../db/model/directories');
-const schema = require('../schema');
+const directories = require('../../db/model/directories');
+const schema = require('../../schema');
 const parse = require('co-body');
 const httpStatus = require('http-status');
-const ra = require('./resource-access');
+const ra = require('../resource-access');
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';

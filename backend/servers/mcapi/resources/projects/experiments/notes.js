@@ -1,9 +1,9 @@
-const experiments = require('../../db/model/experiments');
+const experiments = require('../../../db/model/experiments');
 const status = require('http-status');
-const schema = require('../../schema');
+const schema = require('../../../schema');
 const parse = require('co-body');
 const _ = require('lodash');
-const ra = require('../resource-access');
+const ra = require('../../resource-access');
 
 function* getNotesForExperiment(next) {
     yield next;

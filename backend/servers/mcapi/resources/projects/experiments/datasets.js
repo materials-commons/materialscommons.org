@@ -1,10 +1,10 @@
-const experimentDatasets = require('../../db/model/experiment-datasets');
-const check = require('../../db/model/check');
-const schema = require('../../schema');
+const experimentDatasets = require('../../../db/model/experiment-datasets');
+const check = require('../../../db/model/check');
+const schema = require('../../../schema');
 const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
-const ra = require('../resource-access');
+const ra = require('../../resource-access');
 
 function* getDatasetsForExperiment(next) {
     let rv = yield experimentDatasets.getDatasetsForExperiment(this.params.experiment_id);

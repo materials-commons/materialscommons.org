@@ -1,14 +1,7 @@
-const projects = require('../db/model/projects');
+const projects = require('../../db/model/projects');
 const parse = require('co-body');
 const status = require('http-status');
-const ra = require('./resource-access');
-//const Router = require('koa-router');
-const samples = require('./samples');
-const files = require('./files');
-const directories = require('./directories');
-const processes = require('./processes');
-const shares = require('./shares');
-const experiments = require('./experiments');
+const ra = require('../resource-access');
 
 function* all(next) {
     let user = this.reqctx.user;
@@ -43,12 +36,6 @@ function createResources(router) {
     router.get('/projects', all);
     router.put('/projects/:project_id', ra.validateProjectAccess, update);
     router.get('/projects/:project_id', ra.validateProjectAccess, getProject);
-    samples.createResources(router);
-    files.createResources(router);
-    directories.createResources(router);
-    processes.createResources(router);
-    shares.createResources(router);
-    experiments.createResources(router);
 }
 
 module.exports = {
