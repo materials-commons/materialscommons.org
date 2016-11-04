@@ -103,10 +103,7 @@ function start_servers()
 function stop_servers()
 {
     echo Stopping $SERVERTYPE servers....
-    RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
-    if [ "$RPID" != "" ]; then
-        kill $RPID
-    fi
+
     ps -eo "pid,command" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
         kill $line
@@ -127,14 +124,11 @@ function stop_servers()
         kill $MCPUB_PID
     fi
 
-    if [ $TESTSERVER = "u" ]; then
-        if [ $(hostname) != "materialscommons" ]; then
-            WEBSERVER_PID=$(ps -eo "pid,command" | grep web-server.js | grep 8000 | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-            if [ "$WEBSERVER_PID" != "" ]; then
-                kill $WEBSERVER_PID
-            fi
-        fi
+    RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$RPID" != "" ]; then
+        kill $RPID
     fi
+
     echo Stopped $SERVERTYPE.
 }
 
