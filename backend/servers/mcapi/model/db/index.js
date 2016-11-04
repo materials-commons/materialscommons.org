@@ -4,7 +4,4 @@ let ropts = {
     createDatabase: false
 };
 
-const orm = require('thinky')(ropts);
-
-//module.exports = require('rethinkdbdash')(ropts);
-module.exports = orm.r;
+module.exports = require('thinky')(ropts);
