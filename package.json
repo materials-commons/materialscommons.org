@@ -11,7 +11,7 @@
   "dependencies": {
     "archiver": "^1.1.0",
     "babel-runtime": "^6.6.1",
-    "bluebird": "^2.9.14",
+    "bluebird": "^3.4.6",
     "co": "^4.5.1",
     "co-body": "^1.1.0",
     "command-line-args": "^0.5.9",
@@ -33,9 +33,10 @@
     "nodemailer": "^2.5.0",
     "nodemailer-smtp-transport": "^2.6.0",
     "promise.ify": "^0.3.0",
-    "rethinkdbdash": "^1.16.13",
+    "rethinkdbdash": "^2.3.23",
     "sanitize-filename": "^1.6.0",
-    "socket.io": "^1.4.5"
+    "socket.io": "^1.4.5",
+    "thinky": "^2.3.7"
   },
   "devDependencies": {
     "babel-cli": "^6.14.0",
