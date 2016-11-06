@@ -10,7 +10,7 @@ function loadEmptyPlaceHolder(dir) {
     dir.children.push({
         data: {
             name: placeholderName,
-            _type: 'file',
+            otype: 'file',
             mediatype: {
                 mime: '',
                 description: ''
@@ -34,7 +34,7 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
                 dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
                 srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
 
-            if (src.data._type === 'directory') {
+            if (src.data.otype === 'directory') {
                 return fileTreeMoveService.moveDir(src.data.id, dest.data.id).then(() => {
                     if (!srcDir.children.length) {
                         loadEmptyPlaceHolder(srcDir);
@@ -59,7 +59,7 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
             if (srcDir.data.id == dest.data.id) {
                 // Reject move - attempt to move the file/directory around under it's
                 // current directory;
-                var itemType = src.data._type === 'directory' ? 'Directory' : 'File';
+                var itemType = src.data.otype === 'directory' ? 'Directory' : 'File';
                 toastr.error('Attempt to move ' + itemType + " into current it's directory.",
                     'Error', {closeButton: true});
                 return false;
@@ -124,7 +124,7 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $stat
 
     function setActive(node, file) {
         clearActiveStateInAllNodes();
-        if (file.data._type === 'file') {
+        if (file.data.otype === 'file') {
             file.active = true;
             $state.go('project.files.file', {file_id: file.data.id});
         } else {
@@ -192,7 +192,7 @@ function MCFileTreeDirControlsComponentController(fileTreeProjectService, fileTr
                     data: {
                         id: dir.id,
                         name: ctrl.folderName,
-                        _type: 'directory'
+                        otype: 'directory'
                     }
                 });
                 ctrl.folderName = '';

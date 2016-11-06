@@ -3,7 +3,7 @@
         <h4 class="md-title">Showing top {{$ctrl.results.hits.length}} matches of {{$ctrl.results.total}} found.</h4>
         <md-list>
             <md-list-item ng-repeat="hit in $ctrl.results.hits">
-                <div ng-switch="hit._source._type">
+                <div ng-switch="hit._source.otype">
                     <div ng-switch-when="datafile">
                         <div layout="row">
                             <div class="md-list-item-text">

@@ -1,8 +1,8 @@
 export class ExperimentTask {
-    constructor(name, _type) {
+    constructor(name, otype) {
         this.id = '';
         this.name = name;
-        this._type = _type;
+        this.otype = otype;
         this.tasks = [];
         this.description = '';
         this.flags = {
@@ -46,8 +46,8 @@ export class Experiment {
         this.tasks = [];
     }
 
-    addTask(name, _type) {
-        let task = new ExperimentTask(name, _type);
+    addTask(name, otype) {
+        let task = new ExperimentTask(name, otype);
         this.tasks.push(task);
     }
 }
