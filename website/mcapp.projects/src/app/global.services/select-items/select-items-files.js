@@ -36,7 +36,7 @@ function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileTyp
                     renderer: 'group',
                     innerRenderer: function(params) {
                         var icon = fileType.icon(params.data);
-                        if (params.data._type == 'directory') {
+                        if (params.data.otype == 'directory') {
                             return [
                                 '<a ng-click="data.selected = !data.selected; ctrl.directorySelected(data);">',
                                 '<i ng-if="data.selected" class="fa fa-2x fa-fw fa-check text-success"></i>',
@@ -77,7 +77,7 @@ function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileTyp
     }
 
     function rowClicked(params) {
-        if (params.data._type == 'directory') {
+        if (params.data.otype == 'directory') {
             handleDirectory(params);
         }
     }
@@ -89,7 +89,7 @@ function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileTyp
             return node.model.data.id === data.id;
         });
         dir.model.children.forEach(function(c) {
-            if (c.data._type == 'file') {
+            if (c.data.otype == 'file') {
                 c.data.selected = data.selected;
             }
         });
@@ -109,7 +109,7 @@ function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileTyp
                 });
                 dir.model.children = gridFiles.toGridChildren(files);
                 dir.model.children.forEach(function(c) {
-                    if (c.data._type == 'file') {
+                    if (c.data.otype == 'file') {
                         c.data.selected = params.data.selected;
                     }
                 });

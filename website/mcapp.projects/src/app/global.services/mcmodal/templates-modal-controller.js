@@ -60,7 +60,7 @@ export function TemplatesModalController(project, templates, mcmodal, $modalInst
                                     attribute: setting.property.attribute,
                                     unit: setting.property.unit,
                                     value: setting.property.value == null ? "" : setting.property.value,
-                                    _type: setting.property._type
+                                    otype: setting.property.otype
                                 };
                             }),
                             process_name: t.process_name

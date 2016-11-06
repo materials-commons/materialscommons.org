@@ -11,7 +11,7 @@ function AptInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: null,
-                _type: "selection",
+                otype: "selection",
                 required: true,
                 choices: [
                     {name: "FIM", value: "fim"},
@@ -31,7 +31,7 @@ function AptInstrumentSettings() {
                 value: null,
                 units: ["K", "F", "C"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: true,
                 choices: []
             },
@@ -47,7 +47,7 @@ function AptInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "percentage",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -63,7 +63,7 @@ function AptInstrumentSettings() {
                 value: null,
                 units: ["pJ", "nJ"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -79,7 +79,7 @@ function AptInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "nm",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -95,7 +95,7 @@ function AptInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "kHz",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -111,7 +111,7 @@ function AptInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {
@@ -145,7 +145,7 @@ function AptInstrumentSettings() {
                 units: [],
                 unit: "Atom/Pulse",
                 required: false,
-                _type: "number",
+                otype: "number",
                 choices: []
             },
             validators: [],
@@ -161,7 +161,7 @@ function AptInstrumentSettings() {
                 units: [],
                 unit: "",
                 required: false,
-                _type: "selection",
+                otype: "selection",
                 choices: [
                     {"name": "He", "value": "He"},
                     {"name": "Ar", "value": "Ar"},
@@ -183,7 +183,7 @@ function AptInstrumentSettings() {
                 units: ["atm", "Pa", "torr"],
                 unit: "",
                 required: false,
-                _type: "number",
+                otype: "number",
                 choices: []
             },
             validators: [],
@@ -206,7 +206,7 @@ function SemInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "kV",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -222,7 +222,7 @@ function SemInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "A",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -238,7 +238,7 @@ function SemInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "degrees",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -254,7 +254,7 @@ function SemInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -270,7 +270,7 @@ function SemInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "V",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -286,7 +286,7 @@ function SemInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Standard", "value": "standard"},
@@ -305,7 +305,7 @@ function SemInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Secondary", "value": "secondary"},
@@ -326,7 +326,7 @@ function SemInstrumentSettings() {
                 units: [],
                 unit: "mm",
                 required: false,
-                _type: "number",
+                otype: "number",
                 choices: []
             },
             validators: [],
@@ -349,7 +349,7 @@ function AsReceivedSetupSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -365,7 +365,7 @@ function AsReceivedSetupSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -382,7 +382,7 @@ function AsReceivedSetupSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {name: "Cast", value: "cast"},
@@ -409,7 +409,7 @@ function AptDataAnalysisSystemInformationSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -425,7 +425,7 @@ function AptDataAnalysisSystemInformationSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -441,7 +441,7 @@ function AptDataAnalysisSystemInformationSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -457,7 +457,7 @@ function AptDataAnalysisSystemInformationSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -481,7 +481,7 @@ function AptDataReconstructionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Voltage", "value": "voltage"},
@@ -502,7 +502,7 @@ function AptDataReconstructionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -518,7 +518,7 @@ function AptDataReconstructionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -534,7 +534,7 @@ function AptDataReconstructionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: 'V/nm',
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -550,7 +550,7 @@ function AptDataReconstructionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "percentage",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -566,7 +566,7 @@ function AptDataReconstructionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "nm",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -582,7 +582,7 @@ function AptDataReconstructionInstrumentSettings() {
                 value: null,
                 units: ["degrees", "rad"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -598,7 +598,7 @@ function AptDataReconstructionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -622,7 +622,7 @@ function BroadIonBeamMillingInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Ga", "value": "Ga"},
@@ -643,7 +643,7 @@ function BroadIonBeamMillingInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "V",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -659,7 +659,7 @@ function BroadIonBeamMillingInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "s",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -683,7 +683,7 @@ function CoggingInstrumentSettings() {
                 value: null,
                 units: ["C", "F", "K"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -699,7 +699,7 @@ function CoggingInstrumentSettings() {
                 value: null,
                 units: ["mm/mm", "percentage"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -723,7 +723,7 @@ function CompressionInstrumentSettings() {
                 value: null,
                 units: ["C", "F", "K"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -739,7 +739,7 @@ function CompressionInstrumentSettings() {
                 value: null,
                 units: ["mm/mm", "percentage"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -755,7 +755,7 @@ function CompressionInstrumentSettings() {
                 value: null,
                 units: ["mm/mm", "percentage"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -771,7 +771,7 @@ function CompressionInstrumentSettings() {
                 value: null,
                 units: ["1/s", "mm/min"],
                 unit: null,
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -787,7 +787,7 @@ function CompressionInstrumentSettings() {
                 value: null,
                 units: ["mm/mm", "percentage"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -803,7 +803,7 @@ function CompressionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -827,7 +827,7 @@ function ComputationJobSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -843,7 +843,7 @@ function ComputationJobSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -859,7 +859,7 @@ function ComputationJobSettings() {
                 value: null,
                 units: ["b", "kb", "mb", "gb"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -875,7 +875,7 @@ function ComputationJobSettings() {
                 value: null,
                 units: [],
                 unit: "s",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -899,7 +899,7 @@ function CreepInstrumentSettings() {
                 value: null,
                 units: ["C", "F", "K"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -915,7 +915,7 @@ function CreepInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -931,7 +931,7 @@ function CreepInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "MPa",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -955,7 +955,7 @@ function DicPatterningInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Large-Scale", "value": "large_scale"},
@@ -974,7 +974,7 @@ function DicPatterningInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "microns",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -990,7 +990,7 @@ function DicPatterningInstrumentSettings() {
                 value: null,
                 units: ["microns", "nm"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1006,7 +1006,7 @@ function DicPatterningInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Alumina", "value": "alumina"},
@@ -1025,7 +1025,7 @@ function DicPatterningInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "APTMS", "value": "aptms"},
@@ -1053,7 +1053,7 @@ function DicStatisticalModellingInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1069,7 +1069,7 @@ function DicStatisticalModellingInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1085,7 +1085,7 @@ function DicStatisticalModellingInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Linear", "value": "linear"},
@@ -1114,7 +1114,7 @@ function ElectropolishingInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -1130,7 +1130,7 @@ function ElectropolishingInstrumentSettings() {
                 value: null,
                 units: ["V", "kV"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1146,7 +1146,7 @@ function ElectropolishingInstrumentSettings() {
                 value: null,
                 units: ["mA", "A"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1162,7 +1162,7 @@ function ElectropolishingInstrumentSettings() {
                 value: null,
                 units: ["C", "F", "K"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1186,7 +1186,7 @@ function EtchingInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -1202,7 +1202,7 @@ function EtchingInstrumentSettings() {
                 value: null,
                 units: ["V", "kV"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1218,7 +1218,7 @@ function EtchingInstrumentSettings() {
                 value: null,
                 units: ["hrs", "mins", "s"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1234,7 +1234,7 @@ function EtchingInstrumentSettings() {
                 value: null,
                 units: ["C", "F", "K"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1258,7 +1258,7 @@ function EbsdSemDataCollectionInstrumentSettings() {
                 value: null,
                 units: ["kv", "V"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1274,7 +1274,7 @@ function EbsdSemDataCollectionInstrumentSettings() {
                 value: null,
                 units: ["A", "mA"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1290,7 +1290,7 @@ function EbsdSemDataCollectionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "degrees",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1306,7 +1306,7 @@ function EbsdSemDataCollectionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1322,7 +1322,7 @@ function EbsdSemDataCollectionInstrumentSettings() {
                 value: null,
                 units: ["s", "ms"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1338,7 +1338,7 @@ function EbsdSemDataCollectionInstrumentSettings() {
                 value: null,
                 units: ["microns"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1354,7 +1354,7 @@ function EbsdSemDataCollectionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "microns",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1370,7 +1370,7 @@ function EbsdSemDataCollectionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "mm",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1394,7 +1394,7 @@ function EpmaDataCollectionInstrumentSettings() {
                 value: null,
                 units: ["kv", "V"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1410,7 +1410,7 @@ function EpmaDataCollectionInstrumentSettings() {
                 value: null,
                 units: ["A", "nA"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1426,7 +1426,7 @@ function EpmaDataCollectionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "microns",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1442,7 +1442,7 @@ function EpmaDataCollectionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Line", "value": "line"},
@@ -1462,7 +1462,7 @@ function EpmaDataCollectionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "microns",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1478,7 +1478,7 @@ function EpmaDataCollectionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -1494,7 +1494,7 @@ function EpmaDataCollectionInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -1518,7 +1518,7 @@ function LowCycleFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Total strain control", "value": "total_strain_control"},
@@ -1539,7 +1539,7 @@ function LowCycleFatigueInstrumentSettings() {
                 value: null,
                 units: ["K", "F", "C"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1555,7 +1555,7 @@ function LowCycleFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1571,7 +1571,7 @@ function LowCycleFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Continuous", "value": "continuous"},
@@ -1590,7 +1590,7 @@ function LowCycleFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Sinusoidal", "value": "sinusoidal"},
@@ -1610,7 +1610,7 @@ function LowCycleFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Constant", "value": "constant"},
@@ -1629,7 +1629,7 @@ function LowCycleFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1645,7 +1645,7 @@ function LowCycleFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -1661,7 +1661,7 @@ function LowCycleFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "percentage",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1685,7 +1685,7 @@ function AnnealingInstrumentSettings() {
                 value: null,
                 units: ["K", "F", "C"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1701,7 +1701,7 @@ function AnnealingInstrumentSettings() {
                 value: null,
                 units: ["seconds", "minutes", "hours"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1717,7 +1717,7 @@ function AnnealingInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Air Quench", "value": "air_quench"},
@@ -1738,7 +1738,7 @@ function AnnealingInstrumentSettings() {
                 value: null,
                 units: ["C/s", "K/s"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1754,7 +1754,7 @@ function AnnealingInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Recrystallization", "value": "recrystallization"},
@@ -1781,7 +1781,7 @@ function UltrasonicFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1797,7 +1797,7 @@ function UltrasonicFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1813,7 +1813,7 @@ function UltrasonicFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "kHz",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1829,7 +1829,7 @@ function UltrasonicFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1845,7 +1845,7 @@ function UltrasonicFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1861,7 +1861,7 @@ function UltrasonicFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "MPa",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1877,7 +1877,7 @@ function UltrasonicFatigueInstrumentSettings() {
                 value: null,
                 units: ["C", "F", "K"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1893,7 +1893,7 @@ function UltrasonicFatigueInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -1917,7 +1917,7 @@ function TEMInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -1933,7 +1933,7 @@ function TEMInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Diffraction", "value": "diffraction"},
@@ -1954,7 +1954,7 @@ function TEMInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Yes", "value": "yes"},
@@ -1973,7 +1973,7 @@ function TEMInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Bright Field", "value": "bright_field"},
@@ -1993,7 +1993,7 @@ function TEMInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Standard", "value": "standard"},
@@ -2014,7 +2014,7 @@ function TEMInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "string",
+                otype: "string",
                 required: false,
                 choices: []
             },
@@ -2030,7 +2030,7 @@ function TEMInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -2046,7 +2046,7 @@ function TEMInstrumentSettings() {
                 value: null,
                 units: ["cm", "mm", "m"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -2070,7 +2070,7 @@ function HeatTreatmentInstrumentSettings() {
                 value: null,
                 units: ["K", "F", "C"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -2086,7 +2086,7 @@ function HeatTreatmentInstrumentSettings() {
                 value: null,
                 units: ["seconds", "minutes", "hours"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -2102,7 +2102,7 @@ function HeatTreatmentInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Air Quench", "value": "air_quench"},
@@ -2123,7 +2123,7 @@ function HeatTreatmentInstrumentSettings() {
                 value: null,
                 units: ["C/s", "K/s"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -2154,7 +2154,7 @@ function HardnessInstrumentSettings() {
                 value: null,
                 units: [],
                 unit: "",
-                _type: "selection",
+                otype: "selection",
                 required: false,
                 choices: [
                     {"name": "Vickers", "value": "vickers"},
@@ -2175,7 +2175,7 @@ function HardnessInstrumentSettings() {
                 value: null,
                 units: ["ibf", "N"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },
@@ -2191,7 +2191,7 @@ function HardnessInstrumentSettings() {
                 value: null,
                 units: ["seconds", "minutes", "hours"],
                 unit: "",
-                _type: "number",
+                otype: "number",
                 required: false,
                 choices: []
             },

@@ -68,11 +68,11 @@ class SamplesService {
         }
     }
 
-    createMeasurement(_type, property, unit, value) {
+    createMeasurement(otype, property, unit, value) {
         return {
             name: property.name,
             attribute: property.attribute,
-            _type: _type,
+            otype: otype,
             unit: unit,
             value: value
         }

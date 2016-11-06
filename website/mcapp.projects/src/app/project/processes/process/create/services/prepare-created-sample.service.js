@@ -19,7 +19,7 @@ function prepareCreatedSampleService(processEdit) {
                             is_best_measure: true,
                             value: composition,
                             unit: compositionElements.unit,
-                            _type: 'composition'
+                            otype: 'composition'
                         }
                     ]
                 };
