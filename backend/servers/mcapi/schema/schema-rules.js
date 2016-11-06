@@ -228,7 +228,7 @@ function mustBeForSample(id, idType, done) {
  * @param {Function} done - Callback to signal success or failure
  */
 function mustBeValidMeasurements(measurements, _ignore, done) {
-    let measurementType = this._type;
+    let measurementType = this.otype;
     let sampleID = this.sample_id;
     if (measurements.length === 0) {
         done(null);
@@ -250,7 +250,7 @@ function mustBeValidMeasurements(measurements, _ignore, done) {
             error.expected = `measurements to all be for sample ${sampleID}`;
         } else {
             let index = _.indexOf(measures, function(m) {
-                return m._type !== measurementType;
+                return m.otype !== measurementType;
             });
             if (index !== -1) {
                 // found a measurement with the wrong type.
