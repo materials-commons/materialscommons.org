@@ -3,7 +3,7 @@ const r = db.r;
 
 const Project = db.createModel("projects", {
     id: db.type.string(),
-    _mctype: db.type.string().default("project"),
+    otype: db.type.string().default("project"),
     name: db.type.string(),
     description: db.type.string(),
     owner: db.type.string(),
@@ -22,7 +22,7 @@ const Project = db.createModel("projects", {
  */
 const Process = db.createModel("processes", {
     id: db.type.string(),
-    _mctype: db.type.string().default("process"),
+    otype: db.type.string().default("process"),
     name: db.type.string(),
     description: db.type.string(),
     owner: db.type.string(),
@@ -37,7 +37,7 @@ const Process = db.createModel("processes", {
 
 const Setup = db.createModel("setups", {
     id: db.type.string(),
-    _mctype: db.type.string().default("settings"),
+    otype: db.type.string().default("settings"),
     name: db.type.string(),
     attribute: db.type.string(),
     birthtime: db.type.date().default(r.now())
@@ -52,7 +52,7 @@ const Setup = db.createModel("setups", {
  */
 const Sample = db.createModel("samples", {
     id: db.type.string(),
-    _mctype: db.type.string().default("sample"),
+    otype: db.type.string().default("sample"),
     name: db.type.string(),
     description: db.type.string(),
     owner: db.type.string(),
@@ -62,7 +62,7 @@ const Sample = db.createModel("samples", {
 
 const Experiment = db.createModel("experiments", {
     id: db.type.string(),
-    _mctype: db.type.string().default("experiment"),
+    otype: db.type.string().default("experiment"),
     name: db.type.string(),
     description: db.type.string(),
     owner: db.type.string(),
@@ -80,7 +80,7 @@ const Experiment = db.createModel("experiments", {
 
 const Dataset = db.createModel("datasets", {
     id: db.type.string(),
-    _mctype: db.type.string().default("dataset"),
+    otype: db.type.string().default("dataset"),
     title: db.type.string(),
     description: db.type.string(),
     owner: db.type.string(),
@@ -113,7 +113,7 @@ const Dataset = db.createModel("datasets", {
 
 const Datafile = db.createModel("datafiles", {
     id: db.type.string(),
-    _mctype: db.type.string().default("datafile"),
+    otype: db.type.string().default("datafile"),
     name: db.type.string(),
     description: db.type.string(),
     owner: db.type.string(),
@@ -131,7 +131,7 @@ const Datafile = db.createModel("datafiles", {
 
 const Datadir = db.createModel("datadirs", {
     id: db.type.string(),
-    _mctype: db.type.string().default("datadir"),
+    otype: db.type.string().default("datadir"),
     name: db.type.string(),
     owner: db.type.string(),
     parent: db.type.string(),
@@ -142,7 +142,7 @@ const Datadir = db.createModel("datadirs", {
 
 const ExperimentNote = db.createModel("experimentnotes", {
     id: db.type.string(),
-    _mctype: db.type.string().default("note"),
+    otype: db.type.string().default("note"),
     owner: db.type.string(),
     note: db.type.string(),
     name: db.type.string(),
@@ -152,7 +152,7 @@ const ExperimentNote = db.createModel("experimentnotes", {
 
 const ExperimentTask = db.createModel("experimenttasks", {
     id: db.type.string(),
-    _mctype: db.type.string().default("experiment_task"),
+    otype: db.type.string().default("experiment_task"),
     name: db.type.string(),
     note: db.type.string(),
     owner: db.type.string(),
