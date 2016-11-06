@@ -214,7 +214,7 @@ function *createSetup(processID, settings) {
             let p = current.properties[j].property;
             let val = p.value;
             let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
-                p._type, val, p.unit);
+                p.otype, val, p.unit);
             yield db.insert('setupproperties', prop);
         }
     }
@@ -348,7 +348,7 @@ function *addPropertyMeasurements(pID, pName, pAttr, sampleID, measurements) {
         let m = new model.Measurement(pName, pAttr, sampleID);
         m.value = current.value;
         m.unit = current.unit;
-        m._type = current._type;
+        m.otype = current.otype;
         m.element = current.element;
         let inserted = yield db.insert('measurements', m);
         createdMeasurements.push(inserted);

@@ -9,7 +9,7 @@ function Sample(name, description, owner) {
     this.is_grouped = false;
     this.has_group = false;
     this.group_size = 0;
-    this._type = "sample";
+    this.otype = "sample";
 }
 
 function Process(name, owner, templateId, transform) {
@@ -19,7 +19,7 @@ function Process(name, owner, templateId, transform) {
     this.process_type = transform ? 'transform' : 'measurement';
     this.birthtime = r.now();
     this.mtime = this.birthtime;
-    this._type = "process";
+    this.otype = "process";
     this.note = "";
     this.does_transform = transform;
 }
@@ -59,15 +59,15 @@ function Setups(name, attribute) {
     this.name = name;
     this.attribute = attribute;
     this.birthtime = r.now();
-    this._type = "settings";
+    this.otype = "settings";
 }
 
-function SetupProperty(setupID, name, description, attribute, _type, value, unit) {
+function SetupProperty(setupID, name, description, attribute, otype, value, unit) {
     this.setup_id = setupID;
     this.name = name;
     this.description = description;
     this.attribute = attribute;
-    this._type = _type;
+    this.otype = otype;
     this.value = value;
     this.unit = unit;
 }
@@ -76,13 +76,13 @@ function Measurement(name, attribute, sampleID) {
     this.name = name;
     this.attribute = attribute;
     this.sample_id = sampleID;
-    this._type = "measurement";
+    this.otype = "measurement";
     this.file = {};
 }
 
-Measurement.prototype.setValue = function(value, units, _type, nvalue, nunits, element) {
+Measurement.prototype.setValue = function(value, units, otype, nvalue, nunits, element) {
     this.value = value;
-    this._type = _type;
+    this.otype = otype;
     this.unit = units;
     this.element = element;
     this.nvalue = nvalue ? nvalue : value;
@@ -96,7 +96,7 @@ Measurement.prototype.setFile = function(f) {
 function Property(name, attribute) {
     this.parent_id = '';
     this.birthtime = r.now();
-    this._type = 'property';
+    this.otype = 'property';
     this.name = name;
     this.attribute = attribute;
     this.best_measure_id = '';
@@ -143,7 +143,7 @@ function BestMeasureHistory(propertyID, mID) {
     this.property_id = propertyID;
     this.measurement_id = mID;
     this.when = r.now();
-    this._type = 'best_measure_history';
+    this.otype = 'best_measure_history';
 }
 
 function Sample2Datafile(sampleID, datafileID) {
@@ -175,7 +175,7 @@ function Tag2Item(tagID, itemID, itemType) {
 
 function Directory(name, owner, project, parent) {
     let now = r.now();
-    this._type = "datadir";
+    this.otype = "datadir";
     this.owner = owner;
     this.name = name;
     this.project = project;
@@ -197,7 +197,7 @@ function Sample2Sample(parentID, childID) {
 
 function Share(projectID, itemID, itemType, itemName) {
     let now = r.now();
-    this._type = 'share';
+    this.otype = 'share';
     this.project_id = projectID;
     this.item_id = itemID;
     this.item_type = itemType;
@@ -236,7 +236,7 @@ function Experiment(name, owner) {
     let now = r.now();
     this.name = name;
     this.owner = owner;
-    this._type = 'experiment';
+    this.otype = 'experiment';
     this.description = '';
     this.note = '<h2>Experiment Notes</h2>';
     this.status = 'active';
@@ -255,7 +255,7 @@ function ExperimentTask(name, owner) {
     this.name = name;
     this.owner = owner;
     this.index = 0;
-    this._type = 'experiment_task';
+    this.otype = 'experiment_task';
     this.note = 'Notes here...';
     this.estimate = {
         value: 0,

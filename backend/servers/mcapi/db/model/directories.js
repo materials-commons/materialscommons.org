@@ -47,7 +47,7 @@ function directoryByID(directoryID) {
 
 function toDir(results) {
     let dir = {
-        _type: 'directory',
+        otype: 'directory',
         id: results.datadir_id,
         size: 0,
         name: path.basename(results.name),
@@ -58,7 +58,7 @@ function toDir(results) {
 
     dir.children = results.files.map(f => {
         return {
-            _type: 'file',
+            otype: 'file',
             size: f.size,
             name: f.name,
             path: path.join(dir.path, f.name),
@@ -70,7 +70,7 @@ function toDir(results) {
 
     let childrenDirs = results.directories.map(d => {
         return {
-            _type: 'directory',
+            otype: 'directory',
             id: d.id,
             size: 0,
             name: path.basename(d.name),
