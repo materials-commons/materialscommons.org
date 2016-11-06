@@ -12,7 +12,7 @@ function loadEmptyPlaceHolder(dir) {
     dir.children.push({
         data: {
             name: placeholderName,
-            _type: 'file'
+            otype: 'file'
         }
     });
 }

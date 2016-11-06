@@ -2,7 +2,7 @@
     <ol ui-tree-nodes ng-model="ctrl.components">
         <li ng-repeat="component in ctrl.components track by component.data.id | orderBy:'data.name'" ui-tree-node>
             <div ui-tree-handle ng-class="{'angular-ui-tree-handle-active': component.active}">
-                <div ng-if="component.data._type === 'directory'">
+                <div ng-if="component.data.otype === 'directory'">
                     <div layout="row" layout-align="start center">
                         <i class="fa fa-fw fa-reorder drag-handle-color"></i>
                         <a ng-click="ctrl.setActive(component)" data-nodrag>
@@ -14,7 +14,7 @@
                         </a>
                     </div>
                 </div>
-                <div ng-if="component.data._type !== 'directory'">
+                <div ng-if="component.data.otype !== 'directory'">
                     <div ng-if="component.data.name !== ctrl.placeholderName">
                         <i class="fa fa-fw fa-reorder drag-handle-color"></i>
                         <a ng-click="ctrl.setActive(component)" data-nodrag>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="component.data._type === 'directory'">
+            <div ng-if="component.data.otype === 'directory'">
                 <mc-project-share-tree-dir ng-if="component.expand"
                                            component="component"
                                            project="ctrl.project">

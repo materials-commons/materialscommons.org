@@ -29,7 +29,7 @@ function ProcessSettings2DirectiveController(experimentsService, toast, $statePa
             return;
         }
 
-        if (property._type === "date") {
+        if (property.otype === "date") {
             console.dir(property);
             return;
         }

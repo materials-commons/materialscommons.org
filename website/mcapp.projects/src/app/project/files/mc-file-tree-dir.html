@@ -5,7 +5,7 @@
                  ng-mouseenter="ctrl.onMouseEnter($event, this)"
                  ng-mouseleave="ctrl.onMouseLeave($event, this)"
                  class="mc-active-tree-node" ng-class="{'angular-ui-tree-handle-active': file.active}">
-                <div ng-if="file.data._type === 'directory'">
+                <div ng-if="file.data.otype === 'directory'">
                     <div layout="row" layout-align="start center">
                         <i class="fa fa-fw fa-reorder drag-handle-color"></i>
                         <a ng-click="ctrl.setActive(this, file)" data-nodrag>
@@ -21,7 +21,7 @@
                         </mc-file-tree-dir-controls>
                     </div>
                 </div>
-                <div ng-if="file.data._type === 'file'">
+                <div ng-if="file.data.otype === 'file'">
                     <div ng-if="file.data.name !== ctrl.placeholderName">
                         <i class="fa fa-fw fa-reorder drag-handle-color"></i>
                         <a ng-click="ctrl.setActive(this, file)" data-nodrag>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="file.data._type === 'directory'">
+            <div ng-if="file.data.otype === 'directory'">
                 <mc-file-tree-dir ng-if="file.expand" file="file"></mc-file-tree-dir>
             </div>
         </li>

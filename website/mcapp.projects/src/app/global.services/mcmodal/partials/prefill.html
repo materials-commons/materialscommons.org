@@ -18,7 +18,7 @@
             <h4>SETUP</h4>
             <hr/>
             <div class="row" ng-repeat="setting in ctrl.template.setup.settings[0].properties">
-                <div ng-switch="setting.property._type">
+                <div ng-switch="setting.property.otype">
                     <!--------- number --------->
                     <div ng-switch-when="number">
                         <label class="col-xs-3 control-label">
@@ -102,7 +102,7 @@
                     </div>
                     <!--------- unknown type --------->
                     <div ng-switch-default>
-                        <span>Unknown template type {{setting.property._type}}</span>
+                        <span>Unknown template type {{setting.property.otype}}</span>
                     </div>
                 </div>
             </div>
