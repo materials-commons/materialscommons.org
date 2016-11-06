@@ -58,11 +58,11 @@ module.exports = {
                     measurements: [
                         {
                             id: 'measure_1',
-                            _type: 'number'
+                            otype: 'number'
                         },
                         {
                             id: 'measure_2',
-                            _type: 'number'
+                            otype: 'number'
                         }
                     ]
                 },
@@ -71,7 +71,7 @@ module.exports = {
                     measurements: [
                         {
                             id: 'measure_1',
-                            _type: 'string'
+                            otype: 'string'
                         }
                     ]
                 }
@@ -86,11 +86,11 @@ module.exports = {
                     measurements: [
                         {
                             id: 'measure_1',
-                            _type: 'number'
+                            otype: 'number'
                         },
                         {
                             id: 'measure_2',
-                            _type: 'number'
+                            otype: 'number'
                         }
                     ]
                 },
@@ -99,7 +99,7 @@ module.exports = {
                     measurements: [
                         {
                             id: 'measure_1',
-                            _type: 'string'
+                            otype: 'string'
                         }
                     ]
                 }

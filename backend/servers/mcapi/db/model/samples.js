@@ -128,7 +128,7 @@ function* addPropertyMeasurements(propertyId, sampleId, pName, pAttr, measuremen
         let m = new model.Measurement(pName, pAttr, sampleId);
         m.value = current.value;
         m.unit = current.unit;
-        m._type = current._type;
+        m.otype = current.otype;
         let insertedMeasurement = yield db.insert('measurements', m);
         if (current.is_best_measure) {
             yield addAsBestMeasure(propertyId, insertedMeasurement.id)
