@@ -362,6 +362,20 @@ function Dataset2Datafile(datasetId, datafileId) {
     this.datafile_id = datafileId;
 }
 
+function DataFile(name, owner) {
+    this._type ='datafile';
+    this.current = true;
+    this.description = "";
+    this.parent =  "";
+    this.usesid = "";
+    let now = r.now();
+    this.birthtime = now;
+    this.mtime = now;
+    this.atime = now;
+    this.name = name;
+    this.owner = owner;
+}
+
 module.exports = {
     Sample: Sample,
     Process: Process,
@@ -406,6 +420,7 @@ module.exports = {
     Dataset2Sample,
     Dataset2Process,
     Dataset2ExperimentNote,
-    Dataset2Datafile
+    Dataset2Datafile,
+    DataFile
 };
 
