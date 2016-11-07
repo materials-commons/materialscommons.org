@@ -1,9 +1,12 @@
 const directories = require('../../db/model/directories');
+const files = require('../../db/model/files');
 const schema = require('../../schema');
 const parse = require('co-body');
 const httpStatus = require('http-status');
 const ra = require('../resource-access');
 const Router = require('koa-router');
+const multiParse = require('co-busboy');
+const mimeType = require('../../../lib/create-file-utils')
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';
@@ -118,6 +121,50 @@ function* remove(next) {
     yield next;
 }
 
+function* uploadFileToProjectDirectory(next) {
+    // ref: http://stackoverflow.com/questions/33751203/how-to-parse-multipart-form-data-body-with-koa
+    // 1. Create file record for new file with filename, size values, and other default initial values
+    // 2. Compute store path using UUID of new file record
+    // 3. Upload file and store in store location
+    // 3. Compute checksum and add to file record
+    // 4. Query DB for checksum on record with ‘usesid’ set to empty string -> matching record
+    // 5. If matching record exists:
+    //     - discard uploaded file
+    // - set File record ‘usesid' value to the id of matching record
+    // 6. Return File record
+
+    // it's a stream, you can do something like:
+    // part.pipe(fs.createWriteStream('some file.txt'));
+
+    console.log("this request is multipart",this.request.is('multipart/*'));
+    let directory = yield directories.get(this.params.project_id,this.params.directory_id);
+    console.log(directory);
+
+    let parts = multiParse(this,{
+        autoFields: true
+    });
+    var part = yield parts;
+    // it's a stream, you can do something like:
+    // var saveTo = path.join(os.tmpDir(), path.basename(fieldname));
+    // part.pipe(fs.createWriteStream(saveTo));
+    console.log("part.filename = ",part.filename);
+    console.log("part.mimeType = ",part.mime);
+
+    let fileArgs = {
+        name: part.filename,
+        mediatype: mimeType.mediaTypeDescriptions(part.mimeType)
+    };
+
+    console.log("fileArgs = ",fileArgs);
+
+    let file = yield files.create(fileArgs,this.reqctx.user.id)
+
+    console.log("file = ",file );
+
+    this.body = {};
+    yield next;
+}
+
 function createResource() {
     const router = new Router();
 
@@ -128,6 +175,9 @@ function createResource() {
     router.get('/:directory_id', get);
     router.put('/:directory_id', update);
     router.delete('/:directory_id', remove);
+
+    router.post('/:directory_id/fileupload', uploadFileToProjectDirectory);
+
     return router;
 }
 

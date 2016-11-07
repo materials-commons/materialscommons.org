@@ -43,6 +43,15 @@ function* get(file_id) {
     return runQuery(rql);
 }
 
+// create file
+function* create(file, owner) {
+    console.log("create = ", file);
+    let f = new model.DataFile(file.name, owner);
+    f.mediatype = file.mediatype
+    let newFile = yield db.insert('datafiles', f);
+    return yield get(newFile.id);
+}
+
 // getList gets the details for the given file ids
 function* getList(projectID, fileIDs) {
     let rql = r.table('datafiles').getAll(r.args(fileIDs))
@@ -328,6 +337,7 @@ module.exports = {
     countInProject,
     get,
     getList,
+    create,
     update,
     deleteFile,
     byPath,
