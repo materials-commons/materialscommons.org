@@ -1,5 +1,4 @@
-const md5File = require('md5-file');
-const Promise = require('bluebird');
+const md5 = require('md5-file-promise');
 
 function datafilePath(datafile) {
     let base = process.env.MCDIR;
@@ -14,12 +13,6 @@ function datafilePath(datafile) {
     let partB = part.substring(2);
     let path = base + partA + "/" + partB + "/" + file_id;
     return path;
-}
-
-function writeFileContent(datafile, stream) {
-    return new Promise(function (resolve,reject){
-        part.pipe(fs.createWriteStream(datafilePath(datafile)))
-    });
 }
 
 function mediaTypeDescriptionsFromMime(mime) {
@@ -41,13 +34,7 @@ function mediaTypeDescriptionsFromMime(mime) {
 function computeChecksum(datafile) {
     let path = datafilePath(datafile);
     console.log("computeChecksum; path = ", path);
-    return new Promise(function (resolve,reject) {
-        md5File(path,(err,hash) => {
-            if (err) return reject("Computing checksum failed for: " + err);
-            console.log("computeChecksum; hash = " + hash);
-            return resolve(hash);
-        });
-    });
+    return md5.computeFromFile(path);
 }
 
 const mediaTypeDescriptions = {
