@@ -1,4 +1,26 @@
+const md5File = require('md5-file');
+const Promise = require('bluebird');
 
+function datafilePath(datafile) {
+    let base = process.env.MCDIR;
+    base = base.split(':')[0];
+    if (!base.endsWith('/')) {
+        base += '/';
+    }
+
+    let file_id = datafile.id;
+    let part = file_id.split("-")[1];
+    let partA = part.substring(0, 2);
+    let partB = part.substring(2);
+    let path = base + partA + "/" + partB + "/" + file_id;
+    return path;
+}
+
+function writeFileContent(datafile, stream) {
+    return new Promise(function (resolve,reject){
+        part.pipe(fs.createWriteStream(datafilePath(datafile)))
+    });
+}
 
 function mediaTypeDescriptionsFromMime(mime) {
     // if there is a semi-colen - strip media type of additional information
@@ -14,7 +36,19 @@ function mediaTypeDescriptionsFromMime(mime) {
         description:  description,
         mime:  mime,
     }
-};
+}
+
+function computeChecksum(datafile) {
+    let path = datafilePath(datafile);
+    console.log("computeChecksum; path = ", path);
+    return new Promise(function (resolve,reject) {
+        md5File(path,(err,hash) => {
+            if (err) return reject("Computing checksum failed for: " + err);
+            console.log("computeChecksum; hash = " + hash);
+            return resolve(hash);
+        });
+    });
+}
 
 const mediaTypeDescriptions = {
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":         "Spreadsheet",
@@ -60,6 +94,7 @@ const mediaTypeDescriptions = {
 }
 
 module.exports = {
+    datafilePath,
     mediaTypeDescriptionsFromMime,
     computeChecksum
 };
