@@ -1,5 +1,6 @@
 
-module.exports.mediaTypeDescriptions = function (mime) {
+
+function mediaTypeDescriptionsFromMime(mime) {
     // if there is a semi-colen - strip media type of additional information
     let pos = mime.indexOf(';');
     if (pos > -1) {
@@ -57,3 +58,8 @@ const mediaTypeDescriptions = {
     "application/msword":                       "MS-Word",
     "unknown":                                  "Unknown",
 }
+
+module.exports = {
+    mediaTypeDescriptionsFromMime,
+    computeChecksum
+};
