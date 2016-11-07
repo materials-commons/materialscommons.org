@@ -161,6 +161,10 @@ function* uploadFileToProjectDirectory(next) {
 
     console.log("file = ",file );
 
+    let checksum = yield fileUtils.computeChecksum(file);
+
+
+
     this.body = {};
     yield next;
 }
