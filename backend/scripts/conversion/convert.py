@@ -149,6 +149,24 @@ def fix_as_received_process_name(conn):
     r.table('processes').filter({'process_name': 'As Received'}).update({'process_name': 'Create Samples'}).run(conn)
 
 
+def rename_to_otype(table, conn):
+    r.table(table).map(lambda doc: doc.merge({'otype': doc['_type']}).without('_type')).run(conn)
+
+
+def convert_to_otype(conn):
+    rename_to_otype('datadirs', conn)
+    rename_to_otype('datafiles', conn)
+    rename_to_otype('experiments', conn)
+    rename_to_otype('experimenttasks', conn)
+    rename_to_otype('measurements', conn)
+    rename_to_otype('processes', conn)
+    rename_to_otype('projects', conn)
+    rename_to_otype('properties', conn)
+    rename_to_otype('samples', conn)
+    rename_to_otype('setupproperties', conn)
+    rename_to_otype('setups', conn)
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
@@ -168,6 +186,8 @@ def main():
 
     add_dataset_processes_to_experiments(conn)
     fix_as_received_process_name(conn)
+
+    convert_to_otype(conn)
 
     # Not sure of these steps:
     # change_processes_field_to_description(conn)

@@ -22,7 +22,7 @@ function Apt() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: true,
                         choices: [
                             {name: "FIM", value: "fim"},
@@ -39,7 +39,7 @@ function Apt() {
                         value: "",
                         units: ["K", "F", "C"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: true,
                         choices: []
                     }
@@ -52,7 +52,7 @@ function Apt() {
                         value: "",
                         units: [],
                         unit: "percentage",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -65,7 +65,7 @@ function Apt() {
                         value: "",
                         units: ["pJ", "nJ"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -78,7 +78,7 @@ function Apt() {
                         value: "",
                         units: [],
                         unit: "nm",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -91,7 +91,7 @@ function Apt() {
                         value: "",
                         units: [],
                         unit: "kHz",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -104,7 +104,7 @@ function Apt() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {
@@ -135,7 +135,7 @@ function Apt() {
                         units: [],
                         unit: "Atom/Pulse",
                         required: false,
-                        _type: "number",
+                        otype: "number",
                         choices: []
                     }
                 },
@@ -148,7 +148,7 @@ function Apt() {
                         units: [],
                         unit: "",
                         required: false,
-                        _type: "selection",
+                        otype: "selection",
                         choices: [
                             {"name": "He", "value": "He"},
                             {"name": "Ar", "value": "Ar"},
@@ -167,7 +167,7 @@ function Apt() {
                         units: ["atm", "Pa", "torr"],
                         unit: "",
                         required: false,
-                        _type: "number",
+                        otype: "number",
                         choices: []
                     }
                 }
@@ -198,7 +198,7 @@ function Sem() {
                         value: "",
                         units: [],
                         unit: "kV",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -211,7 +211,7 @@ function Sem() {
                         value: "",
                         units: [],
                         unit: "A",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -224,7 +224,7 @@ function Sem() {
                         value: "",
                         units: [],
                         unit: "degrees",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -237,7 +237,7 @@ function Sem() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -250,7 +250,7 @@ function Sem() {
                         value: "",
                         units: [],
                         unit: "V",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -263,7 +263,7 @@ function Sem() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Standard", "value": "standard"},
@@ -279,7 +279,7 @@ function Sem() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Secondary", "value": "secondary"},
@@ -297,7 +297,7 @@ function Sem() {
                         units: [],
                         unit: "mm",
                         required: false,
-                        _type: "number",
+                        otype: "number",
                         choices: []
                     }
                 }
@@ -322,7 +322,7 @@ function CreateSamples() {
                 value: [],
                 units: [],
                 unit: "at%",
-                _type: "composition",
+                otype: "composition",
                 required: false,
                 choices: []
             }
@@ -342,7 +342,7 @@ function CreateSamples() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -355,7 +355,7 @@ function CreateSamples() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -368,7 +368,7 @@ function CreateSamples() {
                 //        value: "",
                 //        units: ["cm", "mm"],
                 //        unit: "",
-                //        _type: "string",
+                //        otype: "string",
                 //        required: false,
                 //        choices: []
                 //    }
@@ -381,7 +381,7 @@ function CreateSamples() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "date",
+                        otype: "date",
                         required: false,
                         choices: []
                     }
@@ -394,7 +394,7 @@ function CreateSamples() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {name: "Cast", value: "cast"},
@@ -432,7 +432,7 @@ function Sectioning() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -466,7 +466,7 @@ function AptDataAnalysis() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -479,7 +479,7 @@ function AptDataAnalysis() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -492,7 +492,7 @@ function AptDataAnalysis() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -505,7 +505,7 @@ function AptDataAnalysis() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -537,7 +537,7 @@ function AptDataReconstruction() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Voltage", "value": "voltage"},
@@ -555,7 +555,7 @@ function AptDataReconstruction() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -568,7 +568,7 @@ function AptDataReconstruction() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -581,7 +581,7 @@ function AptDataReconstruction() {
                         value: "",
                         units: [],
                         unit: 'V/nm',
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -594,7 +594,7 @@ function AptDataReconstruction() {
                         value: "",
                         units: [],
                         unit: "percentage",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -607,7 +607,7 @@ function AptDataReconstruction() {
                         value: "",
                         units: [],
                         unit: "nm",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -620,7 +620,7 @@ function AptDataReconstruction() {
                         value: "",
                         units: ["degrees", "rad"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -633,7 +633,7 @@ function AptDataReconstruction() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -665,7 +665,7 @@ function BroadIonBeamMilling() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Ga", "value": "Ga"},
@@ -683,7 +683,7 @@ function BroadIonBeamMilling() {
                         value: "",
                         units: [],
                         unit: "V",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -696,7 +696,7 @@ function BroadIonBeamMilling() {
                         value: "",
                         units: [],
                         unit: "s",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -728,7 +728,7 @@ function Cogging() {
                         value: "",
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -741,7 +741,7 @@ function Cogging() {
                         value: "",
                         units: ["mm/mm", "percentage"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -773,7 +773,7 @@ function Compression() {
                         value: "",
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -786,7 +786,7 @@ function Compression() {
                         value: "",
                         units: ["mm/mm", "percentage"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -799,7 +799,7 @@ function Compression() {
                         value: "",
                         units: ["mm/mm", "percentage"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -812,7 +812,7 @@ function Compression() {
                         value: "",
                         units: ["1/s", "mm/min"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -825,7 +825,7 @@ function Compression() {
                         value: "",
                         units: ["mm/mm", "percentage"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -838,7 +838,7 @@ function Compression() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -870,7 +870,7 @@ function Computation() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -883,7 +883,7 @@ function Computation() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -896,7 +896,7 @@ function Computation() {
                         value: "",
                         units: ["b", "kb", "mb", "gb"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -909,7 +909,7 @@ function Computation() {
                         value: "",
                         units: [],
                         unit: "s",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -941,7 +941,7 @@ function Creep() {
                         value: "",
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -954,7 +954,7 @@ function Creep() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -967,7 +967,7 @@ function Creep() {
                         value: "",
                         units: [],
                         unit: "MPa",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -999,7 +999,7 @@ function DicPatterning() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Large-Scale", "value": "large_scale"},
@@ -1015,7 +1015,7 @@ function DicPatterning() {
                         value: "",
                         units: [],
                         unit: "microns",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1028,7 +1028,7 @@ function DicPatterning() {
                         value: "",
                         units: ["microns", "nm"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1041,7 +1041,7 @@ function DicPatterning() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Alumina", "value": "alumina"},
@@ -1057,7 +1057,7 @@ function DicPatterning() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "APTMS", "value": "aptms"},
@@ -1093,7 +1093,7 @@ function DicStatisticalModelling() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1106,7 +1106,7 @@ function DicStatisticalModelling() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1119,7 +1119,7 @@ function DicStatisticalModelling() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Linear", "value": "linear"},
@@ -1156,7 +1156,7 @@ function Electropolishing() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -1169,7 +1169,7 @@ function Electropolishing() {
                         value: "",
                         units: ["V", "kV"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1182,7 +1182,7 @@ function Electropolishing() {
                         value: "",
                         units: ["mA", "A"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1195,7 +1195,7 @@ function Electropolishing() {
                         value: "",
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1227,7 +1227,7 @@ function Etching() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -1240,7 +1240,7 @@ function Etching() {
                         value: "",
                         units: ["V", "kV"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1253,7 +1253,7 @@ function Etching() {
                         value: "",
                         units: ["hrs", "mins", "s"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1266,7 +1266,7 @@ function Etching() {
                         value: "",
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1298,7 +1298,7 @@ function EbsdSemDataCollection() {
                         value: "",
                         units: ["kv", "V"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1311,7 +1311,7 @@ function EbsdSemDataCollection() {
                         value: "",
                         units: ["A", "mA"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1324,7 +1324,7 @@ function EbsdSemDataCollection() {
                         value: "",
                         units: [],
                         unit: "degrees",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1337,7 +1337,7 @@ function EbsdSemDataCollection() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1350,7 +1350,7 @@ function EbsdSemDataCollection() {
                         value: "",
                         units: ["s", "ms"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1363,7 +1363,7 @@ function EbsdSemDataCollection() {
                         value: "",
                         units: ["microns"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1376,7 +1376,7 @@ function EbsdSemDataCollection() {
                         value: "",
                         units: [],
                         unit: "microns",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1389,7 +1389,7 @@ function EbsdSemDataCollection() {
                         value: "",
                         units: [],
                         unit: "mm",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1421,7 +1421,7 @@ function EpmaDataCollection() {
                         value: "",
                         units: ["kv", "V"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1434,7 +1434,7 @@ function EpmaDataCollection() {
                         value: "",
                         units: ["A", "nA"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1447,7 +1447,7 @@ function EpmaDataCollection() {
                         value: "",
                         units: [],
                         unit: "microns",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1460,7 +1460,7 @@ function EpmaDataCollection() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Line", "value": "line"},
@@ -1477,7 +1477,7 @@ function EpmaDataCollection() {
                         value: "",
                         units: [],
                         unit: "microns",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1490,7 +1490,7 @@ function EpmaDataCollection() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -1503,7 +1503,7 @@ function EpmaDataCollection() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -1535,7 +1535,7 @@ function LowCycleFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Total strain control", "value": "total_strain_control"},
@@ -1553,7 +1553,7 @@ function LowCycleFatigue() {
                         value: "",
                         units: ["K", "F", "C"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1566,7 +1566,7 @@ function LowCycleFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1579,7 +1579,7 @@ function LowCycleFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Continuous", "value": "continuous"},
@@ -1595,7 +1595,7 @@ function LowCycleFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Sinusoidal", "value": "sinusoidal"},
@@ -1612,7 +1612,7 @@ function LowCycleFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Constant", "value": "constant"},
@@ -1628,7 +1628,7 @@ function LowCycleFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1641,7 +1641,7 @@ function LowCycleFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -1654,7 +1654,7 @@ function LowCycleFatigue() {
                         value: "",
                         units: [],
                         unit: "percentage",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1686,7 +1686,7 @@ function UltrasonicFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1699,7 +1699,7 @@ function UltrasonicFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1712,7 +1712,7 @@ function UltrasonicFatigue() {
                         value: "",
                         units: [],
                         unit: "kHz",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1725,7 +1725,7 @@ function UltrasonicFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1738,7 +1738,7 @@ function UltrasonicFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1751,7 +1751,7 @@ function UltrasonicFatigue() {
                         value: "",
                         units: [],
                         unit: "MPa",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1764,7 +1764,7 @@ function UltrasonicFatigue() {
                         value: "",
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1777,7 +1777,7 @@ function UltrasonicFatigue() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -1809,7 +1809,7 @@ function TEM() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1822,7 +1822,7 @@ function TEM() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Diffraction", "value": "diffraction"},
@@ -1840,7 +1840,7 @@ function TEM() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Yes", "value": "yes"},
@@ -1856,7 +1856,7 @@ function TEM() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Bright Field", "value": "bright_field"},
@@ -1873,7 +1873,7 @@ function TEM() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Standard", "value": "standard"},
@@ -1891,7 +1891,7 @@ function TEM() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -1904,7 +1904,7 @@ function TEM() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1917,7 +1917,7 @@ function TEM() {
                         value: "",
                         units: ["cm", "mm", "m"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1949,7 +1949,7 @@ function HeatTreatment() {
                         value: "",
                         units: ["K", "F", "C"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1962,7 +1962,7 @@ function HeatTreatment() {
                         value: "",
                         units: ["seconds", "minutes", "hours"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -1975,7 +1975,7 @@ function HeatTreatment() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Air Quench", "value": "air_quench"},
@@ -1993,7 +1993,7 @@ function HeatTreatment() {
                         value: "",
                         units: ["C/s", "K/s"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2043,7 +2043,7 @@ function Hardness() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Vickers", "value": "vickers"},
@@ -2061,7 +2061,7 @@ function Hardness() {
                         value: "",
                         units: ["ibf", "N"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2074,7 +2074,7 @@ function Hardness() {
                         value: "",
                         units: ["seconds", "minutes", "hours"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2106,7 +2106,7 @@ function XRD() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -2119,7 +2119,7 @@ function XRD() {
                         value: "",
                         units: [],
                         unit: "degrees",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2132,7 +2132,7 @@ function XRD() {
                         value: "",
                         units: [],
                         unit: "degrees",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2145,7 +2145,7 @@ function XRD() {
                         value: "",
                         units: [],
                         unit: "degrees/minute",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2158,7 +2158,7 @@ function XRD() {
                         value: "",
                         units: [],
                         unit: "degrees",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2190,7 +2190,7 @@ function Tension() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {name: "Screw", value: "screw"},
@@ -2206,7 +2206,7 @@ function Tension() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {name: "Displacement", value: "displacement"},
@@ -2223,7 +2223,7 @@ function Tension() {
                         value: "",
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2236,7 +2236,7 @@ function Tension() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -2249,7 +2249,7 @@ function Tension() {
                         value: "",
                         units: ["mm", "cm"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2262,7 +2262,7 @@ function Tension() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {name: "Rectangular", value: "rectangular"},
