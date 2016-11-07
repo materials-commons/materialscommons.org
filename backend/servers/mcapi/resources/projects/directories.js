@@ -6,7 +6,7 @@ const httpStatus = require('http-status');
 const ra = require('../resource-access');
 const Router = require('koa-router');
 const multiParse = require('co-busboy');
-const mimeType = require('../../../lib/create-file-utils')
+const fileUtils = require('../../../lib/create-file-utils')
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';
@@ -152,7 +152,7 @@ function* uploadFileToProjectDirectory(next) {
 
     let fileArgs = {
         name: part.filename,
-        mediatype: mimeType.mediaTypeDescriptions(part.mimeType)
+        mediatype: fileUtils.mediaTypeDescriptionsFromMime(part.mimeType)
     };
 
     console.log("fileArgs = ",fileArgs);
