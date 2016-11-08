@@ -2667,7 +2667,7 @@ export function Tension() {
     this.process_name = "Tension";
     this.process_type = "transform";
     this.description = "Tension";
-    this.otype = ="OTHER";
+    this.otype = "OTHER";
     this.template_name = "Tension";
     this.category = "OTHER";
     this.does_transform = true;
