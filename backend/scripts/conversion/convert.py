@@ -150,10 +150,13 @@ def fix_as_received_process_name(conn):
 
 
 def rename_to_otype(table, conn):
-    r.table(table).map(lambda doc: doc.merge({'otype': doc['_type']}).without('_type')).run(conn)
+    print "   Converting table %s" % table
+    r.table(table).filter(r.row.has_fields('_type')).replace(lambda doc: doc.merge({'otype': doc['_type']}).without('_type')).run(conn)
+    print "   Done."
 
 
 def convert_to_otype(conn):
+    print "Convert to otype..."
     rename_to_otype('datadirs', conn)
     rename_to_otype('datafiles', conn)
     rename_to_otype('experiments', conn)
@@ -165,6 +168,7 @@ def convert_to_otype(conn):
     rename_to_otype('samples', conn)
     rename_to_otype('setupproperties', conn)
     rename_to_otype('setups', conn)
+    print "Done."
 
 
 def main():
@@ -174,18 +178,18 @@ def main():
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
 
-    remove_nulls_in_setup(conn)
-    remove_duplicates_in_sample2datafile(conn)
-    add_as_received_processes(conn)
-    set_specific_process_names(conn)
-    set_sample_direction_for_non_transform_processes(conn)
-    fix_transform_process_directions(conn)
-    fix_samples_from_create_samples(conn)
-    set_processes_destructive_flag(conn)
-    set_process_type(conn)
-
-    add_dataset_processes_to_experiments(conn)
-    fix_as_received_process_name(conn)
+    # remove_nulls_in_setup(conn)
+    # remove_duplicates_in_sample2datafile(conn)
+    # add_as_received_processes(conn)
+    # set_specific_process_names(conn)
+    # set_sample_direction_for_non_transform_processes(conn)
+    # fix_transform_process_directions(conn)
+    # fix_samples_from_create_samples(conn)
+    # set_processes_destructive_flag(conn)
+    # set_process_type(conn)
+    #
+    # add_dataset_processes_to_experiments(conn)
+    # fix_as_received_process_name(conn)
 
     convert_to_otype(conn)
 
