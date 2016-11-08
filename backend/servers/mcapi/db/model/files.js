@@ -47,7 +47,10 @@ function* get(file_id) {
 function* create(file, owner) {
     console.log("create = ", file);
     let f = new model.DataFile(file.name, owner);
-    f.mediatype = file.mediatype
+    f.mediatype = file.mediatype;
+    f.size = file.size;
+    f.upload = file.size;
+    f.checksum = file.checksum;
     let newFile = yield db.insert('datafiles', f);
     return yield get(newFile.id);
 }
