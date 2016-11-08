@@ -108,7 +108,7 @@ function* validateProcessInProject(next) {
 }
 
 function* validateFileInProject(next) {
-    if (this.param.file_id !== 'by_path') {
+    if (this.params.file_id !== 'by_path') {
         let isInProject = yield check.fileInProject(this.params.file_id, this.params.project_id);
         if (!isInProject) {
             this.status = httpStatus.BAD_REQUEST;
