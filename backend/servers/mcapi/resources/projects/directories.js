@@ -5,7 +5,12 @@ const parse = require('co-body');
 const httpStatus = require('http-status');
 const ra = require('../resource-access');
 const Router = require('koa-router');
-const multiParse = require('co-busboy');
+const baseLoadPath = '/Users/weymouth/Desktop';
+var koaBody = require('koa-body')({
+    multipart: true,
+    formidable: {uploadDir: baseLoadPath},
+    keepExtensions: true
+});
 const fileUtils = require('../../../lib/create-file-utils')
 
 function* get(next) {
@@ -140,30 +145,26 @@ function* uploadFileToProjectDirectory(next) {
     let directory = yield directories.get(this.params.project_id,this.params.directory_id);
     console.log(directory);
 
-    let parts = multiParse(this,{
-        autoFields: true
-    });
-    var part = yield parts;
-    // it's a stream, you can do something like:
-    // var saveTo = path.join(os.tmpDir(), path.basename(fieldname));
-    // part.pipe(fs.createWriteStream(saveTo));
-    console.log("part.filename = ",part.filename);
-    console.log("part.mimeType = ",part.mime);
+    console.log(this.request)
 
-    let fileArgs = {
-        name: part.filename,
-        mediatype: fileUtils.mediaTypeDescriptionsFromMime(part.mimeType)
-    };
+    var file = this.request.body.files.image;
+    console.log(file.name,file.path)
+//    yield thunkify(fs.rename)(file.path, path.join(baseLoadPath, '', file.name));
 
-    console.log("fileArgs = ",fileArgs);
-
-    let file = yield files.create(fileArgs,this.reqctx.user.id)
-
-    console.log("file = ",file );
-
-    let checksum = yield fileUtils.computeChecksum(file);
-
-
+    // let fileArgs = {
+    //     name: part.filename,
+    //     mediatype: fileUtils.mediaTypeDescriptionsFromMime(part.mimeType)
+    // };
+    //
+    // console.log("fileArgs = ",fileArgs);
+    //
+    // let file = yield files.create(fileArgs,this.reqctx.user.id)
+    //
+    // console.log("file = ",file );
+    //
+    // let checksum = yield fileUtils.computeChecksum(file);
+    //
+    //
 
     this.body = {};
     yield next;
@@ -180,8 +181,7 @@ function createResource() {
     router.put('/:directory_id', update);
     router.delete('/:directory_id', remove);
 
-    router.post('/:directory_id/fileupload', uploadFileToProjectDirectory);
-
+    router.post('/:directory_id/fileupload', koaBody, uploadFileToProjectDirectory);
     return router;
 }
 
