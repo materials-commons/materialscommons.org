@@ -32,6 +32,7 @@ function* validateExperimentInProject(next) {
     if (!isInProject) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such experiment ${experimentId}`};
+        return this.status;
     }
     yield next;
 }
@@ -43,6 +44,7 @@ function* validateDatasetInExperiment(next) {
     if (!isInExperiment) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such dataset ${datasetId}`};
+        return this.status;
     }
     yield next;
 }
@@ -52,24 +54,31 @@ function* validateSampleInExperiment(next) {
     if (!isInExperiment) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such sample in experiment ${this.params.sample_id}`};
+        return this.status;
     }
     yield next;
 }
 
 function* validateProcessInExperiment(next) {
-    let isInExperiment = yield check.processInExperiment(this.params.experiment_id, this.params.process_id);
-    if (!isInExperiment) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such process in experiment ${this.params.process_id}`};
+    if (this.params.process_id !== 'templates') {
+        let isInExperiment = yield check.processInExperiment(this.params.experiment_id, this.params.process_id);
+        if (!isInExperiment) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: `No such process in experiment ${this.params.process_id}`};
+            return this.status;
+        }
     }
     yield next;
 }
 
 function* validateSampleInProject(next) {
-    let isInProject = yield check.sampleInProject(this.params.project_id, this.params.sample_id);
-    if (!isInProject) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such sample in project ${this.params.sample_id}`};
+    if (this.params.sample_id !== 'measurements') {
+        let isInProject = yield check.sampleInProject(this.params.project_id, this.params.sample_id);
+        if (!isInProject) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: `No such sample in project ${this.params.sample_id}`};
+            return this.status;
+        }
     }
     yield next;
 }
@@ -80,25 +89,32 @@ function* validateDirectoryInProject(next) {
         if (!isInProject) {
             this.status = httpStatus.BAD_REQUEST;
             this.body = {error: `No such directory in project ${this.params.directory_id}`};
+            return this.status;
         }
     }
     yield next;
 }
 
 function* validateProcessInProject(next) {
-    let isInProject = yield check.processInProject(this.params.project_id, this.params.process_id);
-    if (!isInProject) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such process in project ${this.params.process_id}`};
+    if (this.params.process_id !== 'templates') {
+        let isInProject = yield check.processInProject(this.params.project_id, this.params.process_id);
+        if (!isInProject) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: `No such process in project ${this.params.process_id}`};
+            return this.status;
+        }
     }
     yield next;
 }
 
 function* validateFileInProject(next) {
-    let isInProject = yield check.fileInProject(this.params.file_id, this.params.project_id);
-    if (!isInProject) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such file in project ${this.params.file_id}`};
+    if (this.param.file_id !== 'by_path') {
+        let isInProject = yield check.fileInProject(this.params.file_id, this.params.project_id);
+        if (!isInProject) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: `No such file in project ${this.params.file_id}`};
+            return this.status;
+        }
     }
     yield next;
 }
@@ -108,6 +124,7 @@ function* validateTaskInExperiment(next) {
     if (!isInExperiment) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such task in experiment ${this.params.task_id}`};
+        return this.status;
     }
     yield next;
 }
@@ -117,6 +134,7 @@ function* validateTemplateExists(next) {
     if (!templateExists) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such template ${this.params.template_id}`};
+        return this.status;
     }
     yield next;
 }
@@ -126,6 +144,7 @@ function* validateNoteInExperiment(next) {
     if (!isInExperiment) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such note in experiment ${this.params.note_id}`};
+        return this.status;
     }
     yield next;
 }
