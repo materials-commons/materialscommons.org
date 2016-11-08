@@ -5,13 +5,16 @@ const parse = require('co-body');
 const httpStatus = require('http-status');
 const ra = require('../resource-access');
 const Router = require('koa-router');
-const baseLoadPath = '/Users/weymouth/Desktop';
+
+// used by file loader
+const fileUtils = require('../../../lib/create-file-utils')
+const baseFileStoreDir = fileUtils.getFileStoreDir(); // ends with '/'
+const uploadTmpDir = fileUtils.getTmpUploadDir(); // ends with '/'
 var koaBody = require('koa-body')({
     multipart: true,
-    formidable: {uploadDir: baseLoadPath},
-    keepExtensions: true
+    formidable: {uploadDir: uploadTmpDir, hash: 'md5'},
+    keepExtensions: true,
 });
-const fileUtils = require('../../../lib/create-file-utils')
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';
@@ -145,26 +148,37 @@ function* uploadFileToProjectDirectory(next) {
     let directory = yield directories.get(this.params.project_id,this.params.directory_id);
     console.log(directory);
 
-    console.log(this.request)
+    let file = this.request.body.files.file;
+    console.log("file name: " , file.name);
+    console.log("file path: " , file.path);
+    console.log("file type: " , file.type);
+    console.log("file size:", file.size);
+    console.log("file hash: ", file.hash);
 
-    var file = this.request.body.files.image;
-    console.log(file.name,file.path)
+    let fileArgs = {
+        name: file.name,
+        mediatype: fileUtils.mediaTypeDescriptionsFromMime(file.type),
+        size: file.size,
+        checksum: file.hash
+    };
+
+    console.log("fileArgs = ",fileArgs);
+
+    console.log("user = " + this.reqctx.user.id);
+
+    console.log("users = ",require("../../db/model/users"));
+
+    console.log("after users");
+
+    console.log("files = ",require("../../db/model/files"));
+
+    console.log("after files");
+
+    let file = yield files.create(fileArgs,this.reqctx.user.id);
+
+//    console.log("file = ", file);
+
 //    yield thunkify(fs.rename)(file.path, path.join(baseLoadPath, '', file.name));
-
-    // let fileArgs = {
-    //     name: part.filename,
-    //     mediatype: fileUtils.mediaTypeDescriptionsFromMime(part.mimeType)
-    // };
-    //
-    // console.log("fileArgs = ",fileArgs);
-    //
-    // let file = yield files.create(fileArgs,this.reqctx.user.id)
-    //
-    // console.log("file = ",file );
-    //
-    // let checksum = yield fileUtils.computeChecksum(file);
-    //
-    //
 
     this.body = {};
     yield next;

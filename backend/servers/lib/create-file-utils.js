@@ -1,12 +1,23 @@
 Promise = require("bluebird");
 
-function datafilePath(datafile) {
+function getFileStoreDir() {
     let base = process.env.MCDIR;
     base = base.split(':')[0];
     if (!base.endsWith('/')) {
         base += '/';
     }
+    return base
+}
 
+// NOTE: dir for temp uploads should be in same file system
+// as dir for file store; a rename is used to position the final
+// version of the upload file
+function getTmpUploadDir() {
+    return getFileStoreDir() + "uploadTmp/";
+}
+
+function datafilePath(datafile) {
+    let base = getFileStoreDir();
     let file_id = datafile.id;
     let part = file_id.split("-")[1];
     let partA = part.substring(0, 2);
@@ -29,21 +40,6 @@ function mediaTypeDescriptionsFromMime(mime) {
         description:  description,
         mime:  mime,
     }
-}
-
-function computeChecksum(datafile) {
-    let path = datafilePath(datafile);
-    console.log("computeChecksum; path = ", path);
-    return new new Promise(function (resolve, reject) {
-        let fd = fs.ReadStream(path);
-        let hash = crypto.createHash('md5');
-        fd.pipe(hash);
-        fd.on('error', reject);
-        fd.on('end', function () {
-            hash.end();
-            resolve(hash.read().toString('hex'));
-        });
-    });
 }
 
 const mediaTypeDescriptions = {
@@ -90,7 +86,8 @@ const mediaTypeDescriptions = {
 }
 
 module.exports = {
+    getFileStoreDir,
+    getTmpUploadDir,
     datafilePath,
     mediaTypeDescriptionsFromMime,
-    computeChecksum
 };
