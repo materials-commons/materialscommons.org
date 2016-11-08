@@ -307,7 +307,7 @@ function* getVersions(fileID) {
         let parentFile = filesIdMap[current.id];
         files.push(
             {
-                _type: 'file',
+                otype: 'file',
                 size: parentFile.size,
                 name: parentFile.name,
                 path: parentFile.name,

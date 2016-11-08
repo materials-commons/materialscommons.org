@@ -15,9 +15,9 @@ export function gridFiles() {
         var children = [];
         filesChildren.forEach(function(entry) {
             var centry;
-            if (entry._type == 'directory') {
+            if (entry.otype == 'directory') {
                 centry = createDirectoryEntry(entry);
-            } else if (entry._type == 'file') {
+            } else if (entry.otype == 'file') {
                 centry = createFileEntry(entry);
             } else {
                 centry = createOtherEntry(entry);
@@ -33,7 +33,7 @@ export function gridFiles() {
             data: {
                 name: entry.name,
                 path: entry.path,
-                _type: 'directory',
+                otype: 'directory',
                 id: entry.id,
                 size: '',
                 childrenLoaded: false
@@ -47,7 +47,7 @@ export function gridFiles() {
             expanded: false,
             data: {
                 name: entry.name,
-                _type: 'file',
+                otype: 'file',
                 path: entry.path,
                 size: entry.size,
                 mediatype: entry.mediatype,
@@ -63,16 +63,16 @@ export function gridFiles() {
             expanded: false,
             data: {
                 name: entry.name,
-                _type: entry._type,
+                otype: entry.otype,
                 id: entry.id,
-                icon: toIcon(entry._type)
+                icon: toIcon(entry.otype)
             },
             children: []
         };
     }
 
-    function toIcon(_type) {
-        switch (_type) {
+    function toIcon(otype) {
+        switch (otype) {
         case 'sample':
             return 'fa-cubes';
         case 'process':
@@ -92,7 +92,7 @@ export function gridFiles() {
                     data: {
                         name: files.name,
                         path: files.path,
-                        _type: files._type,
+                        otype: files.otype,
                         id: files.id,
                         childrenLoaded: true
                     },

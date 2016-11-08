@@ -28,7 +28,7 @@ export function fileTypeService(isImage) {
     self.service = {
         icon: function(f) {
             var fileIcon = "fa-file-o";
-            if (f._type === "directory") {
+            if (f.otype === "directory") {
                 return "fa-folder-open";
             }
 
@@ -71,7 +71,7 @@ export function fileTypeService(isImage) {
         overview: function(files) {
             var overviewHash = [];
             for (var i = 0; i < files.length; i++) {
-                if (files[i].data._type === "directory") {
+                if (files[i].data.otype === "directory") {
                     addEntry(overviewHash, files[i].data, "Directory");
                 } else {
                     addEntry(overviewHash, files[i].data, files[i].data.mediatype.description);

@@ -70,8 +70,8 @@ function* updateProperties(properties) {
         let existingProperty = existingPropertyMatches[0];
         if (existingProperty.attribute !== property.attribute) {
             errors.push({error: `Attributes don't match: ${property.id}/${property.attribute} doesn't match ${existingProperty.attribute}`});
-        } else if (existingProperty._type !== property._type) {
-            errors.push({error: `Types don't match: ${property.id}/${property._type} doesn't match ${existingProperty._type}`});
+        } else if (existingProperty.otype !== property.otype) {
+            errors.push({error: `Types don't match: ${property.id}/${property.otype} doesn't match ${existingProperty.otype}`});
         } else {
             existingProperty.value = property.value;
             existingProperty.unit = property.unit;
@@ -176,7 +176,7 @@ function* createSetup(processID, settings) {
             let p = current.properties[j].property;
             let val = p.value;
             let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
-                p._type, val, p.unit);
+                p.otype, val, p.unit);
             yield db.insert('setupproperties', prop);
         }
     }

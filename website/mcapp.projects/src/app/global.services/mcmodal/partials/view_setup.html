@@ -22,7 +22,7 @@
                 <tbody>
                 <tr ng-repeat="item in ctrl.properties">
                     <td> {{item.property.name}}</td>
-                    <td> {{item.property._type}}</td>
+                    <td> {{item.property.otype}}</td>
                     <td>
                         <div ng-repeat="choice in item.property.choices">{{choice.name}}</div>
                         <div ng-if="item.property.choices.length === 0">-</div>

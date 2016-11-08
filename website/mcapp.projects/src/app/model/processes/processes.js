@@ -4,7 +4,7 @@ export function Apt() {
     this.process_type = "measurement";
     this.template_name = "APT";
     this.description = "Atom Probe Tomography";
-    this._type = "APT";
+    this.otype = "APT";
     this.category = "APT";
     this.input_files = [];
     this.output_files = [];
@@ -31,7 +31,7 @@ export function Apt() {
                         value: null,
                         units: [],
                         unit: null,
-                        _type: "selection",
+                        otype: "selection",
                         required: true,
                         choices: [
                             {name: "FIM", value: "fim"},
@@ -51,7 +51,7 @@ export function Apt() {
                         value: null,
                         units: ["K", "F", "C"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: true,
                         choices: []
                     },
@@ -67,7 +67,7 @@ export function Apt() {
                         value: null,
                         units: [],
                         unit: "percentage",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -83,7 +83,7 @@ export function Apt() {
                         value: null,
                         units: ["pJ", "nJ"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -99,7 +99,7 @@ export function Apt() {
                         value: null,
                         units: [],
                         unit: "nm",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -115,7 +115,7 @@ export function Apt() {
                         value: null,
                         units: [],
                         unit: "kHz",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -131,7 +131,7 @@ export function Apt() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {
@@ -165,7 +165,7 @@ export function Apt() {
                         units: [],
                         unit: "Atom/Pulse",
                         required: false,
-                        _type: "number",
+                        otype: "number",
                         choices: []
                     },
                     validators: [],
@@ -181,7 +181,7 @@ export function Apt() {
                         units: [],
                         unit: "",
                         required: false,
-                        _type: "selection",
+                        otype: "selection",
                         choices: [
                             {"name": "He", "value": "He"},
                             {"name": "Ar", "value": "Ar"},
@@ -203,7 +203,7 @@ export function Apt() {
                         units: ["atm", "Pa", "torr"],
                         unit: "",
                         required: false,
-                        _type: "number",
+                        otype: "number",
                         choices: []
                     },
                     validators: [],
@@ -221,7 +221,7 @@ export function Sem() {
     this.process_type = "measurement";
     this.template_name = "SEM";
     this.description = "Stem Electron Microscopy";
-    this._type = "SEM";
+    this.otype = "SEM";
     this.category = "SEM";
     this.input_files = [];
     this.output_files = [];
@@ -248,7 +248,7 @@ export function Sem() {
                         value: null,
                         units: [],
                         unit: "kV",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -264,7 +264,7 @@ export function Sem() {
                         value: null,
                         units: [],
                         unit: "A",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -280,7 +280,7 @@ export function Sem() {
                         value: null,
                         units: [],
                         unit: "degrees",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -296,7 +296,7 @@ export function Sem() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -312,7 +312,7 @@ export function Sem() {
                         value: null,
                         units: [],
                         unit: "V",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -328,7 +328,7 @@ export function Sem() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Standard", "value": "standard"},
@@ -347,7 +347,7 @@ export function Sem() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Secondary", "value": "secondary"},
@@ -368,7 +368,7 @@ export function Sem() {
                         units: [],
                         unit: "mm",
                         required: false,
-                        _type: "number",
+                        otype: "number",
                         choices: []
                     },
                     validators: [],
@@ -386,7 +386,7 @@ export function CreateSamples() {
     this.process_type = "create";
     this.template_name = "Create Samples";
     this.description = "Create Samples process is used to create new samples.";
-    this._type = "create_samples";
+    this.otype = "create_samples";
     this.category = "create_samples";
     this.input_files = [];
     this.output_files = [];
@@ -408,7 +408,7 @@ export function CreateSamples() {
                 value: [],
                 units: [],
                 unit: "at%",
-                _type: "composition",
+                otype: "composition",
                 required: false,
                 choices: []
             }
@@ -428,7 +428,7 @@ export function CreateSamples() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -444,7 +444,7 @@ export function CreateSamples() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -460,7 +460,7 @@ export function CreateSamples() {
                 //        value: null,
                 //        units: ["cm", "mm"],
                 //        unit: "",
-                //        _type: "string",
+                //        otype: "string",
                 //        required: false,
                 //        choices: []
                 //    },
@@ -476,7 +476,7 @@ export function CreateSamples() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "date",
+                        otype: "date",
                         required: false,
                         choices: []
                     },
@@ -492,7 +492,7 @@ export function CreateSamples() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {name: "Cast", value: "cast"},
@@ -514,7 +514,7 @@ export function Sectioning() {
     this.process_type = "transformation";
     this.template_name = "Sectioning";
     this.description = "Sectioning a sample";
-    this._type = "Create Sample";
+    this.otype = "Create Sample";
     this.category = "Create Sample";
     this.input_files = [];
     this.output_files = [];
@@ -541,7 +541,7 @@ export function Sectioning() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -557,7 +557,7 @@ export function AptDataAnalysis() {
     this.process_type = "analysis";
     this.template_name = "APT Data Analysis";
     this.description = "Atom Probe Tomography Data Analysis";
-    this._type = "APT";
+    this.otype = "APT";
     this.category = "APT";
     this.input_files = [];
     this.output_files = [];
@@ -584,7 +584,7 @@ export function AptDataAnalysis() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -600,7 +600,7 @@ export function AptDataAnalysis() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -616,7 +616,7 @@ export function AptDataAnalysis() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -632,7 +632,7 @@ export function AptDataAnalysis() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -651,7 +651,7 @@ export function AptDataReconstruction() {
     this.process_type = "analysis";
     this.template_name = "APT Data Reconstruction";
     this.description = "Atom Probe Tomography Data Reconstruction";
-    this._type = "APT";
+    this.otype = "APT";
     this.category = "APT";
     this.input_files = [];
     this.output_files = [];
@@ -678,7 +678,7 @@ export function AptDataReconstruction() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Voltage", "value": "voltage"},
@@ -699,7 +699,7 @@ export function AptDataReconstruction() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -715,7 +715,7 @@ export function AptDataReconstruction() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -731,7 +731,7 @@ export function AptDataReconstruction() {
                         value: null,
                         units: [],
                         unit: 'V/nm',
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -747,7 +747,7 @@ export function AptDataReconstruction() {
                         value: null,
                         units: [],
                         unit: "percentage",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -763,7 +763,7 @@ export function AptDataReconstruction() {
                         value: null,
                         units: [],
                         unit: "nm",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -779,7 +779,7 @@ export function AptDataReconstruction() {
                         value: null,
                         units: ["degrees", "rad"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -795,7 +795,7 @@ export function AptDataReconstruction() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -814,7 +814,7 @@ export function BroadIonBeamMilling() {
     this.process_type = "transform";
     this.template_name = "Broad Ion Beam Milling";
     this.description = "Broad Ion Beam Milling";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -841,7 +841,7 @@ export function BroadIonBeamMilling() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Ga", "value": "Ga"},
@@ -862,7 +862,7 @@ export function BroadIonBeamMilling() {
                         value: null,
                         units: [],
                         unit: "V",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -878,7 +878,7 @@ export function BroadIonBeamMilling() {
                         value: null,
                         units: [],
                         unit: "s",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -897,7 +897,7 @@ export function Cogging() {
     this.process_type = "transform";
     this.template_name = "Cogging";
     this.description = "Cogging";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -924,7 +924,7 @@ export function Cogging() {
                         value: null,
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -940,7 +940,7 @@ export function Cogging() {
                         value: null,
                         units: ["mm/mm", "percentage"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -959,7 +959,7 @@ export function Compression() {
     this.process_type = "transform";
     this.template_name = "Compression";
     this.description = "Compression";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -986,7 +986,7 @@ export function Compression() {
                         value: null,
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1002,7 +1002,7 @@ export function Compression() {
                         value: null,
                         units: ["mm/mm", "percentage"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1018,7 +1018,7 @@ export function Compression() {
                         value: null,
                         units: ["mm/mm", "percentage"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1034,7 +1034,7 @@ export function Compression() {
                         value: null,
                         units: ["1/s", "mm/min"],
                         unit: null,
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1050,7 +1050,7 @@ export function Compression() {
                         value: null,
                         units: ["mm/mm", "percentage"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1066,7 +1066,7 @@ export function Compression() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1085,7 +1085,7 @@ export function Computation() {
     this.process_type = "analysis";
     this.template_name = "Computation";
     this.description = "Computation";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -1112,7 +1112,7 @@ export function Computation() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -1128,7 +1128,7 @@ export function Computation() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1144,7 +1144,7 @@ export function Computation() {
                         value: null,
                         units: ["b", "kb", "mb", "gb"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1160,7 +1160,7 @@ export function Computation() {
                         value: null,
                         units: [],
                         unit: "s",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1179,7 +1179,7 @@ export function Creep() {
     this.process_type = "transform";
     this.template_name = "Creep";
     this.description = "Creep";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -1206,7 +1206,7 @@ export function Creep() {
                         value: null,
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1222,7 +1222,7 @@ export function Creep() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -1238,7 +1238,7 @@ export function Creep() {
                         value: null,
                         units: [],
                         unit: "MPa",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1257,7 +1257,7 @@ export function DicPatterning() {
     this.process_type = "measurement";
     this.template_name = "DIC Patterning";
     this.description = "DIC Patterning";
-    this._type = "DIC";
+    this.otype = "DIC";
     this.category = "DIC";
     this.input_files = [];
     this.output_files = [];
@@ -1284,7 +1284,7 @@ export function DicPatterning() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Large-Scale", "value": "large_scale"},
@@ -1303,7 +1303,7 @@ export function DicPatterning() {
                         value: null,
                         units: [],
                         unit: "microns",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1319,7 +1319,7 @@ export function DicPatterning() {
                         value: null,
                         units: ["microns", "nm"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1335,7 +1335,7 @@ export function DicPatterning() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Alumina", "value": "alumina"},
@@ -1354,7 +1354,7 @@ export function DicPatterning() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "APTMS", "value": "aptms"},
@@ -1377,7 +1377,7 @@ export function DicStatisticalModelling() {
     this.process_type = "analysis";
     this.template_name = "DIC Statistical Modelling";
     this.description = "DIC Statistical Modelling";
-    this._type = "DIC";
+    this.otype = "DIC";
     this.category = "DIC";
     this.input_files = [];
     this.output_files = [];
@@ -1404,7 +1404,7 @@ export function DicStatisticalModelling() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1420,7 +1420,7 @@ export function DicStatisticalModelling() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1436,7 +1436,7 @@ export function DicStatisticalModelling() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Linear", "value": "linear"},
@@ -1460,7 +1460,7 @@ export function Electropolishing() {
     this.process_type = "transform";
     this.template_name = "Electropolishing";
     this.description = "Electropolishing";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -1487,7 +1487,7 @@ export function Electropolishing() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -1503,7 +1503,7 @@ export function Electropolishing() {
                         value: null,
                         units: ["V", "kV"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1519,7 +1519,7 @@ export function Electropolishing() {
                         value: null,
                         units: ["mA", "A"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1535,7 +1535,7 @@ export function Electropolishing() {
                         value: null,
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1554,7 +1554,7 @@ export function Etching() {
     this.process_type = "transform";
     this.template_name = "Etching";
     this.description = "Etching";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -1581,7 +1581,7 @@ export function Etching() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -1597,7 +1597,7 @@ export function Etching() {
                         value: null,
                         units: ["V", "kV"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1613,7 +1613,7 @@ export function Etching() {
                         value: null,
                         units: ["hrs", "mins", "s"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1629,7 +1629,7 @@ export function Etching() {
                         value: null,
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1648,7 +1648,7 @@ export function EbsdSemDataCollection() {
     this.process_type = "measurement";
     this.template_name = "EBSD SEM Data Collection";
     this.description = "EBSD SEM Data Collection";
-    this._type = "SEM";
+    this.otype = "SEM";
     this.category = "SEM";
     this.input_files = [];
     this.output_files = [];
@@ -1675,7 +1675,7 @@ export function EbsdSemDataCollection() {
                         value: null,
                         units: ["kv", "V"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1691,7 +1691,7 @@ export function EbsdSemDataCollection() {
                         value: null,
                         units: ["A", "mA"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1707,7 +1707,7 @@ export function EbsdSemDataCollection() {
                         value: null,
                         units: [],
                         unit: "degrees",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1723,7 +1723,7 @@ export function EbsdSemDataCollection() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1739,7 +1739,7 @@ export function EbsdSemDataCollection() {
                         value: null,
                         units: ["s", "ms"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1755,7 +1755,7 @@ export function EbsdSemDataCollection() {
                         value: null,
                         units: ["microns"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1771,7 +1771,7 @@ export function EbsdSemDataCollection() {
                         value: null,
                         units: [],
                         unit: "microns",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1787,7 +1787,7 @@ export function EbsdSemDataCollection() {
                         value: null,
                         units: [],
                         unit: "mm",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1806,7 +1806,7 @@ export function EpmaDataCollection() {
     this.process_type = "measurement";
     this.template_name = "EPMA Data Collection";
     this.description = "EPMA Data Collection";
-    this._type = "EPMA";
+    this.otype = "EPMA";
     this.category = "EPMA";
     this.input_files = [];
     this.output_files = [];
@@ -1833,7 +1833,7 @@ export function EpmaDataCollection() {
                         value: null,
                         units: ["kv", "V"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1849,7 +1849,7 @@ export function EpmaDataCollection() {
                         value: null,
                         units: ["A", "nA"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1865,7 +1865,7 @@ export function EpmaDataCollection() {
                         value: null,
                         units: [],
                         unit: "microns",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1881,7 +1881,7 @@ export function EpmaDataCollection() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Line", "value": "line"},
@@ -1901,7 +1901,7 @@ export function EpmaDataCollection() {
                         value: null,
                         units: [],
                         unit: "microns",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -1917,7 +1917,7 @@ export function EpmaDataCollection() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -1933,7 +1933,7 @@ export function EpmaDataCollection() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -1952,7 +1952,7 @@ export function LowCycleFatigue() {
     this.process_type = "transform";
     this.template_name = "Low Cycle Fatigue";
     this.description = "Low Cycle Fatigue";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -1979,7 +1979,7 @@ export function LowCycleFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Total strain control", "value": "total_strain_control"},
@@ -2000,7 +2000,7 @@ export function LowCycleFatigue() {
                         value: null,
                         units: ["K", "F", "C"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2016,7 +2016,7 @@ export function LowCycleFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2032,7 +2032,7 @@ export function LowCycleFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Continuous", "value": "continuous"},
@@ -2051,7 +2051,7 @@ export function LowCycleFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Sinusoidal", "value": "sinusoidal"},
@@ -2071,7 +2071,7 @@ export function LowCycleFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Constant", "value": "constant"},
@@ -2090,7 +2090,7 @@ export function LowCycleFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2106,7 +2106,7 @@ export function LowCycleFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -2122,7 +2122,7 @@ export function LowCycleFatigue() {
                         value: null,
                         units: [],
                         unit: "percentage",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2141,7 +2141,7 @@ export function UltrasonicFatigue() {
     this.process_type = "transform";
     this.template_name = "Ultrasonic Fatigue";
     this.description = "Ultrasonic Fatigue";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -2168,7 +2168,7 @@ export function UltrasonicFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2184,7 +2184,7 @@ export function UltrasonicFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2200,7 +2200,7 @@ export function UltrasonicFatigue() {
                         value: null,
                         units: [],
                         unit: "kHz",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2216,7 +2216,7 @@ export function UltrasonicFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2232,7 +2232,7 @@ export function UltrasonicFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2248,7 +2248,7 @@ export function UltrasonicFatigue() {
                         value: null,
                         units: [],
                         unit: "MPa",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2264,7 +2264,7 @@ export function UltrasonicFatigue() {
                         value: null,
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2280,7 +2280,7 @@ export function UltrasonicFatigue() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -2299,7 +2299,7 @@ export function TEM() {
     this.process_type = "measurement";
     this.template_name = "TEM";
     this.description = "Transmission Electron Microscope";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -2326,7 +2326,7 @@ export function TEM() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2342,7 +2342,7 @@ export function TEM() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Diffraction", "value": "diffraction"},
@@ -2363,7 +2363,7 @@ export function TEM() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Yes", "value": "yes"},
@@ -2382,7 +2382,7 @@ export function TEM() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Bright Field", "value": "bright_field"},
@@ -2402,7 +2402,7 @@ export function TEM() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Standard", "value": "standard"},
@@ -2423,7 +2423,7 @@ export function TEM() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     },
@@ -2439,7 +2439,7 @@ export function TEM() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2455,7 +2455,7 @@ export function TEM() {
                         value: null,
                         units: ["cm", "mm", "m"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2474,7 +2474,7 @@ export function HeatTreatment() {
     this.process_type = "transform";
     this.template_name = "Heat Treatment";
     this.description = "HeatTreatment";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -2501,7 +2501,7 @@ export function HeatTreatment() {
                         value: null,
                         units: ["K", "F", "C"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2517,7 +2517,7 @@ export function HeatTreatment() {
                         value: null,
                         units: ["seconds", "minutes", "hours"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2533,7 +2533,7 @@ export function HeatTreatment() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Air Quench", "value": "air_quench"},
@@ -2554,7 +2554,7 @@ export function HeatTreatment() {
                         value: null,
                         units: ["C/s", "K/s"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2572,6 +2572,7 @@ export function XRD() {
     this.process_name = "XRD";
     this.process_type = "transform";
     this.description = "XRD";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.template_name = "XRD";
     this.does_transform = true;
@@ -2599,7 +2600,7 @@ export function XRD() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -2612,7 +2613,7 @@ export function XRD() {
                         value: "",
                         units: [],
                         unit: "degrees",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2625,7 +2626,7 @@ export function XRD() {
                         value: "",
                         units: [],
                         unit: "degrees",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2638,7 +2639,7 @@ export function XRD() {
                         value: "",
                         units: [],
                         unit: "degrees/minute",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2651,7 +2652,7 @@ export function XRD() {
                         value: "",
                         units: [],
                         unit: "degrees",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2666,6 +2667,7 @@ export function Tension() {
     this.process_name = "Tension";
     this.process_type = "transform";
     this.description = "Tension";
+    this.otype = ="OTHER";
     this.template_name = "Tension";
     this.category = "OTHER";
     this.does_transform = true;
@@ -2693,7 +2695,7 @@ export function Tension() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {name: "Screw", value: "screw"},
@@ -2709,7 +2711,7 @@ export function Tension() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {name: "Displacement", value: "displacement"},
@@ -2726,7 +2728,7 @@ export function Tension() {
                         value: "",
                         units: ["C", "F", "K"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2739,7 +2741,7 @@ export function Tension() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "string",
+                        otype: "string",
                         required: false,
                         choices: []
                     }
@@ -2752,7 +2754,7 @@ export function Tension() {
                         value: "",
                         units: ["mm", "cm"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     }
@@ -2765,7 +2767,7 @@ export function Tension() {
                         value: "",
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {name: "Rectangular", value: "rectangular"},
@@ -2784,7 +2786,7 @@ export function AsMeasured() {
     this.process_type = "measurement";
     this.template_name = "As Measured";
     this.description = "As Measured process allows you to add in all your As Received measurements";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -2813,7 +2815,7 @@ export function Hardness1() {
     this.process_type = "measurement";
     this.template_name = "Hardness";
     this.description = "Hardness";
-    this._type = "OTHER";
+    this.otype = "OTHER";
     this.category = "OTHER";
     this.input_files = [];
     this.output_files = [];
@@ -2840,7 +2842,7 @@ export function Hardness1() {
                         value: null,
                         units: [],
                         unit: "",
-                        _type: "selection",
+                        otype: "selection",
                         required: false,
                         choices: [
                             {"name": "Vickers", "value": "vickers"},
@@ -2861,7 +2863,7 @@ export function Hardness1() {
                         value: null,
                         units: ["ibf", "N"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },
@@ -2877,7 +2879,7 @@ export function Hardness1() {
                         value: null,
                         units: ["seconds", "minutes", "hours"],
                         unit: "",
-                        _type: "number",
+                        otype: "number",
                         required: false,
                         choices: []
                     },

@@ -259,7 +259,7 @@ export function measurementsService() {
         },
 
         processMeasurments: function(property) {
-            var type = property._type;
+            var type = property.otype;
             var values = [];
             switch (type) {
             case 'number':
@@ -268,7 +268,7 @@ export function measurementsService() {
                 values.forEach(function(v) {
                     property.measurements.push({
                         value: v,
-                        _type: type,
+                        otype: type,
                         unit: property.unit,
                         attribute: property.attribute
                     });
@@ -281,7 +281,7 @@ export function measurementsService() {
                 values.forEach(function(v) {
                     property.measurements.push({
                         value: v,
-                        _type: type,
+                        otype: type,
                         unit: property.unit,
                         attribute: property.attribute
                     });
@@ -292,7 +292,7 @@ export function measurementsService() {
                 property.measurements = [];
                 property.measurements.push({
                     value: property.value,
-                    _type: type,
+                    otype: type,
                     unit: property.unit,
                     attribute: property.attribute
                 });
@@ -302,7 +302,7 @@ export function measurementsService() {
                 property.measurements = [];
                 property.measurements.push({
                     value: property.value,
-                    _type: type,
+                    otype: type,
                     unit: property.unit,
                     attribute: property.attribute
                 });
@@ -312,7 +312,7 @@ export function measurementsService() {
                 property.measurements = [];
                 property.measurements.push({
                     value: property.value,
-                    _type: type,
+                    otype: type,
                     unit: property.unit,
                     attribute: property.attribute
                 });
@@ -326,7 +326,7 @@ export function measurementsService() {
                     property.measurements.push({
                         value: values[i],
                         element: elements[i],
-                        _type: property._type,
+                        otype: property.otype,
                         unit: property.unit,
                         attribute: property.attribute
                     });
@@ -339,7 +339,7 @@ export function measurementsService() {
         },
 
         isExistingPropertyValid: function(property) {
-            var type = property._type;
+            var type = property.otype;
             var values = [];
             switch (type) {
             case 'number':
