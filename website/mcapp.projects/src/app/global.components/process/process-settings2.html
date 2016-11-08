@@ -3,7 +3,7 @@
     <md-content layout-padding>
         <form name="processSettingsForm">
             <div ng-repeat="setting in ctrl.settings">
-                <div ng-switch="::setting.property._type">
+                <div ng-switch="::setting.property.otype">
 
                     <!--------- number --------->
                     <div ng-switch-when="number">
@@ -91,7 +91,7 @@
 
                     <!--------- unknown type --------->
                     <div ng-switch-default>
-                        <span>Unknown template type {{::setting.property._type}}</span>
+                        <span>Unknown template type {{::setting.property.otype}}</span>
                     </div>
                 </div>
             </div>

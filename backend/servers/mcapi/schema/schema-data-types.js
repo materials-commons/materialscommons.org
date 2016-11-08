@@ -3,15 +3,15 @@ var serror = require('./schema-error');
 var dataType = exports;
 
 // Validates a measurement type. A measurement has 4 fields
-//   _type: The type of value
+//   otype: The type of value
 //   _attribute: The attribute being measured. The attribute
 //               defines the list of valid values and units.
-//   value: The value of the measurement (as defined by _type)
+//   value: The value of the measurement (as defined by otype)
 //   units: Not currently validated
 dataType.measurement = function(dt) {
     'use strict';
     let expectedProperties = [
-        '_type',
+        'otype',
         '_attribute',
         'value',
         'units'
@@ -45,7 +45,7 @@ function validateValueForType(dt) {
     'use strict';
 
     let e = serror().from({rule: 'type', actual: dt.value});
-    switch(dt._type) {
+    switch(dt.otype) {
     case "number":
         return validateNumber(dt, e);
     case "string":
@@ -55,7 +55,7 @@ function validateValueForType(dt) {
     case "composition":
         return validateComposition(dt, e);
     default:
-        return e.actual(dt._type).expected(`unknown _type ${dt._type}`).done();
+        return e.actual(dt.otype).expected(`unknown otype ${dt.otype}`).done();
     }
 }
 

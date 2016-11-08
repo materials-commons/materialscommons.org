@@ -14,7 +14,7 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
     ctrl.viewFiles = viewFiles;
     ctrl.fileSrc = mcfile.src;
     ctrl.isImage = isImage;
-    ctrl.overview = _.values(fileType.overview(ctrl.dir.children.filter(f => f.data._type === 'file' && f.data.id)));
+    ctrl.overview = _.values(fileType.overview(ctrl.dir.children.filter(f => f.data.otype === 'file' && f.data.id)));
     ctrl.allFiles = {
         files: allFiles()
     };
@@ -36,7 +36,7 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
 
     function allFiles() {
         return ctrl.dir.children
-            .filter(f => f.data._type === 'file' && f.data.id).map(f => {
+            .filter(f => f.data.otype === 'file' && f.data.id).map(f => {
                 f.data.selected = false;
                 return f.data;
             });

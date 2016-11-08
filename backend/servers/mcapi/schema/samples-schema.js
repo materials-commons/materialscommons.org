@@ -97,7 +97,7 @@ module.exports = function(schema) {
 
     function defineMeasurementSchema() {
         let measurementSchema = schema.defineSchema('Measurement', {
-            _type: {
+            otype: {
                 type: 'string',
                 nullable: false
             },

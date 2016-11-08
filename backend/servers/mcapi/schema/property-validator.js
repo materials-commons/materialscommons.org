@@ -12,7 +12,7 @@ function isValidSetupProperty(template, property) {
     }
     templateProperty = templateProperty.property;
 
-    if (templateProperty._type !== property._type) {
+    if (templateProperty.otype !== property.otype) {
         return false;
     }
 
@@ -20,7 +20,7 @@ function isValidSetupProperty(template, property) {
         return false;
     }
 
-    return isValidValue(property._type, templateProperty.choices, property.value);
+    return isValidValue(property.otype, templateProperty.choices, property.value);
 }
 
 function isValidUnit(templateUnit, templateAllowedUnits, unit) {
