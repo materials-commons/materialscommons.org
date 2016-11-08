@@ -54,7 +54,7 @@ function MCFilesSelectDirDirectiveController(fileTreeProjectService) {
     function setActive(file) {
         clearActiveStateInAllNodes();
 
-        if (file.data._type === 'file') {
+        if (file.data.otype === 'file') {
             file.active = true;
         } else {
             if (!file.data.childrenLoaded) {
@@ -86,14 +86,14 @@ function MCFilesSelectDirDirectiveController(fileTreeProjectService) {
                 dir.active = true;
                 dir.data.childrenLoaded = true;
                 dir.children.forEach(function(f) {
-                    if (f.data._type === 'file') {
+                    if (f.data.otype === 'file') {
                         f.data.selected = dir.data.selected;
                     }
                 });
             });
         } else {
             dir.children.forEach(function(f) {
-                if (f.data._type === 'file') {
+                if (f.data.otype === 'file') {
                     f.data.selected = dir.data.selected;
                 }
             });

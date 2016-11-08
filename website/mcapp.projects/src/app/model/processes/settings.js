@@ -5,7 +5,7 @@ function AptInstrumentModeSetting() {
     this.value = null;
     this.units = [];
     this.unit = null;
-    this._type = "selection";
+    this.otype = "selection";
     this.required = true;
     this.choices = [
         {name: "FIM", value: "fim"},
@@ -22,7 +22,7 @@ function SpecimenTemperatureSetting() {
     this.value = null;
     this.units = ["K", "F", "C"];
     this.unit = "";
-    this._type = "number";
+    this.otype = "number";
     this.required = true;
     this.choices = [];
     this.validators = [];

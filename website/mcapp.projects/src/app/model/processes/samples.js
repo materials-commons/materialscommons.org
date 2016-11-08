@@ -32,7 +32,7 @@ function TransformedProperty() {
 function SampleMeasurement() {
     this.value = "";
     this.unit = "";
-    this._type = "";
+    this.otype = "";
 }
 
 function SampleFile() {

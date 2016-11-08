@@ -17,7 +17,7 @@ module.exports = function(schema) {
                 nullable: false
             },
 
-            _type: {
+            otype: {
                 type: 'string',
                 nullable: false,
                 isValidPropertyType: true

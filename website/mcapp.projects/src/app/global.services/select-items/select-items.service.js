@@ -123,7 +123,7 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
             root.walk({strategy: 'pre'}, function(node) {
                 if (node.model.data.selected) {
                     node.model.data.selected = false;
-                    if (node.model.data._type === 'file') {
+                    if (node.model.data.otype === 'file') {
                         files.push(node.model.data);
                     }
                 }

@@ -8,27 +8,27 @@ function projectTreeService(gridFiles) {
             var topEntries = {
                 name: project.name,
                 path: project.name,
-                _type: 'directory',
+                otype: 'directory',
                 id: project.id,
                 children: [
                     {
                         name: 'Files',
                         path: 'Files',
-                        _type: 'directory',
+                        otype: 'directory',
                         id: 'files__' + project.id
                     },
 
                     {
                         name: 'Samples',
                         path: 'Samples',
-                        _type: 'directory',
+                        otype: 'directory',
                         id: 'samples__' + project.id
                     },
 
                     {
                         name: 'Processes',
                         path: 'Processes',
-                        _type: 'directory',
+                        otype: 'directory',
                         id: 'processes__' + project.id
                     }
                 ]

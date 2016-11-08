@@ -42,7 +42,7 @@ function MCProcessEditComponentController(sampleLinker, process, toastr, process
                     description: p.description,
                     unit: p.unit,
                     setup_id: p.setup_id,
-                    _type: p._type,
+                    otype: p.otype,
                     attribute: p.attribute
                 };
                 if (p.id) {
