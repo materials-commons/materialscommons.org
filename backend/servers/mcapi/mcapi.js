@@ -6,6 +6,8 @@ var app = module.exports = koa();
 require('koa-qs')(app);
 require('./init')();
 
+var m = require('./model');
+
 var users = require('./db/model/users');
 var apikey = require('../lib/apikey')(users);
 var resources = require('./resources').createResources();

@@ -27,8 +27,7 @@ function NavbarDirectiveController(User, $state, modelProjects, $stateParams, se
     navbarOnChange.setOnChange(() => {
         // Hack, change this later
         if ($stateParams.project_id) {
-            projectsService.getAllProjects()
-                .then(() => projectsService.getProject($stateParams.project_id).then((proj) => project.set(proj)));
+            projectsService.getProject2($stateParams.project_id).then((proj) => project.set(proj));
         }
     });
 
