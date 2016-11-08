@@ -77,6 +77,14 @@ class SamplesService {
             value: value
         }
     }
+
+    updateSampleFiles(projectId, sampleId, filesToAdd, filesToDelete) {
+        let toAdd = filesToAdd.map(f => ({command: 'add', id: f.id}));
+        let toDelete = filesToDelete.map(f => ({command: 'delete', id: f.id}));
+        return this.projectsAPI(projectId).one('samples', sampleId).one('files').customPUT({
+            files: toAdd.concat(toDelete)
+        });
+    }
 }
 
 angular.module('materialscommons').service('samplesService', SamplesService);

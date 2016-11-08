@@ -216,7 +216,7 @@ function* validateUpdateMeasurements(projectId, args) {
 
 function* updateSampleFiles(next) {
     let updateArgs = yield parse(this);
-    let errors = yield validateUpdateSampleFiles(this.params.project_id, updateArgs.files);
+    let errors = yield validateUpdateSampleFiles(this.params.project_id, updateArgs);
     if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;

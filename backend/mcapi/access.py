@@ -78,14 +78,6 @@ def remove_user(user, project_id):
         _user_access_matrix[project_id].pop(user, None)
 
 
-# def check_ownership(usergroup, user):
-#     ug = r.table('usergroups').get(usergroup).run(g.conn)
-#     if ug is None:
-#         return
-#     if user != ug['owner']:
-#         raise mcexceptions.AccessNotAllowedException(user)
-
-
 def get_apiuser():
     apikey = request.args.get('apikey')
     apiuser = apikeydb.apikey_user(apikey)

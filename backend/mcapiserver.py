@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 
 from mcapi.mcapp import app, mcdb_connect
-from mcapi import tservices, public, utils, private, access
-from mcapi import process, template, objects, doc, cache
-from mcapi.user import account, datadirs, datafiles, reviews
-from mcapi.user import ud, usergroups, projects, conditions, drafts, notes
-from mcapi.user import provenance
-from mcapi.stater import stater
+from mcapi import utils, access
+from mcapi import objects, cache
+from mcapi.user import account, usergroups, projects
 from os import environ
 import optparse
 import signal
