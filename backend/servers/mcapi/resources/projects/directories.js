@@ -130,15 +130,14 @@ function* remove(next) {
 }
 
 function* uploadFileToProjectDirectory(next) {
+    console.log("=========================================================================")
     let directory = yield directories.get(this.params.project_id,this.params.directory_id);
 
     console.log("directory: " , directory.id);
 
     let upload = this.request.body.files.file;
-    console.log("upload: ", upload);
 
     let oldFile = yield directories.fileInDirectoryByName(directory.id,upload.name);
-
     if (oldFile) console.log("old file: " + oldFile.id);
     else console.log("no old file");
 
@@ -170,9 +169,12 @@ function* uploadFileToProjectDirectory(next) {
         yield fileUtils.moveToStore(upload.path,file);
     }
 
-    directories.addFileToDirectory(directory.id,file.id);
+    console.log("linking: ", directory.id,file.id);
+    let results = yield directories.addFileToDirectory(directory.id,file.id);
+    console.log("linked: ", results);
 
     this.body = file;
+    console.log("=========================================================================")
     yield next;
 }
 
