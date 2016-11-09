@@ -1,4 +1,5 @@
-Promise = require("bluebird");
+const Promise = require("bluebird");
+const fs = Promise.promisifyAll(require('fs'));
 
 function getFileStoreDir() {
     let base = process.env.MCDIR;
@@ -23,7 +24,17 @@ function datafilePath(datafile) {
     let partA = part.substring(0, 2);
     let partB = part.substring(2);
     let path = base + partA + "/" + partB + "/" + file_id;
+    // path.join(baseLoadPath, '', file.name)
     return path;
+}
+
+function deleteFromUpload(uploadPath) {
+    return fs.unlinkAsync(uploadPath);
+}
+
+function moveToStore (sourcePath,datafile) {
+    let destPath = datafilePath(datafile);
+    return fs.renameAsync(sourcePath, datafilePath(datafile));
 }
 
 function mediaTypeDescriptionsFromMime(mime) {
@@ -88,6 +99,8 @@ const mediaTypeDescriptions = {
 module.exports = {
     getFileStoreDir,
     getTmpUploadDir,
+    deleteFromUpload,
+    moveToStore,
     datafilePath,
     mediaTypeDescriptionsFromMime,
 };
