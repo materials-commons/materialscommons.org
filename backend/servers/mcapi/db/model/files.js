@@ -54,7 +54,7 @@ function* create(file, owner) {
 
     console.log("checksum hit = ", checksumHit);
 
-    if (checksumHit) {
+    if (checksumHit && (checksumHit.length > 0)) {
         usesid = checksumHit[0].id;
     }
 
