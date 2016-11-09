@@ -130,57 +130,49 @@ function* remove(next) {
 }
 
 function* uploadFileToProjectDirectory(next) {
-    // ref: http://stackoverflow.com/questions/33751203/how-to-parse-multipart-form-data-body-with-koa
-    // 1. Create file record for new file with filename, size values, and other default initial values
-    // 2. Compute store path using UUID of new file record
-    // 3. Upload file and store in store location
-    // 3. Compute checksum and add to file record
-    // 4. Query DB for checksum on record with ‘usesid’ set to empty string -> matching record
-    // 5. If matching record exists:
-    //     - discard uploaded file
-    // - set File record ‘usesid' value to the id of matching record
-    // 6. Return File record
-
-    // it's a stream, you can do something like:
-    // part.pipe(fs.createWriteStream('some file.txt'));
-
-    console.log("this request is multipart",this.request.is('multipart/*'));
     let directory = yield directories.get(this.params.project_id,this.params.directory_id);
-    console.log(directory);
 
-    let file = this.request.body.files.file;
-    console.log("file name: " , file.name);
-    console.log("file path: " , file.path);
-    console.log("file type: " , file.type);
-    console.log("file size:", file.size);
-    console.log("file hash: ", file.hash);
+    console.log("directory: " , directory.id);
+
+    let upload = this.request.body.files.file;
+    console.log("upload: ", upload);
+
+    let oldFile = yield directories.fileInDirectoryByName(directory.id,upload.name);
+
+    if (oldFile) console.log("old file: " + oldFile.id);
+    else console.log("no old file");
+
+    if (oldFile && (oldFile.checksum == upload.checksum)) {
+        console.log("checksums match");
+        this.body = oldFile;
+        yield next;
+    }
 
     let fileArgs = {
-        name: file.name,
-        mediatype: fileUtils.mediaTypeDescriptionsFromMime(file.type),
-        size: file.size,
-        checksum: file.hash
+        name: upload.name,
+        mediatype: fileUtils.mediaTypeDescriptionsFromMime(upload.type),
+        size: upload.size,
+        checksum: upload.hash
     };
-
-    console.log("fileArgs = ",fileArgs);
-
-    console.log("user = " + this.reqctx.user.id);
-
-    console.log("users = ",require("../../db/model/users"));
-
-    console.log("after users");
-
-    console.log("files = ",require("../../db/model/files"));
-
-    console.log("after files");
 
     let file = yield files.create(fileArgs,this.reqctx.user.id);
 
-//    console.log("file = ", file);
+    if (oldFile) {
+        file = files.pushVersion(file,oldFile);
+    }
 
-//    yield thunkify(fs.rename)(file.path, path.join(baseLoadPath, '', file.name));
+    if (file.usesid) {
+        console.log("deleting upload file -> ",upload.path)
+        // this uses a file that is already in the data store
+        yield fileUtils.deleteFromUpload(upload.path);
+    } else {
+        console.log("moving uploaded file to store -> ",upload.path,file.id);
+        yield fileUtils.moveToStore(upload.path,file);
+    }
 
-    this.body = {};
+    directories.addFileToDirectory(directory.id,file.id);
+
+    this.body = file;
     yield next;
 }
 
