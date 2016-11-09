@@ -15,161 +15,141 @@ function Apt() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Mode",
-                        attribute: "mode",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: true,
-                        choices: [
-                            {name: "FIM", value: "fim"},
-                            {name: "Voltage", value: "voltage"},
-                            {name: "Laser", value: "laser"}
-                        ]
-                    }
+                    name: "Mode",
+                    attribute: "mode",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: true,
+                    choices: [
+                        {name: "FIM", value: "fim"},
+                        {name: "Voltage", value: "voltage"},
+                        {name: "Laser", value: "laser"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Specimen Temperature",
-                        attribute: "specimen_temperature",
-                        description: "",
-                        value: "",
-                        units: ["K", "F", "C"],
-                        unit: "",
-                        otype: "number",
-                        required: true,
-                        choices: []
-                    }
+                    name: "Specimen Temperature",
+                    attribute: "specimen_temperature",
+                    description: "",
+                    value: "",
+                    units: ["K", "F", "C"],
+                    unit: "",
+                    otype: "number",
+                    required: true,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Voltage Pulse Fraction",
-                        attribute: "voltage_pulse_fraction",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "percentage",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Voltage Pulse Fraction",
+                    attribute: "voltage_pulse_fraction",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "percentage",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Laser Pulse Energy",
-                        attribute: "laser_pulse_energy",
-                        description: "",
-                        value: "",
-                        units: ["pJ", "nJ"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Laser Pulse Energy",
+                    attribute: "laser_pulse_energy",
+                    description: "",
+                    value: "",
+                    units: ["pJ", "nJ"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Laser Wavelength",
-                        attribute: "laser_wavelength",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "nm",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Laser Wavelength",
+                    attribute: "laser_wavelength",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "nm",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Pulse Frequency",
-                        attribute: "pulse_frequency",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "kHz",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Pulse Frequency",
+                    attribute: "pulse_frequency",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "kHz",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Evaporation Control",
-                        attribute: "evaporation_control",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {
-                                "name": "Constant Detector Rate",
-                                "value": "constant_detector_rate"
-                            },
-                            {
-                                "name": "Constant Evaporation Rate",
-                                "value": "constant_evaporation_rate"
-                            },
-                            {
-                                "name": "Constant Charge Rate Ratio",
-                                "value": "constant_charge_rate_ratio"
-                            },
-                            {
-                                "name": "Other",
-                                "value": "other"
-                            }
-                        ]
-                    }
+                    name: "Evaporation Control",
+                    attribute: "evaporation_control",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {
+                            name: "Constant Detector Rate",
+                            value: "constant_detector_rate"
+                        },
+                        {
+                            name: "Constant Evaporation Rate",
+                            value: "constant_evaporation_rate"
+                        },
+                        {
+                            name: "Constant Charge Rate Ratio",
+                            value: "constant_charge_rate_ratio"
+                        },
+                        {
+                            name: "Other",
+                            value: "other"
+                        }
+                    ]
                 },
                 {
-                    property: {
-                        name: "Evaporation Rate",
-                        attribute: "evaporation_rate",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "Atom/Pulse",
-                        required: false,
-                        otype: "number",
-                        choices: []
-                    }
+                    name: "Evaporation Rate",
+                    attribute: "evaporation_rate",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "Atom/Pulse",
+                    required: false,
+                    otype: "number",
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Imaging Gas",
-                        attribute: "imaging_gas",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        required: false,
-                        otype: "selection",
-                        choices: [
-                            {"name": "He", "value": "He"},
-                            {"name": "Ar", "value": "Ar"},
-                            {"name": "Ne", "value": "Ne"},
-                            {"name": "Other", "value": "other"},
-                            {"name": "None", "value": "none"}
-                        ]
-                    }
+                    name: "Imaging Gas",
+                    attribute: "imaging_gas",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    required: false,
+                    otype: "selection",
+                    choices: [
+                        {name: "He", value: "He"},
+                        {name: "Ar", value: "Ar"},
+                        {name: "Ne", value: "Ne"},
+                        {name: "Other", value: "other"},
+                        {name: "None", value: "none"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Pressure",
-                        attribute: "pressure",
-                        description: "",
-                        value: "",
-                        units: ["atm", "Pa", "torr"],
-                        unit: "",
-                        required: false,
-                        otype: "number",
-                        choices: []
-                    }
+                    name: "Pressure",
+                    attribute: "pressure",
+                    description: "",
+                    value: "",
+                    units: ["atm", "Pa", "torr"],
+                    unit: "",
+                    required: false,
+                    otype: "number",
+                    choices: []
                 }
             ]
         }
@@ -191,115 +171,99 @@ function Sem() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Voltage",
-                        attribute: "voltage",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "kV",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Voltage",
+                    attribute: "voltage",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "kV",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Current",
-                        attribute: "current",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "A",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Current",
+                    attribute: "current",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "A",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Stage Tilt",
-                        attribute: "stage_tilt",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "degrees",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Stage Tilt",
+                    attribute: "stage_tilt",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "degrees",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        "name": "Magnification",
-                        "attribute": "magnification",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Magnification",
+                    attribute: "magnification",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        "name": "Specimen/Stage Bias",
-                        "attribute": "specimen_stage_bias",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "V",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Specimen/Stage Bias",
+                    attribute: "specimen_stage_bias",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "V",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        "name": "Stage",
-                        "attribute": "stage",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Standard", "value": "standard"},
-                            {"name": "Cryo", "value": "cryo"}
-                        ]
-                    }
+                    name: "Stage",
+                    attribute: "stage",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Standard", value: "standard"},
+                        {name: "Cryo", value: "cryo"}
+                    ]
                 },
                 {
-                    property: {
-                        "name": "Detector",
-                        "attribute": "detector",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Secondary", "value": "secondary"},
-                            {"name": "Backscattered", "value": "backscattered"},
-                            {"name": "Other", "value": "other"}
-                        ]
-                    }
+                    name: "Detector",
+                    attribute: "detector",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Secondary", value: "secondary"},
+                        {name: "Backscattered", value: "backscattered"},
+                        {name: "Other", value: "other"}
+                    ]
                 },
                 {
-                    property: {
-                        "name": "Working Distance",
-                        "attribute": "working_distance",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "mm",
-                        required: false,
-                        otype: "number",
-                        choices: []
-                    }
+                    name: "Working Distance",
+                    attribute: "working_distance",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "mm",
+                    required: false,
+                    otype: "number",
+                    choices: []
                 }
             ]
         }
@@ -315,17 +279,15 @@ function CreateSamples() {
     this.does_transform = true;
     this.measurements = [
         {
-            property: {
-                name: "Composition",
-                attribute: "composition",
-                description: "",
-                value: [],
-                units: [],
-                unit: "at%",
-                otype: "composition",
-                required: false,
-                choices: []
-            }
+            name: "Composition",
+            attribute: "composition",
+            description: "",
+            value: [],
+            units: [],
+            unit: "at%",
+            otype: "composition",
+            required: false,
+            choices: []
         }
     ];
     this.destructive = false;
@@ -335,30 +297,26 @@ function CreateSamples() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Manufacturer",
-                        attribute: "manufacturer",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Manufacturer",
+                    attribute: "manufacturer",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Supplier",
-                        attribute: "supplier",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Supplier",
+                    attribute: "supplier",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 //{
                 //    property: {
@@ -374,36 +332,32 @@ function CreateSamples() {
                 //    }
                 //},
                 {
-                    property: {
-                        name: "Manufacturing Date",
-                        attribute: "manufacturing_date",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "date",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Manufacturing Date",
+                    attribute: "manufacturing_date",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "date",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Production method",
-                        attribute: "production_method",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {name: "Cast", value: "cast"},
-                            {name: "Extruded", value: "extruded"},
-                            {name: "Rolled", value: "rolled"},
-                            {name: "Unknown", value: "unknown"},
-                            {name: "Other", value: "other"}
-                        ]
-                    }
+                    name: "Production method",
+                    attribute: "production_method",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Cast", value: "cast"},
+                        {name: "Extruded", value: "extruded"},
+                        {name: "Rolled", value: "rolled"},
+                        {name: "Unknown", value: "unknown"},
+                        {name: "Other", value: "other"}
+                    ]
                 }
             ]
         }
@@ -425,23 +379,20 @@ function Sectioning() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Notes",
-                        attribute: "notes",
-                        description: "Use these Notes to indicate properties of the sectioning: type of cuts, extraction, dimensions, etc.",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Notes",
+                    attribute: "notes",
+                    description: "Use these Notes to indicate properties of the sectioning: type of cuts, extraction, dimensions, etc.",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 }
             ]
         }
     ];
 }
-
 
 
 function AptDataAnalysis() {
@@ -459,56 +410,48 @@ function AptDataAnalysis() {
             attribute: "system_information",
             properties: [
                 {
-                    property: {
-                        name: "Software",
-                        attribute: "software",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Software",
+                    attribute: "software",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Software URL",
-                        attribute: "software_url",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Software URL",
+                    attribute: "software_url",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Software Version",
-                        attribute: "software_version",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Software Version",
+                    attribute: "software_version",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "How to Cite",
-                        attribute: "how_to_cite",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "How to Cite",
+                    attribute: "how_to_cite",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -530,113 +473,97 @@ function AptDataReconstruction() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Reconstruction Mode",
-                        attribute: "reconstruction_mode",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Voltage", "value": "voltage"},
-                            {"name": "Shank Angle", "value": "shank_angle"},
-                            {"name": "Tip Image", "value": "tip_image"},
-                            {"name": "Other", "value": "other"}
-                        ]
-                    }
+                    name: "Reconstruction Mode",
+                    attribute: "reconstruction_mode",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Voltage", value: "voltage"},
+                        {name: "Shank Angle", value: "shank_angle"},
+                        {name: "Tip Image", value: "tip_image"},
+                        {name: "Other", value: "other"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Field Factor",
-                        attribute: "field_factor",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Field Factor",
+                    attribute: "field_factor",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Image Compression Factor",
-                        attribute: "image_compression_factor",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Image Compression Factor",
+                    attribute: "image_compression_factor",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Evaporation Field",
-                        attribute: "evaporation_field",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: 'V/nm',
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Evaporation Field",
+                    attribute: "evaporation_field",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: 'V/nm',
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Detection Efficiency",
-                        attribute: "detection_efficiency",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "percentage",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Detection Efficiency",
+                    attribute: "detection_efficiency",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "percentage",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Initial Radius",
-                        attribute: "initial_radius",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "nm",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Initial Radius",
+                    attribute: "initial_radius",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "nm",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Shank Angle",
-                        attribute: "shank_angle",
-                        description: "",
-                        value: "",
-                        units: ["degrees", "rad"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Shank Angle",
+                    attribute: "shank_angle",
+                    description: "",
+                    value: "",
+                    units: ["degrees", "rad"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Cone to Sphere Ratio",
-                        attribute: "cone_to_sphere_ratio",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Cone to Sphere Ratio",
+                    attribute: "cone_to_sphere_ratio",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -658,48 +585,42 @@ function BroadIonBeamMilling() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Ion Type",
-                        attribute: "ion_type",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Ga", "value": "Ga"},
-                            {"name": "Ne", "value": "Ne"},
-                            {"name": "Ar", "value": "Ar"},
-                            {"name": "Other", "value": "other"}
-                        ]
-                    }
+                    name: "Ion Type",
+                    attribute: "ion_type",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Ga", value: "Ga"},
+                        {name: "Ne", value: "Ne"},
+                        {name: "Ar", value: "Ar"},
+                        {name: "Other", value: "other"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Energy",
-                        attribute: "energy",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "V",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Energy",
+                    attribute: "energy",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "V",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Time",
-                        attribute: "time",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "s",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Time",
+                    attribute: "time",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "s",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -721,30 +642,26 @@ function Cogging() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Temperature",
-                        attribute: "temperature",
-                        description: "",
-                        value: "",
-                        units: ["C", "F", "K"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Temperature",
+                    attribute: "temperature",
+                    description: "",
+                    value: "",
+                    units: ["C", "F", "K"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Strain",
-                        attribute: "strain",
-                        description: "",
-                        value: "",
-                        units: ["mm/mm", "percentage"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Strain",
+                    attribute: "strain",
+                    description: "",
+                    value: "",
+                    units: ["mm/mm", "percentage"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -766,82 +683,70 @@ function Compression() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Temperature",
-                        attribute: "temperature",
-                        description: "",
-                        value: "",
-                        units: ["C", "F", "K"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Temperature",
+                    attribute: "temperature",
+                    description: "",
+                    value: "",
+                    units: ["C", "F", "K"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "True Strain",
-                        attribute: "true_strain",
-                        description: "",
-                        value: "",
-                        units: ["mm/mm", "percentage"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "True Strain",
+                    attribute: "true_strain",
+                    description: "",
+                    value: "",
+                    units: ["mm/mm", "percentage"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Engineering Strain",
-                        attribute: "engineering_strain",
-                        description: "",
-                        value: "",
-                        units: ["mm/mm", "percentage"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Engineering Strain",
+                    attribute: "engineering_strain",
+                    description: "",
+                    value: "",
+                    units: ["mm/mm", "percentage"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Strain Rate",
-                        attribute: "strain_rate",
-                        description: "",
-                        value: "",
-                        units: ["1/s", "mm/min"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Strain Rate",
+                    attribute: "strain_rate",
+                    description: "",
+                    value: "",
+                    units: ["1/s", "mm/min"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Target Total Strain",
-                        attribute: "target_total_strain",
-                        description: "",
-                        value: "",
-                        units: ["mm/mm", "percentage"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Target Total Strain",
+                    attribute: "target_total_strain",
+                    description: "",
+                    value: "",
+                    units: ["mm/mm", "percentage"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Load Rate",
-                        attribute: "load_rate",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Load Rate",
+                    attribute: "load_rate",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -863,56 +768,48 @@ function Computation() {
             attribute: "job_settings",
             properties: [
                 {
-                    property: {
-                        name: "Submit Script",
-                        attribute: "submit_script",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Submit Script",
+                    attribute: "submit_script",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Number of Processors",
-                        attribute: "number_of_processors",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Number of Processors",
+                    attribute: "number_of_processors",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Memory per Processor",
-                        attribute: "memory_per_processor",
-                        description: "",
-                        value: "",
-                        units: ["b", "kb", "mb", "gb"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Memory per Processor",
+                    attribute: "memory_per_processor",
+                    description: "",
+                    value: "",
+                    units: ["b", "kb", "mb", "gb"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Walltime",
-                        attribute: "walltime",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "s",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Walltime",
+                    attribute: "walltime",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "s",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -934,43 +831,37 @@ function Creep() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Temperature",
-                        attribute: "temperature",
-                        description: "",
-                        value: "",
-                        units: ["C", "F", "K"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Temperature",
+                    attribute: "temperature",
+                    description: "",
+                    value: "",
+                    units: ["C", "F", "K"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Environment",
-                        attribute: "environment",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Environment",
+                    attribute: "environment",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Stress",
-                        attribute: "stress",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "MPa",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Stress",
+                    attribute: "stress",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "MPa",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -992,79 +883,69 @@ function DicPatterning() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Scale",
-                        attribute: "scale",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Large-Scale", "value": "large_scale"},
-                            {"name": "Small-Scale", "value": "small_scale"}
-                        ]
-                    }
+                    name: "Scale",
+                    attribute: "scale",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Large-Scale", value: "large_scale"},
+                        {name: "Small-Scale", value: "small_scale"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Field of View",
-                        attribute: "field_of_view",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "microns",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Field of View",
+                    attribute: "field_of_view",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "microns",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Particle Size",
-                        attribute: "particle_size",
-                        description: "",
-                        value: "",
-                        units: ["microns", "nm"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Particle Size",
+                    attribute: "particle_size",
+                    description: "",
+                    value: "",
+                    units: ["microns", "nm"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Particle Type",
-                        attribute: "particle_type",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Alumina", "value": "alumina"},
-                            {"name": "Gold", "value": "gold"}
-                        ]
-                    }
+                    name: "Particle Type",
+                    attribute: "particle_type",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Alumina", value: "alumina"},
+                        {name: "Gold", value: "gold"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Silane Type",
-                        attribute: "silane_type",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "APTMS", "value": "aptms"},
-                            {"name": "MPTMS", "value": "mptms"},
-                            {"name": "N/A", "value": "n/a"}
-                        ]
-                    }
+                    name: "Silane Type",
+                    attribute: "silane_type",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "APTMS", value: "aptms"},
+                        {name: "MPTMS", value: "mptms"},
+                        {name: "N/A", value: "n/a"}
+                    ]
                 }
             ]
         }
@@ -1086,48 +967,42 @@ function DicStatisticalModelling() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Number of Parameters",
-                        attribute: "number_of_parameters",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Number of Parameters",
+                    attribute: "number_of_parameters",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Number of Observations",
-                        attribute: "number_of_observations",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Number of Observations",
+                    attribute: "number_of_observations",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Model Type",
-                        attribute: "model_type",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Linear", "value": "linear"},
-                            {"name": "Interactions", "value": "interactions"},
-                            {"name": "PureQuadratic", "value": "purequadratic"},
-                            {"name": "Quadratic", "value": "quadratic"}
-                        ]
-                    }
+                    name: "Model Type",
+                    attribute: "model_type",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Linear", value: "linear"},
+                        {name: "Interactions", value: "interactions"},
+                        {name: "PureQuadratic", value: "purequadratic"},
+                        {name: "Quadratic", value: "quadratic"}
+                    ]
                 }
             ]
         }
@@ -1149,56 +1024,48 @@ function Electropolishing() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Solution",
-                        attribute: "solution",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Solution",
+                    attribute: "solution",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Voltage",
-                        attribute: "voltage",
-                        description: "",
-                        value: "",
-                        units: ["V", "kV"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Voltage",
+                    attribute: "voltage",
+                    description: "",
+                    value: "",
+                    units: ["V", "kV"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Current",
-                        attribute: "current",
-                        description: "",
-                        value: "",
-                        units: ["mA", "A"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Current",
+                    attribute: "current",
+                    description: "",
+                    value: "",
+                    units: ["mA", "A"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Temperature",
-                        attribute: "temperature",
-                        description: "",
-                        value: "",
-                        units: ["C", "F", "K"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Temperature",
+                    attribute: "temperature",
+                    description: "",
+                    value: "",
+                    units: ["C", "F", "K"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -1220,56 +1087,48 @@ function Etching() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Solution",
-                        attribute: "solution",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Solution",
+                    attribute: "solution",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Voltage",
-                        attribute: "voltage",
-                        description: "",
-                        value: "",
-                        units: ["V", "kV"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Voltage",
+                    attribute: "voltage",
+                    description: "",
+                    value: "",
+                    units: ["V", "kV"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Time",
-                        attribute: "time",
-                        description: "",
-                        value: "",
-                        units: ["hrs", "mins", "s"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Time",
+                    attribute: "time",
+                    description: "",
+                    value: "",
+                    units: ["hrs", "mins", "s"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Temperature",
-                        attribute: "temperature",
-                        description: "",
-                        value: "",
-                        units: ["C", "F", "K"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Temperature",
+                    attribute: "temperature",
+                    description: "",
+                    value: "",
+                    units: ["C", "F", "K"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -1291,108 +1150,92 @@ function EbsdSemDataCollection() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Voltage",
-                        attribute: "voltage",
-                        description: "",
-                        value: "",
-                        units: ["kv", "V"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Voltage",
+                    attribute: "voltage",
+                    description: "",
+                    value: "",
+                    units: ["kv", "V"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Current",
-                        attribute: "current",
-                        description: "",
-                        value: "",
-                        units: ["A", "mA"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Current",
+                    attribute: "current",
+                    description: "",
+                    value: "",
+                    units: ["A", "mA"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Sample Tilt",
-                        attribute: "sample_tilt",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "degrees",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Sample Tilt",
+                    attribute: "sample_tilt",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "degrees",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Magnification",
-                        attribute: "magnification",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Magnification",
+                    attribute: "magnification",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Acquisition Time",
-                        attribute: "acquisition_time",
-                        description: "",
-                        value: "",
-                        units: ["s", "ms"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Acquisition Time",
+                    attribute: "acquisition_time",
+                    description: "",
+                    value: "",
+                    units: ["s", "ms"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Scan Size",
-                        attribute: "scan_size",
-                        description: "",
-                        value: "",
-                        units: ["microns"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Scan Size",
+                    attribute: "scan_size",
+                    description: "",
+                    value: "",
+                    units: ["microns"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Step Size",
-                        attribute: "step_size",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "microns",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Step Size",
+                    attribute: "step_size",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "microns",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Working Distance",
-                        attribute: "working_distance",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "mm",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Working Distance",
+                    attribute: "working_distance",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "mm",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -1414,99 +1257,85 @@ function EpmaDataCollection() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Voltage",
-                        attribute: "voltage",
-                        description: "",
-                        value: "",
-                        units: ["kv", "V"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Voltage",
+                    attribute: "voltage",
+                    description: "",
+                    value: "",
+                    units: ["kv", "V"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Beam Current",
-                        attribute: "beam_current",
-                        description: "",
-                        value: "",
-                        units: ["A", "nA"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Beam Current",
+                    attribute: "beam_current",
+                    description: "",
+                    value: "",
+                    units: ["A", "nA"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Beam Size",
-                        attribute: "beam_size",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "microns",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Beam Size",
+                    attribute: "beam_size",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "microns",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Scan Type",
-                        attribute: "scan_type",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Line", "value": "line"},
-                            {"name": "Grid", "value": "grid"},
-                            {"name": "Point", "value": "point"}
-                        ]
-                    }
+                    name: "Scan Type",
+                    attribute: "scan_type",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Line", value: "line"},
+                        {name: "Grid", value: "grid"},
+                        {name: "Point", value: "point"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Step Size",
-                        attribute: "step_size",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "microns",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Step Size",
+                    attribute: "step_size",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "microns",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Grid Dimensions",
-                        attribute: "grid_dimensions",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Grid Dimensions",
+                    attribute: "grid_dimensions",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Location",
-                        attribute: "location",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Location",
+                    attribute: "location",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -1528,136 +1357,118 @@ function LowCycleFatigue() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Mode",
-                        attribute: "mode",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Total strain control", "value": "total_strain_control"},
-                            {"name": "Plastic strain control", "value": "plastic_strain_control"},
-                            {"name": "Stress control", "value": "stress_control"},
-                            {"name": "Displacement control", "value": "displacement_control"}
-                        ]
-                    }
+                    name: "Mode",
+                    attribute: "mode",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Total strain control", value: "total_strain_control"},
+                        {name: "Plastic strain control", value: "plastic_strain_control"},
+                        {name: "Stress control", value: "stress_control"},
+                        {name: "Displacement control", value: "displacement_control"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Temperature",
-                        attribute: "temperature",
-                        description: "",
-                        value: "",
-                        units: ["K", "F", "C"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Temperature",
+                    attribute: "temperature",
+                    description: "",
+                    value: "",
+                    units: ["K", "F", "C"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Frequency",
-                        attribute: "frequency",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Frequency",
+                    attribute: "frequency",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Wave Form",
-                        attribute: "wave_form",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Continuous", "value": "continuous"},
-                            {"name": "Interrupted( with hold times)", "value": "interrupted"}
-                        ]
-                    }
+                    name: "Wave Form",
+                    attribute: "wave_form",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Continuous", value: "continuous"},
+                        {name: "Interrupted( with hold times)", value: "interrupted"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Wave Form Shape",
-                        attribute: "wave_form_shape",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Sinusoidal", "value": "sinusoidal"},
-                            {"name": "Rectangular", "value": "rectangular"},
-                            {"name": "Triangular", "value": "triangular"}
-                        ]
-                    }
+                    name: "Wave Form Shape",
+                    attribute: "wave_form_shape",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Sinusoidal", value: "sinusoidal"},
+                        {name: "Rectangular", value: "rectangular"},
+                        {name: "Triangular", value: "triangular"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Amplitude",
-                        attribute: "amplitude",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Constant", "value": "constant"},
-                            {"name": "Variable", "value": "variable"}
-                        ]
-                    }
+                    name: "Amplitude",
+                    attribute: "amplitude",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Constant", value: "constant"},
+                        {name: "Variable", value: "variable"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Load Ratio",
-                        attribute: "load_ratio",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Load Ratio",
+                    attribute: "load_ratio",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Manufacturer",
-                        attribute: "manufacturer",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Manufacturer",
+                    attribute: "manufacturer",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Strain Limits",
-                        attribute: "strain_limits",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "percentage",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Strain Limits",
+                    attribute: "strain_limits",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "percentage",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -1679,108 +1490,92 @@ function UltrasonicFatigue() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Amplifiers (count)",
-                        attribute: "amplifier_count",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Amplifiers (count)",
+                    attribute: "amplifier_count",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Power Control",
-                        attribute: "power_control",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Power Control",
+                    attribute: "power_control",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Resonating Frequency",
-                        attribute: "resonating_frequency",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "kHz",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Resonating Frequency",
+                    attribute: "resonating_frequency",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "kHz",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Calibration Constant",
-                        attribute: "calibration_constant",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Calibration Constant",
+                    attribute: "calibration_constant",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Stress Ratio",
-                        attribute: "stress_ratio",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Stress Ratio",
+                    attribute: "stress_ratio",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Max Stress",
-                        attribute: "max_stress",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "MPa",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Max Stress",
+                    attribute: "max_stress",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "MPa",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Test Temperature",
-                        attribute: "test_temperature",
-                        description: "",
-                        value: "",
-                        units: ["C", "F", "K"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Test Temperature",
+                    attribute: "test_temperature",
+                    description: "",
+                    value: "",
+                    units: ["C", "F", "K"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Test Environment",
-                        attribute: "test_environment",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Test Environment",
+                    attribute: "test_environment",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -1802,125 +1597,109 @@ function TEM() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Voltage",
-                        attribute: "voltage",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Voltage",
+                    attribute: "voltage",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Mode",
-                        attribute: "mode",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Diffraction", "value": "diffraction"},
-                            {"name": "Diffraction Imaging", "value": "diffraction_imaging"},
-                            {"name": "High Resolution Imaging", "value": "high_resolution_imaging"},
-                            {"name": "Scanning z-contrast", "value": "scanning_z_contrast"}
-                        ]
-                    }
+                    name: "Mode",
+                    attribute: "mode",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Diffraction", value: "diffraction"},
+                        {name: "Diffraction Imaging", value: "diffraction_imaging"},
+                        {name: "High Resolution Imaging", value: "high_resolution_imaging"},
+                        {name: "Scanning z-contrast", value: "scanning_z_contrast"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Conventional Scanning",
-                        attribute: "conventional_scanning",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Yes", "value": "yes"},
-                            {"name": "No", "value": "no"}
-                        ]
-                    }
+                    name: "Conventional Scanning",
+                    attribute: "conventional_scanning",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Yes", value: "yes"},
+                        {name: "No", value: "no"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Scanning",
-                        attribute: "scanning",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Bright Field", "value": "bright_field"},
-                            {"name": "High Angle Angular Dark Field", "value": "high_angle_angular_dark_field"},
-                            {"name": "Tilt Series", "value": "tilt_series"}
-                        ]
-                    }
+                    name: "Scanning",
+                    attribute: "scanning",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Bright Field", value: "bright_field"},
+                        {name: "High Angle Angular Dark Field", value: "high_angle_angular_dark_field"},
+                        {name: "Tilt Series", value: "tilt_series"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Stage",
-                        attribute: "stage",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Standard", "value": "standard"},
-                            {"name": "Cryo", "value": "cryo"},
-                            {"name": "Heating", "value": "heating"},
-                            {"name": "Other", "value": "other"}
-                        ]
-                    }
+                    name: "Stage",
+                    attribute: "stage",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Standard", value: "standard"},
+                        {name: "Cryo", value: "cryo"},
+                        {name: "Heating", value: "heating"},
+                        {name: "Other", value: "other"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Apparatus",
-                        attribute: "apparatus",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Apparatus",
+                    attribute: "apparatus",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Spot Size",
-                        attribute: "spot_size",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Spot Size",
+                    attribute: "spot_size",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Camera Length",
-                        attribute: "camera_length",
-                        description: "",
-                        value: "",
-                        units: ["cm", "mm", "m"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Camera Length",
+                    attribute: "camera_length",
+                    description: "",
+                    value: "",
+                    units: ["cm", "mm", "m"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -1942,61 +1721,53 @@ function HeatTreatment() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Temperature",
-                        attribute: "temperature",
-                        description: "",
-                        value: "",
-                        units: ["K", "F", "C"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Temperature",
+                    attribute: "temperature",
+                    description: "",
+                    value: "",
+                    units: ["K", "F", "C"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Time",
-                        attribute: "time",
-                        description: "",
-                        value: "",
-                        units: ["seconds", "minutes", "hours"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Time",
+                    attribute: "time",
+                    description: "",
+                    value: "",
+                    units: ["seconds", "minutes", "hours"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Cooling Type",
-                        attribute: "cooling_type",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Air Quench", "value": "air_quench"},
-                            {"name": "Water Quench", "value": "water_quench"},
-                            {"name": "Furnace Cooled", "value": "furnace_cooled"},
-                            {"name": "Air Cooled", "value": "air_cooled"}
-                        ]
-                    }
+                    name: "Cooling Type",
+                    attribute: "cooling_type",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Air Quench", value: "air_quench"},
+                        {name: "Water Quench", value: "water_quench"},
+                        {name: "Furnace Cooled", value: "furnace_cooled"},
+                        {name: "Air Cooled", value: "air_cooled"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Cooling Rate",
-                        attribute: "cooling_rate",
-                        description: "",
-                        value: "",
-                        units: ["C/s", "K/s"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Cooling Rate",
+                    attribute: "cooling_rate",
+                    description: "",
+                    value: "",
+                    units: ["C/s", "K/s"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -2036,48 +1807,42 @@ function Hardness() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Type",
-                        attribute: "type",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {"name": "Vickers", "value": "vickers"},
-                            {"name": "Rockwell A", "value": "rockwell_a"},
-                            {"name": "Rockwell B", "value": "rockwell_b"},
-                            {"name": "Rockwell C", "value": "rockwell_c"}
-                        ]
-                    }
+                    name: "Type",
+                    attribute: "type",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "selection",
+                    required: false,
+                    choices: [
+                        {name: "Vickers", value: "vickers"},
+                        {name: "Rockwell A", value: "rockwell_a"},
+                        {name: "Rockwell B", value: "rockwell_b"},
+                        {name: "Rockwell C", value: "rockwell_c"}
+                    ]
                 },
                 {
-                    property: {
-                        name: "Load",
-                        attribute: "load",
-                        description: "",
-                        value: "",
-                        units: ["ibf", "N"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Load",
+                    attribute: "load",
+                    description: "",
+                    value: "",
+                    units: ["ibf", "N"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Dwell Time",
-                        attribute: "dwell_time",
-                        description: "",
-                        value: "",
-                        units: ["seconds", "minutes", "hours"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Dwell Time",
+                    attribute: "dwell_time",
+                    description: "",
+                    value: "",
+                    units: ["seconds", "minutes", "hours"],
+                    unit: "",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -2099,69 +1864,59 @@ function XRD() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
-                        name: "Type",
-                        attribute: "type",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Type",
+                    attribute: "type",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "",
+                    otype: "string",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Start Angle",
-                        attribute: "start_angle",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "degrees",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Start Angle",
+                    attribute: "start_angle",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "degrees",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "End Angle",
-                        attribute: "end_angle",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "degrees",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "End Angle",
+                    attribute: "end_angle",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "degrees",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Rate",
-                        attribute: "rate",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "degrees/minute",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Rate",
+                    attribute: "rate",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "degrees/minute",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 },
                 {
-                    property: {
-                        name: "Step Size",
-                        attribute: "step_size",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "degrees",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                    }
+                    name: "Step Size",
+                    attribute: "step_size",
+                    description: "",
+                    value: "",
+                    units: [],
+                    unit: "degrees",
+                    otype: "number",
+                    required: false,
+                    choices: []
                 }
             ]
         }
@@ -2183,7 +1938,6 @@ function Tension() {
             attribute: "instrument",
             properties: [
                 {
-                    property: {
                         name: "Force type",
                         attribute: "force_type",
                         description: "",
@@ -2196,10 +1950,8 @@ function Tension() {
                             {name: "Screw", value: "screw"},
                             {name: "Hydraulic", value: "hydraulic"}
                         ]
-                    }
                 },
                 {
-                    property: {
                         name: "Control Mode",
                         attribute: "control_mode",
                         description: "",
@@ -2213,10 +1965,8 @@ function Tension() {
                             {name: "Force", value: "force"},
                             {name: "Strain", value: "strain"}
                         ]
-                    }
                 },
                 {
-                    property: {
                         name: "Temperature",
                         attribute: "temperature",
                         description: "",
@@ -2226,10 +1976,8 @@ function Tension() {
                         otype: "number",
                         required: false,
                         choices: []
-                    }
                 },
                 {
-                    property: {
                         name: "Test Rate",
                         attribute: "test_rate",
                         description: "",
@@ -2239,10 +1987,8 @@ function Tension() {
                         otype: "string",
                         required: false,
                         choices: []
-                    }
                 },
                 {
-                    property: {
                         name: "Gage Length",
                         attribute: "gage_length",
                         description: "",
@@ -2252,10 +1998,8 @@ function Tension() {
                         otype: "number",
                         required: false,
                         choices: []
-                    }
                 },
                 {
-                    property: {
                         name: "Sample Geometry",
                         attribute: "sample_geometry",
                         description: "",
@@ -2268,7 +2012,6 @@ function Tension() {
                             {name: "Rectangular", value: "rectangular"},
                             {name: "Cylindrical", value: "cylindrical"}
                         ]
-                    }
                 }
             ]
         }

@@ -173,7 +173,7 @@ function* createSetup(processID, settings) {
         // all of its properties.
         // TODO: Add into an array and then batch insert into setupproperties
         for (let j = 0; j < current.properties.length; j++) {
-            let p = current.properties[j].property;
+            let p = current.properties[j];
             let val = p.value;
             let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
                 p.otype, val, p.unit);
