@@ -1,6 +1,7 @@
 class ProcessMeasurementsComponentController2 {
     /*@ngInject*/
     constructor(samplesService, toast, $stateParams) {
+        console.log('ProcessMeasurementsComponentController2 this.measurements', this.measurements);
         this.samplesService = samplesService;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
