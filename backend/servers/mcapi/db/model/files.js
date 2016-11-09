@@ -46,13 +46,36 @@ function* get(file_id) {
 // create file
 function* create(file, owner) {
     console.log("create = ", file);
+
+    let usesid = "";
+    let checksumHit = yield r.table('datafiles')
+        .getAll(file.checksum,{index:'checksum'})
+        .filter({'usesid':''});
+
+    console.log("checksum hit = ", checksumHit);
+
+    if (checksumHit) {
+        usesid = checksumHit[0].id;
+    }
+
     let f = new model.DataFile(file.name, owner);
     f.mediatype = file.mediatype;
     f.size = file.size;
     f.upload = file.size;
     f.checksum = file.checksum;
+    f.usesid = usesid;
+
     let newFile = yield db.insert('datafiles', f);
+
+    console.log("new file = ",newFile);
+
     return yield get(newFile.id);
+}
+
+function* pushVersion(newFile, oldFile) {
+    yield r.table('datafiles').get(oldFile.id).update({current:false});
+    yield r.table('datafiles').get(newFile.id).update({parent:oldFile.id, current:true});
+    return get(newFile.id);
 }
 
 // getList gets the details for the given file ids
@@ -342,6 +365,7 @@ module.exports = {
     getList,
     create,
     update,
+    pushVersion,
     deleteFile,
     byPath,
     getVersions
