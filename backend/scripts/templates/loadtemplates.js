@@ -60,6 +60,18 @@ function createDate(name) {
     }
 }
 
+function createTemperature(name) {
+    return createNumber(name ? name : "Temperature", ["K", "F", "C"])
+}
+
+function createVoltage(name) {
+    return createNumber(name ? name : "Voltage", ["kV", "V"]);
+}
+
+function createCurrent(name) {
+    return createNumber(name ? name : "Current", ["A", "mA", "nA"]);
+}
+
 function Apt() {
     this.name = "APT";
     this.process_name = "APT";
@@ -79,7 +91,7 @@ function Apt() {
                     {name: "Voltage", value: "voltage"},
                     {name: "Laser", value: "laser"}
                 ]),
-                createNumber("Specimen Temperature", ["K", "F", "C"]),
+                createTemperature("Specimen Temperature"),
                 createNumber("Voltage Pulse Fraction", ["percentage"]),
                 createNumber("Laser Pulse Energy", ["pJ", "nJ"]),
                 createNumber("Laser Wavelength", ["nm"]),
@@ -118,8 +130,8 @@ function Sem() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                createNumber("Voltage", ["kV"]),
-                createNumber("Current", ["A"]),
+                createVoltage(),
+                createCurrent(),
                 createNumber("Stage Tilt", ["degrees"]),
                 createNumber("Magnification", []),
                 createNumber("Specimen/Stage Bias", ["V"]),
@@ -296,7 +308,7 @@ function Cogging() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                createNumber("Temperature", ["C", "F", "K"]),
+                createTemperature(),
                 createNumber("Strain", ["mm/mm", "percentage"])
             ]
         }
@@ -317,7 +329,7 @@ function Compression() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                createNumber("Temperature", ["C", "F", "K"]),
+                createTemperature(),
                 createNumber("True Strain", ["mm/mm", "percentage"]),
                 createNumber("Engineering Strain", ["mm/mm", "percentage"]),
                 createNumber("Strain Rate", ["1/s", "mm/min"]),
@@ -365,7 +377,7 @@ function Creep() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                createNumber("Temperature", ["C", "F", "K"]),
+                createTemperature(),
                 createString("Environment"),
                 createNumber("Stress", ["MPa"])
             ]
@@ -449,9 +461,9 @@ function Electropolishing() {
             attribute: "instrument",
             properties: [
                 createString("Solution"),
-                createNumber("Voltage", ["V", "kV"]),
-                createNumber("Current", ["mA", "A"]),
-                createNumber("Temperature", ["C", "F", "K"])
+                createVoltage(),
+                createCurrent(),
+                createTemperature()
             ]
         }
     ];
@@ -472,9 +484,9 @@ function Etching() {
             attribute: "instrument",
             properties: [
                 createString("Solution"),
-                createNumber("Voltage", ["V", "kV"]),
+                createVoltage(),
                 createNumber("Time", ["hrs", "mins", "s"]),
-                createNumber("Temperature", ["C", "F", "K"])
+                createTemperature()
             ]
         }
     ];
@@ -494,94 +506,14 @@ function EbsdSemDataCollection() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                    name: "Voltage",
-                    attribute: "voltage",
-                    description: "",
-                    value: "",
-                    units: ["kv", "V"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Current",
-                    attribute: "current",
-                    description: "",
-                    value: "",
-                    units: ["A", "mA"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Sample Tilt",
-                    attribute: "sample_tilt",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "degrees",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Magnification",
-                    attribute: "magnification",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Acquisition Time",
-                    attribute: "acquisition_time",
-                    description: "",
-                    value: "",
-                    units: ["s", "ms"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Scan Size",
-                    attribute: "scan_size",
-                    description: "",
-                    value: "",
-                    units: ["microns"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Step Size",
-                    attribute: "step_size",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "microns",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Working Distance",
-                    attribute: "working_distance",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "mm",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                }
+                createVoltage(),
+                createCurrent(),
+                createNumber("Sample Tilt", ["degress"]),
+                createNumber("Magnification", []),
+                createNumber("Acquisition Time", ["s", "ms"]),
+                createNumber("Scan Size", ["microns"]),
+                createNumber("Step Size", ["microns"]),
+                createNumber("Working Distance", ["mm"])
             ]
         }
     ];
@@ -601,87 +533,17 @@ function EpmaDataCollection() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                    name: "Voltage",
-                    attribute: "voltage",
-                    description: "",
-                    value: "",
-                    units: ["kv", "V"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Beam Current",
-                    attribute: "beam_current",
-                    description: "",
-                    value: "",
-                    units: ["A", "nA"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Beam Size",
-                    attribute: "beam_size",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "microns",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Scan Type",
-                    attribute: "scan_type",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Line", value: "line"},
-                        {name: "Grid", value: "grid"},
-                        {name: "Point", value: "point"}
-                    ]
-                },
-                {
-                    name: "Step Size",
-                    attribute: "step_size",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "microns",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Grid Dimensions",
-                    attribute: "grid_dimensions",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "string",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Location",
-                    attribute: "location",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "string",
-                    required: false,
-                    choices: []
-                }
+                createVoltage(),
+                createCurrent("Beam Current"),
+                createNumber("Beam Size", ["microns"]),
+                createSelection("Scan Type", [
+                    {name: "Line", value: "line"},
+                    {name: "Grid", value: "grid"},
+                    {name: "Point", value: "point"}
+                ]),
+                createNumber("Step Size", ["microns"]),
+                createString("Grid Dimensions"),
+                createString("Location")
             ]
         }
     ];
@@ -701,120 +563,30 @@ function LowCycleFatigue() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                    name: "Mode",
-                    attribute: "mode",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Total strain control", value: "total_strain_control"},
-                        {name: "Plastic strain control", value: "plastic_strain_control"},
-                        {name: "Stress control", value: "stress_control"},
-                        {name: "Displacement control", value: "displacement_control"}
-                    ]
-                },
-                {
-                    name: "Temperature",
-                    attribute: "temperature",
-                    description: "",
-                    value: "",
-                    units: ["K", "F", "C"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Frequency",
-                    attribute: "frequency",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Wave Form",
-                    attribute: "wave_form",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Continuous", value: "continuous"},
-                        {name: "Interrupted( with hold times)", value: "interrupted"}
-                    ]
-                },
-                {
-                    name: "Wave Form Shape",
-                    attribute: "wave_form_shape",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Sinusoidal", value: "sinusoidal"},
-                        {name: "Rectangular", value: "rectangular"},
-                        {name: "Triangular", value: "triangular"}
-                    ]
-                },
-                {
-                    name: "Amplitude",
-                    attribute: "amplitude",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Constant", value: "constant"},
-                        {name: "Variable", value: "variable"}
-                    ]
-                },
-                {
-                    name: "Load Ratio",
-                    attribute: "load_ratio",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Manufacturer",
-                    attribute: "manufacturer",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "string",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Strain Limits",
-                    attribute: "strain_limits",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "percentage",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                }
+                createSelection("Mode", [
+                    {name: "Total strain control", value: "total_strain_control"},
+                    {name: "Plastic strain control", value: "plastic_strain_control"},
+                    {name: "Stress control", value: "stress_control"},
+                    {name: "Displacement control", value: "displacement_control"}
+                ]),
+                createTemperature(),
+                createNumber("Frequency"),
+                createSelection("Wave Form", [
+                    {name: "Continuous", value: "continuous"},
+                    {name: "Interrupted( with hold times)", value: "interrupted"}
+                ]),
+                createSelection("Wave Form Shape", [
+                    {name: "Sinusoidal", value: "sinusoidal"},
+                    {name: "Rectangular", value: "rectangular"},
+                    {name: "Triangular", value: "triangular"}
+                ]),
+                createSelection("Amplitude", [
+                    {name: "Constant", value: "constant"},
+                    {name: "Variable", value: "variable"}
+                ]),
+                createNumber("Load Ratio", []),
+                createString("Manufacturer"),
+                createNumber("Strain Limits", ["percentage"])
             ]
         }
     ];
@@ -834,94 +606,14 @@ function UltrasonicFatigue() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                    name: "Amplifiers (count)",
-                    attribute: "amplifier_count",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Power Control",
-                    attribute: "power_control",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Resonating Frequency",
-                    attribute: "resonating_frequency",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "kHz",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Calibration Constant",
-                    attribute: "calibration_constant",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Stress Ratio",
-                    attribute: "stress_ratio",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Max Stress",
-                    attribute: "max_stress",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "MPa",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Test Temperature",
-                    attribute: "test_temperature",
-                    description: "",
-                    value: "",
-                    units: ["C", "F", "K"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Test Environment",
-                    attribute: "test_environment",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "string",
-                    required: false,
-                    choices: []
-                }
+                createNumber("Amplifiers Count", []),
+                createNumber("Power Control", []),
+                createNumber("Resonating Frequency", ["kHz"]),
+                createNumber("Calibration Constant", []),
+                createNumber("Stress Ratio", []),
+                createNumber("Max Stress", ["MPa"]),
+                createTemperature("Test Temperature"),
+                createString("Test Environment")
             ]
         }
     ];
@@ -941,111 +633,31 @@ function TEM() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                    name: "Voltage",
-                    attribute: "voltage",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Mode",
-                    attribute: "mode",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Diffraction", value: "diffraction"},
-                        {name: "Diffraction Imaging", value: "diffraction_imaging"},
-                        {name: "High Resolution Imaging", value: "high_resolution_imaging"},
-                        {name: "Scanning z-contrast", value: "scanning_z_contrast"}
-                    ]
-                },
-                {
-                    name: "Conventional Scanning",
-                    attribute: "conventional_scanning",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Yes", value: "yes"},
-                        {name: "No", value: "no"}
-                    ]
-                },
-                {
-                    name: "Scanning",
-                    attribute: "scanning",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Bright Field", value: "bright_field"},
-                        {name: "High Angle Angular Dark Field", value: "high_angle_angular_dark_field"},
-                        {name: "Tilt Series", value: "tilt_series"}
-                    ]
-                },
-                {
-                    name: "Stage",
-                    attribute: "stage",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Standard", value: "standard"},
-                        {name: "Cryo", value: "cryo"},
-                        {name: "Heating", value: "heating"},
-                        {name: "Other", value: "other"}
-                    ]
-                },
-                {
-                    name: "Apparatus",
-                    attribute: "apparatus",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "string",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Spot Size",
-                    attribute: "spot_size",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Camera Length",
-                    attribute: "camera_length",
-                    description: "",
-                    value: "",
-                    units: ["cm", "mm", "m"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                }
+                createVoltage(),
+                createSelection("Mode", [
+                    {name: "Diffraction", value: "diffraction"},
+                    {name: "Diffraction Imaging", value: "diffraction_imaging"},
+                    {name: "High Resolution Imaging", value: "high_resolution_imaging"},
+                    {name: "Scanning z-contrast", value: "scanning_z_contrast"}
+                ]),
+                createSelection("Conventional Scanning", [
+                    {name: "Yes", value: "yes"},
+                    {name: "No", value: "no"}
+                ]),
+                createSelection("Scanning", [
+                    {name: "Bright Field", value: "bright_field"},
+                    {name: "High Angle Angular Dark Field", value: "high_angle_angular_dark_field"},
+                    {name: "Tilt Series", value: "tilt_series"}
+                ]),
+                createSelection("Stage", [
+                    {name: "Standard", value: "standard"},
+                    {name: "Cryo", value: "cryo"},
+                    {name: "Heating", value: "heating"},
+                    {name: "Other", value: "other"}
+                ]),
+                createString("Apparatus"),
+                createNumber("Spot Size", []),
+                createNumber("Camera Length", ["cm", "mm", "m"])
             ]
         }
     ];
@@ -1065,55 +677,15 @@ function HeatTreatment() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                    name: "Temperature",
-                    attribute: "temperature",
-                    description: "",
-                    value: "",
-                    units: ["K", "F", "C"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Time",
-                    attribute: "time",
-                    description: "",
-                    value: "",
-                    units: ["seconds", "minutes", "hours"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Cooling Type",
-                    attribute: "cooling_type",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Air Quench", value: "air_quench"},
-                        {name: "Water Quench", value: "water_quench"},
-                        {name: "Furnace Cooled", value: "furnace_cooled"},
-                        {name: "Air Cooled", value: "air_cooled"}
-                    ]
-                },
-                {
-                    name: "Cooling Rate",
-                    attribute: "cooling_rate",
-                    description: "",
-                    value: "",
-                    units: ["C/s", "K/s"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                }
+                createTemperature(),
+                createNumber("Time", ["seconds", "minutes", "hours"]),
+                createSelection("Cooling Type", [
+                    {name: "Air Quench", value: "air_quench"},
+                    {name: "Water Quench", value: "water_quench"},
+                    {name: "Furnace Cooled", value: "furnace_cooled"},
+                    {name: "Air Cooled", value: "air_cooled"}
+                ]),
+                createNumber("Cooling Rate", ["C/s", "K/s"])
             ]
         }
     ];
@@ -1151,44 +723,14 @@ function Hardness() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                    name: "Type",
-                    attribute: "type",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "selection",
-                    required: false,
-                    choices: [
-                        {name: "Vickers", value: "vickers"},
-                        {name: "Rockwell A", value: "rockwell_a"},
-                        {name: "Rockwell B", value: "rockwell_b"},
-                        {name: "Rockwell C", value: "rockwell_c"}
-                    ]
-                },
-                {
-                    name: "Load",
-                    attribute: "load",
-                    description: "",
-                    value: "",
-                    units: ["ibf", "N"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Dwell Time",
-                    attribute: "dwell_time",
-                    description: "",
-                    value: "",
-                    units: ["seconds", "minutes", "hours"],
-                    unit: "",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                }
+                createSelection("Type", [
+                    {name: "Vickers", value: "vickers"},
+                    {name: "Rockwell A", value: "rockwell_a"},
+                    {name: "Rockwell B", value: "rockwell_b"},
+                    {name: "Rockwell C", value: "rockwell_c"}
+                ]),
+                createNumber("Load", ["ibf", "N"]),
+                createNumber("Dwell Time", ["seconds", "minutes", "hours"])
             ]
         }
     ];
@@ -1208,61 +750,11 @@ function XRD() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                    name: "Type",
-                    attribute: "type",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "",
-                    otype: "string",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Start Angle",
-                    attribute: "start_angle",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "degrees",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "End Angle",
-                    attribute: "end_angle",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "degrees",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Rate",
-                    attribute: "rate",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "degrees/minute",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                },
-                {
-                    name: "Step Size",
-                    attribute: "step_size",
-                    description: "",
-                    value: "",
-                    units: [],
-                    unit: "degrees",
-                    otype: "number",
-                    required: false,
-                    choices: []
-                }
+                createString("Type"),
+                createNumber("Start Angle", ["degrees"]),
+                createNumber("End Angle", ["degrees"]),
+                createNumber("Rate", ["degrees/minute"]),
+                createNumber("Step Size", ["degrees"])
             ]
         }
     ];
@@ -1282,82 +774,22 @@ function Tension() {
             name: "Instrument",
             attribute: "instrument",
             properties: [
-                {
-                        name: "Force type",
-                        attribute: "force_type",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {name: "Screw", value: "screw"},
-                            {name: "Hydraulic", value: "hydraulic"}
-                        ]
-                },
-                {
-                        name: "Control Mode",
-                        attribute: "control_mode",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {name: "Displacement", value: "displacement"},
-                            {name: "Force", value: "force"},
-                            {name: "Strain", value: "strain"}
-                        ]
-                },
-                {
-                        name: "Temperature",
-                        attribute: "temperature",
-                        description: "",
-                        value: "",
-                        units: ["C", "F", "K"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                },
-                {
-                        name: "Test Rate",
-                        attribute: "test_rate",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "string",
-                        required: false,
-                        choices: []
-                },
-                {
-                        name: "Gage Length",
-                        attribute: "gage_length",
-                        description: "",
-                        value: "",
-                        units: ["mm", "cm"],
-                        unit: "",
-                        otype: "number",
-                        required: false,
-                        choices: []
-                },
-                {
-                        name: "Sample Geometry",
-                        attribute: "sample_geometry",
-                        description: "",
-                        value: "",
-                        units: [],
-                        unit: "",
-                        otype: "selection",
-                        required: false,
-                        choices: [
-                            {name: "Rectangular", value: "rectangular"},
-                            {name: "Cylindrical", value: "cylindrical"}
-                        ]
-                }
+                createSelection("Force Type", [
+                    {name: "Screw", value: "screw"},
+                    {name: "Hydraulic", value: "hydraulic"}
+                ]),
+                createSelection("Control Mode", [
+                    {name: "Displacement", value: "displacement"},
+                    {name: "Force", value: "force"},
+                    {name: "Strain", value: "strain"}
+                ]),
+                createTemperature(),
+                createString("Test Rate"),
+                createNumber("Gage Length", ["mm", "cm"]),
+                createSelection("Sample Geometry", [
+                    {name: "Rectangular", value: "rectangular"},
+                    {name: "Cylindrical", value: "cylindrical"}
+                ])
             ]
         }
     ];
