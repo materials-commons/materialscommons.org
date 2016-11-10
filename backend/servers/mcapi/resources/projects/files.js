@@ -34,6 +34,33 @@ function* getVersions(next) {
     yield next;
 }
 
+function* download(next) {
+    if (yield check.fileInProject(this.params.file_id, this.params.project_id)) {
+        let rv = yield files.get(this.params.file_id);
+        if (rv.error) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = rv;
+        } else {
+            console.log(rv);
+            // this.body = {versions: rv.val};
+            //response.setContentType("application/csv");
+            // response.setHeader("Content-Disposition", "attachment; filename=file.csv");
+            //response.setContentLength(getCsvContent().getBytes().length);
+            //ServletOutputStream out = response.getOutputStream();
+            //out.write(getCsvContent());
+            //out.flush();
+            //out.close();
+            this.status = httpStatus.NOT_IMPLEMENTED;
+            this.body = {error: 'Unimplemented'};
+        }
+    } else {
+        this.status = httpStatus.BAD_REQUEST;
+        this.body = {error: 'Unknown file'};
+    }
+
+    yield next;
+}
+
 // put will update certain file fields. To see which fields can be updated look
 // at the files.put method.
 function* update(next) {
@@ -75,8 +102,10 @@ function createResource() {
     router.use('/:file_id', ra.validateFileInProject);
     router.get('/:file_id', get);
     router.get('/:file_id/versions', getVersions);
+    router.get('/:file_id/download', download);
     router.put('/:file_id', update);
     router.delete('/:file_id', deleteFile);
+
 
     return router;
 }
