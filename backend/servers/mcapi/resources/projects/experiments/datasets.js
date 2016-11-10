@@ -30,14 +30,18 @@ function* getDatasetForExperiment(next) {
 }
 
 function* createDatasetForExperiment(next) {
+    console.log("createDatasetForExperiment");
     let datasetArgs = yield parse(this);
+    console.log(datasetArgs);
     schema.prepare(schema.createDatasetSchema, datasetArgs);
     let errors = yield schema.validate(schema.createDatasetSchema, datasetArgs);
+    console.log(errors);
     if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
     } else {
         let rv = yield experimentDatasets.createDatasetForExperiment(this.params.experiment_id, this.reqctx.user.id, datasetArgs);
+        console.log(rv);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
             this.body = rv;
