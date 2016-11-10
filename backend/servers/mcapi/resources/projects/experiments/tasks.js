@@ -230,7 +230,7 @@ function createResource() {
     router.use('/:task_id', ra.validateTaskInExperiment);
 
     router.get('/:task_id', getExperimentTask);
-    router.post('/:task_id', createExperimentTask);
+    //router.post('/:task_id', createExperimentTask);
     router.put('/:task_id', updateExperimentTask);
     router.put('/:task_id/template', updateExperimentTaskTemplate);
     router.post('/:task_id/template/:template_id', ra.validateTemplateExists, addExperimentTaskTemplate);
