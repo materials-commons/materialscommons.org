@@ -1,4 +1,5 @@
 const directories = require('../../db/model/directories');
+const projects = require('../../db/model/projects');
 const files = require('../../db/model/files');
 const schema = require('../../schema');
 const parse = require('co-body');
@@ -131,13 +132,19 @@ function* remove(next) {
 
 function* uploadFileToProjectDirectory(next) {
     console.log("=========================================================================")
-    let directory = yield directories.get(this.params.project_id,this.params.directory_id);
+//    let directory = yield directories.get(this.params.project_id,this.params.directory_id);
+//    let project = yield projects.get(this.params.project_id);
 
-    console.log("directory: " , directory.id);
+    let projectID = this.params.project_id,
+        directoryID = this.params.directory_id;
+
+    console.log("directory: " , directoryID);
+    console.log("project: " , projectID);
 
     let upload = this.request.body.files.file;
+    let name = upload.name;
 
-    let oldFile = yield directories.fileInDirectoryByName(directory.id,upload.name);
+    let oldFile = yield directories.fileInDirectoryByName(directoryID,name);
     if (oldFile) console.log("old file: " + oldFile.id);
     else console.log("no old file");
 
@@ -157,21 +164,24 @@ function* uploadFileToProjectDirectory(next) {
     let file = yield files.create(fileArgs,this.reqctx.user.id);
 
     if (oldFile) {
-        file = files.pushVersion(file,oldFile);
+        console.log("Push oldFile");
+        file = yield files.pushVersion(file,oldFile);
     }
+
+    console.log(file);
 
     if (file.usesid) {
-        console.log("deleting upload file -> ",upload.path)
-        // this uses a file that is already in the data store
-        yield fileUtils.deleteFromUpload(upload.path);
+        yield fileUtils.moveToStore(upload.path,file.usesid);
     } else {
-        console.log("moving uploaded file to store -> ",upload.path,file.id);
-        yield fileUtils.moveToStore(upload.path,file);
+        yield fileUtils.moveToStore(upload.path,file.id);
     }
 
-    console.log("linking: ", directory.id,file.id);
-    let results = yield directories.addFileToDirectory(directory.id,file.id);
-    console.log("linked: ", results);
+    console.log("linking: ", directoryID,file.id);
+    let results = yield directories.addFileToDirectory(directoryID,file.id);
+    console.log("linked to directory: ", results);
+    console.log("linking: ", projectID,file.id);
+    results = yield projects.addFileToProject(projectID,file.id);
+    console.log("linked to project: ", results);
 
     this.body = file;
     console.log("=========================================================================")
