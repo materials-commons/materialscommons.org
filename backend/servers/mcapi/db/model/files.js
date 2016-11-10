@@ -75,7 +75,7 @@ function* create(file, owner) {
 function* pushVersion(newFile, oldFile) {
     yield r.table('datafiles').get(oldFile.id).update({current:false});
     yield r.table('datafiles').get(newFile.id).update({parent:oldFile.id, current:true});
-    return get(newFile.id);
+    return yield get(newFile.id);
 }
 
 // getList gets the details for the given file ids
@@ -281,6 +281,7 @@ function *deleteFile(fileID) {
     yield r.table('datafiles').get(fileID).delete();
     yield r.table('project2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
     yield r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
+    yield r.table('experiment2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
     return {val: f};
 }
 

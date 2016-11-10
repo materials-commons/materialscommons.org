@@ -259,9 +259,8 @@ function peerDirectories(dirID) {
 
 function* addFileToDirectory(dirID,fileID){
     console.log("add file to directory: ",dirID,fileID);
-    let results = yield r.table('datadir2datafile').insert({datadir_id:dirID,datafile_id:fileID});
-    console.log("results = ", results);
-    return results;
+    let link = {datadir_id:dirID,datafile_id:fileID};
+    return yield r.table('datadir2datafile').insert(link);
 }
 
 function* fileInDirectoryByName(dirId,filename) {
