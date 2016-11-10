@@ -1,5 +1,7 @@
 const Promise = require("bluebird");
 const fs = Promise.promisifyAll(require('fs'));
+var mkdirpAsync = Promise.promisify(require('mkdirp'));
+const path = require('path');
 
 function getFileStoreDir() {
     let base = process.env.MCDIR;
@@ -17,24 +19,27 @@ function getTmpUploadDir() {
     return getFileStoreDir() + "uploadTmp/";
 }
 
-function datafilePath(datafile) {
+function datafilePath(fileID) {
     let base = getFileStoreDir();
-    let file_id = datafile.id;
+    console.log(base);
+    let file_id = fileID;
     let part = file_id.split("-")[1];
     let partA = part.substring(0, 2);
     let partB = part.substring(2);
-    let path = base + partA + "/" + partB + "/" + file_id;
-    // path.join(baseLoadPath, '', file.name)
-    return path;
+    let results = path.join(base,partA);
+    results = path.join(results,partB);
+    results = path.join(results,file_id);
+    return results;
 }
 
-function deleteFromUpload(uploadPath) {
-    return fs.unlinkAsync(uploadPath);
-}
-
-function moveToStore (sourcePath,datafile) {
-    let destPath = datafilePath(datafile);
-    return fs.renameAsync(sourcePath, datafilePath(datafile));
+function* moveToStore (sourcePath,fileID) {
+    console.log("moveToStore",sourcePath,fileID)
+    let destPath = datafilePath(fileID);
+    console.log(destPath);
+    let destDir = path.dirname(destPath);
+    console.log(destDir);
+    yield mkdirpAsync(destDir);
+    yield fs.renameAsync(sourcePath, destPath);
 }
 
 function mediaTypeDescriptionsFromMime(mime) {
@@ -99,7 +104,6 @@ const mediaTypeDescriptions = {
 module.exports = {
     getFileStoreDir,
     getTmpUploadDir,
-    deleteFromUpload,
     moveToStore,
     datafilePath,
     mediaTypeDescriptionsFromMime,

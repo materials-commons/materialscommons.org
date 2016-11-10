@@ -144,12 +144,19 @@ function differenceByField(from, others, field) {
     });
 }
 
+function* addFileToProject(projectID,fileID){
+    console.log("add file to project: ",projectID,fileID);
+    let newLink = {project_id:projectID,datafile_id:fileID};
+    return yield r.table('project2datafile').insert(newLink);
+}
+
 module.exports = {
     all: all,
     forUser: forUser,
     get: function(id, index) {
         return getSingle(r, 'projects', id, index);
     },
+    addFileToProject,
     getProject: getProject,
     update: update
 };
