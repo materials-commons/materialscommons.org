@@ -180,6 +180,7 @@ function* createDirs(projectID, startingDir, dirSegments) {
                 createdDirs.push(dirEntry);
             } else {
                 dirEntry = newDirEntry;
+                createdDirs.push(dirEntry);
             }
         }
     }
