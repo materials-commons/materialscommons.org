@@ -5,6 +5,10 @@ const httpStatus = require('http-status');
 const ra = require('../resource-access');
 const Router = require('koa-router');
 
+// used by file sender - download()
+const fs = require('fs');
+const fileUtils = require('../../../lib/create-file-utils');
+
 // get retrieves a file.
 function* get(next) {
     this.body = yield files.get(this.params.file_id);
@@ -36,28 +40,35 @@ function* getVersions(next) {
 
 function* download(next) {
     if (yield check.fileInProject(this.params.file_id, this.params.project_id)) {
-        let rv = yield files.get(this.params.file_id);
-        if (rv.error) {
+        let file = yield files.get(this.params.file_id);
+        if (file.error) {
             this.status = httpStatus.BAD_REQUEST;
-            this.body = rv;
+            this.body = file;
         } else {
-            console.log(rv);
-            // this.body = {versions: rv.val};
-            //response.setContentType("application/csv");
-            // response.setHeader("Content-Disposition", "attachment; filename=file.csv");
-            //response.setContentLength(getCsvContent().getBytes().length);
-            //ServletOutputStream out = response.getOutputStream();
-            //out.write(getCsvContent());
-            //out.flush();
-            //out.close();
-            this.status = httpStatus.NOT_IMPLEMENTED;
-            this.body = {error: 'Unimplemented'};
+            let contentType = file.mediatype.mime;
+            let filename = file.name;
+            let id = file.id;
+            if (file.usesid != ""){
+                id = file.usesid;
+            }
+            let size = file.size;
+            this.set('ContentType',contentType);
+            this.set('Content-Disposition', 'attachment; filename=' + filename);
+            this.set('ContentLength',size);
+
+            let filepath = fileUtils.datafilePath(id);
+
+            if (fileUtils.datafilePathExists(id)) {
+                this.body = fs.createReadStream(filepath);
+            } else {
+                this.status = httpStatus.NOT_FOUND;
+                this.body = {error: 'File not found: ' + filename};
+            }
         }
     } else {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: 'Unknown file'};
     }
-
     yield next;
 }
 
