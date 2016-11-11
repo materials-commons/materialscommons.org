@@ -60,739 +60,651 @@ function createDate(name) {
     }
 }
 
+const UNITS_TEMPERATURE = ["K", "F", "C"];
 function createTemperature(name) {
-    return createNumber(name ? name : "Temperature", ["K", "F", "C"])
+    return createNumber(name ? name : "Temperature", UNITS_TEMPERATURE)
 }
 
+const UNITS_VOLTAGE = ["kV", "V"];
 function createVoltage(name) {
-    return createNumber(name ? name : "Voltage", ["kV", "V"]);
+    return createNumber(name ? name : "Voltage", UNITS_VOLTAGE);
 }
 
+const UNITS_CURRENT = ["A", "mA", "nA"];
 function createCurrent(name) {
-    return createNumber(name ? name : "Current", ["A", "mA", "nA"]);
+    return createNumber(name ? name : "Current", UNITS_CURRENT);
 }
 
-function Apt() {
-    this.name = "APT";
-    this.process_name = "APT";
-    this.process_type = "measurement";
-    this.description = "Atom Probe Tomography";
-    this.category = "APT";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createSelection("Mode", [
-                    {name: "FIM", value: "fim"},
-                    {name: "Voltage", value: "voltage"},
-                    {name: "Laser", value: "laser"}
-                ]),
-                createTemperature("Specimen Temperature"),
-                createNumber("Voltage Pulse Fraction", ["percentage"]),
-                createNumber("Laser Pulse Energy", ["pJ", "nJ"]),
-                createNumber("Laser Wavelength", ["nm"]),
-                createNumber("Pulse Frequency", ["kHz"]),
-                createSelection("Evaporation Control", "evaporation_control", [
-                    {name: "Constant Detector Rate", value: "constant_detector_rate"},
-                    {name: "Constant Evaporation Rate", value: "constant_evaporation_rate"},
-                    {name: "Constant Charge Rate Ratio", value: "constant_charge_rate_ratio"},
-                    {name: "Other", value: "other"}
-                ]),
-                createNumber("Evaporation Rate", ["Atom/Pulse"]),
-                createSelection("Imaging Gas", [
-                    {name: "He", value: "He"},
-                    {name: "Ar", value: "Ar"},
-                    {name: "Ne", value: "Ne"},
-                    {name: "Other", value: "other"},
-                    {name: "None", value: "none"}
-                ]),
-                createNumber("Pressure", ["atm", "Pa", "torr"])
-            ]
-        }
-    ];
+const UNITS_TIME = ["h", "m", "s"];
+function createTime(name) {
+    return createNumber(name ? name : "Time", UNITS_TIME);
 }
 
-function Sem() {
-    this.name = "SEM";
-    this.process_name = "SEM";
-    this.process_type = "measurement";
-    this.description = "Stem Electron Microscopy";
-    this.category = "SEM";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createVoltage(),
-                createCurrent(),
-                createNumber("Stage Tilt", ["degrees"]),
-                createNumber("Magnification", []),
-                createNumber("Specimen/Stage Bias", ["V"]),
-                createSelection("Stage", [
-                    {name: "Standard", value: "standard"},
-                    {name: "Cryo", value: "cryo"}
-                ]),
-                createSelection("Detector", [
-                    {name: "Secondary", value: "secondary"},
-                    {name: "Backscattered", value: "backscattered"},
-                    {name: "Other", value: "other"}
-                ]),
-                createNumber("Working Distance", ["mm"])
-            ]
-        }
-    ];
+const UNITS_STIME = ["s", "ms"];
+function createSmallTime(name) {
+    return createNumber(name ? name : "Time", UNITS_STIME);
 }
 
-function CreateSamples() {
-    this.name = "Create Samples";
-    this.process_name = "Create Samples";
-    this.process_type = "create";
-    this.description = "Create Sample process is used to create new samples.";
-    this.category = "create_sample";
-    this.does_transform = true;
-    this.measurements = [
-        {
-            name: "Composition",
-            attribute: "composition",
-            description: "",
-            value: [],
-            units: [],
-            unit: "at%",
-            otype: "composition",
-            required: false,
-            choices: []
-        }
-    ];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createString("Manufacturer"),
-                createString("Supplier"),
-                createDate("Manufacturing Date"),
-                createSelection("Production Method", [
-                    {name: "Cast", value: "cast"},
-                    {name: "Extruded", value: "extruded"},
-                    {name: "Rolled", value: "rolled"},
-                    {name: "Unknown", value: "unknown"},
-                    {name: "Other", value: "other"}
-                ])
-            ]
-        }
-    ]
+const UNITS_STRAIN = ["mm/mm", "percentage"];
+function createStrain(name) {
+    return createNumber(name ? name : "Strain", UNITS_STRAIN);
 }
 
-function Sectioning() {
-    this.name = "Sectioning";
-    this.process_name = "Sectioning";
-    this.process_type = "transform";
-    this.description = "Sectioning";
-    this.category = "create_sample";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createString("Notes")
-            ]
-        }
-    ];
+class TemplateBase {
+    constructor(name, processType, doesTransform, destructive) {
+        this.name = name;
+        this.process_name = name;
+        this.process_type = processType;
+        this.description = name;
+        this.category = "";
+        this.does_transform = doesTransform;
+        this.destructive = destructive;
+        this.measurements = [];
+        this.setup = [];
+    }
 }
 
-
-function AptDataAnalysis() {
-    this.name = "APT Data Analysis";
-    this.process_name = "APT Data Analysis";
-    this.process_type = "analysis";
-    this.description = "Atom Probe Tomography Data Analysis";
-    this.category = "APT";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "System Information",
-            attribute: "system_information",
-            properties: [
-                createString("Software"),
-                createString("Software URL"),
-                createString("Software Version"),
-                createString("How To Cite")
-            ]
-        }
-    ];
+class AptTemplate extends TemplateBase {
+    constructor() {
+        super("APT", "measurement", false, false);
+        this.description = "Atom Probe Tomography";
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createSelection("Mode", [
+                        {name: "FIM", value: "fim"},
+                        {name: "Voltage", value: "voltage"},
+                        {name: "Laser", value: "laser"}
+                    ]),
+                    createTemperature("Specimen Temperature"),
+                    createNumber("Voltage Pulse Fraction", ["percentage"]),
+                    createNumber("Laser Pulse Energy", ["pJ", "nJ"]),
+                    createNumber("Laser Wavelength", ["nm"]),
+                    createNumber("Pulse Frequency", ["kHz"]),
+                    createSelection("Evaporation Control", "evaporation_control", [
+                        {name: "Constant Detector Rate", value: "constant_detector_rate"},
+                        {name: "Constant Evaporation Rate", value: "constant_evaporation_rate"},
+                        {name: "Constant Charge Rate Ratio", value: "constant_charge_rate_ratio"},
+                        {name: "Other", value: "other"}
+                    ]),
+                    createNumber("Evaporation Rate", ["Atom/Pulse"]),
+                    createSelection("Imaging Gas", [
+                        {name: "He", value: "He"},
+                        {name: "Ar", value: "Ar"},
+                        {name: "Ne", value: "Ne"},
+                        {name: "Other", value: "other"},
+                        {name: "None", value: "none"}
+                    ]),
+                    createNumber("Pressure", ["atm", "Pa", "torr"])
+                ]
+            }
+        ];
+    }
 }
 
-function AptDataReconstruction() {
-    this.name = "APT Data Reconstruction";
-    this.process_name = "APT Data Reconstruction";
-    this.process_type = "analysis";
-    this.description = "Atom Probe Tomography Data Reconstruction";
-    this.category = "APT";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createSelection("Reconstruction Mode", [
-                    {name: "Voltage", value: "voltage"},
-                    {name: "Shank Angle", value: "shank_angle"},
-                    {name: "Tip Image", value: "tip_image"},
-                    {name: "Other", value: "other"}
-                ]),
-                createNumber("Field Factor", []),
-                createNumber("Image Compression Factor", []),
-                createNumber("Evaporatoin Field", ["V/nm"]),
-                createNumber("Detection Efficiency", ["percentage"]),
-                createNumber("Initial Radius", ["nm"]),
-                createNumber("Shank Angle", ["degrees", "rad"]),
-                createNumber("Cone To Sphere Ratio", [])
-            ]
-        }
-    ];
+class SemTemplate extends TemplateBase {
+    constructor() {
+        super("SEM", "measurement", false, false);
+        this.description = "Stem Electron Microscopy";
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createVoltage(),
+                    createCurrent(),
+                    createNumber("Stage Tilt", ["degrees"]),
+                    createNumber("Magnification", []),
+                    createNumber("Specimen/Stage Bias", ["V"]),
+                    createSelection("Stage", [
+                        {name: "Standard", value: "standard"},
+                        {name: "Cryo", value: "cryo"}
+                    ]),
+                    createSelection("Detector", [
+                        {name: "Secondary", value: "secondary"},
+                        {name: "Backscattered", value: "backscattered"},
+                        {name: "Other", value: "other"}
+                    ]),
+                    createNumber("Working Distance", ["mm"])
+                ]
+            }
+        ];
+    }
 }
 
-function BroadIonBeamMilling() {
-    this.name = "Broad Ion Beam Milling";
-    this.process_name = "Broad Ion Beam Milling";
-    this.process_type = "measurement";
-    this.description = "Broad Ion Beam Milling";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createSelection("Ion Type", [
-                    {name: "Ga", value: "Ga"},
-                    {name: "Ne", value: "Ne"},
-                    {name: "Ar", value: "Ar"},
-                    {name: "Other", value: "other"}
-                ]),
-                createNumber("Energy", ["V"]),
-                createNumber("Time", ["s"])
-            ]
-        }
-    ];
+class CreateSamplesTemplate extends TemplateBase {
+    constructor() {
+        super("Create Samples", "create", true, false);
+        this.description = "Create Sample process is used to create new samples";
+        this.measurements = [
+            {
+                name: "Composition",
+                attribute: "composition",
+                description: "",
+                value: [],
+                units: [],
+                unit: "at%",
+                otype: "composition",
+                required: false,
+                choices: []
+            }
+        ];
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createString("Manufacturer"),
+                    createString("Supplier"),
+                    createDate("Manufacturing Date"),
+                    createSelection("Production Method", [
+                        {name: "Cast", value: "cast"},
+                        {name: "Extruded", value: "extruded"},
+                        {name: "Rolled", value: "rolled"},
+                        {name: "Unknown", value: "unknown"},
+                        {name: "Other", value: "other"}
+                    ])
+                ]
+            }
+        ];
+    }
 }
 
-function Cogging() {
-    this.name = "Cogging";
-    this.process_name = "Cogging";
-    this.process_type = "transform";
-    this.description = "Cogging";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createTemperature(),
-                createNumber("Strain", ["mm/mm", "percentage"])
-            ]
-        }
-    ];
+class SectioningTemplate extends TemplateBase {
+    constructor() {
+        super("Sectioning", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createString("Notes")
+                ]
+            }
+        ];
+    }
 }
 
-function Compression() {
-    this.name = "Compression";
-    this.process_name = "Compression";
-    this.process_type = "transform";
-    this.description = "Compression";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createTemperature(),
-                createNumber("True Strain", ["mm/mm", "percentage"]),
-                createNumber("Engineering Strain", ["mm/mm", "percentage"]),
-                createNumber("Strain Rate", ["1/s", "mm/min"]),
-                createNumber("Target Total Strain", ["mm/mm", "percentage"]),
-                createNumber("Load Rate", [])
-            ]
-        }
-    ];
+class AptDataAnalysisTemplate extends TemplateBase {
+    constructor() {
+        super("APT Data Analysis", "analysis", false, false);
+        this.description = "Atom Probe Tomography Data Analysis";
+        this.setup = [
+            {
+                name: "System Information",
+                attribute: "system_information",
+                properties: [
+                    createString("Software"),
+                    createString("Software URL"),
+                    createString("Software Version"),
+                    createString("How To Cite")
+                ]
+            }
+        ];
+    }
 }
 
-function Computation() {
-    this.name = "Computation";
-    this.process_name = "Computation";
-    this.process_type = "analysis";
-    this.description = "Computation";
-    this.category = "OTHER";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Job Settings",
-            attribute: "job_settings",
-            properties: [
-                createString("Submit Script"),
-                createNumber("Number Of Processors", []),
-                createNumber("Memory Per Processor", ["b", "kb", "mb", "gb"]),
-                createNumber("Walltime", ["s"])
-            ]
-        }
-    ];
+class AptDataReconstructionTemplate extends TemplateBase {
+    constructor() {
+        super("APT Data Reconstruction", "analysis", false, false);
+        this.description = "Atom Probe Tomography Data Reconstruction";
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createSelection("Reconstruction Mode", [
+                        {name: "Voltage", value: "voltage"},
+                        {name: "Shank Angle", value: "shank_angle"},
+                        {name: "Tip Image", value: "tip_image"},
+                        {name: "Other", value: "other"}
+                    ]),
+                    createNumber("Field Factor", []),
+                    createNumber("Image Compression Factor", []),
+                    createNumber("Evaporatoin Field", ["V/nm"]),
+                    createNumber("Detection Efficiency", ["percentage"]),
+                    createNumber("Initial Radius", ["nm"]),
+                    createNumber("Shank Angle", ["degrees", "rad"]),
+                    createNumber("Cone To Sphere Ratio", [])
+                ]
+            }
+        ];
+    }
 }
 
-function Creep() {
-    this.name = "Creep";
-    this.process_name = "Creep";
-    this.process_type = "transform";
-    this.description = "Creep";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createTemperature(),
-                createString("Environment"),
-                createNumber("Stress", ["MPa"])
-            ]
-        }
-    ];
+class BroadIonBeamMillingTemplate extends TemplateBase {
+    constructor() {
+        super("Broad Ion Beam Milling", "measurement", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createSelection("Ion Type", [
+                        {name: "Ga", value: "Ga"},
+                        {name: "Ne", value: "Ne"},
+                        {name: "Ar", value: "Ar"},
+                        {name: "Other", value: "other"}
+                    ]),
+                    createNumber("Energy", ["V"]),
+                    createTime()
+                ]
+            }
+        ];
+    }
 }
 
-function DicPatterning() {
-    this.name = "DIC Patterning";
-    this.process_name = "DIC Patterning";
-    this.process_type = "measurement";
-    this.description = "DIC Patterning";
-    this.category = "DIC";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createSelection("Scale", [
-                    {name: "Large-Scale", value: "large_scale"},
-                    {name: "Small-Scale", value: "small_scale"}
-                ]),
-                createNumber("Field Of View", ["microns"]),
-                createNumber("Particle Size", ["microns", "nm"]),
-                createSelection("Particle Type", [
-                    {name: "Alumina", value: "alumina"},
-                    {name: "Gold", value: "gold"}
-                ]),
-                createSelection("Silane Type", [
-                    {name: "APTMS", value: "aptms"},
-                    {name: "MPTMS", value: "mptms"},
-                    {name: "N/A", value: "n/a"}
-                ])
-            ]
-        }
-    ];
+class CoggingTemplate extends TemplateBase {
+    constructor() {
+        super("Cogging", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createTemperature(),
+                    createStrain()
+                ]
+            }
+        ];
+    }
 }
 
-function DicStatisticalModelling() {
-    this.name = "DIC Statistical Modelling";
-    this.process_name = "DIC Statistical Modelling";
-    this.process_type = "analysis";
-    this.description = "DIC Statistical Modelling";
-    this.category = "DIC";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createNumber("Number Of Parameters", []),
-                createNumber("Number Of Observations", []),
-                createSelection("Model Type", [
-                    {name: "Linear", value: "linear"},
-                    {name: "Interactions", value: "interactions"},
-                    {name: "PureQuadratic", value: "purequadratic"},
-                    {name: "Quadratic", value: "quadratic"}
-                ])
-            ]
-        }
-    ];
+class CompressionTemplate extends TemplateBase {
+    constructor() {
+        super("Compression", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createTemperature(),
+                    createStrain("True Strain"),
+                    createStrain("Engineering Strain"),
+                    createNumber("Strain Rate", ["1/s", "mm/min"]),
+                    createStrain("Target Total Strain"),
+                    createNumber("Load Rate", [])
+                ]
+            }
+        ];
+    }
 }
 
-function Electropolishing() {
-    this.name = "Electropolishing";
-    this.process_name = "Electropolishing";
-    this.process_type = "transform";
-    this.description = "Electropolishing";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createString("Solution"),
-                createVoltage(),
-                createCurrent(),
-                createTemperature()
-            ]
-        }
-    ];
+class ComputationTemplate extends TemplateBase {
+    constructor() {
+        super("Computation", "analysis", false, false);
+        this.setup = [
+            {
+                name: "Job Settings",
+                attribute: "job_settings",
+                properties: [
+                    createString("Submit Script"),
+                    createNumber("Number Of Processors", []),
+                    createNumber("Memory Per Processor", ["b", "kb", "mb", "gb"]),
+                    createTime("Walltime")
+                ]
+            }
+        ];
+    }
 }
 
-function Etching() {
-    this.name = "Etching";
-    this.process_name = "Etching";
-    this.process_type = "transform";
-    this.description = "Etching";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createString("Solution"),
-                createVoltage(),
-                createNumber("Time", ["hrs", "mins", "s"]),
-                createTemperature()
-            ]
-        }
-    ];
+class CreepTemplate extends TemplateBase {
+    constructor() {
+        super("Creep", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createTemperature(),
+                    createString("Environment"),
+                    createNumber("Stress", ["MPa"])
+                ]
+            }
+        ];
+    }
 }
 
-function EbsdSemDataCollection() {
-    this.name = "EBSD SEM Data Collection";
-    this.process_name = "EBSD SEM Data Collection";
-    this.process_type = "measurement";
-    this.description = "EBSD SEM Data Collection";
-    this.category = "SEM";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createVoltage(),
-                createCurrent(),
-                createNumber("Sample Tilt", ["degress"]),
-                createNumber("Magnification", []),
-                createNumber("Acquisition Time", ["s", "ms"]),
-                createNumber("Scan Size", ["microns"]),
-                createNumber("Step Size", ["microns"]),
-                createNumber("Working Distance", ["mm"])
-            ]
-        }
-    ];
+class DicPatterningTemplate extends TemplateBase {
+    constructor() {
+        super("DIC Patterning", "measurement", false, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createSelection("Scale", [
+                        {name: "Large-Scale", value: "large_scale"},
+                        {name: "Small-Scale", value: "small_scale"}
+                    ]),
+                    createNumber("Field Of View", ["microns"]),
+                    createNumber("Particle Size", ["microns", "nm"]),
+                    createSelection("Particle Type", [
+                        {name: "Alumina", value: "alumina"},
+                        {name: "Gold", value: "gold"}
+                    ]),
+                    createSelection("Silane Type", [
+                        {name: "APTMS", value: "aptms"},
+                        {name: "MPTMS", value: "mptms"},
+                        {name: "N/A", value: "n/a"}
+                    ])
+                ]
+            }
+        ];
+    }
 }
 
-function EpmaDataCollection() {
-    this.name = "EPMA Data Collection";
-    this.process_name = "EPMA Data Collection";
-    this.process_type = "measurement";
-    this.description = "EPMA Data Collection";
-    this.category = "EPMA";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createVoltage(),
-                createCurrent("Beam Current"),
-                createNumber("Beam Size", ["microns"]),
-                createSelection("Scan Type", [
-                    {name: "Line", value: "line"},
-                    {name: "Grid", value: "grid"},
-                    {name: "Point", value: "point"}
-                ]),
-                createNumber("Step Size", ["microns"]),
-                createString("Grid Dimensions"),
-                createString("Location")
-            ]
-        }
-    ];
+class DicStatisticalModellingTemplate extends TemplateBase {
+    constructor() {
+        super("DIC Statistical Modelling", "analysis", false, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createNumber("Number Of Parameters", []),
+                    createNumber("Number Of Observations", []),
+                    createSelection("Model Type", [
+                        {name: "Linear", value: "linear"},
+                        {name: "Interactions", value: "interactions"},
+                        {name: "PureQuadratic", value: "purequadratic"},
+                        {name: "Quadratic", value: "quadratic"}
+                    ])
+                ]
+            }
+        ];
+    }
 }
 
-function LowCycleFatigue() {
-    this.name = "Low Cycle Fatigue";
-    this.process_name = "Low Cycle Fatigue";
-    this.process_type = "transform";
-    this.description = "Low Cycle Fatigue";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createSelection("Mode", [
-                    {name: "Total strain control", value: "total_strain_control"},
-                    {name: "Plastic strain control", value: "plastic_strain_control"},
-                    {name: "Stress control", value: "stress_control"},
-                    {name: "Displacement control", value: "displacement_control"}
-                ]),
-                createTemperature(),
-                createNumber("Frequency"),
-                createSelection("Wave Form", [
-                    {name: "Continuous", value: "continuous"},
-                    {name: "Interrupted( with hold times)", value: "interrupted"}
-                ]),
-                createSelection("Wave Form Shape", [
-                    {name: "Sinusoidal", value: "sinusoidal"},
-                    {name: "Rectangular", value: "rectangular"},
-                    {name: "Triangular", value: "triangular"}
-                ]),
-                createSelection("Amplitude", [
-                    {name: "Constant", value: "constant"},
-                    {name: "Variable", value: "variable"}
-                ]),
-                createNumber("Load Ratio", []),
-                createString("Manufacturer"),
-                createNumber("Strain Limits", ["percentage"])
-            ]
-        }
-    ];
+class ElectropolishingTemplate extends TemplateBase {
+    constructor() {
+        super("Electropolishing", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createString("Solution"),
+                    createVoltage(),
+                    createCurrent(),
+                    createTemperature()
+                ]
+            }
+        ];
+    }
 }
 
-function UltrasonicFatigue() {
-    this.name = "Ultrasonic Fatigue";
-    this.process_name = "Ultrasonic Fatigue";
-    this.process_type = "transform";
-    this.description = "Ultrasonic Fatigue";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createNumber("Amplifiers Count", []),
-                createNumber("Power Control", []),
-                createNumber("Resonating Frequency", ["kHz"]),
-                createNumber("Calibration Constant", []),
-                createNumber("Stress Ratio", []),
-                createNumber("Max Stress", ["MPa"]),
-                createTemperature("Test Temperature"),
-                createString("Test Environment")
-            ]
-        }
-    ];
+class EtchingTemplate extends TemplateBase {
+    constructor() {
+        super("Etching", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createString("Solution"),
+                    createVoltage(),
+                    createTime(),
+                    createTemperature()
+                ]
+            }
+        ];
+    }
 }
 
-function TEM() {
-    this.name = "TEM";
-    this.process_name = "TEM";
-    this.process_type = "measurement";
-    this.description = "Transmission Electron Microscope";
-    this.category = "OTHER";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createVoltage(),
-                createSelection("Mode", [
-                    {name: "Diffraction", value: "diffraction"},
-                    {name: "Diffraction Imaging", value: "diffraction_imaging"},
-                    {name: "High Resolution Imaging", value: "high_resolution_imaging"},
-                    {name: "Scanning z-contrast", value: "scanning_z_contrast"}
-                ]),
-                createSelection("Conventional Scanning", [
-                    {name: "Yes", value: "yes"},
-                    {name: "No", value: "no"}
-                ]),
-                createSelection("Scanning", [
-                    {name: "Bright Field", value: "bright_field"},
-                    {name: "High Angle Angular Dark Field", value: "high_angle_angular_dark_field"},
-                    {name: "Tilt Series", value: "tilt_series"}
-                ]),
-                createSelection("Stage", [
-                    {name: "Standard", value: "standard"},
-                    {name: "Cryo", value: "cryo"},
-                    {name: "Heating", value: "heating"},
-                    {name: "Other", value: "other"}
-                ]),
-                createString("Apparatus"),
-                createNumber("Spot Size", []),
-                createNumber("Camera Length", ["cm", "mm", "m"])
-            ]
-        }
-    ];
+class EbsdSemDataCollectionTemplate extends TemplateBase {
+    constructor() {
+        super("EBSD SEM Data Collection", "measurement", false, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createVoltage(),
+                    createCurrent(),
+                    createNumber("Sample Tilt", ["degress"]),
+                    createNumber("Magnification", []),
+                    createSmallTime("Acquisition Time"),
+                    createNumber("Scan Size", ["microns"]),
+                    createNumber("Step Size", ["microns"]),
+                    createNumber("Working Distance", ["mm"])
+                ]
+            }
+        ];
+    }
 }
 
-function HeatTreatment() {
-    this.name = "Heat Treatment";
-    this.process_name = "Heat Treatment";
-    this.process_type = "transform";
-    this.description = "HeatTreatment";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createTemperature(),
-                createNumber("Time", ["seconds", "minutes", "hours"]),
-                createSelection("Cooling Type", [
-                    {name: "Air Quench", value: "air_quench"},
-                    {name: "Water Quench", value: "water_quench"},
-                    {name: "Furnace Cooled", value: "furnace_cooled"},
-                    {name: "Air Cooled", value: "air_cooled"}
-                ]),
-                createNumber("Cooling Rate", ["C/s", "K/s"])
-            ]
-        }
-    ];
+class EpmaDataCollectionTemplate extends TemplateBase {
+    constructor() {
+        super("EPMA Data Collection", "measurement", false, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createVoltage(),
+                    createCurrent("Beam Current"),
+                    createNumber("Beam Size", ["microns"]),
+                    createSelection("Scan Type", [
+                        {name: "Line", value: "line"},
+                        {name: "Grid", value: "grid"},
+                        {name: "Point", value: "point"}
+                    ]),
+                    createNumber("Step Size", ["microns"]),
+                    createString("Grid Dimensions"),
+                    createString("Location")
+                ]
+            }
+        ];
+    }
 }
 
-function AsMeasured() {
-    this.name = "As Measured";
-    this.process_name = "As Measured";
-    this.process_type = "measurement";
-    this.description = "As Measured process allows you to add in all your As Received measurements";
-    this.category = "OTHER";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: []
-        }
-    ];
+class LowCycleFatigueTemplate extends TemplateBase {
+    constructor() {
+        super("Low Cycle Fatigue", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createSelection("Mode", [
+                        {name: "Total strain control", value: "total_strain_control"},
+                        {name: "Plastic strain control", value: "plastic_strain_control"},
+                        {name: "Stress control", value: "stress_control"},
+                        {name: "Displacement control", value: "displacement_control"}
+                    ]),
+                    createTemperature(),
+                    createNumber("Frequency"),
+                    createSelection("Wave Form", [
+                        {name: "Continuous", value: "continuous"},
+                        {name: "Interrupted( with hold times)", value: "interrupted"}
+                    ]),
+                    createSelection("Wave Form Shape", [
+                        {name: "Sinusoidal", value: "sinusoidal"},
+                        {name: "Rectangular", value: "rectangular"},
+                        {name: "Triangular", value: "triangular"}
+                    ]),
+                    createSelection("Amplitude", [
+                        {name: "Constant", value: "constant"},
+                        {name: "Variable", value: "variable"}
+                    ]),
+                    createNumber("Load Ratio", []),
+                    createString("Manufacturer"),
+                    createStrain("Strain Limits")
+                ]
+            }
+        ];
+    }
 }
 
-function Hardness() {
-    this.name = "Hardness";
-    this.process_name = "Hardness";
-    this.process_type = "measurement";
-    this.description = "Hardness";
-    this.category = "OTHER";
-    this.does_transform = false;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createSelection("Type", [
-                    {name: "Vickers", value: "vickers"},
-                    {name: "Rockwell A", value: "rockwell_a"},
-                    {name: "Rockwell B", value: "rockwell_b"},
-                    {name: "Rockwell C", value: "rockwell_c"}
-                ]),
-                createNumber("Load", ["ibf", "N"]),
-                createNumber("Dwell Time", ["seconds", "minutes", "hours"])
-            ]
-        }
-    ];
+class UltrasonicFatigueTemplate extends TemplateBase {
+    constructor() {
+        super("Ultrasonic Fatigue", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createNumber("Amplifiers Count", []),
+                    createNumber("Power Control", []),
+                    createNumber("Resonating Frequency", ["kHz"]),
+                    createNumber("Calibration Constant", []),
+                    createNumber("Stress Ratio", []),
+                    createNumber("Max Stress", ["MPa"]),
+                    createTemperature("Test Temperature"),
+                    createString("Test Environment")
+                ]
+            }
+        ];
+    }
 }
 
-function XRD() {
-    this.name = "XRD";
-    this.process_name = "XRD";
-    this.process_type = "transform";
-    this.description = "XRD";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createString("Type"),
-                createNumber("Start Angle", ["degrees"]),
-                createNumber("End Angle", ["degrees"]),
-                createNumber("Rate", ["degrees/minute"]),
-                createNumber("Step Size", ["degrees"])
-            ]
-        }
-    ];
+class TemTemplate extends TemplateBase {
+    constructor() {
+        super("TEM", "measurement", false, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createVoltage(),
+                    createSelection("Mode", [
+                        {name: "Diffraction", value: "diffraction"},
+                        {name: "Diffraction Imaging", value: "diffraction_imaging"},
+                        {name: "High Resolution Imaging", value: "high_resolution_imaging"},
+                        {name: "Scanning z-contrast", value: "scanning_z_contrast"}
+                    ]),
+                    createSelection("Conventional Scanning", [
+                        {name: "Yes", value: "yes"},
+                        {name: "No", value: "no"}
+                    ]),
+                    createSelection("Scanning", [
+                        {name: "Bright Field", value: "bright_field"},
+                        {name: "High Angle Angular Dark Field", value: "high_angle_angular_dark_field"},
+                        {name: "Tilt Series", value: "tilt_series"}
+                    ]),
+                    createSelection("Stage", [
+                        {name: "Standard", value: "standard"},
+                        {name: "Cryo", value: "cryo"},
+                        {name: "Heating", value: "heating"},
+                        {name: "Other", value: "other"}
+                    ]),
+                    createString("Apparatus"),
+                    createNumber("Spot Size", []),
+                    createNumber("Camera Length", ["cm", "mm", "m"])
+                ]
+            }
+        ];
+    }
 }
 
-function Tension() {
-    this.name = "Tension";
-    this.process_name = "Tension";
-    this.process_type = "transform";
-    this.description = "Tension";
-    this.category = "OTHER";
-    this.does_transform = true;
-    this.measurements = [];
-    this.destructive = false;
-    this.setup = [
-        {
-            name: "Instrument",
-            attribute: "instrument",
-            properties: [
-                createSelection("Force Type", [
-                    {name: "Screw", value: "screw"},
-                    {name: "Hydraulic", value: "hydraulic"}
-                ]),
-                createSelection("Control Mode", [
-                    {name: "Displacement", value: "displacement"},
-                    {name: "Force", value: "force"},
-                    {name: "Strain", value: "strain"}
-                ]),
-                createTemperature(),
-                createString("Test Rate"),
-                createNumber("Gage Length", ["mm", "cm"]),
-                createSelection("Sample Geometry", [
-                    {name: "Rectangular", value: "rectangular"},
-                    {name: "Cylindrical", value: "cylindrical"}
-                ])
-            ]
-        }
-    ];
+class HeatTreatmentTemplate extends TemplateBase {
+    constructor() {
+        super("Heat Treatment", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createTemperature(),
+                    createTime(),
+                    createSelection("Cooling Type", [
+                        {name: "Air Quench", value: "air_quench"},
+                        {name: "Water Quench", value: "water_quench"},
+                        {name: "Furnace Cooled", value: "furnace_cooled"},
+                        {name: "Air Cooled", value: "air_cooled"}
+                    ]),
+                    createNumber("Cooling Rate", ["C/s", "K/s"])
+                ]
+            }
+        ];
+    }
+}
+
+class AsMeasuredTemplate extends TemplateBase {
+    constructor() {
+        super("As Measured", "measurement", false, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: []
+            }
+        ];
+    }
+}
+
+class HardnessTemplate extends TemplateBase {
+    constructor() {
+        super("Hardness", "measurement", false, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createSelection("Type", [
+                        {name: "Vickers", value: "vickers"},
+                        {name: "Rockwell A", value: "rockwell_a"},
+                        {name: "Rockwell B", value: "rockwell_b"},
+                        {name: "Rockwell C", value: "rockwell_c"}
+                    ]),
+                    createNumber("Load", ["ibf", "N"]),
+                    createTime("Dwell Time")
+                ]
+            }
+        ];
+    }
+}
+
+class XrdTemplate extends TemplateBase {
+    constructor() {
+        super("XRD", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createString("Type"),
+                    createNumber("Start Angle", ["degrees"]),
+                    createNumber("End Angle", ["degrees"]),
+                    createNumber("Rate", ["degrees/minute"]),
+                    createNumber("Step Size", ["degrees"])
+                ]
+            }
+        ];
+    }
+}
+
+class TensionTemplate extends TemplateBase {
+    constructor() {
+        super("Tension", "transform", true, false);
+        this.setup = [
+            {
+                name: "Instrument",
+                attribute: "instrument",
+                properties: [
+                    createSelection("Force Type", [
+                        {name: "Screw", value: "screw"},
+                        {name: "Hydraulic", value: "hydraulic"}
+                    ]),
+                    createSelection("Control Mode", [
+                        {name: "Displacement", value: "displacement"},
+                        {name: "Force", value: "force"},
+                        {name: "Strain", value: "strain"}
+                    ]),
+                    createTemperature(),
+                    createString("Test Rate"),
+                    createNumber("Gage Length", ["mm", "cm"]),
+                    createSelection("Sample Geometry", [
+                        {name: "Rectangular", value: "rectangular"},
+                        {name: "Cylindrical", value: "cylindrical"}
+                    ])
+                ]
+            }
+        ];
+    }
 }
 
 var ropts = {
@@ -806,31 +718,31 @@ var bluebird = require('bluebird');
 var assert = require('assert');
 
 var globalTemplates = [
-    Apt,
-    Sem,
-    CreateSamples,
-    Sectioning,
-    AptDataAnalysis,
-    AptDataReconstruction,
-    BroadIonBeamMilling,
-    Cogging,
-    Compression,
-    Computation,
-    Creep,
-    DicPatterning,
-    DicStatisticalModelling,
-    Electropolishing,
-    Etching,
-    EbsdSemDataCollection,
-    EpmaDataCollection,
-    LowCycleFatigue,
-    UltrasonicFatigue,
-    TEM,
-    HeatTreatment,
-    AsMeasured,
-    Hardness,
-    XRD,
-    Tension
+    AptTemplate,
+    SemTemplate,
+    CreateSamplesTemplate,
+    SectioningTemplate,
+    AptDataAnalysisTemplate,
+    AptDataReconstructionTemplate,
+    BroadIonBeamMillingTemplate,
+    CoggingTemplate,
+    CompressionTemplate,
+    ComputationTemplate,
+    CreepTemplate,
+    DicPatterningTemplate,
+    DicStatisticalModellingTemplate,
+    ElectropolishingTemplate,
+    EtchingTemplate,
+    EbsdSemDataCollectionTemplate,
+    EpmaDataCollectionTemplate,
+    LowCycleFatigueTemplate,
+    UltrasonicFatigueTemplate,
+    TemTemplate,
+    HeatTreatmentTemplate,
+    AsMeasuredTemplate,
+    HardnessTemplate,
+    XrdTemplate,
+    TensionTemplate
 ];
 
 console.log("Inserting templates...");
@@ -855,4 +767,3 @@ for (var i = 0; i < globalTemplates.length; i++) {
         }
     })(o);
 }
-
