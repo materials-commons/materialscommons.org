@@ -145,8 +145,7 @@ function differenceByField(from, others, field) {
 }
 
 function* addFileToProject(projectID,fileID){
-    console.log("add file to project: ",projectID,fileID);
-    let newLink = {project_id:projectID,datafile_id:fileID};
+    let newLink = {project_id:projectID, datafile_id:fileID};
     return yield r.table('project2datafile').insert(newLink);
 }
 
