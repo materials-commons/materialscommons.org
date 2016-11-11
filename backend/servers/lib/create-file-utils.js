@@ -21,7 +21,6 @@ function getTmpUploadDir() {
 
 function datafilePath(fileID) {
     let base = getFileStoreDir();
-    console.log(base);
     let file_id = fileID;
     let part = file_id.split("-")[1];
     let partA = part.substring(0, 2);
@@ -32,12 +31,15 @@ function datafilePath(fileID) {
     return results;
 }
 
+function* datafilePathExists(fileId) {
+    let path = datafilePath(fileID);
+    let stat = yield fs.stat(path);
+    return stat.isFile();
+}
+
 function* moveToStore (sourcePath,fileID) {
-    console.log("moveToStore",sourcePath,fileID)
     let destPath = datafilePath(fileID);
-    console.log(destPath);
     let destDir = path.dirname(destPath);
-    console.log(destDir);
     yield mkdirpAsync(destDir);
     yield fs.renameAsync(sourcePath, destPath);
 }
@@ -106,5 +108,6 @@ module.exports = {
     getTmpUploadDir,
     moveToStore,
     datafilePath,
+    datafilePathExists,
     mediaTypeDescriptionsFromMime,
 };

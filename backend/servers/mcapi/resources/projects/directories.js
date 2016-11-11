@@ -131,25 +131,15 @@ function* remove(next) {
 }
 
 function* uploadFileToProjectDirectory(next) {
-    console.log("=========================================================================")
-//    let directory = yield directories.get(this.params.project_id,this.params.directory_id);
-//    let project = yield projects.get(this.params.project_id);
-
     let projectID = this.params.project_id,
         directoryID = this.params.directory_id;
-
-    console.log("directory: " , directoryID);
-    console.log("project: " , projectID);
 
     let upload = this.request.body.files.file;
     let name = upload.name;
 
     let oldFile = yield directories.fileInDirectoryByName(directoryID,name);
-    if (oldFile) console.log("old file: " + oldFile.id);
-    else console.log("no old file");
 
     if (oldFile && (oldFile.checksum == upload.checksum)) {
-        console.log("checksums match");
         this.body = oldFile;
         yield next;
     }
@@ -164,11 +154,8 @@ function* uploadFileToProjectDirectory(next) {
     let file = yield files.create(fileArgs,this.reqctx.user.id);
 
     if (oldFile) {
-        console.log("Push oldFile");
         file = yield files.pushVersion(file,oldFile);
     }
-
-    console.log(file);
 
     if (file.usesid) {
         yield fileUtils.moveToStore(upload.path,file.usesid);
@@ -176,15 +163,10 @@ function* uploadFileToProjectDirectory(next) {
         yield fileUtils.moveToStore(upload.path,file.id);
     }
 
-    console.log("linking: ", directoryID,file.id);
     let results = yield directories.addFileToDirectory(directoryID,file.id);
-    console.log("linked to directory: ", results);
-    console.log("linking: ", projectID,file.id);
     results = yield projects.addFileToProject(projectID,file.id);
-    console.log("linked to project: ", results);
 
     this.body = file;
-    console.log("=========================================================================")
     yield next;
 }
 
