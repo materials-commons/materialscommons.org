@@ -45,14 +45,10 @@ function* get(file_id) {
 
 // create file
 function* create(file, owner) {
-    console.log("create = ", file);
-
     let usesid = "";
     let checksumHit = yield r.table('datafiles')
         .getAll(file.checksum,{index:'checksum'})
         .filter({'usesid':''});
-
-    console.log("checksum hit = ", checksumHit);
 
     if (checksumHit && (checksumHit.length > 0)) {
         usesid = checksumHit[0].id;
@@ -66,8 +62,6 @@ function* create(file, owner) {
     f.usesid = usesid;
 
     let newFile = yield db.insert('datafiles', f);
-
-    console.log("new file = ",newFile);
 
     return yield get(newFile.id);
 }
