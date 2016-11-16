@@ -53,11 +53,12 @@ class MCExperimentDatasetsComponentController {
 
 class NewExperimentDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog, datasetService, $stateParams) {
+    constructor($mdDialog, datasetService, toast, $stateParams) {
         this.$mdDialog = $mdDialog;
         this.datasetService = datasetService;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
+        this.toast = toast;
         this.title = "";
         this.description = "";
     }

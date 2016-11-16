@@ -386,11 +386,11 @@ function* unpublishDataset(next) {
 function createResource() {
     const router = new Router();
     router.get('/', getDatasetsForExperiment);
+    router.post('/', createDatasetForExperiment);
 
     router.use('/:dataset_id', ra.validateDatasetInExperiment);
 
     router.get('/:dataset_id', getDatasetForExperiment);
-    router.post('/datasets', createDatasetForExperiment);
     router.put('/:dataset_id', updateDatasetForExperiment);
     router.put('/:dataset_id/publish', publishDataset);
     router.put('/:dataset_id/unpublish', unpublishDataset);
