@@ -15,7 +15,8 @@ function* getProject(projectId) {
                     processes: r.table('process2sample').getAll(sample('sample_id'), {index: 'sample_id'})
                         .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
                 }
-            }).coerceTo('array')
+            }).coerceTo('array'),
+            users: r.table('access').getAll(projectId, {index: 'project_id'}).coerceTo('array')
         }
     });
     return {val: p};
