@@ -3,8 +3,19 @@ angular.module('materialscommons').component('mcProjectSearch', {
     controller: MCProjectSearchComponentController
 });
 
+class ShowSampleDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.cancel();
+    }
+}
+
 /*@ngInject*/
-function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state, isImage) {
+function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state, isImage, $mdDialog) {
     var ctrl = this;
     var projectID = $stateParams.project_id;
     ctrl.isImage = isImage;
@@ -12,6 +23,7 @@ function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state,
     ctrl.gotoFilesPage = gotoFilesPage;
     ctrl.openFilePopup = openFilePopup;
     ctrl.images = images;
+    ctrl.showSample = showSample;
 
     init();
 
@@ -20,6 +32,7 @@ function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state,
     function init() {
         mcapi('/search/project/%/files', projectID)
             .success(function(results) {
+                console.log('search results', results);
                 ctrl.results = results;
             })
             .post({query_string: $stateParams.query});
@@ -53,5 +66,17 @@ function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state,
             }
         });
         return images;
+    }
+
+    function showSample(sample) {
+        $mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-sample-dialog.html',
+            controllerAs: '$ctrl',
+            controller: ShowSampleDialogController,
+            bindToController: true,
+            locals: {
+                sample: sample
+            }
+        });
     }
 }
