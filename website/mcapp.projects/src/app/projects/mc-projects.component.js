@@ -17,7 +17,7 @@ function MCProjectsComponentController(projectsService, $state, $mdDialog, share
     sharedProjectsList.clearSharedProjects();
     sharedProjectsList.setMaxProjects(ctrl.maxSharedProjects);
 
-    projectsService.getAllProjects2().then(function(projects) {
+    projectsService.getAllProjects().then(function(projects) {
         ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
         ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
     });
@@ -29,7 +29,7 @@ function MCProjectsComponentController(projectsService, $state, $mdDialog, share
             controllerAs: '$ctrl',
             bindToController: true
         }).then(
-            () => projectsService.getAllProjects2().then(
+            () => projectsService.getAllProjects().then(
                 (projects) => {
                     ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
                     ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
