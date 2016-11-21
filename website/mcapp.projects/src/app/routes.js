@@ -71,7 +71,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 _project: ["$stateParams", "projectsService", "project",
                     // Inject projects so that it resolves before looking up the project.
                     function($stateParams, projectsService, project) {
-                        return projectsService.getProject2($stateParams.project_id)
+                        return projectsService.getProject($stateParams.project_id)
                             .then(function(proj) {
                                 project.set(proj);
                                 return proj;
