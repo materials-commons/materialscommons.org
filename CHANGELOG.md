@@ -1,5 +1,16 @@
 # Release Notes
 
+## 28 November 2016
+### [Materials Commons Projects](https://materialscommons.org/mcapp)
+- :star: **New Feature:** Materials Commons Python API (documentation coming) [Repo](https://github.com/materials-commons/mcapi).
+- :star: **New Feature:** Files can be linked to samples.
+- :star: **Improvement:** Performance improvements. Various pages now load much faster.
+- :star: **Improvement:** Various backend changes to templates in preparation for future features.
+- :boom: **Fixed:** Updating dataset features was too restrictive.
+
+### [Materials Commons Data](https://materialscommons.org/mcpub)
+- :boom: **Fixed:** File counts for some datasets not displayed correctly.
+
 ## 31 October 2016
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 - :star: **New Feature:** Added template for sample sectioning
