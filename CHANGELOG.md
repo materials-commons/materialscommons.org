@@ -40,7 +40,7 @@
 - :star: **New Feature:** Numerous updates to the details presented for a dataset on MC Data.
 - :boom: **Fixed:** Various bug fixes.
 
-## 3 August 2016
+## 30 August 2016
 - :star: **New Feature:** Datasets that have not been published can now be deleted.
 - :star: **New Feature:** Introducing [Materials Commons Data](https://materialscommons.org/mcpub), a new site for publishing research data.
 - :boom: **Fixed:** Adding or changing composition on a sample was silently failing on the backend. It appeared to the user that the composition was being saved but then wasn't being displayed when viewing the sample.
