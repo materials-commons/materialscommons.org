@@ -129,7 +129,7 @@ module.exports = function(schema) {
                 nullable: true,
                 name: {
                     type: 'string',
-                    nullable: false
+                    nullable: true
                 }
             }
         });

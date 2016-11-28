@@ -1,25 +1,15 @@
 /*@ngInject*/
-export function projectsService(Restangular, modelProjects) {
+export function projectsService (Restangular) {
     var onChangeFn = null;
     var projectsAPI = _.partial(Restangular.one('v2').one, 'projects');
 
     return {
 
         getAllProjects: function() {
-            return modelProjects.getList(true);
-        },
-
-        getProject: function(projectID) {
-            return modelProjects.getList().then(function() {
-                return modelProjects.get(projectID);
-            });
-        },
-
-        getAllProjects2: function() {
             return projectsAPI().getList();
         },
 
-        getProject2: function(projectId) {
+        getProject: function(projectId) {
             return projectsAPI(projectId).get();
         },
 

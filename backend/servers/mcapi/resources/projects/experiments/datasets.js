@@ -114,7 +114,7 @@ function* validateUpdateDataset(datasetArgs) {
         }
     }
 
-    if (datasetArgs.license) {
+    if (datasetArgs.license && datasetArgs.license.name) {
         let license;
         switch (datasetArgs.license.name) {
             case `Public Domain Dedication and License (PDDL)`:
