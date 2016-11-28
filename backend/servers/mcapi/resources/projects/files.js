@@ -5,6 +5,10 @@ const httpStatus = require('http-status');
 const ra = require('../resource-access');
 const Router = require('koa-router');
 
+// used by file sender - download()
+const fs = require('fs');
+const fileUtils = require('../../../lib/create-file-utils');
+
 // get retrieves a file.
 function* get(next) {
     this.body = yield files.get(this.params.file_id);
@@ -31,6 +35,40 @@ function* getVersions(next) {
         this.body = {error: 'Unknown file'};
     }
 
+    yield next;
+}
+
+function* download(next) {
+    if (yield check.fileInProject(this.params.file_id, this.params.project_id)) {
+        let file = yield files.get(this.params.file_id);
+        if (file.error) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = file;
+        } else {
+            let contentType = file.mediatype.mime;
+            let filename = file.name;
+            let id = file.id;
+            if (file.usesid != ""){
+                id = file.usesid;
+            }
+            let size = file.size;
+            this.set('ContentType',contentType);
+            this.set('Content-Disposition', 'attachment; filename=' + filename);
+            this.set('ContentLength',size);
+
+            let filepath = fileUtils.datafilePath(id);
+
+            if (fileUtils.datafilePathExists(id)) {
+                this.body = fs.createReadStream(filepath);
+            } else {
+                this.status = httpStatus.NOT_FOUND;
+                this.body = {error: 'File not found: ' + filename};
+            }
+        }
+    } else {
+        this.status = httpStatus.BAD_REQUEST;
+        this.body = {error: 'Unknown file'};
+    }
     yield next;
 }
 
@@ -75,8 +113,10 @@ function createResource() {
     router.use('/:file_id', ra.validateFileInProject);
     router.get('/:file_id', get);
     router.get('/:file_id/versions', getVersions);
+    router.get('/:file_id/download', download);
     router.put('/:file_id', update);
     router.delete('/:file_id', deleteFile);
+
 
     return router;
 }

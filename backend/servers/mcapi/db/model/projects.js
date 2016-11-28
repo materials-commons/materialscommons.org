@@ -15,7 +15,8 @@ function* getProject(projectId) {
                     processes: r.table('process2sample').getAll(sample('sample_id'), {index: 'sample_id'})
                         .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
                 }
-            }).coerceTo('array')
+            }).coerceTo('array'),
+            users: r.table('access').getAll(projectId, {index: 'project_id'}).coerceTo('array')
         }
     });
     return {val: p};
@@ -144,12 +145,18 @@ function differenceByField(from, others, field) {
     });
 }
 
+function* addFileToProject(projectID,fileID){
+    let newLink = {project_id:projectID, datafile_id:fileID};
+    return yield r.table('project2datafile').insert(newLink);
+}
+
 module.exports = {
     all: all,
     forUser: forUser,
     get: function(id, index) {
         return getSingle(r, 'projects', id, index);
     },
+    addFileToProject,
     getProject: getProject,
     update: update
 };

@@ -1,9 +1,21 @@
 const directories = require('../../db/model/directories');
+const projects = require('../../db/model/projects');
+const files = require('../../db/model/files');
 const schema = require('../../schema');
 const parse = require('co-body');
 const httpStatus = require('http-status');
 const ra = require('../resource-access');
 const Router = require('koa-router');
+
+// used by file loader
+const fileUtils = require('../../../lib/create-file-utils')
+const baseFileStoreDir = fileUtils.getFileStoreDir(); // ends with '/'
+const uploadTmpDir = fileUtils.getTmpUploadDir(); // ends with '/'
+var koaBody = require('koa-body')({
+    multipart: true,
+    formidable: {uploadDir: uploadTmpDir, hash: 'md5'},
+    keepExtensions: true,
+});
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';
@@ -118,6 +130,46 @@ function* remove(next) {
     yield next;
 }
 
+function* uploadFileToProjectDirectory(next) {
+    let projectID = this.params.project_id,
+        directoryID = this.params.directory_id;
+
+    let upload = this.request.body.files.file;
+    let name = upload.name;
+
+    let oldFile = yield directories.fileInDirectoryByName(directoryID,name);
+
+    if (oldFile && (oldFile.checksum == upload.checksum)) {
+        this.body = oldFile;
+        yield next;
+    }
+
+    let fileArgs = {
+        name: upload.name,
+        mediatype: fileUtils.mediaTypeDescriptionsFromMime(upload.type),
+        size: upload.size,
+        checksum: upload.hash
+    };
+
+    let file = yield files.create(fileArgs,this.reqctx.user.id);
+
+    if (oldFile) {
+        file = yield files.pushVersion(file,oldFile);
+    }
+
+    if (file.usesid) {
+        yield fileUtils.moveToStore(upload.path,file.usesid);
+    } else {
+        yield fileUtils.moveToStore(upload.path,file.id);
+    }
+
+    let results = yield directories.addFileToDirectory(directoryID,file.id);
+    results = yield projects.addFileToProject(projectID,file.id);
+
+    this.body = file;
+    yield next;
+}
+
 function createResource() {
     const router = new Router();
 
@@ -128,6 +180,8 @@ function createResource() {
     router.get('/:directory_id', get);
     router.put('/:directory_id', update);
     router.delete('/:directory_id', remove);
+
+    router.post('/:directory_id/fileupload', koaBody, uploadFileToProjectDirectory);
     return router;
 }
 
