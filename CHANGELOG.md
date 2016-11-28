@@ -7,6 +7,7 @@
 - :star: **Improvement:** Performance improvements. Various pages now load much faster.
 - :star: **Improvement:** Various backend changes to templates in preparation for future features.
 - :boom: **Fixed:** Updating dataset features was too restrictive.
+- :boom: **Fixed:** Other bug fixes
 
 ### [Materials Commons Data](https://materialscommons.org/mcpub)
 - :boom: **Fixed:** File counts for some datasets not displayed correctly.
