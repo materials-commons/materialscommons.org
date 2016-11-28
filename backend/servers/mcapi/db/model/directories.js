@@ -180,6 +180,7 @@ function* createDirs(projectID, startingDir, dirSegments) {
                 createdDirs.push(dirEntry);
             } else {
                 dirEntry = newDirEntry;
+                createdDirs.push(dirEntry);
             }
         }
     }
@@ -257,6 +258,21 @@ function peerDirectories(dirID) {
     return dbExec(rql);
 }
 
+function* addFileToDirectory(dirID,fileID){
+    let link = {datadir_id:dirID,datafile_id:fileID};
+    return yield r.table('datadir2datafile').insert(link);
+}
+
+function* fileInDirectoryByName(dirId,filename) {
+    let matches = yield r.table('datadir2datafile')
+        .getAll(dirId,{index:'datadir_id'})
+        .eqJoin('datafile_id',r.table('datafiles'))
+        .without({left: "id", left: "datafile_id", left:"datadir_id"})
+        .zip().filter({name:filename,current:true});
+    if (matches) return matches[0];
+    else return {}
+}
+
 function* isEmpty(dirID) {
     let childrenDirs = yield dbExec(r.table('datadirs').getAll(dirID, {index: 'parent'}));
     if (childrenDirs.length) {
@@ -288,6 +304,8 @@ module.exports = {
     findInProject: findInProject,
     subdirExists: subdirExists,
     peerDirectories: peerDirectories,
+    addFileToDirectory,
+    fileInDirectoryByName,
     isEmpty,
     remove
 };

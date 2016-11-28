@@ -43,6 +43,35 @@ function* get(file_id) {
     return runQuery(rql);
 }
 
+// create file
+function* create(file, owner) {
+    let usesid = "";
+    let checksumHit = yield r.table('datafiles')
+        .getAll(file.checksum,{index:'checksum'})
+        .filter({'usesid':''});
+
+    if (checksumHit && (checksumHit.length > 0)) {
+        usesid = checksumHit[0].id;
+    }
+
+    let f = new model.DataFile(file.name, owner);
+    f.mediatype = file.mediatype;
+    f.size = file.size;
+    f.upload = file.size;
+    f.checksum = file.checksum;
+    f.usesid = usesid;
+
+    let newFile = yield db.insert('datafiles', f);
+
+    return yield get(newFile.id);
+}
+
+function* pushVersion(newFile, oldFile) {
+    yield r.table('datafiles').get(oldFile.id).update({current:false});
+    yield r.table('datafiles').get(newFile.id).update({parent:oldFile.id, current:true});
+    return yield get(newFile.id);
+}
+
 // getList gets the details for the given file ids
 function* getList(projectID, fileIDs) {
     let rql = r.table('datafiles').getAll(r.args(fileIDs))
@@ -246,6 +275,7 @@ function *deleteFile(fileID) {
     yield r.table('datafiles').get(fileID).delete();
     yield r.table('project2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
     yield r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
+    yield r.table('experiment2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
     return {val: f};
 }
 
@@ -328,7 +358,9 @@ module.exports = {
     countInProject,
     get,
     getList,
+    create,
     update,
+    pushVersion,
     deleteFile,
     byPath,
     getVersions

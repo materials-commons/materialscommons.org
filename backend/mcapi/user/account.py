@@ -8,7 +8,6 @@ import uuid
 from ..utils import make_password_hash, make_salted_password_hash
 from .. import error
 from .. import dmutil
-from .. import args
 
 
 @app.route('/user/<user>/apikey', methods=['PUT'])
@@ -116,4 +115,11 @@ def reset_apikey(user):
     r.table('users').get(user).update({'apikey': new_apikey}).run(g.conn)
     access.remove_user(user)
     return jsonify({'apikey': new_apikey})
+
+
+@app.route('/users', methods=['GET'])
+@jsonp
+def list_users():
+    selection = list(r.table('users').pluck('email', 'id').run(g.conn))
+    return json.dumps(selection)
 

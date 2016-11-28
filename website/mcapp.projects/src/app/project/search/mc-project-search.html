@@ -29,7 +29,7 @@
                                 <span>
                                     <b>{{$index+1}}.</b>
                                     <i class="fa fa-fw fa-cubes" style="color: #f0ad4e;"></i>
-                                    <a ui-sref="project.samples.sample({sample_id: hit._source.sample_id})">{{hit._source.name}}</a>
+                                    <a ng-click="$ctrl.showSample(hit._source)">{{hit._source.name}}</a>
                                 </span>
                             </div>
                         </div>
