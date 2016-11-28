@@ -184,6 +184,16 @@ def convert_to_otype(conn):
     print "Done."
 
 
+def fix_missing_processes_for_measurements(conn):
+    measurements = list(r.table('measurements').filter({'otype': 'composition'}).run(conn))
+    for m in measurements:
+        p2m = r.table('process2measurement').get_all(m['id'], index='measurement_id').run(conn)
+        if p2m is None:
+            print "Could not find process for measurement %s" % m['id']
+        else:
+            print "Found measurement for %s" % m['id']
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int",
@@ -204,8 +214,9 @@ def main():
     # add_dataset_processes_to_experiments(conn)
     # fix_as_received_process_name(conn)
 
-    convert_to_otype(conn)
-    fix_template_name(conn)
+    # convert_to_otype(conn)
+    # fix_template_name(conn)
+    fix_missing_processes_for_measurements(conn)
 
     # Not sure of these steps:
     # change_processes_field_to_description(conn)
