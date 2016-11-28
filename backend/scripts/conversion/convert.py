@@ -155,6 +155,19 @@ def rename_to_otype(table, conn):
     print "   Done."
 
 
+def fix_template_name(conn):
+    print "Fixing template names..."
+    processes = list(r.table('processes').run(conn, ))
+    for proc in processes:
+        if 'template_name' not in proc:
+            if proc['process_name'] == 'Annealing':
+                proc['template_name'] = 'Heat Treatment'
+            else:
+                proc['template_name'] = proc['process_name']
+            r.table('processes').get(proc['id']).update({'template_name': proc['template_name']}).run(conn)
+    print "Done."
+
+
 def convert_to_otype(conn):
     print "Convert to otype..."
     rename_to_otype('datadirs', conn)
@@ -192,6 +205,7 @@ def main():
     # fix_as_received_process_name(conn)
 
     convert_to_otype(conn)
+    fix_template_name(conn)
 
     # Not sure of these steps:
     # change_processes_field_to_description(conn)
