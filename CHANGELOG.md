@@ -1,5 +1,17 @@
 # Release Notes
 
+## 28 November 2016
+### [Materials Commons Projects](https://materialscommons.org/mcapp)
+- :star: **New Feature:** Materials Commons Python API (documentation coming) [Repo](https://github.com/materials-commons/mcapi).
+- :star: **New Feature:** Files can be linked to samples.
+- :star: **Improvement:** Performance improvements. Various pages now load much faster.
+- :star: **Improvement:** Various backend changes to templates in preparation for future features.
+- :boom: **Fixed:** Updating dataset features was too restrictive.
+- :boom: **Fixed:** Other bug fixes.
+
+### [Materials Commons Data](https://materialscommons.org/mcpub)
+- :boom: **Fixed:** File counts for some datasets not displayed correctly.
+
 ## 31 October 2016
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 - :star: **New Feature:** Added template for sample sectioning
@@ -9,26 +21,26 @@
 - :star: **New Feature:** Allow users to delete processes in the workflow editor. Ensure that the provenance graph is never made invalid.
 - :boom: **Fixed:** Various speed improvements.
 - :boom: **Fixed:** Deleting samples could leave provenance graph in an inconsistent state.
-- :boom: **Fixed:** Other bug fixes
+- :boom: **Fixed:** Other bug fixes.
 
 ### [Materials Commons Data](https://materialscommons.org/mcpub)
 - :star: **New Feature:** Add reset password link so users who forgot their password can reset it.
 - :boom: **Fixed:** Dataset download files were not built correctly.
-- :boom: **Fixed:** Browse by tag wasn't showing all tags
-- :boom: **Fixed:** Other bug fixes
+- :boom: **Fixed:** Browse by tag wasn't showing all tags.
+- :boom: **Fixed:** Other bug fixes.
 
 ## 23 September 2016
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
-- :star: **New Feature:** First release of the graphical workflow editor
-- :boom: **New Feature:** Various bug fixes
+- :star: **New Feature:** First release of the graphical workflow editor.
+- :boom: **New Feature:** Various bug fixes.
 
 ### [Materials Commons Data](https://materialscommons.org/mcpub)
-- :star: **New Feature:** MC Data now includes provenance details in an outline structure
-- :star: **New Feature:** Ability to search datasets on MC Data
-- :star: **New Feature:** Numerous updates to the details presented for a dataset on MC Data
-- :boom: **Fixed:** Various bug fixes
+- :star: **New Feature:** MC Data now includes provenance details in an outline structure.
+- :star: **New Feature:** Ability to search datasets on MC Data.
+- :star: **New Feature:** Numerous updates to the details presented for a dataset on MC Data.
+- :boom: **Fixed:** Various bug fixes.
 
-## 3 August 2016
+## 30 August 2016
 - :star: **New Feature:** Datasets that have not been published can now be deleted.
 - :star: **New Feature:** Introducing [Materials Commons Data](https://materialscommons.org/mcpub), a new site for publishing research data.
 - :boom: **Fixed:** Adding or changing composition on a sample was silently failing on the backend. It appeared to the user that the composition was being saved but then wasn't being displayed when viewing the sample.
