@@ -20,7 +20,7 @@ class ProcessMeasurementsComponentController2 {
         measurement.is_best_measure = true;
         let samplesMeasurements = this.samplesService.createSamplesPropertyMeasurements(samples, 'separate', prop, [measurement]);
 
-        this.samplesService.addMeasurementsToSamples(this.projectId, this.experimentId, "fill-in-later", [samplesMeasurements])
+        this.samplesService.addMeasurementsToSamples(this.projectId, this.experimentId, this.processId, [samplesMeasurements])
             .then(
                 () => null,
                 () => this.toast.error('Failed to add measurements to samples')
@@ -38,6 +38,7 @@ angular.module('materialscommons').component('processMeasurements', {
     bindings: {
         measurements: '<',
         samples: '<',
-        template: '<'
+        template: '<',
+        processId: '<'
     }
 });
