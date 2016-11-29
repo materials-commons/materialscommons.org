@@ -20,10 +20,10 @@ function ProcessSettings2DirectiveController(experimentsService, toast, $statePa
     var ctrl = this;
 
     console.log('ProcessSettings2DirectiveController');
-    console.log('ctrl.settings:', ctrl.settings);
-    console.log('ctrl.templateId: ', ctrl.templateId);
-    console.log('ctrl.attribute: ', ctrl.attribute);
-    console.log('ctrl.processId: ', ctrl.processId);
+    console.log('PS2 DC - ctrl.settings:', ctrl.settings);
+    console.log('PS2 DC - ctrl.templateId: ', ctrl.templateId);
+    console.log('PS2 DC - ctrl.attribute: ', ctrl.attribute);
+    console.log('PS2 DC - ctrl.processId: ', ctrl.processId);
 
 
     ctrl.datePickerOptions = {
