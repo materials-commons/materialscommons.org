@@ -95,22 +95,22 @@ function* updateSamples(samples) {
     return {val: samples};
 }
 
-function* addSamplesMeasurements(properties) {
+function* addSamplesMeasurements(processId, properties) {
     for (let i = 0; i < properties.length; i++) {
         let prop = properties[i];
         if (prop.add_as === 'shared') {
-            yield addSharedPropertyMeasurementsForSamples(prop);
+            yield addSharedPropertyMeasurementsForSamples(processId, prop);
         } else {
-            yield addSeparatePropertyMeasurementsForSamples(prop);
+            yield addSeparatePropertyMeasurementsForSamples(processId, prop);
         }
     }
     return {val: true};
 }
 
-function* addSharedPropertyMeasurementsForSamples(prop) {
+function* addSharedPropertyMeasurementsForSamples(processId, prop) {
     let p = new model.Property(prop.name, prop.attribute);
     let insertedProperty = yield db.insert('properties', p);
-    yield addPropertyMeasurements(insertedProperty.id, "", prop.name, prop.attribute, prop.measurements);
+    yield addPropertyMeasurements(processId, insertedProperty.id, "", prop.name, prop.attribute, prop.measurements);
     for (let i = 0; i < prop.samples.length; i++) {
         let s = prop.samples[i];
         yield addPropertyToPropertySet(insertedProperty.id, s.property_set_id);
@@ -122,7 +122,7 @@ function* addPropertyToPropertySet(propertyId, psetId) {
     yield db.insert('propertyset2property', ps2p);
 }
 
-function* addPropertyMeasurements(propertyId, sampleId, pName, pAttr, measurements) {
+function* addPropertyMeasurements(processId, propertyId, sampleId, pName, pAttr, measurements) {
     for (let i = 0; i < measurements.length; i++) {
         let current = measurements[i];
         let m = new model.Measurement(pName, pAttr, sampleId);
@@ -133,7 +133,8 @@ function* addPropertyMeasurements(propertyId, sampleId, pName, pAttr, measuremen
         if (current.is_best_measure) {
             yield addAsBestMeasure(propertyId, insertedMeasurement.id)
         }
-        yield addMeasurementToProperty(propertyId, insertedMeasurement.id)
+        yield addMeasurementToProperty(propertyId, insertedMeasurement.id);
+        yield addMeasurementToProcess(processId, insertedMeasurement.id);
     }
 }
 
@@ -142,10 +143,15 @@ function* addMeasurementToProperty(propID, mID) {
     yield db.insert('property2measurement', a2m);
 }
 
-function* addSeparatePropertyMeasurementsForSamples(prop) {
+function* addMeasurementToProcess(processId, mId) {
+    let p2m = new model.Process2Measurement(processId, mId);
+    yield db.insert('process2measurement', p2m);
+}
+
+function* addSeparatePropertyMeasurementsForSamples(processId, prop) {
     for (let i = 0; i < prop.samples.length; i++) {
         let s = prop.samples[i];
-        yield addNewPropertyMeasurements(s.id, s.property_set_id, prop.property, prop.measurements);
+        yield addNewPropertyMeasurements(processId, s.id, s.property_set_id, prop.property, prop.measurements);
     }
 }
 
@@ -155,12 +161,12 @@ function* addAsBestMeasure(propertyID, measurementID) {
     yield r.table('properties').get(propertyID).update({best_measure_id: inserted.id});
 }
 
-function *addNewPropertyMeasurements(sampleID, psetID, prop, measurements) {
+function *addNewPropertyMeasurements(processId, sampleID, psetID, prop, measurements) {
     let p = new model.Property(prop.name, prop.attribute);
     let inserted = yield db.insert('properties', p);
     let ps2p = new model.PropertySet2Property(inserted.id, psetID);
     yield db.insert('propertyset2property', ps2p);
-    yield addPropertyMeasurements(inserted.id, sampleID, prop.name, prop.attribute, measurements);
+    yield addPropertyMeasurements(processId, inserted.id, sampleID, prop.name, prop.attribute, measurements);
 }
 
 function* updateSamplesMeasurements() {
@@ -219,7 +225,7 @@ function* removeExistingSampleFileEntries(sampleFileEntries) {
     if (sampleFileEntries.length) {
         let indexEntries = sampleFileEntries.map(entry => [entry.sample_id, entry.datafile_id]);
         let matchingEntries = yield r.table('sample2datafile').getAll(r.args(indexEntries), {index: 'sample_file'});
-        var byFileID = _.indexBy(matchingEntries, 'datafile_id');
+        let byFileID = _.indexBy(matchingEntries, 'datafile_id');
         return sampleFileEntries.filter(entry => (!(entry.datafile_id in byFileID)));
     }
     return sampleFileEntries;

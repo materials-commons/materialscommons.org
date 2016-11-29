@@ -6,11 +6,11 @@ function isValidSetupProperty(template, property) {
         return false;
     }
 
-    let templateProperty = _.find(setupAttr.properties, (p) => p.property.attribute === property.attribute);
+    let templateProperty = _.find(setupAttr.properties, (p) => p.attribute === property.attribute);
     if (!templateProperty) {
         return false;
     }
-    templateProperty = templateProperty.property;
+    //templateProperty = templateProperty.property;
 
     if (templateProperty.otype !== property.otype) {
         return false;
