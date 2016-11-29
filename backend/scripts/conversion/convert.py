@@ -187,11 +187,23 @@ def convert_to_otype(conn):
 def fix_missing_processes_for_measurements(conn):
     measurements = list(r.table('measurements').filter({'otype': 'composition'}).run(conn))
     for m in measurements:
-        p2m = r.table('process2measurement').get_all(m['id'], index='measurement_id').run(conn)
-        if p2m is None:
-            print "Could not find process for measurement %s" % m['id']
-        else:
-            print "Found measurement for %s" % m['id']
+        p2m = list(r.table('process2measurement').get_all(m['id'], index='measurement_id').run(conn))
+        if not p2m:
+            print "\nCould not find process for measurement %s" % m['id']
+            p = list(r.table('property2measurement').get_all(m['id'], index='measurement_id').run(conn))
+            p_id = p[0]['property_id']
+            ps = list(r.table('propertyset2property').get_all(p_id, index='property_id').run(conn))
+            ps_id = ps[0]['property_set_id']
+            s2ps = list(r.table('sample2propertyset').get_all(ps_id, index='property_set_id').run(conn))
+            s_id = s2ps[0]['sample_id']
+            processes = list(r.table('process2sample').get_all(s_id, index='sample_id')
+                             .eq_join('process_id', r.table('processes')).zip().run(conn))
+            for proc in processes:
+                if 'template_name' in proc and proc['template_name'] == 'Create Samples':
+                    r.table('process2measurement').insert({
+                        'process_id': proc['process_id'],
+                        'measurement_id': m['id']
+                    }).run(conn)
 
 
 def main():
@@ -214,8 +226,8 @@ def main():
     # add_dataset_processes_to_experiments(conn)
     # fix_as_received_process_name(conn)
 
-    # convert_to_otype(conn)
-    # fix_template_name(conn)
+    convert_to_otype(conn)
+    fix_template_name(conn)
     fix_missing_processes_for_measurements(conn)
 
     # Not sure of these steps:
