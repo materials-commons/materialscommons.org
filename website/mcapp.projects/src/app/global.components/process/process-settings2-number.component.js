@@ -5,15 +5,18 @@ class ProcessSettings2NumberComponentController {
         this.toast = toast;
         this.$stateParams = $stateParams;
         this.projectId = $stateParams.project_id;
-        console.log('ProcessSettings2NumberComponentController')
-        console.log('PS2N CC - ctrl.setting:', this.setting);
-        console.log('PS2N CC - ctrl.templateId:', this.templateId);
-        console.log('PS2N CC - ctrl.attribute:', this.attribute);
-        console.log('PS2N CC - ctrl.processId:', this.processId);
+        console.log('ProcessSettings2NumberComponentController, constructor')
     }
 
     updateSettingProperty(property) {
-        console.log('number undateSettingProperty, property: ', property);
+        console.log('ProcessSettings2NumberComponentController')
+        console.log('PS2N CC - setting:', this.setting);
+        console.log('PS2N CC - templateId:', this.templateId);
+        console.log('PS2N CC - attribute:', this.attribute);
+        console.log('PS2N CC - processId:', this.processId);
+        console.log('PS2N CC - processId:', this.projectId);
+        console.log('PS2N CC - undateSettingProperty, property: ', property);
+
         if (!property.value) {
             console.log("No value -> ", property);
             return;
@@ -24,8 +27,12 @@ class ProcessSettings2NumberComponentController {
             return;
         }
 
+        if (!property.units) {
+            property.units = [];
+        }
+
         if (property.units.length && !property.unit) {
-            console.log("No units/unit -> ", property);
+            console.log("No unit -> ", property);
             return;
         }
 
@@ -35,7 +42,9 @@ class ProcessSettings2NumberComponentController {
             properties: [property]
         };
 
-        this.experimentsService.updateProcess(this.$stateParams.project_id, this.$stateParams.experiment_id, this.processId, propertyArgs)
+        console.log('PS2N CC - undateSettingProperty, propertyArgs: ', propertyArgs);
+
+        this.experimentsService.updateProcess(this.project_id, this.$stateParams.experiment_id, this.processId, propertyArgs)
             .then(
                 () => null,
                 () => this.toast.error('Unable to update property')
@@ -47,7 +56,7 @@ angular.module('materialscommons').component('processSettings2Number', {
     templateUrl: 'app/global.components/process/process-settings2-number.html',
     controller: ProcessSettings2NumberComponentController,
     bindings: {
-        settings: '<',
+        setting: '<',
         templateId: '<',
         attribute: '<',
         processId: '<'
