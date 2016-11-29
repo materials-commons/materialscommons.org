@@ -109,13 +109,11 @@ function processEdit() {
 
     return {
         fillProcess: function(template, process) {
-            console.log('fillProcess - enter', template, process.plain());
             process.measurements = [];
             // NOTE: code assumes that units arrya/list exists, and may be empty.
             //       This should be set on the server side, but is not,
             //       see issue #895 on materialscommons.org github project.
             process = repairUnitsLists(template, process);
-            console.log('fillProcess - leave', template, process.plain());
 
             // NOTE: the following are part of future development
             //        and have been disabled for now
