@@ -5,16 +5,18 @@ class ProcessSettings2NumberComponentController {
         this.toast = toast;
         this.$stateParams = $stateParams;
         this.projectId = $stateParams.project_id;
-        console.log('ProcessSettings2NumberComponentController, constructor')
+        this.experimentId = $stateParams.experiment_id;
     }
 
     updateSettingProperty(property) {
+        //this.processId = '995298b0-4cbd-416b-af45-4e6da99a510e'
+        //this.templateId = 'global_SEM'
+
         console.log('ProcessSettings2NumberComponentController')
         console.log('PS2N CC - setting:', this.setting);
         console.log('PS2N CC - templateId:', this.templateId);
-        console.log('PS2N CC - attribute:', this.attribute);
+        console.log('PS2N CC - attribute:', this.setting.attribute);
         console.log('PS2N CC - processId:', this.processId);
-        console.log('PS2N CC - processId:', this.projectId);
         console.log('PS2N CC - undateSettingProperty, property: ', property);
 
         if (!property.value) {
@@ -42,9 +44,9 @@ class ProcessSettings2NumberComponentController {
             properties: [property]
         };
 
-        console.log('PS2N CC - undateSettingProperty, propertyArgs: ', propertyArgs);
+        console.log('PS2N CC - updateSettingProperty, propertyArgs: ', propertyArgs);
 
-        this.experimentsService.updateProcess(this.project_id, this.$stateParams.experiment_id, this.processId, propertyArgs)
+        this.experimentsService.updateProcess(this.project_id, this.experiment_id, this.processId, propertyArgs)
             .then(
                 () => null,
                 () => this.toast.error('Unable to update property')
