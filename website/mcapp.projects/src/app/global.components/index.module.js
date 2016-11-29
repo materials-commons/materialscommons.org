@@ -15,3 +15,4 @@ import './process/mc-process-template.component';
 import './process/process-settings2.directive';
 import './process/mc-process-template-files-list.component';
 import './process/mc-process-template-samples-list.component';
+import './process/process-settings2-number.directive'
