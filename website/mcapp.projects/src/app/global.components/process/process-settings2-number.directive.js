@@ -1,5 +1,5 @@
-angular.module('materialscommons').directive('processSettings2', processSettings2Directive);
-function processSettings2Directive() {
+angular.module('materialscommons').directive('processSettings2Number', processSettings2NumberDirective);
+function processSettings2NumberDirective() {
     return {
         restrict: 'E',
         scope: {
@@ -8,41 +8,37 @@ function processSettings2Directive() {
             attribute: '=',
             processId: '='
         },
-        controller: ProcessSettings2DirectiveController,
+        controller: ProcessSettings2NumberDirectiveController,
         controllerAs: 'ctrl',
         bindToController: true,
-        templateUrl: 'app/global.components/process/process-settings2.html'
+        templateUrl: 'app/global.components/process/process-settings2-number.html'
     }
 }
 
 /*@ngInject*/
-function ProcessSettings2DirectiveController(experimentsService, toast, $stateParams) {
+function ProcessSettings2NumberDirectiveController(experimentsService, toast, $stateParams) {
     var ctrl = this;
 
-    console.log('ProcessSettings2DirectiveController');
-    console.log('ctrl.settings:', ctrl.settings);
+    console.log('ctrl.setting for number ', ctrl.setting);
     console.log('ctrl.templateId: ', ctrl.templateId);
     console.log('ctrl.attribute: ', ctrl.attribute);
     console.log('ctrl.processId: ', ctrl.processId);
 
 
-    ctrl.datePickerOptions = {
-        formatYear: 'yy',
-        startingDay: 1
-    };
-    ctrl.openDatePicker = openDatePicker;
-
     ctrl.updateSettingProperty = (property) => {
+        console.log('number undateSettingProperty, property: ', property);
         if (!property.value) {
+            console.log("No value -> ", property);
             return;
         }
 
-        if (property.otype === "date") {
-            console.dir(property);
+        if (property.otype != "number") {
+            console.log("Not a number -> ", property);
             return;
         }
 
         if (property.units.length && !property.unit) {
+            console.log("No units/unit -> ", property);
             return;
         }
 
@@ -59,11 +55,4 @@ function ProcessSettings2DirectiveController(experimentsService, toast, $statePa
             );
     };
 
-    ///////////////////////////////////////
-
-    function openDatePicker($event, prop) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        prop.opened = true;
-    }
 }
