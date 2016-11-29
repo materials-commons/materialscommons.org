@@ -4,10 +4,8 @@
         <form name="processSettingsForm">
             <div ng-repeat="setting in ctrl.settings">
                 <div ng-switch="::setting.otype">
-
                     <!--------- number --------->
                     <div ng-switch-when="number">
-                        {{ctrl.templateId}}
                         <process-settings2-number
                                 setting="setting"
                                 templateId="ctrl.templateId"

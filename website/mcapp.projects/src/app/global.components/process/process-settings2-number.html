@@ -1,22 +1,22 @@
 <div layout="row" layout-align="start center">
     <md-input-container md-no-float>
-        <label>{{::ctrl.setting.name}}</label>
+        <label>{{::$ctrl.setting.name}}</label>
         <input type="number"
                name="numberInput"
                step="any"
-               ng-change="ctrl.updateSettingProperty(ctrl.setting)"
-               ng-required="::setting.required"
-               ng-model="setting.value">
+               ng-change="$ctrl.updateSettingProperty($ctrl.setting)"
+               ng-required="::$ctrl.setting.required"
+               ng-model="$ctrl.setting.value">
     </md-input-container>
-    <span ng-if="ctrl.setting.units.length === 0" class="unit-align">
-        {{::ctrl.setting.unit}}
+    <span ng-if="$ctrl.setting.units.length === 0" class="unit-align">
+        {{::$ctrl.setting.unit}}
     </span>
-    <span ng-if="ctrl.setting.units.length !== 0">
-        <md-select ng-model="ctrl.setting.unit"
-                   ng-change="ctrl.updateSettingProperty(ctrl.setting)"
+    <span ng-if="$ctrl.setting.units.length !== 0">
+        <md-select ng-model="$ctrl.setting.unit"
+                   ng-change="$ctrl.updateSettingProperty($ctrl.setting)"
                    aria-label="units"
                    class="units-align">
-            <md-option ng-repeat="unit in ::ctrl.setting.units"
+            <md-option ng-repeat="unit in ::$ctrl.setting.units"
                        ng-value="unit">
                 {{unit}}
             </md-option>
