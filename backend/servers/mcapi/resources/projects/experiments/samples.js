@@ -146,12 +146,12 @@ function* validateSamples(projectId, experimentId, sampleIds) {
 function* addSamplesMeasurements(next) {
     let addMeasurementsArgs = yield parse(this);
     schema.prepare(schema.addSamplesMeasurements, addMeasurementsArgs);
-    let errors = yield validateAddSamplesMeasurements(this.params.project_id, addMeasurementsArgs);
+    let errors = yield validateAddSamplesMeasurements(this.params.project_id, this.params.experiment_id, addMeasurementsArgs);
     if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
     } else {
-        let rv = yield samples.addSamplesMeasurements(addMeasurementsArgs.properties);
+        let rv = yield samples.addSamplesMeasurements(addMeasurementsArgs.process_id, addMeasurementsArgs.properties);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
             this.body = rv;
@@ -162,10 +162,16 @@ function* addSamplesMeasurements(next) {
     yield next;
 }
 
-function* validateAddSamplesMeasurements(projectId, args) {
+function* validateAddSamplesMeasurements(projectId, experimentId, args) {
     let errors = yield schema.validate(schema.addSamplesMeasurements, args);
     if (errors !== null) {
         return errors;
+    }
+
+    let isInExperiment = yield check.processInExperiment(experimentId, args.process_id);
+
+    if (!isInExperiment) {
+        return {error: `Process not in experiment ${args.process_id}`};
     }
 
     let sampleIds = {};
@@ -189,7 +195,7 @@ function* validateAddSamplesMeasurements(projectId, args) {
             if (e !== null) {
                 return e;
             }
-            // Need to validate each of the measurement types... (that will be a bit of work)
+            // TODO: Need to validate each of the measurement types... (that will be a bit of work)
         }
     }
 
@@ -198,6 +204,7 @@ function* validateAddSamplesMeasurements(projectId, args) {
     if (!allSamplesInProject) {
         return {error: `Some samples are not in project`};
     }
+
 
     return null;
 }
