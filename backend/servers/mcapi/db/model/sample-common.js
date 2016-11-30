@@ -33,7 +33,7 @@ function* canDeleteSamples(sampleIds, processId) {
         return false;
     }
 
-    console.log('  Allow delete other checks passed');
+    //console.log('  Allow delete other checks passed');
     return true;
 }
 
@@ -60,7 +60,7 @@ function* samplesUsedInOtherProcesses(sampleIds, processId) {
     let foundOther = false;
     p2s.forEach(e => {
         if (e.process_id !== processId) {
-            console.log('sample used in other process', e, processId);
+            //console.log('sample used in other process', e, processId);
             foundOther = true;
         }
     });
