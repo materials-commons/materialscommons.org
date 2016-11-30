@@ -6,11 +6,11 @@
                 <div ng-switch="::setting.otype">
                     <!--------- number --------->
                     <div ng-switch-when="number">
-                        {{ctrl.processId}}
                         <process-settings2-number
                                 setting="setting"
                                 template-id="ctrl.templateId"
                                 process-id="ctrl.processId"
+                                attribute="ctrl.attribute"
                         ></process-settings2-number>
                     </div>
 
