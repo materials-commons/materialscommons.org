@@ -1,0 +1,8 @@
+<md-input-container class="md-block">
+    <label>{{::setting.name}}</label>
+    <input type="text" name="stringInput"
+           ng-required="::setting.required"
+           ng-model-options="{debounce: 500}"
+           ng-change="ctrl.updateSettingProperty(setting)"
+           ng-model="setting.value">
+</md-input-container>

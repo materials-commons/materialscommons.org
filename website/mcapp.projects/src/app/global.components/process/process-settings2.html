@@ -59,14 +59,12 @@
 
                     <!--------- string --------->
                     <div ng-switch-when="string">
-                        <md-input-container class="md-block">
-                            <label>{{::setting.name}}</label>
-                            <input type="text" name="stringInput"
-                                   ng-required="::setting.required"
-                                   ng-model-options="{debounce: 500}"
-                                   ng-change="ctrl.updateSettingProperty(setting)"
-                                   ng-model="setting.value">
-                        </md-input-container>
+                        <process-settings2-sring
+                                setting="setting"
+                                template-id="ctrl.templateId"
+                                process-id="ctrl.processId"
+                                attribute="ctrl.attribute"
+                        ></process-settings2-sring>
                     </div>
 
                     <!--------- unknown type --------->
