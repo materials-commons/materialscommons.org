@@ -19,12 +19,6 @@ function processSettings2Directive() {
 function ProcessSettings2DirectiveController(experimentsService, toast, $stateParams) {
     var ctrl = this;
 
-    console.log('ProcessSettings2DirectiveController');
-    console.log('PS2 DC - ctrl.settings:', ctrl.settings);
-    console.log('PS2 DC - ctrl.templateId: ', ctrl.templateId);
-    console.log('PS2 DC - ctrl.attribute: ', ctrl.attribute);
-    console.log('PS2 DC - ctrl.processId: ', ctrl.processId);
-
     ctrl.datePickerOptions = {
         formatYear: 'yy',
         startingDay: 1

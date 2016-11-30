@@ -14,6 +14,8 @@ class ProcessSettings2NumberComponentController {
 
         console.log('ProcessSettings2NumberComponentController')
         console.log('PS2N CC - setting:', this.setting);
+        console.log('PS2N CC - projectId:', this.projectId);
+        console.log('PS2N CC - experimentId:', this.experimentId);
         console.log('PS2N CC - templateId:', this.templateId);
         console.log('PS2N CC - attribute:', this.setting.attribute);
         console.log('PS2N CC - processId:', this.processId);
@@ -46,7 +48,7 @@ class ProcessSettings2NumberComponentController {
 
         console.log('PS2N CC - updateSettingProperty, propertyArgs: ', propertyArgs);
 
-        this.experimentsService.updateProcess(this.project_id, this.experiment_id, this.processId, propertyArgs)
+        this.experimentsService.updateProcess(this.projectId, this.experimentId, this.processId, propertyArgs)
             .then(
                 () => null,
                 () => this.toast.error('Unable to update property')
