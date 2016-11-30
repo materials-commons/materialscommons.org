@@ -35,7 +35,7 @@ function ProcessSettings2DirectiveController(experimentsService, toast, $statePa
             return;
         }
 
-        if (property.units.length && !property.unit) {
+        if (property.units && property.units.length && !property.unit) {
             return;
         }
 

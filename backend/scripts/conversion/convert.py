@@ -185,7 +185,7 @@ def convert_to_otype(conn):
 
 
 def fix_missing_processes_for_measurements(conn):
-    measurements = list(r.table('measurements').filter({'_type': 'composition'}).run(conn))
+    measurements = list(r.table('measurements').filter({'otype': 'composition'}).run(conn))
     for m in measurements:
         p2m = list(r.table('process2measurement').get_all(m['id'], index='measurement_id').run(conn))
         if not p2m:
@@ -227,7 +227,7 @@ def main():
     # fix_as_received_process_name(conn)
 
     convert_to_otype(conn)
-    # fix_template_name(conn)
+    fix_template_name(conn)
     fix_missing_processes_for_measurements(conn)
 
     # Not sure of these steps:

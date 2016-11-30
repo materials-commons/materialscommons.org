@@ -55,6 +55,7 @@ function* updateExperimentProcess(next) {
 }
 
 function* validateUpdateExperimentProcessTemplateArgs(updateArgs, params) {
+    console.log('updateArgs', updateArgs);
     if (updateArgs.properties && !_.isArray(updateArgs.properties)) {
         return {error: `Properties attribute isn't an array`};
     }
@@ -70,7 +71,9 @@ function* validateUpdateExperimentProcessTemplateArgs(updateArgs, params) {
 
     if (updateArgs.properties) {
         for (let i = 0; i < updateArgs.properties.length; i++) {
+            console.log('updateArgs', i, updateArgs.properties[i]);
             let property = updateArgs.properties[i];
+            console.log('calling validateProperty with', property);
             let errors = yield validateProperty(template, property);
             if (errors !== null) {
                 return errors;
@@ -118,16 +121,21 @@ function* validateUpdateExperimentProcessTemplateArgs(updateArgs, params) {
 }
 
 function* validateProperty(template, property) {
+    console.log('validateProperty', property);
     let errors = yield schema.validate(schema.templateProperty, property);
     if (errors !== null) {
         return errors;
     }
 
+    console.log('after schema validate', property);
+
     if (!propertyValidator.isValidSetupProperty(template, property)) {
+        console.log('isValidSetupProperty', property);
         return {error: `Invalid property ${property.attribute}`};
     }
 
     return null;
+    // return {error: `something bad happened`};
 }
 
 function* validateFile(projectId, file) {
