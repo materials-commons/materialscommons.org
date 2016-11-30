@@ -6,11 +6,49 @@ const commonQueries = require('../../../lib/common-queries');
 const dbExec = require('./run');
 const sampleCommon = require('./sample-common');
 
+function mergeTemplateIntoProcess(template, process) {
+    process.setup[0].properties.forEach(function(property) {
+        let i = _.indexOf(template.setup[0].properties, function(template_property) {
+            return template_property.attribute === property.attribute
+        });
+        if (i > -1) {
+            template.setup[0].properties[i].value = property.value;
+            template.setup[0].properties[i].name = property.name;
+            template.setup[0].properties[i].description = property.description;
+            template.setup[0].properties[i].unit = property.unit;
+            template.setup[0].properties[i].id = property.id;
+            template.setup[0].properties[i].setup_id = property.setup_id;
+            template.setup[0].properties[i].otype = property.otype;
+            template.setup[0].properties[i].attribute = property.attribute;
+
+            // If selection type then modify the choices when Other is selected, since the
+            // user may have modified the value of other. We need to do this otherwise the
+            // default other in the choices will update the value and the user will lose what
+            // they set.
+            if (property.otype === 'selection') {
+                if (property.value.name === 'Other') {
+                    let otherChoicesIndex = _.indexOf(template.setup[0].properties[i].choices,
+                        (c) => c.name === 'Other');
+                    if (otherChoicesIndex !== -1) {
+                        template.setup[0].properties[i].choices[otherChoicesIndex].value = property.value.value;
+                    }
+                }
+            }
+        }
+    });
+    process.setup = template.setup;
+    return process;
+}
 
 function* getProcess(processID) {
     let rql = commonQueries.processDetailsRql(r.table('processes').getAll(processID), r);
     let process = yield dbExec(rql);
-    return process.length ? {val: process[0]} : {error: `No such process ${processID}`};
+    if (!process.length) {
+        return {error: `No such process ${processID}`};
+    }
+    let template = yield r.table('templates').get(`global_${process[0].template_name}`);
+    process = mergeTemplateIntoProcess(template, process[0]);
+    return {val: process};
 }
 
 function* processIsUnused(processId) {
@@ -47,7 +85,7 @@ function* removeExistingProcessFileEntries(processId, files) {
     if (files.length) {
         let indexEntries = files.map(f => [processId, f.datafile_id]);
         let matchingEntries = yield r.table('process2file').getAll(r.args(indexEntries), {index: 'process_datafile'});
-        var byFileID = _.indexBy(matchingEntries, 'datafile_id');
+        let byFileID = _.indexBy(matchingEntries, 'datafile_id');
         return files.filter(f => (!(f.datafile_id in byFileID)));
     }
 
@@ -131,7 +169,7 @@ function* removeExistingProcessSampleEntries(processId, samples) {
     if (samples.length) {
         let indexEntries = samples.map(s => [processId, s.sample_id, s.property_set_id]);
         let matchingEntries = yield r.table('process2sample').getAll(r.args(indexEntries), {index: 'process_sample_property_set'});
-        var bySampleID = _.indexBy(matchingEntries, 'sample_id');
+        let bySampleID = _.indexBy(matchingEntries, 'sample_id');
         return samples.filter(s => (!(s.sample_id in bySampleID)));
     }
 
