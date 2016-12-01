@@ -15,8 +15,8 @@ class ProcessSettings2CompositionComponentController {
             return;
         }
 
-        if (property.otype != "string") {
-            console.log("Not a string -> ", property);
+        if (property.otype != "composition") {
+            console.log("Not a composition -> ", property);
             return;
         }
 
