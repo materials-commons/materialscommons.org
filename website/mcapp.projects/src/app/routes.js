@@ -77,10 +77,17 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                                 return proj;
                             });
                     }],
-                _templates: ["processTemplates", "templates", function(processTemplates, templates) {
-                    let projectTemplates = processTemplates.templates();
-                    templates.set(projectTemplates);
-                    return projectTemplates;
+                _templates: ["templates", function(templates) {
+                    return templates.getServerTemplates().then(
+                        (t) => {
+                            //console.log('server Templates', t);
+                            templates.set(t);
+                            return t;
+                        }
+                    );
+                    // let projectTemplates = processTemplates.templates();
+                    // templates.set(projectTemplates);
+                    // return projectTemplates;
                 }]
             }
         })
