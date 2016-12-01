@@ -6,25 +6,22 @@ class ProcessSettings2DateComponentController {
         this.$stateParams = $stateParams;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
+        this.value = new Date();
     }
 
-    updateSettingProperty(property) {
+    updateDateProperty(property) {
 
-        if (!property.value) {
-            console.log("No value -> ", property);
-            return;
-        }
+        console.log(this.projectId, this.experimentId, this.processId, this.templateId);
 
-        if (property.otype != "date") {
-            console.log("Not a date -> ", property);
-            return;
-        }
+        property.value = "" + this.value.getTime();
 
         property.setup_attribute = this.attribute;
         let propertyArgs = {
             template_id: this.templateId,
             properties: [property]
         };
+
+        console.log(propertyArgs);
 
         this.experimentsService.updateProcess(this.projectId, this.experimentId, this.processId, propertyArgs)
             .then(
