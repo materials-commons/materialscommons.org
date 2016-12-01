@@ -16,8 +16,12 @@
 
                     <!------ composition ----->
                     <div ng-switch-when="composition">
-                        <label>Composition</label>
-                        <periodic-table composition="setting"></periodic-table>
+                        <process-settings2-composition
+                                setting="setting"
+                                template-id="ctrl.templateId"
+                                process-id="ctrl.processId"
+                                attribute="ctrl.attribute"
+                        ></process-settings2-composition>
                     </div>
 
                     <!--------- date --------->

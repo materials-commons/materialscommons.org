@@ -17,3 +17,4 @@ import './process/mc-process-template-files-list.component';
 import './process/mc-process-template-samples-list.component';
 import './process/process-settings2-number.component'
 import './process/process-settings2-string.component'
+import './process/process-settings2-composition.component'
