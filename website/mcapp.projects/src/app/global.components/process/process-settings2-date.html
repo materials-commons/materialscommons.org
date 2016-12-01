@@ -1,10 +1,6 @@
 <div layout="row" layout-align="start center">
-    <md-input-container class="md-block">
-        <label>{{::$ctrl.setting.name}}</label>
-        <input type="text" name="stringInput"
-               ng-required="::$ctrl.setting.required"
-               ng-model-options="{debounce: 500}"
-               ng-change="$ctrl.updateSettingProperty($ctrl.setting)"
-               ng-model="$ctrl.setting.value">
-    </md-input-container>
+    <label>{{::$ctrl.setting.name}}</label>
+    <md-datepicker ng-model="$ctrl.setting.property.value"
+                   ng-change="$ctrl.updateSettingProperty($ctrl.setting.property)">
+    </md-datepicker>
 </div>
