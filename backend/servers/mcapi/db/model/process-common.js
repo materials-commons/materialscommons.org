@@ -37,7 +37,7 @@ function mergeTemplateIntoProcess(template, process) {
         }
     });
     process.setup = template.setup;
-    if (!process.measurements && template.measurements.length) {
+    if (!process.measurements.length && template.measurements.length) {
         process.measurements = template.measurements;
     }
     return process;
