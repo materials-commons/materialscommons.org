@@ -114,6 +114,9 @@ function processDetailsRql(rql, r) {
                             .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
                     }
                 }).coerceTo('array'),
+            measurements: r.table('process2measurement').getAll(process('id'), {index: 'process_id'})
+                .eqJoin('measurement_id', r.table('measurements')).zip().filter({otype: 'composition'})
+                .coerceTo('array'),
             files: r.table('process2file').getAll(process('id'), {index: 'process_id'})
                 .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
             input_files: r.table('process2file').getAll(process('id'), {index: 'process_id'})

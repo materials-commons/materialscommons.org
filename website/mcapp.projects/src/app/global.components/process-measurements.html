@@ -2,7 +2,6 @@
     <h4 class="md-title">Properties</h4>
     <md-content layout-padding>
         <form name="measurementsForm">
-            <pre>{{$ctrl.measurements | json}}</pre>
             <div ng-repeat="measurement in $ctrl.measurements">
                 <div ng-switch="::measurement.otype">
 

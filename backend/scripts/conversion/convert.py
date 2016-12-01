@@ -185,6 +185,7 @@ def convert_to_otype(conn):
 
 
 def fix_missing_processes_for_measurements(conn):
+    print "Associating processes with composition measurements (where missing)..."
     measurements = list(r.table('measurements').filter({'otype': 'composition'}).run(conn))
     for m in measurements:
         p2m = list(r.table('process2measurement').get_all(m['id'], index='measurement_id').run(conn))
@@ -204,6 +205,7 @@ def fix_missing_processes_for_measurements(conn):
                         'process_id': proc['process_id'],
                         'measurement_id': m['id']
                     }).run(conn)
+    print "Done."
 
 
 def main():
