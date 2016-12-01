@@ -1,4 +1,4 @@
-class ProcessSettings2NumberComponentController {
+class ProcessSettings2StringComponentController {
     /*@ngInject*/
     constructor(experimentsService, toast, $stateParams) {
         this.experimentsService = experimentsService;
@@ -9,6 +9,16 @@ class ProcessSettings2NumberComponentController {
     }
 
     updateSettingProperty(property) {
+
+        console.log(this.projectId);
+        console.log(this.experimentId);
+        console.log(this.processId);
+        console.log(this.templateId);
+        console.log(this.attribute);
+
+        console.log(property.value);
+        console.log(property.otype);
+
 
         if (!property.value) {
             console.log("No value -> ", property);
