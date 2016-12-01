@@ -1,4 +1,4 @@
-export function templatesService($filter, processEdit, $log) {
+export function templatesService(Restangular, processEdit, $log) {
     'ngInject';
 
     var self = this;
@@ -15,8 +15,8 @@ export function templatesService($filter, processEdit, $log) {
             $log.log('did not find template');
             return null;
         }
-        var template = t.create();
-        return template;
+        //var template = t.create();
+        return angular.copy(t);
     }
 
     return {
@@ -59,6 +59,10 @@ export function templatesService($filter, processEdit, $log) {
         },
 
         getTemplate: getTemplate,
+
+        getServerTemplates() {
+            return Restangular.one('v2').one('/templates').get();
+        },
 
         loadProcess(process) {
             let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
