@@ -35,6 +35,10 @@ class TemplateBase {
         this.setup.push(s);
         return s;
     }
+
+    setCategory(category) {
+        this.category = category;
+    }
 }
 
 class Setup {
@@ -181,6 +185,7 @@ class CreateSamplesTemplate extends TemplateBase {
     constructor () {
         super("Create Samples", "create", true, false);
         this.description = "Create Sample process is used to create new samples";
+        this.setCategory("create_sample");
         this.measurements = [
             {
                 name: "Composition",
@@ -207,6 +212,7 @@ class SectioningTemplate extends TemplateBase {
     constructor () {
         super("Sectioning", "transform", true, false);
         this.addSetup("Instrument").string("Notes").done();
+        this.setCategory("sectioning");
     }
 }
 
@@ -486,17 +492,17 @@ class TensionTemplate extends TemplateBase {
     }
 }
 
-var ropts = {
+let ropts = {
     db: process.env.MCDB || 'materialscommons',
     port: process.env.MCDB_PORT || 30815
 };
 
 console.log(ropts);
-var r = require('rethinkdbdash')(ropts);
-var bluebird = require('bluebird');
-var assert = require('assert');
+let r = require('rethinkdbdash')(ropts);
+let bluebird = require('bluebird');
+let assert = require('assert');
 
-var globalTemplates = [
+let globalTemplates = [
     AptTemplate,
     SemTemplate,
     CreateSamplesTemplate,
@@ -525,16 +531,16 @@ var globalTemplates = [
 ];
 
 console.log("Inserting templates...");
-var doneCount = 0;
-for (var i = 0; i < globalTemplates.length; i++) {
-    var t = globalTemplates[i];
-    var o = new t();
-    var id = 'global_' + o.process_name;
+let doneCount = 0;
+for (let i = 0; i < globalTemplates.length; i++) {
+    let t = globalTemplates[i];
+    let o = new t();
+    let id = 'global_' + o.process_name;
     o.id = id;
     console.log('  ' + id);
     bluebird.coroutine(function* (o) {
         try {
-            var result = yield r.table('templates').insert(o, {conflict: 'replace'});
+            let result = yield r.table('templates').insert(o, {conflict: 'replace'});
             doneCount++;
             if (doneCount === globalTemplates.length) {
                 console.log('Done.');

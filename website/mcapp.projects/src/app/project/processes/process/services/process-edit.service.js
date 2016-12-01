@@ -87,47 +87,21 @@ function processEdit() {
         process.measurements = templateMeasurements;
     }
 
-    function repairUnitsLists(template,process){
-        let template_props = template.setup[0].properties;
-        let process_props = process.setup[0].properties;
-        for (var i = 0; i < template_props.length; i++){
-            let tprop = template_props[i].property;
-            for (var j = 0; j < process_props.length; j++) {
-                let prop = process_props[j];
-                if (tprop.attribute == prop.attribute){
-                    if (tprop.units) {
-                        prop.units = tprop.units
-                    }
-                    if (tprop.unit) {
-                        prop.unit = tprop.unit
-                    }
-                }
-            }
-        }
-        return process;
-    }
-
     return {
         fillProcess: function(template, process) {
-            process.measurements = [];
-            // NOTE: code assumes that units arrya/list exists, and may be empty.
-            //       This should be set on the server side, but is not,
-            //       see issue #895 on materialscommons.org github project.
-            process = repairUnitsLists(template, process);
-
-            // NOTE: the following are part of future development
-            //        and have been disabled for now
-            //
-            //process = setUp(template, process);
-            //process = samples(process);
-            //process = files(process);
-            //setupMeasurements(process, template.measurements, template);
-            //if (!('output_samples' in process)) {
-            //    process.output_samples = [];
-            //}
-            //if (!('transformed_samples' in process)) {
-            //    process.transformed_samples = [];
-            //}
+            //console.log('fillProcess', template, process.plain());
+            //process.measurements = [];
+            return process;
+            process = setUp(template, process);
+            process = samples(process);
+            process = files(process);
+            setupMeasurements(process, template.measurements, template);
+            if (!('output_samples' in process)) {
+                process.output_samples = [];
+            }
+            if (!('transformed_samples' in process)) {
+                process.transformed_samples = [];
+            }
             return process;
         },
 
