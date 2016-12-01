@@ -1,4 +1,4 @@
-class ProcessSettings2StringComponentController {
+class ProcessSettings2DateComponentController {
     /*@ngInject*/
     constructor(experimentsService, toast, $stateParams) {
         this.experimentsService = experimentsService;
@@ -15,8 +15,8 @@ class ProcessSettings2StringComponentController {
             return;
         }
 
-        if (property.otype != "string") {
-            console.log("Not a string -> ", property);
+        if (property.otype != "date") {
+            console.log("Not a date -> ", property);
             return;
         }
 
@@ -34,9 +34,9 @@ class ProcessSettings2StringComponentController {
     }
 }
 
-angular.module('materialscommons').component('processSettings2String', {
-    templateUrl: 'app/global.components/process/process-settings2-string.html',
-    controller: ProcessSettings2StringComponentController,
+angular.module('materialscommons').component('processSettings2Date', {
+    templateUrl: 'app/global.components/process/process-settings2-date.html',
+    controller: ProcessSettings2DateComponentController,
     bindings: {
         setting: '<',
         templateId: '<',

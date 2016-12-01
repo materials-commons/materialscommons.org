@@ -26,10 +26,12 @@
 
                     <!--------- date --------->
                     <div ng-switch-when="date">
-                        <label>{{::setting.name}}</label>
-                        <md-datepicker ng-model="setting.property.value"
-                                       ng-change="ctrl.updateSettingProperty(setting.property)">
-                        </md-datepicker>
+                        <process-settings2-date
+                                setting="setting"
+                                template-id="ctrl.templateId"
+                                process-id="ctrl.processId"
+                                attribute="ctrl.attribute"
+                        ></process-settings2-date>
                     </div>
 
                     <!--------- selection --------->
