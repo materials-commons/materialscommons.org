@@ -10,16 +10,6 @@ class ProcessSettings2StringComponentController {
 
     updateSettingProperty(property) {
 
-        console.log(this.projectId);
-        console.log(this.experimentId);
-        console.log(this.processId);
-        console.log(this.templateId);
-        console.log(this.attribute);
-
-        console.log(property.value);
-        console.log(property.otype);
-
-
         if (!property.value) {
             console.log("No value -> ", property);
             return;
