@@ -89,8 +89,8 @@ function processEdit() {
 
     return {
         fillProcess: function(template, process) {
-            console.log('fillProcess', template, process.plain());
-            process.measurements = [];
+            //console.log('fillProcess', template, process.plain());
+            //process.measurements = [];
             return process;
             process = setUp(template, process);
             process = samples(process);
