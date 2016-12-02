@@ -36,6 +36,7 @@ function* createProcessInExperimentFromTemplate(next) {
 function* updateExperimentProcess(next) {
     let updateArgs = yield parse(this);
     updateArgs.process_id = this.params.process_id;
+    updateArgs = convertPropertyDateValues(updateArgs);
     let errors = yield validateUpdateExperimentProcessTemplateArgs(updateArgs, this.params);
     if (errors != null) {
         this.status = status.BAD_REQUEST;
@@ -159,6 +160,21 @@ function* getProcess(next) {
         this.body = rv.val;
     }
     yield next;
+}
+
+function convertPropertyDateValues(updateArgs) {
+    if (updateArgs.properties) {
+        let props = updateArgs.properties
+        for (var i = 0; i < props.length; i++) {
+            let property = props[i];
+            if (property.otype == 'date') {
+                try {
+                    property.value = new Date(property.value);
+                } catch(e){}
+            }
+        }
+    }
+    return updateArgs;
 }
 
 function createResource() {

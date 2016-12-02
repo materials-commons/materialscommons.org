@@ -6,14 +6,14 @@ class ProcessSettings2DateComponentController {
         this.$stateParams = $stateParams;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
-        this.value = new Date();
     }
 
     updateDateProperty(property) {
 
         console.log(this.projectId, this.experimentId, this.processId, this.templateId);
 
-        property.value = "" + this.value.getTime();
+        property.value =
+            this.experimentsService.convertDateValueForTransport(this.setting.value);
 
         property.setup_attribute = this.attribute;
         let propertyArgs = {

@@ -49,7 +49,11 @@ class ExperimentsService {
     }
 
     updateProcess(projectId, experimentId, processId, updateArgs) {
-        return this.projectsAPI(projectId).one('experiments', experimentId).one('processes', processId).customPUT(updateArgs);
+        console.log("project/experiments/service/experiment-service.updateProcess")
+        return this.projectsAPI(projectId)
+            .one('experiments', experimentId)
+            .one('processes', processId).customPUT(updateArgs)
+            .then((process) => this.convertDatePropertyAttributes(process));
     }
 
     deleteTask(projectID, experimentID, taskID) {
@@ -65,7 +69,11 @@ class ExperimentsService {
     }
 
     getProcessForExperiment(projectId, experimentId, processId) {
-        return this.projectsAPI(projectId).one('experiments', experimentId).one('processes', processId).customGET();
+        console.log("project/experiments/service/experiment-service.getProcessFroExperiment")
+        return this.projectsAPI(projectId)
+            .one('experiments', experimentId)
+            .one('processes', processId).customGET()
+            .then((process) => this.convertDatePropertyAttributes(process));
     }
 
     getFilesForExperiment(projectId, experimentId) {
@@ -76,6 +84,38 @@ class ExperimentsService {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('processes').one('templates', templateId)
             .customPOST();
     }
+
+    convertDatePropertyAttributes(process) {
+        if (process.setup) {
+            let setup = process.setup;
+            for (var i = 0; i < setup.length; i++) {
+                let s = setup[i];
+                if (s.properties) {
+                    let properties = s.properties;
+                    for (var j = 0; j < properties.length; j++) {
+                        let property = properties[j];
+                        if (property.otype && (property.otype == 'date')){
+                            if (property.value) {
+                                property.value = this.convertDateValueFromTransport(property.value);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return process;
+    }
+
+    convertDateValueForTransport(dateObj) {
+        console.log('convertDateValueForTransport',dateObj);
+        return dateObj.getTime();
+    }
+
+    convertDateValueFromTransport(dateNumber) {
+        console.log('convertDateValueFromTransport',dateNumber);
+        return new Date(dateNumber);
+    }
+
 }
 
 angular.module('materialscommons').service('experimentsService', ExperimentsService);

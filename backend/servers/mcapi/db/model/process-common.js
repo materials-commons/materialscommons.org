@@ -51,7 +51,31 @@ function* getProcess(processID) {
     }
     let template = yield r.table('templates').get(`global_${process[0].template_name}`);
     process = mergeTemplateIntoProcess(template, process[0]);
+    process = convertDatePropertyAttributes(process);
     return {val: process};
+}
+
+function convertDatePropertyAttributes(process) {
+    if (process.setup) {
+        let setup = process.setup;
+        for (var i = 0; i < setup.length; i++) {
+            let s = setup[i];
+            if (s.properties) {
+                let properties = s.properties;
+                for (var j = 0; j < properties.length; j++) {
+                    let property = properties[j];
+                    if (property.otype && (property.otype == 'date')){
+                        let value = property.value;
+                        if (value && value.epoch_time) {
+                            let date = new Date(1000*value.epoch_time)
+                            property.value = date.getTime();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return process;
 }
 
 function* processIsUnused(processId) {
