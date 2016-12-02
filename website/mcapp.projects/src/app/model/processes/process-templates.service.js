@@ -1,6 +1,8 @@
 import * as processes from './processes';
 
-export function processTemplates(User) {
+//Note User is not currently used; see commented-out function
+//  markFavorites, below
+export function processTemplates(/* User */) {
     'ngInject';
 
     var self = this;
@@ -212,14 +214,15 @@ export function processTemplates(User) {
         return templates.concat(filledOutProjectTemplates);
     }
 
-    function markFavorites(templates, favorites) {
-        var templatesByName = _.indexBy(templates, 'name');
-        favorites.forEach(function(favoriteTemplate) {
-            if (favoriteTemplate in templatesByName) {
-                templatesByName[favoriteTemplate].favorite = true;
-            }
-        });
-    }
+    // not currently used
+    // function markFavorites(templates, favorites) {
+    //     var templatesByName = _.indexBy(templates, 'name');
+    //     favorites.forEach(function(favoriteTemplate) {
+    //         if (favoriteTemplate in templatesByName) {
+    //             templatesByName[favoriteTemplate].favorite = true;
+    //         }
+    //     });
+    // }
 
     return {
         templates: function(projectTemplates) {
