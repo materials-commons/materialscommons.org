@@ -63,7 +63,7 @@ class MCProcessesWorkflowComponentController {
                 .then(
                     (process) => {
                         process.hasChildren = hasChildren;
-                        this.selectedProcess = this.templates.loadProcess(process);
+                        this.selectedProcess = process;
                         this.currentTab = 1;
                     },
                     () => {
