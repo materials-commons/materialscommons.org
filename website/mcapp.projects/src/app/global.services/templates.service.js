@@ -1,7 +1,7 @@
+/*@ngInject*/
 export function templatesService(Restangular, processEdit, $log) {
-    'ngInject';
 
-    var self = this;
+    const self = this;
     self.templates = {};
 
     // defined but not used
@@ -10,12 +10,11 @@ export function templatesService(Restangular, processEdit, $log) {
     //}
 
     function getTemplate(name) {
-        var t = _.find(self.templates, {name: name});
+        let t = _.find(self.templates, {name: name});
         if (!t) {
             $log.log('did not find template');
             return null;
         }
-        //var template = t.create();
         return angular.copy(t);
     }
 
@@ -29,9 +28,9 @@ export function templatesService(Restangular, processEdit, $log) {
         },
 
         loadTemplateFromProcess(templateName, process) {
-            var t = getTemplate(templateName);
+            let t = getTemplate(templateName);
             process.name = t.name;
-            var p = processEdit.fillProcess(t, process);
+            let p = process;
             if (process.input_samples) {
                 p.input_samples = process.input_samples;
             } else {
@@ -66,7 +65,7 @@ export function templatesService(Restangular, processEdit, $log) {
 
         loadProcess(process) {
             let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
-            var t = getTemplate(templateName);
+            let t = getTemplate(templateName);
             return processEdit.fillProcess(t, process);
         }
     };

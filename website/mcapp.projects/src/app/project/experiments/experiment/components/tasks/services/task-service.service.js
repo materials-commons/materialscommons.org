@@ -1,12 +1,10 @@
 class TaskService {
     /*@ngInject*/
-    constructor(experimentsService, templates, $stateParams, toast, projectsService, processEdit) {
+    constructor(experimentsService, $stateParams, toast, projectsService) {
         this.experimentsService = experimentsService;
-        this.templates = templates;
         this.$stateParams = $stateParams;
         this.toast = toast;
         this.projectsService = projectsService;
-        this.processEdit = processEdit;
     }
 
     toggleFlag(whichFlag, event, task) {
@@ -124,9 +122,6 @@ class TaskService {
                     this.projectsService.getProjectProcess(projectId, template.process_id).then(
                         (process) => {
                             let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
-                            var t = this.templates.getTemplate(templateName);
-                            task.process_id = template.process_id;
-                            task.template = this.processEdit.fillProcess(t, process);
                             task.template.template_name = templateName;
                             task.template_name = templateName;
                             task.template.template_id = process.template_id;

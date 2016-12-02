@@ -1,11 +1,10 @@
 class MCProcessTemplateSamplesListComponentController {
     /*@ngInject*/
-    constructor(processesService, toast, $stateParams, sampleLinker, processEdit, samplesService) {
+    constructor(processesService, toast, $stateParams, sampleLinker, samplesService) {
         this.processesService = processesService;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.sampleLinker = sampleLinker;
-        this.processEdit = processEdit;
         this.samplesService = samplesService;
     }
 
@@ -27,7 +26,6 @@ class MCProcessTemplateSamplesListComponentController {
                     () => null,
                     () => this.toast.error('Unable to link files to sample')
                 );
-                //sample = this.processEdit.refreshSample(linkedFiles, sample);
             }
         );
     }
