@@ -152,13 +152,13 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             template: '<mc-processes-workflow processes="ctrl.processes"></mc-processes-workflow>',
             controllerAs: 'ctrl',
             controller: ['processes', function(processes) {
-                var ctrl = this;
+                const ctrl = this;
                 ctrl.processes = processes;
             }],
             resolve: {
                 processes: ['experimentsService', '$stateParams', 'toast',
                     function(experimentsService, $stateParams, toast) {
-                        var ctrl = this;
+                        const ctrl = this;
                         ctrl.processes = [];
                         return experimentsService.getProcessesForExperiment($stateParams.project_id, $stateParams.experiment_id).then(
                             (processes) => processes,
@@ -173,7 +173,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             controllerAs: 'ctrl',
             controller: ['experimentsService', '$stateParams', 'toast',
                 function(experimentsService, $stateParams, toast) {
-                    var ctrl = this;
+                    const ctrl = this;
                     ctrl.samples = [];
                     experimentsService.getSamplesForExperiment($stateParams.project_id, $stateParams.experiment_id).then(
                         (samples) => ctrl.samples = samples,
@@ -187,7 +187,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             controllerAs: 'ctrl',
             controller: ['experimentsService', '$stateParams', 'toast',
                 function(experimentsService, $stateParams, toast) {
-                    var ctrl = this;
+                    const ctrl = this;
                     ctrl.files = [];
                     experimentsService.getFilesForExperiment($stateParams.project_id, $stateParams.experiment_id)
                         .then(
@@ -238,12 +238,12 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                         if ($stateParams.process_id) {
                             return projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
                                 .then(function(process) {
-                                    var t = templates.loadTemplateFromProcess($stateParams.template_id, process);
+                                    const t = templates.loadTemplateFromProcess($stateParams.template_id, process);
                                     template.set(t);
                                     return t;
                                 });
                         } else {
-                            var t = templates.getTemplate($stateParams.template_id);
+                            const t = templates.getTemplate($stateParams.template_id);
                             template.set(t);
                             return t;
                         }
@@ -271,7 +271,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             controllerAs: 'ctrl',
             controller: ['projectsService', '$stateParams', 'toast',
                 function(projectsService, $stateParams, toast) {
-                    var ctrl = this;
+                    const ctrl = this;
                     ctrl.processes = [];
                     projectsService.getProjectProcesses($stateParams.project_id).then(
                         (processes) => ctrl.processes = processes,
@@ -299,14 +299,12 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/edit',
             template: '<mc-process-edit></mc-process-edit>',
             resolve: {
-                _process: ['process', 'projectsService', '$stateParams', 'processEdit', 'templates',
-                    function(process, projectsService, $stateParams, processEdit, templates) {
+                _process: ['process', 'projectsService', '$stateParams',
+                    function(process, projectsService, $stateParams) {
                         return projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
                             .then(function(proc) {
-                                var t = templates.getTemplate(proc.process_name);
-                                var p = processEdit.fillProcess(t, proc);
-                                process.set(p);
-                                return p;
+                                process.set(proc);
+                                return proc;
                             });
                     }]
             }
@@ -317,7 +315,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             controllerAs: 'ctrl',
             controller: ['samplesService', '$stateParams', 'toast',
                 function(samplesService, $stateParams, toast) {
-                    var ctrl = this;
+                    const ctrl = this;
                     ctrl.samples = [];
                     samplesService.getProjectSamples($stateParams.project_id).then(
                         (samples) => ctrl.samples = samples,
