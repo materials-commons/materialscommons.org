@@ -26,7 +26,7 @@ function MCExperimentTasksListComponentController(experimentsService, toast, $st
     ctrl.experiment = currentExperiment.get();
 
     ctrl.$onInit = () => {
-        var treeModel = new TreeModel({childrenPropertyName: 'tasks'}),
+        let treeModel = new TreeModel({childrenPropertyName: 'tasks'}),
             root = treeModel.parse(ctrl.experiment);
         root.walk((node) => {
             if (node.model.displayState) {
@@ -81,7 +81,7 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 
 /*@ngInject*/
 function MCExperimentTasksListDirDirectiveController($stateParams, toast, currentTask,
-                                                     currentExperiment, projectsService, templates, processEdit,
+                                                     currentExperiment, projectsService,
                                                      blankTaskService, currentNode, taskService) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
@@ -102,8 +102,6 @@ function MCExperimentTasksListDirDirectiveController($stateParams, toast, curren
                 .then(
                     (process) => {
                         let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
-                        var t = templates.getTemplate(templateName);
-                        ctrl.task.template = processEdit.fillProcess(t, process);
                         ctrl.task.template.template_name = templateName;
                         ctrl.task.template_name = templateName;
                         ctrl.task.loaded = true;
