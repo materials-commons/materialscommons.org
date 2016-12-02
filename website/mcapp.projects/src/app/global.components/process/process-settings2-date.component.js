@@ -6,6 +6,17 @@ class ProcessSettings2DateComponentController {
         this.$stateParams = $stateParams;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
+        this.datePickerOptions = {
+            formatYear: 'yy',
+            startingDay: 1
+        };
+
+    }
+
+    openDatePicker($event, prop) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        prop.opened = true;
     }
 
     updateDateProperty(property) {
