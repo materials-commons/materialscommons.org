@@ -19,8 +19,6 @@ function processSettings2Directive() {
 function ProcessSettings2DirectiveController(experimentsService, toast, $stateParams) {
     var ctrl = this;
 
-    console.log('ctrl.settings', ctrl.settings);
-
     ctrl.datePickerOptions = {
         formatYear: 'yy',
         startingDay: 1
