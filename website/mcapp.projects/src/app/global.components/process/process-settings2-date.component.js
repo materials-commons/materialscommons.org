@@ -10,8 +10,6 @@ class ProcessSettings2DateComponentController {
 
     updateDateProperty(property) {
 
-        console.log(this.projectId, this.experimentId, this.processId, this.templateId);
-
         property.value =
             this.experimentsService.convertDateValueForTransport(this.setting.value);
 
@@ -20,8 +18,6 @@ class ProcessSettings2DateComponentController {
             template_id: this.templateId,
             properties: [property]
         };
-
-        console.log(propertyArgs);
 
         this.experimentsService.updateProcess(this.projectId, this.experimentId, this.processId, propertyArgs)
             .then(

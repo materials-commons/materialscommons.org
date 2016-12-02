@@ -49,7 +49,6 @@ class ExperimentsService {
     }
 
     updateProcess(projectId, experimentId, processId, updateArgs) {
-        console.log("project/experiments/service/experiment-service.updateProcess")
         return this.projectsAPI(projectId)
             .one('experiments', experimentId)
             .one('processes', processId).customPUT(updateArgs)
@@ -69,7 +68,6 @@ class ExperimentsService {
     }
 
     getProcessForExperiment(projectId, experimentId, processId) {
-        console.log("project/experiments/service/experiment-service.getProcessFroExperiment")
         return this.projectsAPI(projectId)
             .one('experiments', experimentId)
             .one('processes', processId).customGET()
@@ -107,12 +105,10 @@ class ExperimentsService {
     }
 
     convertDateValueForTransport(dateObj) {
-        console.log('convertDateValueForTransport',dateObj);
         return dateObj.getTime();
     }
 
     convertDateValueFromTransport(dateNumber) {
-        console.log('convertDateValueFromTransport',dateNumber);
         return new Date(dateNumber);
     }
 
