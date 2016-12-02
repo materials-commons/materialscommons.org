@@ -10,7 +10,7 @@ class ProcessSettings2DateComponentController {
             formatYear: 'yy',
             startingDay: 1
         };
-
+        this.date = new Date(this.setting.value);
     }
 
     openDatePicker($event, prop) {
@@ -22,7 +22,7 @@ class ProcessSettings2DateComponentController {
     updateDateProperty(property) {
 
         property.value =
-            this.experimentsService.convertDateValueForTransport(this.setting.value);
+            this.experimentsService.convertDateValueForTransport(this.date);
 
         property.setup_attribute = this.attribute;
         let propertyArgs = {
