@@ -79,20 +79,26 @@ function isValidString(value) {
 
 // isValidDate will validate a date if it's not more than 1 year in the past
 // and isn't in the future.
+// TODO: this needs to be revisited. See issue #897
 function isValidDate(value) {
-    let today = Date.now();
-    let oneYearAgo = getOneYearAgo();
-    if (_.isNumber(value) && (value >= oneYearAgo && value <= today)) {
-        return true;
-    }
-
+    if (value instanceof Date) return true;
     return false;
+    //let today = Date.now();
+    //console.log((value instanceof Date));
+    //console.log((today instanceof Date));
+    //console.log(Date.prototype);
+    //let oneYearAgo = getOneYearAgo();
+    //if (_.isNumber(value) && (value >= oneYearAgo && value <= today)) {
+    //    return true;
+    //}
+
+    //return false;
 }
 
-function getOneYearAgo() {
-    let today = Date.now();
-    today.setFullYear(today.getFullYear() - 1);
-    return today;
-}
+//function getOneYearAgo() {
+//    let today = Date.now();
+//    today.setFullYear(today.getFullYear() - 1);
+//    return today;
+//}
 
 module.exports.isValidSetupProperty = isValidSetupProperty;

@@ -6,103 +6,105 @@ function processEdit() {
      * and place inside template.
      *
      */
-    function setUp(template, process) {
-        process.setup[0].properties.forEach(function(property) {
-            var i = _.indexOf(template.setup[0].properties, function(template_property) {
-                return template_property.property.attribute === property.attribute
-            });
-            if (i > -1) {
-                template.setup[0].properties[i].property.value = property.value;
-                template.setup[0].properties[i].property.name = property.name;
-                template.setup[0].properties[i].property.description = property.description;
-                template.setup[0].properties[i].property.unit = property.unit;
-                template.setup[0].properties[i].property.id = property.id;
-                template.setup[0].properties[i].property.setup_id = property.setup_id;
-                template.setup[0].properties[i].property.otype = property.otype;
-                template.setup[0].properties[i].property.attribute = property.attribute;
+    // function setUp(template, process) {
+    //     process.setup[0].properties.forEach(function(property) {
+    //         var i = _.indexOf(template.setup[0].properties, function(template_property) {
+    //             return template_property.property.attribute === property.attribute
+    //         });
+    //         if (i > -1) {
+    //             template.setup[0].properties[i].property.value = property.value;
+    //             template.setup[0].properties[i].property.name = property.name;
+    //             template.setup[0].properties[i].property.description = property.description;
+    //             template.setup[0].properties[i].property.unit = property.unit;
+    //             template.setup[0].properties[i].property.id = property.id;
+    //             template.setup[0].properties[i].property.setup_id = property.setup_id;
+    //             template.setup[0].properties[i].property.otype = property.otype;
+    //             template.setup[0].properties[i].property.attribute = property.attribute;
+    //
+    //             // If selection type then modify the choices when Other is selected, since the
+    //             // user may have modified the value of other. We need to do this otherwise the
+    //             // default other in the choices will update the value and the user will lose what
+    //             // they set.
+    //             if (property.otype === 'selection') {
+    //                 if (property.value.name === 'Other') {
+    //                     let otherChoicesIndex = _.indexOf(template.setup[0].properties[i].property.choices,
+    //                         (c) => c.name === 'Other');
+    //                     if (otherChoicesIndex !== -1) {
+    //                         template.setup[0].properties[i].property.choices[otherChoicesIndex].value = property.value.value;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     });
+    //     process.setup = template.setup;
+    //     return process;
+    // }
 
-                // If selection type then modify the choices when Other is selected, since the
-                // user may have modified the value of other. We need to do this otherwise the
-                // default other in the choices will update the value and the user will lose what
-                // they set.
-                if (property.otype === 'selection') {
-                    if (property.value.name === 'Other') {
-                        let otherChoicesIndex = _.indexOf(template.setup[0].properties[i].property.choices,
-                            (c) => c.name === 'Other');
-                        if (otherChoicesIndex !== -1) {
-                            template.setup[0].properties[i].property.choices[otherChoicesIndex].value = property.value.value;
-                        }
-                    }
-                }
-            }
-        });
-        process.setup = template.setup;
-        return process;
-    }
+    // function samples(process) {
+    //     //process.input_samples = process.input_samples;
+    //     return process;
+    // }
 
-    function samples(process) {
-        //process.input_samples = process.input_samples;
-        return process;
-    }
+    // function files(process) {
+    //     //process['input_files'] = process.input_files.map(function(file) {
+    //     //    return {id: file.id, name: file.name}
+    //     //});
+    //     //process['output_files'] = process.output_files.map(function(file) {
+    //     //    return {id: file.id, name: file.name}
+    //     //});
+    //     return process;
+    // }
 
-    function files(process) {
-        //process['input_files'] = process.input_files.map(function(file) {
-        //    return {id: file.id, name: file.name}
-        //});
-        //process['output_files'] = process.output_files.map(function(file) {
-        //    return {id: file.id, name: file.name}
-        //});
-        return process;
-    }
+    // function addCompositionToMeasurements(prop, measurements) {
+    //     for (let i = 0; i < measurements.length; i++) {
+    //         let measurement = measurements[i];
+    //         if (measurement.property.attribute === 'composition') {
+    //             measurement.property.unit = prop.unit;
+    //             measurement.property.value = prop.value;
+    //             break;
+    //         }
+    //     }
+    // }
 
-    function addCompositionToMeasurements(prop, measurements) {
-        for (let i = 0; i < measurements.length; i++) {
-            let measurement = measurements[i];
-            if (measurement.property.attribute === 'composition') {
-                measurement.property.unit = prop.unit;
-                measurement.property.value = prop.value;
-                break;
-            }
-        }
-    }
-
-    function setupMeasurements(process, templateMeasurements, template) {
-        if (template.category === 'create_samples') {
-            // Hack, just extract the composition from one of the samples to display as the measurements.
-            let foundComposition = false;
-            for (let i = 0; i < process.output_samples.length; i++) {
-                let sample = process.output_samples[i];
-                for (let k = 0; k < sample.properties.length; k++) {
-                    let prop = sample.properties[k];
-                    if (prop.attribute === 'composition') {
-                        addCompositionToMeasurements(prop.best_measure[0], templateMeasurements);
-                        foundComposition = true;
-                    }
-                }
-                if (foundComposition) {
-                    break;
-                }
-            }
-        }
-        process.measurements = templateMeasurements;
-    }
+    // function setupMeasurements(process, templateMeasurements, template) {
+    //     if (template.category === 'create_samples') {
+    //         // Hack, just extract the composition from one of the samples to display as the measurements.
+    //         let foundComposition = false;
+    //         for (let i = 0; i < process.output_samples.length; i++) {
+    //             let sample = process.output_samples[i];
+    //             for (let k = 0; k < sample.properties.length; k++) {
+    //                 let prop = sample.properties[k];
+    //                 if (prop.attribute === 'composition') {
+    //                     addCompositionToMeasurements(prop.best_measure[0], templateMeasurements);
+    //                     foundComposition = true;
+    //                 }
+    //             }
+    //             if (foundComposition) {
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     process.measurements = templateMeasurements;
+    // }
 
     return {
         fillProcess: function(template, process) {
             //console.log('fillProcess', template, process.plain());
             //process.measurements = [];
             return process;
-            process = setUp(template, process);
-            process = samples(process);
-            process = files(process);
-            setupMeasurements(process, template.measurements, template);
-            if (!('output_samples' in process)) {
-                process.output_samples = [];
-            }
-            if (!('transformed_samples' in process)) {
-                process.transformed_samples = [];
-            }
-            return process;
+            // comment out below lines and their functions
+            //   to reduce list of errors on compile
+            // process = setUp(template, process);
+            // process = samples(process);
+            // process = files(process);
+            // setupMeasurements(process, template.measurements, template);
+            // if (!('output_samples' in process)) {
+            //     process.output_samples = [];
+            // }
+            // if (!('transformed_samples' in process)) {
+            //     process.transformed_samples = [];
+            // }
+            // return process;
         },
 
         addToSamplesFiles: function(files, process) {
