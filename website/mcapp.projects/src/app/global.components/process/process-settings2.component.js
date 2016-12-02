@@ -1,7 +1,6 @@
 class ProcessSettings2ComponentController {
     /*@ngInject*/
     constructor(){
-        console.log("ProcessSettings2ComponentController");
     }
 }
 
