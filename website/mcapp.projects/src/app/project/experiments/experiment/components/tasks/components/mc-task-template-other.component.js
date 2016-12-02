@@ -75,30 +75,3 @@ angular.module('materialscommons').component('mcTaskTemplateOther', {
     }
 });
 
-/*@ngInject*/
-//function MCTaskTemplateOtherComponentController2(sampleLinker, processEdit, selectItems) {
-//    var ctrl = this;
-//    ctrl.linkFilesToSample = linkFilesToSample;
-//
-//    function linkFilesToSample(sample, input_files, output_files) {
-//        sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function(linkedFiles) {
-//            sample = processEdit.refreshSample(linkedFiles, sample);
-//        });
-//    }
-//
-//    ctrl.selectFiles = () => {
-//        selectItems.open('files').then(
-//            (selected) => {
-//                // log('selectedFiles', selected);
-//            }
-//        );
-//    };
-//
-//    ctrl.selectSamples = () => {
-//        selectItems.open('samples').then(
-//            (selected) => {
-//                // log('selectedSamples', selected);
-//            }
-//        );
-//    };
-//}
