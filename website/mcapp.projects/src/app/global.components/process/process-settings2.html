@@ -4,89 +4,54 @@
         <form name="processSettingsForm">
             <div ng-repeat="setting in ctrl.settings">
                 <div ng-switch="::setting.otype">
-
                     <!--------- number --------->
                     <div ng-switch-when="number">
-                        <div layout="row" layout-align="start center">
-                            <md-input-container md-no-float>
-                                <label>{{::setting.name}}</label>
-                                <input type="number"
-                                       name="numberInput"
-                                       step="any"
-                                       ng-change="ctrl.updateSettingProperty(setting)"
-                                       ng-required="::setting.required"
-                                       ng-model="setting.value">
-                            </md-input-container>
-                            <span ng-if="setting.units.length === 0" class="unit-align">
-                                {{::setting.unit}}
-                            </span>
-                            <span ng-if="setting.units.length !== 0">
-                                <md-select ng-model="setting.unit"
-                                           ng-change="ctrl.updateSettingProperty(setting)"
-                                           aria-label="units"
-                                           class="units-align">
-                                    <md-option ng-repeat="unit in ::setting.units"
-                                               ng-value="unit">
-                                        {{unit}}
-                                    </md-option>
-                                </md-select>
-                            </span>
-                        </div>
+                        <process-settings2-number
+                                setting="setting"
+                                template-id="ctrl.templateId"
+                                process-id="ctrl.processId"
+                                attribute="ctrl.attribute"
+                        ></process-settings2-number>
                     </div>
 
                     <!------ composition ----->
                     <div ng-switch-when="composition">
-                        <label>Composition</label>
-                        <periodic-table composition="setting"></periodic-table>
+                        <process-settings2-composition
+                                setting="setting"
+                                template-id="ctrl.templateId"
+                                process-id="ctrl.processId"
+                                attribute="ctrl.attribute"
+                        ></process-settings2-composition>
                     </div>
 
                     <!--------- date --------->
                     <div ng-switch-when="date">
-                        <label>{{::setting.name}}</label>
-                        <md-datepicker ng-model="setting.property.value"
-                                       ng-change="ctrl.updateSettingProperty(setting.property)">
-                        </md-datepicker>
+                        <process-settings2-date
+                                setting="setting"
+                                template-id="ctrl.templateId"
+                                process-id="ctrl.processId"
+                                attribute="ctrl.attribute"
+                        ></process-settings2-date>
                     </div>
 
                     <!--------- selection --------->
                     <div ng-switch-when="selection">
-                        <div style="margin-top:45px">
-                            <md-input-container class="md-block">
-                                <label>{{::setting.name}}</label>
-                                <md-select ng-model="setting.value"
-                                           ng-model-options="{trackBy: '$value.name'}"
-                                           ng-change="ctrl.updateSettingProperty(setting)"
-                                           aria-label="x">
-                                    <md-option ng-value="choice"
-                                               ng-repeat="choice in ::setting.choices">
-                                        {{::choice.name}}
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
-                        </div>
-                        <div ng-if="setting.value.name === 'Other'">
-                            <div style="margin-top:45px">
-                                <md-input-container class="md-block" md-no-float>
-                                    <label>Specify {{::setting.name}}...</label>
-                                    <input ng-model="setting.value.value"
-                                           ng-model-options="{debounce: 500}"
-                                           ng-change="ctrl.updateSettingProperty(setting)"
-                                           type="text">
-                                </md-input-container>
-                            </div>
-                        </div>
+                        <process-settings2-selection
+                                setting="setting"
+                                template-id="ctrl.templateId"
+                                process-id="ctrl.processId"
+                                attribute="ctrl.attribute"
+                        ></process-settings2-selection>
                     </div>
 
                     <!--------- string --------->
                     <div ng-switch-when="string">
-                        <md-input-container class="md-block">
-                            <label>{{::setting.name}}</label>
-                            <input type="text" name="stringInput"
-                                   ng-required="::setting.required"
-                                   ng-model-options="{debounce: 500}"
-                                   ng-change="ctrl.updateSettingProperty(setting)"
-                                   ng-model="setting.value">
-                        </md-input-container>
+                        <process-settings2-string
+                                setting="setting"
+                                template-id="ctrl.templateId"
+                                process-id="ctrl.processId"
+                                attribute="ctrl.attribute"
+                        ></process-settings2-string>
                     </div>
 
                     <!--------- unknown type --------->
