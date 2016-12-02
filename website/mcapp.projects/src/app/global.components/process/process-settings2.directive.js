@@ -16,6 +16,5 @@ function processSettings2Directive() {
 }
 
 /*@ngInject*/
-function ProcessSettings2DirectiveController(experimentsService, toast, $stateParams) {
-
+function ProcessSettings2DirectiveController() {
 }
