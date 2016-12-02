@@ -2,15 +2,15 @@
     <h4 class="md-title">Setup</h4>
     <md-content layout-padding>
         <form name="processSettingsForm">
-            <div ng-repeat="setting in ctrl.settings">
+            <div ng-repeat="setting in $ctrl.settings">
                 <div ng-switch="::setting.otype">
                     <!--------- number --------->
                     <div ng-switch-when="number">
                         <process-settings2-number
                                 setting="setting"
-                                template-id="ctrl.templateId"
-                                process-id="ctrl.processId"
-                                attribute="ctrl.attribute"
+                                template-id="$ctrl.templateId"
+                                process-id="$ctrl.processId"
+                                attribute="$ctrl.attribute"
                         ></process-settings2-number>
                     </div>
 
@@ -18,9 +18,9 @@
                     <div ng-switch-when="composition">
                         <process-settings2-composition
                                 setting="setting"
-                                template-id="ctrl.templateId"
-                                process-id="ctrl.processId"
-                                attribute="ctrl.attribute"
+                                template-id="$ctrl.templateId"
+                                process-id="$ctrl.processId"
+                                attribute="$ctrl.attribute"
                         ></process-settings2-composition>
                     </div>
 
@@ -28,9 +28,9 @@
                     <div ng-switch-when="date">
                         <process-settings2-date
                                 setting="setting"
-                                template-id="ctrl.templateId"
-                                process-id="ctrl.processId"
-                                attribute="ctrl.attribute"
+                                template-id="$ctrl.templateId"
+                                process-id="$ctrl.processId"
+                                attribute="$ctrl.attribute"
                         ></process-settings2-date>
                     </div>
 
@@ -38,9 +38,9 @@
                     <div ng-switch-when="selection">
                         <process-settings2-selection
                                 setting="setting"
-                                template-id="ctrl.templateId"
-                                process-id="ctrl.processId"
-                                attribute="ctrl.attribute"
+                                template-id="$ctrl.templateId"
+                                process-id="$ctrl.processId"
+                                attribute="$ctrl.attribute"
                         ></process-settings2-selection>
                     </div>
 
@@ -48,9 +48,9 @@
                     <div ng-switch-when="string">
                         <process-settings2-string
                                 setting="setting"
-                                template-id="ctrl.templateId"
-                                process-id="ctrl.processId"
-                                attribute="ctrl.attribute"
+                                template-id="$ctrl.templateId"
+                                process-id="$ctrl.processId"
+                                attribute="$ctrl.attribute"
                         ></process-settings2-string>
                     </div>
 

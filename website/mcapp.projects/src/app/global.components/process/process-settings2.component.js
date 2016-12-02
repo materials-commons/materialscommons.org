@@ -6,7 +6,7 @@ class ProcessSettings2ComponentController {
 }
 
 angular.module('materialscommons').component('processSettings2', {
-    binding: {
+    bindings: {
         settings: '=',
         templateId: '=',
         attribute: '=',
