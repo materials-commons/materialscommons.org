@@ -61,12 +61,6 @@ export function templatesService(Restangular, processEdit, $log) {
 
         getServerTemplates() {
             return Restangular.one('v2').one('/templates').get();
-        },
-
-        loadProcess(process) {
-            let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
-            let t = getTemplate(templateName);
-            return processEdit.fillProcess(t, process);
         }
     };
 }
