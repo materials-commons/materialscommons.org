@@ -176,7 +176,7 @@ function* validateUpdateExperimentTaskTemplateArgs(updateArgs, params) {
     if (updateArgs.properties) {
         for (let i = 0; i < updateArgs.properties.length; i++) {
             let property = updateArgs.properties[i];
-            let errors = yield validateProperty(template, property);
+            let errors = yield validators.validateProperty(template, property);
             if (errors !== null) {
                 return errors;
             }
@@ -194,7 +194,7 @@ function* validateUpdateExperimentTaskTemplateArgs(updateArgs, params) {
     if (updateArgs.files) {
         for (let i = 0; i < updateArgs.files.length; i++) {
             let f = updateArgs.files[i];
-            let errors = yield validateFile(params.project_id, f);
+            let errors = yield validators.validateFile(params.project_id, f);
             if (errors !== null) {
                 return errors;
             }
