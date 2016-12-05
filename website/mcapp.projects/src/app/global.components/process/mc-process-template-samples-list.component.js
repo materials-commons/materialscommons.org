@@ -49,8 +49,8 @@ angular.module('materialscommons').component('mcProcessTemplateSamplesList', {
     controller: MCProcessTemplateSamplesListComponentController,
     bindings: {
         process: '='
-    },
-    require: {
-        mcProcessesWorkflow: '^mcProcessesWorkflow'
-    }
+    }//,
+    // require: {
+    //     mcProcessesWorkflow: '^mcProcessesWorkflow'
+    // }
 });
