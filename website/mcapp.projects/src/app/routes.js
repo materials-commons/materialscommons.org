@@ -295,20 +295,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     }]
             }
         })
-        .state('project.process.edit', {
-            url: '/edit',
-            template: '<mc-process-edit></mc-process-edit>',
-            resolve: {
-                _process: ['process', 'projectsService', '$stateParams',
-                    function(process, projectsService, $stateParams) {
-                        return projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
-                            .then(function(proc) {
-                                process.set(proc);
-                                return proc;
-                            });
-                    }]
-            }
-        })
         .state('project.samples', {
             url: '/samples',
             template: '<mc-project-samples samples="ctrl.samples"></mc-project-samples>',
