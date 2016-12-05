@@ -1,4 +1,4 @@
-class ProcessSettings2CompositionComponentController {
+class MCAttributeSelectionComponentController {
     /*@ngInject*/
     constructor(experimentsService, toast, $stateParams) {
         this.experimentsService = experimentsService;
@@ -8,15 +8,15 @@ class ProcessSettings2CompositionComponentController {
         this.experimentId = $stateParams.experiment_id;
     }
 
-    updateSettingProperty(property) {
+    updateSelectionSettingProperty(property) {
 
         if (!property.value) {
             console.log("No value -> ", property);
             return;
         }
 
-        if (property.otype != "composition") {
-            console.log("Not a composition -> ", property);
+        if (property.otype != "selection") {
+            console.log("Not a selection -> ", property);
             return;
         }
 
@@ -34,9 +34,9 @@ class ProcessSettings2CompositionComponentController {
     }
 }
 
-angular.module('materialscommons').component('processSettings2Composition', {
-    templateUrl: 'app/global.components/process/process-settings2-composition.html',
-    controller: ProcessSettings2CompositionComponentController,
+angular.module('materialscommons').component('mcAttributeSelection', {
+    templateUrl: 'app/global.components/attribute/mc-attribute-selection.html',
+    controller: MCAttributeSelectionComponentController,
     bindings: {
         setting: '<',
         templateId: '<',
