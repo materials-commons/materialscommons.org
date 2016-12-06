@@ -1,4 +1,4 @@
-class ProcessSettings2SelectionComponentController {
+class MCAttributeNumberComponentController {
     /*@ngInject*/
     constructor(experimentsService, toast, $stateParams) {
         this.experimentsService = experimentsService;
@@ -8,15 +8,24 @@ class ProcessSettings2SelectionComponentController {
         this.experimentId = $stateParams.experiment_id;
     }
 
-    updateSelectionSettingProperty(property) {
+    updateSettingProperty(property) {
 
         if (!property.value) {
             console.log("No value -> ", property);
             return;
         }
 
-        if (property.otype != "selection") {
-            console.log("Not a selection -> ", property);
+        if (property.otype != "number") {
+            console.log("Not a number -> ", property);
+            return;
+        }
+
+        if (!property.units) {
+            property.units = [];
+        }
+
+        if (property.units.length && !property.unit) {
+            console.log("No unit -> ", property);
             return;
         }
 
@@ -34,9 +43,9 @@ class ProcessSettings2SelectionComponentController {
     }
 }
 
-angular.module('materialscommons').component('processSettings2Selection', {
-    templateUrl: 'app/global.components/process/process-settings2-selection.html',
-    controller: ProcessSettings2SelectionComponentController,
+angular.module('materialscommons').component('mcAttributeNumber', {
+    templateUrl: 'app/global.components/attribute/mc-attribute-number.html',
+    controller: MCAttributeNumberComponentController,
     bindings: {
         setting: '<',
         templateId: '<',
