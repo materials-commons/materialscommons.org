@@ -1,4 +1,4 @@
-class ProcessSettings2DateComponentController {
+class MCAttributeStringComponentController {
     /*@ngInject*/
     constructor(experimentsService, toast, $stateParams) {
         this.experimentsService = experimentsService;
@@ -6,23 +6,19 @@ class ProcessSettings2DateComponentController {
         this.$stateParams = $stateParams;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
-        this.datePickerOptions = {
-            formatYear: 'yy',
-            startingDay: 1
-        };
-        this.date = new Date(this.setting.value);
     }
 
-    openDatePicker($event, prop) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        prop.opened = true;
-    }
+    updateSettingProperty(property) {
 
-    updateDateProperty(property) {
+        if (!property.value) {
+            console.log("No value -> ", property);
+            return;
+        }
 
-        property.value =
-            this.experimentsService.convertDateValueForTransport(this.date);
+        if (property.otype != "string") {
+            console.log("Not a string -> ", property);
+            return;
+        }
 
         property.setup_attribute = this.attribute;
         let propertyArgs = {
@@ -38,9 +34,9 @@ class ProcessSettings2DateComponentController {
     }
 }
 
-angular.module('materialscommons').component('processSettings2Date', {
-    templateUrl: 'app/global.components/process/process-settings2-date.html',
-    controller: ProcessSettings2DateComponentController,
+angular.module('materialscommons').component('mcAttributeString', {
+    templateUrl: 'app/global.components/attribute/mc-attribute-string.html',
+    controller: MCAttributeStringComponentController,
     bindings: {
         setting: '<',
         templateId: '<',
