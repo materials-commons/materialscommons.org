@@ -6,52 +6,52 @@
                 <div ng-switch="::setting.otype">
                     <!--------- number --------->
                     <div ng-switch-when="number">
-                        <process-settings2-number
+                        <mc-attribute-number
                                 setting="setting"
                                 template-id="$ctrl.templateId"
                                 process-id="$ctrl.processId"
-                                attribute="$ctrl.attribute"
-                        ></process-settings2-number>
+                                attribute="$ctrl.attribute">
+                        </mc-attribute-number>
                     </div>
 
                     <!------ composition ----->
                     <div ng-switch-when="composition">
-                        <process-settings2-composition
+                        <mc-attribute-composition
                                 setting="setting"
                                 template-id="$ctrl.templateId"
                                 process-id="$ctrl.processId"
-                                attribute="$ctrl.attribute"
-                        ></process-settings2-composition>
+                                attribute="$ctrl.attribute">
+                        </mc-attribute-composition>
                     </div>
 
                     <!--------- date --------->
                     <div ng-switch-when="date">
-                        <process-settings2-date
+                        <mc-attribute-date
                                 setting="setting"
                                 template-id="$ctrl.templateId"
                                 process-id="$ctrl.processId"
                                 attribute="$ctrl.attribute"
-                        ></process-settings2-date>
+                        ></mc-attribute-date>
                     </div>
 
                     <!--------- selection --------->
                     <div ng-switch-when="selection">
-                        <process-settings2-selection
+                        <mc-attribute-selection
                                 setting="setting"
                                 template-id="$ctrl.templateId"
                                 process-id="$ctrl.processId"
-                                attribute="$ctrl.attribute"
-                        ></process-settings2-selection>
+                                attribute="$ctrl.attribute">
+                        </mc-attribute-selection>
                     </div>
 
                     <!--------- string --------->
                     <div ng-switch-when="string">
-                        <process-settings2-string
+                        <mc-attribute-string
                                 setting="setting"
                                 template-id="$ctrl.templateId"
                                 process-id="$ctrl.processId"
-                                attribute="$ctrl.attribute"
-                        ></process-settings2-string>
+                                attribute="$ctrl.attribute">
+                        </mc-attribute-string>
                     </div>
 
                     <!--------- unknown type --------->
