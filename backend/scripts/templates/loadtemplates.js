@@ -74,6 +74,7 @@ class Properties {
     composition(name) {
         let p = new Property(name, "composition");
         p.units = ["at%", "wt%", "atoms"];
+        p.value = [];
         this.currentProp = p;
         this.properties.push(p);
         return this;
