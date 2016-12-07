@@ -35,7 +35,7 @@ function listFiles() {
     });
 
     files.push({
-        pattern: 'unit-test/**/*',
+        pattern: 'unit-test/**/*.spec.js',
         include: true,
         watched: true
     });
@@ -48,7 +48,7 @@ module.exports = function (config) {
     var configuration = {
         files: listFiles(),
 
-        singleRun: true,
+        singleRun: false,
 
         autoWatch: true,
 
