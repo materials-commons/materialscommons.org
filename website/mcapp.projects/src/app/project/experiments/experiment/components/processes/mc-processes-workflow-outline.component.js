@@ -27,6 +27,12 @@ class MCProcessesWorkflowOutlineComponentController {
         this.buildOutline();
     }
 
+    $onDestroy() {
+        this.mcProcessesWorkflow.setDeleteProcessCallback(null);
+        this.mcProcessesWorkflow.setOnChangeCallback(null);
+        this.mcProcessesWorkflow.setAddProcessCallback(null);
+    }
+
     // This method will be called implicitly when the component is loaded.
     $onChanges(changes) {
         if (changes.processes) {
