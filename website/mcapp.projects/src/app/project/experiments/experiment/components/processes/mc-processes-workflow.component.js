@@ -31,12 +31,10 @@ class MCProcessesWorkflowComponentController {
     $onInit() {
         let onChangeCB = () => this.onChange();
         this.workflowService.setWorkflowChangeCallback(onChangeCB);
-        console.log('MCProcessesWorkflowComponentController created');
     }
 
     $onDestroy() {
         this.workflowService.clearWorkflowChangeCallbacks();
-        console.log('MCProcessesWorkflowComponentController destroyed');
     }
 
     addProcess(templateId) {
