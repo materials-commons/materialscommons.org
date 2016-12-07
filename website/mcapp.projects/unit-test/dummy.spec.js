@@ -1,9 +1,9 @@
 'use strict';
 
-describe('HelpController', function() {
+describe('Dummy Specification', function() {
 
     it('should be true', function () {
-        expect(true).toBe(false);
+        expect(true).toBe(true);
     });
 
 });
