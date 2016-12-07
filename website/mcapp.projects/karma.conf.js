@@ -18,7 +18,7 @@ function listFiles() {
 
     var patterns = wiredep(wiredepOptions).js
         .concat([
-            path.join(conf.paths.tmp, '/serve/app/index.module.js', 'karma.conf.js'),
+            path.join(conf.paths.tmp, 'src/app/index.module.js', 'karma.conf.js'),
         ])
         .concat(pathSrcHtml);
 
@@ -27,6 +27,10 @@ function listFiles() {
             pattern: pattern
         };
     });
+
+    files.push('../../node_modules/angular/angular.js');              // angular
+    files.push('../../node_modules/angular-mocks/angular-mocks.js');  // to load modules for tests
+
     files.push({
         pattern: path.join(conf.paths.src, '/assets/**/*'),
         included: false,
