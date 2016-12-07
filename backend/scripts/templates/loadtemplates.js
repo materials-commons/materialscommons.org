@@ -432,7 +432,7 @@ class CreateSinglePhaseSamplesTemplate extends TemplateBase {
         this.addMeasurements()
             .string("Phase Name")
             .string("Application")
-            .desc("Describes thee physical model. Ex: CahnHilliard, AllenCahn, CoupledCahnHilliardAllenCahn, etc...")
+            .desc("Describes the physical model. Ex: CahnHilliard, AllenCahn, CoupledCahnHilliardAllenCahn, etc...")
             .func(chname("Source"))
             .func(chname("Homogenous Free Energy Density"))
             .vector(chname("Concentration Gradient Penalty Coefficient Vector"))
@@ -470,6 +470,20 @@ class CreatePhaseInterfaceSamplesTemplate extends TemplateBase {
             .vectorType('float').vectorDim(3)
             .matrix('Structural Order Parameter Gradient Penalty Coefficient Matrix', [3, 3])
             .matrixType('float')
+            .done();
+        this.measurementsDone();
+    }
+}
+
+class CreatePhaseFieldSystemSamplesTemplate extends TemplateBase {
+    constructor() {
+        super("Phase Field System", "create", true, false);
+        this.setCategory("create_sample");
+        this.addSetup("Computation").done();
+
+        this.addMeasurements()
+            .string("Application").desc("Describes the physical model. Ex: CahnHilliard, AllenCahn, CoupledCahnHilliardAllenCahn, etc...")
+            .func("Interpolation Function")
             .done();
         this.measurementsDone();
     }
@@ -887,6 +901,7 @@ let globalTemplates = [
     CreateCompositionAxesSamplesTemplate,
     CreateSinglePhaseSamplesTemplate,
     CreatePhaseInterfaceSamplesTemplate,
+    CreatePhaseFieldSystemSamplesTemplate,
 
     // Experimental Process Templates
     AptTemplate,
