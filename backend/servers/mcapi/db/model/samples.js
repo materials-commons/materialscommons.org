@@ -156,17 +156,30 @@ function* addSeparatePropertyMeasurementsForSamples(processId, prop) {
 }
 
 function* addAsBestMeasure(propertyID, measurementID) {
-    let bmh = new model.BestMeasureHistory(propertyID, measurementID);
-    let inserted = yield db.insert('best_measure_history', bmh);
-    yield r.table('properties').get(propertyID).update({best_measure_id: inserted.id});
+    let existing = yield r.table('best_measure_history').getAll(propertyID, {index: 'property_id'});
+    if (!existing.length) {
+        let bmh = new model.BestMeasureHistory(propertyID, measurementID);
+        let inserted = yield db.insert('best_measure_history', bmh);
+        yield r.table('properties').get(propertyID).update({best_measure_id: inserted.id});
+    } else {
+        yield r.table('best_measure_history').get(existing[0].id).update({measurement_id: measurementID});
+    }
 }
 
 function *addNewPropertyMeasurements(processId, sampleID, psetID, prop, measurements) {
-    let p = new model.Property(prop.name, prop.attribute);
-    let inserted = yield db.insert('properties', p);
-    let ps2p = new model.PropertySet2Property(inserted.id, psetID);
-    yield db.insert('propertyset2property', ps2p);
-    yield addPropertyMeasurements(processId, inserted.id, sampleID, prop.name, prop.attribute, measurements);
+    let propertyId;
+    let matches = yield r.table('propertyset2property').getAll(psetID, {index: 'property_set_id'})
+        .eqJoin('property_id', r.table('properties')).zip().filter({attribute: prop.attribute});
+    if (matches.length) {
+        propertyId = matches[0].property_id;
+    } else {
+        let p = new model.Property(prop.name, prop.attribute);
+        let inserted = yield db.insert('properties', p);
+        propertyId = inserted.id;
+        let ps2p = new model.PropertySet2Property(inserted.id, psetID);
+        yield db.insert('propertyset2property', ps2p);
+    }
+    yield addPropertyMeasurements(processId, propertyId, sampleID, prop.name, prop.attribute, measurements);
 }
 
 function* updateSamplesMeasurements() {
