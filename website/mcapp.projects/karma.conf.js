@@ -65,7 +65,8 @@ module.exports = function (config) {
 
         frameworks: ['jasmine'],
 
-        browsers : ['PhantomJS','Chrome'],
+        // browsers : ['PhantomJS','Chrome'],
+        browsers : ['Chrome'],
 
         // plugins: [
         //     'karma-phantomjs-launcher',
@@ -80,7 +81,8 @@ module.exports = function (config) {
             dir: 'coverage/'
         },
 
-        reporters: ['progress','mocha'],
+        // reporters: ['progress','mocha'],
+        reporters: ['mocha'],
 
         proxies: {
             '/assets/': path.join('/base/', conf.paths.src, '/assets/')
