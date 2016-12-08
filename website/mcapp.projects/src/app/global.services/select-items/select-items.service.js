@@ -3,11 +3,12 @@ export function selectItemsService($modal) {
 
     return {
         open: function() {
-            var tabs = {
+            let tabs = {
                 processes: false,
                 files: false,
                 samples: false,
-                reviews: false
+                reviews: false,
+                uploadFiles: false
             };
 
             let opts = {
@@ -19,7 +20,7 @@ export function selectItemsService($modal) {
                 throw "Invalid arguments to service selectItems:open()";
             }
 
-            for (var i = 0; i < arguments.length; i++) {
+            for (let i = 0; i < arguments.length; i++) {
                 if ((arguments[i] in tabs)) {
                     tabs[arguments[i]] = true;
                 } else if (_.isObject(arguments[i])) {
@@ -28,7 +29,7 @@ export function selectItemsService($modal) {
                 }
             }
 
-            var modal = $modal.open({
+            let modal = $modal.open({
                 size: 'lg',
                 templateUrl: 'app/global.services/select-items/select-items.html',
                 controller: SelectItemsServiceModalController,
@@ -54,6 +55,10 @@ export function selectItemsService($modal) {
                         return tabs.reviews;
                     },
 
+                    showUploadFiles: function() {
+                        return tabs.uploadFiles;
+                    },
+
                     options: () => opts
                 }
             });
@@ -64,8 +69,8 @@ export function selectItemsService($modal) {
 
 /*@ngInject*/
 function SelectItemsServiceModalController($modalInstance, showProcesses, showFilesTree, showFilesTable, showSamples, options,
-                                           showReviews, projectsService, $stateParams, project, experimentsService) {
-    var ctrl = this;
+                                           showReviews, showUploadFiles, projectsService, $stateParams, project, experimentsService) {
+    let ctrl = this;
 
     ctrl.project = project.get();
     ctrl.tabs = loadTabs();
@@ -89,11 +94,11 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
     }
 
     function ok() {
-        var selectedProcesses = ctrl.processes.filter(function(p) {
+        const selectedProcesses = ctrl.processes.filter(function(p) {
             return p.input || p.output;
         });
 
-        var selectedSamples = ctrl.samples.filter(function(s) {
+        let selectedSamples = ctrl.samples.filter(function(s) {
             for (let i = 0; i < s.versions.length; i++) {
                 if (s.versions[i].selected) {
                     return true;
@@ -102,7 +107,7 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
             return false;
         });
 
-        var selectedFiles = getSelectedFiles();
+        let selectedFiles = getSelectedFiles();
 
         $modalInstance.close({
             processes: selectedProcesses,
@@ -112,9 +117,9 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
     }
 
     function getSelectedFiles() {
-        var files = [];
+        let files = [];
         if (showFilesTree) {
-            var treeModel = new TreeModel(),
+            let treeModel = new TreeModel(),
                 root = treeModel.parse(project.get().files[0]);
             // Walk the tree looking for selected files and adding them to the
             // list of files. Also reset the selected flag so the next time
@@ -141,7 +146,7 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
     }
 
     function loadTabs() {
-        var tabs = [];
+        let tabs = [];
         if (showProcesses) {
             tabs.push(newTab('processes', 'fa-code-fork'));
             if (options.experimentId) {
@@ -184,6 +189,10 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
 
         if (showReviews) {
             tabs.push(newTab('reviews', 'fa-comment'));
+        }
+
+        if (showUploadFiles) {
+            tabs.push(newTab('Upload Files', 'fa-upload'));
         }
 
         tabs.sort(function compareByName(t1, t2) {
