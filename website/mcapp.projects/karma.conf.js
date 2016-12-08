@@ -60,6 +60,14 @@ function listFiles() {
         watched: false
     });
 
+    // source code
+    files.push({
+        pattern: path.join(conf.paths.src, '/src/app/**/*.js'),
+        included: false,
+        served: false,
+        watched: true
+    });
+
     // assets
     files.push({
         pattern: path.join(conf.paths.src, '/assets/**/*'),

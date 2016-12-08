@@ -1,4 +1,4 @@
-describe('MC Show Process Component Controller', function() {
+describe('MC isImage Service', function() {
     // ref: src/app/global.services/isImage.service.js
 
     beforeEach(module('angular.filter'));
