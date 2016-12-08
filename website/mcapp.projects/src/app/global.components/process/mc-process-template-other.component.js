@@ -18,7 +18,7 @@ class MCProcessTemplateOtherComponentController {
     }
 
     selectFiles() {
-        this.selectItems.open('files').then(
+        this.selectItems.open('files', 'uploadFiles').then(
             (selected) => {
                 let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
                 let filesArgs = {
