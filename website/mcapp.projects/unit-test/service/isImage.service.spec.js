@@ -1,7 +1,6 @@
-describe('MC isImage Service', function() {
+describe('MC Service: isImage', function() {
     // ref: src/app/global.services/isImage.service.js
 
-    beforeEach(module('angular.filter'));
     beforeEach(module('materialscommons'));
 
     var service;
