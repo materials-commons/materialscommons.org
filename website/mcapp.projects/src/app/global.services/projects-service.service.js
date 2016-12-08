@@ -1,7 +1,7 @@
 /*@ngInject*/
 export function projectsService (Restangular) {
-    var onChangeFn = null;
-    var projectsAPI = _.partial(Restangular.one('v2').one, 'projects');
+    let onChangeFn = null;
+    const projectsAPI = _.partial(Restangular.one('v2').one, 'projects');
 
     return {
 
@@ -72,6 +72,10 @@ export function projectsService (Restangular) {
             } else {
                 return projectsAPI(projectID).one('directories', dirID).get();
             }
+        },
+
+        getAllProjectDirectories: function(projectId) {
+            return projectsAPI(projectId).one('directories', 'all').getList();
         },
 
         createProjectDir: function(projectID, fromDirID, path) {
