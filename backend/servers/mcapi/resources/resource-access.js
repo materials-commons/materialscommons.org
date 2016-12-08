@@ -84,7 +84,7 @@ function* validateSampleInProject(next) {
 }
 
 function* validateDirectoryInProject(next) {
-    if (this.params.directory_id !== 'top') {
+    if (this.params.directory_id !== 'top' && this.params.directory_id !== 'all') {
         let isInProject = yield check.directoryInProject(this.params.project_id, this.params.directory_id);
         if (!isInProject) {
             this.status = httpStatus.BAD_REQUEST;

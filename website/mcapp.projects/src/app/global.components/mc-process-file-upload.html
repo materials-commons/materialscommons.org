@@ -1,0 +1,14 @@
+<div>
+    <mc-flow-button dir="$ctrl.dir"></mc-flow-button>
+    <label>Directory to upload to</label>
+    <md-select ng-model="$ctrl.dir.data"
+               aria-label="dirs">
+        <md-option ng-repeat="dir in $ctrl.dirs"
+                   ng-value="dir">
+            {{dir.name}}
+        </md-option>
+    </md-select>
+    <div ng-if="$ctrl.hasUploads()">
+        <mc-file-uploads></mc-file-uploads>
+    </div>
+</div>
