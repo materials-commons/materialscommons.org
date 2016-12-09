@@ -62,7 +62,7 @@ function listFiles() {
 
     // source code
     files.push({
-        pattern: path.join(conf.paths.src, '/src/app/**/*.js'),
+        pattern: path.join(conf.paths.src, '/app/**/*.js'),
         included: false,
         served: false,
         watched: true
