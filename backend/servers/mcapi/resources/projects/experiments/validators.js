@@ -1,5 +1,6 @@
 const check = require('../../../db/model/check');
 const schema = require('../../../schema');
+const propertyValidator = require('../../../schema/property-validator');
 
 function* validateSample(projectId, sample) {
     let errors = yield schema.validate(schema.templateCommand, sample);
@@ -28,6 +29,40 @@ function* validateSample(projectId, sample) {
     return null;
 }
 
+function* validateProperty (template, property) {
+    let errors = yield schema.validate(schema.templateProperty, property);
+    if (errors !== null) {
+        return errors;
+    }
+
+
+    if (!propertyValidator.isValidSetupProperty(template, property)) {
+        return {error: `Invalid property ${property.attribute}`};
+    }
+
+    return null;
+}
+
+function* validateFile (projectId, file) {
+    let errors = yield schema.validate(schema.templateCommand, file);
+    if (errors !== null) {
+        return errors;
+    }
+
+    if (file.command !== 'add' && file.command !== 'delete') {
+        return {error: `Bad command '${file.command} for file ${file.id}`};
+    }
+
+    let fileInProject = yield check.fileInProject(file.id, projectId);
+    if (!fileInProject) {
+        return {error: `File ${file.id} not in project ${projectId}`};
+    }
+
+    return null;
+}
+
 module.exports = {
-    validateSample
+    validateSample,
+    validateProperty,
+    validateFile
 };

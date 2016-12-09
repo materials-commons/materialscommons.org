@@ -1,7 +1,7 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
     constructor(experimentsService, processesService, templates, $stateParams, toast, $mdDialog,
-                $timeout, experimentProcessesService, datasetService) {
+                $timeout, experimentProcessesService, datasetService, workflowService) {
         this.experimentsService = experimentsService;
         this.processesService = processesService;
         this.templates = templates;
@@ -23,8 +23,18 @@ class MCProcessesWorkflowComponentController {
         this.$timeout = $timeout;
         this.experimentProcessesService = experimentProcessesService;
         this.datasetService = datasetService;
+        this.workflowService = workflowService;
 
         this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
+    }
+
+    $onInit() {
+        let onChangeCB = () => this.onChange();
+        this.workflowService.setWorkflowChangeCallback(onChangeCB);
+    }
+
+    $onDestroy() {
+        this.workflowService.clearWorkflowChangeCallbacks();
     }
 
     addProcess(templateId) {
@@ -94,7 +104,9 @@ class MCProcessesWorkflowComponentController {
             .then(
                 (processes) => {
                     this.processes = processes;
-                    this.onChangeCallback(processes);
+                    if (this.onChangeCallback) {
+                        this.onChangeCallback(processes);
+                    }
                 },
                 () => this.toast.error('Error retrieving processes for experiment')
             );

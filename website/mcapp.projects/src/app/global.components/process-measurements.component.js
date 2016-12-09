@@ -14,9 +14,13 @@ class ProcessMeasurementsComponentController2 {
             return;
         }
 
+        console.log('addPropertyMeasurement', property);
         let samples = this.samples.map((s) => { return {id: s.id, property_set_id: s.property_set_id}; });
         let prop = this.samplesService.createProperty(property.name, property.attribute);
         let measurement = this.samplesService.createMeasurement(property.otype, prop, property.unit, property.value);
+        if (property.measurement_id) {
+            measurement.id = property.measurement_id;
+        }
         measurement.is_best_measure = true;
         let samplesMeasurements = this.samplesService.createSamplesPropertyMeasurements(samples, 'separate', prop, [measurement]);
 
