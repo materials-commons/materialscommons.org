@@ -1324,7 +1324,16 @@
             var bytes = this.fileObj.file[func](this.startByte, this.endByte, this.fileObj.file.type);
             var fr = new FileReader();
             this.xhr = new XMLHttpRequest();
+            var xhr = this.xhr;
+            var who = this;
             this.xhr.upload.addEventListener('progress', this.progressHandler, false);
+            this.xhr.upload.addEventListener('load', function() {
+                var myxhr = xhr;
+                var me = who;
+                console.log('load', myxhr);
+                console.log('load me', me);
+                console.log('flowObj files', me.flowObj.files);
+            }, false);
             this.xhr.addEventListener("load", this.doneHandler, false);
             this.xhr.addEventListener("error", this.doneHandler, false);
             var self = this;

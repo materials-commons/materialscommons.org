@@ -1,7 +1,6 @@
 class MCProcessTemplateCreateSamplesComponentController {
     /*@ngInject*/
-    constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast, selectItems, experimentsService, navbarOnChange) {
-        this.prepareCreatedSample = prepareCreatedSample;
+    constructor(focus, $mdDialog, samplesService, $stateParams, toast, selectItems, experimentsService, navbarOnChange) {
         this.focus = focus;
         this.$mdDialog = $mdDialog;
         this.samplesService = samplesService;

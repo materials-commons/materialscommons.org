@@ -8,8 +8,10 @@ angular.module('materialscommons').component('mcFileUploadEntry', {
 
 /*@ngInject*/
 function MCFileUploadEntryComponentController(mcapi) {
-    var ctrl = this;
+    const ctrl = this;
     ctrl.removeFromUpload = removeFromUpload;
+
+    console.log('uploadEntry File', ctrl.file);
 
     ////////////////////
 
