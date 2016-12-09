@@ -1,19 +1,35 @@
-describe('MC Component: mc-show-process', function(){
+describe('MC Component - controller for: mc-show-process', function(){
     // ref: src/app/global.components/mc-show-process.component.js
 
-    let testingProcessId = "123000";
+    let testingProcessId = "056fe1ed-6c1c-48b3-ba63-18d1060e585a";
     let testingProjectId = "123999";
+    let testingFakeOwner = "soneone@somewhere.edu"
+    let now = new Date();
+
+    let testProcess = {
+        birthtime: now ,
+        destructive: false ,
+        does_transform: true ,
+        id:  testingProcessId ,
+        mtime: now ,
+        name:  "Ultrasonic Fatigue" ,
+        otype:  "process" ,
+        owner: testingFakeOwner,
+        process_type:  "transform" ,
+        template_id:  "global_Ultrasonic Fatigue" ,
+        template_name:  "Ultrasonic Fatigue"
+    };
+
+    var testResults;
 
     var controller;
     var element;
     var scope;
 
-    var usage = '<mc-show-process processId="{{process_id}}"></mc-show-process>';
-
     beforeEach(function() {
         module('materialscommons');
 
-        // moke $stateParams
+        // mock $stateParams
         module(function ($provide) {
             $stateParams = {};
             $stateParams.project_id = testingProjectId;
@@ -23,8 +39,23 @@ describe('MC Component: mc-show-process', function(){
 
         // mock projectsService
         module(function ($provide) {
-            projectsService = {};
-            $provide.value('projectsService', toprojectsServiceastr);
+            let projectsService = {};
+            let getProjectProcess = jasmine.createSpy(['getProjectProcess']);
+            getProjectProcess.and.callFake(
+                (projectId, processId) => {
+                    testResults = testProcess;
+                    testResults.id = processId;
+
+                    // punting on promise instance!!!
+                    let dummyPromise = {}
+                    dummyPromise.then = (okFn, errFN) => {
+                        okFn(testResults);
+                    };
+                    return dummyPromise;
+                }
+            );
+            projectsService.getProjectProcess = getProjectProcess;
+            $provide.value('projectsService', projectsService);
         });
 
         // mock toastr
@@ -37,22 +68,42 @@ describe('MC Component: mc-show-process', function(){
 
             $provide.value('toastr', toastr);
         });
-    });
 
-    beforeEach(inject(function($rootScope, $compile){
-        scope = $rootScope.$new();
-        element = angular.element(usage);
-        element = $compile(element)(scope);
-        scope.process_id = testingProcessId;
-        scope.$apply();
-    }));
+        inject(function ($rootScope, $compile) {
+            var usage = '<mc-show-process process-id="{pid}"></mc-show-process>';
+
+            // refs:
+            // https://www.airpair.com/angularjs/posts/unit-testing-angularjs-applications
+            // https://puigcerber.com/2016/02/07/how-to-test-angular-1-5-components/
+            scope = $rootScope.$new();
+            element = angular.element(usage);
+            element = $compile(element)(scope);
+            scope.pid = testingProcessId;
+            scope.$apply();
+        });
+    });
 
     beforeEach(function() {
         controller = element.controller('mcShowProcess');
     });
 
-    // Verify our controller exists
     it('should be defined', function() {
-         expect(controller).toBeDefined();
+        expect(controller).toBeDefined();
+    });
+
+    it('project id should be set in the controller', function(){
+        expect(controller.projectId).toEqual(testingProjectId);
+    });
+
+    it('process id should be set in the controller', function(){
+        expect(controller.processId.pid).toEqual(testingProcessId);
+    });
+
+    it('process should be set in the controller', function(){
+        expect(controller.process).toBeDefined();
+    });
+
+    it('process id should be the same as testprocess', function(){
+        expect(controller.process.id.pid).toEqual(testingProcessId);
     });
 });
