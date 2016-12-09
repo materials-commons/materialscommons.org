@@ -97,6 +97,7 @@ describe('MC Component - controller for: mc-show-process', function(){
 
     it('process id should be set in the controller', function(){
         expect(controller.processId.pid).toEqual(testingProcessId);
+        // above should actually be controller.processId
     });
 
     it('process should be set in the controller', function(){
@@ -105,5 +106,6 @@ describe('MC Component - controller for: mc-show-process', function(){
 
     it('process id should be the same as testprocess', function(){
         expect(controller.process.id.pid).toEqual(testingProcessId);
+        // above should actually be controller.process.id
     });
 });
