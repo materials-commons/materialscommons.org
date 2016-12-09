@@ -1,7 +1,6 @@
 class MCProcessTemplateSectioningComponentController {
     /*@ngInject*/
-    constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast, selectItems, experimentsService, navbarOnChange) {
-        this.prepareCreatedSample = prepareCreatedSample;
+    constructor(focus, $mdDialog, samplesService, $stateParams, toast, selectItems, experimentsService, navbarOnChange) {
         this.focus = focus;
         this.$mdDialog = $mdDialog;
         this.samplesService = samplesService;
@@ -11,8 +10,6 @@ class MCProcessTemplateSectioningComponentController {
         this.selectItems = selectItems;
         this.experimentsService = experimentsService;
         this.navbarOnChange = navbarOnChange;
-        this.inputSamples = _.indexBy(this.process.input_samples, 'id');
-        this.outputSamples = this.filterOutputSamples();
     }
 
     selectFiles() {
@@ -56,7 +53,6 @@ class MCProcessTemplateSectioningComponentController {
                     .then(
                         () => {
                             this.process.input_samples = selected.samples;
-                            this.inputSamples = _.indexBy(this.process.input_samples, 'id');
                             this.navbarOnChange.fireChange();
                             if (this.onChange) {
                                 this.onChange();
@@ -84,7 +80,6 @@ class MCProcessTemplateSectioningComponentController {
                         .then(
                             () => {
                                 this.process.output_samples.push(samples.samples[0]);
-                                this.outputSamples = this.filterOutputSamples();
                                 this.focus(samples.samples[0].id);
                             },
                             () => this.toast.error('Failed to add sample to experiment')
@@ -131,7 +126,8 @@ class MCProcessTemplateSectioningComponentController {
     }
 
     filterOutputSamples() {
-        return this.process.output_samples.filter((s) => !(s.id in this.inputSamples));
+        let inputSamples = _.indexBy(this.process.input_samples, 'id');
+        return this.process.output_samples.filter((s) => !(s.id in inputSamples));
     }
 }
 

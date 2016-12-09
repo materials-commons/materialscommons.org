@@ -1,9 +1,11 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph) {
+    constructor(processGraph, workflowService) {
         this.cy = null;
         this.processGraph = processGraph;
+        this.workflowService = workflowService;
+        this.myName = 'MCProcessesWorkflowGraph';
     }
 
     $onInit() {
@@ -18,6 +20,19 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
         this.mcProcessesWorkflow.setOnChangeCallback(cb);
         this.mcProcessesWorkflow.setAddProcessCallback(cb);
+
+        this.workflowService.addOnAddCallback(this.myName, cb);
+        this.workflowService.addOnChangeCallback(this.myName, cb);
+        this.workflowService.addOnDeleteCallback(this.myName, cb);
+    }
+
+    $onDestroy() {
+        this.mcProcessesWorkflow.setDeleteProcessCallback(null);
+        this.mcProcessesWorkflow.setOnChangeCallback(null);
+        this.mcProcessesWorkflow.setAddProcessCallback(null);
+        this.workflowService.deleteOnAddCallback(this.myName);
+        this.workflowService.deleteOnChangeCallback(this.myName);
+        this.workflowService.deleteOnDeleteCallback(this.myName);
     }
 
     // This method will be called implicitly when the component is loaded.

@@ -1,39 +1,4 @@
-<md-menu-bar>
-    <md-menu>
-        <md-button ng-class="$ctrl.buttonClass" ng-click="$mdOpenMenu($event)">
-            <i ng-if="$ctrl.buttonIcon" class="fa fa-fw" ng-class="$ctrl.buttonIcon"></i>
-            {{$ctrl.buttonName}}
-        </md-button>
-        <md-menu-content>
-            <md-menu-item ng-if="false">
-                <md-menu>
-                    <md-button ng-click="$mdOpenMenu()">
-                        <!--<i ng-if="$ctrl.buttonIcon !== ''" class="fa fa-fw" ng-class="$ctrl.buttonClass"></i>-->
-                        <span class="text-uppercase">favorites</span>
-                    </md-button>
-                    <md-menu-content width="3">
-                        <md-menu-item ng-repeat="template in $ctrl.templates | filter:{favorite: true} | orderBy:'name'">
-                            <a ui-sref="project.create.process({template_id: template.name, process_id:''})">
-                                {{template.name}} <span class="text-uppercase" ng-if="template.prefill">(PF)</span>
-                            </a>
-                        </md-menu-item>
-                        <md-menu-item class="md-indent" ng-if="!$ctrl.hasFavorites()">
-                            <span class="text-uppercase">No favorites</span>
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
-            </md-menu-item>
-            <md-menu-divider></md-menu-divider>
-            <md-menu-item>
-                <md-button ng-click="$ctrl.chooseTemplate()">
-                    <span class="text-uppercase">Choose Template</span>
-                </md-button>
-            </md-menu-item>
-            <md-menu-item ng-if="false">
-                <md-button ng-click="$ctrl.chooseExistingProcess()">
-                    <span class="text-uppercase">Choose from existing process</span>
-                </md-button>
-            </md-menu-item>
-        </md-menu-content>
-    </md-menu>
-</md-menu-bar>
+<md-button ng-class="$ctrl.buttonClass" ng-click="$ctrl.chooseTemplate()">
+    <i ng-if="$ctrl.buttonIcon" class="fa fa-fw" ng-class="$ctrl.buttonIcon"></i>
+    {{$ctrl.buttonName}}
+</md-button>

@@ -2,11 +2,11 @@
 
 'use strict';
 
-function nameToAttr (name) {
+function nameToAttr(name) {
     return name.replace(/\s+/g, '_').replace(/\//g, '_').replace(/-/g, '_').toLowerCase()
 }
 
-function toSelectionChoices (choices) {
+function toSelectionChoices(choices) {
     return choices.map(choice => ({name: choice, value: nameToAttr(choice)}))
 }
 
@@ -18,7 +18,7 @@ const UNITS_STIME = ["s", "ms"];
 const UNITS_STRAIN = ["mm/mm", "percentage"];
 
 class TemplateBase {
-    constructor (name, processType, doesTransform, destructive) {
+    constructor(name, processType, doesTransform, destructive) {
         this.name = name;
         this.process_name = name;
         this.process_type = processType;
@@ -30,7 +30,7 @@ class TemplateBase {
         this.setup = [];
     }
 
-    addSetup (name) {
+    addSetup(name) {
         let s = new Setup(name);
         this.setup.push(s);
         return s;
@@ -39,86 +39,261 @@ class TemplateBase {
     setCategory(category) {
         this.category = category;
     }
+
+    addMeasurements() {
+        this.m = new Properties();
+        return this.m;
+    }
+
+    measurementsDone() {
+        this.measurements = this.m.properties;
+        this.m = undefined;
+    }
 }
 
-class Setup {
-    constructor (name) {
-        this.name = name;
-        this.attribute = nameToAttr(name);
+function mkname(name, other) {
+    if (!name || name === '') {
+        return other;
+    }
+    return `${name} ${other}`;
+}
+
+class Properties {
+    constructor() {
         this.properties = [];
         this.currentProp = undefined;
     }
 
-    property (name, otype) {
+    property(name, otype) {
         let p = new Property(name, otype);
         this.currentProp = p;
         this.properties.push(p);
         return this;
     }
 
-    number (name) {
+    composition(name) {
+        let p = new Property(name, "composition");
+        p.units = ["at%", "wt%", "atoms"];
+        p.value = [];
+        this.currentProp = p;
+        this.properties.push(p);
+        return this;
+    }
+
+    desc(d) {
+        this.currentProp.description = d;
+        return this;
+    }
+
+    number(name) {
         return this.property(name, "number");
     }
 
-    units (...units) {
+    units(...units) {
         this.currentProp.addUnits(...units);
         return this;
     }
 
-    number_with_units (name, ...units) {
+    number_with_units(name, ...units) {
         this.property(name, "number");
         this.currentProp.addUnits(...units);
         return this;
     }
 
-    selection (name) {
+    selection(name) {
         return this.property(name, "selection")
     }
 
-    choices (...choices) {
+    choices(...choices) {
         this.currentProp.addChoices(...choices);
         return this;
     }
 
-    string (name) {
+    string(name) {
         return this.property(name, "string");
     }
 
-    date (name) {
+    func(name) {
+        return this.property(name, "function");
+    }
+
+    date(name) {
         return this.property(name, "date");
     }
 
-    temperature (name) {
+    bool(name) {
+        return this.property(name, 'boolean')
+    }
+
+    temperature(name) {
         return this.number_with_units(name ? name : "Temperature", ...UNITS_TEMPERATURE);
     }
 
-    voltage (name) {
+    voltage(name) {
         return this.number_with_units(name ? name : "Voltage", ...UNITS_VOLTAGE);
     }
 
-    current (name) {
+    current(name) {
         return this.number_with_units(name ? name : "Current", ...UNITS_CURRENT);
     }
 
-    time (name) {
+    time(name) {
         return this.number_with_units(name ? name : "Time", ...UNITS_TIME);
     }
 
-    stime (name) {
+    stime(name) {
         return this.number_with_units(name ? name : "Time", ...UNITS_STIME);
     }
 
-    strain (name) {
+    strain(name) {
         return this.number_with_units(name ? name : "Strain", ...UNITS_STRAIN);
     }
 
-    done () {
+    solver(name) {
+        return this.string(mkname(name, 'Solver Type'))
+            .string(mkname(name, 'Solver Preconditioner Type'))
+            .selection(mkname(name, 'Solver Tolerance Type')).choices("Relative", "Absolute")
+            .number(mkname(name, 'Solver Tolerance'))
+            .number(mkname(name, 'Solver Max Iterations'));
+    }
+
+    finiteElementBasis(name) {
+        return this.number(mkname(name, 'Order')).number(mkname(name, 'Quadrature Order'));
+    }
+
+    mesh(name) {
+        return this.string(mkname(name, 'Filename')).meshgrid(name);
+    }
+
+    meshgrid(name) {
+        return this.number(mkname(name, 'Dimension'))
+            .vector(name, 'Span').vectorType('float')
+            .desc("A vector of float with length equal to calculation dimension, giving the distance span.")
+            .vector(name, 'Subdivisions').vectorType('integer')
+            .desc("A vector of integer with length equal to calculation dimension, giving the number of mesh subdivisions along each dimension.")
+            .number(mkname(name, 'Initial Refinement Factor')).desc("Initial mesh refinement factor of each subdivision");
+    }
+
+    vector(name) {
+        let p = new Property(name, "vector");
+        this.currentProp = p;
+        p.value = {
+            otype: "",
+            value: [],
+            dimensions: 0
+        };
+        this.properties.push(p);
+        return this;
+    }
+
+    vectorType(t) {
+        this.currentProp.value.otype = t;
+        return this;
+    }
+
+    vectorDim(dim) {
+        this.currentProp.value.dimensions = dim;
+        return this;
+    }
+
+    meshAdaptivityParameters(name) {
+        return this.number(mkname(name, 'Max Refinement Factor'))
+            .number(mkname(name, 'Min Refinement Factor'))
+            .string(mkname(name, 'Refinement Criteria')).desc('Indices or names of fields that control refinement.')
+            .selection(mkname(name, 'Refinement Type')).choices('Window', 'Ellipsoidal Shell')
+            .number(mkname(name, 'Window Refinement Max'))
+            .number(mkname(name, 'Window Refinement Min'))
+            .vector(mkname(name, 'Ellipsoid Center')).vectorType('float')
+            .vector(mkname(name, 'Inner Semi-Axes')).vectorType('float')
+            .vector(mkname(name, 'Outer Semi-Axes')).vectorType('float')
+            .number(mkname(name, 'Skip Remeshing Steps'));
+    }
+
+    software(name) {
+        return this.string(mkname(name, 'Software Name'))
+            .string(mkname(name, 'Software Version')).desc('Version number or commit hash')
+            .string(mkname(name, 'Software URL'));
+    }
+
+    mcConditions(name) {
+        return this.number(mkname(name, "Temperature")).units("K")
+            .vector(mkname(name, "Parametric Chemical Potential")).vectorType('float');
+    }
+
+    matrix(name, dimensions) {
+        let p = new Property(name, "matrix");
+        this.currentProp = p;
+        p.value = {
+            otype: "",
+            value: [],
+            dimensions: dimensions
+        };
+        this.properties.push(p);
+        return this;
+    }
+
+    matrixType(t) {
+        this.currentProp.value.otype = t;
+        return this;
+    }
+
+    lattice(name) {
+        return this.matrix(mkname(name, "Lattice"), [3, 3]).matrixType('float')
+            .desc("Lattice vectores, respresented as columns of a matrix")
+            .vector(mkname(name, "Parameters")).vectorType('float').vectorDim(6)
+            .desc("Lattice parameters as[a, b, c, alpha, beta, gamma]")
+            .selection(mkname(name, "Lattice System"))
+            .choices("Triclinic", "Monoclinic", "Orthorhombic", "Tetragonal", "Hexagonal",
+                "Rhombohedral", "Cubic")
+            .string(mkname(name, "Symmetry")).desc("Schonflies symbol");
+    }
+
+    spaceGroup(name) {
+        return this.string(mkname(name, "Schonflies Space Group Symbol"))
+            .string(mkname(name, "Hermann-Mauguin Space Group Symbol"))
+            .number(mkname(name, "Space Group Number"))
+            .desc("International Union of Crytallography space group number")
+            .selection(mkname(name, "Crystal Family"))
+            .choices("Triclinic", "Monoclinic", "Orthorhombic", "Tetragonal", "Hexagonal",
+                "Cubic")
+            .selection(mkname(name, "Crystal System"))
+            .choices("Triclinic", "Monoclinic", "Orthorhombic", "Tetragonal", "Hexagonal",
+                "Trigonal", "Cubic")
+    }
+
+    link(name, attr) {
+        let p = new Property(name, attr);
+        p.value = {};
+        p.value[`${attr}_name`] = '';
+        p.value[`${attr}_id`] = '';
+        this.currentProp = p;
+        this.properties.push(p);
+        return this;
+    }
+
+    file(name) {
+        return this.link(name, "file")
+    }
+
+    sample(name) {
+        return this.link(name, "sample");
+    }
+
+    done() {
         this.currentProp = undefined;
     }
 }
 
+class Setup extends Properties {
+    constructor(name) {
+        super();
+        this.name = name;
+        this.attribute = nameToAttr(name);
+    }
+}
+
 class Property {
-    constructor (name, otype) {
+    constructor(name, otype) {
         this.name = name;
         this.attribute = nameToAttr(name);
         this.required = false;
@@ -130,18 +305,199 @@ class Property {
         this.choices = [];
     }
 
-    addUnits (...units) {
+    addUnits(...units) {
         this.unit = units.length === 1 ? units[0] : "";
         this.units = units.length === 0 || units.length === 1 ? [] : units;
     }
 
-    addChoices (...choices) {
+    addChoices(...choices) {
         this.choices = toSelectionChoices(choices);
     }
 }
 
+/**
+ * Sample Creation
+ */
+
+// Physical Samples
+
+class CreateSamplesTemplate extends TemplateBase {
+    constructor() {
+        super("Create Samples", "create", true, false);
+        this.description = "Create Sample process is used to create new samples";
+        this.setCategory("create_sample");
+
+        this.addSetup("Instrument")
+            .string("Manufacturer")
+            .string("Supplier")
+            .date("Manufacturing Date")
+            .selection("Production Method").choices("Cast", "Extruded", "Rolled", "Unknown", "Other")
+            .done();
+
+        this.addMeasurements()
+            .composition("Composition")
+            .done();
+        this.measurementsDone();
+    }
+}
+
+// Computational Samples
+
+class CreateAtomicConfigurationSamplesTemplate extends TemplateBase {
+    constructor() {
+        super("Atomic Configuration Samples", "create", true, false);
+        this.setCategory("create_sample");
+
+        this.setCategory("create_sample");
+        this.addSetup("Computation").done();
+
+        this.addMeasurements()
+            .string("Name")
+            .lattice()
+            .file("Crystallographic File")
+            .spaceGroup()
+            .number("Number Of Elements").desc("Usually length of Elements.")
+            .composition("Elements")
+            .number("Number Of Atoms")
+            .done();
+        this.measurementsDone();
+    }
+}
+
+class CreatePrimitiveCrystalStructureSamplesTemplate extends TemplateBase {
+    constructor() {
+        super("Primitive Crystal Structure", "create", true, false);
+        this.setCategory("create_sample");
+        this.addSetup("Computation").done();
+
+        this.addMeasurements()
+            .string("Name")
+            .lattice()
+            .file("CASM PRISM File").desc("CASM prim.json type file.")
+            .spaceGroup()
+            .number("Number Of Elements").desc("Usually length of Elements.")
+            .composition("Elements")
+            .number("Number Of Components")
+            .composition("Components")
+            .number("Number Of Independent Composition Variables")
+            .vector("Degrees Of Freedom").vectorType("string")
+            .done();
+        this.measurementsDone();
+    }
+}
+
+class CreateClusterExpansionEffectiveHamiltonianSamplesTemplate extends TemplateBase {
+    constructor() {
+        super("Cluster Expansion Effective Hamiltonian", "create", true, false);
+        this.setCategory("create_sample");
+        this.addSetup("Computation").done();
+
+        this.addMeasurements()
+            .sample("Prim")
+            .file("Basis Function Specs").desc("CASM bspecs.json file.")
+            .file("Effective Cluster Interactions").desc("CASM eci.json file.")
+            .done();
+        this.measurementsDone();
+    }
+}
+
+class CreateCompositionAxesSamplesTemplate extends TemplateBase {
+    constructor() {
+        super("Composition Axes", "create", true, false);
+        this.setCategory("create_sample");
+        this.addSetup("Computation").done();
+
+        this.addMeasurements()
+            .vector("End Members Origin").vectorType('float')
+            .vector("End Members A").vectorType('float')
+            .vector("End Members B").vectorType('float')
+            .vector("End Members C").vectorType('float')
+            .vector("End Members D").vectorType('float')
+            .sample("Prim")
+            .string("Formula")
+            .string("Parametric Formula")
+            .done();
+        this.measurementsDone();
+    }
+}
+
+class CreateSinglePhaseSamplesTemplate extends TemplateBase {
+    constructor() {
+        super("Single Phase", "create", true, false);
+        this.setCategory("create_sample");
+        this.addSetup("Computation").done();
+
+        let chname = (n) => `Cahn-Hilliard ${n}`;
+        let lename = (n) => `Linear Plasticity Mechanics ${n}`;
+        let stname = (n) => `Stiffness Tensor ${n}`;
+        this.addMeasurements()
+            .string("Phase Name")
+            .string("Application")
+            .desc("Describes the physical model. Ex: CahnHilliard, AllenCahn, CoupledCahnHilliardAllenCahn, etc...")
+            .func(chname("Source"))
+            .func(chname("Homogenous Free Energy Density"))
+            .vector(chname("Concentration Gradient Penalty Coefficient Vector"))
+            .vectorType('float').vectorDim(3)
+            .matrix(chname("Concentration Gradient Penalty Coefficient Matrix"))
+            .matrixType('float')
+            .number(chname('Mobility'))
+            .lattice(lename(''))
+            .selection(lename("Symmetry of Stiffness Tensor"))
+            .choices("Isotropic", "Anisotropic", "Transverse", "Orthotropic")
+            .vector(stname("Isotropic 1d")).vectorType('float').vectorDim(1)
+            .vector(stname("Isotropic 2d")).vectorType('float').vectorDim(2)
+            .vector(stname("Isotropic 3d")).vectorType('float').vectorDim(2)
+            .vector(stname("Anisotropic 2d")).vectorType('float').vectorDim(6)
+            .vector(stname("Anisotropic 3d")).vectorType('float').vectorDim(21)
+            .vector(stname("Transverse 3d")).vectorType('float').vectorDim(5)
+            .vector(stname("Orthotropic 3d")).vectorType('float').vectorDim(9)
+            .done();
+        this.measurementsDone();
+    }
+}
+
+class CreatePhaseInterfaceSamplesTemplate extends TemplateBase {
+    constructor() {
+        super("Phase Interface", "create", true, false);
+        this.setCategory("create_sample");
+        this.addSetup("Computation").done();
+
+        this.addMeasurements()
+            .vector("Phases").vectorType("string").vectorDim(2)
+            .desc("The phases separated by this interface")
+            .string("Model")
+            .number("Allen-Cahn Mobility")
+            .vector('Structural Order Parameter Gradient Penalty Coefficient Vector')
+            .vectorType('float').vectorDim(3)
+            .matrix('Structural Order Parameter Gradient Penalty Coefficient Matrix', [3, 3])
+            .matrixType('float')
+            .done();
+        this.measurementsDone();
+    }
+}
+
+class CreatePhaseFieldSystemSamplesTemplate extends TemplateBase {
+    constructor() {
+        super("Phase Field System", "create", true, false);
+        this.setCategory("create_sample");
+        this.addSetup("Computation").done();
+
+        this.addMeasurements()
+            .string("Application").desc("Describes the physical model. Ex: CahnHilliard, AllenCahn, CoupledCahnHilliardAllenCahn, etc...")
+            .func("Interpolation Function")
+            .done();
+        this.measurementsDone();
+    }
+}
+
+/******* End Sample Creation Templates *******/
+
+/**
+ * Experimental Process Templates
+ */
+
 class AptTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("APT", "measurement", false, false);
         this.description = "Atom Probe Tomography";
         this.addSetup("Instrument")
@@ -165,7 +521,7 @@ class AptTemplate extends TemplateBase {
 }
 
 class SemTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("SEM", "measurement", false, false);
         this.description = "Stem Electron Microscopy";
         this.addSetup("Instrument")
@@ -181,35 +537,9 @@ class SemTemplate extends TemplateBase {
     }
 }
 
-class CreateSamplesTemplate extends TemplateBase {
-    constructor () {
-        super("Create Samples", "create", true, false);
-        this.description = "Create Sample process is used to create new samples";
-        this.setCategory("create_sample");
-        this.measurements = [
-            {
-                name: "Composition",
-                attribute: "composition",
-                description: "",
-                value: [],
-                units: [],
-                unit: "at%",
-                otype: "composition",
-                required: false,
-                choices: []
-            }
-        ];
-        this.addSetup("Instrument")
-            .string("Manufacturer")
-            .string("Supplier")
-            .date("Manufacturing Date")
-            .selection("Production Method").choices("Cast", "Extruded", "Rolled", "Unknown", "Other")
-            .done()
-    }
-}
 
 class SectioningTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Sectioning", "transform", true, false);
         this.addSetup("Instrument").string("Notes").done();
         this.setCategory("sectioning");
@@ -217,7 +547,7 @@ class SectioningTemplate extends TemplateBase {
 }
 
 class AptDataAnalysisTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("APT Data Analysis", "analysis", false, false);
         this.description = "Atom Probe Tomography Data Analysis";
         this.addSetup("Instrument")
@@ -230,7 +560,7 @@ class AptDataAnalysisTemplate extends TemplateBase {
 }
 
 class AptDataReconstructionTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("APT Data Reconstruction", "analysis", false, false);
         this.description = "Atom Probe Tomography Data Reconstruction";
         this.addSetup("Instrument")
@@ -247,7 +577,7 @@ class AptDataReconstructionTemplate extends TemplateBase {
 }
 
 class BroadIonBeamMillingTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Broad Ion Beam Milling", "measurement", true, false);
         this.addSetup("Instrument")
             .selection("Ion Type").choices("Ga", "Ne", "Ar", "Other")
@@ -258,7 +588,7 @@ class BroadIonBeamMillingTemplate extends TemplateBase {
 }
 
 class CoggingTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Cogging", "transform", true, false);
         this.addSetup("Instrument")
             .temperature()
@@ -268,7 +598,7 @@ class CoggingTemplate extends TemplateBase {
 }
 
 class CompressionTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Compression", "transform", true, false);
         this.addSetup("Instrument")
             .temperature()
@@ -281,20 +611,8 @@ class CompressionTemplate extends TemplateBase {
     }
 }
 
-class ComputationTemplate extends TemplateBase {
-    constructor () {
-        super("Computation", "analysis", false, false);
-        this.addSetup("Instrument")
-            .string("Submit Script")
-            .number("Number Of Processors")
-            .number("Memory Per Processor").units("b", "kb", "mb", "gb")
-            .time("Walltime")
-            .done();
-    }
-}
-
 class CreepTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Creep", "transform", true, false);
         this.addSetup("Instrument")
             .temperature()
@@ -305,7 +623,7 @@ class CreepTemplate extends TemplateBase {
 }
 
 class DicPatterningTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("DIC Patterning", "measurement", false, false);
         this.addSetup("Instrument")
             .selection("Scale").choices("Large-Scale", "Small-Scale")
@@ -318,7 +636,7 @@ class DicPatterningTemplate extends TemplateBase {
 }
 
 class DicStatisticalModellingTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("DIC Statistical Modelling", "analysis", false, false);
         this.addSetup("Instrument")
             .number("Number Of Parameters")
@@ -329,7 +647,7 @@ class DicStatisticalModellingTemplate extends TemplateBase {
 }
 
 class ElectropolishingTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Electropolishing", "transform", true, false);
         this.addSetup("Instrument")
             .string("Solution")
@@ -341,7 +659,7 @@ class ElectropolishingTemplate extends TemplateBase {
 }
 
 class EtchingTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Etching", "transform", true, false);
         this.addSetup("Instrument")
             .string("Solution")
@@ -353,7 +671,7 @@ class EtchingTemplate extends TemplateBase {
 }
 
 class EbsdSemDataCollectionTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("EBSD SEM Data Collection", "measurement", false, false);
         this.addSetup("Instrument")
             .voltage()
@@ -369,7 +687,7 @@ class EbsdSemDataCollectionTemplate extends TemplateBase {
 }
 
 class EpmaDataCollectionTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("EPMA Data Collection", "measurement", false, false);
         this.addSetup("Instrument")
             .voltage()
@@ -384,7 +702,7 @@ class EpmaDataCollectionTemplate extends TemplateBase {
 }
 
 class LowCycleFatigueTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Low Cycle Fatigue", "transform", true, false);
         this.addSetup("Instrument")
             .selection("Mode")
@@ -404,7 +722,7 @@ class LowCycleFatigueTemplate extends TemplateBase {
 }
 
 class UltrasonicFatigueTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Ultrasonic Fatigue", "transform", true, false);
         this.addSetup("Instrument")
             .number("Amplifiers Count")
@@ -420,7 +738,7 @@ class UltrasonicFatigueTemplate extends TemplateBase {
 }
 
 class TemTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("TEM", "measurement", false, false);
         this.addSetup("Instrument")
             .voltage()
@@ -436,7 +754,7 @@ class TemTemplate extends TemplateBase {
 }
 
 class HeatTreatmentTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Heat Treatment", "transform", true, false);
         this.addSetup("Instrument")
             .temperature()
@@ -447,15 +765,8 @@ class HeatTreatmentTemplate extends TemplateBase {
     }
 }
 
-class AsMeasuredTemplate extends TemplateBase {
-    constructor () {
-        super("As Measured", "measurement", false, false);
-        this.addSetup("Instrument").done();
-    }
-}
-
 class HardnessTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Hardness", "measurement", false, false);
         this.addSetup("Instrument")
             .selection("Type").choices("Vickers", "Rockwell A", "Rockwell B", "Rockwell C")
@@ -466,7 +777,7 @@ class HardnessTemplate extends TemplateBase {
 }
 
 class XrdTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("XRD", "transform", true, false);
         this.addSetup("Instrument")
             .string("Type")
@@ -479,7 +790,7 @@ class XrdTemplate extends TemplateBase {
 }
 
 class TensionTemplate extends TemplateBase {
-    constructor () {
+    constructor() {
         super("Tension", "transform", true, false);
         this.addSetup("Instrument")
             .selection("Force Type").choices("Screw", "Hydraulic")
@@ -492,6 +803,84 @@ class TensionTemplate extends TemplateBase {
     }
 }
 
+/******* End Experimental Process Templates *******/
+
+/**
+ * Computational Process Templates
+ */
+
+class ComputationTemplate extends TemplateBase {
+    constructor() {
+        super("Computation", "analysis", false, false);
+        this.addSetup("Instrument")
+            .string("Submit Script")
+            .number("Number Of Processors")
+            .number("Memory Per Processor").units("b", "kb", "mb", "gb")
+            .time("Walltime")
+            .done();
+    }
+}
+
+class PhaseFieldCalculationTemplate extends TemplateBase {
+    constructor() {
+        super("Phase Field Calculation", "analysis", false, false);
+        this.addSetup("Computation")
+            .finiteElementBasis("FE Basis")
+            .mesh("Mesh")
+            .meshAdaptivityParameters("Mesh Adaptivity")
+            .solver("Mechanics")
+            .done();
+    }
+}
+
+class DFTCalculationTemplate extends TemplateBase {
+    constructor() {
+        super("Density Functional Theory Calculation", "analysis", false, false);
+        this.addSetup("Computation")
+            .software('DFT')
+            .string('Exchange Correlation Functional')
+            .vector('Potential').vectorType('string').desc('Potential used, typically one element')
+            .bool('Relax Ion Positions')
+            .bool('Relax Latice Shape')
+            .bool('Relax Lattice Volume')
+            .done();
+    }
+}
+
+class CASMMonteCarloCalculationTemplate extends TemplateBase {
+    constructor() {
+        super("CASM Monte Carlo Calculation", "analysis", false, false);
+        this.addSetup("Computation")
+            .selection("Ensemble").choices("grand_cononical")
+            .selection("Method").choices("metropolis", "lte1")
+            .matrix("Supercell Transformation Matrix", [3, 3]).matrixType('integer')
+            .desc("Supercell lattice = Primitive lattice * transformation matrix, where lattice vectors are represented as columns.")
+            .selection("Mode").choices("Incremental", "Custom")
+            .string("Motif")
+            .mcConditions("Initial Conditions")
+            .mcConditions("Final Conditions")
+            .mcConditions("Incremental Conditions")
+            .mcConditions("Custom Conditions")
+            .done();
+    }
+}
+
+/******* End Computational Process Templates *******/
+
+/**
+ * Generic Process Templates
+ *
+ */
+
+class AsMeasuredTemplate extends TemplateBase {
+    constructor() {
+        super("As Measured", "measurement", false, false);
+        this.addSetup("Instrument").done();
+    }
+}
+
+/******* End Generic Process Templates *******/
+
 let ropts = {
     db: process.env.MCDB || 'materialscommons',
     port: process.env.MCDB_PORT || 30815
@@ -503,9 +892,21 @@ let bluebird = require('bluebird');
 let assert = require('assert');
 
 let globalTemplates = [
+    // Physical Sample Creation Templates
+    CreateSamplesTemplate,
+
+    // Computational Sample Creation Templates
+    CreateAtomicConfigurationSamplesTemplate,
+    CreatePrimitiveCrystalStructureSamplesTemplate,
+    CreateClusterExpansionEffectiveHamiltonianSamplesTemplate,
+    CreateCompositionAxesSamplesTemplate,
+    CreateSinglePhaseSamplesTemplate,
+    CreatePhaseInterfaceSamplesTemplate,
+    CreatePhaseFieldSystemSamplesTemplate,
+
+    // Experimental Process Templates
     AptTemplate,
     SemTemplate,
-    CreateSamplesTemplate,
     SectioningTemplate,
     AptDataAnalysisTemplate,
     AptDataReconstructionTemplate,
@@ -524,10 +925,16 @@ let globalTemplates = [
     UltrasonicFatigueTemplate,
     TemTemplate,
     HeatTreatmentTemplate,
-    AsMeasuredTemplate,
     HardnessTemplate,
     XrdTemplate,
-    TensionTemplate
+    TensionTemplate,
+    // Computational Process Templates
+    PhaseFieldCalculationTemplate,
+    DFTCalculationTemplate,
+    CASMMonteCarloCalculationTemplate,
+
+    // Generic Process Templates
+    AsMeasuredTemplate
 ];
 
 console.log("Inserting templates...");
@@ -538,7 +945,7 @@ for (let i = 0; i < globalTemplates.length; i++) {
     let id = 'global_' + o.process_name;
     o.id = id;
     console.log('  ' + id);
-    bluebird.coroutine(function* (o) {
+    bluebird.coroutine(function*(o) {
         try {
             let result = yield r.table('templates').insert(o, {conflict: 'replace'});
             doneCount++;
