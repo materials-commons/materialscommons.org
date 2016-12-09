@@ -1,4 +1,4 @@
-export function selectItemsService($modal) {
+export function selectItemsService($mdDialog) {
     'ngInject';
 
     return {
@@ -29,47 +29,36 @@ export function selectItemsService($modal) {
                 }
             }
 
-            let modal = $modal.open({
-                size: 'lg',
+            let showFilesTree = tabs.files && opts.experimentId === '';
+            let showFilesTable = tabs.files && opts.experimentId !== '';
+            return $mdDialog.show({
                 templateUrl: 'app/global.services/select-items/select-items.html',
                 controller: SelectItemsServiceModalController,
                 controllerAs: 'ctrl',
-                resolve: {
-                    showProcesses: function() {
-                        return tabs.processes;
-                    },
+                bindToController: true,
+                locals: {
+                    showProcesses: tabs.processes,
 
-                    showFilesTree: function() {
-                        return tabs.files && opts.experimentId === '';
-                    },
+                    showFilesTree: showFilesTree,
 
-                    showFilesTable: function() {
-                        return tabs.files && opts.experimentId !== '';
-                    },
+                    showFilesTable: showFilesTable,
 
-                    showSamples: function() {
-                        return tabs.samples;
-                    },
+                    showSamples: tabs.samples,
 
-                    showReviews: function() {
-                        return tabs.reviews;
-                    },
 
-                    showUploadFiles: function() {
-                        return tabs.uploadFiles;
-                    },
+                    showReviews: tabs.reviews,
 
-                    options: () => opts
+                    showUploadFiles: tabs.uploadFiles,
+
+                    options: opts
                 }
             });
-            return modal.result;
         }
     };
 }
 
 /*@ngInject*/
-function SelectItemsServiceModalController($modalInstance, showProcesses, showFilesTree, showFilesTable, showSamples, options,
-                                           showReviews, showUploadFiles, projectsService, $stateParams, project, experimentsService) {
+function SelectItemsServiceModalController($mdDialog, projectsService, $stateParams, project, experimentsService) {
     let ctrl = this;
 
     ctrl.project = project.get();
@@ -81,7 +70,6 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
     ctrl.cancel = cancel;
     ctrl.processes = [];
     ctrl.samples = [];
-    ctrl.options = options;
 
     /////////////////////////
 
@@ -109,7 +97,7 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
 
         let selectedFiles = getSelectedFiles();
 
-        $modalInstance.close({
+        $mdDialog.hide({
             processes: selectedProcesses,
             samples: selectedSamples,
             files: selectedFiles
@@ -118,7 +106,7 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
 
     function getSelectedFiles() {
         let files = [];
-        if (showFilesTree) {
+        if (ctrl.showFilesTree) {
             let treeModel = new TreeModel(),
                 root = treeModel.parse(project.get().files[0]);
             // Walk the tree looking for selected files and adding them to the
@@ -134,7 +122,7 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
                 }
             });
             return files;
-        } else if (showFilesTable) {
+        } else if (ctrl.showFilesTable) {
             return ctrl.files.filter(f => f.selected);
         } else {
             return [];
@@ -142,14 +130,14 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
     }
 
     function cancel() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.cancel();
     }
 
     function loadTabs() {
         let tabs = [];
-        if (showProcesses) {
+        if (ctrl.showProcesses) {
             tabs.push(newTab('processes', 'fa-code-fork'));
-            if (options.experimentId) {
+            if (ctrl.options.experimentId) {
                 // get processes for experiment
             } else {
                 projectsService.getProjectProcesses($stateParams.project_id).then(function(processes) {
@@ -158,10 +146,10 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
             }
         }
 
-        if (showSamples) {
+        if (ctrl.showSamples) {
             tabs.push(newTab('samples', 'fa-cubes'));
-            if (options.experimentId && options.experimentId !== '') {
-                experimentsService.getSamplesForExperiment($stateParams.project_id, options.experimentId).then(
+            if (ctrl.options.experimentId && ctrl.options.experimentId !== '') {
+                experimentsService.getSamplesForExperiment($stateParams.project_id, ctrl.options.experimentId).then(
                     (samples) => {
                         ctrl.samples = samples;
                     }
@@ -173,13 +161,13 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
             }
         }
 
-        if (showFilesTree) {
+        if (ctrl.showFilesTree) {
             tabs.push(newTab('file tree', 'fa-files-o'));
         }
 
-        if (showFilesTable) {
+        if (ctrl.showFilesTable) {
             tabs.push(newTab('file table', 'fa-files-o'));
-            experimentsService.getFilesForExperiment($stateParams.project_id, options.experimentId)
+            experimentsService.getFilesForExperiment($stateParams.project_id, ctrl.options.experimentId)
                 .then(
                     (files) => {
                         ctrl.files = files;
@@ -187,11 +175,11 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
                 );
         }
 
-        if (showReviews) {
+        if (ctrl.showReviews) {
             tabs.push(newTab('reviews', 'fa-comment'));
         }
 
-        if (showUploadFiles) {
+        if (ctrl.showUploadFiles) {
             tabs.push(newTab('Upload Files', 'fa-upload'));
         }
 

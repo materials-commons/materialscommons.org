@@ -5,7 +5,7 @@ angular.module('materialscommons').component('mcFileUploads', {
 
 /*@ngInject*/
 function MCFileUploadsComponentController(mcFlow, $timeout) {
-    var ctrl = this;
+    const ctrl = this;
 
     ctrl.flow = mcFlow.get();
     ctrl.filesByDir = {};
@@ -17,7 +17,7 @@ function MCFileUploadsComponentController(mcFlow, $timeout) {
             if (eventName === 'filesAdded' || eventName === 'fileRemoved') {
                 loadFilesByDir();
             } else if (eventName === 'complete') {
-                ctrl.flow.files.length = 0;
+                //ctrl.flow.files.length = 0;
             }
         });
     });
@@ -25,7 +25,7 @@ function MCFileUploadsComponentController(mcFlow, $timeout) {
     /////////////////////////
 
     function loadFilesByDir() {
-        var files = ctrl.flow.files;
+        const files = ctrl.flow.files;
         ctrl.filesByDir = {}; // reset the list
 
         // Load files indexed by the directory
