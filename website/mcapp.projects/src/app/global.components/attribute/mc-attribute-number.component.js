@@ -11,12 +11,10 @@ class MCAttributeNumberComponentController {
     updateSettingProperty(property) {
 
         if (!property.value) {
-            console.log("No value -> ", property);
             return;
         }
 
         if (property.otype != "number") {
-            console.log("Not a number -> ", property);
             return;
         }
 
@@ -25,7 +23,6 @@ class MCAttributeNumberComponentController {
         }
 
         if (property.units.length && !property.unit) {
-            console.log("No unit -> ", property);
             return;
         }
 

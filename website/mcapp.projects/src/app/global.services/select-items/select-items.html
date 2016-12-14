@@ -1,8 +1,10 @@
-<div>
-    <div class="modal-header">
-        <h3 class="modal-title">Select Items</h3>
-    </div>
-    <div class="modal-body">
+<md-dialog flex>
+    <md-toolbar layout="row">
+        <div layout-margin>
+            <h3>Select Items</h3>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
         <md-tabs md-selected="ctrl.currentTab" class="" md-dynamic-height md-border-bottom>
             <md-tab ng-repeat="tab in ctrl.tabs" ng-click="ctrl.setActive(tab.name)">
                 <md-tab-label>
@@ -24,12 +26,15 @@
                     <div ng-if="ctrl.isActive('reviews')">
                         reviews
                     </div>
+                    <div ng-if="ctrl.isActive('Upload Files')">
+                        <mc-process-file-upload on-upload-complete="ctrl.uploadComplete(fileIds)"></mc-process-file-upload>
+                    </div>
                 </md-tab-body>
             </md-tab>
         </md-tabs>
-    </div>
-    <div class="modal-footer">
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
         <md-button class="md-primary md-raised" ng-click="ctrl.ok()">OK</md-button>
         <md-button class="md-warn md-raised" ng-click="ctrl.cancel()">Cancel</md-button>
-    </div>
-</div>
+    </md-dialog-actions>
+</md-dialog>

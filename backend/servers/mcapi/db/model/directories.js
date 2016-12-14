@@ -13,6 +13,13 @@ function* get(projectID, directoryID) {
     }
 }
 
+function* getAll(projectId) {
+    return yield r.table('project2datadir')
+        .getAll(projectId, {index: 'project_id'})
+        .eqJoin('datadir_id', r.db('materialscommons').table('datadirs')).zip()
+        .pluck('name', 'id').orderBy('name');
+}
+
 function topLevelDir(projectID) {
     let rql = r.table('projects').getAll(projectID)
         .eqJoin('name', r.table('datadirs'), {index: 'name'}).zip()
@@ -299,6 +306,7 @@ function* remove(projectID, dirID) {
 
 module.exports = {
     get: get,
+    getAll,
     create: create,
     update: update,
     findInProject: findInProject,

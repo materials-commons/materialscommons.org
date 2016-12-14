@@ -1,39 +1,44 @@
-angular.module('materialscommons').component('mcFileUploads', {
-    templateUrl: 'app/project/files/components/uploads/mc-file-uploads.html',
-    controller: MCFileUploadsComponentController
-});
+class MCFileUploadsComponentController {
+    /*@ngInject*/
+    constructor(mcFlow, $timeout) {
+        this.flow = mcFlow.get();
+        this.$timeout = $timeout;
+    }
 
-/*@ngInject*/
-function MCFileUploadsComponentController(mcFlow, $timeout) {
-    var ctrl = this;
+    $onInit() {
+        this.filesByDir = {};
+        this.loadFilesByDir();
 
-    ctrl.flow = mcFlow.get();
-    ctrl.filesByDir = {};
-    loadFilesByDir();
-
-    ctrl.flow.on('catchAll', (eventName) => {
-        // Force a dirty check of the changed flow state.
-        $timeout(() => {
-            if (eventName === 'filesAdded' || eventName === 'fileRemoved') {
-                loadFilesByDir();
-            } else if (eventName === 'complete') {
-                ctrl.flow.files.length = 0;
-            }
+        this.flow.on('catchAll', (eventName) => {
+            // Force a dirty check of the changed flow state.
+            this.$timeout(() => {
+                if (eventName === 'filesAdded' || eventName === 'fileRemoved') {
+                    this.loadFilesByDir();
+                } else if (eventName === 'complete' && this.resetFiles) {
+                    this.flow.files.length = 0;
+                }
+            });
         });
-    });
+    }
 
-    /////////////////////////
-
-    function loadFilesByDir() {
-        var files = ctrl.flow.files;
-        ctrl.filesByDir = {}; // reset the list
+    loadFilesByDir() {
+        const files = this.flow.files;
+        this.filesByDir = {}; // reset the list
 
         // Load files indexed by the directory
         files.forEach((file) => {
-            if (!(file.attrs.directory_name in ctrl.filesByDir)) {
-                ctrl.filesByDir[file.attrs.directory_name] = [];
+            if (!(file.attrs.directory_name in this.filesByDir)) {
+                this.filesByDir[file.attrs.directory_name] = [];
             }
-            ctrl.filesByDir[file.attrs.directory_name].push(file);
+            this.filesByDir[file.attrs.directory_name].push(file);
         });
     }
 }
+
+angular.module('materialscommons').component('mcFileUploads', {
+    templateUrl: 'app/project/files/components/uploads/mc-file-uploads.html',
+    controller: MCFileUploadsComponentController,
+    bindings: {
+        resetFiles: '<'
+    }
+});

@@ -1,13 +1,14 @@
-export function selectItemsService($modal) {
+export function selectItemsService($mdDialog) {
     'ngInject';
 
     return {
         open: function() {
-            var tabs = {
+            let tabs = {
                 processes: false,
                 files: false,
                 samples: false,
-                reviews: false
+                reviews: false,
+                uploadFiles: false
             };
 
             let opts = {
@@ -19,7 +20,7 @@ export function selectItemsService($modal) {
                 throw "Invalid arguments to service selectItems:open()";
             }
 
-            for (var i = 0; i < arguments.length; i++) {
+            for (let i = 0; i < arguments.length; i++) {
                 if ((arguments[i] in tabs)) {
                     tabs[arguments[i]] = true;
                 } else if (_.isObject(arguments[i])) {
@@ -28,55 +29,49 @@ export function selectItemsService($modal) {
                 }
             }
 
-            var modal = $modal.open({
-                size: 'lg',
+            let showFilesTree = tabs.files && opts.experimentId === '';
+            let showFilesTable = tabs.files && opts.experimentId !== '';
+            return $mdDialog.show({
                 templateUrl: 'app/global.services/select-items/select-items.html',
                 controller: SelectItemsServiceModalController,
                 controllerAs: 'ctrl',
-                resolve: {
-                    showProcesses: function() {
-                        return tabs.processes;
-                    },
+                bindToController: true,
+                locals: {
+                    showProcesses: tabs.processes,
 
-                    showFilesTree: function() {
-                        return tabs.files && opts.experimentId === '';
-                    },
+                    showFilesTree: showFilesTree,
 
-                    showFilesTable: function() {
-                        return tabs.files && opts.experimentId !== '';
-                    },
+                    showFilesTable: showFilesTable,
 
-                    showSamples: function() {
-                        return tabs.samples;
-                    },
+                    showSamples: tabs.samples,
 
-                    showReviews: function() {
-                        return tabs.reviews;
-                    },
 
-                    options: () => opts
+                    showReviews: tabs.reviews,
+
+                    showUploadFiles: tabs.uploadFiles,
+
+                    options: opts
                 }
             });
-            return modal.result;
         }
     };
 }
 
 /*@ngInject*/
-function SelectItemsServiceModalController($modalInstance, showProcesses, showFilesTree, showFilesTable, showSamples, options,
-                                           showReviews, projectsService, $stateParams, project, experimentsService) {
-    var ctrl = this;
+function SelectItemsServiceModalController($mdDialog, projectsService, $stateParams, project, experimentsService) {
+    let ctrl = this;
 
     ctrl.project = project.get();
     ctrl.tabs = loadTabs();
     ctrl.activeTab = ctrl.tabs[0].name;
     ctrl.setActive = setActive;
     ctrl.isActive = isActive;
+    ctrl.uploadComplete = uploadComplete;
     ctrl.ok = ok;
     ctrl.cancel = cancel;
     ctrl.processes = [];
     ctrl.samples = [];
-    ctrl.options = options;
+    ctrl.uploadedFiles = [];
 
     /////////////////////////
 
@@ -89,11 +84,11 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
     }
 
     function ok() {
-        var selectedProcesses = ctrl.processes.filter(function(p) {
+        const selectedProcesses = ctrl.processes.filter(function(p) {
             return p.input || p.output;
         });
 
-        var selectedSamples = ctrl.samples.filter(function(s) {
+        let selectedSamples = ctrl.samples.filter(function(s) {
             for (let i = 0; i < s.versions.length; i++) {
                 if (s.versions[i].selected) {
                     return true;
@@ -102,9 +97,9 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
             return false;
         });
 
-        var selectedFiles = getSelectedFiles();
+        let selectedFiles = getSelectedFiles();
 
-        $modalInstance.close({
+        $mdDialog.hide({
             processes: selectedProcesses,
             samples: selectedSamples,
             files: selectedFiles
@@ -112,39 +107,53 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
     }
 
     function getSelectedFiles() {
-        var files = [];
-        if (showFilesTree) {
-            var treeModel = new TreeModel(),
-                root = treeModel.parse(project.get().files[0]);
-            // Walk the tree looking for selected files and adding them to the
-            // list of files. Also reset the selected flag so the next time
-            // the popup for files is used it doesn't show previously selected
-            // items.
-            root.walk({strategy: 'pre'}, function(node) {
-                if (node.model.data.selected) {
-                    node.model.data.selected = false;
-                    if (node.model.data.otype === 'file') {
-                        files.push(node.model.data);
+        let files = [];
+        if (ctrl.showFilesTree) {
+            let filesFromTree = [];
+            let projectFiles = project.get().files;
+            if (projectFiles && projectFiles.length) {
+                let treeModel = new TreeModel(),
+                    root = treeModel.parse(project.get().files[0]);
+                // Walk the tree looking for selected files and adding them to the
+                // list of files. Also reset the selected flag so the next time
+                // the popup for files is used it doesn't show previously selected
+                // items.
+                root.walk({strategy: 'pre'}, function(node) {
+                    if (node.model.data.selected) {
+                        node.model.data.selected = false;
+                        if (node.model.data.otype === 'file') {
+                            filesFromTree.push(node.model.data);
+                        }
                     }
-                }
-            });
-            return files;
-        } else if (showFilesTable) {
-            return ctrl.files.filter(f => f.selected);
-        } else {
-            return [];
+                });
+                files = files.concat(filesFromTree);
+            }
         }
+
+        if (ctrl.showFilesTable) {
+            files = files.concat(ctrl.files.filter(f => f.selected));
+        }
+
+        if (ctrl.showUploadFiles) {
+            files = files.concat(ctrl.uploadedFiles);
+        }
+
+        return files;
+    }
+
+    function uploadComplete(fileIds) {
+        ctrl.uploadedFiles = fileIds.map(fid => ({id: fid}));
     }
 
     function cancel() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.cancel();
     }
 
     function loadTabs() {
-        var tabs = [];
-        if (showProcesses) {
+        let tabs = [];
+        if (ctrl.showProcesses) {
             tabs.push(newTab('processes', 'fa-code-fork'));
-            if (options.experimentId) {
+            if (ctrl.options.experimentId) {
                 // get processes for experiment
             } else {
                 projectsService.getProjectProcesses($stateParams.project_id).then(function(processes) {
@@ -153,10 +162,10 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
             }
         }
 
-        if (showSamples) {
+        if (ctrl.showSamples) {
             tabs.push(newTab('samples', 'fa-cubes'));
-            if (options.experimentId && options.experimentId !== '') {
-                experimentsService.getSamplesForExperiment($stateParams.project_id, options.experimentId).then(
+            if (ctrl.options.experimentId && ctrl.options.experimentId !== '') {
+                experimentsService.getSamplesForExperiment($stateParams.project_id, ctrl.options.experimentId).then(
                     (samples) => {
                         ctrl.samples = samples;
                     }
@@ -168,13 +177,13 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
             }
         }
 
-        if (showFilesTree) {
+        if (ctrl.showFilesTree) {
             tabs.push(newTab('file tree', 'fa-files-o'));
         }
 
-        if (showFilesTable) {
+        if (ctrl.showFilesTable) {
             tabs.push(newTab('file table', 'fa-files-o'));
-            experimentsService.getFilesForExperiment($stateParams.project_id, options.experimentId)
+            experimentsService.getFilesForExperiment($stateParams.project_id, ctrl.options.experimentId)
                 .then(
                     (files) => {
                         ctrl.files = files;
@@ -182,8 +191,12 @@ function SelectItemsServiceModalController($modalInstance, showProcesses, showFi
                 );
         }
 
-        if (showReviews) {
+        if (ctrl.showReviews) {
             tabs.push(newTab('reviews', 'fa-comment'));
+        }
+
+        if (ctrl.showUploadFiles) {
+            tabs.push(newTab('Upload Files', 'fa-upload'));
         }
 
         tabs.sort(function compareByName(t1, t2) {

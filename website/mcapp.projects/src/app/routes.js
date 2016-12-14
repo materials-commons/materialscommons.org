@@ -80,7 +80,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 _templates: ["templates", function(templates) {
                     return templates.getServerTemplates().then(
                         (t) => {
-                            //console.log('server Templates', t);
                             templates.set(t);
                             return t;
                         }
@@ -319,7 +318,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.files.uploads', {
             url: '/uploads',
-            template: '<mc-file-uploads></mc-file-uploads>'
+            template: '<mc-file-uploads reset-files="true"></mc-file-uploads>'
         })
         .state('project.files.file', {
             url: '/file/:file_id',
