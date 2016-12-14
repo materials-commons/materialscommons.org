@@ -80,7 +80,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 _templates: ["templates", function(templates) {
                     return templates.getServerTemplates().then(
                         (t) => {
-                            //console.log('server Templates', t);
                             templates.set(t);
                             return t;
                         }

@@ -3,7 +3,6 @@ class MCFileUploadsComponentController {
     constructor(mcFlow, $timeout) {
         this.flow = mcFlow.get();
         this.$timeout = $timeout;
-        console.log('this.resetFiles = ', this.resetFiles);
     }
 
     $onInit() {
@@ -16,7 +15,6 @@ class MCFileUploadsComponentController {
                 if (eventName === 'filesAdded' || eventName === 'fileRemoved') {
                     this.loadFilesByDir();
                 } else if (eventName === 'complete' && this.resetFiles) {
-                    console.log('setting flow.files.length to zero', this.resetFiles);
                     this.flow.files.length = 0;
                 }
             });
