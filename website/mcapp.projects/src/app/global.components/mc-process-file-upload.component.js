@@ -23,7 +23,11 @@ class MCProcessFileUploadComponentController {
             this.$timeout(() => {
                 if (eventName === 'complete') {
                     let fileIds = this.flow.files.map(f => f.file_id);
-                    console.log('The following fileIds were added to process', fileIds);
+                    if (fileIds.length) {
+                        console.log('The following fileIds were added to process', fileIds);
+                        this.onUploadComplete({fileIds: fileIds});
+                        this.flow.files.length = 0;
+                    }
                 }
             });
         })
@@ -36,5 +40,8 @@ class MCProcessFileUploadComponentController {
 
 angular.module('materialscommons').component('mcProcessFileUpload', {
     templateUrl: 'app/global.components/mc-process-file-upload.html',
-    controller: MCProcessFileUploadComponentController
+    controller: MCProcessFileUploadComponentController,
+    bindings: {
+        onUploadComplete: '&'
+    }
 });
