@@ -20,14 +20,12 @@ class MCProcessTemplateOtherComponentController {
     selectFiles() {
         this.selectItems.open('files', 'uploadFiles').then(
             (selected) => {
-                console.log('other selectItems');
                 let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
                 let filesArgs = {
                     template_id: this.process.template_id,
                     files: files,
                     process_id: this.process.id
                 };
-                console.log('filesArgs', filesArgs);
                 this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
                     .then(
                         (process) => this.process.files = process.files,

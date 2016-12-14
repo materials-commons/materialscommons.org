@@ -107,7 +107,6 @@ function SelectItemsServiceModalController($mdDialog, projectsService, $statePar
     }
 
     function getSelectedFiles() {
-        console.log('getSelectedFiles', ctrl.showUploadFiles, ctrl.uploadedFiles);
         let files = [];
         if (ctrl.showFilesTree) {
             let filesFromTree = [];

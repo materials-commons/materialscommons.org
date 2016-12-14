@@ -24,7 +24,6 @@ class MCProcessFileUploadComponentController {
                 if (eventName === 'complete') {
                     let fileIds = this.flow.files.map(f => f.file_id);
                     if (fileIds.length) {
-                        console.log('The following fileIds were added to process', fileIds);
                         this.onUploadComplete({fileIds: fileIds});
                         this.flow.files.length = 0;
                     }

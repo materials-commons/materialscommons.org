@@ -11,12 +11,10 @@ class MCAttributeSelectionComponentController {
     updateSelectionSettingProperty(property) {
 
         if (!property.value) {
-            console.log("No value -> ", property);
             return;
         }
 
         if (property.otype != "selection") {
-            console.log("Not a selection -> ", property);
             return;
         }
 

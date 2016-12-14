@@ -11,12 +11,10 @@ class MCAttributeStringComponentController {
     updateSettingProperty(property) {
 
         if (!property.value) {
-            console.log("No value -> ", property);
             return;
         }
 
         if (property.otype != "string") {
-            console.log("Not a string -> ", property);
             return;
         }
 

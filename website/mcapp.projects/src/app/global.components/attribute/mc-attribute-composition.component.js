@@ -11,12 +11,10 @@ class MCAttributeCompositionComponentController {
     updateSettingProperty(property) {
 
         if (!property.value) {
-            console.log("No value -> ", property);
             return;
         }
 
         if (property.otype != "composition") {
-            console.log("Not a composition -> ", property);
             return;
         }
 

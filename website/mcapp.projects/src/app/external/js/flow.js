@@ -1330,19 +1330,12 @@
             this.xhr.onreadystatechange = function() {
                 var myxhr = xhr;
                 var me = who;
-                console.log('new load listener');
                 if (myxhr.readyState === 4 && myxhr.status === 200) {
-                    console.log('readyState 4 and status 200');
                     var data = JSON.parse(myxhr.responseText);
-                    console.log('data after JSON.parse', data);
                     if (data.done) {
-                        console.log('setting fileObj file_id');
                         me.fileObj.file_id = data.file_id;
                     }
                 }
-                console.log('myxhr', myxhr);
-                console.log('load me', me);
-                console.log('flowObj files', me.flowObj.files);
             };
             this.xhr.addEventListener("load", this.doneHandler, false);
             this.xhr.addEventListener("error", this.doneHandler, false);
