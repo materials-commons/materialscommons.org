@@ -66,10 +66,12 @@ function SelectItemsServiceModalController($mdDialog, projectsService, $statePar
     ctrl.activeTab = ctrl.tabs[0].name;
     ctrl.setActive = setActive;
     ctrl.isActive = isActive;
+    ctrl.uploadComplete = uploadComplete;
     ctrl.ok = ok;
     ctrl.cancel = cancel;
     ctrl.processes = [];
     ctrl.samples = [];
+    ctrl.uploadedFiles = [];
 
     /////////////////////////
 
@@ -105,28 +107,43 @@ function SelectItemsServiceModalController($mdDialog, projectsService, $statePar
     }
 
     function getSelectedFiles() {
+        console.log('getSelectedFiles', ctrl.showUploadFiles, ctrl.uploadedFiles);
         let files = [];
         if (ctrl.showFilesTree) {
-            let treeModel = new TreeModel(),
-                root = treeModel.parse(project.get().files[0]);
-            // Walk the tree looking for selected files and adding them to the
-            // list of files. Also reset the selected flag so the next time
-            // the popup for files is used it doesn't show previously selected
-            // items.
-            root.walk({strategy: 'pre'}, function(node) {
-                if (node.model.data.selected) {
-                    node.model.data.selected = false;
-                    if (node.model.data.otype === 'file') {
-                        files.push(node.model.data);
+            let filesFromTree = [];
+            let projectFiles = project.get().files;
+            if (projectFiles && projectFiles.length) {
+                let treeModel = new TreeModel(),
+                    root = treeModel.parse(project.get().files[0]);
+                // Walk the tree looking for selected files and adding them to the
+                // list of files. Also reset the selected flag so the next time
+                // the popup for files is used it doesn't show previously selected
+                // items.
+                root.walk({strategy: 'pre'}, function(node) {
+                    if (node.model.data.selected) {
+                        node.model.data.selected = false;
+                        if (node.model.data.otype === 'file') {
+                            filesFromTree.push(node.model.data);
+                        }
                     }
-                }
-            });
-            return files;
-        } else if (ctrl.showFilesTable) {
-            return ctrl.files.filter(f => f.selected);
-        } else {
-            return [];
+                });
+                files = files.concat(filesFromTree);
+            }
         }
+
+        if (ctrl.showFilesTable) {
+            files = files.concat(ctrl.files.filter(f => f.selected));
+        }
+
+        if (ctrl.showUploadFiles) {
+            files = files.concat(ctrl.uploadedFiles);
+        }
+
+        return files;
+    }
+
+    function uploadComplete(fileIds) {
+        ctrl.uploadedFiles = fileIds.map(fid => ({id: fid}));
     }
 
     function cancel() {

@@ -16,7 +16,7 @@ class MCFileUploadsComponentController {
                 if (eventName === 'filesAdded' || eventName === 'fileRemoved') {
                     this.loadFilesByDir();
                 } else if (eventName === 'complete' && this.resetFiles) {
-                    console.log('setting flow.files.length to zero');
+                    console.log('setting flow.files.length to zero', this.resetFiles);
                     this.flow.files.length = 0;
                 }
             });
@@ -41,6 +41,6 @@ angular.module('materialscommons').component('mcFileUploads', {
     templateUrl: 'app/project/files/components/uploads/mc-file-uploads.html',
     controller: MCFileUploadsComponentController,
     bindings: {
-        resetFiles: '@'
+        resetFiles: '<'
     }
 });
