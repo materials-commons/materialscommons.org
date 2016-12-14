@@ -16,8 +16,8 @@ class ShowSampleDialogController {
 
 /*@ngInject*/
 function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state, isImage, $mdDialog) {
-    var ctrl = this;
-    var projectID = $stateParams.project_id;
+    const ctrl = this;
+    const projectID = $stateParams.project_id;
     ctrl.isImage = isImage;
     ctrl.fileSrc = fileSrc;
     ctrl.gotoFilesPage = gotoFilesPage;
@@ -32,7 +32,6 @@ function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state,
     function init() {
         mcapi('/search/project/%/files', projectID)
             .success(function(results) {
-                console.log('search results', results);
                 ctrl.results = results;
             })
             .post({query_string: $stateParams.query});
@@ -59,7 +58,7 @@ function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state,
 
     // images goes through the list of files and returns all the images.
     function images(files) {
-        var images = [];
+        const images = [];
         files.forEach(function(f) {
             if (isImage(f.mediatype.mime)) {
                 images.push(f);

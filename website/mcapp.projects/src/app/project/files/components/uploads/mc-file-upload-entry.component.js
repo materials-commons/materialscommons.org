@@ -11,8 +11,6 @@ function MCFileUploadEntryComponentController(mcapi) {
     const ctrl = this;
     ctrl.removeFromUpload = removeFromUpload;
 
-    console.log('uploadEntry File', ctrl.file);
-
     ////////////////////
 
     function removeFromUpload(file) {
