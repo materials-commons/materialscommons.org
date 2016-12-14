@@ -8,10 +8,9 @@ const ra = require('../resource-access');
 const Router = require('koa-router');
 
 // used by file loader
-const fileUtils = require('../../../lib/create-file-utils')
-const baseFileStoreDir = fileUtils.getFileStoreDir(); // ends with '/'
+const fileUtils = require('../../../lib/create-file-utils');
 const uploadTmpDir = fileUtils.getTmpUploadDir(); // ends with '/'
-var koaBody = require('koa-body')({
+const koaBody = require('koa-body')({
     multipart: true,
     formidable: {uploadDir: uploadTmpDir, hash: 'md5'},
     keepExtensions: true,
@@ -19,7 +18,11 @@ var koaBody = require('koa-body')({
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';
-    this.body = yield directories.get(this.params.project_id, dirID);
+    if (dirID === 'all') {
+        this.body = yield directories.getAll(this.params.project_id);
+    } else {
+        this.body = yield directories.get(this.params.project_id, dirID);
+    }
     yield next;
 }
 
@@ -163,8 +166,8 @@ function* uploadFileToProjectDirectory(next) {
         yield fileUtils.moveToStore(upload.path,file.id);
     }
 
-    let results = yield directories.addFileToDirectory(directoryID,file.id);
-    results = yield projects.addFileToProject(projectID,file.id);
+    yield directories.addFileToDirectory(directoryID, file.id);
+    yield projects.addFileToProject(projectID, file.id);
 
     this.body = file;
     yield next;

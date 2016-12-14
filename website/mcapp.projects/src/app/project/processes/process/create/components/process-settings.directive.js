@@ -17,7 +17,7 @@ function processSettingsDirective() {
 
 /*@ngInject*/
 function ProcessSettingsDirectiveController(experimentsService, toast, $stateParams) {
-    var ctrl = this;
+    const ctrl = this;
     ctrl.datePickerOptions = {
         formatYear: 'yy',
         startingDay: 1
@@ -30,7 +30,6 @@ function ProcessSettingsDirectiveController(experimentsService, toast, $statePar
         }
 
         if (property.otype === "date") {
-            console.dir(property);
             return;
         }
 
