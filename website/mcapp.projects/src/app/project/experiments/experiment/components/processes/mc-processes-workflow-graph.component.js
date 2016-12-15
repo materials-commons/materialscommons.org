@@ -104,6 +104,7 @@ class MCProcessesWorkflowGraphComponentController {
                 }
             ]
         });
+
         this.cy.on('click', event => {
             let target = event.cyTarget;
             if (!target.isNode && !target.isEdge) {

@@ -74,15 +74,18 @@ class MCProcessesWorkflowComponentController {
                     (process) => {
                         process.hasChildren = hasChildren;
                         this.selectedProcess = process;
+                        this.workflowService.callOnSelectCallbacks(process);
                         this.currentTab = 1;
                     },
                     () => {
                         this.toast.error('Unable to retrieve process details');
                         this.selectedProcess = null;
+                        this.workflowService.callOnSelectCallbacks(null);
                     }
                 );
         } else {
             this.selectedProcess = null;
+            this.workflowService.callOnSelectCallbacks(null);
             this.currentTab = 0;
         }
     }
