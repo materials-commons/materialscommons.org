@@ -34,6 +34,64 @@
                         </div>
                     </div>
 
+                    <!--------- integer --------->
+                    <div ng-switch-when="integer">
+                        <div layout="row" layout-align="start center">
+                            <md-input-container md-no-float>
+                                <label>{{::measurement.name}}</label>
+                                <input type="number"
+                                       name="numberInput"
+                                       step="any"
+                                       ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                       ng-required="::measurement.required"
+                                       ng-model="measurement.value">
+                            </md-input-container>
+                            <span ng-if="measurement.units.length === 0" class="unit-align">
+                                {{::measurement.unit}}
+                            </span>
+                            <span ng-if="measurement.units.length !== 0">
+                                <md-select ng-model="measurement.unit"
+                                           ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                           aria-label="units"
+                                           class="units-align">
+                                    <md-option ng-repeat="unit in ::measurement.units"
+                                               ng-value="unit">
+                                        {{unit}}
+                                    </md-option>
+                                </md-select>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!--------- float --------->
+                    <div ng-switch-when="float">
+                        <div layout="row" layout-align="start center">
+                            <md-input-container md-no-float>
+                                <label>{{::measurement.name}}</label>
+                                <input type="number"
+                                       name="numberInput"
+                                       step="any"
+                                       ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                       ng-required="::measurement.required"
+                                       ng-model="measurement.value">
+                            </md-input-container>
+                            <span ng-if="measurement.units.length === 0" class="unit-align">
+                                {{::measurement.unit}}
+                            </span>
+                            <span ng-if="measurement.units.length !== 0">
+                                <md-select ng-model="measurement.unit"
+                                           ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                           aria-label="units"
+                                           class="units-align">
+                                    <md-option ng-repeat="unit in ::measurement.units"
+                                               ng-value="unit">
+                                        {{unit}}
+                                    </md-option>
+                                </md-select>
+                            </span>
+                        </div>
+                    </div>
+
                     <!------ composition ----->
                     <div ng-switch-when="composition">
                         <label>Composition</label>
