@@ -14,6 +14,26 @@
                         </mc-attribute-number>
                     </div>
 
+                    <!------- integer ------>
+                    <div ng-switch-when="integer">
+                        <mc-attribute-number
+                                setting="setting"
+                                template-id="$ctrl.templateId"
+                                process-id="$ctrl.processId"
+                                attribute="$ctrl.attribute">
+                        </mc-attribute-number>
+                    </div>
+
+                    <!------- float ------>
+                    <div ng-switch-when="float">
+                        <mc-attribute-number
+                                setting="setting"
+                                template-id="$ctrl.templateId"
+                                process-id="$ctrl.processId"
+                                attribute="$ctrl.attribute">
+                        </mc-attribute-number>
+                    </div>
+
                     <!------ composition ----->
                     <div ng-switch-when="composition">
                         <mc-attribute-composition
@@ -56,7 +76,7 @@
 
                     <!--------- unknown type --------->
                     <div ng-switch-default>
-                        <span>Unknown template type2 {{::setting.otype}}</span>
+                        <!--<span>Unknown template type2 {{::setting.otype}}</span>-->
                     </div>
                 </div>
             </div>
