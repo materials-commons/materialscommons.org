@@ -20,5 +20,5 @@ class MCWorkflowToolbarComponentController {
 
 angular.module('materialscommons').component('mcWorkflowToolbar', {
     templateUrl: 'app/project/experiments/experiment/components/processes/mc-workflow-toolbar.html',
-    controller: MCWorkflowToolbarComponentController,
+    controller: MCWorkflowToolbarComponentController
 });
