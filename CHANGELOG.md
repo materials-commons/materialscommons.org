@@ -6,7 +6,7 @@
 - :star: **New Feature:** Files can now be directly uploaded into a workflow process.
 - :star: **New Feature:** Additional process templates for PRISMS computational processes were added.
 - :star: **New Feature:** The ability to add and update measurements and setup information for processes were added to the [Python API](https://github.com/materials-commons/mcapi).
-- :star: **Cleanup:** Reduced the number of steps to choose a template in tasks.
+- :star: **Improvement:** Reduced the number of steps to choose a template in tasks.
 - :boom: **Fixed:** Various updates to time/date handling.
 - :boom: **Fixed:** Composition wasn't being properly updated in the backend.
 - :boom: **Fixed:** Problem with setting units.
