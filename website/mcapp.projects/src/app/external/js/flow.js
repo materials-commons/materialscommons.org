@@ -1324,7 +1324,19 @@
             var bytes = this.fileObj.file[func](this.startByte, this.endByte, this.fileObj.file.type);
             var fr = new FileReader();
             this.xhr = new XMLHttpRequest();
+            var xhr = this.xhr;
+            var who = this;
             this.xhr.upload.addEventListener('progress', this.progressHandler, false);
+            this.xhr.onreadystatechange = function() {
+                var myxhr = xhr;
+                var me = who;
+                if (myxhr.readyState === 4 && myxhr.status === 200) {
+                    var data = JSON.parse(myxhr.responseText);
+                    if (data.done) {
+                        me.fileObj.file_id = data.file_id;
+                    }
+                }
+            };
             this.xhr.addEventListener("load", this.doneHandler, false);
             this.xhr.addEventListener("error", this.doneHandler, false);
             var self = this;

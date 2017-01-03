@@ -5,7 +5,6 @@ const schema = require('../../../schema');
 const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
-const propertyValidator = require('../../../schema/property-validator');
 const validators = require('./validators');
 const ra = require('../../resource-access');
 const Router = require('koa-router');
@@ -72,7 +71,7 @@ function* validateUpdateExperimentProcessTemplateArgs(updateArgs, params) {
     if (updateArgs.properties) {
         for (let i = 0; i < updateArgs.properties.length; i++) {
             let property = updateArgs.properties[i];
-            let errors = yield validateProperty(template, property);
+            let errors = yield validators.validateProperty(template, property);
             if (errors !== null) {
                 return errors;
             }
@@ -90,7 +89,7 @@ function* validateUpdateExperimentProcessTemplateArgs(updateArgs, params) {
     if (updateArgs.files) {
         for (let i = 0; i < updateArgs.files.length; i++) {
             let f = updateArgs.files[i];
-            let errors = yield validateFile(params.project_id, f);
+            let errors = yield validators.validateFile(params.project_id, f);
             if (errors !== null) {
                 return errors;
             }
@@ -118,39 +117,6 @@ function* validateUpdateExperimentProcessTemplateArgs(updateArgs, params) {
     return null;
 }
 
-function* validateProperty(template, property) {
-    let errors = yield schema.validate(schema.templateProperty, property);
-    if (errors !== null) {
-        return errors;
-    }
-
-
-    if (!propertyValidator.isValidSetupProperty(template, property)) {
-        return {error: `Invalid property ${property.attribute}`};
-    }
-
-    return null;
-    // return {error: `something bad happened`};
-}
-
-function* validateFile(projectId, file) {
-    let errors = yield schema.validate(schema.templateCommand, file);
-    if (errors !== null) {
-        return errors;
-    }
-
-    if (file.command !== 'add' && file.command !== 'delete') {
-        return {error: `Bad command '${file.command} for file ${file.id}`};
-    }
-
-    let fileInProject = yield check.fileInProject(file.id, projectId);
-    if (!fileInProject) {
-        return {error: `File ${file.id} not in project ${projectId}`};
-    }
-
-    return null;
-}
-
 function* getProcess(next) {
     let rv = yield processes.getProcess(this.params.process_id);
     if (rv.error) {
@@ -164,8 +130,8 @@ function* getProcess(next) {
 
 function convertPropertyDateValues(updateArgs) {
     if (updateArgs.properties) {
-        let props = updateArgs.properties
-        for (var i = 0; i < props.length; i++) {
+        let props = updateArgs.properties;
+        for (let i = 0; i < props.length; i++) {
             let property = props[i];
             if (property.otype == 'date') {
                 try {

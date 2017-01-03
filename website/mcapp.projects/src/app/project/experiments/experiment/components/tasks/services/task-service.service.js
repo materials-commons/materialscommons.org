@@ -121,6 +121,7 @@ class TaskService {
                 (template) => {
                     this.projectsService.getProjectProcess(projectId, template.process_id).then(
                         (process) => {
+                            task.template = process;
                             let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
                             task.template.template_name = templateName;
                             task.template_name = templateName;

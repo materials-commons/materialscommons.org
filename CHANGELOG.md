@@ -1,5 +1,20 @@
 # Release Notes
 
+## 21 December 2016
+### [Materials Commons Projects](https://materialscommons.org/mcapp)
+- :star: **New Feature:** First iteration of online help available. You can access this from within the UI. It's also available in the [wiki](https://github.com/materials-commons/materialscommons.org/wiki) on our repo.
+- :star: **New Feature:** Files can now be directly uploaded into a workflow process.
+- :star: **New Feature:** Additional process templates for PRISMS computational processes were added.
+- :star: **New Feature:** The ability to add and update measurements and setup information for processes were added to the [Python API](https://github.com/materials-commons/mcapi).
+- :star: **Improvement:** Reduced the number of steps to choose a template in tasks.
+- :boom: **Fixed:** Various updates to time/date handling.
+- :boom: **Fixed:** Composition wasn't being properly updated in the backend.
+- :boom: **Fixed:** Problem with setting units.
+- :boom: **Fixed:** Other bug fixes.
+
+### [Materials Commons Data](https://materialscommons.org/mcpub)
+There were no changes made to Materials Commons Data in this release.
+
 ## 28 November 2016
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 - :star: **New Feature:** Materials Commons Python API (documentation coming) [Repo](https://github.com/materials-commons/mcapi).

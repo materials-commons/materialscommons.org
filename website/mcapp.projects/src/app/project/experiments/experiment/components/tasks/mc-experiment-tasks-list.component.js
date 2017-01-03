@@ -101,6 +101,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, toast, curren
             projectsService.getProjectProcess($stateParams.project_id, ctrl.task.process_id)
                 .then(
                     (process) => {
+                        ctrl.task.template = process;
                         let templateName = process.process_name ? process.process_name : process.template_id.substring(7);
                         ctrl.task.template.template_name = templateName;
                         ctrl.task.template_name = templateName;

@@ -363,7 +363,7 @@ function Dataset2Datafile(datasetId, datafileId) {
 }
 
 function DataFile(name, owner) {
-    this._type ='datafile';
+    this.otype ='datafile';
     this.current = true;
     this.description = "";
     this.parent =  "";

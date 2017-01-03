@@ -34,6 +34,62 @@
                         </div>
                     </div>
 
+                    <div ng-switch-when="integer">
+                        <div layout="row" layout-align="start center">
+                            <md-input-container md-no-float>
+                                <label>{{::setting.name}}</label>
+                                <input type="number"
+                                       name="numberInput"
+                                       step="any"
+                                       ng-change="ctrl.updateSettingProperty(setting)"
+                                       ng-required="::setting.required"
+                                       ng-model="setting.value">
+                            </md-input-container>
+                            <span ng-if="setting.units.length === 0" class="unit-align">
+                                {{::setting.unit}}
+                            </span>
+                            <span ng-if="setting.units.length !== 0">
+                                <md-select ng-model="setting.unit"
+                                           ng-change="ctrl.updateSettingProperty(setting)"
+                                           aria-label="units"
+                                           class="units-align">
+                                    <md-option ng-repeat="unit in ::setting.units"
+                                               ng-value="unit">
+                                        {{unit}}
+                                    </md-option>
+                                </md-select>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div ng-switch-when="float">
+                        <div layout="row" layout-align="start center">
+                            <md-input-container md-no-float>
+                                <label>{{::setting.name}}</label>
+                                <input type="number"
+                                       name="numberInput"
+                                       step="any"
+                                       ng-change="ctrl.updateSettingProperty(setting)"
+                                       ng-required="::setting.required"
+                                       ng-model="setting.value">
+                            </md-input-container>
+                            <span ng-if="setting.units.length === 0" class="unit-align">
+                                {{::setting.unit}}
+                            </span>
+                            <span ng-if="setting.units.length !== 0">
+                                <md-select ng-model="setting.unit"
+                                           ng-change="ctrl.updateSettingProperty(setting)"
+                                           aria-label="units"
+                                           class="units-align">
+                                    <md-option ng-repeat="unit in ::setting.units"
+                                               ng-value="unit">
+                                        {{unit}}
+                                    </md-option>
+                                </md-select>
+                            </span>
+                        </div>
+                    </div>
+
                     <!------ composition ----->
                     <div ng-switch-when="composition">
                         <label>Composition</label>

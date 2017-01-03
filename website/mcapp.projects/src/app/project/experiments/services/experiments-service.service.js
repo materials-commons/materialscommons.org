@@ -104,6 +104,15 @@ class ExperimentsService {
         return process;
     }
 
+    convertDatePropertyAttributes2(process) {
+        angular.forEach(process.setup, (s) => s.properties.filter(p => p.otype === 'date')
+            .forEach(p => {
+                if (p.value) {
+                    p.value = this.convertDateValueFromTransport(p.value)
+                }
+            }));
+    }
+
     convertDateValueForTransport(dateObj) {
         return dateObj.getTime();
     }

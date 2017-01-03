@@ -51,7 +51,10 @@
         </process-measurements>
     </div>
 
-    <div flex="100" layout-margin>
+    <mc-process-template-samples-list process="$ctrl.task.template"></mc-process-template-samples-list>
+    <mc-process-template-files-list process="$ctrl.task.template"></mc-process-template-files-list>
+
+    <div flex="100" layout-margin ng-if="false">
         <md-table-container>
             <table md-table
                    ng-if="$ctrl.task.template.output_samples.length || $ctrl.task.template.input_files.length || $ctrl.task.template.output_files.length">
