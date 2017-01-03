@@ -43,6 +43,7 @@ class MCProcessesWorkflowGraphComponentController {
         if (changes.highlightProcesses) {
             this.highlightProcesses = changes.highlightProcesses.currentValue;
         }
+        this.workflowService.setSelectedProcess(null);
         this.allProcessesGraph();
     }
 
@@ -108,11 +109,18 @@ class MCProcessesWorkflowGraphComponentController {
         this.cy.on('click', event => {
             let target = event.cyTarget;
             if (!target.isNode && !target.isEdge) {
+                this.workflowService.setSelectedProcess(null);
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             } else if (target.isNode()) {
+                let edges = target.connectedEdges();
+                edges.forEach((e) => console.log('source is ' + e.data('source')));
+                //console.log(target.connectedEdges());
                 let processId = target.data('id');
+                let process = this.processes.filter((p) => p.id === processId)[0];
+                this.workflowService.setSelectedProcess(process);
                 this.mcProcessesWorkflow.setSelectedProcess(processId, (target.outgoers().length > 0));
             } else if (target.isEdge()) {
+                this.workflowService.setSelectedProcess(null);
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             }
         });
