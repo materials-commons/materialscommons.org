@@ -8,6 +8,7 @@ class WorkflowService {
         this.workflowDeleteCallback = null;
         this.workflowAddCallback = null;
         this.workflowChangeCallback = null;
+        this.selectedProcess = null;
     }
 
     addOnSelectCallback(name, cb) {
@@ -94,6 +95,10 @@ class WorkflowService {
         this.workflowChangeCallback = null;
         this.workflowAddCallback = null;
         this.workflowDeleteCallback = null;
+    }
+
+    setSelectedProcess(p) {
+        this.selectedProcess = p;
     }
 }
 
