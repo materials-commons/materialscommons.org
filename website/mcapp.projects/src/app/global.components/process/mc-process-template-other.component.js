@@ -18,7 +18,7 @@ class MCProcessTemplateOtherComponentController {
     }
 
     selectFiles() {
-        this.selectItems.open('files').then(
+        this.selectItems.open('files', 'uploadFiles').then(
             (selected) => {
                 let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
                 let filesArgs = {
@@ -28,10 +28,7 @@ class MCProcessTemplateOtherComponentController {
                 };
                 this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
                     .then(
-                        () => {
-                            this.process.files = selected.files;
-                            console.log('added files');
-                        },
+                        (process) => this.process.files = process.files,
                         () => this.toast.error('Unable to add files')
                     );
             });

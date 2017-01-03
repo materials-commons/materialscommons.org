@@ -11,12 +11,10 @@ class MCAttributeNumberComponentController {
     updateSettingProperty(property) {
 
         if (!property.value) {
-            console.log("No value -> ", property);
             return;
         }
 
-        if (property.otype != "number") {
-            console.log("Not a number -> ", property);
+        if (!MCAttributeNumberComponentController.isNumberOType(property.otype)) {
             return;
         }
 
@@ -25,7 +23,6 @@ class MCAttributeNumberComponentController {
         }
 
         if (property.units.length && !property.unit) {
-            console.log("No unit -> ", property);
             return;
         }
 
@@ -40,6 +37,15 @@ class MCAttributeNumberComponentController {
                 () => null,
                 () => this.toast.error('Unable to update property')
             );
+    }
+
+    static isNumberOType(otype) {
+        switch (otype) {
+            case "number": return true;
+            case "float": return true;
+            case "integer": return true;
+            default: return false;
+        }
     }
 }
 

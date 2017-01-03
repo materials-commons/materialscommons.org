@@ -8,13 +8,13 @@ class MCWorkflowProcessTemplatesComponentController {
                 cssClass: 'mc-create-samples-color',
                 icon: 'fa-cubes',
                 margin: true,
-                templates: this.templates.filter(t => t.process_type === 'create' && t.name === 'Create Samples')
+                templates: this.templates.filter(t => t.process_type === 'create')
             },
             {
                 title: 'TRANSFORMATION',
                 cssClass: 'mc-transform-color',
                 icon: 'fa-exclamation-triangle',
-                templates: this.templates.filter(t => t.process_type === 'transform' && t.name !== 'Create Samples')
+                templates: this.templates.filter(t => t.process_type === 'transform')
             },
             {
                 title: 'MEASUREMENT',

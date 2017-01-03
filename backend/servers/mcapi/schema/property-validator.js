@@ -41,6 +41,10 @@ function isValidValue(propertyType, choices, value) {
             return isValidSelectionValue(choices, value);
         case "number":
             return isValidNumber(value);
+        case "integer":
+            return isValidNumber(value);
+        case "float":
+            return isValidNumber(value);
         case "string":
             return isValidString(value);
         case "date":
@@ -81,8 +85,8 @@ function isValidString(value) {
 // and isn't in the future.
 // TODO: this needs to be revisited. See issue #897
 function isValidDate(value) {
-    if (value instanceof Date) return true;
-    return false;
+    return value instanceof Date;
+
     //let today = Date.now();
     //console.log((value instanceof Date));
     //console.log((today instanceof Date));
