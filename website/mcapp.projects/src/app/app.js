@@ -15,12 +15,6 @@ import './util/util';
 
 angular.module('materialscommons')
     .constant('mcglobals', setupMCGlobals())
-    .value('mc$', {
-        project: null,
-        experiment: null,
-        process: null,
-        sample: null
-    })
     .config(appConfig)
     .run(appRun)
     .controller('MCAppController', MCAppController);
