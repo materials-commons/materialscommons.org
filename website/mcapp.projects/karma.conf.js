@@ -111,13 +111,14 @@ module.exports = function (config) {
         // browsers : ['PhantomJS','Chrome'],
         browsers : ['Chrome'],
 
-        // plugins: [
-        //     'karma-phantomjs-launcher',
-        //     'karma-chrome-launcher',
-        //     'karma-coverage',
-        //     'karma-jasmine',
-        //     'karma-ng-html2js-preprocessor'
-        // ],
+        plugins: [
+             'karma-phantomjs-launcher',
+             'karma-chrome-launcher',
+             'karma-coverage',
+             'karma-jasmine',
+             'karma-ng-html2js-preprocessor',
+             'karma-mocha-reporter'
+        ],
 
         coverageReporter: {
             type: 'html',
