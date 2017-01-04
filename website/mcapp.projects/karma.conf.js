@@ -18,7 +18,7 @@ function listFiles() {
 
     var patterns = wiredep(wiredepOptions).js
         .concat([
-            path.join(conf.paths.tmp, '/serve/app/index.module.js', 'karma.conf.js'),
+            path.join(conf.paths.tmp, 'serve/app/index.module.js')
         ])
         .concat(pathSrcHtml);
 
@@ -27,6 +27,48 @@ function listFiles() {
             pattern: pattern
         };
     });
+
+//    files.push('../../node_modules/angular/angular.js');              // angular
+    files.push('../../node_modules/angular-mocks/angular-mocks.js');  // to load modules for tests
+
+    // external modules
+    files.push({
+        pattern: path.join(conf.paths.src, '/app/external/js/ckeditor/ckeditor.js'),
+        included: true,
+        served: true,
+        watched: false
+    });
+
+    files.push({
+        pattern: path.join(conf.paths.src, '/app/external/js/angular-filter.js'),
+        included: true,
+        served: true,
+        watched: false
+    });
+
+    files.push({
+        pattern: path.join(conf.paths.src, '/app/external/js/calendar.js'),
+        included: true,
+        served: true,
+        watched: false
+    });
+
+    files.push({
+        pattern: path.join(conf.paths.src, '/app/external/js/angular-cache-2.3.3.min.js'),
+        included: true,
+        served: true,
+        watched: false
+    });
+
+    // source code
+    files.push({
+        pattern: path.join(conf.paths.src, '/app/**/*.js'),
+        included: false,
+        served: false,
+        watched: true
+    });
+
+    // assets
     files.push({
         pattern: path.join(conf.paths.src, '/assets/**/*'),
         included: false,
@@ -34,8 +76,9 @@ function listFiles() {
         watched: false
     });
 
+    // unit-tests
     files.push({
-        pattern: 'unit-test/**/*',
+        pattern: 'unit-test/**/*.spec.js',
         include: true,
         watched: true
     });
@@ -48,7 +91,7 @@ module.exports = function (config) {
     var configuration = {
         files: listFiles(),
 
-        singleRun: true,
+        singleRun: false,
 
         autoWatch: true,
 
@@ -65,14 +108,16 @@ module.exports = function (config) {
 
         frameworks: ['jasmine'],
 
-        browsers : ['PhantomJS','Chrome'],
+        // browsers : ['PhantomJS','Chrome'],
+        browsers : ['Chrome'],
 
         plugins: [
-            'karma-phantomjs-launcher',
-            'karma-chrome-launcher',
-            'karma-coverage',
-            'karma-jasmine',
-            'karma-ng-html2js-preprocessor'
+             'karma-phantomjs-launcher',
+             'karma-chrome-launcher',
+             'karma-coverage',
+             'karma-jasmine',
+             'karma-ng-html2js-preprocessor',
+             'karma-mocha-reporter'
         ],
 
         coverageReporter: {
@@ -80,7 +125,8 @@ module.exports = function (config) {
             dir: 'coverage/'
         },
 
-        reporters: ['progress','mocha'],
+        // reporters: ['progress','mocha'],
+        reporters: ['mocha'],
 
         proxies: {
             '/assets/': path.join('/base/', conf.paths.src, '/assets/')
