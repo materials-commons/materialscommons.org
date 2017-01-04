@@ -89,6 +89,14 @@ class Properties {
         return this.property(name, "number");
     }
 
+    integer(name) {
+        return this.property(name, "integer");
+    }
+
+    float(name) {
+        return this.property(name, "float");
+    }
+
     units(...units) {
         this.currentProp.addUnits(...units);
         return this;
@@ -153,12 +161,12 @@ class Properties {
         return this.string(mkname(name, 'Solver Type'))
             .string(mkname(name, 'Solver Preconditioner Type'))
             .selection(mkname(name, 'Solver Tolerance Type')).choices("Relative", "Absolute")
-            .number(mkname(name, 'Solver Tolerance'))
-            .number(mkname(name, 'Solver Max Iterations'));
+            .float(mkname(name, 'Solver Tolerance'))
+            .integer(mkname(name, 'Solver Max Iterations'));
     }
 
     finiteElementBasis(name) {
-        return this.number(mkname(name, 'Order')).number(mkname(name, 'Quadrature Order'));
+        return this.integer(mkname(name, 'Order')).integer(mkname(name, 'Quadrature Order'));
     }
 
     mesh(name) {
@@ -171,7 +179,7 @@ class Properties {
             .desc("A vector of float with length equal to calculation dimension, giving the distance span.")
             .vector(name, 'Subdivisions').vectorType('integer')
             .desc("A vector of integer with length equal to calculation dimension, giving the number of mesh subdivisions along each dimension.")
-            .number(mkname(name, 'Initial Refinement Factor')).desc("Initial mesh refinement factor of each subdivision");
+            .integer(mkname(name, 'Initial Refinement Factor')).desc("Initial mesh refinement factor of each subdivision");
     }
 
     vector(name) {
@@ -197,16 +205,16 @@ class Properties {
     }
 
     meshAdaptivityParameters(name) {
-        return this.number(mkname(name, 'Max Refinement Factor'))
-            .number(mkname(name, 'Min Refinement Factor'))
+        return this.integer(mkname(name, 'Max Refinement Factor'))
+            .integer(mkname(name, 'Min Refinement Factor'))
             .string(mkname(name, 'Refinement Criteria')).desc('Indices or names of fields that control refinement.')
             .selection(mkname(name, 'Refinement Type')).choices('Window', 'Ellipsoidal Shell')
-            .number(mkname(name, 'Window Refinement Max'))
-            .number(mkname(name, 'Window Refinement Min'))
+            .float(mkname(name, 'Window Refinement Max'))
+            .float(mkname(name, 'Window Refinement Min'))
             .vector(mkname(name, 'Ellipsoid Center')).vectorType('float')
             .vector(mkname(name, 'Inner Semi-Axes')).vectorType('float')
             .vector(mkname(name, 'Outer Semi-Axes')).vectorType('float')
-            .number(mkname(name, 'Skip Remeshing Steps'));
+            .integer(mkname(name, 'Skip Remeshing Steps'));
     }
 
     software(name) {
@@ -216,7 +224,7 @@ class Properties {
     }
 
     mcConditions(name) {
-        return this.number(mkname(name, "Temperature")).units("K")
+        return this.float(mkname(name, "Temperature")).units("K")
             .vector(mkname(name, "Parametric Chemical Potential")).vectorType('float');
     }
 
@@ -251,7 +259,7 @@ class Properties {
     spaceGroup(name) {
         return this.string(mkname(name, "Schonflies Space Group Symbol"))
             .string(mkname(name, "Hermann-Mauguin Space Group Symbol"))
-            .number(mkname(name, "Space Group Number"))
+            .integer(mkname(name, "Space Group Number"))
             .desc("International Union of Crytallography space group number")
             .selection(mkname(name, "Crystal Family"))
             .choices("Triclinic", "Monoclinic", "Orthorhombic", "Tetragonal", "Hexagonal",
@@ -356,9 +364,9 @@ class CreateAtomicConfigurationSamplesTemplate extends TemplateBase {
             .lattice()
             .file("Crystallographic File")
             .spaceGroup()
-            .number("Number Of Elements").desc("Usually length of Elements.")
+            .integer("Number Of Elements").desc("Usually length of Elements.")
             .composition("Elements")
-            .number("Number Of Atoms")
+            .integer("Number Of Atoms")
             .done();
         this.measurementsDone();
     }
@@ -375,11 +383,11 @@ class CreatePrimitiveCrystalStructureSamplesTemplate extends TemplateBase {
             .lattice()
             .file("CASM PRISM File").desc("CASM prim.json type file.")
             .spaceGroup()
-            .number("Number Of Elements").desc("Usually length of Elements.")
+            .integer("Number Of Elements").desc("Usually length of Elements.")
             .composition("Elements")
-            .number("Number Of Components")
+            .integer("Number Of Components")
             .composition("Components")
-            .number("Number Of Independent Composition Variables")
+            .integer("Number Of Independent Composition Variables")
             .vector("Degrees Of Freedom").vectorType("string")
             .done();
         this.measurementsDone();
@@ -440,7 +448,7 @@ class CreateSinglePhaseSamplesTemplate extends TemplateBase {
             .vectorType('float').vectorDim(3)
             .matrix(chname("Concentration Gradient Penalty Coefficient Matrix"))
             .matrixType('float')
-            .number(chname('Mobility'))
+            .float(chname('Mobility'))
             .lattice(lename(''))
             .selection(lename("Symmetry of Stiffness Tensor"))
             .choices("Isotropic", "Anisotropic", "Transverse", "Orthotropic")
@@ -466,7 +474,7 @@ class CreatePhaseInterfaceSamplesTemplate extends TemplateBase {
             .vector("Phases").vectorType("string").vectorDim(2)
             .desc("The phases separated by this interface")
             .string("Model")
-            .number("Allen-Cahn Mobility")
+            .float("Allen-Cahn Mobility")
             .vector('Structural Order Parameter Gradient Penalty Coefficient Vector')
             .vectorType('float').vectorDim(3)
             .matrix('Structural Order Parameter Gradient Penalty Coefficient Matrix', [3, 3])
@@ -485,6 +493,34 @@ class CreatePhaseFieldSystemSamplesTemplate extends TemplateBase {
         this.addMeasurements()
             .string("Application").desc("Describes the physical model. Ex: CahnHilliard, AllenCahn, CoupledCahnHilliardAllenCahn, etc...")
             .func("Interpolation Function")
+            .done();
+        this.measurementsDone();
+    }
+}
+
+class CreateCPFESamplesTemplate extends TemplateBase {
+    constructor() {
+        super("CPFE Samples", "create", true, false);
+        this.setCategory("create_sample");
+        this.addSetup("Computation").done();
+
+        this.addMeasurements()
+            .selection("Crystal Type").choices("FCC", "BCC", "HCP")
+            .float("Latent Hardening Ratio")
+            .integer("Number of Slip Systems")
+            .vector("Initial Slip Resistance").vectorType("float").units("Pa").desc("Crtical resolved shear stress of slip systems")
+            .vector("Initial Hardening Modulus").vectorType("float").units("Pa").desc("Hardening moduli of slip systems")
+            .vector("Power Law Exponent").vectorType("float").desc("Power law coefficient")
+            .vector("Saturation Stress").vectorType("float").units("Pa").desc("Saturation stress")
+            .matrix("Elastic Stiffness", [6, 6]).matrixType("float").units("Pa")
+            .integer("Number of Twin Systems")
+            .vector("Initial Twin Slip Resistance").units("Pa").vectorType("float").desc("Critical resolved shear stress of twin systems")
+            .vector("Initial Twin Hardening Modulus").units("Pa").vectorType("float").desc("Hardening moduli of twin systems")
+            .vector("Twin Power Law Exponent").vectorType("float").desc("Power law coefficient")
+            .vector("Twin Saturation Stress").units("Pa").vectorType("float").desc("Saturation stress")
+            .float("Twin Shear").desc("Charateristic twin shear")
+            .float("Twin Threshold Fraction").desc("Threshold fraction of characteristic twin shear")
+            .float("Twin Saturation Factor").desc("Twin growth saturation factor")
             .done();
         this.measurementsDone();
     }
@@ -860,7 +896,20 @@ class CASMMonteCarloCalculationTemplate extends TemplateBase {
             .mcConditions("Initial Conditions")
             .mcConditions("Final Conditions")
             .mcConditions("Incremental Conditions")
-            .mcConditions("Custom Conditions")
+            .vector("Custom Conditions Temperature").vectorType("float").units("K")
+            .matrix("Custom Conditions Parametric Chemical Potential", [1, 1]).matrixType("float")
+            .done();
+    }
+}
+
+class CrystalPlasticityFiniteElementTemplate extends TemplateBase {
+    constructor() {
+        super("Crystal Plasticity Finite Element", "analysis", false, false);
+        this.addSetup("Computation")
+            .finiteElementBasis('Finite Element Basis')
+            .mesh("Mesh")
+            .solver("Linear Solver")
+            .solver("Nonlinear Solver")
             .done();
     }
 }
@@ -903,6 +952,7 @@ let globalTemplates = [
     CreateSinglePhaseSamplesTemplate,
     CreatePhaseInterfaceSamplesTemplate,
     CreatePhaseFieldSystemSamplesTemplate,
+    CreateCPFESamplesTemplate,
 
     // Experimental Process Templates
     AptTemplate,
@@ -932,6 +982,7 @@ let globalTemplates = [
     PhaseFieldCalculationTemplate,
     DFTCalculationTemplate,
     CASMMonteCarloCalculationTemplate,
+    CrystalPlasticityFiniteElementTemplate,
 
     // Generic Process Templates
     AsMeasuredTemplate
