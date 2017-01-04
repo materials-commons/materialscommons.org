@@ -32,7 +32,7 @@ class ShowProcessDialogController {
 }
 
 angular.module('materialscommons').component('mcExperimentProcessesTable', {
-    templateUrl: 'app/project/experiments/experiment/components/processes/mc-experiment-processes-table.html',
+    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-experiment-processes-table.html',
     controller: MCExperimentProcessesTableComponentController,
     bindings: {
         processes: '<',

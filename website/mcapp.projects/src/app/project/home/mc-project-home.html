@@ -64,7 +64,8 @@
                         <a class="md-primary" tooltip="files" ui-sref="project.experiment.files({experiment_id: experiment.id})">
                             <i class="fa fa-fw fa-files-o"></i>{{::experiment.files.length | number}}
                         </a>
-                        <a class="md-primary" tooltip="processes" ui-sref="project.experiment.processes({experiment_id: experiment.id})">
+                        <a class="md-primary" tooltip="workflow"
+                           ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
                                 <i class="fa fa-fw fa-code-fork"></i>{{::experiment.processes.length | number}}
                         </a>
                     </md-card-actions>
