@@ -146,7 +146,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 this.experiment = experiment;
             }]
         })
-        .state('project.experiment.processes', {
+        .state('project.experiment.workflow', {
             url: '/processes',
             template: '<mc-processes-workflow processes="ctrl.processes"></mc-processes-workflow>',
             controllerAs: 'ctrl',
