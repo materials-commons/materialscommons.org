@@ -51,7 +51,7 @@ describe('Feature - reset lost password: ', function() {
             assert.isTrue(user.reset_password,"The flag is set");
             assert.equal(user.validate_uuid,validate_uuid);
         });
-        it('User reset password flag set cleared', function*() {
+        it('User reset password flag is cleared', function*() {
             let user =  yield dbModelUsers.getUser(user1Id);
             assert.isNotNull(user,"test user is not null");
             let result = yield dbModelUsers.setUserPasswordResetFlag(user1Id);
