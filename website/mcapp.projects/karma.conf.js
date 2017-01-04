@@ -112,17 +112,13 @@ module.exports = function (config) {
         browsers : ['Chrome'],
 
         plugins: [
-            'karma-mocha-reporter',
-            'karma-ng-html2js-preprocessor'
+            'karma-phantomjs-launcher',
+            'karma-chrome-launcher',
+            'karma-coverage',
+            'karma-jasmine',
+            'karma-ng-html2js-preprocessor',
+            'karma-mocha-reporter'
         ],
-
-        // plugins: [
-        //     'karma-phantomjs-launcher',
-        //     'karma-chrome-launcher',
-        //     'karma-coverage',
-        //     'karma-jasmine',
-        //     'karma-ng-html2js-preprocessor'
-        // ],
 
         coverageReporter: {
             type: 'html',
