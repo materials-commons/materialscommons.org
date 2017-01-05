@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcExperimentTasks', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksComponentController($scope, moveTask, mcreg, mcregvars, blankTaskService, $mdDialog) {
+function MCExperimentTasksComponentController($scope, moveTask, mcreg, blankTaskService, $mdDialog) {
     let ctrl = this;
     ctrl.show = 'note';
 
@@ -14,15 +14,17 @@ function MCExperimentTasksComponentController($scope, moveTask, mcreg, mcregvars
         ctrl.currentNode = null;
         ctrl.experiment = mcreg.current$experiment;
         ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
-        mcreg.set(mcregvars.CURRENT$TASK, ctrl.experiment.tasks[0]);
-        ctrl.currentTask = mcreg.get(mcregvars.CURRENT$TASK);
-        mcreg.registerName(mcregvars.CURRENT$TASK, 'MCExperimentTasksComponentController',
-            () => ctrl.currentTask = mcreg.get(mcregvars.CURRENT$TASK));
+        mcreg.set(mcreg.CURRENT$TASK, ctrl.experiment.tasks[0]);
+        ctrl.currentTask = mcreg.get(mcreg.CURRENT$TASK);
+        mcreg.registerName(mcreg.CURRENT$TASK, 'MCExperimentTasksComponentController',
+            () => {
+                ctrl.currentTask = mcreg.get(mcreg.CURRENT$TASK);
+            });
     };
 
     ctrl.addTask = () => {
-        let node = mcreg.get(mcregvars.CURRENT$NODE),
-            task = mcreg.get(mcregvars.CURRENT$TASK);
+        let node = mcreg.get(mcreg.CURRENT$NODE),
+            task = mcreg.get(mcreg.CURRENT$TASK);
         blankTaskService.addBlankTask(node, task);
     };
 
@@ -77,7 +79,7 @@ function MCExperimentTasksComponentController($scope, moveTask, mcreg, mcregvars
         }
     }
 
-    let currentTask = () => mcreg.get(mcregvars.CURRENT$TASK);
+    let currentTask = () => mcreg.get(mcreg.CURRENT$TASK);
 
     ctrl.moveLeft = () => moveTask.left(ctrl.currentNode, currentTask(), ctrl.experiment);
     ctrl.moveRight = () => moveTask.right(ctrl.currentNode, currentTask());
