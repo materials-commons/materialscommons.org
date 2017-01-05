@@ -33,6 +33,7 @@ import './processes-service.service';
 import './process-tree.service';
 import './process-graph.service';
 import './mcbus.service';
+import './mcregvars.service';
 import './mcreg.service';
 
 angular.module('materialscommons')
