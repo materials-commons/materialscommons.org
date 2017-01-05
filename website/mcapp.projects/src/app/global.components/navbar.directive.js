@@ -12,27 +12,28 @@ function navbarDirective() {
 }
 
 /*@ngInject*/
-function NavbarDirectiveController(User, $state, modelProjects, $stateParams, searchQueryText, project, navbarOnChange, projectsService) {
-    var ctrl = this;
+function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, mcreg,
+                                   navbarOnChange, projectsService) {
+    const ctrl = this;
 
-    var inProjectsState = $state.includes('projects');
+    const inProjectsState = $state.includes('projects');
     ctrl.$stateParams = $stateParams;
 
     searchQueryText.setOnChange(() => {
         ctrl.query = searchQueryText.get();
     });
 
-    ctrl.project = null;
+    ctrl.project = mcreg.current$project;
 
     navbarOnChange.setOnChange(() => {
         // Hack, change this later
         if ($stateParams.project_id) {
-            projectsService.getProject($stateParams.project_id).then((proj) => project.set(proj));
+            projectsService.getProject($stateParams.project_id).then((proj) => mcreg.current$project = proj);
         }
     });
 
-    project.setOnChange(() => {
-        ctrl.project = project.get();
+    mcreg.registerCurrent$project('navbar', () => {
+        ctrl.project = mcreg.current$project;
         ctrl.published = ctrl.project.datasets.filter(d => d.published);
         ctrl.unusedSamples = ctrl.project.samples.filter(s => s.processes.length === 1);
         ctrl.measuredSamples = ctrl.project.samples.filter(s => s.processes.length > 1);
@@ -65,7 +66,6 @@ function NavbarDirectiveController(User, $state, modelProjects, $stateParams, se
 
     function logout() {
         User.setAuthenticated(false);
-        modelProjects.clear();
         $state.go('login');
     }
 }

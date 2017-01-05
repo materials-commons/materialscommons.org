@@ -17,13 +17,13 @@ angular.module('materialscommons').component('mcExperimentTasksList', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksListComponentController(experimentsService, toast, $stateParams, currentExperiment) {
+function MCExperimentTasksListComponentController(experimentsService, toast, $stateParams, mcreg) {
     let ctrl = this;
     ctrl.treeOptions = {
         dropped: onDrop
     };
 
-    ctrl.experiment = currentExperiment.get();
+    ctrl.experiment = mcreg.current$experiment;
 
     ctrl.$onInit = () => {
         let treeModel = new TreeModel({childrenPropertyName: 'tasks'}),
@@ -81,11 +81,11 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 
 /*@ngInject*/
 function MCExperimentTasksListDirDirectiveController($stateParams, toast, currentTask,
-                                                     currentExperiment, projectsService,
+                                                     mcreg, projectsService,
                                                      blankTaskService, currentNode, taskService) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
-    ctrl.experiment = currentExperiment.get();
+    ctrl.experiment = mcreg.current$experiment;
 
     function setCurrent(node, event) {
         $('.mc-experiment-outline-task').removeClass('task-selected');

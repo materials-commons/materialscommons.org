@@ -4,10 +4,10 @@ angular.module('materialscommons')
         controller: MCProjectComponentController
     });
 
-function MCProjectComponentController(projectsService, $state, $stateParams, project) {
+function MCProjectComponentController(projectsService, $stateParams, mcreg) {
     'ngInject';
 
-    var ctrl = this;
+    const ctrl = this;
 
     ctrl.showQuickbar = false;
     ctrl.toggle = toggle;
@@ -17,14 +17,14 @@ function MCProjectComponentController(projectsService, $state, $stateParams, pro
     closeAll();
 
     projectsService.getProject($stateParams.project_id).then(function(p) {
-        project.set(p);
+        mcreg.current$project = p;
         ctrl.project = p;
     });
 
     ////////////////////////////////////////
 
     function toggle(what) {
-        var current = ctrl[what];
+        const current = ctrl[what];
         closeAll();
         ctrl[what] = !current;
     }

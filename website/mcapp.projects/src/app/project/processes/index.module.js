@@ -8,5 +8,4 @@ import './process/create/create-other.component';
 import './process/create/mc-process-create.component';
 import './process/services/process-edit.service';
 import './process/services/process-selections.service';
-import './process/services/process.service';
 import './process/services/sample-linker.service';

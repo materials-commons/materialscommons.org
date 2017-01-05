@@ -58,10 +58,10 @@ export function selectItemsService($mdDialog) {
 }
 
 /*@ngInject*/
-function SelectItemsServiceModalController($mdDialog, projectsService, $stateParams, project, experimentsService) {
+function SelectItemsServiceModalController($mdDialog, projectsService, $stateParams, mcreg, experimentsService) {
     let ctrl = this;
 
-    ctrl.project = project.get();
+    ctrl.project = mcreg.current$project;
     ctrl.tabs = loadTabs();
     ctrl.activeTab = ctrl.tabs[0].name;
     ctrl.setActive = setActive;
@@ -110,10 +110,10 @@ function SelectItemsServiceModalController($mdDialog, projectsService, $statePar
         let files = [];
         if (ctrl.showFilesTree) {
             let filesFromTree = [];
-            let projectFiles = project.get().files;
+            let projectFiles = mcreg.current$project.files;
             if (projectFiles && projectFiles.length) {
                 let treeModel = new TreeModel(),
-                    root = treeModel.parse(project.get().files[0]);
+                    root = treeModel.parse(mcreg.current$project.files[0]);
                 // Walk the tree looking for selected files and adding them to the
                 // list of files. Also reset the selected flag so the next time
                 // the popup for files is used it doesn't show previously selected

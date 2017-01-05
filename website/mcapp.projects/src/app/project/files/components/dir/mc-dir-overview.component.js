@@ -8,8 +8,8 @@ angular.module('materialscommons').component('mcDirOverview', {
 });
 
 /*@ngInject*/
-function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, project, toastr, isImage) {
-    var ctrl = this;
+function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, mcreg, toastr, isImage) {
+    const ctrl = this;
 
     ctrl.viewFiles = viewFiles;
     ctrl.fileSrc = mcfile.src;
@@ -59,7 +59,7 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
     }
 
     function selectAllFiles() {
-        var filesToSelect = $filter('filter')(ctrl.files, ctrl.fileFilter);
+        const filesToSelect = $filter('filter')(ctrl.files, ctrl.fileFilter);
         filesToSelect.forEach(function(f) {
             f.selected = true;
         });
@@ -77,7 +77,7 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
 
     function downloadSelectedFiles() {
         ctrl.downloadState = 'preparing';
-        var fileIDs = ctrl.files.filter(function(f) { return f.selected; }).map(function(f) { return f.id});
+        const fileIDs = ctrl.files.filter(function(f) { return f.selected; }).map(function(f) { return f.id});
         Restangular.one("project2").one("archive").customPOST({
             file_ids: fileIDs
         }).then(
@@ -94,9 +94,9 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
     }
 
     function shareSelectedFiles() {
-        var toUserName = function(u) { return u.user_id;};
-        var proj = project.get();
-        var users = proj.users.map(toUserName);
+        const toUserName = function(u) { return u.user_id;};
+        const proj = mcreg.current$project;
+        const users = proj.users.map(toUserName);
         mcmodal.chooseUsers(users).then(function(chosenUsers) { // eslint-disable-line no-unused-vars
             // log('users chosen', chosenUsers);
         });

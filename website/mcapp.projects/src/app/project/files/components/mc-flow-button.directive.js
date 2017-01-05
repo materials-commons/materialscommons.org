@@ -1,6 +1,6 @@
 angular.module('materialscommons').directive("mcFlowButton", mcFlowButtonDirective);
 
-function mcFlowButtonDirective(mcFlow, project, mcapi, User, $log) {
+function mcFlowButtonDirective(mcFlow, mcreg, mcapi, User, $log) {
     'ngInject';
 
     return {
@@ -11,16 +11,16 @@ function mcFlowButtonDirective(mcFlow, project, mcapi, User, $log) {
         },
         template: "<span style='cursor: pointer' title='Upload to directory' class='mc-file-tree-control mc-flow-button text-uppercase'><i class='fa fa-fw fa-upload'></i>upload files</span>",
         link: function(scope, element, attrs) {
-            var flow = mcFlow.get();
-            var isDirectory = attrs.hasOwnProperty('flowDirectory');
-            var isSingleFile = attrs.hasOwnProperty('flowSingleFile');
-            var inputAttrs = attrs.hasOwnProperty('flowAttrs') && scope.$eval(attrs.flowAttrs);
+            const flow = mcFlow.get();
+            const isDirectory = attrs.hasOwnProperty('flowDirectory');
+            const isSingleFile = attrs.hasOwnProperty('flowSingleFile');
+            const inputAttrs = attrs.hasOwnProperty('flowAttrs') && scope.$eval(attrs.flowAttrs);
 
             function each(obj, callback, context) {
                 if (!obj) {
                     return;
                 }
-                var key;
+                let key;
                 // Is Array?
                 if (typeof(obj.length) !== 'undefined') {
                     for (key = 0; key < obj.length; key++) {
@@ -48,13 +48,13 @@ function mcFlowButtonDirective(mcFlow, project, mcapi, User, $log) {
                 return dst;
             }
 
-            var assignBrowse = function(domNodes, isDirectory, isSingleFile, attributes) {
+            const assignBrowse = function(domNodes, isDirectory, isSingleFile, attributes) {
                 if (typeof domNodes.length === 'undefined') {
                     domNodes = [domNodes];
                 }
 
                 each(domNodes, function(domNode) {
-                    var input;
+                    let input;
                     if (domNode.tagName === 'INPUT' && domNode.type === 'file') {
                         input = domNode;
                     } else {
@@ -87,9 +87,9 @@ function mcFlowButtonDirective(mcFlow, project, mcapi, User, $log) {
 
                     // When new files are added, simply append them to the overall list
                     input.addEventListener('change', function(e) {
-                        var proj = project.get();
+                        const proj = mcreg.current$project;
                         each(e.target.files, function(f) {
-                            var req = {
+                            const req = {
                                 project_id: proj.id,
                                 directory_id: scope.dir.data.id,
                                 filename: f.name,
@@ -98,7 +98,7 @@ function mcFlowButtonDirective(mcFlow, project, mcapi, User, $log) {
                                 filemtime: f.lastModifiedDate.toUTCString(),
                                 user_id: User.u()
                             };
-                            var matchFn = function(file) {
+                            const matchFn = function(file) {
                                 return !!(file.name === req.filename &&
                                 file.attrs.directory_id === req.directory_id &&
                                 file.attrs.project_id === req.project_id);
@@ -106,7 +106,7 @@ function mcFlowButtonDirective(mcFlow, project, mcapi, User, $log) {
                             if (!flow.findFile(matchFn)) {
                                 mcapi("/upload")
                                     .success(function(resp) {
-                                        var o = {
+                                        const o = {
                                             id: resp.request_id,
                                             file: f,
                                             attrs: {
