@@ -113,7 +113,6 @@ class MCRegService {
     }
 
     get current$project() {
-        console.log('current$project', this.mcregvars.CURRENT$PROJECT);
         return this.get(this.mcregvars.CURRENT$PROJECT);
     }
 
@@ -145,7 +144,6 @@ class MCRegService {
     }
 
     set current$experiment(value) {
-        console.log('set current$experiment', this.mcregvars.CURRENT$EXPERIMENT);
         this.set(this.mcregvars.CURRENT$EXPERIMENT, value);
     }
 }

@@ -8,8 +8,6 @@ import './tasks/mc-experiment-tasks-list.component';
 import './tasks/mc-experiment-task-details.component';
 import './tasks/services/move-task.service';
 import './tasks/mc-experiment-tasks.component';
-import './tasks/services/current-task.service';
-import './tasks/services/current-node.service';
 import './tasks/components/mc-task-template.component';
 import './tasks/components/mc-task-template-create-samples.component';
 import './tasks/components/mc-task-template-other.component';
