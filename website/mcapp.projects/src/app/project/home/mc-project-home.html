@@ -24,9 +24,9 @@
                 <i class="fa fa-fw fa-plus"></i> Start New Experiment
             </md-button>
         </div>
-        <md-column layout="column" layout-align="start stretch" flex>
+        <md-content style="max-height: 70vh" layout="column" layout-align="start stretch" flex>
             <div layout="row" layout-wrap>
-                <md-card flex="45" flex-md="60" flex-sm="60"
+                <md-card flex-xl="20" flex-md="60" flex-sm="60" flex-xs="60"
                          ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.whichExperiments} | orderBy:'name'"
                          class="experiment-card">
                     <md-card-header class="project-card-header"
@@ -70,6 +70,6 @@
                     </md-card-actions>
                 </md-card>
             </div>
-        </md-column>
+        </md-content>
     </div>
 </div>
