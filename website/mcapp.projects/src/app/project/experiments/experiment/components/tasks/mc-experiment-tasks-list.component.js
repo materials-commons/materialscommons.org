@@ -80,9 +80,8 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 }
 
 /*@ngInject*/
-function MCExperimentTasksListDirDirectiveController($stateParams, toast, currentTask,
-                                                     mcreg, projectsService,
-                                                     blankTaskService, currentNode, taskService) {
+function MCExperimentTasksListDirDirectiveController($stateParams, toast, mcreg, mcregvars, projectsService,
+                                                     blankTaskService, taskService) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
     ctrl.experiment = mcreg.current$experiment;
@@ -90,8 +89,8 @@ function MCExperimentTasksListDirDirectiveController($stateParams, toast, curren
     function setCurrent(node, event) {
         $('.mc-experiment-outline-task').removeClass('task-selected');
         $(event.currentTarget).addClass('task-selected');
-        currentTask.set(ctrl.task);
-        currentNode.set(node);
+        mcreg.set(mcreg.CURRENT$TASK, ctrl.task);
+        mcreg.set(mcregvars.CURRENT$NODE, node);
         loadTaskTemplate();
         // log(ctrl.task);
     }
