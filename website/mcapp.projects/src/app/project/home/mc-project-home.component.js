@@ -6,10 +6,10 @@ angular.module('materialscommons').component('mcProjectHome', {
 });
 
 /*@ngInject*/
-function MCProjectHomeComponentController($scope, project, experimentsService, toast, $state,
+function MCProjectHomeComponentController($scope, mcreg, experimentsService, toast, $state,
                                           $stateParams, projectsService, editorOpts, $mdDialog) {
-    var ctrl = this;
-    ctrl.project = project.get();
+    const ctrl = this;
+    ctrl.project = mcreg.current$project;
     ctrl.projectLoaded = true;
     ctrl.whichExperiments = 'active';
     ctrl.experiments = [];

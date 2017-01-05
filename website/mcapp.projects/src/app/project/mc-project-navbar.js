@@ -4,17 +4,17 @@ angular.module('materialscommons').component("mcProjectNavbar", {
 });
 
 /*@ngInject*/
-function MCProjectNavbarComponentController(project, $state, $rootScope, $scope, $mdSidenav, quickbarSamples, $stateParams) {
-    var ctrl = this;
+function MCProjectNavbarComponentController(mcreg, $state, $rootScope, $scope, $mdSidenav, quickbarSamples, $stateParams) {
+    const ctrl = this;
 
     ctrl.showQuickbar = false;
     ctrl.currentTab = getCurrentTabIndex();
-    ctrl.project = project.get();
+    ctrl.project = mcreg.current$project;
     ctrl.projectSamples = [];
     ctrl.experimentSamples = [];
     ctrl.datasetSamples = [];
 
-    var unregister = $rootScope.$on('$stateChangeSuccess', function() {
+    const unregister = $rootScope.$on('$stateChangeSuccess', function() {
         ctrl.currentTab = getCurrentTabIndex();
     });
 

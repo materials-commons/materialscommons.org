@@ -4,13 +4,13 @@ angular.module('materialscommons').component('mcProjectSettings', {
 });
 
 /*@ngInject*/
-function MCProjectSettingsComponentController(project, mcapi, User, toastr, navbarOnChange) {
-    var ctrl = this;
+function MCProjectSettingsComponentController(mcreg, mcapi, User, toastr, navbarOnChange) {
+    const ctrl = this;
     ctrl.isOwner = isOwner;
     ctrl.deleteUser = deleteUser;
     ctrl.addUser = addUser;
 
-    ctrl.project = project.get();
+    ctrl.project = mcreg.current$project;
     ctrl.signedInUser = User.u();
     ctrl.user = '';
 
@@ -23,7 +23,7 @@ function MCProjectSettingsComponentController(project, mcapi, User, toastr, navb
     function deleteUser(id) {
         mcapi('/access/%/remove', id)
             .success(function() {
-                var i = _.indexOf(ctrl.project.users, function(item) {
+                const i = _.indexOf(ctrl.project.users, function(item) {
                     return (item.id === id);
                 });
                 if (i !== -1) {
@@ -34,7 +34,7 @@ function MCProjectSettingsComponentController(project, mcapi, User, toastr, navb
     }
 
     function addUser() {
-        var i = _.indexOf(ctrl.project.users, function(item) {
+        const i = _.indexOf(ctrl.project.users, function(item) {
             return (item.id === ctrl.user.email);
         });
         if (i === -1) {

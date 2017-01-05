@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcExperimentTasks', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksComponentController($scope, moveTask, currentTask, currentExperiment, currentNode,
+function MCExperimentTasksComponentController($scope, moveTask, currentTask, mcreg, currentNode,
                                               blankTaskService, $mdDialog) {
     let ctrl = this;
     ctrl.show = 'note';
@@ -13,7 +13,7 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, cur
 
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
-        ctrl.experiment = currentExperiment.get();
+        ctrl.experiment = mcreg.current$experiment;
         ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
         currentTask.set(ctrl.experiment.tasks[0]);
         ctrl.currentTask = currentTask.get();

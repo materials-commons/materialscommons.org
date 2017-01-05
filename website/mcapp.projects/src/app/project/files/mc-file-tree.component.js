@@ -3,8 +3,8 @@ angular.module('materialscommons').component('mcFileTree', {
     controller: MCFileTreeComponentController
 });
 
-var placeholderName = '__$$placeholder$$__';
-var dropFolder = null;
+const placeholderName = '__$$placeholder$$__';
+let dropFolder = null;
 
 function loadEmptyPlaceHolder(dir) {
     dir.children.push({
@@ -21,16 +21,16 @@ function loadEmptyPlaceHolder(dir) {
 }
 
 /*@ngInject*/
-function MCFileTreeComponentController(project, $state, $stateParams, fileTreeProjectService,
+function MCFileTreeComponentController(mcreg, $state, $stateParams, fileTreeProjectService,
                                        fileTreeMoveService, toastr, mcFlow) {
-    var ctrl = this,
-        proj = project.get();
+    const ctrl = this,
+        proj = mcreg.current$project;
     ctrl.projectID = proj.id;
     ctrl.flow = mcFlow.get();
 
     ctrl.treeOptions = {
         dropped: function(event) {
-            var src = event.source.nodeScope.$modelValue,
+            const src = event.source.nodeScope.$modelValue,
                 dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
                 srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
 
@@ -53,13 +53,13 @@ function MCFileTreeComponentController(project, $state, $stateParams, fileTreePr
         },
 
         beforeDrop: function(event) {
-            var src = event.source.nodeScope.$modelValue,
+            const src = event.source.nodeScope.$modelValue,
                 dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
                 srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
             if (srcDir.data.id == dest.data.id) {
                 // Reject move - attempt to move the file/directory around under it's
                 // current directory;
-                var itemType = src.data.otype === 'directory' ? 'Directory' : 'File';
+                const itemType = src.data.otype === 'directory' ? 'Directory' : 'File';
                 toastr.error('Attempt to move ' + itemType + " into current it's directory.",
                     'Error', {closeButton: true});
                 return false;
@@ -102,9 +102,9 @@ function mcFileTreeDirDirective(RecursionHelper) {
 }
 
 /*@ngInject*/
-function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $state) {
-    var ctrl = this;
-    ctrl.projectID = project.get().id;
+function MCFileTreeDirDirectiveController(fileTreeProjectService, mcreg, $state) {
+    const ctrl = this;
+    ctrl.projectID = mcreg.current$project.id;
     ctrl.files = ctrl.file.children;
     ctrl.placeholderName = placeholderName;
 
@@ -149,8 +149,8 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, project, $stat
     }
 
     function clearActiveStateInAllNodes() {
-        var treeModel = new TreeModel(),
-            root = treeModel.parse(project.get().files[0]);
+        const treeModel = new TreeModel(),
+            root = treeModel.parse(mcreg.current$project.files[0]);
         root.walk(function(treeNode) {
             treeNode.model.active = false;
         });
@@ -171,7 +171,7 @@ angular.module('materialscommons').component('mcFileTreeDirControls', {
 
 /*@ngInject*/
 function MCFileTreeDirControlsComponentController(fileTreeProjectService, fileTreeDeleteService) {
-    var ctrl = this;
+    const ctrl = this;
     ctrl.addFolder = addFolder;
     ctrl.renameFolder = renameFolder;
     ctrl.deleteFolder = deleteFolder;
@@ -227,7 +227,7 @@ angular.module('materialscommons').component('mcFileTreeFileControls', {
 
 /*@ngInject*/
 function MCFileTreeFileControlsComponentController(fileTreeProjectService, fileTreeDeleteService, toast) {
-    var ctrl = this;
+    const ctrl = this;
     ctrl.promptForRename = false;
     ctrl.renameFile = renameFile;
     ctrl.deleteFile = deleteFile;

@@ -1,8 +1,7 @@
 class MCExperimentComponentController {
     /*@ngInject*/
-    constructor(currentExperiment) {
-        this.currentExperiment = currentExperiment;
-        this.experiment = currentExperiment.get();
+    constructor(mcreg) {
+        this.experiment = mcreg.current$experiment;
     }
 }
 

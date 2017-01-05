@@ -12,12 +12,12 @@ function selectItemsFilesDirective() {
     }
 }
 
-function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileType, project, mcmodal) {
+function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileType, mcreg, mcmodal) {
     'ngInject';
 
-    var ctrl = this;
+    const ctrl = this;
 
-    var proj = project.get();
+    const proj = mcreg.current$project;
     ctrl.gridShowingFlag = true;
     ctrl.files[0].expanded = true;
     ctrl.directorySelected = directorySelected;
@@ -27,7 +27,7 @@ function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileTyp
     ///////////////
 
     function init() {
-        var columnDefs = [
+        const columnDefs = [
             {
                 headerName: "",
                 field: "name",
@@ -35,7 +35,7 @@ function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileTyp
                 cellRenderer: {
                     renderer: 'group',
                     innerRenderer: function(params) {
-                        var icon = fileType.icon(params.data);
+                        const icon = fileType.icon(params.data);
                         if (params.data.otype == 'directory') {
                             return [
                                 '<a ng-click="data.selected = !data.selected; ctrl.directorySelected(data);">',
@@ -83,9 +83,9 @@ function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileTyp
     }
 
     function directorySelected(data) {
-        var treeModel = new TreeModel(),
+        const treeModel = new TreeModel(),
             root = treeModel.parse(proj.files[0]);
-        var dir = root.first({strategy: 'pre'}, function(node) {
+        const dir = root.first({strategy: 'pre'}, function(node) {
             return node.model.data.id === data.id;
         });
         dir.model.children.forEach(function(c) {
@@ -102,9 +102,9 @@ function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileTyp
     function handleDirectory(params) {
         if (!params.data.childrenLoaded) {
             projectsService.getProjectDirectory(proj.id, params.data.id).then(function(files) {
-                var treeModel = new TreeModel(),
+                const treeModel = new TreeModel(),
                     root = treeModel.parse(proj.files[0]);
-                var dir = root.first({strategy: 'pre'}, function(node) {
+                const dir = root.first({strategy: 'pre'}, function(node) {
                     return node.model.data.id === params.data.id;
                 });
                 dir.model.children = gridFiles.toGridChildren(files);
