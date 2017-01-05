@@ -21,8 +21,8 @@
             <md-content layout="column" layout-margin flex>
                 <div>
                     <h3 class="md-title">My Projects:</h3>
-                    <div layout="row" layout-align="start start" layout-wrap flex>
-                        <div flex="25" flex-md="33" flex-sm="60"
+                    <div layout="row" layout-xs="column" layout-align="start start" layout-wrap flex>
+                        <div flex-md="33" flex-sm="50" flex-lg="25" flex-xl="20"
                              ng-repeat="project in $ctrl.myProjects | filter:$ctrl.query | orderBy:'name'">
                             <md-card class="md-primary project-card"
                                      ng-class="{'project-selected': $ctrl.sharingOn && project.selected}">
@@ -58,8 +58,8 @@
                 </div>
                 <div>
                     <h3 class="md-title">Projects I'm a member of:</h3>
-                    <div layout="row" layout-align="start start" layout-wrap flex>
-                        <div flex="25" flex-md="33" flex-sm="60"
+                    <div layout="row" layout-xs="column" layout-align="start start" layout-wrap flex>
+                        <div flex-md="33" flex-sm="50" flex-lg="25" flex-xl="20"
                              ng-repeat="project in $ctrl.joinedProjects | filter:$ctrl.query | orderBy:'name'">
                             <md-card class="md-primary project-card"
                                      ng-class="{'project-selected': $ctrl.sharingOn && project.selected}">
