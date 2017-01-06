@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcExperimentTasks', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksComponentController($scope, moveTask, mcreg, blankTaskService, $mdDialog) {
+function MCExperimentTasksComponentController($scope, moveTask, mcstate, blankTaskService, $mdDialog) {
     let ctrl = this;
     ctrl.show = 'note';
 
@@ -12,19 +12,19 @@ function MCExperimentTasksComponentController($scope, moveTask, mcreg, blankTask
 
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
-        ctrl.experiment = mcreg.current$experiment;
+        ctrl.experiment = mcstate.get(mcstate.CURRENT$EXPERIMENT);
         ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
-        mcreg.set(mcreg.CURRENT$TASK, ctrl.experiment.tasks[0]);
-        ctrl.currentTask = mcreg.get(mcreg.CURRENT$TASK);
-        mcreg.registerName(mcreg.CURRENT$TASK, 'MCExperimentTasksComponentController',
+        mcstate.set(mcstate.CURRENT$TASK, ctrl.experiment.tasks[0]);
+        ctrl.currentTask = mcstate.get(mcstate.CURRENT$TASK);
+        mcstate.subscribe(mcstate.CURRENT$TASK, 'MCExperimentTasksComponentController',
             () => {
-                ctrl.currentTask = mcreg.get(mcreg.CURRENT$TASK);
+                ctrl.currentTask = mcstate.get(mcstate.CURRENT$TASK);
             });
     };
 
     ctrl.addTask = () => {
-        let node = mcreg.get(mcreg.CURRENT$NODE),
-            task = mcreg.get(mcreg.CURRENT$TASK);
+        let node = mcstate.get(mcstate.CURRENT$NODE),
+            task = mcstate.get(mcstate.CURRENT$TASK);
         blankTaskService.addBlankTask(node, task);
     };
 
@@ -79,7 +79,7 @@ function MCExperimentTasksComponentController($scope, moveTask, mcreg, blankTask
         }
     }
 
-    let currentTask = () => mcreg.get(mcreg.CURRENT$TASK);
+    let currentTask = () => mcstate.get(mcstate.CURRENT$TASK);
 
     ctrl.moveLeft = () => moveTask.left(ctrl.currentNode, currentTask(), ctrl.experiment);
     ctrl.moveRight = () => moveTask.right(ctrl.currentNode, currentTask());

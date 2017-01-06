@@ -21,10 +21,10 @@ function loadEmptyPlaceHolder(dir) {
 }
 
 /*@ngInject*/
-function MCFileTreeComponentController(mcreg, $state, $stateParams, fileTreeProjectService,
+function MCFileTreeComponentController(mcstate, $state, $stateParams, fileTreeProjectService,
                                        fileTreeMoveService, toastr, mcFlow) {
     const ctrl = this,
-        proj = mcreg.current$project;
+        proj = mcstate.get(mcstate.CURRENT$PROJECT);
     ctrl.projectID = proj.id;
     ctrl.flow = mcFlow.get();
 
@@ -102,9 +102,9 @@ function mcFileTreeDirDirective(RecursionHelper) {
 }
 
 /*@ngInject*/
-function MCFileTreeDirDirectiveController(fileTreeProjectService, mcreg, $state) {
+function MCFileTreeDirDirectiveController(fileTreeProjectService, mcstate, $state) {
     const ctrl = this;
-    ctrl.projectID = mcreg.current$project.id;
+    ctrl.projectID = mcstate.get(mcstate.CURRENT$PROJECT).id;
     ctrl.files = ctrl.file.children;
     ctrl.placeholderName = placeholderName;
 
@@ -150,7 +150,7 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, mcreg, $state)
 
     function clearActiveStateInAllNodes() {
         const treeModel = new TreeModel(),
-            root = treeModel.parse(mcreg.current$project.files[0]);
+            root = treeModel.parse(mcstate.get(mcstate.CURRENT$PROJECT).files[0]);
         root.walk(function(treeNode) {
             treeNode.model.active = false;
         });

@@ -33,7 +33,7 @@ import './processes-service.service';
 import './process-tree.service';
 import './process-graph.service';
 import './mcbus.service';
-import './mcreg.service';
+import './mcstate.service';
 
 angular.module('materialscommons')
     .factory('selectItems', selectItemsService)
