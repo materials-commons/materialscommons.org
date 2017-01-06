@@ -10,7 +10,7 @@ angular.module('materialscommons').component('mcNewProcessMenu', {
 });
 
 /*@ngInject*/
-function MCNewProcessMenuComponentController(templates, mcreg, projectsService, mcmodal, $state) {
+function MCNewProcessMenuComponentController(templates, mcstate, projectsService, mcmodal, $state) {
     const ctrl = this;
     ctrl.templates = templates.get();
     ctrl.chooseTemplate = chooseTemplate;
@@ -20,7 +20,7 @@ function MCNewProcessMenuComponentController(templates, mcreg, projectsService, 
     /////////////////////////
 
     function chooseTemplate() {
-        const proj = mcreg.current$project;
+        const proj = mcstate.get(mcstate.CURRENT$PROJECT);
         mcmodal.chooseTemplate(proj, ctrl.templates).then(function(processTemplateName) {
             if (ctrl.onSelected) {
                 ctrl.onSelected({templateId: processTemplateName, processId: ''});
@@ -31,7 +31,7 @@ function MCNewProcessMenuComponentController(templates, mcreg, projectsService, 
     }
 
     function chooseExistingProcess() {
-        const projectID = mcreg.current$project.id;
+        const projectID = mcstate.get(mcstate.CURRENT$PROJECT).id;
         projectsService.getProjectProcesses(projectID).then(function(processes) {
             mcmodal.chooseExistingProcess(processes).then(function(existingProcess) {
                 if (ctrl.onSelected) {

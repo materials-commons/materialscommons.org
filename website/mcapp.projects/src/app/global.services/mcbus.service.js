@@ -4,7 +4,7 @@ class MCBusService {
         this.bus = {};
     }
 
-    register(event, name, fn) {
+    subscribe(event, name, fn) {
         if (!this.bus.hasOwnProperty(event)) {
             this.bus[event] = {};
         }
@@ -12,7 +12,7 @@ class MCBusService {
         this.bus[event][name] = fn;
     }
 
-    unregister(event, name) {
+    leave(event, name) {
         if (!this.bus.hasOwnProperty(event)) {
             return;
         }
@@ -24,13 +24,13 @@ class MCBusService {
         delete this.bus[event][name];
     }
 
-    unregisterEvent(event) {
+    leaveEvent(event) {
         if (this.bus.hasOwnProperty(event)) {
             delete this.bus[event];
         }
     }
 
-    unregisterFromAllEvents(name) {
+    leaveFromAllEvents(name) {
         for (let event in this.bus) {
             if (this.bus.hasOwnProperty(event) && this.bus[event].hasOwnProperty(name)) {
                 delete this.bus[event][name];

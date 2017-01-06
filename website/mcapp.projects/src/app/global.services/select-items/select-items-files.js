@@ -12,12 +12,12 @@ function selectItemsFilesDirective() {
     }
 }
 
-function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileType, mcreg, mcmodal) {
+function SelectItemsFilesDirectiveController(projectsService, gridFiles, fileType, mcstate, mcmodal) {
     'ngInject';
 
     const ctrl = this;
 
-    const proj = mcreg.current$project;
+    const proj = mcstate.get(mcstate.CURRENT$PROJECT);
     ctrl.gridShowingFlag = true;
     ctrl.files[0].expanded = true;
     ctrl.directorySelected = directorySelected;

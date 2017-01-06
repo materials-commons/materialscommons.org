@@ -4,13 +4,13 @@ angular.module('materialscommons').component('mcProjectSettings', {
 });
 
 /*@ngInject*/
-function MCProjectSettingsComponentController(mcreg, mcapi, User, toastr, navbarOnChange) {
+function MCProjectSettingsComponentController(mcstate, mcapi, User, toastr, navbarOnChange) {
     const ctrl = this;
     ctrl.isOwner = isOwner;
     ctrl.deleteUser = deleteUser;
     ctrl.addUser = addUser;
 
-    ctrl.project = mcreg.current$project;
+    ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
     ctrl.signedInUser = User.u();
     ctrl.user = '';
 
