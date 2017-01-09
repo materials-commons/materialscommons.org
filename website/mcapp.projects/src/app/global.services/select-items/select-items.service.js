@@ -1,7 +1,42 @@
 export function selectItemsService($mdDialog) {
     'ngInject';
 
+    function getTabs(...args) {
+        let tabs = {
+            processes: false,
+            fileTree: false,
+            fileTable: false,
+            uploadFiles: false,
+            samples: false,
+            reviews: false
+        };
+        args.forEach(tab => tabs[tab] = true);
+        return tabs;
+    }
+
     return {
+        fileTree(uploadFiles = false) {
+            // By default assume uploading files when getting tabs, and then reset that tab to the
+            // value of the uploadFiles parameter.
+            let tabs = getTabs('fileTree', 'uploadFiles');
+            tabs.uploadFiles = uploadFiles;
+        },
+
+        fileTable(uploadFiles = false, files = []) {
+            // By default assume uploading files when getting tabs, and then reset that tab to the
+            // value of the uploadFiles parameter.
+            let tabs = getTabs('fileTable', 'uploadFiles');
+            tabs.uploadFiles = uploadFiles;
+        },
+
+        samples(samples = []) {
+            let tabs = getTabs('samples');
+        },
+
+        processes(processes = []) {
+            let tabs = getTabs('processes');
+        },
+
         open: function() {
             let tabs = {
                 processes: false,
