@@ -14,7 +14,7 @@ class MCTaskTemplateCreateSamplesComponentController {
     }
 
     selectFiles() {
-        this.selectItems.open('files').then(
+        this.selectItems.fileTree().then(
             (selected) => {
                 let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
                 let filesArgs = {

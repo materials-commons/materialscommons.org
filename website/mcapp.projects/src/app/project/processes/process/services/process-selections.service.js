@@ -4,7 +4,7 @@ function processSelectionsService(selectItems, differenceById) {
     'ngInject';
     return {
         selectSamples: function(processSamples) {
-            selectItems.open('samples').then(function(item) {
+            selectItems.samples([]).then(function (item) {
                 var uniqueSamples = differenceById(item.samples, processSamples);
                 uniqueSamples.forEach(function(sample) {
                     processSamples.push({
@@ -20,7 +20,7 @@ function processSelectionsService(selectItems, differenceById) {
         },
 
         selectUpdatedSamples: function(processSamples, updatedSamples) {
-            selectItems.open('samples').then(function(item) {
+            selectItems.samples([]).then(function (item) {
                 var uniqueSamples = differenceById(item.samples, processSamples);
                 uniqueSamples.forEach(function(sample) {
                     processSamples.push({
@@ -41,7 +41,7 @@ function processSelectionsService(selectItems, differenceById) {
         },
 
         selectFiles: function(processFiles) {
-            selectItems.open('files').then(function(item) {
+            selectItems.fileTree().then(function (item) {
                 var uniqueFiles = differenceById(item.files, processFiles);
                 uniqueFiles.forEach(function(file) {
                     processFiles.push({
@@ -54,7 +54,7 @@ function processSelectionsService(selectItems, differenceById) {
         },
 
         selectUpdatedFiles: function(processFiles, updatedFiles) {
-            selectItems.open('files').then(function(item) {
+            selectItems.fileTree().then(function (item) {
                 var uniqueFiles = differenceById(item.files, processFiles);
                 uniqueFiles.forEach(function(file) {
                     processFiles.push({

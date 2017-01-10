@@ -35,7 +35,7 @@ function MCFileEditControlsComponentController(mcfile, pubsub, toastr, selectIte
     }
 
     function displayProcesses() {
-        selectItems.open('processes').then(function(items) {
+        selectItems.processes([]).then(function (items) {
             var processCommands = toProcessCommands(items.processes);
             ctrl.file.customPUT({processes: processCommands}).then(function() {
             });
