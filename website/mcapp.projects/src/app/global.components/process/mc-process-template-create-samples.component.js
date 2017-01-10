@@ -13,7 +13,7 @@ class MCProcessTemplateCreateSamplesComponentController {
     }
 
     selectFiles() {
-        this.selectItems.open('files', 'uploadFiles').then(
+        this.selectItems.fileTree(true).then(
             (selected) => {
                 let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
                 let filesArgs = {

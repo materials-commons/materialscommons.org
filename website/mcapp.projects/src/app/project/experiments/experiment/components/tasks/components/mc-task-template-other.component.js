@@ -22,7 +22,7 @@ class MCTaskTemplateOtherComponentController {
     }
 
     selectFiles() {
-        this.selectItems.open('files').then(
+        this.selectItems.fileTree().then(
             (selected) => {
                 let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
                 let filesArgs = {
@@ -39,7 +39,7 @@ class MCTaskTemplateOtherComponentController {
     }
 
     selectSamples() {
-        this.selectItems.open('samples').then(
+        this.selectItems.samples([]).then(
             (selected) => {
                 let samples = selected.samples.map(s => {
                     return {

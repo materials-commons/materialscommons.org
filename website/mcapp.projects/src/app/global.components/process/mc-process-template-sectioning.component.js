@@ -13,7 +13,7 @@ class MCProcessTemplateSectioningComponentController {
     }
 
     selectFiles() {
-        this.selectItems.open('files', 'uploadFiles').then(
+        this.selectItems.fileTree(true).then(
             (selected) => {
                 let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
                 let filesArgs = {
@@ -30,7 +30,7 @@ class MCProcessTemplateSectioningComponentController {
     }
 
     selectSamples() {
-        this.selectItems.open('samples', {singleSelection: true}).then(
+        this.selectItems.samples([], {singleSelection: true}).then(
             (selected) => {
                 let samples = selected.samples.map(s => {
                     for (let i = 0; i < s.versions.length; i++) {

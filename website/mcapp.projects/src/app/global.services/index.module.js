@@ -11,7 +11,6 @@ import { projectsService } from './projects-service.service';
 import { pubsubService } from './pubsub.service';
 import { templateService } from './template.service';
 import { templatesService } from './templates.service';
-import { selectItemsService } from './select-items/select-items.service';
 import { mcmodalService } from './mcmodal/mcmodal';
 import './toast.service';
 import './editoropts.service';
@@ -34,9 +33,9 @@ import './process-tree.service';
 import './process-graph.service';
 import './mcbus.service';
 import './mcstate.service';
+import './select-items/select-items.service';
 
 angular.module('materialscommons')
-    .factory('selectItems', selectItemsService)
     .factory('User', UserService)
     .factory('CachedServiceFactory', CachedServiceFactoryService)
     .factory("fileType", fileTypeService)
