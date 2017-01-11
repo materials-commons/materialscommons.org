@@ -6,7 +6,7 @@ angular.module('materialscommons').component('mcFileEditControls', {
     }
 });
 
-function MCFileEditControlsComponentController(mcfile, pubsub, toastr, selectItems) {
+function MCFileEditControlsComponentController(mcfile, pubsub, toastr, mcstate, selectItems) {
     'ngInject';
 
     var ctrl = this;
@@ -35,7 +35,8 @@ function MCFileEditControlsComponentController(mcfile, pubsub, toastr, selectIte
     }
 
     function displayProcesses() {
-        selectItems.processes([]).then(function (items) {
+        let projectId = mcstate.get(mcstate.CURRENT$PROJECT).id;
+        selectItems.processesFromProject(projectId).then(function (items) {
             var processCommands = toProcessCommands(items.processes);
             ctrl.file.customPUT({processes: processCommands}).then(function() {
             });

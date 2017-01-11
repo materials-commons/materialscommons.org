@@ -1,9 +1,7 @@
 class SelectItemsService {
-    'ngInject';
-
-    constructor($mdDialog, $stateParams, projectsService, experimentsService) {
+    /*@ngInject*/
+    constructor($mdDialog, projectsService, experimentsService) {
         this.$mdDialog = $mdDialog;
-        this.$stateParams = $stateParams;
         this.projectsService = projectsService;
         this.experimentsService = experimentsService;
     }
@@ -19,26 +17,37 @@ class SelectItemsService {
     }
 
     fileTree(uploadFiles = false) {
-        return this.dialog({showFileTree: true, uploadFiles}, SelectItemsFilesServiceModalController);
+        return this.dialog({
+            showFileTree: true,
+            showFileTable: false,
+            uploadFiles
+        }, SelectItemsFilesServiceModalController);
     }
 
-    fileTable(uploadFiles = false, files = []) {
-        return this.dialog({showFileTable: true, uploadFiles, files}, SelectItemsFilesServiceModalController);
+    fileTable(files = [], uploadFiles = false) {
+        return this.dialog({
+            showFileTable: true,
+            showFileTree: false,
+            uploadFiles,
+            files
+        }, SelectItemsFilesServiceModalController);
     }
 
     samples(samples = [], singleSelection = false) {
         return this.dialog({samples, singleSelection}, SelectItemsSamplesServiceModalController);
     }
 
-    samplesFromProject(singleSelection = false) {
-        return this.projectsService.getProjectSamples(this.$stateParams.project_id).then(
-            (samples) => this.dialog({samples, singleSelection}, SelectItemsSamplesServiceModalController)
-        );
+    samplesFromProject(projectId, singleSelection = false) {
+        let options = {
+            singleSelection
+        };
+        return this.projectsService.getProjectSamples(projectId).then(
+            (samples) => this.dialog({samples, options}, SelectItemsSamplesServiceModalController)
+        )
+            ;
     }
 
-    samplesFromExperiment(singleSelection = false) {
-        let experimentId = this.$stateParams.experiment_id,
-            projectId = this.$stateParams.project_id;
+    samplesFromExperiment(projectId, experimentId, singleSelection = false) {
         return this.experimentsService.getSamplesForExperiment(projectId, experimentId).then(
             (samples) => this.dialog({samples, singleSelection}, SelectItemsSamplesServiceModalController)
         );
@@ -48,8 +57,10 @@ class SelectItemsService {
         return this.dialog({processes}, SelectItemsProcessesServiceModalController);
     }
 
-    projectProcesses() {
-        return this.projectsService.getProjectProcesses()
+    processesFromProject(projectId) {
+        return this.projectsService.getProjectProcesses(projectId).then(
+            (processes) => this.dialog({processes}, SelectItemsProcessesServiceModalController)
+        );
     }
 }
 
@@ -85,6 +96,7 @@ class SelectItemsSamplesServiceModalController extends SelectItemsBase {
     /*@ngInject*/
     constructor($mdDialog) {
         super($mdDialog);
+        this.$onInit();
     }
 
     $onInit() {
@@ -100,7 +112,7 @@ class SelectItemsSamplesServiceModalController extends SelectItemsBase {
             }
             return false;
         });
-        this.$mdDialog.hide({selected: {samples: selectedSamples}});
+        this.$mdDialog.hide({samples: selectedSamples});
     }
 }
 
@@ -108,6 +120,7 @@ class SelectItemsProcessesServiceModalController extends SelectItemsBase {
     /*@ngInject*/
     constructor($mdDialog) {
         super($mdDialog);
+        this.$onInit();
     }
 
     $onInit() {
@@ -116,7 +129,7 @@ class SelectItemsProcessesServiceModalController extends SelectItemsBase {
 
     ok() {
         let selectedProcesses = this.processes.filter(p => p.input || p.output);
-        this.$mdDialog.hide({selected: {processes: selectedProcesses}});
+        this.$mdDialog.hide({processes: selectedProcesses});
     }
 }
 
@@ -126,6 +139,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
         super($mdDialog);
         this.uploadedFiles = [];
         this.mcstate = mcstate;
+        this.$onInit();
     }
 
     $onInit() {
@@ -149,7 +163,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
     ok() {
         let selectedFiles = [];
         if (this.showFileTree) {
-            selectedFiles = file.concat(this.getFilesFromTree());
+            selectedFiles = selectedFiles.concat(this.getFilesFromTree());
         }
 
         if (this.showFileTable) {
@@ -160,15 +174,15 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
             selectedFiles = selectedFiles.concat(this.uploadedFiles);
         }
 
-        this.$mdDialog.hide({selected: {files: selectedFiles}});
+        this.$mdDialog.hide({files: selectedFiles});
     }
 
     getFilesFromTree() {
         let filesFromTree = [];
-        let projectFiles = this.mcstate.get(mcstate.CURRENT$PROJECT).files;
+        let projectFiles = this.mcstate.get(this.mcstate.CURRENT$PROJECT).files;
         if (projectFiles && projectFiles.length) {
             let treeModel = new TreeModel(),
-                root = treeModel.parse(this.mcstate.get(mcstate.CURRENT$PROJECT).files[0]);
+                root = treeModel.parse(this.mcstate.get(this.mcstate.CURRENT$PROJECT).files[0]);
             // Walk the tree looking for selected files and adding them to the
             // list of files. Also reset the selected flag so the next time
             // the popup for files is used it doesn't show previously selected

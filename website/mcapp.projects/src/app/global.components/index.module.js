@@ -16,6 +16,7 @@ import './process/mc-process-template.component';
 import './process/mc-process-template-files-list.component';
 import './process/mc-process-template-samples-list.component';
 import './process/process-settings2.component';
+import './process/mc-process-template-select.service'
 import './attribute/mc-attribute-number.component'
 import './attribute/mc-attribute-string.component'
 import './attribute/mc-attribute-composition.component'
