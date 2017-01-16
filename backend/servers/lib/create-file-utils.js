@@ -16,7 +16,9 @@ function getFileStoreDir() {
 // as dir for file store; a rename is used to position the final
 // version of the upload file
 function getTmpUploadDir() {
-    return getFileStoreDir() + "uploadTmp/";
+    let dirPath = getFileStoreDir() + "uploadTmp/";
+    yield mkdirpAsync(dirPath);
+    return dirPath;
 }
 
 function datafilePath(fileID) {
