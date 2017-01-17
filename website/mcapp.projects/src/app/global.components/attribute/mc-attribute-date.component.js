@@ -10,7 +10,12 @@ class MCAttributeDateComponentController {
             formatYear: 'yy',
             startingDay: 1
         };
-        this.date = new Date(this.setting.value);
+        if (this.setting.value) {
+            this.date = new Date(this.setting.value);
+        } else {
+            this.date = new Date();
+        }
+        console.log(MCAttributeDateComponentController, this.date)
     }
 
     openDatePicker($event, prop) {
