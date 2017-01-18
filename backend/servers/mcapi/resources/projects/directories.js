@@ -14,7 +14,7 @@ const koaBody = require('koa-body')({
     multipart: true,
     formidable: {uploadDir: uploadTmpDir, hash: 'md5'},
     keepExtensions: true,
-});
+ });
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';

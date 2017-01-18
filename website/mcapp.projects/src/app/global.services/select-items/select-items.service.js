@@ -92,6 +92,18 @@ class SelectItemsBase {
     }
 }
 
+class SelectItemsState {
+    constructor() {
+        this.uploadedFiles = [];
+    }
+
+    reset() {
+        this.uploadedFiles = [];
+    }
+}
+
+const selectItemsState = new SelectItemsState();
+
 class SelectItemsSamplesServiceModalController extends SelectItemsBase {
     /*@ngInject*/
     constructor($mdDialog) {
@@ -137,12 +149,12 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
     /*@ngInject*/
     constructor($mdDialog, mcstate) {
         super($mdDialog);
-        this.uploadedFiles = [];
         this.mcstate = mcstate;
         this.$onInit();
     }
 
     $onInit() {
+        selectItemsState.reset();
         if (this.showFileTable) {
             this.addTab('file table', 'fa-files-o');
         }
@@ -157,7 +169,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
     }
 
     uploadComplete(fileIds) {
-        this.uploadedFiles = fileIds.map(fid => ({id: fid}));
+        selectItemsState.uploadedFiles = fileIds.map(fid => ({id: fid}));
     }
 
     ok() {
@@ -171,7 +183,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
         }
 
         if (this.uploadFiles) {
-            selectedFiles = selectedFiles.concat(this.uploadedFiles);
+            selectedFiles = selectedFiles.concat(selectItemsState.uploadedFiles);
         }
 
         this.$mdDialog.hide({files: selectedFiles});
