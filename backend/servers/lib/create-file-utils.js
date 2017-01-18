@@ -1,6 +1,7 @@
 const Promise = require("bluebird");
 const fs = Promise.promisifyAll(require('fs'));
-var mkdirpAsync = Promise.promisify(require('mkdirp'));
+const mkdirpAsync = Promise.promisify(require('mkdirp'));
+const mkdirpSync = require('mkdirp');
 const path = require('path');
 
 function getFileStoreDir() {
@@ -14,9 +15,12 @@ function getFileStoreDir() {
 
 // NOTE: dir for temp uploads should be in same file system
 // as dir for file store; a rename is used to position the final
-// version of the upload file
+// version of the upload file - this is called at build time;
+// ref: line 12 in directories.js
 function getTmpUploadDir() {
-    return getFileStoreDir() + "uploadTmp/";
+    let path = getFileStoreDir() + "uploadTmp/";
+    mkdirpSync(path);
+    return path;
 }
 
 function datafilePath(fileID) {
