@@ -54,7 +54,7 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
     }
 
-    var unregister = $rootScope.$on('$stateChangeStart', function(event, toState) {
+    const unregister = $rootScope.$on('$stateChangeStart', function(event, toState) {
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
         if (!User.isAuthenticated() && isStateRequiringALogin(toState.name)) {
             event.preventDefault();
@@ -84,7 +84,7 @@ function isStateRequiringALogin(stateName) {
 }
 
 function setupMCGlobals() {
-    var mcglobals = {};
+    const mcglobals = {};
     if (window.location.hostname === 'localhost') {
         mcglobals.apihost = window.location.protocol + '//localhost:5002';
     } else {

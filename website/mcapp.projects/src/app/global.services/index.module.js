@@ -12,7 +12,6 @@ import { pubsubService } from './pubsub.service';
 import { templateService } from './template.service';
 import { templatesService } from './templates.service';
 import { selectItemsService } from './select-items/select-items.service';
-import { modelProjectsService } from './model/projects-service';
 import { mcmodalService } from './mcmodal/mcmodal';
 import './toast.service';
 import './editoropts.service';
@@ -33,6 +32,9 @@ import './navbar-on-change.service';
 import './processes-service.service';
 import './process-tree.service';
 import './process-graph.service';
+import './mcbus.service';
+import './mcregvars.service';
+import './mcreg.service';
 
 angular.module('materialscommons')
     .factory('selectItems', selectItemsService)
@@ -48,6 +50,5 @@ angular.module('materialscommons')
     .factory('projectsService', projectsService)
     .factory('pubsub', pubsubService)
     .factory('template', templateService)
-    .factory('modelProjects', modelProjectsService)
     .factory('mcmodal', mcmodalService)
     .factory("templates", templatesService);

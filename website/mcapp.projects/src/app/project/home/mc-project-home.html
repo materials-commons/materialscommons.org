@@ -24,9 +24,9 @@
                 <i class="fa fa-fw fa-plus"></i> Start New Experiment
             </md-button>
         </div>
-        <md-column layout="column" layout-align="start stretch" flex>
+        <md-content style="max-height: 70vh" layout="column" layout-align="start stretch" flex>
             <div layout="row" layout-wrap>
-                <md-card flex="45" flex-md="60" flex-sm="60"
+                <md-card flex="45" flex-md="60" flex-sm="60" flex-xs="60"
                          ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.whichExperiments} | orderBy:'name'"
                          class="experiment-card">
                     <md-card-header class="project-card-header"
@@ -48,28 +48,33 @@
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-actions layout="row" class="md-subhead" layout-align="space-between center">
-                        <a class="md-primary" tooltip="tasks" ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
-                                <i class="fa fa-fw fa-tasks"></i>{{::experiment.tasks.length}}
+                        <a class="md-primary" tooltip="tasks"
+                           ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
+                            <i class="fa fa-fw fa-tasks"></i>{{::experiment.tasks.length}}
                         </a>
-                        <a class="md-primary" tooltip="notes" ui-sref="project.experiment.notes({experiment_id: experiment.id})">
+                        <a class="md-primary" tooltip="notes"
+                           ui-sref="project.experiment.notes({experiment_id: experiment.id})">
                             <i class="fa fa-fw fa-book"></i>{{::experiment.notes.length}}
                         </a>
                         <a class="md-primary" tooltip="datasets"
                            ui-sref="project.experiment.datasets({experiment_id: experiment.id})">
                             <i class="fa fa-fw fa-database"></i>{{::experiment.datasets.length}}
                         </a>
-                        <a class="md-primary" tooltip="samples" ui-sref="project.experiment.samples({experiment_id: experiment.id})">
-                                <i class="fa fa-fw fa-cubes"></i>{{::experiment.samples.length | number}}
+                        <a class="md-primary" tooltip="samples"
+                           ui-sref="project.experiment.samples({experiment_id: experiment.id})">
+                            <i class="fa fa-fw fa-cubes"></i>{{::experiment.samples.length | number}}
                         </a>
-                        <a class="md-primary" tooltip="files" ui-sref="project.experiment.files({experiment_id: experiment.id})">
+                        <a class="md-primary" tooltip="files"
+                           ui-sref="project.experiment.files({experiment_id: experiment.id})">
                             <i class="fa fa-fw fa-files-o"></i>{{::experiment.files.length | number}}
                         </a>
-                        <a class="md-primary" tooltip="processes" ui-sref="project.experiment.processes({experiment_id: experiment.id})">
-                                <i class="fa fa-fw fa-code-fork"></i>{{::experiment.processes.length | number}}
+                        <a class="md-primary" tooltip="workflow"
+                           ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
+                            <i class="fa fa-fw fa-code-fork"></i>{{::experiment.processes.length | number}}
                         </a>
                     </md-card-actions>
                 </md-card>
             </div>
-        </md-column>
+        </md-content>
     </div>
 </div>

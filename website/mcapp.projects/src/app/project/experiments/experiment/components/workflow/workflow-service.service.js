@@ -4,9 +4,28 @@ class WorkflowService {
         this.onDeleteCallbacks = {};
         this.onChangeCallbacks = {};
         this.onAddCallbacks = {};
+        this.onSelectCallbacks = {};
         this.workflowDeleteCallback = null;
         this.workflowAddCallback = null;
         this.workflowChangeCallback = null;
+        this.selectedProcess = null;
+    }
+
+    addOnSelectCallback(name, cb) {
+        this.onSelectCallbacks[name] = cb;
+        return this;
+    }
+
+    deleteOnSelectCallback(name) {
+        delete this.onSelectCallbacks[name];
+        return this;
+    }
+
+    callOnSelectCallbacks(what) {
+        for (let key in this.onSelectCallbacks) {
+            let cb = this.onSelectCallbacks[key];
+            cb(what);
+        }
     }
 
     addOnDeleteCallback(name, cb) {
@@ -76,6 +95,10 @@ class WorkflowService {
         this.workflowChangeCallback = null;
         this.workflowAddCallback = null;
         this.workflowDeleteCallback = null;
+    }
+
+    setSelectedProcess(p) {
+        this.selectedProcess = p;
     }
 }
 

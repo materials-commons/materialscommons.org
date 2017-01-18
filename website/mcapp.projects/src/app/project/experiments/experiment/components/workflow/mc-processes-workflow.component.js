@@ -43,7 +43,7 @@ class MCProcessesWorkflowComponentController {
                 (process) => {
                     let p = this.templates.loadTemplateFromProcess(process.template_name, process);
                     this.$mdDialog.show({
-                        templateUrl: 'app/project/experiments/experiment/components/processes/new-process-dialog.html',
+                        templateUrl: 'app/project/experiments/experiment/components/workflow/new-process-dialog.html',
                         controllerAs: '$ctrl',
                         controller: NewProcessDialogController,
                         bindToController: true,
@@ -74,15 +74,18 @@ class MCProcessesWorkflowComponentController {
                     (process) => {
                         process.hasChildren = hasChildren;
                         this.selectedProcess = process;
+                        this.workflowService.callOnSelectCallbacks(process);
                         this.currentTab = 1;
                     },
                     () => {
                         this.toast.error('Unable to retrieve process details');
                         this.selectedProcess = null;
+                        this.workflowService.callOnSelectCallbacks(null);
                     }
                 );
         } else {
             this.selectedProcess = null;
+            this.workflowService.callOnSelectCallbacks(null);
             this.currentTab = 0;
         }
     }
@@ -208,7 +211,7 @@ class NewProcessDialogController {
 }
 
 angular.module('materialscommons').component('mcProcessesWorkflow', {
-    templateUrl: 'app/project/experiments/experiment/components/processes/mc-processes-workflow.html',
+    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-processes-workflow.html',
     controller: MCProcessesWorkflowComponentController,
     bindings: {
         processes: '<',

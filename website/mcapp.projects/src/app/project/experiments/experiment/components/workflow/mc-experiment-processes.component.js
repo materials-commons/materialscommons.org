@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentProcesses', {
-    templateUrl: 'app/project/experiments/experiment/components/processes/mc-experiment-processes.html',
+    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-experiment-processes.html',
     controller: MCExperimentProcessesComponentController,
     bindings: {
         processes: '<'
@@ -8,6 +8,6 @@ angular.module('materialscommons').component('mcExperimentProcesses', {
 
 /*@ngInject*/
 function MCExperimentProcessesComponentController() {
-    var ctrl = this;
+    const ctrl = this;
     ctrl.showTableView = true;
 }

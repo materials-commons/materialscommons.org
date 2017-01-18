@@ -6,10 +6,12 @@
         </md-button>
     </div>
     <div layout="column" flex="45">
-        <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
             <h4 class="md-title">Samples ({{$ctrl.process.output_samples.length}})</h4>
-            <md-button class="md-primary" ng-click="$ctrl.addSample()">add sample</md-button>
-            <md-button class="md-primary" ng-click="$ctrl.addMultipleSamples()">Add Multiple Samples</md-button>
+            <div>
+                <md-button class="md-primary" ng-click="$ctrl.addSample()">add sample</md-button>
+                <md-button class="md-primary" ng-click="$ctrl.addMultipleSamples()">Add Multiple Samples</md-button>
+            </div>
         </div>
         <p>
             The names of the samples you are creating will appear below. All samples will share the same setup

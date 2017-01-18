@@ -1,19 +1,19 @@
 class BlankTaskService {
     /*@ngInject*/
-    constructor(toUITask, focus, currentTask, paginationService, experimentsService, toast, $stateParams, currentExperiment) {
+    constructor(toUITask, focus, currentTask, paginationService, experimentsService, toast, $stateParams, mcreg) {
         this.toUITask = toUITask;
         this.focus = focus;
         this.currentTask = currentTask;
         this.paginationService = paginationService;
         this.experimentsService = experimentsService;
         this.toast = toast;
+        this.mcreg = mcreg;
         this.$stateParams = $stateParams;
-        this.currentExperiment = currentExperiment;
     }
 
     addBlankTask(node, currentlySelectedTask) {
         let csi = node == null ? 1 : this.findCurrentTaskIndex(node, currentlySelectedTask);
-        let experiment = this.currentExperiment.get();
+        let experiment = this.mcreg.current$experiment;
         let tasks = experiment.tasks;
 
         let newTask = {

@@ -45,7 +45,6 @@ export function selectItemsService($mdDialog) {
 
                     showSamples: tabs.samples,
 
-
                     showReviews: tabs.reviews,
 
                     showUploadFiles: tabs.uploadFiles,
@@ -57,11 +56,23 @@ export function selectItemsService($mdDialog) {
     };
 }
 
+class SelectItemsState {
+    constructor() {
+        this.uploadedFiles = [];
+    }
+
+    reset() {
+        this.uploadedFiles = [];
+    }
+}
+
+const selectItemsState = new SelectItemsState();
+
 /*@ngInject*/
-function SelectItemsServiceModalController($mdDialog, projectsService, $stateParams, project, experimentsService) {
+function SelectItemsServiceModalController($mdDialog, projectsService, $stateParams, mcreg, experimentsService) {
     let ctrl = this;
 
-    ctrl.project = project.get();
+    ctrl.project = mcreg.current$project;
     ctrl.tabs = loadTabs();
     ctrl.activeTab = ctrl.tabs[0].name;
     ctrl.setActive = setActive;
@@ -71,7 +82,7 @@ function SelectItemsServiceModalController($mdDialog, projectsService, $statePar
     ctrl.cancel = cancel;
     ctrl.processes = [];
     ctrl.samples = [];
-    ctrl.uploadedFiles = [];
+    selectItemsState.reset();
 
     /////////////////////////
 
@@ -110,10 +121,10 @@ function SelectItemsServiceModalController($mdDialog, projectsService, $statePar
         let files = [];
         if (ctrl.showFilesTree) {
             let filesFromTree = [];
-            let projectFiles = project.get().files;
+            let projectFiles = mcreg.current$project.files;
             if (projectFiles && projectFiles.length) {
                 let treeModel = new TreeModel(),
-                    root = treeModel.parse(project.get().files[0]);
+                    root = treeModel.parse(mcreg.current$project.files[0]);
                 // Walk the tree looking for selected files and adding them to the
                 // list of files. Also reset the selected flag so the next time
                 // the popup for files is used it doesn't show previously selected
@@ -135,14 +146,14 @@ function SelectItemsServiceModalController($mdDialog, projectsService, $statePar
         }
 
         if (ctrl.showUploadFiles) {
-            files = files.concat(ctrl.uploadedFiles);
+            files = files.concat(selectItemsState.uploadedFiles);
         }
 
         return files;
     }
 
     function uploadComplete(fileIds) {
-        ctrl.uploadedFiles = fileIds.map(fid => ({id: fid}));
+        selectItemsState.uploadedFiles = fileIds.map(fid => ({id: fid}));
     }
 
     function cancel() {

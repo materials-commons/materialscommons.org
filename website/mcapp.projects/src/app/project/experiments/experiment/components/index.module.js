@@ -25,13 +25,14 @@ import './datasets/mc-experiment-datasets.component';
 import './dataset/mc-experiment-dataset.component';
 import './dataset/components/mc-dataset-details.component';
 
-import './processes/mc-experiment-processes.component';
-import './processes/mc-experiment-processes-table.component';
-import './processes/experiment-processes.service';
+import './workflow/mc-experiment-processes.component';
+import './workflow/mc-experiment-processes-table.component';
+import './workflow/experiment-processes.service';
 
-import './processes/mc-processes-workflow.component';
-import './processes/mc-workflow-process-templates.component';
-import './processes/mc-processes-workflow-graph.component';
-import './processes/mc-processes-workflow-outline.component';
+import './workflow/mc-processes-workflow.component';
+import './workflow/mc-workflow-process-templates.component';
+import './workflow/mc-processes-workflow-graph.component';
+import './workflow/mc-processes-workflow-outline.component';
+import './workflow/mc-workflow-toolbar.component';
 
-import './processes/workflow-service.service';
+import './workflow/workflow-service.service';
