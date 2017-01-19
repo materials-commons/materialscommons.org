@@ -190,7 +190,11 @@ function* validateAddSamplesMeasurements(projectId, experimentId, args) {
 
         for (let j = 0; j < prop.measurements.length; j++) {
             let measurement = prop.measurements[j];
+            // NOTE: any non-primitive value is set to empty, {}, by schema prepare
+            // see issue #
+            let value = measurement.value;
             schema.prepare(schema.measurement, measurement);
+            measurement.value = value;
             e = yield schema.validate(schema.measurement, measurement);
             if (e !== null) {
                 return e;
