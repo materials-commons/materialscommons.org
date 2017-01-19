@@ -10,8 +10,8 @@ const path = require('path');
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const zipFileUtils = require('../servers/lib/zipFileUtils.js');
 
-//const defaultPort =  29015; // true default
-const defaultPort =  30815; // localhost version
+//const defaultPort =  28015; // true default
+const defaultPort = 30815; // localhost version
 
 let parameters = getControlParameters();
 
@@ -36,7 +36,7 @@ function main() {
     if (base) {
         zipFileUtils.setBase(base);
     }
-    if (zipbase){
+    if (zipbase) {
         zipFileUtils.setZipDirPath(zipbase);
     }
 
@@ -55,7 +55,7 @@ function* buildZipFiles() {
         var idSet = new Set(idList);
         var ids = (idList.length > 0);
 
-        let allDatasetIds = yield r.db('materialscommons').table('datasets').pluck(["id","published"]);
+        let allDatasetIds = yield r.db('materialscommons').table('datasets').pluck(["id", "published"]);
 
         var idsToProcess = [];
         allDatasetIds.forEach(record => {
@@ -106,7 +106,9 @@ function* publishDatasetZipFile(r, datasetId) {
             numberProcessed++;
             console.log('no zip for id = ' + datasetId);
             console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
-            return new Promise(function(resolve, reject){resolve()});
+            return new Promise(function (resolve, reject) {
+                resolve()
+            });
         }
 
         yield mkdirpAsync(zipDirPath);
@@ -117,7 +119,7 @@ function* publishDatasetZipFile(r, datasetId) {
         let nameSourceList = [];
         var seenThisOne = {};
 
-        for (var i=0; i < datafiles.length; i++) {
+        for (var i = 0; i < datafiles.length; i++) {
             let df = datafiles[i];
 
             let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, sourcePath
@@ -125,7 +127,7 @@ function* publishDatasetZipFile(r, datasetId) {
             let name = zipEntry.fileName;
             let checksum = zipEntry.checksum;
             name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
-            let stream = fsa.createReadStream(path,{
+            let stream = fsa.createReadStream(path, {
                 flags: 'r',
                 encoding: null,
                 fd: null,
@@ -139,16 +141,16 @@ function* publishDatasetZipFile(r, datasetId) {
 
         var output = fsa.createWriteStream(fillPathAndFilename);
 
-        let retP =  new Promise(function (resolve, reject) {
+        let retP = new Promise(function (resolve, reject) {
             var archive = archiver('zip');
 
             output.on('close', function () {
                 let zipfileSize = archive.pointer();
-                console.log('for dataset: ' + datasetId + " with " +zipfileSize + ' total bytes');
+                console.log('for dataset: ' + datasetId + " with " + zipfileSize + ' total bytes');
                 numberProcessed++;
                 console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
                 let zip = {size: zipfileSize, filename: zipFileName};
-                r.db('materialscommons').table('datasets').get(datasetId).update({zip: zip}).then(() =>{
+                r.db('materialscommons').table('datasets').get(datasetId).update({zip: zip}).then(() => {
                     resolve();
                     if (numberProcessed == totalNumberToProcess) {
                         process.exit(0);
@@ -158,13 +160,15 @@ function* publishDatasetZipFile(r, datasetId) {
 
             archive.on('error', reject);
 
-            archive.on('close',function() {console.log('archive close');});
+            archive.on('close', function () {
+                console.log('archive close');
+            });
 
             archive.pipe(output);
 
             nameSourceList.forEach(ns => {
                 let pathAndName = pathForFileInZip + ns.name;
-                archive.append(ns.source, {name:pathAndName} );
+                archive.append(ns.source, {name: pathAndName});
             });
 
             archive.finalize();
@@ -175,11 +179,11 @@ function* publishDatasetZipFile(r, datasetId) {
         return retP;
 
     } catch (error) {
-        return yield Promise.reject("Error in publishDatasetZipFile: " +  error.message);
+        return yield Promise.reject("Error in publishDatasetZipFile: " + error.message);
     }
 }
 
-function resolveZipfileFilenameDuplicates(seenThisOne,name,checksum){
+function resolveZipfileFilenameDuplicates(seenThisOne, name, checksum) {
     name = name.toLowerCase();
 
     if (name.startsWith(".")) {
@@ -215,7 +219,7 @@ function verifyParameters() {
 
     if (!all && !ids) {
         program.help(text => {
-            var banner =    "\t--------------------------------\n";
+            var banner = "\t--------------------------------\n";
             return banner + "\tOne of --id or --all is required\n"
                 + banner + text;
         })
@@ -249,17 +253,17 @@ function reportParameters() {
 }
 
 function getControlParameters() {
-    let accumulateIds = (id,ids) => {
+    let accumulateIds = (id, ids) => {
         ids.push(id);
         return ids;
     };
 
     return program
-        .option('-p, --port [port]', 'The RethinkDB port; defaults to ' + defaultPort,defaultPort)
+        .option('-p, --port [port]', 'The RethinkDB port; defaults to ' + defaultPort, defaultPort)
         .option('-b, --base [base]', 'The base path of the datasets directory, optional')
         .option('-z, --zipbase [zipbase]', 'The base path for the zipfile directory, optional')
-        .option('-i, --id [id]', 'If given, the id of the dataset to copy, can be repeated',accumulateIds,[])
+        .option('-i, --id [id]', 'If given, the id of the dataset to copy, can be repeated', accumulateIds, [])
         .option('-a, --all', 'If given, and no id(s), then copy all datasets, \n\t\tone of --id or --all required')
-        .option('-r, --replace','If given, then replace files already generaåted, \n\t\totherwise not; optional')
+        .option('-r, --replace', 'If given, then replace files already generated, \n\t\totherwise not; optional')
         .parse(process.argv);
 }

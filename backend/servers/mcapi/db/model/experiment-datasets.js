@@ -283,6 +283,7 @@ function* publishSetupForProcesses(processes) {
 }
 
 function* publishDatasetSamples(datasetId) {
+    yield addSamplesToDataset(datasetId);
     let ds2sEntries = yield r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'});
     let sampleIds = ds2sEntries.map(entry => entry.sample_id);
     let samples = yield r.table('samples').getAll(r.args(sampleIds));
@@ -315,7 +316,21 @@ function* publishDatasetSamples(datasetId) {
     yield r.db('mcpub').table('process2sample').insert(p2sEntries);
 }
 
+function* addSamplesToDataset(datasetId) {
+    let sampleIds = yield r.table('dataset2process')
+        .getAll(datasetId, {index: 'dataset_id'})
+        .eqJoin('process_id', r.table('process2sample'), {index: 'process_id'})
+        .zip().pluck('sample_id').distinct();
+
+    // Delete old entries for dataset in dataset2sample before inserting new entries
+    yield r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();
+
+    let samplesToAdd = sampleIds.map(s => new model.Dataset2Sample(datasetId, s.sample_id));
+    yield r.table('dataset2sample').insert(samplesToAdd);
+}
+
 function* publishDatasetFiles(datasetId) {
+    yield addFilesToDataset(datasetId);
     let ds2dfEntries = yield r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
     if (!ds2dfEntries.length) {
         return;
@@ -351,6 +366,17 @@ function* publishDatasetFiles(datasetId) {
     yield r.db('mcpub').table('process2file').insert(p2fEntries);
 }
 
+function* addFilesToDataset(datasetId) {
+    let datasetProcessIds = yield r.table('dataset2process')
+        .getAll(datasetId, {index: 'dataset_id'}).pluck('process_id');
+    let processIds = datasetProcessIds.map(d => d.process_id);
+
+    let sampleProcessIds = yield r.table('dataset2sample')
+        .getAll(datasetId, {index: 'dataset_id'}).pluck('sample_id');
+    let sampleIds = sampleProcessIds.map(d => d.sample_id);
+    yield addFilesForProcessesAndSamples(datasetId, processIds, sampleIds);
+}
+
 function* publishDatasetZipFile(datasetId) {
     let ds = yield r.table('datasets').get(datasetId);
     let zipDirPath = zipFileUtils.zipDirPath(ds);
@@ -366,11 +392,11 @@ function* publishDatasetZipFile(datasetId) {
     let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
     let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         var archive = archiver('zip');
         var output = fs.createWriteStream(fillPathAndFilename);
 
-        output.on('close', function() {
+        output.on('close', function () {
             var totalBytes = archive.pointer();
             var filename = zipFilename;
             r.table('datasets').get(datasetId).update({zipFilename: filename, zipSize: totalBytes})
