@@ -10,15 +10,11 @@ const r = require('rethinkdbdash')({
     port: process.env.MCDB_PORT || 30815
 });
 
-const model = require('../../../servers/mcapi/db/model')(r);
-const schema = require('../../../servers/mcapi/schema')(model);
-const experiments = require('../../../servers/mcapi/resources/experiments')(model.experiments, model.samples, schema);
-const resourcesUsers = require('../../../servers/mcapi/resources/users')(model.users, model.experiments, schema);
-
-const dbModelUsers = require('../../../servers/mcapi/db/model/users')(r);
+const resourcesUsers = require('../../../servers/mcapi/resources/users');
+const dbModelUsers = require('../../../servers/mcapi/db/model/users');
 
 const user1Id = 'thisIsAUserForTestingONLY!@mc.org';
-const fullname = "Test User"
+const fullname = "Test User";
 
 beforeEach(function*() {
     let results = yield r.db('materialscommons').table('users').insert({
