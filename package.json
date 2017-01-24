@@ -101,7 +101,6 @@
     "mocha-generators": "^1.2.0",
     "mochawesome": "^1.5.2",
     "ng-annotate-loader": "0.0.10",
-    "phantomjs": "^2.1.7",
     "should": "^5.2.0",
     "supertest": "^0.15.0",
     "uglify-save-license": "~0.4.1",
