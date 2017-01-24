@@ -1,10 +1,11 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService) {
+    constructor(processGraph, workflowService, mcbus) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
+        this.mcbus = mcbus;
         this.myName = 'MCProcessesWorkflowGraph';
     }
 
@@ -13,6 +14,7 @@ class MCProcessesWorkflowGraphComponentController {
         // functions lexically scope, so this in the arrow function is the this for
         // MCProcessesWorkflowGraphComponentController
         let cb = (processes) => {
+            console.log('cb called in mc-processes-workflow-graph');
             this.processes = processes;
             this.allProcessesGraph();
         };
@@ -24,6 +26,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.workflowService.addOnAddCallback(this.myName, cb);
         this.workflowService.addOnChangeCallback(this.myName, cb);
         this.workflowService.addOnDeleteCallback(this.myName, cb);
+        this.mcbus.subscribe('ADD$PROCESS', this.myName, cb);
     }
 
     $onDestroy() {
@@ -33,6 +36,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.workflowService.deleteOnAddCallback(this.myName);
         this.workflowService.deleteOnChangeCallback(this.myName);
         this.workflowService.deleteOnDeleteCallback(this.myName);
+        this.mcbus.leave('ADD$PROCESS', this.myName);
     }
 
     // This method will be called implicitly when the component is loaded.
