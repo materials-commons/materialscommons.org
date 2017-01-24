@@ -1,7 +1,7 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
     constructor(experimentsService, processesService, templates, $stateParams, toast, $mdDialog,
-                $timeout, experimentProcessesService, datasetService, workflowService) {
+                $timeout, experimentProcessesService, datasetService, workflowService, mcbus) {
         this.experimentsService = experimentsService;
         this.processesService = processesService;
         this.templates = templates;
@@ -24,6 +24,7 @@ class MCProcessesWorkflowComponentController {
         this.experimentProcessesService = experimentProcessesService;
         this.datasetService = datasetService;
         this.workflowService = workflowService;
+        this.mcbus = mcbus;
 
         this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
     }
@@ -56,7 +57,8 @@ class MCProcessesWorkflowComponentController {
                                 .then(
                                     (processes) => {
                                         this.processes = processes;
-                                        this.addProcessCallback(processes);
+                                        //this.addProcessCallback(processes);
+                                        this.mcbus.send('ADD$PROCESS', processes);
                                     },
                                     () => this.toast.error('Error retrieving processes for experiment')
                                 );
