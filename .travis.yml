@@ -20,12 +20,19 @@ sudo: required
 
 env:
   global:
-    - MCDIR=/tmp/mcdir
+    - MC_SERVICE_PORT=5002
+    - MC_API_SERVICE_PORT=5004
+    - MC_PUB_SERVICE_PORT=5026
+    - MCDB_PORT=30815
+    - MCDB_CONNECTION="localhost:$MCDB_PORT"
+    - MCDB_DIR=~/testdb
+    - RETHINKDB_HTTP_PORT=8090
+    - RETHINKDB_CLUSTER_PORT=31815
+    - MC_ES_URL="http://localhost:9500"
+    - MC_LOG_DIR=/tmp
     - MCDB_TYPE=rethinkdb
     - MCDB_NAME=materialscommons
     - MCDB_FILE=test_data/rethinkdb_dump_test_data.tar.gz
-    - MCDB_PORT=30815
-    - MCDB_CONNECTION=localhost:$MCDB_PORT
     - RETHINKDB_CLUSTER_PORT=31815
     - RETHINKDB_HTTP_PORT=8090
 
