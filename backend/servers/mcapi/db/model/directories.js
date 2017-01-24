@@ -130,8 +130,6 @@ function* dirById(dirID, projectID) {
     let dir = yield getSingle(r, 'datadirs', dirID);
     if (!dir) {
         return null;
-    } else if (dir.project !== projectID) {
-        return null;
     }
     return dir;
 }
