@@ -21,9 +21,9 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
         this.mcProcessesWorkflow.setOnChangeCallback(cb);
-        this.mcProcessesWorkflow.setAddProcessCallback(cb);
+        //this.mcProcessesWorkflow.setAddProcessCallback(cb);
 
-        this.workflowService.addOnAddCallback(this.myName, cb);
+        //this.workflowService.addOnAddCallback(this.myName, cb);
         this.workflowService.addOnChangeCallback(this.myName, cb);
         this.workflowService.addOnDeleteCallback(this.myName, cb);
         this.mcbus.subscribe('ADD$PROCESS', this.myName, cb);

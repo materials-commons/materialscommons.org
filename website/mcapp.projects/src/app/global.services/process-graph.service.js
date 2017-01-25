@@ -3,6 +3,7 @@ class ProcessGraphService {
     constructor() {}
 
     build(processes, highlight) {
+        //console.log(processes.plain());
         let sample2InputProcesses = {};
         let sample2OutputProcesses = {};
         let highlightedProcesses = ProcessGraphService.buildHighlightedProcesses(highlight);
@@ -24,6 +25,8 @@ class ProcessGraphService {
                 sample2OutputProcesses[id].push(p);
             })
         });
+
+        console.log('sample2InputProcesses', sample2InputProcesses);
 
         // Draw all processes
         let elements = processes.map(p => {
@@ -68,6 +71,7 @@ class ProcessGraphService {
 
         let samples = _.values(sampleName2Sample);
 
+        console.log('elements', elements);
         return {elements, samples};
     }
 
