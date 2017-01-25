@@ -6,17 +6,31 @@ const _ = require('lodash');
 
 function* createProject(user,attrs) {
     let name = attrs.name;
+    let owner = user.id;
     let matches = yield r.table('projects')
-        .filter(r.row('owner').ne('delete@materialscommons.org'))
-        .filter({name:name});
-    if (matches) return matches[0];
+        .filter({name:name, owner:owner});
+    if (matches.length > 0) {
+        return yield getProject(matches[0].id);
+    }
     var description = "";
     if (attrs.description) {
         description = attrs.description;
     }
-    var project = model.Project(name,description,user);
-    let newProject = yield r.table('projects').insert(project);
-    return yield getProject(newProject.id);
+    let project_doc = new model.Project(name,description,owner);
+    let project_result = yield r.table('projects').insert(project_doc);
+    let project_id = project_result.generated_keys[0];
+
+    let directory_doc = new model.Directory(name,owner,project_id,'');
+    let directory_result = yield r.table('datadirs').insert(directory_doc);
+    let directory_id = directory_result.generated_keys[0];
+
+    let proj2datadir_doc = new model.Project2DataDir(project_id,directory_id);
+    yield r.table('project2datadir').insert(proj2datadir_doc);
+
+    let access_doc = new model.Access(name,project_id,owner);
+    let access_result = yield r.table('access').insert(access_doc);
+
+    return yield getProject(project_id);
 }
 
 function* getProject(projectId) {

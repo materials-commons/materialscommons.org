@@ -12,10 +12,16 @@ const shares = require('./shares');
 const experiments = require('./experiments');
 
 function* create(next){
-    console.log("Create");
     let user = this.reqctx.user;
     let attrs = yield parse(this);
-    this.body = yield projects.createProject(user,attrs);
+    let rv = yield projects.createProject(user,attrs);
+    if (rv.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
 }
 
 function* all(next) {
