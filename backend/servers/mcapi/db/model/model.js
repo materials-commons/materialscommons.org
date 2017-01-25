@@ -1,5 +1,14 @@
 const r = require('../r');
 
+function Project(name, description, owner) {
+    this.name = name;
+    this.description = description;
+    this.owner = owner;
+    this.birthtime = r.now();
+    this.mtime = this.birthtime;
+    this.otype = "project";
+}
+
 function Sample(name, description, owner) {
     this.name = name;
     this.description = description;
@@ -377,6 +386,7 @@ function DataFile(name, owner) {
 }
 
 module.exports = {
+    Project: Project,
     Sample: Sample,
     Process: Process,
     Process2Setup: Process2Setup,

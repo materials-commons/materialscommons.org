@@ -1,7 +1,23 @@
 const r = require('../r');
 const run = require('./run');
+const model = require('./model');
 const getSingle = require('./get-single');
 const _ = require('lodash');
+
+function* createProject(user,attrs) {
+    let name = attrs.name;
+    let matches = yield r.table('projects')
+        .filter(r.row('owner').ne('delete@materialscommons.org'))
+        .filter({name:name});
+    if (matches) return matches[0];
+    var description = "";
+    if (attrs.description) {
+        description = attrs.description;
+    }
+    var project = model.Project(name,description,user);
+    let newProject = yield r.table('projects').insert(project);
+    return yield getProject(newProject.id);
+}
 
 function* getProject(projectId) {
     let p = yield r.table('projects').get(projectId).merge(function(project) {
@@ -152,6 +168,7 @@ function* addFileToProject(projectID,fileID){
 
 module.exports = {
     all: all,
+    createProject,
     forUser: forUser,
     get: function(id, index) {
         return getSingle(r, 'projects', id, index);
