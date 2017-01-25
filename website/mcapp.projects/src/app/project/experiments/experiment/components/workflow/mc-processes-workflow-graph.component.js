@@ -1,12 +1,15 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService, mcbus) {
+    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
         this.mcbus = mcbus;
         this.myName = 'MCProcessesWorkflowGraph';
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.experimentsService = experimentsService;
     }
 
     $onInit() {
@@ -15,8 +18,18 @@ class MCProcessesWorkflowGraphComponentController {
         // MCProcessesWorkflowGraphComponentController
         let cb = (processes) => {
             console.log('cb called in mc-processes-workflow-graph');
-            this.processes = processes;
-            this.allProcessesGraph();
+            if (processes != null) {
+                this.processes = processes;
+                this.allProcessesGraph();
+            } else {
+                this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
+                    .then(
+                        (processes) => {
+                            this.processes = processes;
+                            this.allProcessesGraph();
+                        }
+                    );
+            }
         };
 
         this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
