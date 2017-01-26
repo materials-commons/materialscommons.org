@@ -28,6 +28,7 @@ class TemplateBase {
         this.destructive = destructive;
         this.measurements = [];
         this.setup = [];
+        this.otype = "template";
     }
 
     addSetup(name) {
