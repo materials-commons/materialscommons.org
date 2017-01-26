@@ -12,6 +12,7 @@ class SelectItemsService {
             controller: controller,
             controllerAs: '$ctrl',
             bindToController: true,
+            multiple: true,
             locals: locals
         });
     }
