@@ -20,10 +20,10 @@ module.exports = function(users) {
     return function *validateAPIKey(next) {
         if (!(matchPathInWhiteList(this.path))) {
             let UNAUTHORIZED = httpStatus.UNAUTHORIZED;
-            let apikey = this.query.apikey || this.throw(UNAUTHORIZED, 'Not authorized 1 ');
+            let apikey = this.query.apikey || this.throw(UNAUTHORIZED, 'Not authorized');
             let user = yield apikeyCache.find(apikey);
             if (! user) {
-                this.throw(UNAUTHORIZED, 'Not authorized 2');
+                this.throw(UNAUTHORIZED, 'Not authorized');
             }
             this.reqctx = {
                 user: user
