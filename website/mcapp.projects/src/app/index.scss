@@ -435,3 +435,30 @@ md-checkbox.md-checkbox-small {
 .no-inner-padding .md-subheader-inner {
   padding-left: 0;
 }
+
+
+/*
+** Do not group these rules.
+**
+** Newest release of angular-material broke the default color for placeholder for inputs. Angular team marked as
+** won't fix. So this is a work around.
+*/
+input.mc-navbar-search-input::-webkit-input-placeholder {
+    color: white;
+}
+
+input.mc-navbar-search-input:-moz-placeholder {
+    /* FF 4-18 */
+    color: white;
+}
+
+input.mc-navbar-search-input::-moz-placeholder {
+    /* FF 19+ */
+    color: white;
+}
+
+input.mc-navbar-search-input:-ms-input-placeholder {
+    /* IE 10+ */
+    color: white;
+}
+
