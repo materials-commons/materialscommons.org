@@ -36,6 +36,7 @@ export function selectItemsService($mdDialog) {
                 controller: SelectItemsServiceModalController,
                 controllerAs: 'ctrl',
                 bindToController: true,
+                multiple: true,
                 locals: {
                     showProcesses: tabs.processes,
 
