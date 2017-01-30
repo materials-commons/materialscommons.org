@@ -1,9 +1,11 @@
 class SelectItemsService {
     /*@ngInject*/
-    constructor($mdDialog, projectsService, experimentsService) {
+    constructor($mdDialog, projectsService, experimentsService, fileTreeProjectService, mcstate) {
         this.$mdDialog = $mdDialog;
         this.projectsService = projectsService;
         this.experimentsService = experimentsService;
+        this.fileTreeProjectService = fileTreeProjectService;
+        this.mcstate = mcstate;
     }
 
     dialog(locals, controller) {
@@ -18,11 +20,17 @@ class SelectItemsService {
     }
 
     fileTree(uploadFiles = false) {
-        return this.dialog({
-            showFileTree: true,
-            showFileTable: false,
-            uploadFiles
-        }, SelectItemsFilesServiceModalController);
+        let project = this.mcstate.get(this.mcstate.CURRENT$PROJECT);
+        return this.fileTreeProjectService.getProjectRoot(project.id).then(
+            files => {
+                project.files = files;
+                return this.dialog({
+                    showFileTree: true,
+                    showFileTable: false,
+                    uploadFiles,
+                    project
+                }, SelectItemsFilesServiceModalController);
+            });
     }
 
     fileTable(files = [], uploadFiles = false) {
@@ -152,16 +160,13 @@ class SelectItemsProcessesServiceModalController extends SelectItemsBase {
 
 class SelectItemsFilesServiceModalController extends SelectItemsBase {
     /*@ngInject*/
-    constructor($mdDialog, mcstate) {
+    constructor($mdDialog) {
         console.log('SelectItemsFilesServiceModalController');
         super($mdDialog);
-        this.mcstate = mcstate;
         this.$onInit();
     }
 
     $onInit() {
-        console.log('$onInit called');
-        this.project = this.mcstate.get(this.mcstate.CURRENT$PROJECT);
         selectItemsState.reset();
         if (this.showFileTable) {
             this.addTab('file table', 'fa-files-o');
@@ -199,10 +204,10 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
 
     getFilesFromTree() {
         let filesFromTree = [];
-        let projectFiles = this.mcstate.get(this.mcstate.CURRENT$PROJECT).files;
+        let projectFiles = this.project.files;
         if (projectFiles && projectFiles.length) {
             let treeModel = new TreeModel(),
-                root = treeModel.parse(this.mcstate.get(this.mcstate.CURRENT$PROJECT).files[0]);
+                root = treeModel.parse(this.project.files[0]);
             // Walk the tree looking for selected files and adding them to the
             // list of files. Also reset the selected flag so the next time
             // the popup for files is used it doesn't show previously selected

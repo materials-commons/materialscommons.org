@@ -18,6 +18,7 @@
                 <div ng-if="file.data.otype !== 'directory'">
                     <div ng-if="file.data.name !== ctrl.placeholderName">
                         <md-checkbox ng-model="file.data.selected" class="mc-md-file-checkbox"
+                                     ng-change="ctrl.showFile(file)"
                                      aria-label="file"></md-checkbox>
                         <a ng-click="ctrl.setActive(this, file)" data-nodrag>
                             <span>

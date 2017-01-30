@@ -13,12 +13,12 @@ function MCFilesSelectComponentController(fileTreeProjectService) {
 
     console.log('MCFilesSelectComponentController');
 
-    fileTreeProjectService.getProjectRoot(ctrl.project.id).then(function(files) {
-        ctrl.project.files = files;
+    //fileTreeProjectService.getProjectRoot(ctrl.project.id).then(function(files) {
+        //ctrl.project.files = files;
         ctrl.files = ctrl.project.files;
         ctrl.files[0].data.childrenLoaded = true;
         ctrl.files[0].expand = true;
-    });
+    //});
 
 }
 
