@@ -5,7 +5,6 @@
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
-        {{$ctrl.tabs}}
         <md-tabs md-selected="$ctrl.currentTab" class="" md-dynamic-height md-border-bottom>
             <md-tab ng-repeat="tab in $ctrl.tabs" ng-click="$ctrl.setActive(tab.name)">
                 <md-tab-label>
