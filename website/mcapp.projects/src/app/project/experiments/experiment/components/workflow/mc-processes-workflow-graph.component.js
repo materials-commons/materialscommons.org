@@ -112,8 +112,8 @@ class MCProcessesWorkflowGraphComponentController {
                 this.workflowService.setSelectedProcess(null);
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             } else if (target.isNode()) {
-                let edges = target.connectedEdges();
-                edges.forEach((e) => console.log('source is ' + e.data('source')));
+                //let edges = target.connectedEdges();
+                //edges.forEach((e) => console.log('source is ' + e.data('source')));
                 //console.log(target.connectedEdges());
                 let processId = target.data('id');
                 let process = this.processes.filter((p) => p.id === processId)[0];
