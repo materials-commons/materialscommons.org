@@ -17,19 +17,8 @@ class MCProcessesWorkflowGraphComponentController {
         // functions lexically scope, so this in the arrow function is the this for
         // MCProcessesWorkflowGraphComponentController
         let cb = (processes) => {
-            console.log('cb called in mc-processes-workflow-graph');
-            if (processes != null) {
                 this.processes = processes;
                 this.allProcessesGraph();
-            } else {
-                this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
-                    .then(
-                        (processes) => {
-                            this.processes = processes;
-                            this.allProcessesGraph();
-                        }
-                    );
-            }
         };
 
         this.mcProcessesWorkflow.setDeleteProcessCallback(cb);

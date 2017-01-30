@@ -18,6 +18,7 @@ class SelectItemsService {
     }
 
     fileTree(uploadFiles = false) {
+        console.log('fileTree');
         return this.dialog({
             showFileTree: true,
             showFileTable: false,
@@ -151,6 +152,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
     constructor($mdDialog, mcstate) {
         super($mdDialog);
         this.mcstate = mcstate;
+        this.project = mcstate.get(mcstate.CURRENT$PROJECT);
         this.$onInit();
     }
 
@@ -193,6 +195,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
     getFilesFromTree() {
         let filesFromTree = [];
         let projectFiles = this.mcstate.get(this.mcstate.CURRENT$PROJECT).files;
+        console.log('getFilesFromTree', projectFiles);
         if (projectFiles && projectFiles.length) {
             let treeModel = new TreeModel(),
                 root = treeModel.parse(this.mcstate.get(this.mcstate.CURRENT$PROJECT).files[0]);
@@ -201,6 +204,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
             // the popup for files is used it doesn't show previously selected
             // items.
             root.walk({strategy: 'pre'}, function (node) {
+                console.log(node.model.data);
                 if (node.model.data.selected) {
                     node.model.data.selected = false;
                     if (node.model.data.otype === 'file') {

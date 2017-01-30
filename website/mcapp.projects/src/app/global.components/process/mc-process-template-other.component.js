@@ -1,6 +1,6 @@
 class MCProcessTemplateOtherComponentController {
     /*@ngInject*/
-    constructor(sampleLinker, processEdit, selectItems, experimentsService, toast, $stateParams, navbarOnChange, mcbus) {
+    constructor(sampleLinker, processEdit, selectItems, experimentsService, toast, $stateParams, navbarOnChange) {
         this.sampleLinker = sampleLinker;
         this.processEdit = processEdit;
         this.selectItems = selectItems;
@@ -9,7 +9,6 @@ class MCProcessTemplateOtherComponentController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.navbarOnChange = navbarOnChange;
-        this.mcbus = mcbus;
     }
 
     linkFilesToSample(sample, input_files, output_files) {
@@ -63,7 +62,6 @@ class MCProcessTemplateOtherComponentController {
                             if (this.onChange) {
                                 this.onChange();
                             }
-                            this.mcbus.send('ADD$PROCESS', null)
                         },
                         () => this.toast.error('Unable to add samples')
                     );
