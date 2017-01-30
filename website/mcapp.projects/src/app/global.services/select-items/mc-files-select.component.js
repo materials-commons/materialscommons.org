@@ -11,6 +11,8 @@ function MCFilesSelectComponentController(fileTreeProjectService) {
 
     var ctrl = this;
 
+    console.log('MCFilesSelectComponentController');
+
     fileTreeProjectService.getProjectRoot(ctrl.project.id).then(function(files) {
         ctrl.project.files = files;
         ctrl.files = ctrl.project.files;
@@ -43,6 +45,8 @@ function MCFilesSelectDirDirective(RecursionHelper) {
 
 function MCFilesSelectDirDirectiveController(fileTreeProjectService) {
     'ngInject';
+
+    console.log("MCFilesSelectDirDirectiveController", this.file.children);
 
     var ctrl = this;
     ctrl.files = ctrl.file.children;
@@ -98,5 +102,9 @@ function MCFilesSelectDirDirectiveController(fileTreeProjectService) {
                 }
             });
         }
+    }
+
+    function showFile(file) {
+        console.log('showFile', file);
     }
 }

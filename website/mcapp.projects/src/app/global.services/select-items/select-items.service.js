@@ -18,7 +18,6 @@ class SelectItemsService {
     }
 
     fileTree(uploadFiles = false) {
-        console.log('fileTree');
         return this.dialog({
             showFileTree: true,
             showFileTable: false,
@@ -45,8 +44,7 @@ class SelectItemsService {
         };
         return this.projectsService.getProjectSamples(projectId).then(
             (samples) => this.dialog({samples, options}, SelectItemsSamplesServiceModalController)
-        )
-            ;
+        );
     }
 
     samplesFromExperiment(projectId, experimentId, singleSelection = false) {
@@ -68,10 +66,15 @@ class SelectItemsService {
 
 class SelectItemsBase {
     constructor($mdDialog) {
+        console.log('SelectItemsBase');
         this.activeTab = 0;
         this.currentTab = '';
         this.tabs = [];
         this.$mdDialog = $mdDialog;
+    }
+
+    $onInit() {
+        console.log('SelectItemsBase $onInit called');
     }
 
     isActive(tab) {
@@ -150,13 +153,15 @@ class SelectItemsProcessesServiceModalController extends SelectItemsBase {
 class SelectItemsFilesServiceModalController extends SelectItemsBase {
     /*@ngInject*/
     constructor($mdDialog, mcstate) {
+        console.log('SelectItemsFilesServiceModalController');
         super($mdDialog);
         this.mcstate = mcstate;
-        this.project = mcstate.get(mcstate.CURRENT$PROJECT);
         this.$onInit();
     }
 
     $onInit() {
+        console.log('$onInit called');
+        this.project = this.mcstate.get(this.mcstate.CURRENT$PROJECT);
         selectItemsState.reset();
         if (this.showFileTable) {
             this.addTab('file table', 'fa-files-o');
@@ -195,7 +200,6 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
     getFilesFromTree() {
         let filesFromTree = [];
         let projectFiles = this.mcstate.get(this.mcstate.CURRENT$PROJECT).files;
-        console.log('getFilesFromTree', projectFiles);
         if (projectFiles && projectFiles.length) {
             let treeModel = new TreeModel(),
                 root = treeModel.parse(this.mcstate.get(this.mcstate.CURRENT$PROJECT).files[0]);
@@ -206,6 +210,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
             root.walk({strategy: 'pre'}, function (node) {
                 console.log(node.model.data);
                 if (node.model.data.selected) {
+                    console.log(' is selected');
                     node.model.data.selected = false;
                     if (node.model.data.otype === 'file') {
                         filesFromTree.push(node.model.data);
