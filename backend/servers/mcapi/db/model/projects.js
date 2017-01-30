@@ -66,7 +66,7 @@ function all() {
 function forUser(user) {
     let rql;
     if (user.isAdmin) {
-        rql = r.table('projects').limit(75).orderBy('name');
+        rql = r.table('projects').limit(100).orderBy('name');
     } else {
         rql = r.table('access').getAll(user.id, {index: 'user_id'})
             .eqJoin('project_id', r.table('projects'))
