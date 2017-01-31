@@ -15,7 +15,6 @@ class MCAttributeDateComponentController {
         } else {
             this.date = new Date();
         }
-        console.log(MCAttributeDateComponentController, this.date)
     }
 
     openDatePicker($event, prop) {

@@ -74,15 +74,10 @@ class SelectItemsService {
 
 class SelectItemsBase {
     constructor($mdDialog) {
-        console.log('SelectItemsBase');
         this.activeTab = 0;
         this.currentTab = '';
         this.tabs = [];
         this.$mdDialog = $mdDialog;
-    }
-
-    $onInit() {
-        console.log('SelectItemsBase $onInit called');
     }
 
     isActive(tab) {
@@ -161,7 +156,6 @@ class SelectItemsProcessesServiceModalController extends SelectItemsBase {
 class SelectItemsFilesServiceModalController extends SelectItemsBase {
     /*@ngInject*/
     constructor($mdDialog) {
-        console.log('SelectItemsFilesServiceModalController');
         super($mdDialog);
         this.$onInit();
     }
@@ -213,9 +207,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
             // the popup for files is used it doesn't show previously selected
             // items.
             root.walk({strategy: 'pre'}, function (node) {
-                console.log(node.model.data);
                 if (node.model.data.selected) {
-                    console.log(' is selected');
                     node.model.data.selected = false;
                     if (node.model.data.otype === 'file') {
                         filesFromTree.push(node.model.data);

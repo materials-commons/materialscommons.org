@@ -41,8 +41,6 @@ function MCFilesSelectDirDirective(RecursionHelper) {
 function MCFilesSelectDirDirectiveController(fileTreeProjectService) {
     'ngInject';
 
-    console.log("MCFilesSelectDirDirectiveController", this.file.children);
-
     var ctrl = this;
     ctrl.files = ctrl.file.children;
     ctrl.setActive = setActive;
