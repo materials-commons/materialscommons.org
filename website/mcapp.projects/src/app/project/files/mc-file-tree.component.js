@@ -22,7 +22,7 @@ function loadEmptyPlaceHolder(dir) {
 
 /*@ngInject*/
 function MCFileTreeComponentController(mcstate, $state, $stateParams, fileTreeProjectService,
-                                       fileTreeMoveService, toastr, mcFlow) {
+                                       fileTreeMoveService, mcFlow) {
     const ctrl = this,
         proj = mcstate.get(mcstate.CURRENT$PROJECT);
     ctrl.projectID = proj.id;
@@ -59,9 +59,6 @@ function MCFileTreeComponentController(mcstate, $state, $stateParams, fileTreePr
             if (srcDir.data.id == dest.data.id) {
                 // Reject move - attempt to move the file/directory around under it's
                 // current directory;
-                const itemType = src.data.otype === 'directory' ? 'Directory' : 'File';
-                toastr.error('Attempt to move ' + itemType + " into current it's directory.",
-                    'Error', {closeButton: true});
                 return false;
             }
 
