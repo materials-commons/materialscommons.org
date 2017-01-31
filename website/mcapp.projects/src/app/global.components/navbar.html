@@ -3,17 +3,17 @@
         <h1><a class="mc-link-no-change" ui-sref="projects.list">MaterialsCommons</a></h1>
         <md-divider class="md-vertical-divider margin-left-15"
                     style="border-right-color: #4d4d4d"></md-divider>
-        <div ng-show="ctrl.$stateParams.project_id"
+        <div ng-show="ctrl.$stateParams.project_id" hide-sm
              flex="10" layout="column" layout-fill layout-margin class="margin-left-15">
             <div flex layout="row" layout-align="center center" class="arrow_box">
                 <h3 class="md-title">Samples</h3>
             </div>
         </div>
-        <div ng-show="ctrl.$stateParams.project_id" layout="column" class="margin-left-15">
+        <div ng-show="ctrl.$stateParams.project_id" layout="column" class="margin-left-15" hide-sm>
             <span class="md-subhead" style="color:#ff5252">{{ctrl.unusedSamples.length}} unused</span>
             <span class="md-subhead">{{ctrl.measuredSamples.length}} measured</span>
         </div>
-        <div layout="row" hide-md layout-align="space-around" flex-gt-md="15" flex="10">
+        <div layout="row" hide-md hide-sm layout-align="space-around" flex-gt-md="15" flex="10">
             <div ng-show="ctrl.$stateParams.project_id" layout="column" layout-align="center center">
                 <a ng-if="ctrl.project.users.length !== 1" class="md-title" style="color:#4caf50"
                    ui-sref="project.settings">
