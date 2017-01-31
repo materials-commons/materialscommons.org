@@ -199,8 +199,10 @@ class MCProcessesWorkflowComponentController {
 
 class NewProcessDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, processesService, $stateParams) {
         this.$mdDialog = $mdDialog;
+        this.processesService = processesService;
+        this.projectId = $stateParams.project_id;
     }
 
     done() {
@@ -208,7 +210,10 @@ class NewProcessDialogController {
     }
 
     cancel() {
-        this.$mdDialog.cancel();
+        this.processesService.deleteProcess(this.projectId, this.process.id).then(
+            () => this.$mdDialog.cancel(),
+            () => this.$mdDialog.cancel()
+        );
     }
 }
 
