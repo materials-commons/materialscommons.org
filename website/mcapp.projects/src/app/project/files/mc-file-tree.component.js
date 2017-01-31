@@ -60,6 +60,9 @@ function MCFileTreeComponentController(mcstate, $state, $stateParams, fileTreePr
                 // Reject move - attempt to move the file/directory around under it's
                 // current directory;
                 return false;
+            } else if (dest.data.otype === 'file') {
+                // Reject move - Move destination is a file.
+                return false;
             }
 
             return true;
