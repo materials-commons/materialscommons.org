@@ -23,10 +23,19 @@ function* updateUserSettings(next) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
     } else {
-        let settingArgs = {
-            default_project: args.default_project,
-            default_experiment: args.default_experiment
-        };
+        let settingArgs = {};
+        if (args.default_project) {
+            settingArgs.default_project = args.default_project;
+        }
+
+        if (args.default_experiment) {
+            settingArgs.default_experiment = args.default_experiment;
+        }
+
+        if (args.fullname) {
+            settingArgs.fullname = args.fullname;
+        }
+
         let rv = yield users.updateUserSettings(this.reqctx.user.id, settingArgs);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
@@ -36,6 +45,42 @@ function* updateUserSettings(next) {
         }
     }
     yield next;
+}
+
+function* validateUserSettingsArgs(args, userId) {
+    if (args.default_project) {
+        if (!_.isString(args.default_project)) {
+            return {error: `Bad argument for default_project`};
+        }
+
+        let isValidProject = yield check.userHasProjectAccess(userId, args.default_project);
+        if (!isValidProject) {
+            return {error: `No such project: ${args.default_project}`};
+        }
+    }
+
+    if (args.default_experiment) {
+        if (!_.isString(args.default_experiment)) {
+            return {error: `Bad argument for default_experiment`};
+        }
+
+        if (!args.default_project) {
+            return {error: `You must specify a default project when setting a default experiment`};
+        }
+
+        let experimentInProject = yield check.experimentExistsInProject(args.default_project, args.default_experiment);
+        if (!experimentInProject) {
+            return {error: `No such experiment ${args.default_experiment} in project ${args.default_project}`};
+        }
+    }
+
+    if (args.fullname) {
+        if (!_.isString(args.fullname)) {
+            return {error: `Bad argument for fullname`};
+        }
+    }
+
+    return null;
 }
 
 function* createAccount(next) {
@@ -140,33 +185,6 @@ function* clearUserResetPasswordFlag(next) {
     yield next;
 }
 
-
-function* validateUserSettingsArgs(args, userId) {
-    if (!args.default_project || !_.isString(args.default_project)) {
-        return {error: `Bad argument for default_project`};
-    }
-
-    let isValidProject = yield check.userHasProjectAccess(userId, args.default_project);
-    if (!isValidProject) {
-        return {error: `No such project: ${args.default_project}`};
-    }
-
-    if (args.default_experiment && !_.isString(args.default_experiment)) {
-        return {error: `Bad argument for default_experiment`};
-    }
-
-    if (args.default_experiment) {
-        let experimentInProject = yield check.experimentExistsInProject(args.default_project, args.default_experiment);
-        if (!experimentInProject) {
-            return {error: `No such experiment ${args.default_experiment} in project ${args.default_project}`};
-        }
-    } else {
-        args.default_experiment = '';
-    }
-
-    return null;
-}
-
 function* validateCreateAccount(accountArgs) {
     return yield schema.validate(schema.userAccountSchema, accountArgs);
 }
@@ -193,7 +211,7 @@ function emailResetLinkToUser(userData, site) {
     };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function(error, info) {
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             return {error: error};
         }
@@ -224,7 +242,7 @@ function emailValidationLinkToUser(userData, site) {
     };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function(error, info) {
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             return {error: error};
         }

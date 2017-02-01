@@ -3,13 +3,13 @@ angular.module('materialscommons').component('mcUserPassword', {
     controller: MCUserPasswordComponentController
 });
 
-function MCUserPasswordComponentController(mcapi, User, toastr, focus, $previousState) {
+function MCUserPasswordComponentController(mcapi, User, toast, focus) {
     'ngInject';
 
     var ctrl = this;
     ctrl.newPassword = null;
     ctrl.verifyNewPassword = null;
-    focus('inputPassword');
+    //focus('inputPassword');
 
     ctrl.changePassword = changePassword;
     ctrl.cancel = cancel;
@@ -21,21 +21,15 @@ function MCUserPasswordComponentController(mcapi, User, toastr, focus, $previous
             if (ctrl.newPassword === ctrl.verifyNewPassword) {
                 mcapi('/user/%/password', User.u(), ctrl.newPassword)
                     .success(function() {
-                        toastr.success('Password updated successfully', {
-                            closeButton: true
-                        });
-                        $previousState.go();
+                        toast.success('Password updated successfully', 'top left');
+                        resetPasswordFields();
                     })
                     .error(function(data) {
-                        toastr.error('Unable to update password: ' + data.error, {
-                            closeButton: true
-                        });
+                        toast.error('Unable to update password: ' + data.error, 'top left');
                         resetPasswordFields();
                     }).put({password: ctrl.newPassword});
             } else {
-                toastr.error('Passwords do not match.', {
-                    closeButton: true
-                });
+                toast.error('Passwords do not match.', 'top left');
                 resetPasswordFields();
             }
         }
