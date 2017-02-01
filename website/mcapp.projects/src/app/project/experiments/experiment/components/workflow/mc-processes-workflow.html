@@ -28,7 +28,7 @@
                         <span><i class="fa fa-fw fa-desktop"></i>Display</span>
                     </md-tab-label>
                     <md-tab-body>
-                        <md-content style="max-height: 70vh">
+                        <md-content style="maxx-height: 70vh">
                             <h3 class="md-title">Show</h3>
                             <md-radio-group ng-model="$ctrl.displayGraph" layout="column"
                                             ng-change="$ctrl.showSelectedGraph()">
@@ -53,7 +53,7 @@
                         <span><i class="fa fa-fw fa-plus"></i>Add</span>
                     </md-tab-label>
                     <md-tab-body>
-                        <md-content style="max-height: 70vh" class="margin-left-15">
+                        <md-content style="maxx-height: 70vh" class="margin-left-15">
                             <h3 class="md-title">Add To Workflow</h3>
                             <mc-workflow-process-templates
                                     on-selected="$ctrl.addProcess(templateId, processId)"></mc-workflow-process-templates>
@@ -69,7 +69,7 @@
                             No process selected
                         </div>
                         <div ng-show="$ctrl.selectedProcess">
-                            <md-content style="max-height: 70vh">
+                            <md-content style="maxx-height: 70vh">
                                 <div layout="row" layout-margin layout-wrap layout-align="end">
                                     <md-button class="md-primary" ng-if="!$ctrl.selectedProcess.hasChildren"
                                                ng-click="$ctrl.deleteNodeAndProcessConfirm()">
