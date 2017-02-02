@@ -32,7 +32,7 @@ env:
     - MC_LOG_DIR=/tmp
     - MCDB_TYPE=rethinkdb
     - MCDB_NAME=materialscommons
-    - MCDB_FILE=test_data/rethinkdb_dump_test_data.tar.gz
+    - MCDB_FILE=test_data/test_ready_rethinkdb_dump_2017-02-01.tar.gz
     - RETHINKDB_CLUSTER_PORT=31815
     - RETHINKDB_HTTP_PORT=8090
 
