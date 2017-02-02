@@ -33,8 +33,6 @@ function MCProjectSettingsComponentController(mcstate, mcapi, User, toastr, navb
                     return (item.id === id);
                 });
                 if (i !== -1) {
-                    var ui = _.indexOf(allUsers, u => u.id === id);
-                    allUsers[i].selected = false;
                     ctrl.project.users.splice(i, 1);
                     projectUsers = _.indexBy(ctrl.project.users, 'user_id');
                     ctrl.usersAvailable = usersNotInProject();
@@ -61,6 +59,7 @@ function MCProjectSettingsComponentController(mcstate, mcapi, User, toastr, navb
                         'project_id': ctrl.project.id,
                         'project_name': ctrl.project.name
                     });
+                    user.selected = false;
                     navbarOnChange.fireChange();
                     projectUsers = _.indexBy(ctrl.project.users, 'user_id');
                     ctrl.usersAvailable = usersNotInProject();
