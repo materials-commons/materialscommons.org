@@ -1,12 +1,13 @@
 angular.module('materialscommons').factory('processSelections', processSelectionsService);
 
-function processSelectionsService(selectItems, differenceById) {
+function processSelectionsService(selectItems, differenceById, mcstate) {
     'ngInject';
     return {
-        selectSamples: function(processSamples) {
-            selectItems.open('samples').then(function(item) {
-                var uniqueSamples = differenceById(item.samples, processSamples);
-                uniqueSamples.forEach(function(sample) {
+        selectSamples: function (processSamples) {
+            let projectId = mcstate.get(mcstate.CURRENT$PROJECT).id;
+            selectItems.samplesFromProject(projectId).then(function (item) {
+                const uniqueSamples = differenceById(item.samples, processSamples);
+                uniqueSamples.forEach(function (sample) {
                     processSamples.push({
                         id: sample.id,
                         name: sample.name,
@@ -19,10 +20,11 @@ function processSelectionsService(selectItems, differenceById) {
             });
         },
 
-        selectUpdatedSamples: function(processSamples, updatedSamples) {
-            selectItems.open('samples').then(function(item) {
-                var uniqueSamples = differenceById(item.samples, processSamples);
-                uniqueSamples.forEach(function(sample) {
+        selectUpdatedSamples: function (processSamples, updatedSamples) {
+            let projectId = mcstate.get(mcstate.CURRENT$PROJECT).id;
+            selectItems.samples(projectId).then(function (item) {
+                const uniqueSamples = differenceById(item.samples, processSamples);
+                uniqueSamples.forEach(function (sample) {
                     processSamples.push({
                         id: sample.id,
                         name: sample.name,
@@ -40,10 +42,10 @@ function processSelectionsService(selectItems, differenceById) {
             });
         },
 
-        selectFiles: function(processFiles) {
-            selectItems.open('files').then(function(item) {
-                var uniqueFiles = differenceById(item.files, processFiles);
-                uniqueFiles.forEach(function(file) {
+        selectFiles: function (processFiles) {
+            selectItems.fileTree().then(function (item) {
+                const uniqueFiles = differenceById(item.files, processFiles);
+                uniqueFiles.forEach(function (file) {
                     processFiles.push({
                         id: file.id,
                         name: file.name,
@@ -53,10 +55,10 @@ function processSelectionsService(selectItems, differenceById) {
             });
         },
 
-        selectUpdatedFiles: function(processFiles, updatedFiles) {
-            selectItems.open('files').then(function(item) {
-                var uniqueFiles = differenceById(item.files, processFiles);
-                uniqueFiles.forEach(function(file) {
+        selectUpdatedFiles: function (processFiles, updatedFiles) {
+            selectItems.fileTree().then(function (item) {
+                const uniqueFiles = differenceById(item.files, processFiles);
+                uniqueFiles.forEach(function (file) {
                     processFiles.push({
                         id: file.id,
                         name: file.name,

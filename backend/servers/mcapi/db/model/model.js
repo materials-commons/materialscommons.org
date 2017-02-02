@@ -1,5 +1,28 @@
 const r = require('../r');
 
+function Project(name, description, owner) {
+    this.name = name;
+    this.description = description;
+    this.owner = owner;
+    this.birthtime = r.now();
+    this.mtime = this.birthtime;
+    this.mediatypes = { };
+    this.size = 0;
+    this.otype = "project";
+    this._type = "project"
+}
+
+function Access(project_name,project_id,user_id) {
+    this.project_name = project_name;
+    this.project_id = project_id;
+    this.user_id = user_id;
+    this.birthtime = r.now();
+    this.mtime = this.birthtime;
+    this.dataset = "";
+    this.permissions = "";
+    this.status = "";
+}
+
 function Sample(name, description, owner) {
     this.name = name;
     this.description = description;
@@ -377,6 +400,8 @@ function DataFile(name, owner) {
 }
 
 module.exports = {
+    Project: Project,
+    Access: Access,
     Sample: Sample,
     Process: Process,
     Process2Setup: Process2Setup,

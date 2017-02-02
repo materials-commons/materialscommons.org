@@ -21,10 +21,10 @@ function loadEmptyPlaceHolder(dir) {
 }
 
 /*@ngInject*/
-function MCFileTreeComponentController(mcreg, $state, $stateParams, fileTreeProjectService,
-                                       fileTreeMoveService, toastr, mcFlow) {
+function MCFileTreeComponentController(mcstate, $state, $stateParams, fileTreeProjectService,
+                                       fileTreeMoveService, mcFlow) {
     const ctrl = this,
-        proj = mcreg.current$project;
+        proj = mcstate.get(mcstate.CURRENT$PROJECT);
     ctrl.projectID = proj.id;
     ctrl.flow = mcFlow.get();
 
@@ -59,9 +59,9 @@ function MCFileTreeComponentController(mcreg, $state, $stateParams, fileTreeProj
             if (srcDir.data.id == dest.data.id) {
                 // Reject move - attempt to move the file/directory around under it's
                 // current directory;
-                const itemType = src.data.otype === 'directory' ? 'Directory' : 'File';
-                toastr.error('Attempt to move ' + itemType + " into current it's directory.",
-                    'Error', {closeButton: true});
+                return false;
+            } else if (dest.data.otype === 'file') {
+                // Reject move - Move destination is a file.
                 return false;
             }
 
@@ -102,9 +102,9 @@ function mcFileTreeDirDirective(RecursionHelper) {
 }
 
 /*@ngInject*/
-function MCFileTreeDirDirectiveController(fileTreeProjectService, mcreg, $state) {
+function MCFileTreeDirDirectiveController(fileTreeProjectService, mcstate, $state) {
     const ctrl = this;
-    ctrl.projectID = mcreg.current$project.id;
+    ctrl.projectID = mcstate.get(mcstate.CURRENT$PROJECT).id;
     ctrl.files = ctrl.file.children;
     ctrl.placeholderName = placeholderName;
 
@@ -150,7 +150,7 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, mcreg, $state)
 
     function clearActiveStateInAllNodes() {
         const treeModel = new TreeModel(),
-            root = treeModel.parse(mcreg.current$project.files[0]);
+            root = treeModel.parse(mcstate.get(mcstate.CURRENT$PROJECT).files[0]);
         root.walk(function(treeNode) {
             treeNode.model.active = false;
         });

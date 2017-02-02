@@ -1,11 +1,15 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService) {
+    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
+        this.mcbus = mcbus;
         this.myName = 'MCProcessesWorkflowGraph';
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.experimentsService = experimentsService;
     }
 
     $onInit() {
@@ -13,8 +17,8 @@ class MCProcessesWorkflowGraphComponentController {
         // functions lexically scope, so this in the arrow function is the this for
         // MCProcessesWorkflowGraphComponentController
         let cb = (processes) => {
-            this.processes = processes;
-            this.allProcessesGraph();
+                this.processes = processes;
+                this.allProcessesGraph();
         };
 
         this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
@@ -24,6 +28,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.workflowService.addOnAddCallback(this.myName, cb);
         this.workflowService.addOnChangeCallback(this.myName, cb);
         this.workflowService.addOnDeleteCallback(this.myName, cb);
+        //this.mcbus.subscribe('ADD$PROCESS', this.myName, cb);
     }
 
     $onDestroy() {
@@ -33,6 +38,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.workflowService.deleteOnAddCallback(this.myName);
         this.workflowService.deleteOnChangeCallback(this.myName);
         this.workflowService.deleteOnDeleteCallback(this.myName);
+        //this.mcbus.leave('ADD$PROCESS', this.myName);
     }
 
     // This method will be called implicitly when the component is loaded.
@@ -112,8 +118,8 @@ class MCProcessesWorkflowGraphComponentController {
                 this.workflowService.setSelectedProcess(null);
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             } else if (target.isNode()) {
-                let edges = target.connectedEdges();
-                edges.forEach((e) => console.log('source is ' + e.data('source')));
+                //let edges = target.connectedEdges();
+                //edges.forEach((e) => console.log('source is ' + e.data('source')));
                 //console.log(target.connectedEdges());
                 let processId = target.data('id');
                 let process = this.processes.filter((p) => p.id === processId)[0];

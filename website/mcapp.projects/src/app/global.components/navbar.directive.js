@@ -12,7 +12,7 @@ function navbarDirective() {
 }
 
 /*@ngInject*/
-function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, mcreg,
+function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, mcstate,
                                    navbarOnChange, projectsService) {
     const ctrl = this;
 
@@ -23,17 +23,17 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
         ctrl.query = searchQueryText.get();
     });
 
-    ctrl.project = mcreg.current$project;
+    ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
 
     navbarOnChange.setOnChange(() => {
         // Hack, change this later
         if ($stateParams.project_id) {
-            projectsService.getProject($stateParams.project_id).then((proj) => mcreg.current$project = proj);
+            projectsService.getProject($stateParams.project_id).then((proj) => mcstate.set(mcstate.CURRENT$PROJECT, proj));
         }
     });
 
-    mcreg.registerCurrent$project('navbar', () => {
-        ctrl.project = mcreg.current$project;
+    mcstate.subscribe(mcstate.CURRENT$PROJECT, 'navbar', () => {
+        ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
         ctrl.published = ctrl.project.datasets.filter(d => d.published);
         ctrl.unusedSamples = ctrl.project.samples.filter(s => s.processes.length === 1);
         ctrl.measuredSamples = ctrl.project.samples.filter(s => s.processes.length > 1);

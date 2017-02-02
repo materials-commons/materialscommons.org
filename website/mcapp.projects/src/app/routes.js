@@ -68,12 +68,12 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<ui-view flex="100" layout="column"></ui-view>',
             resolve: {
-                _project: ["$stateParams", "projectsService", "mcreg",
+                _project: ["$stateParams", "projectsService", "mcstate",
                     // Inject projects so that it resolves before looking up the project.
-                    function($stateParams, projectsService, mcreg) {
+                    function($stateParams, projectsService, mcstate) {
                         return projectsService.getProject($stateParams.project_id)
                             .then(function(proj) {
-                                mcreg.current$project = proj;
+                                mcstate.set(mcstate.CURRENT$PROJECT, proj);
                                 return proj;
                             });
                     }],
@@ -104,13 +104,13 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/experiment/:experiment_id',
             template: `<mc-experiment></mc-experiment>`,
             resolve: {
-                experiment: ['experimentsService', 'toast', 'toUITask', '$stateParams', 'mcreg',
-                    function(experimentsService, toast, toUITask, $stateParams, mcreg) {
+                experiment: ['experimentsService', 'toast', 'toUITask', '$stateParams', 'mcstate',
+                    function(experimentsService, toast, toUITask, $stateParams, mcstate) {
                         return experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id)
                             .then(
                                 (e) => {
                                     e.tasks.forEach((task) => toUITask(task));
-                                    mcreg.current$experiment = e;
+                                    mcstate.set(mcstate.CURRENT$EXPERIMENT, e);
                                     return e;
                                 },
                                 () => toast.error('Failed to retrieve experiment')

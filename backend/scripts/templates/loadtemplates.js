@@ -28,6 +28,7 @@ class TemplateBase {
         this.destructive = destructive;
         this.measurements = [];
         this.setup = [];
+        this.otype = "template";
     }
 
     addSetup(name) {
@@ -795,7 +796,7 @@ class HeatTreatmentTemplate extends TemplateBase {
         this.addSetup("Instrument")
             .temperature()
             .time()
-            .selection("Cooling Type").choices("Air Quench", "Water Quench", "Furnace Cooled", "Air Cooled")
+            .selection("Cooling Type").choices("Air Quench", "Water Quench", "Furnace Cooled", "Air Cooled", "Gas Cooled")
             .number("Cooling Rate").units("C/s", "K/s")
             .done();
     }

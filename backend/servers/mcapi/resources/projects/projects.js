@@ -11,6 +11,19 @@ const processes = require('./processes');
 const shares = require('./shares');
 const experiments = require('./experiments');
 
+function* create(next){
+    let user = this.reqctx.user;
+    let attrs = yield parse(this);
+    let rv = yield projects.createProject(user,attrs);
+    if (rv.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
+}
+
 function* all(next) {
     let user = this.reqctx.user;
     this.body = yield projects.forUser(user);
@@ -37,6 +50,7 @@ function* update(next) {
 function createResource() {
     const router = new Router();
     router.get('/', all);
+    router.post('/',create);
     router.use('/:project_id', ra.validateProjectAccess);
     router.put('/:project_id', update);
     router.get('/:project_id', getProject);

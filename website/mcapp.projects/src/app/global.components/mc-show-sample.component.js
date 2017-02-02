@@ -22,6 +22,7 @@ class MCShowSampleComponentController {
             controllerAs: '$ctrl',
             controller: ShowProcessDialogController,
             bindToController: true,
+            multiple: true,
             locals: {
                 process: process
             }

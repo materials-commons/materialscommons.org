@@ -3,11 +3,11 @@ angular.module('materialscommons').component('mcDir', {
     controller: MCDirComponentController
 });
 
-function MCDirComponentController($stateParams, mcreg, gridFiles) {
+function MCDirComponentController($stateParams, mcstate, gridFiles) {
     'ngInject';
 
     const ctrl = this;
-    ctrl.project = mcreg.current$project;
+    ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
 
     const entry = gridFiles.findEntry(ctrl.project.files[0], $stateParams.dir_id);
     if (entry) {

@@ -4,8 +4,7 @@ angular.module('materialscommons').component('mcExperimentTasks', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksComponentController($scope, moveTask, currentTask, mcreg, currentNode,
-                                              blankTaskService, $mdDialog) {
+function MCExperimentTasksComponentController($scope, moveTask, mcstate, blankTaskService, $mdDialog) {
     let ctrl = this;
     ctrl.show = 'note';
 
@@ -13,16 +12,19 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, mcr
 
     ctrl.$onInit = () => {
         ctrl.currentNode = null;
-        ctrl.experiment = mcreg.current$experiment;
+        ctrl.experiment = mcstate.get(mcstate.CURRENT$EXPERIMENT);
         ctrl.experiment.tasks[0].displayState.selectedClass = 'task-selected';
-        currentTask.set(ctrl.experiment.tasks[0]);
-        ctrl.currentTask = currentTask.get();
-        currentTask.setOnChange(() => ctrl.currentTask = currentTask.get());
+        mcstate.set(mcstate.CURRENT$TASK, ctrl.experiment.tasks[0]);
+        ctrl.currentTask = mcstate.get(mcstate.CURRENT$TASK);
+        mcstate.subscribe(mcstate.CURRENT$TASK, 'MCExperimentTasksComponentController',
+            () => {
+                ctrl.currentTask = mcstate.get(mcstate.CURRENT$TASK);
+            });
     };
 
     ctrl.addTask = () => {
-        let node = currentNode.get(),
-            task = currentTask.get();
+        let node = mcstate.get(mcstate.CURRENT$NODE),
+            task = mcstate.get(mcstate.CURRENT$TASK);
         blankTaskService.addBlankTask(node, task);
     };
 
@@ -77,19 +79,21 @@ function MCExperimentTasksComponentController($scope, moveTask, currentTask, mcr
         }
     }
 
-    ctrl.moveLeft = () => moveTask.left(ctrl.currentNode, currentTask.get(), ctrl.experiment);
-    ctrl.moveRight = () => moveTask.right(ctrl.currentNode, currentTask.get());
-    ctrl.moveUp = () => moveTask.up(ctrl.currentNode, currentTask.get());
-    ctrl.moveDown = () => moveTask.down(ctrl.currentNode, currentTask.get(), ctrl.experiment);
+    let currentTask = () => mcstate.get(mcstate.CURRENT$TASK);
+
+    ctrl.moveLeft = () => moveTask.left(ctrl.currentNode, currentTask(), ctrl.experiment);
+    ctrl.moveRight = () => moveTask.right(ctrl.currentNode, currentTask());
+    ctrl.moveUp = () => moveTask.up(ctrl.currentNode, currentTask());
+    ctrl.moveDown = () => moveTask.down(ctrl.currentNode, currentTask(), ctrl.experiment);
     ctrl.expandAll = () => $scope.$broadcast('angular-ui-tree:expand-all');
     ctrl.collapseAll = () => $scope.$broadcast('angular-ui-tree:collapse-all');
     ctrl.showTaskMaximized = () => {
-        if (!currentTask.get()) {
+        if (!currentTask()) {
             return false;
         }
-        return currentTask.get().displayState.maximize;
+        return currentTask().displayState.maximize;
     };
-    ctrl.getCurrentTask = () => currentTask.get();
+    ctrl.getCurrentTask = () => currentTask();
 }
 
 class CreateExperimentQuickNoteDialogController {

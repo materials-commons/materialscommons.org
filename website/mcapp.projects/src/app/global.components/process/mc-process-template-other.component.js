@@ -18,7 +18,7 @@ class MCProcessTemplateOtherComponentController {
     }
 
     selectFiles() {
-        this.selectItems.open('files', 'uploadFiles').then(
+        this.selectItems.fileTree(true).then(
             (selected) => {
                 let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
                 let filesArgs = {
@@ -35,7 +35,7 @@ class MCProcessTemplateOtherComponentController {
     }
 
     selectSamples() {
-        this.selectItems.open('samples').then(
+        this.selectItems.samplesFromProject(this.projectId, this.experimentId).then(
             (selected) => {
                 let samples = selected.samples.map(s => {
                     for (let i = 0; i < s.versions.length; i++) {
@@ -56,8 +56,8 @@ class MCProcessTemplateOtherComponentController {
 
                 this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, samplesArgs)
                     .then(
-                        () => {
-                            this.process.input_samples = selected.samples;
+                        (p) => {
+                            this.process = p;
                             this.navbarOnChange.fireChange();
                             if (this.onChange) {
                                 this.onChange();

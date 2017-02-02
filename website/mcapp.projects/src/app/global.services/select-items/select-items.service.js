@@ -1,59 +1,103 @@
-export function selectItemsService($mdDialog) {
-    'ngInject';
+class SelectItemsService {
+    /*@ngInject*/
+    constructor($mdDialog, projectsService, experimentsService, fileTreeProjectService, mcstate) {
+        this.$mdDialog = $mdDialog;
+        this.projectsService = projectsService;
+        this.experimentsService = experimentsService;
+        this.fileTreeProjectService = fileTreeProjectService;
+        this.mcstate = mcstate;
+    }
 
-    return {
-        open: function() {
-            let tabs = {
-                processes: false,
-                files: false,
-                samples: false,
-                reviews: false,
-                uploadFiles: false
-            };
+    dialog(locals, controller) {
+        return this.$mdDialog.show({
+            templateUrl: 'app/global.services/select-items/select-items.html',
+            controller: controller,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            multiple: true,
+            locals: locals
+        });
+    }
 
-            let opts = {
-                experimentId: '',
-                singleSelection: false
-            };
-
-            if (arguments.length === 0) {
-                throw "Invalid arguments to service selectItems:open()";
-            }
-
-            for (let i = 0; i < arguments.length; i++) {
-                if ((arguments[i] in tabs)) {
-                    tabs[arguments[i]] = true;
-                } else if (_.isObject(arguments[i])) {
-                    opts.experimentId = arguments[i].experimentId;
-                    opts.singleSelection = arguments[i].singleSelection;
-                }
-            }
-
-            let showFilesTree = tabs.files && opts.experimentId === '';
-            let showFilesTable = tabs.files && opts.experimentId !== '';
-            return $mdDialog.show({
-                templateUrl: 'app/global.services/select-items/select-items.html',
-                controller: SelectItemsServiceModalController,
-                controllerAs: 'ctrl',
-                bindToController: true,
-                locals: {
-                    showProcesses: tabs.processes,
-
-                    showFilesTree: showFilesTree,
-
-                    showFilesTable: showFilesTable,
-
-                    showSamples: tabs.samples,
-
-                    showReviews: tabs.reviews,
-
-                    showUploadFiles: tabs.uploadFiles,
-
-                    options: opts
-                }
+    fileTree(uploadFiles = false) {
+        let project = this.mcstate.get(this.mcstate.CURRENT$PROJECT);
+        return this.fileTreeProjectService.getProjectRoot(project.id).then(
+            files => {
+                project.files = files;
+                return this.dialog({
+                    showFileTree: true,
+                    showFileTable: false,
+                    uploadFiles,
+                    project
+                }, SelectItemsFilesServiceModalController);
             });
+    }
+
+    fileTable(files = [], uploadFiles = false) {
+        return this.dialog({
+            showFileTable: true,
+            showFileTree: false,
+            uploadFiles,
+            files
+        }, SelectItemsFilesServiceModalController);
+    }
+
+    samples(samples = [], singleSelection = false) {
+        return this.dialog({samples, singleSelection}, SelectItemsSamplesServiceModalController);
+    }
+
+    samplesFromProject(projectId, singleSelection = false) {
+        let options = {
+            singleSelection
+        };
+        return this.projectsService.getProjectSamples(projectId).then(
+            (samples) => this.dialog({samples, options}, SelectItemsSamplesServiceModalController)
+        );
+    }
+
+    samplesFromExperiment(projectId, experimentId, singleSelection = false) {
+        return this.experimentsService.getSamplesForExperiment(projectId, experimentId).then(
+            (samples) => this.dialog({samples, singleSelection}, SelectItemsSamplesServiceModalController)
+        );
+    }
+
+    processes(processes = []) {
+        return this.dialog({processes}, SelectItemsProcessesServiceModalController);
+    }
+
+    processesFromProject(projectId) {
+        return this.projectsService.getProjectProcesses(projectId).then(
+            (processes) => this.dialog({processes}, SelectItemsProcessesServiceModalController)
+        );
+    }
+}
+
+class SelectItemsBase {
+    constructor($mdDialog) {
+        this.activeTab = 0;
+        this.currentTab = '';
+        this.tabs = [];
+        this.$mdDialog = $mdDialog;
+    }
+
+    isActive(tab) {
+        return this.activeTab === tab;
+    }
+
+    setActive(tabName) {
+        this.activeTab = tabName;
+    }
+
+    addTab(name, icon) {
+        this.tabs.push({name, icon});
+        if (this.tabs.length === 1) {
+            this.activeTab = this.tabs[0].name;
         }
-    };
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
 }
 
 class SelectItemsState {
@@ -68,38 +112,19 @@ class SelectItemsState {
 
 const selectItemsState = new SelectItemsState();
 
-/*@ngInject*/
-function SelectItemsServiceModalController($mdDialog, projectsService, $stateParams, mcreg, experimentsService) {
-    let ctrl = this;
-
-    ctrl.project = mcreg.current$project;
-    ctrl.tabs = loadTabs();
-    ctrl.activeTab = ctrl.tabs[0].name;
-    ctrl.setActive = setActive;
-    ctrl.isActive = isActive;
-    ctrl.uploadComplete = uploadComplete;
-    ctrl.ok = ok;
-    ctrl.cancel = cancel;
-    ctrl.processes = [];
-    ctrl.samples = [];
-    selectItemsState.reset();
-
-    /////////////////////////
-
-    function setActive(tab) {
-        ctrl.activeTab = tab;
+class SelectItemsSamplesServiceModalController extends SelectItemsBase {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        super($mdDialog);
+        this.$onInit();
     }
 
-    function isActive(tab) {
-        return ctrl.activeTab === tab;
+    $onInit() {
+        this.addTab('samples', 'fa-cubes');
     }
 
-    function ok() {
-        const selectedProcesses = ctrl.processes.filter(function(p) {
-            return p.input || p.output;
-        });
-
-        let selectedSamples = ctrl.samples.filter(function(s) {
+    ok() {
+        let selectedSamples = this.samples.filter(s => {
             for (let i = 0; i < s.versions.length; i++) {
                 if (s.versions[i].selected) {
                     return true;
@@ -107,127 +132,91 @@ function SelectItemsServiceModalController($mdDialog, projectsService, $statePar
             }
             return false;
         });
-
-        let selectedFiles = getSelectedFiles();
-
-        $mdDialog.hide({
-            processes: selectedProcesses,
-            samples: selectedSamples,
-            files: selectedFiles
-        });
-    }
-
-    function getSelectedFiles() {
-        let files = [];
-        if (ctrl.showFilesTree) {
-            let filesFromTree = [];
-            let projectFiles = mcreg.current$project.files;
-            if (projectFiles && projectFiles.length) {
-                let treeModel = new TreeModel(),
-                    root = treeModel.parse(mcreg.current$project.files[0]);
-                // Walk the tree looking for selected files and adding them to the
-                // list of files. Also reset the selected flag so the next time
-                // the popup for files is used it doesn't show previously selected
-                // items.
-                root.walk({strategy: 'pre'}, function(node) {
-                    if (node.model.data.selected) {
-                        node.model.data.selected = false;
-                        if (node.model.data.otype === 'file') {
-                            filesFromTree.push(node.model.data);
-                        }
-                    }
-                });
-                files = files.concat(filesFromTree);
-            }
-        }
-
-        if (ctrl.showFilesTable) {
-            files = files.concat(ctrl.files.filter(f => f.selected));
-        }
-
-        if (ctrl.showUploadFiles) {
-            files = files.concat(selectItemsState.uploadedFiles);
-        }
-
-        return files;
-    }
-
-    function uploadComplete(fileIds) {
-        selectItemsState.uploadedFiles = fileIds.map(fid => ({id: fid}));
-    }
-
-    function cancel() {
-        $mdDialog.cancel();
-    }
-
-    function loadTabs() {
-        let tabs = [];
-        if (ctrl.showProcesses) {
-            tabs.push(newTab('processes', 'fa-code-fork'));
-            if (ctrl.options.experimentId) {
-                // get processes for experiment
-            } else {
-                projectsService.getProjectProcesses($stateParams.project_id).then(function(processes) {
-                    ctrl.processes = processes;
-                });
-            }
-        }
-
-        if (ctrl.showSamples) {
-            tabs.push(newTab('samples', 'fa-cubes'));
-            if (ctrl.options.experimentId && ctrl.options.experimentId !== '') {
-                experimentsService.getSamplesForExperiment($stateParams.project_id, ctrl.options.experimentId).then(
-                    (samples) => {
-                        ctrl.samples = samples;
-                    }
-                )
-            } else {
-                projectsService.getProjectSamples($stateParams.project_id).then(function(samples) {
-                    ctrl.samples = samples;
-                });
-            }
-        }
-
-        if (ctrl.showFilesTree) {
-            tabs.push(newTab('file tree', 'fa-files-o'));
-        }
-
-        if (ctrl.showFilesTable) {
-            tabs.push(newTab('file table', 'fa-files-o'));
-            experimentsService.getFilesForExperiment($stateParams.project_id, ctrl.options.experimentId)
-                .then(
-                    (files) => {
-                        ctrl.files = files;
-                    }
-                );
-        }
-
-        if (ctrl.showReviews) {
-            tabs.push(newTab('reviews', 'fa-comment'));
-        }
-
-        if (ctrl.showUploadFiles) {
-            tabs.push(newTab('Upload Files', 'fa-upload'));
-        }
-
-        tabs.sort(function compareByName(t1, t2) {
-            if (t1.name < t2.name) {
-                return -1;
-            }
-            if (t1.name > t2.name) {
-                return 1;
-            }
-            return 0;
-        });
-
-        return tabs;
-    }
-
-    function newTab(name, icon) {
-        return {
-            name: name,
-            icon: icon
-        };
+        this.$mdDialog.hide({samples: selectedSamples});
     }
 }
 
+class SelectItemsProcessesServiceModalController extends SelectItemsBase {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        super($mdDialog);
+        this.$onInit();
+    }
+
+    $onInit() {
+        this.addTab('processes', 'fa-code-fork');
+    }
+
+    ok() {
+        let selectedProcesses = this.processes.filter(p => p.input || p.output);
+        this.$mdDialog.hide({processes: selectedProcesses});
+    }
+}
+
+class SelectItemsFilesServiceModalController extends SelectItemsBase {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        super($mdDialog);
+        this.$onInit();
+    }
+
+    $onInit() {
+        selectItemsState.reset();
+        if (this.showFileTable) {
+            this.addTab('file table', 'fa-files-o');
+        }
+
+        if (this.showFileTree) {
+            this.addTab('file tree', 'fa-files-o');
+        }
+
+        if (this.uploadFiles) {
+            this.addTab('Upload Files', 'fa-upload');
+        }
+    }
+
+    uploadComplete(fileIds) {
+        selectItemsState.uploadedFiles = fileIds.map(fid => ({id: fid}));
+    }
+
+    ok() {
+        let selectedFiles = [];
+        if (this.showFileTree) {
+            selectedFiles = selectedFiles.concat(this.getFilesFromTree());
+        }
+
+        if (this.showFileTable) {
+            selectedFiles = selectedFiles.concat(this.files.filter(f => f.selected));
+        }
+
+        if (this.uploadFiles) {
+            selectedFiles = selectedFiles.concat(selectItemsState.uploadedFiles);
+        }
+
+        this.$mdDialog.hide({files: selectedFiles});
+    }
+
+    getFilesFromTree() {
+        let filesFromTree = [];
+        let projectFiles = this.project.files;
+        if (projectFiles && projectFiles.length) {
+            let treeModel = new TreeModel(),
+                root = treeModel.parse(this.project.files[0]);
+            // Walk the tree looking for selected files and adding them to the
+            // list of files. Also reset the selected flag so the next time
+            // the popup for files is used it doesn't show previously selected
+            // items.
+            root.walk({strategy: 'pre'}, function (node) {
+                if (node.model.data.selected) {
+                    node.model.data.selected = false;
+                    if (node.model.data.otype === 'file') {
+                        filesFromTree.push(node.model.data);
+                    }
+                }
+            });
+        }
+        return filesFromTree;
+    }
+}
+
+angular.module('materialscommons').service('selectItems', SelectItemsService);

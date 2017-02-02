@@ -4,7 +4,7 @@ angular.module('materialscommons')
         controller: MCProjectComponentController
     });
 
-function MCProjectComponentController(projectsService, $stateParams, mcreg) {
+function MCProjectComponentController(projectsService, $stateParams, mcstate) {
     'ngInject';
 
     const ctrl = this;
@@ -17,7 +17,7 @@ function MCProjectComponentController(projectsService, $stateParams, mcreg) {
     closeAll();
 
     projectsService.getProject($stateParams.project_id).then(function(p) {
-        mcreg.current$project = p;
+        mcstate.set(mcstate.CURRENT$PROJECT, p);
         ctrl.project = p;
     });
 

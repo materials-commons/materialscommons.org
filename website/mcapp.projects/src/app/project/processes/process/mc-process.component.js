@@ -4,9 +4,9 @@ angular.module('materialscommons').component('mcProcess', {
 });
 
 /*@ngInject*/
-function MCProcessComponentController(mcreg, $state, $stateParams) {
+function MCProcessComponentController(mcstate, $state, $stateParams) {
     const ctrl = this;
-    ctrl.process = mcreg.current$process;
+    ctrl.process = mcstate.get(mcstate.CURRENT$PROCESS);
     ctrl.edit = edit;
 
     ///////////////////
