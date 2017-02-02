@@ -10,8 +10,8 @@ const r = require('rethinkdbdash')({
     port: process.env.MCDB_PORT || 30815
 });
 
-const experiments = require('../../../servers/mcapi/resources/projects/experiments');
-const dbModelUsers = require('../../../servers/mcapi/db/model/users');
+const experiments = require('../../../../servers/mcapi/resources/projects/experiments/index');
+const dbModelUsers = require('../../../../servers/mcapi/db/model/users');
 
 const user1Id = 'thisIsAUserForTestingONLY!@mc.org';
 const fullname = "Test User";
