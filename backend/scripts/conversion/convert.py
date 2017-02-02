@@ -65,6 +65,11 @@ def rename_to_otype(table, conn):
     print "   Done."
 
 
+def fix_users_table_type(conn):
+    r.table('users').update({'otype': 'user'}).run(conn)
+    r.table('users').filter(r.row.has_fields('_type')).replace(lambda doc: doc.without('_type')).run(conn)
+
+
 def fix_missing_processes_for_measurements(conn):
     print "Associating processes with composition measurements (where missing)..."
     measurements = list(r.table('measurements').filter({'otype': 'composition'}).run(conn))
@@ -96,9 +101,11 @@ def main():
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
 
-    convert_to_otype(conn)
-    fix_template_name(conn)
-    fix_missing_processes_for_measurements(conn)
+    # convert_to_otype(conn)
+    # fix_template_name(conn)
+    # fix_missing_processes_for_measurements(conn)
+
+    fix_users_table_type(conn)
 
     # Not sure of these steps:
     # change_processes_field_to_description(conn)
