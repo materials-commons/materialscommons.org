@@ -46,7 +46,25 @@ function* getProject(projectId) {
                         .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
                 }
             }).coerceTo('array'),
-            users: r.table('access').getAll(projectId, {index: 'project_id'}).coerceTo('array')
+            users: r.table('access').getAll(projectId, {index: 'project_id'})
+                .eqJoin('user_id', r.table('users')).without({
+                    'right': {
+                        id: true,
+                        admin: true,
+                        affiliation: true,
+                        avatar: true,
+                        birthtime: true,
+                        description: true,
+                        email: true,
+                        homepage: true,
+                        last_login: true,
+                        mtime: true,
+                        name: true,
+                        password: true,
+                        preferences: true,
+                        otype: true
+                    }
+                }).zip().coerceTo('array')
         }
     });
     return {val: p};

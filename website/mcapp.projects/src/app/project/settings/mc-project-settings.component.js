@@ -9,13 +9,19 @@ function MCProjectSettingsComponentController(mcstate, mcapi, User, toastr, navb
     ctrl.isOwner = isOwner;
     ctrl.deleteUser = deleteUser;
     ctrl.addUser = addUser;
+    var allUsers = [];
+    ctrl.usersAvailable = [];
+
+    ctrl.filterUsersBy = '';
 
     ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
     ctrl.signedInUser = User.u();
-    ctrl.user = '';
+
+    var projectUsers = _.indexBy(ctrl.project.users, 'user_id');
 
     mcapi('/users').success(function(users) {
-        ctrl.allUsers = users;
+        allUsers = users;
+        ctrl.usersAvailable = usersNotInProject();
     }).jsonp();
 
     ///////////////////////////////////////
@@ -27,34 +33,44 @@ function MCProjectSettingsComponentController(mcstate, mcapi, User, toastr, navb
                     return (item.id === id);
                 });
                 if (i !== -1) {
+                    var ui = _.indexOf(allUsers, u => u.id === id);
+                    allUsers[i].selected = false;
                     ctrl.project.users.splice(i, 1);
+                    projectUsers = _.indexBy(ctrl.project.users, 'user_id');
+                    ctrl.usersAvailable = usersNotInProject();
                 }
                 navbarOnChange.fireChange();
             }).delete();
     }
 
-    function addUser() {
+    function usersNotInProject() {
+        return allUsers.filter(u => (!(u.email in projectUsers)));
+    }
+
+    function addUser(user) {
         const i = _.indexOf(ctrl.project.users, function(item) {
-            return (item.id === ctrl.user.email);
+            return (item.id === user.email);
         });
         if (i === -1) {
             mcapi('/access/new')
                 .success(function(data) {
                     ctrl.project.users.push({
                         'id': data.id,
-                        'user_id': ctrl.user.email,
+                        'user_id': user.email,
+                        'fullname': user.fullname,
                         'project_id': ctrl.project.id,
                         'project_name': ctrl.project.name
                     });
-                    ctrl.user = '';
                     navbarOnChange.fireChange();
+                    projectUsers = _.indexBy(ctrl.project.users, 'user_id');
+                    ctrl.usersAvailable = usersNotInProject();
                 })
                 .error(function(e) {
                     toastr.error(e.error, 'Error', {
                         closeButton: true
                     });
                 }).post({
-                'user_id': ctrl.user.email,
+                'user_id': user.email,
                 'project_id': ctrl.project.id,
                 'project_name': ctrl.project.name
             });
