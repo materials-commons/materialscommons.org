@@ -3,6 +3,7 @@
 *.dump
 .cache
 .tmp
+yarn.lock
 nohup.out
 test
 apitest
