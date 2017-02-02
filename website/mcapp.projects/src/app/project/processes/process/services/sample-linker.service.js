@@ -17,6 +17,7 @@ class SampleLinkerService {
             controller: LinkFilesToSampleController,
             controllerAs: '$ctrl',
             bindToController: true,
+            multiple: true,
             locals: {
                 sample: sample,
                 files: files
