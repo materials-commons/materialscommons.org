@@ -1,5 +1,27 @@
 # Release Notes
 
+## 3 February 2017
+### [Materials Commons Projects](https://materialscommons.org/mcapp)
+This release of Materials Commons focused on stability and usability improvements.
+
+- :star: **Improvement:** Names were added to the list of users (rather than just email addresses) when choosing users to give access to your project. The whole layout has been changed to improve usability.
+- :star: **Improvement:** A help link was added to the projects navbar to make it easier to find.
+- :star: **Improvement:** The way that pages scroll has been reworked in this release. This provides better support for small screens.
+- :star: **Improvement:** Uploading files to a process has been improved to handle error conditions.
+- :star: **Improvement:** The top menu bar now scales appropriately for the screen size.
+- :star: **Improvement:** A new drop entry was added to the Heat Treatment template.
+- :star: **Improvement:** A number of other miscellaneous usability improvements.
+- :boom: **Fixed:** Publishing datasets was failing. This has been fixed.
+- :boom: **Fixed:** Other bug fixes.
+
+### Materials Commons Python API
+A lot of behind the scenes work was done on our Python library for Materials Commons (Not yet released).
+We are close to announcing a beta release.
+
+### [Materials Commons Data](https://materialscommons.org/mcpub)
+There were no changes made to Materials Commons Data in this release.
+
+
 ## 21 December 2016
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 - :star: **New Feature:** First iteration of online help available. You can access this from within the UI. It's also available in the [wiki](https://github.com/materials-commons/materialscommons.org/wiki) on our repo.
