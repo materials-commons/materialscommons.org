@@ -29,7 +29,7 @@ function MCFileTreeComponentController(mcstate, $state, $stateParams, fileTreePr
     ctrl.flow = mcFlow.get();
 
     ctrl.treeOptions = {
-        dropped: function(event) {
+        dropped: function (event) {
             const src = event.source.nodeScope.$modelValue,
                 dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
                 srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
@@ -52,9 +52,8 @@ function MCFileTreeComponentController(mcstate, $state, $stateParams, fileTreePr
 
         },
 
-        beforeDrop: function(event) {
-            const src = event.source.nodeScope.$modelValue,
-                dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
+        beforeDrop: function (event) {
+            const dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
                 srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
             if (srcDir.data.id == dest.data.id) {
                 // Reject move - attempt to move the file/directory around under it's
@@ -95,8 +94,9 @@ function mcFileTreeDirDirective(RecursionHelper) {
         controllerAs: 'ctrl',
         bindToController: true,
         templateUrl: 'app/project/files/mc-file-tree-dir.html',
-        compile: function(element) {
-            return RecursionHelper.compile(element, function() {});
+        compile: function (element) {
+            return RecursionHelper.compile(element, function () {
+            });
         }
     }
 }
@@ -130,7 +130,7 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, mcstate, $stat
         } else {
             node.toggle();
             if (!file.data.childrenLoaded) {
-                fileTreeProjectService.getDirectory(ctrl.projectID, file.data.id).then(function(files) {
+                fileTreeProjectService.getDirectory(ctrl.projectID, file.data.id).then(function (files) {
                     file.children = files;
                     if (!file.children.length) {
                         loadEmptyPlaceHolder(file);
@@ -151,7 +151,7 @@ function MCFileTreeDirDirectiveController(fileTreeProjectService, mcstate, $stat
     function clearActiveStateInAllNodes() {
         const treeModel = new TreeModel(),
             root = treeModel.parse(mcstate.get(mcstate.CURRENT$PROJECT).files[0]);
-        root.walk(function(treeNode) {
+        root.walk(function (treeNode) {
             treeNode.model.active = false;
         });
     }

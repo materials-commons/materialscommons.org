@@ -42,6 +42,5 @@ function MCUserPasswordComponentController(mcapi, User, toast, focus) {
     }
 
     function cancel() {
-        $previousState.go();
     }
 }
