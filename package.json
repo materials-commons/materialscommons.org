@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "./node_modules/.bin/_mocha --compilers js:babel-core/register \"**/specs/**/*-spec.js\" --reporter mochawesome ",
-    "test-no-html": "./node_modules/.bin/_mocha --compilers js:babel-core/register \"**/specs/**/*-spec.js\" ",
+    "test-no-html": "./node_modules/.bin/_mocha --compilers js:babel-core/register \"**/specs/**/*-spec.js\" "
   },
   "author": "",
   "license": "ISC",
