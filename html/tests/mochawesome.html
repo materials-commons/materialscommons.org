@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mochawesome Report Card</title>
+    
+    <link rel="stylesheet" href="css/mochawesome.css">
+  </head>
+  <body>
+
+    <!-- NAVBAR -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="report-info-cnt">
+          <h1 class="report-title">materialscommons.org</h1>
+          <h3 class="report-date">Friday, February 3 2017, 08:20am</h3>
+        </div>
+        <div class="nav-right">
+          <div class="quick-summary-cnt">
+              <ul class="list-unstyled quick-summary">
+                <li class="qs-item summary-duration" title="Duration">1.84<span>S</span></li>
+                <li class="qs-item summary-suites" title="Suites">5</li>
+                <li class="qs-item summary-tests" title="Tests">8</li>
+                <li class="qs-item summary-passes" title="Passed" data-filter="passed">8</li>
+                <li class="qs-item summary-failures" title="Failed" data-filter="failed">0</li>
+                <li class="qs-item summary-pending" title="Pending" data-filter="pending">0</li>
+              </ul>          </div>
+          <button class="nav-menu-btn open-menu"><i class="icon-menu"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Summary -->
+    <div class="summary">
+      <div class="container">
+          <div class="row">
+            <div class="summary-col summary-duration">
+              <h1 class="summary-count">1.84<span>S</span></h1>
+              <h4 class="summary-label">S</h4>
+            </div>
+            <div class="summary-col summary-suites" title="Suites">
+              <h1 class="summary-count">5</h1>
+              <h4 class="summary-label">Suites</h4>
+            </div>
+            <div class="summary-col summary-tests" title="Tests">
+              <h1 class="summary-count">8</h1>
+              <h4 class="summary-label">Tests</h4>
+            </div>
+            <div class="summary-col summary-passes" data-filter="passed" title="Passed">
+              <h1 class="summary-count">8</h1>
+              <h4 class="summary-label">Passed</h4>
+            </div>
+            <div class="summary-col summary-failures" data-filter="failed" title="Failed">
+              <h1 class="summary-count">0</h1>
+              <h4 class="summary-label">Failed</h4>
+            </div>
+            <div class="summary-col summary-pending" data-filter="pending" title="Pending">
+              <h1 class="summary-count">0</h1>
+              <h4 class="summary-label">Pending</h4>
+            </div>
+          </div>      </div>
+    </div>
+    <div class="statusbar">
+      <div class="container">
+          <div class="row">
+            <div class="status-item status-item-pending-pct">0% Pending</div>
+            <div class="status-item status-item-passing-pct success">100% Passing</div>
+          </div>      </div>
+    </div>
+
+    <!-- Suites -->
+    <div class="details container">
+            <section class="suite-wrap">
+          <div id="08ed67b9-fcaa-48bb-881a-c7802f84c6f8" class="suite has-suites">
+            <h3 class="suite-title">Feature - projects: </h3>
+            <h5 class="suite-filename">/backend/tests/mcapi/specs/projects-spec.js</h5>
+        
+              <section class="suite-wrap">
+          <div id="abb71879-bad4-4a8b-9dc2-471b96e75ec3" class="suite has-tests has-passed">
+            <h3 class="suite-title">Create project</h3>
+            <h5 class="suite-filename">/backend/tests/mcapi/specs/projects-spec.js</h5>
+            <!-- Suite Chart -->
+            <div class="suite-chart-wrap">
+              <canvas id="abb71879-bad4-4a8b-9dc2-471b96e75ec3" class="suite-chart" width="50" height="50" data-total-passes="4" data-total-failures="0" data-total-pending="0" data-total-skipped="0"></canvas>
+            </div>
+            <div class="suite-data-wrap">
+              <!-- Suite Summary -->
+              <ul class="suite-summary list-unstyled">
+                <li class="suite-summary-item duration">324 ms</li>
+                <li class="suite-summary-item tests">4</li>
+                <li class="suite-summary-item passed">4</li>
+                <li class="suite-summary-item failed">0</li>
+                <li class="suite-summary-item pending">0</li>
+              </ul>
+              <!-- Test Info -->
+              <div class="suite-test-wrap">
+                <div class="suite-test-header" data-toggle="collapse" data-target="#abb71879-bad4-4a8b-9dc2-471b96e75ec3-test-list">
+                  <h4 class="suite-test-header-title">Tests</h4>
+                </div>
+                <div id="abb71879-bad4-4a8b-9dc2-471b96e75ec3-test-list" class="list-group test-list collapse in">
+                    <div id="d2e0ab30-3e64-43c8-b242-d57bf84245c8" class="list-group-item test passed">
+          <!-- Test Heading -->
+          <div class="test-heading">
+            <h4 class="test-title">
+              <span class="text-muted hidden"> it </span>
+              create project and get project back
+            </h4>
+            <div class="pull-right">
+              <button class="btn btn-link btn-sm toggle-btn toggle-code collapsed" data-toggle="collapse" data-target="#d2e0ab30-3e64-43c8-b242-d57bf84245c8 > .test-code.collapse">Code</button>
+              <span class="test-duration slow">84 ms</span>
+            </div>
+          </div>
+          <!-- Test Errors -->
+          <!-- Test Code -->
+          <div class="test-code collapse">
+            <pre><code class="hljs javascript small"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee2</span>(<span class="hljs-params"></span>) </span>{<br>            <span class="hljs-keyword">var</span> user, project_name, attrs, ret, project;<br>            <span class="hljs-keyword">return</span> _regenerator2.default.wrap(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee2$</span>(<span class="hljs-params">_context2</span>) </span>{<br>                <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) {<br>                    <span class="hljs-keyword">switch</span> (_context2.prev = _context2.next) {<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                            _context2.next = <span class="hljs-number">2</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>                            user = _context2.sent;<br>                            project_name = random_name();<br>                            assert.isNotNull(user, <span class="hljs-string">"test user exists"</span>);<br>                            attrs = {<br>                                name: project_name,<br>                                description: <span class="hljs-string">"This is a test project for automated testing."</span><br>                            };<br>                            _context2.next = <span class="hljs-number">8</span>;<br>                            <span class="hljs-keyword">return</span> projects.createProject(user, attrs);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">8</span>:<br>                            ret = _context2.sent;<br>                            project = ret.val;<br>                            assert.equal(project.otype, <span class="hljs-string">"project"</span>);<br>                            assert.equal(project.name, project_name);<br>                            assert.equal(project.owner, user.id);<br>                            assert.equal(project.owner, user1Id);<br>                            assert.equal(project.users.length, <span class="hljs-number">1</span>);<br>                            assert.equal(project.users[<span class="hljs-number">0</span>].user_id, user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">16</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">'end'</span>:<br>                            <span class="hljs-keyword">return</span> _context2.stop();<br>                    }<br>                }<br>            }, _callee2, <span class="hljs-keyword">this</span>);</code></pre>
+          </div>
+          <!-- Test Error Stack -->
+        </div>            <div id="b61614c7-5d1c-47a5-bab6-6c4c7a696755" class="list-group-item test passed">
+          <!-- Test Heading -->
+          <div class="test-heading">
+            <h4 class="test-title">
+              <span class="text-muted hidden"> it </span>
+              create project and find project in all projects
+            </h4>
+            <div class="pull-right">
+              <button class="btn btn-link btn-sm toggle-btn toggle-code collapsed" data-toggle="collapse" data-target="#b61614c7-5d1c-47a5-bab6-6c4c7a696755 > .test-code.collapse">Code</button>
+              <span class="test-duration slow">76 ms</span>
+            </div>
+          </div>
+          <!-- Test Errors -->
+          <!-- Test Code -->
+          <div class="test-code collapse">
+            <pre><code class="hljs javascript small"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee3</span>(<span class="hljs-params"></span>) </span>{<br>            <span class="hljs-keyword">var</span> user, project_name, attrs, ret, project, project_list, found_project;<br>            <span class="hljs-keyword">return</span> _regenerator2.default.wrap(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee3$</span>(<span class="hljs-params">_context3</span>) </span>{<br>                <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) {<br>                    <span class="hljs-keyword">switch</span> (_context3.prev = _context3.next) {<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                            _context3.next = <span class="hljs-number">2</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>                            user = _context3.sent;<br>                            project_name = random_name();<br>                            assert.isNotNull(user, <span class="hljs-string">"test user exists"</span>);<br>                            attrs = {<br>                                name: project_name,<br>                                description: <span class="hljs-string">"This is a test project for automated testing."</span><br>                            };<br>                            _context3.next = <span class="hljs-number">8</span>;<br>                            <span class="hljs-keyword">return</span> projects.createProject(user, attrs);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">8</span>:<br>                            ret = _context3.sent;<br>                            project = ret.val;<br>                            assert.equal(project.name, project_name);<br>                            assert.equal(project.users[<span class="hljs-number">0</span>].user_id, user1Id);<br>                            _context3.next = <span class="hljs-number">14</span>;<br>                            <span class="hljs-keyword">return</span> projects.all();<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">14</span>:<br>                            project_list = _context3.sent;<br>                            found_project = <span class="hljs-literal">null</span>;<br>                            project_list.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">p</span>) </span>{<br>                                <span class="hljs-keyword">if</span> (p.name == project_name) {<br>                                    found_project = p;<br>                                }<br>                            });<br>                            assert.isNotNull(found_project);<br>                            assert.equal(found_project.otype, <span class="hljs-string">"project"</span>);<br>                            assert.equal(found_project.owner, user.id);<br>                            assert.equal(found_project.owner, user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">21</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">'end'</span>:<br>                            <span class="hljs-keyword">return</span> _context3.stop();<br>                    }<br>                }<br>            }, _callee3, <span class="hljs-keyword">this</span>);</code></pre>
+          </div>
+          <!-- Test Error Stack -->
+        </div>            <div id="a77fa925-02e1-4c3c-9274-133ce215fd4b" class="list-group-item test passed">
+          <!-- Test Heading -->
+          <div class="test-heading">
+            <h4 class="test-title">
+              <span class="text-muted hidden"> it </span>
+              create project and find project by user
+            </h4>
+            <div class="pull-right">
+              <button class="btn btn-link btn-sm toggle-btn toggle-code collapsed" data-toggle="collapse" data-target="#a77fa925-02e1-4c3c-9274-133ce215fd4b > .test-code.collapse">Code</button>
+              <span class="test-duration slow">84 ms</span>
+            </div>
+          </div>
+          <!-- Test Errors -->
+          <!-- Test Code -->
+          <div class="test-code collapse">
+            <pre><code class="hljs javascript small"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee4</span>(<span class="hljs-params"></span>) </span>{<br>            <span class="hljs-keyword">var</span> user, project_name, attrs, ret, project, project_list, found_project;<br>            <span class="hljs-keyword">return</span> _regenerator2.default.wrap(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee4$</span>(<span class="hljs-params">_context4</span>) </span>{<br>                <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) {<br>                    <span class="hljs-keyword">switch</span> (_context4.prev = _context4.next) {<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                            _context4.next = <span class="hljs-number">2</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>                            user = _context4.sent;<br>                            project_name = random_name();<br>                            assert.isNotNull(user, <span class="hljs-string">"test user exists"</span>);<br>                            attrs = {<br>                                name: project_name,<br>                                description: <span class="hljs-string">"This is a test project for automated testing."</span><br>                            };<br>                            _context4.next = <span class="hljs-number">8</span>;<br>                            <span class="hljs-keyword">return</span> projects.createProject(user, attrs);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">8</span>:<br>                            ret = _context4.sent;<br>                            project = ret.val;<br>                            assert.equal(project.name, project_name);<br>                            assert.equal(project.users[<span class="hljs-number">0</span>].user_id, user1Id);<br>                            _context4.next = <span class="hljs-number">14</span>;<br>                            <span class="hljs-keyword">return</span> projects.forUser(user);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">14</span>:<br>                            project_list = _context4.sent;<br>                            found_project = <span class="hljs-literal">null</span>;<br>                            project_list.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">p</span>) </span>{<br>                                <span class="hljs-keyword">if</span> (p.name == project_name) {<br>                                    found_project = p;<br>                                }<br>                            });<br>                            assert.isNotNull(found_project);<br>                            assert.equal(found_project.otype, <span class="hljs-string">"project"</span>);<br>                            assert.equal(found_project.owner, user.id);<br>                            assert.equal(found_project.owner, user1Id);<br>                            assert.equal(found_project.users.length, <span class="hljs-number">1</span>);<br>                            <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> field is user, here, but user_id in test above!!!</span><br>                            <span class="hljs-comment">// is this the correct behaivor???</span><br>                            assert.equal(found_project.users[<span class="hljs-number">0</span>].user, user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">23</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">'end'</span>:<br>                            <span class="hljs-keyword">return</span> _context4.stop();<br>                    }<br>                }<br>            }, _callee4, <span class="hljs-keyword">this</span>);</code></pre>
+          </div>
+          <!-- Test Error Stack -->
+        </div>            <div id="7b3866a4-a66a-4e3c-9134-586907ea5248" class="list-group-item test passed">
+          <!-- Test Heading -->
+          <div class="test-heading">
+            <h4 class="test-title">
+              <span class="text-muted hidden"> it </span>
+              create project, find by user, has full set of properties
+            </h4>
+            <div class="pull-right">
+              <button class="btn btn-link btn-sm toggle-btn toggle-code collapsed" data-toggle="collapse" data-target="#7b3866a4-a66a-4e3c-9134-586907ea5248 > .test-code.collapse">Code</button>
+              <span class="test-duration slow">80 ms</span>
+            </div>
+          </div>
+          <!-- Test Errors -->
+          <!-- Test Code -->
+          <div class="test-code collapse">
+            <pre><code class="hljs javascript small"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee5</span>(<span class="hljs-params"></span>) </span>{<br>            <span class="hljs-keyword">var</span> user, project_name, attrs, ret, project, project_list, found_project;<br>            <span class="hljs-keyword">return</span> _regenerator2.default.wrap(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee5$</span>(<span class="hljs-params">_context5</span>) </span>{<br>                <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) {<br>                    <span class="hljs-keyword">switch</span> (_context5.prev = _context5.next) {<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                            _context5.next = <span class="hljs-number">2</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>                            user = _context5.sent;<br>                            project_name = random_name();<br>                            assert.isNotNull(user, <span class="hljs-string">"test user exists"</span>);<br>                            attrs = {<br>                                name: project_name,<br>                                description: <span class="hljs-string">"This is a test project for automated testing."</span><br>                            };<br>                            _context5.next = <span class="hljs-number">8</span>;<br>                            <span class="hljs-keyword">return</span> projects.createProject(user, attrs);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">8</span>:<br>                            ret = _context5.sent;<br>                            project = ret.val;<br>                            _context5.next = <span class="hljs-number">12</span>;<br>                            <span class="hljs-keyword">return</span> projects.forUser(user);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">12</span>:<br>                            project_list = _context5.sent;<br>                            found_project = <span class="hljs-literal">null</span>;<br>                            project_list.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">p</span>) </span>{<br>                                <span class="hljs-keyword">if</span> (p.name == project_name) {<br>                                    found_project = p;<br>                                }<br>                            });<br>                            assert.isNotNull(found_project);<br>                            assert.equal(found_project.otype, <span class="hljs-string">"project"</span>);<br>                            assert.equal(found_project.owner, user.id);<br>                            assert.equal(found_project.owner, user1Id);<br>                            assert.equal(found_project.users.length, <span class="hljs-number">1</span>);<br>                            assert.equal(found_project.users[<span class="hljs-number">0</span>].user, user1Id);<br>                            assert.isTrue(found_project.hasOwnProperty(<span class="hljs-string">'events'</span>));<br>                            assert.equal(found_project.events.length, <span class="hljs-number">0</span>);<br>                            assert.isTrue(found_project.hasOwnProperty(<span class="hljs-string">'processes'</span>));<br>                            assert.isTrue(found_project.hasOwnProperty(<span class="hljs-string">'samples'</span>));<br>                            assert.isTrue(found_project.hasOwnProperty(<span class="hljs-string">'files'</span>));<br>                            assert.isTrue(found_project.hasOwnProperty(<span class="hljs-string">'experiments'</span>));<br>                            assert.equal(found_project.processes, <span class="hljs-number">0</span>);<br>                            assert.equal(found_project.samples, <span class="hljs-number">0</span>);<br>                            assert.equal(found_project.files, <span class="hljs-number">0</span>);<br>                            assert.equal(found_project.experiments, <span class="hljs-number">0</span>);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">31</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">'end'</span>:<br>                            <span class="hljs-keyword">return</span> _context5.stop();<br>                    }<br>                }<br>            }, _callee5, <span class="hljs-keyword">this</span>);</code></pre>
+          </div>
+          <!-- Test Error Stack -->
+        </div>        </div>
+              </div>
+            </div>
+        
+        
+          </div>
+        </section>
+              <section class="suite-wrap">
+          <div id="42b303b5-59b2-4389-b5cb-0a3a465b0c57" class="suite has-tests has-passed">
+            <h3 class="suite-title">Update project</h3>
+            <h5 class="suite-filename">/backend/tests/mcapi/specs/projects-spec.js</h5>
+            <!-- Suite Chart -->
+            <div class="suite-chart-wrap">
+              <canvas id="42b303b5-59b2-4389-b5cb-0a3a465b0c57" class="suite-chart" width="50" height="50" data-total-passes="1" data-total-failures="0" data-total-pending="0" data-total-skipped="0"></canvas>
+            </div>
+            <div class="suite-data-wrap">
+              <!-- Suite Summary -->
+              <ul class="suite-summary list-unstyled">
+                <li class="suite-summary-item duration">87 ms</li>
+                <li class="suite-summary-item tests">1</li>
+                <li class="suite-summary-item passed">1</li>
+                <li class="suite-summary-item failed">0</li>
+                <li class="suite-summary-item pending">0</li>
+              </ul>
+              <!-- Test Info -->
+              <div class="suite-test-wrap">
+                <div class="suite-test-header" data-toggle="collapse" data-target="#42b303b5-59b2-4389-b5cb-0a3a465b0c57-test-list">
+                  <h4 class="suite-test-header-title">Tests</h4>
+                </div>
+                <div id="42b303b5-59b2-4389-b5cb-0a3a465b0c57-test-list" class="list-group test-list collapse in">
+                    <div id="282c4fcc-10fb-47cb-a3b9-249a649600aa" class="list-group-item test passed">
+          <!-- Test Heading -->
+          <div class="test-heading">
+            <h4 class="test-title">
+              <span class="text-muted hidden"> it </span>
+              create project, update name and description
+            </h4>
+            <div class="pull-right">
+              <button class="btn btn-link btn-sm toggle-btn toggle-code collapsed" data-toggle="collapse" data-target="#282c4fcc-10fb-47cb-a3b9-249a649600aa > .test-code.collapse">Code</button>
+              <span class="test-duration slow">87 ms</span>
+            </div>
+          </div>
+          <!-- Test Errors -->
+          <!-- Test Code -->
+          <div class="test-code collapse">
+            <pre><code class="hljs javascript small"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee6</span>(<span class="hljs-params"></span>) </span>{<br>            <span class="hljs-keyword">var</span> user, project_name, attrs, ret, project, name, description, update_attrs, updated_project;<br>            <span class="hljs-keyword">return</span> _regenerator2.default.wrap(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee6$</span>(<span class="hljs-params">_context6</span>) </span>{<br>                <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) {<br>                    <span class="hljs-keyword">switch</span> (_context6.prev = _context6.next) {<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                            _context6.next = <span class="hljs-number">2</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>                            user = _context6.sent;<br>                            project_name = random_name();<br>                            assert.isNotNull(user, <span class="hljs-string">"test user exists"</span>);<br>                            attrs = {<br>                                name: project_name,<br>                                description: <span class="hljs-string">"This is a test project for automated testing."</span><br>                            };<br>                            _context6.next = <span class="hljs-number">8</span>;<br>                            <span class="hljs-keyword">return</span> projects.createProject(user, attrs);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">8</span>:<br>                            ret = _context6.sent;<br>                            project = ret.val;<br>                            assert.equal(project.otype, <span class="hljs-string">"project"</span>);<br>                            assert.equal(project.name, project_name);<br>                            assert.equal(project.owner, user1Id);<br>                            name = <span class="hljs-string">"Another Name"</span>;<br>                            description = <span class="hljs-string">"An alternate description"</span>;<br>                            update_attrs = {<br>                                name: name,<br>                                description: description<br>                            };<br>                            _context6.next = <span class="hljs-number">18</span>;<br>                            <span class="hljs-keyword">return</span> projects.update(project.id, update_attrs);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">18</span>:<br>                            updated_project = _context6.sent;<br>                            assert.equal(updated_project.otype, <span class="hljs-string">"project"</span>);<br>                            assert.equal(updated_project.owner, user1Id);<br>                            assert.equal(updated_project.name, name);<br>                            assert.equal(updated_project.description, description);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">23</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">'end'</span>:<br>                            <span class="hljs-keyword">return</span> _context6.stop();<br>                    }<br>                }<br>            }, _callee6, <span class="hljs-keyword">this</span>);</code></pre>
+          </div>
+          <!-- Test Error Stack -->
+        </div>        </div>
+              </div>
+            </div>
+        
+        
+          </div>
+        </section>
+        
+          </div>
+        </section>
+            <section class="suite-wrap">
+          <div id="008665fe-0bba-4f77-bca9-43b4c184bde7" class="suite has-suites">
+            <h3 class="suite-title">Feature - reset lost password: </h3>
+            <h5 class="suite-filename">/backend/tests/mcapi/specs/reset-lost-password-spec.js</h5>
+        
+              <section class="suite-wrap">
+          <div id="1eba87df-6f11-4a7d-8179-a11f65d45d97" class="suite has-tests has-passed">
+            <h3 class="suite-title">User with reset_password flag</h3>
+            <h5 class="suite-filename">/backend/tests/mcapi/specs/reset-lost-password-spec.js</h5>
+            <!-- Suite Chart -->
+            <div class="suite-chart-wrap">
+              <canvas id="1eba87df-6f11-4a7d-8179-a11f65d45d97" class="suite-chart" width="50" height="50" data-total-passes="3" data-total-failures="0" data-total-pending="0" data-total-skipped="0"></canvas>
+            </div>
+            <div class="suite-data-wrap">
+              <!-- Suite Summary -->
+              <ul class="suite-summary list-unstyled">
+                <li class="suite-summary-item duration">59 ms</li>
+                <li class="suite-summary-item tests">3</li>
+                <li class="suite-summary-item passed">3</li>
+                <li class="suite-summary-item failed">0</li>
+                <li class="suite-summary-item pending">0</li>
+              </ul>
+              <!-- Test Info -->
+              <div class="suite-test-wrap">
+                <div class="suite-test-header" data-toggle="collapse" data-target="#1eba87df-6f11-4a7d-8179-a11f65d45d97-test-list">
+                  <h4 class="suite-test-header-title">Tests</h4>
+                </div>
+                <div id="1eba87df-6f11-4a7d-8179-a11f65d45d97-test-list" class="list-group test-list collapse in">
+                    <div id="9dfdeb26-1bba-40f1-aa7a-336edc17643a" class="list-group-item test passed">
+          <!-- Test Heading -->
+          <div class="test-heading">
+            <h4 class="test-title">
+              <span class="text-muted hidden"> it </span>
+              there is a user for testing
+            </h4>
+            <div class="pull-right">
+              <button class="btn btn-link btn-sm toggle-btn toggle-code collapsed" data-toggle="collapse" data-target="#9dfdeb26-1bba-40f1-aa7a-336edc17643a > .test-code.collapse">Code</button>
+              <span class="test-duration fast">1 ms</span>
+            </div>
+          </div>
+          <!-- Test Errors -->
+          <!-- Test Code -->
+          <div class="test-code collapse">
+            <pre><code class="hljs javascript small"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee2</span>(<span class="hljs-params"></span>) </span>{<br>            <span class="hljs-keyword">var</span> user;<br>            <span class="hljs-keyword">return</span> _regenerator2.default.wrap(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee2$</span>(<span class="hljs-params">_context2</span>) </span>{<br>                <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) {<br>                    <span class="hljs-keyword">switch</span> (_context2.prev = _context2.next) {<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                            _context2.next = <span class="hljs-number">2</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>                            user = _context2.sent;<br>                            assert.isNotNull(user, <span class="hljs-string">"test user is not null"</span>);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">'end'</span>:<br>                            <span class="hljs-keyword">return</span> _context2.stop();<br>                    }<br>                }<br>            }, _callee2, <span class="hljs-keyword">this</span>);</code></pre>
+          </div>
+          <!-- Test Error Stack -->
+        </div>            <div id="0de40a0e-6f8f-45de-91a4-1500afb2e300" class="list-group-item test passed">
+          <!-- Test Heading -->
+          <div class="test-heading">
+            <h4 class="test-title">
+              <span class="text-muted hidden"> it </span>
+              User with the reset password flag set
+            </h4>
+            <div class="pull-right">
+              <button class="btn btn-link btn-sm toggle-btn toggle-code collapsed" data-toggle="collapse" data-target="#0de40a0e-6f8f-45de-91a4-1500afb2e300 > .test-code.collapse">Code</button>
+              <span class="test-duration fast">20 ms</span>
+            </div>
+          </div>
+          <!-- Test Errors -->
+          <!-- Test Code -->
+          <div class="test-code collapse">
+            <pre><code class="hljs javascript small"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee3</span>(<span class="hljs-params"></span>) </span>{<br>            <span class="hljs-keyword">var</span> user, validate_uuid, result;<br>            <span class="hljs-keyword">return</span> _regenerator2.default.wrap(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee3$</span>(<span class="hljs-params">_context3</span>) </span>{<br>                <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) {<br>                    <span class="hljs-keyword">switch</span> (_context3.prev = _context3.next) {<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                            _context3.next = <span class="hljs-number">2</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>                            user = _context3.sent;<br>                            assert.isNotNull(user, <span class="hljs-string">"test user is not null"</span>);<br>                            _context3.next = <span class="hljs-number">6</span>;<br>                            <span class="hljs-keyword">return</span> r.uuid();<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">6</span>:<br>                            validate_uuid = _context3.sent;<br>                            _context3.next = <span class="hljs-number">9</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.setUserPasswordResetFlag(user1Id, validate_uuid);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">9</span>:<br>                            result = _context3.sent;<br>                            assert.equal(result.replaced, <span class="hljs-number">1</span>, <span class="hljs-string">"The flag was correctly added to the user"</span>);<br>                            _context3.next = <span class="hljs-number">13</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">13</span>:<br>                            user = _context3.sent;<br>                            assert.isTrue(user.reset_password, <span class="hljs-string">"The flag is set"</span>);<br>                            assert.equal(user.validate_uuid, validate_uuid);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">16</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">'end'</span>:<br>                            <span class="hljs-keyword">return</span> _context3.stop();<br>                    }<br>                }<br>            }, _callee3, <span class="hljs-keyword">this</span>);</code></pre>
+          </div>
+          <!-- Test Error Stack -->
+        </div>            <div id="acdb78c5-6725-48bc-8b09-b7d8f8b4f4ad" class="list-group-item test passed">
+          <!-- Test Heading -->
+          <div class="test-heading">
+            <h4 class="test-title">
+              <span class="text-muted hidden"> it </span>
+              User reset password flag is cleared
+            </h4>
+            <div class="pull-right">
+              <button class="btn btn-link btn-sm toggle-btn toggle-code collapsed" data-toggle="collapse" data-target="#acdb78c5-6725-48bc-8b09-b7d8f8b4f4ad > .test-code.collapse">Code</button>
+              <span class="test-duration medium">38 ms</span>
+            </div>
+          </div>
+          <!-- Test Errors -->
+          <!-- Test Code -->
+          <div class="test-code collapse">
+            <pre><code class="hljs javascript small"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee4</span>(<span class="hljs-params"></span>) </span>{<br>            <span class="hljs-keyword">var</span> user, result;<br>            <span class="hljs-keyword">return</span> _regenerator2.default.wrap(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_callee4$</span>(<span class="hljs-params">_context4</span>) </span>{<br>                <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) {<br>                    <span class="hljs-keyword">switch</span> (_context4.prev = _context4.next) {<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                            _context4.next = <span class="hljs-number">2</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>                            user = _context4.sent;<br>                            assert.isNotNull(user, <span class="hljs-string">"test user is not null"</span>);<br>                            _context4.next = <span class="hljs-number">6</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.setUserPasswordResetFlag(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">6</span>:<br>                            result = _context4.sent;<br>                            assert.equal(result.replaced, <span class="hljs-number">1</span>, <span class="hljs-string">"The flag was correctly added to the user"</span>);<br>                            _context4.next = <span class="hljs-number">10</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">10</span>:<br>                            user = _context4.sent;<br>                            assert.isTrue(user.reset_password);<br>                            _context4.next = <span class="hljs-number">14</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.clearUserPasswordResetFlag(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">14</span>:<br>                            result = _context4.sent;<br>                            assert.equal(result.replaced, <span class="hljs-number">1</span>, <span class="hljs-string">"The flag was correctly cleared from the user"</span>);<br>                            _context4.next = <span class="hljs-number">18</span>;<br>                            <span class="hljs-keyword">return</span> dbModelUsers.getUser(user1Id);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">18</span>:<br>                            user = _context4.sent;<br>                            assert.isUndefined(user.reset_password, <span class="hljs-string">"The flag is cleared"</span>);<br>                            assert.isUndefined(user.validate_uuid, <span class="hljs-string">"The flag is cleared"</span>);<br>                        <span class="hljs-keyword">case</span> <span class="hljs-number">21</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">'end'</span>:<br>                            <span class="hljs-keyword">return</span> _context4.stop();<br>                    }<br>                }<br>            }, _callee4, <span class="hljs-keyword">this</span>);</code></pre>
+          </div>
+          <!-- Test Error Stack -->
+        </div>        </div>
+              </div>
+            </div>
+        
+        
+          </div>
+        </section>
+        
+          </div>
+        </section>
+    </div>
+
+    <footer>
+      <div class="container">
+        <p>Report generated by <a href="http://adamgruber.github.io/mochawesome/" target="_blank">mochawesome</a>.<br>Designed and built by <a href="https://github.com/adamgruber" target="_blank">adamgruber</a>. &copy;2017.</p>
+      </div>
+    </footer>
+
+    <!-- Nav Menu -->
+    <div class="nav-menu-wrap">
+      <div class="menu-overlay close-menu"></div>
+      <nav class="menu">
+        <button class="nav-menu-btn close-menu"><i class="icon-failed"></i></button>
+        <ul class="list-unstyled main-menu">
+                <li class="nav-menu-item">
+                <a href="#08ed67b9-fcaa-48bb-881a-c7802f84c6f8" class="nav-menu-item-link">Feature - projects: </a>
+                  <ul class="list-unstyled sub-menu">
+                    <li class="nav-menu-item">
+                <a href="#abb71879-bad4-4a8b-9dc2-471b96e75ec3" class="nav-menu-item-link has-passes">Create project</a>
+            </li>
+                  </ul>
+                  <ul class="list-unstyled sub-menu">
+                    <li class="nav-menu-item">
+                <a href="#42b303b5-59b2-4389-b5cb-0a3a465b0c57" class="nav-menu-item-link has-passes">Update project</a>
+            </li>
+                  </ul>
+            </li>
+                <li class="nav-menu-item">
+                <a href="#008665fe-0bba-4f77-bca9-43b4c184bde7" class="nav-menu-item-link">Feature - reset lost password: </a>
+                  <ul class="list-unstyled sub-menu">
+                    <li class="nav-menu-item">
+                <a href="#1eba87df-6f11-4a7d-8179-a11f65d45d97" class="nav-menu-item-link has-passes">User with reset_password flag</a>
+            </li>
+                  </ul>
+            </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/vendor.js"></script>
+    <script src="js/mochawesome.js"></script>
+  </body>
+</html>
