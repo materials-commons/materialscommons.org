@@ -10,7 +10,7 @@ const r = require('rethinkdbdash')({
     port: process.env.MCDB_PORT || 30815
 });
 
-const backend_base = '../../..';
+const backend_base = '../../../..';
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const projects = require(backend_base + '/servers/mcapi/db/model/projects')
 
