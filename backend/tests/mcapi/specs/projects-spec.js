@@ -14,14 +14,21 @@ const backend_base = '../../..';
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const projects = require(backend_base + '/servers/mcapi/db/model/projects')
 
-const user1Id = 'thisIsAUserForTestingONLY!@mc.org';
+const base_user_id = 'thisIsAUserForTestingONLY!';
 const fullname = "Test User";
 const base_project_name = "Test project - test 1: ";
 
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
     return base_project_name + number;
-}
+};
+
+let random_user = function(){
+    let number = Math.floor(Math.random()*10000);
+    return base_user_id + number + "@mc.org";
+};
+
+let user1Id = random_user();
 
 before(function*() {
     let user = yield dbModelUsers.getUser(user1Id);
@@ -42,6 +49,8 @@ before(function*() {
             }
         });
         assert.equal(results.inserted, 1, "The User was correctly inserted");
+    } else {
+        assert.equal(user.id,user1Id, "Wrong test user, id = " + user.id);
     }
 });
 
@@ -120,6 +129,11 @@ describe('Feature - projects: ', function() {
 });
 
 after(function*() {
-    let results = yield r.db('materialscommons').table('users').get(user1Id).delete();
-    assert.equal(results.deleted,1, "The User was correctly deleted");
+    let user = yield dbModelUsers.getUser(user1Id);
+    if (user) {
+        let results = yield r.db('materialscommons').table('users').get(user1Id).delete();
+        assert.equal(results.deleted,1, "The User was correctly deleted");
+    } else {
+        assert.isNull(user,"The user still exists at end");
+    }
 });

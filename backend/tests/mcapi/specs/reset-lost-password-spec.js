@@ -13,26 +13,44 @@ const r = require('rethinkdbdash')({
 const resourcesUsers = require('../../../servers/mcapi/resources/users');
 const dbModelUsers = require('../../../servers/mcapi/db/model/users');
 
-const user1Id = 'thisIsAUserForTestingONLY!@mc.org';
+const base_user_id = 'thisIsAUserForTestingONLY!';
 const fullname = "Test User";
+const base_project_name = "Test project - test 1: ";
+
+let random_name = function(){
+    let number = Math.floor(Math.random()*10000);
+    return base_project_name + number;
+};
+
+let random_user = function(){
+    let number = Math.floor(Math.random()*10000);
+    return base_user_id + number + "@mc.org";
+};
+
+let user1Id = random_user();
 
 beforeEach(function*() {
-    let results = yield r.db('materialscommons').table('users').insert({
-        admin: false ,
-        affiliation:  "" ,
-        avatar:  "" ,
-        description:  "" ,
-        email: user1Id,
-        fullname:  fullname ,
-        homepage:  "" ,
-        id: user1Id,
-        name: fullname,
-        preferences: {
-            tags: [],
-            templates: []
-        }
-    });
-    assert.equal(results.inserted,1, "The User was correctly inserted");
+    let user = yield dbModelUsers.getUser(user1Id);
+    if (!user) {
+        let results = yield r.db('materialscommons').table('users').insert({
+            admin: false,
+            affiliation: "",
+            avatar: "",
+            description: "",
+            email: user1Id,
+            fullname: fullname,
+            homepage: "",
+            id: user1Id,
+            name: fullname,
+            preferences: {
+                tags: [],
+                templates: []
+            }
+        });
+        assert.equal(results.inserted, 1, "The User was correctly inserted");
+    } else {
+        assert.equal(user.id,user1Id, "Wrong test user, id = " + user.id);
+    }
 });
 
 describe('Feature - reset lost password: ', function() {
@@ -68,7 +86,11 @@ describe('Feature - reset lost password: ', function() {
 });
 
 afterEach(function*() {
-    let results = yield r.db('materialscommons').table('users').get(user1Id).delete();
-    assert.equal(results.deleted,1, "The User was correctly deleted");
+    let user = yield dbModelUsers.getUser(user1Id);
+    if (user) {
+        let results = yield r.db('materialscommons').table('users').get(user1Id).delete();
+        assert.equal(results.deleted,1, "The User was correctly deleted");
+    } else {
+        assert.isNull(user,"The user still exists at end");
+    }
 });
-
