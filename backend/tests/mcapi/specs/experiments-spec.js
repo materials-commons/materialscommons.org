@@ -54,7 +54,7 @@ before(function*() {
     }
 });
 
-describe('Feature - processes: ', function() {
+describe('Feature - experiments: ', function() {
     describe('Function level', function () {
         it('feature level');
     });
