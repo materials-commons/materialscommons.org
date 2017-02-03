@@ -26,15 +26,21 @@
     <link href="app/style-3.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
-<body layout="row" ng-controller="MCAppController as ctrl" style="overflow:hidden;" ng-cloak>
+<body layout="row" ng-controller="MCAppController as ctrl" stylex="overflow:hidden;" ng-cloak>
 
-<div flex layout="column">
+<div layout="column" flex="100">
     <navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
     <mc-project-navbar ng-if="ctrl.inProject()"></mc-project-navbar>
-
-    <div flex layout="column">
+    <md-content flex layout="column">
         <ui-view flex layout="column"></ui-view>
-    </div>
+        <!--<span ng-repeat="index in ctrl.items">-->
+            <!--{{index}}-->
+        <!--</span>-->
+    </md-content>
+    <!--<mc-project-navbar ng-if="ctrl.inProject()"></mc-project-navbar>-->
+    <!--<div flex layout="column">-->
+        <!--<ui-view flex layout="column"></ui-view>-->
+    <!--</div>-->
 </div>
 
 <!-- build:js(src) scripts/vendor.js -->

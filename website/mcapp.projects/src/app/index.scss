@@ -462,3 +462,6 @@ input.mc-navbar-search-input:-ms-input-placeholder {
     color: white;
 }
 
+md-toast.md-success-toast-theme .md-toast-content {
+  background-color: $mc-md-primary-color;
+}

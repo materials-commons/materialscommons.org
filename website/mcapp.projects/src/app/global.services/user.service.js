@@ -82,6 +82,10 @@ export function UserService($window, $log, Restangular) {
         updateDefaultProject: function(projectId, experimentId) {
             return Restangular.one('v2').one('users')
                 .customPUT({default_project: projectId, default_experiment: experimentId});
+        },
+
+        updateFullname: function(fullname) {
+            return Restangular.one('v2').one('users').customPUT({fullname: fullname});
         }
     };
 }

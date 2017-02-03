@@ -7,17 +7,19 @@
                ng-change="$ctrl.updateProcessName()"
                ng-model="$ctrl.process.name">
     </md-input-container>
-    <div ng-switch='$ctrl.process.template_name'>
-        <div ng-switch-when="Create Samples">
-            <mc-process-template-create-samples process="$ctrl.process"
-                                                on-change="$ctrl.onChange()"></mc-process-template-create-samples>
-        </div>
-        <div ng-switch-when="Sectioning">
-            <mc-process-template-sectioning process="$ctrl.process"
-                                            on-change="$ctrl.onChange()"></mc-process-template-sectioning>
-        </div>
-        <div ng-switch-default>
-            <mc-process-template-other process="$ctrl.process" on-change="$ctrl.onChange()"></mc-process-template-other>
-        </div>
-    </div>
+    <mc-process-template-create-samples ng-if="$ctrl.process.category === 'create_sample'"
+                                        process="$ctrl.process"
+                                        on-change="$ctrl.onChange()"></mc-process-template-create-samples>
+
+    <mc-process-template-sectioning ng-if="$ctrl.process.template_name === 'Sectioning'"
+                                    process="$ctrl.process"
+                                    on-change="$ctrl.onChange()">
+    </mc-process-template-sectioning>
+
+
+    <mc-process-template-other
+            ng-if="$ctrl.process.category !== 'create_sample' && $ctrl.process.template_name !== 'Sectioning'"
+            process="$ctrl.process"
+            on-change="$ctrl.onChange()">
+    </mc-process-template-other>
 </div>
