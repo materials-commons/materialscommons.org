@@ -5,8 +5,7 @@ node_js:
 notifications:
   email:
     recipients:
-      gtarcea@umich.edu
-      weymouth@umich.ed
+      weymouth@umich.edu
 
 python:
   - '2.7'
