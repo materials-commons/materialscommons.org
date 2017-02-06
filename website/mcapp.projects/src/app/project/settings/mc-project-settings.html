@@ -1,7 +1,7 @@
 <div layout="column" layout-margin>
     <h3 class="md-title">Add Users To Project</h3>
     <div ng-if="$ctrl.isOwner($ctrl.signedInUser)">
-        <input type="text" placeholder="Filters users..."
+        <input type="text" placeholder="Filter users..."
                class="mc-input-as-line" ng-model="$ctrl.filterUsersBy">
         <md-content style="max-height:30vh" flex="40">
             <md-list>
