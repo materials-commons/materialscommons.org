@@ -1,6 +1,7 @@
 <div layout="column" layout-margin>
     <input type="text" placeholder="Filter samples..."
-               class="mc-input-as-line" ng-model="$ctrl.filterBy">
+               class="mc-input-as-line" ng-model="ctrl.filterBy">
+    <h3 ng-if="
     <md-table-container ng-if="ctrl.samples.length">
         <table md-table ng-model="ctrl.selected">
             <thead md-head>
@@ -12,7 +13,7 @@
             </tr>
             </thead>
             <tbody md-body>
-            <tr md-row ng-repeat-start="sample in ctrl.samples | filter:$ctrl.filterBy | orderBy:'name'">
+            <tr md-row ng-repeat-start="sample in ctrl.samples | filter:ctrl.processFilter | filter:ctrl.filterBy | orderBy:'name'">
                 <td md-cell>
                     {{sample.name}}
                 </td>

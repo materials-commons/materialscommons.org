@@ -13,10 +13,19 @@ function selectItemsSamplesDirective() {
     }
 }
 
-function SelectItemsSamplesDirectiveController($mdDialog) {
+function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
     'ngInject';
 
     var ctrl = this;
+
+    // console.log(ctrl.samples.plain());
+    let selectedProcess = mcstate.get(mcstate.SELECTED$PROCESS);
+    // console.log(selectedProcess);
+    if (selectedProcess !== null) {
+        ctrl.processFilter = selectedProcess.id;
+    } else {
+        ctrl.processFilter = null;
+    }
 
     ctrl.selected = [];
     ctrl.showSamplesInGroups = false;

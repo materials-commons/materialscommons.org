@@ -1,11 +1,12 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams) {
+    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams, mcstate) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
         this.mcbus = mcbus;
+        this.mcstate = mcstate;
         this.myName = 'MCProcessesWorkflowGraph';
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
@@ -17,8 +18,8 @@ class MCProcessesWorkflowGraphComponentController {
         // functions lexically scope, so this in the arrow function is the this for
         // MCProcessesWorkflowGraphComponentController
         let cb = (processes) => {
-                this.processes = processes;
-                this.allProcessesGraph();
+            this.processes = processes;
+            this.allProcessesGraph();
         };
 
         this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
@@ -115,6 +116,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.cy.on('click', event => {
             let target = event.cyTarget;
             if (!target.isNode && !target.isEdge) {
+                this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
                 this.workflowService.setSelectedProcess(null);
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             } else if (target.isNode()) {
@@ -123,9 +125,11 @@ class MCProcessesWorkflowGraphComponentController {
                 //console.log(target.connectedEdges());
                 let processId = target.data('id');
                 let process = this.processes.filter((p) => p.id === processId)[0];
+                this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
                 this.workflowService.setSelectedProcess(process);
                 this.mcProcessesWorkflow.setSelectedProcess(processId, (target.outgoers().length > 0));
             } else if (target.isEdge()) {
+                this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
                 this.workflowService.setSelectedProcess(null);
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             }
