@@ -5,7 +5,10 @@
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
-        <mc-show-process process-id="$ctrl.process.id"></mc-show-process>
+        <mc-show-process process-id="$ctrl.process.id"
+                         show-input-samples="$ctrl.showInputSamples"
+                         show-output-samples="$ctrl.showOutputSamples">
+        </mc-show-process>
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <md-button class="md-primary" ng-click="$ctrl.done()">done</md-button>

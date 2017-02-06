@@ -13,7 +13,7 @@ function selectItemsSamplesDirective() {
     }
 }
 
-function SelectItemsSamplesDirectiveController() {
+function SelectItemsSamplesDirectiveController($mdDialog) {
     'ngInject';
 
     var ctrl = this;
@@ -26,6 +26,7 @@ function SelectItemsSamplesDirectiveController() {
     };
     ctrl.toggleSampleSelected = toggleSampleSelected;
     ctrl.onChange = onChange;
+    ctrl.showProcess = showProcess;
 
     ctrl.itemSelected = false;
 
@@ -57,5 +58,33 @@ function SelectItemsSamplesDirectiveController() {
             ctrl.itemSelected = selected;
         }
     }
+
+    function showProcess(process) {
+        $mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-process-dialog.html',
+            controllerAs: '$ctrl',
+            controller: ShowProcessDialogController,
+            bindToController: true,
+            multiple: true,
+            locals: {
+                process: process,
+                showInputSamples: false,
+                showOutputSamples: true
+            }
+        });
+    }
 }
+
+class ShowProcessDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.cancel();
+    }
+}
+
+
 
