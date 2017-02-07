@@ -18,24 +18,19 @@ function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
 
     var ctrl = this;
 
-    // console.log(ctrl.samples.plain());
-    let selectedProcess = mcstate.get(mcstate.SELECTED$PROCESS);
-    // console.log(selectedProcess);
-    if (selectedProcess !== null) {
-        ctrl.processFilter = selectedProcess.id;
+    ctrl.selectedProcess = mcstate.get(mcstate.SELECTED$PROCESS);
+    if (ctrl.selectedProcess !== null) {
+        ctrl.processFilter = ctrl.selectedProcess.id;
     } else {
         ctrl.processFilter = null;
     }
 
     ctrl.selected = [];
-    ctrl.showSamplesInGroups = false;
-    ctrl.showGroupsChanged = showGroupsChanged;
-    ctrl.showGroupsFilter = {
-        is_grouped: false
-    };
     ctrl.toggleSampleSelected = toggleSampleSelected;
     ctrl.onChange = onChange;
     ctrl.showProcess = showProcess;
+    ctrl.toggleAllSamples = toggleAllSamples;
+    ctrl.showAllProcesses = false;
 
     ctrl.itemSelected = false;
 
@@ -46,20 +41,18 @@ function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
         });
     });
 
-    /////////////////////////
-
-    function showGroupsChanged() {
-        if (!ctrl.showSamplesInGroups) {
-            ctrl.showGroupsFilter = {
-                is_grouped: false
-            }
-        } else {
-            ctrl.showGroupsFilter = {};
-        }
-    }
+    ////////////////////////
 
     function toggleSampleSelected(sample) {
         sample.selected = !sample.selected;
+    }
+
+    function toggleAllSamples() {
+        if (ctrl.showAllProcesses) {
+            ctrl.processFilter = null;
+        } else {
+            ctrl.processFilter = ctrl.selectedProcess.id;
+        }
     }
 
     function onChange(selected) {

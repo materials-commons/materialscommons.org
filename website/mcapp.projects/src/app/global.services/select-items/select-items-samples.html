@@ -1,7 +1,17 @@
 <div layout="column" layout-margin>
+    <div ng-if="ctrl.selectedProcess !== null" layout="row" layout-align="start space-around" flex>
+        <span class="md-subhead padding-right-30" ng-if="ctrl.processFilter !== null">
+            Showing samples from selected process ({{ctrl.selectedProcess.name}})
+        </span>
+        <span class="md-subhead padding-right-30" ng-if="ctrl.processFilter === null">
+            Showing all samples in project
+        </span>
+        <md-checkbox ng-model="ctrl.showAllProcesses" ng-change="ctrl.toggleAllSamples()">
+            Show all samples in project
+        </md-checkbox>
+    </div>
     <input type="text" placeholder="Filter samples..."
-               class="mc-input-as-line" ng-model="ctrl.filterBy">
-    <h3 ng-if="
+           class="mc-input-as-line" ng-model="ctrl.filterBy">
     <md-table-container ng-if="ctrl.samples.length">
         <table md-table ng-model="ctrl.selected">
             <thead md-head>
@@ -13,7 +23,8 @@
             </tr>
             </thead>
             <tbody md-body>
-            <tr md-row ng-repeat-start="sample in ctrl.samples | filter:ctrl.processFilter | filter:ctrl.filterBy | orderBy:'name'">
+            <tr md-row
+                ng-repeat-start="sample in ctrl.samples | filter:ctrl.processFilter | filter:ctrl.filterBy | orderBy:'name'">
                 <td md-cell>
                     {{sample.name}}
                 </td>
