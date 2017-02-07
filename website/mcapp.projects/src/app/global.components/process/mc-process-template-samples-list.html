@@ -1,5 +1,4 @@
 <md-list>
-
     <div ng-if="$ctrl.process.input_samples.length">
         <md-subheader class="md-no-sticky no-inner-padding"><h4>Input Samples</h4></md-subheader>
         <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.process.input_samples | orderBy:'name'">
