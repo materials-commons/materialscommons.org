@@ -7,6 +7,7 @@ class WorkflowService {
         this.templates = templates;
         this.toast = toast;
         this.$mdDialog = $mdDialog;
+        this.workflowChangeCallback = null;
     }
 
     addProcessFromTemplate(templateId, projectId, experimentId) {
@@ -92,6 +93,21 @@ class WorkflowService {
                 error => this.toast.error(error.data.error)
             );
     }
+
+    sendWorkflowChange() {
+        if (this.workflowChangeCallback) {
+            this.workflowChangeCallback();
+        }
+    }
+
+    setWorkflowChangeCallback(cb) {
+        this.workflowChangeCallback = cb;
+        return this;
+    }
+
+    clearWorkflowChangeCallbacks() {
+        this.workflowChangeCallback = null;
+    }
 }
 
 class NewProcessDialogController {
@@ -114,4 +130,4 @@ class NewProcessDialogController {
     }
 }
 
-angular.module('materialscommons').service('workflowService2', WorkflowService);
+angular.module('materialscommons').service('workflowService', WorkflowService);

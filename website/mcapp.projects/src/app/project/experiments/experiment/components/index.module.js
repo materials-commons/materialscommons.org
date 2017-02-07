@@ -33,5 +33,4 @@ import './workflow/mc-processes-workflow-graph.component';
 import './workflow/mc-processes-workflow-outline.component';
 import './workflow/mc-workflow-toolbar.component';
 
-import './workflow/workflow-service.service';
 import './workflow/services/workflow-service.service';

@@ -37,7 +37,6 @@ class MCProcessesWorkflowGraphComponentController {
         if (changes.highlightProcesses) {
             this.highlightProcesses = changes.highlightProcesses.currentValue;
         }
-        this.workflowService.setSelectedProcess(null);
         this.allProcessesGraph();
     }
 
@@ -104,7 +103,6 @@ class MCProcessesWorkflowGraphComponentController {
             let target = event.cyTarget;
             if (!target.isNode && !target.isEdge) {
                 this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                this.workflowService.setSelectedProcess(null);
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             } else if (target.isNode()) {
                 //let edges = target.connectedEdges();
@@ -113,11 +111,9 @@ class MCProcessesWorkflowGraphComponentController {
                 let processId = target.data('id');
                 let process = this.processes.filter((p) => p.id === processId)[0];
                 this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
-                this.workflowService.setSelectedProcess(process);
                 this.mcProcessesWorkflow.setSelectedProcess(processId, (target.outgoers().length > 0));
             } else if (target.isEdge()) {
                 this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                this.workflowService.setSelectedProcess(null);
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             }
         });

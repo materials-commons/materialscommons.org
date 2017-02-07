@@ -1,16 +1,8 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
     constructor(experimentsService, $stateParams, toast, experimentProcessesService, datasetService,
-                workflowService, mcstate, workflowService2) {
+                workflowService, mcstate) {
         this.experimentsService = experimentsService;
-        this.workflowService2 = workflowService2;
-
-        // Initialize callbacks to functions that do nothing. This cleans up the code
-        // as we don't have to worry if its been set.
-        this.deleteProcessCallback = () => null;
-        this.onChangeCallback = () => null;
-        this.addProcessCallback = () => null;
-
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
@@ -44,47 +36,30 @@ class MCProcessesWorkflowComponentController {
                     (process) => {
                         process.hasChildren = hasChildren;
                         this.selectedProcess = process;
-                        this.workflowService.callOnSelectCallbacks(process);
+                        this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
                     },
                     () => {
                         this.toast.error('Unable to retrieve process details');
                         this.selectedProcess = null;
-                        this.workflowService.callOnSelectCallbacks(null);
+                        this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
                     }
                 );
         } else {
             this.selectedProcess = null;
-            this.workflowService.callOnSelectCallbacks(null);
+            this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
         }
-    }
-
-    setDeleteProcessCallback(cb) {
-        this.deleteProcessCallback = cb;
-    }
-
-    setOnChangeCallback(cb) {
-        this.onChangeCallback = cb;
-    }
-
-    setAddProcessCallback(cb) {
-        this.addProcessCallback = cb;
     }
 
     onChange() {
         this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
             .then(
-                (processes) => {
-                    this.processes = processes;
-                    if (this.onChangeCallback) {
-                        this.onChangeCallback(processes);
-                    }
-                },
+                (processes) => this.processes = processes,
                 () => this.toast.error('Error retrieving processes for experiment')
             );
     }
 
     deleteNodeAndProcessConfirm() {
-        this.workflowService2.deleteNodeAndProcess(this.projectId, this.experimentId, this.selectedProcess.id)
+        this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.selectedProcess.id)
     }
 
     inDataset() {
