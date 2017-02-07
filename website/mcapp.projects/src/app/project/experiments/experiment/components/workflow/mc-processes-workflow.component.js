@@ -41,37 +41,6 @@ class MCProcessesWorkflowComponentController {
         this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
     }
 
-    addProcess(templateId) {
-        this.experimentsService.createProcessFromTemplate(this.projectId, this.experimentId, `global_${templateId}`)
-            .then(
-                (process) => {
-                    let p = this.templates.loadTemplateFromProcess(process.template_name, process);
-                    this.$mdDialog.show({
-                        templateUrl: 'app/project/experiments/experiment/components/workflow/new-process-dialog.html',
-                        controllerAs: '$ctrl',
-                        controller: NewProcessDialogController,
-                        bindToController: true,
-                        locals: {
-                            process: p
-                        }
-                    }).then(
-                        () => {
-                            this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
-                                .then(
-                                    (processes) => {
-                                        this.processes = processes;
-                                        //this.addProcessCallback(processes);
-                                        this.mcbus.send('ADD$PROCESS', processes);
-                                    },
-                                    () => this.toast.error('Error retrieving processes for experiment')
-                                );
-                        }
-                    );
-                },
-                () => this.toast.error('Unable to add samples')
-            );
-    }
-
     setSelectedProcess(processId, hasChildren) {
         if (processId) {
             this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
@@ -196,26 +165,6 @@ class MCProcessesWorkflowComponentController {
         this.datasetService.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [p.id], []).then(
             () => this.experimentProcessesService.addProcessToDataset(p, this.dataset, this.datasetProcesses),
             () => this.toast.error(`Unable to add process to dataset ${p.name}`)
-        );
-    }
-}
-
-class NewProcessDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, processesService, $stateParams) {
-        this.$mdDialog = $mdDialog;
-        this.processesService = processesService;
-        this.projectId = $stateParams.project_id;
-    }
-
-    done() {
-        this.$mdDialog.hide();
-    }
-
-    cancel() {
-        this.processesService.deleteProcess(this.projectId, this.process.id).then(
-            () => this.$mdDialog.cancel(),
-            () => this.$mdDialog.cancel()
         );
     }
 }
