@@ -13,19 +13,24 @@ function selectItemsSamplesDirective() {
     }
 }
 
-function SelectItemsSamplesDirectiveController() {
+function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
     'ngInject';
 
     var ctrl = this;
 
+    ctrl.selectedProcess = mcstate.get(mcstate.SELECTED$PROCESS);
+    if (ctrl.selectedProcess !== null) {
+        ctrl.processFilter = ctrl.selectedProcess.id;
+    } else {
+        ctrl.processFilter = null;
+    }
+
     ctrl.selected = [];
-    ctrl.showSamplesInGroups = false;
-    ctrl.showGroupsChanged = showGroupsChanged;
-    ctrl.showGroupsFilter = {
-        is_grouped: false
-    };
     ctrl.toggleSampleSelected = toggleSampleSelected;
     ctrl.onChange = onChange;
+    ctrl.showProcess = showProcess;
+    ctrl.toggleAllSamples = toggleAllSamples;
+    ctrl.showAllProcesses = false;
 
     ctrl.itemSelected = false;
 
@@ -36,20 +41,18 @@ function SelectItemsSamplesDirectiveController() {
         });
     });
 
-    /////////////////////////
-
-    function showGroupsChanged() {
-        if (!ctrl.showSamplesInGroups) {
-            ctrl.showGroupsFilter = {
-                is_grouped: false
-            }
-        } else {
-            ctrl.showGroupsFilter = {};
-        }
-    }
+    ////////////////////////
 
     function toggleSampleSelected(sample) {
         sample.selected = !sample.selected;
+    }
+
+    function toggleAllSamples() {
+        if (ctrl.showAllProcesses) {
+            ctrl.processFilter = null;
+        } else {
+            ctrl.processFilter = ctrl.selectedProcess.id;
+        }
     }
 
     function onChange(selected) {
@@ -57,5 +60,33 @@ function SelectItemsSamplesDirectiveController() {
             ctrl.itemSelected = selected;
         }
     }
+
+    function showProcess(process) {
+        $mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-process-dialog.html',
+            controllerAs: '$ctrl',
+            controller: ShowProcessDialogController,
+            bindToController: true,
+            multiple: true,
+            locals: {
+                process: process,
+                showInputSamples: false,
+                showOutputSamples: true
+            }
+        });
+    }
 }
+
+class ShowProcessDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.cancel();
+    }
+}
+
+
 

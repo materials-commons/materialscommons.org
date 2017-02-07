@@ -59,7 +59,6 @@ angular.module('materialscommons').component('mcShowSample', {
     templateUrl: 'app/global.components/mc-show-sample.html',
     controller: MCShowSampleComponentController,
     bindings: {
-        sampleId: '<',
-        viewHeight: '@'
+        sampleId: '<'
     }
 });

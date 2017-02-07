@@ -93,6 +93,13 @@ class MCStateService {
     get CURRENT$TASK() {
         return this.constructor.CURRENT$TASK;
     }
+
+    /**
+     *
+     */
+    get SELECTED$PROCESS() {
+        return this.constructor.SELECTED$PROCESS;
+    }
 }
 
 MCStateService.CURRENT$PROCESS = 'CURRENT$PROCESS';
@@ -101,6 +108,7 @@ MCStateService.CURRENT$PROJECT = 'CURRENT$PROJECT';
 MCStateService.CURRENT$EXPERIMENT = 'CURRENT$EXPERIMENT';
 MCStateService.CURRENT$NODE = 'CURRENT$NODE';
 MCStateService.CURRENT$TASK = 'CURRENT$TASK';
+MCStateService.SELECTED$PROCESS = 'SELECTED$PROCESS';
 
 angular.module('materialscommons').service('mcstate', MCStateService);
 

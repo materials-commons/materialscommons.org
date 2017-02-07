@@ -1,7 +1,7 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
     constructor(experimentsService, processesService, templates, $stateParams, toast, $mdDialog,
-                $timeout, experimentProcessesService, datasetService, workflowService, mcbus) {
+                $timeout, experimentProcessesService, datasetService, workflowService, mcbus, mcstate) {
         this.experimentsService = experimentsService;
         this.processesService = processesService;
         this.templates = templates;
@@ -25,17 +25,20 @@ class MCProcessesWorkflowComponentController {
         this.datasetService = datasetService;
         this.workflowService = workflowService;
         this.mcbus = mcbus;
+        this.mcstate = mcstate;
 
         this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
     }
 
     $onInit() {
         let onChangeCB = () => this.onChange();
+        this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
         this.workflowService.setWorkflowChangeCallback(onChangeCB);
     }
 
     $onDestroy() {
         this.workflowService.clearWorkflowChangeCallbacks();
+        this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
     }
 
     addProcess(templateId) {
@@ -77,7 +80,7 @@ class MCProcessesWorkflowComponentController {
                         process.hasChildren = hasChildren;
                         this.selectedProcess = process;
                         this.workflowService.callOnSelectCallbacks(process);
-                        this.currentTab = 1;
+                        //this.currentTab = 1;
                     },
                     () => {
                         this.toast.error('Unable to retrieve process details');
@@ -88,7 +91,7 @@ class MCProcessesWorkflowComponentController {
         } else {
             this.selectedProcess = null;
             this.workflowService.callOnSelectCallbacks(null);
-            this.currentTab = 0;
+            //this.currentTab = 0;
         }
     }
 
