@@ -1,7 +1,8 @@
 class WorkflowService {
     /*@ngInject*/
-    constructor(experimentsService, mcbus, templates, toast, $mdDialog) {
+    constructor(experimentsService, processesService, mcbus, templates, toast, $mdDialog) {
         this.experimentsService = experimentsService;
+        this.processesService = processesService;
         this.mcbus = mcbus;
         this.templates = templates;
         this.toast = toast;
@@ -39,14 +40,58 @@ class WorkflowService {
             );
     }
 
+    deleteNodeAndProcess(projectId, experimentId, processId) {
+        this.processesService.getDeleteProcessPreConditions(projectId, processId)
+            .then(
+                process => {
+                    let numberOfSamples = process.output_samples.length;
+                    if (numberOfSamples == 0) {
+                        this.deleteNodeAndProcess();
+                    } else {
+                        this.confirmAndDeleteProcess(projectId, experimentId, process);
+                    }
+                },
+                error => this.toast.error(error.data.error)
+            );
+    }
 
-    // deleteProcess(processId) {
-    //
-    // }
-    //
-    // selectProcess() {
-    //
-    // }
+    confirmAndDeleteProcess(projectId, experimentId, process) {
+        let processName = process.name;
+        let numberOfSamples = process.output_samples.length;
+        let samples = " output sample" + ((numberOfSamples != 1) ? "s" : "");
+        let processInfo = processName + " - has " + numberOfSamples + samples + ".";
+        let confirm = this.$mdDialog.confirm()
+            .title('This process has output samples: Delete node and Samples?')
+            .textContent(processInfo)
+            .ariaLabel('Please confirm - deleting node')
+            .ok('Delete')
+            .cancel('Cancel');
+
+        this.$mdDialog.show(confirm).then(() => this.deleteNodeAndProcess(projectId, experimentId, process.id));
+    }
+
+    deleteNodeAndProcess(projectId, experimentId, processId) {
+        //NOTE: currently the graph is redisplayed after the process is deleted;
+        // so, currently we do not delete the node from the graph itself; the problem
+        // with this approach is that redrawing the graph "blows away"
+        // any local layout that the user has created. Hence, this needs to be
+        // updated so that only the process is deleted, and the node is deleted
+        // from the graph without disturbing the layout. Terry Weymouth - Sept 29, 2016
+        this.processesService.deleteProcess(projectId, processId)
+            .then(
+                () => {
+                    this.experimentsService.getProcessesForExperiment(projectId, experimentId)
+                        .then(
+                            (processes) => {
+                                this.mcbus.send('PROCESSES$CHANGE', processes);
+                            },
+                            () => this.toast.error('Error retrieving processes for experiment')
+                        );
+                },
+
+                error => this.toast.error(error.data.error)
+            );
+    }
 }
 
 class NewProcessDialogController {

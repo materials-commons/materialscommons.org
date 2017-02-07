@@ -22,23 +22,10 @@ class MCProcessesWorkflowGraphComponentController {
             this.allProcessesGraph();
         };
 
-        this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
-        this.mcProcessesWorkflow.setOnChangeCallback(cb);
-        this.mcProcessesWorkflow.setAddProcessCallback(cb);
-
-        this.workflowService.addOnAddCallback(this.myName, cb);
-        this.workflowService.addOnChangeCallback(this.myName, cb);
-        this.workflowService.addOnDeleteCallback(this.myName, cb);
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
     }
 
     $onDestroy() {
-        this.mcProcessesWorkflow.setDeleteProcessCallback(null);
-        this.mcProcessesWorkflow.setOnChangeCallback(null);
-        this.mcProcessesWorkflow.setAddProcessCallback(null);
-        this.workflowService.deleteOnAddCallback(this.myName);
-        this.workflowService.deleteOnChangeCallback(this.myName);
-        this.workflowService.deleteOnDeleteCallback(this.myName);
         this.mcbus.leave('PROCESSES$CHANGE', this.myName);
     }
 

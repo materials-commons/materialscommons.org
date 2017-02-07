@@ -3,6 +3,7 @@
         <md-button ng-click="$ctrl.addProcess()"><i class="fa fa-fw fa-plus"></i>add process</md-button>
         <!--<md-button ng-disabled="$ctrl.selectedProcess == null"><i class="fa fa-fw fa-clone"></i>clone process</md-button>-->
         <md-button class="md-warn"
+                   ng-click="$ctrl.deleteProcess()"
                    ng-disabled="$ctrl.selectedProcess == null || $ctrl.selectedProcess.hasChildren">
             <i class="fa fa-fw fa-trash"></i>delete process
         </md-button>

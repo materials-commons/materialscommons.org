@@ -1,11 +1,14 @@
 class MCWorkflowToolbarComponentController {
     /*@ngInject*/
-    constructor(workflowService, $timeout, $mdDialog) {
+    constructor(workflowService, workflowService2, $timeout, $mdDialog, $stateParams) {
         this.myName = "mcWorkflowToolbar";
         this.workflowService = workflowService;
+        this.workflowService2 = workflowService2;
         this.$timeout = $timeout;
         this.selectedProcess = null;
         this.$mdDialog = $mdDialog;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
     }
 
 
@@ -29,6 +32,10 @@ class MCWorkflowToolbarComponentController {
         });
     }
 
+    deleteProcess() {
+        this.workflowService2.deleteNodeAndProcess(this.projectId, this.experimentId, this.selectedProcess.id);
+        this.selectedProcess = null;
+    }
 
 }
 
