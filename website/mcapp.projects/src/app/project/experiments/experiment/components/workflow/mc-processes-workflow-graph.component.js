@@ -29,7 +29,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.workflowService.addOnAddCallback(this.myName, cb);
         this.workflowService.addOnChangeCallback(this.myName, cb);
         this.workflowService.addOnDeleteCallback(this.myName, cb);
-        //this.mcbus.subscribe('ADD$PROCESS', this.myName, cb);
+        this.mcbus.subscribe('ADD$PROCESS', this.myName, cb);
     }
 
     $onDestroy() {
@@ -39,7 +39,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.workflowService.deleteOnAddCallback(this.myName);
         this.workflowService.deleteOnChangeCallback(this.myName);
         this.workflowService.deleteOnDeleteCallback(this.myName);
-        //this.mcbus.leave('ADD$PROCESS', this.myName);
+        this.mcbus.leave('ADD$PROCESS', this.myName);
     }
 
     // This method will be called implicitly when the component is loaded.
