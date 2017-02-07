@@ -7,11 +7,11 @@ const commonQueries = require('../../../lib/common-queries');
 
 function* getSample(sampleID) {
     let rql = r.table('samples').get(sampleID)
-        .merge(function(sample) {
+        .merge(function (sample) {
             return {
                 processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
                     .eqJoin('process_id', r.table('processes')).zip()
-                    .merge(function(process) {
+                    .merge(function (process) {
                         return {
                             measurements: r.table('process2measurement')
                                 .getAll(process('process_id'), {index: 'process_id'})
@@ -27,38 +27,59 @@ function* getSample(sampleID) {
 }
 
 function* getAllSamplesForProject(projectID) {
-    let projectSamplesRql = r.table('project2sample').getAll(projectID, {index: 'project_id'})
-        .eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'})
-        .zip().filter({'current': true})
-        .eqJoin('sample_id', r.table('samples')).zip();
-    return yield getAllSamplesFromQuery(projectSamplesRql);
+    // let projectSamplesRql = r.table('project2sample').getAll(projectID, {index: 'project_id'})
+    //     .eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'})
+    //     .zip().filter({'current': true})
+    //     .eqJoin('sample_id', r.table('samples')).zip();
+    let rql = r.table('project2sample').getAll(projectID, {index: 'project_id'})
+        .eqJoin('sample_id', r.table('samples')).zip()
+        .merge(function (sample) {
+            return {
+                versions: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
+                    .filter({direction: 'out'})
+                    .eqJoin('process_id', r.table('processes')).zip()
+                    .coerceTo('array'),
+                processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
+                    .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
+            }
+        });
+    let samples = yield dbExec(rql);
+    return {val: samples};
 }
 
 function* getAllSamplesForExperiment(experimentId) {
-    let experimentSamplesRql = r.table('experiment2sample').getAll(experimentId, {index: 'experiment_id'})
-        .eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'})
-        .zip().filter({'current': true})
-        .eqJoin('sample_id', r.table('samples')).zip();
-    return yield getAllSamplesFromQuery(experimentSamplesRql);
-}
-
-function* getAllSamplesFromQuery(query) {
-    let rql = commonQueries.sampleDetailsRql(query, r);
-    let samples = yield dbExec(rql);
-    samples = samples.map(s => {
-        s.transforms = s.processes.filter(p => p.does_transform).length;
-        s.properties = s.properties.map(p => {
-            if (p.best_measure.length) {
-                p.best_measure = p.best_measure[0];
-            } else {
-                p.best_measure = null;
+    let rql = r.table('experiment2sample').getAll(experimentId, {index: 'experiment_id'})
+        .eqJoin('sample_id', r.table('samples')).zip().merge(function (sample) {
+            return {
+                versions: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
+                    .filter({direction: 'out'})
+                    .eqJoin('process_id', r.table('processes')).zip()
+                    .coerceTo('array'),
+                processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
+                    .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
             }
-            return p;
         });
-        return s;
-    });
+    let samples = yield dbExec(rql);
     return {val: samples};
 }
+
+// function* getAllSamplesFromQuery(query) {
+//     let rql = commonQueries.sampleDetailsRql(query, r);
+//     let samples = yield dbExec(rql);
+//     samples = samples.map(s => {
+//         s.transforms = s.processes.filter(p => p.does_transform).length;
+//         s.properties = s.properties.map(p => {
+//             if (p.best_measure.length) {
+//                 p.best_measure = p.best_measure[0];
+//             } else {
+//                 p.best_measure = null;
+//             }
+//             return p;
+//         });
+//         return s;
+//     });
+//     return {val: samples};
+// }
 
 function* createSamples(projectId, processId, samples, owner) {
     let pset = new model.PropertySet(true);
