@@ -7,7 +7,6 @@ class WorkflowService {
         this.templates = templates;
         this.toast = toast;
         this.$mdDialog = $mdDialog;
-        this.workflowChangeCallback = null;
     }
 
     addProcessFromTemplate(templateId, projectId, experimentId) {
@@ -92,21 +91,6 @@ class WorkflowService {
 
                 error => this.toast.error(error.data.error)
             );
-    }
-
-    sendWorkflowChange() {
-        if (this.workflowChangeCallback) {
-            this.workflowChangeCallback();
-        }
-    }
-
-    setWorkflowChangeCallback(cb) {
-        this.workflowChangeCallback = cb;
-        return this;
-    }
-
-    clearWorkflowChangeCallbacks() {
-        this.workflowChangeCallback = null;
     }
 }
 

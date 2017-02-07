@@ -1,12 +1,12 @@
 class MCProcessTemplateSamplesListComponentController {
     /*@ngInject*/
-    constructor(processesService, toast, $stateParams, sampleLinker, samplesService, workflowService) {
+    constructor(processesService, toast, $stateParams, sampleLinker, samplesService, mcbus) {
         this.processesService = processesService;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.sampleLinker = sampleLinker;
         this.samplesService = samplesService;
-        this.workflowService = workflowService;
+        this.mcbus = mcbus;
     }
 
     removeSample(s) {
@@ -34,7 +34,7 @@ class MCProcessTemplateSamplesListComponentController {
     removeSampleFromProcess(sample) {
         this.removeFromSampleList(sample, 'input_samples');
         this.removeFromSampleList(sample, 'output_samples');
-        this.workflowService.sendWorkflowChange();
+        this.mcbus.send('WORKFLOW$CHANGE', null);
     }
 
     removeFromSampleList(sample, list) {

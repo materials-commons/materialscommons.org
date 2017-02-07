@@ -1,7 +1,8 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
     constructor(experimentsService, $stateParams, toast, experimentProcessesService, datasetService,
-                workflowService, mcstate) {
+                workflowService, mcstate, mcbus) {
+        this.myName = 'MCProcessesWorkflow';
         this.experimentsService = experimentsService;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
@@ -14,6 +15,7 @@ class MCProcessesWorkflowComponentController {
         this.datasetService = datasetService;
         this.workflowService = workflowService;
         this.mcstate = mcstate;
+        this.mcbus = mcbus;
 
         this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
     }
@@ -21,11 +23,11 @@ class MCProcessesWorkflowComponentController {
     $onInit() {
         let onChangeCB = () => this.onChange();
         this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-        this.workflowService.setWorkflowChangeCallback(onChangeCB);
+        this.mcbus.subscribe('WORKFLOW$CHANGE', this.myName, onChangeCB);
     }
 
     $onDestroy() {
-        this.workflowService.clearWorkflowChangeCallbacks();
+        this.mcbus.leave('WORKFLOW$CHANGE', this.myName);
         this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
     }
 
