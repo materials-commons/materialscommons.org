@@ -1,6 +1,6 @@
 class MCWorkflowToolbarComponentController {
     /*@ngInject*/
-    constructor(workflowService, $timeout, $mdDialog, $stateParams, mcstate) {
+    constructor(workflowService, $timeout, $mdDialog, $stateParams, mcstate, mcbus) {
         this.myName = "mcWorkflowToolbar";
         this.workflowService = workflowService;
         this.$timeout = $timeout;
@@ -9,6 +9,8 @@ class MCWorkflowToolbarComponentController {
         this.mcstate = mcstate;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
+        this.mcbus = mcbus;
+        this.query = '';
     }
 
 
@@ -36,6 +38,14 @@ class MCWorkflowToolbarComponentController {
         this.selectedProcess = null;
     }
 
+    search() {
+        this.mcstate.set('WORKFLOW$SEARCH', this.query);
+    }
+
+    reset() {
+        this.query = '';
+        this.mcbus.send('WORKFLOW$RESET');
+    }
 }
 
 class SelectProcessTemplateDialogController {

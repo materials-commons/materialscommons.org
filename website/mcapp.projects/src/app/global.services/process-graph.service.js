@@ -31,6 +31,7 @@ class ProcessGraphService {
                 data: {
                     id: p.id,
                     name: p.name,
+                    details: p,
                     color: ProcessGraphService.processColor(p),
                     shape: ProcessGraphService.processShape(p),
                     highlight: ProcessGraphService.highlightColor(p, highlightedProcesses)
