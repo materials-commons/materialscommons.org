@@ -10,7 +10,8 @@ const ra = require('../../resource-access');
 const Router = require('koa-router');
 
 function *getProcessesForExperiment(next) {
-    let rv = yield experiments.getProcessesForExperiment(this.params.experiment_id);
+    let simple = this.query.simple ? true : false;
+    let rv = yield experiments.getProcessesForExperiment(this.params.experiment_id, simple);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
         this.body = rv;

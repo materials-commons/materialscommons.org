@@ -377,10 +377,13 @@ function* deleteSamplesFromExperiment(experimentId, processId, sampleIds) {
     return {val: sampleIds};
 }
 
-function* getProcessesForExperiment(experimentId) {
-    let rql = commonQueries.processDetailsRql(r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'})
-        .eqJoin('process_id', r.table('processes')).zip(), r);
-    let processes = yield dbExec(rql);
+function* getProcessesForExperiment(experimentId, simple) {
+    let baseRql = r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'})
+        .eqJoin('process_id', r.table('processes')).zip();
+
+    let rql = simple ? commonQueries.processDetailsSimpleRql(baseRql, r) : commonQueries.processDetailsRql(baseRql, r),
+        processes = yield dbExec(rql);
+
     return {val: processes};
 }
 
@@ -390,10 +393,6 @@ function* getFilesForExperiment(experimentId) {
     let files = yield dbExec(rql);
     return {val: files};
 }
-
-
-
-
 
 module.exports = {
     getAllForProject,
