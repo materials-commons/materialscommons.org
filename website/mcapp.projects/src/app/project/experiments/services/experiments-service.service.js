@@ -64,7 +64,7 @@ class ExperimentsService {
     }
 
     getProcessesForExperiment(projectId, experimentId) {
-        return this.projectsAPI(projectId).one('experiments', experimentId).one('processes').customGET();
+        return this.projectsAPI(projectId).one('experiments', experimentId).customGET("processes", {simple: true});
     }
 
     getProcessForExperiment(projectId, experimentId, processId) {
