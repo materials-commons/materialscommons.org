@@ -1,25 +1,29 @@
 class MCWorkflowToolbarComponentController {
     /*@ngInject*/
-    constructor(workflowService, $timeout, $mdDialog) {
+    constructor(workflowService, $timeout, $mdDialog, $stateParams, mcstate, mcbus) {
         this.myName = "mcWorkflowToolbar";
         this.workflowService = workflowService;
         this.$timeout = $timeout;
         this.selectedProcess = null;
         this.$mdDialog = $mdDialog;
+        this.mcstate = mcstate;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.mcbus = mcbus;
+        this.query = '';
     }
 
 
     $onInit() {
         let cb = (selected) => this.$timeout(() => this.selectedProcess = selected);
-        this.workflowService.addOnSelectCallback(this.myName, cb);
+        this.mcstate.subscribe(this.mcstate.SELECTED$PROCESS, this.myName, cb);
     }
 
     $onDestroy() {
-        this.workflowService.deleteOnSelectCallback(this.myName);
+        this.mcstate.leave(this.mcstate.SELECTED$PROCESS, this.myName);
     }
 
     addProcess() {
-        console.log('addProcess');
         this.$mdDialog.show({
             templateUrl: 'app/project/experiments/experiment/components/workflow/mc-process-templates-dialog.html',
             controller: SelectProcessTemplateDialogController,
@@ -29,80 +33,38 @@ class MCWorkflowToolbarComponentController {
         });
     }
 
+    deleteProcess() {
+        this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.selectedProcess.id);
+        this.selectedProcess = null;
+    }
 
+    search() {
+        this.mcstate.set('WORKFLOW$SEARCH', this.query);
+    }
+
+    reset() {
+        this.query = '';
+        this.mcbus.send('WORKFLOW$RESET');
+    }
 }
 
 class SelectProcessTemplateDialogController {
     /*@ngInject*/
-    constructor($mdDialog, $stateParams, experimentsService, mcbus, templates) {
+    constructor($stateParams, $mdDialog, workflowService) {
         this.$mdDialog = $mdDialog;
-        this.experimentsService = experimentsService;
-        this.mcbus = mcbus;
-        this.templates = templates;
-
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
+        this.workflowService = workflowService;
     }
 
     addSelectedProcessTemplate(templateId) {
-        this.experimentsService.createProcessFromTemplate(this.projectId, this.experimentId, `global_${templateId}`)
-            .then(
-                (process) => {
-                    let p = this.templates.loadTemplateFromProcess(process.template_name, process);
-                    this.$mdDialog.show({
-                        templateUrl: 'app/project/experiments/experiment/components/workflow/new-process-dialog.html',
-                        controllerAs: '$ctrl',
-                        controller: NewProcessDialogController,
-                        bindToController: true,
-                        multiple: true,
-                        locals: {
-                            process: p
-                        }
-                    }).then(
-                        () => {
-                            this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
-                                .then(
-                                    (processes) => {
-                                        this.processes = processes;
-                                        //this.addProcessCallback(processes);
-                                        this.mcbus.send('ADD$PROCESS', processes);
-                                    },
-                                    () => this.toast.error('Error retrieving processes for experiment')
-                                );
-                        }
-                    );
-                },
-                () => this.toast.error('Unable to add samples')
-            );
+        this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId)
     }
 
     done() {
         this.$mdDialog.hide();
     }
 
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
-
-class NewProcessDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, processesService, $stateParams) {
-        this.$mdDialog = $mdDialog;
-        this.processesService = processesService;
-        this.projectId = $stateParams.project_id;
-    }
-
-    done() {
-        this.$mdDialog.hide();
-    }
-
-    cancel() {
-        this.processesService.deleteProcess(this.projectId, this.process.id).then(
-            () => this.$mdDialog.cancel(),
-            () => this.$mdDialog.cancel()
-        );
-    }
 }
 
 angular.module('materialscommons').component('mcWorkflowToolbar', {

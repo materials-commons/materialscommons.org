@@ -1,7 +1,7 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams, mcstate) {
+    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams, mcstate, $filter) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
@@ -11,6 +11,8 @@ class MCProcessesWorkflowGraphComponentController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.experimentsService = experimentsService;
+        this.$filter = $filter;
+        this.removedNodes = null;
     }
 
     $onInit() {
@@ -22,24 +24,41 @@ class MCProcessesWorkflowGraphComponentController {
             this.allProcessesGraph();
         };
 
-        this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
-        this.mcProcessesWorkflow.setOnChangeCallback(cb);
-        this.mcProcessesWorkflow.setAddProcessCallback(cb);
+        this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
 
-        this.workflowService.addOnAddCallback(this.myName, cb);
-        this.workflowService.addOnChangeCallback(this.myName, cb);
-        this.workflowService.addOnDeleteCallback(this.myName, cb);
-        this.mcbus.subscribe('ADD$PROCESS', this.myName, cb);
+        let searchcb = (search) => {
+            if (search === '') {
+                if (this.removedNodes !== null) {
+                    this.removedNodes.restore();
+                    this.cy.fit();
+                }
+                return;
+            }
+            this.removedNodes = null;
+            let matches = this.$filter('filter')(this.processes.plain(), search);
+            if (!matches.length) {
+                return;
+            }
+            let matchesById = _.indexBy(matches, 'id');
+            let matchingNodes = this.cy.nodes().filter((i, ele) => {
+                let processId = ele.data('details').id;
+                if ((processId in matchesById)) {
+                    return false;
+                }
+                return true;
+            });
+            this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
+            this.cy.fit();
+        };
+
+        this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, searchcb);
+        this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => this.allProcessesGraph());
     }
 
     $onDestroy() {
-        this.mcProcessesWorkflow.setDeleteProcessCallback(null);
-        this.mcProcessesWorkflow.setOnChangeCallback(null);
-        this.mcProcessesWorkflow.setAddProcessCallback(null);
-        this.workflowService.deleteOnAddCallback(this.myName);
-        this.workflowService.deleteOnChangeCallback(this.myName);
-        this.workflowService.deleteOnDeleteCallback(this.myName);
-        this.mcbus.leave('ADD$PROCESS', this.myName);
+        this.mcbus.leave('PROCESSES$CHANGE', this.myName);
+        this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
+        this.mcbus.leave('WORKFLOW$RESET', this.myName);
     }
 
     // This method will be called implicitly when the component is loaded.
@@ -50,7 +69,6 @@ class MCProcessesWorkflowGraphComponentController {
         if (changes.highlightProcesses) {
             this.highlightProcesses = changes.highlightProcesses.currentValue;
         }
-        this.workflowService.setSelectedProcess(null);
         this.allProcessesGraph();
     }
 
@@ -117,7 +135,6 @@ class MCProcessesWorkflowGraphComponentController {
             let target = event.cyTarget;
             if (!target.isNode && !target.isEdge) {
                 this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                this.workflowService.setSelectedProcess(null);
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             } else if (target.isNode()) {
                 //let edges = target.connectedEdges();
@@ -126,11 +143,9 @@ class MCProcessesWorkflowGraphComponentController {
                 let processId = target.data('id');
                 let process = this.processes.filter((p) => p.id === processId)[0];
                 this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
-                this.workflowService.setSelectedProcess(process);
                 this.mcProcessesWorkflow.setSelectedProcess(processId, (target.outgoers().length > 0));
             } else if (target.isEdge()) {
                 this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                this.workflowService.setSelectedProcess(null);
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             }
         });
@@ -145,6 +160,7 @@ class MCProcessesWorkflowGraphComponentController {
         //    //});
         //});
         this.cy.layout({name: 'dagre'});
+        this.cy.panzoom();
     }
 
 }

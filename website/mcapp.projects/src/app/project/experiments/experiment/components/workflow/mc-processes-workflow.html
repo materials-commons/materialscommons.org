@@ -8,7 +8,8 @@
             <mc-processes-workflow-outline ng-if="!$ctrl.showGraphView"
                                            highlight-processes="$ctrl.highlightProcesses"
                                            dataset="$ctrl.dataset"
-                                           processes="$ctrl.processes"></mc-processes-workflow-outline>
+                                           processes="$ctrl.processes">
+            </mc-processes-workflow-outline>
         </div>
         <span flex style="border-left: solid 2px grey; margin-left: 8px"></span>
         <div flex="30">
@@ -48,18 +49,6 @@
                         </md-content>
                     </md-tab-body>
                 </md-tab>
-                <!--<md-tab>-->
-                    <!--<md-tab-label>-->
-                        <!--<span><i class="fa fa-fw fa-plus"></i>Add</span>-->
-                    <!--</md-tab-label>-->
-                    <!--<md-tab-body>-->
-                        <!--<md-content style="maxx-height: 70vh" class="margin-left-15">-->
-                            <!--<h3 class="md-title">Add To Workflow</h3>-->
-                            <!--<mc-workflow-process-templates-->
-                                    <!--on-selected="$ctrl.addProcess(templateId, processId)"></mc-workflow-process-templates>-->
-                        <!--</md-content>-->
-                    <!--</md-tab-body>-->
-                <!--</md-tab>-->
                 <md-tab>
                     <md-tab-label>
                         <span><i class="fa fa-fw fa-gears"></i>details</span>
@@ -100,7 +89,7 @@
                         <span><i class="fa fa-fw fa-filter"></i>filters</span>
                     </md-tab-label>
                     <md-tab-body>
-                        filters here
+                        <mc-workflow-filters></mc-workflow-filters>
                     </md-tab-body>
                 </md-tab>
             </md-tabs>

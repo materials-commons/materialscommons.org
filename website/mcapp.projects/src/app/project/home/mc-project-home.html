@@ -30,7 +30,7 @@
                          ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.whichExperiments} | orderBy:'name'"
                          class="experiment-card">
                     <md-card-header class="project-card-header"
-                                    ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
+                                    ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
                         <md-card-avatar>
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x mc-md-primary-color"></i>
@@ -42,7 +42,7 @@
                         </md-card-header-title>
                     </md-card-header>
                     <md-card-title style="padding-top: 0; padding-bottom: 4px;" class="project-card-header"
-                                   ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
+                                   ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
                         <md-card-title-text>
                             <span class="md-subhead" style="padding-top:4px">{{experiment.description}}</span>
                         </md-card-title-text>

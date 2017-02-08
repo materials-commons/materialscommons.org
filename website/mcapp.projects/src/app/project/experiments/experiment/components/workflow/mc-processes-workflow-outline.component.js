@@ -1,13 +1,16 @@
 class MCProcessesWorkflowOutlineComponentController {
     /*@ngInject*/
-    constructor(processTree, datasetService, $stateParams, toast, experimentProcessesService) {
+    constructor(processTree, datasetService, $stateParams, toast, experimentProcessesService, mcstate, mcbus) {
         this.processTree = processTree;
         this.datasetService = datasetService;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
         this.toast = toast;
+        this.myName = 'mcProcessesWorkflowOutline';
         this.experimentProcessesService = experimentProcessesService;
+        this.mcstate = mcstate;
+        this.mcbus = mcbus;
     }
 
     $onInit() {
@@ -21,16 +24,12 @@ class MCProcessesWorkflowOutlineComponentController {
 
         this.datasetProcesses = this.mcProcessesWorkflow.datasetProcesses;
 
-        this.mcProcessesWorkflow.setDeleteProcessCallback(cb);
-        this.mcProcessesWorkflow.setOnChangeCallback(cb);
-        this.mcProcessesWorkflow.setAddProcessCallback(cb);
+        this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
         this.buildOutline();
     }
 
     $onDestroy() {
-        this.mcProcessesWorkflow.setDeleteProcessCallback(null);
-        this.mcProcessesWorkflow.setOnChangeCallback(null);
-        this.mcProcessesWorkflow.setAddProcessCallback(null);
+        this.mcbus.leave('PROCESSES$CHANGE', this.myName);
     }
 
     // This method will be called implicitly when the component is loaded.
@@ -52,7 +51,7 @@ class MCProcessesWorkflowOutlineComponentController {
         this.rootNode = t.rootNode;
         if (this.dataset) {
             this.root.walk((node) => {
-                node.model.inds = !!(node.model.id in this.datasetProcesses);
+                node.model.inds = (node.model.id in this.datasetProcesses);
             });
         }
     }
