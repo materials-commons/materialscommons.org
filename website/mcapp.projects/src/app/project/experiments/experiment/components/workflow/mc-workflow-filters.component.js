@@ -1,7 +1,7 @@
 class MCWorkflowFiltersComponentController {
     /*@ngInject*/
     constructor() {
-
+        this.whichFilter = 'all';
     }
 }
 
