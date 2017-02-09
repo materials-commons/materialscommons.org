@@ -69,6 +69,9 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcbus.leave('PROCESSES$CHANGE', this.myName);
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
         this.mcbus.leave('WORKFLOW$RESET', this.myName);
+        if (this.navigator !== null) {
+            this.navigator.destroy();
+        }
     }
 
     // This method will be called implicitly when the component is loaded.
