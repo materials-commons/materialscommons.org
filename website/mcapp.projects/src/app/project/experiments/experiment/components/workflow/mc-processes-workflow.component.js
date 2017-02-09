@@ -68,10 +68,6 @@ class MCProcessesWorkflowComponentController {
             );
     }
 
-    deleteNodeAndProcessConfirm() {
-        this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.selectedProcess.id)
-    }
-
     inDataset() {
         if (!this.selectedProcess) {
             return false;

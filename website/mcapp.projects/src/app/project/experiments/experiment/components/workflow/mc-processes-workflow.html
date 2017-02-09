@@ -12,18 +12,8 @@
                                            processes="$ctrl.processes">
             </mc-processes-workflow-outline>
         </div>
-        <!--<span flex style="border-left: solid 2px grey; margin-left: 8px"></span>-->
-        <!--<div flex="30">-->
-            <!--<div layout="row">-->
-                <!--<a ng-click="$ctrl.showGraphView = true"-->
-                   <!--ng-class="{'view-selected': $ctrl.showGraphView}">-->
-                    <!--<i class="fa fa-fw fa-sitemap" style="margin-left: 3px"></i>-->
-                <!--</a>-->
-                <!--<a ng-click="$ctrl.showGraphView = false"-->
-                   <!--ng-class="{'view-selected': !$ctrl.showGraphView}">-->
-                    <!--<i class="fa fa-fw fa-th-list" style="margin-left: 3px"></i>-->
-                <!--</a>-->
-            <!--</div>-->
+        <!--<span ng-if="$ctrl.showDetails" flex style="border-left: solid 2px grey; margin-left: 8px"></span>-->
+        <!--<div flex="30" ng-if="$ctrl.showDetails">-->
             <!--<md-tabs md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>-->
                 <!--<md-tab ng-if="false">-->
                     <!--<md-tab-label>-->
@@ -70,10 +60,12 @@
                                         <!--To delete: remove 'children' first-->
                                     <!--</md-button>-->
 
-                                    <!--<md-button class="md-primary" ng-click="$ctrl.addToDataset()" ng-if="$ctrl.dataset && !$ctrl.inDataset()">-->
+                                    <!--<md-button class="md-primary" ng-click="$ctrl.addToDataset()"-->
+                                               <!--ng-if="$ctrl.dataset && !$ctrl.inDataset()">-->
                                         <!--add to dataset-->
                                     <!--</md-button>-->
-                                    <!--<md-button class="md-warn" ng-click="$ctrl.removeFromDataset()" ng-if="$ctrl.dataset && $ctrl.inDataset()">-->
+                                    <!--<md-button class="md-warn" ng-click="$ctrl.removeFromDataset()"-->
+                                               <!--ng-if="$ctrl.dataset && $ctrl.inDataset()">-->
                                         <!--remove from dataset-->
                                     <!--</md-button>-->
                                 <!--</div>-->

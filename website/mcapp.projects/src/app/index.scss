@@ -472,6 +472,8 @@ md-toast.md-success-toast-theme .md-toast-content {
 
 .cytoscape-navigator {
   z-index: 5;
-  //width: 300px;
-  //height: 300px;
+}
+
+.cy-context-menus-cxt-menuitem {
+  font-size: 16px;
 }
