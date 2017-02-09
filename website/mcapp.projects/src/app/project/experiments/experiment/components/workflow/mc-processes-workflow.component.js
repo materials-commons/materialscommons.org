@@ -16,7 +16,6 @@ class MCProcessesWorkflowComponentController {
         this.workflowService = workflowService;
         this.mcstate = mcstate;
         this.mcbus = mcbus;
-
         this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
     }
 
@@ -24,10 +23,19 @@ class MCProcessesWorkflowComponentController {
         let onChangeCB = () => this.onChange();
         this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
         this.mcbus.subscribe('WORKFLOW$CHANGE', this.myName, onChangeCB);
+
+        this.mcbus.subscribe('WORKFLOW$VIEW', this.myName, (whichView) => {
+            if (whichView === 'graph') {
+                this.showGraphView = true;
+            } else {
+                this.showGraphView = false;
+            }
+        });
     }
 
     $onDestroy() {
         this.mcbus.leave('WORKFLOW$CHANGE', this.myName);
+        this.mcbus.leave('WORKFLOW$VIEW', this.myName);
         this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
     }
 

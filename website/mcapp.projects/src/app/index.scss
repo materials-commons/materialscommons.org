@@ -406,8 +406,8 @@ a {
 }
 
 #processesGraph {
-  width: 60%;
-  height: 75%;
+  width:90%;
+  height:85%;
   position: absolute;
 }
 
@@ -464,4 +464,14 @@ input.mc-navbar-search-input:-ms-input-placeholder {
 
 md-toast.md-success-toast-theme .md-toast-content {
   background-color: $mc-md-primary-color;
+}
+
+.cy-panzoom {
+  z-index: 5;
+}
+
+.cytoscape-navigator {
+  z-index: 5;
+  //width: 300px;
+  //height: 300px;
 }

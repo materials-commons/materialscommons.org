@@ -11,6 +11,7 @@ class MCWorkflowToolbarComponentController {
         this.experimentId = $stateParams.experiment_id;
         this.mcbus = mcbus;
         this.query = '';
+        this.showingWorkflowGraph = true;
     }
 
 
@@ -45,6 +46,18 @@ class MCWorkflowToolbarComponentController {
     reset() {
         this.query = '';
         this.mcbus.send('WORKFLOW$RESET');
+    }
+
+    toggleNavigator() {
+        this.mcbus.send('WORKFLOW$NAVIGATOR');
+    }
+
+    showWorkflowGraph() {
+        this.mcbus.send('WORKFLOW$VIEW', 'graph');
+    }
+
+    showWorkflowOutline() {
+        this.mcbus.send('WORKFLOW$VIEW', 'outline');
     }
 }
 

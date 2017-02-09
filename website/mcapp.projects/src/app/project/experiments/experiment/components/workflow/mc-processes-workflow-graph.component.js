@@ -13,6 +13,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.experimentsService = experimentsService;
         this.$filter = $filter;
         this.removedNodes = null;
+        this.navigator = null;
     }
 
     $onInit() {
@@ -53,6 +54,14 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, searchcb);
         this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => this.allProcessesGraph());
+        this.mcbus.subscribe('WORKFLOW$NAVIGATOR', this.myName, () => {
+            if (this.navigator === null) {
+                this.navigator = this.cy.navigator();
+            } else {
+                this.navigator.destroy();
+                this.navigator = null;
+            }
+        })
     }
 
     $onDestroy() {
@@ -159,8 +168,31 @@ class MCProcessesWorkflowGraphComponentController {
         //    //    content: target.data('name')
         //    //});
         //});
-        this.cy.layout({name: 'dagre'});
+        this.cy.layout({name: 'dagre', fit: true});
         this.cy.panzoom();
+        this.setupContextMenus()
+    }
+
+    setupContextMenus() {
+        let options = {
+            menuItems: [
+                {
+                    id: 'details',
+                    title: 'Show Details',
+                    selector: 'node, edge',
+                    onClickFunction: function (event) {
+                        let target = event.cyTarget;
+                        let name = target.data('name');
+                        if (target.isNode()) {
+                            console.log('show details for node', name)
+                        } else {
+                            console.log('show details for edge', name);
+                        }
+                    }
+                }
+            ]
+        };
+        this.cy.contextMenus(options);
     }
 
 }

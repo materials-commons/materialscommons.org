@@ -43,12 +43,28 @@
     "angular-highlightjs": "^0.6.1",
     "cytoscape": "^2.7.7",
     "cytoscape-dagre": "^1.3.0",
-    "cytoscape-panzoom": "^2.4.0"
+    "cytoscape-panzoom": "^2.4.0",
+    "cytoscape-context-menus": "^2.1.1",
+    "cytoscape-navigator": "cytoscape.js-navigator#^1.1.3"
   },
-
   "overrides": {
     "cytoscape-panzoom": {
-      "main": ["cytoscape.js-panzoom.css", "cytoscape-panzoom.js"]
+      "main": [
+        "cytoscape.js-panzoom.css",
+        "cytoscape-panzoom.js"
+      ]
+    },
+    "cytoscape-context-menus": {
+      "main": [
+        "cytoscape-context-menus.css",
+        "cytoscape-context-menus.js"
+      ]
+    },
+    "cytoscape-navigator": {
+      "main": [
+        "cytoscape.js-navigator.css",
+        "cytoscape-navigator.js"
+      ]
     }
   }
 }
