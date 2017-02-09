@@ -1,8 +1,9 @@
 class MCWorkflowToolbarComponentController {
     /*@ngInject*/
-    constructor(workflowService, $timeout, $mdDialog, $stateParams, mcstate, mcbus) {
+    constructor(workflowService, workflowFiltersService, $timeout, $mdDialog, $stateParams, mcstate, mcbus) {
         this.myName = "mcWorkflowToolbar";
         this.workflowService = workflowService;
+        this.workflowFiltersService = workflowFiltersService;
         this.$timeout = $timeout;
         this.selectedProcess = null;
         this.$mdDialog = $mdDialog;
@@ -60,6 +61,10 @@ class MCWorkflowToolbarComponentController {
     showWorkflowOutline() {
         this.showingWorkflowGraph = false;
         this.mcbus.send('WORKFLOW$VIEW', 'outline');
+    }
+
+    filterBySamples() {
+        this.workflowFiltersService.filterBySamples(this.projectId, this.experimentId);
     }
 }
 

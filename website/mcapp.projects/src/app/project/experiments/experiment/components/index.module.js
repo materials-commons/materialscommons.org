@@ -35,3 +35,4 @@ import './workflow/mc-workflow-toolbar.component';
 import './workflow/mc-workflow-filters.component';
 
 import './workflow/services/workflow-service.service';
+import './workflow/services/workflow-filters-service.service';
