@@ -62,7 +62,26 @@ class MCProcessesWorkflowGraphComponentController {
                 this.navigator.destroy();
                 this.navigator = null;
             }
-        })
+        });
+
+        this.mcbus.subscribe('WORKFLOW$FILTER$BYSAMPLES', this.myName, (samples) => {
+            if (!samples.length) {
+                return;
+            }
+
+            let matchingProcesses = [];
+            samples.forEach( sample => {
+                let matches = this.$filter('filter')(this.processes.plain(), sample.id);
+                matchingProcesses = matchingProcesses.concat(matches.map(p => ({id: p.id, seen: false})));
+            });
+
+            matchingProcesses = _.uniq(matchingProcesses, 'id');
+            let seenProcessesTracker = _.indexBy(matchingProcesses, id);
+            let matchingNodes = this.cy.nodes().filter((i, ele) => {
+
+            });
+
+        });
     }
 
     $onDestroy() {

@@ -1,8 +1,9 @@
 class WorkflowFiltersService {
     /*@ngInject*/
-    constructor($mdDialog, experimentsService) {
+    constructor($mdDialog, experimentsService, mcbus) {
         this.$mdDialog = $mdDialog;
         this.experimentsService = experimentsService;
+        this.mcbus = mcbus;
     }
 
     filterBySamples(projectId, experimentId) {
@@ -17,7 +18,7 @@ class WorkflowFiltersService {
                         samples: samples
                     }
                 }).then((chosenSamples) => {
-                    console.log('samplesToFilterOn', chosenSamples);
+                    this.mcbus.send('WORKFLOW$FILTER$BYSAMPLES', chosenSamples);
                 });
             }
         );
@@ -51,7 +52,7 @@ class FitlerBySamplesDialogController {
     }
 
     done() {
-        this.$mdDialog.hide();
+        this.$mdDialog.hide({samples: this.selectedSamples});
     }
 
     cancel() {
