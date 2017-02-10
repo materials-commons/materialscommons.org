@@ -32,7 +32,7 @@ class MCProcessesWorkflowGraphComponentController {
             if (search === '') {
                 if (this.removedNodes !== null) {
                     this.removedNodes.restore();
-                    this.cy.fit();
+                    this.cy.layout({name: 'dagre', fit: true});
                 }
                 return;
             }
@@ -50,7 +50,7 @@ class MCProcessesWorkflowGraphComponentController {
                 return true;
             });
             this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
-            this.cy.fit();
+            this.cy.layout({name: 'dagre', fit: true});
         };
 
         this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, searchcb);

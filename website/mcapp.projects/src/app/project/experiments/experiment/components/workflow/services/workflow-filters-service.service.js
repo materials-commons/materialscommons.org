@@ -27,23 +27,31 @@ class WorkflowFiltersService {
 
 class FitlerBySamplesDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, mcshow) {
         this.$mdDialog = $mdDialog;
+        this.mcshow = mcshow;
         this.filterSamplesListBy = "";
         this.selectedSamples = [];
         this.allSamples = angular.copy(this.samples);
     }
 
-    addToFilter(sample) {
-        this.selectedSamples.push(sample);
-        const i = _.indexOf(this.allSamples, (s) => s.id === sample.id);
-        if (i !== -1) {
-            this.allSamples.splice(i, 1);
+    showSample(sample) {
+        this.mcshow.sampleDialog(sample);
+    }
+
+    toggleEntry(sample) {
+        if (sample.selected) {
+            this.addToFilter(sample);
+        } else {
+            this.removeFromFilter(sample);
         }
     }
 
+    addToFilter(sample) {
+        this.selectedSamples.push(sample);
+    }
+
     removeFromFilter(sample) {
-        this.allSamples.push(sample);
         const i = _.indexOf(this.selectedSamples, (s) => s.id === sample.id);
         if (i !== -1) {
             sample.selected = false;
