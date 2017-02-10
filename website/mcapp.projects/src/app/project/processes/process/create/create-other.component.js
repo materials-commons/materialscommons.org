@@ -7,7 +7,7 @@ angular.module('materialscommons').component('mcProcessCreateOther', {
 });
 
 /*@ngInject*/
-function MCProcessCreateOtherComponentController(processSelections, createProcess, toastr,
+function MCProcessCreateOtherComponentController(processSelections, createProcess, toast,
                                                  previousStateService, $state, sampleLinker, processEdit,
                                                  $stateParams, removeById) {
     var ctrl = this;
@@ -47,7 +47,7 @@ function MCProcessCreateOtherComponentController(processSelections, createProces
                 },
 
                 function failure() {
-                    toastr.error('Unable to create sample', 'Error', {closeButton: true});
+                    toast.error('Unable to create sample');
                 }
             );
     }

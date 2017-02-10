@@ -5,7 +5,7 @@ angular.module('materialscommons')
     });
 
 /*@ngInject*/
-function MCLoginController($state, User, toastr, mcapi, Restangular) {
+function MCLoginController($state, User, toast, mcapi, Restangular) {
     var ctrl = this;
 
     ctrl.message = "";
@@ -34,9 +34,7 @@ function MCLoginController($state, User, toastr, mcapi, Restangular) {
             })
             .error(function(reason) {
                 ctrl.message = "Incorrect Password/Username!";
-                toastr.error(reason.error, 'Error', {
-                    closeButton: true
-                });
+                toast.error(reason.error);
             }).put({password: ctrl.password});
     }
 

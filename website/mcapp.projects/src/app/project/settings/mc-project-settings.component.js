@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcProjectSettings', {
 });
 
 /*@ngInject*/
-function MCProjectSettingsComponentController(mcstate, mcapi, User, toastr, navbarOnChange) {
+function MCProjectSettingsComponentController(mcstate, mcapi, User, toast, navbarOnChange) {
     const ctrl = this;
     ctrl.isOwner = isOwner;
     ctrl.deleteUser = deleteUser;
@@ -65,9 +65,7 @@ function MCProjectSettingsComponentController(mcstate, mcapi, User, toastr, navb
                     ctrl.usersAvailable = usersNotInProject();
                 })
                 .error(function(e) {
-                    toastr.error(e.error, 'Error', {
-                        closeButton: true
-                    });
+                    toast.error(e.error);
                 }).post({
                 'user_id': user.email,
                 'project_id': ctrl.project.id,

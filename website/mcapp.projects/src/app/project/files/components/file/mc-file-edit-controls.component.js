@@ -6,7 +6,7 @@ angular.module('materialscommons').component('mcFileEditControls', {
     }
 });
 
-function MCFileEditControlsComponentController(mcfile, pubsub, toastr, mcstate, selectItems) {
+function MCFileEditControlsComponentController(mcfile, pubsub, toast, mcstate, selectItems) {
     'ngInject';
 
     var ctrl = this;
@@ -72,7 +72,7 @@ function MCFileEditControlsComponentController(mcfile, pubsub, toastr, mcstate, 
         ctrl.file.remove().then(function() {
             // do something here with deleted the file.
         }).catch(function(err) {
-            toastr.error("File deletion failed: " + err.error, "Error");
+            toast.error("File deletion failed: " + err.error);
         });
     }
 
@@ -89,7 +89,7 @@ function MCFileEditControlsComponentController(mcfile, pubsub, toastr, mcstate, 
             ctrl.renameActive = false;
             pubsub.send('files.refresh', ctrl.file);
         }).catch(function(err) {
-            toastr.error("File rename failed: " + err.error, "Error");
+            toast.error("File rename failed: " + err.error);
         });
     }
 
