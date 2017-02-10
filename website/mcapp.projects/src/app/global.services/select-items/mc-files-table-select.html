@@ -17,7 +17,6 @@
                 ng-repeat="file in $ctrl.files">
                 <td md-cell>
                     <md-checkbox ng-model="file.selected" aria-label="select"></md-checkbox>
-
                 </td>
                 <td md-cell>
                     <a class="md-primary" ui-sref="project.file({file_id: file.id})">{{file.name}}</a>
