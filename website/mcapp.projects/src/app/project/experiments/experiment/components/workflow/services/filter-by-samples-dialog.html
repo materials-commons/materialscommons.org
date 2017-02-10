@@ -13,7 +13,7 @@
                     <md-subheader class="md-no-sticky">Samples in experiment</md-subheader>
                     <md-list-item class="md-2-line"
                                   ng-repeat="sample in $ctrl.allSamples | orderBy:'name' | filter:$ctrl.filterSamplesListBy">
-                        <md-checkbox ng-model="sample.selected" ng-change="$ctrl.addToFilter(sample)"></md-checkbox>
+                        <md-checkbox aria-label="selected" ng-model="sample.selected" ng-change="$ctrl.addToFilter(sample)"></md-checkbox>
                         <div class="md-list-item-text">
                             <h3 class="md-title">{{sample.name}}</h3>
                             <!--<p>{{user.email}}</p>-->

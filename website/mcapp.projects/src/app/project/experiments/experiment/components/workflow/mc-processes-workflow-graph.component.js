@@ -65,6 +65,7 @@ class MCProcessesWorkflowGraphComponentController {
         });
 
         this.mcbus.subscribe('WORKFLOW$FILTER$BYSAMPLES', this.myName, (samples) => {
+            console.log('WORKFLOW$FILTER$BYSAMPLES', samples);
             if (!samples.length) {
                 return;
             }
@@ -75,12 +76,18 @@ class MCProcessesWorkflowGraphComponentController {
                 matchingProcesses = matchingProcesses.concat(matches.map(p => ({id: p.id, seen: false})));
             });
 
-            matchingProcesses = _.uniq(matchingProcesses, 'id');
-            let seenProcessesTracker = _.indexBy(matchingProcesses, id);
+            console.log('  number of matching processes', matchingProcesses.length);
+
+            let matchesById = _.indexBy(matchingProcesses, 'id');
             let matchingNodes = this.cy.nodes().filter((i, ele) => {
-
+                    let processId = ele.data('details').id;
+                    if ((processId in matchesById)) {
+                        return false;
+                    }
+                    return true;
             });
-
+            this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
+            this.cy.layout({name: 'dagre', fit: true});
         });
     }
 

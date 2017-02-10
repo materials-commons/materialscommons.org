@@ -52,7 +52,7 @@ class FitlerBySamplesDialogController {
     }
 
     done() {
-        this.$mdDialog.hide({samples: this.selectedSamples});
+        this.$mdDialog.hide(this.selectedSamples);
     }
 
     cancel() {
