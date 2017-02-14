@@ -59,6 +59,7 @@ class MCProcessesWorkflowOutlineComponentController {
     showDetails(p) {
         this.processTree.clearSelected(this.root);
         p.selected = true;
+        this.process = p;
         this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
     }
 
