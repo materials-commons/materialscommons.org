@@ -11,11 +11,11 @@
     <label>Notes</label>
     <div md-whiteframe layout-margin>
             <div ckeditor="editorOptions"
-                 ng-model="$ctrl.process.note"
+                 ng-model="$ctrl.process.description"
                  ng-model-options="{debounce: 500}"
-                 ng-change="$ctrl.updateProcessNote()"
+                 ng-change="$ctrl.updateProcessDescription()"
                  contenteditable="true">
-                {{$ctrl.project.description}}
+                {{$ctrl.process.description}}
             </div>
         </div>
 
