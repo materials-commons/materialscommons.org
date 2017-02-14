@@ -25,9 +25,15 @@ def convert_scan_size(conn):
     print "Done."
 
 
-def add_missing_note_field_to_processes(conn):
-    print "Adding note field to processes that are missing it..."
-    r.table('processes').filter(~r.row.has_fields('note')).update({'note': ''}).run(conn)
+def add_missing_description_field_to_processes(conn):
+    print "Adding description field and removing notes field..."
+    r.table('processes').update({'description': ''}).run(conn)
+    all_processes = list(r.table('processes').run(conn))
+    for p in all_processes:
+        if 'note' in p:
+            if p['note'] != '':
+                r.table('processes').get(p['id']).update({'description': p['note']}).run(conn)
+    r.table('processes').replace(r.row.without('note'))
     print "Done."
 
 
@@ -41,7 +47,7 @@ def main():
     # fix_users_table_type(conn)
 
     convert_scan_size(conn)
-    add_missing_note_field_to_processes(conn)
+    add_missing_description_field_to_processes(conn)
 
 
 if __name__ == "__main__":
