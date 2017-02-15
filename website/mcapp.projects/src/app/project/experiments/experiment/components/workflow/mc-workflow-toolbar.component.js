@@ -35,6 +35,10 @@ class MCWorkflowToolbarComponentController {
         });
     }
 
+    cloneProcess() {
+        this.workflowService.cloneProcess(this.projectId, this.experimentId, this.selectedProcess);
+    }
+
     deleteProcess() {
         this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.selectedProcess.id);
         this.selectedProcess = null;

@@ -40,6 +40,25 @@ class WorkflowService {
             );
     }
 
+    cloneProcess(projectId, experimentId, process) {
+        console.log(projectId, experimentId, process.plain());
+        let p = angular.copy(process);
+        p.input_samples.forEach(s => s.selected = true);
+        p.output_samples.forEach(s => s.selected = true);
+        p.files.forEach(f => f.selected = true);
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/workflow/services/clone-process-dialog.html',
+            controllerAs: '$ctrl',
+            controller: CloneProcessDialogController,
+            bindToController: true,
+            locals: {
+                process: p
+            }
+        }).then(
+            () => null
+        );
+    }
+
     deleteNodeAndProcess(projectId, experimentId, processId) {
         this.processesService.getDeleteProcessPreConditions(projectId, processId)
             .then(
@@ -100,6 +119,7 @@ class NewProcessDialogController {
         this.$mdDialog = $mdDialog;
         this.processesService = processesService;
         this.projectId = $stateParams.project_id;
+        this.processName = this.process.name;
     }
 
     done() {
@@ -111,6 +131,21 @@ class NewProcessDialogController {
             () => this.$mdDialog.cancel(),
             () => this.$mdDialog.cancel()
         );
+    }
+}
+
+class CloneProcessDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 
