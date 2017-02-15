@@ -64,10 +64,12 @@
         <a style="color:white;" ui-sref="projects.list">switch</a>
     </div>
     <span flex></span>
-    <a class="text-white" style="color:white" ng-click="$ctrl.toggleQuickbar()">QUICKBAR</a>
+    <a ng-if="false" class="text-white" style="color:white" ng-click="$ctrl.toggleQuickbar()">QUICKBAR</a>
     <span flex></span>
-    <a class="text-white" style="..." href="https://github.com/materials-commons/materialscommons.org/wiki/Help"
+    <a class="text-white" href="https://github.com/materials-commons/materialscommons.org/wiki/Help"
        target="_blank"><span class="fa fa-question-circle"></span></a>
+    <span flex></span>
+    <a class="always-white" href="mailto:help@materialscommons.org">Report Issue</a>
     <span flex></span>
 </div>
 <mc-project-quickbar show-quickbar="$ctrl.showQuickbar"
