@@ -9,7 +9,7 @@ class WorkflowService {
         this.$mdDialog = $mdDialog;
     }
 
-    addProcessFromTemplate(templateId, projectId, experimentId) {
+    addProcessFromTemplate(templateId, projectId, experimentId, multiple=true) {
         this.experimentsService.createProcessFromTemplate(projectId, experimentId, `global_${templateId}`)
             .then(
                 (process) => {
@@ -19,7 +19,7 @@ class WorkflowService {
                         controllerAs: '$ctrl',
                         controller: NewProcessDialogController,
                         bindToController: true,
-                        multiple: true,
+                        multiple: multiple,
                         locals: {
                             process: p
                         }

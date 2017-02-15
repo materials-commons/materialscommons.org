@@ -75,10 +75,11 @@ class SelectProcessTemplateDialogController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.workflowService = workflowService;
+        this.keepOpen = false;
     }
 
     addSelectedProcessTemplate(templateId) {
-        this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId)
+        this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId, this.keepOpen)
     }
 
     done() {
