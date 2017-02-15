@@ -37,6 +37,22 @@ def add_missing_description_field_to_processes(conn):
     print "Done."
 
 
+def fix_missing_property_sets(conn):
+    print "Fixing samples that having missing property sets..."
+    process_property_sets = list(r.table('process2sample').run(conn))
+    for p2s in process_property_sets:
+        s2p = list(r.table('sample2propertyset').get_all(p2s['property_set_id'], index='property_set_id').run(conn))
+        if not s2p:
+            print "The following property set is missing %s" % (p2s['property_set_id'])
+            r.table('sample2propertyset').insert({
+                'current': True,
+                'property_set_id': p2s['property_set_id'],
+                'sample_id': p2s['sample_id'],
+                'version': ''
+            }).run(conn)
+    print "Done."
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
@@ -46,8 +62,9 @@ def main():
     # Is this needed?
     # fix_users_table_type(conn)
 
-    convert_scan_size(conn)
-    add_missing_description_field_to_processes(conn)
+    # convert_scan_size(conn)
+    # add_missing_description_field_to_processes(conn)
+    fix_missing_property_sets(conn)
 
 
 if __name__ == "__main__":
