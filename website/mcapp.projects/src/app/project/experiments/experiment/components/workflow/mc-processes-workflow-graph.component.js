@@ -71,7 +71,7 @@ class MCProcessesWorkflowGraphComponentController {
             }
 
             let matchingProcesses = [];
-            samples.forEach( sample => {
+            samples.forEach(sample => {
                 let matches = this.$filter('filter')(this.processes.plain(), sample.id);
                 matchingProcesses = matchingProcesses.concat(matches.map(p => ({id: p.id, seen: false})));
             });
@@ -80,11 +80,11 @@ class MCProcessesWorkflowGraphComponentController {
 
             let matchesById = _.indexBy(matchingProcesses, 'id');
             let matchingNodes = this.cy.nodes().filter((i, ele) => {
-                    let processId = ele.data('details').id;
-                    if ((processId in matchesById)) {
-                        return false;
-                    }
-                    return true;
+                let processId = ele.data('details').id;
+                if ((processId in matchesById)) {
+                    return false;
+                }
+                return true;
             });
             this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
             this.cy.layout({name: 'dagre', fit: true});
@@ -210,7 +210,14 @@ class MCProcessesWorkflowGraphComponentController {
                     id: 'details',
                     title: 'Show Details',
                     selector: 'node, edge',
+                    hasTrailingDivider: true,
                     onClickFunction: (event) => this._showDetails(event)
+                },
+                {
+                    id: 'clone-process',
+                    title: 'Clone Process',
+                    selector: 'node',
+                    onClickFunction: (event) => this._cloneProcess(event)
                 }
             ]
         };
@@ -220,9 +227,7 @@ class MCProcessesWorkflowGraphComponentController {
     _showDetails(event) {
         let target = event.cyTarget;
         if (target.isNode()) {
-            let processId = target.data('id');
-            let process = this.processes.filter((p) => p.id === processId)[0];
-            process.hasChildren = (target.outgoers().length > 0);
+            let process = this.getProcessFromEvent(event);
             this.$mdDialog.show({
                 templateUrl: 'app/project/experiments/experiment/components/workflow/mc-process-details-dialog.html',
                 controller: MCProcessDetailsDialogController,
@@ -233,6 +238,19 @@ class MCProcessesWorkflowGraphComponentController {
                 }
             });
         }
+    }
+
+    _cloneProcess(event) {
+        let process = this.getProcessFromEvent(event);
+        this.workflowService.cloneProcess(this.projectId, this.experimentId, process);
+    }
+
+    getProcessFromEvent(event) {
+        let target = event.cyTarget;
+        let processId = target.data('id');
+        let process = this.processes.filter((p) => p.id === processId)[0];
+        process.hasChildren = (target.outgoers().length > 0);
+        return process;
     }
 
 }

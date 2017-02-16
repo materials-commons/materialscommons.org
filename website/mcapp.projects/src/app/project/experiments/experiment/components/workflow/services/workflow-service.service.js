@@ -41,7 +41,7 @@ class WorkflowService {
     }
 
     cloneProcess(projectId, experimentId, process) {
-        console.log(projectId, experimentId, process.plain());
+        console.log(projectId, experimentId, process.plain ? process.plain() : process);
         let p = angular.copy(process);
         p.input_samples.forEach(s => s.selected = true);
         p.output_samples.forEach(s => s.selected = true);

@@ -10,13 +10,9 @@
                 <label>Name</label>
                 <input ng-model="$ctrl.processName">
             </md-input-container>
-            <mc-clone-process-select-samples ng-show="$ctrl.process.input_samples.length"
-                                             title="Select Input Samples In Cloned Process"
-                                             samples="$ctrl.process.input_samples">
-            </mc-clone-process-select-samples>
-            <mc-clone-process-select-samples ng-show="$ctrl.process.output_samples.length"
-                                             title="Select Output Samples In Cloned Process"
-                                             samples="$ctrl.process.output_samples">
+            <mc-clone-process-select-samples does-transform="$ctrl.process.does_transform"
+                                             output-samples="$ctrl.process.output_samples"
+                                             input-samples="$ctrl.process.input_samples">
             </mc-clone-process-select-samples>
         </md-content>
     </md-dialog-content>

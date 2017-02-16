@@ -6,9 +6,21 @@ const commonQueries = require('../../../lib/common-queries');
 const dbExec = require('./run');
 const sampleCommon = require('./sample-common');
 
+function* getProcess(processID) {
+    let rql = commonQueries.processDetailsRql(r.table('processes').getAll(processID), r);
+    let process = yield dbExec(rql);
+    if (!process.length) {
+        return {error: `No such process ${processID}`};
+    }
+    let template = yield r.table('templates').get(`global_${process[0].template_name}`);
+    process = mergeTemplateIntoProcess(template, process[0]);
+    process = convertDatePropertyAttributes(process);
+    return {val: process};
+}
+
 function mergeTemplateIntoProcess(template, process) {
-    process.setup[0].properties.forEach(function(property) {
-        let i = _.indexOf(template.setup[0].properties, function(template_property) {
+    process.setup[0].properties.forEach(function (property) {
+        let i = _.indexOf(template.setup[0].properties, function (template_property) {
             return template_property.attribute === property.attribute
         });
         if (i > -1) {
@@ -43,18 +55,6 @@ function mergeTemplateIntoProcess(template, process) {
     return process;
 }
 
-function* getProcess(processID) {
-    let rql = commonQueries.processDetailsRql(r.table('processes').getAll(processID), r);
-    let process = yield dbExec(rql);
-    if (!process.length) {
-        return {error: `No such process ${processID}`};
-    }
-    let template = yield r.table('templates').get(`global_${process[0].template_name}`);
-    process = mergeTemplateIntoProcess(template, process[0]);
-    process = convertDatePropertyAttributes(process);
-    return {val: process};
-}
-
 function convertDatePropertyAttributes(process) {
     if (process.setup) {
         let setup = process.setup;
@@ -64,10 +64,10 @@ function convertDatePropertyAttributes(process) {
                 let properties = s.properties;
                 for (var j = 0; j < properties.length; j++) {
                     let property = properties[j];
-                    if (property.otype && (property.otype == 'date')){
+                    if (property.otype && (property.otype == 'date')) {
                         let value = property.value;
                         if (value && value.epoch_time) {
-                            let date = new Date(1000*value.epoch_time)
+                            let date = new Date(1000 * value.epoch_time)
                             property.value = date.getTime();
                         }
                     }
@@ -154,7 +154,8 @@ function* updateProperties(properties) {
 
 function* updateProcessSamples(process, samples) {
     let processId = process.id;
-    let samplesToAddToProcess = samples.filter(s => s.command === 'add').map(s => new model.Process2Sample(processId, s.id, s.property_set_id, 'in'));
+    let samplesToAddToProcess = samples.filter(s => s.command === 'add')
+        .map(s => new model.Process2Sample(processId, s.id, s.property_set_id, 'in'));
     samplesToAddToProcess = yield removeExistingProcessSampleEntries(processId, samplesToAddToProcess);
     if (samplesToAddToProcess.length) {
         yield r.table('process2sample').insert(samplesToAddToProcess);
@@ -175,7 +176,8 @@ function* updateProcessSamples(process, samples) {
         }
     }
 
-    let samplesToDeleteFromProcess = samples.filter(s => s.command === 'delete').map(s => [processId, s.id, s.property_set_id]);
+    let samplesToDeleteFromProcess = samples.filter(s => s.command === 'delete')
+        .map(s => [processId, s.id, s.property_set_id]);
     let sampleIds = samples.filter(s => s.command === 'delete').map(s => s.id);
     let canBeDeleted = yield sampleCommon.canDeleteSamples(sampleIds, processId);
     if (!canBeDeleted) {
@@ -183,7 +185,8 @@ function* updateProcessSamples(process, samples) {
         return 'Some samples used in other processes - cannot be deleted.';
     }
     if (samplesToDeleteFromProcess.length) {
-        yield r.table('process2sample').getAll(r.args(samplesToDeleteFromProcess), {index: 'process_sample_property_set'}).delete();
+        yield r.table('process2sample')
+            .getAll(r.args(samplesToDeleteFromProcess), {index: 'process_sample_property_set'}).delete();
     }
 
     yield sampleCommon.removeUnusedSamples(sampleIds);
@@ -195,7 +198,8 @@ function* updateProcessSamples(process, samples) {
 function* removeExistingProcessSampleEntries(processId, samples) {
     if (samples.length) {
         let indexEntries = samples.map(s => [processId, s.sample_id, s.property_set_id]);
-        let matchingEntries = yield r.table('process2sample').getAll(r.args(indexEntries), {index: 'process_sample_property_set'});
+        let matchingEntries = yield r.table('process2sample')
+            .getAll(r.args(indexEntries), {index: 'process_sample_property_set'});
         let bySampleID = _.indexBy(matchingEntries, 'sample_id');
         return samples.filter(s => (!(s.sample_id in bySampleID)));
     }
