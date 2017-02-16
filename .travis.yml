@@ -5,8 +5,7 @@ node_js:
 notifications:
   email:
     recipients:
-      gtarcea@umich.edu
-      weymouth@umich.ed
+      weymouth@umich.edu
 
 python:
   - '2.7'
@@ -56,5 +55,5 @@ before_script:
   - rethinkdb restore $MCDB_FILE --connect $MCDB_CONNECTION --force
 
 script:
-  - npm run-script test
+  - npm run-script test-no-html
   - pytest --ignore=node_modules/

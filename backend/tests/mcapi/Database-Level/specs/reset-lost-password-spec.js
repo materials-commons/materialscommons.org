@@ -10,29 +10,49 @@ const r = require('rethinkdbdash')({
     port: process.env.MCDB_PORT || 30815
 });
 
-const resourcesUsers = require('../../../servers/mcapi/resources/users');
-const dbModelUsers = require('../../../servers/mcapi/db/model/users');
+const backend_base = '../../../..';
 
-const user1Id = 'thisIsAUserForTestingONLY!@mc.org';
+const experiments = require(backend_base + '/servers/mcapi/resources/projects/experiments/index');
+const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
+
+const base_user_id = 'thisIsAUserForTestingONLY!';
 const fullname = "Test User";
+const base_project_name = "Test project - test 1: ";
+
+let random_name = function(){
+    let number = Math.floor(Math.random()*10000);
+    return base_project_name + number;
+};
+
+let random_user = function(){
+    let number = Math.floor(Math.random()*10000);
+    return base_user_id + number + "@mc.org";
+};
+
+let user1Id = random_user();
 
 beforeEach(function*() {
-    let results = yield r.db('materialscommons').table('users').insert({
-        admin: false ,
-        affiliation:  "" ,
-        avatar:  "" ,
-        description:  "" ,
-        email: user1Id,
-        fullname:  fullname ,
-        homepage:  "" ,
-        id: user1Id,
-        name: fullname,
-        preferences: {
-            tags: [],
-            templates: []
-        }
-    });
-    assert.equal(results.inserted,1, "The User was correctly inserted");
+    let user = yield dbModelUsers.getUser(user1Id);
+    if (!user) {
+        let results = yield r.db('materialscommons').table('users').insert({
+            admin: false,
+            affiliation: "",
+            avatar: "",
+            description: "",
+            email: user1Id,
+            fullname: fullname,
+            homepage: "",
+            id: user1Id,
+            name: fullname,
+            preferences: {
+                tags: [],
+                templates: []
+            }
+        });
+        assert.equal(results.inserted, 1, "The User was correctly inserted");
+    } else {
+        assert.equal(user.id,user1Id, "Wrong test user, id = " + user.id);
+    }
 });
 
 describe('Feature - reset lost password: ', function() {
@@ -51,7 +71,7 @@ describe('Feature - reset lost password: ', function() {
             assert.isTrue(user.reset_password,"The flag is set");
             assert.equal(user.validate_uuid,validate_uuid);
         });
-        it('User reset password flag set cleared', function*() {
+        it('User reset password flag is cleared', function*() {
             let user =  yield dbModelUsers.getUser(user1Id);
             assert.isNotNull(user,"test user is not null");
             let result = yield dbModelUsers.setUserPasswordResetFlag(user1Id);
@@ -68,7 +88,11 @@ describe('Feature - reset lost password: ', function() {
 });
 
 afterEach(function*() {
-    let results = yield r.db('materialscommons').table('users').get(user1Id).delete();
-    assert.equal(results.deleted,1, "The User was correctly deleted");
+    let user = yield dbModelUsers.getUser(user1Id);
+    if (user) {
+        let results = yield r.db('materialscommons').table('users').get(user1Id).delete();
+        assert.equal(results.deleted,1, "The User was correctly deleted");
+    } else {
+        assert.isNull(user,"The user still exists at end");
+    }
 });
-
