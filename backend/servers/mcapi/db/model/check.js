@@ -74,6 +74,18 @@ function* allProcessesInExperiment(experimentId, processIds) {
     return processes.length === processIds.length;
 }
 
+function* allSamplesInProcess(processId, samples) {
+    let indexArgs = samples.map(s => [processId, s.sample_id, s.property_set_id]);
+    let matches = yield r.table('process2sample').getAll(r.args(indexArgs), {index: 'process_sample_property_set'});
+    return matches.length === samples.length;
+}
+
+function* allFilesInProcess(processId, files) {
+    let indexArgs = files.map(f => [processId, f.id]);
+    let matches = yield r.table('process2file').getAll(r.args(indexArgs), {index: 'process_datafile'});
+    return files.length === matches.length;
+}
+
 function* sampleInExperiment(experimentId, sampleId) {
     let samples = yield r.table('experiment2sample').getAll([experimentId, sampleId], {index: 'experiment_sample'});
     return samples.length !== 0;
@@ -148,6 +160,8 @@ module.exports = {
     allSamplesInExperiment,
     allFilesInExperiment,
     allProcessesInExperiment,
+    allSamplesInProcess,
+    allFilesInProcess,
     sampleInExperiment,
     processInExperiment,
     fileInProject,

@@ -41,12 +41,11 @@ class WorkflowService {
     }
 
     cloneProcess(projectId, experimentId, process) {
-        console.log(projectId, experimentId, process.plain ? process.plain() : process);
         let p = angular.copy(process);
         p.input_samples.forEach(s => s.selected = true);
         p.output_samples.forEach(s => s.selected = true);
         p.files.forEach(f => f.selected = true);
-        this.$mdDialog.show({
+        return this.$mdDialog.show({
             templateUrl: 'app/project/experiments/experiment/components/workflow/services/clone-process-dialog.html',
             controllerAs: '$ctrl',
             controller: CloneProcessDialogController,
@@ -55,7 +54,12 @@ class WorkflowService {
                 process: p
             }
         }).then(
-            () => null
+            (cloneArgs) => {
+                return this.experimentsService.cloneProcess(projectId, experimentId, p.id, cloneArgs).then(
+                    (process) => process,
+                    () => this.toast.error('Error cloning process')
+                )
+            }
         );
     }
 
@@ -141,7 +145,9 @@ class CloneProcessDialogController {
     }
 
     done() {
-        this.$mdDialog.hide();
+        let files = this.process.files.filter(f => f.selected);
+        let inputSamples = this.process.input_samples.filter(s => s.selected);
+        this.$mdDialog.hide({name: this.process.name, files: files, samples: inputSamples});
     }
 
     cancel() {

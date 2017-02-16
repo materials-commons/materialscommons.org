@@ -7,7 +7,6 @@ class MCCloneProcessSelectSamplesComponentController {
     }
 
     showSample(sample) {
-        console.log('showSample');
         this.mcshow.sampleDialog(sample);
     }
 

@@ -234,7 +234,7 @@ class MCProcessesWorkflowGraphComponentController {
                 controllerAs: '$ctrl',
                 bindToController: true,
                 locals: {
-                    process: target.data('details')
+                    process: process
                 }
             });
         }

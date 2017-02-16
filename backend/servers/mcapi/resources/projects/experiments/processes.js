@@ -137,12 +137,65 @@ function convertPropertyDateValues(updateArgs) {
             if (property.otype == 'date') {
                 try {
                     property.value = new Date(property.value);
-                } catch(e){}
+                } catch (e) {
+                }
             }
         }
     }
     return updateArgs;
 }
+
+function* cloneProcess(next) {
+    let cloneArgs = yield parse(this);
+    cloneArgs = setDefaultCloneArgValues(cloneArgs);
+    let errors = yield validateCloneArgs(this.params.process_id, cloneArgs);
+    if (errors != null) {
+        this.status = status.BAD_REQUEST;
+        this.body = errors;
+    } else {
+        let rv = yield experiments.cloneProcess(this.params.project_id,
+            this.params.experiment_id, this.params.process_id, this.reqctx.user.id, cloneArgs);
+        if (rv.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = rv;
+        } else {
+            this.body = rv.val;
+        }
+    }
+
+    yield next;
+}
+
+function setDefaultCloneArgValues(cloneArgs) {
+    if (!cloneArgs.samples) {
+        cloneArgs.samples = [];
+    }
+
+    if (!cloneArgs.files) {
+        cloneArgs.files = [];
+    }
+
+    return cloneArgs;
+}
+
+function* validateCloneArgs(processId, cloneArgs) {
+    if (cloneArgs.samples.length) {
+        let samplesInProcess = yield check.allSamplesInProcess(processId, cloneArgs.samples);
+        if (! samplesInProcess) {
+            return {error: `All input samples must be from the cloned process`};
+        }
+    }
+
+    if (cloneArgs.files.length) {
+        let filesInProcess = yield check.allFilesInProcess(processId, cloneArgs.files);
+        if (! filesInProcess) {
+            return {error: `All files must be from the cloned process`};
+        }
+    }
+
+    return null;
+}
+
 
 function createResource() {
     const router = new Router();
@@ -154,6 +207,7 @@ function createResource() {
 
     router.put('/:process_id', updateExperimentProcess);
     router.get('/:process_id', getProcess);
+    router.post('/:process_id/clone', cloneProcess)
 
     return router;
 }

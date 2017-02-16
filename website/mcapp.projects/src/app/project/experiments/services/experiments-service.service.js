@@ -83,6 +83,11 @@ class ExperimentsService {
             .customPOST();
     }
 
+    cloneProcess(projectId, experimentId, processId, cloneArgs) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('processes', processId).one('clone')
+            .customPOST(cloneArgs);
+    }
+
     convertDatePropertyAttributes(process) {
         if (process.setup) {
             let setup = process.setup;
