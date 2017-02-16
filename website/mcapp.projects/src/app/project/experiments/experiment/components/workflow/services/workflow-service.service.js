@@ -47,7 +47,7 @@ class WorkflowService {
         }).then(
             (cloneArgs) => {
                 return this.experimentsService.cloneProcess(projectId, experimentId, p.id, cloneArgs).then(
-                    (process) => this.sendProcessChangeEvent(projectId, experimentId),
+                    () => this.sendProcessChangeEvent(projectId, experimentId),
                     () => this.toast.error('Error cloning process')
                 )
             }
