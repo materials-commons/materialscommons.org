@@ -62,8 +62,8 @@ def main():
     # Is this needed?
     # fix_users_table_type(conn)
 
-    # convert_scan_size(conn)
-    # add_missing_description_field_to_processes(conn)
+    convert_scan_size(conn)
+    add_missing_description_field_to_processes(conn)
     fix_missing_property_sets(conn)
 
 
