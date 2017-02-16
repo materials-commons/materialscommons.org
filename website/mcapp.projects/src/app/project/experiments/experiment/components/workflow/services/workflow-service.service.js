@@ -9,7 +9,7 @@ class WorkflowService {
         this.$mdDialog = $mdDialog;
     }
 
-    addProcessFromTemplate(templateId, projectId, experimentId, multiple=true) {
+    addProcessFromTemplate(templateId, projectId, experimentId, multiple = true) {
         this.experimentsService.createProcessFromTemplate(projectId, experimentId, `global_${templateId}`)
             .then(
                 (process) => {
@@ -24,16 +24,7 @@ class WorkflowService {
                             process: p
                         }
                     }).then(
-                        () => {
-                            this.experimentsService.getProcessesForExperiment(projectId, experimentId)
-                                .then(
-                                    (processes) => {
-                                        this.processes = processes;
-                                        this.mcbus.send('PROCESSES$CHANGE', processes);
-                                    },
-                                    () => this.toast.error('Error retrieving processes for experiment')
-                                );
-                        }
+                        () => this.sendProcessChangeEvent(projectId, experimentId)
                     );
                 },
                 () => this.toast.error('Unable to add samples')
@@ -56,11 +47,19 @@ class WorkflowService {
         }).then(
             (cloneArgs) => {
                 return this.experimentsService.cloneProcess(projectId, experimentId, p.id, cloneArgs).then(
-                    (process) => process,
+                    (process) => this.sendProcessChangeEvent(projectId, experimentId),
                     () => this.toast.error('Error cloning process')
                 )
             }
         );
+    }
+
+    sendProcessChangeEvent(projectId, experimentId) {
+        this.experimentsService.getProcessesForExperiment(projectId, experimentId)
+            .then(
+                (processes) => this.mcbus.send('PROCESSES$CHANGE', processes),
+                () => this.toast.error('Error retrieving processes for experiment')
+            );
     }
 
     deleteNodeAndProcess(projectId, experimentId, processId) {
