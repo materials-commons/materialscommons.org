@@ -225,13 +225,14 @@ class MCProcessesWorkflowGraphComponentController {
                     title: 'Clone Process',
                     selector: 'node',
                     onClickFunction: (event) => this._cloneProcess(event)
-                },
-                {
-                    id: 'delete-process',
-                    title: 'Delete Process',
-                    selector: 'node',
-                    onClickFunction: (event) => this._deleteProcess(event),
                 }
+                // ,
+                // {
+                //     id: 'delete-process',
+                //     title: 'Delete Process',
+                //     selector: 'node',
+                //     onClickFunction: (event) => this._deleteProcess(event)
+                // }
             ]
         };
         this.cy.contextMenus(options);
