@@ -13,10 +13,12 @@ const backend_base = '../../../..';
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const projects = require(backend_base + '/servers/mcapi/db/model/projects');
 const directories = require(backend_base + '/servers/mcapi/db/model/directories');
+const apikeyCache = require(backend_base + '/servers/lib/apikey-cache')(dbModelUsers);
 
 const base_user_id = 'thisIsAUserForTestingONLY!';
 const fullname = "Test User";
 const base_project_name = "Test project - test 1: ";
+const user_apikey = "ThisIsAJunkKey";
 
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
@@ -39,6 +41,7 @@ before(function*() {
             avatar: "",
             description: "",
             email: user1Id,
+            apikey: user_apikey,
             fullname: fullname,
             homepage: "",
             id: user1Id,
@@ -55,24 +58,23 @@ before(function*() {
 });
 
 describe('Feature - User - Build Demo Project: ', function() {
-    describe('Get user apikey',function() {
-        it('API key', function * (){
+    describe('Got a user',function() {
+        it('Test user', function * (){
             let user = yield dbModelUsers.getUser(user1Id);
-            console.log(user);
             assert.isNotNull(user,"test user exists");
-            console.log(user.name)
-            console.log(user.apikey);
-            assert.isNotNull(user.apikey);
+            assert.equal(user.id,user1Id);
+            assert.equal(user.name,fullname);
         })
     });
     describe('Run build demo script command with args',function() {
         it('Build demo project ', function* () {
             this.timeout(10000); // 10 seconds
-            let user = yield dbModelUsers.getUser(user1Id);
-            let apikey = 'totally-bogus';
+            let apikey = user_apikey;
             let host = get_host_by_guessing();
 
-            let base_dir = "$MCDIR/project_demo/";
+            console.log("$MCDIR = " + process.env.MCDIR);
+
+            let base_dir = process.env.MCDIR + "/project_demo/";
             let source_dir = base_dir + "python"
             let datapath = base_dir + "files";
             let host_part = " --host=" + host;
@@ -80,15 +82,22 @@ describe('Feature - User - Build Demo Project: ', function() {
             let key_part = " --apikey=" + apikey;
             let command1 = "cd " + source_dir;
             let command2 = "python build_project.py " + host_part + path_part + key_part;
-            const execSync = require('child_process').execSync;
-            let command = command1 + " ; " + command2;
             console.log("command1 = " + command1);
             console.log("command2 = " + command2);
-            console.log("$MCDIR = " + process.env.MCDIR);
-            //let results_buf = execSync(command);
-            //let result = results_buf.toString();
-            let result = "Refreshed project with name = Demo Project\n"
-            assert.equal(result,"Refreshed project with name = Demo Project\n")
+
+            let command = command1 + " ; " + command2;
+
+            const execSync = require('child_process').execSync;
+            let results_buf = execSync(command);
+
+            let result = results_buf.toString();
+            let expected1 = 'Built project with name = Demo Project\n';
+            let expected2 = "Refreshed project with name = Demo Project\n";
+            console.log(result);
+
+            assert(
+                result == expected1 || result == expected2
+            )
         })
     });
 });
