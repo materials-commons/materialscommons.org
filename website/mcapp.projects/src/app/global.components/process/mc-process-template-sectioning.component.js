@@ -12,7 +12,7 @@ class MCProcessTemplateSectioningComponentController {
         this.navbarOnChange = navbarOnChange;
     }
 
-    selectFilesOld() {
+    selectFiles() {
         this.selectItems.fileTree(true).then(
             (selected) => {
                 let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
@@ -29,7 +29,7 @@ class MCProcessTemplateSectioningComponentController {
             });
     }
 
-    selectSamplesOld() {
+    selectSamples() {
         this.selectItems.samplesFromProject(this.projectId, this.experimentId, {singleSelection: true}).then(
             (selected) => {
                 let samples = selected.samples.map(s => {
