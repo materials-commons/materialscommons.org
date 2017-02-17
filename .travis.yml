@@ -46,10 +46,12 @@ before_install:
   - sudo pip install pytest
   - node --version
   - pip list
+  - pushd ~
   - git clone https://github.com/materials-commons/mcapi.git
   - pwd
   - ls
   - ls ~/mcapi/python
+  - popd
   - pushd $MCDIR
   - mkdir -p project_demo/files
   - cd project_demo
