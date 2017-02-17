@@ -96,7 +96,7 @@ describe('Feature - User - Build Demo Project: ', function() {
             let apikey = user_apikey;
 
             //let result = createDemoProjectSync(apikey);
-            let result = yield createDemoProjectAsync(apikey);
+            let result = yield createDemoProjectAsync2(apikey);
             console.log(result);
             //assert.equal(result,"Refreshed project with name = Demo Project")
         })
@@ -174,6 +174,76 @@ function promiseFromChildProcess(child) {
             }
         });
     });
+}
+
+function* createDemoProjectAsync2(apikey) {
+    let port = process.env.MCDB_PORT,
+        hostname = os.hostname(),
+        mcdir = process.env.MCDIR,
+        apihost = '',
+        source_dir = `${mcdir}/project_demo/python`;
+
+    switch (hostname) {
+        case 'materialscommons':
+            apihost = port === '30815' ? 'test.materialscommons.org' : 'materialscommons.org';
+            break;
+        case 'lift.miserver.it.umich.edu':
+            apihost = 'lift.materialscommons.org';
+            break;
+        default:
+            apihost = 'mctest.localhost';
+            break;
+    }
+
+    let host_string = `http://${apihost}/`;
+    let command1 = `cd ${source_dir}`;
+    let command2 = `python build_project.py --host ${host_string} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
+    let command = `${command1} ; ${command2}`;
+    let result = '';
+    try {
+        results = yield promiseExec(command);
+        console.log("return from exec: ", results); // never gets here
+    } catch (err) {
+        console.log("error from exec: ", err); // gets here with err = '[ReferenceError: results is not defined]'
+        result = err;
+    }
+    console.log("after try");
+    return result;
+}
+
+function promiseExec(command) {
+    return new Promise(function (resolve, reject) {
+        exec(command, (error, stdout, stderr) => {
+            let results = stdout.toString();
+            let errorReturn = stderr.toString();
+            console.log(error);
+            if (error) {
+                reject(errorReturn);
+            } else {
+                console.log("results: ", results); // prints expected value
+                resolve(results);
+            }
+        });
+    });
+}
+
+function promiseExecNotWorking(command) {
+    console.log("Before Promise: ", Promise);
+    let p = new Promise();
+    cousole.log(p);
+    exec(command,(error, stdout, stderr) => {
+        console.log("error = ",error);
+        results = stdout.toString();
+        console.log("results = ",results);
+        let errorReturn = stderr.toString();
+        console.log("errorReturn = ",errorReturn);
+        if (error) {
+            p.reject(errorReturn);
+        } else {
+            p.resolve(results);
+        }
+    });
+    return p;
 }
 
 /*
