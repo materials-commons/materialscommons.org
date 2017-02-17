@@ -97,8 +97,11 @@ describe('Feature - User - Build Demo Project: ', function() {
 
             //let result = createDemoProjectSync(apikey);
             let result = yield createDemoProjectAsync2(apikey);
-            console.log(result);
-            //assert.equal(result,"Refreshed project with name = Demo Project")
+
+            assert(
+                result == "Refreshed project with name = Demo Project\n" ||
+                result == "Built project with name = Demo Project\n"
+            )
         })
     });
 });
@@ -199,16 +202,13 @@ function* createDemoProjectAsync2(apikey) {
     let command1 = `cd ${source_dir}`;
     let command2 = `python build_project.py --host ${host_string} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
     let command = `${command1} ; ${command2}`;
-    let result = '';
+    let results = '';
     try {
         results = yield promiseExec(command);
-        console.log("return from exec: ", results); // never gets here
     } catch (err) {
-        console.log("error from exec: ", err); // gets here with err = '[ReferenceError: results is not defined]'
-        result = err;
+        results = err;
     }
-    console.log("after try");
-    return result;
+    return results;
 }
 
 function promiseExec(command) {
@@ -216,11 +216,9 @@ function promiseExec(command) {
         exec(command, (error, stdout, stderr) => {
             let results = stdout.toString();
             let errorReturn = stderr.toString();
-            console.log(error);
             if (error) {
                 reject(errorReturn);
             } else {
-                console.log("results: ", results); // prints expected value
                 resolve(results);
             }
         });
