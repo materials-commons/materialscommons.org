@@ -189,6 +189,12 @@ function* validateCreateAccount(accountArgs) {
     return yield schema.validate(schema.userAccountSchema, accountArgs);
 }
 
+function* createDemoProject(next) {
+    this.status = status.OK;
+    this.body = "Demo Project reached";
+    yield next;
+}
+
 function emailResetLinkToUser(userData, site) {
     var transporter = nodemailer.createTransport(mailTransport);
     var sendTo = userData.id;
@@ -265,6 +271,7 @@ function createResource(router) {
     router.get('/users/validate/:validation_id', getUserRegistrationFromUuid);
     router.get('/users/rvalidate/:validation_id', getUserForPasswordResetFromUuid);
     router.put('/users/:user_id/clear-reset-password', clearUserResetPasswordFlag);
+    router.put('/users/create_demo_project', createDemoProject);
     router.post('/accounts', createAccount);
     router.post('/accounts/reset', resetPasswordGenerateLink);
 }
