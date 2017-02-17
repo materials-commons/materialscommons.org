@@ -175,3 +175,31 @@ function promiseFromChildProcess(child) {
         });
     });
 }
+
+/*
+Notes:
+ let cp = exec(something, (error, stdout, stderr) => {
+ console.log(stdout);
+ console.log(stderr);
+
+ })
+
+ resultsbuf = "";
+ (error, stdout, stderr) { resultsbuf = stdout;}
+ return resultsbuf;
+
+
+ cp.stderr.on('data', (data) => resultsbuf += data)
+
+ let p = new Promise()
+ exec(something, (error, stdout, stderr) => {
+ if (error) {
+ p.reject();
+ } else {
+ p.resolve();
+ }
+ });
+ yield p;
+
+
+ */
