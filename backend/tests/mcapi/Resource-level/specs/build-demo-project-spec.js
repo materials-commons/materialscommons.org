@@ -4,8 +4,10 @@ require('co-mocha');
 const chai = require('chai');
 const assert = require('chai').assert;
 const fs = require('fs');
-const child_process = require('child_process');
-const execFile = require('child_process').execFile;
+const os = require('os')
+const execSync = require('child_process').execSync;
+const exec = require('child_process').exec;
+
 
 const r = require('rethinkdbdash')({
     db: process.env.MCDB || 'materialscommons',
@@ -92,57 +94,84 @@ describe('Feature - User - Build Demo Project: ', function() {
         it('Build demo project ', function* () {
             this.timeout(10000); // 10 seconds
             let apikey = user_apikey;
-            let host = get_host_by_guessing();
-            let base_dir = process.env.MCDIR + "/project_demo/";
-            let datapath = base_dir + "files";
 
-            let result = build_demo_project(host, apikey, datapath);
+            //let result = createDemoProjectSync(apikey);
+            let result = yield createDemoProjectAsync(apikey);
             console.log(result);
-
-            let expected1 = 'Built project with name = Demo Project\n';
-            let expected2 = "Refreshed project with name = Demo Project\n";
-            assert(
-                result == expected1 || result == expected2
-            )
+            //assert.equal(result,"Refreshed project with name = Demo Project")
         })
     });
 });
 
-let build_demo_project = function(host, apikey, datapath) {
-    console.log("$MCDIR = " + process.env.MCDIR);
+function createDemoProjectSync (apikey) {
+    let port = process.env.MCDB_PORT,
+        hostname = os.hostname(),
+        mcdir = process.env.MCDIR,
+        apihost = '',
+        source_dir = `${mcdir}/project_demo/python`;
 
-    let base_dir = process.env.MCDIR + "/project_demo/";
-    let source_dir = base_dir + "python";
-    let host_part = " --host=" + host;
-    let path_part = " --datapath=" + datapath;
-    let key_part = " --apikey=" + apikey;
-    let command1 = "cd " + source_dir;
-    let command2 = "python build_project.py " + host_part + path_part + key_part;
-    console.log("command1 = " + command1);
-    console.log("command2 = " + command2);
+    switch (hostname) {
+        case 'materialscommons':
+            apihost = port === '30815' ? 'test.materialscommons.org' : 'materialscommons.org';
+            break;
+        case 'lift.miserver.it.umich.edu':
+            apihost = 'lift.materialscommons.org';
+            break;
+        default:
+            apihost = 'mctest.localhost';
+            break;
+    }
 
-    let command = command1 + " ; " + command2;
+    let host_string = `http://${apihost}/`;
+    let command1 = `cd ${source_dir}`;
+    let command2 = `python build_project.py --host ${host_string} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
+    let results_buf = execSync(`${command1} ; ${command2}`);
+    return results_buf.toString();
+}
 
-    const execSync = child_process.execSync;
-    let results_buf = execSync(command);
+function* createDemoProjectAsync(apikey) {
+    let port = process.env.MCDB_PORT,
+        hostname = os.hostname(),
+        mcdir = process.env.MCDIR,
+        apihost = '',
+        source_dir = `${mcdir}/project_demo/python`;
 
-    let result = results_buf.toString();
+    switch (hostname) {
+        case 'materialscommons':
+            apihost = port === '30815' ? 'test.materialscommons.org' : 'materialscommons.org';
+            break;
+        case 'lift.miserver.it.umich.edu':
+            apihost = 'lift.materialscommons.org';
+            break;
+        default:
+            apihost = 'mctest.localhost';
+            break;
+    }
+
+    let host_string = `http://${apihost}/`;
+    let command1 = `cd ${source_dir}`;
+    let command2 = `python build_project.py --host ${host_string} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
+    let result = '';
+    try {
+        let childProcess = exec(`${command1} ; ${command2}`);
+        yield promiseFromChildProcess(childProcess);
+        result = {status: 'Demo project setup'}
+    } catch (err) {
+        console.log(err)
+        result = {error: 'Failed to create demo project'};
+    }
     return result;
-};
+}
 
-let get_host_by_guessing = function(){
-    let port = process.env.MCDB_PORT;
-    let hostname = require('os').hostname();
-    let apihost = "http://mctest.localhost/";
-    if ((port === 30815) && (hostname == 'materialscommons.org')) {
-        apihost = "https://test.materialscommons.org/"
-    }
-    else if ((port == 28015) && (hostname == 'materialscommons.org')) {
-        apihost = 'https://materialscommons.org/'
-    }
-    else if (( port == 28015) && (hostname.contains('lift'))) {
-        apihost = 'https://lift.materialscommons.org/'
-    }
-    console.log("demo-project api host = " + apihost);
-    return apihost;
-};
+function promiseFromChildProcess(child) {
+    return new Promise(function (resolve, reject) {
+        child.addListener("error", reject);
+        child.addListener("exit", (exitCode) => {
+            if (exitCode !== 0) {
+                reject();
+            } else {
+                resolve()
+            }
+        });
+    });
+}
