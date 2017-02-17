@@ -5,6 +5,7 @@ const chai = require('chai');
 const assert = require('chai').assert;
 const fs = require('fs');
 const child_process = require('child_process');
+const execFile = require('child_process').execFile;
 
 const r = require('rethinkdbdash')({
     db: process.env.MCDB || 'materialscommons',
