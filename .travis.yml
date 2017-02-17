@@ -24,6 +24,7 @@ env:
     - MC_PUB_SERVICE_PORT=5026
     - MCDB_PORT=30815
     - MCDB_CONNECTION="localhost:$MCDB_PORT"
+    - MCDIR=~/file_data
     - MCDB_DIR=~/testdb
     - RETHINKDB_HTTP_PORT=8090
     - RETHINKDB_CLUSTER_PORT=31815
@@ -52,8 +53,8 @@ before_install:
   - ls
   - ls ~/mcapi/python
   - popd
+  - mkdir -p $MCDIR/project_demo/files
   - pushd $MCDIR
-  - mkdir -p project_demo/files
   - cd project_demo
   - cp -r ~/mcapi/python ./
   - cp  python/test/test_data/demo_project_data/* files
