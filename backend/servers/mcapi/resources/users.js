@@ -8,6 +8,9 @@ const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
 const mailTransport = mailTransportConfig();
 const ra = require('./resource-access');
+const execFile = require('child_process').execFile;
+const Promise = require('bluebird');
+const os = require('os');
 
 function* updateProjectFavorites(next) {
     let attrs = yield parse(this);
@@ -185,6 +188,52 @@ function* clearUserResetPasswordFlag(next) {
     yield next;
 }
 
+function* createDemoProject(next) {
+    let apikey = this.query.apikey,
+        port = process.env.MCDB_PORT,
+        hostname = os.hostname(),
+        mcdir = process.env.MCDIR,
+        apihost = '';
+
+    switch (hostname) {
+        case 'materialscommons':
+            apihost = port === '30815' ? 'test.materialscommons.org' : 'materialscommons.org';
+            break;
+        case 'lift.miserver.it.umich.edu':
+            apihost = 'lift.materialscommons.org';
+            break;
+        default:
+            apihost = 'mctest.localhost';
+            break;
+    }
+
+    let command = `mycommand --host ${apihost} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
+    try {
+        let childProcess = execFile(command);
+        yield promiseFromChildProcess(childProcess);
+        this.body = {status: 'Demo project setup'}
+    } catch (err) {
+        this.body = {error: 'Failed to create demo project'};
+        this.status = status.INTERNAL_SERVER_ERROR;
+    }
+
+    yield next;
+
+}
+
+function promiseFromChildProcess(child) {
+    return new Promise(function (resolve, reject) {
+        child.addListener("error", reject);
+        child.addListener("exit", (exitCode) => {
+            if (exitCode !== 0) {
+                reject();
+            } else {
+                resolve()
+            }
+        });
+    });
+}
+
 function* validateCreateAccount(accountArgs) {
     return yield schema.validate(schema.userAccountSchema, accountArgs);
 }
@@ -271,7 +320,7 @@ function createResource(router) {
     router.get('/users/validate/:validation_id', getUserRegistrationFromUuid);
     router.get('/users/rvalidate/:validation_id', getUserForPasswordResetFromUuid);
     router.put('/users/:user_id/clear-reset-password', clearUserResetPasswordFlag);
-    router.put('/users/create_demo_project', createDemoProject);
+    router.put('/users/:user_id/create_demo_project', createDemoProject);
     router.post('/accounts', createAccount);
     router.post('/accounts/reset', resetPasswordGenerateLink);
 }
