@@ -1,5 +1,4 @@
 import { UserService } from './user.service';
-import { CachedServiceFactoryService } from './cached-service-factory.service';
 import { fileTypeService } from './file-type-service';
 import { focusService } from './focus.service';
 import { gridFiles } from './grid-files';
@@ -19,7 +18,6 @@ import './search-query-text.service';
 import './api-service.service';
 import './select-items/mc-files-select.component';
 import './select-items/mc-files-table-select.component';
-import './select-items/select-items-files';
 import './select-items/select-items-processes';
 import './select-items/select-items-samples';
 import './isimage.service';
@@ -34,10 +32,10 @@ import './process-graph.service';
 import './mcbus.service';
 import './mcstate.service';
 import './select-items/select-items.service';
+import './show/mcshow.service';
 
 angular.module('materialscommons')
     .factory('User', UserService)
-    .factory('CachedServiceFactory', CachedServiceFactoryService)
     .factory("fileType", fileTypeService)
     .factory('focus', focusService)
     .factory('gridFiles', gridFiles)

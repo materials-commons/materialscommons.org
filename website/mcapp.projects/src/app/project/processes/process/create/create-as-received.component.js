@@ -9,7 +9,7 @@ angular.module('materialscommons').component('mcProcessCreateAsReceived', {
 /*@ngInject*/
 function MCProcessCreateAsReceivedComponentController(processSelections, removeById,
                                                       prepareCreatedSample, createProcess,
-                                                      toastr, previousStateService, $state, $stateParams) {
+                                                      toast, previousStateService, $state, $stateParams) {
     var ctrl = this;
     ctrl.process = ctrl.template;
     ctrl.sample = {
@@ -51,7 +51,7 @@ function MCProcessCreateAsReceivedComponentController(processSelections, removeB
 
     function performSubmit(goFn) {
         if (ctrl.sample.name === '') {
-            toastr.error("You must specify a sample name", 'Error', {closeButton: true});
+            toast.error("You must specify a sample name");
             return;
         }
         prepareSample();
@@ -64,7 +64,7 @@ function MCProcessCreateAsReceivedComponentController(processSelections, removeB
                 },
 
                 function failure() {
-                    toastr.error('Unable to create sample', 'Error', {closeButton: true});
+                    toast.error('Unable to create sample');
                 }
             );
     }

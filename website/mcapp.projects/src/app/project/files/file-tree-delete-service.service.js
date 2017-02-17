@@ -1,6 +1,6 @@
 angular.module('materialscommons').factory('fileTreeDeleteService', fileTreeDeleteService);
 
-function fileTreeDeleteService(projectTreeModel, projectsAPI, toastr) {
+function fileTreeDeleteService(projectTreeModel, projectsAPI, toast) {
 
     function deleteProjectDir(projectID, dirID) {
         return projectsAPI(projectID).one('directories', dirID).customDELETE();
@@ -21,7 +21,7 @@ function fileTreeDeleteService(projectTreeModel, projectsAPI, toastr) {
 
     function displayError(err) {
         let msg = getErrorMessage(err);
-        toastr.error(msg, 'Error', {closeButton: true});
+        toast.error(msg);
         return false;
     }
 

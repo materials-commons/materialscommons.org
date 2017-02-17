@@ -1,8 +1,9 @@
 class MCWorkflowToolbarComponentController {
     /*@ngInject*/
-    constructor(workflowService, $timeout, $mdDialog, $stateParams, mcstate, mcbus) {
+    constructor(workflowService, workflowFiltersService, $timeout, $mdDialog, $stateParams, mcstate, mcbus) {
         this.myName = "mcWorkflowToolbar";
         this.workflowService = workflowService;
+        this.workflowFiltersService = workflowFiltersService;
         this.$timeout = $timeout;
         this.selectedProcess = null;
         this.$mdDialog = $mdDialog;
@@ -11,6 +12,7 @@ class MCWorkflowToolbarComponentController {
         this.experimentId = $stateParams.experiment_id;
         this.mcbus = mcbus;
         this.query = '';
+        this.showingWorkflowGraph = true;
     }
 
 
@@ -33,6 +35,10 @@ class MCWorkflowToolbarComponentController {
         });
     }
 
+    cloneProcess() {
+        this.workflowService.cloneProcess(this.projectId, this.experimentId, this.selectedProcess);
+    }
+
     deleteProcess() {
         this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.selectedProcess.id);
         this.selectedProcess = null;
@@ -46,6 +52,24 @@ class MCWorkflowToolbarComponentController {
         this.query = '';
         this.mcbus.send('WORKFLOW$RESET');
     }
+
+    toggleNavigator() {
+        this.mcbus.send('WORKFLOW$NAVIGATOR');
+    }
+
+    showWorkflowGraph() {
+        this.showingWorkflowGraph = true;
+        this.mcbus.send('WORKFLOW$VIEW', 'graph');
+    }
+
+    showWorkflowOutline() {
+        this.showingWorkflowGraph = false;
+        this.mcbus.send('WORKFLOW$VIEW', 'outline');
+    }
+
+    filterBySamples() {
+        this.workflowFiltersService.filterBySamples(this.projectId, this.experimentId);
+    }
 }
 
 class SelectProcessTemplateDialogController {
@@ -55,10 +79,11 @@ class SelectProcessTemplateDialogController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.workflowService = workflowService;
+        this.keepOpen = false;
     }
 
     addSelectedProcessTemplate(templateId) {
-        this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId)
+        this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId, this.keepOpen)
     }
 
     done() {

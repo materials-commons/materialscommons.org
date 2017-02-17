@@ -6,7 +6,7 @@ angular.module('materialscommons').component('mcFileDescription', {
     }
 });
 
-function MCFileDescriptionComponentController(toastr) {
+function MCFileDescriptionComponentController(toast) {
     'ngInject';
 
     var ctrl = this;
@@ -29,7 +29,7 @@ function MCFileDescriptionComponentController(toastr) {
                 ctrl.file.description = ctrl.description;
                 ctrl.editDescription = false;
             }).catch(function(err) {
-                toastr.error("Failed updating description: " + err.error, "Error");
+                toast.error("Failed updating description: " + err.error);
             });
         }
     }

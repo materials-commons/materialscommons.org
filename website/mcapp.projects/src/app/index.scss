@@ -406,8 +406,8 @@ a {
 }
 
 #processesGraph {
-  width: 60%;
-  height: 75%;
+  width:90%;
+  height:85%;
   position: absolute;
 }
 
@@ -464,4 +464,23 @@ input.mc-navbar-search-input:-ms-input-placeholder {
 
 md-toast.md-success-toast-theme .md-toast-content {
   background-color: $mc-md-primary-color;
+}
+
+.cy-panzoom {
+  z-index: 5;
+}
+
+.cytoscape-navigator {
+  z-index: 5;
+  height: 200px;
+  width: 600px;
+}
+
+.cy-context-menus-cxt-menuitem {
+  font-size: 16px;
+}
+
+a.always-white, a.always-white:link, a.always-white:visited, a.always-white:hover, a.always-white:focus, a.always-white:active{
+  color:#ffffff;
+  text-transform: uppercase;
 }

@@ -7,6 +7,18 @@
                ng-change="$ctrl.updateProcessName()"
                ng-model="$ctrl.process.name">
     </md-input-container>
+
+    <label>Notes</label>
+    <div md-whiteframe layout-margin>
+            <div ckeditor="editorOptions"
+                 ng-model="$ctrl.process.description"
+                 ng-model-options="{debounce: 500}"
+                 ng-change="$ctrl.updateProcessDescription()"
+                 contenteditable="true">
+                {{$ctrl.process.description}}
+            </div>
+        </div>
+
     <mc-process-template-create-samples ng-if="$ctrl.process.category === 'create_sample'"
                                         process="$ctrl.process"
                                         on-change="$ctrl.onChange()"></mc-process-template-create-samples>

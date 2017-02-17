@@ -8,7 +8,7 @@ angular.module('materialscommons').component('mcDirOverview', {
 });
 
 /*@ngInject*/
-function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, mcstate, toastr, isImage) {
+function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, mcstate, toast, isImage) {
     const ctrl = this;
 
     ctrl.viewFiles = viewFiles;
@@ -88,7 +88,7 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
             },
 
             function failure() {
-                toastr.error('Unable to create file archive.', 'Error', {closeButton: true});
+                toast.error('Unable to create file archive.');
             }
         );
     }

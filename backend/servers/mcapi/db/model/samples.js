@@ -270,8 +270,6 @@ module.exports = {
     getAllSamplesForProject,
     getAllSamplesForExperiment,
     createSamples,
-
-
     isValidCreateSamplesProcess,
     updateSamples,
     addSamplesMeasurements,
