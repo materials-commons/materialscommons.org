@@ -47,6 +47,8 @@ before_install:
   - node --version
   - pip list
   - git clone https://github.com/materials-commons/mcapi.git
+  - pwd
+  - ls
   - ls ~/mcapi/python
   - pushd $MCDIR
   - mkdir -p project_demo/files
