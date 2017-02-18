@@ -5,7 +5,6 @@ const chai = require('chai');
 const assert = require('chai').assert;
 const fs = require('fs');
 const os = require('os')
-const execSync = require('child_process').execSync;
 const exec = require('child_process').exec;
 
 
@@ -18,11 +17,8 @@ const backend_base = '../../../..';
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const projects = require(backend_base + '/servers/mcapi/db/model/projects');
 const directories = require(backend_base + '/servers/mcapi/db/model/directories');
-const apikeyCache = require(backend_base + '/servers/lib/apikey-cache')(dbModelUsers);
-
-const base_user_id = 'thisIsAUserForTestingONLY!';
+const users = require(backend_base + '/servers/mcapi/resources/users');
 const fullname = "Test User";
-const base_project_name = "Test project - test 1: ";
 const user_apikey = "ThisIsAJunkKey";
 const user1Id = "mctest@mc.org";
 
@@ -56,6 +52,7 @@ describe('Feature - User - Build Demo Project: ', function() {
         it('exists', function * (){
             let user = yield dbModelUsers.getUser(user1Id);
             assert.isNotNull(user,"test user exists");
+            assert.equal(user.apikey,user_apikey);
             assert.equal(user.id,user1Id);
             assert.equal(user.name,fullname);
         })
@@ -90,13 +87,32 @@ describe('Feature - User - Build Demo Project: ', function() {
             }
         });
     });
-    describe('Run build demo script command with args',function() {
+    describe('Run build demo script command local',function() {
         it('Build demo project ', function* () {
             this.timeout(10000); // 10 seconds
             let apikey = user_apikey;
 
-            //let result = createDemoProjectSync(apikey);
-            let result = yield createDemoProjectAsync2(apikey);
+            let result = yield createDemoProject(apikey);
+            console.log("              ", result);
+
+            assert(
+                result == "Refreshed project with name = Demo Project\n" ||
+                result == "Built project with name = Demo Project\n"
+            )
+        })
+    });
+    describe('Run build demo script command in users',function() {
+        it('Build demo project ', function* () {
+            this.timeout(10000); // 10 seconds
+            let apikey = user_apikey;
+
+            let result = yield users.createDemoProjectRequest(apikey);
+            console.log("              ", result);
+
+            assert(result.val);
+            assert(!result.error);
+
+            result = result.val;
 
             assert(
                 result == "Refreshed project with name = Demo Project\n" ||
@@ -106,80 +122,7 @@ describe('Feature - User - Build Demo Project: ', function() {
     });
 });
 
-function createDemoProjectSync (apikey) {
-    let port = process.env.MCDB_PORT,
-        hostname = os.hostname(),
-        mcdir = process.env.MCDIR,
-        apihost = '',
-        source_dir = `${mcdir}/project_demo/python`;
-
-    switch (hostname) {
-        case 'materialscommons':
-            apihost = port === '30815' ? 'test.materialscommons.org' : 'materialscommons.org';
-            break;
-        case 'lift.miserver.it.umich.edu':
-            apihost = 'lift.materialscommons.org';
-            break;
-        default:
-            apihost = 'mctest.localhost';
-            break;
-    }
-
-    let host_string = `http://${apihost}/`;
-    let command1 = `cd ${source_dir}`;
-    let command2 = `python build_project.py --host ${host_string} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
-    let results_buf = execSync(`${command1} ; ${command2}`);
-    return results_buf.toString();
-}
-
-function* createDemoProjectAsync(apikey) {
-    let port = process.env.MCDB_PORT,
-        hostname = os.hostname(),
-        mcdir = process.env.MCDIR,
-        apihost = '',
-        source_dir = `${mcdir}/project_demo/python`;
-
-    switch (hostname) {
-        case 'materialscommons':
-            apihost = port === '30815' ? 'test.materialscommons.org' : 'materialscommons.org';
-            break;
-        case 'lift.miserver.it.umich.edu':
-            apihost = 'lift.materialscommons.org';
-            break;
-        default:
-            apihost = 'mctest.localhost';
-            break;
-    }
-
-    let host_string = `http://${apihost}/`;
-    let command1 = `cd ${source_dir}`;
-    let command2 = `python build_project.py --host ${host_string} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
-    let result = '';
-    try {
-        let childProcess = exec(`${command1} ; ${command2}`);
-        yield promiseFromChildProcess(childProcess);
-        result = {status: 'Demo project setup'}
-    } catch (err) {
-        console.log(err)
-        result = {error: 'Failed to create demo project'};
-    }
-    return result;
-}
-
-function promiseFromChildProcess(child) {
-    return new Promise(function (resolve, reject) {
-        child.addListener("error", reject);
-        child.addListener("exit", (exitCode) => {
-            if (exitCode !== 0) {
-                reject();
-            } else {
-                resolve()
-            }
-        });
-    });
-}
-
-function* createDemoProjectAsync2(apikey) {
+function* createDemoProject(apikey) {
     let port = process.env.MCDB_PORT,
         hostname = os.hostname(),
         mcdir = process.env.MCDIR,
@@ -225,49 +168,3 @@ function promiseExec(command) {
     });
 }
 
-function promiseExecNotWorking(command) {
-    console.log("Before Promise: ", Promise);
-    let p = new Promise();
-    cousole.log(p);
-    exec(command,(error, stdout, stderr) => {
-        console.log("error = ",error);
-        results = stdout.toString();
-        console.log("results = ",results);
-        let errorReturn = stderr.toString();
-        console.log("errorReturn = ",errorReturn);
-        if (error) {
-            p.reject(errorReturn);
-        } else {
-            p.resolve(results);
-        }
-    });
-    return p;
-}
-
-/*
-Notes:
- let cp = exec(something, (error, stdout, stderr) => {
- console.log(stdout);
- console.log(stderr);
-
- })
-
- resultsbuf = "";
- (error, stdout, stderr) { resultsbuf = stdout;}
- return resultsbuf;
-
-
- cp.stderr.on('data', (data) => resultsbuf += data)
-
- let p = new Promise()
- exec(something, (error, stdout, stderr) => {
- if (error) {
- p.reject();
- } else {
- p.resolve();
- }
- });
- yield p;
-
-
- */

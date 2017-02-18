@@ -8,7 +8,7 @@ const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
 const mailTransport = mailTransportConfig();
 const ra = require('./resource-access');
-const execFile = require('child_process').execFile;
+const exec = require('child_process').exec;
 const Promise = require('bluebird');
 const os = require('os');
 
@@ -188,12 +188,50 @@ function* clearUserResetPasswordFlag(next) {
     yield next;
 }
 
+function* validateCreateAccount(accountArgs) {
+    return yield schema.validate(schema.userAccountSchema, accountArgs);
+}
+
 function* createDemoProject(next) {
-    let apikey = this.query.apikey,
-        port = process.env.MCDB_PORT,
+    let userId = this.params.user_id;
+    let checkId = this.reqctx.user.id;
+    if ((!this.reqctx.user.isAdmin) && (userId != checkId)) {
+        this.status = status.BAD_REQUEST;
+        this.body = "Must be admin to create demo project for non-self user: " + userId;
+    } else {
+        let user = yield users.getUser(userId);
+        if (! user) {
+            this.status = status.BAD_REQUEST;
+            this.body = "Unable to create demo project; no user = " + userId;
+        } else {
+            let apikey = user.apikey;
+            console.log("createDemoProject: " + user.id + ", " + apikey);
+            let result = yield createDemoProjectRequest(apikey);
+            if (result.error) {
+                this.status = status.BAD_REQUEST;
+                this.body = result;
+            } else {
+                this.status = status.OK;
+                this.body = result.val;
+            }
+        }
+    }
+    yield next;
+}
+
+function* createDemoProjectRequest(apikey){
+    let port = process.env.MCDB_PORT,
         hostname = os.hostname(),
         mcdir = process.env.MCDIR,
-        apihost = '';
+        apihost = '',
+        source_dir = `${mcdir}/project_demo/python`;
+
+    let mcdirList = mcdir.split(":");
+    if (mcdirList.length > 1){
+        mcdir = mcdirList[0];
+        source_dir = `${mcdir}/project_demo/python`;
+    }
+    console.log("MCDIR",mcdir);
 
     switch (hostname) {
         case 'materialscommons':
@@ -207,41 +245,43 @@ function* createDemoProject(next) {
             break;
     }
 
-    let command = `mycommand --host ${apihost} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
+    let host_string = `http://${apihost}/`;
+    let command1 = `cd ${source_dir}`;
+    let command2 = `python build_project.py --host ${host_string} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
+    let command = `${command1} ; ${command2}`;
+    let result = '';
+    let ret = '';
     try {
-        let childProcess = execFile(command);
-        yield promiseFromChildProcess(childProcess);
-        this.body = {status: 'Demo project setup'}
+        result = yield promiseExec(command);
+
+        let buildOk =  (
+            result == "Refreshed project with name = Demo Project\n" ||
+            result == "Built project with name = Demo Project\n"
+        );
+        if (buildOk) {
+            ret = {val: result};
+        } else {
+            ret = {error: result};
+        }
     } catch (err) {
-        this.body = {error: 'Failed to create demo project'};
-        this.status = status.INTERNAL_SERVER_ERROR;
+        console.log("in users - build demo project - error: " + err);
+        ret = {error: err};
     }
-
-    yield next;
-
+    return ret;
 }
 
-function promiseFromChildProcess(child) {
+function promiseExec(command) {
     return new Promise(function (resolve, reject) {
-        child.addListener("error", reject);
-        child.addListener("exit", (exitCode) => {
-            if (exitCode !== 0) {
-                reject();
+        exec(command, (error, stdout, stderr) => {
+            let results = stdout.toString();
+            let errorReturn = stderr.toString();
+            if (error) {
+                reject(errorReturn);
             } else {
-                resolve()
+                resolve(results);
             }
         });
     });
-}
-
-function* validateCreateAccount(accountArgs) {
-    return yield schema.validate(schema.userAccountSchema, accountArgs);
-}
-
-function* createDemoProject(next) {
-    this.status = status.OK;
-    this.body = "Demo Project reached";
-    yield next;
 }
 
 function emailResetLinkToUser(userData, site) {
@@ -326,5 +366,5 @@ function createResource(router) {
 }
 
 module.exports = {
-    createResource
+    createResource,createDemoProjectRequest
 };
