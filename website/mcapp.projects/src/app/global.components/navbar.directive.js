@@ -46,12 +46,17 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
     ctrl.search = search;
     ctrl.home = home;
     ctrl.logout = logout;
+    ctrl.demoproject = demoproject;
     ctrl.user = User.u();
 
     ////////////////////////
 
     function help() {
 
+    }
+
+    function demoproject(){
+        console.log("Clicked Demo Project");
     }
 
     function search() {
@@ -65,6 +70,7 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
     }
 
     function logout() {
+        console.log("Clicked logout")
         User.setAuthenticated(false);
         $state.go('login');
     }
