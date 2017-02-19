@@ -13,7 +13,7 @@ function navbarDirective() {
 
 /*@ngInject*/
 function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, mcstate,
-                                   navbarOnChange, projectsService) {
+                                   navbarOnChange, projectsService,demoProjectService,toast) {
     const ctrl = this;
 
     const inProjectsState = $state.includes('projects');
@@ -47,7 +47,9 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
     ctrl.home = home;
     ctrl.logout = logout;
     ctrl.buildDemoProject = buildDemoProject;
+    ctrl.demoProjectService = demoProjectService;
     ctrl.user = User.u();
+    ctrl.toast = toast;
 
     ////////////////////////
 
@@ -56,7 +58,15 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
     }
 
     function buildDemoProject(){
-        console.log("Clicked Demo Project");
+        let user_id = ctrl.user;
+        let result = ctrl.demoProjectService.buildDemoProject(user_id);
+        result.then(
+            (message) => ctrl.toast.success(message,'top right'),
+            (error) => {
+                let message = `Status: ${error.status}; Message: ${error.data}`;
+                ctrl.toast.error(message,'top right');
+            }
+        );
     }
 
     function search() {
@@ -70,7 +80,6 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
     }
 
     function logout() {
-        console.log("Clicked logout")
         User.setAuthenticated(false);
         $state.go('login');
     }

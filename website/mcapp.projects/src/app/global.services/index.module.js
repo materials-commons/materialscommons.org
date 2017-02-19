@@ -33,6 +33,7 @@ import './mcbus.service';
 import './mcstate.service';
 import './select-items/select-items.service';
 import './show/mcshow.service';
+import './demo-project.service';
 
 angular.module('materialscommons')
     .factory('User', UserService)
