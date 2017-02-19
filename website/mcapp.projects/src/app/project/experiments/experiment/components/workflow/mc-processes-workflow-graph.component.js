@@ -188,6 +188,13 @@ class MCProcessesWorkflowGraphComponentController {
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             }
         });
+        this.cy.on('cxttap', event => {
+            console.log('cxttap');
+            let target = event.cyTarget;
+            if (target.isNode()) {
+                console.log(' -- target is node', target.data('name'));
+            }
+        });
         //this.cy.on('mouseover', function(event) {
         //    let target = event.cyTarget;
         //    if (target.data) {
@@ -200,7 +207,7 @@ class MCProcessesWorkflowGraphComponentController {
         //});
         this.cy.layout({name: 'dagre', fit: true});
         this.cy.panzoom();
-        this.setupContextMenus()
+        this.ctxMenu = this.setupContextMenus()
     }
 
     setupContextMenus() {
@@ -219,6 +226,13 @@ class MCProcessesWorkflowGraphComponentController {
                     selector: 'node',
                     onClickFunction: (event) => this._cloneProcess(event)
                 }
+                // ,
+                // {
+                //     id: 'delete-process',
+                //     title: 'Delete Process',
+                //     selector: 'node',
+                //     onClickFunction: (event) => this._deleteProcess(event)
+                // }
             ]
         };
         this.cy.contextMenus(options);
@@ -243,6 +257,10 @@ class MCProcessesWorkflowGraphComponentController {
     _cloneProcess(event) {
         let process = this.getProcessFromEvent(event);
         this.workflowService.cloneProcess(this.projectId, this.experimentId, process);
+    }
+
+    _deleteProcess() {
+
     }
 
     getProcessFromEvent(event) {
