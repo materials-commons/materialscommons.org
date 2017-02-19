@@ -46,7 +46,7 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
     ctrl.search = search;
     ctrl.home = home;
     ctrl.logout = logout;
-    ctrl.demoproject = demoproject;
+    ctrl.buildDemoProject = buildDemoProject;
     ctrl.user = User.u();
 
     ////////////////////////
@@ -55,7 +55,7 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
 
     }
 
-    function demoproject(){
+    function buildDemoProject(){
         console.log("Clicked Demo Project");
     }
 
