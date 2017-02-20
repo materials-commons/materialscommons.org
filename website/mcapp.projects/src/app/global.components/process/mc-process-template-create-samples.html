@@ -18,9 +18,9 @@
             properties.
         </p>
         <md-content style="maxx-height:20vh; minx-height:5vh">
-            <div ng-repeat="sample in $ctrl.process.output_samples">
+            <div ng-repeat="sample in $ctrl.process.output_samples | orderBy:'name'">
                 <div layout="row">
-                    <label>{{::$index+1}}.</label>
+                    <label>{{$index+1}}.</label>
                     <input type="text" class="mc-input-as-line"
                            flex="85" ng-model="sample.name"
                            ng-model-options="{debounce: 500}"
