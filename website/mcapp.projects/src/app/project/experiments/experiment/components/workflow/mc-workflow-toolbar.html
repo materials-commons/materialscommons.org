@@ -12,10 +12,27 @@
                             ADD NEW PROCESS
                         </md-button>
                     </md-menu-item>
+                    <!--<md-menu-item>-->
+                    <!--<md-button ng-disabled="$ctrl.selectedProcess === null"-->
+                    <!--ng-click="$ctrl.cloneProcess()" md-menu-align-target>-->
+                    <!--CLONE SELECTED PROCESS-->
+                    <!--</md-button>-->
+                    <!--</md-menu-item>-->
+                </md-menu-content>
+            </md-menu>
+            <md-menu>
+                <md-button ng-click="$mdMenu.open()">
+                    <i md-menu-origin class="fa fa-fw fa-eye"></i>view
+                </md-button>
+                <md-menu-content width="4">
                     <md-menu-item>
-                        <md-button ng-disabled="$ctrl.selectedProcess === null"
-                                   ng-click="$ctrl.cloneProcess()" md-menu-align-target>
-                            CLONE SELECTED PROCESS
+                        <md-button ng-click="$ctrl.toggleNavigator()" md-menu-align-target>
+                            TOGGLE NAVIGATOR
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-show="$ctrl.selectedProcess !== null">
+                        <md-button ng-click="$ctrl.showSelectedProcess()" md-menu-align-target>
+                            SHOW PROCESS DETAILS
                         </md-button>
                     </md-menu-item>
                 </md-menu-content>
@@ -38,9 +55,6 @@
                    ng-click="$ctrl.deleteProcess()"
                    ng-disabled="$ctrl.selectedProcess == null || $ctrl.selectedProcess.hasChildren">
             <i class="fa fa-fw fa-trash"></i>delete
-        </md-button>
-        <md-button ng-click="$ctrl.toggleNavigator()">
-            <i class="fa fa-fw fa-eye"></i>nav
         </md-button>
         <span flex></span>
         <md-input-container md-no-float flex="20" class="md-input-bottom-0">

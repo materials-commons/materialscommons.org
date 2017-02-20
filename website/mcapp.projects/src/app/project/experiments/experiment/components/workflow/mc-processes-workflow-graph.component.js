@@ -1,7 +1,7 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams, mcstate, $filter, $mdDialog) {
+    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams, mcstate, $filter, $mdDialog, mcshow) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
@@ -13,6 +13,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.experimentsService = experimentsService;
         this.$filter = $filter;
         this.$mdDialog = $mdDialog;
+        this.mcshow = mcshow;
         this.removedNodes = null;
         this.navigator = null;
     }
@@ -219,13 +220,14 @@ class MCProcessesWorkflowGraphComponentController {
                     selector: 'node, edge',
                     hasTrailingDivider: true,
                     onClickFunction: (event) => this._showDetails(event)
-                },
-                {
-                    id: 'clone-process',
-                    title: 'Clone Process',
-                    selector: 'node',
-                    onClickFunction: (event) => this._cloneProcess(event)
                 }
+                // ,
+                // {
+                //     id: 'clone-process',
+                //     title: 'Clone Process',
+                //     selector: 'node',
+                //     onClickFunction: (event) => this._cloneProcess(event)
+                // }
                 // ,
                 // {
                 //     id: 'delete-process',
@@ -242,15 +244,7 @@ class MCProcessesWorkflowGraphComponentController {
         let target = event.cyTarget;
         if (target.isNode()) {
             let process = this.getProcessFromEvent(event);
-            this.$mdDialog.show({
-                templateUrl: 'app/project/experiments/experiment/components/workflow/mc-process-details-dialog.html',
-                controller: MCProcessDetailsDialogController,
-                controllerAs: '$ctrl',
-                bindToController: true,
-                locals: {
-                    process: process
-                }
-            });
+            this.mcshow.processDetailsDialog(process, false);
         }
     }
 
@@ -271,24 +265,6 @@ class MCProcessesWorkflowGraphComponentController {
         return process;
     }
 
-}
-
-class MCProcessDetailsDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, workflowService, $stateParams) {
-        this.$mdDialog = $mdDialog;
-        this.projectId = $stateParams.project_id;
-        this.experimentId = $stateParams.experiment_id;
-        this.workflowService = workflowService;
-    }
-
-    done() {
-        this.$mdDialog.hide();
-    }
-
-    deleteProcess() {
-        this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.process.id)
-    }
 }
 
 angular.module('materialscommons').component('mcProcessesWorkflowGraph', {

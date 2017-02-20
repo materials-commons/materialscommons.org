@@ -1,4 +1,4 @@
-class Toast {
+class ToastService {
     /*@ngInject*/
     constructor($mdToast) {
         this.$mdToast = $mdToast;
@@ -21,4 +21,4 @@ class Toast {
     }
 }
 
-angular.module('materialscommons').service('toast', Toast);
+angular.module('materialscommons').service('toast', ToastService);
