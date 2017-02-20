@@ -16,10 +16,22 @@ function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage) {
     'ngInject';
 
     var ctrl = this;
-    ctrl.fileType = determineFileType(ctrl.file.mediatype);
     ctrl.fileSrc = mcfile.src(ctrl.file.id);
     ctrl.showImage = showImage;
     ctrl.downloadSrc = downloadSrc;
+
+    let officeTypes = [
+        {name: "application/vnd.ms-excel"},
+        {name: "application/vnd.ms-powerpoint"},
+        {name: "application/msword"},
+        {name: "application/vnd.openxmlformats-officedocument.presentationml.presentation"},
+        {name: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+        {name: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+    ];
+
+    let officeTypesMap = _.indexBy(officeTypes, 'name');
+
+    ctrl.fileType = determineFileType(ctrl.file.mediatype);
 
     //////////////
 
@@ -27,17 +39,26 @@ function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage) {
         if (isImage(mediatype.mime)) {
             return "image";
         } else {
+            if (isOfficeFile(mediatype.mime)) {
+                return "office";
+            }
             switch (mediatype.mime) {
-            case "application/pdf":
-                return "pdf";
-            case "application/vnd.ms-excel":
-                return "xls";
-            case "application/octet-stream":
-                return "binary";
-            default:
-                return mediatype.mime;
+                case "application/pdf":
+                    return "pdf";
+                case "application/vnd.ms-excel":
+                    return "office";
+                case "":
+                    return "office";
+                case "application/octet-stream":
+                    return "binary";
+                default:
+                    return mediatype.mime;
             }
         }
+    }
+
+    function isOfficeFile(mime) {
+        return (mime in officeTypesMap);
     }
 
     function showImage(file) {
