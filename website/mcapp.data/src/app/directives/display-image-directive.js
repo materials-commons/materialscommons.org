@@ -19,6 +19,17 @@ class DisplayImageController {
 
     constructor(userService) {
         'ngInject';
+        let officeTypes = [
+            {name: "application/vnd.ms-excel"},
+            {name: "application/vnd.ms-powerpoint"},
+            {name: "application/msword"},
+            {name: "application/vnd.openxmlformats-officedocument.presentationml.presentation"},
+            {name: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+            {name: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+        ];
+
+        this.officeTypesMap = _.indexBy(officeTypes, 'name');
+
         this.file.src = "app/datafiles/static/" + this.file.original_id + "?apikey=" + userService.apikey();
         this.file.fileType = this.determineFileType(this.file.mediatype);
     }
@@ -27,6 +38,9 @@ class DisplayImageController {
         if (this.isImage(mediatype.mime)) {
             return "image";
         } else {
+            if (this.isOfficeFile(mediatype.mime)) {
+                return "office";
+            }
             switch (mediatype.mime) {
                 case "application/pdf":
                     return "pdf";
@@ -54,6 +68,10 @@ class DisplayImageController {
             default:
                 return false;
         }
+    }
+
+    isOfficeFile(mime) {
+        return (mime in this.officeTypesMap);
     }
 
     //showImage(file) {
