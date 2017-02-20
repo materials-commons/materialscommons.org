@@ -89,7 +89,7 @@ describe('Feature - User - Build Demo Project: ', function() {
     });
     describe('Run build demo script command local',function() {
         it('Build demo project ', function* () {
-            this.timeout(10000); // 10 seconds
+            this.timeout(30000); // 30 seconds
             let apikey = user_apikey;
 
             let result = yield createDemoProject(apikey);
@@ -103,7 +103,7 @@ describe('Feature - User - Build Demo Project: ', function() {
     });
     describe('Run build demo script command in users',function() {
         it('Build demo project ', function* () {
-            this.timeout(10000); // 10 seconds
+            this.timeout(30000); // 30 seconds
             let apikey = user_apikey;
 
             let result = yield users.createDemoProjectRequest(apikey);
