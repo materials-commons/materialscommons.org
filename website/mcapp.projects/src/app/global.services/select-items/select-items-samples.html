@@ -39,8 +39,7 @@
                 <td md-cell>
                     <md-checkbox ng-model="sampleps.selected" aria-label="selected"
                                  aria-label="Select sample from process"
-                                 ng-change="ctrl.onChange(sampleps.selected)"
-                                 ng-disabled="ctrl.options.singleSelection && ctrl.itemSelected && (!sampleps.selected)">
+                                 ng-change="ctrl.onChange(sampleps.selected)">
                     </md-checkbox>
                     <md-button class="md-primary" ng-click="ctrl.showProcess(sampleps)">{{sampleps.name}}</md-button>
                 </td>

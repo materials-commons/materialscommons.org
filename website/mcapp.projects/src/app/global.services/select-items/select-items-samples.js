@@ -18,6 +18,8 @@ function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
 
     var ctrl = this;
 
+    this.singleSelection = false;
+
     ctrl.selectedProcess = mcstate.get(mcstate.SELECTED$PROCESS);
     if (ctrl.selectedProcess !== null) {
         ctrl.processFilter = ctrl.selectedProcess.id;
