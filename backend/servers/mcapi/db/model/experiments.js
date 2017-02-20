@@ -252,6 +252,43 @@ function* addProcessFromTemplate(projectId, experimentId, templateId, owner) {
     return yield processCommon.getProcess(procId);
 }
 
+function* cloneProcess(projectId, experimentId, processId, owner, cloneArgs) {
+    let process = yield processCommon.getProcess(processId);
+    process = process.val;
+    let createdProcess = yield addProcessFromTemplate(projectId, experimentId, process.template_id, owner);
+    createdProcess = createdProcess.val;
+
+    // Adding input samples will take care of output samples for transformation processes.
+    let samples = cloneArgs.samples.map(s => ({command: 'add', id: s.id, property_set_id: s.property_set_id}));
+    yield processCommon.updateProcessSamples(createdProcess, samples);
+
+    // Add files
+    let files = cloneArgs.files.map(f => ({command: 'add', id: f.id}));
+    yield processCommon.updateProcessFiles(processId, files);
+
+    // Add setup properties
+    for (let sIndex = 0; sIndex < process.setup.length; sIndex++) {
+        let properties = process.setup[sIndex].properties;
+        let propMap = _.indexBy(createdProcess.setup[sIndex].properties, 'attribute');
+        for (let pIndex = 0; pIndex < properties.length; pIndex++) {
+            let prop = properties[pIndex];
+            let cpProp = propMap[prop.attribute];
+            cpProp.value = prop.value;
+            cpProp.unit = prop.unit;
+            cpProp.description = prop.description;
+        }
+        yield processCommon.updateProperties(createdProcess.setup[sIndex].properties);
+    }
+
+    if (cloneArgs.name && cloneArgs.name !== '') {
+        yield r.table('processes').get(createdProcess.id).update({name: cloneArgs.name});
+    }
+
+    // TODO: Add measurements
+
+    return yield processCommon.getProcess(createdProcess.id);
+}
+
 function* updateProcess(experimentId, processId, properties, files, samples) {
     let errors = yield updateTemplateCommon(experimentId, processId, properties, files, samples);
 
@@ -415,5 +452,6 @@ module.exports = {
     getProcessesForExperiment,
     getFilesForExperiment,
     addProcessFromTemplate,
+    cloneProcess,
     updateProcess
 };

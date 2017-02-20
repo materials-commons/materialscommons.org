@@ -1,19 +1,65 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
-        <md-button ng-click="$ctrl.addProcess()"><i class="fa fa-fw fa-plus"></i>add</md-button>
+
+        <md-menu-bar>
+            <md-menu>
+                <md-button md-icon-button ng-click="$mdMenu.open()">
+                    <i class="fa fa-fw fa-plus"></i>add
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item class="md-ident">
+                        <md-button ng-click="$ctrl.addProcess()">
+                            ADD NEW PROCESS
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-disabled="$ctrl.selectedProcess === null"
+                                   ng-click="$ctrl.cloneProcess()" md-menu-align-target>
+                            CLONE SELECTED PROCESS
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+            <md-menu>
+                <md-button ng-click="$mdMenu.open()">
+                    <i md-menu-origin class="fa fa-fw fa-filter"></i>filter
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.filterBySamples()" md-menu-align-target>
+                            BY SAMPLES
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-menu-bar>
         <!--<md-button ng-disabled="$ctrl.selectedProcess == null"><i class="fa fa-fw fa-clone"></i>clone process</md-button>-->
         <md-button class="md-warn"
                    ng-click="$ctrl.deleteProcess()"
                    ng-disabled="$ctrl.selectedProcess == null || $ctrl.selectedProcess.hasChildren">
             <i class="fa fa-fw fa-trash"></i>delete
         </md-button>
+        <md-button ng-click="$ctrl.toggleNavigator()">
+            <i class="fa fa-fw fa-eye"></i>nav
+        </md-button>
         <span flex></span>
-        <md-input-container md-no-float flex="30" class="md-input-bottom-0">
+        <md-input-container md-no-float flex="20" class="md-input-bottom-0">
             <input placeholder="Search workflow..." type="text" class="mc-navbar-search-input"
                    ng-model="$ctrl.query"
                    on-enter="$ctrl.search()"
                    style="color:white; border-bottom-color:white">
         </md-input-container>
         <md-button ng-click="$ctrl.reset()">reset</md-button>
+        <span flex></span>
+        <div layout="row">
+            <a ng-click="$ctrl.showWorkflowGraph()"
+               ng-class="{'view-selected': $ctrl.showingWorkflowGraph}">
+                <i class="fa fa-fw fa-sitemap" style="margin-left: 3px"></i>
+            </a>
+            <a ng-click="$ctrl.showWorkflowOutline()"
+               ng-class="{'view-selected': !$ctrl.showingWorkflowGraph}">
+                <i class="fa fa-fw fa-th-list" style="margin-left: 3px"></i>
+            </a>
+        </div>
     </div>
 </md-toolbar>

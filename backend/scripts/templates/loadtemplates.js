@@ -451,8 +451,8 @@ class CreateSinglePhaseSamplesTemplate extends TemplateBase {
             .matrixType('float')
             .float(chname('Mobility'))
             .lattice(lename(''))
-            .selection(lename("Symmetry of Stiffness Tensor"))
-            .choices("Isotropic", "Anisotropic", "Transverse", "Orthotropic")
+            .selection(lename("Symmetry of Stiffness Tensor")).choices(
+            "Isotropic", "Anisotropic", "Transverse", "Orthotropic")
             .vector(stname("Isotropic 1d")).vectorType('float').vectorDim(1)
             .vector(stname("Isotropic 2d")).vectorType('float').vectorDim(2)
             .vector(stname("Isotropic 3d")).vectorType('float').vectorDim(2)
@@ -544,12 +544,11 @@ class AptTemplate extends TemplateBase {
             .number("Laser Pulse Energy").units("pJ", "nJ")
             .number("Laser Wavelength").units("nm")
             .number("Pulse Frequency").units("kHz")
-            .selection("Evaporation Control")
-            .choices(
-                "Constant Detector Rate",
-                "Constant Evaporation Rate",
-                "Constant Charge Rate Ratio",
-                "Other")
+            .selection("Evaporation Control").choices(
+            "Constant Detector Rate",
+            "Constant Evaporation Rate",
+            "Constant Charge Rate Ratio",
+            "Other")
             .number("Evaporation Rate").units("Atom/Pulse")
             .selection("Imaging Gas").choices("He", "Ar", "Ne", "Other", "None")
             .number("Pressure").units("atm", "Pa", "torr")
@@ -716,9 +715,12 @@ class EbsdSemDataCollectionTemplate extends TemplateBase {
             .number("Sample Tilt").units("degress")
             .number("Magnification")
             .stime("Acquisition Time")
-            .number("Scan Size").units("microns")
+            .number("Scan Size Width").units("microns")
+            .number("Scan Size Height").units("microns")
             .number("Step Size").units("microns")
             .number("Working Distance").units("mm")
+            .string("Horizontal Direction")
+            .string("Vertical Direction")
             .done();
     }
 }
@@ -730,7 +732,7 @@ class EpmaDataCollectionTemplate extends TemplateBase {
             .voltage()
             .current("Beam Current")
             .number("Beam Size", "microns")
-            .selection("Scan Type", "Line", "Grid", "Point")
+            .selection("Scan Type").choices("Line", "Grid", "Point")
             .number("Step Size", "microns")
             .string("Grid Dimensions")
             .string("Location")
@@ -742,10 +744,9 @@ class LowCycleFatigueTemplate extends TemplateBase {
     constructor() {
         super("Low Cycle Fatigue", "transform", true, false);
         this.addSetup("Instrument")
-            .selection("Mode")
-            .choices(
-                "Total strain control", "Plastic strain control",
-                "Stress control", "Displacement control")
+            .selection("Mode").choices(
+            "Total strain control", "Plastic strain control",
+            "Stress control", "Displacement control")
             .temperature()
             .number("Frequency")
             .selection("Wave Form").choices("Continuous", "Interrupted with hold times")
@@ -796,7 +797,8 @@ class HeatTreatmentTemplate extends TemplateBase {
         this.addSetup("Instrument")
             .temperature()
             .time()
-            .selection("Cooling Type").choices("Air Quench", "Water Quench", "Furnace Cooled", "Air Cooled", "Gas Cooled")
+            .selection("Cooling Type").choices(
+            "Air Quench", "Water Quench", "Furnace Cooled", "Air Cooled", "Gas Cooled")
             .number("Cooling Rate").units("C/s", "K/s")
             .done();
     }
@@ -929,6 +931,37 @@ class AsMeasuredTemplate extends TemplateBase {
     }
 }
 
+class GenericMeasurementTemplate extends TemplateBase {
+    constructor() {
+        super("Generic Measurement Template", "measurement", false, false);
+        this.addSetup("Instrument").done();
+    }
+}
+
+class GenericCreateSampleTemplate extends TemplateBase {
+    constructor() {
+        super("Generic Create Samples Template", "create", true, false);
+        this.setCategory("create_sample");
+        this.addSetup("Instrument").done();
+        this.addMeasurements().composition("Composition").done();
+        this.measurementsDone();
+    }
+}
+
+class GenericTransformSampleTemplate extends TemplateBase {
+    constructor() {
+        super("Generic Transform Samples Template", "transform", true, false);
+        this.addSetup("Instrument").done();
+    }
+}
+
+class GenericAnalysisTemplate extends TemplateBase {
+    constructor() {
+        super("Generic Analysis Template", "analysis", false, false);
+        this.addSetup("Instrument").done();
+    }
+}
+
 /******* End Generic Process Templates *******/
 
 let ropts = {
@@ -986,7 +1019,11 @@ let globalTemplates = [
     CrystalPlasticityFiniteElementTemplate,
 
     // Generic Process Templates
-    AsMeasuredTemplate
+    AsMeasuredTemplate,
+    GenericMeasurementTemplate,
+    GenericCreateSampleTemplate,
+    GenericTransformSampleTemplate,
+    GenericAnalysisTemplate
 ];
 
 console.log("Inserting templates...");

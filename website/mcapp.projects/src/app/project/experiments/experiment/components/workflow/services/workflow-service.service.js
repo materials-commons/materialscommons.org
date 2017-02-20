@@ -9,7 +9,7 @@ class WorkflowService {
         this.$mdDialog = $mdDialog;
     }
 
-    addProcessFromTemplate(templateId, projectId, experimentId) {
+    addProcessFromTemplate(templateId, projectId, experimentId, multiple = true) {
         this.experimentsService.createProcessFromTemplate(projectId, experimentId, `global_${templateId}`)
             .then(
                 (process) => {
@@ -19,24 +19,46 @@ class WorkflowService {
                         controllerAs: '$ctrl',
                         controller: NewProcessDialogController,
                         bindToController: true,
-                        multiple: true,
+                        multiple: multiple,
                         locals: {
                             process: p
                         }
                     }).then(
-                        () => {
-                            this.experimentsService.getProcessesForExperiment(projectId, experimentId)
-                                .then(
-                                    (processes) => {
-                                        this.processes = processes;
-                                        this.mcbus.send('PROCESSES$CHANGE', processes);
-                                    },
-                                    () => this.toast.error('Error retrieving processes for experiment')
-                                );
-                        }
+                        () => this.sendProcessChangeEvent(projectId, experimentId)
                     );
                 },
                 () => this.toast.error('Unable to add samples')
+            );
+    }
+
+    cloneProcess(projectId, experimentId, process) {
+        let p = angular.copy(process);
+        p.input_samples.forEach(s => s.selected = true);
+        p.output_samples.forEach(s => s.selected = true);
+        p.files.forEach(f => f.selected = true);
+        return this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/workflow/services/clone-process-dialog.html',
+            controllerAs: '$ctrl',
+            controller: CloneProcessDialogController,
+            bindToController: true,
+            locals: {
+                process: p
+            }
+        }).then(
+            (cloneArgs) => {
+                return this.experimentsService.cloneProcess(projectId, experimentId, p.id, cloneArgs).then(
+                    () => this.sendProcessChangeEvent(projectId, experimentId),
+                    () => this.toast.error('Error cloning process')
+                )
+            }
+        );
+    }
+
+    sendProcessChangeEvent(projectId, experimentId) {
+        this.experimentsService.getProcessesForExperiment(projectId, experimentId)
+            .then(
+                (processes) => this.mcbus.send('PROCESSES$CHANGE', processes),
+                () => this.toast.error('Error retrieving processes for experiment')
             );
     }
 
@@ -100,6 +122,7 @@ class NewProcessDialogController {
         this.$mdDialog = $mdDialog;
         this.processesService = processesService;
         this.projectId = $stateParams.project_id;
+        this.processName = this.process.name;
     }
 
     done() {
@@ -111,6 +134,23 @@ class NewProcessDialogController {
             () => this.$mdDialog.cancel(),
             () => this.$mdDialog.cancel()
         );
+    }
+}
+
+class CloneProcessDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        let files = this.process.files.filter(f => f.selected);
+        let inputSamples = this.process.input_samples.filter(s => s.selected);
+        this.$mdDialog.hide({name: this.process.name, files: files, samples: inputSamples});
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 

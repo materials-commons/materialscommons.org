@@ -15,7 +15,7 @@
                 <tbody>
                 <tr md-row ng-repeat="user in ctrl.users">
                     <td md-cell>{{user.name}}</td>
-                    <td md-cell><md-checkbox class="md-secondary" ng-model="user.selected"></md-checkbox></td>
+                    <td md-cell><md-checkbox aria-label="" class="md-secondary" ng-model="user.selected"></md-checkbox></td>
                 </tr>
                 </tbody>
             </table>
@@ -23,7 +23,7 @@
         <md-list ng-if="false">
             <md-list-item ng-repeat="user in ctrl.users">
                 <p>{{user.name}}</p>
-                <md-checkbox class="md-secondary" ng-model="user.selected"></md-checkbox>
+                <md-checkbox aria-label="" class="md-secondary" ng-model="user.selected"></md-checkbox>
                 <md-divider></md-divider>
             </md-list-item>
         </md-list>

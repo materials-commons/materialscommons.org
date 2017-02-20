@@ -1,4 +1,4 @@
-export function PreFillProcessController(template, existingTemplateNames, toastr, $modalInstance) {
+export function PreFillProcessController(template, existingTemplateNames, toast, $modalInstance) {
     'ngInject';
 
     var ctrl = this;
@@ -13,7 +13,7 @@ export function PreFillProcessController(template, existingTemplateNames, toastr
         var index = _.indexOf(existingTemplateNames, template.name);
         if (index !== -1) {
             var msg = "A template with name '" + template.name + "' already exists. Please choose a unique name.";
-            toastr.error(msg, 'Error');
+            toast.error(msg);
         } else {
             $modalInstance.close(ctrl.template);
         }

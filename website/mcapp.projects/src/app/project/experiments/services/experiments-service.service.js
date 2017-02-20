@@ -64,7 +64,7 @@ class ExperimentsService {
     }
 
     getProcessesForExperiment(projectId, experimentId) {
-        return this.projectsAPI(projectId).one('experiments', experimentId).customGET("processes", {simple: true});
+        return this.projectsAPI(projectId).one('experiments', experimentId).customGET("processes");//, {simple: true});
     }
 
     getProcessForExperiment(projectId, experimentId, processId) {
@@ -81,6 +81,11 @@ class ExperimentsService {
     createProcessFromTemplate(projectId, experimentId, templateId) {
         return this.projectsAPI(projectId).one('experiments', experimentId).one('processes').one('templates', templateId)
             .customPOST();
+    }
+
+    cloneProcess(projectId, experimentId, processId, cloneArgs) {
+        return this.projectsAPI(projectId).one('experiments', experimentId).one('processes', processId).one('clone')
+            .customPOST(cloneArgs);
     }
 
     convertDatePropertyAttributes(process) {

@@ -6,7 +6,7 @@
         <span class="md-subhead padding-right-30" ng-if="ctrl.processFilter === null">
             Showing all samples in project
         </span>
-        <md-checkbox ng-model="ctrl.showAllProcesses" ng-change="ctrl.toggleAllSamples()">
+        <md-checkbox aria-label="Show all processes" ng-model="ctrl.showAllProcesses" ng-change="ctrl.toggleAllSamples()">
             Show all samples in project
         </md-checkbox>
     </div>
@@ -37,7 +37,7 @@
                 <td md-cell>
                 </td>
                 <td md-cell>
-                    <md-checkbox ng-model="sampleps.selected"
+                    <md-checkbox ng-model="sampleps.selected" aria-label="selected"
                                  aria-label="Select sample from process"
                                  ng-change="ctrl.onChange(sampleps.selected)"
                                  ng-disabled="ctrl.options.singleSelection && ctrl.itemSelected && (!sampleps.selected)">

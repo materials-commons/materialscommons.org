@@ -1,7 +1,7 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams, mcstate, $filter) {
+    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams, mcstate, $filter, $mdDialog) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
@@ -12,7 +12,9 @@ class MCProcessesWorkflowGraphComponentController {
         this.experimentId = $stateParams.experiment_id;
         this.experimentsService = experimentsService;
         this.$filter = $filter;
+        this.$mdDialog = $mdDialog;
         this.removedNodes = null;
+        this.navigator = null;
     }
 
     $onInit() {
@@ -30,7 +32,7 @@ class MCProcessesWorkflowGraphComponentController {
             if (search === '') {
                 if (this.removedNodes !== null) {
                     this.removedNodes.restore();
-                    this.cy.fit();
+                    this.cy.layout({name: 'dagre', fit: true});
                 }
                 return;
             }
@@ -48,17 +50,54 @@ class MCProcessesWorkflowGraphComponentController {
                 return true;
             });
             this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
-            this.cy.fit();
+            this.cy.layout({name: 'dagre', fit: true});
         };
 
         this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, searchcb);
         this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => this.allProcessesGraph());
+        this.mcbus.subscribe('WORKFLOW$NAVIGATOR', this.myName, () => {
+            if (this.navigator === null) {
+                this.navigator = this.cy.navigator();
+            } else {
+                this.navigator.destroy();
+                this.navigator = null;
+            }
+        });
+
+        this.mcbus.subscribe('WORKFLOW$FILTER$BYSAMPLES', this.myName, (samples) => {
+            console.log('WORKFLOW$FILTER$BYSAMPLES', samples);
+            if (!samples.length) {
+                return;
+            }
+
+            let matchingProcesses = [];
+            samples.forEach(sample => {
+                let matches = this.$filter('filter')(this.processes.plain(), sample.id);
+                matchingProcesses = matchingProcesses.concat(matches.map(p => ({id: p.id, seen: false})));
+            });
+
+            console.log('  number of matching processes', matchingProcesses.length);
+
+            let matchesById = _.indexBy(matchingProcesses, 'id');
+            let matchingNodes = this.cy.nodes().filter((i, ele) => {
+                let processId = ele.data('details').id;
+                if ((processId in matchesById)) {
+                    return false;
+                }
+                return true;
+            });
+            this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
+            this.cy.layout({name: 'dagre', fit: true});
+        });
     }
 
     $onDestroy() {
         this.mcbus.leave('PROCESSES$CHANGE', this.myName);
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
         this.mcbus.leave('WORKFLOW$RESET', this.myName);
+        if (this.navigator !== null) {
+            this.navigator.destroy();
+        }
     }
 
     // This method will be called implicitly when the component is loaded.
@@ -149,6 +188,13 @@ class MCProcessesWorkflowGraphComponentController {
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             }
         });
+        this.cy.on('cxttap', event => {
+            console.log('cxttap');
+            let target = event.cyTarget;
+            if (target.isNode()) {
+                console.log(' -- target is node', target.data('name'));
+            }
+        });
         //this.cy.on('mouseover', function(event) {
         //    let target = event.cyTarget;
         //    if (target.data) {
@@ -159,10 +205,90 @@ class MCProcessesWorkflowGraphComponentController {
         //    //    content: target.data('name')
         //    //});
         //});
-        this.cy.layout({name: 'dagre'});
+        this.cy.layout({name: 'dagre', fit: true});
         this.cy.panzoom();
+        this.ctxMenu = this.setupContextMenus()
     }
 
+    setupContextMenus() {
+        let options = {
+            menuItems: [
+                {
+                    id: 'details',
+                    title: 'Show Details',
+                    selector: 'node, edge',
+                    hasTrailingDivider: true,
+                    onClickFunction: (event) => this._showDetails(event)
+                },
+                {
+                    id: 'clone-process',
+                    title: 'Clone Process',
+                    selector: 'node',
+                    onClickFunction: (event) => this._cloneProcess(event)
+                }
+                // ,
+                // {
+                //     id: 'delete-process',
+                //     title: 'Delete Process',
+                //     selector: 'node',
+                //     onClickFunction: (event) => this._deleteProcess(event)
+                // }
+            ]
+        };
+        this.cy.contextMenus(options);
+    }
+
+    _showDetails(event) {
+        let target = event.cyTarget;
+        if (target.isNode()) {
+            let process = this.getProcessFromEvent(event);
+            this.$mdDialog.show({
+                templateUrl: 'app/project/experiments/experiment/components/workflow/mc-process-details-dialog.html',
+                controller: MCProcessDetailsDialogController,
+                controllerAs: '$ctrl',
+                bindToController: true,
+                locals: {
+                    process: process
+                }
+            });
+        }
+    }
+
+    _cloneProcess(event) {
+        let process = this.getProcessFromEvent(event);
+        this.workflowService.cloneProcess(this.projectId, this.experimentId, process);
+    }
+
+    _deleteProcess() {
+
+    }
+
+    getProcessFromEvent(event) {
+        let target = event.cyTarget;
+        let processId = target.data('id');
+        let process = this.processes.filter((p) => p.id === processId)[0];
+        process.hasChildren = (target.outgoers().length > 0);
+        return process;
+    }
+
+}
+
+class MCProcessDetailsDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, workflowService, $stateParams) {
+        this.$mdDialog = $mdDialog;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.workflowService = workflowService;
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
+    deleteProcess() {
+        this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.process.id)
+    }
 }
 
 angular.module('materialscommons').component('mcProcessesWorkflowGraph', {
