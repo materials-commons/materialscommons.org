@@ -95,7 +95,7 @@ function* createSamples(projectId, processId, samples, owner) {
         let proj2sample = new model.Project2Sample(projectId, createdSample.id);
         yield db.insert('process2sample', proc2sample);
         yield db.insert('project2sample', proj2sample);
-        createdSamples.push({name: s.name, id: createdSample.id, property_set_id: createdPSet.id});
+        createdSamples.push({name: s.name, id: createdSample.id, property_set_id: createdPSet.id, otype: createdSample.otype});
     }
 
     return {val: {samples: createdSamples}};
