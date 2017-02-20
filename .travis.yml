@@ -51,16 +51,18 @@ before_install:
   - git clone https://github.com/materials-commons/mcapi.git
   - pwd
   - ls
-  - ls ~/mcapi/python
+  - ls -r ~/mcapi/python/test
   - popd
   - mkdir -p $MCDIR/project_demo/files
-  - pushd $MCDIR
-  - cd project_demo
+  - pushd $MCDIR/project_demo
+  - echo $MCDIR
+  - pwd
   - cp -r ~/mcapi/python ./
   - pwd
   - ls
   - ls python
   - ls python/test
+  - ls python/test/test_data
   - ls python/test/test_data/demo_project_data
   - cp  python/test/test_data/demo_project_data/* files
   - popd
