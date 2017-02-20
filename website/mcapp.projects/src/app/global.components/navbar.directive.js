@@ -13,7 +13,7 @@ function navbarDirective() {
 
 /*@ngInject*/
 function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, mcstate,
-                                   navbarOnChange, projectsService) {
+                                   navbarOnChange, projectsService,demoProjectService,toast,mcbus) {
     const ctrl = this;
 
     const inProjectsState = $state.includes('projects');
@@ -46,12 +46,30 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
     ctrl.search = search;
     ctrl.home = home;
     ctrl.logout = logout;
+    ctrl.buildDemoProject = buildDemoProject;
+    ctrl.demoProjectService = demoProjectService;
     ctrl.user = User.u();
+    ctrl.toast = toast;
 
     ////////////////////////
 
     function help() {
 
+    }
+
+    function buildDemoProject(){
+        let user_id = ctrl.user;
+        let result = ctrl.demoProjectService.buildDemoProject(user_id);
+        result.then(
+            (message) => {
+                mcbus.send('PROJECTS$REFRESH');
+                ctrl.toast.success(message,'top right');
+            },
+            (error) => {
+                let message = `Status: ${error.status}; Message: ${error.data}`;
+                ctrl.toast.error(message,'top right');
+            }
+        );
     }
 
     function search() {
