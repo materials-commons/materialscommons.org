@@ -222,16 +222,10 @@ function* createDemoProject(next) {
 function* createDemoProjectRequest(apikey){
     let port = process.env.MCDB_PORT,
         hostname = os.hostname(),
-        mcdir = process.env.MCDIR,
         apihost = '',
-        source_dir = `${mcdir}/project_demo/python`;
+        sourceDir = `./scripts/demo-project/`;
 
-    let mcdirList = mcdir.split(":");
-    if (mcdirList.length > 1){
-        mcdir = mcdirList[0];
-        source_dir = `${mcdir}/project_demo/python`;
-    }
-    console.log("MCDIR",mcdir);
+    console.log("sourceDir",sourceDir);
 
     switch (hostname) {
         case 'materialscommons':
@@ -246,9 +240,7 @@ function* createDemoProjectRequest(apikey){
     }
 
     let host_string = `http://${apihost}/`;
-    let command1 = `cd ${source_dir}`;
-    let command2 = `python build_project.py --host ${host_string} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
-    let command = `${command1} ; ${command2}`;
+    let command = `${sourceDir}build_project.py --host ${host_string} --apikey ${apikey} --datapath ${sourceDir}/demo_project_data`;
     let result = '';
     let ret = '';
     try {
@@ -261,6 +253,7 @@ function* createDemoProjectRequest(apikey){
         if (buildOk) {
             ret = {val: result};
         } else {
+            console.log("in users - build demo project - results error: " + results);
             ret = {error: result};
         }
     } catch (err) {
