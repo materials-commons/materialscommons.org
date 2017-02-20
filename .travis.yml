@@ -48,10 +48,10 @@ before_install:
   - node --version
   - pip list
   - pushd ~
-  - git clone https://github.com/materials-commons/mcapi.git
+  - git clone --depth=50 --branch=sprint https://github.com/materials-commons/mcapi.git
   - pwd
   - ls
-  - ls -r ~/mcapi/python/test
+  - ls -R ~/mcapi/python/test
   - popd
   - mkdir -p $MCDIR/project_demo/files
   - pushd $MCDIR/project_demo
