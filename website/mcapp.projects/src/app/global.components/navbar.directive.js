@@ -13,7 +13,7 @@ function navbarDirective() {
 
 /*@ngInject*/
 function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, mcstate,
-                                   navbarOnChange, projectsService,demoProjectService,toast) {
+                                   navbarOnChange, projectsService,demoProjectService,toast,mcbus) {
     const ctrl = this;
 
     const inProjectsState = $state.includes('projects');
@@ -61,7 +61,10 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
         let user_id = ctrl.user;
         let result = ctrl.demoProjectService.buildDemoProject(user_id);
         result.then(
-            (message) => ctrl.toast.success(message,'top right'),
+            (message) => {
+                mcbus.send('PROJECTS$REFRESH');
+                ctrl.toast.success(message,'top right');
+            },
             (error) => {
                 let message = `Status: ${error.status}; Message: ${error.data}`;
                 ctrl.toast.error(message,'top right');
