@@ -57,6 +57,11 @@ before_install:
   - pushd $MCDIR
   - cd project_demo
   - cp -r ~/mcapi/python ./
+  - pwd
+  - ls
+  - ls python
+  - ls python/test
+  - ls python/test/test_data/demo_project_data
   - cp  python/test/test_data/demo_project_data/* files
   - popd
   - ls -aR $MCDIR/project_demo
