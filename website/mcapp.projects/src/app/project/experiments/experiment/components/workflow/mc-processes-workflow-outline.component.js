@@ -1,6 +1,7 @@
 class MCProcessesWorkflowOutlineComponentController {
     /*@ngInject*/
-    constructor(processTree, datasetService, $stateParams, toast, experimentProcessesService, mcstate, mcbus) {
+    constructor(processTree, datasetService, $stateParams, toast, workflowService,
+                experimentProcessesService, mcbus) {
         this.processTree = processTree;
         this.datasetService = datasetService;
         this.projectId = $stateParams.project_id;
@@ -8,8 +9,8 @@ class MCProcessesWorkflowOutlineComponentController {
         this.datasetId = $stateParams.dataset_id;
         this.toast = toast;
         this.myName = 'mcProcessesWorkflowOutline';
+        this.workflowService = workflowService;
         this.experimentProcessesService = experimentProcessesService;
-        this.mcstate = mcstate;
         this.mcbus = mcbus;
     }
 
@@ -77,6 +78,10 @@ class MCProcessesWorkflowOutlineComponentController {
                 () => this.toast.error(`Unable to remove process from dataset ${p.name}`)
             );
         }
+    }
+
+    deleteProcess() {
+        this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.process.id)
     }
 }
 
