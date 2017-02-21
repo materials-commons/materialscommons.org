@@ -66,7 +66,6 @@ class MCProcessesWorkflowGraphComponentController {
         });
 
         this.mcbus.subscribe('WORKFLOW$FILTER$BYSAMPLES', this.myName, (samples) => {
-            console.log('WORKFLOW$FILTER$BYSAMPLES', samples);
             if (!samples.length) {
                 return;
             }
@@ -76,8 +75,6 @@ class MCProcessesWorkflowGraphComponentController {
                 let matches = this.$filter('filter')(this.processes.plain(), sample.id);
                 matchingProcesses = matchingProcesses.concat(matches.map(p => ({id: p.id, seen: false})));
             });
-
-            console.log('  number of matching processes', matchingProcesses.length);
 
             let matchesById = _.indexBy(matchingProcesses, 'id');
             let matchingNodes = this.cy.nodes().filter((i, ele) => {
@@ -189,13 +186,16 @@ class MCProcessesWorkflowGraphComponentController {
                 this.mcProcessesWorkflow.setSelectedProcess(null);
             }
         });
-        this.cy.on('cxttap', event => {
-            console.log('cxttap');
-            let target = event.cyTarget;
-            if (target.isNode()) {
-                console.log(' -- target is node', target.data('name'));
-            }
-        });
+        // Use this to show/hide certain menu items
+        // this.cy.on('cxttap', event => {
+        //     console.log('cxttap');
+        //     let target = event.cyTarget;
+        //     if (target.isNode()) {
+        //         console.log(' -- target is node', target.data('name'));
+        //     }
+        // });
+
+
         //this.cy.on('mouseover', function(event) {
         //    let target = event.cyTarget;
         //    if (target.data) {
