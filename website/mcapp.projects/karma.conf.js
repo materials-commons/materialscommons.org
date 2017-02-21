@@ -47,14 +47,28 @@ function listFiles() {
     });
 
     files.push({
-        pattern: path.join(conf.paths.src, '/app/external/js/calendar.js'),
+        pattern: path.join(conf.paths.src, '/app/external/js/flow.js'),
         included: true,
         served: true,
         watched: false
     });
 
     files.push({
-        pattern: path.join(conf.paths.src, '/app/external/js/angular-cache-2.3.3.min.js'),
+        pattern: path.join(conf.paths.src, '/app/external/js/highlight.pack.js'),
+        included: true,
+        served: true,
+        watched: false
+    });
+
+    files.push({
+        pattern: path.join(conf.paths.src, '/app/external/js/lodash.min.js'),
+        included: true,
+        served: true,
+        watched: false
+    });
+
+    files.push({
+        pattern: path.join(conf.paths.src, '/app/external/js/TreeModel-min.js'),
         included: true,
         served: true,
         watched: false
@@ -79,6 +93,13 @@ function listFiles() {
     // unit-tests
     files.push({
         pattern: 'unit-test/**/*.spec.js',
+        include: true,
+        watched: true
+    });
+
+    // helper functions
+    files.push({
+        pattern: 'unit-test/testutils/*.js',
         include: true,
         watched: true
     });
