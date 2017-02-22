@@ -125,9 +125,9 @@ describe('Feature - User - Build Demo Project: ', function() {
 function* createDemoProject(apikey) {
     let port = process.env.MCDB_PORT,
         hostname = os.hostname(),
-        mcdir = process.env.MCDIR,
         apihost = '',
-        source_dir = `${mcdir}/project_demo/python`;
+        source_dir = 'backend/scripts/demo-project',
+        datapath = 'backend/scripts/demo-project/demo_project_data'
 
     switch (hostname) {
         case 'materialscommons':
@@ -142,9 +142,7 @@ function* createDemoProject(apikey) {
     }
 
     let host_string = `http://${apihost}/`;
-    let command1 = `cd ${source_dir}`;
-    let command2 = `python build_project.py --host ${host_string} --apikey ${apikey} --datapath ${mcdir}/project_demo/files`;
-    let command = `${command1} ; ${command2}`;
+    let command = `${source_dir}/build_project.py --host ${host_string} --apikey ${apikey} --datapath ${datapath}`;
     let results = '';
     try {
         results = yield promiseExec(command);

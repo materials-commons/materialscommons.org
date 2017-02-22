@@ -223,9 +223,8 @@ function* createDemoProjectRequest(apikey){
     let port = process.env.MCDB_PORT,
         hostname = os.hostname(),
         apihost = '',
-        sourceDir = `./scripts/demo-project/`;
-
-    console.log("sourceDir",sourceDir);
+        prefix = './',
+        sourceDir = 'scripts/demo-project/';
 
     switch (hostname) {
         case 'materialscommons':
@@ -239,10 +238,29 @@ function* createDemoProjectRequest(apikey){
             break;
     }
 
+    let current_dir = process.cwd();
+    let parts = current_dir.split('/');
+    let last = parts[parts.length-1];
+
+    let ret = '';
+    if ((last != "backend") && (last != "materialscommons.org")) {
+        let message = 'Can not create proejct with process running in unexpected base dir: '
+        message = message + current_dir;
+        console.log("Build demo project fails - " + message);
+        ret = {error: "Can not create demo project: admin see log"};
+        return ret;
+    }
+
+    if (last == "backend") {
+        prefix = current_dir + "/";
+    } else {
+        prefix = current_dir + "/backend/"
+    }
+
+    sourceDir = prefix + sourceDir;
     let host_string = `http://${apihost}/`;
     let command = `${sourceDir}build_project.py --host ${host_string} --apikey ${apikey} --datapath ${sourceDir}/demo_project_data`;
     let result = '';
-    let ret = '';
     try {
         result = yield promiseExec(command);
 
