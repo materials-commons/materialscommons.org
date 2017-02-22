@@ -3,8 +3,8 @@
          class="tree-node-content mc-experiment-outline-task no-outline {{::$ctrl.task.displayState.selectedClass}}"
          ng-click="$ctrl.setCurrent(this, $event)"
          on-enter="$ctrl.addBlankTask(this, $event)">
-        <div layout="row" layout-fill layout-align="space-between center">
-            <div>
+        <div layout="row" flex layout-fill layout-align="space-between center">
+            <div flex>
                 <i class="fa fa-fw fa-reorder align-task-element"></i>
                 <i class="fa fa-fw {{::$ctrl.task.displayState.flags.starredClass}} cursor-pointer" data-nodrag
                    ng-click="$ctrl.toggleStar($event)" style="font-size: 20px"></i>
@@ -13,16 +13,16 @@
                              ng-model="$ctrl.task.flags.done"
                              aria-label="done">
                 </md-checkbox>
-                <input size="30" type="text" data-nodrag
+                <input flex="80" layout-fill type="text" data-nodrag
                        ng-model="$ctrl.task.name"
                        ng-model-options="{debounce: 1000}"
                        ng-change="$ctrl.onNameChange()"
                        placeholder="Untitled Task..."
                        class="mc-input-no-border align-task-element"
                        id="{{::$ctrl.task.id}}">
-                <input size="25" type="text" placeholder="No template..." data-nodrag
-                       ng-model="$ctrl.task.template_name"
-                       class="mc-input-no-border" disabled>
+                <!--<input size="25" type="text" placeholder="No template..." data-nodrag-->
+                <!--ng-model="$ctrl.task.template_name"-->
+                <!--class="mc-input-no-border" disabled>-->
             </div>
             <div class="align-task-element" data-nodrag>
                 <i class="fa fa-fw fa-flag cursor-pointer {{::$ctrl.task.displayState.flags.flaggedClass}}"

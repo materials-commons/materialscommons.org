@@ -4,7 +4,6 @@ describe('mc-process-template component', () => {
 
     beforeEach(() => {
         module('materialscommons');
-        inject()
     });
 
     describe('mc-process-template activates only one template type', () => {
