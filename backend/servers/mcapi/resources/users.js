@@ -271,7 +271,7 @@ function* createDemoProjectRequest(apikey){
         if (buildOk) {
             ret = {val: result};
         } else {
-            console.log("in users - build demo project - results error: " + results);
+            console.log("in users - build demo project - results error: " + result);
             ret = {error: result};
         }
     } catch (err) {
