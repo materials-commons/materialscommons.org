@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width">
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="icon" href="app/external/css/favicon.ico" type="image/x-icon"/>
 
     <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
     <!-- bower:css -->
@@ -25,7 +26,7 @@
     <link href="app/style-3.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
-<body layout="row" ng-controller="MCAppController as ctrl" stylex="overflow:hidden;" ng-cloak>
+<body layout="row" ng-controller="MCAppController as ctrl" ng-cloak>
 
 <div layout="column" flex="100">
     <navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
