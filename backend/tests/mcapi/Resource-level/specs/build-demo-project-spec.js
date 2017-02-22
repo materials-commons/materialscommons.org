@@ -77,9 +77,8 @@ describe('Feature - User - Build Demo Project: ', function() {
                 'ExperimentData_Lift380_L124_20161227.docx',
                 'Samples_Lift380_L124_20161227.xlsx'
             ];
-            let base_dir = process.env.MCDIR + "/project_demo/";
-            let datapath = base_dir + "files";
-            assert(fs.existsSync(datapath));
+            let datapath = 'backend/scripts/demo-project/demo_project_data';
+            assert(fs.existsSync(datapath), "missing test datafile dir " + datapath);
             for (var i = 0; i < filenames.length; i++) {
                 let filename = filenames[i];
                 let path = `${datapath}/${filename}`;
