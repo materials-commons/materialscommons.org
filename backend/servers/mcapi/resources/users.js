@@ -195,17 +195,16 @@ function* validateCreateAccount(accountArgs) {
 function* createDemoProject(next) {
     let userId = this.params.user_id;
     let checkId = this.reqctx.user.id;
+    let user = yield users.getUser(userId);
     if ((!this.reqctx.user.isAdmin) && (userId != checkId)) {
         this.status = status.BAD_REQUEST;
         this.body = "Must be admin to create demo project for non-self user: " + userId;
     } else {
-        let user = yield users.getUser(userId);
         if (! user) {
             this.status = status.BAD_REQUEST;
             this.body = "Unable to create demo project; no user = " + userId;
         } else {
             let apikey = user.apikey;
-            console.log("createDemoProject for " + user.id + ", " + apikey);
             let result = yield createDemoProjectRequest(apikey);
             if (result.error) {
                 this.status = status.BAD_REQUEST;
@@ -216,6 +215,7 @@ function* createDemoProject(next) {
             }
         }
     }
+    console.log("createDemoProject for " + user.id + ' - ' + this.body);
     yield next;
 }
 
