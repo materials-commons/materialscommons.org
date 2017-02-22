@@ -205,7 +205,7 @@ function* createDemoProject(next) {
             this.body = "Unable to create demo project; no user = " + userId;
         } else {
             let apikey = user.apikey;
-            console.log("createDemoProject: " + user.id + ", " + apikey);
+            console.log("createDemoProject for " + user.id + ", " + apikey);
             let result = yield createDemoProjectRequest(apikey);
             if (result.error) {
                 this.status = status.BAD_REQUEST;
