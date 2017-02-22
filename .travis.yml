@@ -32,7 +32,7 @@ env:
     - MC_LOG_DIR=/tmp
     - MCDB_TYPE=rethinkdb
     - MCDB_NAME=materialscommons
-    - MCDB_FILE=test_data/test_ready_rethinkdb_dump_2017-02-01.tar.gz
+    - MCDB_FILE=test_data/test_rethinkdb_dump.tar.gz
     - RETHINKDB_CLUSTER_PORT=31815
     - RETHINKDB_HTTP_PORT=8090
 
@@ -41,7 +41,7 @@ before_install:
   - wget -qO- https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
   - sudo apt-get update
   - sudo apt-get install rethinkdb
-  - 'nvm install v5.3.0'
+  - nvm install v5.3.0
   - sudo pip install rethinkdb
   - sudo pip install Flask
   - sudo pip install pytest
@@ -49,31 +49,20 @@ before_install:
   - pip list
   - pushd ~
   - git clone --depth=50 --branch=sprint https://github.com/materials-commons/mcapi.git
-  - pwd
-  - ls
-  - ls -R ~/mcapi/python/test
+  - cd mcapi/python
+  - sudo python setup.py install
   - popd
-  - mkdir -p $MCDIR/project_demo/files
-  - pushd $MCDIR/project_demo
-  - echo $MCDIR
-  - pwd
-  - cp -r ~/mcapi/python ./
-  - pwd
-  - ls
-  - ls python
-  - ls python/test
-  - ls python/test/test_data
-  - ls python/test/test_data/demo_project_data
-  - cp  python/test/test_data/demo_project_data/* files
-  - popd
-  - ls -aR $MCDIR/project_demo
 
 before_script:
   - npm list --depth=0
   - which mocha
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
+  - ls $MCDB_FILE
   - rethinkdb restore $MCDB_FILE --connect $MCDB_CONNECTION --force
+  - pushd backend/scripts/templates/
+  - ./run.sh
+  - popd
 
 script:
   - npm run-script test-no-html
