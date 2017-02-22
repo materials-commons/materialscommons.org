@@ -1,7 +1,9 @@
-<div layout="column" layout-margin style="maxx-height: 68vh;">
-    <div layout="row" layout-align="start center">
-        <span flex-offset="15">Task</span>
-        <span flex-offset="35">Template</span>
+<div layout="column" layout-margin>
+    <div layout="row" layout-align="space-between" style="margin-left: 55px; margin-right: 40px">
+        <span>Status</span>
+        <span>Task</span>
+        <span>Flag</span>
+        <!--<span flex-offset="35">Template</span>-->
     </div>
     <md-content ui-tree="$ctrl.treeOptions" id="tree-root" ng-if="$ctrl.experiment.tasks.length">
         <ol ui-tree-nodes ng-model="$ctrl.experiment.tasks" style="margin-right: 8px">
