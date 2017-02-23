@@ -86,18 +86,70 @@ describe('Feature - User - Build Demo Project: ', function() {
             }
         });
     });
+    describe('Run build directly as script would',function() {
+        it('Builds a demo project', function* () {
+            this.timeout(30000); // 30 seconds
+            let port = process.env.MCDB_PORT,
+                hostname = os.hostname(),
+                apihost = '',
+                source_dir = 'backend/scripts/demo-project',
+                datapath = 'backend/scripts/demo-project/demo_project_data',
+                apikey = user_apikey;
+
+            switch (hostname) {
+                case 'materialscommons':
+                    apihost = port === '30815' ? 'https://test.materialscommons.org' : 'https://materialscommons.org';
+                    break;
+                case 'lift.miserver.it.umich.edu':
+                    apihost = 'https://lift.materialscommons.org';
+                    break;
+                default:
+                    apihost = 'http://mctest.localhost';
+                    break;
+            }
+            let command = `${source_dir}/build_project.py --host ${apihost} --apikey ${apikey} --datapath ${datapath}`;
+            let result = yield promiseExec(command);
+            assert(
+                result == "Refreshed project with name = Demo Project\n" ||
+                result == "Built project with name = Demo Project\n"
+            )
+        })
+    });
+    describe('Run build directly with bad url',function() {
+        it('Builds a demo project', function* () {
+            this.timeout(30000); // 30 seconds
+            let port = process.env.MCDB_PORT,
+                hostname = os.hostname(),
+                apihost = '',
+                source_dir = 'backend/scripts/demo-project',
+                datapath = 'backend/scripts/demo-project/demo_project_data',
+                apikey = user_apikey
+                apihost = "http://noda.host";
+
+            let command = `${source_dir}/build_project.py --host ${apihost} --apikey ${apikey} --datapath ${datapath}`;
+            let error = null;
+            try{
+                let result = yield promiseExec(command);
+                console.log("              ", result);
+            } catch (e) {
+                error = e;
+            }
+            assert.isNotNull(error);
+            assert(error instanceof Error);
+        })
+    });
     describe('Run build demo script command local',function() {
-        it('Build demo project ', function* () {
+        it('Build demo project', function* () {
             this.timeout(30000); // 30 seconds
             let apikey = user_apikey;
 
             let result = yield createDemoProject(apikey);
             console.log("              ", result);
-
             assert(
                 result == "Refreshed project with name = Demo Project\n" ||
                 result == "Built project with name = Demo Project\n"
             )
+
         })
     });
     describe('Run build demo script command in users',function() {
@@ -156,8 +208,8 @@ function promiseExec(command) {
         exec(command, (error, stdout, stderr) => {
             let results = stdout.toString();
             let errorReturn = stderr.toString();
-            if (error) {
-                reject(errorReturn);
+            if (error || errorReturn) {
+                reject(new Error(errorReturn));
             } else {
                 resolve(results);
             }
