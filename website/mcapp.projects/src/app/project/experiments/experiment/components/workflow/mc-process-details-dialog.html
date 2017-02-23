@@ -5,7 +5,6 @@
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
-        <md-content>
             <div layout="row" layout-margin layout-wrap layout-align="end">
                 <md-button class="md-primary" ng-if="!$ctrl.process.hasChildren"
                            ng-click="$ctrl.deleteProcess()">
@@ -20,7 +19,6 @@
             <mc-process-template process="$ctrl.process"
                                  on-change="$ctrl.onChange()">
             </mc-process-template>
-        </md-content>
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
