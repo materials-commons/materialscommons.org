@@ -10,7 +10,7 @@
             </tr>
             </thead>
             <tbody md-body>
-            <tr md-row class="md-row-hover pointer" tooltip="hello"
+            <tr md-row class="md-row-hover pointer"
                 ng-repeat="experiment in $ctrl.experiments | filter:$ctrl.filterBy | orderBy:$ctrl.sortOrder">
                 <td md-cell>
                     <a class="md-primary" ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
