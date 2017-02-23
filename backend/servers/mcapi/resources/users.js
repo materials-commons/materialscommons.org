@@ -228,13 +228,13 @@ function* createDemoProjectRequest(apikey){
 
     switch (hostname) {
         case 'materialscommons':
-            apihost = port === '30815' ? 'https://test.materialscommons.org' : 'https://materialscommons.org';
+            apihost = port === '30815' ? 'https://test.materialscommons.org/' : 'https://materialscommons.org/';
             break;
         case 'lift.miserver.it.umich.edu':
-            apihost = 'https://lift.materialscommons.org';
+            apihost = 'https://lift.materialscommons.org/';
             break;
         default:
-            apihost = 'http://mctest.localhost';
+            apihost = 'http://mctest.localhost/';
             break;
     }
 

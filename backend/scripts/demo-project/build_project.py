@@ -3,6 +3,7 @@
 import argparse
 from os import path as os_path
 import demo_project as demo
+import traceback
 
 def set_host_url_arg():
     parser.add_argument('--host', required=True,
@@ -43,4 +44,5 @@ try:
         print "Built project with name = " + project.name
 
 except Exception as err:
+    traceback.print_exc()
     print 'Error: ', err
