@@ -244,7 +244,7 @@ function* createDemoProjectRequest(apikey){
 
     let ret = '';
     if ((last != "backend") && (last != "materialscommons.org")) {
-        let message = 'Can not create proejct with process running in unexpected base dir: '
+        let message = 'Can not create proejct with process running in unexpected base dir: ';
         message = message + current_dir;
         console.log("Build demo project fails - " + message);
         ret = {error: "Can not create demo project: admin see log"};
