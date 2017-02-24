@@ -14,6 +14,10 @@ branches:
 
 sudo: required
 
+addons:
+  hosts:
+  - mctest.localhost
+
 env:
   global:
     - MC_SERVICE_PORT=5002
@@ -34,6 +38,7 @@ env:
     - RETHINKDB_HTTP_PORT=8090
 
 before_install:
+  - sudo cat /etc/hosts
   - export MC_APP_DIR=`pwd`
     # RethinkDB
   - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
@@ -42,8 +47,6 @@ before_install:
   - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   - sudo apt-get update
-
-  - sudo cat /etc/hosts
 
 install:
   - sudo apt-get install nginx
@@ -86,7 +89,6 @@ install:
 
 before_script:
   - sudo cat /etc/nginx/conf.d/mctest.localhost.conf
-  - sudo cat /etc/hosts
   - sudo nginx
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
