@@ -41,6 +41,7 @@ before_install:
   - sudo apt-get install nginx
   - nvm install v5.3.0
   - npm install -g node-gyp@3.5.0
+  - npm install -g gulp-cli
   - npm install -g gulp
   - sudo pip install rethinkdb
   - sudo pip install Flask
