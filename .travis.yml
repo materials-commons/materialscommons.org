@@ -34,7 +34,7 @@ env:
     - RETHINKDB_HTTP_PORT=8090
 
 before_install:
-  - export MC_CLONE_DIR=`pwd`
+  - export MC_APP_DIR=`pwd`
     # RethinkDB
   - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
   - wget -qO- https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
@@ -55,10 +55,10 @@ install:
 
   - yarn install
 
-  - pip install rethinkdb
-  - pip install Flask
-  - pip install pytest
-  - pip install pbkdf2
+  - sudo pip install rethinkdb
+  - sudo pip install Flask
+  - sudo pip install pytest
+  - sudo pip install pbkdf2
 
   - npm install -g node-gyp@3.5.0
   - npm install -g gulp-cli
@@ -72,17 +72,16 @@ install:
   - cd mcapi/python
   - export MC_PYTHON_API_DIR=`pwd`
   - pip install -r requirements.txt
+  - sudo python setup.py install
+
 # Note: github does not store or recover empty directories
 #       this is needed for testing - creating empty dir
   - mkdir -p test/test_data/test_upload_data/test_upload_dir/sub_directory_c/empty_dir
-
-  - pushd test/test_data/test_config_data
+  - cd test/test_data/test_config_data
   - cp travisconfig.json ~/.materialscommons/config.json
   - sudo cp mctest.localhost.conf /etc/nginx/conf.d/
   - popd
-
-  - sudo python setup.py install
-  - popd
+  - pwd
 
 before_script:
   - sudo cat /etc/nginx/conf.d/mctest.localhost.conf
@@ -92,6 +91,7 @@ before_script:
   - sleep 5
   - ls $MCDB_FILE
   - rethinkdb restore $MCDB_FILE --connect $MCDB_CONNECTION --force
+  - cd $MC_APP_DIR
   - pushd backend/scripts/templates/
   - ./run.sh
   - popd
