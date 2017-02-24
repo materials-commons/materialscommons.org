@@ -228,13 +228,13 @@ function* createDemoProjectRequest(apikey){
 
     switch (hostname) {
         case 'materialscommons':
-            apihost = port === '30815' ? 'test.materialscommons.org' : 'materialscommons.org';
+            apihost = port === '30815' ? 'https://test.materialscommons.org/' : 'https://materialscommons.org/';
             break;
         case 'lift.miserver.it.umich.edu':
-            apihost = 'lift.materialscommons.org';
+            apihost = 'https://lift.materialscommons.org/';
             break;
         default:
-            apihost = 'mctest.localhost';
+            apihost = 'http://mctest.localhost/';
             break;
     }
 
@@ -244,7 +244,7 @@ function* createDemoProjectRequest(apikey){
 
     let ret = '';
     if ((last != "backend") && (last != "materialscommons.org")) {
-        let message = 'Can not create proejct with process running in unexpected base dir: '
+        let message = 'Can not create proejct with process running in unexpected base dir: ';
         message = message + current_dir;
         console.log("Build demo project fails - " + message);
         ret = {error: "Can not create demo project: admin see log"};
@@ -258,8 +258,7 @@ function* createDemoProjectRequest(apikey){
     }
 
     sourceDir = prefix + sourceDir;
-    let host_string = `http://${apihost}/`;
-    let command = `${sourceDir}build_project.py --host ${host_string} --apikey ${apikey} --datapath ${sourceDir}/demo_project_data`;
+    let command = `${sourceDir}build_project.py --host ${apihost} --apikey ${apikey} --datapath ${sourceDir}/demo_project_data`;
     let result = '';
     try {
         result = yield promiseExec(command);

@@ -1,5 +1,29 @@
 # Release Notes
 
+## 23 February 2017
+### [Materials Commons Projects](https://materialscommons.org/mcapp)
+This release added a bunch of new features to the graph workflow builder.
+- :star: **New Feature:** The workflow graph can now be filtered by sample. This allows you to view only nodes associated with a set of samples.
+- :star: **New Feature:** Added the ability to search within the graph workflow, showing only nodes that match the search.
+- :star: **New Feature:** Added a right click handler to the graph. When over a node right click to view a 'Show Details' menu popup.
+- :star: **New Feature:** Added a toolbar to the workflow containing useful tools.
+- :star: **New Feature:** If a node is selected, when adding a new node, the default view for samples to choose from is now filtered to the samples available from the clicked node. You can still choose to see all the available samples.
+- :star: **New Feature:** The dropdown menu under your username now allows you to create a demo project.
+- :star: **New Feature:** Added the ability to create a birds eye view of your workflow and move around it easily.
+- :star: **New Feature:** 
+- :star: **Improvement:** Increased the size of the graph workflow area.
+- :star: **Improvement:** Updates to existing templates, as well as added a set of generic templates.
+- :star: **Improvement:** Pan/Zoom and navigate have been improved in the graph view. 
+- :star: **Improvement:** Added description field to processes. The editor is fully featured and allows for rich data to be added to the process description.
+- :star: **Improvement:** Improved various views to allow to view details, such as process and samples selection.
+- :exclamation: **Deprecated:** Removed the ability to set a process template for a task. This feature has been deprecated. Existing tasks with templates still work.
+- :boom: **Fixed:** Microsoft documents were treated as viewable, showing binary content. This has been fixed.
+- :boom: **Fixed:** Other bug fixes.
+
+### [Materials Commons Data](https://materialscommons.org/mcpub)
+There were no changes made to Materials Commons Data in this release.
+
+
 ## 3 February 2017
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 This release of Materials Commons focused on stability and usability improvements.

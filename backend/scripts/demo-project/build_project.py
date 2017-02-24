@@ -3,6 +3,7 @@
 import argparse
 from os import path as os_path
 import demo_project as demo
+import traceback
 
 def set_host_url_arg():
     parser.add_argument('--host', required=True,
@@ -43,15 +44,5 @@ try:
         print "Built project with name = " + project.name
 
 except Exception as err:
+    traceback.print_exc()
     print 'Error: ', err
-
-'''
-if MCDB_PORT === 30815 and hostname == materialscommons.org then apihost = https://test.materialscommons.org
-else if MCDB_PORT == 28015 and hostname == materialscommons.org then apihost = https://materialscommons.org
-else if MCDB_PORT == 28015 and hostname = lift.something... then apihost = https://lift.materialscommons.org
-else // we are on localhost so use mctest.localhost
-'''
-
-'''
-$MCDIR/project_demo/files
-'''
