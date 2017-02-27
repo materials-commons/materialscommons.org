@@ -36,6 +36,14 @@
                    on-enter="ctrl.search()"
                    style="color:white; border-bottom-color:white">
         </md-input-container>
+        <span flex ng-show="!ctrl.$stateParams.project_id"></span>
+        <div ng-show="!ctrl.$stateParams.project_id">
+            <a class="always-white"
+               href="https://github.com/materials-commons/materialscommons.org/wiki/Help"
+               target="_blank">
+                <i class="fa fa-fw fa-question-circle"></i>
+            </a>
+        </div>
         <span flex></span>
         <div layout="row" flex layout-sm="column" layout-align="space-between">
             <md-button ng-show="false">Help</md-button>
