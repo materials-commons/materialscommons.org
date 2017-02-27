@@ -1,0 +1,2 @@
+import './api/index.module';
+

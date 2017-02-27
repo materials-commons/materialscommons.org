@@ -1,16 +1,16 @@
 /*@ngInject*/
 function projectsService(Restangular) {
     let onChangeFn = null;
-    const projectsAPI = _.partial(Restangular.one('v2').one, 'projects');
+    const projectsAPIRoute = _.partial(Restangular.one('v2').one, 'projects');
 
     return {
 
         getAllProjects: function() {
-            return projectsAPI().getList();
+            return projectsAPIRoute().getList();
         },
 
         getProject: function(projectId) {
-            return projectsAPI(projectId).get();
+            return projectsAPIRoute(projectId).get();
         },
 
         createProject: function(projectName, projectDescription) {
@@ -26,7 +26,7 @@ function projectsService(Restangular) {
         },
 
         getProjectSamples: function(projectID) {
-            return projectsAPI(projectID).one('samples').getList();
+            return projectsAPIRoute(projectID).one('samples').getList();
         },
 
         getProjectSample: function(projectID, sampleID) {
@@ -37,15 +37,15 @@ function projectsService(Restangular) {
         },
 
         getProjectProcesses: function(projectID) {
-            return projectsAPI(projectID).one('processes').getList();
+            return projectsAPIRoute(projectID).one('processes').getList();
         },
 
         getProjectProcess: function(projectId, processId) {
-            return projectsAPI(projectId).one('processes', processId).get();
+            return projectsAPIRoute(projectId).one('processes', processId).get();
         },
 
         updateProjectProcess: function(projectID, process) {
-            return projectsAPI(projectID).one('processes', process.id).customPUT(process).then(function(p) {
+            return projectsAPIRoute(projectID).one('processes', process.id).customPUT(process).then(function(p) {
                 if (onChangeFn) {
                     onChangeFn(p);
                 }
@@ -54,11 +54,11 @@ function projectsService(Restangular) {
         },
 
         updateProject: function(projectID, projectAttrs) {
-            return projectsAPI(projectID).customPUT(projectAttrs);
+            return projectsAPIRoute(projectID).customPUT(projectAttrs);
         },
 
         createProjectProcess: function(projectID, process) {
-            return projectsAPI(projectID).one('processes').customPOST(process).then(function(p) {
+            return projectsAPIRoute(projectID).one('processes').customPOST(process).then(function(p) {
                 if (onChangeFn) {
                     onChangeFn(p);
                 }
@@ -68,18 +68,18 @@ function projectsService(Restangular) {
 
         getProjectDirectory: function(projectID, dirID) {
             if (!dirID) {
-                return projectsAPI(projectID).one('directories').get();
+                return projectsAPIRoute(projectID).one('directories').get();
             } else {
-                return projectsAPI(projectID).one('directories', dirID).get();
+                return projectsAPIRoute(projectID).one('directories', dirID).get();
             }
         },
 
         getAllProjectDirectories: function(projectId) {
-            return projectsAPI(projectId).one('directories', 'all').getList();
+            return projectsAPIRoute(projectId).one('directories', 'all').getList();
         },
 
         createProjectDir: function(projectID, fromDirID, path) {
-            return projectsAPI(projectID).one('directories').customPOST({
+            return projectsAPIRoute(projectID).one('directories').customPOST({
                 from_dir: fromDirID,
                 path: path
             }).then(function(dirs) {
@@ -91,7 +91,7 @@ function projectsService(Restangular) {
         },
 
         getProjectFile: function(projectID, fileID) {
-            return projectsAPI(projectID).one('files', fileID).get();
+            return projectsAPIRoute(projectID).one('files', fileID).get();
         },
 
         onChange: function(scope, fn) {

@@ -1,9 +1,9 @@
 angular.module('materialscommons').factory('createProcess', createProcessService);
 
 /*@ngInject*/
-function createProcessService(projectsAPI, onChangeService) {
+function createProcessService(projectsAPIRoute, onChangeService) {
     return function(projectID, process) {
-        return projectsAPI(projectID).one('processes').customPOST(process).then(function(p) {
+        return projectsAPIRoute(projectID).one('processes').customPOST(process).then(function(p) {
             onChangeService.execif(p);
             return p;
         });

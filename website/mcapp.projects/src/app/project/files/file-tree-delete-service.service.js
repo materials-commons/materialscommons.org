@@ -1,13 +1,13 @@
 angular.module('materialscommons').factory('fileTreeDeleteService', fileTreeDeleteService);
 
-function fileTreeDeleteService(projectTreeModel, projectsAPI, toast) {
+function fileTreeDeleteService(projectTreeModel, projectsAPIRoute, toast) {
 
     function deleteProjectDir(projectID, dirID) {
-        return projectsAPI(projectID).one('directories', dirID).customDELETE();
+        return projectsAPIRoute(projectID).one('directories', dirID).customDELETE();
     }
 
     function deleteProjectFile(projectID, fileID) {
-        return projectsAPI(projectID).one('files', fileID).customDELETE();
+        return projectsAPIRoute(projectID).one('files', fileID).customDELETE();
     }
 
     function dropNode(id) {

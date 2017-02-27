@@ -2,6 +2,7 @@ import './index.module';
 import { setupRoutes } from './routes.js';
 import { MCAppController } from './mc-app.controller';
 import './global.services/index.module';
+import './models/index.module';
 import './global.filters/index.module';
 import './global.components/index.module';
 import './login/index.module';

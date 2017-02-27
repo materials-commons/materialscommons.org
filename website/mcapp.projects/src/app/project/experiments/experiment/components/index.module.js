@@ -13,11 +13,9 @@ import './tasks/components/mc-task-template-create-samples.component';
 import './tasks/components/mc-task-template-other.component';
 import './notes/mc-experiment-notes.component';
 import './notes/mc-experiment-notes-list.component';
-import './notes/notes-service.service';
 import './tasks/services/blank-task-service.service';
 import './tasks/services/task-service.service';
 import './publish/mc-experiment-publish.component';
-import './publish/dataset-service.service';
 
 import './datasets/mc-experiment-datasets.component';
 import './dataset/mc-experiment-dataset.component';
