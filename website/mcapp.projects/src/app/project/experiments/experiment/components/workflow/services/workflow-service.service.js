@@ -1,8 +1,8 @@
 class WorkflowService {
     /*@ngInject*/
-    constructor(experimentsAPI, processesService, mcbus, templates, toast, $mdDialog) {
+    constructor(experimentsAPI, processesAPI, mcbus, templates, toast, $mdDialog) {
         this.experimentsAPI = experimentsAPI;
-        this.processesService = processesService;
+        this.processesAPI = processesAPI;
         this.mcbus = mcbus;
         this.templates = templates;
         this.toast = toast;
@@ -63,7 +63,7 @@ class WorkflowService {
     }
 
     deleteNodeAndProcess(projectId, experimentId, processId) {
-        this.processesService.getDeleteProcessPreConditions(projectId, processId)
+        this.processesAPI.getDeleteProcessPreConditions(projectId, processId)
             .then(
                 process => {
                     let numberOfSamples = process.output_samples.length;
@@ -99,7 +99,7 @@ class WorkflowService {
         // any local layout that the user has created. Hence, this needs to be
         // updated so that only the process is deleted, and the node is deleted
         // from the graph without disturbing the layout. Terry Weymouth - Sept 29, 2016
-        this.processesService.deleteProcess(projectId, processId)
+        this.processesAPI.deleteProcess(projectId, processId)
             .then(
                 () => {
                     this.experimentsAPI.getProcessesForExperiment(projectId, experimentId)
@@ -118,9 +118,9 @@ class WorkflowService {
 
 class NewProcessDialogController {
     /*@ngInject*/
-    constructor($mdDialog, processesService, $stateParams) {
+    constructor($mdDialog, processesAPI, $stateParams) {
         this.$mdDialog = $mdDialog;
-        this.processesService = processesService;
+        this.processesAPI = processesAPI;
         this.projectId = $stateParams.project_id;
         this.processName = this.process.name;
     }
@@ -130,7 +130,7 @@ class NewProcessDialogController {
     }
 
     cancel() {
-        this.processesService.deleteProcess(this.projectId, this.process.id).then(
+        this.processesAPI.deleteProcess(this.projectId, this.process.id).then(
             () => this.$mdDialog.cancel(),
             () => this.$mdDialog.cancel()
         );

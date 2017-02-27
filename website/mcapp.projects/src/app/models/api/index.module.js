@@ -1,7 +1,7 @@
 import './projects-api-route.service';
 import './experiments-api.service';
 import './projects-api.service';
-import './processes-service.service';
+import './processes-api.service';
 import './api-service.service';
 import './mcapi.service';
 import './samples-api.service';

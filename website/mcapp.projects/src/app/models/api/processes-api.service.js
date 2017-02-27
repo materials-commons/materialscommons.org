@@ -1,4 +1,4 @@
-class ProcessesService {
+class ProcessesAPIService {
     constructor(projectsAPIRoute) {
         this.projectsAPIRoute = projectsAPIRoute;
     }
@@ -32,4 +32,4 @@ class ProcessesService {
     }
 }
 
-angular.module('materialscommons').service('processesService', ProcessesService);
+angular.module('materialscommons').service('processesAPI', ProcessesAPIService);

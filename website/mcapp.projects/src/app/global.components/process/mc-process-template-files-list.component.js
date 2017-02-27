@@ -1,10 +1,10 @@
 class MCProcessTemplateFilesListComponentController {
     /*@ngInject*/
-    constructor(mcfile, isImage, showFileService, processesService, toast, $stateParams) {
+    constructor(mcfile, isImage, showFileService, processesAPI, toast, $stateParams) {
         this.fileSrc = mcfile.src;
         this.isImage = isImage;
         this.showFileService = showFileService;
-        this.processesService = processesService;
+        this.processesAPI = processesAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
     }
@@ -14,7 +14,7 @@ class MCProcessTemplateFilesListComponentController {
     }
 
     removeFile(f) {
-        this.processesService.updateFilesInProcess(this.projectId, this.process.id, [], [f.id]).then(
+        this.processesAPI.updateFilesInProcess(this.projectId, this.process.id, [], [f.id]).then(
             () => this.removeFileFromProcess(f),
             () => this.toast.error('Unable to remove file from process')
         );
