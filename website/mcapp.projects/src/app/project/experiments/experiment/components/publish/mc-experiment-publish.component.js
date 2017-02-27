@@ -1,16 +1,16 @@
 class MCExperimentPublishComponentController {
     /*@ngInject*/
-    constructor($stateParams, datasetService, toast) {
+    constructor($stateParams, datasetsAPI, toast) {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
-        this.datasetService = datasetService;
+        this.datasetsAPI = datasetsAPI;
         this.toast = toast;
         this.publishedDatasets = [];
         this.inprocessDatasets = [];
     }
 
     $onInit() {
-        this.datasetService.getDatasetsForExperiment(this.projectId, this.experimentId)
+        this.datasetsAPI.getDatasetsForExperiment(this.projectId, this.experimentId)
             .then(
                 (datasets) => {
                     this.publishedDatasets = datasets.filter(ds => ds.published);
@@ -21,7 +21,7 @@ class MCExperimentPublishComponentController {
     }
 
     createNewDataset() {
-        this.datasetService.createDatasetForExperiment(this.projectId, this.experimentId, "new dataset", "my new dataset")
+        this.datasetsAPI.createDatasetForExperiment(this.projectId, this.experimentId, "new dataset", "my new dataset")
             .then(
                 () => {
                 // (dataset) => {  // dataset defined but not used - when log statement commented out

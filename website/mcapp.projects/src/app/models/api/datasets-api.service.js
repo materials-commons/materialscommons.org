@@ -1,4 +1,4 @@
-class DatasetService {
+class DatasetsAPIService {
     /*@ngInject*/
     constructor(projectsAPIRoute) {
         this.projectsAPIRoute = projectsAPIRoute;
@@ -68,4 +68,4 @@ class DatasetService {
     }
 }
 
-angular.module('materialscommons').service('datasetService', DatasetService);
+angular.module('materialscommons').service('datasetsAPI', DatasetsAPIService);

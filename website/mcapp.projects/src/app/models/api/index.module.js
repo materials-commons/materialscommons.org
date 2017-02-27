@@ -8,4 +8,4 @@ import './samples-api.service';
 import './accounts-api.service';
 import './file-tree-project-service.service';
 import './notes-service.service';
-import './dataset-service.service';
+import './datasets-api.service';
