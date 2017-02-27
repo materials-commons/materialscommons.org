@@ -4,7 +4,7 @@ import './projects-api.service';
 import './processes-service.service';
 import './api-service.service';
 import './mcapi.service';
-import './samples-service.service';
+import './samples-api.service';
 import './accounts-service.service';
 import './file-tree-project-service.service';
 import './notes-service.service';

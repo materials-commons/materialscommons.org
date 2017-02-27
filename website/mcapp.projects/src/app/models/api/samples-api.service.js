@@ -1,4 +1,4 @@
-class SamplesService {
+class SamplesAPIService {
     constructor(projectsAPIRoute) {
         this.projectsAPIRoute = projectsAPIRoute;
     }
@@ -87,4 +87,4 @@ class SamplesService {
     }
 }
 
-angular.module('materialscommons').service('samplesService', SamplesService);
+angular.module('materialscommons').service('samplesAPI', SamplesAPIService);

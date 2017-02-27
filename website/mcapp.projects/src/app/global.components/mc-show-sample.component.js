@@ -1,15 +1,15 @@
 class MCShowSampleComponentController {
     /*@ngInject*/
-    constructor($stateParams, samplesService, toast, $mdDialog) {
+    constructor($stateParams, samplesAPI, toast, $mdDialog) {
         this.projectId = $stateParams.project_id;
-        this.samplesService = samplesService;
+        this.samplesAPI = samplesAPI;
         this.toast = toast;
         this.$mdDialog = $mdDialog;
         this.viewHeight = this.viewHeight ? this.viewHeight : "40vh";
     }
 
     $onInit() {
-        this.samplesService.getProjectSample(this.projectId, this.sampleId)
+        this.samplesAPI.getProjectSample(this.projectId, this.sampleId)
             .then(
                 (sample) => this.processSample(sample),
                 () => this.toast.error('Unable to retrieve sample')

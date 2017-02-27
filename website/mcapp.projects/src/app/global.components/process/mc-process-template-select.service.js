@@ -1,9 +1,9 @@
 class MCProcessTemplateSelectService {
     /*@ngInject*/
-    constructor(experimentsAPI, selectItems, samplesService) {
+    constructor(experimentsAPI, selectItems, samplesAPI) {
         this.experimentsAPI = experimentsAPI;
         this.selectItems = selectItems;
-        this.samplesService = samplesService;
+        this.samplesAPI = samplesAPI;
     }
 
     files(projectId, experimentId, process) {

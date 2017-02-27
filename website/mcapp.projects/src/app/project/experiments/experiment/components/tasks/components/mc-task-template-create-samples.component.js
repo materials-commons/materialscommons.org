@@ -1,11 +1,11 @@
 class MCTaskTemplateCreateSamplesComponentController {
     /*@ngInject*/
-    constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast, selectItems,
+    constructor(prepareCreatedSample, focus, $mdDialog, samplesAPI, $stateParams, toast, selectItems,
                 experimentsAPI, navbarOnChange) {
         this.prepareCreatedSample = prepareCreatedSample;
         this.focus = focus;
         this.$mdDialog = $mdDialog;
-        this.samplesService = samplesService;
+        this.samplesAPI = samplesAPI;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.toast = toast;
@@ -38,12 +38,12 @@ class MCTaskTemplateCreateSamplesComponentController {
             return;
         }
 
-        this.samplesService.createSamplesInProjectForProcess(this.projectId, this.task.process_id, [{name: ''}])
+        this.samplesAPI.createSamplesInProjectForProcess(this.projectId, this.task.process_id, [{name: ''}])
             .then(
                 (samples) => {
                     let sampleIds = samples.samples.map((s) => s.id);
                     this.navbarOnChange.fireChange();
-                    this.samplesService.addSamplesToExperiment(this.projectId, this.experimentId, sampleIds)
+                    this.samplesAPI.addSamplesToExperiment(this.projectId, this.experimentId, sampleIds)
                         .then(
                             () => {
                                 this.task.template.output_samples.push(samples.samples[0]);
@@ -58,7 +58,7 @@ class MCTaskTemplateCreateSamplesComponentController {
 
     remove(index) {
         let sample = this.task.template.output_samples[index];
-        this.samplesService.deleteSamplesFromExperiment(this.projectId, this.experimentId, this.task.process_id, [sample.id])
+        this.samplesAPI.deleteSamplesFromExperiment(this.projectId, this.experimentId, this.task.process_id, [sample.id])
             .then(
                 () => this.task.template.output_samples.splice(index, 1),
                 () => this.toast.error('Unable to delete remove sample')
@@ -66,7 +66,7 @@ class MCTaskTemplateCreateSamplesComponentController {
     }
 
     updateSampleName(sample) {
-        this.samplesService.updateSampleInExperiment(this.projectId, this.experimentId, this.task.process_id, {
+        this.samplesAPI.updateSampleInExperiment(this.projectId, this.experimentId, this.task.process_id, {
                 id: sample.id,
                 name: sample.name
             })
@@ -103,9 +103,9 @@ angular.module('materialscommons').component('mcTaskTemplateCreateSamples', {
 
 class AddMultipleSamplesDialogController {
     /*@ngInject*/
-    constructor($mdDialog, samplesService, toast) {
+    constructor($mdDialog, samplesAPI, toast) {
         this.$mdDialog = $mdDialog;
-        this.samplesService = samplesService;
+        this.samplesAPI = samplesAPI;
         this.toast = toast;
         this.nameTemplate = "";
         this.count = 2;
@@ -123,11 +123,11 @@ class AddMultipleSamplesDialogController {
             samplesToAdd.push({name: name});
         }
 
-        this.samplesService.createSamplesInProjectForProcess(this.projectId, this.processId, samplesToAdd)
+        this.samplesAPI.createSamplesInProjectForProcess(this.projectId, this.processId, samplesToAdd)
             .then(
                 (samples) => {
                     let sampleIds = samples.samples.map((s) => s.id);
-                    this.samplesService.addSamplesToExperiment(this.projectId, this.experimentId, sampleIds)
+                    this.samplesAPI.addSamplesToExperiment(this.projectId, this.experimentId, sampleIds)
                         .then(
                             () => this.$mdDialog.hide(samples.samples),
                             () => this.toast.error('Failed to add samples to experiment')
