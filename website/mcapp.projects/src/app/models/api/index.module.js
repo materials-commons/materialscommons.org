@@ -1,4 +1,4 @@
-import './projects-api.service';
+import './projects-api-route.service';
 import './experiments-api.service';
 import './projects-service.service';
 import './processes-service.service';
