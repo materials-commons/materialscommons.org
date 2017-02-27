@@ -1,7 +1,7 @@
 class MCJoinComponentController {
     /*@ngInject*/
-    constructor(accountsService, $state) {
-        this.accountsService = accountsService;
+    constructor(accountsAPI, $state) {
+        this.accountsAPI = accountsAPI;
         this.$state = $state;
         this.firstName = '';
         this.lastName = '';
@@ -19,7 +19,7 @@ class MCJoinComponentController {
             return;
         }
 
-        this.accountsService.createAccount(`${this.firstName} ${this.lastName}`, this.email)
+        this.accountsAPI.createAccount(`${this.firstName} ${this.lastName}`, this.email)
             .then(
                 () => this.showSuccessMsg = true,
                 (e) => this.message = `${e.data.error}`

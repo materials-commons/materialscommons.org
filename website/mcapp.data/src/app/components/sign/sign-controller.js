@@ -15,7 +15,7 @@ export class SignController {
         this.$uibModalInstance = $uibModalInstance;
         this.toastr = toastr;
         this.Restangular = Restangular;
-        this.accountsService = accountsService;
+        this.accountsAPI = accountsService;
         this.showSuccessMsg = false;
         this.$timeout = $timeout;
         this.second = 1000;
@@ -47,7 +47,7 @@ export class SignController {
     }
 
     register() {
-        this.accountsService.createAccount(`${this.user.firstName} ${this.user.lastName}`, this.user.email)
+        this.accountsAPI.createAccount(`${this.user.firstName} ${this.user.lastName}`, this.user.email)
             .then(
                 () => {
                     this.showSuccessMsg = true;
@@ -61,7 +61,7 @@ export class SignController {
     }
 
     resetPassword() {
-        this.accountsService.resetPassword(this.user.email)
+        this.accountsAPI.resetPassword(this.user.email)
             .then(
                 () => {
                     this.showSuccessMsg = true;

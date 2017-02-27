@@ -3,7 +3,7 @@ export class ResetValidateController {
     constructor($stateParams, accountsService, userService, $state, Restangular, toastr, $uibModal) {
         this.$stateParams = $stateParams;
         this.validationId = $stateParams.validation_id;
-        this.accountsService = accountsService;
+        this.accountsAPI = accountsService;
         this.userService = userService;
         this.$state = $state;
         this.Restangular = Restangular;
@@ -11,7 +11,7 @@ export class ResetValidateController {
         this.$uibModal = $uibModal;
         this.password1 = '';
         this.password2 = '';
-        this.accountsService.getUserForResetPassword(this.validationId)
+        this.accountsAPI.getUserForResetPassword(this.validationId)
             .then(
                 (user) => this.user = user,
                 (e) => this.message = e.data.error
@@ -22,7 +22,7 @@ export class ResetValidateController {
             return;
         }
 
-        this.accountsService.resetUserPasswordWithValidate(this.validationId, this.password1)
+        this.accountsAPI.resetUserPasswordWithValidate(this.validationId, this.password1)
             .then(
                 () => {
                     this.userService.login(this.user.email, this.password1)
