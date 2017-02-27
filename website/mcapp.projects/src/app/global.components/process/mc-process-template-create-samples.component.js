@@ -1,6 +1,6 @@
 class MCProcessTemplateCreateSamplesComponentController {
     /*@ngInject*/
-    constructor(focus, $mdDialog, samplesService, $stateParams, toast, selectItems, experimentsService, navbarOnChange) {
+    constructor(focus, $mdDialog, samplesService, $stateParams, toast, selectItems, experimentsAPI, navbarOnChange) {
         this.focus = focus;
         this.$mdDialog = $mdDialog;
         this.samplesService = samplesService;
@@ -8,7 +8,7 @@ class MCProcessTemplateCreateSamplesComponentController {
         this.experimentId = $stateParams.experiment_id;
         this.toast = toast;
         this.selectItems = selectItems;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.navbarOnChange = navbarOnChange;
     }
 
@@ -21,7 +21,7 @@ class MCProcessTemplateCreateSamplesComponentController {
                     files: files,
                     process_id: this.process.id
                 };
-                this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
+                this.experimentsAPI.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
                     .then(
                         (process) => this.process.files = process.files,
                         () => this.toast.error('Unable to add files')

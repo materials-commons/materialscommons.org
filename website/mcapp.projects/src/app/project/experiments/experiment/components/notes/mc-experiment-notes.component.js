@@ -1,8 +1,8 @@
 class MCExperimentNotesComponentController {
     /*@ngInject*/
-    constructor($scope, $mdDialog, notesService, $stateParams, toast, editorOpts, experimentsService, toUITask) {
+    constructor($scope, $mdDialog, notesService, $stateParams, toast, editorOpts, experimentsAPI, toUITask) {
         $scope.editorOptions = editorOpts({height: 67, width: 59});
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.notesService = notesService;
         this.$mdDialog = $mdDialog;
         this.toast = toast;
@@ -25,7 +25,7 @@ class MCExperimentNotesComponentController {
             parent_id: '',
             index: this.experiment.tasks.length
         };
-        this.experimentsService.createTask(this.projectID, this.experimentID, newTask)
+        this.experimentsAPI.createTask(this.projectID, this.experimentID, newTask)
             .then(
                 (task) => {
                     this.toUITask(task);
@@ -116,12 +116,12 @@ class NewExperimentNoteDialogController {
 
 class NewExperimentQuickTasksDialogController {
     /*@ngInject*/
-    constructor($mdDialog, toUITask, toast, taskService, experimentsService, $stateParams) {
+    constructor($mdDialog, toUITask, toast, taskService, experimentsAPI, $stateParams) {
         this.$mdDialog = $mdDialog;
         this.toast = toast;
         this.toUITask = toUITask;
         this.taskService = taskService;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.$stateParams = $stateParams;
     }
 
@@ -138,7 +138,7 @@ class NewExperimentQuickTasksDialogController {
                 parent_id: '',
                 index: this.experiment.tasks.length
             };
-        this.experimentsService.createTask(projectId, experimentId, newTask)
+        this.experimentsAPI.createTask(projectId, experimentId, newTask)
             .then(
                 (task) => {
                     this.toUITask(task);

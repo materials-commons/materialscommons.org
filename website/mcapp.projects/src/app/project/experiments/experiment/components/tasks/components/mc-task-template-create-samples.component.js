@@ -1,6 +1,7 @@
 class MCTaskTemplateCreateSamplesComponentController {
     /*@ngInject*/
-    constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast, selectItems, experimentsService, navbarOnChange) {
+    constructor(prepareCreatedSample, focus, $mdDialog, samplesService, $stateParams, toast, selectItems,
+                experimentsAPI, navbarOnChange) {
         this.prepareCreatedSample = prepareCreatedSample;
         this.focus = focus;
         this.$mdDialog = $mdDialog;
@@ -9,7 +10,7 @@ class MCTaskTemplateCreateSamplesComponentController {
         this.experimentId = $stateParams.experiment_id;
         this.toast = toast;
         this.selectItems = selectItems;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.navbarOnChange = navbarOnChange;
     }
 
@@ -22,7 +23,7 @@ class MCTaskTemplateCreateSamplesComponentController {
                     files: files,
                     process_id: this.task.process_id
                 };
-                this.experimentsService.updateTaskTemplateFiles(this.projectId, this.experimentId, this.task.id, filesArgs)
+                this.experimentsAPI.updateTaskTemplateFiles(this.projectId, this.experimentId, this.task.id, filesArgs)
                     .then(
                         () => this.task.template.input_files = selected.files,
                         () => this.toast.error('Unable to add files')

@@ -1,9 +1,9 @@
 class SelectItemsService {
     /*@ngInject*/
-    constructor($mdDialog, projectsService, experimentsService, fileTreeProjectService, mcstate) {
+    constructor($mdDialog, projectsService, experimentsAPI, fileTreeProjectService, mcstate) {
         this.$mdDialog = $mdDialog;
         this.projectsService = projectsService;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.fileTreeProjectService = fileTreeProjectService;
         this.mcstate = mcstate;
     }
@@ -56,7 +56,7 @@ class SelectItemsService {
     }
 
     samplesFromExperiment(projectId, experimentId, singleSelection = false) {
-        return this.experimentsService.getSamplesForExperiment(projectId, experimentId).then(
+        return this.experimentsAPI.getSamplesForExperiment(projectId, experimentId).then(
             (samples) => this.dialog({samples, singleSelection}, SelectItemsSamplesServiceModalController)
         );
     }

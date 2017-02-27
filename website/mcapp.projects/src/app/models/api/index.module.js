@@ -1,5 +1,5 @@
 import './projects-api.service';
-import './experiments-service.service';
+import './experiments-api.service';
 import './projects-service.service';
 import './processes-service.service';
 import './api-service.service';

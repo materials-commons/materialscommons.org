@@ -104,9 +104,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/experiment/:experiment_id',
             template: `<mc-experiment></mc-experiment>`,
             resolve: {
-                experiment: ['experimentsService', 'toast', 'toUITask', '$stateParams', 'mcstate',
-                    function(experimentsService, toast, toUITask, $stateParams, mcstate) {
-                        return experimentsService.getForProject($stateParams.project_id, $stateParams.experiment_id)
+                experiment: ['experimentsAPI', 'toast', 'toUITask', '$stateParams', 'mcstate',
+                    function(experimentsAPI, toast, toUITask, $stateParams, mcstate) {
+                        return experimentsAPI.getForProject($stateParams.project_id, $stateParams.experiment_id)
                             .then(
                                 (e) => {
                                     e.tasks.forEach((task) => toUITask(task));
@@ -135,9 +135,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/processes',
             template: '<mc-processes-workflow processes="$resolve.processes"></mc-processes-workflow>',
             resolve: {
-                processes: ['experimentsService', '$stateParams',
-                    (experimentsService, $stateParams) =>
-                        experimentsService.getProcessesForExperiment($stateParams.project_id, $stateParams.experiment_id)
+                processes: ['experimentsAPI', '$stateParams',
+                    (experimentsAPI, $stateParams) =>
+                        experimentsAPI.getProcessesForExperiment($stateParams.project_id, $stateParams.experiment_id)
                 ]
             }
         })
@@ -145,9 +145,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/samples',
             template: '<mc-project-samples samples="$resolve.samples"></mc-project-samples>',
             resolve: {
-                samples: ['experimentsService', '$stateParams',
-                    (experimentsService, $stateParams) =>
-                        experimentsService.getSamplesForExperiment($stateParams.project_id, $stateParams.experiment_id)
+                samples: ['experimentsAPI', '$stateParams',
+                    (experimentsAPI, $stateParams) =>
+                        experimentsAPI.getSamplesForExperiment($stateParams.project_id, $stateParams.experiment_id)
                 ]
             }
         })
@@ -155,9 +155,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/files',
             template: '<mc-experiment-files files="$resolve.files"></mc-experiment-files>',
             resolve: {
-                files: ['experimentsService', '$stateParams',
-                    (experimentsService, $stateParams) =>
-                        experimentsService.getFilesForExperiment($stateParams.project_id, $stateParams.experiment_id)
+                files: ['experimentsAPI', '$stateParams',
+                    (experimentsAPI, $stateParams) =>
+                        experimentsAPI.getFilesForExperiment($stateParams.project_id, $stateParams.experiment_id)
                 ]
             }
         })
@@ -194,9 +194,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/experiments',
             template: '<mc-project-experiments experiments="$resolve.experiments"></mc-project-experiments>',
             resolve: {
-                experiments: ['experimentsService', '$stateParams',
-                    (experimentsService, $stateParams) =>
-                        experimentsService.getAllForProject($stateParams.project_id)
+                experiments: ['experimentsAPI', '$stateParams',
+                    (experimentsAPI, $stateParams) =>
+                        experimentsAPI.getAllForProject($stateParams.project_id)
                 ]
             }
         })

@@ -1,13 +1,13 @@
 class WorkflowFiltersService {
     /*@ngInject*/
-    constructor($mdDialog, experimentsService, mcbus) {
+    constructor($mdDialog, experimentsAPI, mcbus) {
         this.$mdDialog = $mdDialog;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.mcbus = mcbus;
     }
 
     filterBySamples(projectId, experimentId) {
-        this.experimentsService.getSamplesForExperiment(projectId, experimentId).then(
+        this.experimentsAPI.getSamplesForExperiment(projectId, experimentId).then(
             (samples) => {
                 this.$mdDialog.show({
                     templateUrl: 'app/project/experiments/experiment/components/workflow/services/filter-by-samples-dialog.html',

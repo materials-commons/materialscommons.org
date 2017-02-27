@@ -1,10 +1,10 @@
 class BlankTaskService {
     /*@ngInject*/
-    constructor(toUITask, focus, paginationService, experimentsService, toast, $stateParams, mcstate) {
+    constructor(toUITask, focus, paginationService, experimentsAPI, toast, $stateParams, mcstate) {
         this.toUITask = toUITask;
         this.focus = focus;
         this.paginationService = paginationService;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
         this.mcstate = mcstate;
@@ -21,7 +21,7 @@ class BlankTaskService {
             parent_id: '',
             index: csi + 1
         };
-        this.experimentsService.createTask(this.$stateParams.project_id, this.$stateParams.experiment_id, newTask)
+        this.experimentsAPI.createTask(this.$stateParams.project_id, this.$stateParams.experiment_id, newTask)
             .then(
                 (task) => {
                     $('.mc-experiment-outline-task').removeClass('task-selected');

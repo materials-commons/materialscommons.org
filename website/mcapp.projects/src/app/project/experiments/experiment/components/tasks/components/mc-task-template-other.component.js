@@ -1,10 +1,10 @@
 class MCTaskTemplateOtherComponentController {
     /*@ngInject*/
-    constructor(sampleLinker, processEdit, selectItems, experimentsService, toast, $stateParams, navbarOnChange) {
+    constructor(sampleLinker, processEdit, selectItems, experimentsAPI, toast, $stateParams, navbarOnChange) {
         this.sampleLinker = sampleLinker;
         this.processEdit = processEdit;
         this.selectItems = selectItems;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
@@ -30,7 +30,7 @@ class MCTaskTemplateOtherComponentController {
                     files: files,
                     process_id: this.task.process_id
                 };
-                this.experimentsService.updateTaskTemplateFiles(this.projectId, this.experimentId, this.task.id, filesArgs)
+                this.experimentsAPI.updateTaskTemplateFiles(this.projectId, this.experimentId, this.task.id, filesArgs)
                     .then(
                         () => this.task.template.input_files = selected.files,
                         () => this.toast.error('Unable to add files')
@@ -54,7 +54,7 @@ class MCTaskTemplateOtherComponentController {
                     process_id: this.task.process_id
                 };
 
-                this.experimentsService.updateTaskTemplateSamples(this.projectId, this.experimentId, this.task.id, samplesArgs)
+                this.experimentsAPI.updateTaskTemplateSamples(this.projectId, this.experimentId, this.task.id, samplesArgs)
                     .then(
                         () => {
                             this.task.template.input_samples = selected.samples;

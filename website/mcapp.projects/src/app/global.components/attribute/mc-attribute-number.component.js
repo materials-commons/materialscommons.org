@@ -1,7 +1,7 @@
 class MCAttributeNumberComponentController {
     /*@ngInject*/
-    constructor(experimentsService, toast, $stateParams) {
-        this.experimentsService = experimentsService;
+    constructor(experimentsAPI, toast, $stateParams) {
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
         this.projectId = $stateParams.project_id;
@@ -32,7 +32,7 @@ class MCAttributeNumberComponentController {
             properties: [property]
         };
 
-        this.experimentsService.updateProcess(this.projectId, this.experimentId, this.processId, propertyArgs)
+        this.experimentsAPI.updateProcess(this.projectId, this.experimentId, this.processId, propertyArgs)
             .then(
                 () => null,
                 () => this.toast.error('Unable to update property')

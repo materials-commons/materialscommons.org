@@ -1,7 +1,7 @@
 class MCAttributeDateComponentController {
     /*@ngInject*/
-    constructor(experimentsService, toast, $stateParams) {
-        this.experimentsService = experimentsService;
+    constructor(experimentsAPI, toast, $stateParams) {
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
         this.projectId = $stateParams.project_id;
@@ -26,7 +26,7 @@ class MCAttributeDateComponentController {
     updateDateProperty(property) {
 
         property.value =
-            this.experimentsService.convertDateValueForTransport(this.date);
+            this.experimentsAPI.convertDateValueForTransport(this.date);
 
         property.setup_attribute = this.attribute;
         let propertyArgs = {
@@ -34,7 +34,7 @@ class MCAttributeDateComponentController {
             properties: [property]
         };
 
-        this.experimentsService.updateProcess(this.projectId, this.experimentId, this.processId, propertyArgs)
+        this.experimentsAPI.updateProcess(this.projectId, this.experimentId, this.processId, propertyArgs)
             .then(
                 () => null,
                 () => this.toast.error('Unable to update property')

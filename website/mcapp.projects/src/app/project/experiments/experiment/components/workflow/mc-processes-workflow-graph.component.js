@@ -1,7 +1,7 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService, mcbus, experimentsService, $stateParams, mcstate, $filter, $mdDialog, mcshow) {
+    constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter, $mdDialog, mcshow) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
@@ -10,7 +10,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.myName = 'MCProcessesWorkflowGraph';
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.$filter = $filter;
         this.$mdDialog = $mdDialog;
         this.mcshow = mcshow;

@@ -1,8 +1,8 @@
 class QuickbarSamplesService {
     /*@ngInject*/
-    constructor(projectsService, experimentsService, datasetService, toast) {
+    constructor(projectsService, experimentsAPI, datasetService, toast) {
         this.projectsService = projectsService;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.datasetService = datasetService;
         this.toast = toast;
     }
@@ -16,7 +16,7 @@ class QuickbarSamplesService {
     }
 
     getExperimentSamples(projectId, experimentId) {
-        return this.experimentsService.getSamplesForExperiment(projectId, experimentId)
+        return this.experimentsAPI.getSamplesForExperiment(projectId, experimentId)
             .then(
                 (samples) => samples,
                 () => this.toast.error('Unable to retrieve experiment samples')

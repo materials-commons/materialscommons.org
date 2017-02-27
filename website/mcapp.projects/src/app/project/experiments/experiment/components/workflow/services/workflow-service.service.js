@@ -1,7 +1,7 @@
 class WorkflowService {
     /*@ngInject*/
-    constructor(experimentsService, processesService, mcbus, templates, toast, $mdDialog) {
-        this.experimentsService = experimentsService;
+    constructor(experimentsAPI, processesService, mcbus, templates, toast, $mdDialog) {
+        this.experimentsAPI = experimentsAPI;
         this.processesService = processesService;
         this.mcbus = mcbus;
         this.templates = templates;
@@ -10,7 +10,7 @@ class WorkflowService {
     }
 
     addProcessFromTemplate(templateId, projectId, experimentId, multiple = true) {
-        this.experimentsService.createProcessFromTemplate(projectId, experimentId, `global_${templateId}`)
+        this.experimentsAPI.createProcessFromTemplate(projectId, experimentId, `global_${templateId}`)
             .then(
                 (process) => {
                     let p = this.templates.loadTemplateFromProcess(process.template_name, process);
@@ -46,7 +46,7 @@ class WorkflowService {
             }
         }).then(
             (cloneArgs) => {
-                return this.experimentsService.cloneProcess(projectId, experimentId, p.id, cloneArgs).then(
+                return this.experimentsAPI.cloneProcess(projectId, experimentId, p.id, cloneArgs).then(
                     () => this.sendProcessChangeEvent(projectId, experimentId),
                     () => this.toast.error('Error cloning process')
                 )
@@ -55,7 +55,7 @@ class WorkflowService {
     }
 
     sendProcessChangeEvent(projectId, experimentId) {
-        this.experimentsService.getProcessesForExperiment(projectId, experimentId)
+        this.experimentsAPI.getProcessesForExperiment(projectId, experimentId)
             .then(
                 (processes) => this.mcbus.send('PROCESSES$CHANGE', processes),
                 () => this.toast.error('Error retrieving processes for experiment')
@@ -102,7 +102,7 @@ class WorkflowService {
         this.processesService.deleteProcess(projectId, processId)
             .then(
                 () => {
-                    this.experimentsService.getProcessesForExperiment(projectId, experimentId)
+                    this.experimentsAPI.getProcessesForExperiment(projectId, experimentId)
                         .then(
                             (processes) => {
                                 this.mcbus.send('PROCESSES$CHANGE', processes);

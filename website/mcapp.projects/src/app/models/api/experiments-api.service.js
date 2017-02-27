@@ -1,4 +1,4 @@
-class ExperimentsService {
+class ExperimentsAPIService {
     /*@ngInject*/
     constructor(projectsAPIRoute) {
         this.projectsAPIRoute = projectsAPIRoute;
@@ -128,4 +128,4 @@ class ExperimentsService {
 
 }
 
-angular.module('materialscommons').service('experimentsService', ExperimentsService);
+angular.module('materialscommons').service('experimentsAPI', ExperimentsAPIService);

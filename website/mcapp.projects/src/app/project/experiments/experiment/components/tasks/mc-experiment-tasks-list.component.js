@@ -17,7 +17,7 @@ angular.module('materialscommons').component('mcExperimentTasksList', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksListComponentController(experimentsService, toast, $stateParams, mcstate) {
+function MCExperimentTasksListComponentController(experimentsAPI, toast, $stateParams, mcstate) {
     let ctrl = this;
     ctrl.treeOptions = {
         dropped: onDrop
@@ -50,7 +50,7 @@ function MCExperimentTasksListComponentController(experimentsService, toast, $st
         let swapArgs = {
             task_id: dstTask.id
         };
-        experimentsService
+        experimentsAPI
             .updateTask($stateParams.project_id, $stateParams.experiment_id, task.id, {swap: swapArgs})
             .then(
                 () => null,

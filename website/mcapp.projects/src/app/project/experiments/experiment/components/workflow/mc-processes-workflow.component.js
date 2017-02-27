@@ -1,9 +1,9 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
-    constructor(experimentsService, $stateParams, toast, experimentProcessesService, datasetService,
+    constructor(experimentsAPI, $stateParams, toast, experimentProcessesService, datasetService,
                 workflowService, mcstate, mcbus) {
         this.myName = 'MCProcessesWorkflow';
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
@@ -41,7 +41,7 @@ class MCProcessesWorkflowComponentController {
 
     setSelectedProcess(processId, hasChildren) {
         if (processId) {
-            this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
+            this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, processId)
                 .then(
                     (process) => {
                         process.hasChildren = hasChildren;
@@ -61,7 +61,7 @@ class MCProcessesWorkflowComponentController {
     }
 
     onChange() {
-        this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
+        this.experimentsAPI.getProcessesForExperiment(this.projectId, this.experimentId)
             .then(
                 (processes) => this.processes = processes,
                 () => this.toast.error('Error retrieving processes for experiment')
