@@ -3,30 +3,11 @@ import { existingProcessController } from './existing-process-controller';
 import { ImageController } from './image-controller';
 import { PreFillProcessController } from './prefill-controller';
 import { setupViewController } from './setup_view_controller';
-import { TemplatesModalController } from './templates-modal-controller';
 
 export function mcmodalService($modal) {
     'ngInject';
 
     var service = {
-
-        chooseTemplate: function(project, templates) {
-            var modal = $modal.open({
-                size: 'lg',
-                templateUrl: 'app/global.services/mcmodal/partials/template.html',
-                controller: TemplatesModalController,
-                controllerAs: 'ctrl',
-                resolve: {
-                    project: function() {
-                        return project;
-                    },
-                    templates: function() {
-                        return templates;
-                    }
-                }
-            });
-            return modal.result;
-        },
 
         chooseUsers: function(users) {
             var modal = $modal.open({
