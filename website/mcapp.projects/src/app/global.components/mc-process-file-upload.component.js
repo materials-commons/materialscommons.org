@@ -1,8 +1,8 @@
 class MCProcessFileUploadComponentController {
     /*@ngInject*/
-    constructor(mcFlow, projectsService, toast, $stateParams, $timeout) {
+    constructor(mcFlow, projectsAPI, toast, $stateParams, $timeout) {
         this.flow = mcFlow.get();
-        this.projectsService = projectsService;
+        this.projectsAPI = projectsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
         this.$timeout = $timeout;
@@ -11,7 +11,7 @@ class MCProcessFileUploadComponentController {
     $onInit() {
         this.dirs = [];
         this.dir = {data: ''};
-        this.projectsService.getAllProjectDirectories(this.$stateParams.project_id).then(
+        this.projectsAPI.getAllProjectDirectories(this.$stateParams.project_id).then(
             (dirs) => {
                 this.dir.data = dirs[0];
                 this.dirs = dirs;

@@ -1,8 +1,8 @@
 class SelectItemsService {
     /*@ngInject*/
-    constructor($mdDialog, projectsService, experimentsAPI, fileTreeProjectService, mcstate) {
+    constructor($mdDialog, projectsAPI, experimentsAPI, fileTreeProjectService, mcstate) {
         this.$mdDialog = $mdDialog;
-        this.projectsService = projectsService;
+        this.projectsAPI = projectsAPI;
         this.experimentsAPI = experimentsAPI;
         this.fileTreeProjectService = fileTreeProjectService;
         this.mcstate = mcstate;
@@ -50,7 +50,7 @@ class SelectItemsService {
         let options = {
             singleSelection
         };
-        return this.projectsService.getProjectSamples(projectId).then(
+        return this.projectsAPI.getProjectSamples(projectId).then(
             (samples) => this.dialog({samples, options}, SelectItemsSamplesServiceModalController)
         );
     }
@@ -66,7 +66,7 @@ class SelectItemsService {
     }
 
     processesFromProject(projectId) {
-        return this.projectsService.getProjectProcesses(projectId).then(
+        return this.projectsAPI.getProjectProcesses(projectId).then(
             (processes) => this.dialog({processes}, SelectItemsProcessesServiceModalController)
         );
     }

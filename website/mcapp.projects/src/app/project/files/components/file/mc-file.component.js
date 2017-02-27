@@ -3,11 +3,11 @@ angular.module('materialscommons').component('mcFile', {
     controller: MCFileComponentController
 });
 
-function MCFileComponentController(projectsService, $stateParams) {
+function MCFileComponentController(projectsAPI, $stateParams) {
     'ngInject';
 
     var ctrl = this;
-    projectsService.getProjectFile($stateParams.project_id, $stateParams.file_id)
+    projectsAPI.getProjectFile($stateParams.project_id, $stateParams.file_id)
         .then(function(file) {
             ctrl.file = file;
         });

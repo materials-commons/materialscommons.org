@@ -7,7 +7,7 @@ angular.module('materialscommons').component('mcProjectHome', {
 
 /*@ngInject*/
 function MCProjectHomeComponentController($scope, mcstate, experimentsAPI, toast, $state,
-                                          $stateParams, projectsService, editorOpts, $mdDialog) {
+                                          $stateParams, projectsAPI, editorOpts, $mdDialog) {
     const ctrl = this;
     ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
     ctrl.projectLoaded = true;
@@ -35,7 +35,7 @@ function MCProjectHomeComponentController($scope, mcstate, experimentsAPI, toast
             return;
         }
 
-        projectsService.updateProject($stateParams.project_id, {description: ctrl.project.description})
+        projectsAPI.updateProject($stateParams.project_id, {description: ctrl.project.description})
             .then(
                 () => projectDescription = ctrl.project.description,
                 () => toast.error('Unable to update project description')

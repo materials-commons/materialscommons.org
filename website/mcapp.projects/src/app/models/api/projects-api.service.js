@@ -1,5 +1,5 @@
 /*@ngInject*/
-function projectsService(Restangular) {
+function projectsAPIService(Restangular) {
     let onChangeFn = null;
     const projectsAPIRoute = _.partial(Restangular.one('v2').one, 'projects');
 
@@ -103,5 +103,5 @@ function projectsService(Restangular) {
     }
 }
 
-angular.module('materialscommons').factory('projectsService', projectsService);
+angular.module('materialscommons').factory('projectsAPI', projectsAPIService);
 

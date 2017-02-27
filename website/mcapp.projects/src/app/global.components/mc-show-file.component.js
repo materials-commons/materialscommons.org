@@ -1,13 +1,13 @@
 class MCShowFileComponentController {
     /*@ngInject*/
-    constructor(projectsService, toast, $stateParams) {
+    constructor(projectsAPI, toast, $stateParams) {
         this.projectId = $stateParams.project_id;
-        this.projectsService = projectsService;
+        this.projectsAPI = projectsAPI;
         this.toast = toast;
     }
 
     $onInit() {
-        this.projectsService.getProjectFile(this.projectId, this.fileId)
+        this.projectsAPI.getProjectFile(this.projectId, this.fileId)
             .then(
                 (file) => this.file = file,
                 () => this.toast.error('Unable to retrieve file details')

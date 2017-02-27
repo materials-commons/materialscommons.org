@@ -68,10 +68,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<ui-view flex="100" layout="column"></ui-view>',
             resolve: {
-                _project: ["$stateParams", "projectsService", "mcstate",
+                _project: ["$stateParams", "projectsAPI", "mcstate",
                     // Inject projects so that it resolves before looking up the project.
-                    function($stateParams, projectsService, mcstate) {
-                        return projectsService.getProject($stateParams.project_id)
+                    function($stateParams, projectsAPI, mcstate) {
+                        return projectsAPI.getProject($stateParams.project_id)
                             .then(function(proj) {
                                 mcstate.set(mcstate.CURRENT$PROJECT, proj);
                                 return proj;
@@ -204,9 +204,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/processes',
             template: '<mc-project-processes processes="$resolve.processes"></mc-project-processes>',
             resolve: {
-                processes: ['projectsService', '$stateParams',
-                    (projectsService, $stateParams) =>
-                        projectsService.getProjectProcesses($stateParams.project_id)
+                processes: ['projectsAPI', '$stateParams',
+                    (projectsAPI, $stateParams) =>
+                        projectsAPI.getProjectProcesses($stateParams.project_id)
                 ]
             }
         })

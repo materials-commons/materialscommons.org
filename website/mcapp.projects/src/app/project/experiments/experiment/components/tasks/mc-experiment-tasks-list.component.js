@@ -80,7 +80,7 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 }
 
 /*@ngInject*/
-function MCExperimentTasksListDirDirectiveController($stateParams, toast, mcstate, projectsService,
+function MCExperimentTasksListDirDirectiveController($stateParams, toast, mcstate, projectsAPI,
                                                      blankTaskService, taskService) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
@@ -97,7 +97,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, toast, mcstat
 
     function loadTaskTemplate() {
         if (!ctrl.task.loaded && ctrl.task.process_id !== '') {
-            projectsService.getProjectProcess($stateParams.project_id, ctrl.task.process_id)
+            projectsAPI.getProjectProcess($stateParams.project_id, ctrl.task.process_id)
                 .then(
                     (process) => {
                         ctrl.task.template = process;
