@@ -2,15 +2,14 @@ import { ChooseUsersController } from './choose-users-controller';
 import { existingProcessController } from './existing-process-controller';
 import { ImageController } from './image-controller';
 import { PreFillProcessController } from './prefill-controller';
-import { setupViewController } from './setup_view_controller';
+import {setupViewController} from './setup-view.controller';
 
-export function mcmodalService($modal) {
-    'ngInject';
-
-    var service = {
+/*@ngInject*/
+function mcmodalService($modal) {
+    const service = {
 
         chooseUsers: function(users) {
-            var modal = $modal.open({
+            const modal = $modal.open({
                 size: 'lg',
                 templateUrl: 'app/global.services/mcmodal/partials/choose-users.html',
                 controller: ChooseUsersController,
@@ -25,7 +24,7 @@ export function mcmodalService($modal) {
         },
 
         chooseExistingProcess: function(processes) {
-            var modal = $modal.open({
+            const modal = $modal.open({
                 size: 'lg',
                 templateUrl: 'app/global.services/mcmodal/partials/existing-process.html',
                 controller: existingProcessController,
@@ -40,7 +39,7 @@ export function mcmodalService($modal) {
         },
 
         viewSetup: function(template) {
-            var modal = $modal.open({
+            const modal = $modal.open({
                 size: 'lg',
                 templateUrl: 'app/global.services/mcmodal/partials/view_setup.html',
                 controller: setupViewController,
@@ -55,7 +54,7 @@ export function mcmodalService($modal) {
         },
 
         preFill: function(template, existingTemplateNames) {
-            var modal = $modal.open({
+            const modal = $modal.open({
                 size: 'lg',
                 templateUrl: 'app/global.services/mcmodal/partials/prefill.html',
                 controller: PreFillProcessController,
@@ -73,7 +72,7 @@ export function mcmodalService($modal) {
         },
 
         viewImage: function(file) {
-            var modal = $modal.open({
+            const modal = $modal.open({
                 size: 'lg',
                 templateUrl: 'app/global.services/mcmodal/partials/image.html',
                 controller: ImageController,
@@ -90,3 +89,5 @@ export function mcmodalService($modal) {
     };
     return service;
 }
+
+angular.module('materialscommons').factory('mcmodal', mcmodalService);

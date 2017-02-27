@@ -1,5 +1,5 @@
 /*@ngInject*/
-export function projectsService (Restangular) {
+function projectsService(Restangular) {
     let onChangeFn = null;
     const projectsAPI = _.partial(Restangular.one('v2').one, 'projects');
 
@@ -102,4 +102,6 @@ export function projectsService (Restangular) {
         }
     }
 }
+
+angular.module('materialscommons').factory('projectsService', projectsService);
 

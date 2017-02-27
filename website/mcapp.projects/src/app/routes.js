@@ -190,27 +190,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 this.sampleId = $stateParams.sample_id;
             }]
         })
-        .state('project.create.process', {
-            url: '/process/:template_id/:process_id',
-            template: '<mc-process-create></mc-process-create>',
-            resolve: {
-                _template: ['templates', 'template', '$stateParams', 'projectsService',
-                    function(templates, template, $stateParams, projectsService) {
-                        if ($stateParams.process_id) {
-                            return projectsService.getProjectProcess($stateParams.project_id, $stateParams.process_id)
-                                .then(function(process) {
-                                    const t = templates.loadTemplateFromProcess($stateParams.template_id, process);
-                                    template.set(t);
-                                    return t;
-                                });
-                        } else {
-                            const t = templates.getTemplate($stateParams.template_id);
-                            template.set(t);
-                            return t;
-                        }
-                    }]
-            }
-        })
         .state('project.experiments', {
             url: '/experiments',
             template: '<mc-project-experiments experiments="$resolve.experiments"></mc-project-experiments>',

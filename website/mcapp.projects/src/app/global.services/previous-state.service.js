@@ -1,10 +1,9 @@
-export function previousStateService($previousState) {
-    'ngInject';
-
+/*@ngInject*/
+function previousStateService($previousState) {
     return {
         go: function(memo) {
             if (memo) {
-                var previousMemo = $previousState.get(memo);
+                let previousMemo = $previousState.get(memo);
                 if (!previousMemo) {
                     $previousState.go();
                 } else {
@@ -17,8 +16,8 @@ export function previousStateService($previousState) {
         },
 
         setMemo: function(memo, state) {
-            var previousMemo = $previousState.get(memo);
-            var previousState = $previousState.get();
+            let previousMemo = $previousState.get(memo);
+            let previousState = $previousState.get();
             if (!previousMemo) {
                 $previousState.memo(memo);
             } else {
@@ -34,4 +33,6 @@ export function previousStateService($previousState) {
         }
     }
 }
+
+angular.module('materialscommons').factory('previousStateService', previousStateService);
 

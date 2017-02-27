@@ -1,6 +1,5 @@
-export function mcapiService($http, User, mcglobals, $log) {
-    'ngInject';
-
+/*@ngInject*/
+function mcapiService($http, User, mcglobals, $log) {
     function MCApi() {
         this.url = this._makeUrl.apply(this, arguments);
         this.on_error = undefined;
@@ -12,19 +11,19 @@ export function mcapiService($http, User, mcglobals, $log) {
     }
 
     MCApi.prototype._makeUrl = function() {
-        var apihost = mcglobals.apihost ? mcglobals.apihost : "https://api.materialscommons.org";
+        let apihost = mcglobals.apihost ? mcglobals.apihost : "https://api.materialscommons.org";
 
         if (arguments.length < 1) {
             throw "Invalid url spec";
         }
 
-        var s = arguments[0];
+        let s = arguments[0];
 
-        for (var i = 1; i < arguments.length; i++) {
+        for (let i = 1; i < arguments.length; i++) {
             s = s.replace('%', arguments[i]);
         }
 
-        var url = apihost + s + "?apikey=" + User.apikey();
+        let url = apihost + s + "?apikey=" + User.apikey();
         return url;
     };
 
@@ -53,7 +52,7 @@ export function mcapiService($http, User, mcglobals, $log) {
     };
 
     MCApi.prototype.put = function(putData, putConfig) {
-        var self = this;
+        const self = this;
         $http.put(this.url, putData, putConfig)
             .success(function(data, status, headers, config) {
                 if (self.on_success) {
@@ -68,7 +67,7 @@ export function mcapiService($http, User, mcglobals, $log) {
     };
 
     MCApi.prototype.delete = function(deleteConfig) {
-        var self = this;
+        const self = this;
         $http.delete(this.url, deleteConfig)
             .success(function(data, status, headers, config) {
                 if (self.on_success) {
@@ -83,7 +82,7 @@ export function mcapiService($http, User, mcglobals, $log) {
     };
 
     MCApi.prototype.post = function(postData, postConfig) {
-        var self = this;
+        const self = this;
         $http.post(this.url, postData, postConfig)
             .success(function(data, status, headers, config) {
                 if (self.on_success) {
@@ -98,7 +97,7 @@ export function mcapiService($http, User, mcglobals, $log) {
     };
 
     MCApi.prototype.get = function(getConfig) {
-        var self = this;
+        const self = this;
         $http.get(this.url, getConfig)
             .success(function(data, status, headers, config) {
                 if (self.on_success) {
@@ -113,19 +112,19 @@ export function mcapiService($http, User, mcglobals, $log) {
     };
 
     MCApi.prototype.getJson = function() {
-        var self = this;
+        const self = this;
         $http.get(this.url, {
-                cache: false,
-                transformResponse: function(data) {
-                    try {
-                        var jsonObject = angular.fromJson(data);
-                        return jsonObject;
-                    } catch (e) {
-                        $log.log("Invalid json: " + e);
-                    }
-                    return {};
+            cache: false,
+            transformResponse: function(data) {
+                try {
+                    let jsonObject = angular.fromJson(data);
+                    return jsonObject;
+                } catch (e) {
+                    $log.log("Invalid json: " + e);
                 }
-            })
+                return {};
+            }
+        })
             .success(function(data, status, headers, config) {
                 if (self.on_success) {
                     self.on_success(data, status, headers, config);
@@ -139,8 +138,8 @@ export function mcapiService($http, User, mcglobals, $log) {
     };
 
     MCApi.prototype.jsonp = function(jsonpConfig) {
-        var self = this;
-        var jsonpurl = _add_json_callback(this.url);
+        const self = this;
+        let jsonpurl = _add_json_callback(this.url);
         $http.jsonp(jsonpurl, jsonpConfig)
             .success(function(data) {
                 if (data.success) {
@@ -165,3 +164,5 @@ export function mcapiService($http, User, mcglobals, $log) {
     };
 
 }
+
+angular.module('materialscommons').factory('mcapi', mcapiService);

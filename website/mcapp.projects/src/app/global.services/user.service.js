@@ -1,7 +1,6 @@
-export function UserService($window, $log, Restangular) {
-    'ngInject';
-
-    var self = this;
+/*@ngInject*/
+function UserService($window, $log, Restangular) {
+    const self = this;
     if ($window.sessionStorage.mcuser) {
         try {
             self.mcuser = angular.fromJson($window.sessionStorage.mcuser);
@@ -57,7 +56,7 @@ export function UserService($window, $log, Restangular) {
         },
 
         removeFromFavorites: function(projectID, templateName) {
-            var i = _.indexOf(self.mcuser.favorites[projectID].processes, function(n) {
+            let i = _.indexOf(self.mcuser.favorites[projectID].processes, function(n) {
                 return n === templateName;
             });
             if (i !== -1) {
@@ -89,3 +88,5 @@ export function UserService($window, $log, Restangular) {
         }
     };
 }
+
+angular.module('materialscommons').factory('User', UserService);
