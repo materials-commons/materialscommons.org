@@ -1,9 +1,9 @@
 class MCExperimentNotesComponentController {
     /*@ngInject*/
-    constructor($scope, $mdDialog, notesService, $stateParams, toast, editorOpts, experimentsAPI, toUITask) {
+    constructor($scope, $mdDialog, notesAPI, $stateParams, toast, editorOpts, experimentsAPI, toUITask) {
         $scope.editorOptions = editorOpts({height: 67, width: 59});
         this.experimentsAPI = experimentsAPI;
-        this.notesService = notesService;
+        this.notesAPI = notesAPI;
         this.$mdDialog = $mdDialog;
         this.toast = toast;
         this.toUITask = toUITask;
@@ -70,7 +70,7 @@ class MCExperimentNotesComponentController {
         }
 
         let note = this.currentNote;
-        this.notesService.updateNote(this.projectID, this.experimentID, note.id, {note: note.note})
+        this.notesAPI.updateNote(this.projectID, this.experimentID, note.id, {note: note.note})
             .then(
                 () => null,
                 () => this.toast.error('Unable to update note')
@@ -86,9 +86,9 @@ class MCExperimentNotesComponentController {
 
 class NewExperimentNoteDialogController {
     /*@ngInject*/
-    constructor($mdDialog, notesService, $stateParams, toast) {
+    constructor($mdDialog, notesAPI, $stateParams, toast) {
         this.$mdDialog = $mdDialog;
-        this.notesService = notesService;
+        this.notesAPI = notesAPI;
         this.toast = toast;
         this.projectID = $stateParams.project_id;
         this.experimentID = $stateParams.experiment_id;
@@ -101,7 +101,7 @@ class NewExperimentNoteDialogController {
                 name: this.name,
                 note: `<h2>${this.name}</h2>`
             };
-            this.notesService.createNote(this.projectID, this.experimentID, note)
+            this.notesAPI.createNote(this.projectID, this.experimentID, note)
                 .then(
                     (n) => this.$mdDialog.hide(n),
                     () => this.toast.error('Failed to create note')

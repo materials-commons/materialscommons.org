@@ -6,6 +6,6 @@ import './api-service.service';
 import './mcapi.service';
 import './samples-api.service';
 import './accounts-api.service';
-import './file-tree-project-service.service';
-import './notes-service.service';
+import './project-file-tree-api.service';
+import './notes-api.service';
 import './datasets-api.service';

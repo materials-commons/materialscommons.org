@@ -1,4 +1,4 @@
-class NotesService {
+class NotesAPIService {
     /*@ngInject*/
     constructor(projectsAPIRoute) {
         this.projectsAPIRoute = projectsAPIRoute;
@@ -13,4 +13,4 @@ class NotesService {
     }
 }
 
-angular.module('materialscommons').service('notesService', NotesService);
+angular.module('materialscommons').service('notesAPI', NotesAPIService);

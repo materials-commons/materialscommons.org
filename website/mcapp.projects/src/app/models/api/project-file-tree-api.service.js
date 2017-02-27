@@ -1,7 +1,5 @@
-angular.module('materialscommons').factory('fileTreeProjectService', fileTreeProjectService);
-function fileTreeProjectService(projectsAPIRoute, gridFiles) {
-    'ngInject';
-
+/*@ngInject*/
+function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles) {
     return {
         getDirectory: function(projectID, directoryID) {
             return projectsAPIRoute(projectID).one('directories', directoryID).get()
@@ -41,3 +39,5 @@ function fileTreeProjectService(projectsAPIRoute, gridFiles) {
         }
     };
 }
+
+angular.module('materialscommons').factory('projectFileTreeAPI', ProjectFileTreeAPIService);
