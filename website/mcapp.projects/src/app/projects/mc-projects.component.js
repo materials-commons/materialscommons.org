@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcProjects', {
 });
 
 /*@ngInject*/
-function MCProjectsComponentController(projectsAPI, $state, $mdDialog, sharedProjectsList, toast, User, mcbus) {
+function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, toast, User, mcbus, ProjectModel) {
     var ctrl = this;
     ctrl.isOpen = true;
     ctrl.openProject = openProject;
@@ -16,17 +16,13 @@ function MCProjectsComponentController(projectsAPI, $state, $mdDialog, sharedPro
     ctrl.user = User.u();
     sharedProjectsList.clearSharedProjects();
     sharedProjectsList.setMaxProjects(ctrl.maxSharedProjects);
+    ctrl.sortOrderMine = 'name';
+    ctrl.sortOrderJoined = 'name';
 
-    projectsAPI.getAllProjects().then(function(projects) {
-        ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
-        ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
-    });
+    getUserProjects();
 
     mcbus.subscribe('PROJECTS$REFRESH', 'MCProjectsComponentController', () => {
-        projectsAPI.getAllProjects().then(function(projects) {
-            ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
-            ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
-        });
+        getUserProjects();
     });
 
     ctrl.createNewProject = () => {
@@ -36,16 +32,20 @@ function MCProjectsComponentController(projectsAPI, $state, $mdDialog, sharedPro
             controllerAs: '$ctrl',
             bindToController: true
         }).then(
-            () => projectsAPI.getAllProjects().then(
-                (projects) => {
-                    ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
-                    ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
-                }
-            )
+            () => getUserProjects()
         );
     };
 
     ///////////////////////
+
+    function getUserProjects() {
+        ProjectModel.getProjectsForCurrentUser().then(
+            (projects) => {
+                ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
+                ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
+            }
+        );
+    }
 
     function openProject(project) {
         if (ctrl.sharingOn) {

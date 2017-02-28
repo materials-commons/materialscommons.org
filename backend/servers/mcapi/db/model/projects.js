@@ -84,10 +84,19 @@ function all() {
 function forUser(user) {
     let rql;
     if (user.isAdmin) {
-        rql = r.table('projects').limit(100).orderBy('name');
+        rql = r.table('projects').filter(r.row('owner').ne('delete@materialscommons.org'))
+            .merge(function(project) {
+                return {
+                    owner_details: r.table('users').get(project('owner'))
+                }
+            })
+            .limit(100).orderBy('name');
     } else {
         rql = r.table('access').getAll(user.id, {index: 'user_id'})
             .eqJoin('project_id', r.table('projects'))
+            .merge((project) => ({
+                owner_details: r.table('users').get(project('owner'))
+            }))
             .zip().orderBy('name');
     }
 
@@ -118,10 +127,11 @@ function addComputed(rql) {
                 .getAll(project('id'), {index: 'project_id'})
                 .map(function(entry) {
                     return entry.merge({
-                        'user': entry('user_id')
+                        'user': entry('user_id'),
+                        'fullname': r.table('users').get(entry('user_id')).pluck('fullname')
                     });
                 })
-                .pluck('user', 'permissions')
+                .pluck('user', 'permissions', 'fullname')
                 .coerceTo('array'),
             events: r.table('events')
                 .getAll(project('id'), {index: 'project_id'})
