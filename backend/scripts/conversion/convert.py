@@ -52,7 +52,7 @@ def fix_missing_property_sets(conn):
             }).run(conn)
     print "Done."
 
-def fix_file_upload_count_to_uploaded():
+def fix_file_upload_count_to_uploaded(conn):
     print "Added file uploaded with value from upload, removing upload..."
     all_files = list(r.table('files').run(conn))
     for file in all_files:
@@ -73,6 +73,7 @@ def main():
     convert_scan_size(conn)
     add_missing_description_field_to_processes(conn)
     fix_missing_property_sets(conn)
+    fix_file_upload_count_to_uploaded(conn)
 
 
 if __name__ == "__main__":
