@@ -14,7 +14,7 @@ const koaBody = require('koa-body')({
     multipart: true,
     formidable: {uploadDir: uploadTmpDir, hash: 'md5'},
     keepExtensions: true,
- });
+});
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';
@@ -53,9 +53,9 @@ function prepareDirArgs(projectID, dirArgs) {
 }
 
 function validateDirArgs(dirArgs) {
-    return schema.createDirectory.validateAsync(dirArgs).then(function() {
+    return schema.createDirectory.validateAsync(dirArgs).then(function () {
         return null;
-    }, function(errors) {
+    }, function (errors) {
         return errors;
     });
 }
@@ -97,17 +97,17 @@ function* validateUpdateArgs(projectID, directoryID, updateArgs) {
 }
 
 function validateMoveArgs(moveArgs) {
-    return schema.moveDirectory.validateAsync(moveArgs).then(function() {
+    return schema.moveDirectory.validateAsync(moveArgs).then(function () {
         return null;
-    }, function(errors) {
+    }, function (errors) {
         return errors;
     });
 }
 
 function validateRenameArgs(renameArgs) {
-    return schema.renameDirectory.validateAsync(renameArgs).then(function() {
+    return schema.renameDirectory.validateAsync(renameArgs).then(function () {
         return null;
-    }, function(errors) {
+    }, function (errors) {
         return errors;
     });
 }
@@ -141,13 +141,13 @@ function* uploadFileToProjectDirectory(next) {
     let args = {
         name: upload.name,
         checksum: upload.hash,
-        minetype: upload.type,
+        mimetype: upload.type,
         filesize: upload.size,
-        filePath: upload.path
+        filepath: upload.path
     };
 
-    let file = yield directories.ingestSingleLocalFile(
-        projectID, directoryID, this.reqctx.user.id, args);
+    console.log("check for obvious errors and return error as above");
+    let file = yield directories.ingestSingleLocalFile(projectID, directoryID, this.reqctx.user.id, args);
 
     this.body = file;
     yield next;

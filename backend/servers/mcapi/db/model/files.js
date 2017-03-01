@@ -13,7 +13,7 @@ function* countInProject(ids, projectID) {
 
 // get details on a file
 function* get(file_id) {
-    let rql = r.table('datafiles').get(file_id).merge(function() {
+    let rql = r.table('datafiles').get(file_id).merge(function () {
         return {
             tags: r.table('tag2item').getAll(file_id, {index: 'item_id'})
                 .orderBy('tag_id')
@@ -26,11 +26,11 @@ function* get(file_id) {
                 .coerceTo('array'),
             processes: r.table('process2file').getAll(file_id, {index: 'datafile_id'})
                 .eqJoin('process_id', r.table('processes')).zip()
-                .merge(function(proc) {
+                .merge(function (proc) {
                     return {
                         setup: r.table('process2setup').getAll(proc('process_id'), {index: 'process_id'})
                             .eqJoin('setup_id', r.table('setups')).zip()
-                            .merge(function(setup) {
+                            .merge(function (setup) {
                                 return {
                                     properties: r.table('setupproperties')
                                         .getAll(setup('setup_id'), {index: 'setup_id'})
@@ -47,9 +47,9 @@ function* get(file_id) {
 function* fetchOrCreateFileFromLocalPath(userid, args) {
     let filename = args.name;
     let checksum = args.checksum;
-    let minetype = args.minetype;
+    let mimetype = args.mimetype;
     let filesize = args.filesize;
-    let filePath = args.filePath;
+    let filepath = args.filepath;
     let parentFile = args.parent;
 
     //2) get uuid for file record
@@ -59,15 +59,15 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
     //move file to store using uuid to compute location and as filename (fileUtils.moveToStore)
     let usesid = "";
     let checksumHit = yield r.table('datafiles')
-        .getAll(checksum,{index:'checksum'})
-        .filter({'usesid':''});
+        .getAll(checksum, {index: 'checksum'})
+        .filter({'usesid': ''});
 
     if (checksumHit && (checksumHit.length > 0)) {
         usesid = checksumHit[0].id;
     }
 
-    if (! usesid) {
-        yield fileUtils.moveToStore(filePath,fileId);
+    if (!usesid) {
+        yield fileUtils.moveToStore(filepath, fileId);
     }
 
     //4) files.create(fileArgs,this.reqctx.user.id); with added usesid and id fields
@@ -75,17 +75,17 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
         id: fileId,
         usesid: usesid,
         name: filename,
-        mediatype: fileUtils.mediaTypeDescriptionsFromMime(minetype),
+        mediatype: fileUtils.mediaTypeDescriptionsFromMime(mimetype),
         size: filesize,
         checksum: checksum
     };
-    let file = yield create(fileArgs,userid);
+    let file = yield create(fileArgs, userid);
 
     //5) if files existed in step 3, file = yield files.pushVersion(file,oldFile);
     if (parentFile) {
-        file = yield pushVersion(file,parentFile);
+        file = yield pushVersion(file, parentFile);
     }
-    
+
     //7) return file
     return file;
 }
@@ -93,7 +93,7 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
 // create file
 function* create(file, owner) {
     let usesid = file.usesid;
-    if (! usesid) {
+    if (!usesid) {
         usesid = "";
         let checksumHit = yield r.table('datafiles')
             .getAll(file.checksum, {index: 'checksum'})
@@ -107,7 +107,7 @@ function* create(file, owner) {
     let f = new model.DataFile(file.name, owner);
     f.mediatype = file.mediatype;
     f.size = file.size;
-    f.upload = file.size;
+    f.uploaded = file.size;
     f.checksum = file.checksum;
     f.usesid = usesid;
 
@@ -121,8 +121,8 @@ function* create(file, owner) {
 }
 
 function* pushVersion(newFile, oldFile) {
-    yield r.table('datafiles').get(oldFile.id).update({current:false});
-    yield r.table('datafiles').get(newFile.id).update({parent:oldFile.id, current:true});
+    yield r.table('datafiles').get(oldFile.id).update({current: false});
+    yield r.table('datafiles').get(newFile.id).update({parent: oldFile.id, current: true});
     return yield get(newFile.id);
 }
 
@@ -131,7 +131,7 @@ function* getList(projectID, fileIDs) {
     let rql = r.table('datafiles').getAll(r.args(fileIDs))
         .eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).zip()
         .filter({project_id: projectID})
-        .merge(function(file) {
+        .merge(function (file) {
             return {
                 tags: r.table('tag2item').getAll(file('datafile_id'), {index: 'item_id'}).orderBy('tag_id').pluck(
                     'tag_id').coerceTo('array'),

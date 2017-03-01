@@ -265,18 +265,18 @@ function peerDirectories(dirID) {
     return dbExec(rql);
 }
 
-function* ingestSingleLocalFile(projectId, directoryId, userid, args){
+function* ingestSingleLocalFile(projectId, directoryId, userId, args){
     let filename = args.name;
     let checksum = args.checksum;
-    //let minetype = args.minetype;
+    //let mimetype = args.mimetype;
     //let filesize = args.filesize;
-    //let filePath = args.filePath;
+    //let filePath = args.filepath;
 
     let file = yield fileInDirectoryByName(directoryId, filename);
 
     if (!file || !(file.checksum == checksum)) {
         args.parent = file;
-        file = yield files.fetchOrCreateFileFromLocalPath(userid, args);
+        file = yield files.fetchOrCreateFileFromLocalPath(userId, args);
 
         yield addFileToDirectory(directoryId, file.id);
         yield projects.addFileToProject(projectId, file.id);
@@ -286,8 +286,8 @@ function* ingestSingleLocalFile(projectId, directoryId, userid, args){
 }
 
 function* addFileToDirectory(dirID,fileID){
-    let link = {datadir_id:dirID,datafile_id:fileID};
-    return yield r.table('datadir2datafile').insert(link);
+    let link = new model.DataDir2DataFile(dirID,fileID);
+    yield r.table('datadir2datafile').insert(link);
 }
 
 function* fileInDirectoryByName(dirId,filename) {

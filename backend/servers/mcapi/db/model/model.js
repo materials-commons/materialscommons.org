@@ -397,6 +397,18 @@ function DataFile(name, owner) {
     this.atime = now;
     this.name = name;
     this.owner = owner;
+    this.size = 0;
+    this.uploaded = 0;
+}
+
+function Project2DataFile(projectId,datafileId) {
+    this.project_id = projectId;
+    this.datafile_id = datafileId;
+}
+
+function DataDir2DataFile(dirId,datafileId) {
+    this.datadir_id = dirId;
+    this.datafile_id = datafileId;
 }
 
 module.exports = {
@@ -446,6 +458,8 @@ module.exports = {
     Dataset2Process,
     Dataset2ExperimentNote,
     Dataset2Datafile,
-    DataFile
+    DataFile,
+    Project2DataFile,
+    DataDir2DataFile
 };
 
