@@ -39,6 +39,10 @@ function* updateUserSettings(next) {
             settingArgs.fullname = args.fullname;
         }
 
+        if (args.affiliation) {
+            settingArgs.affiliation = args.affiliation;
+        }
+
         let rv = yield users.updateUserSettings(this.reqctx.user.id, settingArgs);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
@@ -80,6 +84,12 @@ function* validateUserSettingsArgs(args, userId) {
     if (args.fullname) {
         if (!_.isString(args.fullname)) {
             return {error: `Bad argument for fullname`};
+        }
+    }
+
+    if (args.affiliation) {
+        if (!_.isString(args.affiliation)) {
+            return {error: `Bad argument for affiliation`};
         }
     }
 

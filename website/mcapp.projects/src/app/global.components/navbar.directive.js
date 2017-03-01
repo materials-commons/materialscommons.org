@@ -49,7 +49,7 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
     ctrl.logout = logout;
     ctrl.buildDemoProject = buildDemoProject;
     ctrl.demoProjectService = demoProjectService;
-    ctrl.user = User.u();
+    ctrl.user = User.attr().fullname;
     ctrl.toast = toast;
 
     ////////////////////////
