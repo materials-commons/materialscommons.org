@@ -11,6 +11,7 @@ function ProjectModelService(projectsAPI) {
             this.files_count = 0;
             this.description = "";
             this.birthtime = 0;
+            this.owner_details = {};
             this.mtime = 0;
         }
 
