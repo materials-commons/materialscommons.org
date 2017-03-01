@@ -1,4 +1,4 @@
-class MCUserFullnameComponentController {
+class MCUserDetailsComponentController {
     /*@ngInject*/
     constructor(User, toast) {
         this.User = User;
@@ -14,7 +14,7 @@ class MCUserFullnameComponentController {
     }
 }
 
-angular.module('materialscommons').component('mcUserFullname', {
-    templateUrl: 'app/user/components/mc-user-fullname.html',
-    controller: MCUserFullnameComponentController
+angular.module('materialscommons').component('mcUserDetails', {
+    templateUrl: 'app/user/components/mc-user-details.html',
+    controller: MCUserDetailsComponentController
 });
