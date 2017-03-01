@@ -24,14 +24,16 @@
             <div md-whiteframe layout-margin>
                 <h3 class="md-title">My Projects ({{$ctrl.myProjects.length}}):</h3>
                 <md-table-container>
-                    <table md-table>
+                    <table md-table style="empty-cells: show">
                         <thead md-head md-order="$ctrl.sortOrderMine">
                         <tr md-row>
                             <th md-column md-order-by="name">Name</th>
+                            <th md-column></th>
+                            <th md-column>Owner</th>
                             <th md-column md-order-by="birthtime">Created</th>
-                            <th md-column md-order-by="experiments_count"># Experiments</th>
-                            <th md-column md-order-by="samples_count"># Samples</th>
-                            <th md-column md-order-by="processes_count"># Processes</th>
+                            <th md-column md-order-by="experiments.length"># Experiments</th>
+                            <th md-column md-order-by="samples.length"># Samples</th>
+                            <th md-column md-order-by="processes.length"># Processes</th>
                             <th md-column md-order-by="files_count"># Files</th>
                             <th md-column md-order-by="users.length"># Users</th>
                         </tr>
@@ -44,12 +46,21 @@
                                 <a ui-sref="project.home({project_id: project.id})">
                                     {{project.name |truncate:40:'...'}}
                                 </a>
-                                <a ng-show="project.selected" class="padding-left-15">overview</a>
+                            </td>
+                            <td md-cell>
+                                <a ng-show="project.selected"
+                                   ng-click="$ctrl.showProjectOverview(project)">
+                                    overview
+                                </a>
+                                <a ng-hide="project.selected" style="color: white">overview</a>
+                            </td>
+                            <td md-cell>
+                                {{project.owner_details.fullname | truncate:20:'...'}}
                             </td>
                             <td md-cell>{{project.birthtime | date:'shortDate'}}</td>
-                            <td md-cell>{{project.experiments_count | number}}</td>
-                            <td md-cell>{{::project.samples_count | number}}</td>
-                            <td md-cell>{{::project.processes_count | number}}</td>
+                            <td md-cell>{{project.experiments.length | number}}</td>
+                            <td md-cell>{{::project.samples.length | number}}</td>
+                            <td md-cell>{{::project.processes.length | number}}</td>
                             <td md-cell>{{::project.files_count | number}}</td>
                             <td md-cell>{{::project.users.length - 1}}</td>
                         </tr>
@@ -61,15 +72,16 @@
                 <h3 class="md-title">Projects I'm a member of ({{$ctrl.joinedProjects.length}}):</h3>
 
                 <md-table-container>
-                    <table md-table>
+                    <table md-table style="empty-cells: show">
                         <thead md-head md-order="$ctrl.sortOrderJoined">
                         <tr md-row>
                             <th md-column md-order-by="name">Name</th>
+                            <th md-column></th>
                             <th md-column md-order-by="owner_details.fullname">Owner</th>
                             <th md-column md-order-by="birthtime">Created</th>
-                            <th md-column md-order-by="experiments_count"># Experiments</th>
-                            <th md-column md-order-by="samples_count"># Samples</th>
-                            <th md-column md-order-by="processes_count"># Processes</th>
+                            <th md-column md-order-by="experiments.length"># Experiments</th>
+                            <th md-column md-order-by="samples.length"># Samples</th>
+                            <th md-column md-order-by="processes.length"># Processes</th>
                             <th md-column md-order-by="files_count"># Files</th>
                             <th md-column md-order-by="users.length"># Users</th>
                         </tr>
@@ -82,15 +94,23 @@
                                 <a tooltip="{{project.name}}" ui-sref="project.home({project_id: project.id})">
                                     {{project.name| truncate:40:'...'}}
                                 </a>
-                                <a ng-show="project.selected" class="padding-left-15">overview</a>
+
+                            </td>
+                            <td md-cell>
+                                <a ng-show="project.selected"
+                                   ng-click="$ctrl.showProjectOverview(project)"
+                                   class="padding-left-15">
+                                    overview
+                                </a>
+                                <a ng-hide="project.selected" style="color: white">overview</a>
                             </td>
                             <td md-cell>
                                 {{project.owner_details.fullname | truncate:20:'...'}}
                             </td>
                             <td md-cell>{{project.birthtime | date:'shortDate'}}</td>
-                            <td md-cell>{{project.experiments_count | number}}</td>
-                            <td md-cell>{{::project.samples_count | number}}</td>
-                            <td md-cell>{{::project.processes_count | number}}</td>
+                            <td md-cell>{{project.experiments.length | number}}</td>
+                            <td md-cell>{{::project.samples.length | number}}</td>
+                            <td md-cell>{{::project.processes.length | number}}</td>
                             <td md-cell>{{::project.files_count | number}}</td>
                             <td md-cell>{{::project.users.length - 1}}</td>
                         </tr>

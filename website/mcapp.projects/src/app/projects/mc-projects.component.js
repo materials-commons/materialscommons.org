@@ -4,8 +4,8 @@ angular.module('materialscommons').component('mcProjects', {
 });
 
 /*@ngInject*/
-function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, toast, User, mcbus, ProjectModel) {
-    var ctrl = this;
+function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, toast, User, mcbus, ProjectModel, mcshow) {
+    const ctrl = this;
     ctrl.isOpen = true;
     ctrl.openProject = openProject;
     ctrl.projects = [];
@@ -18,6 +18,7 @@ function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, to
     sharedProjectsList.setMaxProjects(ctrl.maxSharedProjects);
     ctrl.sortOrderMine = 'name';
     ctrl.sortOrderJoined = 'name';
+    ctrl.showProjectOverview = (project) => mcshow.projectOverviewDialog(project);
 
     getUserProjects();
 
@@ -51,7 +52,7 @@ function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, to
         if (ctrl.sharingOn) {
             if (sharedProjectsList.isFull() && !project.selected) {
                 // Adding project, but the list is full, so delete the last item.
-                var removed = sharedProjectsList.removeLast();
+                let removed = sharedProjectsList.removeLast();
                 removed.selected = false;
             }
 

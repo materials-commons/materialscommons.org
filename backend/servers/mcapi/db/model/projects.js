@@ -133,9 +133,12 @@ function addComputed(rql) {
             events: r.table('events')
                 .getAll(project('id'), {index: 'project_id'})
                 .coerceTo('array'),
-            experiments: r.table('project2experiment').getAll(project('id'), {index: 'project_id'}).count(),
-            processes: r.table('project2process').getAll(project('id'), {index: 'project_id'}).count(),
-            samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).count(),
+            experiments: r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array'),
+            processes: r.table('project2process').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
+            samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
             files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count()
         };
     });

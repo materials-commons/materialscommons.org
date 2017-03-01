@@ -30,9 +30,9 @@ class MCShowService {
             });
     }
 
-    projectOverviewDialog(projectId, multiple = true) {
+    projectOverviewDialog(project, multiple = true) {
         this.$mdDialog.show({
-            templateUrl: 'app/global.services/show/project-overview-dialog.html',
+            templateUrl: 'app/global.services/mcshow/partials/project-overview-dialog.html',
             controller: CommonDoneDismissDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
