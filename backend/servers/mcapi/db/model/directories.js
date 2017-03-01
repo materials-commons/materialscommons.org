@@ -3,6 +3,8 @@ const path = require('path');
 const dbExec = require('./run');
 const db = require('./db');
 const model = require('./model');
+const files = require('./files');
+const projects = require('./projects');
 const getSingle = require('./get-single');
 
 function* get(projectID, directoryID) {
@@ -263,6 +265,26 @@ function peerDirectories(dirID) {
     return dbExec(rql);
 }
 
+function* ingestSingleLocalFile(projectId, directoryId, userid, args){
+    let filename = args.name;
+    let checksum = args.checksum;
+    //let minetype = args.minetype;
+    //let filesize = args.filesize;
+    //let filePath = args.filePath;
+
+    let file = yield fileInDirectoryByName(directoryId, filename);
+
+    if (!file || !(file.checksum == checksum)) {
+        args.parent = file;
+        file = yield files.fetchOrCreateFileFromLocalPath(userid, args);
+
+        yield addFileToDirectory(directoryId, file.id);
+        yield projects.addFileToProject(projectId, file.id);
+    }
+
+    return file;
+}
+
 function* addFileToDirectory(dirID,fileID){
     let link = {datadir_id:dirID,datafile_id:fileID};
     return yield r.table('datadir2datafile').insert(link);
@@ -310,6 +332,7 @@ module.exports = {
     findInProject: findInProject,
     subdirExists: subdirExists,
     peerDirectories: peerDirectories,
+    ingestSingleLocalFile,
     addFileToDirectory,
     fileInDirectoryByName,
     isEmpty,

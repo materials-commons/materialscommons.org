@@ -4,6 +4,7 @@ const db = require('./db');
 const _ = require('lodash');
 const model = require('./model');
 const path = require('path');
+const fileUtils = require('../../../lib/create-file-utils');
 
 function* countInProject(ids, projectID) {
     let rql = r.table('datafiles').getAll(r.args(ids));
@@ -43,15 +44,64 @@ function* get(file_id) {
     return runQuery(rql);
 }
 
-// create file
-function* create(file, owner) {
+function* fetchOrCreateFileFromLocalPath(userid, args) {
+    let filename = args.name;
+    let checksum = args.checksum;
+    let minetype = args.minetype;
+    let filesize = args.filesize;
+    let filePath = args.filePath;
+    let parentFile = args.parent;
+
+    //2) get uuid for file record
+    let fileId = yield r.uuid();
+
+    //3) fetch file by checksum, and if it exists skip to next step, else
+    //move file to store using uuid to compute location and as filename (fileUtils.moveToStore)
     let usesid = "";
     let checksumHit = yield r.table('datafiles')
-        .getAll(file.checksum,{index:'checksum'})
+        .getAll(checksum,{index:'checksum'})
         .filter({'usesid':''});
 
     if (checksumHit && (checksumHit.length > 0)) {
         usesid = checksumHit[0].id;
+    }
+
+    if (! usesid) {
+        yield fileUtils.moveToStore(filePath,fileId);
+    }
+
+    //4) files.create(fileArgs,this.reqctx.user.id); with added usesid and id fields
+    let fileArgs = {
+        id: fileId,
+        usesid: usesid,
+        name: filename,
+        mediatype: fileUtils.mediaTypeDescriptionsFromMime(minetype),
+        size: filesize,
+        checksum: checksum
+    };
+    let file = yield create(fileArgs,userid);
+
+    //5) if files existed in step 3, file = yield files.pushVersion(file,oldFile);
+    if (parentFile) {
+        file = yield pushVersion(file,parentFile);
+    }
+    
+    //7) return file
+    return file;
+}
+
+// create file
+function* create(file, owner) {
+    let usesid = file.usesid;
+    if (! usesid) {
+        usesid = "";
+        let checksumHit = yield r.table('datafiles')
+            .getAll(file.checksum, {index: 'checksum'})
+            .filter({'usesid': ''});
+
+        if (checksumHit && (checksumHit.length > 0)) {
+            usesid = checksumHit[0].id;
+        }
     }
 
     let f = new model.DataFile(file.name, owner);
@@ -60,6 +110,10 @@ function* create(file, owner) {
     f.upload = file.size;
     f.checksum = file.checksum;
     f.usesid = usesid;
+
+    if (file.id) {
+        f.id = file.id;
+    }
 
     let newFile = yield db.insert('datafiles', f);
 
@@ -358,6 +412,7 @@ module.exports = {
     countInProject,
     get,
     getList,
+    fetchOrCreateFileFromLocalPath,
     create,
     update,
     pushVersion,

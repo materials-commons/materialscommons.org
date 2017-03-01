@@ -138,36 +138,16 @@ function* uploadFileToProjectDirectory(next) {
         directoryID = this.params.directory_id;
 
     let upload = this.request.body.files.file;
-    let name = upload.name;
-
-    let oldFile = yield directories.fileInDirectoryByName(directoryID,name);
-
-    if (oldFile && (oldFile.checksum == upload.checksum)) {
-        this.body = oldFile;
-        yield next;
-    }
-
-    let fileArgs = {
+    let args = {
         name: upload.name,
-        mediatype: fileUtils.mediaTypeDescriptionsFromMime(upload.type),
-        size: upload.size,
-        checksum: upload.hash
+        checksum: upload.hash,
+        minetype: upload.type,
+        filesize: upload.size,
+        filePath: upload.path
     };
 
-    let file = yield files.create(fileArgs,this.reqctx.user.id);
-
-    if (oldFile) {
-        file = yield files.pushVersion(file,oldFile);
-    }
-
-    if (file.usesid) {
-        yield fileUtils.moveToStore(upload.path,file.usesid);
-    } else {
-        yield fileUtils.moveToStore(upload.path,file.id);
-    }
-
-    yield directories.addFileToDirectory(directoryID, file.id);
-    yield projects.addFileToProject(projectID, file.id);
+    let file = yield directories.ingestSingleLocalFile(
+        projectID, directoryID, this.reqctx.user.id, args);
 
     this.body = file;
     yield next;
