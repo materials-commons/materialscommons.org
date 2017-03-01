@@ -52,6 +52,14 @@ def fix_missing_property_sets(conn):
             }).run(conn)
     print "Done."
 
+def fix_file_upload_count_to_uploaded():
+    print "Added file uploaded with value from upload, removing upload..."
+    all_files = list(r.table('files').run(conn))
+    for file in all_files:
+        if 'upload' in file:
+            p.table('files').get(file['id']).update({'uploaded': p['upload']}).run(conn)
+    r.table('files').replace(r.row.without('upload'))
+    print "Done."
 
 def main():
     parser = OptionParser()
