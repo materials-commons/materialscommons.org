@@ -12,6 +12,7 @@ function ProjectModelService(projectsAPI) {
             this.description = "";
             this.birthtime = 0;
             this.owner_details = {};
+            this.selected = false;
             this.mtime = 0;
         }
 

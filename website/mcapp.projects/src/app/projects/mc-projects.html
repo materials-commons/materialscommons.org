@@ -1,10 +1,13 @@
 <div layout="row" flex="100" layout-margin>
     <div layout="column" flex>
-        <div ng-if="!$ctrl.sharingOn" layout="row">
+        <div ng-if="!$ctrl.sharingOn" layout="row" layout-align="end">
             <md-button class="md-primary md-raised" ng-click="$ctrl.createNewProject()">create project</md-button>
             <md-button ng-show="false" class="md-primary md-raised" ng-click="$ctrl.sharingOn = true">share</md-button>
+        </div>
+        <div ng-if="!$ctrl.sharingOn" layout="row" layout-align="center">
+            <md-button class="md-warn" ng-click="$ctrl.query = ''">clear search</md-button>
             <input placeholder="Search projects..." type="text"
-                   class="mc-input-as-line margin-left-45 md-subhead"
+                   class="mc-input-as-line margin-left-15 md-subhead"
                    flex="30"
                    ng-model="$ctrl.query">
         </div>
@@ -35,11 +38,13 @@
                         </thead>
                         <tbody>
                         <tr md-row class="md-row-hover pointer"
+                            ng-mouseenter="project.selected=true" ng-mouseleave="project.selected=false"
                             ng-repeat="project in $ctrl.myProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderMine">
                             <td md-cell>
                                 <a ui-sref="project.home({project_id: project.id})">
                                     {{project.name |truncate:40:'...'}}
                                 </a>
+                                <a ng-show="project.selected" class="padding-left-15">overview</a>
                             </td>
                             <td md-cell>{{project.birthtime | date:'shortDate'}}</td>
                             <td md-cell>{{project.experiments_count | number}}</td>
@@ -60,7 +65,7 @@
                         <thead md-head md-order="$ctrl.sortOrderJoined">
                         <tr md-row>
                             <th md-column md-order-by="name">Name</th>
-                            <td md-column md-order-by="owner_details.fullname">Owner</td>
+                            <th md-column md-order-by="owner_details.fullname">Owner</th>
                             <th md-column md-order-by="birthtime">Created</th>
                             <th md-column md-order-by="experiments_count"># Experiments</th>
                             <th md-column md-order-by="samples_count"># Samples</th>
@@ -71,11 +76,13 @@
                         </thead>
                         <tbody>
                         <tr md-row class="md-row-hover pointer"
+                            ng-mouseenter="project.selected=true" ng-mouseleave="project.selected=false"
                             ng-repeat="project in $ctrl.joinedProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderJoined">
                             <td md-cell>
                                 <a tooltip="{{project.name}}" ui-sref="project.home({project_id: project.id})">
                                     {{project.name| truncate:40:'...'}}
                                 </a>
+                                <a ng-show="project.selected" class="padding-left-15">overview</a>
                             </td>
                             <td md-cell>
                                 {{project.owner_details.fullname | truncate:20:'...'}}

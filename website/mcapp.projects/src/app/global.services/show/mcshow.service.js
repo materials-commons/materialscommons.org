@@ -29,6 +29,19 @@ class MCShowService {
                 }
             });
     }
+
+    projectOverviewDialog(projectId, multiple = true) {
+        this.$mdDialog.show({
+            templateUrl: 'app/global.services/show/project-overview-dialog.html',
+            controller: CommonDoneDismissDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            multiple: multiple,
+            locals: {
+                project: project
+            }
+        });
+    }
 }
 
 class CommonDoneDismissDialogController {
