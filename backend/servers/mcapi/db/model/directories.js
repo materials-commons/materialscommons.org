@@ -268,7 +268,7 @@ function peerDirectories(dirID) {
 function* ingestSingleLocalFile(projectId, directoryId, userId, args){
     let filename = args.name;
     let checksum = args.checksum;
-    //let mimetype = args.mimetype;
+    //let mediatype = args.mediatype;
     //let filesize = args.filesize;
     //let filePath = args.filepath;
 

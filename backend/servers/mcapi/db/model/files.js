@@ -47,7 +47,7 @@ function* get(file_id) {
 function* fetchOrCreateFileFromLocalPath(userid, args) {
     let filename = args.name;
     let checksum = args.checksum;
-    let mimetype = args.mimetype;
+    let mediatype = args.mediatype;
     let filesize = args.filesize;
     let filepath = args.filepath;
     let parentFile = args.parent;
@@ -75,7 +75,7 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
         id: fileId,
         usesid: usesid,
         name: filename,
-        mediatype: fileUtils.mediaTypeDescriptionsFromMime(mimetype),
+        mediatype: mediatype,
         size: filesize,
         checksum: checksum
     };

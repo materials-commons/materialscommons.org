@@ -141,7 +141,7 @@ function* uploadFileToProjectDirectory(next) {
     let args = {
         name: upload.name,
         checksum: upload.hash,
-        mimetype: upload.type,
+        mediatype: fileUtils.mediaTypeDescriptionsFromMime(upload.type),
         filesize: upload.size,
         filepath: upload.path
     };
