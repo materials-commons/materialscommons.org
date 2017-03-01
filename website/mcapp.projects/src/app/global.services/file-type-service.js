@@ -1,8 +1,6 @@
 /*@ngInject*/
-export function fileTypeService(isImage) {
-    'ngInject';
-
-    var self = this;
+function fileTypeService(isImage) {
+    const self = this;
 
     function OverviewEntry(icon, name) {
         this.count = 1;
@@ -12,7 +10,7 @@ export function fileTypeService(isImage) {
     }
 
     function addEntry(to, f, name) {
-        var entry, icon;
+        let entry, icon;
         if (!(name in to)) {
             icon = self.service.icon(f);
             entry = new OverviewEntry(icon, name);
@@ -27,7 +25,7 @@ export function fileTypeService(isImage) {
 
     self.service = {
         icon: function(f) {
-            var fileIcon = "fa-file-o";
+            let fileIcon = "fa-file-o";
             if (f.otype === "directory") {
                 return "fa-folder-open";
             }
@@ -69,8 +67,8 @@ export function fileTypeService(isImage) {
         },
 
         overview: function(files) {
-            var overviewHash = [];
-            for (var i = 0; i < files.length; i++) {
+            const overviewHash = [];
+            for (let i = 0; i < files.length; i++) {
                 if (files[i].data.otype === "directory") {
                     addEntry(overviewHash, files[i].data, "Directory");
                 } else {
@@ -83,3 +81,5 @@ export function fileTypeService(isImage) {
 
     return self.service;
 }
+
+angular.module('materialscommons').factory("fileType", fileTypeService);

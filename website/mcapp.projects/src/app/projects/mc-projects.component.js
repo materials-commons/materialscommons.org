@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcProjects', {
 });
 
 /*@ngInject*/
-function MCProjectsComponentController(projectsService, $state, $mdDialog, sharedProjectsList, toast, User, mcbus) {
+function MCProjectsComponentController(projectsAPI, $state, $mdDialog, sharedProjectsList, toast, User, mcbus) {
     var ctrl = this;
     ctrl.isOpen = true;
     ctrl.openProject = openProject;
@@ -17,13 +17,13 @@ function MCProjectsComponentController(projectsService, $state, $mdDialog, share
     sharedProjectsList.clearSharedProjects();
     sharedProjectsList.setMaxProjects(ctrl.maxSharedProjects);
 
-    projectsService.getAllProjects().then(function(projects) {
+    projectsAPI.getAllProjects().then(function(projects) {
         ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
         ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
     });
 
     mcbus.subscribe('PROJECTS$REFRESH', 'MCProjectsComponentController', () => {
-        projectsService.getAllProjects().then(function(projects) {
+        projectsAPI.getAllProjects().then(function(projects) {
             ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
             ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
         });
@@ -36,7 +36,7 @@ function MCProjectsComponentController(projectsService, $state, $mdDialog, share
             controllerAs: '$ctrl',
             bindToController: true
         }).then(
-            () => projectsService.getAllProjects().then(
+            () => projectsAPI.getAllProjects().then(
                 (projects) => {
                     ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
                     ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
@@ -88,17 +88,17 @@ function MCProjectsComponentController(projectsService, $state, $mdDialog, share
 
 class CreateNewProjectDialogController {
     /*@ngInject*/
-    constructor($mdDialog, projectsService, toast) {
+    constructor($mdDialog, projectsAPI, toast) {
         this.$mdDialog = $mdDialog;
         this.name = '';
         this.description = '';
-        this.projectsService = projectsService;
+        this.projectsAPI = projectsAPI;
         this.toast = toast;
     }
 
     submit() {
         if (this.name !== '') {
-            this.projectsService.createProject(this.name, this.description)
+            this.projectsAPI.createProject(this.name, this.description)
                 .then(
                     () => this.$mdDialog.hide(),
                     () => this.toast.error('Unable to create project')

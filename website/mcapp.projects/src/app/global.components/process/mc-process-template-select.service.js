@@ -1,9 +1,9 @@
 class MCProcessTemplateSelectService {
     /*@ngInject*/
-    constructor(experimentsService, selectItems, samplesService) {
-        this.experimentsService = experimentsService;
+    constructor(experimentsAPI, selectItems, samplesAPI) {
+        this.experimentsAPI = experimentsAPI;
         this.selectItems = selectItems;
-        this.samplesService = samplesService;
+        this.samplesAPI = samplesAPI;
     }
 
     files(projectId, experimentId, process) {
@@ -21,7 +21,7 @@ class MCProcessTemplateSelectService {
 
                 })
             .then(
-                filesArgs => this.experimentsService.updateProcess(projectId, experimentId, process.id, filesArgs)
+                filesArgs => this.experimentsAPI.updateProcess(projectId, experimentId, process.id, filesArgs)
             );
     }
 
@@ -49,7 +49,7 @@ class MCProcessTemplateSelectService {
                 }
             )
             .then(
-                samplesArgs => this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, samplesArgs)
+                samplesArgs => this.experimentsAPI.updateProcess(this.projectId, this.experimentId, this.process.id, samplesArgs)
             )
     }
 }

@@ -1,8 +1,8 @@
 class MCUserSettingsProjectsComponentController {
     /*@ngInject*/
-    constructor(User, projectsService, toast) {
+    constructor(User, projectsAPI, toast) {
         this.User = User;
-        this.projectsService = projectsService;
+        this.projectsAPI = projectsAPI;
         this.projects = [];
         this.defaultProject = "";
         this.defaultExperiment = "";
@@ -10,7 +10,7 @@ class MCUserSettingsProjectsComponentController {
     }
 
     $onInit() {
-        this.projectsService.getAllProjects().then(
+        this.projectsAPI.getAllProjects().then(
             (projects) => this.projects = projects,
             () => this.toast.error('Unable to retrieve users projects')
         );

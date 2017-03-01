@@ -1,7 +1,6 @@
-export function onChangeService() {
-    'ngInject';
-
-    var onChangeFn = null;
+/*@ngInject*/
+function onChangeService() {
+    let onChangeFn = null;
     return {
         register: function(scope, fn) {
             onChangeFn = fn;
@@ -17,4 +16,6 @@ export function onChangeService() {
         }
     }
 }
+
+angular.module('materialscommons').factory('onChangeService', onChangeService);
 

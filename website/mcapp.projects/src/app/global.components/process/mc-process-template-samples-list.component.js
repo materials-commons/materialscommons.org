@@ -1,11 +1,11 @@
 class MCProcessTemplateSamplesListComponentController {
     /*@ngInject*/
-    constructor(processesService, toast, $stateParams, sampleLinker, samplesService, mcbus) {
-        this.processesService = processesService;
+    constructor(processesAPI, toast, $stateParams, sampleLinker, samplesAPI, mcbus) {
+        this.processesAPI = processesAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.sampleLinker = sampleLinker;
-        this.samplesService = samplesService;
+        this.samplesAPI = samplesAPI;
         this.mcbus = mcbus;
     }
 
@@ -14,7 +14,7 @@ class MCProcessTemplateSamplesListComponentController {
             id: s.id,
             property_set_id: s.property_set_id
         };
-        this.processesService.updateSamplesInProcess(this.projectId, this.process.id, [], [sampleArg]).then(
+        this.processesAPI.updateSamplesInProcess(this.projectId, this.process.id, [], [sampleArg]).then(
             () => this.removeSampleFromProcess(s),
             () => this.toast.error('Unable to remove file from process')
         );
@@ -23,7 +23,7 @@ class MCProcessTemplateSamplesListComponentController {
     linkFilesToSample(sample) {
         this.sampleLinker.linkFilesToSample(sample, this.process.files, []).then(
             (linkedFiles) => {
-                this.samplesService.updateSampleFiles(this.projectId, sample.id, linkedFiles, []).then(
+                this.samplesAPI.updateSampleFiles(this.projectId, sample.id, linkedFiles, []).then(
                     () => null,
                     () => this.toast.error('Unable to link files to sample')
                 );

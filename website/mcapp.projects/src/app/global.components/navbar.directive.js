@@ -13,7 +13,7 @@ function navbarDirective() {
 
 /*@ngInject*/
 function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, mcstate,
-                                   navbarOnChange, projectsService, demoProjectService, blockUI,
+                                   navbarOnChange, projectsAPI, demoProjectService, blockUI,
                                    toast, mcbus) {
     const ctrl = this;
 
@@ -29,7 +29,7 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
     navbarOnChange.setOnChange(() => {
         // Hack, change this later
         if ($stateParams.project_id) {
-            projectsService.getProject($stateParams.project_id).then((proj) => mcstate.set(mcstate.CURRENT$PROJECT, proj));
+            projectsAPI.getProject($stateParams.project_id).then((proj) => mcstate.set(mcstate.CURRENT$PROJECT, proj));
         }
     });
 

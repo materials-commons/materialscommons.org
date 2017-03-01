@@ -1,6 +1,6 @@
+/*@ngInject*/
 export function setupViewController(template, $modalInstance) {
-    'ngInject';
-    var ctrl = this;
+    const ctrl = this;
 
     ctrl.dismiss = dismiss;
     ctrl.template = template.create();

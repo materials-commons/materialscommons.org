@@ -1,5 +1,5 @@
 /*@ngInject*/
-export function templatesService(Restangular, processEdit, $log) {
+function templatesService(Restangular, $log) {
 
     const self = this;
     self.templates = {};
@@ -64,4 +64,6 @@ export function templatesService(Restangular, processEdit, $log) {
         }
     };
 }
+
+angular.module('materialscommons').factory("templates", templatesService);
 

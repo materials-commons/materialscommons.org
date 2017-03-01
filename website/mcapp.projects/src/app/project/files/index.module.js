@@ -1,5 +1,4 @@
 import './file-tree-move-service.service';
-import './file-tree-project-service.service';
 import './project-tree-model.service';
 import './file-tree-delete-service.service';
 import './mc-file-tree.component';

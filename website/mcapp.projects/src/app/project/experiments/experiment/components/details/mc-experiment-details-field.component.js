@@ -9,7 +9,7 @@ angular.module('materialscommons').component('mcExperimentDetailsField', {
     }
 });
 /*@ngInject*/
-function MCExperimentDetailsFieldComponentController(experimentsService, $stateParams, toast) {
+function MCExperimentDetailsFieldComponentController(experimentsAPI, $stateParams, toast) {
     let ctrl = this;
 
     ctrl.add = (field) => ctrl.experiment[field].push("");
@@ -17,7 +17,7 @@ function MCExperimentDetailsFieldComponentController(experimentsService, $stateP
     ctrl.update = (field) => {
         let updateArgs = {};
         updateArgs[field] = ctrl.experiment[field];
-        experimentsService
+        experimentsAPI
             .updateForProject($stateParams.project_id, $stateParams.experiment_id, updateArgs)
             .then(
                 () => null,
@@ -29,7 +29,7 @@ function MCExperimentDetailsFieldComponentController(experimentsService, $stateP
         ctrl.experiment[field].splice(index, 1);
         let removeArgs = {};
         removeArgs[field] = ctrl.experiment[field];
-        experimentsService
+        experimentsAPI
             .updateForProject($stateParams.project_id, $stateParams.experiment_id, removeArgs)
             .then(
                 () => null,

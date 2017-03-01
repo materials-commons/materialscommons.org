@@ -1,9 +1,9 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
-    constructor(experimentsService, $stateParams, toast, experimentProcessesService, datasetService,
+    constructor(experimentsAPI, $stateParams, toast, experimentProcessesService, datasetsAPI,
                 workflowService, mcstate, mcbus) {
         this.myName = 'MCProcessesWorkflow';
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
@@ -12,7 +12,7 @@ class MCProcessesWorkflowComponentController {
         this.showGraphView = true;
         this.currentTab = 0;
         this.experimentProcessesService = experimentProcessesService;
-        this.datasetService = datasetService;
+        this.datasetsAPI = datasetsAPI;
         this.workflowService = workflowService;
         this.mcstate = mcstate;
         this.mcbus = mcbus;
@@ -41,7 +41,7 @@ class MCProcessesWorkflowComponentController {
 
     setSelectedProcess(processId, hasChildren) {
         if (processId) {
-            this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, processId)
+            this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, processId)
                 .then(
                     (process) => {
                         process.hasChildren = hasChildren;
@@ -61,7 +61,7 @@ class MCProcessesWorkflowComponentController {
     }
 
     onChange() {
-        this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId)
+        this.experimentsAPI.getProcessesForExperiment(this.projectId, this.experimentId)
             .then(
                 (processes) => this.processes = processes,
                 () => this.toast.error('Error retrieving processes for experiment')
@@ -77,7 +77,7 @@ class MCProcessesWorkflowComponentController {
 
     removeFromDataset() {
         let p = this.selectedProcess;
-        this.datasetService.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [], [p.id]).then(
+        this.datasetsAPI.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [], [p.id]).then(
             () => this.experimentProcessesService.removeProcessFromDataset(p, this.dataset, this.datasetProcesses),
             () => this.toast.error(`Unable to remove process from dataset ${p.name}`)
         );
@@ -85,7 +85,7 @@ class MCProcessesWorkflowComponentController {
 
     addToDataset() {
         let p = this.selectedProcess;
-        this.datasetService.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [p.id], []).then(
+        this.datasetsAPI.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [p.id], []).then(
             () => this.experimentProcessesService.addProcessToDataset(p, this.dataset, this.datasetProcesses),
             () => this.toast.error(`Unable to add process to dataset ${p.name}`)
         );

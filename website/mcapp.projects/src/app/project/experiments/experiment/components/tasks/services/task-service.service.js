@@ -1,10 +1,10 @@
 class TaskService {
     /*@ngInject*/
-    constructor(experimentsService, $stateParams, toast, projectsService) {
-        this.experimentsService = experimentsService;
+    constructor(experimentsAPI, $stateParams, toast, projectsAPI) {
+        this.experimentsAPI = experimentsAPI;
         this.$stateParams = $stateParams;
         this.toast = toast;
-        this.projectsService = projectsService;
+        this.projectsAPI = projectsAPI;
     }
 
     toggleFlag(whichFlag, event, task) {
@@ -26,7 +26,7 @@ class TaskService {
             $(event.target).addClass('mc-flag-not-set');
         }
 
-        this.experimentsService
+        this.experimentsAPI
             .updateTask(projectId, experimentId, task.id, {flags: task.flags})
             .then(
                 () => null,
@@ -49,7 +49,7 @@ class TaskService {
             task.flags.starred = true;
         }
 
-        this.experimentsService
+        this.experimentsAPI
             .updateTask(projectId, experimentId, task.id, {flags: task.flags})
             .then(
                 () => null,
@@ -60,7 +60,7 @@ class TaskService {
     updateName(task) {
         let projectId = this.$stateParams.project_id,
             experimentId = this.$stateParams.experiment_id;
-        this.experimentsService
+        this.experimentsAPI
             .updateTask(projectId, experimentId, task.id, {name: task.name})
             .then(
                 () => null,
@@ -71,7 +71,7 @@ class TaskService {
     updateDoneStatus(task) {
         let projectId = this.$stateParams.project_id,
             experimentId = this.$stateParams.experiment_id;
-        this.experimentsService
+        this.experimentsAPI
             .updateTask(projectId, experimentId, task.id, {flags: task.flags})
             .then(
                 () => null,
@@ -91,7 +91,7 @@ class TaskService {
             return;
         }
 
-        this.experimentsService.updateTask(projectId, experimentId, task.id, {note: task.note})
+        this.experimentsAPI.updateTask(projectId, experimentId, task.id, {note: task.note})
             .then(
                 () => null,
                 () => this.toast.error('Unable to update task note.')
@@ -106,7 +106,7 @@ class TaskService {
             return;
         }
 
-        this.experimentsService.deleteTask(projectId, experimentId, task.id)
+        this.experimentsAPI.deleteTask(projectId, experimentId, task.id)
             .then(
                 () => node.$nodeScope.remove(),
                 (err) => this.toast.error(`Unable to delete task: ${err.data.error}`)
@@ -116,10 +116,10 @@ class TaskService {
     setTemplate(templateId, processId, task) {
         let projectId = this.$stateParams.project_id,
             experimentId = this.$stateParams.experiment_id;
-        this.experimentsService.addTemplateToTask(projectId, experimentId, task.id, `global_${templateId}`)
+        this.experimentsAPI.addTemplateToTask(projectId, experimentId, task.id, `global_${templateId}`)
             .then(
                 (template) => {
-                    this.projectsService.getProjectProcess(projectId, template.process_id).then(
+                    this.projectsAPI.getProjectProcess(projectId, template.process_id).then(
                         (process) => {
                             task.template = process;
                             let templateName = process.process_name ? process.process_name : process.template_id.substring(7);

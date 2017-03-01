@@ -1,4 +1,4 @@
-class AccountsService {
+class AccountsAPIService {
     /*@ngInject*/
     constructor(apiService, Restangular) {
         this.apiService = apiService;
@@ -39,4 +39,4 @@ class AccountsService {
     }
 }
 
-angular.module('materialscommons').service('accountsService', AccountsService);
+angular.module('materialscommons').service('accountsAPI', AccountsAPIService);

@@ -1,11 +1,11 @@
 class MCDatasetDetailsComponentController {
     /*@ngInject*/
-    constructor($stateParams, $mdDialog, datasetService, toast, navbarOnChange, $window) {
+    constructor($stateParams, $mdDialog, datasetsAPI, toast, navbarOnChange, $window) {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
         this.$mdDialog = $mdDialog;
-        this.datasetService = datasetService;
+        this.datasetsAPI = datasetsAPI;
         this.toast = toast;
         this.navbarOnChange = navbarOnChange;
         this.pubDate = "";
@@ -68,7 +68,7 @@ class MCDatasetDetailsComponentController {
     }
 
     updateDataset() {
-        this.datasetService.updateDatasetDetails(this.projectId, this.experimentId, this.datasetId, this.dataset)
+        this.datasetsAPI.updateDatasetDetails(this.projectId, this.experimentId, this.datasetId, this.dataset)
             .then(
                 () => null,
                 () => this.toast.error('Unable to update dataset')
@@ -116,17 +116,17 @@ class MCDatasetDetailsComponentController {
 
 class PublishDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog, $stateParams, toast, datasetService) {
+    constructor($mdDialog, $stateParams, toast, datasetsAPI) {
         this.$mdDialog = $mdDialog;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
         this.toast = toast;
-        this.datasetService = datasetService;
+        this.datasetsAPI = datasetsAPI;
     }
 
     publish() {
-        this.datasetService.publishDataset(this.projectId, this.experimentId, this.datasetId)
+        this.datasetsAPI.publishDataset(this.projectId, this.experimentId, this.datasetId)
             .then(
                 () => this.$mdDialog.hide(),
                 () => {
@@ -143,17 +143,17 @@ class PublishDatasetDialogController {
 
 class UnpublishDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog, $stateParams, toast, datasetService) {
+    constructor($mdDialog, $stateParams, toast, datasetsAPI) {
         this.$mdDialog = $mdDialog;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
         this.toast = toast;
-        this.datasetService = datasetService;
+        this.datasetsAPI = datasetsAPI;
     }
 
     unpublish() {
-        this.datasetService.unpublishDataset(this.projectId, this.experimentId, this.datasetId)
+        this.datasetsAPI.unpublishDataset(this.projectId, this.experimentId, this.datasetId)
             .then(
                 () => this.$mdDialog.hide(),
                 () => {

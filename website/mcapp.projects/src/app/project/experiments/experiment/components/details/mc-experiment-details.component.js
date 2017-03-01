@@ -7,13 +7,13 @@ angular.module('materialscommons').component('mcExperimentDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentDetailsComponentController($stateParams, experimentsService, toast, $scope, $state, editorOpts) {
+function MCExperimentDetailsComponentController($stateParams, experimentsAPI, toast, $scope, editorOpts) {
     let ctrl = this;
 
     $scope.editorOptions = editorOpts({height: 67, width: 41});
 
     ctrl.updateName = () => {
-        experimentsService.updateForProject($stateParams.project_id, $stateParams.experiment_id, {name: ctrl.experiment.name})
+        experimentsAPI.updateForProject($stateParams.project_id, $stateParams.experiment_id, {name: ctrl.experiment.name})
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment name')
@@ -21,7 +21,7 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
     };
 
     ctrl.updateStatus = () => {
-        experimentsService.updateForProject($stateParams.project_id, $stateParams.experiment_id, {status: ctrl.experiment.status})
+        experimentsAPI.updateForProject($stateParams.project_id, $stateParams.experiment_id, {status: ctrl.experiment.status})
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment status')
@@ -29,7 +29,7 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
     };
 
     ctrl.updateDescription = () => {
-        experimentsService.updateForProject($stateParams.project_id, $stateParams.experiment_id,
+        experimentsAPI.updateForProject($stateParams.project_id, $stateParams.experiment_id,
                 {description: ctrl.experiment.description})
             .then(
                 () => null,
@@ -42,7 +42,7 @@ function MCExperimentDetailsComponentController($stateParams, experimentsService
             return;
         }
 
-        experimentsService.updateForProject($stateParams.project_id, $stateParams.experiment_id, {note: ctrl.experiment.note})
+        experimentsAPI.updateForProject($stateParams.project_id, $stateParams.experiment_id, {note: ctrl.experiment.note})
             .then(
                 () => null,
                 () => toast.error('Failed to update note')

@@ -1,24 +1,22 @@
-angular.module('materialscommons').factory('fileTreeProjectService', fileTreeProjectService);
-function fileTreeProjectService(projectsAPI, gridFiles) {
-    'ngInject';
-
+/*@ngInject*/
+function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles) {
     return {
         getDirectory: function(projectID, directoryID) {
-            return projectsAPI(projectID).one('directories', directoryID).get()
+            return projectsAPIRoute(projectID).one('directories', directoryID).get()
                 .then(function(files) {
                     return gridFiles.toGridChildren(files);
                 });
         },
 
         getProjectRoot: function(projectID) {
-            return projectsAPI(projectID).one('directories').get()
+            return projectsAPIRoute(projectID).one('directories').get()
                 .then(function(files) {
                     return gridFiles.toGrid(files);
                 });
         },
 
         createProjectDir: function(projectID, fromDirID, path) {
-            return projectsAPI(projectID).one('directories').customPOST({
+            return projectsAPIRoute(projectID).one('directories').customPOST({
                 from_dir: fromDirID,
                 path: path
             }).then(function(dirs) {
@@ -27,7 +25,7 @@ function fileTreeProjectService(projectsAPI, gridFiles) {
         },
 
         renameProjectDir: function(projectID, dirID, newDirectoryName) {
-            return projectsAPI(projectID).one('directories', dirID).customPUT({
+            return projectsAPIRoute(projectID).one('directories', dirID).customPUT({
                 rename: {
                     new_name: newDirectoryName
                 }
@@ -35,9 +33,11 @@ function fileTreeProjectService(projectsAPI, gridFiles) {
         },
 
         renameProjectFile: function(projectID, fileID, newFileName) {
-            return projectsAPI(projectID).one('files', fileID).customPUT({
+            return projectsAPIRoute(projectID).one('files', fileID).customPUT({
                 name: newFileName
             });
         }
     };
 }
+
+angular.module('materialscommons').factory('projectFileTreeAPI', ProjectFileTreeAPIService);

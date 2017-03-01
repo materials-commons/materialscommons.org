@@ -3,7 +3,7 @@ export class ValidateController {
     constructor($stateParams, accountsService, userService, $state, Restangular, toastr, $uibModal) {
         this.$stateParams = $stateParams;
         this.validationId = $stateParams.validation_id;
-        this.accountsService = accountsService;
+        this.accountsAPI = accountsService;
         this.userService = userService;
         this.$state = $state;
         this.Restangular = Restangular;
@@ -11,7 +11,7 @@ export class ValidateController {
         this.$uibModal = $uibModal;
         this.password1 = '';
         this.password2 = '';
-        this.accountsService.getUserRegistrationAccount(this.validationId)
+        this.accountsAPI.getUserRegistrationAccount(this.validationId)
             .then(
                 (registration) => this.registration = registration,
                 (e) => this.message = e.data.error
@@ -33,7 +33,7 @@ export class ValidateController {
 
         modalInstance.result.then(
             ()=> {
-                this.accountsService.setUserFromRegistrationData(this.validationId, this.password1)
+                this.accountsAPI.setUserFromRegistrationData(this.validationId, this.password1)
                     .then(
                         () => {
                             this.userService.login(this.registration.email, this.password1)

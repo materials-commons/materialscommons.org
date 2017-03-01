@@ -1,10 +1,10 @@
 class MCProjectSamplesComponentController {
     /*@ngInject*/
-    constructor($mdDialog, experimentsService, $stateParams, toast, templates) {
+    constructor($mdDialog, experimentsAPI, $stateParams, toast, templates) {
         this.query = '';
         this.showTableView = true;
         this.$mdDialog = $mdDialog;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.toast = toast;
@@ -12,7 +12,7 @@ class MCProjectSamplesComponentController {
     }
 
     newSamples() {
-        this.experimentsService.createProcessFromTemplate(this.projectId, this.experimentId, 'global_Create Samples')
+        this.experimentsAPI.createProcessFromTemplate(this.projectId, this.experimentId, 'global_Create Samples')
             .then(
                 (process) => {
                     let p = this.templates.loadTemplateFromProcess(process.template_name, process);
@@ -25,7 +25,7 @@ class MCProjectSamplesComponentController {
                             process: p
                         }
                     }).then(
-                        () => this.experimentsService.getSamplesForExperiment(this.projectId, this.experimentId)
+                        () => this.experimentsAPI.getSamplesForExperiment(this.projectId, this.experimentId)
                             .then(
                                 (samples) => this.samples = samples,
                                 () => this.toast.error('Error retrieving samples for experiment')

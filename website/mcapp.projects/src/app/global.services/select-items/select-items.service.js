@@ -1,10 +1,10 @@
 class SelectItemsService {
     /*@ngInject*/
-    constructor($mdDialog, projectsService, experimentsService, fileTreeProjectService, mcstate) {
+    constructor($mdDialog, projectsAPI, experimentsAPI, projectFileTreeAPI, mcstate) {
         this.$mdDialog = $mdDialog;
-        this.projectsService = projectsService;
-        this.experimentsService = experimentsService;
-        this.fileTreeProjectService = fileTreeProjectService;
+        this.projectsAPI = projectsAPI;
+        this.experimentsAPI = experimentsAPI;
+        this.projectFileTreeAPI = projectFileTreeAPI;
         this.mcstate = mcstate;
     }
 
@@ -21,7 +21,7 @@ class SelectItemsService {
 
     fileTree(uploadFiles = false) {
         let project = this.mcstate.get(this.mcstate.CURRENT$PROJECT);
-        return this.fileTreeProjectService.getProjectRoot(project.id).then(
+        return this.projectFileTreeAPI.getProjectRoot(project.id).then(
             files => {
                 project.files = files;
                 return this.dialog({
@@ -50,13 +50,13 @@ class SelectItemsService {
         let options = {
             singleSelection
         };
-        return this.projectsService.getProjectSamples(projectId).then(
+        return this.projectsAPI.getProjectSamples(projectId).then(
             (samples) => this.dialog({samples, options}, SelectItemsSamplesServiceModalController)
         );
     }
 
     samplesFromExperiment(projectId, experimentId, singleSelection = false) {
-        return this.experimentsService.getSamplesForExperiment(projectId, experimentId).then(
+        return this.experimentsAPI.getSamplesForExperiment(projectId, experimentId).then(
             (samples) => this.dialog({samples, singleSelection}, SelectItemsSamplesServiceModalController)
         );
     }
@@ -66,7 +66,7 @@ class SelectItemsService {
     }
 
     processesFromProject(projectId) {
-        return this.projectsService.getProjectProcesses(projectId).then(
+        return this.projectsAPI.getProjectProcesses(projectId).then(
             (processes) => this.dialog({processes}, SelectItemsProcessesServiceModalController)
         );
     }

@@ -1,8 +1,8 @@
 class MCExperimentDatasetComponentController {
     /*@ngInject*/
-    constructor(datasetService, experimentsService, toast, $stateParams) {
-        this.datasetService = datasetService;
-        this.experimentsService = experimentsService;
+    constructor(datasetsAPI, experimentsAPI, toast, $stateParams) {
+        this.datasetsAPI = datasetsAPI;
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
@@ -19,12 +19,12 @@ class MCExperimentDatasetComponentController {
     }
 
     load() {
-        this.datasetService.getDataset(this.projectId, this.experimentId, this.datasetId)
+        this.datasetsAPI.getDataset(this.projectId, this.experimentId, this.datasetId)
             .then(
                 (dataset) => this.dataset = dataset,
                 () => this.toast.error('Unable to retrieve datasets for experiment')
             );
-        this.experimentsService.getProcessesForExperiment(this.projectId, this.experimentId).then(
+        this.experimentsAPI.getProcessesForExperiment(this.projectId, this.experimentId).then(
             (processes) => this.processes = processes,
             () => this.toast.error('Error retrieving processes for experiment')
         );

@@ -1,8 +1,8 @@
 class MCResetValidateComponentController {
     /*@ngInject*/
-    constructor(accountsService, $stateParams, $state, $timeout) {
+    constructor(accountsAPI, $stateParams, $state, $timeout) {
         this.uuid = $stateParams.validation_uuid;
-        this.accountsService = accountsService;
+        this.accountsAPI = accountsAPI;
         this.$state = $state;
         this.message = null;
         this.password1 = '';
@@ -12,7 +12,7 @@ class MCResetValidateComponentController {
     }
 
     $onInit() {
-        this.accountsService.getUserForResetPassword(this.uuid)
+        this.accountsAPI.getUserForResetPassword(this.uuid)
             .then(
                 (user) => {
                     this.user = user;
@@ -35,7 +35,7 @@ class MCResetValidateComponentController {
             return;
         }
 
-        this.accountsService.resetUserPasswordWithValidate(this.uuid,this.password1)
+        this.accountsAPI.resetUserPasswordWithValidate(this.uuid, this.password1)
             .then(
                 () => {
                     this.showSuccessMsg = true;

@@ -1,10 +1,10 @@
 class MCProcessTemplateOtherComponentController {
     /*@ngInject*/
-    constructor(sampleLinker, processEdit, selectItems, experimentsService, toast, $stateParams, navbarOnChange) {
+    constructor(sampleLinker, processEdit, selectItems, experimentsAPI, toast, $stateParams, navbarOnChange) {
         this.sampleLinker = sampleLinker;
         this.processEdit = processEdit;
         this.selectItems = selectItems;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
@@ -26,7 +26,7 @@ class MCProcessTemplateOtherComponentController {
                     files: files,
                     process_id: this.process.id
                 };
-                this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
+                this.experimentsAPI.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
                     .then(
                         (process) => this.process.files = process.files,
                         () => this.toast.error('Unable to add files')
@@ -54,7 +54,7 @@ class MCProcessTemplateOtherComponentController {
                     process_id: this.process.id
                 };
 
-                this.experimentsService.updateProcess(this.projectId, this.experimentId, this.process.id, samplesArgs)
+                this.experimentsAPI.updateProcess(this.projectId, this.experimentId, this.process.id, samplesArgs)
                     .then(
                         (p) => {
                             this.process = p;

@@ -17,7 +17,7 @@ angular.module('materialscommons').component('mcExperimentTasksList', {
 });
 
 /*@ngInject*/
-function MCExperimentTasksListComponentController(experimentsService, toast, $stateParams, mcstate) {
+function MCExperimentTasksListComponentController(experimentsAPI, toast, $stateParams, mcstate) {
     let ctrl = this;
     ctrl.treeOptions = {
         dropped: onDrop
@@ -50,7 +50,7 @@ function MCExperimentTasksListComponentController(experimentsService, toast, $st
         let swapArgs = {
             task_id: dstTask.id
         };
-        experimentsService
+        experimentsAPI
             .updateTask($stateParams.project_id, $stateParams.experiment_id, task.id, {swap: swapArgs})
             .then(
                 () => null,
@@ -80,7 +80,7 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
 }
 
 /*@ngInject*/
-function MCExperimentTasksListDirDirectiveController($stateParams, toast, mcstate, projectsService,
+function MCExperimentTasksListDirDirectiveController($stateParams, toast, mcstate, projectsAPI,
                                                      blankTaskService, taskService) {
     let ctrl = this;
     ctrl.setCurrent = setCurrent;
@@ -97,7 +97,7 @@ function MCExperimentTasksListDirDirectiveController($stateParams, toast, mcstat
 
     function loadTaskTemplate() {
         if (!ctrl.task.loaded && ctrl.task.process_id !== '') {
-            projectsService.getProjectProcess($stateParams.project_id, ctrl.task.process_id)
+            projectsAPI.getProjectProcess($stateParams.project_id, ctrl.task.process_id)
                 .then(
                     (process) => {
                         ctrl.task.template = process;

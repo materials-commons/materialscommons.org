@@ -28,12 +28,12 @@ function MCProjectExperimentsComponentController($mdDialog, $state) {
 
 class CreateNewExperimentDialogController {
     /*@ngInject*/
-    constructor($mdDialog, experimentsService, $stateParams, toast) {
+    constructor($mdDialog, experimentsAPI, $stateParams, toast) {
         this.$mdDialog = $mdDialog;
         this.name = '';
         this.description = '';
         this.projectID = $stateParams.project_id;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
     }
 
@@ -44,7 +44,7 @@ class CreateNewExperimentDialogController {
         }
         let e = new Experiment(this.name);
         e.description = this.description;
-        this.experimentsService.createForProject(this.projectID, e).then(
+        this.experimentsAPI.createForProject(this.projectID, e).then(
             (createdExperiment) => {
                 this.$mdDialog.hide(createdExperiment)
             },

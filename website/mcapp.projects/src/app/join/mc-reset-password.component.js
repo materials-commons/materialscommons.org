@@ -1,7 +1,7 @@
 class MCResetPasswordComponentController {
     /*@ngInject*/
-    constructor(accountsService) {
-        this.accountsService = accountsService;
+    constructor(accountsAPI) {
+        this.accountsAPI = accountsAPI;
         this.email = '';
         this.message = null;
         this.showSuccessMsg = false;
@@ -11,7 +11,7 @@ class MCResetPasswordComponentController {
         if (resetForm.$invalid) {
             return;
         }
-        this.accountsService.createResetPasswordRequest(this.email)
+        this.accountsAPI.createResetPasswordRequest(this.email)
             .then(
                 () => this.showSuccessMsg = true,
                 (e) => this.message = `${e.data.error}`

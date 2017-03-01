@@ -16,7 +16,7 @@ function processSettingsDirective() {
 }
 
 /*@ngInject*/
-function ProcessSettingsDirectiveController(experimentsService, toast, $stateParams) {
+function ProcessSettingsDirectiveController(experimentsAPI, toast, $stateParams) {
     const ctrl = this;
     ctrl.datePickerOptions = {
         formatYear: 'yy',
@@ -44,7 +44,7 @@ function ProcessSettingsDirectiveController(experimentsService, toast, $statePar
         };
 
         if (ctrl.taskId) {
-            experimentsService.updateTaskTemplateProperties($stateParams.project_id, $stateParams.experiment_id, ctrl.taskId, propertyArgs)
+            experimentsAPI.updateTaskTemplateProperties($stateParams.project_id, $stateParams.experiment_id, ctrl.taskId, propertyArgs)
                 .then(
                     () => null,
                     () => toast.error('Unable to update property')

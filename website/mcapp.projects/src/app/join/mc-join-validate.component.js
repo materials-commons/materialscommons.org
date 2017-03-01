@@ -1,8 +1,8 @@
 class MCJoinValidateComponentController {
     /*@ngInject*/
-    constructor(accountsService, $stateParams, $state, $timeout) {
+    constructor(accountsAPI, $stateParams, $state, $timeout) {
         this.uuid = $stateParams.validation_uuid;
-        this.accountsService = accountsService;
+        this.accountsAPI = accountsAPI;
         this.$state = $state;
         this.message = null;
         this.password1 = '';
@@ -12,7 +12,7 @@ class MCJoinValidateComponentController {
     }
 
     $onInit() {
-        this.accountsService.getUserRegistrationAccount(this.uuid)
+        this.accountsAPI.getUserRegistrationAccount(this.uuid)
             .then(
                 (registration) => {
                     this.registration = registration;
@@ -36,7 +36,7 @@ class MCJoinValidateComponentController {
         }
 
         if (this.registration.reset_password) {
-            this.accountsService.resetUserPasswordWithValidate(this.uuid,this.registration.id,this.password1)
+            this.accountsAPI.resetUserPasswordWithValidate(this.uuid, this.registration.id, this.password1)
                 .then(
                     () => {
                         this.showSuccessMsg = true;
@@ -45,7 +45,7 @@ class MCJoinValidateComponentController {
                     (e) => this.message = `${e.data.error}`
                 );
         } else {
-            this.accountsService.setUserFromRegistrationData(this.uuid, this.password1)
+            this.accountsAPI.setUserFromRegistrationData(this.uuid, this.password1)
                 .then(
                     () => {
                         this.showSuccessMsg = true;

@@ -1,7 +1,6 @@
-export function pubsubService($rootScope) {
-    'ngInject';
-
-    var pubsubService = {};
+/*@ngInject*/
+function pubsubService($rootScope) {
+    let pubsubService = {};
     pubsubService.message = '';
 
     pubsubService.send = function(channel, msg) {
@@ -21,3 +20,5 @@ export function pubsubService($rootScope) {
 
     return pubsubService;
 }
+
+angular.module('materialscommons').factory('pubsub', pubsubService);

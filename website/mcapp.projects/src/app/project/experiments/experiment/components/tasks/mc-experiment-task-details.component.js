@@ -7,15 +7,14 @@ angular.module('materialscommons').component('mcExperimentTaskDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentTaskDetailsComponentController($scope, editorOpts, $stateParams, toast, projectsService,
-                                                    taskService) {
+function MCExperimentTaskDetailsComponentController($scope, editorOpts, $stateParams, toast, projectsAPI, taskService) {
     let ctrl = this;
 
     $scope.editorOptions = editorOpts({height: 25, width: 20});
 
     ctrl.$onInit = () => {
         if (!ctrl.task.loaded && ctrl.task.process_id !== '') {
-            projectsService.getProjectProcess($stateParams.project_id, ctrl.task.process_id)
+            projectsAPI.getProjectProcess($stateParams.project_id, ctrl.task.process_id)
                 .then(
                     (process) => {
                         ctrl.task.template = process;

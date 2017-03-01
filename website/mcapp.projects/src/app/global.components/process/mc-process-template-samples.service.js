@@ -1,14 +1,14 @@
 class MCProcessTemplateSamplesService {
     /*@ngInject*/
-    constructor(navbarOnChange, samplesService, toast, $mdDialog) {
+    constructor(navbarOnChange, samplesAPI, toast, $mdDialog) {
         this.navbarOnChange = navbarOnChange;
-        this.samplesService = samplesService;
+        this.samplesAPI = samplesAPI;
         this.toast = toast;
         this.$mdDialog = $mdDialog;
     }
 
     addSample(projectId, experimentId, processId) {
-        this.samplesService.createSamplesInProjectForProcess(projectId, processId, [{name: ''}])
+        this.samplesAPI.createSamplesInProjectForProcess(projectId, processId, [{name: ''}])
             .then(
                 (samples) => {
                     this.navbarOnChange.fireChange();
@@ -18,7 +18,7 @@ class MCProcessTemplateSamplesService {
             .then(
                 samples => {
                     let sampleIds = samples.samples.map((s) => s.id);
-                    return this.samplesService.addSamplesToExperiment(projectId, experimentId, sampleIds)
+                    return this.samplesAPI.addSamplesToExperiment(projectId, experimentId, sampleIds)
                         .then(
                             () => samples
                         );
@@ -28,7 +28,7 @@ class MCProcessTemplateSamplesService {
 
     remove(index) {
         let sample = this.process.output_samples[index];
-        this.samplesService.deleteSamplesFromExperiment(this.projectId, this.experimentId, this.process.id, [sample.id])
+        this.samplesAPI.deleteSamplesFromExperiment(this.projectId, this.experimentId, this.process.id, [sample.id])
             .then(
                 () => this.process.output_samples.splice(index, 1),
                 () => this.toast.error('Unable to remove sample')
@@ -36,7 +36,7 @@ class MCProcessTemplateSamplesService {
     }
 
     updateSampleName(sample) {
-        this.samplesService.updateSampleInExperiment(this.projectId, this.experimentId, this.process.id, {
+        this.samplesAPI.updateSampleInExperiment(this.projectId, this.experimentId, this.process.id, {
                 id: sample.id,
                 name: sample.name
             })

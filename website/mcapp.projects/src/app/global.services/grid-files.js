@@ -1,6 +1,5 @@
-export function gridFiles() {
-    'ngInject';
-
+/*@ngInject*/
+function gridFiles() {
     function compareFileEntry(fentry1, fentry2) {
         if (fentry1.name < fentry2.name) {
             return -1;
@@ -12,9 +11,9 @@ export function gridFiles() {
     }
 
     function createGridChildren(filesChildren) {
-        var children = [];
+        const children = [];
         filesChildren.forEach(function(entry) {
-            var centry;
+            let centry;
             if (entry.otype == 'directory') {
                 centry = createDirectoryEntry(entry);
             } else if (entry.otype == 'file') {
@@ -86,7 +85,7 @@ export function gridFiles() {
 
     return {
         toGrid: function(files) {
-            var gridData = [
+            const gridData = [
                 {
                     expanded: true,
                     data: {
@@ -110,7 +109,7 @@ export function gridFiles() {
         },
 
         findEntry(files, id) {
-            var treeModel = new TreeModel(),
+            const treeModel = new TreeModel(),
                 root = treeModel.parse(files);
             return root.first({strategy: 'pre'}, function(node) {
                 return node.model.data.id === id;
@@ -118,3 +117,5 @@ export function gridFiles() {
         }
     }
 }
+
+angular.module('materialscommons').factory('gridFiles', gridFiles);

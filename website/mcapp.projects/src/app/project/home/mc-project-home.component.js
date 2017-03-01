@@ -6,8 +6,8 @@ angular.module('materialscommons').component('mcProjectHome', {
 });
 
 /*@ngInject*/
-function MCProjectHomeComponentController($scope, mcstate, experimentsService, toast, $state,
-                                          $stateParams, projectsService, editorOpts, $mdDialog) {
+function MCProjectHomeComponentController($scope, mcstate, experimentsAPI, toast, $state,
+                                          $stateParams, projectsAPI, editorOpts, $mdDialog) {
     const ctrl = this;
     ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
     ctrl.projectLoaded = true;
@@ -18,7 +18,7 @@ function MCProjectHomeComponentController($scope, mcstate, experimentsService, t
     $scope.editorOptions = editorOpts({height: 25, width: 20});
 
     ctrl.$onInit = () => {
-        experimentsService.getAllForProject($stateParams.project_id).then(
+        experimentsAPI.getAllForProject($stateParams.project_id).then(
             (experiments) => {
                 ctrl.experiments = experiments;
             },
@@ -35,7 +35,7 @@ function MCProjectHomeComponentController($scope, mcstate, experimentsService, t
             return;
         }
 
-        projectsService.updateProject($stateParams.project_id, {description: ctrl.project.description})
+        projectsAPI.updateProject($stateParams.project_id, {description: ctrl.project.description})
             .then(
                 () => projectDescription = ctrl.project.description,
                 () => toast.error('Unable to update project description')
@@ -58,12 +58,12 @@ function MCProjectHomeComponentController($scope, mcstate, experimentsService, t
 
 class CreateNewExperimentDialogController {
     /*@ngInject*/
-    constructor($mdDialog, experimentsService, $stateParams, toast) {
+    constructor($mdDialog, experimentsAPI, $stateParams, toast) {
         this.$mdDialog = $mdDialog;
         this.name = '';
         this.description = '';
         this.projectID = $stateParams.project_id;
-        this.experimentsService = experimentsService;
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
     }
 
@@ -74,7 +74,7 @@ class CreateNewExperimentDialogController {
         }
         let e = new Experiment(this.name);
         e.description = this.description;
-        this.experimentsService.createForProject(this.projectID, e)
+        this.experimentsAPI.createForProject(this.projectID, e)
             .then(
                 (createdExperiment) => this.$mdDialog.hide(createdExperiment),
                 () => this.toast.error('create experiment failed')

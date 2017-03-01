@@ -1,9 +1,9 @@
 class MCExperimentDatasetsComponentController {
     /*@ngInject*/
-    constructor($stateParams, datasetService, toast, $state, $mdDialog) {
+    constructor($stateParams, datasetsAPI, toast, $state, $mdDialog) {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
-        this.datasetService = datasetService;
+        this.datasetsAPI = datasetsAPI;
         this.toast = toast;
         this.$state = $state;
         this.$mdDialog = $mdDialog;
@@ -11,7 +11,7 @@ class MCExperimentDatasetsComponentController {
     }
 
     $onInit() {
-        this.datasetService.getDatasetsForExperiment(this.projectId, this.experimentId)
+        this.datasetsAPI.getDatasetsForExperiment(this.projectId, this.experimentId)
             .then(
                 (datasets) => this.datasets = datasets,
                 () => this.toast.error('Unable to retrieve datasets for experiment')
@@ -26,7 +26,7 @@ class MCExperimentDatasetsComponentController {
             bindingToController: true
         }).then(
             (dataset) => {
-                this.datasetService.getDatasetsForExperiment(this.projectId, this.experimentId)
+                this.datasetsAPI.getDatasetsForExperiment(this.projectId, this.experimentId)
                     .then(
                         (datasets) => {
                             this.datasets = datasets;
@@ -43,7 +43,7 @@ class MCExperimentDatasetsComponentController {
     }
 
     removeDataset(datasetId) {
-        this.datasetService.deleteDatasetFromExperiment(this.projectId, this.experimentId, datasetId)
+        this.datasetsAPI.deleteDatasetFromExperiment(this.projectId, this.experimentId, datasetId)
             .then(
                 () => this.datasets = this.datasets.filter(d => d.id !== datasetId),
                 () => this.toast.error("Unable to delete dataset from experiment")
@@ -53,9 +53,9 @@ class MCExperimentDatasetsComponentController {
 
 class NewExperimentDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog, datasetService, toast, $stateParams) {
+    constructor($mdDialog, datasetsAPI, toast, $stateParams) {
         this.$mdDialog = $mdDialog;
-        this.datasetService = datasetService;
+        this.datasetsAPI = datasetsAPI;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.toast = toast;
@@ -65,7 +65,7 @@ class NewExperimentDatasetDialogController {
 
     create() {
         if (this.name !== '') {
-            this.datasetService.createDatasetForExperiment(this.projectId, this.experimentId, this.title, this.description)
+            this.datasetsAPI.createDatasetForExperiment(this.projectId, this.experimentId, this.title, this.description)
                 .then(
                     (dataset) => this.$mdDialog.hide(dataset),
                     () => this.toast.error('Unable to create new dataset')

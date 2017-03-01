@@ -38,7 +38,7 @@ function MCFilesSelectDirDirective(RecursionHelper) {
     }
 }
 
-function MCFilesSelectDirDirectiveController(fileTreeProjectService) {
+function MCFilesSelectDirDirectiveController(projectFileTreeAPI) {
     'ngInject';
 
     var ctrl = this;
@@ -55,7 +55,7 @@ function MCFilesSelectDirDirectiveController(fileTreeProjectService) {
             file.active = true;
         } else {
             if (!file.data.childrenLoaded) {
-                fileTreeProjectService.getDirectory(ctrl.project.id, file.data.id).then(function (files) {
+                projectFileTreeAPI.getDirectory(ctrl.project.id, file.data.id).then(function(files) {
                     file.children = files;
                     file.active = true;
                     file.data.childrenLoaded = true;
@@ -78,7 +78,7 @@ function MCFilesSelectDirDirectiveController(fileTreeProjectService) {
 
     function dirToggle(dir) {
         if (!dir.data.childrenLoaded) {
-            fileTreeProjectService.getDirectory(ctrl.project.id, dir.data.id).then(function (files) {
+            projectFileTreeAPI.getDirectory(ctrl.project.id, dir.data.id).then(function(files) {
                 dir.children = files;
                 dir.active = true;
                 dir.data.childrenLoaded = true;

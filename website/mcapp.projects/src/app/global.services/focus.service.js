@@ -1,13 +1,14 @@
-export function focusService($timeout, $window) {
-    'ngInject';
-
+/*@ngInject*/
+function focusService($timeout, $window) {
     return function(id) {
         $timeout(function() {
-            var element = $window.document.getElementById(id);
+            let element = $window.document.getElementById(id);
             if (element) {
                 element.focus();
             }
         });
     };
 }
+
+angular.module('materialscommons').factory('focus', focusService);
 

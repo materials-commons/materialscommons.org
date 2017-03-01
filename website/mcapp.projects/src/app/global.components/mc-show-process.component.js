@@ -1,13 +1,13 @@
 class MCShowProcessComponentController {
     /*@ngInject*/
-    constructor($stateParams, projectsService, toast) {
+    constructor($stateParams, projectsAPI, toast) {
         this.projectId = $stateParams.project_id;
-        this.projectsService = projectsService;
+        this.projectsAPI = projectsAPI;
         this.toast = toast;
     }
 
     $onInit() {
-        this.projectsService.getProjectProcess(this.projectId, this.processId)
+        this.projectsAPI.getProjectProcess(this.projectId, this.processId)
             .then(
                 (process) => this.process = process,
                 () => this.toast.error('Unable to retrieve process details')
