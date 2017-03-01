@@ -19,7 +19,7 @@
         </div>
         <div layout="column" flex>
             <div md-whiteframe layout-margin>
-                <h3 class="md-title">My Projects:</h3>
+                <h3 class="md-title">My Projects ({{$ctrl.myProjects.length}}):</h3>
                 <md-table-container>
                     <table md-table>
                         <thead md-head md-order="$ctrl.sortOrderMine">
@@ -36,8 +36,11 @@
                         <tbody>
                         <tr md-row class="md-row-hover pointer"
                             ng-repeat="project in $ctrl.myProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderMine">
-                            <td md-cell><a ui-sref="project.home({project_id: project.id})">{{project.name |
-                                truncate:40:'...'}}</a></td>
+                            <td md-cell>
+                                <a ui-sref="project.home({project_id: project.id})">
+                                    {{project.name |truncate:40:'...'}}
+                                </a>
+                            </td>
                             <td md-cell>{{project.birthtime | date:'shortDate'}}</td>
                             <td md-cell>{{project.experiments_count | number}}</td>
                             <td md-cell>{{::project.samples_count | number}}</td>
@@ -50,14 +53,14 @@
                 </md-table-container>
             </div>
             <div md-whiteframe layout-margin>
-                <h3 class="md-title">Projects I'm a member of:</h3>
+                <h3 class="md-title">Projects I'm a member of ({{$ctrl.joinedProjects.length}}):</h3>
 
                 <md-table-container>
                     <table md-table>
                         <thead md-head md-order="$ctrl.sortOrderJoined">
                         <tr md-row>
                             <th md-column md-order-by="name">Name</th>
-                            <td md-column md-order-by="owner">Owner</td>
+                            <td md-column md-order-by="owner_details.fullname">Owner</td>
                             <th md-column md-order-by="birthtime">Created</th>
                             <th md-column md-order-by="experiments_count"># Experiments</th>
                             <th md-column md-order-by="samples_count"># Samples</th>
@@ -69,9 +72,14 @@
                         <tbody>
                         <tr md-row class="md-row-hover pointer"
                             ng-repeat="project in $ctrl.joinedProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderJoined">
-                            <td md-cell><a tooltip="{{project.name}}" ui-sref="project.home({project_id: project.id})">{{project.name
-                                | truncate:40:'...'}}</a></td>
-                            <td md-cell tooltip="">{{project.owner | truncate:20:'...'}}</td>
+                            <td md-cell>
+                                <a tooltip="{{project.name}}" ui-sref="project.home({project_id: project.id})">
+                                    {{project.name| truncate:40:'...'}}
+                                </a>
+                            </td>
+                            <td md-cell>
+                                {{project.owner_details.fullname | truncate:20:'...'}}
+                            </td>
                             <td md-cell>{{project.birthtime | date:'shortDate'}}</td>
                             <td md-cell>{{project.experiments_count | number}}</td>
                             <td md-cell>{{::project.samples_count | number}}</td>
