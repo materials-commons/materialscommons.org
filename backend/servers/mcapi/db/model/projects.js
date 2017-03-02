@@ -90,11 +90,10 @@ function forUser(user) {
             .limit(100).orderBy('name');
     } else {
         rql = r.table('access').getAll(user.id, {index: 'user_id'})
-            .eqJoin('project_id', r.table('projects'))
+            .eqJoin('project_id', r.table('projects')).zip()
             .merge((project) => ({
                 owner_details: r.table('users').get(project('owner')).pluck('fullname')
-            }))
-            .zip().orderBy('name');
+            })).orderBy('name');
     }
 
     rql = transformDates(rql);
@@ -125,17 +124,20 @@ function addComputed(rql) {
                 .map(function(entry) {
                     return entry.merge({
                         'user': entry('user_id'),
-                        'fullname': r.table('users').get(entry('user_id')).pluck('fullname')
+                        'details': r.table('users').get(entry('user_id')).pluck('fullname')
                     });
                 })
-                .pluck('user', 'permissions', 'fullname')
+                .pluck('user', 'permissions', 'details')
                 .coerceTo('array'),
             events: r.table('events')
                 .getAll(project('id'), {index: 'project_id'})
                 .coerceTo('array'),
-            experiments: r.table('project2experiment').getAll(project('id'), {index: 'project_id'}).count(),
-            processes: r.table('project2process').getAll(project('id'), {index: 'project_id'}).count(),
-            samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).count(),
+            experiments: r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array'),
+            processes: r.table('project2process').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
+            samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
             files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count()
         };
     });

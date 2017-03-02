@@ -12,15 +12,18 @@ function ProjectModelService(projectsAPI) {
             this.description = "";
             this.birthtime = 0;
             this.owner_details = {};
+            this.selected = false;
+            this.selected2 = false;
+            this.msg1 = "This is a status message";
             this.mtime = 0;
         }
 
         static fromJSON(data) {
             let p = new Project(data.id, data.name, data.owner);
-            p.samples_count = data.samples;
-            p.processes_count = data.processes;
-            p.experiments_count = data.experiments;
-            p.files_counts = data.files;
+            p.samples = data.samples;
+            p.processes = data.processes;
+            p.experiments = data.experiments;
+            p.files_count = data.files;
             p.description = data.description;
             p.birthtime = new Date(data.birthtime * 1000);
             p.mtime = new Date(data.mtime * 1000);

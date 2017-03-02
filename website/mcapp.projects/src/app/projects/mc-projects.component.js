@@ -4,8 +4,8 @@ angular.module('materialscommons').component('mcProjects', {
 });
 
 /*@ngInject*/
-function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, toast, User, mcbus, ProjectModel) {
-    var ctrl = this;
+function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, toast, User, mcbus, ProjectModel, mcshow, $mdEditDialog) {
+    const ctrl = this;
     ctrl.isOpen = true;
     ctrl.openProject = openProject;
     ctrl.projects = [];
@@ -18,6 +18,7 @@ function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, to
     sharedProjectsList.setMaxProjects(ctrl.maxSharedProjects);
     ctrl.sortOrderMine = 'name';
     ctrl.sortOrderJoined = 'name';
+    ctrl.showProjectOverview = (project) => mcshow.projectOverviewDialog(project);
 
     getUserProjects();
 
@@ -36,6 +37,41 @@ function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, to
         );
     };
 
+    ctrl.editStatusNote = (event, project) => {
+        event.stopPropagation();
+        $mdEditDialog.small({
+            modelValue: project.msg1,
+            placeholder: 'Add status message',
+            save: function (input) {
+                project.msg1 = input.$modelValue;
+            },
+            targetEvent: event
+        });
+    };
+
+    /*
+     $scope.editComment = function (event, dessert) {
+     // if auto selection is enabled you will want to stop the event
+     // from propagating and selecting the row
+     event.stopPropagation();
+
+
+     var promise = $mdEditDialog.small({
+     // messages: {
+     //   test: 'I don\'t like tests!'
+     // },
+     modelValue: dessert.comment,
+     placeholder: 'Add a comment',
+     save: function (input) {
+     dessert.comment = input.$modelValue;
+     },
+     targetEvent: event,
+     validators: {
+     'md-maxlength': 30
+     }
+     });
+     */
+
     ///////////////////////
 
     function getUserProjects() {
@@ -51,7 +87,7 @@ function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, to
         if (ctrl.sharingOn) {
             if (sharedProjectsList.isFull() && !project.selected) {
                 // Adding project, but the list is full, so delete the last item.
-                var removed = sharedProjectsList.removeLast();
+                let removed = sharedProjectsList.removeLast();
                 removed.selected = false;
             }
 

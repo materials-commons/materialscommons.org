@@ -4,6 +4,17 @@
         <md-input-container class="md-block">
             <input type="text" ng-model="$ctrl.fullname">
         </md-input-container>
-        <md-button class="md-warn" ng-click="$ctrl.updateFullname()">Change Name</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.updateFullname()">Update Name</md-button>
+    </div>
+    <h3>Affiliation</h3>
+    <div layout="row" layout-align="start start">
+        <div md-whiteframe layout-margin flex="50">
+            <div ckeditor="editorOptions"
+                 ng-model="$ctrl.affiliation"
+                 contenteditable="true">
+                {{$ctrl.affiliation}}
+            </div>
+        </div>
+        <md-button class="md-primary" ng-click="$ctrl.updateAffiliation()">Update Affiliation</md-button>
     </div>
 </div>
