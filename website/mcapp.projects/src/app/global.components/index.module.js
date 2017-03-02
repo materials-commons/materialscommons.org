@@ -22,3 +22,4 @@ import './attribute/mc-attribute-string.component'
 import './attribute/mc-attribute-composition.component'
 import './attribute/mc-attribute-date.component'
 import './attribute/mc-attribute-selection.component'
+import './mc-project-overview.component';

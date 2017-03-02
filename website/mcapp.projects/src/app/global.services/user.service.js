@@ -85,6 +85,10 @@ function UserService($window, $log, Restangular) {
 
         updateFullname: function(fullname) {
             return Restangular.one('v2').one('users').customPUT({fullname: fullname});
+        },
+
+        updateAffiliation: function(affiliation) {
+            return Restangular.one('v2').one('users').customPUT({affiliation: affiliation});
         }
     };
 }

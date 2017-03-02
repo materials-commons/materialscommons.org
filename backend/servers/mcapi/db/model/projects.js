@@ -4,31 +4,28 @@ const model = require('./model');
 const getSingle = require('./get-single');
 const _ = require('lodash');
 
-function* createProject(user,attrs) {
+function* createProject(user, attrs) {
     let name = attrs.name;
     let owner = user.id;
     let matches = yield r.table('projects')
-        .filter({name:name, owner:owner});
-    if (matches.length > 0) {
+        .filter({name: name, owner: owner});
+    if (0 < matches.length) {
         return yield getProject(matches[0].id);
     }
-    var description = "";
-    if (attrs.description) {
-        description = attrs.description;
-    }
-    let project_doc = new model.Project(name,description,owner);
+    let description = attrs.description ? attrs.description : "";
+    let project_doc = new model.Project(name, description, owner);
     let project_result = yield r.table('projects').insert(project_doc);
     let project_id = project_result.generated_keys[0];
 
-    let directory_doc = new model.Directory(name,owner,project_id,'');
+    let directory_doc = new model.Directory(name, owner, project_id, '');
     let directory_result = yield r.table('datadirs').insert(directory_doc);
     let directory_id = directory_result.generated_keys[0];
 
-    let proj2datadir_doc = new model.Project2DataDir(project_id,directory_id);
+    let proj2datadir_doc = new model.Project2DataDir(project_id, directory_id);
     yield r.table('project2datadir').insert(proj2datadir_doc);
 
-    let access_doc = new model.Access(name,project_id,owner);
-    let access_result = yield r.table('access').insert(access_doc);
+    let access_doc = new model.Access(name, project_id, owner);
+    yield r.table('access').insert(access_doc);
 
     return yield getProject(project_id);
 }
@@ -84,11 +81,19 @@ function all() {
 function forUser(user) {
     let rql;
     if (user.isAdmin) {
-        rql = r.table('projects').limit(100).orderBy('name');
+        rql = r.table('projects').filter(r.row('owner').ne('delete@materialscommons.org'))
+            .merge(function(project) {
+                return {
+                    owner_details: r.table('users').get(project('owner')).pluck('fullname')
+                }
+            })
+            .limit(100).orderBy('name');
     } else {
         rql = r.table('access').getAll(user.id, {index: 'user_id'})
-            .eqJoin('project_id', r.table('projects'))
-            .zip().orderBy('name');
+            .eqJoin('project_id', r.table('projects')).zip()
+            .merge((project) => ({
+                owner_details: r.table('users').get(project('owner')).pluck('fullname')
+            })).orderBy('name');
     }
 
     rql = transformDates(rql);
@@ -118,17 +123,21 @@ function addComputed(rql) {
                 .getAll(project('id'), {index: 'project_id'})
                 .map(function(entry) {
                     return entry.merge({
-                        'user': entry('user_id')
+                        'user': entry('user_id'),
+                        'details': r.table('users').get(entry('user_id')).pluck('fullname')
                     });
                 })
-                .pluck('user', 'permissions')
+                .pluck('user', 'permissions', 'details')
                 .coerceTo('array'),
             events: r.table('events')
                 .getAll(project('id'), {index: 'project_id'})
                 .coerceTo('array'),
-            experiments: r.table('project2experiment').getAll(project('id'), {index: 'project_id'}).count(),
-            processes: r.table('project2process').getAll(project('id'), {index: 'project_id'}).count(),
-            samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).count(),
+            experiments: r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array'),
+            processes: r.table('project2process').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
+            samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
             files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count()
         };
     });
@@ -138,7 +147,7 @@ function addComputed(rql) {
 
 
 function* update(projectID, attrs) {
-    var pattrs = {};
+    const pattrs = {};
     if (attrs.name) {
         pattrs.name = attrs.name;
     }
@@ -151,10 +160,10 @@ function* update(projectID, attrs) {
     }
 
     if (attrs.process_templates) {
-        var addTemplates = attrs.process_templates.filter(p => p.command == 'add').map(p => p.template);
-        var deleteTemplates = attrs.process_templates.filter(p => p.command === 'delete').map(p => p.template);
-        var updateTemplates = attrs.process_templates.filter(p => p.command === 'update').map(p => p.template);
-        var project = yield r.table('projects').get(projectID);
+        let addTemplates = attrs.process_templates.filter(p => p.command == 'add').map(p => p.template);
+        let deleteTemplates = attrs.process_templates.filter(p => p.command === 'delete').map(p => p.template);
+        let updateTemplates = attrs.process_templates.filter(p => p.command === 'update').map(p => p.template);
+        let project = yield r.table('projects').get(projectID);
         if (!project.process_templates) {
             project.process_templates = [];
         }
@@ -166,7 +175,7 @@ function* update(projectID, attrs) {
         project.process_templates = project.process_templates.filter(p => _.indexOf(updateTemplates, t => t.name === p.name, null) === -1);
 
         // add new templates if they don't exist
-        var toAdd = differenceByField(addTemplates, project.process_templates, 'name');
+        let toAdd = differenceByField(addTemplates, project.process_templates, 'name');
         yield r.table('projects').get(projectID).update({
             process_templates: project.process_templates.concat(toAdd).concat(updateTemplates)
         });
@@ -176,15 +185,15 @@ function* update(projectID, attrs) {
 }
 
 function differenceByField(from, others, field) {
-    var elementsFrom = from.map(function(entry) {
+    let elementsFrom = from.map(function(entry) {
         return entry[field];
     });
 
-    var elementsOthers = others.map(function(entry) {
+    let elementsOthers = others.map(function(entry) {
         return entry[field];
     });
 
-    var diff = _.difference(elementsFrom, elementsOthers);
+    let diff = _.difference(elementsFrom, elementsOthers);
 
     return from.filter(function(entry) {
         return _.indexOf(diff, function(e) {
@@ -193,8 +202,8 @@ function differenceByField(from, others, field) {
     });
 }
 
-function* addFileToProject(projectID,fileID){
-    let link = new model.Project2DataFile(projectID,fileID);
+function* addFileToProject(projectID,fileID) {
+    let link = new model.Project2DataFile(projectID, fileID);
     yield r.table('project2datafile').insert(link);
 }
 

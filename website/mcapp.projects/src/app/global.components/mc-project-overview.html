@@ -1,0 +1,25 @@
+<div flex layout="column">
+    Project Overview for {{$ctrl.project.name}}
+    <div flex="30" layout="column" layout-margin>
+        <label>Project Description</label>
+        <div md-whiteframe layout-margin>
+            <div ckeditor="editorOptions"
+                 ng-model="$ctrl.project.description"
+                 ng-model-options="{debounce: 500}"
+                 ng-change="$ctrl.updateProjectDescription()"
+                 contenteditable="true">
+                {{$ctrl.project.description}}
+            </div>
+        </div>
+    </div>
+    <div ng-repeat="experiment in $ctrl.project.experiments" layout-margin md-whiteframe layout="column">
+        <label>Experiment: {{experiment.name}}</label>
+        <label>Description</label>
+        <span>{{experiment.description}}</span>
+    </div>
+    <div md-whiteframe layout-margin>
+        <div ng-repeat="user in $ctrl.project.users">
+            {{user.details.fullname}}
+        </div>
+    </div>
+</div>
