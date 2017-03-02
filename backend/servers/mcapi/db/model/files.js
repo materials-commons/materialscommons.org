@@ -52,25 +52,13 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
     let filepath = args.filepath;
     let parentFile = args.parent;
 
-    //2) get uuid for file record
     let fileId = yield r.uuid();
 
-    //3) fetch file by checksum, and if it exists skip to next step, else
-    //move file to store using uuid to compute location and as filename (fileUtils.moveToStore)
-    let usesid = "";
-    let checksumHit = yield r.table('datafiles')
-        .getAll(checksum, {index: 'checksum'})
-        .filter({'usesid': ''});
-
-    if (checksumHit && (checksumHit.length > 0)) {
-        usesid = checksumHit[0].id;
-    }
-
+    let usesid = yield determineUsesidIfNeeded(checksum);
     if (!usesid) {
         yield fileUtils.moveToStore(filepath, fileId);
     }
 
-    //4) files.create(fileArgs,this.reqctx.user.id); with added usesid and id fields
     let fileArgs = {
         id: fileId,
         usesid: usesid,
@@ -81,27 +69,29 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
     };
     let file = yield create(fileArgs, userid);
 
-    //5) if files existed in step 3, file = yield files.pushVersion(file,oldFile);
     if (parentFile) {
         file = yield pushVersion(file, parentFile);
     }
-
-    //7) return file
     return file;
+}
+
+function* determineUsesidIfNeeded(checksum){
+    let usesid = "";
+    let checksumHit = yield r.table('datafiles')
+        .getAll(checksum, {index: 'checksum'})
+        .filter({'usesid': ''});
+
+    if (checksumHit && (checksumHit.length > 0)) {
+        usesid = checksumHit[0].id;
+    }
+    return usesid;
 }
 
 // create file
 function* create(file, owner) {
     let usesid = file.usesid;
     if (!usesid) {
-        usesid = "";
-        let checksumHit = yield r.table('datafiles')
-            .getAll(file.checksum, {index: 'checksum'})
-            .filter({'usesid': ''});
-
-        if (checksumHit && (checksumHit.length > 0)) {
-            usesid = checksumHit[0].id;
-        }
+        usesid = yield determineUsesidIfNeeded(file.checksum);
     }
 
     let f = new model.DataFile(file.name, owner);
