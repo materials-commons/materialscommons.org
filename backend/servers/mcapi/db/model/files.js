@@ -44,6 +44,12 @@ function* get(file_id) {
     return runQuery(rql);
 }
 
+function* getAllByChecksum(checksum) {
+    let files = yield r.table('datafiles')
+        .getAll(checksum, {index: 'checksum'})
+    return files;
+}
+
 function* fetchOrCreateFileFromLocalPath(userid, args) {
     let filename = args.name;
     let checksum = args.checksum;
@@ -401,6 +407,7 @@ function* getVersions(fileID) {
 module.exports = {
     countInProject,
     get,
+    getAllByChecksum,
     getList,
     fetchOrCreateFileFromLocalPath,
     create,

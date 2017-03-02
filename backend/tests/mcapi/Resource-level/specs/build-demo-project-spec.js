@@ -19,6 +19,7 @@ const backend_base = '../../../..';
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const projects = require(backend_base + '/servers/mcapi/db/model/projects');
 const directories = require(backend_base + '/servers/mcapi/db/model/directories');
+const files = require(backend_base + '/servers/mcapi/db/model/files');
 const users = require(backend_base + '/servers/mcapi/resources/users');
 const fullname = "Test User";
 const user_apikey = "ThisIsAJunkKey";
@@ -79,8 +80,8 @@ describe('Feature - User - Build Demo Project: ', function() {
             assert.equal(user.name,fullname);
         })
     });
-    describe('Files for build test',function() {
-        it('files exist', function *() {
+    describe('List of files for build',function() {
+        it('exists in folder', function *() {
             let datapath = 'backend/scripts/demo-project/demo_project_data';
             assert(fs.existsSync(datapath), "missing test datafile dir " + datapath);
             for (let i = 0; i < checksumsAndFiles.length; i++) {
@@ -88,17 +89,29 @@ describe('Feature - User - Build Demo Project: ', function() {
                 let expectedChecksum = checksumAndFilename[0];
                 let filename = checksumAndFilename[1];
                 let path = `${datapath}/${filename}`;
-                assert(fs.existsSync(path), "missing test datafile " + filename);
+                assert(fs.existsSync(path), "missing test datafile " + datapath + "/" + filename);
                 let checksum = yield md5File(path);
-                assert(expectedChecksum == checksum, "Checksums should be equal for file: " + filename);
+                assert(expectedChecksum == checksum, "Checksums should be equal for file: " +
+                    filename + "; but expected " + expectedChecksum + " and got " + checksum);
             }
         });
-        it('confirm file is in database', function*() {
+        it('is in the database', function*() {
             let datapath = 'backend/scripts/demo-project/demo_project_data';
             assert(fs.existsSync(datapath), "missing test datafile dir " + datapath);
-            let checksumAndFilename = checksumsAndFiles[0];
-            let expectedChecksum = checksumAndFilename[0];
-            let filename = checksumAndFilename[1];
+            for (let i = 0; i < checksumsAndFiles.length; i++) {
+                let checksumAndFilename = checksumsAndFiles[i];
+                let checksum = checksumAndFilename[0];
+                let filename = checksumAndFilename[1];
+                let fileList = yield files.getAllByChecksum(checksum);
+                if (fileList.length == 0) {
+                    console.log("Missing demo file = " + filename + " in database. Run script!");
+                }
+                assert(fileList.length == 1, "Expecting exactly one file for checksum: " + checksum + "; " +
+                    "got " + fileList.length);
+                let file = yield files.get(fileList[0].id);
+                assert(file.name == filename, "Filename for file by checksum for filename = " + filename +
+                    "; with checksum = " + checksum + "; expected " + filename + " but found " + file.name);
+            }
         });
     });
 
