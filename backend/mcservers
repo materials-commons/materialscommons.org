@@ -276,6 +276,12 @@ function show_env()
     echo
 }
 
+function tail_servers() {
+    D=${MC_LOG_DIR}
+    ST=${SERVERTYPE}
+    tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} -f ${D}/mcpub.out.${ST}
+}
+
 export MCDB_NAME="materialscommons"
 export MCDB_TYPE="rethinkdb"
 
@@ -437,6 +443,10 @@ case "$CMD" in
 
     env)
         show_env
+        ;;
+
+    tail)
+        tail_servers
         ;;
 
     "")
