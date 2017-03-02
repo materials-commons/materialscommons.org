@@ -29,10 +29,6 @@ function start_servers()
         sleep 10
         echo "  Setting up database..."
         scripts/dbcreate.py
-        while [ $? -ne 0 ]
-        do
-            scripts/dbcreate.py
-        done
         if [ $TESTSERVER != false ]; then
             if [ "$REINIT" = "t" ]; then
                 echo "  Restoring from file $MCDB_FILE..."
@@ -46,55 +42,38 @@ function start_servers()
         fi
     fi
 
-    while true
-    do
-        R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
-        if [ "$R" = "" ]; then
-            echo "  Starting mcapiserver..."
-            ./mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
-            sleep 1
-        else
-            break
-        fi
-    done
+    R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
+    if [ "$R" = "" ]; then
+        echo "  Starting mcapiserver..."
+        ./mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
 
-    while true
-    do
-        R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
-        if [ "$R" = "" ]; then
-            echo "  Starting mcstored..."
-            mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
-            sleep 1
-        else
-            break
-        fi
-    done
+    R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
+    if [ "$R" = "" ]; then
+        echo "  Starting mcstored..."
+        mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
 
-    while true
-    do
-        R=$(is_running "sbin/mcapi/mcapi.js" "p $MC_API_SERVICE_PORT")
-        if [ "$R" = "" ]; then
-            echo "  Starting mcapi..."
-            gulp build-mcapi-server
-            node sbin/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
-            sleep 1
-        else
-            break
-        fi
-    done
+    echo "  Building server lib..."
+    gulp build-lib
 
-    while true
-    do
-        R=$(is_running "sbin/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
-        if [ "$R" = "" ]; then
-            echo "  Starting mcpub..."
-            gulp build-mcpub-server
-            node sbin/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
-            sleep 1
-        else
-            break
-        fi
-    done
+    R=$(is_running "sbin/mcapi/mcapi.js" "p $MC_API_SERVICE_PORT")
+    if [ "$R" = "" ]; then
+        echo "  Starting mcapi..."
+        gulp build-mcapi-server
+        node sbin/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
+
+    R=$(is_running "sbin/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
+    if [ "$R" = "" ]; then
+        echo "  Starting mcpub..."
+        gulp build-mcpub-server
+        node sbin/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
 
     disown -a
     echo Started $SERVERTYPE.
@@ -194,13 +173,13 @@ function restart_named_server()
 
         mcapi)
             echo "  Starting mcapi..."
-            gulp build-mcapi-server
+            gulp build-mcapi-server-lib
             node sbin/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
             ;;
 
         mcpub)
             echo "  Starting mcpub..."
-            gulp build-mcpub-server
+            gulp build-mcpub-server-lib
             node sbin/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
             ;;
 
