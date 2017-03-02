@@ -87,7 +87,7 @@ function forUser(user) {
                     owner_details: r.table('users').get(project('owner')).pluck('fullname')
                 }
             })
-            .limit(100).orderBy('name');
+            .limit(150).orderBy('name');
     } else {
         rql = r.table('access').getAll(user.id, {index: 'user_id'})
             .eqJoin('project_id', r.table('projects')).zip()
