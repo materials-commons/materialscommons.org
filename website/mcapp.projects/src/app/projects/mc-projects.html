@@ -40,7 +40,6 @@
                         </thead>
                         <tbody>
                         <tr md-row class="md-row-hover pointer"
-                            ng-mouseenter="project.selected=true" ng-mouseleave="project.selected=false"
                             ng-repeat-start="project in $ctrl.myProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderMine">
                             <td md-cell>
                                 <a ui-sref="project.home({project_id: project.id})">
@@ -48,8 +47,7 @@
                                 </a>
                             </td>
                             <td md-cell>
-                                <a ng-show="project.selected"
-                                   ng-click="$ctrl.showProjectOverview(project)">
+                                <a ng-click="$ctrl.showProjectOverview(project)">
                                     overview
                                 </a>
                                 <a ng-hide="project.selected" style="color: white">overview</a>
