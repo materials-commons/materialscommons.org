@@ -148,14 +148,20 @@ function addComputed(rql) {
 
 function* update(projectID, attrs) {
     const pattrs = {};
+
     if (attrs.name) {
         pattrs.name = attrs.name;
     }
+
     if (attrs.description) {
         pattrs.description = attrs.description;
     }
 
-    if (pattrs.name || pattrs.description) {
+    if (attrs.overview) {
+        pattrs.overview = attrs.overview;
+    }
+
+    if (pattrs.name || pattrs.description || pattrs.overview) {
         yield r.table('projects').get(projectID).update(pattrs);
     }
 
