@@ -86,36 +86,7 @@ describe('Feature - User - Build Demo Project: ', function() {
             }
         });
     });
-    describe('Run build directly as script would',function() {
-        it('Builds a demo project', function* () {
-            this.timeout(30000); // 30 seconds
-            let port = process.env.MCDB_PORT,
-                hostname = os.hostname(),
-                apihost = '',
-                source_dir = 'backend/scripts/demo-project',
-                datapath = 'backend/scripts/demo-project/demo_project_data',
-                apikey = user_apikey;
-
-            switch (hostname) {
-                case 'materialscommons':
-                    apihost = port === '30815' ? 'https://test.materialscommons.org' : 'https://materialscommons.org';
-                    break;
-                case 'lift.miserver.it.umich.edu':
-                    apihost = 'https://lift.materialscommons.org';
-                    break;
-                default:
-                    apihost = 'http://mctest.localhost';
-                    break;
-            }
-            let command = `${source_dir}/build_project.py --host ${apihost} --apikey ${apikey} --datapath ${datapath}`;
-            let result = yield promiseExec(command);
-            assert(
-                result == "Refreshed project with name = Demo Project\n" ||
-                result == "Built project with name = Demo Project\n"
-            )
-        })
-    });
-    describe('Run build directly with bad url',function() {
+    describe('Run with bad url throws exception',function() {
         it('Builds a demo project', function* () {
             this.timeout(30000); // 30 seconds
             let port = process.env.MCDB_PORT,
@@ -138,82 +109,4 @@ describe('Feature - User - Build Demo Project: ', function() {
             assert(error instanceof Error);
         })
     });
-    describe('Run build demo script command local',function() {
-        it('Build demo project', function* () {
-            this.timeout(30000); // 30 seconds
-            let apikey = user_apikey;
-
-            let result = yield createDemoProject(apikey);
-            console.log("              ", result);
-            assert(
-                result == "Refreshed project with name = Demo Project\n" ||
-                result == "Built project with name = Demo Project\n"
-            )
-
-        })
-    });
-    describe('Run build demo script command in users',function() {
-        it('Build demo project ', function* () {
-            this.timeout(30000); // 30 seconds
-            let apikey = user_apikey;
-
-            let result = yield users.createDemoProjectRequest(apikey);
-            console.log("              ", result);
-
-            assert(result.val);
-            assert(!result.error);
-
-            result = result.val;
-
-            assert(
-                result == "Refreshed project with name = Demo Project\n" ||
-                result == "Built project with name = Demo Project\n"
-            )
-        })
-    });
 });
-
-function* createDemoProject(apikey) {
-    let port = process.env.MCDB_PORT,
-        hostname = os.hostname(),
-        apihost = '',
-        source_dir = 'backend/scripts/demo-project',
-        datapath = 'backend/scripts/demo-project/demo_project_data'
-
-    switch (hostname) {
-        case 'materialscommons':
-            apihost = port === '30815' ? 'test.materialscommons.org' : 'materialscommons.org';
-            break;
-        case 'lift.miserver.it.umich.edu':
-            apihost = 'lift.materialscommons.org';
-            break;
-        default:
-            apihost = 'mctest.localhost';
-            break;
-    }
-
-    let host_string = `http://${apihost}/`;
-    let command = `${source_dir}/build_project.py --host ${host_string} --apikey ${apikey} --datapath ${datapath}`;
-    let results = '';
-    try {
-        results = yield promiseExec(command);
-    } catch (err) {
-        results = err;
-    }
-    return results;
-}
-
-function promiseExec(command) {
-    return new Promise(function (resolve, reject) {
-        exec(command, (error, stdout, stderr) => {
-            let results = stdout.toString();
-            let errorReturn = stderr.toString();
-            if (error || errorReturn) {
-                reject(new Error(errorReturn));
-            } else {
-                resolve(results);
-            }
-        });
-    });
-}
-
