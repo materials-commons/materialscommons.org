@@ -13,6 +13,8 @@ function ProjectModelService(projectsAPI) {
             this.birthtime = 0;
             this.owner_details = {};
             this.selected = false;
+            this.selected2 = false;
+            this.msg1 = "This is a status message";
             this.mtime = 0;
         }
 

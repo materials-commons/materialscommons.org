@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcProjects', {
 });
 
 /*@ngInject*/
-function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, toast, User, mcbus, ProjectModel, mcshow) {
+function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, toast, User, mcbus, ProjectModel, mcshow, $mdEditDialog) {
     const ctrl = this;
     ctrl.isOpen = true;
     ctrl.openProject = openProject;
@@ -36,6 +36,41 @@ function MCProjectsComponentController($state, $mdDialog, sharedProjectsList, to
             () => getUserProjects()
         );
     };
+
+    ctrl.editStatusNote = (event, project) => {
+        event.stopPropagation();
+        $mdEditDialog.small({
+            modelValue: project.msg1,
+            placeholder: 'Add status message',
+            save: function (input) {
+                project.msg1 = input.$modelValue;
+            },
+            targetEvent: event
+        });
+    };
+
+    /*
+     $scope.editComment = function (event, dessert) {
+     // if auto selection is enabled you will want to stop the event
+     // from propagating and selecting the row
+     event.stopPropagation();
+
+
+     var promise = $mdEditDialog.small({
+     // messages: {
+     //   test: 'I don\'t like tests!'
+     // },
+     modelValue: dessert.comment,
+     placeholder: 'Add a comment',
+     save: function (input) {
+     dessert.comment = input.$modelValue;
+     },
+     targetEvent: event,
+     validators: {
+     'md-maxlength': 30
+     }
+     });
+     */
 
     ///////////////////////
 

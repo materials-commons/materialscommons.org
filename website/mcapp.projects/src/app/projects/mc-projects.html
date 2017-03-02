@@ -41,7 +41,7 @@
                         <tbody>
                         <tr md-row class="md-row-hover pointer"
                             ng-mouseenter="project.selected=true" ng-mouseleave="project.selected=false"
-                            ng-repeat="project in $ctrl.myProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderMine">
+                            ng-repeat-start="project in $ctrl.myProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderMine">
                             <td md-cell>
                                 <a ui-sref="project.home({project_id: project.id})">
                                     {{project.name |truncate:40:'...'}}
@@ -63,6 +63,19 @@
                             <td md-cell>{{::project.processes.length | number}}</td>
                             <td md-cell>{{::project.files_count | number}}</td>
                             <td md-cell>{{::project.users.length - 1}}</td>
+                        </tr>
+                        <tr md-row ng-repeat-end>
+                            <td></td>
+                            <td><label>Status Notes:</label></td>
+                            <td md-cell colspan="3"
+                                style="border-top: medium solid black"
+                                ng-click="$ctrl.editStatusNote($event, project)">
+                                1.{{project.msg1}}
+                            </td>
+                            <td md-cell colspan="2" style="border-top: medium solid grey">2. Update description to
+                                include composition
+                            </td>
+                            <td md-cell colspan="2" style="border-top: medium solid black"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -89,7 +102,7 @@
                         <tbody>
                         <tr md-row class="md-row-hover pointer"
                             ng-mouseenter="project.selected=true" ng-mouseleave="project.selected=false"
-                            ng-repeat="project in $ctrl.joinedProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderJoined">
+                            ng-repeat-start="project in $ctrl.joinedProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderJoined">
                             <td md-cell>
                                 <a tooltip="{{project.name}}" ui-sref="project.home({project_id: project.id})">
                                     {{project.name| truncate:40:'...'}}
@@ -98,8 +111,7 @@
                             </td>
                             <td md-cell>
                                 <a ng-show="project.selected"
-                                   ng-click="$ctrl.showProjectOverview(project)"
-                                   class="padding-left-15">
+                                   ng-click="$ctrl.showProjectOverview(project)">
                                     overview
                                 </a>
                                 <a ng-hide="project.selected" style="color: white">overview</a>
@@ -113,6 +125,15 @@
                             <td md-cell>{{::project.processes.length | number}}</td>
                             <td md-cell>{{::project.files_count | number}}</td>
                             <td md-cell>{{::project.users.length - 1}}</td>
+                        </tr>
+                        <tr md-row ng-repeat-end ng-if="project.selected2">
+                            <td colspan="9">
+                                <div layout="column" layout-align="start">
+                                    <mc-project-overview project="project"></mc-project-overview>
+                                    <md-button class="md-warn" ng-click="project.selected2 = !project.selected2">close
+                                    </md-button>
+                                </div>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
