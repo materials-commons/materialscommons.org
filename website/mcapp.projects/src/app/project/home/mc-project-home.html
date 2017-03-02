@@ -1,13 +1,13 @@
 <div layout="row" layout-fill layout-align="start stretch">
     <div flex="30" layout="column" layout-margin>
-        <label>Project Description</label>
+        <label>Project Overview</label>
         <div md-whiteframe layout-margin>
             <div ckeditor="editorOptions"
-                 ng-model="$ctrl.project.description"
+                 ng-model="$ctrl.project.overview"
                  ng-model-options="{debounce: 500}"
-                 ng-change="$ctrl.updateProjectDescription()"
+                 ng-change="$ctrl.updateProjectOverview()"
                  contenteditable="true">
-                {{$ctrl.project.description}}
+                {{$ctrl.project.overview}}
             </div>
         </div>
     </div>

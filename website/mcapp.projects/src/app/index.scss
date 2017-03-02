@@ -484,3 +484,11 @@ a.always-white, a.always-white:link, a.always-white:visited, a.always-white:hove
   color:#ffffff;
   text-transform: uppercase;
 }
+
+.projects-table-left-odd {
+  border-left: thick solid #15650;
+}
+
+.projects-table-left-even {
+  border-left: thick solid #4caf50;
+}

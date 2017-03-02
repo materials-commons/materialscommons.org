@@ -40,6 +40,7 @@
                         </thead>
                         <tbody>
                         <tr md-row class="md-row-hover pointer"
+                            ng-style="$index%2 == 0 && {'border-left': 'thick solid #1565c0'} || {'border-left': 'thick solid #4caf50'}"
                             ng-repeat-start="project in $ctrl.myProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderMine">
                             <td md-cell>
                                 <a ui-sref="project.home({project_id: project.id})">
@@ -62,7 +63,9 @@
                             <td md-cell>{{::project.files_count | number}}</td>
                             <td md-cell>{{::project.users.length - 1}}</td>
                         </tr>
-                        <tr md-row ng-repeat-end>
+                        <tr md-row
+                            ng-style="$index%2 == 0 && {'border-left': 'thick solid #1565c0'} || {'border-left': 'thick solid #4caf50'}"
+                            ng-repeat-end>
                             <td></td>
                             <td><label>Status Notes:</label></td>
                             <td md-cell colspan="3"
