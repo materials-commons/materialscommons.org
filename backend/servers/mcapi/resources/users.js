@@ -218,7 +218,7 @@ function* createDemoProject(next) {
             let result = yield createDemoProjectRequest(apikey);
             if (result.error) {
                 this.status = status.BAD_REQUEST;
-                this.body = result;
+                this.body = result.error;
             } else {
                 this.status = status.OK;
                 this.body = result.val;
@@ -230,78 +230,11 @@ function* createDemoProject(next) {
 }
 
 function* createDemoProjectRequest(apikey){
-    let port = process.env.MCDB_PORT,
-        hostname = os.hostname(),
-        apihost = '',
-        prefix = './',
-        sourceDir = 'scripts/demo-project/';
-
-    switch (hostname) {
-        case 'materialscommons':
-            apihost = port === '30815' ? 'https://test.materialscommons.org' : 'https://materialscommons.org';
-            break;
-        case 'lift.miserver.it.umich.edu':
-            apihost = 'https://lift.materialscommons.org';
-            break;
-        default:
-            apihost = 'http://mctest.localhost';
-            break;
-    }
-
-    let current_dir = process.cwd();
-    let parts = current_dir.split('/');
-    let last = parts[parts.length-1];
-
-    let ret = '';
-    if ((last != "backend") && (last != "materialscommons.org")) {
-        let message = 'Can not create proejct with process running in unexpected base dir: ';
-        message = message + current_dir;
-        console.log("Build demo project fails - " + message);
-        ret = {error: "Can not create demo project: admin see log"};
-        return ret;
-    }
-
-    if (last == "backend") {
-        prefix = current_dir + "/";
-    } else {
-        prefix = current_dir + "/backend/"
-    }
-
-    sourceDir = prefix + sourceDir;
-    let command = `${sourceDir}build_project.py --host ${apihost} --apikey ${apikey} --datapath ${sourceDir}/demo_project_data`;
-    let result = '';
-    try {
-        result = yield promiseExec(command);
-
-        let buildOk =  (
-            result == "Refreshed project with name = Demo Project\n" ||
-            result == "Built project with name = Demo Project\n"
-        );
-        if (buildOk) {
-            ret = {val: result};
-        } else {
-            console.log("in users - build demo project - results error: " + result);
-            ret = {error: result};
-        }
-    } catch (err) {
-        console.log("in users - build demo project - error: " + err);
-        ret = {error: err};
-    }
+    // ret == val.ok_val or error.error
+    let ret = {
+        error: "Create demo project not implemented"
+    };
     return ret;
-}
-
-function promiseExec(command) {
-    return new Promise(function (resolve, reject) {
-        exec(command, (error, stdout, stderr) => {
-            let results = stdout.toString();
-            let errorReturn = stderr.toString();
-            if (error) {
-                reject(errorReturn);
-            } else {
-                resolve(results);
-            }
-        });
-    });
 }
 
 function emailResetLinkToUser(userData, site) {
