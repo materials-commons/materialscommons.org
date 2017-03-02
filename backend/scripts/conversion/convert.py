@@ -58,7 +58,7 @@ def fix_file_upload_count_to_uploaded(conn):
     for file in all_files:
         if 'upload' in file:
             p.table('files').get(file['id']).update({'uploaded': p['upload']}).run(conn)
-    r.table('files').replace(r.row.without('upload'))
+    r.table('files').replace(r.row.without('upload')).run(conn)
     print "Done."
 
 def main():

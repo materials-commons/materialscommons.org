@@ -38,7 +38,6 @@ env:
     - RETHINKDB_HTTP_PORT=8090
 
 before_install:
-  - sudo cat /etc/hosts
   - export MC_APP_DIR=`pwd`
     # RethinkDB
   - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
@@ -88,7 +87,6 @@ install:
   - pwd
 
 before_script:
-  - sudo cat /etc/nginx/conf.d/mctest.localhost.conf
   - sudo nginx
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
