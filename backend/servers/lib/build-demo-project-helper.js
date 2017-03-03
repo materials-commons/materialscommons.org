@@ -67,10 +67,28 @@ function* filesMissingInFolder() {
     return ret;
 }
 
+function* filesMissingInDatabase(project){
+    let files = yield filesForProject(project);
+    let table = {}
+    files.forEach((file) => {
+        table[file.checksum] = file;
+    });
+
+    let ret = [];
+    filesDescriptions().forEach((fileDescription) => {
+        let expectedChecksum = fileDescription[0];
+        let filename = fileDescription[1];
+        let ok = table[expectedChecksum];
+        if (!ok) {
+            ret.push(filename);
+        }
+    });
+    return ret;
+}
+
 function* addAllFiles(user,project) {
     let top_directory =  yield dbModelDirectories.get(project.id,'top');
     let tempDir = os.tmpdir();
-    console.log(tempDir);
     for (let i = 0; i < filesDescriptions().length; i++) {
         let checksumFilenameAndMimetype = filesDescriptions()[i];
         let expectedChecksum = checksumFilenameAndMimetype[0];
@@ -78,7 +96,6 @@ function* addAllFiles(user,project) {
         let mimetype = checksumFilenameAndMimetype[2];
         let path = `${datapath}/${filename}`;
         let checksum = yield md5File(path);
-        console.log(fileaname);
         if (expectedChecksum == checksum) {
             let stats = fs.statSync(path);
             let fileSizeInBytes = stats.size;
@@ -91,27 +108,26 @@ function* addAllFiles(user,project) {
                 filesize: fileSizeInBytes,
                 filepath: path
             };
-            console.log(fileaname);
             let file = yield dbModelDirectories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
-            console.log(file.name);
         }
     }
 }
 
 function* filesForProject(project) {
     let top_directory =  yield dbModelDirectories.get(project.id,'top');
-    console.log(top_directory)
-    return top_directory.files
-}
-
-function* filesMissingInDatabase(project){
-    let ret = [];
-    return ret;
+    let children = top_directory.children;
+    let files = []
+    for (let i = 0; i < children.length; i++) {
+        let fileOrDir = children[i];
+        if (fileOrDir.otype == 'file') files.push(fileOrDir);
+    }
+    return files;
 }
 
 module.exports = {
     filesDescriptions,
     filesMissingInFolder,
+    filesMissingInDatabase,
     addAllFiles,
     filesForProject
 }

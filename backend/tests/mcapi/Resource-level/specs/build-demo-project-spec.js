@@ -1,5 +1,6 @@
 'use strict';
 require('mocha');
+import {it} from 'mocha';
 require('co-mocha');
 const chai = require('chai');
 const assert = chai.assert;
@@ -168,6 +169,7 @@ describe('Feature - User - Build Demo Project: ', function() {
         it('adds all files to top dir of a test Demo Project', function*(){
             let user = yield dbModelUsers.getUser(user1Id);
             assert.isNotNull(user,"test user exists");
+
             let projectName = random_name();
             let attrs = {
                 name: projectName,
@@ -177,11 +179,14 @@ describe('Feature - User - Build Demo Project: ', function() {
             let project = ret.val;
             assert.equal(projectName,project.name);
             assert.equal(user.id,project.owner);
-            helper.addAllFiles(user,project);
-            console.log("Project name: " + projectName);
-            let files = helper.filesForProject(project);
-            console.log(files);
-            // let missingFiles = yield helper.filesMissingInDatabase(project);
+
+            yield helper.addAllFiles(user,project);
+            let files = yield helper.filesForProject(project);
+            assert.lengthOf(files,helper.filesDescriptions().length);
+
+            let missingFiles = yield helper.filesMissingInDatabase(project);
+            assert.lengthOf(missingFiles,0);
+
         });
     });
 });
