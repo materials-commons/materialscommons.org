@@ -42,6 +42,23 @@ const checksumsFilesAndMimiTypes = [
 
 const datapath = 'backend/scripts/demo-project/demo_project_data';
 
+const demoProjectName = "Demo Project";
+const demoProjectDescription = "A project for trying things out."
+const demoProjectExperimentName = "Demo: Microsegregation in HPDC L380"
+const dmeoProjectExperimentDescription =
+    "A demo experiment -  A study of microsegregation in High Pressure Die Cast L380."
+
+function* createOrFindDemoProjectForUser(user) {
+    // Note create project returns the project if it already exists, by name
+    // It does not create a duplicate!
+    let attributes = {
+        name: demoProjectName,
+        description: demoProjectDescription
+    }
+    // ret == val.ok_val or error.error
+    return yield dbModelProjects.createProject(user,attributes);
+}
+
 function filesDescriptions(){
     return checksumsFilesAndMimiTypes;
 }
@@ -125,6 +142,7 @@ function* filesForProject(project) {
 }
 
 module.exports = {
+    createOrFindDemoProjectForUser,
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,

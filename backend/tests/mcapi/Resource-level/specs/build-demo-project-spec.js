@@ -32,6 +32,14 @@ const user1Id = "mctest@mc.org";
 
 const base_project_name = "Demo project test: ";
 
+const demoProjectTestUser = 'test@test.mc';
+const demoProjectTestUserKey = "totally-bogus";
+const demoProjectName = "Demo Project";
+const demoProjectDescription = "A project for trying things out.";
+const demoProjectExperimentName = "Demo: Microsegregation in HPDC L380";
+const dmeoProjectExperimentDescription =
+    "A demo experiment -  A study of microsegregation in High Pressure Die Cast L380.";
+
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
     return base_project_name + number;
@@ -62,7 +70,7 @@ before(function*() {
     }
 });
 
-describe('Feature - User - Build Demo Project: ', function() {
+describe('Feature - User - Build Demo Project Support: ', function() {
     describe('User for test',function() {
         it('exists', function * (){
             let user = yield dbModelUsers.getUser(user1Id);
@@ -161,31 +169,63 @@ describe('Feature - User - Build Demo Project: ', function() {
             }
         });
     });
-    describe('Build Demo Project helper',function (){
-        it('checkes for missing files in folder', function*(){
+    describe('Build Demo Project helper supporting functions',function () {
+        it('checkes for missing files in folder', function*() {
             let missingFiles = yield helper.filesMissingInFolder();
-            assert.lengthOf(missingFiles,0);
+            assert.lengthOf(missingFiles, 0);
         });
-        it('adds all files to top dir of a test Demo Project', function*(){
+        it('adds all files to top dir of a test Demo Project', function*() {
             let user = yield dbModelUsers.getUser(user1Id);
-            assert.isNotNull(user,"test user exists");
+            assert.isNotNull(user, "test user exists");
 
             let projectName = random_name();
             let attrs = {
                 name: projectName,
                 description: "This is a test project for automated testing."
             };
-            let ret = yield projects.createProject(user,attrs);
+            let ret = yield projects.createProject(user, attrs);
             let project = ret.val;
-            assert.equal(projectName,project.name);
-            assert.equal(user.id,project.owner);
+            assert.equal(projectName, project.name);
+            assert.equal(user.id, project.owner);
 
-            yield helper.addAllFiles(user,project);
+            yield helper.addAllFiles(user, project);
             let files = yield helper.filesForProject(project);
-            assert.lengthOf(files,helper.filesDescriptions().length);
+            assert.lengthOf(files, helper.filesDescriptions().length);
 
             let missingFiles = yield helper.filesMissingInDatabase(project);
-            assert.lengthOf(missingFiles,0);
+            assert.lengthOf(missingFiles, 0);
+
+        });
+    });
+    describe('Build Demo Project helper main functions',function (){
+        it('demo project test user exists', function * (){
+            let user = yield dbModelUsers.getUser(demoProjectTestUser);
+            assert.isNotNull(user,"test user exists");
+            assert.equal(user.id,);
+            assert.equal(user.name,demoProjectTestUser);
+            assert.equal(user.apikey.demoProjectTestUserKey);
+        })
+        it('finds or creates the Demo Project', function* (){
+            let user = yield dbModelUsers.getUser(demoProjectTestUser);
+            assert.isNotNull(user,"test user exists");
+            assert.equal(user.id, demoProjectTestUser);
+
+            // Note create project returns the project if it already exists, by name
+            // It does not create a duplicate!
+            let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+            assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
+
+            let project = valOrError.val;
+            assert.isNotNull(project,"project is not null");
+            assert.equal(project.otype, "project");
+            assert.equal(project.name,demoProjectName);
+            assert.equal(project.description,demoProjectDescription);
+            assert.equal(project.owner,demoProjectTestUser);
+        });
+        it('finds or creates the Demo Project Experiment', function*(){
+            let user = yield dbModelUsers.getUser(demoProjectTestUser);
+            assert.isNotNull(user,"test user exists");
+            assert.equal(user.id, demoProjectTestUser);
 
         });
     });
