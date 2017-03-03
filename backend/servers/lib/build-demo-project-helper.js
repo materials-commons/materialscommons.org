@@ -8,12 +8,47 @@ const copyOne = promise.promisify(copy.one);
 const backend_base = '../..';
 const dbModelProjects = require(backend_base + '/servers/mcapi/db/model/projects');
 const dbModelExperiments = require(backend_base + '/servers/mcapi/db/model/experiments');
+const dbModelProcesses = require(backend_base + '/servers/mcapi/db/model/processes');
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const dbModelDirectories = require(backend_base + '/servers/mcapi/db/model/directories');
 const dbModelFiles = require(backend_base + '/servers/mcapi/db/model/files');
 const resourceUsers = require(backend_base + '/servers/mcapi/resources/users');
 const fileUtils = require(backend_base + '/servers/lib/create-file-utils');
 
+
+const demoProjectName = "Demo Project";
+const demoProjectDescription = "A project for trying things out.";
+const demoProjectExperimentName = "Demo: Microsegregation in HPDC L380";
+const dmeoProjectExperimentDescription =
+    "A demo experiment - A study of microsegregation in High Pressure Die Cast L380.";
+
+const createSamplesTemplateId = 'global_Create Samples';
+const sectioningTemplateId = 'global_Sectioning';
+const ebsdTemplateId = 'global_EBSD SEM Data Collection';
+const epmaTemplateId = 'global_EPMA Data Collection';
+
+const processes_data = [
+    {
+        'name': 'Lift 380 Casting Day  # 1',
+        'template_id': createSamplesTemplateId
+    },
+    {
+        'name': 'Casting L124',
+        'template': sectioningTemplateId
+    },
+    {
+        'name': 'Sectioning of Casting L124',
+        'template': sectioningTemplateId
+    },
+    {
+        'name': 'EBSD SEM Data Collection - 5 mm plate',
+        'template': ebsdTemplateId
+    },
+    {
+        'name': 'EPMA Data Collection - 5 mm plate - center',
+        'template': epmaTemplateId
+    }
+];
 
 const tiffMimeType = "image/tiff";
 const jpegMimeType = "image/jpeg";
@@ -43,12 +78,6 @@ const checksumsFilesAndMimiTypes = [
 
 const datapath = 'backend/scripts/demo-project/demo_project_data';
 
-const demoProjectName = "Demo Project";
-const demoProjectDescription = "A project for trying things out."
-const demoProjectExperimentName = "Demo: Microsegregation in HPDC L380"
-const dmeoProjectExperimentDescription =
-    "A demo experiment - A study of microsegregation in High Pressure Die Cast L380."
-
 function* createOrFindDemoProjectForUser(user) {
     // Note create project returns the project if it already exists, by name
     // It does not create a duplicate!
@@ -60,7 +89,9 @@ function* createOrFindDemoProjectForUser(user) {
     return yield dbModelProjects.createProject(user,attributes);
 }
 
-function* createOrFindDemoProjectExperiment(project, experimentName, experimentDescription) {
+function* createOrFindDemoProjectExperiment(project) {
+    let experimentName = demoProjectExperimentName;
+    let experimentDescription = dmeoProjectExperimentDescription;
     let ret = yield dbModelExperiments.getAllForProject(project.id);
     if (ret.val) {
         let experiment = null;
@@ -173,6 +204,18 @@ function* filesForProject(project) {
     return files;
 }
 
+function* makeTemplateTable() {
+    let ret = yield dbModelProcesses.getProcessTemplates();
+    let table = {};
+    if (ret.val) {
+        let templates = ret.val;
+        templates.forEach((template) => {
+            table[template.id] = template;
+        });
+    }
+    return table;
+}
+
 module.exports = {
     createOrFindDemoProjectForUser,
     createOrFindDemoProjectExperiment,
@@ -180,5 +223,6 @@ module.exports = {
     filesMissingInFolder,
     filesMissingInDatabase,
     addAllFiles,
-    filesForProject
+    filesForProject,
+    makeTemplateTable
 }

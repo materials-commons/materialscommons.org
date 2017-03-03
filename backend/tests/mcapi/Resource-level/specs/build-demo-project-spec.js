@@ -2,6 +2,7 @@
 require('mocha');
 import {it} from 'mocha';
 require('co-mocha');
+const _ = require('lodash');
 const chai = require('chai');
 const assert = chai.assert;
 const should = chai.should();
@@ -32,6 +33,7 @@ const user1Id = "mctest@mc.org";
 
 const base_project_name = "Demo project test: ";
 
+// ****  NOTE: See const section of helper; ref - const helper above ****
 const demoProjectTestUserId = 'test@test.mc';
 const demoProjectTestUserKey = "totally-bogus";
 const demoProjectName = "Demo Project";
@@ -39,6 +41,36 @@ const demoProjectDescription = "A project for trying things out.";
 const demoProjectExperimentName = "Demo: Microsegregation in HPDC L380";
 const demoProjectExperimentDescription =
     "A demo experiment - A study of microsegregation in High Pressure Die Cast L380.";
+
+const createSamplesTemplateId = 'global_Create Samples';
+const sectioningTemplateId = 'global_Sectioning';
+const ebsdTemplateId = 'global_EBSD SEM Data Collection';
+const epmaTemplateId = 'global_EPMA Data Collection';
+
+const processes_data = [
+    {
+        'name': 'Lift 380 Casting Day  # 1',
+        'template_id': createSamplesTemplateId
+    },
+    {
+        'name': 'Casting L124',
+        'template': sectioningTemplateId
+    },
+    {
+        'name': 'Sectioning of Casting L124',
+        'template': sectioningTemplateId
+    },
+    {
+        'name': 'EBSD SEM Data Collection - 5 mm plate',
+        'template': ebsdTemplateId
+    },
+    {
+        'name': 'EPMA Data Collection - 5 mm plate - center',
+        'template': epmaTemplateId
+    }
+];
+
+// ****  NOTE: See const section of helper; ref - const helper above ****
 
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
@@ -196,6 +228,15 @@ describe('Feature - User - Build Demo Project Support: ', function() {
             assert.lengthOf(missingFiles, 0);
 
         });
+        it('create a table of all templates', function*() {
+            let table = yield helper.makeTemplateTable();
+            assert.isOk(table,"table is undefined");
+            assert(! _.isEmpty(table), "table is empty");
+            assert.isOk(table[createSamplesTemplateId], `table has a value for '${createSamplesTemplateId}'`);
+            assert.isOk(table[sectioningTemplateId], `table has a value for '${sectioningTemplateId}'`);
+            assert.isOk(table[ebsdTemplateId], `table has a value for '${ebsdTemplateId}'`);
+            assert.isOk(table[epmaTemplateId], `table has a value for '${epmaTemplateId}'`);
+        });
     });
     describe('Build Demo Project helper main functions',function (){
         it('demo project test user exists', function * (){
@@ -204,7 +245,7 @@ describe('Feature - User - Build Demo Project Support: ', function() {
             assert.equal(user.id,demoProjectTestUserId);
             assert.equal(user.name,demoProjectTestUserId);
             assert.equal(user.apikey,demoProjectTestUserKey);
-        })
+        });
         it('finds or creates the Demo Project', function* (){
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user,"test user exists");
@@ -221,6 +262,27 @@ describe('Feature - User - Build Demo Project Support: ', function() {
             assert.equal(project.name,demoProjectName);
             assert(project.description.includes(demoProjectDescription)); // may have been turned into html!!
             assert.equal(project.owner,demoProjectTestUserId);
+        });
+        it('finds or creates the Demo Project Experiment', function*(){
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+            assert.isNotNull(user,"test user exists");
+            assert.equal(user.id, demoProjectTestUserId);
+            let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+            assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
+
+            let project = valOrError.val;
+            assert.equal(project.name,demoProjectName);
+
+            valOrError = yield helper
+                .createOrFindDemoProjectExperiment(project);
+            assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
+
+            let experiment = valOrError.val;
+            assert.isNotNull(experiment,"experiment is not null");
+            assert.equal(experiment.otype, "experiment");
+            assert.equal(experiment.name,demoProjectExperimentName);
+            assert(experiment.description.includes(demoProjectExperimentDescription)); // may have been turned into html!!
+            assert.equal(experiment.owner,demoProjectTestUserId);
         });
         it('finds or creates the Demo Project Experiment', function*(){
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
