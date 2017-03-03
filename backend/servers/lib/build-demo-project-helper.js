@@ -6,8 +6,9 @@ const copy = require('copy');
 const copyOne = promise.promisify(copy.one);
 
 const backend_base = '../..';
-const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const dbModelProjects = require(backend_base + '/servers/mcapi/db/model/projects');
+const dbModelExperiments = require(backend_base + '/servers/mcapi/db/model/experiments');
+const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const dbModelDirectories = require(backend_base + '/servers/mcapi/db/model/directories');
 const dbModelFiles = require(backend_base + '/servers/mcapi/db/model/files');
 const resourceUsers = require(backend_base + '/servers/mcapi/resources/users');
@@ -46,7 +47,7 @@ const demoProjectName = "Demo Project";
 const demoProjectDescription = "A project for trying things out."
 const demoProjectExperimentName = "Demo: Microsegregation in HPDC L380"
 const dmeoProjectExperimentDescription =
-    "A demo experiment -  A study of microsegregation in High Pressure Die Cast L380."
+    "A demo experiment - A study of microsegregation in High Pressure Die Cast L380."
 
 function* createOrFindDemoProjectForUser(user) {
     // Note create project returns the project if it already exists, by name
@@ -59,6 +60,37 @@ function* createOrFindDemoProjectForUser(user) {
     return yield dbModelProjects.createProject(user,attributes);
 }
 
+function* createOrFindDemoProjectExperiment(project, experimentName, experimentDescription) {
+    let ret = yield dbModelExperiments.getAllForProject(project.id);
+    if (ret.val) {
+        let experiment = null;
+        let experiments = ret.val;
+        experiments.forEach((e) => {
+            if (e.name == experimentName) {
+                experiment = e;
+            }
+        });
+        if (experiment) {
+            ret = { val: experiment }
+        } else {
+            let args = {
+                project_id: project.id,
+                name: experimentName,
+                description: experimentDescription
+            };
+            ret = yield dbModelExperiments.create(args,project.owner);
+        }
+    }
+    // ret == val.ok_val or error.error
+    return ret;
+}
+
+function* createOrFindDemoProcess(experiment,processName,template) {
+    // ret == val.ok_val or error.error
+    return {
+        error: "not implemented yet"
+    }
+}
 function filesDescriptions(){
     return checksumsFilesAndMimiTypes;
 }
@@ -143,6 +175,7 @@ function* filesForProject(project) {
 
 module.exports = {
     createOrFindDemoProjectForUser,
+    createOrFindDemoProjectExperiment,
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,

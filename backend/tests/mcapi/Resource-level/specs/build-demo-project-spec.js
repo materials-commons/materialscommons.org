@@ -37,8 +37,8 @@ const demoProjectTestUserKey = "totally-bogus";
 const demoProjectName = "Demo Project";
 const demoProjectDescription = "A project for trying things out.";
 const demoProjectExperimentName = "Demo: Microsegregation in HPDC L380";
-const dmeoProjectExperimentDescription =
-    "A demo experiment -  A study of microsegregation in High Pressure Die Cast L380.";
+const demoProjectExperimentDescription =
+    "A demo experiment - A study of microsegregation in High Pressure Die Cast L380.";
 
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
@@ -226,7 +226,22 @@ describe('Feature - User - Build Demo Project Support: ', function() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user,"test user exists");
             assert.equal(user.id, demoProjectTestUserId);
+            let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+            assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
 
+            let project = valOrError.val;
+            assert.equal(project.name,demoProjectName);
+
+            valOrError = yield helper
+                .createOrFindDemoProjectExperiment(project,demoProjectExperimentName,demoProjectExperimentDescription);
+            assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
+
+            let experiment = valOrError.val;
+            assert.isNotNull(experiment,"experiment is not null");
+            assert.equal(experiment.otype, "experiment");
+            assert.equal(experiment.name,demoProjectExperimentName);
+            assert(experiment.description.includes(demoProjectExperimentDescription)); // may have been turned into html!!
+            assert.equal(experiment.owner,demoProjectTestUserId);
         });
     });
 });
