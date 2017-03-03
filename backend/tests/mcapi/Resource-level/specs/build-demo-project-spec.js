@@ -2,10 +2,10 @@
 require('mocha');
 require('co-mocha');
 const chai = require('chai');
-const assert = require('chai').assert;
+const assert = chai.assert;
+const should = chai.should();
 const fs = require('fs');
 const os = require('os')
-const exec = require('child_process').exec;
 const promise = require('bluebird');
 const md5File = promise.promisify(require('md5-file'));
 const copy = require('copy');
@@ -28,7 +28,13 @@ const fileUtils = require(backend_base + '/servers/lib/create-file-utils');
 const fullname = "Test User";
 const user_apikey = "ThisIsAJunkKey";
 const user1Id = "mctest@mc.org";
-const projectName = "Demo Project";
+
+const base_project_name = "Demo project test: ";
+
+let random_name = function(){
+    let number = Math.floor(Math.random()*10000);
+    return base_project_name + number;
+};
 
 before(function*() {
     let user = yield dbModelUsers.getUser(user1Id);
@@ -69,8 +75,8 @@ describe('Feature - User - Build Demo Project: ', function() {
         it('exists in folder', function *() {
             let datapath = 'backend/scripts/demo-project/demo_project_data';
             assert(fs.existsSync(datapath), "missing test datafile dir " + datapath);
-            for (let i = 0; i < helper.files.length; i++) {
-                let checksumAndFilename = helper.files[i];
+            for (let i = 0; i < helper.filesDescriptions().length; i++) {
+                let checksumAndFilename = helper.filesDescriptions()[i];
                 let expectedChecksum = checksumAndFilename[0];
                 let filename = checksumAndFilename[1];
                 let path = `${datapath}/${filename}`;
@@ -84,6 +90,7 @@ describe('Feature - User - Build Demo Project: ', function() {
             let datapath = 'backend/scripts/demo-project/demo_project_data';
             let user = yield dbModelUsers.getUser(user1Id);
             assert.isNotNull(user,"test user exists");
+            let projectName = random_name();
             let attrs = {
                 name: projectName,
                 description: "This is a test project for automated testing."
@@ -96,8 +103,10 @@ describe('Feature - User - Build Demo Project: ', function() {
             assert.equal(top_directory.otype, "directory");
             assert.equal(top_directory.name, project.name);
             let tempDir = os.tmpdir();
-            for (let i = 0; i < helper.files.length; i++) {
-                let checksumFilenameAndMimetype = helper.files[i];
+            let fileResults = {};
+            let fileCount = 0;
+            for (let i = 0; i < helper.filesDescriptions().length; i++) {
+                let checksumFilenameAndMimetype = helper.filesDescriptions()[i];
                 let expectedChecksum = checksumFilenameAndMimetype[0];
                 let filename = checksumFilenameAndMimetype[1];
                 let mimetype = checksumFilenameAndMimetype[2];
@@ -118,14 +127,25 @@ describe('Feature - User - Build Demo Project: ', function() {
                     filepath: path
                 };
                 let file = yield directories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
-                console.log(file);
+                should.exist(file);
+                assert.equal(file.name,filename);
+                assert.equal(file.checksum,checksum);
+                fileResults[file.checksum] = file;
+            }
+            for (let i = 0; i < helper.filesDescriptions().length; i++) {
+                let checksumFilenameAndMimetype = helper.filesDescriptions()[i];
+                let expectedChecksum = checksumFilenameAndMimetype[0];
+                let filename = checksumFilenameAndMimetype[1];
+                let file = fileResults[expectedChecksum];
+                should.exist(file, "file with filname = " + filename + " in not in the results");
+                assert.equal(file.name,filename);
             }
         });
         it('is in the database', function*() {
             let datapath = 'backend/scripts/demo-project/demo_project_data';
             assert(fs.existsSync(datapath), "missing test datafile dir " + datapath);
-            for (let i = 0; i < helper.files.length; i++) {
-                let checksumAndFilename = helper.files[i];
+            for (let i = 0; i < helper.filesDescriptions().length; i++) {
+                let checksumAndFilename = helper.filesDescriptions()[i];
                 let checksum = checksumAndFilename[0];
                 let filename = checksumAndFilename[1];
                 let fileList = yield files.getAllByChecksum(checksum);
@@ -138,6 +158,30 @@ describe('Feature - User - Build Demo Project: ', function() {
                 assert(file.name == filename, "Filename for file by checksum for filename = " + filename +
                     "; with checksum = " + checksum + "; expected " + filename + " but found " + file.name);
             }
+        });
+    });
+    describe('Build Demo Project helper',function (){
+        it('checkes for missing files in folder', function*(){
+            let missingFiles = yield helper.filesMissingInFolder();
+            assert.lengthOf(missingFiles,0);
+        });
+        it('adds all files to top dir of a test Demo Project', function*(){
+            let user = yield dbModelUsers.getUser(user1Id);
+            assert.isNotNull(user,"test user exists");
+            let projectName = random_name();
+            let attrs = {
+                name: projectName,
+                description: "This is a test project for automated testing."
+            };
+            let ret = yield projects.createProject(user,attrs);
+            let project = ret.val;
+            assert.equal(projectName,project.name);
+            assert.equal(user.id,project.owner);
+            helper.addAllFiles(user,project);
+            console.log("Project name: " + projectName);
+            let files = helper.filesForProject(project);
+            console.log(files);
+            // let missingFiles = yield helper.filesMissingInDatabase(project);
         });
     });
 });

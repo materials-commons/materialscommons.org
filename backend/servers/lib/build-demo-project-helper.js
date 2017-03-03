@@ -1,3 +1,19 @@
+const fs = require('fs');
+const os = require('os')
+const promise = require('bluebird');
+const md5File = promise.promisify(require('md5-file'));
+const copy = require('copy');
+const copyOne = promise.promisify(copy.one);
+
+const backend_base = '../..';
+const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
+const dbModelProjects = require(backend_base + '/servers/mcapi/db/model/projects');
+const dbModelDirectories = require(backend_base + '/servers/mcapi/db/model/directories');
+const dbModelFiles = require(backend_base + '/servers/mcapi/db/model/files');
+const resourceUsers = require(backend_base + '/servers/mcapi/resources/users');
+const fileUtils = require(backend_base + '/servers/lib/create-file-utils');
+
+
 const tiffMimeType = "image/tiff";
 const jpegMimeType = "image/jpeg";
 const textMimeTYpe = "text/plain";
@@ -24,10 +40,78 @@ const checksumsFilesAndMimiTypes = [
     ['d423248c056eff682f46181e0c912369', 'Samples_Lift380_L124_20161227.xlsx', xlsxMimeType]
 ];
 
-function files(){
+const datapath = 'backend/scripts/demo-project/demo_project_data';
+
+function filesDescriptions(){
     return checksumsFilesAndMimiTypes;
 }
 
+function* filesMissingInFolder() {
+    let ret = [];
+    for (let i = 0; i < filesDescriptions().length; i++) {
+        let checksumAndFilename = filesDescriptions()[i];
+        let expectedChecksum = checksumAndFilename[0];
+        let filename = checksumAndFilename[1];
+        let path = `${datapath}/${filename}`;
+        let ok = false;
+        if (fs.existsSync(path)) {
+            let checksum = yield md5File(path);
+            if (checksum == expectedChecksum) {
+                ok = true;
+            }
+        }
+        if (!ok) {
+            ret.push(filename);
+        }
+    }
+    return ret;
+}
+
+function* addAllFiles(user,project) {
+    let top_directory =  yield dbModelDirectories.get(project.id,'top');
+    let tempDir = os.tmpdir();
+    console.log(tempDir);
+    for (let i = 0; i < filesDescriptions().length; i++) {
+        let checksumFilenameAndMimetype = filesDescriptions()[i];
+        let expectedChecksum = checksumFilenameAndMimetype[0];
+        let filename = checksumFilenameAndMimetype[1];
+        let mimetype = checksumFilenameAndMimetype[2];
+        let path = `${datapath}/${filename}`;
+        let checksum = yield md5File(path);
+        console.log(fileaname);
+        if (expectedChecksum == checksum) {
+            let stats = fs.statSync(path);
+            let fileSizeInBytes = stats.size;
+            let source = yield copyOne(path,tempDir);
+            path = source.path;
+            let args = {
+                name: filename,
+                checksum: checksum,
+                mediatype: fileUtils.mediaTypeDescriptionsFromMime(mimetype),
+                filesize: fileSizeInBytes,
+                filepath: path
+            };
+            console.log(fileaname);
+            let file = yield dbModelDirectories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
+            console.log(file.name);
+        }
+    }
+}
+
+function* filesForProject(project) {
+    let top_directory =  yield dbModelDirectories.get(project.id,'top');
+    console.log(top_directory)
+    return top_directory.files
+}
+
+function* filesMissingInDatabase(project){
+    let ret = [];
+    return ret;
+}
+
 module.exports = {
-    files
+    filesDescriptions,
+    filesMissingInFolder,
+    addAllFiles,
+    filesForProject
 }
