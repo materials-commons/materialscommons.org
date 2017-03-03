@@ -23,7 +23,7 @@
             <td md-cell>
                 <div layout="column">
                     <div layout="row">
-                        <a ui-sref="project.home({project_id: project.id})">
+                        <a ui-sref="project.home({project_id: project.id})" tooltip="{{project.name}}">
                             {{project.name |truncate:40:'...'}}
                         </a>
                     </div>
