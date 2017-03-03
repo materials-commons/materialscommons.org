@@ -5,9 +5,9 @@ function ProcessModelService() {
 
         }
 
-        static fromJSON(data) {
-
-        }
+        // static fromJSON(data) {
+        //
+        // }
     }
 
     return Process;

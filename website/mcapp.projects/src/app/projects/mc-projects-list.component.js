@@ -17,7 +17,7 @@ class MCProjectsListComponentController {
             },
             targetEvent: event
         });
-    };
+    }
 
     showProjectOverview(project) {
         this.mcshow.projectOverviewDialog(project);
