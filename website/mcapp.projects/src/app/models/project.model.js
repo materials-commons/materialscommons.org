@@ -5,17 +5,33 @@ function ProjectModelService(projectsAPI) {
             this.id = id;
             this.name = name;
             this.owner = owner;
-            this.samples_count = 0;
-            this.processes_count = 0;
-            this.experiments_count = 0;
             this.files_count = 0;
             this.description = "";
+            this.overview = "";
             this.birthtime = 0;
             this.owner_details = {};
             this.selected = false;
-            this.selected2 = false;
-            this.msg1 = "This is a status message";
             this.mtime = 0;
+            this.processes = [];
+            this.samples = [];
+            this.experiments = [];
+            this.status_notes = [
+                {
+                    note: '',
+                    status: 'none'
+                },
+                {
+                    note: '',
+                    status: 'none'
+                },
+                {
+                    note: '',
+                    status: 'none'
+                }
+            ];
+            this.users = [];
+            this.owner_details = {fullname: ''};
+            this.status = 'none';
         }
 
         static fromJSON(data) {
@@ -25,6 +41,7 @@ function ProjectModelService(projectsAPI) {
             p.experiments = data.experiments;
             p.files_count = data.files;
             p.description = data.description;
+            p.overview = data.overview;
             p.birthtime = new Date(data.birthtime * 1000);
             p.mtime = new Date(data.mtime * 1000);
             p.users = data.users;
@@ -35,7 +52,9 @@ function ProjectModelService(projectsAPI) {
         }
 
         static get(id) {
-
+            return projectsAPI.getProject(id).then(
+                (project) => Project.fromJSON(project)
+            );
         }
 
         static getProjectsForCurrentUser() {
@@ -48,8 +67,8 @@ function ProjectModelService(projectsAPI) {
 
         }
 
-        update() {
-
+        update(attrs) {
+            return projectsAPI.updateProject(this.id, attrs);
         }
     }
 
