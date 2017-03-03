@@ -47,26 +47,26 @@ const sectioningTemplateId = 'global_Sectioning';
 const ebsdTemplateId = 'global_EBSD SEM Data Collection';
 const epmaTemplateId = 'global_EPMA Data Collection';
 
-const processes_data = [
+const processesData = [
     {
         'name': 'Lift 380 Casting Day  # 1',
-        'template_id': createSamplesTemplateId
+        'templateId': createSamplesTemplateId
     },
     {
         'name': 'Casting L124',
-        'template': sectioningTemplateId
+        'templateId': sectioningTemplateId
     },
     {
         'name': 'Sectioning of Casting L124',
-        'template': sectioningTemplateId
+        'templateId': sectioningTemplateId
     },
     {
         'name': 'EBSD SEM Data Collection - 5 mm plate',
-        'template': ebsdTemplateId
+        'templateId': ebsdTemplateId
     },
     {
         'name': 'EPMA Data Collection - 5 mm plate - center',
-        'template': epmaTemplateId
+        'templateId': epmaTemplateId
     }
 ];
 
@@ -263,7 +263,7 @@ describe('Feature - User - Build Demo Project Support: ', function() {
             assert(project.description.includes(demoProjectDescription)); // may have been turned into html!!
             assert.equal(project.owner,demoProjectTestUserId);
         });
-        it('finds or creates the Demo Project Experiment', function*(){
+        it('finds or creates the Demo Experiment', function*(){
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user,"test user exists");
             assert.equal(user.id, demoProjectTestUserId);
@@ -273,8 +273,7 @@ describe('Feature - User - Build Demo Project Support: ', function() {
             let project = valOrError.val;
             assert.equal(project.name,demoProjectName);
 
-            valOrError = yield helper
-                .createOrFindDemoProjectExperiment(project);
+            valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
 
             let experiment = valOrError.val;
@@ -284,26 +283,53 @@ describe('Feature - User - Build Demo Project Support: ', function() {
             assert(experiment.description.includes(demoProjectExperimentDescription)); // may have been turned into html!!
             assert.equal(experiment.owner,demoProjectTestUserId);
         });
-        it('finds or creates the Demo Project Experiment', function*(){
+        it('finds or create a Demo Process', function* () {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
-            assert.isNotNull(user,"test user exists");
             assert.equal(user.id, demoProjectTestUserId);
+
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
-
             let project = valOrError.val;
             assert.equal(project.name,demoProjectName);
 
-            valOrError = yield helper
-                .createOrFindDemoProjectExperiment(project,demoProjectExperimentName,demoProjectExperimentDescription);
+            valOrError = yield helper.createOrFindDemoProjectExperiment(project);
+            assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
+            let experiment = valOrError.val;
+            assert.equal(experiment.name,demoProjectExperimentName);
+
+            let processData = processesData[0];
+            let processName = processData.name;
+            let templateId = processData.templateId;
+
+            valOrError = yield helper.createOrFindDemoProcess(project,experiment,processName,templateId);
             assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
 
+            let process = valOrError.val;
+            assert.equal(process.otype,"process");
+            assert.equal(process.name,processName);
+            assert.equal(process.template_id,templateId);
+            assert.equal(process.owner,demoProjectTestUserId);
+        });
+        it('finds or create all Demo Processes', function* () {
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+            assert.equal(user.id, demoProjectTestUserId);
+
+            let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+            assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
+            let project = valOrError.val;
+            assert.equal(project.name,demoProjectName);
+
+            valOrError = yield helper.createOrFindDemoProjectExperiment(project);
+            assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let experiment = valOrError.val;
-            assert.isNotNull(experiment,"experiment is not null");
-            assert.equal(experiment.otype, "experiment");
             assert.equal(experiment.name,demoProjectExperimentName);
-            assert(experiment.description.includes(demoProjectExperimentDescription)); // may have been turned into html!!
-            assert.equal(experiment.owner,demoProjectTestUserId);
+
+            valOrError = yield helper.createOrFindDemoProcess(project,experiment,processName,templateId);
+            assert.isUndefined(valOrError.error,"Unexpected error from createDemoProjectForUser: " + valOrError.error);
+
+            let processes = valOrError.val;
+            assert.ok(processes);
+            assert.lengthOf(processes,processesData.length);
         });
     });
 });

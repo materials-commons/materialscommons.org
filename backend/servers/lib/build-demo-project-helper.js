@@ -27,26 +27,26 @@ const sectioningTemplateId = 'global_Sectioning';
 const ebsdTemplateId = 'global_EBSD SEM Data Collection';
 const epmaTemplateId = 'global_EPMA Data Collection';
 
-const processes_data = [
+const processesData = [
     {
         'name': 'Lift 380 Casting Day  # 1',
-        'template_id': createSamplesTemplateId
+        'templateId': createSamplesTemplateId
     },
     {
         'name': 'Casting L124',
-        'template': sectioningTemplateId
+        'templateId': sectioningTemplateId
     },
     {
         'name': 'Sectioning of Casting L124',
-        'template': sectioningTemplateId
+        'templateId': sectioningTemplateId
     },
     {
         'name': 'EBSD SEM Data Collection - 5 mm plate',
-        'template': ebsdTemplateId
+        'templateId': ebsdTemplateId
     },
     {
         'name': 'EPMA Data Collection - 5 mm plate - center',
-        'template': epmaTemplateId
+        'templateId': epmaTemplateId
     }
 ];
 
@@ -116,12 +116,55 @@ function* createOrFindDemoProjectExperiment(project) {
     return ret;
 }
 
-function* createOrFindDemoProcess(experiment,processName,template) {
+function* createOrFindDemoProcess(project,experiment,processName,templateId) {
+    let simple = true;
+    let ret = yield dbModelExperiments.getProcessesForExperiment(experiment.id, simple);
+    if (! ret.error) {
+        if (ret.val.length == 0) {
+            ret = yield dbModelExperiments.addProcessFromTemplate(project.id, experiment.id,templateId, project.owner);
+            if (! ret.error) {
+                let process = ret.val;
+                let args = {name: processName, files:[], properties:[], samples:[]};
+                ret = yield dbModelProcesses.updateProcess(process.id,args);
+            }
+        } else {
+            ret.val = ret.val[0];
+        }
+    }
+    // ret == val.ok_val or error.error
+    return ret;
+}
+
+function* createOrFindAllDemoProcesses(project,experiment) {
+    let ret = {error: "unknown error in createOrFindAllDemoProcesses"};
+    let processes = [];
+
+    processesData.forEach((processData) => {
+        let processName = processData.name;
+        let templateId = processData.templateId;
+
+        ret = yield createOrFindDemoProcess(project,experiment,processName,templateId);
+        if (! ret.error) {
+            let process = ret.val;
+            processes.push(process);
+        }
+    });
+
+    if (! ret.error) {
+        ret.val = processes;
+    }
+
+    // ret == val.ok_val or error.error
+    return ret;
+}
+
+function* createOrFindOutputSamplesFromProcess(process,sampleNameList) {
     // ret == val.ok_val or error.error
     return {
         error: "not implemented yet"
     }
 }
+
 function filesDescriptions(){
     return checksumsFilesAndMimiTypes;
 }
@@ -219,10 +262,11 @@ function* makeTemplateTable() {
 module.exports = {
     createOrFindDemoProjectForUser,
     createOrFindDemoProjectExperiment,
+    createOrFindDemoProcess,
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,
     addAllFiles,
     filesForProject,
     makeTemplateTable
-}
+};
