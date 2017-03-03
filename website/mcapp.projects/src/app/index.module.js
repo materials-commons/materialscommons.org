@@ -16,5 +16,6 @@ angular.module('materialscommons',
         'ct.ui.router.extras.core', 'ct.ui.router.extras.transition',
         'ct.ui.router.extras.previous',
         'angular-timeline',
-        'blockUI'
+        'blockUI',
+        'ngHandsontable'
     ]);
