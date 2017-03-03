@@ -13,6 +13,7 @@ class MCProjectsListComponentController {
             placeholder: 'Add status message...',
             save: function(input) {
                 project.status_notes[index].note = input.$modelValue;
+                project.update({status_notes: project.status_notes});
             },
             targetEvent: event
         });
