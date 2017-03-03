@@ -51,7 +51,6 @@
                                 <a ng-click="$ctrl.showProjectOverview(project)">
                                     overview
                                 </a>
-                                <a ng-hide="project.selected" style="color: white">overview</a>
                             </td>
                             <td md-cell>
                                 {{project.owner_details.fullname | truncate:20:'...'}}
@@ -63,7 +62,7 @@
                             <td md-cell>{{::project.files_count | number}}</td>
                             <td md-cell>{{::project.users.length - 1}}</td>
                         </tr>
-                        <tr md-row
+                        <tr md-row ng-if="false"
                             ng-style="$index%2 == 0 && {'border-left': '12px solid #1565c0'} || {'border-left': '12px solid #4caf50'}"
                             ng-repeat-end>
                             <td></td>
