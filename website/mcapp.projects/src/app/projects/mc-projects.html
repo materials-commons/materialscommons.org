@@ -31,10 +31,10 @@
                             <th md-column></th>
                             <th md-column>Owner</th>
                             <th md-column md-order-by="birthtime">Created</th>
-                            <th md-column md-order-by="experiments.length"># Experiments</th>
-                            <th md-column md-order-by="samples.length"># Samples</th>
-                            <th md-column md-order-by="processes.length"># Processes</th>
-                            <th md-column md-order-by="files_count"># Files</th>
+                            <th md-column>Status Notes</th>
+                            <th md-column></th>
+                            <th md-column></th>
+                            <th md-column>Counts</th>
                             <th md-column md-order-by="users.length"># Users</th>
                         </tr>
                         </thead>
@@ -66,8 +66,8 @@
                         <tr md-row
                             ng-style="$index%2 == 0 && {'border-left': '12px solid #1565c0'} || {'border-left': '12px solid #4caf50'}"
                             ng-repeat-end>
-                            <td colspan="2"></td>
-                            <td style="border-top: medium solid black"><label>Status Notes:</label></td>
+                            <td></td>
+                            <td><label>Status Notes:</label></td>
                             <td md-cell colspan="2"
                                 style="border-top: medium solid black"
                                 ng-click="$ctrl.editStatusNote($event, project)">
