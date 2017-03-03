@@ -120,7 +120,14 @@ function* createOrFindDemoProcess(project,experiment,processName,templateId) {
     let simple = true;
     let ret = yield dbModelExperiments.getProcessesForExperiment(experiment.id, simple);
     if (! ret.error) {
-        if (ret.val.length == 0) {
+        let processes = ret.val;
+        let nameMatchProcess = null;
+        processes.forEach((process) => {
+            if (process.name == processName) {
+                nameMatchProcess = process;
+            }
+        });
+        if (! nameMatchProcess) {
             ret = yield dbModelExperiments.addProcessFromTemplate(project.id, experiment.id,templateId, project.owner);
             if (! ret.error) {
                 let process = ret.val;
@@ -128,7 +135,7 @@ function* createOrFindDemoProcess(project,experiment,processName,templateId) {
                 ret = yield dbModelProcesses.updateProcess(process.id,args);
             }
         } else {
-            ret.val = ret.val[0];
+            ret.val = nameMatchProcess;
         }
     }
     // ret == val.ok_val or error.error
@@ -139,16 +146,18 @@ function* createOrFindAllDemoProcesses(project,experiment) {
     let ret = {error: "unknown error in createOrFindAllDemoProcesses"};
     let processes = [];
 
-    processesData.forEach((processData) => {
+    for (let i = 0; i < processesData.length; i++) {
+        let processData = processesData[i];
         let processName = processData.name;
         let templateId = processData.templateId;
 
         ret = yield createOrFindDemoProcess(project,experiment,processName,templateId);
-        if (! ret.error) {
-            let process = ret.val;
-            processes.push(process);
+        if (ret.error) {
+            break;
         }
-    });
+        let process = ret.val;
+        processes.push(process);
+    }
 
     if (! ret.error) {
         ret.val = processes;
@@ -263,6 +272,7 @@ module.exports = {
     createOrFindDemoProjectForUser,
     createOrFindDemoProjectExperiment,
     createOrFindDemoProcess,
+    createOrFindAllDemoProcesses,
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,
