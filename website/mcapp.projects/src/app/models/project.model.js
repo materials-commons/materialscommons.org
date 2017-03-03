@@ -29,6 +29,8 @@ function ProjectModelService(projectsAPI) {
             p.mtime = new Date(data.mtime * 1000);
             p.users = data.users;
             p.owner_details = data.owner_details;
+            p.status_notes = data.status_notes;
+            p.status = data.status;
             return p;
         }
 
