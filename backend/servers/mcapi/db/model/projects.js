@@ -161,7 +161,15 @@ function* update(projectID, attrs) {
         pattrs.overview = attrs.overview;
     }
 
-    if (pattrs.name || pattrs.description || pattrs.overview) {
+    if (attrs.status_notes) {
+        pattrs.status_notes = attrs.status_notes;
+    }
+
+    if (attrs.status) {
+        pattrs.status = attrs.status;
+    }
+
+    if (pattrs.name || pattrs.description || pattrs.overview || pattrs.status_notes || pattrs.status) {
         yield r.table('projects').get(projectID).update(pattrs);
     }
 
