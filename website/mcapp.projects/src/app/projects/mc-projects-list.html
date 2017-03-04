@@ -1,5 +1,5 @@
 <md-table-container>
-    <table md-table style="empty-cells: show">
+    <table md-table>
         <thead md-head md-order="$ctrl.sortOrder">
         <tr md-row>
             <th md-column md-order-by="status">Status</th>
@@ -63,34 +63,25 @@
                 style="padding-left: 8px"
                 ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
                 ng-click="$ctrl.editStatusNote($event, project, 0)">
-                                <span ng-show="project.status_notes[0].note" tooltip="Click to edit">
-                                    {{project.status_notes[0].note}}
-                                </span>
-                <span ng-show="!project.status_notes[0].note" style="color: grey">
-                                    Click to add note
-                                </span>
+                <span ng-show="project.status_notes[0].note"
+                      tooltip="Click to edit">{{project.status_notes[0].note}}</span>
+                <span ng-show="!project.status_notes[0].note" style="color: grey">Click to add note</span>
             </td>
             <td md-cell
                 style="padding-left: 8px"
                 ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
                 ng-click="$ctrl.editStatusNote($event, project, 1)">
-                                <span ng-show="project.status_notes[1].note" tooltip="Click to edit">
-                                    {{project.status_notes[1].note}}
-                                </span>
-                <span ng-show="!project.status_notes[1].note" style="color: grey">
-                                    Click to add note
-                                </span>
+                <span ng-show="project.status_notes[1].note"
+                      tooltip="Click to edit">{{project.status_notes[1].note}}</span>
+                <span ng-show="!project.status_notes[1].note" style="color: grey">Click to add note</span>
             </td>
             <td md-cell
                 style="padding-left: 8px; border-right-width: 8px"
                 ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0, 'cell-right-odd': $index%2 !== 0, 'cell-right-even': $index%2 ==0}"
                 ng-click="$ctrl.editStatusNote($event, project, 2)">
-                    <span ng-show="project.status_notes[2].note" tooltip="Click to edit">
-                        {{project.status_notes[2].note}}
-                    </span>
-                <span ng-show="!project.status_notes[2].note" style="color: grey">
-                        Click to add note
-                    </span>
+                <span ng-show="project.status_notes[2].note"
+                      tooltip="Click to edit">{{project.status_notes[2].note}}</span>
+                <span ng-show="!project.status_notes[2].note" style="color: grey">Click to add note</span>
             </td>
         </tr>
         </tbody>
