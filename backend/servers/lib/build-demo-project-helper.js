@@ -92,7 +92,7 @@ function* createOrFindDemoProjectForUser(user) {
         description: demoProjectDescription
     }
     // ret == val.ok_val or error.error
-    return yield dbModelProjects.createProject(user,attributes);
+    return yield dbModelProjects.createProject(user, attributes);
 }
 
 function* createOrFindDemoProjectExperiment(project) {
@@ -108,24 +108,24 @@ function* createOrFindDemoProjectExperiment(project) {
             }
         });
         if (experiment) {
-            ret = { val: experiment }
+            ret = {val: experiment}
         } else {
             let args = {
                 project_id: project.id,
                 name: experimentName,
                 description: experimentDescription
             };
-            ret = yield dbModelExperiments.create(args,project.owner);
+            ret = yield dbModelExperiments.create(args, project.owner);
         }
     }
     // ret == val.ok_val or error.error
     return ret;
 }
 
-function* createOrFindDemoProcess(project,experiment,processName,templateId) {
+function* createOrFindDemoProcess(project, experiment, processName, templateId) {
     let simple = true;
     let ret = yield dbModelExperiments.getProcessesForExperiment(experiment.id, simple);
-    if (! ret.error) {
+    if (!ret.error) {
         let processes = ret.val;
         let nameMatchProcess = null;
         processes.forEach((process) => {
@@ -133,12 +133,12 @@ function* createOrFindDemoProcess(project,experiment,processName,templateId) {
                 nameMatchProcess = process;
             }
         });
-        if (! nameMatchProcess) {
-            ret = yield dbModelExperiments.addProcessFromTemplate(project.id, experiment.id,templateId, project.owner);
-            if (! ret.error) {
+        if (!nameMatchProcess) {
+            ret = yield dbModelExperiments.addProcessFromTemplate(project.id, experiment.id, templateId, project.owner);
+            if (!ret.error) {
                 let process = ret.val;
-                let args = {name: processName, files:[], properties:[], samples:[]};
-                ret = yield dbModelProcesses.updateProcess(process.id,args);
+                let args = {name: processName, files: [], properties: [], samples: []};
+                ret = yield dbModelProcesses.updateProcess(process.id, args);
             }
         } else {
             ret.val = nameMatchProcess;
@@ -148,7 +148,7 @@ function* createOrFindDemoProcess(project,experiment,processName,templateId) {
     return ret;
 }
 
-function* createOrFindAllDemoProcesses(project,experiment) {
+function* createOrFindAllDemoProcesses(project, experiment) {
     let ret = {error: "unknown error in createOrFindAllDemoProcesses"};
     let processes = [];
 
@@ -157,7 +157,7 @@ function* createOrFindAllDemoProcesses(project,experiment) {
         let processName = processData.name;
         let templateId = processData.templateId;
 
-        ret = yield createOrFindDemoProcess(project,experiment,processName,templateId);
+        ret = yield createOrFindDemoProcess(project, experiment, processName, templateId);
         if (ret.error) {
             break;
         }
@@ -165,25 +165,25 @@ function* createOrFindAllDemoProcesses(project,experiment) {
         processes.push(process);
     }
 
-    if (! ret.error) {
+    if (!ret.error) {
         ret.val = processes;
     }
 
     // ret == val.ok_val or error.error
     return ret;
 }
-function* createOrFindProcessOutputSamples(project,experiment,process,sampleNameList) {
+function* createOrFindProcessOutputSamples(project, experiment, process, sampleNameList) {
     let resultsingSamples = [];
     let copyOfNames = sampleNameList.slice();
     let ret = yield dbModelProcesses.getProcess(process.id);
-    if (! ret.error) {
+    if (!ret.error) {
         let detailedProcess = ret.val;
         let outputSamples = detailedProcess.output_samples;
         for (let i = 0; i < outputSamples.length; i++) {
             let sample = outputSamples[i];
             let loc = copyOfNames.indexOf(sample.name);
             if (loc > -1) {
-                copyOfNames.splice(loc,1);
+                copyOfNames.splice(loc, 1);
                 resultsingSamples.push(sample);
             }
         }
@@ -200,7 +200,7 @@ function* createOrFindProcessOutputSamples(project,experiment,process,sampleName
                 samples.forEach((sample) => {
                     idList.push(sample.id);
                 });
-                ret = yield dbModelExperiments.addSamples(experiment.id,idList);
+                ret = yield dbModelExperiments.addSamples(experiment.id, idList);
             }
         }
     }
@@ -208,7 +208,7 @@ function* createOrFindProcessOutputSamples(project,experiment,process,sampleName
         let output = [];
         sampleNameList.forEach((name) => {
             resultsingSamples.forEach((sample) => {
-                if(name == sample.name) {
+                if (name == sample.name) {
                     output.push(sample);
                 }
             });
@@ -218,7 +218,7 @@ function* createOrFindProcessOutputSamples(project,experiment,process,sampleName
     return ret
 }
 
-function filesDescriptions(){
+function filesDescriptions() {
     return checksumsFilesAndMimiTypes;
 }
 
@@ -243,7 +243,7 @@ function* filesMissingInFolder() {
     return ret;
 }
 
-function* filesMissingInDatabase(project){
+function* filesMissingInDatabase(project) {
     let files = yield filesForProject(project);
     let table = {};
     files.forEach((file) => {
@@ -262,8 +262,8 @@ function* filesMissingInDatabase(project){
     return ret;
 }
 
-function* addAllFiles(user,project) {
-    let top_directory =  yield dbModelDirectories.get(project.id,'top');
+function* addAllFiles(user, project) {
+    let top_directory = yield dbModelDirectories.get(project.id, 'top');
     let tempDir = os.tmpdir();
     for (let i = 0; i < filesDescriptions().length; i++) {
         let checksumFilenameAndMimetype = filesDescriptions()[i];
@@ -275,7 +275,7 @@ function* addAllFiles(user,project) {
         if (expectedChecksum == checksum) {
             let stats = fs.statSync(path);
             let fileSizeInBytes = stats.size;
-            let source = yield copyOne(path,tempDir);
+            let source = yield copyOne(path, tempDir);
             path = source.path;
             let args = {
                 name: filename,
@@ -290,7 +290,7 @@ function* addAllFiles(user,project) {
 }
 
 function* filesForProject(project) {
-    let top_directory =  yield dbModelDirectories.get(project.id,'top');
+    let top_directory = yield dbModelDirectories.get(project.id, 'top');
     let children = top_directory.children;
     let files = [];
     for (let i = 0; i < children.length; i++) {
