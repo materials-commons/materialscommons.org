@@ -1,0 +1,13 @@
+<div layout="row" md-whiteframe>
+    <span class="md-subhead">{{experiment.name}}</span>
+    <label>Last Updated:</label> <span>{{experiment.mtime | date:'shortDate'}}</span>
+    <div layout="column" flex="70">
+        <!-- hands on table for spreadsheet fields here -->
+        <!-- Experiment details such as description, samples count, etc.. here -->
+    </div>
+    <textarea ckeditor="editorOptions"
+              ng-model="$ctrl.experiment.note"
+              ng-model-options="{debounce: 1000}"
+              ng-change="$ctrl.updateNote()">
+    </textarea>
+</div>
