@@ -9,6 +9,7 @@ const backend_base = '../..';
 const dbModelProjects = require(backend_base + '/servers/mcapi/db/model/projects');
 const dbModelExperiments = require(backend_base + '/servers/mcapi/db/model/experiments');
 const dbModelProcesses = require(backend_base + '/servers/mcapi/db/model/processes');
+const dbModelSamples = require(backend_base + '/servers/mcapi/db/model/samples');
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const dbModelDirectories = require(backend_base + '/servers/mcapi/db/model/directories');
 const dbModelFiles = require(backend_base + '/servers/mcapi/db/model/files');
@@ -48,6 +49,11 @@ const processesData = [
         'name': 'EPMA Data Collection - 5 mm plate - center',
         'templateId': epmaTemplateId
     }
+];
+
+const sampleNameData = [
+    'l380', 'L124', 'L124 - 2mm plate', 'L124 - 3mm plate',
+    'L124 - 5mm plate', 'L124 - 5mm plate - 3ST', 'L124 - tensil bar, gage'
 ];
 
 const tiffMimeType = "image/tiff";
@@ -166,12 +172,50 @@ function* createOrFindAllDemoProcesses(project,experiment) {
     // ret == val.ok_val or error.error
     return ret;
 }
-
-function* createOrFindOutputSamplesFromProcess(process,sampleNameList) {
-    // ret == val.ok_val or error.error
-    return {
-        error: "not implemented yet"
+function* createOrFindProcessOutputSamples(project,experiment,process,sampleNameList) {
+    let resultsingSamples = [];
+    let copyOfNames = sampleNameList.slice();
+    let ret = yield dbModelProcesses.getProcess(process.id);
+    if (! ret.error) {
+        let detailedProcess = ret.val;
+        let outputSamples = detailedProcess.output_samples;
+        for (let i = 0; i < outputSamples.length; i++) {
+            let sample = outputSamples[i];
+            let loc = copyOfNames.indexOf(sample.name);
+            if (loc > -1) {
+                copyOfNames.splice(loc,1);
+                resultsingSamples.push(sample);
+            }
+        }
+        if (copyOfNames.length > 0) {
+            let sampleNameArgs = [];
+            copyOfNames.forEach((name) => {
+                sampleNameArgs.push({name: name});
+            });
+            ret = yield dbModelSamples.createSamples(project.id, process.id, sampleNameArgs, project.owner);
+            if (!ret.error) {
+                let samples = ret.val.samples;
+                resultsingSamples = resultsingSamples.concat(samples);
+                let idList = [];
+                samples.forEach((sample) => {
+                    idList.push(sample.id);
+                });
+                ret = yield dbModelExperiments.addSamples(experiment.id,idList);
+            }
+        }
     }
+    if (!ret.error) {
+        let output = [];
+        sampleNameList.forEach((name) => {
+            resultsingSamples.forEach((sample) => {
+                if(name == sample.name) {
+                    output.push(sample);
+                }
+            });
+        });
+        ret.val = output;
+    }
+    return ret
 }
 
 function filesDescriptions(){
@@ -201,7 +245,7 @@ function* filesMissingInFolder() {
 
 function* filesMissingInDatabase(project){
     let files = yield filesForProject(project);
-    let table = {}
+    let table = {};
     files.forEach((file) => {
         table[file.checksum] = file;
     });
@@ -248,7 +292,7 @@ function* addAllFiles(user,project) {
 function* filesForProject(project) {
     let top_directory =  yield dbModelDirectories.get(project.id,'top');
     let children = top_directory.children;
-    let files = []
+    let files = [];
     for (let i = 0; i < children.length; i++) {
         let fileOrDir = children[i];
         if (fileOrDir.otype == 'file') files.push(fileOrDir);
@@ -273,6 +317,7 @@ module.exports = {
     createOrFindDemoProjectExperiment,
     createOrFindDemoProcess,
     createOrFindAllDemoProcesses,
+    createOrFindProcessOutputSamples,
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,
