@@ -33,7 +33,7 @@ const user1Id = "mctest@mc.org";
 
 const base_project_name = "Demo project test: ";
 
-// ****  NOTE: See const section of helper; ref - const helper above ****
+// **vv  NOTE: See const section of helper; ref - const helper above vv**
 const demoProjectTestUserId = 'test@test.mc';
 const demoProjectTestUserKey = "totally-bogus";
 const demoProjectName = "Demo Project";
@@ -75,7 +75,20 @@ const sampleNameData = [
     'L124 - 5mm plate', 'L124 - 5mm plate - 3ST', 'L124 - tensil bar, gage'
 ];
 
-// ****  NOTE: See const section of helper; ref - const helper above ****
+const outputSampleIndexMap = [
+    {processIndex: 0, sampleIndexList: [0]},
+    {processIndex: 1, sampleIndexList: [1]},
+    {processIndex: 2, sampleIndexList: [2,3,4,5,6]}
+];
+
+const inputSampleIndexMap = [
+    {processIndex: 1, sampleIndexList: [0]},
+    {processIndex: 2, sampleIndexList: [1]},
+    {processIndex: 3, sampleIndexList: [4]},
+    {processIndex: 4, sampleIndexList: [4]}
+];
+
+// **^^  NOTE: See const section of helper; ref - const helper above ^^**
 
 let random_name = function () {
     let number = Math.floor(Math.random() * 10000);
@@ -363,7 +376,9 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let experiment = valOrError.val;
             assert.equal(experiment.name, demoProjectExperimentName);
 
-            let processData = processesData[2];
+            let mapEntry = outputSampleIndexMap[2];
+
+            let processData = processesData[mapEntry.processIndex];
             let processName = processData.name;
             let templateId = processData.templateId;
 
@@ -372,8 +387,11 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             let process = valOrError.val;
 
-            let sampleNames = [sampleNameData[2], sampleNameData[3], sampleNameData[4],
-                sampleNameData[5], sampleNameData[6]];
+            let sampleIndexList = mapEntry.sampleIndexList;
+            let sampleNames = [];
+            for (let i = 0; i < sampleIndexList.length; i++){
+                sampleNames.push(sampleNameData[sampleIndexList[i]]);
+            }
 
             valOrError = yield helper.createOrFindProcessOutputSamples(project, experiment, process, sampleNames);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindProcessOutputSamples: " + valOrError.error);
@@ -387,7 +405,116 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 assert.equal(name, sample.name);
             }
         });
+        it('find or creates the output samples for all Process', function*() {
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+            assert.equal(user.id, demoProjectTestUserId);
+
+            let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+            assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
+            let project = valOrError.val;
+            assert.equal(project.name, demoProjectName);
+
+            valOrError = yield helper.createOrFindDemoProjectExperiment(project);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
+            let experiment = valOrError.val;
+            assert.equal(experiment.name, demoProjectExperimentName);
+
+            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+
+            let processes = valOrError.val;
+            assert.ok(processes);
+            assert.lengthOf(processes, processesData.length);
+            for (let i = 0; i < processesData.length; i++) {
+                let processData = processesData[i];
+                let processName = processData.name;
+
+                let process = processes[i];
+                assert.equal(process.otype, "process");
+                assert.equal(process.name, processName);
+            }
+
+            valOrError = yield helper.createOrFindOutputSamplesForAllProcesses(
+                project, experiment, processes, sampleNameData,outputSampleIndexMap);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindOutputSamplesForAllProcesses: " + valOrError.error);
+
+            let samples = valOrError.val;
+            assert.isOk(samples);
+            assert.lengthOf(samples, sampleNameData.length);
+            for (let i = 0; i < sampleNameData.length; i++) {
+                let sample = samples[i];
+                let name = sampleNameData[i];
+                assert.equal(name, sample.name);
+            }
+
+        });
         it('find or creates the input samples for a given Process', function*() {
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+            assert.equal(user.id, demoProjectTestUserId);
+
+            let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+            assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
+            let project = valOrError.val;
+            assert.equal(project.name, demoProjectName);
+
+            valOrError = yield helper.createOrFindDemoProjectExperiment(project);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
+            let experiment = valOrError.val;
+            assert.equal(experiment.name, demoProjectExperimentName);
+
+            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+
+            let processes = valOrError.val;
+            assert.ok(processes);
+            assert.lengthOf(processes, processesData.length);
+            for (let i = 0; i < processesData.length; i++) {
+                let processData = processesData[i];
+                let processName = processData.name;
+
+                let process = processes[i];
+                assert.equal(process.otype, "process");
+                assert.equal(process.name, processName);
+            }
+
+            valOrError = yield helper.createOrFindOutputSamplesForAllProcesses(
+                project, experiment, processes, sampleNameData,outputSampleIndexMap);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindOutputSamplesForAllProcesses: " + valOrError.error);
+
+            let samples = valOrError.val;
+            assert.isOk(samples);
+            assert.lengthOf(samples, sampleNameData.length);
+
+            let mapEntry = inputSampleIndexMap[0];
+            let process = processes[mapEntry.processIndex];
+            let sampleList = [];
+            let sampleIndexList = mapEntry.sampleIndexList;
+
+            sampleIndexList.forEach((index) => {
+                sampleList.push(samples[sampleIndexList[index]]);
+            });
+
+            valOrError = yield helper.createOrFindInputSamplesForProcess(project, experiment, process, sampleList);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindOutputSampleForProcess: " + valOrError.error);
+
+            let inputSampleList = valOrError.val;
+            assert.isOk(inputSampleList);
+            assert.lengthOf(inputSampleList, sampleIndexList.length);
+
+            let missingSamples = [];
+            sampleList.forEach((sample) => {
+                let found = false;
+                inputSampleList.forEach((inputSample) => {
+                    if (sample.id == inputSample.id) {
+                        found = true;
+                    }
+                });
+                if (!found) {
+                    misingSamples.push(sample);
+                }
+            });
+
+            assert.lengthOf(missingSamples,0,"Samples missing from input_samplesa of perocess");
 
         });
     });

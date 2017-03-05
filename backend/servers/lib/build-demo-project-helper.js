@@ -6,6 +6,8 @@ const copy = require('copy');
 const copyOne = promise.promisify(copy.one);
 
 const backend_base = '../..';
+const resourcesProjectsExperimentsProcesses =
+    require(backend_base + '/servers/mcapi/resources/projects/experiments/processes');
 const dbModelProjects = require(backend_base + '/servers/mcapi/db/model/projects');
 const dbModelExperiments = require(backend_base + '/servers/mcapi/db/model/experiments');
 const dbModelProcesses = require(backend_base + '/servers/mcapi/db/model/processes');
@@ -54,6 +56,19 @@ const processesData = [
 const sampleNameData = [
     'l380', 'L124', 'L124 - 2mm plate', 'L124 - 3mm plate',
     'L124 - 5mm plate', 'L124 - 5mm plate - 3ST', 'L124 - tensil bar, gage'
+];
+
+const outputSampleIndexMap = [
+    {processIndex: 0, sampleIndexList: [0]},
+    {processIndex: 1, sampleIndexList: [1]},
+    {processIndex: 2, sampleIndexList: [2,3,4,5,6]}
+];
+
+const inputSampleIndexMap = [
+    {processIndex: 1, sampleIndexList: [0]},
+    {processIndex: 2, sampleIndexList: [1]},
+    {processIndex: 3, sampleIndexList: [4]},
+    {processIndex: 4, sampleIndexList: [4]}
 ];
 
 const tiffMimeType = "image/tiff";
@@ -218,6 +233,93 @@ function* createOrFindProcessOutputSamples(project, experiment, process, sampleN
     return ret
 }
 
+function* createOrFindOutputSamplesForAllProcesses(project, experiment, processList, sampleNameList,map){
+
+    let ret = {error: "Failure in 'createOrFindOutputSamplesForAllProcesses'"};
+    let outputSampleList = [];
+
+    for (let mapIndex = 0; mapIndex < map.length; mapIndex++) {
+        let mapEntry = map[mapIndex];
+
+        let process = processList[mapEntry.processIndex];
+
+        let sampleIndexList = mapEntry.sampleIndexList;
+        let sampleNames = [];
+        for (let i = 0; i < sampleIndexList.length; i++){
+            sampleNames.push(sampleNameData[sampleIndexList[i]]);
+        }
+
+        ret = yield createOrFindProcessOutputSamples(project, experiment, process, sampleNames);
+        if (!ret.error) {
+            let samples = ret.val;
+            samples.forEach((sample) => {
+                outputSampleList.push(sample)
+            })
+        }
+    }
+    if (!ret.error) {
+        ret.val = outputSampleList;
+    }
+    return ret;
+}
+
+function* createOrFindInputSamplesForProcess(project, experiment, process, sampleList) {
+    let resultsingSamples = [];
+    let ret = yield dbModelProcesses.getProcess(process.id);
+    if (!ret.error) {
+        process = ret.val;
+        if (process.input_samples.length > 0) {
+            resultsingSamples = process.input_samples;
+        }
+        if (resultsingSamples.length != sampleList.length) {
+            let samplesData = [];
+            sampleList.forEach((sample) => {
+                let found = false;
+                if (resultsingSamples.length > 0) {
+                    resultsingSamples.each((foundSample) => {
+                        if (foundSample.id == sample.id) {
+                            found = true;
+                        }
+                    });
+                }
+                if (!found) {
+                    samplesData.push({
+                        command: 'add',
+                        id: sample.id,
+                        property_set_id: sample.property_set_id
+                    })
+                }
+            });
+            if (samplesData.length > 0) {
+                let args = {
+                    template_id: process.template_id,
+                    process_id: process.id,
+                    samples: samplesData
+                };
+                console.log(args);
+                let params = {
+                    project_id: project.id,
+                    experiment_id: experiment.id,
+                    process_id: process.id
+                };
+                let errors = yield resourcesProjectsExperimentsProcesses
+                    .validateUpdateExperimentProcessTemplateArgs(args, params);
+                if (errors != null) {
+                    ret = errors;
+                } else {
+                    ret = yield dbModelExperiments.updateProcess(experiment.id, process.id,
+                        [], [], args.samples);
+                    resultsingSamples = ret.val.input_samples;
+                }
+            }
+        }
+    }
+    if (!ret.error) {
+        ret.val = resultsingSamples;
+    }
+    return ret;
+}
+
 function filesDescriptions() {
     return checksumsFilesAndMimiTypes;
 }
@@ -318,6 +420,8 @@ module.exports = {
     createOrFindDemoProcess,
     createOrFindAllDemoProcesses,
     createOrFindProcessOutputSamples,
+    createOrFindOutputSamplesForAllProcesses,
+    createOrFindInputSamplesForProcess,
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,
