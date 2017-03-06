@@ -517,6 +517,61 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert.lengthOf(missingSamples,0,"Samples missing from input_samplesa of perocess");
 
         });
+        it('find or creates the input samples for all Processes', function*() {
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+            assert.equal(user.id, demoProjectTestUserId);
+
+            let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+            assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
+            let project = valOrError.val;
+            assert.equal(project.name, demoProjectName);
+
+            valOrError = yield helper.createOrFindDemoProjectExperiment(project);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
+            let experiment = valOrError.val;
+            assert.equal(experiment.name, demoProjectExperimentName);
+
+            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+
+            let processes = valOrError.val;
+            assert.ok(processes);
+            assert.lengthOf(processes, processesData.length);
+            for (let i = 0; i < processesData.length; i++) {
+                let processData = processesData[i];
+                let processName = processData.name;
+
+                let process = processes[i];
+                assert.equal(process.otype, "process");
+                assert.equal(process.name, processName);
+            }
+
+            valOrError = yield helper.createOrFindOutputSamplesForAllProcesses(
+                project, experiment, processes, sampleNameData, outputSampleIndexMap);
+            assert.isUndefined(valOrError.error,
+                "Unexpected error from createOrFindOutputSamplesForAllProcesses: " + valOrError.error);
+
+            let samples = valOrError.val;
+            assert.isOk(samples);
+            assert.lengthOf(samples, sampleNameData.length);
+
+            valOrError = yield helper.createOrFindInputSamplesForAllProcesses(
+                project, experiment, processes, samples, inputSampleIndexMap);
+            assert.isUndefined(valOrError.error,
+                "Unexpected error from createOrFindInputSamplesForAllProcesses: " + valOrError.error);
+
+            let inputSampleListList = valOrError.val;
+            assert.isOk(inputSampleListList);
+            assert.lengthOf(inputSampleListList, inputSampleIndexMap.length);
+
+            for (let i = 0; i < inputSampleListList.length; i++) {
+                let mapEntry = inputSampleIndexMap[i];
+                let processName = processes[mapEntry.processIndex].name;
+                let indexList = mapEntry.sampleIndexList;
+                let inputSampleList = inputSampleListList[i];
+                assert.lengthOf(inputSampleList,indexList.length, "Missing samples for process with name: " + processName);
+            }
+        });
     });
 });
 

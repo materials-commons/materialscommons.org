@@ -296,7 +296,6 @@ function* createOrFindInputSamplesForProcess(project, experiment, process, sampl
                     process_id: process.id,
                     samples: samplesData
                 };
-                console.log(args);
                 let params = {
                     project_id: project.id,
                     experiment_id: experiment.id,
@@ -317,6 +316,35 @@ function* createOrFindInputSamplesForProcess(project, experiment, process, sampl
     if (!ret.error) {
         ret.val = resultsingSamples;
     }
+    return ret;
+}
+
+function* createOrFindInputSamplesForAllProcesses(project, experiment, processes, samples, map){
+
+    let ret = {error: "Failure in 'createOrFindInputSamplesForAllProcesses'"};
+    let inputSampleList = [];
+
+    for (let i = 0; i < map.length; i++) {
+        let mapEntry = inputSampleIndexMap[i];
+        let process = processes[mapEntry.processIndex];
+        let sampleList = [];
+        let sampleIndexList = mapEntry.sampleIndexList;
+
+        sampleIndexList.forEach((index) => {
+            sampleList.push(samples[index]);
+        });
+
+        ret = yield createOrFindInputSamplesForProcess(project, experiment, process, sampleList);
+        if (ret.error) {
+            break;
+        }
+        inputSampleList.push(ret.val);
+    }
+
+    if (!ret.error) {
+        ret.val = inputSampleList;
+    }
+
     return ret;
 }
 
@@ -422,6 +450,7 @@ module.exports = {
     createOrFindProcessOutputSamples,
     createOrFindOutputSamplesForAllProcesses,
     createOrFindInputSamplesForProcess,
+    createOrFindInputSamplesForAllProcesses,
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,
