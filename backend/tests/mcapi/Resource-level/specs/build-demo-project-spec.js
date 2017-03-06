@@ -295,7 +295,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert.equal(user.name, demoProjectTestUserId);
             assert.equal(user.apikey, demoProjectTestUserKey);
         });
-        it('finds or creates the Demo Project', function*() {
+        it('find or create the Demo Project', function*() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user, "test user exists");
             assert.equal(user.id, demoProjectTestUserId);
@@ -312,7 +312,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert(project.description.includes(demoProjectDescription)); // may have been turned into html!!
             assert.equal(project.owner, demoProjectTestUserId);
         });
-        it('finds or creates the Demo Experiment', function*() {
+        it('find or create the Demo Experiment', function*() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user, "test user exists");
             assert.equal(user.id, demoProjectTestUserId);
@@ -332,7 +332,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert(experiment.description.includes(demoProjectExperimentDescription)); // may have been turned into html!!
             assert.equal(experiment.owner, demoProjectTestUserId);
         });
-        it('finds or create a Demo Process', function*() {
+        it('find or create a Demo Process', function*() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
 
@@ -359,7 +359,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert.equal(process.template_id, templateId);
             assert.equal(process.owner, demoProjectTestUserId);
         });
-        it('finds or create all Demo Processes', function*() {
+        it('find or create all Demo Processes', function*() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
 
@@ -393,7 +393,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             }
         });
-        it('find or creates the output samples for a given Process', function*() {
+        it('find or create the output samples for a given Process', function*() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
 
@@ -436,7 +436,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 assert.equal(name, sample.name);
             }
         });
-        it('find or creates the output samples for all Process', function*() {
+        it('find or create the output samples for all Process', function*() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
 
@@ -479,7 +479,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
 
         });
-        it('find or creates the input samples for a given Process', function*() {
+        it('find or create the input samples for a given Process', function*() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
 
@@ -548,7 +548,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert.lengthOf(missingSamples,0,"Samples missing from input_samplesa of perocess");
 
         });
-        it('find or creates the input samples for all Processes', function*() {
+        it('find or create the input samples for all Processes', function*() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
 
@@ -603,7 +603,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 assert.lengthOf(inputSampleList,indexList.length, "Missing samples for process with name: " + processName);
             }
         });
-        it('find or creates the setup values for all Processes', function*() {
+        it('find or create the setup values for all Processes', function*() {
 
         });
     });
