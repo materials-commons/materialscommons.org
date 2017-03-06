@@ -484,3 +484,31 @@ a.always-white, a.always-white:link, a.always-white:visited, a.always-white:hove
   color:#ffffff;
   text-transform: uppercase;
 }
+
+.cell-left-8px {
+  border-left-width: 8px;
+}
+
+.cell-left-odd {
+  border-left: 4px solid #1565c0;
+}
+
+.cell-left-even {
+  border-left: 4px solid #4caf50;
+}
+
+.cell-right-8px {
+  border-right-width: 8px;
+}
+
+.cell-right-odd {
+  border-right: 4px solid #1565c0;
+}
+
+.cell-right-even {
+  border-right: 4px solid #4caf50;
+}
+
+table.md-table tr.md-row:last-child {
+  border-bottom: 2px solid #b9b9b9;
+}

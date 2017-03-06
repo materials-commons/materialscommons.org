@@ -35,16 +35,20 @@ gulp.task('clean-mcpub', function() {
         .pipe(clean({read: false, force: true}));
 });
 
-gulp.task('build-mcapi-server', ['clean-mcapi', 'build-lib'], function() {
+gulp.task('build-mcapi-server', ['clean-mcapi'], function () {
     return gulp.src([mcapiServerSrc])
         .pipe(babel({presets: ['es2015'], plugins:['transform-runtime']}))
         .pipe(gulp.dest('sbin/mcapi'));
 });
 
-gulp.task('build-mcpub-server', ['clean-mcpub', 'build-lib'], function() {
+gulp.task('build-mcpub-server', ['clean-mcpub'], function () {
     return gulp.src([mcpubServerSrc])
         .pipe(babel({presets: ['es2015'], plugins: ['transform-runtime']}))
         .pipe(gulp.dest('sbin/mcpub'));
 });
+
+gulp.task('build-mcapi-server-lib', ['build-lib', 'build-mcapi-server']);
+
+gulp.task('build-mcpub-server-lib', ['build-lib', 'build-mcpub-server']);
 
 gulp.task('build-servers', ['build-lib', 'build-mcapi-server', 'build-mcpub-server']);

@@ -10,33 +10,6 @@ def msg(s):
     sys.stdout.flush()
 
 
-def fix_users_table_type(conn):
-    r.table('users').update({'otype': 'user'}).run(conn)
-    r.table('users').filter(r.row.has_fields('_type')).replace(lambda doc: doc.without('_type')).run(conn)
-
-
-def convert_scan_size(conn):
-    print "Converting setup attribute scan_size to scan_size_width..."
-    r.table('setupproperties').filter({'attribute': 'scan_size'}) \
-        .update({
-        'attribute': 'scan_size_width',
-        'name': 'Scan Size Width'
-    }).run(conn)
-    print "Done."
-
-
-def add_missing_description_field_to_processes(conn):
-    print "Adding description field and removing notes field..."
-    r.table('processes').update({'description': ''}).run(conn)
-    all_processes = list(r.table('processes').run(conn))
-    for p in all_processes:
-        if 'note' in p:
-            if p['note'] != '':
-                r.table('processes').get(p['id']).update({'description': p['note']}).run(conn)
-    r.table('processes').replace(r.row.without('note'))
-    print "Done."
-
-
 def fix_missing_property_sets(conn):
     print "Fixing samples that having missing property sets..."
     process_property_sets = list(r.table('process2sample').run(conn))
@@ -52,14 +25,42 @@ def fix_missing_property_sets(conn):
             }).run(conn)
     print "Done."
 
+
 def fix_file_upload_count_to_uploaded(conn):
-    print "Added file uploaded with value from upload, removing upload..."
-    all_files = list(r.table('files').run(conn))
-    for file in all_files:
-        if 'upload' in file:
-            p.table('files').get(file['id']).update({'uploaded': p['upload']}).run(conn)
-    r.table('files').replace(r.row.without('upload')).run(conn)
+    print "Add file uploaded with value from upload, removing upload..."
+    r.table('datafiles').filter(r.row.has_fields('upload')) \
+        .update({'uploaded': r.row['upload']}, durability="soft").run(conn)
+    r.table('datafiles').filter(r.row.has_fields('upload')) \
+        .replace(r.row.without('upload'), durability="soft").run(conn)
     print "Done."
+
+
+def update_projects_with_new_fields(conn):
+    print "Adding additional fields to projects. Swap notes and description..."
+    r.table('projects').replace(r.row.without('note')).run(conn)
+    projects = list(r.table('projects').run(conn))
+    for p in projects:
+        p['overview'] = p['description']
+        p['description'] = ''
+        p['status_notes'] = [
+            {
+                'note': '',
+                'status': 'none'
+            },
+            {
+                'note': '',
+                'status': 'none'
+            },
+            {
+                'note': '',
+                'status': 'none'
+            }
+        ]
+        p['status'] = 'none'
+        p['tags'] = []
+        r.table('projects').get(p['id']).update(p).run(conn)
+    print "Done."
+
 
 def main():
     parser = OptionParser()
@@ -73,6 +74,7 @@ def main():
     convert_scan_size(conn)
     add_missing_description_field_to_processes(conn)
     fix_missing_property_sets(conn)
+    update_projects_with_new_fields(conn)
     fix_file_upload_count_to_uploaded(conn)
 
 

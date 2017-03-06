@@ -1,14 +1,16 @@
 <div flex layout="column">
     Project Overview for {{$ctrl.project.name}}
+    <label>Description</label>
+    <span>{{$ctrl.project.description}}</span>
     <div flex="30" layout="column" layout-margin>
-        <label>Project Description</label>
+        <label>Project Overview</label>
         <div md-whiteframe layout-margin>
-            <div ckeditor="editorOptions"
-                 ng-model="$ctrl.project.description"
+            <div ckeditor="editorOptions" disabled
+                 ng-model="$ctrl.project.overview"
                  ng-model-options="{debounce: 500}"
-                 ng-change="$ctrl.updateProjectDescription()"
-                 contenteditable="true">
-                {{$ctrl.project.description}}
+                 ng-change="$ctrl.updateProjectOverview()"
+                 contenteditablex="true">
+                {{$ctrl.project.Overview}}
             </div>
         </div>
     </div>

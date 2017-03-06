@@ -1,141 +1,25 @@
 <div layout="row" flex="100" layout-margin>
     <div layout="column" flex>
-        <div ng-if="!$ctrl.sharingOn" layout="row" layout-align="end">
+        <div layout="row" layout-align="end">
             <md-button class="md-primary md-raised" ng-click="$ctrl.createNewProject()">create project</md-button>
             <md-button ng-show="false" class="md-primary md-raised" ng-click="$ctrl.sharingOn = true">share</md-button>
         </div>
-        <div ng-if="!$ctrl.sharingOn" layout="row" layout-align="center">
+        <div layout="row" layout-align="center">
             <md-button class="md-warn" ng-click="$ctrl.query = ''">clear search</md-button>
-            <input placeholder="Search projects..." type="text"
-                   class="mc-input-as-line margin-left-15 md-subhead"
+            <input ng-model="$ctrl.query" ng-model-options="{debounce:200}"
                    flex="30"
-                   ng-model="$ctrl.query">
-        </div>
-        <div ng-if="$ctrl.sharingOn" layout="row">
-            <md-button class="md-primary md-raised" ng-click="$ctrl.gotoSharing()">done</md-button>
-            <md-button class="md-warn md-raised" ng-click="$ctrl.cancelSharing()">cancel</md-button>
-        </div>
-        <div ng-if="$ctrl.sharingOn" layout="row" layout-margin>
-            <p class="md-headline">Select {{$ctrl.maxSharedProjects}} projects. Click done when you have chosen the
-                projects you want to
-                share between.</p>
+                   placeholder="Search projects..." type="text"
+                   class="mc-input-as-line margin-left-15 md-subhead">
         </div>
         <div layout="column" flex>
-            <div md-whiteframe layout-margin>
+            <div md-whiteframex layout-margin>
                 <h3 class="md-title">My Projects ({{$ctrl.myProjects.length}}):</h3>
-                <md-table-container>
-                    <table md-table style="empty-cells: show">
-                        <thead md-head md-order="$ctrl.sortOrderMine">
-                        <tr md-row>
-                            <th md-column md-order-by="name">Name</th>
-                            <th md-column></th>
-                            <th md-column>Owner</th>
-                            <th md-column md-order-by="birthtime">Created</th>
-                            <th md-column md-order-by="experiments.length"># Experiments</th>
-                            <th md-column md-order-by="samples.length"># Samples</th>
-                            <th md-column md-order-by="processes.length"># Processes</th>
-                            <th md-column md-order-by="files_count"># Files</th>
-                            <th md-column md-order-by="users.length"># Users</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr md-row class="md-row-hover pointer"
-                            ng-repeat-start="project in $ctrl.myProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderMine">
-                            <td md-cell>
-                                <a ui-sref="project.home({project_id: project.id})">
-                                    {{project.name |truncate:40:'...'}}
-                                </a>
-                            </td>
-                            <td md-cell>
-                                <a ng-click="$ctrl.showProjectOverview(project)">
-                                    overview
-                                </a>
-                                <a ng-hide="project.selected" style="color: white">overview</a>
-                            </td>
-                            <td md-cell>
-                                {{project.owner_details.fullname | truncate:20:'...'}}
-                            </td>
-                            <td md-cell>{{project.birthtime | date:'shortDate'}}</td>
-                            <td md-cell>{{project.experiments.length | number}}</td>
-                            <td md-cell>{{::project.samples.length | number}}</td>
-                            <td md-cell>{{::project.processes.length | number}}</td>
-                            <td md-cell>{{::project.files_count | number}}</td>
-                            <td md-cell>{{::project.users.length - 1}}</td>
-                        </tr>
-                        <tr md-row ng-repeat-end>
-                            <td></td>
-                            <td><label>Status Notes:</label></td>
-                            <td md-cell colspan="3"
-                                style="border-top: medium solid black"
-                                ng-click="$ctrl.editStatusNote($event, project)">
-                                1.{{project.msg1}}
-                            </td>
-                            <td md-cell colspan="2" style="border-top: medium solid grey">2. Update description to
-                                include composition
-                            </td>
-                            <td md-cell colspan="2" style="border-top: medium solid black"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </md-table-container>
+                <mc-projects-list projects="$ctrl.myProjects" query="$ctrl.query" style="margin:0"></mc-projects-list>
             </div>
-            <div md-whiteframe layout-margin>
+            <div md-whiteframex layout-margin>
                 <h3 class="md-title">Projects I'm a member of ({{$ctrl.joinedProjects.length}}):</h3>
-
-                <md-table-container>
-                    <table md-table style="empty-cells: show">
-                        <thead md-head md-order="$ctrl.sortOrderJoined">
-                        <tr md-row>
-                            <th md-column md-order-by="name">Name</th>
-                            <th md-column></th>
-                            <th md-column md-order-by="owner_details.fullname">Owner</th>
-                            <th md-column md-order-by="birthtime">Created</th>
-                            <th md-column md-order-by="experiments.length"># Experiments</th>
-                            <th md-column md-order-by="samples.length"># Samples</th>
-                            <th md-column md-order-by="processes.length"># Processes</th>
-                            <th md-column md-order-by="files_count"># Files</th>
-                            <th md-column md-order-by="users.length"># Users</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr md-row class="md-row-hover pointer"
-                            ng-mouseenter="project.selected=true" ng-mouseleave="project.selected=false"
-                            ng-repeat-start="project in $ctrl.joinedProjects | filter:$ctrl.query | orderBy:$ctrl.sortOrderJoined">
-                            <td md-cell>
-                                <a tooltip="{{project.name}}" ui-sref="project.home({project_id: project.id})">
-                                    {{project.name| truncate:40:'...'}}
-                                </a>
-
-                            </td>
-                            <td md-cell>
-                                <a ng-show="project.selected"
-                                   ng-click="$ctrl.showProjectOverview(project)">
-                                    overview
-                                </a>
-                                <a ng-hide="project.selected" style="color: white">overview</a>
-                            </td>
-                            <td md-cell>
-                                {{project.owner_details.fullname | truncate:20:'...'}}
-                            </td>
-                            <td md-cell>{{project.birthtime | date:'shortDate'}}</td>
-                            <td md-cell>{{project.experiments.length | number}}</td>
-                            <td md-cell>{{::project.samples.length | number}}</td>
-                            <td md-cell>{{::project.processes.length | number}}</td>
-                            <td md-cell>{{::project.files_count | number}}</td>
-                            <td md-cell>{{::project.users.length - 1}}</td>
-                        </tr>
-                        <tr md-row ng-repeat-end ng-if="project.selected2">
-                            <td colspan="9">
-                                <div layout="column" layout-align="start">
-                                    <mc-project-overview project="project"></mc-project-overview>
-                                    <md-button class="md-warn" ng-click="project.selected2 = !project.selected2">close
-                                    </md-button>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </md-table-container>
+                <mc-projects-list projects="$ctrl.joinedProjects" query="$ctrl.query"
+                                  style="margin:0"></mc-projects-list>
             </div>
         </div>
     </div>

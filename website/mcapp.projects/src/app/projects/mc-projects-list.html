@@ -1,0 +1,98 @@
+<md-table-container>
+    <table md-table style="empty-cells: show">
+        <thead md-head md-order="$ctrl.sortOrder">
+        <tr md-row>
+            <th md-column md-order-by="status">Status</th>
+            <th md-column md-order-by="name">Name</th>
+            <th md-column></th>
+            <th md-column>Owner</th>
+            <th md-column md-order-by="mtime">Modified</th>
+            <th md-column>Status Notes</th>
+            <th md-column></th>
+            <th md-column></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr md-row class="md-row-hover pointer"
+            ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
+            style='border-left-width: 8px;'
+            ng-repeat="project in $ctrl.projects | filter:$ctrl.query | orderBy:$ctrl.sortOrder">
+            <td md-cell>
+                <mc-project-status status="project.status"></mc-project-status>
+            </td>
+            <td md-cell>
+                <div layout="column">
+                    <div layout="row">
+                        <a ui-sref="project.home({project_id: project.id})" tooltip="{{project.name}}">
+                            {{project.name |truncate:40:'...'}}
+                        </a>
+                    </div>
+                    <div layout="row">
+                        <span tooltip="# Experiments">
+                            <i class="fa fa-fw fa-flask"></i>{{project.experiments.length | number}}
+                        </span>
+                        <span class="padding-left-10" tooltip="# Samples">
+                            <i class="fa fa-fw fa-cubes"></i>{{::project.samples.length | number}}
+                        </span>
+                        <span class="padding-left-10" tooltip="# Processes">
+                            <i class="fa fa-fw fa-code-fork"></i>{{::project.processes.length | number}}
+                        </span>
+                        <span class="padding-left-10" tooltip="# Files">
+                            <i class="fa fa-fw fa-files-o"></i>{{::project.files_count | number}}
+                        </span>
+                        <span class="padding-left-10" tooltip="# Users">
+                            <i class="fa fa-fw fa-users"></i>{{::project.users.length - 1 | number}}
+                        </span>
+                    </div>
+                    <span>{{project.description}}</span>
+                </div>
+            </td>
+            <td md-cell>
+                <a ng-click="$ctrl.showProjectOverview(project)">
+                    overview
+                </a>
+            </td>
+            <td md-cell>
+                {{project.owner_details.fullname | truncate:20:'...'}}
+            </td>
+
+            <td md-cell>
+                {{project.mtime | date:'shortDate'}}
+            </td>
+            <td md-cell
+                style="padding-left: 8px"
+                ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
+                ng-click="$ctrl.editStatusNote($event, project, 0)">
+                                <span ng-show="project.status_notes[0].note" tooltip="Click to edit">
+                                    {{project.status_notes[0].note}}
+                                </span>
+                <span ng-show="!project.status_notes[0].note" style="color: grey">
+                                    Click to add note
+                                </span>
+            </td>
+            <td md-cell
+                style="padding-left: 8px"
+                ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
+                ng-click="$ctrl.editStatusNote($event, project, 1)">
+                                <span ng-show="project.status_notes[1].note" tooltip="Click to edit">
+                                    {{project.status_notes[1].note}}
+                                </span>
+                <span ng-show="!project.status_notes[1].note" style="color: grey">
+                                    Click to add note
+                                </span>
+            </td>
+            <td md-cell
+                style="padding-left: 8px; border-right-width: 8px"
+                ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0, 'cell-right-odd': $index%2 !== 0, 'cell-right-even': $index%2 ==0}"
+                ng-click="$ctrl.editStatusNote($event, project, 2)">
+                    <span ng-show="project.status_notes[2].note" tooltip="Click to edit">
+                        {{project.status_notes[2].note}}
+                    </span>
+                <span ng-show="!project.status_notes[2].note" style="color: grey">
+                        Click to add note
+                    </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>

@@ -3,16 +3,33 @@ const r = require('../r');
 function Project(name, description, owner) {
     this.name = name;
     this.description = description;
+    this.overview = '';
+    this.status = 'none';
+    this.tags = [];
+    this.status_notes = [
+        {
+            note: '',
+            status: 'none'
+        },
+        {
+            note: '',
+            status: 'none'
+        },
+        {
+            note: '',
+            status: 'none'
+        }
+    ];
     this.owner = owner;
     this.birthtime = r.now();
     this.mtime = this.birthtime;
-    this.mediatypes = { };
+    this.mediatypes = {};
     this.size = 0;
     this.otype = "project";
     this._type = "project"
 }
 
-function Access(project_name,project_id,user_id) {
+function Access(project_name, project_id, user_id) {
     this.project_name = project_name;
     this.project_id = project_id;
     this.user_id = user_id;
@@ -103,7 +120,7 @@ function Measurement(name, attribute, sampleID) {
     this.file = {};
 }
 
-Measurement.prototype.setValue = function(value, units, otype, nvalue, nunits, element) {
+Measurement.prototype.setValue = function (value, units, otype, nvalue, nunits, element) {
     this.value = value;
     this.otype = otype;
     this.unit = units;
@@ -112,7 +129,7 @@ Measurement.prototype.setValue = function(value, units, otype, nvalue, nunits, e
     this.nunits = nunits ? nunits : units;
 };
 
-Measurement.prototype.setFile = function(f) {
+Measurement.prototype.setFile = function (f) {
     this.file = f;
 };
 
@@ -386,10 +403,10 @@ function Dataset2Datafile(datasetId, datafileId) {
 }
 
 function DataFile(name, owner) {
-    this.otype ='datafile';
+    this.otype = 'datafile';
     this.current = true;
     this.description = "";
-    this.parent =  "";
+    this.parent = "";
     this.usesid = "";
     let now = r.now();
     this.birthtime = now;

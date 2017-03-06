@@ -1373,6 +1373,10 @@ li.dashboard-item div p {
     border-radius: 6px 0 6px 6px;
 }
 
+.padding-left-10 {
+    padding-left: 10px;
+}
+
 .padding-left-15 {
     padding-left: 15px;
 }

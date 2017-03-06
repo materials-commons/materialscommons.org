@@ -13,7 +13,7 @@ function MCProjectHomeComponentController($scope, mcstate, experimentsAPI, toast
     ctrl.projectLoaded = true;
     ctrl.whichExperiments = 'active';
     ctrl.experiments = [];
-    let projectDescription = ctrl.project.description;
+    let projectOverview = ctrl.project.overview;
 
     $scope.editorOptions = editorOpts({height: 25, width: 20});
 
@@ -26,19 +26,19 @@ function MCProjectHomeComponentController($scope, mcstate, experimentsAPI, toast
         );
     };
 
-    ctrl.updateProjectDescription = () => {
-        if (projectDescription === ctrl.project.description) {
+    ctrl.updateProjectOverview = () => {
+        if (projectOverview === ctrl.project.overview) {
             return;
         }
 
-        if (ctrl.project.description === null) {
+        if (ctrl.project.overview === null) {
             return;
         }
 
-        projectsAPI.updateProject($stateParams.project_id, {description: ctrl.project.description})
+        projectsAPI.updateProject($stateParams.project_id, {overview: ctrl.project.overview})
             .then(
-                () => projectDescription = ctrl.project.description,
-                () => toast.error('Unable to update project description')
+                () => projectOverview = ctrl.project.overview,
+                () => toast.error('Unable to update project overview')
             );
     };
 

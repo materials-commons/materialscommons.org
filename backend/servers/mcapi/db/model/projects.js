@@ -87,7 +87,7 @@ function forUser(user) {
                     owner_details: r.table('users').get(project('owner')).pluck('fullname')
                 }
             })
-            .limit(100).orderBy('name');
+            .limit(150).orderBy('name');
     } else {
         rql = r.table('access').getAll(user.id, {index: 'user_id'})
             .eqJoin('project_id', r.table('projects')).zip()
@@ -148,14 +148,28 @@ function addComputed(rql) {
 
 function* update(projectID, attrs) {
     const pattrs = {};
+
     if (attrs.name) {
         pattrs.name = attrs.name;
     }
+
     if (attrs.description) {
         pattrs.description = attrs.description;
     }
 
-    if (pattrs.name || pattrs.description) {
+    if (attrs.overview) {
+        pattrs.overview = attrs.overview;
+    }
+
+    if (attrs.status_notes) {
+        pattrs.status_notes = attrs.status_notes;
+    }
+
+    if (attrs.status) {
+        pattrs.status = attrs.status;
+    }
+
+    if (pattrs.name || pattrs.description || pattrs.overview || pattrs.status_notes || pattrs.status) {
         yield r.table('projects').get(projectID).update(pattrs);
     }
 
