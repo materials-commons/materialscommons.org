@@ -105,4 +105,3 @@ before_script:
 
 script:
   - npm run-script test-no-html
-  - pytest --ignore=node_modules/
