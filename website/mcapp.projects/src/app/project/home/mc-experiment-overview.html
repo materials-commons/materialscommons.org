@@ -1,9 +1,11 @@
 <div layout="row" md-whiteframe>
-    <span class="md-subhead">{{experiment.name}}</span>
-    <label>Last Updated:</label> <span>{{experiment.mtime | date:'shortDate'}}</span>
+    <span class="md-subhead">{{$ctrl.experiment.name}}</span>
+    <label>Last Updated:</label> <span>{{$ctrl.experiment.mtime | date:'shortDate'}}</span>
     <div layout="column" flex="70">
+        <span>{{$ctrl.experiment.description}}</span>
         <!-- hands on table for spreadsheet fields here -->
         <!-- Experiment details such as description, samples count, etc.. here -->
+        <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
     </div>
     <textarea ckeditor="editorOptions"
               ng-model="$ctrl.experiment.note"

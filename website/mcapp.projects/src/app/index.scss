@@ -183,6 +183,11 @@ md-toast.md-error-theme .md-toast-content {
   outline: none;
 }
 
+.mc-text-area {
+  outline: none;
+  border: 2px solid #eaebed;
+}
+
 .mc-input-no-border {
   background-color: transparent;
   border: 0 none $mc-light-grey;
