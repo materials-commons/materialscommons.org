@@ -71,6 +71,37 @@ const inputSampleIndexMap = [
     {processIndex: 4, sampleIndexList: [4]}
 ];
 
+const setupProperties = [
+    {
+        processIndex: 0,
+        properties: [
+            {name: 'manufacturing_date', value: 1485977519347},           // February 1, 2017
+            {name: 'manufacturer',  value: 'Ohio State University'}
+        ]
+    },
+    {
+        processIndex: 3,
+        properties: [
+            {name: 'voltage', value: 31, unit: 'kV'},
+            {name: 'sample_tilt', value: 70},
+            {name: 'scan_size_width', value: 2500},
+            {name: 'scan_size_height', value: 2500},
+            {name: 'step_size', value: 1},
+            {name: 'working_distance', value: 20}
+        ]
+    },
+    {
+        processIndex: 4,
+        properties: [
+            {name: 'voltage', value: 15, unit: 'kV'},
+            {name: 'beam_current', value: 20, unit: 'nA'},
+            {name: 'step_size', value: 10},
+            {name: 'grid_dimensions', value: '20 x 20'},
+            {name: 'location', value: 'center, mid-thickness'}
+        ]
+    }
+];
+
 const tiffMimeType = "image/tiff";
 const jpegMimeType = "image/jpeg";
 const textMimeTYpe = "text/plain";
@@ -346,6 +377,10 @@ function* createOrFindInputSamplesForAllProcesses(project, experiment, processes
     }
 
     return ret;
+}
+
+function* update_process_setup_properties(project, experiment, process, prop_list) {
+
 }
 
 function filesDescriptions() {
