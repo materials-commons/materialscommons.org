@@ -1,11 +1,15 @@
-<div layout="row" md-whiteframe>
-    <span class="md-subhead">{{$ctrl.experiment.name}}</span>
-    <label>Last Updated:</label> <span>{{$ctrl.experiment.mtime | date:'shortDate'}}</span>
-    <div layout="column" flex="70">
-        <span>{{$ctrl.experiment.description}}</span>
-        <!-- hands on table for spreadsheet fields here -->
-        <!-- Experiment details such as description, samples count, etc.. here -->
-        <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
+<div layout="row" md-whiteframe flex>
+    <div layout="column" flex="50" layout-margin>
+        <div layout="row">
+            <a class="md-subhead" ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">{{$ctrl.experiment.name}}</a>
+            <label>Last Updated:</label> <span>{{$ctrl.experiment.mtime.epoch_time | date:'shortDate'}}</span>
+        </div>
+        <div layout="column">
+            <span>{{$ctrl.experiment.description}}</span>
+            <!-- hands on table for spreadsheet fields here -->
+            <!-- Experiment details such as description, samples count, etc.. here -->
+            <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
+        </div>
     </div>
     <textarea ckeditor="editorOptions"
               ng-model="$ctrl.experiment.note"
