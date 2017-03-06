@@ -1,11 +1,18 @@
 <div layout="row" md-whiteframe flex>
-    <div layout="column" flex="50" layout-margin>
+    <div layout="column" flex="55" layout-margin>
         <div layout="row">
-            <a class="md-subhead" ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">{{$ctrl.experiment.name}}</a>
-            <label>Last Updated:</label> <span>{{$ctrl.experiment.mtime.epoch_time | date:'shortDate'}}</span>
+            <a class="md-subhead" flex="70" ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">{{$ctrl.experiment.name}}</a>
+            <span flex="5"></span>
+            <div layout-align="start start" flex>
+                <span class="md-subhead">Last Updated:</span>
+                <span>{{$ctrl.experiment.mtime.epoch_time | date:'shortDate'}}</span>
+            </div>
         </div>
         <div layout="column">
-            <span>{{$ctrl.experiment.description}}</span>
+            <div layout="row">
+                <span class="md-subhead bold">Description:</span>
+                <span class="padding-left-15">{{$ctrl.experiment.description}}</span>
+            </div>
             <!-- hands on table for spreadsheet fields here -->
             <!-- Experiment details such as description, samples count, etc.. here -->
             <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
