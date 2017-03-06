@@ -604,6 +604,38 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
         });
         it('find or create the setup values for all Processes', function*() {
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+            assert.equal(user.id, demoProjectTestUserId);
+
+            let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+            assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
+            let project = valOrError.val;
+            assert.equal(project.name, demoProjectName);
+
+            valOrError = yield helper.createOrFindDemoProjectExperiment(project);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
+            let experiment = valOrError.val;
+            assert.equal(experiment.name, demoProjectExperimentName);
+
+            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+
+            let processes = valOrError.val;
+            assert.ok(processes);
+            assert.lengthOf(processes, processesData.length);
+            for (let i = 0; i < processesData.length; i++) {
+                let processData = processesData[i];
+                let processName = processData.name;
+
+                let process = processes[i];
+                assert.equal(process.otype, "process");
+                assert.equal(process.name, processName);
+            }
+
+            let propertyEntry = setupProperties[0];
+            let processIndex = propertyEntry.processIndex;
+            let setupProperties = propertyEntry.properties;
+
 
         });
     });
