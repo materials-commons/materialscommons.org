@@ -35,11 +35,27 @@ class MCProcessTemplateFilesListComponentController {
             (linkedSamples) => linkedSamples.forEach(s => {
                 let linkedFilesToAdd = [{id: file.id, name: file.name}];
                 this.samplesAPI.updateSampleFiles(this.projectId, s.id, linkedFilesToAdd, []).then(
-                    () => null,
+                    () => this.updateProcessSamples(s.id, linkedFilesToAdd),
                     () => this.toast.error('Unable to link sample to file')
                 );
             })
         );
+    }
+
+    updateProcessSamples(sampleId, filesToAdd) {
+        let iInput = _.indexOf(this.process.input_samples, s => s.id == sampleId),
+            iOutput = _.indexOf(this.process.output_samples, s => s.id == sampleId),
+            s;
+
+        if (iInput !== -1) {
+            s = this.process.input_samples[iInput];
+            s.files = _.uniq(s.files.concat(filesToAdd), 'id');
+        }
+
+        if (iOutput !== -1) {
+            s = this.process.output_samples[iOutput];
+            s.files = _.uniq(s.files.concat(filesToAdd), 'id');
+        }
     }
 }
 
