@@ -604,6 +604,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
         });
         it('find or create the setup values for all Processes', function*() {
+
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
 
@@ -632,10 +633,13 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 assert.equal(process.name, processName);
             }
 
+            let process = processes[0];
+
             let propertyEntry = setupProperties[0];
             let processIndex = propertyEntry.processIndex;
-            let setupProperties = propertyEntry.properties;
+            let properties = propertyEntry.properties;
 
+            console.log(process.setup[0].properties[0]);
 
         });
     });
