@@ -12,10 +12,10 @@ class MCExperimentOverviewDetailsComponentController {
                 title: 'Samples',
                 label: {
                     format: function (value) {
-                        return d3.format('')(value);
+                        return value;
                     }
                 },
-                width: 30,
+                width: 35
             }
         }
     }
