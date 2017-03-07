@@ -5,10 +5,10 @@
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
-        <a ng-if="$ctrl.isImage(file.mediatype.mime)"
-           class="md-primary" ng-click="$ctrl.showFile(file)" aria-label="view file">
+        <a ng-if="$ctrl.isImage($ctrl.file.mediatype.mime)"
+           class="md-primary" ng-click="$ctrl.showFile($ctrl.file)" aria-label="view file">
             <img class="img-thumbnail" height="140" width="140"
-                 ng-src="{{$ctrl.fileSrc(file.id)}}">
+                 ng-src="{{$ctrl.fileSrc($ctrl.file.id)}}">
         </a>
         <md-table-container>
             <table md-table>

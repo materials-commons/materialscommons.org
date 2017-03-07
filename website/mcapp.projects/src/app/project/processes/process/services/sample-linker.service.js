@@ -56,59 +56,21 @@ class LinkFilesToSampleController {
     cancel() {
         this.$mdDialog.cancel();
     }
-
-    linkFile(file) {
-        file.linked = true;
-        let i = _.findIndex(this.filesToLink, f => f.id == file.id && f.sample_id == file.sample_id);
-        if (i !== -1) {
-            let f = this.filesToLink[i];
-            f.id = file.id;
-            f.command = 'add';
-            f.name = file.name;
-            f.linked = file.linked;
-            f.sample_id = this.sample.id;
-        } else {
-            this.filesToLink.push({
-                id: file.id,
-                command: 'add',
-                name: file.name,
-                linked: file.linked,
-                sample_id: this.sample_id
-            });
-        }
-    }
-
-    unlinkFile(file) {
-        file.linked = false;
-        let i = _.findIndex(this.filesToLink, f => f.id == file.id && f.sample_id == file.sample_id);
-        if (i !== -1) {
-            let f = this.filesToLink[i];
-            f.id = file.id;
-            f.command = 'delete';
-            f.name = file.name;
-            f.linked = file.linked;
-            f.sample_id = this.sample.id;
-        }
-    }
-
-    linkAllFiles() {
-        this.filesToLink = [];
-        this.files.forEach(f => this.linkFile(f));
-    }
-
-    unlinkAllFiles() {
-        this.files.forEach(f => this.unlinkFile(f));
-    }
 }
 
 class LinkSamplesToFileController {
     /*@ngInject*/
-    constructor($mdDialog, isImage, mcfile) {
+    constructor($mdDialog, isImage, mcfile, showFileService) {
         this.$mdDialog = $mdDialog;
         this.isImage = isImage;
         this.fileSrc = mcfile.src;
+        this.showFileService = showFileService;
         this.samplesToLink = this.samples.map(s => ({id: s.id, name: s.name, linked: s.linked}));
         this.selected = [];
+    }
+
+    showFile(f) {
+        this.showFileService.showFile(f);
     }
 
     done() {
