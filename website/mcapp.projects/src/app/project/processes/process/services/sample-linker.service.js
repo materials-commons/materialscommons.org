@@ -2,7 +2,6 @@ class SampleLinkerService {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
-
     }
 
     linkFilesToSample(sample, input_files, output_files) {
@@ -21,6 +20,20 @@ class SampleLinkerService {
             locals: {
                 sample: sample,
                 files: files
+            }
+        });
+    }
+
+    linkSamplesToFile(file, samples) {
+        return this.$mdDialog.show({
+            templateUrl: 'app/project/processes/process/services/link-samples-to-file.html',
+            controller: LinkSamplesToFileController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            multiple: true,
+            locals: {
+                samples: samples,
+                file: file
             }
         });
     }
@@ -85,6 +98,25 @@ class LinkFilesToSampleController {
 
     unlinkAllFiles() {
         this.files.forEach(f => this.unlinkFile(f));
+    }
+}
+
+class LinkSamplesToFileController {
+    /*@ngInject*/
+    constructor($mdDialog, isImage, mcfile) {
+        this.$mdDialog = $mdDialog;
+        this.isImage = isImage;
+        this.fileSrc = mcfile.src;
+        this.samplesToLink = this.samples.map(s => ({id: s.id, name: s.name, linked: s.linked}));
+        this.selected = [];
+    }
+
+    done() {
+        this.$mdDialog.hide(this.samplesToLink);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 

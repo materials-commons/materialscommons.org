@@ -1,11 +1,13 @@
 class MCProcessTemplateFilesListComponentController {
     /*@ngInject*/
-    constructor(mcfile, isImage, showFileService, processesAPI, toast, $stateParams) {
+    constructor(mcfile, isImage, showFileService, processesAPI, toast, sampleLinker, samplesAPI, $stateParams) {
         this.fileSrc = mcfile.src;
         this.isImage = isImage;
         this.showFileService = showFileService;
         this.processesAPI = processesAPI;
         this.toast = toast;
+        this.sampleLinker = sampleLinker;
+        this.samplesAPI = samplesAPI;
         this.projectId = $stateParams.project_id;
     }
 
@@ -25,6 +27,19 @@ class MCProcessTemplateFilesListComponentController {
         if (i !== -1) {
             this.process.files.splice(i, 1);
         }
+    }
+
+    linkFileToSamples(file) {
+        let uniqueSamples = _.uniq(this.process.output_samples.concat(this.process.input_samples), 'id');
+        this.sampleLinker.linkSamplesToFile(file, uniqueSamples).then(
+            (linkedSamples) => linkedSamples.forEach(s => {
+                let linkedFilesToAdd = [{id: file.id, name: file.name}];
+                this.samplesAPI.updateSampleFiles(this.projectId, s.id, linkedFilesToAdd, []).then(
+                    () => null,
+                    () => this.toast.error('Unable to link sample to file')
+                );
+            })
+        );
     }
 }
 
