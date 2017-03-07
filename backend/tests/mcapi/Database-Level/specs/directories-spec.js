@@ -382,7 +382,7 @@ describe('Feature - directories: ', function() {
             let dir_list = result.val;
             assert.equal(dir_list.length, 1);
             assert.equal(dir_list[0].name,project_name + '/A1');
-            let name = project_name + '/XX'
+            let name = project_name + '/XX';
             let directory_id = dir_list[0].id;
             let rename_args = {
                 rename: {

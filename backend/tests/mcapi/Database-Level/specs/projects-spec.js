@@ -12,7 +12,7 @@ const r = require('rethinkdbdash')({
 
 const backend_base = '../../../..';
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
-const projects = require(backend_base + '/servers/mcapi/db/model/projects')
+const projects = require(backend_base + '/servers/mcapi/db/model/projects');
 
 const base_user_id = 'thisIsAUserForTestingONLY!';
 const fullname = "Test User";

@@ -7,7 +7,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const should = chai.should();
 const fs = require('fs');
-const os = require('os')
+const os = require('os');
 const promise = require('bluebird');
 const md5File = promise.promisify(require('md5-file'));
 const copy = require('copy');
@@ -49,24 +49,209 @@ const epmaTemplateId = 'global_EPMA Data Collection';
 
 const processesData = [
     {
-        'name': 'Lift 380 Casting Day  # 1',
-        'templateId': createSamplesTemplateId
+        name: 'Lift 380 Casting Day  # 1',
+        templateId: createSamplesTemplateId
     },
     {
-        'name': 'Casting L124',
-        'templateId': sectioningTemplateId
+        name: 'Casting L124',
+        templateId: sectioningTemplateId
     },
     {
-        'name': 'Sectioning of Casting L124',
-        'templateId': sectioningTemplateId
+        name: 'Sectioning of Casting L124',
+        templateId: sectioningTemplateId
     },
     {
-        'name': 'EBSD SEM Data Collection - 5 mm plate',
-        'templateId': ebsdTemplateId
+        name: 'EBSD SEM Data Collection - 5 mm plate',
+        templateId: ebsdTemplateId
     },
     {
-        'name': 'EPMA Data Collection - 5 mm plate - center',
-        'templateId': epmaTemplateId
+        name: 'EPMA Data Collection - 5 mm plate - center',
+        templateId: epmaTemplateId
+    }
+];
+
+const measurementsFromTemplate = [
+    {
+        tempateId: createSamplesTemplateId,
+        measurements: [
+            {attribute: 'composition', name: 'Composition', otype: 'compostion', units: ["at%", "wt%", "atoms"]}
+        ]
+    },
+    {
+        tempateId: sectioningTemplateId,
+        measurements: []
+    },
+    {
+        tempateId: ebsdTemplateId,
+        measurements: []
+    },
+    {
+        tempateId: epmaTemplateId,
+        measurements: []
+    }
+];
+
+const setupPropertiesFromTemplateDefaults = {
+    choices: [],
+    description: "",
+    required: false,
+    unit: "",
+    units: [],
+};
+
+const setupPropertiesFromTemplate = [
+    {
+        tempateId: createSamplesTemplateId,
+        properties: [
+            {
+                attribute: "manufacturer",
+                name: "Manufacturer",
+                otype: "string",
+            },
+            {
+                attribute: "supplier",
+                name: "Supplier",
+                otype: "string",
+            },
+            {
+                attribute: "manufacturing_date",
+                name: "Manufacturing Date",
+                otype: "date",
+            },
+            {
+                attribute: "production_method",
+                choices: [
+                    {name: "Cast", value: "cast"},
+                    {name: "Extruded", value: "extruded"},
+                    {name: "Rolled", value: "rolled"},
+                    {name: "Unknown", value: "unknown"},
+                    {name: "Other", value: "other"}
+                ],
+                name: "Production Method",
+                otype: "selection",
+            }
+        ]
+    },
+    {
+        tempateId: sectioningTemplateId,
+        properties: [
+            {
+                attribute: "notes",
+                name: "Notes",
+                otype: "string",
+            },
+        ]
+    },
+    {
+        tempateId: ebsdTemplateId,
+        properties: [
+            {
+                attribute: "voltage",
+                name: "Voltage",
+                otype: "number",
+                units: ["kV", "V"]
+            },
+            {
+                attribute: "current",
+                name: "Current",
+                otype: "number",
+                units: ["A", "mA", "nA"]
+            },
+            {
+                attribute: "sample_tilt",
+                name: "Sample Tilt",
+                otype: "number",
+                unit: "degress"
+            },
+            {
+                attribute: "magnification",
+                name: "Magnification",
+                otype: "number"
+            },
+            {
+                attribute: "acquisition_time",
+                name: "Acquisition Time",
+                otype: "number",
+                units: ["s", "ms"]
+            },
+            {
+                attribute: "scan_size_width",
+                name: "Scan Size Width",
+                otype: "number",
+                unit: "microns"
+            },
+            {
+                attribute: "scan_size_height",
+                name: "Scan Size Height",
+                otype: "number",
+                unit: "microns"
+            },
+            {
+                attribute: "step_size",
+                name: "Step Size",
+                otype: "number",
+                unit: "microns"
+            },
+            {
+                attribute: "working_distance",
+                name: "Working Distance",
+                otype: "number",
+                unit: "mm"
+            },
+            {
+                attribute: "horizontal_direction",
+                name: "Horizontal Direction",
+                otype: "string"
+            },
+            {
+                attribute: "vertical_direction",
+                name: "Vertical Direction",
+                otype: "string"
+            },
+        ],
+
+    },
+    {
+        tempateId: epmaTemplateId,
+        properties: [
+            {
+                attribute: "voltage",
+                name: "Voltage",
+                otype: "number",
+                units: ["kV", "V"]
+            },
+            {
+                attribute: "beam_current",
+                name: "Beam Current",
+                otype: "number",
+                units: ["A", "mA", "nA"],
+            }, {
+                attribute: "beam_size",
+                name: "Beam Size",
+                otype: "number",
+            }, {
+                attribute: "scan_type",
+                choices: [
+                    {name: "Line", value: "line"},
+                    {name: "Grid", value: "grid"},
+                    {name: "Point", "value": "point"}
+                ],
+                name: "Scan Type",
+                otype: "selection",
+            }, {
+                attribute: "step_size",
+                name: "Step Size",
+                otype: "number",
+            }, {
+                attribute: "grid_dimensions",
+                name: "Grid Dimensions",
+                otype: "string",
+                units: [],
+            }, {
+                attribute: "location",
+                name: "Location",
+                otype: "string",
+            }]
     }
 ];
 
@@ -78,7 +263,7 @@ const sampleNameData = [
 const outputSampleIndexMap = [
     {processIndex: 0, sampleIndexList: [0]},
     {processIndex: 1, sampleIndexList: [1]},
-    {processIndex: 2, sampleIndexList: [2,3,4,5,6]}
+    {processIndex: 2, sampleIndexList: [2, 3, 4, 5, 6]}
 ];
 
 const inputSampleIndexMap = [
@@ -92,29 +277,31 @@ const setupProperties = [
     {
         processIndex: 0,
         properties: [
-            {name: 'manufacturing_date', value: 1485977519347},           // February 1, 2017
-            {name: 'manufacturer',  value: 'Ohio State University'}
+            {attribute: 'manufacturing_date', value: 1485977519347},           // February 1, 2017
+            {attribute: 'manufacturer', value: 'Ohio State University'},
+            {attribute: "production_method", value: {name: "Cast", value: "cast"}}
         ]
     },
     {
         processIndex: 3,
         properties: [
-            {name: 'voltage', value: 31, unit: 'kV'},
-            {name: 'sample_tilt', value: 70},
-            {name: 'scan_size_width', value: 2500},
-            {name: 'scan_size_height', value: 2500},
-            {name: 'step_size', value: 1},
-            {name: 'working_distance', value: 20}
+            {attribute: 'voltage', value: 31, unit: 'kV'},
+            {attribute: 'sample_tilt', value: 70},
+            {attribute: 'scan_size_width', value: 2500},
+            {attribute: 'scan_size_height', value: 2500},
+            {attribute: 'step_size', value: 1},
+            {attribute: 'working_distance', value: 20}
         ]
     },
     {
         processIndex: 4,
         properties: [
-            {name: 'voltage', value: 15, unit: 'kV'},
-            {name: 'beam_current', value: 20, unit: 'nA'},
-            {name: 'step_size', value: 10},
-            {name: 'grid_dimensions', value: '20 x 20'},
-            {name: 'location', value: 'center, mid-thickness'}
+            {attribute: 'voltage', value: 15, unit: 'kV'},
+            {attribute: 'beam_current', value: 20, unit: 'nA'},
+            {attribute: 'step_size', value: 10},
+            {attribute: 'grid_dimensions', value: '20 x 20'},
+            {attribute: 'location', value: 'center, mid-thickness'},
+            {attribute: 'scane_type', value: {name: "Grid", value: "grid"}}
         ]
     }
 ];
@@ -358,6 +545,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert.equal(process.name, processName);
             assert.equal(process.template_id, templateId);
             assert.equal(process.owner, demoProjectTestUserId);
+
         });
         it('find or create all Demo Processes', function*() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
@@ -420,7 +608,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             let sampleIndexList = mapEntry.sampleIndexList;
             let sampleNames = [];
-            for (let i = 0; i < sampleIndexList.length; i++){
+            for (let i = 0; i < sampleIndexList.length; i++) {
                 sampleNames.push(sampleNameData[sampleIndexList[i]]);
             }
 
@@ -466,7 +654,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
 
             valOrError = yield helper.createOrFindOutputSamplesForAllProcesses(
-                project, experiment, processes, sampleNameData,outputSampleIndexMap);
+                project, experiment, processes, sampleNameData, outputSampleIndexMap);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindOutputSamplesForAllProcesses: " + valOrError.error);
 
             let samples = valOrError.val;
@@ -509,7 +697,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
 
             valOrError = yield helper.createOrFindOutputSamplesForAllProcesses(
-                project, experiment, processes, sampleNameData,outputSampleIndexMap);
+                project, experiment, processes, sampleNameData, outputSampleIndexMap);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindOutputSamplesForAllProcesses: " + valOrError.error);
 
             let samples = valOrError.val;
@@ -545,7 +733,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 }
             });
 
-            assert.lengthOf(missingSamples,0,"Samples missing from input_samplesa of perocess");
+            assert.lengthOf(missingSamples, 0, "Samples missing from input_samplesa of perocess");
 
         });
         it('find or create the input samples for all Processes', function*() {
@@ -600,10 +788,10 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 let processName = processes[mapEntry.processIndex].name;
                 let indexList = mapEntry.sampleIndexList;
                 let inputSampleList = inputSampleListList[i];
-                assert.lengthOf(inputSampleList,indexList.length, "Missing samples for process with name: " + processName);
+                assert.lengthOf(inputSampleList, indexList.length, "Missing samples for process with name: " + processName);
             }
         });
-        it('find or create the setup values for all Processes', function*() {
+        it('add the setup values for all Processes', function*() {
 
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
@@ -639,7 +827,9 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let processIndex = propertyEntry.processIndex;
             let properties = propertyEntry.properties;
 
-            console.log(process.setup[0].properties[0]);
+            console.log(process);
+
+            // intermix defaults, template, and value
 
         });
     });
