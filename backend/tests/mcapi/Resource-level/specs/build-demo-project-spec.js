@@ -52,9 +52,10 @@ const processesData = [
         name: 'Lift 380 Casting Day  # 1',
         templateId: createSamplesTemplateId,
         properties: [
-//            {attribute: 'manufacturing_date', value: new Date('Feb 1, 2017')} //,           // February 1, 2017 == 1485977519347
-            {attribute: 'manufacturer', value: 'Ohio State University'} //,
-//            {attribute: "production_method", value: {name: "Cast", value: "cast"}}
+            // Note: non-simple values do not appear to be working correctly, issue #998
+            // {attribute: 'manufacturing_date', value: new Date('Feb 1, 2017')},           // February 1, 2017 == 1485977519347
+            // {attribute: "production_method", value: {name: "Cast", value: "cast"}},
+            {attribute: 'manufacturer', value: 'Ohio State University'}
         ],
         measurements: [
             {attribute: 'composition', name: 'Composition', otype: 'compostion', units: ["at%", "wt%", "atoms"]}
@@ -89,12 +90,13 @@ const processesData = [
         name: 'EPMA Data Collection - 5 mm plate - center',
         templateId: epmaTemplateId,
         properties: [
+            // Note: non-simple values do not appear to be working correctly, issue #998
+            // {attribute: 'scan_type', value: {name: "Grid", value: "grid"}},
             {attribute: 'voltage', value: 15, unit: 'kV'},
             {attribute: 'beam_current', value: 20, unit: 'nA'},
             {attribute: 'step_size', value: 10},
             {attribute: 'grid_dimensions', value: '20 x 20'},
-            {attribute: 'location', value: 'center, mid-thickness'},
-            {attribute: 'scane_type', value: {name: "Grid", value: "grid"}}
+            {attribute: 'location', value: 'center, mid-thickness'}
         ],
         measurements: []
     }

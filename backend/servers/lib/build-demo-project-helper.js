@@ -19,10 +19,12 @@ const resourceUsers = require(backend_base + '/servers/mcapi/resources/users');
 const fileUtils = require(backend_base + '/servers/lib/create-file-utils');
 
 
+const demoProjectTestUserId = 'test@test.mc';
+const demoProjectTestUserKey = "totally-bogus";
 const demoProjectName = "Demo Project";
 const demoProjectDescription = "A project for trying things out.";
 const demoProjectExperimentName = "Demo: Microsegregation in HPDC L380";
-const dmeoProjectExperimentDescription =
+const demoProjectExperimentDescription =
     "A demo experiment - A study of microsegregation in High Pressure Die Cast L380.";
 
 const createSamplesTemplateId = 'global_Create Samples';
@@ -32,24 +34,56 @@ const epmaTemplateId = 'global_EPMA Data Collection';
 
 const processesData = [
     {
-        'name': 'Lift 380 Casting Day  # 1',
-        'templateId': createSamplesTemplateId
+        name: 'Lift 380 Casting Day  # 1',
+        templateId: createSamplesTemplateId,
+        properties: [
+            // Note: non-simple values do not appear to be working correctly, issue #998
+            // {attribute: 'manufacturing_date', value: new Date('Feb 1, 2017')},           // February 1, 2017 == 1485977519347
+            // {attribute: "production_method", value: {name: "Cast", value: "cast"}},
+            {attribute: 'manufacturer', value: 'Ohio State University'}
+        ],
+        measurements: [
+            {attribute: 'composition', name: 'Composition', otype: 'compostion', units: ["at%", "wt%", "atoms"]}
+        ]
     },
     {
-        'name': 'Casting L124',
-        'templateId': sectioningTemplateId
+        name: 'Casting L124',
+        templateId: sectioningTemplateId,
+        properties: [],
+        measurements: []
     },
     {
-        'name': 'Sectioning of Casting L124',
-        'templateId': sectioningTemplateId
+        name: 'Sectioning of Casting L124',
+        templateId: sectioningTemplateId,
+        properties: [],
+        measurements: []
     },
     {
-        'name': 'EBSD SEM Data Collection - 5 mm plate',
-        'templateId': ebsdTemplateId
+        name: 'EBSD SEM Data Collection - 5 mm plate',
+        templateId: ebsdTemplateId,
+        properties: [
+            {attribute: 'voltage', value: 31, unit: 'kV'},
+            {attribute: 'sample_tilt', value: 70},
+            {attribute: 'scan_size_width', value: 2500},
+            {attribute: 'scan_size_height', value: 2500},
+            {attribute: 'step_size', value: 1},
+            {attribute: 'working_distance', value: 20}
+        ],
+        measurements: []
     },
     {
-        'name': 'EPMA Data Collection - 5 mm plate - center',
-        'templateId': epmaTemplateId
+        name: 'EPMA Data Collection - 5 mm plate - center',
+        templateId: epmaTemplateId,
+        properties: [
+            // Note: non-simple values do not appear to be working correctly, issue #998
+            // {attribute: 'scan_type', value: {name: "Grid", value: "grid"}},
+            {attribute: 'voltage', value: 15, unit: 'kV'},
+            {attribute: 'beam_current', value: 20, unit: 'nA'},
+            {attribute: 'step_size', value: 10},
+            {attribute: 'grid_dimensions', value: '20 x 20'},
+            {attribute: 'location', value: 'center, mid-thickness'}
+        ],
+        measurements: []
     }
 ];
 
@@ -61,7 +95,7 @@ const sampleNameData = [
 const outputSampleIndexMap = [
     {processIndex: 0, sampleIndexList: [0]},
     {processIndex: 1, sampleIndexList: [1]},
-    {processIndex: 2, sampleIndexList: [2,3,4,5,6]}
+    {processIndex: 2, sampleIndexList: [2, 3, 4, 5, 6]}
 ];
 
 const inputSampleIndexMap = [
@@ -136,7 +170,7 @@ function* createOrFindDemoProjectForUser(user) {
     let attributes = {
         name: demoProjectName,
         description: demoProjectDescription
-    }
+    };
     // ret == val.ok_val or error.error
     return yield dbModelProjects.createProject(user, attributes);
 }
