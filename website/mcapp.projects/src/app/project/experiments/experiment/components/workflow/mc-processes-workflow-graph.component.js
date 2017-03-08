@@ -220,14 +220,13 @@ class MCProcessesWorkflowGraphComponentController {
                     selector: 'node, edge',
                     hasTrailingDivider: true,
                     onClickFunction: (event) => this._showDetails(event)
+                },
+                {
+                    id: 'clone-process',
+                    title: 'Clone Process',
+                    selector: 'node',
+                    onClickFunction: (event) => this._cloneProcess(event)
                 }
-                // ,
-                // {
-                //     id: 'clone-process',
-                //     title: 'Clone Process',
-                //     selector: 'node',
-                //     onClickFunction: (event) => this._cloneProcess(event)
-                // }
                 // ,
                 // {
                 //     id: 'delete-process',
