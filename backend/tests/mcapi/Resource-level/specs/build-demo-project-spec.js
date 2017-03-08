@@ -55,7 +55,8 @@ const processesData = [
             // Note: non-simple values do not appear to be working correctly, issue #998
             // {attribute: 'manufacturing_date', value: new Date('Feb 1, 2017')},           // February 1, 2017 == 1485977519347
             // {attribute: "production_method", value: {name: "Cast", value: "cast"}},
-            {attribute: 'manufacturer', value: 'Ohio State University'}
+            {attribute: 'manufacturer', value: 'Ohio State University'},
+            {attribute: 'supplier', value: 'Ohio State University'}
         ],
         measurements: [
             {attribute: 'composition', name: 'Composition', otype: 'compostion', units: ["at%", "wt%", "atoms"]}
@@ -605,7 +606,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 assert.lengthOf(inputSampleList, indexList.length, "Missing samples for process with name: " + processName);
             }
         });
-        it('add the setup values for all Processes', function*() {
+        it('add the setup values for a given Process', function*() {
 
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
@@ -654,7 +655,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
             
             let processIndex = 0;
-            let process = processes[0];
+            let process = processes[processIndex];
 
             let templateId = process['template_id'];
             let templateTable = yield helper.makeTemplateTable();
@@ -666,15 +667,15 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 templetPropertyTable[property.attribute] = property;
             });
 
-            let porcessSetupPropertyList = process.setup[0].properties;
+            let processSetupPropertyList = process.setup[0].properties;
             let processSetupTable = {};
-            porcessSetupPropertyList.forEach((property) => {
+            processSetupPropertyList.forEach((property) => {
                 processSetupTable[property.attribute] = property;
             });
 
-            assert.lengthOf(templatePropertyList,porcessSetupPropertyList.length,
+            assert.lengthOf(templatePropertyList,processSetupPropertyList.length,
                 "Lengths of property-list in process and template should match")
-            porcessSetupPropertyList.forEach((check) => {
+            processSetupPropertyList.forEach((check) => {
                 assert.ok(templetPropertyTable[check.attribute],
                     "unexpected property attribute in process: " + check.attribute);
                 assert.equal(templetPropertyTable[check.attribute].otype, check.otype,
@@ -693,7 +694,6 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                     if (setupValue.unit) {
                         property.unit = setupValue.unit;
                     }
-                    console.log(property);
                     args.push(property);
                 }
                 else {
@@ -707,13 +707,139 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                     JSON.stringify(valOrError.error));
             }
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoSetupProperties: " + valOrError.error);
-
             let updatedProcess = valOrError.val;
 
-            //console.log(updatedProcess.setup[0].properties);
+            assert.equal(process.id, updatedProcess.id, `Updated process for '${process.name}'`);
+
+            let updatedProperties = updatedProcess.setup[0].properties;
+
+            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+
+            processes = valOrError.val;
+            assert.ok(processes);
+            assert.lengthOf(processes, processesData.length);
+            for (let i = 0; i < processesData.length; i++) {
+                let probe = processes[i];
+                if (probe.id == process.id) {
+                    updatedProcess = probe;
+                    updatedProperties = probe.setup[0].properties;
+                }
+            }
+
+            assert.equal(process.id, updatedProcess.id, `Updated process for '${process.name}'`);
+            let updatedPropertyTable = {};
+            updatedProperties.forEach((property) => {
+                updatedPropertyTable[property.attribute] = property;
+            });
+
+            valuesForSetup.forEach((setupValue) => {
+                let property = updatedPropertyTable[setupValue.attribute];
+
+                if (property) {
+                    assert.equal(property.value, setupValue.value, "Value for process " + process.name
+                        + " property with attribute" + setupValue.attribute);
+                    if (setupValue.unit) {
+                        assert.equal(property.unit, setupValue.unit, "Unit for process " + process.name
+                            + " property with attribute" + setupValue.attribute);
+                    }
+                }
+                else {
+                    assert.fail("Process " + process.name
+                        + " is missing expected setup value attribute: " + setupValue.attribute);
+                }
+            });
+
         });
     });
 
+    it('add the setup values for all Processes', function*() {
+
+        let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+        assert.equal(user.id, demoProjectTestUserId);
+
+        let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+        assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
+        let project = valOrError.val;
+        assert.equal(project.name, demoProjectName);
+
+        valOrError = yield helper.createOrFindDemoProjectExperiment(project);
+        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
+        let experiment = valOrError.val;
+        assert.equal(experiment.name, demoProjectExperimentName);
+
+        valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+
+        let processes = valOrError.val;
+        assert.ok(processes);
+        assert.lengthOf(processes, processesData.length);
+        for (let i = 0; i < processesData.length; i++) {
+            let processData = processesData[i];
+            let processName = processData.name;
+
+            let process = processes[i];
+            assert.equal(process.otype, "process");
+            assert.equal(process.name, processName);
+        }
+
+        // Note: refresh process list. If they were created for the first time on the above call, then the
+        // body of the returned process is not sufficently decorated to support inserting properties;
+        // however, on refresh it is. Needs to be investigated.
+        valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+
+        processes = valOrError.val;
+        assert.ok(processes);
+        assert.lengthOf(processes, processesData.length);
+        for (let i = 0; i < processesData.length; i++) {
+            let processData = processesData[i];
+            let processName = processData.name;
+
+            let process = processes[i];
+            assert.equal(process.otype, "process");
+            assert.equal(process.name, processName);
+        }
+
+        valOrError = yield helper.createOrFindSetupPropertiesForAllDemoProcesses(project,experiment,processes);
+        assert.isUndefined(valOrError.error,
+            "Unexpected error from createOrFindSetupPropertiesForAllDemoProcesses: " + valOrError.error);
+
+        processes = valOrError.val;
+        assert.lengthOf(processes, processesData.length);
+
+        for (let processIndex = 0; processIndex < processes.length; processIndex++) {
+            let updatedProcess = processes[processIndex];
+            let updatedProperties = updatedProcess.setup[0].properties;
+            let valuesForSetup = processesData[processIndex].properties;
+            if (valuesForSetup && valuesForSetup.length < 0) {
+
+                let updatedPropertyTable = {};
+                updatedProperties.forEach((property) => {
+                    updatedPropertyTable[property.attribute] = property;
+                });
+
+                valuesForSetup.forEach((setupValue) => {
+                    let property = updatedPropertyTable[setupValue.attribute];
+
+                    if (property) {
+                        assert.equal(property.value, setupValue.value, "Value for process " + process.name
+                            + " property with attribute" + setupValue.attribute);
+                        if (setupValue.unit) {
+                            assert.equal(property.unit, setupValue.unit, "Unit for process " + process.name
+                                + " property with attribute" + setupValue.attribute);
+                        }
+                    }
+                    else {
+                        assert.fail("Process " + process.name
+                            + " is missing expected setup value attribute: " + setupValue.attribute);
+                    }
+                });
+
+            }
+        }
+
+    });
 });
 
 

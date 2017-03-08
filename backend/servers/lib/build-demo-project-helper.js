@@ -39,8 +39,9 @@ const processesData = [
         properties: [
             // Note: non-simple values do not appear to be working correctly, issue #998
             // {attribute: 'manufacturing_date', value: new Date('Feb 1, 2017')},           // February 1, 2017 == 1485977519347
-            // {attribute: "production_method", value: {name: "Cast", value: "cast"}},
-            {attribute: 'manufacturer', value: 'Ohio State University'}
+            {attribute: "production_method", value: {name: "Cast", value: "cast"}},
+            {attribute: 'manufacturer', value: 'Ohio State University'},
+            {attribute: 'supplier', value: 'Ohio State University'}
         ],
         measurements: [
             {attribute: 'composition', name: 'Composition', otype: 'compostion', units: ["at%", "wt%", "atoms"]}
@@ -438,7 +439,65 @@ function* createOrFindDemoProcessSetupProperties(project, experiment, process, p
         let samples = [];
         ret = yield dbModelExperiments.updateProcess(experiment.id, process.id,
             properties,files,samples);
+        if (!ret.error) {
+            ret = yield dbModelProcesses.getProcess(process.id);
+        }
     }
+    return ret;
+}
+
+function* createOrFindSetupPropertiesForAllDemoProcesses(project,experiment,processes) {
+    let ret = {error: "unexpected error in createOrFindSetupPropertiesForAllDemoProcesses"};
+
+    let templateTable = yield makeTemplateTable();
+
+    for (let processIndex = 0; processIndex < processes.length; processIndex++) {
+
+        let process = processes[processIndex];
+        let templateId = process['template_id'];
+        let template = templateTable[templateId];
+        let templatePropertyList = template.setup[0].properties;
+
+        let templetPropertyTable = {};
+        templatePropertyList.forEach((property) => {
+            templetPropertyTable[property.attribute] = property;
+        });
+
+        let processSetupPropertyList = process.setup[0].properties;
+        let processSetupTable = {};
+        processSetupPropertyList.forEach((property) => {
+            processSetupTable[property.attribute] = property;
+        });
+
+        let valuesForSetup = processesData[processIndex].properties;
+
+        if (valuesForSetup && valuesForSetup.length > 0) {
+
+            let args = [];
+            valuesForSetup.forEach((setupValue) => {
+                let property = processSetupTable[setupValue.attribute];
+
+                if (property) {
+                    property.setup_attribute = "instrument";
+                    property.value = setupValue.value;
+                    if (setupValue.unit) {
+                        property.unit = setupValue.unit;
+                    }
+                    args.push(property);
+                }
+            });
+
+            ret = yield createOrFindDemoProcessSetupProperties(project,experiment,process,args);
+            if (ret.error) {
+                break;
+            }
+        }
+    }
+
+    if (!ret.error) {
+        ret = yield createOrFindAllDemoProcesses(project, experiment);
+    }
+
     return ret;
 }
 
@@ -546,6 +605,7 @@ module.exports = {
     createOrFindInputSamplesForProcess,
     createOrFindInputSamplesForAllProcesses,
     createOrFindDemoProcessSetupProperties,
+    createOrFindSetupPropertiesForAllDemoProcesses,
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,
