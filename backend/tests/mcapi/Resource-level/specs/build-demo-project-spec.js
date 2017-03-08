@@ -50,208 +50,53 @@ const epmaTemplateId = 'global_EPMA Data Collection';
 const processesData = [
     {
         name: 'Lift 380 Casting Day  # 1',
-        templateId: createSamplesTemplateId
-    },
-    {
-        name: 'Casting L124',
-        templateId: sectioningTemplateId
-    },
-    {
-        name: 'Sectioning of Casting L124',
-        templateId: sectioningTemplateId
-    },
-    {
-        name: 'EBSD SEM Data Collection - 5 mm plate',
-        templateId: ebsdTemplateId
-    },
-    {
-        name: 'EPMA Data Collection - 5 mm plate - center',
-        templateId: epmaTemplateId
-    }
-];
-
-const measurementsFromTemplate = [
-    {
-        tempateId: createSamplesTemplateId,
+        templateId: createSamplesTemplateId,
+        properties: [
+//            {attribute: 'manufacturing_date', value: new Date('Feb 1, 2017')} //,           // February 1, 2017 == 1485977519347
+            {attribute: 'manufacturer', value: 'Ohio State University'} //,
+//            {attribute: "production_method", value: {name: "Cast", value: "cast"}}
+        ],
         measurements: [
             {attribute: 'composition', name: 'Composition', otype: 'compostion', units: ["at%", "wt%", "atoms"]}
         ]
     },
     {
-        tempateId: sectioningTemplateId,
+        name: 'Casting L124',
+        templateId: sectioningTemplateId,
+        properties: [],
         measurements: []
     },
     {
-        tempateId: ebsdTemplateId,
+        name: 'Sectioning of Casting L124',
+        templateId: sectioningTemplateId,
+        properties: [],
         measurements: []
     },
     {
-        tempateId: epmaTemplateId,
-        measurements: []
-    }
-];
-
-const setupPropertiesFromTemplateDefaults = {
-    choices: [],
-    description: "",
-    required: false,
-    unit: "",
-    units: [],
-};
-
-const setupPropertiesFromTemplate = [
-    {
-        tempateId: createSamplesTemplateId,
+        name: 'EBSD SEM Data Collection - 5 mm plate',
+        templateId: ebsdTemplateId,
         properties: [
-            {
-                attribute: "manufacturer",
-                name: "Manufacturer",
-                otype: "string",
-            },
-            {
-                attribute: "supplier",
-                name: "Supplier",
-                otype: "string",
-            },
-            {
-                attribute: "manufacturing_date",
-                name: "Manufacturing Date",
-                otype: "date",
-            },
-            {
-                attribute: "production_method",
-                choices: [
-                    {name: "Cast", value: "cast"},
-                    {name: "Extruded", value: "extruded"},
-                    {name: "Rolled", value: "rolled"},
-                    {name: "Unknown", value: "unknown"},
-                    {name: "Other", value: "other"}
-                ],
-                name: "Production Method",
-                otype: "selection",
-            }
-        ]
-    },
-    {
-        tempateId: sectioningTemplateId,
-        properties: [
-            {
-                attribute: "notes",
-                name: "Notes",
-                otype: "string",
-            },
-        ]
-    },
-    {
-        tempateId: ebsdTemplateId,
-        properties: [
-            {
-                attribute: "voltage",
-                name: "Voltage",
-                otype: "number",
-                units: ["kV", "V"]
-            },
-            {
-                attribute: "current",
-                name: "Current",
-                otype: "number",
-                units: ["A", "mA", "nA"]
-            },
-            {
-                attribute: "sample_tilt",
-                name: "Sample Tilt",
-                otype: "number",
-                unit: "degress"
-            },
-            {
-                attribute: "magnification",
-                name: "Magnification",
-                otype: "number"
-            },
-            {
-                attribute: "acquisition_time",
-                name: "Acquisition Time",
-                otype: "number",
-                units: ["s", "ms"]
-            },
-            {
-                attribute: "scan_size_width",
-                name: "Scan Size Width",
-                otype: "number",
-                unit: "microns"
-            },
-            {
-                attribute: "scan_size_height",
-                name: "Scan Size Height",
-                otype: "number",
-                unit: "microns"
-            },
-            {
-                attribute: "step_size",
-                name: "Step Size",
-                otype: "number",
-                unit: "microns"
-            },
-            {
-                attribute: "working_distance",
-                name: "Working Distance",
-                otype: "number",
-                unit: "mm"
-            },
-            {
-                attribute: "horizontal_direction",
-                name: "Horizontal Direction",
-                otype: "string"
-            },
-            {
-                attribute: "vertical_direction",
-                name: "Vertical Direction",
-                otype: "string"
-            },
+            {attribute: 'voltage', value: 31, unit: 'kV'},
+            {attribute: 'sample_tilt', value: 70},
+            {attribute: 'scan_size_width', value: 2500},
+            {attribute: 'scan_size_height', value: 2500},
+            {attribute: 'step_size', value: 1},
+            {attribute: 'working_distance', value: 20}
         ],
-
+        measurements: []
     },
     {
-        tempateId: epmaTemplateId,
+        name: 'EPMA Data Collection - 5 mm plate - center',
+        templateId: epmaTemplateId,
         properties: [
-            {
-                attribute: "voltage",
-                name: "Voltage",
-                otype: "number",
-                units: ["kV", "V"]
-            },
-            {
-                attribute: "beam_current",
-                name: "Beam Current",
-                otype: "number",
-                units: ["A", "mA", "nA"],
-            }, {
-                attribute: "beam_size",
-                name: "Beam Size",
-                otype: "number",
-            }, {
-                attribute: "scan_type",
-                choices: [
-                    {name: "Line", value: "line"},
-                    {name: "Grid", value: "grid"},
-                    {name: "Point", "value": "point"}
-                ],
-                name: "Scan Type",
-                otype: "selection",
-            }, {
-                attribute: "step_size",
-                name: "Step Size",
-                otype: "number",
-            }, {
-                attribute: "grid_dimensions",
-                name: "Grid Dimensions",
-                otype: "string",
-                units: [],
-            }, {
-                attribute: "location",
-                name: "Location",
-                otype: "string",
-            }]
+            {attribute: 'voltage', value: 15, unit: 'kV'},
+            {attribute: 'beam_current', value: 20, unit: 'nA'},
+            {attribute: 'step_size', value: 10},
+            {attribute: 'grid_dimensions', value: '20 x 20'},
+            {attribute: 'location', value: 'center, mid-thickness'},
+            {attribute: 'scane_type', value: {name: "Grid", value: "grid"}}
+        ],
+        measurements: []
     }
 ];
 
@@ -271,39 +116,6 @@ const inputSampleIndexMap = [
     {processIndex: 2, sampleIndexList: [1]},
     {processIndex: 3, sampleIndexList: [4]},
     {processIndex: 4, sampleIndexList: [4]}
-];
-
-const setupProperties = [
-    {
-        processIndex: 0,
-        properties: [
-            {attribute: 'manufacturing_date', value: 1485977519347},           // February 1, 2017
-            {attribute: 'manufacturer', value: 'Ohio State University'},
-            {attribute: "production_method", value: {name: "Cast", value: "cast"}}
-        ]
-    },
-    {
-        processIndex: 3,
-        properties: [
-            {attribute: 'voltage', value: 31, unit: 'kV'},
-            {attribute: 'sample_tilt', value: 70},
-            {attribute: 'scan_size_width', value: 2500},
-            {attribute: 'scan_size_height', value: 2500},
-            {attribute: 'step_size', value: 1},
-            {attribute: 'working_distance', value: 20}
-        ]
-    },
-    {
-        processIndex: 4,
-        properties: [
-            {attribute: 'voltage', value: 15, unit: 'kV'},
-            {attribute: 'beam_current', value: 20, unit: 'nA'},
-            {attribute: 'step_size', value: 10},
-            {attribute: 'grid_dimensions', value: '20 x 20'},
-            {attribute: 'location', value: 'center, mid-thickness'},
-            {attribute: 'scane_type', value: {name: "Grid", value: "grid"}}
-        ]
-    }
 ];
 
 // **^^  NOTE: See const section of helper; ref - const helper above ^^**
@@ -821,16 +633,82 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 assert.equal(process.name, processName);
             }
 
+            // Note: refresh process list. If they were created for the first time on the above call, then the
+            // body of the returned process is not sufficently decorated to support inserting properties;
+            // however, on refresh it is. Needs to be investigated.
+            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+
+            processes = valOrError.val;
+            assert.ok(processes);
+            assert.lengthOf(processes, processesData.length);
+            for (let i = 0; i < processesData.length; i++) {
+                let processData = processesData[i];
+                let processName = processData.name;
+
+                let process = processes[i];
+                assert.equal(process.otype, "process");
+                assert.equal(process.name, processName);
+            }
+            
+            let processIndex = 0;
             let process = processes[0];
 
-            let propertyEntry = setupProperties[0];
-            let processIndex = propertyEntry.processIndex;
-            let properties = propertyEntry.properties;
+            let templateId = process['template_id'];
+            let templateTable = yield helper.makeTemplateTable();
+            let template = templateTable[templateId];
+            let templatePropertyList = template.setup[0].properties;
 
-            console.log(process);
+            let templetPropertyTable = {};
+            templatePropertyList.forEach((property) => {
+                templetPropertyTable[property.attribute] = property;
+            });
 
-            // intermix defaults, template, and value
+            let porcessSetupPropertyList = process.setup[0].properties;
+            let processSetupTable = {};
+            porcessSetupPropertyList.forEach((property) => {
+                processSetupTable[property.attribute] = property;
+            });
 
+            assert.lengthOf(templatePropertyList,porcessSetupPropertyList.length,
+                "Lengths of property-list in process and template should match")
+            porcessSetupPropertyList.forEach((check) => {
+                assert.ok(templetPropertyTable[check.attribute],
+                    "unexpected property attribute in process: " + check.attribute);
+                assert.equal(templetPropertyTable[check.attribute].otype, check.otype,
+                    "Type mismatch for property with attribute: " + check.attribute);
+            });
+
+            let valuesForSetup = processesData[processIndex].properties;
+
+            let args = [];
+            valuesForSetup.forEach((setupValue) => {
+                let property = processSetupTable[setupValue.attribute];
+
+                if (property) {
+                    property.setup_attribute = "instrument";
+                    property.value = setupValue.value;
+                    if (setupValue.unit) {
+                        property.unit = setupValue.unit;
+                    }
+                    console.log(property);
+                    args.push(property);
+                }
+                else {
+                    assert.fail("Template is missing expected attribute: " + setupValue.attribute);
+                }
+            });
+
+            valOrError = yield helper.createOrFindDemoProcessSetupProperties(project,experiment,process,args);
+            if (valOrError.error) {
+                console.log("           Error expanded from setup properties: " ,
+                    JSON.stringify(valOrError.error));
+            }
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoSetupProperties: " + valOrError.error);
+
+            let updatedProcess = valOrError.val;
+
+            //console.log(updatedProcess.setup[0].properties);
         });
     });
 

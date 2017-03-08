@@ -337,8 +337,11 @@ function* createOrFindInputSamplesForProcess(project, experiment, process, sampl
                 if (errors != null) {
                     ret = errors;
                 } else {
+                    let properties = [];
+                    let files = [];
+                    let samples = args.samples;
                     ret = yield dbModelExperiments.updateProcess(experiment.id, process.id,
-                        [], [], args.samples);
+                        properties,files,samples);
                     resultsingSamples = ret.val.input_samples;
                 }
             }
@@ -379,8 +382,30 @@ function* createOrFindInputSamplesForAllProcesses(project, experiment, processes
     return ret;
 }
 
-function* update_process_setup_properties(project, experiment, process, prop_list) {
-
+function* createOrFindDemoProcessSetupProperties(project, experiment, process, propList) {
+    let ret = {error: "unexpected error in createOrFindDemoProcessSetupProperties"};
+    let args = {
+        template_id: process.template_id,
+        process_id: process.id,
+        properties: propList
+    };
+    let params = {
+        project_id: project.id,
+        experiment_id: experiment.id,
+        process_id: process.id
+    };
+    let errors = yield resourcesProjectsExperimentsProcesses
+        .validateUpdateExperimentProcessTemplateArgs(args, params);
+    if (errors != null) {
+        ret = {error: errors};
+    } else {
+        let properties = args.properties;
+        let files = [];
+        let samples = [];
+        ret = yield dbModelExperiments.updateProcess(experiment.id, process.id,
+            properties,files,samples);
+    }
+    return ret;
 }
 
 function filesDescriptions() {
@@ -486,6 +511,7 @@ module.exports = {
     createOrFindOutputSamplesForAllProcesses,
     createOrFindInputSamplesForProcess,
     createOrFindInputSamplesForAllProcesses,
+    createOrFindDemoProcessSetupProperties,
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,
