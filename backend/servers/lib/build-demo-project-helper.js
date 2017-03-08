@@ -177,7 +177,7 @@ function* createOrFindDemoProjectForUser(user) {
 
 function* createOrFindDemoProjectExperiment(project) {
     let experimentName = demoProjectExperimentName;
-    let experimentDescription = dmeoProjectExperimentDescription;
+    let experimentDescription = demoProjectExperimentDescription;
     let ret = yield dbModelExperiments.getAllForProject(project.id);
     if (ret.val) {
         let experiment = null;
