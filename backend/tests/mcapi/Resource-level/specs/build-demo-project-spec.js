@@ -761,150 +761,147 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             });
 
         });
-    });
+        it('add the setup values for all Processes', function*() {
 
-    it('add the setup values for all Processes', function*() {
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+            assert.equal(user.id, demoProjectTestUserId);
 
-        let user = yield dbModelUsers.getUser(demoProjectTestUserId);
-        assert.equal(user.id, demoProjectTestUserId);
+            let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+            assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
+            let project = valOrError.val;
+            assert.equal(project.name, demoProjectName);
 
-        let valOrError = yield helper.createOrFindDemoProjectForUser(user);
-        assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
-        let project = valOrError.val;
-        assert.equal(project.name, demoProjectName);
+            valOrError = yield helper.createOrFindDemoProjectExperiment(project);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
+            let experiment = valOrError.val;
+            assert.equal(experiment.name, demoProjectExperimentName);
 
-        valOrError = yield helper.createOrFindDemoProjectExperiment(project);
-        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
-        let experiment = valOrError.val;
-        assert.equal(experiment.name, demoProjectExperimentName);
+            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
-        valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
-        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+            let processes = valOrError.val;
+            assert.ok(processes);
+            assert.lengthOf(processes, processesData.length);
+            for (let i = 0; i < processesData.length; i++) {
+                let processData = processesData[i];
+                let processName = processData.name;
 
-        let processes = valOrError.val;
-        assert.ok(processes);
-        assert.lengthOf(processes, processesData.length);
-        for (let i = 0; i < processesData.length; i++) {
-            let processData = processesData[i];
-            let processName = processData.name;
+                let process = processes[i];
+                assert.equal(process.otype, "process");
+                assert.equal(process.name, processName);
+            }
 
-            let process = processes[i];
-            assert.equal(process.otype, "process");
-            assert.equal(process.name, processName);
-        }
+            // Note: refresh process list. If they were created for the first time on the above call, then the
+            // body of the returned process is not sufficently decorated to support inserting properties;
+            // however, on refresh it is. Needs to be investigated.
+            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
-        // Note: refresh process list. If they were created for the first time on the above call, then the
-        // body of the returned process is not sufficently decorated to support inserting properties;
-        // however, on refresh it is. Needs to be investigated.
-        valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
-        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+            processes = valOrError.val;
+            assert.ok(processes);
+            assert.lengthOf(processes, processesData.length);
+            for (let i = 0; i < processesData.length; i++) {
+                let processData = processesData[i];
+                let processName = processData.name;
 
-        processes = valOrError.val;
-        assert.ok(processes);
-        assert.lengthOf(processes, processesData.length);
-        for (let i = 0; i < processesData.length; i++) {
-            let processData = processesData[i];
-            let processName = processData.name;
+                let process = processes[i];
+                assert.equal(process.otype, "process");
+                assert.equal(process.name, processName);
+            }
 
-            let process = processes[i];
-            assert.equal(process.otype, "process");
-            assert.equal(process.name, processName);
-        }
+            valOrError = yield helper.createOrFindSetupPropertiesForAllDemoProcesses(project,experiment,processes);
+            assert.isUndefined(valOrError.error,
+                "Unexpected error from createOrFindSetupPropertiesForAllDemoProcesses: " + valOrError.error);
 
-        valOrError = yield helper.createOrFindSetupPropertiesForAllDemoProcesses(project,experiment,processes);
-        assert.isUndefined(valOrError.error,
-            "Unexpected error from createOrFindSetupPropertiesForAllDemoProcesses: " + valOrError.error);
+            processes = valOrError.val;
+            assert.lengthOf(processes, processesData.length);
 
-        processes = valOrError.val;
-        assert.lengthOf(processes, processesData.length);
+            for (let processIndex = 0; processIndex < processes.length; processIndex++) {
+                let updatedProcess = processes[processIndex];
+                let updatedProperties = updatedProcess.setup[0].properties;
+                let valuesForSetup = processesData[processIndex].properties;
+                if (valuesForSetup && valuesForSetup.length < 0) {
 
-        for (let processIndex = 0; processIndex < processes.length; processIndex++) {
-            let updatedProcess = processes[processIndex];
-            let updatedProperties = updatedProcess.setup[0].properties;
-            let valuesForSetup = processesData[processIndex].properties;
-            if (valuesForSetup && valuesForSetup.length < 0) {
+                    let updatedPropertyTable = {};
+                    updatedProperties.forEach((property) => {
+                        updatedPropertyTable[property.attribute] = property;
+                    });
 
-                let updatedPropertyTable = {};
-                updatedProperties.forEach((property) => {
-                    updatedPropertyTable[property.attribute] = property;
-                });
+                    valuesForSetup.forEach((setupValue) => {
+                        let property = updatedPropertyTable[setupValue.attribute];
 
-                valuesForSetup.forEach((setupValue) => {
-                    let property = updatedPropertyTable[setupValue.attribute];
-
-                    if (property) {
-                        assert.equal(property.value, setupValue.value, "Value for process " + process.name
-                            + " property with attribute" + setupValue.attribute);
-                        if (setupValue.unit) {
-                            console.log("unit - " + setupValue.attribute + ': ' + property.unit);
-                            assert.equal(property.unit, setupValue.unit, "Unit for process " + process.name
+                        if (property) {
+                            assert.equal(property.value, setupValue.value, "Value for process " + process.name
                                 + " property with attribute" + setupValue.attribute);
+                            if (setupValue.unit) {
+                                console.log("unit - " + setupValue.attribute + ': ' + property.unit);
+                                assert.equal(property.unit, setupValue.unit, "Unit for process " + process.name
+                                    + " property with attribute" + setupValue.attribute);
+                            }
                         }
-                    }
-                    else {
-                        assert.fail("Process " + process.name
-                            + " is missing expected setup value attribute: " + setupValue.attribute);
-                    }
-                });
+                        else {
+                            assert.fail("Process " + process.name
+                                + " is missing expected setup value attribute: " + setupValue.attribute);
+                        }
+                    });
 
+                }
             }
-        }
 
-    });
-    it('add the measurement values for the only Process with a measurement', function*() {
-        let user = yield dbModelUsers.getUser(demoProjectTestUserId);
-        assert.equal(user.id, demoProjectTestUserId);
-
-        let valOrError = yield helper.createOrFindDemoProjectForUser(user);
-        assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
-        let project = valOrError.val;
-        assert.equal(project.name, demoProjectName);
-
-        valOrError = yield helper.createOrFindDemoProjectExperiment(project);
-        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
-        let experiment = valOrError.val;
-        assert.equal(experiment.name, demoProjectExperimentName);
-
-        valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
-        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
-
-        // Note: refresh process list. If they were created for the first time on the above call, then the
-        // body of the returned process is not sufficently decorated to support inserting properties;
-        // however, on refresh it is. Needs to be investigated.
-        valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
-        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
-
-        let processes = valOrError.val;
-        let process = processes[0];
-        let processData = processesData[0];
-        let measurement = processData.measurements[0];
-
-        valOrError = yield helper.updateMeasurementForProcessSamples(process,measurement);
-        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindMeasurement: " + valOrError.error);
-
-        let samples = valOrError.val;
-        let sample = samples[0];
-        let updatedProcess = null;
-        sample.processes.forEach((probe) => {
-            if (probe.id == process.id) {
-                updatedProcess = probe;
-            }
         });
+        it('add the measurement values for the only Process with a measurement', function*() {
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+            assert.equal(user.id, demoProjectTestUserId);
 
-        let updatedmeasurement = updatedProcess.measurements[0];
+            let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+            assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
+            let project = valOrError.val;
+            assert.equal(project.name, demoProjectName);
 
-        assert.equal(measurement.attribute,updatedmeasurement.attribute);
-        assert.equal(measurement.name,updatedmeasurement.name);
-        assert.equal(measurement.otype,updatedmeasurement.otype);
-        assert.equal(measurement.unit,updatedmeasurement.unit);
-        assert.lengthOf(updatedmeasurement.value,measurement.value.length);
-        for (let i = 0; i < measurement.value.length; i++) {
-            assert.equal(updatedmeasurement.value[i].element,measurement.value[i].element)
-            assert.equal(updatedmeasurement.value[i].value,measurement.value[i].value)
-        }
+            valOrError = yield helper.createOrFindDemoProjectExperiment(project);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
+            let experiment = valOrError.val;
+            assert.equal(experiment.name, demoProjectExperimentName);
 
+            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
+            // Note: refresh process list. If they were created for the first time on the above call, then the
+            // body of the returned process is not sufficently decorated to support inserting properties;
+            // however, on refresh it is. Needs to be investigated.
+            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
+            let processes = valOrError.val;
+            let process = processes[0];
+            let processData = processesData[0];
+            let measurement = processData.measurements[0];
+
+            valOrError = yield helper.updateMeasurementForProcessSamples(process,measurement);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindMeasurement: " + valOrError.error);
+
+            let samples = valOrError.val;
+            let sample = samples[0];
+            let updatedProcess = null;
+            sample.processes.forEach((probe) => {
+                if (probe.id == process.id) {
+                    updatedProcess = probe;
+                }
+            });
+
+            let updatedmeasurement = updatedProcess.measurements[0];
+
+            assert.equal(measurement.attribute,updatedmeasurement.attribute);
+            assert.equal(measurement.name,updatedmeasurement.name);
+            assert.equal(measurement.otype,updatedmeasurement.otype);
+            assert.equal(measurement.unit,updatedmeasurement.unit);
+            assert.lengthOf(updatedmeasurement.value,measurement.value.length);
+            for (let i = 0; i < measurement.value.length; i++) {
+                assert.equal(updatedmeasurement.value[i].element,measurement.value[i].element)
+                assert.equal(updatedmeasurement.value[i].value,measurement.value[i].value)
+            }
+
+        });
     });
 });
 
