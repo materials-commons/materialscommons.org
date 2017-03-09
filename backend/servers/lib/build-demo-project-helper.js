@@ -165,6 +165,10 @@ const checksumsFilesAndMimiTypes = [
 
 const datapath = 'backend/scripts/demo-project/demo_project_data';
 
+const processFileIndexList = [
+    [0,2,3], [0,1], [1], [4,5,6,7,8,9,10], [11,12,13,14,15]
+];
+
 function* createOrFindDemoProjectForUser(user) {
     // Note create project returns the project if it already exists, by name
     // It does not create a duplicate!
@@ -583,7 +587,7 @@ function* filesMissingInDatabase(project) {
     return ret;
 }
 
-function* addAllFiles(user, project) {
+function* addAllFilesToProject(user, project) {
     let top_directory = yield dbModelDirectories.get(project.id, 'top');
     let tempDir = os.tmpdir();
     for (let i = 0; i < filesDescriptions().length; i++) {
@@ -618,7 +622,69 @@ function* filesForProject(project) {
         let fileOrDir = children[i];
         if (fileOrDir.otype == 'file') files.push(fileOrDir);
     }
+    files = restoreProjectSourceOrderToFiles(files);
     return files;
+}
+
+function restoreProjectSourceOrderToFiles(files){
+    let returnFileList = [];
+    let fileTable = {}
+    files.forEach((file) => {
+        fileTable[file.checksum] = file;
+    });
+    checksumsFilesAndMimiTypes.forEach((fileEntry) => {
+        let checksum = fileEntry[0];
+        returnFileList.push(fileTable[checksum]);
+    });
+    return returnFileList;
+}
+
+function* addAllFilesToExperimentProcesses(project,experiment,processes,files) {
+    let ret = {error: "unexpected error in createOrFindDemoProcessSetupProperties"};
+    let processesToReturn = [];
+    for (let processIndex = 0; processIndex < processFileIndexList.length; processIndex++) {
+        let process = processes[processIndex];
+        let fileIndexes = processFileIndexList[processIndex];
+        let filesArg = [];
+        for (let i = 0; i < fileIndexes.length; i++) {
+            let file = files[fileIndexes[i]];
+            filesArg.push({command: 'add', id: file.id});
+        }
+        // Note: no duplication of redundent files
+        let args = {
+            template_id: process.template_id,
+            process_id: process.id,
+            files: filesArg
+        };
+        let params = {
+            project_id: project.id,
+            experiment_id: experiment.id,
+            process_id: process.id
+        };
+        let errors = yield resourcesProjectsExperimentsProcesses
+            .validateUpdateExperimentProcessTemplateArgs(args, params);
+        if (errors != null) {
+            ret = {error: errors};
+        } else {
+            let properties = [];
+            let files = args.files;
+            let samples = [];
+            ret = yield dbModelExperiments.updateProcess(experiment.id, process.id,
+                properties, files, samples);
+        }
+        if (!ret.error) {
+            ret = yield dbModelProcesses.getProcess(process.id);
+            if (!ret.error) {
+                let process = ret.val;
+                processesToReturn.push(process);
+            }
+        }
+        if (ret.error) break;
+    }
+    if (!ret.error) {
+        ret.val = processesToReturn;
+    }
+    return ret;
 }
 
 function* makeTemplateTable() {
@@ -648,7 +714,8 @@ module.exports = {
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,
-    addAllFiles,
+    addAllFilesToProject,
     filesForProject,
+    addAllFilesToExperimentProcesses,
     makeTemplateTable
 };
