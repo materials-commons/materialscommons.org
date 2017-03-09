@@ -14,14 +14,24 @@ const processesData = [
         name: 'Lift 380 Casting Day  # 1',
         templateId: createSamplesTemplateId,
         properties: [
-            // Note: non-simple values do not appear to be working correctly, issue #998
+            // Note: problem with date verification and retrival issue #998
             // {attribute: 'manufacturing_date', value: new Date('Feb 1, 2017')},           // February 1, 2017 == 1485977519347
             {attribute: "production_method", value: {name: "Cast", value: "cast"}},
             {attribute: 'manufacturer', value: 'Ohio State University'},
             {attribute: 'supplier', value: 'Ohio State University'}
         ],
         measurements: [
-            {attribute: 'composition', name: 'Composition', otype: 'compostion', units: ["at%", "wt%", "atoms"]}
+            {
+                name: "Composition",
+                attribute: "composition",
+                otype: "composition",
+                unit: "at%",
+                value: [
+                    {"element": "Al", "value": 94},
+                    {"element": "Ca", "value": 1},
+                    {"element": "Zr", "value": 5}],
+                is_best_measure: true
+            }
         ]
     },
     {
@@ -53,8 +63,7 @@ const processesData = [
         name: 'EPMA Data Collection - 5 mm plate - center',
         templateId: epmaTemplateId,
         properties: [
-            // Note: non-simple values do not appear to be working correctly, issue #998
-            // {attribute: 'scan_type', value: {name: "Grid", value: "grid"}},
+            {attribute: 'scan_type', value: {name: "Grid", value: "grid"}},
             {attribute: 'voltage', value: 15, unit: 'kV'},
             {attribute: 'beam_current', value: 20, unit: 'nA'},
             {attribute: 'step_size', value: 10},
@@ -81,37 +90,6 @@ const inputSampleIndexMap = [
     {processIndex: 2, sampleIndexList: [1]},
     {processIndex: 3, sampleIndexList: [4]},
     {processIndex: 4, sampleIndexList: [4]}
-];
-
-const setupProperties = [
-    {
-        processIndex: 0,
-        properties: [
-            {name: 'manufacturing_date', value: 1485977519347},           // February 1, 2017
-            {name: 'manufacturer', value: 'Ohio State University'}
-        ]
-    },
-    {
-        processIndex: 3,
-        properties: [
-            {name: 'voltage', value: 31, unit: 'kV'},
-            {name: 'sample_tilt', value: 70},
-            {name: 'scan_size_width', value: 2500},
-            {name: 'scan_size_height', value: 2500},
-            {name: 'step_size', value: 1},
-            {name: 'working_distance', value: 20}
-        ]
-    },
-    {
-        processIndex: 4,
-        properties: [
-            {name: 'voltage', value: 15, unit: 'kV'},
-            {name: 'beam_current', value: 20, unit: 'nA'},
-            {name: 'step_size', value: 10},
-            {name: 'grid_dimensions', value: '20 x 20'},
-            {name: 'location', value: 'center, mid-thickness'}
-        ]
-    }
 ];
 
 const tiffMimeType = "image/tiff";
@@ -151,10 +129,15 @@ module.exports = {
     demoProjectDescription,
     demoProjectExperimentName,
     demoProjectExperimentDescription,
+    createSamplesTemplateId,
+    sectioningTemplateId,
+    ebsdTemplateId,
+    epmaTemplateId,
     processesData,
     sampleNameData,
     outputSampleIndexMap,
     inputSampleIndexMap,
-    setupProperties,
-    checksumsFilesAndMimiTypes
+    checksumsFilesAndMimiTypes,
+    datapath,
+    processFileIndexList
 };

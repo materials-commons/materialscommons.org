@@ -24,16 +24,20 @@ const projects = require(backend_base + '/servers/mcapi/db/model/projects');
 const directories = require(backend_base + '/servers/mcapi/db/model/directories');
 const files = require(backend_base + '/servers/mcapi/db/model/files');
 const users = require(backend_base + '/servers/mcapi/resources/users');
-const helper = require(backend_base + '/servers/lib/build-demo-project-helper');
 const fileUtils = require(backend_base + '/servers/lib/create-file-utils');
 
-const demoProjectConf = require(backend_base + '/servers/lib/builld-demo-project-conf');
+const helper = require(backend_base + '/servers/lib/build-demo-project-helper');
+const demoProjectConf = require(backend_base + '/servers/lib/build-demo-project-conf');
+const buildDemoProject = require(backend_base + '/servers/lib/build-demo-project');
 
 const fullname = "Test User";
 const user_apikey = "ThisIsAJunkKey";
 const user1Id = "mctest@mc.org";
 
 const base_project_name = "Demo project test: ";
+
+const demoProjectTestUserId = 'test@test.mc';
+const demoProjectTestUserKey = "totally-bogus";
 
 let random_name = function () {
     let number = Math.floor(Math.random() * 10000);
@@ -77,21 +81,19 @@ describe('Feature - User - Build Demo Project Support: ', function () {
     });
     describe('List of files for build', function () {
         it('exists in folder', function *() {
-            let datapath = 'backend/scripts/demo-project/demo_project_data';
-            assert(fs.existsSync(datapath), "missing test datafile dir " + datapath);
+            assert(fs.existsSync(demoProjectConf.datapath), "missing test datafile dir " + demoProjectConf.datapath);
             for (let i = 0; i < helper.filesDescriptions().length; i++) {
                 let checksumAndFilename = helper.filesDescriptions()[i];
                 let expectedChecksum = checksumAndFilename[0];
                 let filename = checksumAndFilename[1];
-                let path = `${datapath}/${filename}`;
-                assert(fs.existsSync(path), "missing test datafile " + datapath + "/" + filename);
+                let path = `${demoProjectConf.datapath}/${filename}`;
+                assert(fs.existsSync(path), "missing test datafile " + demoProjectConf.datapath + "/" + filename);
                 let checksum = yield md5File(path);
                 assert(expectedChecksum == checksum, "Checksums should be equal for file: " +
                     filename + "; but expected " + expectedChecksum + " and got " + checksum);
             }
         });
         it('can be inserted in database', function*() {
-            let datapath = 'backend/scripts/demo-project/demo_project_data';
             let user = yield dbModelUsers.getUser(user1Id);
             assert.isNotNull(user, "test user exists");
             let projectName = random_name();
@@ -114,8 +116,8 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 let expectedChecksum = checksumFilenameAndMimetype[0];
                 let filename = checksumFilenameAndMimetype[1];
                 let mimetype = checksumFilenameAndMimetype[2];
-                let path = `${datapath}/${filename}`;
-                assert(fs.existsSync(path), "missing test datafile " + datapath + "/" + filename);
+                let path = `${demoProjectConf.datapath}/${filename}`;
+                assert(fs.existsSync(path), "missing test datafile " + demoProjectConf.datapath + "/" + filename);
                 let checksum = yield md5File(path);
                 assert(expectedChecksum == checksum, "Checksums should be equal for file: " +
                     filename + "; but expected " + expectedChecksum + " and got " + checksum);
@@ -146,8 +148,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
         });
         it('is in the database', function*() {
-            let datapath = 'backend/scripts/demo-project/demo_project_data';
-            assert(fs.existsSync(datapath), "missing test datafile dir " + datapath);
+            assert(fs.existsSync(demoProjectConf.datapath), "missing test datafile dir " + demoProjectConf.datapath);
             for (let i = 0; i < helper.filesDescriptions().length; i++) {
                 let checksumAndFilename = helper.filesDescriptions()[i];
                 let checksum = checksumAndFilename[0];
@@ -195,10 +196,10 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let table = yield helper.makeTemplateTable();
             assert.isOk(table, "table is undefined");
             assert(!_.isEmpty(table), "table is empty");
-            assert.isOk(table[createSamplesTemplateId], `table has a value for '${createSamplesTemplateId}'`);
-            assert.isOk(table[sectioningTemplateId], `table has a value for '${sectioningTemplateId}'`);
-            assert.isOk(table[ebsdTemplateId], `table has a value for '${ebsdTemplateId}'`);
-            assert.isOk(table[epmaTemplateId], `table has a value for '${epmaTemplateId}'`);
+            assert.isOk(table[demoProjectConf.createSamplesTemplateId], `table has a value for '${demoProjectConf.createSamplesTemplateId}'`);
+            assert.isOk(table[demoProjectConf.sectioningTemplateId], `table has a value for '${demoProjectConf.sectioningTemplateId}'`);
+            assert.isOk(table[demoProjectConf.ebsdTemplateId], `table has a value for '${demoProjectConf.ebsdTemplateId}'`);
+            assert.isOk(table[demoProjectConf.epmaTemplateId], `table has a value for '${demoProjectConf.epmaTemplateId}'`);
         });
     });
     describe('Build Demo Project helper main functions', function () {
@@ -222,8 +223,8 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let project = valOrError.val;
             assert.isNotNull(project, "project is not null");
             assert.equal(project.otype, "project");
-            assert.equal(project.name, demoProjectName);
-            assert(project.description.includes(demoProjectDescription)); // may have been turned into html!!
+            assert.equal(project.name, demoProjectConf.demoProjectName);
+            assert(project.description.includes(demoProjectConf.demoProjectDescription)); // may have been turned into html!!
             assert.equal(project.owner, demoProjectTestUserId);
         });
         it('find or create the Demo Experiment', function*() {
@@ -234,7 +235,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
 
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
@@ -242,8 +243,8 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let experiment = valOrError.val;
             assert.isNotNull(experiment, "experiment is not null");
             assert.equal(experiment.otype, "experiment");
-            assert.equal(experiment.name, demoProjectExperimentName);
-            assert(experiment.description.includes(demoProjectExperimentDescription)); // may have been turned into html!!
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
+            assert(experiment.description.includes(demoProjectConf.demoProjectExperimentDescription)); // may have been turned into html!!
             assert.equal(experiment.owner, demoProjectTestUserId);
         });
         it('find or create a Demo Process', function*() {
@@ -253,14 +254,14 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
             let experiment = valOrError.val;
-            assert.equal(experiment.name, demoProjectExperimentName);
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
 
-            let processData = processesData[0];
+            let processData = demoProjectConf.processesData[0];
             let processName = processData.name;
             let templateId = processData.templateId;
 
@@ -281,21 +282,21 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
             let experiment = valOrError.val;
-            assert.equal(experiment.name, demoProjectExperimentName);
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
 
             valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
             let processes = valOrError.val;
             assert.ok(processes);
-            assert.lengthOf(processes, processesData.length);
-            for (let i = 0; i < processesData.length; i++) {
-                let processData = processesData[i];
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
+            for (let i = 0; i < demoProjectConf.processesData.length; i++) {
+                let processData = demoProjectConf.processesData[i];
                 let processName = processData.name;
                 let templateId = processData.templateId;
 
@@ -315,16 +316,16 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
             let experiment = valOrError.val;
-            assert.equal(experiment.name, demoProjectExperimentName);
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
 
-            let mapEntry = outputSampleIndexMap[2];
+            let mapEntry = demoProjectConf.outputSampleIndexMap[2];
 
-            let processData = processesData[mapEntry.processIndex];
+            let processData = demoProjectConf.processesData[mapEntry.processIndex];
             let processName = processData.name;
             let templateId = processData.templateId;
 
@@ -336,7 +337,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let sampleIndexList = mapEntry.sampleIndexList;
             let sampleNames = [];
             for (let i = 0; i < sampleIndexList.length; i++) {
-                sampleNames.push(sampleNameData[sampleIndexList[i]]);
+                sampleNames.push(demoProjectConf.sampleNameData[sampleIndexList[i]]);
             }
 
             valOrError = yield helper.createOrFindProcessOutputSamples(project, experiment, process, sampleNames);
@@ -358,21 +359,21 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
             let experiment = valOrError.val;
-            assert.equal(experiment.name, demoProjectExperimentName);
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
 
             valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
             let processes = valOrError.val;
             assert.ok(processes);
-            assert.lengthOf(processes, processesData.length);
-            for (let i = 0; i < processesData.length; i++) {
-                let processData = processesData[i];
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
+            for (let i = 0; i < demoProjectConf.processesData.length; i++) {
+                let processData = demoProjectConf.processesData[i];
                 let processName = processData.name;
 
                 let process = processes[i];
@@ -381,15 +382,15 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
 
             valOrError = yield helper.createOrFindOutputSamplesForAllProcesses(
-                project, experiment, processes, sampleNameData, outputSampleIndexMap);
+                project, experiment, processes, demoProjectConf.sampleNameData, demoProjectConf.outputSampleIndexMap);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindOutputSamplesForAllProcesses: " + valOrError.error);
 
             let samples = valOrError.val;
             assert.isOk(samples);
-            assert.lengthOf(samples, sampleNameData.length);
-            for (let i = 0; i < sampleNameData.length; i++) {
+            assert.lengthOf(samples, demoProjectConf.sampleNameData.length);
+            for (let i = 0; i < demoProjectConf.sampleNameData.length; i++) {
                 let sample = samples[i];
-                let name = sampleNameData[i];
+                let name = demoProjectConf.sampleNameData[i];
                 assert.equal(name, sample.name);
             }
 
@@ -401,21 +402,21 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
             let experiment = valOrError.val;
-            assert.equal(experiment.name, demoProjectExperimentName);
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
 
             valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
             let processes = valOrError.val;
             assert.ok(processes);
-            assert.lengthOf(processes, processesData.length);
-            for (let i = 0; i < processesData.length; i++) {
-                let processData = processesData[i];
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
+            for (let i = 0; i < demoProjectConf.processesData.length; i++) {
+                let processData = demoProjectConf.processesData[i];
                 let processName = processData.name;
 
                 let process = processes[i];
@@ -424,14 +425,14 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
 
             valOrError = yield helper.createOrFindOutputSamplesForAllProcesses(
-                project, experiment, processes, sampleNameData, outputSampleIndexMap);
+                project, experiment, processes, demoProjectConf.sampleNameData, demoProjectConf.outputSampleIndexMap);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindOutputSamplesForAllProcesses: " + valOrError.error);
 
             let samples = valOrError.val;
             assert.isOk(samples);
-            assert.lengthOf(samples, sampleNameData.length);
+            assert.lengthOf(samples, demoProjectConf.sampleNameData.length);
 
-            let mapEntry = inputSampleIndexMap[0];
+            let mapEntry = demoProjectConf.inputSampleIndexMap[0];
             let process = processes[mapEntry.processIndex];
             let sampleList = [];
             let sampleIndexList = mapEntry.sampleIndexList;
@@ -470,21 +471,21 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
             let experiment = valOrError.val;
-            assert.equal(experiment.name, demoProjectExperimentName);
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
 
             valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
             let processes = valOrError.val;
             assert.ok(processes);
-            assert.lengthOf(processes, processesData.length);
-            for (let i = 0; i < processesData.length; i++) {
-                let processData = processesData[i];
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
+            for (let i = 0; i < demoProjectConf.processesData.length; i++) {
+                let processData = demoProjectConf.processesData[i];
                 let processName = processData.name;
 
                 let process = processes[i];
@@ -493,25 +494,25 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
 
             valOrError = yield helper.createOrFindOutputSamplesForAllProcesses(
-                project, experiment, processes, sampleNameData, outputSampleIndexMap);
+                project, experiment, processes, demoProjectConf.sampleNameData, demoProjectConf.outputSampleIndexMap);
             assert.isUndefined(valOrError.error,
                 "Unexpected error from createOrFindOutputSamplesForAllProcesses: " + valOrError.error);
 
             let samples = valOrError.val;
             assert.isOk(samples);
-            assert.lengthOf(samples, sampleNameData.length);
+            assert.lengthOf(samples, demoProjectConf.sampleNameData.length);
 
             valOrError = yield helper.createOrFindInputSamplesForAllProcesses(
-                project, experiment, processes, samples, inputSampleIndexMap);
+                project, experiment, processes, samples, demoProjectConf.inputSampleIndexMap);
             assert.isUndefined(valOrError.error,
                 "Unexpected error from createOrFindInputSamplesForAllProcesses: " + valOrError.error);
 
             let inputSampleListList = valOrError.val;
             assert.isOk(inputSampleListList);
-            assert.lengthOf(inputSampleListList, inputSampleIndexMap.length);
+            assert.lengthOf(inputSampleListList, demoProjectConf.inputSampleIndexMap.length);
 
             for (let i = 0; i < inputSampleListList.length; i++) {
-                let mapEntry = inputSampleIndexMap[i];
+                let mapEntry = demoProjectConf.inputSampleIndexMap[i];
                 let processName = processes[mapEntry.processIndex].name;
                 let indexList = mapEntry.sampleIndexList;
                 let inputSampleList = inputSampleListList[i];
@@ -526,21 +527,21 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
             let experiment = valOrError.val;
-            assert.equal(experiment.name, demoProjectExperimentName);
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
 
             valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
             let processes = valOrError.val;
             assert.ok(processes);
-            assert.lengthOf(processes, processesData.length);
-            for (let i = 0; i < processesData.length; i++) {
-                let processData = processesData[i];
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
+            for (let i = 0; i < demoProjectConf.processesData.length; i++) {
+                let processData = demoProjectConf.processesData[i];
                 let processName = processData.name;
 
                 let process = processes[i];
@@ -556,9 +557,9 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             processes = valOrError.val;
             assert.ok(processes);
-            assert.lengthOf(processes, processesData.length);
-            for (let i = 0; i < processesData.length; i++) {
-                let processData = processesData[i];
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
+            for (let i = 0; i < demoProjectConf.processesData.length; i++) {
+                let processData = demoProjectConf.processesData[i];
                 let processName = processData.name;
 
                 let process = processes[i];
@@ -594,7 +595,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                     "Type mismatch for property with attribute: " + check.attribute);
             });
 
-            let valuesForSetup = processesData[processIndex].properties;
+            let valuesForSetup = demoProjectConf.processesData[processIndex].properties;
 
             let args = [];
             valuesForSetup.forEach((setupValue) => {
@@ -630,8 +631,8 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             processes = valOrError.val;
             assert.ok(processes);
-            assert.lengthOf(processes, processesData.length);
-            for (let i = 0; i < processesData.length; i++) {
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
+            for (let i = 0; i < demoProjectConf.processesData.length; i++) {
                 let probe = processes[i];
                 if (probe.id == process.id) {
                     updatedProcess = probe;
@@ -649,8 +650,16 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 let property = updatedPropertyTable[setupValue.attribute];
 
                 if (property) {
-                    assert.equal(property.value, setupValue.value, "Value for process " + process.name
-                        + " property with attribute" + setupValue.attribute);
+                    if (property.value.name) {
+                        assert.ok(property.value.value)
+                        assert.ok(setupValue.value.name);
+                        assert.ok(setupValue.value.value);
+                        assert.equal(property.value.name,setupValue.value.name);
+                        assert.equal(property.value.value,setupValue.value.value);
+                    } else {
+                        assert.equal(property.value, setupValue.value, "Value for process " + process.name
+                            + " property with attribute" + setupValue.attribute);
+                    }
                     if (setupValue.unit) {
                         assert.equal(property.unit, setupValue.unit, "Unit for process " + process.name
                             + " property with attribute" + setupValue.attribute);
@@ -671,21 +680,21 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
             let experiment = valOrError.val;
-            assert.equal(experiment.name, demoProjectExperimentName);
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
 
             valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
             let processes = valOrError.val;
             assert.ok(processes);
-            assert.lengthOf(processes, processesData.length);
-            for (let i = 0; i < processesData.length; i++) {
-                let processData = processesData[i];
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
+            for (let i = 0; i < demoProjectConf.processesData.length; i++) {
+                let processData = demoProjectConf.processesData[i];
                 let processName = processData.name;
 
                 let process = processes[i];
@@ -701,9 +710,9 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             processes = valOrError.val;
             assert.ok(processes);
-            assert.lengthOf(processes, processesData.length);
-            for (let i = 0; i < processesData.length; i++) {
-                let processData = processesData[i];
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
+            for (let i = 0; i < demoProjectConf.processesData.length; i++) {
+                let processData = demoProjectConf.processesData[i];
                 let processName = processData.name;
 
                 let process = processes[i];
@@ -716,12 +725,12 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 "Unexpected error from createOrFindSetupPropertiesForAllDemoProcesses: " + valOrError.error);
 
             processes = valOrError.val;
-            assert.lengthOf(processes, processesData.length);
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
 
             for (let processIndex = 0; processIndex < processes.length; processIndex++) {
                 let updatedProcess = processes[processIndex];
                 let updatedProperties = updatedProcess.setup[0].properties;
-                let valuesForSetup = processesData[processIndex].properties;
+                let valuesForSetup = demoProjectConf.processesData[processIndex].properties;
                 if (valuesForSetup && valuesForSetup.length < 0) {
 
                     let updatedPropertyTable = {};
@@ -758,12 +767,12 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             valOrError = yield helper.createOrFindDemoProjectExperiment(project);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
             let experiment = valOrError.val;
-            assert.equal(experiment.name, demoProjectExperimentName);
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
 
             valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
@@ -776,7 +785,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             let processes = valOrError.val;
             let process = processes[0];
-            let processData = processesData[0];
+            let processData = demoProjectConf.processesData[0];
             let measurement = processData.measurements[0];
 
             valOrError = yield helper.updateMeasurementForProcessSamples(process, measurement);
@@ -811,7 +820,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let project = valOrError.val;
-            assert.equal(project.name, demoProjectName);
+            assert.equal(project.name, demoProjectConf.demoProjectName);
 
             yield helper.addAllFilesToProject(user, project);
             let files = yield helper.filesForProject(project);
@@ -820,7 +829,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let missingFiles = yield helper.filesMissingInDatabase(project);
             assert.lengthOf(missingFiles, 0);
         });
-        it('add files the demo-project files to the experiment', function*() {
+        it('add the demo-project files to the experiment', function*() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
 
             let valOrError = yield helper.createOrFindDemoProjectForUser(user);
@@ -834,9 +843,9 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             yield helper.addAllFilesToProject(user, project);
             let files = yield helper.filesForProject(project);
 
-            assert.lengthOf(files,checksumsFilesAndMimiTypes.length, "Files set is complete");
-            for (let i = 0; i < checksumsFilesAndMimiTypes.length; i++) {
-                let checksum = checksumsFilesAndMimiTypes[i][0];
+            assert.lengthOf(files,demoProjectConf.checksumsFilesAndMimiTypes.length, "Files set is complete");
+            for (let i = 0; i < demoProjectConf.checksumsFilesAndMimiTypes.length; i++) {
+                let checksum = demoProjectConf.checksumsFilesAndMimiTypes[i][0];
                 let file = files[i];
                 assert.equal(checksum,file.checksum,`Checksum for file: '${file.name}'`);
             }
@@ -852,9 +861,9 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let updatedProcesses = valOrError.val;
 
             assert.lengthOf(updatedProcesses, processes.length,"Processes with files added");
-            for (let processIndex = 0; processIndex < processFileIndexList.length; processIndex++) {
+            for (let processIndex = 0; processIndex < demoProjectConf.processFileIndexList.length; processIndex++) {
                 let process = updatedProcesses[processIndex];
-                let fileIndexes = processFileIndexList[processIndex];
+                let fileIndexes = demoProjectConf.processFileIndexList[processIndex];
                 let expectedFiles = [];
                 fileIndexes.forEach ((index) => {
                     expectedFiles.push(files[index])
@@ -870,6 +879,55 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                     assert.equal(expectedFile.id,matchingFile.id);
                 });
             }
+        });
+    });
+    describe('Complete demo project', function () {
+        it('buid',function*(){
+
+            this.timeout(5000); // this test can take up to 5 seconds
+
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+            assert.equal(user.id, demoProjectTestUserId);
+
+            let valOrError = yield buildDemoProject.findOrBuildAllParts(user);
+            assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
+            let results = valOrError.val;
+            let project = results.project;
+            let experiment = results.experiment;
+            let processes = results.processes;
+            let samples = results.samples;
+            let files = results.files;
+
+            assert.equal(project.name, demoProjectConf.demoProjectName);
+            assert(project.description.includes(demoProjectConf.demoProjectDescription));
+            assert.equal(project.owner, demoProjectTestUserId);
+
+            assert.equal(experiment.name, demoProjectConf.demoProjectExperimentName);
+            assert(experiment.description.includes(demoProjectConf.demoProjectExperimentDescription));
+            assert.equal(experiment.owner, demoProjectTestUserId);
+
+            assert.lengthOf(processes, demoProjectConf.processesData.length);
+            for (let i = 0; i < demoProjectConf.processesData.length; i++) {
+                let processData = demoProjectConf.processesData[i];
+                let processName = processData.name;
+
+                let process = processes[i];
+                assert.equal(process.otype, "process");
+                assert.equal(process.name, processName);
+            }
+
+            assert.lengthOf(samples, demoProjectConf.sampleNameData.length);
+            for (let i = 0; i < demoProjectConf.sampleNameData.length; i++) {
+                let sample = samples[i];
+                let name = demoProjectConf.sampleNameData[i];
+                assert.equal(name, sample.name);
+            }
+
+            assert.lengthOf(files, helper.filesDescriptions().length);
+
+            let missingFiles = yield helper.filesMissingInDatabase(project);
+            assert.lengthOf(missingFiles, 0);
+
         });
     });
 });

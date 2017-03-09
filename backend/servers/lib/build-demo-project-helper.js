@@ -15,22 +15,22 @@ const dbModelSamples = require(backend_base + '/servers/mcapi/db/model/samples')
 const dbModelDirectories = require(backend_base + '/servers/mcapi/db/model/directories');
 const fileUtils = require(backend_base + '/servers/lib/create-file-utils');
 
-const demoProjectConf = require('./builld-demo-project-conf');
+const demoProjectConf = require('./build-demo-project-conf');
 
 function* createOrFindDemoProjectForUser(user) {
     // Note create project returns the project if it already exists, by name
     // It does not create a duplicate!
     let attributes = {
-        name: demoProjectName,
-        description: demoProjectDescription
+        name: demoProjectConf.demoProjectName,
+        description: demoProjectConf.demoProjectDescription
     };
     // ret == val.ok_val or error.error
     return yield dbModelProjects.createProject(user, attributes);
 }
 
 function* createOrFindDemoProjectExperiment(project) {
-    let experimentName = demoProjectExperimentName;
-    let experimentDescription = demoProjectExperimentDescription;
+    let experimentName = demoProjectConf.demoProjectExperimentName;
+    let experimentDescription = demoProjectConf.demoProjectExperimentDescription;
     let ret = yield dbModelExperiments.getAllForProject(project.id);
     if (ret.val) {
         let experiment = null;
@@ -85,8 +85,8 @@ function* createOrFindAllDemoProcesses(project, experiment) {
     let ret = {error: "unknown error in createOrFindAllDemoProcesses"};
     let processes = [];
 
-    for (let i = 0; i < processesData.length; i++) {
-        let processData = processesData[i];
+    for (let i = 0; i < demoProjectConf.processesData.length; i++) {
+        let processData = demoProjectConf.processesData[i];
         let processName = processData.name;
         let templateId = processData.templateId;
 
@@ -164,7 +164,7 @@ function* createOrFindOutputSamplesForAllProcesses(project, experiment, processL
         let sampleIndexList = mapEntry.sampleIndexList;
         let sampleNames = [];
         for (let i = 0; i < sampleIndexList.length; i++) {
-            sampleNames.push(sampleNameData[sampleIndexList[i]]);
+            sampleNames.push(demoProjectConf.sampleNameData[sampleIndexList[i]]);
         }
 
         ret = yield createOrFindProcessOutputSamples(project, experiment, process, sampleNames);
@@ -246,7 +246,7 @@ function* createOrFindInputSamplesForAllProcesses(project, experiment, processes
     let inputSampleList = [];
 
     for (let i = 0; i < map.length; i++) {
-        let mapEntry = inputSampleIndexMap[i];
+        let mapEntry = demoProjectConf.inputSampleIndexMap[i];
         let process = processes[mapEntry.processIndex];
         let sampleList = [];
         let sampleIndexList = mapEntry.sampleIndexList;
@@ -321,7 +321,7 @@ function* createOrFindSetupPropertiesForAllDemoProcesses(project, experiment, pr
             processSetupTable[property.attribute] = property;
         });
 
-        let valuesForSetup = processesData[processIndex].properties;
+        let valuesForSetup = demoProjectConf.processesData[processIndex].properties;
 
         if (valuesForSetup && valuesForSetup.length > 0) {
 
@@ -392,7 +392,7 @@ function* updateMeasurementForProcessSamples(process, measurement) {
 }
 
 function filesDescriptions() {
-    return checksumsFilesAndMimiTypes;
+    return demoProjectConf.checksumsFilesAndMimiTypes;
 }
 
 function* filesMissingInFolder() {
@@ -401,7 +401,7 @@ function* filesMissingInFolder() {
         let checksumAndFilename = filesDescriptions()[i];
         let expectedChecksum = checksumAndFilename[0];
         let filename = checksumAndFilename[1];
-        let path = `${datapath}/${filename}`;
+        let path = `${demoProjectConf.datapath}/${filename}`;
         let ok = false;
         if (fs.existsSync(path)) {
             let checksum = yield md5File(path);
@@ -443,7 +443,7 @@ function* addAllFilesToProject(user, project) {
         let expectedChecksum = checksumFilenameAndMimetype[0];
         let filename = checksumFilenameAndMimetype[1];
         let mimetype = checksumFilenameAndMimetype[2];
-        let path = `${datapath}/${filename}`;
+        let path = `${demoProjectConf.datapath}/${filename}`;
         let checksum = yield md5File(path);
         if (expectedChecksum == checksum) {
             let stats = fs.statSync(path);
@@ -480,7 +480,7 @@ function restoreProjectSourceOrderToFiles(files){
     files.forEach((file) => {
         fileTable[file.checksum] = file;
     });
-    checksumsFilesAndMimiTypes.forEach((fileEntry) => {
+    demoProjectConf.checksumsFilesAndMimiTypes.forEach((fileEntry) => {
         let checksum = fileEntry[0];
         returnFileList.push(fileTable[checksum]);
     });
@@ -490,9 +490,9 @@ function restoreProjectSourceOrderToFiles(files){
 function* addAllFilesToExperimentProcesses(project,experiment,processes,files) {
     let ret = {error: "unexpected error in createOrFindDemoProcessSetupProperties"};
     let processesToReturn = [];
-    for (let processIndex = 0; processIndex < processFileIndexList.length; processIndex++) {
+    for (let processIndex = 0; processIndex < demoProjectConf.processFileIndexList.length; processIndex++) {
         let process = processes[processIndex];
-        let fileIndexes = processFileIndexList[processIndex];
+        let fileIndexes = demoProjectConf.processFileIndexList[processIndex];
         let filesArg = [];
         for (let i = 0; i < fileIndexes.length; i++) {
             let file = files[fileIndexes[i]];
