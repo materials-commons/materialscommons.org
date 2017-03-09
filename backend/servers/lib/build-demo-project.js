@@ -1,7 +1,8 @@
+'use strict';
 const helper = require('./build-demo-project-helper');
 const demoConfig = require('./build-demo-project-conf');
 
-function* findOrBuildAllParts(user) {
+function* findOrBuildAllParts(user,dataPathPrefix) {
 
     let project = null;
     let experiment = null;
@@ -45,7 +46,7 @@ function* findOrBuildAllParts(user) {
         ret = yield helper.updateMeasurementForProcessSamples(process, measurement);
     }
     if (!ret.error) {
-        yield helper.addAllFilesToProject(user, project);
+        yield helper.addAllFilesToProject(user, project,demoConfig.datapathPrefix);
         files = yield helper.filesForProject(project);
         ret = yield helper.createOrFindAllDemoProcesses(project, experiment);
     }

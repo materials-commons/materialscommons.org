@@ -395,13 +395,13 @@ function filesDescriptions() {
     return demoProjectConf.checksumsFilesAndMimiTypes;
 }
 
-function* filesMissingInFolder() {
+function* filesMissingInFolder(datapathPrefix) {
     let ret = [];
     for (let i = 0; i < filesDescriptions().length; i++) {
         let checksumAndFilename = filesDescriptions()[i];
         let expectedChecksum = checksumAndFilename[0];
         let filename = checksumAndFilename[1];
-        let path = `${demoProjectConf.datapath}/${filename}`;
+        let path = datapathPrefix + `${demoProjectConf.datapath}/${filename}`;
         let ok = false;
         if (fs.existsSync(path)) {
             let checksum = yield md5File(path);
@@ -435,7 +435,7 @@ function* filesMissingInDatabase(project) {
     return ret;
 }
 
-function* addAllFilesToProject(user, project) {
+function* addAllFilesToProject(user, project, datapathPrefix) {
     let top_directory = yield dbModelDirectories.get(project.id, 'top');
     let tempDir = os.tmpdir();
     for (let i = 0; i < filesDescriptions().length; i++) {
@@ -443,7 +443,7 @@ function* addAllFilesToProject(user, project) {
         let expectedChecksum = checksumFilenameAndMimetype[0];
         let filename = checksumFilenameAndMimetype[1];
         let mimetype = checksumFilenameAndMimetype[2];
-        let path = `${demoProjectConf.datapath}/${filename}`;
+        let path = datapathPrefix + `${demoProjectConf.datapath}/${filename}`;
         let checksum = yield md5File(path);
         if (expectedChecksum == checksum) {
             let stats = fs.statSync(path);

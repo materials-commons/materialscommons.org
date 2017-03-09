@@ -81,13 +81,15 @@ describe('Feature - User - Build Demo Project Support: ', function () {
     });
     describe('List of files for build', function () {
         it('exists in folder', function *() {
-            assert(fs.existsSync(demoProjectConf.datapath), "missing test datafile dir " + demoProjectConf.datapath);
+            assert(fs.existsSync(demoProjectConf.fullDatapath),
+                "missing test datafile dir " + demoProjectConf.fullDatapath);
             for (let i = 0; i < helper.filesDescriptions().length; i++) {
                 let checksumAndFilename = helper.filesDescriptions()[i];
                 let expectedChecksum = checksumAndFilename[0];
                 let filename = checksumAndFilename[1];
-                let path = `${demoProjectConf.datapath}/${filename}`;
-                assert(fs.existsSync(path), "missing test datafile " + demoProjectConf.datapath + "/" + filename);
+                let path = `${demoProjectConf.fullDatapath}/${filename}`;
+                assert(fs.existsSync(path),
+                    "missing test datafile " + demoProjectConf.fullDatapath + "/" + filename);
                 let checksum = yield md5File(path);
                 assert(expectedChecksum == checksum, "Checksums should be equal for file: " +
                     filename + "; but expected " + expectedChecksum + " and got " + checksum);
@@ -116,8 +118,9 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 let expectedChecksum = checksumFilenameAndMimetype[0];
                 let filename = checksumFilenameAndMimetype[1];
                 let mimetype = checksumFilenameAndMimetype[2];
-                let path = `${demoProjectConf.datapath}/${filename}`;
-                assert(fs.existsSync(path), "missing test datafile " + demoProjectConf.datapath + "/" + filename);
+                let path = `${demoProjectConf.fullDatapath}/${filename}`;
+                assert(fs.existsSync(path),
+                    "missing test datafile " + demoProjectConf.fullDatapath + "/" + filename);
                 let checksum = yield md5File(path);
                 assert(expectedChecksum == checksum, "Checksums should be equal for file: " +
                     filename + "; but expected " + expectedChecksum + " and got " + checksum);
@@ -148,7 +151,8 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
         });
         it('is in the database', function*() {
-            assert(fs.existsSync(demoProjectConf.datapath), "missing test datafile dir " + demoProjectConf.datapath);
+            assert(fs.existsSync(demoProjectConf.fullDatapath),
+                "missing test datafile dir " + demoProjectConf.fullDatapath);
             for (let i = 0; i < helper.filesDescriptions().length; i++) {
                 let checksumAndFilename = helper.filesDescriptions()[i];
                 let checksum = checksumAndFilename[0];
@@ -167,7 +171,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
     });
     describe('Build Demo Project helper supporting functions', function () {
         it('checkes for missing files in folder', function*() {
-            let missingFiles = yield helper.filesMissingInFolder();
+            let missingFiles = yield helper.filesMissingInFolder(demoProjectConf.datapathPrefix);
             assert.lengthOf(missingFiles, 0);
         });
         it('adds all files to top dir of a test Demo Project', function*() {
@@ -184,7 +188,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert.equal(projectName, project.name);
             assert.equal(user.id, project.owner);
 
-            yield helper.addAllFilesToProject(user, project);
+            yield helper.addAllFilesToProject(user, project, demoProjectConf.datapathPrefix);
             let files = yield helper.filesForProject(project);
             assert.lengthOf(files, helper.filesDescriptions().length);
 
@@ -822,11 +826,11 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let project = valOrError.val;
             assert.equal(project.name, demoProjectConf.demoProjectName);
 
-            yield helper.addAllFilesToProject(user, project);
+            yield helper.addAllFilesToProject(user, project,demoProjectConf.datapathPrefix);
             let files = yield helper.filesForProject(project);
             assert.lengthOf(files, helper.filesDescriptions().length);
 
-            let missingFiles = yield helper.filesMissingInDatabase(project);
+            let missingFiles = yield helper.filesMissingInDatabase(project,demoProjectConf.datapathPrefix);
             assert.lengthOf(missingFiles, 0);
         });
         it('add the demo-project files to the experiment', function*() {
@@ -840,7 +844,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
             let experiment = valOrError.val;
 
-            yield helper.addAllFilesToProject(user, project);
+            yield helper.addAllFilesToProject(user, project,demoProjectConf.datapathPrefix);
             let files = yield helper.filesForProject(project);
 
             assert.lengthOf(files,demoProjectConf.checksumsFilesAndMimiTypes.length, "Files set is complete");
@@ -889,7 +893,8 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
 
-            let valOrError = yield buildDemoProject.findOrBuildAllParts(user);
+
+            let valOrError = yield buildDemoProject.findOrBuildAllParts(user,demoProjectConf.datapathPrefix);
             assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
             let results = valOrError.val;
             let project = results.project;
@@ -925,7 +930,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             assert.lengthOf(files, helper.filesDescriptions().length);
 
-            let missingFiles = yield helper.filesMissingInDatabase(project);
+            let missingFiles = yield helper.filesMissingInDatabase(project,demoProjectConf.datapathPrefix);
             assert.lengthOf(missingFiles, 0);
 
         });

@@ -1,3 +1,4 @@
+'use strict';
 const demoProjectName = "Demo Project";
 const demoProjectDescription = "A project for trying things out.";
 const demoProjectExperimentName = "Demo: Microsegregation in HPDC L380";
@@ -118,7 +119,9 @@ const checksumsFilesAndMimiTypes = [
     ['d423248c056eff682f46181e0c912369', 'Samples_Lift380_L124_20161227.xlsx', xlsxMimeType]
 ];
 
-const datapath = 'backend/scripts/demo-project/demo_project_data';
+const datapathPrefix = 'backend/';
+const datapath = 'scripts/demo-project/demo_project_data';
+const fullDatapath = datapathPrefix + datapath;
 
 const processFileIndexList = [
     [0,2,3], [0,1], [1], [4,5,6,7,8,9,10], [11,12,13,14,15]
@@ -138,6 +141,8 @@ module.exports = {
     outputSampleIndexMap,
     inputSampleIndexMap,
     checksumsFilesAndMimiTypes,
+    datapathPrefix,
     datapath,
+    fullDatapath,
     processFileIndexList
 };
