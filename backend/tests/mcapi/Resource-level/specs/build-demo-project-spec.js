@@ -977,7 +977,12 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let processes = valOrError.val;
 
             valOrError = yield helper.addAllFilesToExperimentProcesses(project,experiment,processes,files);
+            assert.isUndefined(valOrError.error, "Unexpected error from addAllFilesToExperimentProcesses: " + valOrError.error);
 
+            let updatedProcesses = valOrError.val;
+
+            assert.lengthOf(updatedProcesses, processes.length,"Processes with files added");
+            console.log(updatedProcesses[0]);
         });
     });
 });
