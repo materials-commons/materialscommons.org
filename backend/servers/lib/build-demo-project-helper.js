@@ -1,19 +1,18 @@
 const fs = require('fs');
-const os = require('os')
+const os = require('os');
 const promise = require('bluebird');
 const md5File = promise.promisify(require('md5-file'));
 const copy = require('copy');
 const copyOne = promise.promisify(copy.one);
 
-const backend_base = '../..';
 const resourcesProjectsExperimentsProcesses =
-    require(backend_base + '/servers/mcapi/resources/projects/experiments/processes');
-const dbModelProjects = require(backend_base + '/servers/mcapi/db/model/projects');
-const dbModelExperiments = require(backend_base + '/servers/mcapi/db/model/experiments');
-const dbModelProcesses = require(backend_base + '/servers/mcapi/db/model/processes');
-const dbModelSamples = require(backend_base + '/servers/mcapi/db/model/samples');
-const dbModelDirectories = require(backend_base + '/servers/mcapi/db/model/directories');
-const fileUtils = require(backend_base + '/servers/lib/create-file-utils');
+    require('../mcapi/resources/projects/experiments/processes');
+const dbModelProjects = require('../mcapi/db/model/projects');
+const dbModelExperiments = require('../mcapi/db/model/experiments');
+const dbModelProcesses = require('../mcapi/db/model/processes');
+const dbModelSamples = require('../mcapi/db/model/samples');
+const dbModelDirectories = require('../mcapi/db/model/directories');
+const fileUtils = require('./create-file-utils');
 
 const demoProjectConf = require('./build-demo-project-conf');
 
@@ -457,7 +456,7 @@ function* addAllFilesToProject(user, project, datapathPrefix) {
                 filesize: fileSizeInBytes,
                 filepath: path
             };
-            let file = yield dbModelDirectories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
+            yield dbModelDirectories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
         }
     }
 }
@@ -476,7 +475,7 @@ function* filesForProject(project) {
 
 function restoreProjectSourceOrderToFiles(files){
     let returnFileList = [];
-    let fileTable = {}
+    let fileTable = {};
     files.forEach((file) => {
         fileTable[file.checksum] = file;
     });

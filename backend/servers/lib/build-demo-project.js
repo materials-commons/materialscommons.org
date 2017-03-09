@@ -1,4 +1,3 @@
-'use strict';
 const helper = require('./build-demo-project-helper');
 const demoConfig = require('./build-demo-project-conf');
 
