@@ -982,7 +982,24 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let updatedProcesses = valOrError.val;
 
             assert.lengthOf(updatedProcesses, processes.length,"Processes with files added");
-            console.log(updatedProcesses[0]);
+            for (let processIndex = 0; processIndex < processFileIndexList.length; processIndex++) {
+                let process = updatedProcesses[processIndex];
+                let fileIndexes = processFileIndexList[processIndex];
+                let expectedFiles = [];
+                fileIndexes.forEach ((index) => {
+                    expectedFiles.push(files[index])
+                });
+                let processFileTable = {};
+                let processFiles = process.files;
+                processFiles.forEach((file) =>{
+                    processFileTable[file.checksum] = file;
+                });
+                expectedFiles.forEach((expectedFile) => {
+                    let matchingFile = processFileTable[expectedFile.checksum];
+                    assert.ok(matchingFile,`Expecting file '${expectedFile.name}' in process '${process.name}'`);
+                    assert.equal(expectedFile.id,matchingFile.id);
+                });
+            }
         });
     });
 });
