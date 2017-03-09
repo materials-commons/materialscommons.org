@@ -68,6 +68,12 @@ def main():
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
 
+    # Is this needed?
+    # fix_users_table_type(conn)
+
+    convert_scan_size(conn)
+    add_missing_description_field_to_processes(conn)
+    fix_missing_property_sets(conn)
     update_projects_with_new_fields(conn)
     fix_file_upload_count_to_uploaded(conn)
 

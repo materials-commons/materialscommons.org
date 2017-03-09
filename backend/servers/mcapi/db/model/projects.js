@@ -216,9 +216,9 @@ function differenceByField(from, others, field) {
     });
 }
 
-function* addFileToProject(projectID, fileID) {
-    let newLink = {project_id: projectID, datafile_id: fileID};
-    return yield r.table('project2datafile').insert(newLink);
+function* addFileToProject(projectID,fileID) {
+    let link = new model.Project2DataFile(projectID, fileID);
+    yield r.table('project2datafile').insert(link);
 }
 
 module.exports = {

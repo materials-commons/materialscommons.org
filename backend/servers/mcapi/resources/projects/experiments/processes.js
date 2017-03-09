@@ -213,5 +213,6 @@ function createResource() {
 }
 
 module.exports = {
-    createResource
+    createResource,
+    validateUpdateExperimentProcessTemplateArgs //used by build-demo-project-helper
 };

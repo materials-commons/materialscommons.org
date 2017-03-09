@@ -14,7 +14,7 @@ const koaBody = require('koa-body')({
     multipart: true,
     formidable: {uploadDir: uploadTmpDir, hash: 'md5'},
     keepExtensions: true,
- });
+});
 
 function* get(next) {
     let dirID = this.params.directory_id || 'top';
@@ -53,9 +53,9 @@ function prepareDirArgs(projectID, dirArgs) {
 }
 
 function validateDirArgs(dirArgs) {
-    return schema.createDirectory.validateAsync(dirArgs).then(function() {
+    return schema.createDirectory.validateAsync(dirArgs).then(function () {
         return null;
-    }, function(errors) {
+    }, function (errors) {
         return errors;
     });
 }
@@ -97,17 +97,17 @@ function* validateUpdateArgs(projectID, directoryID, updateArgs) {
 }
 
 function validateMoveArgs(moveArgs) {
-    return schema.moveDirectory.validateAsync(moveArgs).then(function() {
+    return schema.moveDirectory.validateAsync(moveArgs).then(function () {
         return null;
-    }, function(errors) {
+    }, function (errors) {
         return errors;
     });
 }
 
 function validateRenameArgs(renameArgs) {
-    return schema.renameDirectory.validateAsync(renameArgs).then(function() {
+    return schema.renameDirectory.validateAsync(renameArgs).then(function () {
         return null;
-    }, function(errors) {
+    }, function (errors) {
         return errors;
     });
 }
@@ -138,36 +138,16 @@ function* uploadFileToProjectDirectory(next) {
         directoryID = this.params.directory_id;
 
     let upload = this.request.body.files.file;
-    let name = upload.name;
-
-    let oldFile = yield directories.fileInDirectoryByName(directoryID,name);
-
-    if (oldFile && (oldFile.checksum == upload.checksum)) {
-        this.body = oldFile;
-        yield next;
-    }
-
-    let fileArgs = {
+    let args = {
         name: upload.name,
+        checksum: upload.hash,
         mediatype: fileUtils.mediaTypeDescriptionsFromMime(upload.type),
-        size: upload.size,
-        checksum: upload.hash
+        filesize: upload.size,
+        filepath: upload.path
     };
 
-    let file = yield files.create(fileArgs,this.reqctx.user.id);
-
-    if (oldFile) {
-        file = yield files.pushVersion(file,oldFile);
-    }
-
-    if (file.usesid) {
-        yield fileUtils.moveToStore(upload.path,file.usesid);
-    } else {
-        yield fileUtils.moveToStore(upload.path,file.id);
-    }
-
-    yield directories.addFileToDirectory(directoryID, file.id);
-    yield projects.addFileToProject(projectID, file.id);
+    console.log("check for obvious errors and return error as above");
+    let file = yield directories.ingestSingleLocalFile(projectID, directoryID, this.reqctx.user.id, args);
 
     this.body = file;
     yield next;

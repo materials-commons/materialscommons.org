@@ -243,7 +243,9 @@ class MCProcessesWorkflowGraphComponentController {
         let target = event.cyTarget;
         if (target.isNode()) {
             let process = this.getProcessFromEvent(event);
-            this.mcshow.processDetailsDialog(process, false);
+            this.experimentsService.getProcessForExperiment(this.projectId, this.experimentId, process.id).then(
+                p => this.mcshow.processDetailsDialog(p, false)
+            );
         }
     }
 
