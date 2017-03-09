@@ -59,7 +59,17 @@ const processesData = [
             {attribute: 'supplier', value: 'Ohio State University'}
         ],
         measurements: [
-            {attribute: 'composition', name: 'Composition', otype: 'compostion', units: ["at%", "wt%", "atoms"]}
+            {
+                name: "Composition",
+                attribute: "composition",
+                otype: "composition",
+                unit: "at%",
+                value: [
+                    {"element": "Al", "value": 94},
+                    {"element": "Ca", "value": 1},
+                    {"element": "Zr", "value": 5}],
+                is_best_measure: true
+            }
         ]
     },
     {
@@ -826,6 +836,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                         assert.equal(property.value, setupValue.value, "Value for process " + process.name
                             + " property with attribute" + setupValue.attribute);
                         if (setupValue.unit) {
+                            console.log("unit - " + setupValue.attribute + ': ' + property.unit);
                             assert.equal(property.unit, setupValue.unit, "Unit for process " + process.name
                                 + " property with attribute" + setupValue.attribute);
                         }
@@ -838,6 +849,61 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             }
         }
+
+    });
+    it('add the measurement values for the only Process with a measurement', function*() {
+        let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+        assert.equal(user.id, demoProjectTestUserId);
+
+        let valOrError = yield helper.createOrFindDemoProjectForUser(user);
+        assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
+        let project = valOrError.val;
+        assert.equal(project.name, demoProjectName);
+
+        valOrError = yield helper.createOrFindDemoProjectExperiment(project);
+        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProjectExperiment: " + valOrError.error);
+        let experiment = valOrError.val;
+        assert.equal(experiment.name, demoProjectExperimentName);
+
+        valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+
+        // Note: refresh process list. If they were created for the first time on the above call, then the
+        // body of the returned process is not sufficently decorated to support inserting properties;
+        // however, on refresh it is. Needs to be investigated.
+        valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
+        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+
+        let processes = valOrError.val;
+        let process = processes[0];
+        let processData = processesData[0];
+        let measurement = processData.measurements[0];
+
+        valOrError = yield helper.updateMeasurementForProcessSamples(process,measurement);
+        assert.isUndefined(valOrError.error, "Unexpected error from createOrFindMeasurement: " + valOrError.error);
+
+        let samples = valOrError.val;
+        let sample = samples[0];
+        let updatedProcess = null;
+        sample.processes.forEach((probe) => {
+            if (probe.id == process.id) {
+                updatedProcess = probe;
+            }
+        });
+
+        let updatedmeasurement = updatedProcess.measurements[0];
+
+        assert.equal(measurement.attribute,updatedmeasurement.attribute);
+        assert.equal(measurement.name,updatedmeasurement.name);
+        assert.equal(measurement.otype,updatedmeasurement.otype);
+        assert.equal(measurement.unit,updatedmeasurement.unit);
+        assert.lengthOf(updatedmeasurement.value,measurement.value.length);
+        for (let i = 0; i < measurement.value.length; i++) {
+            assert.equal(updatedmeasurement.value[i].element,measurement.value[i].element)
+            assert.equal(updatedmeasurement.value[i].value,measurement.value[i].value)
+        }
+
+
 
     });
 });

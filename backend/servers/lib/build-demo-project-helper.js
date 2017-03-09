@@ -501,6 +501,44 @@ function* createOrFindSetupPropertiesForAllDemoProcesses(project,experiment,proc
     return ret;
 }
 
+function* updateMeasurementForProcessSamples(process,measurement){
+    let samples = process.output_samples;
+    let samplesArg = [];
+    samples.forEach((sample) => {
+        samplesArg.push ({id: sample.id, property_set_id: sample.property_set_id });
+    });
+    let propertyArg = {
+        name: measurement.name,
+        attribute: measurement.attribute
+    };
+
+    let propertiesArg = [{
+        add_as: 'seperate',
+        samples: samplesArg,
+        property: propertyArg,
+        measurements: [measurement]
+    }];
+
+    let ret = yield dbModelSamples.addSamplesMeasurements(process.id,propertiesArg);
+
+    if (!ret.error) {
+        let samplesToReturn = [];
+        for (let i = 0; i < samples.length; i++){
+            if (!ret.error) {
+                ret = yield dbModelSamples.getSample(samples[i].id);
+                if (!ret.error) {
+                    let sample = ret.val;
+                    samplesToReturn.push(sample);
+                }
+            }
+        }
+        if (!ret.error) {
+            ret.val = samplesToReturn;
+        }
+    }
+    return ret;
+}
+
 function filesDescriptions() {
     return checksumsFilesAndMimiTypes;
 }
@@ -606,6 +644,7 @@ module.exports = {
     createOrFindInputSamplesForAllProcesses,
     createOrFindDemoProcessSetupProperties,
     createOrFindSetupPropertiesForAllDemoProcesses,
+    updateMeasurementForProcessSamples,
     filesDescriptions,
     filesMissingInFolder,
     filesMissingInDatabase,
