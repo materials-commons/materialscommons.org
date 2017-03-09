@@ -8,7 +8,7 @@ const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
 const mailTransport = mailTransportConfig();
 const ra = require('./resource-access');
-const buildDemoProject = require('../../lib/build-demo-project');
+const buildDemoProject = require('../build-demo/build-demo-project');
 const os = require('os');
 
 function* updateProjectFavorites(next) {

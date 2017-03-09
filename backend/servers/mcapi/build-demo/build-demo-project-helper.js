@@ -6,13 +6,13 @@ const copy = require('copy');
 const copyOne = promise.promisify(copy.one);
 
 const resourcesProjectsExperimentsProcesses =
-    require('../mcapi/resources/projects/experiments/processes');
-const dbModelProjects = require('../mcapi/db/model/projects');
-const dbModelExperiments = require('../mcapi/db/model/experiments');
-const dbModelProcesses = require('../mcapi/db/model/processes');
-const dbModelSamples = require('../mcapi/db/model/samples');
-const dbModelDirectories = require('../mcapi/db/model/directories');
-const fileUtils = require('./create-file-utils');
+    require('../resources/projects/experiments/processes');
+const dbModelProjects = require('../db/model/projects');
+const dbModelExperiments = require('../db/model/experiments');
+const dbModelProcesses = require('../db/model/processes');
+const dbModelSamples = require('../db/model/samples');
+const dbModelDirectories = require('../db/model/directories');
+const fileUtils = require('./../../lib/create-file-utils');
 
 const demoProjectConf = require('./build-demo-project-conf');
 

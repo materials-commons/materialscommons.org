@@ -18,17 +18,19 @@ const r = require('rethinkdbdash')({
     port: process.env.MCDB_PORT || 30815
 });
 
-const backend_base = '../../../..';
-const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
-const projects = require(backend_base + '/servers/mcapi/db/model/projects');
-const directories = require(backend_base + '/servers/mcapi/db/model/directories');
-const files = require(backend_base + '/servers/mcapi/db/model/files');
-const users = require(backend_base + '/servers/mcapi/resources/users');
-const fileUtils = require(backend_base + '/servers/lib/create-file-utils');
+const fileUtils = require('../../../../servers/lib/create-file-utils');
 
-const helper = require(backend_base + '/servers/lib/build-demo-project-helper');
-const demoProjectConf = require(backend_base + '/servers/lib/build-demo-project-conf');
-const buildDemoProject = require(backend_base + '/servers/lib/build-demo-project');
+const mcapi_base = '../../../../servers/mcapi/';
+
+const dbModelUsers = require(mcapi_base + 'db/model/users');
+const projects = require(mcapi_base + 'db/model/projects');
+const directories = require(mcapi_base + 'db/model/directories');
+const files = require(mcapi_base + 'db/model/files');
+const users = require(mcapi_base + 'resources/users');
+
+const helper = require(mcapi_base + 'build-demo/build-demo-project-helper');
+const demoProjectConf = require(mcapi_base + 'build-demo/build-demo-project-conf');
+const buildDemoProject = require(mcapi_base + 'build-demo/build-demo-project');
 
 const fullname = "Test User";
 const user_apikey = "ThisIsAJunkKey";
