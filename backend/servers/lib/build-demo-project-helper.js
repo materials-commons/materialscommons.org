@@ -111,7 +111,7 @@ const setupProperties = [
         processIndex: 0,
         properties: [
             {name: 'manufacturing_date', value: 1485977519347},           // February 1, 2017
-            {name: 'manufacturer',  value: 'Ohio State University'}
+            {name: 'manufacturer', value: 'Ohio State University'}
         ]
     },
     {
@@ -299,7 +299,7 @@ function* createOrFindProcessOutputSamples(project, experiment, process, sampleN
     return ret
 }
 
-function* createOrFindOutputSamplesForAllProcesses(project, experiment, processList, sampleNameList,map){
+function* createOrFindOutputSamplesForAllProcesses(project, experiment, processList, sampleNameList, map) {
 
     let ret = {error: "Failure in 'createOrFindOutputSamplesForAllProcesses'"};
     let outputSampleList = [];
@@ -311,7 +311,7 @@ function* createOrFindOutputSamplesForAllProcesses(project, experiment, processL
 
         let sampleIndexList = mapEntry.sampleIndexList;
         let sampleNames = [];
-        for (let i = 0; i < sampleIndexList.length; i++){
+        for (let i = 0; i < sampleIndexList.length; i++) {
             sampleNames.push(sampleNameData[sampleIndexList[i]]);
         }
 
@@ -376,7 +376,7 @@ function* createOrFindInputSamplesForProcess(project, experiment, process, sampl
                     let files = [];
                     let samples = args.samples;
                     ret = yield dbModelExperiments.updateProcess(experiment.id, process.id,
-                        properties,files,samples);
+                        properties, files, samples);
                     resultsingSamples = ret.val.input_samples;
                 }
             }
@@ -388,7 +388,7 @@ function* createOrFindInputSamplesForProcess(project, experiment, process, sampl
     return ret;
 }
 
-function* createOrFindInputSamplesForAllProcesses(project, experiment, processes, samples, map){
+function* createOrFindInputSamplesForAllProcesses(project, experiment, processes, samples, map) {
 
     let ret = {error: "Failure in 'createOrFindInputSamplesForAllProcesses'"};
     let inputSampleList = [];
@@ -438,7 +438,7 @@ function* createOrFindDemoProcessSetupProperties(project, experiment, process, p
         let files = [];
         let samples = [];
         ret = yield dbModelExperiments.updateProcess(experiment.id, process.id,
-            properties,files,samples);
+            properties, files, samples);
         if (!ret.error) {
             ret = yield dbModelProcesses.getProcess(process.id);
         }
@@ -446,7 +446,7 @@ function* createOrFindDemoProcessSetupProperties(project, experiment, process, p
     return ret;
 }
 
-function* createOrFindSetupPropertiesForAllDemoProcesses(project,experiment,processes) {
+function* createOrFindSetupPropertiesForAllDemoProcesses(project, experiment, processes) {
     let ret = {error: "unexpected error in createOrFindSetupPropertiesForAllDemoProcesses"};
 
     let templateTable = yield makeTemplateTable();
@@ -487,7 +487,7 @@ function* createOrFindSetupPropertiesForAllDemoProcesses(project,experiment,proc
                 }
             });
 
-            ret = yield createOrFindDemoProcessSetupProperties(project,experiment,process,args);
+            ret = yield createOrFindDemoProcessSetupProperties(project, experiment, process, args);
             if (ret.error) {
                 break;
             }
@@ -501,11 +501,11 @@ function* createOrFindSetupPropertiesForAllDemoProcesses(project,experiment,proc
     return ret;
 }
 
-function* updateMeasurementForProcessSamples(process,measurement){
+function* updateMeasurementForProcessSamples(process, measurement) {
     let samples = process.output_samples;
     let samplesArg = [];
     samples.forEach((sample) => {
-        samplesArg.push ({id: sample.id, property_set_id: sample.property_set_id });
+        samplesArg.push({id: sample.id, property_set_id: sample.property_set_id});
     });
     let propertyArg = {
         name: measurement.name,
@@ -519,11 +519,11 @@ function* updateMeasurementForProcessSamples(process,measurement){
         measurements: [measurement]
     }];
 
-    let ret = yield dbModelSamples.addSamplesMeasurements(process.id,propertiesArg);
+    let ret = yield dbModelSamples.addSamplesMeasurements(process.id, propertiesArg);
 
     if (!ret.error) {
         let samplesToReturn = [];
-        for (let i = 0; i < samples.length; i++){
+        for (let i = 0; i < samples.length; i++) {
             if (!ret.error) {
                 ret = yield dbModelSamples.getSample(samples[i].id);
                 if (!ret.error) {

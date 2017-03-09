@@ -663,7 +663,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 assert.equal(process.otype, "process");
                 assert.equal(process.name, processName);
             }
-            
+
             let processIndex = 0;
             let process = processes[processIndex];
 
@@ -683,7 +683,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 processSetupTable[property.attribute] = property;
             });
 
-            assert.lengthOf(templatePropertyList,processSetupPropertyList.length,
+            assert.lengthOf(templatePropertyList, processSetupPropertyList.length,
                 "Lengths of property-list in process and template should match")
             processSetupPropertyList.forEach((check) => {
                 assert.ok(templetPropertyTable[check.attribute],
@@ -711,9 +711,9 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 }
             });
 
-            valOrError = yield helper.createOrFindDemoProcessSetupProperties(project,experiment,process,args);
+            valOrError = yield helper.createOrFindDemoProcessSetupProperties(project, experiment, process, args);
             if (valOrError.error) {
-                console.log("           Error expanded from setup properties: " ,
+                console.log("           Error expanded from setup properties: ",
                     JSON.stringify(valOrError.error));
             }
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoSetupProperties: " + valOrError.error);
@@ -809,7 +809,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 assert.equal(process.name, processName);
             }
 
-            valOrError = yield helper.createOrFindSetupPropertiesForAllDemoProcesses(project,experiment,processes);
+            valOrError = yield helper.createOrFindSetupPropertiesForAllDemoProcesses(project, experiment, processes);
             assert.isUndefined(valOrError.error,
                 "Unexpected error from createOrFindSetupPropertiesForAllDemoProcesses: " + valOrError.error);
 
@@ -877,7 +877,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             let processData = processesData[0];
             let measurement = processData.measurements[0];
 
-            valOrError = yield helper.updateMeasurementForProcessSamples(process,measurement);
+            valOrError = yield helper.updateMeasurementForProcessSamples(process, measurement);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindMeasurement: " + valOrError.error);
 
             let samples = valOrError.val;
@@ -891,15 +891,18 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             let updatedmeasurement = updatedProcess.measurements[0];
 
-            assert.equal(measurement.attribute,updatedmeasurement.attribute);
-            assert.equal(measurement.name,updatedmeasurement.name);
-            assert.equal(measurement.otype,updatedmeasurement.otype);
-            assert.equal(measurement.unit,updatedmeasurement.unit);
-            assert.lengthOf(updatedmeasurement.value,measurement.value.length);
+            assert.equal(measurement.attribute, updatedmeasurement.attribute);
+            assert.equal(measurement.name, updatedmeasurement.name);
+            assert.equal(measurement.otype, updatedmeasurement.otype);
+            assert.equal(measurement.unit, updatedmeasurement.unit);
+            assert.lengthOf(updatedmeasurement.value, measurement.value.length);
             for (let i = 0; i < measurement.value.length; i++) {
-                assert.equal(updatedmeasurement.value[i].element,measurement.value[i].element)
-                assert.equal(updatedmeasurement.value[i].value,measurement.value[i].value)
+                assert.equal(updatedmeasurement.value[i].element, measurement.value[i].element)
+                assert.equal(updatedmeasurement.value[i].value, measurement.value[i].value)
             }
+
+        });
+        it('find and attache the demo-project files', function*() {
 
         });
     });
