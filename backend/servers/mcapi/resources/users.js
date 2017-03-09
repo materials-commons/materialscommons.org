@@ -240,13 +240,13 @@ function* createDemoProjectRequest(user){
         return {error: "Can not create demo project: admin see log"};
     }
 
+    let prefix = current_dir + "/backend/"
     if (last == "backend") {
         prefix = current_dir + "/";
-    } else {
-        prefix = current_dir + "/backend/"
     }
 
     let ret = yield buildDemoProject.findOrBuildAllParts(user, prefix);
+
     if (!ret.error) {
         ret.val = "Created project: " + ret.val.project.name;
     }

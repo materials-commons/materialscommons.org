@@ -1,7 +1,7 @@
 const helper = require('./build-demo-project-helper');
 const demoConfig = require('./build-demo-project-conf');
 
-function* findOrBuildAllParts(user,dataPathPrefix) {
+function* findOrBuildAllParts(user,datapathPrefix) {
 
     let project = null;
     let experiment = null;
@@ -45,7 +45,7 @@ function* findOrBuildAllParts(user,dataPathPrefix) {
         ret = yield helper.updateMeasurementForProcessSamples(process, measurement);
     }
     if (!ret.error) {
-        yield helper.addAllFilesToProject(user, project,demoConfig.datapathPrefix);
+        yield helper.addAllFilesToProject(user, project,datapathPrefix);
         files = yield helper.filesForProject(project);
         ret = yield helper.createOrFindAllDemoProcesses(project, experiment);
     }
