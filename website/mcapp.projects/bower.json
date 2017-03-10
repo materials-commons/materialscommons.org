@@ -44,7 +44,8 @@
     "angular-block-ui": "^0.2.2",
     "handsontable": "^0.31.0",
     "ngHandsontable": "^0.13.0",
-    "angular-c3-simple": "^0.0.12"
+    "angular-c3-simple": "^0.0.12",
+    "angularjs-gauge": "^1.2.0"
   },
   "overrides": {
     "cytoscape-panzoom": {
