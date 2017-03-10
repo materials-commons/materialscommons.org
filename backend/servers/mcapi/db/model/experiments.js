@@ -25,6 +25,11 @@ function* getAllForProject(projectID) {
                     .coerceTo('array'),
                 samples: r.table('experiment2sample').getAll(experiment('id'), {index: 'experiment_id'})
                     .eqJoin('sample_id', r.table('samples')).zip()
+                    .merge(function (s) {
+                        return {
+                            process_count: r.table('process2sample').getAll(s('id'), {index: 'sample_id'}).count()
+                        };
+                    })
                     .orderBy('name')
                     .coerceTo('array'),
                 files: r.table('experiment2datafile').getAll(experiment('id'), {index: 'experiment_id'})
@@ -365,7 +370,7 @@ function* removeExistingExperimentFileEntries(experimentId, files) {
     if (files.length) {
         let indexEntries = files.map(f => [experimentId, f.datafile_id]);
         let matchingEntries = yield r.table('experiment2datafile').getAll(r.args(indexEntries), {index: 'experiment_datafile'});
-        var byFileID = _.indexBy(matchingEntries, 'datafile_id');
+        const byFileID = _.indexBy(matchingEntries, 'datafile_id');
         return files.filter(f => (!(f.datafile_id in byFileID)));
     }
 
@@ -376,7 +381,7 @@ function* removeExistingExperimentSampleEntries(experimentId, samples) {
     if (samples.length) {
         let indexEntries = samples.map(s => [experimentId, s.sample_id]);
         let matchingEntries = yield r.table('experiment2sample').getAll(r.args(indexEntries), {index: 'experiment_sample'});
-        var bySampleID = _.indexBy(matchingEntries, 'sample_id');
+        const bySampleID = _.indexBy(matchingEntries, 'sample_id');
         return samples.filter(s => (!(s.sample_id in bySampleID)));
     }
 
