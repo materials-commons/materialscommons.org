@@ -8,8 +8,7 @@ const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
 const mailTransport = mailTransportConfig();
 const ra = require('./resource-access');
-const exec = require('child_process').exec;
-const Promise = require('bluebird');
+const buildDemoProject = require('../build-demo/build-demo-project');
 const os = require('os');
 
 function* updateProjectFavorites(next) {
@@ -215,7 +214,7 @@ function* createDemoProject(next) {
             this.body = "Unable to create demo project; no user = " + userId;
         } else {
             let apikey = user.apikey;
-            let result = yield createDemoProjectRequest(apikey);
+            let result = yield createDemoProjectRequest(user);
             if (result.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = result.error;
@@ -225,15 +224,32 @@ function* createDemoProject(next) {
             }
         }
     }
-    console.log("createDemoProject for " + user.id + ' - ' + this.body);
+    console.log("In createDemoProject() for " + user.id + ' - ' + this.body);
     yield next;
 }
 
-function* createDemoProjectRequest(apikey){
-    // ret == val.ok_val or error.error
-    let ret = {
-        error: "Create demo project not implemented"
-    };
+function* createDemoProjectRequest(user){
+    let current_dir = process.cwd();
+    let parts = current_dir.split('/');
+    let last = parts[parts.length-1];
+
+    if ((last != "backend") && (last != "materialscommons.org")) {
+        let message = 'Can not create proejct with process running in unexpected base dir: ';
+        message = message + current_dir;
+        console.log("Build demo project fails - " + message);
+        return {error: "Can not create demo project: admin see log"};
+    }
+
+    let prefix = current_dir + "/backend/"
+    if (last == "backend") {
+        prefix = current_dir + "/";
+    }
+
+    let ret = yield buildDemoProject.findOrBuildAllParts(user, prefix);
+
+    if (!ret.error) {
+        ret.val = "Created project: " + ret.val.project.name;
+    }
     return ret;
 }
 
