@@ -1,9 +1,10 @@
 class MCProcessesWorkflowOutlineComponentController {
     /*@ngInject*/
-    constructor(processTree, datasetsAPI, $stateParams, toast, workflowService,
+    constructor(processTree, datasetsAPI, experimentsAPI, $stateParams, toast, workflowService,
                 experimentProcessesService, mcbus) {
         this.processTree = processTree;
         this.datasetsAPI = datasetsAPI;
+        this.experimentsAPI = experimentsAPI;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
@@ -60,7 +61,9 @@ class MCProcessesWorkflowOutlineComponentController {
     showDetails(p) {
         this.processTree.clearSelected(this.root);
         p.selected = true;
-        this.process = p;
+        this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, p.id).then(
+            process => this.process = process
+        );
         this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
     }
 
@@ -136,8 +139,9 @@ function mcProcessesWorkflowOutlineDirDirective(RecursionHelper) {
         controllerAs: '$ctrl',
         bindToController: true,
         templateUrl: 'app/project/experiments/experiment/components/workflow/mc-processes-workflow-outline-dir.html',
-        compile: function(element) {
-            return RecursionHelper.compile(element, function() {});
+        compile: function (element) {
+            return RecursionHelper.compile(element, function () {
+            });
         }
     }
 }
