@@ -46,9 +46,10 @@ class SelectItemsService {
         return this.dialog({samples, singleSelection}, SelectItemsSamplesServiceModalController);
     }
 
-    samplesFromProject(projectId, singleSelection = false) {
+    samplesFromProject(projectId, showAllSamples = false, singleSelection = false) {
         let options = {
-            singleSelection
+            singleSelection,
+            showAllSamples
         };
         return this.projectsAPI.getProjectSamples(projectId).then(
             (samples) => this.dialog({samples, options}, SelectItemsSamplesServiceModalController)

@@ -10,7 +10,7 @@ const ra = require('../../resource-access');
 const Router = require('koa-router');
 
 function *getProcessesForExperiment(next) {
-    let simple = this.query.simple ? true : false;
+    let simple = !!this.query.simple;
     let rv = yield experiments.getProcessesForExperiment(this.params.experiment_id, simple);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
@@ -148,7 +148,7 @@ function convertPropertyDateValues(updateArgs) {
 function* cloneProcess(next) {
     let cloneArgs = yield parse(this);
     cloneArgs = setDefaultCloneArgValues(cloneArgs);
-    let errors = yield validateCloneArgs(this.params.process_id, cloneArgs);
+    let errors = yield validateCloneArgs(this.params.project_id, this.params.process_id, cloneArgs);
     if (errors != null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
@@ -178,11 +178,12 @@ function setDefaultCloneArgValues(cloneArgs) {
     return cloneArgs;
 }
 
-function* validateCloneArgs(processId, cloneArgs) {
+function* validateCloneArgs(projectId, processId, cloneArgs) {
     if (cloneArgs.samples.length) {
-        let samplesInProcess = yield check.allSamplesInProcess(processId, cloneArgs.samples);
+        let sampleIds = cloneArgs.samples.map(s => s.sample_id);
+        let samplesInProcess = yield check.allSamplesInProject(projectId, sampleIds);
         if (! samplesInProcess) {
-            return {error: `All input samples must be from the cloned process`};
+            return {error: `All input samples must be from the project`};
         }
     }
 
@@ -207,7 +208,7 @@ function createResource() {
 
     router.put('/:process_id', updateExperimentProcess);
     router.get('/:process_id', getProcess);
-    router.post('/:process_id/clone', cloneProcess)
+    router.post('/:process_id/clone', cloneProcess);
 
     return router;
 }

@@ -13,10 +13,9 @@ function selectItemsSamplesDirective() {
     }
 }
 
+/*@ngInject*/
 function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
-    'ngInject';
-
-    var ctrl = this;
+    const ctrl = this;
 
     this.singleSelection = false;
 
@@ -33,6 +32,11 @@ function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
     ctrl.showProcess = showProcess;
     ctrl.toggleAllSamples = toggleAllSamples;
     ctrl.showAllProcesses = false;
+
+    if (ctrl.options.showAllSamples) {
+        ctrl.showAllProcesses = true;
+        ctrl.processFilter = null;
+    }
 
     ctrl.itemSelected = false;
 

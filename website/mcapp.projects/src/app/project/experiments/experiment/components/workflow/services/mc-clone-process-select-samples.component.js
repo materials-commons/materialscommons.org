@@ -1,7 +1,8 @@
 class MCCloneProcessSelectSamplesComponentController {
     /*@ngInject*/
-    constructor(mcshow) {
+    constructor(mcshow, selectItems) {
         this.mcshow = mcshow;
+        this.selectItems = selectItems;
         this.inputSamplesMap = _.indexBy(this.inputSamples, 'id');
         this.outputSamplesMap = _.indexBy(this.outputSamples, 'id');
     }
@@ -28,6 +29,22 @@ class MCCloneProcessSelectSamplesComponentController {
         s = this.outputSamplesMap[sample.id];
         s.selected = selectedState;
     }
+
+    selectProjectSamples() {
+        this.selectItems.samplesFromProject(this.projectId, true).then(
+            (selected) => {
+                selected.samples.forEach(s => {
+                    s.selected = true;
+                    s.versions.filter(v => v.selected).forEach(s2 => {
+                        s.property_set_id = s2.property_set_id;
+                        s.process_id = s2.process_id;
+                        this.inputSamples.push(s);
+                    });
+                });
+                this.inputSamplesMap = _.indexBy(this.inputSamples, 'id');
+            }
+        );
+    }
 }
 
 
@@ -38,6 +55,7 @@ angular.module('materialscommons').component('mcCloneProcessSelectSamples', {
         title: '@',
         inputSamples: '<',
         outputSamples: '<',
+        projectId: '<',
         doesTransform: '@'
     }
 });

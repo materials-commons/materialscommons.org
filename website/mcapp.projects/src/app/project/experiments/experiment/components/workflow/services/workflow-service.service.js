@@ -31,7 +31,7 @@ class WorkflowService {
             );
     }
 
-    cloneProcess(projectId, experimentId, process, allSamples = []) {
+    cloneProcess(projectId, experimentId, process) {
         let p = angular.copy(process);
         p.input_samples.forEach(s => s.selected = true);
         p.output_samples.forEach(s => s.selected = true);
@@ -43,7 +43,7 @@ class WorkflowService {
             bindToController: true,
             locals: {
                 process: p,
-                allSamples: allSamples
+                projectId: projectId
             }
         }).then(
             (cloneArgs) => {

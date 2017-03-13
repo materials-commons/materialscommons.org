@@ -5,12 +5,13 @@
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
-        <md-input-container>
+        <md-input-container class="md-block" style="margin-top:40px">
             <label>Name</label>
             <input ng-model="$ctrl.process.name">
         </md-input-container>
         <mc-clone-process-select-samples does-transform="$ctrl.process.does_transform"
                                          output-samples="$ctrl.process.output_samples"
+                                         project-id="$ctrl.projectId"
                                          input-samples="$ctrl.process.input_samples">
         </mc-clone-process-select-samples>
     </md-dialog-content>
