@@ -42,7 +42,8 @@ class WorkflowService {
             controller: CloneProcessDialogController,
             bindToController: true,
             locals: {
-                process: p
+                process: p,
+                allSamples: allSamples
             }
         }).then(
             (cloneArgs) => {
