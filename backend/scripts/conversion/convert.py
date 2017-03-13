@@ -36,27 +36,20 @@ def fix_file_upload_count_to_uploaded(conn):
 
 
 def update_projects_with_new_fields(conn):
-    print "Adding additional fields to projects. Swap notes and description..."
+    print "Adding additional fields to projects. Swap overview and description..."
     r.table('projects').replace(r.row.without('note')).run(conn)
     projects = list(r.table('projects').run(conn))
     for p in projects:
         p['overview'] = p['description']
         p['description'] = ''
-        p['status_notes'] = [
+        p['reminders'] = [
             {
-                'note': '',
-                'status': 'none'
-            },
-            {
-                'note': '',
-                'status': 'none'
-            },
-            {
-                'note': '',
+                'reminder': '',
                 'status': 'none'
             }
         ]
-        p['status'] = 'none'
+        p['status'] = 'active'
+        p['flag'] = 'none'
         p['tags'] = []
         r.table('projects').get(p['id']).update(p).run(conn)
     print "Done."
@@ -68,11 +61,6 @@ def main():
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
 
-    # Is this needed?
-    # fix_users_table_type(conn)
-
-    convert_scan_size(conn)
-    add_missing_description_field_to_processes(conn)
     fix_missing_property_sets(conn)
     update_projects_with_new_fields(conn)
     fix_file_upload_count_to_uploaded(conn)
