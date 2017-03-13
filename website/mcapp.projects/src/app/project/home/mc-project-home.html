@@ -9,7 +9,7 @@
                           ng-model="$ctrl.project.description" flex="100"></textarea>
             </div>
         </div>
-        <mc-project-home-status-notes project="$ctrl.project" style="margin:0"></mc-project-home-status-notes>
+        <mc-project-home-reminders project="$ctrl.project" style="margin:0"></mc-project-home-reminders>
         <label>Project Overview</label>
         <div md-whiteframe layout-margin>
             <div ckeditor="editorOptions"
@@ -34,59 +34,7 @@
                 <i class="fa fa-fw fa-plus"></i> Start New Experiment
             </md-button>
         </div>
-        <mc-experiment-overview experiment="experiment"
-                                ng-repeat="experiment in $ctrl.experiments"></mc-experiment-overview>
-        <md-content style="maxx-height: 70vh" layout="column" layout-align="start stretch" flex ng-if="false">
-            <div layout="row" layout-wrap>
-                <md-card flex="45" flex-md="60" flex-sm="60" flex-xs="60"
-                         ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.whichExperiments} | orderBy:'name'"
-                         class="experiment-card">
-                    <md-card-header class="project-card-header"
-                                    ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
-                        <md-card-avatar>
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x mc-md-primary-color"></i>
-                                    <i class="fa fa-flask fa-stack-1x fa-inverse"></i>
-                                </span>
-                        </md-card-avatar>
-                        <md-card-header-title>
-                            <span class="md-title">{{experiment.name}}</span>
-                        </md-card-header-title>
-                    </md-card-header>
-                    <md-card-title style="padding-top: 0; padding-bottom: 4px;" class="project-card-header"
-                                   ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
-                        <md-card-title-text>
-                            <span class="md-subhead" style="padding-top:4px">{{experiment.description}}</span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <md-card-actions layout="row" class="md-subhead" layout-align="space-between center">
-                        <a class="md-primary" tooltip="tasks"
-                           ui-sref="project.experiment.tasks({experiment_id: experiment.id})">
-                            <i class="fa fa-fw fa-tasks"></i>{{::experiment.tasks.length}}
-                        </a>
-                        <a class="md-primary" tooltip="notes"
-                           ui-sref="project.experiment.notes({experiment_id: experiment.id})">
-                            <i class="fa fa-fw fa-book"></i>{{::experiment.notes.length}}
-                        </a>
-                        <a class="md-primary" tooltip="datasets"
-                           ui-sref="project.experiment.datasets.list({experiment_id: experiment.id})">
-                            <i class="fa fa-fw fa-database"></i>{{::experiment.datasets.length}}
-                        </a>
-                        <a class="md-primary" tooltip="samples"
-                           ui-sref="project.experiment.samples({experiment_id: experiment.id})">
-                            <i class="fa fa-fw fa-cubes"></i>{{::experiment.samples.length | number}}
-                        </a>
-                        <a class="md-primary" tooltip="files"
-                           ui-sref="project.experiment.files({experiment_id: experiment.id})">
-                            <i class="fa fa-fw fa-files-o"></i>{{::experiment.files.length | number}}
-                        </a>
-                        <a class="md-primary" tooltip="workflow"
-                           ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
-                            <i class="fa fa-fw fa-code-fork"></i>{{::experiment.processes.length | number}}
-                        </a>
-                    </md-card-actions>
-                </md-card>
-            </div>
-        </md-content>
+        <mc-experiment-overview experiment="experiment" ng-repeat="experiment in $ctrl.experiments">
+        </mc-experiment-overview>
     </div>
 </div>
