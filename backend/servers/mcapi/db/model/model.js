@@ -4,29 +4,16 @@ function Project(name, description, owner) {
     this.name = name;
     this.description = description;
     this.overview = '';
-    this.status = 'none';
+    this.status = 'active';
+    this.flag = 'none';
     this.tags = [];
-    this.status_notes = [
-        {
-            note: '',
-            status: 'none'
-        },
-        {
-            note: '',
-            status: 'none'
-        },
-        {
-            note: '',
-            status: 'none'
-        }
-    ];
+    this.reminders = [];
     this.owner = owner;
     this.birthtime = r.now();
     this.mtime = this.birthtime;
     this.mediatypes = {};
     this.size = 0;
     this.otype = "project";
-    this._type = "project"
 }
 
 function Access(project_name, project_id, user_id) {
