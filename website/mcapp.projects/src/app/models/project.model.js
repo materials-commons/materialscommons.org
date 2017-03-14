@@ -15,20 +15,7 @@ function ProjectModelService(projectsAPI) {
             this.processes = [];
             this.samples = [];
             this.experiments = [];
-            this.status_notes = [
-                {
-                    note: '',
-                    status: 'none'
-                },
-                {
-                    note: '',
-                    status: 'none'
-                },
-                {
-                    note: '',
-                    status: 'none'
-                }
-            ];
+            this.reminders = [];
             this.users = [];
             this.owner_details = {fullname: ''};
             this.status = 'none';
@@ -46,7 +33,7 @@ function ProjectModelService(projectsAPI) {
             p.mtime = new Date(data.mtime * 1000);
             p.users = data.users;
             p.owner_details = data.owner_details;
-            p.status_notes = data.status_notes;
+            p.reminders = data.reminders;
             p.status = data.status;
             return p;
         }
