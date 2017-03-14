@@ -42,6 +42,13 @@ function MCProjectHomeComponentController($scope, mcstate, experimentsAPI, toast
             );
     };
 
+    ctrl.updateProjectDescription = () => {
+        projectsAPI.updateProject($stateParams.project_id, {description: ctrl.project.description}).then(
+            () => null,
+            () => toast.error('Unable to update project description')
+        )
+    };
+
     ctrl.startNewExperiment = () => {
         $mdDialog.show({
             templateUrl: 'app/project/experiments/create-experiment-dialog.html',

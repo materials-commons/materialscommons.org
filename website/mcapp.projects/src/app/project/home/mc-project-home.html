@@ -6,6 +6,8 @@
                 <label>Description</label>
                 <textarea class="mc-text-area" type="text"
                           placeholder="Add short project description..."
+                          ng-model-options="{debounce:1000}"
+                          ng-change="$ctrl.updateProjectDescription()"
                           ng-model="$ctrl.project.description" flex="100"></textarea>
             </div>
         </div>
