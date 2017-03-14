@@ -78,28 +78,41 @@ function all() {
 
 // forUser returns all the projects for a specific user. It handles
 // the case where a user is an administrator.
-function forUser(user) {
-    let rql;
+function* forUser(user) {
+    let userProjectsRql = r.table('projects').getAll(user.id, {index: 'owner'})
+        .merge(function(project) {
+            return {
+                owner_details: r.table('users').get(project('owner')).pluck('fullname')
+            }
+        });
+    userProjectsRql = transformDates(userProjectsRql);
+    userProjectsRql = addComputed(userProjectsRql);
+
+    let memberOfRql;
+
     if (user.isAdmin) {
-        rql = r.table('projects').filter(r.row('owner').ne('delete@materialscommons.org'))
+        memberOfRql = r.table('projects')
+            .filter(r.row('owner').ne('delete@materialscommons.org').and(r.row('owner').ne(user.id)))
             .merge(function(project) {
                 return {
                     owner_details: r.table('users').get(project('owner')).pluck('fullname')
                 }
             })
-            .limit(150).orderBy('name');
+            .limit(50);
     } else {
-        rql = r.table('access').getAll(user.id, {index: 'user_id'})
+        memberOfRql = r.table('access').getAll(user.id, {index: 'user_id'})
             .eqJoin('project_id', r.table('projects')).zip()
             .merge((project) => ({
                 owner_details: r.table('users').get(project('owner')).pluck('fullname')
-            })).orderBy('name');
+            }));
     }
 
-    rql = transformDates(rql);
-    rql = addComputed(rql);
+    memberOfRql = transformDates(memberOfRql);
+    memberOfRql = addComputed(memberOfRql);
 
-    return run(rql);
+    let usersProjects = yield run(userProjectsRql);
+    let memberProjects = yield run(memberOfRql);
+    return usersProjects.concat(memberProjects);
 }
 
 // transformDates removes the rethinkdb specific date
@@ -161,15 +174,15 @@ function* update(projectID, attrs) {
         pattrs.overview = attrs.overview;
     }
 
-    if (attrs.status_notes) {
-        pattrs.status_notes = attrs.status_notes;
+    if (attrs.reminders) {
+        pattrs.reminders = attrs.reminders;
     }
 
     if (attrs.status) {
         pattrs.status = attrs.status;
     }
 
-    if (pattrs.name || pattrs.description || pattrs.overview || pattrs.status_notes || pattrs.status) {
+    if (pattrs.name || pattrs.description || pattrs.overview || pattrs.reminders || pattrs.status) {
         yield r.table('projects').get(projectID).update(pattrs);
     }
 
@@ -216,7 +229,7 @@ function differenceByField(from, others, field) {
     });
 }
 
-function* addFileToProject(projectID,fileID) {
+function* addFileToProject(projectID, fileID) {
     let link = new model.Project2DataFile(projectID, fileID);
     yield r.table('project2datafile').insert(link);
 }
