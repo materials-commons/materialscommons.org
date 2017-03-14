@@ -1,6 +1,7 @@
 class MCProjectHomeRemindersComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(projectsAPI) {
+        this.projectsAPI = projectsAPI;
     }
 
     removeReminder(index) {
@@ -12,7 +13,7 @@ class MCProjectHomeRemindersComponentController {
     }
 
     updateReminders() {
-        this.project.update({reminders: this.project.reminders});
+        this.projectsAPI.updateProject(this.project.id, {reminders: this.project.reminders});
     }
 }
 
