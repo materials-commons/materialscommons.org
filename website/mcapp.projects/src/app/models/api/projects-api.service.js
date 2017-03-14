@@ -14,7 +14,7 @@ function projectsAPIService(Restangular) {
         },
 
         createProject: function(projectName, projectDescription) {
-            return Restangular.one('projects').customPOST({
+            return Restangular.one('v2').one('projects').customPOST({
                 name: projectName,
                 description: projectDescription
             }).then(function(p) {
