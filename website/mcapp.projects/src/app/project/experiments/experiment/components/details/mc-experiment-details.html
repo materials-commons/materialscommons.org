@@ -60,7 +60,7 @@
         </div>
 
     </md-content>
-    <div flex="45">
+    <div flex="45" ng-show="$ctrl.showNote">
         <textarea ckeditor="editorOptions"
                   ng-model="$ctrl.experiment.note"
                   ng-model-options="{debounce: 1000}"

@@ -1,7 +1,7 @@
 class MCExperimentOverviewComponentController {
     /*@ngInject*/
     constructor($scope, editorOpts) {
-        $scope.editorOptions = editorOpts({height: 35});
+        $scope.editorOptions = editorOpts({height: 30});
     }
 }
 

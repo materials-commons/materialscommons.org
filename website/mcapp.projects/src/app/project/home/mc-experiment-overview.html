@@ -1,5 +1,5 @@
 <div layout="row" md-whiteframe flex>
-    <div layout="column" flex="55" layout-margin>
+    <div layout="column" flex="45" layout-margin style="border-right:2px solid #dcdcdc;">
         <div layout="row">
             <a class="md-subhead" flex="70"
                ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">
@@ -21,9 +21,36 @@
             <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
         </div>
     </div>
-    <textarea ckeditor="editorOptions"
-              ng-model="$ctrl.experiment.note"
-              ng-model-options="{debounce: 1000}"
-              ng-change="$ctrl.updateNote()">
-    </textarea>
+    <md-content flex style="max-height: 55vh">
+        <md-tabs md-selected="$ctrl.currentTab" classx="md-primary md-hue-2"
+                 md-stretch-tabs md-dynamic-height md-border-bottom>
+            <md-tab>
+                <md-tab-label>
+                    <span><i class="fa fa-fw fa-flask"></i></span>Details
+                </md-tab-label>
+                <md-tab-body layout-margin>
+                    <mc-experiment-details experiment="$ctrl.experiment"></mc-experiment-details>
+                </md-tab-body>
+            </md-tab>
+            <md-tab>
+                <md-tab-label>
+                    <span><i class="fa fa-fw fa-book"></i>Overview</span>
+                </md-tab-label>
+                <md-tab-body>
+                    <textarea ckeditor="editorOptions"
+                              ng-model="$ctrl.experiment.note"
+                              ng-model-options="{debounce: 1000}"
+                              ng-change="$ctrl.updateNote()"></textarea>
+                </md-tab-body>
+            </md-tab>
+            <md-tab>
+                <md-tab-label>
+                    <span><i class="fa fa-fw fa-sitemap"></i>Workflow</span>
+                </md-tab-label>
+                <md-tab-body>
+                    Show workflow graph and outline here
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
 </div>

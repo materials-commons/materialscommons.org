@@ -121,7 +121,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.details', {
             url: '/details',
-            template: '<mc-experiment-details experiment="$resolve.experiment"></mc-experiment-details>'
+            template: '<mc-experiment-details experiment="$resolve.experiment" show-note="true"></mc-experiment-details>'
         })
         .state('project.experiment.tasks', {
             url: '/tasks',

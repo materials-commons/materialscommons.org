@@ -46,7 +46,7 @@ function MCProjectHomeComponentController($scope, mcstate, experimentsAPI, toast
         projectsAPI.updateProject($stateParams.project_id, {description: ctrl.project.description}).then(
             () => null,
             () => toast.error('Unable to update project description')
-        )
+        );
     };
 
     ctrl.startNewExperiment = () => {
