@@ -42,12 +42,7 @@ def update_projects_with_new_fields(conn):
     for p in projects:
         p['overview'] = p['description']
         p['description'] = ''
-        p['reminders'] = [
-            {
-                'reminder': '',
-                'status': 'none'
-            }
-        ]
+        p['reminders'] = []
         p['status'] = 'active'
         p['flag'] = 'none'
         p['tags'] = []
