@@ -25,7 +25,7 @@
     </div>
     <div layout="column" flex layout-margin>
         <div layout="row" layout-align="center center">
-            <md-radio-group layout="row" class="text-uppercase" ng-model="$ctrl.whichExperiments">
+            <md-radio-group layout="row" class="text-uppercase" ng-model="$ctrl.experimentType">
                 <md-radio-button value="active" class="md-primary">Active Experiments</md-radio-button>
                 <md-radio-button value="done" class="md-primary">Completed Experiments</md-radio-button>
                 <md-radio-button value="on-hold" class="md-warn">On Hold Experiments</md-radio-button>
@@ -36,7 +36,8 @@
                 <i class="fa fa-fw fa-plus"></i> Start New Experiment
             </md-button>
         </div>
-        <mc-experiment-overview experiment="experiment" ng-repeat="experiment in $ctrl.experiments">
+        <mc-experiment-overview experiment="experiment"
+                                ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.experimentType} | orderBy:'name'">
         </mc-experiment-overview>
     </div>
 </div>

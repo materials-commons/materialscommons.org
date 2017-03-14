@@ -11,11 +11,11 @@ function MCProjectHomeComponentController($scope, mcstate, experimentsAPI, toast
     const ctrl = this;
     ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
     ctrl.projectLoaded = true;
-    ctrl.whichExperiments = 'active';
+    ctrl.experimentType = 'active';
     ctrl.experiments = [];
     let projectOverview = ctrl.project.overview;
 
-    $scope.editorOptions = editorOpts({height: 25, width: 20});
+    $scope.editorOptions = editorOpts({height: 65, width: 50});
 
     ctrl.$onInit = () => {
         experimentsAPI.getAllForProject($stateParams.project_id).then(
