@@ -1,7 +1,10 @@
 <div layout="row" md-whiteframe flex>
     <div layout="column" flex="55" layout-margin>
         <div layout="row">
-            <a class="md-subhead" flex="70" ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">{{$ctrl.experiment.name}}</a>
+            <a class="md-subhead" flex="70"
+               ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">
+                {{$ctrl.experiment.name}}
+            </a>
             <span flex="5"></span>
             <div layout-align="start start" flex>
                 <span class="md-subhead">Last Updated:</span>
