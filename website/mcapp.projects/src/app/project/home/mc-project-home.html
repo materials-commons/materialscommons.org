@@ -13,7 +13,7 @@
         </div>
         <mc-project-home-reminders project="$ctrl.project" style="margin:0"></mc-project-home-reminders>
         <label>Project Overview</label>
-        <div md-whiteframe layout-margin>
+        <div md-whiteframe="10" layout-margin>
             <div ckeditor="editorOptions"
                  ng-model="$ctrl.project.overview"
                  ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
