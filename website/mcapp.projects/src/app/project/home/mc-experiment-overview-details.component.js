@@ -1,23 +1,11 @@
 class MCExperimentOverviewDetailsComponentController {
     /*@ngInject*/
     constructor() {
-        this.options = {
-            data: {
-                type: 'donut',
-                columns: [
-                    ['unused', 5], ['used', 8]
-                ]
-            },
-            donut: {
-                title: 'Samples',
-                label: {
-                    format: function (value) {
-                        return value;
-                    }
-                },
-                width: 35
-            }
-        }
+
+    }
+
+    $onInit() {
+        //this.measuredSamples = this.experiment.samples.filter(e => e.process_count > 1);
     }
 }
 

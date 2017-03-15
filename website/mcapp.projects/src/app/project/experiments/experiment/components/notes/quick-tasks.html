@@ -11,15 +11,11 @@
                    style="font-size:20px"></i>
                 <input flex="90" layout-fill type="text"
                        ng-model="$ctrl.task.name"
-                       ng-model-options="{debounce: 1000}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
                        ng-change="$ctrl.onNameChange()"
                        on-enter="$ctrl.done()"
                        placeholder="Untitled Task..."
                        class="mc-input-no-border align-task-element">
-                <!--<input size="25" type="text" placeholder="No template..."-->
-                <!--ng-model="$ctrl.task.template_name"-->
-                <!--class="mc-input-no-border" disabled>-->
-                <!--<md-button ng-if="$ctrl.task.template_name === ''" class="md-primary">Set Template</md-button>-->
             </div>
             <div class="align-task-element">
                 <i class="fa fa-fw fa-flag cursor-pointer mc-flag-not-set"

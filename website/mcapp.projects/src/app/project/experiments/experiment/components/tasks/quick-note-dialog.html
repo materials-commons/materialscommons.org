@@ -10,12 +10,12 @@
             <input type="text" class="mc-input-as-line" flex="60"
                    placholder="Title..."
                    ng-model="$ctrl.note.name"
-                   ng-model-options="{debounce: 500}"
+                   ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
                    ng-change="$ctrl.updateNote()">
         </div>
         <textarea ckeditor="editorOptions"
                   ng-model="$ctrl.note.note"
-                  ng-model-options="{debounce: 1000}"
+                  ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
                   ng-change="$ctrl.updateNote()">
         </textarea>
 

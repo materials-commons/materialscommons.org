@@ -14,7 +14,7 @@
         <div ng-show="$ctrl.currentNote.note !== null">
             <textarea ckeditor="editorOptions"
                       ng-model="$ctrl.currentNote.note"
-                      ng-model-options="{debounce: 1000}"
+                      ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
                       ng-change="$ctrl.updateNote()">
             </textarea>
         </div>

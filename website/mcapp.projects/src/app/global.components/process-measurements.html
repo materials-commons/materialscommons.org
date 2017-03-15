@@ -130,7 +130,7 @@
                                 <md-input-container class="md-block" md-no-float>
                                     <label>Specify {{::measurement.name}}...</label>
                                     <input ng-model="measurement.value.value"
-                                           ng-model-options="{debounce: 500}"
+                                           ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
                                            ng-change="$ctrl.updateMeasurementProperty(measurement)"
                                            type="text">
                                 </md-input-container>
@@ -144,7 +144,7 @@
                             <label>{{::measurement.name}}</label>
                             <input type="text" name="stringInput"
                                    ng-required="::measurement.required"
-                                   ng-model-options="{debounce: 500}"
+                                   ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
                                    ng-change="$ctrl.updateMeasurementProperty(measurement)"
                                    ng-model="measurement.value">
                         </md-input-container>

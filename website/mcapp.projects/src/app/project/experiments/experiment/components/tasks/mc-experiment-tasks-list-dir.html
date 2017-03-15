@@ -15,14 +15,11 @@
                 </md-checkbox>
                 <input flex="80" layout-fill type="text" data-nodrag
                        ng-model="$ctrl.task.name"
-                       ng-model-options="{debounce: 1000}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
                        ng-change="$ctrl.onNameChange()"
                        placeholder="Untitled Task..."
                        class="mc-input-no-border align-task-element"
                        id="{{::$ctrl.task.id}}">
-                <!--<input size="25" type="text" placeholder="No template..." data-nodrag-->
-                <!--ng-model="$ctrl.task.template_name"-->
-                <!--class="mc-input-no-border" disabled>-->
             </div>
             <div class="align-task-element" data-nodrag>
                 <i class="fa fa-fw fa-flag cursor-pointer {{::$ctrl.task.displayState.flags.flaggedClass}}"
