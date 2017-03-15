@@ -1,4 +1,4 @@
-<div layout="row" md-whiteframe flex>
+<div layout="row" md-whiteframe="10" flex>
     <div layout="column" flex="50" layout-margin style="border-right:2px solid #dcdcdc;">
         <div layout="row">
             <a class="md-subhead" flex="70"
@@ -19,26 +19,16 @@
             <!-- hands on table for spreadsheet fields here -->
             <!-- Experiment details such as description, samples count, etc.. here -->
             <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
-            <md-content style="max-height: 20vh">
-                <md-tabs md-selected="$ctrl.currentOverviewTab" md-stretch-tabs md-border-bottom>
-                    <md-tab>
-                        <md-tab-label>
-                            <span><i class="fa fa-fw fa-code-fork"></i>Processes</span>
-                        </md-tab-label>
-                        <md-tab-body>
-                            Processes here
-                        </md-tab-body>
-                    </md-tab>
-                    <md-tab>
-                        <md-tab-label>
-                            <span><i class="fa fa-fw fa-cubes"></i>Samples</span>
-                        </md-tab-label>
-                        <md-tab-body>
-                            Samples here
-                        </md-tab-body>
-                    </md-tab>
-                </md-tabs>
-            </md-content>
+            <md-tabs md-selected="$ctrl.currentOverviewTab" md-stretch-tabs md-border-bottom>
+                <md-tab>
+                    <md-tab-label>
+                        <span><i class="fa fa-fw fa-cubes"></i>Samples</span>
+                    </md-tab-label>
+                    <md-tab-body>
+                        <mc-project-samples-table samples="$ctrl.experiment.samples"></mc-project-samples-table>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
         </div>
     </div>
     <md-content flex style="max-height: 50vh">
