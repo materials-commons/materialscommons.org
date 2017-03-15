@@ -1,13 +1,13 @@
 <div layout="row">
-    <ng-gauge type="arch" total="15" valuex="10" used="12" size="100" thick="5" label="Measured"
-              append="Samples"></ng-gauge>
-    <ng-gauge type="arch" total="3" used="2" size="100" thick="5" foreground-color="#e74c3c"
-              label="Published" append="Datasets"></ng-gauge>
-    <ng-gauge type="arch" total="10" used="4" size="100" thick="5" foreground-color="#4caf50"
-              label="Completed" append="Tasks"></ng-gauge>
+    <ng-gauge type="arch" total="$ctrl.experiment.samples.length" used="$ctrl.measuredSamples.length" size="100"
+              thick="5" label="Measured" append="Samples"></ng-gauge>
+    <ng-gauge type="arch" total="$ctrl.experiment.datasets.length" used="$ctrl.publishedDatasets.length" size="100"
+              thick="5" foreground-color="#e74c3c" label="Published" append="Datasets"></ng-gauge>
+    <ng-gauge type="arch" total="$ctrl.experiment.tasks.length" used="$ctrl.completedTasks.length" size="100"
+              thick="5" foreground-color="#4caf50" label="Completed" append="Tasks"></ng-gauge>
     <div layout="column" class="padding-left-15 padding-top-20">
-        <span>20 Processes</span>
-        <span>30 Notes</span>
-        <span>300 Files</span>
+        <span>{{$ctrl.experiment.processes.length | number}} Processes</span>
+        <span>{{$ctrl.experiment.notes.length | number}} Notes</span>
+        <span>{{$ctrl.experiment.files.length | number}} Files</span>
     </div>
 </div>

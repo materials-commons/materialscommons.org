@@ -5,7 +5,9 @@ class MCExperimentOverviewDetailsComponentController {
     }
 
     $onInit() {
-        //this.measuredSamples = this.experiment.samples.filter(e => e.process_count > 1);
+        this.measuredSamples = this.experiment.samples.filter(s => s.process_count > 1);
+        this.publishedDatasets = this.experiment.datasets.filter(ds => ds.published);
+        this.completedTasks = this.experiment.tasks.filter(t => t.flags.done);
     }
 }
 
