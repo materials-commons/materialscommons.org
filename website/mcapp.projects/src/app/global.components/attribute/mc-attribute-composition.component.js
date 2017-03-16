@@ -3,7 +3,6 @@ class MCAttributeCompositionComponentController {
     constructor(experimentsAPI, toast, $stateParams) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
-        this.$stateParams = $stateParams;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
     }

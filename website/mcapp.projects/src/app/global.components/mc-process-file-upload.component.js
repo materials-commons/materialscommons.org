@@ -4,14 +4,14 @@ class MCProcessFileUploadComponentController {
         this.flow = mcFlow.get();
         this.projectsAPI = projectsAPI;
         this.toast = toast;
-        this.$stateParams = $stateParams;
+        this.projectId = $stateParams.project_id;
         this.$timeout = $timeout;
     }
 
     $onInit() {
         this.dirs = [];
         this.dir = {data: ''};
-        this.projectsAPI.getAllProjectDirectories(this.$stateParams.project_id).then(
+        this.projectsAPI.getAllProjectDirectories(this.projectId).then(
             (dirs) => {
                 this.dir.data = dirs[0];
                 this.dirs = dirs;

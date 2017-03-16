@@ -109,7 +109,8 @@ class CreateExperimentQuickNoteDialogController {
         this.noteCreated = false;
         this.noteId = "";
         this.notesAPI = notesAPI;
-        this.$stateParams = $stateParams;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
         this.toast = toast;
     }
 
@@ -119,14 +120,13 @@ class CreateExperimentQuickNoteDialogController {
      * note will not occur. Once it has been created updates will start being made to the note.
      */
     updateNote() {
-        let projectId = this.$stateParams.project_id,
-            experimentId = this.$stateParams.experiment_id,
-            note = {
-                note: this.note.note ? this.note.note : " ",
-                name: this.note.name ? this.note.name : " "
-            };
+        let note = {
+            note: this.note.note ? this.note.note : " ",
+            name: this.note.name ? this.note.name : " "
+        };
+
         if (!this.noteCreated) {
-            this.notesAPI.createNote(projectId, experimentId, note)
+            this.notesAPI.createNote(this.projectId, this.experimentId, note)
                 .then(
                     (n) => {
                         this.noteId = n.id;
@@ -137,7 +137,7 @@ class CreateExperimentQuickNoteDialogController {
                     () => this.toast.error('Failed to create note')
                 );
         } else if (this.noteId !== "") {
-            this.notesAPI.updateNote(projectId, experimentId, this.noteId, note)
+            this.notesAPI.updateNote(this.projectId, this.experimentId, this.noteId, note)
                 .then(
                     () => null,
                     () => this.toast.error('Unable to update note')

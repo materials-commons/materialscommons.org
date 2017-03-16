@@ -18,7 +18,8 @@ angular.module('materialscommons').component('mcExperimentTasksList', {
 
 /*@ngInject*/
 function MCExperimentTasksListComponentController(experimentsAPI, toast, $stateParams, mcstate) {
-    let ctrl = this;
+    let ctrl = this,
+        projectId = $stateParams.project_id;
     ctrl.treeOptions = {
         dropped: onDrop
     };
@@ -51,7 +52,7 @@ function MCExperimentTasksListComponentController(experimentsAPI, toast, $stateP
             task_id: dstTask.id
         };
         experimentsAPI
-            .updateTask($stateParams.project_id, $stateParams.experiment_id, task.id, {swap: swapArgs})
+            .updateTask(projectId, ctrl.experiment.id, task.id, {swap: swapArgs})
             .then(
                 () => null,
                 () => toast.error('Failed to update task')
