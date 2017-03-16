@@ -8,9 +8,11 @@ angular.module('materialscommons').component('mcExperimentDetailsField', {
         field: '@'
     }
 });
+
 /*@ngInject*/
 function MCExperimentDetailsFieldComponentController(experimentsAPI, $stateParams, toast) {
-    let ctrl = this;
+    let ctrl = this,
+        projectId = $stateParams.project_id;
 
     ctrl.add = (field) => ctrl.experiment[field].push("");
 
@@ -18,7 +20,7 @@ function MCExperimentDetailsFieldComponentController(experimentsAPI, $stateParam
         let updateArgs = {};
         updateArgs[field] = ctrl.experiment[field];
         experimentsAPI
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id, updateArgs)
+            .updateForProject(projectId, ctrl.experiment.id, updateArgs)
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment description')
@@ -30,7 +32,7 @@ function MCExperimentDetailsFieldComponentController(experimentsAPI, $stateParam
         let removeArgs = {};
         removeArgs[field] = ctrl.experiment[field];
         experimentsAPI
-            .updateForProject($stateParams.project_id, $stateParams.experiment_id, removeArgs)
+            .updateForProject(projectId, ctrl.experiment.id, removeArgs)
             .then(
                 () => null,
                 () => toast.error('Failed to update experiment description')
