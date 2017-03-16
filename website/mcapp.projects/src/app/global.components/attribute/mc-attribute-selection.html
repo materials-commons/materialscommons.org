@@ -18,7 +18,7 @@
             <md-input-container class="md-block" md-no-float>
                 <label>Specify {{::$ctrl.setting.name}}...</label>
                 <input ng-model="$ctrl.setting.value.value"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateSelectionSettingProperty($ctrl.setting)"
                        type="text">
             </md-input-container>

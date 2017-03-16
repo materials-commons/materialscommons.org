@@ -7,7 +7,7 @@
         <div md-whiteframe layout-margin>
             <div ckeditor="editorOptions" disabled
                  ng-model="$ctrl.project.overview"
-                 ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                 ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                  ng-change="$ctrl.updateProjectOverview()"
                  contenteditablex="true">
                 {{$ctrl.project.Overview}}

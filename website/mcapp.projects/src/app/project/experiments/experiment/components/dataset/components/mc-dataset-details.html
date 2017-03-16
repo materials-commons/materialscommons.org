@@ -15,25 +15,25 @@
             <md-input-container class="md-block">
                 <label>Name</label>
                 <input ng-model="$ctrl.dataset.title"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Description</label>
                 <textarea ng-model="$ctrl.dataset.description"
-                          ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                          ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                           ng-change="$ctrl.updateDataset()"></textarea>
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Institution</label>
                 <input ng-model="$ctrl.dataset.institution"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Funding</label>
                 <input ng-model="$ctrl.dataset.funding"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <div ng-if="false" layout="row">
@@ -77,25 +77,25 @@
             <md-input-container class="md-block">
                 <label>Title</label>
                 <input ng-model="paper.title"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Abstract</label>
                 <textarea ng-model="paper.abstract"
-                          ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                          ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                           ng-change="$ctrl.updateDataset()"></textarea>
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Link To Paper</label>
                 <input ng-model="paper.link"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block">
                 <label>DOI</label>
                 <input ng-model="paper.doi"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-button class="md-warn" ng-click="$ctrl.removePaper($index)">delete paper</md-button>
@@ -111,19 +111,19 @@
             <md-input-container class="md-block" flex-gt-sm>
                 <label>Last Name</label>
                 <input ng-model="author.lastname"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block" flex-gt-sm>
                 <label>First Name</label>
                 <input ng-model="author.firstname"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <md-input-container class="md-block" flex-gt-sm>
                 <label>Affiliation</label>
                 <input ng-model="author.affiliation"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateDataset()">
             </md-input-container>
             <a class="mc-error-color" ng-click="$ctrl.removeAuthor($index)">

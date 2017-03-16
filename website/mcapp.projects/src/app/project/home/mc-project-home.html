@@ -6,7 +6,7 @@
                 <label>Description</label>
                 <textarea class="mc-text-area" type="text"
                           placeholder="Add short project description..."
-                          ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                          ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                           ng-change="$ctrl.updateProjectDescription()"
                           ng-model="$ctrl.project.description" flex="100"></textarea>
             </div>
@@ -16,7 +16,7 @@
         <div md-whiteframe="10" layout-margin>
             <div ckeditor="editorOptions"
                  ng-model="$ctrl.project.overview"
-                 ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                 ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                  ng-change="$ctrl.updateProjectOverview()"
                  contenteditable="true">
                 {{$ctrl.project.overview}}

@@ -17,7 +17,7 @@
                 <label>Name</label>
                 <input type="text"
                        ng-model="$ctrl.experiment.name"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                        ng-change="$ctrl.updateName()">
             </md-input-container>
         </div>
@@ -26,7 +26,7 @@
             <md-input-container flex="90">
                 <label>Description</label>
                 <textarea ng-model="$ctrl.experiment.description"
-                          ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                          ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                           ng-change="$ctrl.updateDescription()"></textarea>
             </md-input-container>
         </div>
@@ -63,7 +63,7 @@
     <div flex="45" ng-show="$ctrl.showNote">
         <textarea ckeditor="editorOptions"
                   ng-model="$ctrl.experiment.note"
-                  ng-model-options="{updateOn: 'default blur', debounce:{default: 5000, blur: 0}}"
+                  ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                   ng-change="$ctrl.updateNote()">
         </textarea>
     </div>
