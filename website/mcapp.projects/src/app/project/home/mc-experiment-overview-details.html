@@ -1,10 +1,16 @@
 <div layout="row">
-    <ng-gauge type="arch" total="$ctrl.experiment.samples.length" used="$ctrl.measuredSamples.length" size="100"
-              thick="5" label="Measured" append="Samples"></ng-gauge>
-    <ng-gauge type="arch" total="$ctrl.experiment.datasets.length" used="$ctrl.publishedDatasets.length" size="100"
-              thick="5" foreground-color="#e74c3c" label="Published" append="Datasets"></ng-gauge>
-    <ng-gauge type="arch" total="$ctrl.experiment.tasks.length" used="$ctrl.completedTasks.length" size="100"
-              thick="5" foreground-color="#4caf50" label="Completed" append="Tasks"></ng-gauge>
+    <ng-gauge type="arch" total="$ctrl.experiment.samples.length" used="$ctrl.measuredSamples.length" size="160"
+              thick="5"
+              append="{{$ctrl.measuredSamples.length ? '' : 'No Samples'}}"
+              label="{{$ctrl.measuredSamples.length ? 'Samples Used' : 'Used'}}"></ng-gauge>
+    <ng-gauge type="arch" total="$ctrl.experiment.datasets.length" used="$ctrl.publishedDatasets.length" size="160"
+              thick="5" foreground-color="#e74c3c"
+              append="{{$ctrl.publishedDatasets.length ? '' : 'No Datasets'}}"
+              label="{{$ctrl.publishedDatasets.length ? 'Datasets Published' : 'Published'}}"></ng-gauge>
+    <!--append="{{$ctrl.publishedDatasets.length ? 'Datasets' : 'No Datasets'}}"></ng-gauge>-->
+    <!--<ng-gauge type="arch" total="$ctrl.experiment.tasks.length" used="$ctrl.completedTasks.length" size="120"-->
+    <!--thick="5" foreground-color="#4caf50" label="Completed"-->
+    <!--append="{{$ctrl.completedTasks.length ? 'Tasks' : 'No Tasks'}}"></ng-gauge>-->
     <div layout="column" class="padding-left-15 padding-top-20">
         <span>{{$ctrl.experiment.processes.length | number}} Processes</span>
         <span>{{$ctrl.experiment.notes.length | number}} Notes</span>

@@ -36,14 +36,6 @@
                  md-stretch-tabs md-dynamic-height md-border-bottom>
             <md-tab>
                 <md-tab-label>
-                    <span><i class="fa fa-fw fa-flask"></i></span>Details
-                </md-tab-label>
-                <md-tab-body layout-margin>
-                    <mc-experiment-details experiment="$ctrl.experiment"></mc-experiment-details>
-                </md-tab-body>
-            </md-tab>
-            <md-tab>
-                <md-tab-label>
                     <span><i class="fa fa-fw fa-book"></i>Overview</span>
                 </md-tab-label>
                 <md-tab-body>
@@ -55,10 +47,10 @@
             </md-tab>
             <md-tab>
                 <md-tab-label>
-                    <span><i class="fa fa-fw fa-sitemap"></i>Workflow</span>
+                    <span><i class="fa fa-fw fa-flask"></i></span>Details
                 </md-tab-label>
-                <md-tab-body>
-                    Show workflow graph and outline here
+                <md-tab-body layout-margin>
+                    <mc-experiment-details experiment="$ctrl.experiment"></mc-experiment-details>
                 </md-tab-body>
             </md-tab>
         </md-tabs>
