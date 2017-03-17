@@ -4,6 +4,7 @@
         <tr md-row>
             <th md-column md-order-by="status">Status</th>
             <th md-column md-order-by="name">Name</th>
+            <th md-column></th>
             <th md-column md-order-by="owner_details.fullname">Owner</th>
             <th md-column md-order-by="mtime">Modified</th>
             <th md-column md-order-by="experiments.length">E</th>
@@ -27,11 +28,13 @@
                     <a ui-sref="project.home({project_id: project.id})" tooltip="{{project.name}}">
                         {{project.name |truncate:40:'...'}}
                     </a>
-                    <a ng-click="$ctrl.showProjectOverview(project)">
-                        overview
-                    </a>
                     <span>{{project.description}}</span>
                 </div>
+            </td>
+            <td md-cell>
+                <a ng-click="$ctrl.showProjectOverview(project)">
+                    <i class="fa fa-fw fa-info-circle"></i>
+                </a>
             </td>
             <td md-cell>
                 {{project.owner_details.fullname | truncate:20:'...'}}
