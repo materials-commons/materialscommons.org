@@ -1,5 +1,7 @@
 import './details/mc-experiment-details.component';
 import './details/mc-experiment-details-field.component';
+import './details/mc-experiment-collaborators';
+
 import './files/mc-experiment-files.component';
 import './files/mc-experiment-files-table.component';
 import './forecast/mc-experiment-forecast.component';
