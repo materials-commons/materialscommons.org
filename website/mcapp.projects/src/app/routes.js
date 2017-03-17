@@ -37,15 +37,15 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('account.settings', {
             url: '/settings',
-            template: '<mc-user-settings></mc-user-settings>'
+            template: '<mc-account-settings></mc-account-settings>'
         })
         .state('account.settings.profile', {
             url: '/profile',
-            template: '<mc-user-settings-account></mc-user-settings-account>'
+            template: '<mc-account-settings-profile></mc-account-settings-profile>'
         })
         .state('account.settings.projects', {
             url: '/projects',
-            template: '<mc-user-settings-projects></mc-user-settings-projects>'
+            template: '<mc-account-settings-projects></mc-account-settings-projects>'
         })
         .state('project', {
             url: '/project/:project_id',

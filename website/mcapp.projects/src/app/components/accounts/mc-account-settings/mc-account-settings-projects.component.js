@@ -1,4 +1,4 @@
-class MCUserSettingsProjectsComponentController {
+class MCAccountSettingsProjectsComponentController {
     /*@ngInject*/
     constructor(User, projectsAPI, toast) {
         this.User = User;
@@ -35,7 +35,7 @@ class MCUserSettingsProjectsComponentController {
 
 }
 
-angular.module('materialscommons').component('mcUserSettingsProjects', {
-    templateUrl: 'app/components/accounts/mc-account/mc-user-settings-projects.html',
-    controller: MCUserSettingsProjectsComponentController
+angular.module('materialscommons').component('mcAccountSettingsProjects', {
+    templateUrl: 'app/components/accounts/mc-account-settings/mc-account-settings-projects.html',
+    controller: MCAccountSettingsProjectsComponentController
 });

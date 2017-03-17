@@ -1,10 +1,10 @@
-angular.module('materialscommons').component('mcUserApikey', {
-    templateUrl: 'app/components/accounts/mc-account/mc-user-apikey.html',
-    controller: MCUserApikeyComponentController
+angular.module('materialscommons').component('mcAccountSettingsApikey', {
+    templateUrl: 'app/components/accounts/mc-account-settings/mc-account-settings-apikey.html',
+    controller: MCAccountSettingsApikeyComponentController
 });
 
 /*@ngInect*/
-function MCUserApikeyComponentController(mcapi, User) {
+function MCAccountSettingsApikeyComponentController(mcapi, User) {
     const ctrl = this;
 
     ctrl.showKey = false;

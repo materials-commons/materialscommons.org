@@ -1,10 +1,10 @@
-angular.module('materialscommons').component('mcUserPassword', {
-    templateUrl: 'app/components/accounts/mc-account/mc-user-password.html',
-    controller: MCUserPasswordComponentController
+angular.module('materialscommons').component('mcAccountSettingsPassword', {
+    templateUrl: 'app/components/accounts/mc-account-settings/mc-account-settings-password.html',
+    controller: MCAccountSettingsPasswordComponentController
 });
 
 /*@ngInject*/
-function MCUserPasswordComponentController(mcapi, User, toast, focus) {
+function MCAccountSettingsPasswordComponentController(mcapi, User, toast, focus) {
     const ctrl = this;
     ctrl.newPassword = null;
     ctrl.verifyNewPassword = null;

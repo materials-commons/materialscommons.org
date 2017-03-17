@@ -1,4 +1,4 @@
-class MCUserDetailsComponentController {
+class MCAccountSettingsAboutUserComponentController {
     /*@ngInject*/
     constructor(User, toast, editorOpts, $scope) {
         this.User = User;
@@ -26,7 +26,7 @@ class MCUserDetailsComponentController {
     }
 }
 
-angular.module('materialscommons').component('mcUserDetails', {
-    templateUrl: 'app/components/accounts/mc-account/mc-user-details.html',
-    controller: MCUserDetailsComponentController
+angular.module('materialscommons').component('mcAccountSettingsAboutUser', {
+    templateUrl: 'app/components/accounts/mc-account-settings/mc-account-settings-about-user.html',
+    controller: MCAccountSettingsAboutUserComponentController
 });
