@@ -19,23 +19,19 @@ function MCExperimentDetailsFieldComponentController(experimentsAPI, $stateParam
     ctrl.update = (field) => {
         let updateArgs = {};
         updateArgs[field] = ctrl.experiment[field];
-        experimentsAPI
-            .updateForProject(projectId, ctrl.experiment.id, updateArgs)
-            .then(
-                () => null,
-                () => toast.error('Failed to update experiment description')
-            );
+        experimentsAPI.updateForProject(projectId, ctrl.experiment.id, updateArgs).then(
+            () => null,
+            () => toast.error(`Failed to update experiment ${ctrl.label}`)
+        );
     };
 
     ctrl.remove = (field, index) => {
         ctrl.experiment[field].splice(index, 1);
         let removeArgs = {};
         removeArgs[field] = ctrl.experiment[field];
-        experimentsAPI
-            .updateForProject(projectId, ctrl.experiment.id, removeArgs)
-            .then(
-                () => null,
-                () => toast.error('Failed to update experiment description')
-            );
+        experimentsAPI.updateForProject(projectId, ctrl.experiment.id, removeArgs).then(
+            () => null,
+            () => toast.error(`Failed to update experiment ${ctrl.label}`)
+        );
     };
 }
