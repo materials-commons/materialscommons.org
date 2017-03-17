@@ -8,7 +8,7 @@ import './global.components/index.module';
 import './login/index.module';
 import './join/index.module';
 import './project/index.module';
-import './components/projects/index.module';
+import './components/index.module';
 import './user/index.module';
 import './util/util';
 
