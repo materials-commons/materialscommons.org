@@ -34,10 +34,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/list',
             template: '<mc-projects></mc-projects>'
         })
-        .state('projects.share', {
-            url: '/share',
-            template: '<mc-projects-share></mc-projects-share>'
-        })
         .state('user', {
             url: '/user',
             abstract: true,

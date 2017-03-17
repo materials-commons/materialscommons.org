@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcProjects', {
-    templateUrl: 'app/projects/mc-projects.html',
+    templateUrl: 'app/components/projects/mc-projects/mc-projects.html',
     controller: MCProjectsComponentController
 });
 
@@ -16,7 +16,7 @@ function MCProjectsComponentController($mdDialog, User, mcbus, ProjectModel) {
 
     ctrl.createNewProject = () => {
         $mdDialog.show({
-            templateUrl: 'app/projects/create-project-dialog.html',
+            templateUrl: 'app/components/projects/mc-projects/create-project-dialog.html',
             controller: CreateNewProjectDialogController,
             controllerAs: '$ctrl',
             bindToController: true
