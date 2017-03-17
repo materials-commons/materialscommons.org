@@ -10,7 +10,6 @@ import './join/index.module';
 import './project/index.module';
 import './components/projects/index.module';
 import './user/index.module';
-import './releasenotes/mc-release-notes.component';
 import './util/util';
 
 angular.module('materialscommons')
