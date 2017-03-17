@@ -1,20 +1,14 @@
 <div layout="column">
     <h3>Name</h3>
     <div layout="row" layout-align="start center">
-        <md-input-container class="md-block">
+        <md-input-container class="md-block" flex="30">
             <input type="text" ng-model="$ctrl.fullname">
         </md-input-container>
         <md-button class="md-primary" ng-click="$ctrl.updateFullname()">Update Name</md-button>
     </div>
     <h3>Affiliation</h3>
     <div layout="row" layout-align="start start">
-        <div md-whiteframe layout-margin flex="50">
-            <div ckeditor="editorOptions"
-                 ng-model="$ctrl.affiliation"
-                 contenteditable="true">
-                {{$ctrl.affiliation}}
-            </div>
-        </div>
+        <textarea md-whiteframe ng-model="$ctrl.affiliation" flex="30"></textarea>
         <md-button class="md-primary" ng-click="$ctrl.updateAffiliation()">Update Affiliation</md-button>
     </div>
 </div>
