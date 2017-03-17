@@ -30,20 +30,20 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/list',
             template: '<mc-projects></mc-projects>'
         })
-        .state('user', {
-            url: '/user',
+        .state('account', {
+            url: '/account',
             abstract: true,
             template: '<div ui-view></div>'
         })
-        .state('user.settings', {
+        .state('account.settings', {
             url: '/settings',
             template: '<mc-user-settings></mc-user-settings>'
         })
-        .state('user.settings.account', {
-            url: '/account',
+        .state('account.settings.profile', {
+            url: '/profile',
             template: '<mc-user-settings-account></mc-user-settings-account>'
         })
-        .state('user.settings.projects', {
+        .state('account.settings.projects', {
             url: '/projects',
             template: '<mc-user-settings-projects></mc-user-settings-projects>'
         })
