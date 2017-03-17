@@ -27,6 +27,6 @@ class MCUserDetailsComponentController {
 }
 
 angular.module('materialscommons').component('mcUserDetails', {
-    templateUrl: 'app/user/components/mc-user-details.html',
+    templateUrl: 'app/components/accounts/mc-account/mc-user-details.html',
     controller: MCUserDetailsComponentController
 });

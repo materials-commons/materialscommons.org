@@ -1,12 +1,11 @@
 angular.module('materialscommons').component('mcUserApikey', {
-    templateUrl: 'app/user/mc-user-apikey.html',
+    templateUrl: 'app/components/accounts/mc-account/mc-user-apikey.html',
     controller: MCUserApikeyComponentController
 });
 
+/*@ngInect*/
 function MCUserApikeyComponentController(mcapi, User) {
-    'ngInject';
-
-    var ctrl = this;
+    const ctrl = this;
 
     ctrl.showKey = false;
     ctrl.showHideButtonText = "Show API Key";

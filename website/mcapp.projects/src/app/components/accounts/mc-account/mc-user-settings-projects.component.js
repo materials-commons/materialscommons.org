@@ -36,6 +36,6 @@ class MCUserSettingsProjectsComponentController {
 }
 
 angular.module('materialscommons').component('mcUserSettingsProjects', {
-    templateUrl: 'app/user/components/mc-user-settings-projects.html',
+    templateUrl: 'app/components/accounts/mc-account/mc-user-settings-projects.html',
     controller: MCUserSettingsProjectsComponentController
 });
