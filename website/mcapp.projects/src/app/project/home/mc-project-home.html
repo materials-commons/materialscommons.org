@@ -36,8 +36,12 @@
                 <i class="fa fa-fw fa-plus"></i> Start New Experiment
             </md-button>
         </div>
-        <mc-experiment-overview experiment="experiment"
-                                ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.experimentType} | orderBy:'name'">
-        </mc-experiment-overview>
+        <div layout="row" layout-wrap flex="100">
+            <mc-experiment-overview experiment="experiment" flex="50" flex-md="70" flex-sm="70" flex-xs="70" layout-wrap
+                                    layout="row"
+                                    style="min-width:500px"
+                                    ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.experimentType} | orderBy:'name'">
+            </mc-experiment-overview>
+        </div>
     </div>
 </div>

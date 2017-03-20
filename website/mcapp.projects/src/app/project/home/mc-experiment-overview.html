@@ -1,58 +1,27 @@
-<div layout="row" md-whiteframe="10" flex>
-    <div layout="column" flex="50" layout-margin style="border-right:2px solid #dcdcdc;">
-        <div layout="row">
-            <a class="md-subhead" flex="70"
-               ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">
-                {{$ctrl.experiment.name}}
-            </a>
-            <span flex="5"></span>
-            <div layout-align="start start" flex>
-                <span class="md-subhead">Last Updated:</span>
-                <span>{{$ctrl.experiment.mtime.epoch_time | date:'shortDate'}}</span>
-            </div>
-        </div>
-        <div layout="column">
-            <div layout="row">
-                <span class="md-subhead bold">Description:</span>
-                <span class="padding-left-15">{{$ctrl.experiment.description}}</span>
-            </div>
-            <!-- hands on table for spreadsheet fields here -->
-            <!-- Experiment details such as description, samples count, etc.. here -->
-            <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
-            <md-tabs md-selected="$ctrl.currentOverviewTab" md-stretch-tabs md-border-bottom>
-                <md-tab>
-                    <md-tab-label>
-                        <span><i class="fa fa-fw fa-cubes"></i>Samples</span>
-                    </md-tab-label>
-                    <md-tab-body>
-                        <mc-project-samples-table samples="$ctrl.experiment.samples"></mc-project-samples-table>
-                    </md-tab-body>
-                </md-tab>
-            </md-tabs>
+<div layout="column" layout-margin md-whiteframe="10" flex="100" style="margin-right: 10px">
+    <div layout="row">
+        <a class="md-subhead" flex="60"
+           ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">
+            {{$ctrl.experiment.name}}
+        </a>
+        <span flex="5"></span>
+        <div layout-align="start start" flex>
+            <span class="md-subhead">Last Updated: {{$ctrl.experiment.mtime | toDate}}</span>
+            <span></span>
         </div>
     </div>
-    <md-content flex style="max-height: 60vh; min-height:35vh">
-        <md-tabs md-selected="$ctrl.currentTab" classx="md-primary md-hue-2"
-                 md-stretch-tabs md-dynamic-height md-border-bottom>
-            <md-tab>
-                <md-tab-label>
-                    <span><i class="fa fa-fw fa-book"></i>Overview</span>
-                </md-tab-label>
-                <md-tab-body>
-                    <textarea ckeditor="editorOptions"
-                              ng-model="$ctrl.experiment.note"
-                              ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                              ng-change="$ctrl.updateNote()"></textarea>
-                </md-tab-body>
-            </md-tab>
-            <md-tab>
-                <md-tab-label>
-                    <span><i class="fa fa-fw fa-flask"></i></span>Details
-                </md-tab-label>
-                <md-tab-body layout-margin>
-                    <mc-experiment-details experiment="$ctrl.experiment"></mc-experiment-details>
-                </md-tab-body>
-            </md-tab>
-        </md-tabs>
-    </md-content>
+    <div layout="column">
+        <div layout="row" ng-if="false">
+            <span class="md-subhead bold">Description:</span>
+            <span class="padding-left-15">{{$ctrl.experiment.description}}</span>
+        </div>
+        <!-- hands on table for spreadsheet fields here -->
+        <!-- Experiment details such as description, samples count, etc.. here -->
+        <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
+        <div layout="row">
+            <span class="md-subhead bold">Description:</span>
+            <span class="padding-left-15">{{$ctrl.experiment.description}}</span>
+        </div>
+    </div>
+
 </div>

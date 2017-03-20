@@ -12,8 +12,11 @@
     <!--thick="5" foreground-color="#4caf50" label="Completed"-->
     <!--append="{{$ctrl.completedTasks.length ? 'Tasks' : 'No Tasks'}}"></ng-gauge>-->
     <div layout="column" class="padding-left-15 padding-top-20">
-        <span>{{$ctrl.experiment.processes.length | number}} Processes</span>
-        <span>{{$ctrl.experiment.notes.length | number}} Notes</span>
-        <span>{{$ctrl.experiment.files.length | number}} Files</span>
+        <span>{{::$ctrl.experiment.publications.length | number}} {{::$ctrl.pubPlural()}}</span>
+        <span>{{::$ctrl.experiment.samples.length | number}} {{::$ctrl.samplePlural()}}</span>
+        <span>{{::$ctrl.experiment.processes.length | number}} {{::$ctrl.processPlural()}}</span>
+        <span>{{::$ctrl.experiment.datasets.length | number}} {{::$ctrl.datasetPlural()}}</span>
+        <span>{{::$ctrl.experiment.files.length | number}} {{::$ctrl.filePlural()}}</span>
+        <span>{{::$ctrl.experiment.notes.length | number}} {{::$ctrl.notePlural()}}</span>
     </div>
 </div>
