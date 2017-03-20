@@ -13,7 +13,7 @@ export function toDateFilter() {
         if (input) {
             var t = input.epoch_time;
             var d = new Date(t * 1000);
-            return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+            return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
         }
     }
 }
