@@ -2,16 +2,26 @@
     <table md-table>
         <thead md-head md-order="$ctrl.sortOrder">
         <tr md-row>
-            <th md-column md-order-by="status">Status</th>
+            <!--<th md-column md-order-by="status">Status</th>-->
             <th md-column md-order-by="name">Name</th>
             <th md-column></th>
             <th md-column md-order-by="owner_details.fullname">Owner</th>
             <th md-column md-order-by="mtime">Modified</th>
-            <th md-column md-order-by="experiments.length">E</th>
-            <th md-column md-order-by="samples.length">S</th>
-            <th md-column md-order-by="processes.length">P</th>
-            <th md-column md-order-by="files_count">F</th>
-            <th md-column md-order-by="users.length">U</th>
+            <th md-column md-order-by="experiments.length">
+                <i class="fa fa-fw fa-flask"></i> E
+            </th>
+            <th md-column md-order-by="samples.length">
+                <i class="fa fa-fw fa-cubes"></i> S
+            </th>
+            <th md-column md-order-by="processes.length">
+                <i class="fa fa-fw fa-code-fork"></i> P
+            </th>
+            <th md-column md-order-by="files_count">
+                <i class="fa fa-fw fa-files-o"></i> F
+            </th>
+            <th md-column md-order-by="users.length">
+                <i class="fa fa-fw fa-users"></i> U
+            </th>
             <th md-column>Reminders</th>
         </tr>
         </thead>
@@ -20,9 +30,9 @@
             ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
             style='border-left-width: 8px;'
             ng-repeat="project in $ctrl.projects | filter:$ctrl.query | orderBy:$ctrl.sortOrder">
-            <td md-cell>
-                <mc-project-status status="project.status"></mc-project-status>
-            </td>
+            <!--<td md-cell>-->
+            <!--<mc-project-status status="project.status"></mc-project-status>-->
+            <!--</td>-->
             <td md-cell>
                 <div layout="column">
                     <a ui-sref="project.home({project_id: project.id})" tooltip="{{project.name}}">
