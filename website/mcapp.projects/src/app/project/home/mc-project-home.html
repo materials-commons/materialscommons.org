@@ -8,7 +8,7 @@
                       placeholder="Add short project description..."
                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                       ng-change="$ctrl.updateProjectDescription()"
-                      ng-model="$ctrl.project.description" flexx="100"></textarea>
+                      ng-model="$ctrl.project.description"></textarea>
         </div>
         <mc-project-home-reminders project="$ctrl.project" style="margin:0"></mc-project-home-reminders>
         <label>Project Overview</label>
