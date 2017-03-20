@@ -1,6 +1,6 @@
 <div layout="column" layout-margin md-whiteframe="10" flex="100" style="margin-right: 10px">
     <div layout="row">
-        <a class="md-subhead" flex="60"
+        <a class="md-subhead" flex
            ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">
             {{$ctrl.experiment.name}}
         </a>
@@ -11,12 +11,6 @@
         </div>
     </div>
     <div layout="column">
-        <div layout="row" ng-if="false">
-            <span class="md-subhead bold">Description:</span>
-            <span class="padding-left-15">{{$ctrl.experiment.description}}</span>
-        </div>
-        <!-- hands on table for spreadsheet fields here -->
-        <!-- Experiment details such as description, samples count, etc.. here -->
         <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
         <div layout="row">
             <span class="md-subhead bold">Description:</span>

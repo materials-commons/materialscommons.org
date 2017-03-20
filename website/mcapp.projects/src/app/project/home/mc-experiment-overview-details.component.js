@@ -5,33 +5,55 @@ class MCExperimentOverviewDetailsComponentController {
     }
 
     $onInit() {
-        this.measuredSamples = this.experiment.samples.filter(s => s.process_count > 1);
+        this.usedSamples = this.experiment.samples.filter(s => s.process_count > 1);
         this.publishedDatasets = this.experiment.datasets.filter(ds => ds.published);
         this.completedTasks = this.experiment.tasks.filter(t => t.flags.done);
     }
 
     pubPlural() {
-        return this.experiment.publications.length === 1 ? "Publication" : "Publications";
+        return this.experiment.publications.length === 1 ? 'Publication' : 'Publications';
     }
 
     samplePlural() {
-        return this.experiment.samples.length === 1 ? "Sample" : "Samples";
+        return this.experiment.samples.length === 1 ? 'Sample' : 'Samples';
+    }
+
+    usedSamplesPlural() {
+        switch (this.usedSamples.length) {
+            case 0:
+                return 'Used';
+            case 1:
+                return 'Sample Used';
+            default:
+                return 'Samples Used';
+        }
+    }
+
+    publishedDatasetsPlural() {
+        switch (this.publishedDatasets.length) {
+            case 0:
+                return 'Published';
+            case 1:
+                return 'Dataset Published';
+            default:
+                return 'Datasets Published';
+        }
     }
 
     processPlural() {
-        return this.experiment.processes.length === 1 ? "Process" : "Processes";
+        return this.experiment.processes.length === 1 ? 'Process' : 'Processes';
     }
 
     datasetPlural() {
-        return this.experiment.datasets.length === 1 ? "Dataset" : "Datasets";
+        return this.experiment.datasets.length === 1 ? 'Dataset' : 'Datasets';
     }
 
     filePlural() {
-        return this.experiment.files.length === 1 ? "File" : "Files";
+        return this.experiment.files.length === 1 ? 'File' : 'Files';
     }
 
     notePlural() {
-        return this.experiment.notes.length === 1 ? "Note" : "Notes";
+        return this.experiment.notes.length === 1 ? 'Note' : 'Notes';
     }
 }
 

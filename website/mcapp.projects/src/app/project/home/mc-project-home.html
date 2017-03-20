@@ -1,15 +1,13 @@
 <div layout="row" layout-fill layout-align="start stretch">
     <div flex="30" layout="column" layout-margin>
-        <div layout="row">
-            <mc-project-status status="$ctrl.project.status"></mc-project-status>
-            <div layout="column" flex="100">
-                <label>Description</label>
-                <textarea class="mc-text-area" type="text"
-                          placeholder="Add short project description..."
-                          ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                          ng-change="$ctrl.updateProjectDescription()"
-                          ng-model="$ctrl.project.description" flex="100"></textarea>
-            </div>
+
+        <div layout="column" flex="100">
+            <label>Description</label>
+            <textarea class="mc-text-area" type="text"
+                      placeholder="Add short project description..."
+                      ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                      ng-change="$ctrl.updateProjectDescription()"
+                      ng-model="$ctrl.project.description" flex="100"></textarea>
         </div>
         <mc-project-home-reminders project="$ctrl.project" style="margin:0"></mc-project-home-reminders>
         <label>Project Overview</label>
