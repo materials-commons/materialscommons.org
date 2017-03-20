@@ -9,10 +9,10 @@
               label="{{$ctrl.publishedDatasetsPlural()}}"></ng-gauge>
     <div layout="column" class="padding-left-15 padding-top-20" flex>
         <span>{{::$ctrl.experiment.publications.length | number}} {{::$ctrl.pubPlural()}}</span>
-        <span>{{::$ctrl.experiment.samples.length | number}} {{::$ctrl.samplePlural()}}</span>
-        <span>{{::$ctrl.experiment.processes.length | number}} {{::$ctrl.processPlural()}}</span>
-        <span>{{::$ctrl.experiment.datasets.length | number}} {{::$ctrl.datasetPlural()}}</span>
-        <span>{{::$ctrl.experiment.files.length | number}} {{::$ctrl.filePlural()}}</span>
+        <span>{{::$ctrl.experiment.samples.length | number}} <i class="fa fa-fw fa-cubes"></i> ({{::$ctrl.samplePlural()}})</span>
+        <span>{{::$ctrl.experiment.processes.length | number}} <i class="fa fa-fw fa-code-fork"></i> ({{::$ctrl.processPlural()}})</span>
+        <span>{{::$ctrl.experiment.datasets.length | number}} <i class="fa fa-fw fa-database"></i> ({{::$ctrl.datasetPlural()}})</span>
+        <span>{{::$ctrl.experiment.files.length | number}} <i class="fa fa-fw fa-files-o"></i> ({{::$ctrl.filePlural()}})</span>
         <span>{{::$ctrl.experiment.notes.length | number}} {{::$ctrl.notePlural()}}</span>
     </div>
 </div>

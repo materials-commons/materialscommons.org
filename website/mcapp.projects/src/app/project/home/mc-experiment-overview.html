@@ -1,9 +1,8 @@
 <div layout="column" layout-margin md-whiteframe="10" flex="100" style="margin-right: 10px">
     <div layout="row">
-        <a class="md-subhead" flex
-           ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">
+        <span class="md-title" flex>
             {{$ctrl.experiment.name}}
-        </a>
+        </span>
         <span flex="5"></span>
         <div layout-align="start start" flex>
             <span class="md-subhead">Last Updated: {{$ctrl.experiment.mtime | toDate}}</span>
@@ -14,8 +13,7 @@
         <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
         <div layout="row">
             <span class="md-subhead bold">Description:</span>
-            <span class="padding-left-15">{{$ctrl.experiment.description}}</span>
+            <span class="padding-left-15 md-subhead">{{$ctrl.experiment.description}}</span>
         </div>
     </div>
-
 </div>
