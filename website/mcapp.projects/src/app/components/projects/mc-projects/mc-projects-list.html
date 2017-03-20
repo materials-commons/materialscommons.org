@@ -35,8 +35,8 @@
             <!--</td>-->
             <td md-cell>
                 <div layout="column">
-                    <a ui-sref="project.home({project_id: project.id})" tooltip="{{project.name}}">
-                        {{project.name |truncate:40:'...'}}
+                    <a ui-sref="project.home({project_id: project.id})">
+                        {{project.name}}
                     </a>
                     <span>{{project.description}}</span>
                 </div>
@@ -47,7 +47,7 @@
                 </a>
             </td>
             <td md-cell>
-                {{project.owner_details.fullname | truncate:20:'...'}}
+                {{project.owner_details.fullname}}
             </td>
             <td md-cell>
                 {{project.mtime | date:'shortDate'}}
