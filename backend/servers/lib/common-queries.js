@@ -136,7 +136,7 @@ function processDetailsRql(rql, r) {
                                         .zip().coerceTo('array')
                                 }
                             }).coerceTo('array'),
-                        files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
+                        files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'}).limit(50)
                             .eqJoin('datafile_id', r.table('datafiles')).zip().pluck('id', 'name')
                             .coerceTo('array')
                         // processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
@@ -161,7 +161,7 @@ function processDetailsRql(rql, r) {
                                         .zip().coerceTo('array')
                                 }
                             }).coerceTo('array'),
-                        files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
+                        files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'}).limit(50)
                             .eqJoin('datafile_id', r.table('datafiles')).zip().pluck('id', 'name')
                             .coerceTo('array')
                         // processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
@@ -177,7 +177,7 @@ function processDetailsRql(rql, r) {
                 })
                 .without({right: {'id': true, 'otype': true}}).zip()
                 .coerceTo('array'),
-            files: r.table('process2file').getAll(process('id'), {index: 'process_id'})
+            files: r.table('process2file').getAll(process('id'), {index: 'process_id'}).limit(50)
                 .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
             input_files: r.table('process2file').getAll(process('id'), {index: 'process_id'})
                 .filter({direction: 'in'})
