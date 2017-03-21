@@ -42,6 +42,19 @@ class MCShowService {
             }
         });
     }
+
+    showFile(file, multiple = true) {
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
+            controllerAs: '$ctrl',
+            controller: CommonDoneDismissDialogController,
+            bindToController: true,
+            multiple: multiple,
+            locals: {
+                file: file
+            }
+        });
+    }
 }
 
 class CommonDoneDismissDialogController {
