@@ -19,6 +19,12 @@ function* allProcessesInDataset(datasetId, processIds) {
     return processes.length === processIds.length;
 }
 
+function* allFilesInProject(projectId, fileIds) {
+    let indexArgs = fileIds.map(fid => [projectId, fid]);
+    let matches = yield r.table('project2datafile').getAll(r.args(indexArgs), {index: 'project_datafile'});
+    return matches.length === fileIds.length;
+}
+
 function* experimentExistsInProject(projectID, experimentID) {
     let matches = yield r.table('project2experiment').getAll([projectID, experimentID], {index: 'project_experiment'});
     return matches.length !== 0;
@@ -150,6 +156,7 @@ module.exports = {
     allSamplesInDataset,
     allFilesInDataset,
     allProcessesInDataset,
+    allFilesInProject,
     experimentExistsInProject,
     taskInExperiment,
     noteInExperiment,
