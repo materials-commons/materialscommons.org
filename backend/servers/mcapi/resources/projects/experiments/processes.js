@@ -148,7 +148,7 @@ function convertPropertyDateValues(updateArgs) {
 function* cloneProcess(next) {
     let cloneArgs = yield parse(this);
     cloneArgs = setDefaultCloneArgValues(cloneArgs);
-    let errors = yield validateCloneArgs(this.params.project_id, this.params.process_id, cloneArgs);
+    let errors = yield validateCloneArgs(this.params.project_id, cloneArgs);
     if (errors != null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
@@ -178,19 +178,20 @@ function setDefaultCloneArgValues(cloneArgs) {
     return cloneArgs;
 }
 
-function* validateCloneArgs(projectId, processId, cloneArgs) {
+function* validateCloneArgs(projectId, cloneArgs) {
     if (cloneArgs.samples.length) {
         let sampleIds = cloneArgs.samples.map(s => s.sample_id);
-        let samplesInProcess = yield check.allSamplesInProject(projectId, sampleIds);
-        if (! samplesInProcess) {
+        let samplesInProject = yield check.allSamplesInProject(projectId, sampleIds);
+        if (!samplesInProject) {
             return {error: `All input samples must be from the project`};
         }
     }
 
     if (cloneArgs.files.length) {
-        let filesInProcess = yield check.allFilesInProcess(processId, cloneArgs.files);
-        if (! filesInProcess) {
-            return {error: `All files must be from the cloned process`};
+        let fileIds = cloneArgs.files.map(f => f.id);
+        let filesInProject = yield check.allFilesInProject(projectId, fileIds);
+        if (!filesInProject) {
+            return {error: `All files must be from the project`};
         }
     }
 
