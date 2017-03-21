@@ -213,18 +213,17 @@ function* createDemoProject(next) {
             this.status = status.BAD_REQUEST;
             this.body = "Unable to create demo project; no user = " + userId;
         } else {
-            let apikey = user.apikey;
             let result = yield createDemoProjectRequest(user);
             if (result.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = result.error;
             } else {
+                yield users.updateUserSettings(userId, {demo_installed: true});
                 this.status = status.OK;
                 this.body = result.val;
             }
         }
     }
-    console.log("In createDemoProject() for " + user.id + ' - ' + this.body);
     yield next;
 }
 

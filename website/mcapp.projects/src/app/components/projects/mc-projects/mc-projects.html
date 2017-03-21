@@ -2,7 +2,9 @@
     <div layout="column" flex>
         <div layout="row" layout-align="end">
             <md-button class="md-primary md-raised" ng-click="$ctrl.createNewProject()">create project</md-button>
-            <md-button ng-show="false" class="md-primary md-raised" ng-click="$ctrl.sharingOn = true">share</md-button>
+            <md-button ng-show="!$ctrl.demoInstalled" class="md-primary md-raised">
+                Add Demo Project
+            </md-button>
         </div>
         <div layout="row" layout-align="center">
             <md-button class="md-warn" ng-click="$ctrl.query = ''">clear search</md-button>

@@ -4,9 +4,10 @@ angular.module('materialscommons').component('mcProjects', {
 });
 
 /*@ngInject*/
-function MCProjectsComponentController($mdDialog, User, mcbus, ProjectModel) {
+function MCProjectsComponentController($mdDialog, User, mcbus, ProjectModel, blockUI, demoProjectService, toast) {
     const ctrl = this;
     ctrl.user = User.u();
+    ctrl.demoInstalled = User.attr().demo_installed;
 
     getUserProjects();
 
@@ -25,6 +26,8 @@ function MCProjectsComponentController($mdDialog, User, mcbus, ProjectModel) {
         );
     };
 
+    ctrl.buildDemoProject = buildDemoProject;
+
     ///////////////////////
 
     function getUserProjects() {
@@ -32,6 +35,22 @@ function MCProjectsComponentController($mdDialog, User, mcbus, ProjectModel) {
             (projects) => {
                 ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
                 ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
+            }
+        );
+    }
+
+    function buildDemoProject() {
+        let user_id = ctrl.user;
+        blockUI.start("Building demo project (this may take a few seconds)...");
+        demoProjectService.buildDemoProject(user_id).then(
+            () => {
+                blockUI.stop();
+                mcbus.send('PROJECTS$REFRESH');
+            },
+            (error) => {
+                blockUI.stop();
+                let message = `Status: ${error.status}; Message: ${error.data}`;
+                toast.error(message, 'top right');
             }
         );
     }
