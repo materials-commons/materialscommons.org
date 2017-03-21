@@ -269,7 +269,7 @@ function* cloneProcess(projectId, experimentId, processId, owner, cloneArgs) {
 
     // Add files
     let files = cloneArgs.files.map(f => ({command: 'add', id: f.id}));
-    yield processCommon.updateProcessFiles(processId, files);
+    yield processCommon.updateProcessFiles(createdProcess.id, files);
 
     // Add setup properties
     for (let sIndex = 0; sIndex < process.setup.length; sIndex++) {
