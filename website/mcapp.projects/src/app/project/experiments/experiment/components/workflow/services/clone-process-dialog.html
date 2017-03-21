@@ -1,7 +1,7 @@
 <md-dialog flex="40" style="max-height:85vh">
     <md-toolbar layout="row">
         <div layout-margin>
-            Create process from {{$ctrl.process.name}}
+            Clone process from {{$ctrl.process.name}}
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
@@ -14,6 +14,8 @@
                                          project-id="$ctrl.projectId"
                                          input-samples="$ctrl.process.input_samples">
         </mc-clone-process-select-samples>
+        <mc-clone-process-select-files files="$ctrl.process.files"
+                                       project-id="$ctrl.projectId"></mc-clone-process-select-files>
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
