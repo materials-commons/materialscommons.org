@@ -95,6 +95,24 @@ function* validateUserSettingsArgs(args, userId) {
     return null;
 }
 
+function* getUser(next) {
+    let user = users.getUser(this.params.user_id);
+    if (user.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = user;
+    } else if (user.val.apikey !== this.query.apikey) {
+        this.status = status.BAD_REQUEST;
+        this.body = {error: `No such user or access denied: ${this.params.user_id}`};
+    } else {
+        delete user.val.apikey;
+        delete user.val.admin;
+        delete user.val.password;
+        this.body = user.val;
+    }
+
+    yield next;
+}
+
 function* createAccount(next) {
     let accountArgs = yield parse(this);
     schema.prepare(schema.userAccountSchema, accountArgs);
@@ -325,6 +343,7 @@ function mailTransportConfig() {
 function createResource(router) {
     router.put('/users/:project_id', ra.validateProjectAccess, updateProjectFavorites);
     router.put('/users', updateUserSettings);
+    router.get('/users/:user_id', getUser);
     router.get('/users/validate/:validation_id', getUserRegistrationFromUuid);
     router.get('/users/rvalidate/:validation_id', getUserForPasswordResetFromUuid);
     router.put('/users/:user_id/clear-reset-password', clearUserResetPasswordFlag);
