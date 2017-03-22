@@ -146,7 +146,7 @@ function* uploadFileToProjectDirectory(next) {
         filepath: upload.path
     };
 
-    console.log("check for obvious errors and return error as above");
+    //TODO: check for obvious errors and return error as above - tew
     let file = yield directories.ingestSingleLocalFile(projectID, directoryID, this.reqctx.user.id, args);
 
     this.body = file;
