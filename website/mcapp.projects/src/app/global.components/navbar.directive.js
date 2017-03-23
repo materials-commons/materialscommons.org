@@ -40,6 +40,10 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
         ctrl.measuredSamples = ctrl.project.samples.filter(s => s.processes.length > 1);
     });
 
+    mcbus.subscribe('USER$NAME', 'NavbarDirectiveController', () => {
+        ctrl.user = User.attr().fullname;
+    });
+
     ctrl.query = searchQueryText.get();
     ctrl.placeholder = inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
 
