@@ -1,10 +1,11 @@
 <div layout="row">
     <ng-gauge type="arch" total="$ctrl.experiment.samples.length" used="$ctrl.usedSamples.length" size="160"
               thick="5"
+              background-color="#ffcc66"
               append="{{$ctrl.usedSamples.length ? '' : 'No Samples'}}"
               label="{{$ctrl.usedSamplesPlural()}}"></ng-gauge>
     <ng-gauge type="arch" total="$ctrl.experiment.datasets.length" used="$ctrl.publishedDatasets.length" size="160"
-              thick="5" foreground-color="#e74c3c"
+              thick="5" foreground-color="#4caf50" background-color="#4caf50"
               append="{{$ctrl.publishedDatasets.length ? '' : 'No Datasets'}}"
               label="{{$ctrl.publishedDatasetsPlural()}}"></ng-gauge>
     <div layout="column" class="padding-left-15 padding-top-20" flex>
