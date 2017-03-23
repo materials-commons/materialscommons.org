@@ -246,6 +246,7 @@ function User(email, fullname, apikey) {
     this.id = email;
     this.apikey = apikey;
     this.birthtime = now;
+    this.demo_installed = false;
     this.mtime = now;
     this.avatar = "";
     this.description = "";
