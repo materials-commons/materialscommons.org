@@ -101,7 +101,7 @@ function* forUser(user) {
             .limit(50);
     } else {
         memberOfRql = r.table('access').getAll(user.id, {index: 'user_id'})
-            .eqJoin('project_id', r.table('projects')).zip()
+            .eqJoin('project_id', r.table('projects')).zip().filter(r.row('owner').ne(user.id))
             .merge((project) => ({
                 owner_details: r.table('users').get(project('owner')).pluck('fullname')
             }));

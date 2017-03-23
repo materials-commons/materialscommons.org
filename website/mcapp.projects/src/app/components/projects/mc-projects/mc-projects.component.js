@@ -1,39 +1,67 @@
-angular.module('materialscommons').component('mcProjects', {
-    templateUrl: 'app/components/projects/mc-projects/mc-projects.html',
-    controller: MCProjectsComponentController
-});
+class MCProjectsComponentController {
+    /*@ngInject*/
+    constructor($mdDialog, User, mcbus, ProjectModel, blockUI, demoProjectService, toast) {
+        this.$mdDialog = $mdDialog;
+        this.User = User;
+        this.mcbus = mcbus;
+        this.ProjectModel = ProjectModel;
+        this.blockUI = blockUI;
+        this.demoProjectService = demoProjectService;
+        this.toast = toast;
+        this.mcuser = User.attr();
+        console.log(this.mcuser);
+        this.myProjects = [];
+        this.joinedProjects = [];
+    }
 
-/*@ngInject*/
-function MCProjectsComponentController($mdDialog, User, mcbus, ProjectModel) {
-    const ctrl = this;
-    ctrl.user = User.u();
+    $onInit() {
+        this.getUserProjects();
+        this.mcbus.subscribe('PROJECTS$REFRESH', 'MCProjectsComponentController', () => {
+            this.getUserProjects();
+        });
+    }
 
-    getUserProjects();
-
-    mcbus.subscribe('PROJECTS$REFRESH', 'MCProjectsComponentController', () => {
-        getUserProjects();
-    });
-
-    ctrl.createNewProject = () => {
-        $mdDialog.show({
+    createNewProject() {
+        this.$mdDialog.show({
             templateUrl: 'app/components/projects/mc-projects/create-project-dialog.html',
             controller: CreateNewProjectDialogController,
             controllerAs: '$ctrl',
             bindToController: true
         }).then(
-            () => getUserProjects()
+            () => this.getUserProjects()
         );
-    };
+    }
 
-    ///////////////////////
-
-    function getUserProjects() {
-        ProjectModel.getProjectsForCurrentUser().then(
+    getUserProjects() {
+        this.ProjectModel.getProjectsForCurrentUser().then(
             (projects) => {
-                ctrl.myProjects = projects.filter(p => p.owner === ctrl.user);
-                ctrl.joinedProjects = projects.filter(p => p.owner !== ctrl.user);
+                this.myProjects = projects.filter(p => p.owner === this.mcuser.email);
+                this.joinedProjects = projects.filter(p => p.owner !== this.mcuser.email);
             }
         );
+    }
+
+    buildDemoProject() {
+        this.blockUI.start("Building demo project (this may take a few seconds)...");
+        this.demoProjectService.buildDemoProject(this.mcuser.email).then(
+            () => {
+                this.mcuser.demo_installed = true;
+                this.User.save();
+                this.blockUI.stop();
+                this.mcbus.send('PROJECTS$REFRESH');
+            },
+            (error) => {
+                this.blockUI.stop();
+                let message = `Status: ${error.status}; Message: ${error.data}`;
+                this.toast.error(message, 'top right');
+            }
+        );
+    }
+
+    hideDemoProjectButton() {
+        this.mcuser.demo_installed = true;
+        this.User.save();
+        this.User.updateDemoInstalled(true);
     }
 }
 
@@ -61,3 +89,8 @@ class CreateNewProjectDialogController {
         this.$mdDialog.cancel();
     }
 }
+
+angular.module('materialscommons').component('mcProjects', {
+    templateUrl: 'app/components/projects/mc-projects/mc-projects.html',
+    controller: MCProjectsComponentController
+});

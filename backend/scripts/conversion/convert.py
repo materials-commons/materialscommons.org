@@ -133,6 +133,13 @@ def find_external_collaborator(who, external_collaborators):
     return None
 
 
+def add_demo_installed_attribute(conn):
+    r.table('users').filter(~r.row.has_fields('demo_installed')).update({'demo_installed': False}).run(conn)
+    demo_projects = list(r.table('projects').filter({'name': 'Demo Project'}).run(conn))
+    for p in demo_projects:
+        r.table('users').get(p['owner']).update({'demo_installed': True}).run(conn)
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
@@ -141,9 +148,10 @@ def main():
 
     fix_missing_property_sets(conn)
     update_projects_with_new_fields(conn)
-    add_collaborators_to_projects(conn)
+    # add_collaborators_to_projects(conn)
     fix_experiment_collaborators(conn)
     fix_file_upload_count_to_uploaded(conn)
+    add_demo_installed_attribute(conn)
 
 
 if __name__ == "__main__":

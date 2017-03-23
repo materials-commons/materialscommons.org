@@ -17,8 +17,10 @@ angular.module('materialscommons')
     .run(appRun)
     .controller('MCAppController', MCAppController);
 
-appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$ariaProvider', '$compileProvider', 'hljsServiceProvider'];
-function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider, $compileProvider, hljsServiceProvider) {
+appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$ariaProvider', '$compileProvider',
+    'hljsServiceProvider', 'ngGaugeProvider'];
+function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider, $compileProvider, hljsServiceProvider,
+                   ngGaugeProvider) {
     setupMaterialsTheme($mdThemingProvider);
     setupRoutes($stateProvider, $urlRouterProvider);
     $ariaProvider.config({ariaChecked: false, ariaInvalid: false});
@@ -27,6 +29,7 @@ function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $aria
         // replace tab with 4 spaces
         tabReplace: '    '
     });
+    ngGaugeProvider.setOptions({duration: 10});
 }
 
 /*

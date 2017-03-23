@@ -1,8 +1,17 @@
 <div layout="row" flex="100" layout-margin>
     <div layout="column" flex>
         <div layout="row" layout-align="end">
+            <md-button ng-show="!$ctrl.mcuser.demo_installed" ng-click="$ctrl.buildDemoProject()"
+                       class="md-warn md-raised" flex="30">
+                Add Demo Project
+            </md-button>
+            <md-checkbox ng-model="$ctrl.hideAddDemo" ng-change="$ctrl.hideDemoProjectButton()"
+                         ng-show="!$ctrl.mcuser.demo_installed">
+                Don't show this again
+            </md-checkbox>
+            <span flex="5"></span>
             <md-button class="md-primary md-raised" ng-click="$ctrl.createNewProject()">create project</md-button>
-            <md-button ng-show="false" class="md-primary md-raised" ng-click="$ctrl.sharingOn = true">share</md-button>
+
         </div>
         <div layout="row" layout-align="center">
             <md-button class="md-warn" ng-click="$ctrl.query = ''">clear search</md-button>

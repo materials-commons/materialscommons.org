@@ -22,6 +22,7 @@ class User(object):
         self.description = ""
         self.affiliation = ""
         self.homepage = ""
+        self.demo_installed = False
         self.last_login = r.now()
         self.notes = []
         self.admin = False

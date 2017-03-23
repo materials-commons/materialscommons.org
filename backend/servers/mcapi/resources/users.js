@@ -42,6 +42,10 @@ function* updateUserSettings(next) {
             settingArgs.affiliation = args.affiliation;
         }
 
+        if (args.demo_installed) {
+            settingArgs.demo_installed = args.demo_installed;
+        }
+
         let rv = yield users.updateUserSettings(this.reqctx.user.id, settingArgs);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
@@ -93,6 +97,24 @@ function* validateUserSettingsArgs(args, userId) {
     }
 
     return null;
+}
+
+function* getUser(next) {
+    let user = users.getUser(this.params.user_id);
+    if (user.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = user;
+    } else if (user.val.apikey !== this.query.apikey) {
+        this.status = status.BAD_REQUEST;
+        this.body = {error: `No such user or access denied: ${this.params.user_id}`};
+    } else {
+        delete user.val.apikey;
+        delete user.val.admin;
+        delete user.val.password;
+        this.body = user.val;
+    }
+
+    yield next;
 }
 
 function* createAccount(next) {
@@ -202,6 +224,7 @@ function* validateCreateAccount(accountArgs) {
 }
 
 function* createDemoProject(next) {
+    console.log('createDemoProject called');
     let userId = this.params.user_id;
     let checkId = this.reqctx.user.id;
     let user = yield users.getUser(userId);
@@ -209,29 +232,28 @@ function* createDemoProject(next) {
         this.status = status.BAD_REQUEST;
         this.body = "Must be admin to create demo project for non-self user: " + userId;
     } else {
-        if (! user) {
+        if (!user) {
             this.status = status.BAD_REQUEST;
             this.body = "Unable to create demo project; no user = " + userId;
         } else {
-            let apikey = user.apikey;
             let result = yield createDemoProjectRequest(user);
             if (result.error) {
                 this.status = status.BAD_REQUEST;
                 this.body = result.error;
             } else {
+                yield users.updateUserSettings(userId, {demo_installed: true});
                 this.status = status.OK;
                 this.body = result.val;
             }
         }
     }
-    console.log("In createDemoProject() for " + user.id + ' - ' + this.body);
     yield next;
 }
 
-function* createDemoProjectRequest(user){
+function* createDemoProjectRequest(user) {
     let current_dir = process.cwd();
     let parts = current_dir.split('/');
-    let last = parts[parts.length-1];
+    let last = parts[parts.length - 1];
 
     if ((last != "backend") && (last != "materialscommons.org")) {
         let message = 'Can not create proejct with process running in unexpected base dir: ';
@@ -240,7 +262,7 @@ function* createDemoProjectRequest(user){
         return {error: "Can not create demo project: admin see log"};
     }
 
-    let prefix = current_dir + "/backend/"
+    let prefix = current_dir + "/backend/";
     if (last == "backend") {
         prefix = current_dir + "/";
     }
@@ -254,50 +276,50 @@ function* createDemoProjectRequest(user){
 }
 
 function emailResetLinkToUser(userData, site) {
-    var transporter = nodemailer.createTransport(mailTransport);
-    var sendTo = userData.id;
-    var validationLink = `${process.env.MC_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`;
+    let transporter = nodemailer.createTransport(mailTransport),
+        sendTo = userData.id,
+        validationLink = `${process.env.MC_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`;
     if (site === 'mcpub') {
         validationLink = `${process.env.MCPUB_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`
     }
     let emailMsg =
-        `You have requested a password reset at Materials Commons reset in the account for this email.
-            To complete this process please click on the given link or copy and paste in the url given below.`;
-    var plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
-    var htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`;
-
-    var mailOptions = {
-        from: process.env.MC_VERIFY_EMAIL,
-        to: sendTo,
-        subject: 'MaterialCommons - account verification',
-        text: plainTextBody,
-        html: htmlBody
-    };
+            `You have requested a password reset at Materials Commons reset in the account for this email.
+            To complete this process please click on the given link or copy and paste in the url given below.`,
+        plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`,
+        htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`,
+        mailOptions = {
+            from: process.env.MC_VERIFY_EMAIL,
+            to: sendTo,
+            subject: 'MaterialCommons - account verification',
+            text: plainTextBody,
+            html: htmlBody
+        };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            return {error: error};
+    transporter.sendMail(mailOptions, function(error) {
+        if (error !== null) {
+            console.log(error);
         }
+        transporter.close();
     });
 
     return {val: userData}
 }
 
 function emailValidationLinkToUser(userData, site) {
-    var transporter = nodemailer.createTransport(mailTransport);
-    var sendTo = userData.id;
-    var validationLink = `${process.env.MC_BASE_API_LINK}/validate/${userData.validate_uuid}`;
+    let transporter = nodemailer.createTransport(mailTransport);
+    let sendTo = userData.id;
+    let validationLink = `${process.env.MC_BASE_API_LINK}/validate/${userData.validate_uuid}`;
     if (site === 'mcpub') {
         validationLink = `${process.env.MCPUB_BASE_API_LINK}/validate/${userData.validate_uuid}`
     }
     let emailMsg =
         `Thank you for registering for an account with Materials Commons. To complete the registration
             process please click on the given link or copy and paste in the url given below.`;
-    var plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
-    var htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`;
+    let plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
+    let htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`;
 
-    var mailOptions = {
+    let mailOptions = {
         from: process.env.MC_VERIFY_EMAIL,
         to: sendTo,
         subject: 'MaterialCommons - account verification',
@@ -306,10 +328,11 @@ function emailValidationLinkToUser(userData, site) {
     };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            return {error: error};
+    transporter.sendMail(mailOptions, function(error) {
+        if (error !== null) {
+            console.log(error);
         }
+        transporter.close();
     });
 
     return {val: userData}
@@ -326,6 +349,7 @@ function mailTransportConfig() {
 function createResource(router) {
     router.put('/users/:project_id', ra.validateProjectAccess, updateProjectFavorites);
     router.put('/users', updateUserSettings);
+    router.get('/users/:user_id', getUser);
     router.get('/users/validate/:validation_id', getUserRegistrationFromUuid);
     router.get('/users/rvalidate/:validation_id', getUserForPasswordResetFromUuid);
     router.put('/users/:user_id/clear-reset-password', clearUserResetPasswordFlag);
@@ -335,5 +359,5 @@ function createResource(router) {
 }
 
 module.exports = {
-    createResource,createDemoProjectRequest
+    createResource, createDemoProjectRequest
 };
