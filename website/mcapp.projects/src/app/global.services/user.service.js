@@ -89,6 +89,10 @@ function UserService($window, $log, Restangular) {
 
         updateAffiliation: function(affiliation) {
             return Restangular.one('v2').one('users').customPUT({affiliation: affiliation});
+        },
+
+        updateDemoInstalled: function(demoInstalled) {
+            return Restangular.one('v2').one('users').customPUT({demo_installed: demoInstalled});
         }
     };
 }
