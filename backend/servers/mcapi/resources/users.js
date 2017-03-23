@@ -297,7 +297,10 @@ function emailResetLinkToUser(userData, site) {
 
     // send mail with defined transport object
     transporter.sendMail(mailOptions, function(error) {
-        console.log(error);
+        if (error !== null) {
+            console.log(error);
+        }
+        transporter.close();
     });
 
     return {val: userData}
@@ -326,7 +329,10 @@ function emailValidationLinkToUser(userData, site) {
 
     // send mail with defined transport object
     transporter.sendMail(mailOptions, function(error) {
-        console.log(error);
+        if (error !== null) {
+            console.log(error);
+        }
+        transporter.close();
     });
 
     return {val: userData}
