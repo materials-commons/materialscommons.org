@@ -42,6 +42,10 @@ function* updateUserSettings(next) {
             settingArgs.affiliation = args.affiliation;
         }
 
+        if (args.demo_installed) {
+            settingArgs.demo_installed = args.demo_installed;
+        }
+
         let rv = yield users.updateUserSettings(this.reqctx.user.id, settingArgs);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
@@ -220,6 +224,7 @@ function* validateCreateAccount(accountArgs) {
 }
 
 function* createDemoProject(next) {
+    console.log('createDemoProject called');
     let userId = this.params.user_id;
     let checkId = this.reqctx.user.id;
     let user = yield users.getUser(userId);
@@ -227,7 +232,7 @@ function* createDemoProject(next) {
         this.status = status.BAD_REQUEST;
         this.body = "Must be admin to create demo project for non-self user: " + userId;
     } else {
-        if (! user) {
+        if (!user) {
             this.status = status.BAD_REQUEST;
             this.body = "Unable to create demo project; no user = " + userId;
         } else {
@@ -245,10 +250,10 @@ function* createDemoProject(next) {
     yield next;
 }
 
-function* createDemoProjectRequest(user){
+function* createDemoProjectRequest(user) {
     let current_dir = process.cwd();
     let parts = current_dir.split('/');
-    let last = parts[parts.length-1];
+    let last = parts[parts.length - 1];
 
     if ((last != "backend") && (last != "materialscommons.org")) {
         let message = 'Can not create proejct with process running in unexpected base dir: ';
@@ -257,7 +262,7 @@ function* createDemoProjectRequest(user){
         return {error: "Can not create demo project: admin see log"};
     }
 
-    let prefix = current_dir + "/backend/"
+    let prefix = current_dir + "/backend/";
     if (last == "backend") {
         prefix = current_dir + "/";
     }
@@ -271,50 +276,47 @@ function* createDemoProjectRequest(user){
 }
 
 function emailResetLinkToUser(userData, site) {
-    var transporter = nodemailer.createTransport(mailTransport);
-    var sendTo = userData.id;
-    var validationLink = `${process.env.MC_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`;
+    let transporter = nodemailer.createTransport(mailTransport),
+        sendTo = userData.id,
+        validationLink = `${process.env.MC_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`;
     if (site === 'mcpub') {
         validationLink = `${process.env.MCPUB_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`
     }
     let emailMsg =
-        `You have requested a password reset at Materials Commons reset in the account for this email.
-            To complete this process please click on the given link or copy and paste in the url given below.`;
-    var plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
-    var htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`;
-
-    var mailOptions = {
-        from: process.env.MC_VERIFY_EMAIL,
-        to: sendTo,
-        subject: 'MaterialCommons - account verification',
-        text: plainTextBody,
-        html: htmlBody
-    };
+            `You have requested a password reset at Materials Commons reset in the account for this email.
+            To complete this process please click on the given link or copy and paste in the url given below.`,
+        plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`,
+        htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`,
+        mailOptions = {
+            from: process.env.MC_VERIFY_EMAIL,
+            to: sendTo,
+            subject: 'MaterialCommons - account verification',
+            text: plainTextBody,
+            html: htmlBody
+        };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            return {error: error};
-        }
+    transporter.sendMail(mailOptions, function(error) {
+        console.log(error);
     });
 
     return {val: userData}
 }
 
 function emailValidationLinkToUser(userData, site) {
-    var transporter = nodemailer.createTransport(mailTransport);
-    var sendTo = userData.id;
-    var validationLink = `${process.env.MC_BASE_API_LINK}/validate/${userData.validate_uuid}`;
+    let transporter = nodemailer.createTransport(mailTransport);
+    let sendTo = userData.id;
+    let validationLink = `${process.env.MC_BASE_API_LINK}/validate/${userData.validate_uuid}`;
     if (site === 'mcpub') {
         validationLink = `${process.env.MCPUB_BASE_API_LINK}/validate/${userData.validate_uuid}`
     }
     let emailMsg =
         `Thank you for registering for an account with Materials Commons. To complete the registration
             process please click on the given link or copy and paste in the url given below.`;
-    var plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
-    var htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`;
+    let plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
+    let htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`;
 
-    var mailOptions = {
+    let mailOptions = {
         from: process.env.MC_VERIFY_EMAIL,
         to: sendTo,
         subject: 'MaterialCommons - account verification',
@@ -323,10 +325,8 @@ function emailValidationLinkToUser(userData, site) {
     };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            return {error: error};
-        }
+    transporter.sendMail(mailOptions, function(error) {
+        console.log(error);
     });
 
     return {val: userData}
@@ -353,5 +353,5 @@ function createResource(router) {
 }
 
 module.exports = {
-    createResource,createDemoProjectRequest
+    createResource, createDemoProjectRequest
 };
