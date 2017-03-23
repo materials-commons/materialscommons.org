@@ -112,7 +112,7 @@ function* forUser(user) {
 
     let usersProjects = yield run(userProjectsRql);
     let memberProjects = yield run(memberOfRql);
-    return usersProjects.concat(memberProjects);
+    return usersProjects.concat(memberProjects.filter(p => p.owner !== user.id));
 }
 
 // transformDates removes the rethinkdb specific date
