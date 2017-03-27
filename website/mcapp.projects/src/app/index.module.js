@@ -17,6 +17,5 @@ angular.module('materialscommons', [
     'angular-timeline',
     'blockUI',
     'ngHandsontable',
-    'angular-c3-simple',
-    'angularjs-gauge'
+    'angular-c3-simple'
 ]);
