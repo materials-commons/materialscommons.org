@@ -447,29 +447,34 @@ describe('Feature - directories: ', function() {
             let project_id = project.id;
             let top_directory = yield directories.get(project_id,'top');
             let from_dir = '/';
-            let path = 'A1/B1/C1';
+            let path = 'A1/B1/C1/D1/E1';
             let dir_args = {
                 from_dir: from_dir,
                 path: path
             };
-            let result = yield directories.create(project_id,project_name,dir_args);
-            assert.isTrue(result.hasOwnProperty('val'));
-            let dir_list = result.val;
-            assert.equal(dir_list.length, 3);
-            assert.equal(dir_list[0].name,project_name + '/A1');
-            assert.equal(dir_list[1].name,project_name + '/A1/B1');
-            assert.equal(dir_list[2].name,project_name + '/A1/B1/C1');
-            dir_list = yield directories.getAll(project_id);
-            assert.equal(dir_list.length, 4);
+            yield directories.create(project_id,project_name,dir_args);
+            path = 'A1/B1/C2';
+            dir_args = {
+                from_dir: from_dir,
+                path: path
+            };
+            yield directories.create(project_id,project_name,dir_args);
+            path = 'A1/B1/C3';
+            dir_args = {
+                from_dir: from_dir,
+                path: path
+            };
+            yield directories.create(project_id,project_name,dir_args);
+            let dir_list = yield directories.getAll(project_id);
+            assert.equal(dir_list.length, 8);
             assert.equal(dir_list[0].name,project_name);
             assert.equal(dir_list[1].name,project_name + '/A1');
             assert.equal(dir_list[2].name,project_name + '/A1/B1');
             assert.equal(dir_list[3].name,project_name + '/A1/B1/C1');
-            assert.isFalse(yield directories.isEmpty(dir_list[0].id));
-            assert.isFalse(yield directories.isEmpty(dir_list[1].id));
-            assert.isFalse(yield directories.isEmpty(dir_list[2].id));
-            assert.isTrue(yield directories.isEmpty(dir_list[3].id));
-            console.log("Constructing test here...");
+            assert.equal(dir_list[4].name,project_name + '/A1/B1/C1/D1');
+            assert.equal(dir_list[5].name,project_name + '/A1/B1/C1/D1/E1');
+            assert.equal(dir_list[6].name,project_name + '/A1/B1/C2');
+            assert.equal(dir_list[7].name,project_name + '/A1/B1/C3');
             let name = project_name + '/A1/XX';
             let directory_id = dir_list[2].id;
             let rename_args = {
@@ -478,18 +483,16 @@ describe('Feature - directories: ', function() {
                 }
             };
             yield directories.update(project_id,directory_id,rename_args);
-            let dir = yield directories.get(project_id,directory_id);
-            assert.equal(dir.path, name);
             dir_list = yield directories.getAll(project_id);
-            assert.equal(dir_list.length, 4);
+            assert.equal(dir_list.length, 8);
             assert.equal(dir_list[0].name,project_name);
             assert.equal(dir_list[1].name,project_name + '/A1');
             assert.equal(dir_list[2].name,project_name + '/A1/XX');
             assert.equal(dir_list[3].name,project_name + '/A1/XX/C1');
-            assert.isFalse(yield directories.isEmpty(dir_list[0].id));
-            assert.isFalse(yield directories.isEmpty(dir_list[1].id));
-            assert.isFalse(yield directories.isEmpty(dir_list[2].id));
-            assert.isTrue(yield directories.isEmpty(dir_list[3].id));
+            assert.equal(dir_list[4].name,project_name + '/A1/XX/C1/D1');
+            assert.equal(dir_list[5].name,project_name + '/A1/XX/C1/D1/E1');
+            assert.equal(dir_list[6].name,project_name + '/A1/XX/C2');
+            assert.equal(dir_list[7].name,project_name + '/A1/XX/C3');
         });
     });
 });
