@@ -22,42 +22,18 @@ const directories = require(backend_base + '/servers/mcapi/db/model/directories'
 
 const base_user_id = 'thisIsAUserForTestingONLY!';
 const fullname = "Test User";
-const base_project_name = "Test project - test 1: ";
+const base_project_name = "Test directory";
 
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
     return base_project_name + number;
 };
 
-let random_user = function(){
-    let number = Math.floor(Math.random()*10000);
-    return base_user_id + number + "@mc.org";
-};
-
-let user1Id = random_user();
+let user1Id = "test@test.mc";
 
 before(function*() {
     let user = yield dbModelUsers.getUser(user1Id);
-    if (!user) {
-        let results = yield r.db('materialscommons').table('users').insert({
-            admin: false,
-            affiliation: "",
-            avatar: "",
-            description: "",
-            email: user1Id,
-            fullname: fullname,
-            homepage: "",
-            id: user1Id,
-            name: fullname,
-            preferences: {
-                tags: [],
-                templates: []
-            }
-        });
-        assert.equal(results.inserted, 1, "The User was correctly inserted");
-    } else {
-        assert.equal(user.id,user1Id, "Wrong test user, id = " + user.id);
-    }
+    assert.equal(user.id,user1Id, "No test user available = " + user.id);
 });
 
 describe('Feature - directories: ', function() {
@@ -197,7 +173,6 @@ describe('Feature - directories: ', function() {
             assert.equal(dir_list[1].name,project_name + '/A1/B1/C1/D1/E1');
         });
     });
-
     describe('Get directories', function() {
         it('Get all dirs in project and test for empty', function*(){
             let user = yield dbModelUsers.getUser(user1Id);
@@ -350,17 +325,10 @@ describe('Feature - directories: ', function() {
             assert.isNotNull(cross);
             assert.equal(cross.length,1);
             assert.equal(cross[0].project_id,project_id);
-//            console.log(cross[0].datadir_id);
-//            let dir2 = yield directories.get(project_id,cross[0].datadir_id);
-//            console.log(dir2.name);
-//            assert.equal(dir2.name,project_name + '/A1/B1');
-//            assert.isFalse(yield directories.isEmpty(dir2.id));
-//            let child1 = dir2.children[0];
-//            assert.equal(child1.name,project_name + '/A1/B1/C1');
         });
     });
-    describe('Modifiy directories', function() {
-        it("Rename dir",function* (){
+    describe('Modify directory', function() {
+        it("Rename leaf directory",function* (){
             let user = yield dbModelUsers.getUser(user1Id);
             let project_name = random_name();
             let attrs = {
@@ -393,7 +361,7 @@ describe('Feature - directories: ', function() {
             let dir = yield directories.get(project_id,directory_id);
             assert.equal(dir.path, name);
         });
-        it("Move dir",function* (){
+        it("Move leaf directory",function* (){
             let user = yield dbModelUsers.getUser(user1Id);
             let project_name = random_name();
             let attrs = {
@@ -434,7 +402,7 @@ describe('Feature - directories: ', function() {
             let dir3 = ret.val;
             assert.equal(dir3.path,project_name + '/A1/C1/B1');
         });
-        it("Delete dir",function* (){
+        it("Delete leaf directory",function* (){
             let user = yield dbModelUsers.getUser(user1Id);
             let project_name = random_name();
             let attrs = {
@@ -466,16 +434,63 @@ describe('Feature - directories: ', function() {
             dir_list = yield directories.getAll(project_id);
             assert.equal(dir_list.length,1);
         });
+        it("Rename interior directory",function* (){
+            let user = yield dbModelUsers.getUser(user1Id);
+            let project_name = random_name();
+            console.log("Rename interior directory: project name = ", project_name);
+            let attrs = {
+                name: project_name,
+                description: "This is a test project for automated testing."
+            };
+            let ret = yield projects.createProject(user,attrs);
+            let project = ret.val;
+            let project_id = project.id;
+            let top_directory = yield directories.get(project_id,'top');
+            let from_dir = '/';
+            let path = 'A1/B1/C1';
+            let dir_args = {
+                from_dir: from_dir,
+                path: path
+            };
+            let result = yield directories.create(project_id,project_name,dir_args);
+            assert.isTrue(result.hasOwnProperty('val'));
+            let dir_list = result.val;
+            assert.equal(dir_list.length, 3);
+            assert.equal(dir_list[0].name,project_name + '/A1');
+            assert.equal(dir_list[1].name,project_name + '/A1/B1');
+            assert.equal(dir_list[2].name,project_name + '/A1/B1/C1');
+            dir_list = yield directories.getAll(project_id);
+            assert.equal(dir_list.length, 4);
+            assert.equal(dir_list[0].name,project_name);
+            assert.equal(dir_list[1].name,project_name + '/A1');
+            assert.equal(dir_list[2].name,project_name + '/A1/B1');
+            assert.equal(dir_list[3].name,project_name + '/A1/B1/C1');
+            assert.isFalse(yield directories.isEmpty(dir_list[0].id));
+            assert.isFalse(yield directories.isEmpty(dir_list[1].id));
+            assert.isFalse(yield directories.isEmpty(dir_list[2].id));
+            assert.isTrue(yield directories.isEmpty(dir_list[3].id));
+            console.log("Constructing test here...");
+            let name = project_name + '/A1/XX';
+            let directory_id = dir_list[2].id;
+            let rename_args = {
+                rename: {
+                    new_name: name
+                }
+            };
+            yield directories.update(project_id,directory_id,rename_args);
+            let dir = yield directories.get(project_id,directory_id);
+            assert.equal(dir.path, name);
+            dir_list = yield directories.getAll(project_id);
+            assert.equal(dir_list.length, 4);
+            assert.equal(dir_list[0].name,project_name);
+            assert.equal(dir_list[1].name,project_name + '/A1');
+            assert.equal(dir_list[2].name,project_name + '/A1/XX');
+            assert.equal(dir_list[3].name,project_name + '/A1/XX/C1');
+            assert.isFalse(yield directories.isEmpty(dir_list[0].id));
+            assert.isFalse(yield directories.isEmpty(dir_list[1].id));
+            assert.isFalse(yield directories.isEmpty(dir_list[2].id));
+            assert.isTrue(yield directories.isEmpty(dir_list[3].id));
+        });
     });
-});
-
-after(function*() {
-    let user = yield dbModelUsers.getUser(user1Id);
-    if (user) {
-        let results = yield r.db('materialscommons').table('users').get(user1Id).delete();
-        assert.equal(results.deleted,1, "The User was correctly deleted");
-    } else {
-        assert.isNull(user,"The user still exists at end");
-    }
 });
 

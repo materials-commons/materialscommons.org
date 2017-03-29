@@ -234,10 +234,26 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
 }
 
 function* renameDirectory(directoryID, renameArgs) {
-    yield r.table('datadirs').get(directoryID).update({name: renameArgs.new_name});
+    let newName = renameArgs.new_name;
+    let currentDirectory = yield r.table('datadirs').get(directoryID);
+    let currentName = currentDirectory.name;
+    yield recursiveRaname(directoryID,currentName,newName);
     let rv = {};
     rv.val = yield directoryByID(directoryID);
     return rv;
+}
+
+function* recursiveRaname(directoryID,currentName,newName){
+    console.log("rename: ",currentName,newName);
+    yield r.table('datadirs').get(directoryID).update({name: newName});
+    let dirList = yield r.table('datadirs').getAll(directoryID,{index:'parent'});
+    for (let i = 0; i < dirList.length; i++) {
+        let dir = dirList[i];
+        let id = dir.id;
+        let dirName = dir.name;
+        let updateName = dirName.replace(currentName,newName);
+        yield recursiveRaname(dir.id,dirName,updateName);
+    }
 }
 
 function findInProject(projectID, _key, dir) {
