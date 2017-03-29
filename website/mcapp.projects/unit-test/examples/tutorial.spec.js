@@ -87,29 +87,3 @@ describe("Tutorial - Component Controller 01: ", function(){
 
 });
 
-describe("Tutorial - Component Controller 02: ", function() {
-
-    // skip this test suite: got error...
-    //   $componentController on line 2330:14
-    //   compileProvider.preAssignBindingsEnabled is not a function
-    pending();
-
-    beforeEach(module('myComponentModule'));
-
-    var controller;
-    var scope;
-    beforeEach(inject(function($rootScope, $componentController){
-        scope = $rootScope.$new();
-        controller = $componentController('myComponent', {$scope: scope}, {myBinding: '1.5'});
-    }));
-
-    it('should expose my title', function() {
-        expect(controller.myTitle).toBeDefined();
-        expect(controller.myTitle).toBe('Unit Testing AngularJS');
-    });
-
-    it('should have my binding bound', function() {
-        expect(controller.myBinding).toBeDefined();
-        expect(controller.myBinding).toBe('1.5');
-    });
-});
