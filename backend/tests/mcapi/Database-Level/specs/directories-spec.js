@@ -482,6 +482,7 @@ describe('Feature - directories: ', function() {
                     new_name: name
                 }
             };
+
             yield directories.update(project_id,directory_id,rename_args);
             dir_list = yield directories.getAll(project_id);
             assert.equal(dir_list.length, 8);
@@ -493,6 +494,7 @@ describe('Feature - directories: ', function() {
             assert.equal(dir_list[5].name,project_name + '/A1/XX/C1/D1/E1');
             assert.equal(dir_list[6].name,project_name + '/A1/XX/C2');
             assert.equal(dir_list[7].name,project_name + '/A1/XX/C3');
+
         });
     });
 });

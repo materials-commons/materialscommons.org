@@ -235,25 +235,32 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
 
 function* renameDirectory(directoryID, renameArgs) {
     let newName = renameArgs.new_name;
-    let currentDirectory = yield r.table('datadirs').get(directoryID);
-    let currentName = currentDirectory.name;
-    yield recursiveRaname(directoryID,currentName,newName);
+    let baseDirectory = yield r.table('datadirs').get(directoryID);
+    let currentName = baseDirectory.name;
+
+    let directoryIdSet = new Set([directoryID]);
+    let size = directoryIdSet.size;
+    let oldSize = 0;
+    while (size != oldSize) {
+        oldSize = size;
+        let directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]),{index: 'parent'});
+        for (let i = 0; i < directoryList.length; i++) {
+            directoryIdSet.add(directoryList[i].id);
+        }
+        size = directoryIdSet.size;
+    }
+
+    let directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]));
+    for (let i = 0; i < directoryList.length; i++) {
+        let directory = directoryList[i];
+        directory.name = directory.name.replace(currentName,newName);
+    }
+
+    yield r.table('datadirs').insert(directoryList,{conflict: 'update'});
+
     let rv = {};
     rv.val = yield directoryByID(directoryID);
     return rv;
-}
-
-function* recursiveRaname(directoryID,currentName,newName){
-    console.log("rename: ",currentName,newName);
-    yield r.table('datadirs').get(directoryID).update({name: newName});
-    let dirList = yield r.table('datadirs').getAll(directoryID,{index:'parent'});
-    for (let i = 0; i < dirList.length; i++) {
-        let dir = dirList[i];
-        let id = dir.id;
-        let dirName = dir.name;
-        let updateName = dirName.replace(currentName,newName);
-        yield recursiveRaname(dir.id,dirName,updateName);
-    }
 }
 
 function findInProject(projectID, _key, dir) {
