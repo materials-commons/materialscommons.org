@@ -55,6 +55,7 @@ function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, 
     ctrl.demoProjectService = demoProjectService;
     ctrl.user = User.attr().fullname;
     ctrl.toast = toast;
+    ctrl.isAdmin = User.attr().admin;
 
     ////////////////////////
 

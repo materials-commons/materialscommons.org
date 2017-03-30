@@ -44,7 +44,6 @@
                 <i class="fa fa-fw fa-question-circle"></i>
             </a>
         </div>
-        <span flex></span>
         <div layout="row" flex layout-sm="column" layout-align="space-between">
             <md-button ng-show="false">Help</md-button>
             <md-menu>
@@ -52,7 +51,14 @@
                     <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>
                     {{ctrl.user}}
                 </md-button>
-                <md-menu-content>
+                <md-menu-content style="min-height: 350px">
+                    <md-menu-item ng-if="::ctrl.isAdmin">
+                        <md-button ng-click="ctrl.switchUser()">
+                            <md-icon md-font-icon="fa-superpowers" class="fa fa-md-icon"></md-icon>
+                            <span class="text-uppercase">Switch To User</span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-divider ng-if="::ctrl.isAdmin"></md-menu-divider>
                     <md-menu-item>
                         <md-button ui-sref="account.settings.profile">
                             <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>
