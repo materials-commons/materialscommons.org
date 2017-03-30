@@ -9,7 +9,6 @@ class MCProjectsComponentController {
         this.demoProjectService = demoProjectService;
         this.toast = toast;
         this.mcuser = User.attr();
-        console.log(this.mcuser);
         this.myProjects = [];
         this.joinedProjects = [];
     }
