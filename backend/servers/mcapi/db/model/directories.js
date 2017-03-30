@@ -236,12 +236,17 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
 function* renameDirectory(directoryID, renameArgs) {
     let newName = renameArgs.new_name;
     let baseDirectory = yield r.table('datadirs').get(directoryID);
-    let currentName = baseDirectory.name;
+    let currentPath = baseDirectory.name;
+    let parts = currentPath.split('/');
+    parts[parts.length - 1] = newName;
+    let newPath = parts.join('/');
+    console.log("rename: ",currentPath, newPath);
 
     let directoryIdSet = new Set([directoryID]);
     let size = directoryIdSet.size;
     let oldSize = 0;
     while (size != oldSize) {
+        console.log(oldSize, size, [...directoryIdSet]);
         oldSize = size;
         let directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]),{index: 'parent'});
         for (let i = 0; i < directoryList.length; i++) {
@@ -253,7 +258,9 @@ function* renameDirectory(directoryID, renameArgs) {
     let directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]));
     for (let i = 0; i < directoryList.length; i++) {
         let directory = directoryList[i];
-        directory.name = directory.name.replace(currentName,newName);
+        console.log(directory.name);
+        directory.name = directory.name.replace(currentPath,newPath);
+        console.log(directory.name);
     }
 
     yield r.table('datadirs').insert(directoryList,{conflict: 'update'});

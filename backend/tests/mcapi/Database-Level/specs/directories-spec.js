@@ -350,7 +350,7 @@ describe('Feature - directories: ', function() {
             let dir_list = result.val;
             assert.equal(dir_list.length, 1);
             assert.equal(dir_list[0].name,project_name + '/A1');
-            let name = project_name + '/XX';
+            let name = 'XX';
             let directory_id = dir_list[0].id;
             let rename_args = {
                 rename: {
@@ -359,7 +359,8 @@ describe('Feature - directories: ', function() {
             };
             yield directories.update(project_id,directory_id,rename_args);
             let dir = yield directories.get(project_id,directory_id);
-            assert.equal(dir.path, name);
+            let expectedPath = project_name + '/XX'
+            assert.equal(dir.path, expectedPath);
         });
         it("Move leaf directory",function* (){
             let user = yield dbModelUsers.getUser(user1Id);
@@ -447,24 +448,28 @@ describe('Feature - directories: ', function() {
             let project_id = project.id;
             let top_directory = yield directories.get(project_id,'top');
             let from_dir = '/';
+
             let path = 'A1/B1/C1/D1/E1';
             let dir_args = {
                 from_dir: from_dir,
                 path: path
             };
             yield directories.create(project_id,project_name,dir_args);
+
             path = 'A1/B1/C2';
             dir_args = {
                 from_dir: from_dir,
                 path: path
             };
             yield directories.create(project_id,project_name,dir_args);
+
             path = 'A1/B1/C3';
             dir_args = {
                 from_dir: from_dir,
                 path: path
             };
             yield directories.create(project_id,project_name,dir_args);
+
             let dir_list = yield directories.getAll(project_id);
             assert.equal(dir_list.length, 8);
             assert.equal(dir_list[0].name,project_name);
@@ -475,15 +480,20 @@ describe('Feature - directories: ', function() {
             assert.equal(dir_list[5].name,project_name + '/A1/B1/C1/D1/E1');
             assert.equal(dir_list[6].name,project_name + '/A1/B1/C2');
             assert.equal(dir_list[7].name,project_name + '/A1/B1/C3');
-            let name = project_name + '/A1/XX';
+
+            let newName = 'XX';
             let directory_id = dir_list[2].id;
             let rename_args = {
                 rename: {
-                    new_name: name
+                    new_name: newName
                 }
             };
+            path = project_name + "/A1/" + newName;
 
-            yield directories.update(project_id,directory_id,rename_args);
+            let results = yield directories.update(project_id,directory_id,rename_args);
+            let directory = results.val;
+            assert.equal(directory.path, path);
+
             dir_list = yield directories.getAll(project_id);
             assert.equal(dir_list.length, 8);
             assert.equal(dir_list[0].name,project_name);
