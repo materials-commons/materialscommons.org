@@ -1,7 +1,8 @@
 /*@ngInject*/
 class NavbarComponentController {
+    /*@ngInject*/
     constructor(User, $state, $stateParams, searchQueryText, mcstate, navbarOnChange, projectsAPI, demoProjectService,
-                blockUI, toast, mcbus) {
+                blockUI, toast, mcbus, $mdDialog) {
         this.User = User;
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -19,6 +20,7 @@ class NavbarComponentController {
         this.placeholder = this.inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
         this.user = User.attr().fullname;
         this.isAdmin = User.attr().admin;
+        this.$mdDialog = $mdDialog;
     }
 
     $onInit() {
@@ -47,13 +49,10 @@ class NavbarComponentController {
         });
     }
 
-    ////////////////////////
-
-
     buildDemoProject() {
         let user_id = this.user;
         this.blockUI.start("Building demo project (this may take a few seconds)...");
-        this.demoProjectService.buildDemoProject(user_id).then(
+        this.demoProjectService.buildDemoProject(this.User.attr().email).then(
             () => {
                 this.blockUI.stop();
                 this.mcbus.send('PROJECTS$REFRESH');
@@ -79,6 +78,37 @@ class NavbarComponentController {
     logout() {
         this.User.setAuthenticated(false);
         this.$state.go('login');
+    }
+
+    switchToUser() {
+        this.$mdDialog.show({
+            templateUrl: 'app/global.components/switch-user-dialog.html',
+            controller: MCSwitchUserDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+        });
+    }
+}
+
+class MCSwitchUserDialogController {
+    /*@ngInject*/
+    constructor(User, $mdDialog, toast) {
+        this.User = User;
+        this.$mdDialog = $mdDialog;
+        this.toast = toast;
+        this.email = "";
+    }
+
+    done() {
+        this.User.switchToUser(this.email).then(
+            (user) => this.User.setAuthenticated(true, user.plain()),
+            () => this.toast.error(`Unable to switch to user ${this.email}`)
+        );
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 
