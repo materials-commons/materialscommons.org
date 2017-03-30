@@ -50,7 +50,6 @@ class NavbarComponentController {
     }
 
     buildDemoProject() {
-        let user_id = this.user;
         this.blockUI.start("Building demo project (this may take a few seconds)...");
         this.demoProjectService.buildDemoProject(this.User.attr().email).then(
             () => {
@@ -66,7 +65,7 @@ class NavbarComponentController {
     }
 
     search() {
-        if (this.query != '') {
+        if (this.query !== '') {
             this.$state.go('project.search', {query: this.query}, {reload: true});
         }
     }
@@ -85,7 +84,7 @@ class NavbarComponentController {
             templateUrl: 'app/global.components/switch-user-dialog.html',
             controller: MCSwitchUserDialogController,
             controllerAs: '$ctrl',
-            bindToController: true,
+            bindToController: true
         });
     }
 }
