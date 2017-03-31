@@ -1,96 +1,118 @@
-angular.module('materialscommons').directive('navbar', navbarDirective);
-
-function navbarDirective() {
-    return {
-        restrict: 'E',
-        bindToController: true,
-        replace: true,
-        templateUrl: 'app/global.components/navbar.html',
-        controller: NavbarDirectiveController,
-        controllerAs: 'ctrl'
-    };
-}
-
 /*@ngInject*/
-function NavbarDirectiveController(User, $state, $stateParams, searchQueryText, mcstate,
-                                   navbarOnChange, projectsAPI, demoProjectService, blockUI,
-                                   toast, mcbus) {
-    const ctrl = this;
-
-    const inProjectsState = $state.includes('projects');
-    ctrl.$stateParams = $stateParams;
-
-    searchQueryText.setOnChange(() => {
-        ctrl.query = searchQueryText.get();
-    });
-
-    ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
-
-    navbarOnChange.setOnChange(() => {
-        // Hack, change this later
-        if ($stateParams.project_id) {
-            projectsAPI.getProject($stateParams.project_id).then((proj) => mcstate.set(mcstate.CURRENT$PROJECT, proj));
-        }
-    });
-
-    mcstate.subscribe(mcstate.CURRENT$PROJECT, 'navbar', () => {
-        ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
-        ctrl.published = ctrl.project.datasets.filter(d => d.published);
-        ctrl.unusedSamples = ctrl.project.samples.filter(s => s.processes.length === 1);
-        ctrl.measuredSamples = ctrl.project.samples.filter(s => s.processes.length > 1);
-    });
-
-    mcbus.subscribe('USER$NAME', 'NavbarDirectiveController', () => {
-        ctrl.user = User.attr().fullname;
-    });
-
-    ctrl.query = searchQueryText.get();
-    ctrl.placeholder = inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
-
-    ctrl.toggleHelp = help;
-    ctrl.search = search;
-    ctrl.home = home;
-    ctrl.logout = logout;
-    ctrl.buildDemoProject = buildDemoProject;
-    ctrl.demoProjectService = demoProjectService;
-    ctrl.user = User.attr().fullname;
-    ctrl.toast = toast;
-
-    ////////////////////////
-
-    function help() {
-
+class NavbarComponentController {
+    /*@ngInject*/
+    constructor(User, $state, $stateParams, searchQueryText, mcstate, navbarOnChange, projectsAPI, demoProjectService,
+                blockUI, toast, mcbus, $mdDialog) {
+        this.User = User;
+        this.$state = $state;
+        this.$stateParams = $stateParams;
+        this.searchQueryText = searchQueryText;
+        this.mcstate = mcstate;
+        this.navbarOnChange = navbarOnChange;
+        this.projectsAPI = projectsAPI;
+        this.demoProjectService = demoProjectService;
+        this.blockUI = blockUI;
+        this.toast = toast;
+        this.mcbus = mcbus;
+        this.inProjectsState = $state.includes('projects');
+        this.project = mcstate.get(mcstate.CURRENT$PROJECT);
+        this.query = searchQueryText.get();
+        this.navbarSearchText = this.inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
+        this.user = User.attr().fullname;
+        this.isAdmin = User.attr().admin;
+        this.$mdDialog = $mdDialog;
     }
 
-    function buildDemoProject() {
-        let user_id = ctrl.user;
-        blockUI.start("Building demo project (this may take a few seconds)...");
-        ctrl.demoProjectService.buildDemoProject(user_id).then(
+    $onInit() {
+        this.searchQueryText.setOnChange(() => {
+            this.query = this.searchQueryText.get();
+        });
+
+        this.navbarOnChange.setOnChange(() => {
+            // Hack, change this later
+            if (this.$stateParams.project_id) {
+                this.projectsAPI.getProject(this.$stateParams.project_id).then(
+                    (proj) => this.mcstate.set(this.mcstate.CURRENT$PROJECT, proj)
+                );
+            }
+        });
+
+        this.mcstate.subscribe(this.mcstate.CURRENT$PROJECT, 'navbar', () => {
+            this.project = this.mcstate.get(this.mcstate.CURRENT$PROJECT);
+            this.published = this.project.datasets.filter(d => d.published);
+            this.unusedSamples = this.project.samples.filter(s => s.processes.length === 1);
+            this.measuredSamples = this.project.samples.filter(s => s.processes.length > 1);
+        });
+
+        this.mcbus.subscribe('USER$NAME', 'NavbarDirectiveController', () => {
+            this.user = this.User.attr().fullname;
+        });
+    }
+
+    buildDemoProject() {
+        this.blockUI.start("Building demo project (this may take a few seconds)...");
+        this.demoProjectService.buildDemoProject(this.User.attr().email).then(
             () => {
-                blockUI.stop();
-                mcbus.send('PROJECTS$REFRESH');
+                this.blockUI.stop();
+                this.mcbus.send('PROJECTS$REFRESH');
             },
             (error) => {
-                blockUI.stop();
+                this.blockUI.stop();
                 let message = `Status: ${error.status}; Message: ${error.data}`;
-                ctrl.toast.error(message, 'top right');
+                this.toast.error(message, 'top right');
             }
         );
     }
 
-    function search() {
-        if (ctrl.query != '') {
-            $state.go('project.search', {query: ctrl.query}, {reload: true});
+    search() {
+        if (this.query !== '') {
+            this.$state.go('project.search', {query: this.query}, {reload: true});
         }
     }
 
-    function home() {
-        $state.go('projects');
+    home() {
+        this.$state.go('projects');
     }
 
-    function logout() {
-        User.setAuthenticated(false);
-        $state.go('login');
+    logout() {
+        this.User.setAuthenticated(false);
+        this.$state.go('login');
+    }
+
+    switchToUser() {
+        this.$mdDialog.show({
+            templateUrl: 'app/global.components/switch-user-dialog.html',
+            controller: MCSwitchUserDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true
+        });
     }
 }
+
+class MCSwitchUserDialogController {
+    /*@ngInject*/
+    constructor(User, $mdDialog, toast) {
+        this.User = User;
+        this.$mdDialog = $mdDialog;
+        this.toast = toast;
+        this.email = "";
+    }
+
+    done() {
+        this.User.switchToUser(this.email).then(
+            (user) => this.User.setAuthenticated(true, user.plain()),
+            () => this.toast.error(`Unable to switch to user ${this.email}`)
+        );
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+angular.module('materialscommons').component('navbar', {
+    templateUrl: 'app/global.components/navbar.html',
+    controller: NavbarComponentController
+});
 

@@ -190,7 +190,7 @@ function* publishDataset(datasetId) {
     yield publishDatasetProcesses(datasetId);
     yield publishDatasetSamples(datasetId);
     yield publishDatasetFiles(datasetId);
-    // yield publishDatasetZipFile(datasetId);  -- Note: this needs to be redisigned: see issue #846
+    // yield publishDatasetZipFile(datasetId);  -- Note: this needs to be redesigned: see issue #846
     yield r.table('datasets').get(datasetId).update({published: true});
     return yield getDataset(datasetId);
 }

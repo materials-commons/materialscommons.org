@@ -64,20 +64,6 @@ describe('http call mock example', function() {
     });
 
 
-    it('should fail authentication', function() {
-
-        pending(); // does not work as expected - can not figure out why ???
-
-        // Notice how you can change the response even after it was set
-        authRequestHandler.respond(401, '');
-
-        $httpBackend.expectGET('/auth.py');
-        var controller = createController();
-        $httpBackend.flush();
-        expect($rootScope.status).toBe('Failed...');
-    });
-
-
     it('should send msg to server', function() {
         var controller = createController();
         $httpBackend.flush();

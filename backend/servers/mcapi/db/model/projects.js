@@ -88,24 +88,11 @@ function* forUser(user) {
     userProjectsRql = transformDates(userProjectsRql);
     userProjectsRql = addComputed(userProjectsRql);
 
-    let memberOfRql;
-
-    if (user.isAdmin) {
-        memberOfRql = r.table('projects')
-            .filter(r.row('owner').ne('delete@materialscommons.org').and(r.row('owner').ne(user.id)))
-            .merge(function(project) {
-                return {
-                    owner_details: r.table('users').get(project('owner')).pluck('fullname')
-                }
-            })
-            .limit(50);
-    } else {
-        memberOfRql = r.table('access').getAll(user.id, {index: 'user_id'})
-            .eqJoin('project_id', r.table('projects')).zip().filter(r.row('owner').ne(user.id))
-            .merge((project) => ({
-                owner_details: r.table('users').get(project('owner')).pluck('fullname')
-            }));
-    }
+    let memberOfRql = r.table('access').getAll(user.id, {index: 'user_id'})
+        .eqJoin('project_id', r.table('projects')).zip().filter(r.row('owner').ne(user.id))
+        .merge((project) => ({
+            owner_details: r.table('users').get(project('owner')).pluck('fullname')
+        }));
 
     memberOfRql = transformDates(memberOfRql);
     memberOfRql = addComputed(memberOfRql);

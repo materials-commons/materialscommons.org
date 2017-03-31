@@ -1,0 +1,1 @@
+import './mc-template-builder/mc-template-builder.component';
