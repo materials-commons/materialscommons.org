@@ -1,5 +1,33 @@
 # Release Notes
 
+## 31 March 2017
+### [Materials Commons Projects](https://materialscommons.org/mcapp)
+This release focused on ease of use and workflow improvements. Notably we added the ability to clone processes.
+- :star: **New Feature:** Ability to clone a process. When cloning a process you have full control over files and samples.
+- :star: **New Feature:** Added reminders to projects, this shows up in the new projects overview.
+- :star: **New Feature:** Added description separate from overview for a project. This shows up in the projects overview.
+- :star: **New Feature:** Added affiliation for users.
+- :star: **Improvement:** UI now shows file and sample links.
+- :star: **Improvement:** Improved linking files and samples by allowing a file to be linked to multiple samples.
+- :star: **Improvement:** Changed look and feel of experiment overview in project home page. Additional information added to experiment overview.
+- :star: **Improvement:** Change projects list to a table. Allowed sorting on columns. Added an overview for a project (more improvements will be added to overview).
+- :star: **Improvement:** Demo project building added as button on projects page. You can also hide this without building a demo project. Demo project builder remains in window.
+- :star: **Improvement:** Demo project building speed improved (from almost a minute down to seconds).
+- :star: **Improvement:** Show user name rather than email address in various places (most notably in the navbar).
+- :star: **Improvement:** Other small improvements.
+- :boom: **Fixed:** Processes with large numbers of files (thousands) causing problems. Now limited files display to 50 for now.
+- :boom: **Fixed:** Auto save was causing cursor to jump around. Increased timeout so this doesn't happen.
+- :boom: **Fixed:** Other bug fixes.
+
+### [Materials Commons Data](https://materialscommons.org/mcpub)
+There were small changes made to the navigation bar.
+- :star: **Improvement:** Added report a problem link to navbar.
+- :star: **Improvement:** Other small changes to the navbar and bug fixes.
+
+### Materials Commons Python API
+We are getting closer to an alpha release.
+
+
 ## 23 February 2017
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 This release added a bunch of new features to the graph workflow builder.
@@ -10,7 +38,6 @@ This release added a bunch of new features to the graph workflow builder.
 - :star: **New Feature:** If a node is selected, when adding a new node, the default view for samples to choose from is now filtered to the samples available from the clicked node. You can still choose to see all the available samples.
 - :star: **New Feature:** The dropdown menu under your username now allows you to create a demo project.
 - :star: **New Feature:** Added the ability to create a birds eye view of your workflow and move around it easily.
-- :star: **New Feature:** 
 - :star: **Improvement:** Increased the size of the graph workflow area.
 - :star: **Improvement:** Updates to existing templates, as well as added a set of generic templates.
 - :star: **Improvement:** Pan/Zoom and navigate have been improved in the graph view. 
