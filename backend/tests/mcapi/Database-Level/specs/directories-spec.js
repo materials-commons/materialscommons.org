@@ -506,6 +506,81 @@ describe('Feature - directories: ', function() {
             assert.equal(dir_list[7].name,project_name + '/A1/XX/C3');
 
         });
+        it("Can not rename top level directory",function* (){
+            let user = yield dbModelUsers.getUser(user1Id);
+            let project_name = random_name();
+            let attrs = {
+                name: project_name,
+                description: "This is a test project for automated testing."
+            };
+            let ret = yield projects.createProject(user,attrs);
+            let project = ret.val;
+            let project_id = project.id;
+            let top_directory =  yield directories.get(project_id,'top');
+            let directory_id = top_directory.id;
+            let name = 'XX';
+            let rename_args = {
+                rename: {
+                    new_name: name
+                }
+            };
+            let result = yield directories.update(project_id,directory_id,rename_args);
+            assert(!!result.error);
+            top_directory =  yield directories.get(project_id,'top');
+            assert.equal(top_directory.otype, "directory");
+            assert.equal(top_directory.name, project_name);
+        });
+        it("Can not move top level directory",function* (){
+            let user = yield dbModelUsers.getUser(user1Id);
+            let project_name = random_name();
+            let attrs = {
+                name: project_name,
+                description: "This is a test project for automated testing."
+            };
+            let ret = yield projects.createProject(user,attrs);
+            let project = ret.val;
+            let project_id = project.id;
+            let top_directory =  yield directories.get(project_id,'top');
+            let directory_id = top_directory.id;
+            let from_dir = '/';
+            let target_path = 'NEW/LOCATION';
+            let target_dir_args = {
+                from_dir: from_dir,
+                path: target_path
+            };
+            let result = yield directories.create(project_id,project_name,target_dir_args);
+            let dir_list = result.val;
+            assert.equal(dir_list.length, 2);
+            assert.equal(dir_list[1].name,project_name + "/" + target_path);
+            let target_id = dir_list[1].id;
+            let rename_args = {
+                move: {
+                    new_directory_id: target_id
+                }
+            };
+            result = yield directories.update(project_id,directory_id,rename_args);
+            assert.isTrue(!!result.error);
+            top_directory =  yield directories.get(project_id,'top');
+            assert.equal(top_directory.otype, "directory");
+            assert.equal(top_directory.name, project_name);
+        });
+        it("Can not delete top level directory",function* (){
+            let user = yield dbModelUsers.getUser(user1Id);
+            let project_name = random_name();
+            let attrs = {
+                name: project_name,
+                description: "This is a test project for automated testing."
+            };
+            let result = yield projects.createProject(user,attrs);
+            let project = result.val;
+            let project_id = project.id;
+            let top_directory = yield directories.get(project_id,'top');
+            result = yield directories.remove(project_id,top_directory.id);
+            assert.isTrue(!!result.error);
+            top_directory =  yield directories.get(project_id,'top');
+            assert.equal(top_directory.otype, "directory");
+            assert.equal(top_directory.name, project_name);
+        });
     });
 });
 

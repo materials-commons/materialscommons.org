@@ -203,6 +203,12 @@ function* insertDir(projectID, parentID, owner, dirPath) {
 }
 
 function* update(projectID, directoryID, updateArgs) {
+    let toplevel_dir = yield topLevelDir(projectID);
+    if (directoryID == toplevel_dir.id) {
+        return {
+            error: "Can not move or rename top level directory"
+        }
+    }
     if (updateArgs.move) {
         return yield moveDirectory(projectID, directoryID, updateArgs.move);
     } else {
@@ -337,6 +343,12 @@ function* isEmpty(dirID) {
 }
 
 function* remove(projectID, dirID) {
+    let toplevel_dir = yield topLevelDir(projectID);
+    if (dirID == toplevel_dir.id) {
+        return {
+            error: "Can not delete top level directory"
+        }
+    }
     let rv = yield r.table('datadirs').get(dirID).delete();
     if (!rv || !rv.deleted) {
         return {error: 'Unable to delete'};
