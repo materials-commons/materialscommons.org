@@ -31,7 +31,7 @@
         </div>
         <span flex-offset="5"></span>
         <md-input-container ng-show="$ctrl.$stateParams.project_id" md-no-float flex="20" class="md-input-bottom-0">
-            <input placeholder="{{navbarSearchText}}" type="text" class="mc-navbar-search-input"
+            <input placeholder="{{$ctrl.navbarSearchText}}" type="text" class="mc-navbar-search-input"
                    ng-model="$ctrl.query"
                    on-enter="$ctrl.search()"
                    style="color:white; border-bottom-color:white">

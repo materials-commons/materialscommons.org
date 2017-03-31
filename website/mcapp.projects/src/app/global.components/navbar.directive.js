@@ -17,7 +17,7 @@ class NavbarComponentController {
         this.inProjectsState = $state.includes('projects');
         this.project = mcstate.get(mcstate.CURRENT$PROJECT);
         this.query = searchQueryText.get();
-        this.placeholder = this.inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
+        this.navbarSearchText = this.inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
         this.user = User.attr().fullname;
         this.isAdmin = User.attr().admin;
         this.$mdDialog = $mdDialog;
