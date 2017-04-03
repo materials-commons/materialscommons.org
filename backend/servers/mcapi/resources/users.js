@@ -101,17 +101,36 @@ function* validateUserSettingsArgs(args, userId) {
 
 function* getUser(next) {
     let user = users.getUser(this.params.user_id);
-    if (user.error) {
+    if (!user) {
         this.status = status.BAD_REQUEST;
-        this.body = user;
-    } else if (user.val.apikey !== this.query.apikey) {
+        this.body = {error: `Failed to retrieve user ${this.param.user_id}`};
+    } else if (user.apikey !== this.query.apikey) {
         this.status = status.BAD_REQUEST;
         this.body = {error: `No such user or access denied: ${this.params.user_id}`};
     } else {
-        delete user.val.apikey;
-        delete user.val.admin;
-        delete user.val.password;
-        this.body = user.val;
+        delete user.apikey;
+        delete user.admin;
+        delete user.password;
+        this.body = user;
+    }
+
+    yield next;
+}
+
+function* becomeUser(next) {
+    if (!this.reqctx.user.isAdmin) {
+        this.status = status.BAD_REQUEST;
+        this.body = {error: `You are not allowed to switch to another user`};
+    } else {
+        let userArgs = yield parse(this);
+        let user = yield users.getUser(userArgs.email);
+        if (!user) {
+            this.status = status.BAD_REQUEST;
+            this.body = {error: `Failed to retrieve user ${userArgs.email}`};
+        } else {
+            delete user.password;
+            this.body = user;
+        }
     }
 
     yield next;
@@ -350,6 +369,7 @@ function createResource(router) {
     router.put('/users/:project_id', ra.validateProjectAccess, updateProjectFavorites);
     router.put('/users', updateUserSettings);
     router.get('/users/:user_id', getUser);
+    router.put('/users_become', becomeUser);
     router.get('/users/validate/:validation_id', getUserRegistrationFromUuid);
     router.get('/users/rvalidate/:validation_id', getUserForPasswordResetFromUuid);
     router.put('/users/:user_id/clear-reset-password', clearUserResetPasswordFlag);

@@ -5,6 +5,7 @@ const db = require('./db');
 const model = require('./model');
 const files = require('./files');
 const projects = require('./projects');
+const renameHelper = require('./directory-rename');
 const getSingle = require('./get-single');
 
 function* get(projectID, directoryID) {
@@ -203,11 +204,23 @@ function* insertDir(projectID, parentID, owner, dirPath) {
 }
 
 function* update(projectID, directoryID, updateArgs) {
+    let guard = yield isTopLevelDir(projectID,directoryID)
+    if (guard) {
+        return {
+            error: "Can not move or rename top level directory"
+        }
+    }
     if (updateArgs.move) {
         return yield moveDirectory(projectID, directoryID, updateArgs.move);
     } else {
         return yield renameDirectory(directoryID, updateArgs.rename);
     }
+}
+
+function* isTopLevelDir(projectID,directoryID){
+    let projectNameData = yield r.table('projects').get(projectID).pluck('name');
+    let directoryNameData = yield r.table('datadirs').get(directoryID).pluck('name');
+    return (projectNameData.name == directoryNameData.name);
 }
 
 function* moveDirectory(projectID, directoryID, moveArgs) {
@@ -235,35 +248,7 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
 
 function* renameDirectory(directoryID, renameArgs) {
     let newName = renameArgs.new_name;
-    let baseDirectory = yield r.table('datadirs').get(directoryID);
-    let currentPath = baseDirectory.name;
-    let parts = currentPath.split('/');
-    parts[parts.length - 1] = newName;
-    let newPath = parts.join('/');
-    console.log("rename: ",currentPath, newPath);
-
-    let directoryIdSet = new Set([directoryID]);
-    let size = directoryIdSet.size;
-    let oldSize = 0;
-    while (size != oldSize) {
-        console.log(oldSize, size, [...directoryIdSet]);
-        oldSize = size;
-        let directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]),{index: 'parent'});
-        for (let i = 0; i < directoryList.length; i++) {
-            directoryIdSet.add(directoryList[i].id);
-        }
-        size = directoryIdSet.size;
-    }
-
-    let directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]));
-    for (let i = 0; i < directoryList.length; i++) {
-        let directory = directoryList[i];
-        console.log(directory.name);
-        directory.name = directory.name.replace(currentPath,newPath);
-        console.log(directory.name);
-    }
-
-    yield r.table('datadirs').insert(directoryList,{conflict: 'update'});
+    yield renameHelper.renameDirectory(directoryID,newName);
 
     let rv = {};
     rv.val = yield directoryByID(directoryID);
@@ -341,6 +326,12 @@ function* isEmpty(dirID) {
 }
 
 function* remove(projectID, dirID) {
+    let guard = yield isTopLevelDir(projectID,dirID)
+    if (guard) {
+        return {
+            error: "Can not delete top level directory"
+        }
+    }
     let rv = yield r.table('datadirs').get(dirID).delete();
     if (!rv || !rv.deleted) {
         return {error: 'Unable to delete'};

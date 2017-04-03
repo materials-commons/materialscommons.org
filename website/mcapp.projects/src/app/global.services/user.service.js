@@ -93,6 +93,10 @@ function UserService($window, $log, Restangular) {
 
         updateDemoInstalled: function(demoInstalled) {
             return Restangular.one('v2').one('users').customPUT({demo_installed: demoInstalled});
+        },
+
+        switchToUser: function(email) {
+            return Restangular.one('v2').one('users_become').customPUT({email: email});
         }
     };
 }

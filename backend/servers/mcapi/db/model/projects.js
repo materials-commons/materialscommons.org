@@ -2,6 +2,7 @@ const r = require('../r');
 const run = require('./run');
 const model = require('./model');
 const getSingle = require('./get-single');
+const renameTopDirHelper = require('./directory-rename');
 const _ = require('lodash');
 
 function* createProject(user, attrs) {
@@ -88,24 +89,11 @@ function* forUser(user) {
     userProjectsRql = transformDates(userProjectsRql);
     userProjectsRql = addComputed(userProjectsRql);
 
-    let memberOfRql;
-
-    if (user.isAdmin) {
-        memberOfRql = r.table('projects')
-            .filter(r.row('owner').ne('delete@materialscommons.org').and(r.row('owner').ne(user.id)))
-            .merge(function(project) {
-                return {
-                    owner_details: r.table('users').get(project('owner')).pluck('fullname')
-                }
-            })
-            .limit(50);
-    } else {
-        memberOfRql = r.table('access').getAll(user.id, {index: 'user_id'})
-            .eqJoin('project_id', r.table('projects')).zip().filter(r.row('owner').ne(user.id))
-            .merge((project) => ({
-                owner_details: r.table('users').get(project('owner')).pluck('fullname')
-            }));
-    }
+    let memberOfRql = r.table('access').getAll(user.id, {index: 'user_id'})
+        .eqJoin('project_id', r.table('projects')).zip().filter(r.row('owner').ne(user.id))
+        .merge((project) => ({
+            owner_details: r.table('users').get(project('owner')).pluck('fullname')
+        }));
 
     memberOfRql = transformDates(memberOfRql);
     memberOfRql = addComputed(memberOfRql);
@@ -161,9 +149,12 @@ function addComputed(rql) {
 
 function* update(projectID, attrs) {
     const pattrs = {};
+    let oldName = '';
 
     if (attrs.name) {
         pattrs.name = attrs.name;
+        let projectData = yield r.table('projects').get(projectID);
+        oldName = projectData.name;
     }
 
     if (attrs.description) {
@@ -208,7 +199,17 @@ function* update(projectID, attrs) {
         });
     }
 
+    if (attrs.name) {
+        yield renameTopDirectory(oldName, attrs.name);
+    }
+
     return yield r.table('projects').get(projectID);
+}
+
+function* renameTopDirectory(oldName, newName){
+    let dirsList = yield r.table('datadirs').getAll(oldName,{index: 'name'});
+    let directoryID = dirsList[0].id;
+    yield renameTopDirHelper.renameDirectory(directoryID,newName);
 }
 
 function differenceByField(from, others, field) {

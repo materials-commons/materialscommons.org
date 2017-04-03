@@ -29,17 +29,17 @@ let random_name = function(){
     return base_project_name + number;
 };
 
-let user1Id = "test@test.mc";
+let userId = "test@test.mc";
 
 before(function*() {
-    let user = yield dbModelUsers.getUser(user1Id);
-    assert.equal(user.id,user1Id, "No test user available = " + user.id);
+    let user = yield dbModelUsers.getUser(userId);
+    assert.isOk(user,"No test user available = " + userId);
 });
 
 describe('Feature - directories: ', function() {
     describe('Top level directory', function() {
         it('fetch top level directory from project', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             assert.isNotNull(user,"test user exists");
             let attrs = {
@@ -58,14 +58,14 @@ describe('Feature - directories: ', function() {
             assert.isNotNull(found_project);
             assert.equal(found_project.otype, "project");
             assert.equal(found_project.owner, user.id);
-            assert.equal(found_project.owner, user1Id);
+            assert.equal(found_project.owner, userId);
             let project_id = project.id;
             let top_directory =  yield directories.get(project_id,'top');
             assert.equal(top_directory.otype, "directory");
             assert.equal(top_directory.name, found_project.name);
         });
         it('fetch top level directory by id', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -86,7 +86,7 @@ describe('Feature - directories: ', function() {
 
     describe('Create directory', function() {
         it('create directory path from top directory as /', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -111,7 +111,7 @@ describe('Feature - directories: ', function() {
             assert.equal(dir_list[2].name,project_name + '/A1/B1/C1');
         });
         it('create directory path from top directory as id', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -136,7 +136,7 @@ describe('Feature - directories: ', function() {
             assert.equal(dir_list[2].name,project_name + '/A1/B1/C1');
         });
         it('create directory path from directory as path', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -175,7 +175,7 @@ describe('Feature - directories: ', function() {
     });
     describe('Get directories', function() {
         it('Get all dirs in project and test for empty', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -210,7 +210,7 @@ describe('Feature - directories: ', function() {
             assert.isTrue(yield directories.isEmpty(dir_list[3].id));
         });
         it('Subdir exists and test for empty', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -241,7 +241,7 @@ describe('Feature - directories: ', function() {
             assert.isTrue(yield directories.isEmpty(subdir.id));
         });
         it('Get sub-directories as peer_directories', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -296,7 +296,7 @@ describe('Feature - directories: ', function() {
         });
         it("Find in project",function* (){
             // Note dir to find is either a path starting with '/' or an id
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -329,7 +329,7 @@ describe('Feature - directories: ', function() {
     });
     describe('Modify directory', function() {
         it("Rename leaf directory",function* (){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -359,11 +359,11 @@ describe('Feature - directories: ', function() {
             };
             yield directories.update(project_id,directory_id,rename_args);
             let dir = yield directories.get(project_id,directory_id);
-            let expectedPath = project_name + '/XX'
+            let expectedPath = project_name + '/XX';
             assert.equal(dir.path, expectedPath);
         });
         it("Move leaf directory",function* (){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -404,7 +404,7 @@ describe('Feature - directories: ', function() {
             assert.equal(dir3.path,project_name + '/A1/C1/B1');
         });
         it("Delete leaf directory",function* (){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             let attrs = {
                 name: project_name,
@@ -436,9 +436,8 @@ describe('Feature - directories: ', function() {
             assert.equal(dir_list.length,1);
         });
         it("Rename interior directory",function* (){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
-            console.log("Rename interior directory: project name = ", project_name);
             let attrs = {
                 name: project_name,
                 description: "This is a test project for automated testing."
@@ -505,6 +504,81 @@ describe('Feature - directories: ', function() {
             assert.equal(dir_list[6].name,project_name + '/A1/XX/C2');
             assert.equal(dir_list[7].name,project_name + '/A1/XX/C3');
 
+        });
+        it("Can not rename top level directory",function* (){
+            let user = yield dbModelUsers.getUser(userId);
+            let project_name = random_name();
+            let attrs = {
+                name: project_name,
+                description: "This is a test project for automated testing."
+            };
+            let ret = yield projects.createProject(user,attrs);
+            let project = ret.val;
+            let project_id = project.id;
+            let top_directory =  yield directories.get(project_id,'top');
+            let directory_id = top_directory.id;
+            let name = 'XX';
+            let rename_args = {
+                rename: {
+                    new_name: name
+                }
+            };
+            let result = yield directories.update(project_id,directory_id,rename_args);
+            assert(!!result.error);
+            top_directory =  yield directories.get(project_id,'top');
+            assert.equal(top_directory.otype, "directory");
+            assert.equal(top_directory.name, project_name);
+        });
+        it("Can not move top level directory",function* (){
+            let user = yield dbModelUsers.getUser(userId);
+            let project_name = random_name();
+            let attrs = {
+                name: project_name,
+                description: "This is a test project for automated testing."
+            };
+            let ret = yield projects.createProject(user,attrs);
+            let project = ret.val;
+            let project_id = project.id;
+            let top_directory =  yield directories.get(project_id,'top');
+            let directory_id = top_directory.id;
+            let from_dir = '/';
+            let target_path = 'NEW/LOCATION';
+            let target_dir_args = {
+                from_dir: from_dir,
+                path: target_path
+            };
+            let result = yield directories.create(project_id,project_name,target_dir_args);
+            let dir_list = result.val;
+            assert.equal(dir_list.length, 2);
+            assert.equal(dir_list[1].name,project_name + "/" + target_path);
+            let target_id = dir_list[1].id;
+            let rename_args = {
+                move: {
+                    new_directory_id: target_id
+                }
+            };
+            result = yield directories.update(project_id,directory_id,rename_args);
+            assert.isTrue(!!result.error);
+            top_directory =  yield directories.get(project_id,'top');
+            assert.equal(top_directory.otype, "directory");
+            assert.equal(top_directory.name, project_name);
+        });
+        it("Can not delete top level directory",function* (){
+            let user = yield dbModelUsers.getUser(userId);
+            let project_name = random_name();
+            let attrs = {
+                name: project_name,
+                description: "This is a test project for automated testing."
+            };
+            let result = yield projects.createProject(user,attrs);
+            let project = result.val;
+            let project_id = project.id;
+            let top_directory = yield directories.get(project_id,'top');
+            result = yield directories.remove(project_id,top_directory.id);
+            assert.isTrue(!!result.error);
+            top_directory =  yield directories.get(project_id,'top');
+            assert.equal(top_directory.otype, "directory");
+            assert.equal(top_directory.name, project_name);
         });
     });
 });
