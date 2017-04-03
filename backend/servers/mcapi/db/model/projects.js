@@ -2,7 +2,7 @@ const r = require('../r');
 const run = require('./run');
 const model = require('./model');
 const getSingle = require('./get-single');
-const directories = require('./directories');
+const renameTopDirHelper = require('./directory-rename');
 const _ = require('lodash');
 
 function* createProject(user, attrs) {
@@ -199,25 +199,17 @@ function* update(projectID, attrs) {
         });
     }
 
-    // note: in the case tha the name changed, the top level directory must be renamed
-    // this must be done after the project has be updated to by-pass the guard that
-    // prohibits renaming the top level directory
     if (attrs.name) {
-        yield renameTopDirectory(oldName, attrs.name, projectID);
+        yield renameTopDirectory(oldName, attrs.name);
     }
 
     return yield r.table('projects').get(projectID);
 }
 
-function* renameTopDirectory(oldName, newName, projectID){
+function* renameTopDirectory(oldName, newName){
     let dirsList = yield r.table('datadirs').getAll(oldName,{index: 'name'});
     let directoryID = dirsList[0].id;
-    let renameArgs = {
-        rename: {
-            new_name: newName
-        }
-    }
-    yield directories.update(projectID,directoryID,renameArgs)
+    yield renameTopDirHelper.renameDirectory(directoryID,newName);
 }
 
 function differenceByField(from, others, field) {
