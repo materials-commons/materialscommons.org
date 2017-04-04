@@ -52,7 +52,7 @@ import {onEnterDirective} from './directives/on-enter.directive';
 angular.module('mcpub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria',
     'restangular', 'ui.router', 'ui.bootstrap', 'toastr', 'ct.ui.router.extras',
     'angularUtils.directives.dirPagination', 'RecursionHelper',
-    'ngTagsInput', 'ngFileUpload'])
+    'ngTagsInput', 'ngFileUpload', 'blockUI'])
     .config(config)
     .config(routerConfig)
     .run(runBlock)
@@ -70,7 +70,7 @@ angular.module('mcpub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngM
     .controller('BrowseTagsController', BrowseTagsController)
     .controller('BrowseAuthorsController', BrowseAuthorsController)
     .controller('ValidateController', ValidateController)
-    .controller('ResetValidateController',ResetValidateController)
+    .controller('ResetValidateController', ResetValidateController)
     .directive('mcpubNavbar', NavbarDirective)
     .directive('homeTabDirective', HomeTabDirective)
     .directive('mcpubSearchbar', MCPubSearchbarDirective)
