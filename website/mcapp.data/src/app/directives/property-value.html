@@ -16,7 +16,7 @@
             <label ng-if="ctrl.user" class="col-sm-2 field-label">Download</label>
             <label ng-if="!ctrl.user" class="col-sm-2 field-label">Files</label>
             <div class="col-sm-10 field-value text-left">
-                <span ng-if="!ctrl.user">{{ctrl.value.files.length}} files</span>
+                <span ng-if="!ctrl.user">{{ctrl.value.file_count}} files</span>
                 <span ng-if="ctrl.user && !ctrl.isDownloadAvaiable(ctrl.value)">
                     {{ctrl.value.files.length}} files.
                     Download zipfile is still building; check back later.
@@ -25,7 +25,7 @@
                     <a  href="{{ctrl.urlForDownload(ctrl.value)}}" download="{{ctrl.filenameForDownload(ctrl.value)}}"
                        class="theme">
                         <i class="fa fa-fw fa-download"></i>
-                        Download Dataset - {{ctrl.value.files.length}} files
+                        Download Dataset - {{ctrl.value.file_count}} files
                     </a>
                     ({{ctrl.bytesMessageForDownload(ctrl.value)}})
                 </span>
