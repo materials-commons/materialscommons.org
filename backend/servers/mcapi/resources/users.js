@@ -10,6 +10,7 @@ const mailTransport = mailTransportConfig();
 const ra = require('./resource-access');
 const buildDemoProject = require('../build-demo/build-demo-project');
 const os = require('os');
+const Mailgen = require('mailgen');
 
 function* updateProjectFavorites(next) {
     let attrs = yield parse(this);
@@ -21,7 +22,7 @@ function* updateProjectFavorites(next) {
 function* updateUserSettings(next) {
     let args = yield parse(this);
     let errors = yield validateUserSettingsArgs(args, this.reqctx.user.id);
-    if (errors != null) {
+    if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
     } else {
@@ -247,7 +248,7 @@ function* createDemoProject(next) {
     let userId = this.params.user_id;
     let checkId = this.reqctx.user.id;
     let user = yield users.getUser(userId);
-    if ((!this.reqctx.user.isAdmin) && (userId != checkId)) {
+    if ((!this.reqctx.user.isAdmin) && (userId !== checkId)) {
         this.status = status.BAD_REQUEST;
         this.body = "Must be admin to create demo project for non-self user: " + userId;
     } else {
@@ -274,7 +275,7 @@ function* createDemoProjectRequest(user) {
     let parts = current_dir.split('/');
     let last = parts[parts.length - 1];
 
-    if ((last != "backend") && (last != "materialscommons.org")) {
+    if ((last !== "backend") && (last !== "materialscommons.org")) {
         let message = 'Can not create proejct with process running in unexpected base dir: ';
         message = message + current_dir;
         console.log("Build demo project fails - " + message);
@@ -282,7 +283,7 @@ function* createDemoProjectRequest(user) {
     }
 
     let prefix = current_dir + "/backend/";
-    if (last == "backend") {
+    if (last === "backend") {
         prefix = current_dir + "/";
     }
 
@@ -297,22 +298,43 @@ function* createDemoProjectRequest(user) {
 function emailResetLinkToUser(userData, site) {
     let transporter = nodemailer.createTransport(mailTransport),
         sendTo = userData.id,
-        validationLink = `${process.env.MC_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`;
+        siteLink = site === 'mcpub' ? process.env.MCPUB_BASE_API_LINK : process.env.MC_BASE_API_LINK,
+        validationLink = `${process.env.MC_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`,
+        mailGenerator = new Mailgen({
+            theme: 'default',
+            product: {
+                name: 'Materials Commons',
+                link: siteLink
+            }
+        });
+
     if (site === 'mcpub') {
         validationLink = `${process.env.MCPUB_BASE_API_LINK}/rvalidate/${userData.validate_uuid}`
     }
-    let emailMsg =
-            `You have requested a password reset at Materials Commons reset in the account for this email.
-            To complete this process please click on the given link or copy and paste in the url given below.`,
-        plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`,
-        htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`,
-        mailOptions = {
-            from: process.env.MC_VERIFY_EMAIL,
-            to: sendTo,
-            subject: 'MaterialCommons - account verification',
-            text: plainTextBody,
-            html: htmlBody
-        };
+
+    let email = {
+        body: {
+            name: userData.fullname,
+            intro: 'You have requsted a password reset for Materials Commons. If you did not make this request please ignore this email.',
+            action: {
+                instruction: 'To reset your password please click here:',
+                button: {
+                    color: '#22bc66',
+                    text: 'Reset your password',
+                    link: validationLink
+                }
+            },
+            outro: `Need help or have questions? Send an email to help@materialscommons.org, we'd love to help!`
+        }
+    };
+
+    let mailOptions = {
+        from: process.env.MC_VERIFY_EMAIL,
+        to: sendTo,
+        subject: 'Material Commons - Password Reset Request',
+        text: mailGenerator.generatePlaintext(email),
+        html: mailGenerator.generate(email)
+    };
 
     // send mail with defined transport object
     transporter.sendMail(mailOptions, function(error) {
@@ -328,22 +350,42 @@ function emailResetLinkToUser(userData, site) {
 function emailValidationLinkToUser(userData, site) {
     let transporter = nodemailer.createTransport(mailTransport);
     let sendTo = userData.id;
+    let siteLink = site === 'mcpub' ? process.env.MCPUB_BASE_API_LINK : process.env.MC_BASE_API_LINK;
+    let mailGenerator = new Mailgen({
+        theme: 'default',
+        product: {
+            name: 'Materials Commons',
+            link: siteLink
+        }
+    });
+
     let validationLink = `${process.env.MC_BASE_API_LINK}/validate/${userData.validate_uuid}`;
     if (site === 'mcpub') {
         validationLink = `${process.env.MCPUB_BASE_API_LINK}/validate/${userData.validate_uuid}`
     }
-    let emailMsg =
-        `Thank you for registering for an account with Materials Commons. To complete the registration
-            process please click on the given link or copy and paste in the url given below.`;
-    let plainTextBody = `${emailMsg} Please validate using the following URL: ${validationLink}`;
-    let htmlBody = `${emailMsg} Please validate by clicking <a href='${validationLink}'>here</a>  or using the following url: ${validationLink}`;
+
+    let email = {
+        body: {
+            name: userData.fullname,
+            intro: `Welcome to Materials Commons! We're very excited to have you on board.`,
+            action: {
+                instructions: 'To complete your registration process please click here:',
+                button: {
+                    color: '#22bc66',
+                    text: 'Confirm your account',
+                    link: validationLink
+                }
+            },
+            outro: `Need help or have questions? Send an email to help@materialscommons.org, we'd love to help!`
+        }
+    };
 
     let mailOptions = {
         from: process.env.MC_VERIFY_EMAIL,
         to: sendTo,
-        subject: 'MaterialCommons - account verification',
-        text: plainTextBody,
-        html: htmlBody
+        subject: 'Welcome to Material Commons - account verification',
+        text: mailGenerator.generatePlaintext(email),
+        html: mailGenerator.generate(email)
     };
 
     // send mail with defined transport object
