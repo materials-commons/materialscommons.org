@@ -505,6 +505,81 @@ describe('Feature - directories: ', function() {
             assert.equal(dir_list[7].name,project_name + '/A1/XX/C3');
 
         });
+        it("Move interior directory",function* (){
+            let user = yield dbModelUsers.getUser(userId);
+            let project_name = random_name();
+            console.log(project_name);
+            let attrs = {
+                name: project_name,
+                description: "This is a test project for automated testing."
+            };
+            let ret = yield projects.createProject(user,attrs);
+            let project = ret.val;
+            let project_id = project.id;
+            let top_directory = yield directories.get(project_id,'top');
+            let from_dir = '/';
+
+            let path = 'A1/B1/C1/D1/E1';
+            let dir_args = {
+                from_dir: from_dir,
+                path: path
+            };
+            yield directories.create(project_id,project_name,dir_args);
+
+            path = 'A1/B1/C2';
+            dir_args = {
+                from_dir: from_dir,
+                path: path
+            };
+            yield directories.create(project_id,project_name,dir_args);
+
+            let dir_list = yield directories.getAll(project_id);
+            assert.equal(dir_list.length, 7);
+            assert.equal(dir_list[0].name,project_name);
+            assert.equal(dir_list[1].name,project_name + '/A1');
+            assert.equal(dir_list[2].name,project_name + '/A1/B1');
+            assert.equal(dir_list[3].name,project_name + '/A1/B1/C1');
+            assert.equal(dir_list[4].name,project_name + '/A1/B1/C1/D1');
+            assert.equal(dir_list[5].name,project_name + '/A1/B1/C1/D1/E1');
+            assert.equal(dir_list[6].name,project_name + '/A1/B1/C2');
+
+            let directoryA1_id = dir_list[1].id;
+            let directoryB1_id = dir_list[2].id;
+            let directoryC1_id = dir_list[3].id;
+            let directoryD1_id = dir_list[4].id;
+            let directoryE1_id = dir_list[5].id;
+            let directoryC2_id = dir_list[6].id;
+
+            let directory_id = dir_list[3].id;
+            let rename_args = {
+                move: {
+                    new_directory_id: dir_list[6].id
+                }
+            };
+
+            let results = yield directories.update(project_id,directory_id,rename_args);
+            let directory = results.val;
+            assert.equal(directory.path, project_name + '/A1/B1/C2/C1');
+
+            dir_list = yield directories.getAll(project_id);
+
+            assert.equal(dir_list.length, 7);
+            assert.equal(dir_list[0].name,project_name);
+            assert.equal(dir_list[1].name,project_name + '/A1');
+            assert.equal(dir_list[2].name,project_name + '/A1/B1');
+            assert.equal(dir_list[3].name,project_name + '/A1/B1/C2');
+            assert.equal(dir_list[4].name,project_name + '/A1/B1/C2/C1');
+            assert.equal(dir_list[5].name,project_name + '/A1/B1/C2/C1/D1');
+            assert.equal(dir_list[6].name,project_name + '/A1/B1/C2/C1/D1/E1');
+
+            assert.equal(dir_list[1].id,directoryA1_id);
+            assert.equal(dir_list[2].id,directoryB1_id);
+            assert.equal(dir_list[3].id,directoryC2_id);
+            assert.equal(dir_list[4].id,directoryC1_id);
+            assert.equal(dir_list[5].id,directoryD1_id);
+            assert.equal(dir_list[6].id,directoryE1_id);
+
+        });
         it("Can not rename top level directory",function* (){
             let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();

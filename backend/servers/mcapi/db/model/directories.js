@@ -234,12 +234,44 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
 
     let newDir = yield dbExec(r.table('datadirs').get(moveArgs.new_directory_id));
     let updateDir = yield dbExec(r.table('datadirs').get(directoryID));
+    let currentPath = updateDir.name;
+
     let updateFields = {
         name: path.join(newDir.name, path.basename(updateDir.name)),
         parent: newDir.id
     };
+    let newPath = updateFields.name;
 
     yield r.table('datadirs').get(directoryID).update(updateFields);
+
+    let directoryList = yield r.table('datadirs').getAll(directoryID,{index: 'parent'});
+    if (directoryList && directoryList.length > 0) {
+
+        let directoryIdSet = new Set();
+
+        for (let i = 0; i < directoryList.length; i++) {
+            directoryIdSet.add(directoryList[i].id);
+        }
+
+        let size = directoryIdSet.size;
+        let oldSize = 0;
+        while (size != oldSize) {
+            oldSize = size;
+            directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]),{index: 'parent'});
+            for (let i = 0; i < directoryList.length; i++) {
+                directoryIdSet.add(directoryList[i].id);
+            }
+            size = directoryIdSet.size;
+        }
+
+        directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]));
+        for (let i = 0; i < directoryList.length; i++) {
+            let directory = directoryList[i];
+            directory.name = directory.name.replace(currentPath,newPath);
+        }
+
+        yield r.table('datadirs').insert(directoryList,{conflict: 'update'});
+    }
 
     let rv = {};
     rv.val = yield directoryByID(directoryID);
