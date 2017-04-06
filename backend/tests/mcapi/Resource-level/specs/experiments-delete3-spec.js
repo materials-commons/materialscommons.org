@@ -112,7 +112,7 @@ before(function*() {
 
 describe('Feature - Experiments: ', function() {
     describe('Delete Experiment - in parts: ', function () {
-        it('deletes all datasets and processes', function* (){
+        it('deletes datasets and deletes all processes', function* (){
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -144,6 +144,17 @@ describe('Feature - Experiments: ', function() {
             dataset_list = results.val;
             assert.isOk(dataset_list);
             assert.equal(dataset_list.length,0);
+
+            for (let i = 0; i < process_list.length; i++) {
+                let process = process_list[i];
+                yield processes.deleteProcess(project.id,process.id);
+            }
+
+            let simple = true;
+            results = yield experiments.getProcessesForExperiment(experiment_id, simple);
+            let proc_list = results.val;
+            assert.isOk(proc_list);
+            assert.equal(proc_list.length,0);
 
         });
     });
