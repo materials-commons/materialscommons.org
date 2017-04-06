@@ -112,7 +112,7 @@ before(function*() {
 
 describe('Feature - Experiments: ', function() {
     describe('Delete Experiment - in parts: ', function () {
-        it('deletes all datasets', function* (){
+        it('deletes all datasets and processes', function* (){
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
