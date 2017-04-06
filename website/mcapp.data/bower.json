@@ -25,6 +25,7 @@
     "ng-tags-input": "~3.1.1",
     "underscore": "~1.8.3",
     "ng-file-upload": "~12.0.4",
+    "angular-block-ui": "^0.2.2",
     "angular-recursion": "~1.0.5"
   },
   "devDependencies": {

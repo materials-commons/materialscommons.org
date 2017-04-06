@@ -7,8 +7,7 @@ const fsa = Promise.promisifyAll(require('fs'));
 module.exports.getAll = function*(next) {
     this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
         return {
-            'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
-                .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+            'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
             'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
             'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
         }
@@ -26,8 +25,7 @@ module.exports.getRecent = function*(next) {
     this.body = yield r.db('materialscommons').table('datasets').filter({published: true})
         .orderBy(r.desc('birthtime')).merge(function(ds) {
             return {
-                'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
-                    .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+                'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
                 'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
                 'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
             }
@@ -38,8 +36,7 @@ module.exports.getRecent = function*(next) {
 module.exports.getTopViews = function*(next) {
     this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
         return {
-            'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
-                .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+            'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
             'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
             'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
         }
