@@ -121,6 +121,11 @@ describe('Feature - Experiments: ', function() {
             console.log(experiment.name);
             console.log(experiment_id);
 
+            // Note: delete all processes will delete all the samples in the processes;
+            // so, we need to add a sample that is not in any process - to complete test
+
+
+
             let results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
             let dataset_list = results.val;
             assert.isOk(dataset_list);
