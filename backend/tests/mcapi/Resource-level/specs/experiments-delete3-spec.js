@@ -112,7 +112,7 @@ before(function*() {
 
 describe('Feature - Experiments: ', function() {
     describe('Delete Experiment - in parts: ', function () {
-        it('deletes datasets and deletes all processes', function* (){
+        it('deletes datasets and deletes all processes and samples', function* (){
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -121,10 +121,10 @@ describe('Feature - Experiments: ', function() {
             console.log(experiment.name);
             console.log(experiment_id);
 
-            // Note: delete all processes will delete all the samples in the processes;
-            // so, we need to add a sample that is not in any process - to complete test
-
-
+            // Note: create fake sample that is not part of a process for testing
+            let rv = yield r.table('samples').insert({'name':'fake sample', 'otype':'sample', 'owner':'noone'})
+            let key = rv.generated_keys[0];
+            yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment_id});
 
             let results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
             let dataset_list = results.val;
@@ -145,6 +145,8 @@ describe('Feature - Experiments: ', function() {
                 yield experimentDatasets.deleteDataset(dataset.id);
             }
 
+            // Note: delete process also deletes all samples associated with the processes ...
+
             results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
             dataset_list = results.val;
             assert.isOk(dataset_list);
@@ -160,6 +162,24 @@ describe('Feature - Experiments: ', function() {
             let proc_list = results.val;
             assert.isOk(proc_list);
             assert.equal(proc_list.length,0);
+
+            // ... but, in rare cases, there my be samples in the experiment that are in no process
+
+            let sampleList = yield r.db('materialscommons').table('experiment2sample')
+                .getAll(experiment_id,{index:'experiment_id'})
+                .eqJoin('sample_id',r.db('materialscommons').table('samples')).zip()
+                .getField('sample_id');
+
+            rv = yield r.table('samples').getAll(r.args([...sampleList])).delete();
+
+            assert.equal(rv.deleted, 1);
+
+            // and the sample entries for the experiment are left in experiment2sample
+
+            rv = yield r.db('materialscommons').table('experiment2sample')
+                .getAll(experiment_id,{index:'experiment_id'}).delete();
+
+            assert.equal(rv.deleted, 8);
 
         });
     });
