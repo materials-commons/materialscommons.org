@@ -20,8 +20,6 @@ const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const projects = require(backend_base + '/servers/mcapi/db/model/projects');
 const directories = require(backend_base + '/servers/mcapi/db/model/directories');
 
-const base_user_id = 'thisIsAUserForTestingONLY!';
-const fullname = "Test User";
 const base_project_name = "Test directory";
 
 let random_name = function(){

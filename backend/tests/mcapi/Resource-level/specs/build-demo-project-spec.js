@@ -32,10 +32,6 @@ const helper = require(mcapi_base + 'build-demo/build-demo-project-helper');
 const demoProjectConf = require(mcapi_base + 'build-demo/build-demo-project-conf');
 const buildDemoProject = require(mcapi_base + 'build-demo/build-demo-project');
 
-const fullname = "Test User";
-const user_apikey = "ThisIsAJunkKey";
-const user1Id = "mctest@mc.org";
-
 const base_project_name = "Demo project test: ";
 
 const demoProjectTestUserId = 'test@test.mc';
@@ -47,34 +43,14 @@ let random_name = function () {
 };
 
 before(function*() {
-    let user = yield dbModelUsers.getUser(user1Id);
-    if (!user) {
-        let results = yield r.db('materialscommons').table('users').insert({
-            admin: false,
-            affiliation: "",
-            avatar: "",
-            description: "",
-            email: user1Id,
-            apikey: user_apikey,
-            fullname: fullname,
-            homepage: "",
-            id: user1Id,
-            name: fullname,
-            preferences: {
-                tags: [],
-                templates: []
-            }
-        });
-        assert.equal(results.inserted, 1, "The User was correctly inserted");
-    } else {
-        assert.equal(user.id, user1Id, "Wrong test user, id = " + user.id);
-    }
+    let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+    assert.isOk(user, "Missing test user, id = " + demoProjectTestUserId);
 });
 
 describe('Feature - User - Build Demo Project Support: ', function () {
     describe('User for test', function () {
         it('exists', function *() {
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user, "test user exists");
             assert.equal(user.apikey, user_apikey);
             assert.equal(user.id, user1Id);
@@ -98,7 +74,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
         });
         it('can be inserted in database', function*() {
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user, "test user exists");
             let projectName = random_name();
             let attrs = {
