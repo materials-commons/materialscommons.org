@@ -174,7 +174,12 @@ describe('Feature - Experiments: ', function() {
 
         });
         it('deletes links between files and experiment', function* (){
+            let experimentId = experiment.id;
+            assert.isOk(experimentId);
 
+            let delete_msg = yield r.table('experiment2datafile')
+                .getAll(experimentId,{index:'experiment_id'}).delete();
+            assert.equal(delete_msg.deleted, 16);
         });
     });
 });
