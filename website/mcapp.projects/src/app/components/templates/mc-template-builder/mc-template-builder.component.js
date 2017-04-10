@@ -5,8 +5,8 @@ class MCTemplateBuilderComponentController {
             name: '',
             description: '',
             setup: [],
-            measurements: []
         }];
+        this.measurements = [];
     }
 
     addSection() {
@@ -14,7 +14,6 @@ class MCTemplateBuilderComponentController {
             name: '',
             description: '',
             setup: [],
-            measurements: []
         });
     }
 
@@ -22,8 +21,8 @@ class MCTemplateBuilderComponentController {
         section.setup.push({name: ''});
     }
 
-    addSectionMeasurementProperty(section) {
-        section.measurements.push({name: ''});
+    addMeasurementProperty() {
+        this.measurements.push({name: ''});
     }
 }
 
