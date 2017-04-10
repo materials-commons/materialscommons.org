@@ -117,7 +117,7 @@ function* deleteProcess(projectId, processId) {
                 }
             }
 
-            // remote process2Sample records with proceeeId
+            // remote process2Sample records with processId
             //   for each such sample, if there are no other records, delete sample
             let process2Sample = yield r.table('process2sample').filter({process_id: processId});
             let sampleIdValues = process2Sample.map(record => record.sample_id);
