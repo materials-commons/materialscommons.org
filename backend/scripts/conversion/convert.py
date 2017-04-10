@@ -149,7 +149,7 @@ def main():
     fix_missing_property_sets(conn)
     update_projects_with_new_fields(conn)
     # add_collaborators_to_projects(conn)
-    fix_experiment_collaborators(conn)
+    # fix_experiment_collaborators(conn)
     fix_file_upload_count_to_uploaded(conn)
     add_demo_installed_attribute(conn)
 
