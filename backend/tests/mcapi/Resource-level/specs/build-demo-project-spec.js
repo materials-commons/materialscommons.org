@@ -52,9 +52,8 @@ describe('Feature - User - Build Demo Project Support: ', function () {
         it('exists', function *() {
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user, "test user exists");
-            assert.equal(user.apikey, user_apikey);
-            assert.equal(user.id, user1Id);
-            assert.equal(user.name, fullname);
+            assert.equal(user.apikey,demoProjectTestUserKey);
+            assert.equal(user.id, demoProjectTestUserId);
         })
     });
     describe('List of files for build', function () {
@@ -153,7 +152,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert.lengthOf(missingFiles, 0);
         });
         it('adds all files to top dir of a test Demo Project', function*() {
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user, "test user exists");
 
             let projectName = random_name();
