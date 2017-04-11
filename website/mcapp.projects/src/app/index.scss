@@ -531,7 +531,7 @@ table.md-table tr.md-row:last-child {
  * The dnd-list should always have a min-height,
  * otherwise you can't drop to it once it's empty
  */
-.simpleDemo ul[dnd-list] {
+ul[dnd-list] {
   min-height: 42px;
   padding-left: 0px;
 }
