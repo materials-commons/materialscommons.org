@@ -1,19 +1,22 @@
 class MCTemplateBuilderComponentController {
     /*@ngInject*/
     constructor() {
-        this.sections = [{
+        this.whichElements = 'measurements';
+        this.template = {
             name: '',
+            template_type: 'create',
             description: '',
+            does_transform: false,
             setup: [],
-        }];
-        this.measurements = [];
+            measurements: []
+        };
     }
 
     addSection() {
         this.sections.push({
             name: '',
             description: '',
-            setup: [],
+            setup: []
         });
     }
 

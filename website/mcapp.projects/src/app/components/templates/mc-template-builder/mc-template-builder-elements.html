@@ -1,0 +1,11 @@
+<md-content style="max-height:90vh; min-height: 40vh">
+    <ul ng-show="$ctrl.elements === 'measurements'">
+        <li ng-repeat="m in $ctrl.measurements"
+            dnd-draggable="m">
+            {{m}}
+        </li>
+    </ul>
+    <ul ng-show="$ctrl.elements === 'setup'">
+        <li ng-repeat="p in $ctrl.properties">{{p}}</li>
+    </ul>
+</md-content>

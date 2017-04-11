@@ -1,0 +1,13 @@
+<div>
+    <label>Drop elements</label>
+    {{$ctrl.measurements.length}}
+    {{$ctrl.measurements}}
+    <ul dnd-list="$ctrl.measurements" class="elementsList">
+        <li ng-repeat="m in $ctrl.measurements track by $index"
+            dnd-moved="$ctrl.measurements.splice($index, 1)"
+            dnd-effect-allowed="move"
+            dnd-draggable="m">
+            {{m}}
+        </li>
+    </ul>
+</div>
