@@ -506,7 +506,7 @@ describe('Feature - directories: ', function() {
         it("Move interior directory",function* (){
             let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
-            console.log(project_name);
+
             let attrs = {
                 name: project_name,
                 description: "This is a test project for automated testing."

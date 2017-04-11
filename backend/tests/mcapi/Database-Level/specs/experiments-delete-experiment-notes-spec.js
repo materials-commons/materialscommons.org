@@ -92,9 +92,6 @@ before(function*() {
     yield setUpFakeExperimentNoteData(experimentId);
     yield setUpAdditionalExperimentTaskData(experimentId);
 
-    console.log(project.name);
-    console.log(experiment.name);
-    console.log(experimentId);
 });
 
 describe('Feature - Experiments: ', function() {
@@ -141,9 +138,6 @@ describe('Feature - Experiments: ', function() {
             assert.isOk(task);
             assert.isOk(task.process_id);
             let processId = task.process_id;
-
-            console.log('taskId: ',taskId);
-            console.log('processId: ',processId);
 
             // experiment2experimenttask
             // experimenttask2process

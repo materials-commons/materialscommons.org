@@ -117,9 +117,6 @@ describe('Feature - Experiments: ', function() {
             assert.isOk(project_id);
             let experiment_id = experiment.id;
             assert.isOk(experiment_id);
-            console.log(project.name);
-            console.log(experiment.name);
-            console.log(experiment_id);
 
             let results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
             let dataset_list = results.val;

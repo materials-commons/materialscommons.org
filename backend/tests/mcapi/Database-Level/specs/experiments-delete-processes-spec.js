@@ -117,9 +117,6 @@ describe('Feature - Experiments: ', function() {
             assert.isOk(project_id);
             let experiment_id = experiment.id;
             assert.isOk(experiment_id);
-            console.log(project.name);
-            console.log(experiment.name);
-            console.log(experiment_id);
 
             // Note: create fake sample that is not part of a process for testing
             let rv = yield r.table('samples').insert({'name':'fake sample', 'otype':'sample', 'owner':'noone'})
