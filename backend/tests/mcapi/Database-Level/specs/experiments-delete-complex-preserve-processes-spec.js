@@ -114,11 +114,28 @@ before(function*() {
     let key = result.generated_keys[0];
     yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment_id});
 
+    // create new experiment
+    results = yield createAdditionalExperiment(project,"Experment For Test");
+    assert.isOk(results.val);
+    let extraExperiment = results.val;
+    assert.equal(extraExperiment.otype,'experiment');
+
+    // add a process to it
+    results = yield createProcess(project,extraExperiment,"Etching - test process","global_Etching");
+    assert.isOk(results.val);
+    let extraProcess = results.val;
+    assert.equal(extraProcess.otype,'process');
+
+    // reuse an existing sample for that process
+    let sampleToUse = sample_list[1];
+    results = yield addSamplesToProcess(project,extraExperiment,extraProcess,[sampleToUse]);
+//    console.log(results);
+
 });
 
 describe('Feature - Experiments: ', function() {
-    describe('Delete Experiment - simple case: ', function () {
-        it('deletes all datasets, processes, samples, tasks, and links to files', function* (){
+    describe('Delete Experiment - complex case: ', function () {
+        it('deletes all datasets, tasks, and links to files - preserve processes, samples', function* (){
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -133,3 +150,55 @@ describe('Feature - Experiments: ', function() {
         });
     });
 });
+
+function* createAdditionalExperiment(project,experimentName) {
+    let experimentDescription = "Test experiment";
+    let args = {
+        project_id: project.id,
+        name: experimentName,
+        description: experimentDescription
+    };
+    let ret = yield experiments.create(args, project.owner);
+    // ret == val.ok_val or error.error
+    return ret;
+}
+
+function* createProcess(project, experiment, processName, templateId) {
+    let simple = true;
+    let ret = yield experiments.addProcessFromTemplate(project.id, experiment.id, templateId, project.owner);
+    if (!ret.error) {
+        let process = ret.val;
+        let args = {name: processName, files: [], properties: [], samples: []};
+        ret = yield processes.updateProcess(process.id, args);
+    }
+    // ret == val.ok_val or error.error
+    return ret;
+}
+
+function* addSamplesToProcess(project, experiment, process, sampleList) {
+    let resultsingSamples = [];
+    let ret = yield processes.getProcess(process.id);
+    if (!ret.error) {
+        process = ret.val;
+        let samplesData = [];
+        sampleList.forEach((sample) => {
+            samplesData.push({
+                command: 'add',
+                id: sample.id,
+                property_set_id: sample.property_set_id
+            })
+        });
+        let args = {
+            template_id: process.template_id,
+            process_id: process.id,
+            samples: samplesData
+        };
+        let properties = [];
+        let files = [];
+        let samples = args.samples;
+        ret = yield experiments.updateProcess(experiment.id, process.id,
+            properties, files, samples);
+    }
+    // ret == val.ok_val or error.error
+    return ret;
+}
