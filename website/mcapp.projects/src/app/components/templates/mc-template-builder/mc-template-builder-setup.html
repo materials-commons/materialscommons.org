@@ -1,1 +1,19 @@
-mc-template-builder-setup
+<div>
+    <label>Drop elements</label>
+    <ul dnd-list="$ctrl.setup[0].properties" class="elementsList">
+        <li ng-repeat="p in $ctrl.setup[0].properties"
+            dnd-moved="$ctrl.setup[0].properties.splice($index, 1)"
+            dnd-effect-allowed="move"
+            dnd-draggable="p">
+            <div layout="column">
+                <md-input-container>
+                    <label>Name</label>
+                    <input ng-model="p.name">
+                </md-input-container>
+                <ul>
+                    <li ng-repeat="u in p.units">{{u}}</li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</div>

@@ -78,7 +78,7 @@ $mc-import-samples-color: #b2bfdb;
 
 .project-card:hover {
   /*background-color: #2196f3;*/
-  box-shadow: 5px 5px 5px 0px #a3a3a3;
+  box-shadow: 5px 5px 5px 0 #a3a3a3;
 }
 
 /* Customize md toast */
@@ -533,7 +533,7 @@ table.md-table tr.md-row:last-child {
  */
 ul[dnd-list] {
   min-height: 42px;
-  padding-left: 0px;
+  padding-left: 0;
 }
 
 /**
@@ -558,10 +558,12 @@ ul[dnd-list] .dndPlaceholder {
 }
 
 ul[dnd-list] li {
+  margin-top: 10px;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
+  //border-top-right-radius: 4px;
+  //border-top-left-radius: 4px;
+  border-radius: 4px;
   display: block;
   padding: 10px 15px;
   margin-bottom: -1px;

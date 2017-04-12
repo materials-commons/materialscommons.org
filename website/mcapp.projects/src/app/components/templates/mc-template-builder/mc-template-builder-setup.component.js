@@ -1,7 +1,11 @@
 class MCTemplateBuilderSetupComponentController {
     /*@ngInject*/
     constructor() {
-
+        this.setup = [{
+            name: 'Instrument',
+            attribute: 'instrument',
+            properties: []
+        }];
     }
 }
 

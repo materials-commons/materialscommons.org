@@ -1,1 +1,19 @@
-mc-template-builder-description
+<div layout="column" layout-margin>
+    <md-input-container>
+        <label>Name</label>
+        <input ng-model="$ctrl.template.name">
+    </md-input-container>
+
+    <md-input-container>
+        <label>Description</label>
+        <input ng-model="$ctrl.template.description">
+    </md-input-container>
+
+    <label>Template Type</label>
+    <md-radio-group ng-model="$ctrl.template.process_type">
+        <md-radio-button value="create" class="md-primary">Create Samples</md-radio-button>
+        <md-radio-button value="transform">Transforms Samples</md-radio-button>
+        <md-radio-button value="analysis">Analysis</md-radio-button>
+        <md-radio-button value="measurement">Measurement</md-radio-button>
+    </md-radio-group>
+</div>

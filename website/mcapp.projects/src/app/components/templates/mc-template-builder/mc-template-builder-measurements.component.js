@@ -2,7 +2,6 @@ class MCTemplateBuilderMeasurementsComponentController {
     /*@ngInject*/
     constructor() {
         this.measurements = [];
-        //this.measurements.push("item 1");
     }
 }
 

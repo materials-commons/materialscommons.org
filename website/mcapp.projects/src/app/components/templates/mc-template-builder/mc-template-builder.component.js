@@ -4,28 +4,12 @@ class MCTemplateBuilderComponentController {
         this.whichElements = 'measurements';
         this.template = {
             name: '',
-            template_type: 'create',
+            process_type: 'create',
             description: '',
             does_transform: false,
             setup: [],
             measurements: []
         };
-    }
-
-    addSection() {
-        this.sections.push({
-            name: '',
-            description: '',
-            setup: []
-        });
-    }
-
-    addSectionSetupProperty(section) {
-        section.setup.push({name: ''});
-    }
-
-    addMeasurementProperty() {
-        this.measurements.push({name: ''});
     }
 }
 

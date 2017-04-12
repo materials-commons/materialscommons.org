@@ -1,13 +1,20 @@
 <div>
     <label>Drop elements</label>
-    {{$ctrl.measurements.length}}
-    {{$ctrl.measurements}}
     <ul dnd-list="$ctrl.measurements" class="elementsList">
-        <li ng-repeat="m in $ctrl.measurements track by $index"
+        <li ng-repeat="m in $ctrl.measurements"
             dnd-moved="$ctrl.measurements.splice($index, 1)"
             dnd-effect-allowed="move"
             dnd-draggable="m">
-            {{m}}
+            <div layout="column">
+                <label>{{m.id}}</label>
+                <md-input-container>
+                    <label>Name</label>
+                    <input ng-model="m.name">
+                </md-input-container>
+                <ul>
+                    <li ng-repeat="u in m.units">{{u}}</li>
+                </ul>
+            </div>
         </li>
     </ul>
 </div>
