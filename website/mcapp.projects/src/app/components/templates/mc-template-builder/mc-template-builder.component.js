@@ -5,7 +5,7 @@ class MCTemplateBuilderComponentController {
         this.template = {
             name: '',
             process_type: 'create',
-            description: '',
+            template_description: '',
             does_transform: false,
             setup: [],
             measurements: []

@@ -1,4 +1,5 @@
 <md-content style="max-height:80vh; min-height: 40vh">
+    <label>Drag elements from list</label>
     <ul ng-show="$ctrl.elements === 'measurements'" dnd-list="$ctrl.measurements" dnd-disable-if="true">
         <li ng-repeat="m in $ctrl.measurements"
             dnd-draggable="m">

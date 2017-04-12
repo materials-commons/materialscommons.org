@@ -9,6 +9,9 @@ class MCProcessTemplateComponentController {
     }
 
     updateProcessName() {
+        if (this.readonly) {
+            return;
+        }
         this.processesAPI.updateProcess(this.projectId, this.process.id, {name: this.process.name})
             .then(
                 () => {
@@ -21,6 +24,9 @@ class MCProcessTemplateComponentController {
     }
 
     updateProcessDescription() {
+        if (this.readonly) {
+            return;
+        }
         if (this.processDescription === this.process.description) {
             return;
         }
@@ -42,6 +48,7 @@ angular.module('materialscommons').component('mcProcessTemplate', {
     controller: MCProcessTemplateComponentController,
     bindings: {
         process: '<',
-        onChange: '&'
+        onChange: '&',
+        readonly: '@'
     }
 });
