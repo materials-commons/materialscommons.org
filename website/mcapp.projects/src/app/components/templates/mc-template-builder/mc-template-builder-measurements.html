@@ -1,6 +1,6 @@
 <div>
     <label>Drop Template Measurements Here</label>
-    <ul dnd-list="$ctrl.measurements" class="elementsList">
+    <ul dnd-list="$ctrl.measurements" ng-class="{'dnd-list-empty': !$ctrl.measurements.length}">
         <li ng-repeat="m in $ctrl.measurements"
             dnd-moved="$ctrl.measurements.splice($index, 1)"
             dnd-effect-allowed="move"

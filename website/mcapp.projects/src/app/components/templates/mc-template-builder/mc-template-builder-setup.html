@@ -1,6 +1,6 @@
 <div>
     <label>Drop Template Setup Properties Here</label>
-    <ul dnd-list="$ctrl.setup[0].properties" class="elementsList">
+    <ul dnd-list="$ctrl.setup[0].properties" ng-class="{'dnd-list-empty': !$ctrl.setup[0].properties.length}">
         <li ng-repeat="p in $ctrl.setup[0].properties"
             dnd-moved="$ctrl.setup[0].properties.splice($index, 1)"
             dnd-effect-allowed="move"
