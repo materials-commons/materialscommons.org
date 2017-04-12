@@ -15,7 +15,10 @@ function* getSample(sampleID) {
                         return {
                             measurements: r.table('process2measurement')
                                 .getAll(process('process_id'), {index: 'process_id'})
-                                .eqJoin('measurement_id', r.table('measurements')).zip().coerceTo('array')
+                                .eqJoin('measurement_id', r.table('measurements')).zip().coerceTo('array'),
+                            experiments: r.table('experiment2process')
+                                .getAll(process('process_id'), {index: 'process_id'})
+                                .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array')
                         };
                     }).orderBy('birthtime').coerceTo('array'),
                 files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
