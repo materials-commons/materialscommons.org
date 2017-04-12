@@ -22,7 +22,10 @@ function* getSample(sampleID) {
                         };
                     }).orderBy('birthtime').coerceTo('array'),
                 files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
-                    .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array')
+                    .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+                experiments: r.table('experiment2sample')
+                    .getAll(sampleID, {index: 'sample_id'})
+                    .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array')
             }
         });
     let sample = yield dbExec(rql);
@@ -43,7 +46,10 @@ function* getAllSamplesForProject(projectID) {
                     .eqJoin('process_id', r.table('processes')).zip()
                     .coerceTo('array'),
                 processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
-                    .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
+                    .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
+                experiments: r.table('experiment2sample')
+                    .getAll(sample('id'), {index: 'sample_id'})
+                    .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array')
             }
         });
     let samples = yield dbExec(rql);
@@ -52,14 +58,18 @@ function* getAllSamplesForProject(projectID) {
 
 function* getAllSamplesForExperiment(experimentId) {
     let rql = r.table('experiment2sample').getAll(experimentId, {index: 'experiment_id'})
-        .eqJoin('sample_id', r.table('samples')).zip().merge(function (sample) {
+        .eqJoin('sample_id', r.table('samples')).zip()
+        .merge(function (sample) {
             return {
                 versions: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
                     .filter({direction: 'out'})
                     .eqJoin('process_id', r.table('processes')).zip()
                     .coerceTo('array'),
                 processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
-                    .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
+                    .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
+                experiments: r.table('experiment2sample')
+                    .getAll(sample('id'), {index: 'sample_id'})
+                    .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array')
             }
         });
     let samples = yield dbExec(rql);
