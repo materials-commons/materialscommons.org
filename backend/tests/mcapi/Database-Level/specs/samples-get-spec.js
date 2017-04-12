@@ -25,9 +25,11 @@ let random_name = function(){
 let userId = 'test@test.mc';
 let sample1 = null;
 let sample2 = null;
+let project = null;
 let experiment = null;
 let createSampleProcess = null;
-let transformationProcess = null;
+let transformationProcess1 = null;
+let transformationProcess2 = null;
 
 before(function*() {
     let user = yield dbModelUsers.getUser(userId);
@@ -37,7 +39,7 @@ before(function*() {
     let projectName = random_name();
     let results = yield testHelpers.createProject(projectName,user);
     assert.isOk(results.val);
-    let project = results.val;
+    project = results.val;
     assert.equal(project.otype, "project");
     assert.equal(project.name, projectName);
     assert.equal(project.owner, user.id);
@@ -86,19 +88,19 @@ before(function*() {
     assert.equal(sample2.otype,'sample');
     assert.equal(sample2.name, sampleName2);
 
-    // add a transformation process to it
-    processName = "Etching - test process";
+    // add a transformation process
+    processName = "Etching1 - test process";
     processTemplateId = "global_Etching";
     results = yield testHelpers.createProcess(project,experiment,processName,processTemplateId);
     assert.isOk(results.val);
-    transformationProcess = results.val;
-    assert.equal(transformationProcess.otype,'process');
-    assert.equal(transformationProcess.name, processName);
-    assert.equal(transformationProcess.template_id, processTemplateId);
-    assert.equal(transformationProcess.owner, userId);
+    transformationProcess1 = results.val;
+    assert.equal(transformationProcess1.otype,'process');
+    assert.equal(transformationProcess1.name, processName);
+    assert.equal(transformationProcess1.template_id, processTemplateId);
+    assert.equal(transformationProcess1.owner, userId);
 
-    // add samples for that process
-    results = yield testHelpers.addSamplesToProcess(project,experiment,transformationProcess,[sample1]);
+    // add a sample to that process
+    results = yield testHelpers.addSamplesToProcess(project,experiment,transformationProcess1,[sample1]);
     assert.isOk(results.val);
     let checkProcess = results.val;
     assert.equal(checkProcess.otype,'process');
@@ -109,6 +111,28 @@ before(function*() {
     assert.equal(checkProcess.input_samples[0].id,sample1.id);
     assert.equal(checkProcess.output_samples[0].id,sample1.id);
 
+    // add a another transformation process
+    processName = "Etching2 - test process";
+    processTemplateId = "global_Etching";
+    results = yield testHelpers.createProcess(project,experiment,processName,processTemplateId);
+    assert.isOk(results.val);
+    transformationProcess2 = results.val;
+    assert.equal(transformationProcess2.otype,'process');
+    assert.equal(transformationProcess2.name, processName);
+    assert.equal(transformationProcess2.template_id, processTemplateId);
+    assert.equal(transformationProcess2.owner, userId);
+
+    // add the other sample to that process
+    results = yield testHelpers.addSamplesToProcess(project,experiment,transformationProcess2,[sample2]);
+    assert.isOk(results.val);
+    checkProcess = results.val;
+    assert.equal(checkProcess.otype,'process');
+    assert.equal(checkProcess.name, processName);
+    assert.equal(checkProcess.template_id, processTemplateId);
+    assert.equal(checkProcess.owner, userId);
+    assert.equal(checkProcess.process_type, 'transform');
+    assert.equal(checkProcess.input_samples[0].id,sample2.id);
+    assert.equal(checkProcess.output_samples[0].id,sample2.id);
 });
 
 describe('Feature - Samples: ', function() {
@@ -126,8 +150,8 @@ describe('Feature - Samples: ', function() {
             assert.equal(processes.length, 3);
             let checks = [
                 {name: createSampleProcess.name, direction: 'out'},
-                {name: transformationProcess.name, direction: 'in'},
-                {name: transformationProcess.name, direction: 'out'}
+                {name: transformationProcess1.name, direction: 'in'},
+                {name: transformationProcess1.name, direction: 'out'}
             ];
             for (let c = 0; c < checks.length; c++) {
                 let name = checks[c].name;
@@ -143,12 +167,32 @@ describe('Feature - Samples: ', function() {
         });
 
         it('gets all samples for experiment', function*() {
-            // let results = yield samples.getAllSamplesForExperiment(experiment.id);
-            // console.log(results);
-            // assert.isOk(results.val);
-            // let sampleList = results.val;
-            // assert.equal(sampleList.length,2);
+            let results = yield samples.getAllSamplesForExperiment(experiment.id);
+            assert.isOk(results.val);
+            let sampleList = results.val;
+            assert.equal(sampleList.length,2);
+            let testTable = {};
+            for (let i = 0; i < sampleList.length; i++) {
+                testTable[sampleList[i].id] = sampleList[i];
+            }
+            assert.isOk(testTable[sample1.id]);
+            assert.equal(testTable[sample1.id].name, sample1.name);
+            assert.isOk(testTable[sample2.id]);
+            assert.equal(testTable[sample2.id].name, sample2.name);
         });
-        it('gets all samples for project', function*() {});
+        it('gets all samples for project', function*() {
+            let results = yield samples.getAllSamplesForProject(project.id);
+            assert.isOk(results.val);
+            let sampleList = results.val;
+            assert.equal(sampleList.length,2);
+            let testTable = {};
+            for (let i = 0; i < sampleList.length; i++) {
+                testTable[sampleList[i].id] = sampleList[i];
+            }
+            assert.isOk(testTable[sample1.id]);
+            assert.equal(testTable[sample1.id].name, sample1.name);
+            assert.isOk(testTable[sample2.id]);
+            assert.equal(testTable[sample2.id].name, sample2.name);
+        });
     });
 });
