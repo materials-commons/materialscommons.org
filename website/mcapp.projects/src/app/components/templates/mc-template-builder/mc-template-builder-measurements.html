@@ -5,15 +5,25 @@
             dnd-moved="$ctrl.measurements.splice($index, 1)"
             dnd-effect-allowed="move"
             dnd-draggable="m">
-            <div layout="column">
-                <label>{{m.id}}</label>
-                <md-input-container>
-                    <label>Name</label>
-                    <input ng-model="m.name">
-                </md-input-container>
-                <ul>
-                    <li ng-repeat="u in m.units">{{u}}</li>
-                </ul>
+            <div dnd-nodrag>
+                <div dnd-handle class="cursor-grab"><i class="fa fa-fw fa-bars"></i></div>
+                <div layout="column">
+                    <md-input-container>
+                        <label>Name</label>
+                        <input ng-model="m.name">
+                    </md-input-container>
+                    <div layout="row">
+                        <md-button class="md-primary" ng-if="m.units.length" ng-click="$ctrl.editUnits()">
+                            edit units
+                        </md-button>
+                        <md-button class="md-primary" ng-if="!m.units.length" ng-click="$ctrl.addUnits()">
+                            add units
+                        </md-button>
+                    </div>
+                    <ul>
+                        <li ng-repeat="u in m.units">{{u}}</li>
+                    </ul>
+                </div>
             </div>
         </li>
     </ul>

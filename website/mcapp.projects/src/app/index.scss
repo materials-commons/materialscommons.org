@@ -580,3 +580,13 @@ ul[dnd-list] li.selected {
 .dnd-list-empty {
   background-color: #ddd;
 }
+
+/* ******************************* */
+.radio-description {
+  font-size: 0.9em;
+  color: grey;
+}
+
+.cursor-grab {
+  cursor: grab;
+}
