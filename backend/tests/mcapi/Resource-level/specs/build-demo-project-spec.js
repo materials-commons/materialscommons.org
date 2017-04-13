@@ -43,6 +43,9 @@ let random_name = function () {
 };
 
 before(function*() {
+
+    this.timeout(8000); // some tests in this test suite can take up to 8 seconds
+
     let user = yield dbModelUsers.getUser(demoProjectTestUserId);
     assert.isOk(user, "Missing test user, id = " + demoProjectTestUserId);
 });

@@ -26,6 +26,8 @@ const helper = require(build_project_base + '/build-demo-project-helper');
 const demoProjectConf = require(build_project_base + '/build-demo-project-conf');
 const buildDemoProject = require(build_project_base + '/build-demo-project');
 
+const testHelpers = require('./test-helpers');
+
 const base_project_name = "Test directory";
 
 let random_name = function(){
