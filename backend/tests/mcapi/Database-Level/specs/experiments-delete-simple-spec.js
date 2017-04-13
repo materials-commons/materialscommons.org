@@ -21,10 +21,15 @@ const directories = require(backend_base + '/directories');
 const experiments = require(backend_base + '/experiments');
 const processes = require(backend_base + '/processes');
 const experimentDatasets = require(backend_base + '/experiment-datasets');
+const samples = require(backend_base + '/samples');
 
 const helper = require(build_project_base + '/build-demo-project-helper');
 const demoProjectConf = require(build_project_base + '/build-demo-project-conf');
 const buildDemoProject = require(build_project_base + '/build-demo-project');
+
+const testHelpers = require('./test-helpers');
+
+const experimentDelete = require(backend_base + '/experiment-delete');
 
 const base_project_name = "Test directory";
 
@@ -37,12 +42,14 @@ let userId = "test@test.mc";
 
 let project = null;
 let experiment = null;
-let process_list = null;
-let sample_list = null;
-let file_list = null;
-let dataset_list = null;
+let processList = null;
+let sampleList = null;
+let fileList = null;
+let datasetList = null;
+let experimentNote = null;
+let experimentTask = null;
 
-before(function*() {
+beforeEach(function*() {
 
     this.timeout(8000); // this test suite can take up to 8 seconds
 
@@ -55,12 +62,9 @@ before(function*() {
     let results = valOrError.val;
     project = results.project;
     experiment = results.experiment;
-    process_list = results.processes;
-    sample_list = results.samples;
-    file_list = results.files;
-
-    let project_id = project.id;
-    let experiment_id = experiment.id;
+    processList = results.processes;
+    sampleList = results.samples;
+    fileList = results.files;
 
     let name = random_name();
     let description = "Changed the name of the demo project to " + name;
@@ -73,62 +77,93 @@ before(function*() {
     assert.equal(updated_project.owner, userId);
     assert.equal(updated_project.name, name);
     assert.equal(updated_project.description, description);
-    assert.equal(updated_project.id,project_id);
+    assert.equal(updated_project.id,project.id);
     project = updated_project;
 
-    let processesToAdd = [
-        {id: process_list[0].id}
-    ];
-
-    let processesToDelete = [];
-
-    let datasetArgs = {
-        title:"Test Dataset1",
-        description:"Dataset for testing"
-    };
-
-    let result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
-    let dataset = result.val;
-    assert.isOk(dataset);
-
-    yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete);
-
-    datasetArgs = {
-        title:"Test Dataset2",
-        description:"Dataset for testing"
-    };
-
-    result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
-    dataset = result.val;
-    assert.isOk(dataset);
-
-    yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete)
-
-    results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
-    dataset_list = results.val;
-    assert.isOk(dataset_list);
-    assert.equal(dataset_list.length,2);
+    datasetList = yield testHelpers.createDatasetList(experiment,processList,userId);
 
     // Note: create fake sample that is not part of a process for testing
-    result = yield r.table('samples').insert({'name':'fake sample', 'otype':'sample', 'owner':'noone'})
-    let key = result.generated_keys[0];
-    yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment_id});
+    results = yield r.table('samples').insert({'name':'fake sample', 'otype':'sample', 'owner':'noone'})
+    let key = results.generated_keys[0];
+    yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment.id});
+
+    experimentNote = yield testHelpers.setUpFakeExperimentNoteData(experiment.id,userId);
+    experimentTask = yield testHelpers.setUpAdditionalExperimentTaskData(experiment.id,userId);
 
 });
 
 describe('Feature - Experiments: ', function() {
     describe('Delete Experiment - simple case: ', function () {
+        it('does not delete an experiment with a published dataset', function* (){
+            let project_id = project.id;
+            assert.isOk(project_id);
+            let experiment_id = experiment.id;
+            assert.isOk(experiment_id);
+
+            // test that structures exist - datasets
+            let idList = [];
+            for (let i = 0; i < datasetList.length; i++){
+                idList.push(datasetList[i].id);
+            }
+
+            let check = yield r.table('experiment2dataset').getAll(r.args([...idList]),{index:'dataset_id'});
+            assert.isOk(check);
+            assert.equal(check.length,2);
+
+            // publish one of the datasets
+            let datasetId = idList[0];
+            let results = yield experimentDatasets.publishDataset(datasetId);
+            assert.isOk(results);
+            assert.isOk(results.val);
+            assert.isOk(results.val.published);
+            assert(results.val.published);
+
+            // delete experiment - fails
+            results = yield experimentDelete.deleteExperiment(experiment_id, {deleteProcesses: true,dryRun: false});
+            assert.isOk(results);
+            assert.isOk(results.error);
+
+        });
         it('deletes all datasets, processes, samples, tasks, and links to files', function* (){
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
             assert.isOk(experiment_id);
 
-            // test that structures exist
+            // test that structures exist - datasets
+            let idList = [];
+            for (let i = 0; i < datasetList.length; i++){
+                idList.push(datasetList[i].id);
+            }
 
-            // experiments.delete(experiment_id, {deleteProcesses: true});
+            let check = yield r.table('dataset2process').getAll(r.args([...idList]),{index:'dataset_id'});
+            assert.isOk(check);
+            assert.equal(check.length,2);
 
-            // test that structures are deleted
+            check = yield r.table('experiment2dataset').getAll(r.args([...idList]),{index:'dataset_id'});
+            assert.isOk(check);
+            assert.equal(check.length,2);
+
+            // delete experiment
+            let results = yield experimentDelete.deleteExperiment(experiment_id, {deleteProcesses: true,dryRun: false});
+            assert.isOk(results);
+            assert.isOk(results.val);
+            assert.isOk(results.val.datasets);
+            assert.equal(results.val.datasets.length,2);
+
+            // test that structures are deleted - datasets
+            check = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
+            let dataset_list = check.val;
+            assert.isOk(dataset_list);
+            assert.equal(dataset_list.length,0);
+
+            check = yield r.table('dataset2process').getAll(r.args([...idList]),{index:'dataset_id'});
+            assert.isOk(check);
+            assert.equal(check.length,0);
+
+            check = yield r.table('experiment2dataset').getAll(r.args([...idList]),{index:'dataset_id'});
+            assert.isOk(check);
+            assert.equal(check.length,0);
 
         });
     });

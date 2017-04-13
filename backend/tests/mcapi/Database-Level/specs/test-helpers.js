@@ -2,6 +2,11 @@
 require('mocha');
 require('co-mocha');
 
+const r = require('rethinkdbdash')({
+    db: process.env.MCDB || 'materialscommons',
+    port: process.env.MCDB_PORT || 30815
+});
+
 const mcapi_base = '../../../../servers/mcapi';
 const backend_base = mcapi_base + "/db/model";
 
@@ -10,6 +15,7 @@ const directories = require(backend_base + '/directories');
 const experiments = require(backend_base + '/experiments');
 const processes = require(backend_base + '/processes');
 const samples = require(backend_base + '/samples');
+const experimentDatasets = require(backend_base + '/experiment-datasets');
 
 function* createProject(projectName,user){
     let attrs = {
@@ -83,10 +89,97 @@ function* addSamplesToProcess(project, experiment, process, sampleList) {
     return ret;
 }
 
+let createDatasetList = function* (experiment, processList, userId) {
+    let processesToAdd = [
+        {id: processList[0].id}
+    ];
+
+    let processesToDelete = [];
+
+    let datasetArgs = {
+        title:"Test Dataset1",
+        description:"Dataset for testing"
+    };
+
+    let results = yield experimentDatasets.createDatasetForExperiment(experiment.id, userId, datasetArgs);
+    let dataset = results.val;
+
+    yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete);
+
+    datasetArgs = {
+        title:"Test Dataset2",
+        description:"Dataset for testing"
+    };
+
+    results = yield experimentDatasets.createDatasetForExperiment(experiment.id, userId, datasetArgs);
+    dataset = results.val;
+
+    yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete)
+
+    results = yield experimentDatasets.getDatasetsForExperiment(experiment.id);
+    let dataset_list = results.val;
+    return dataset_list;
+};
+
+let setUpFakeExperimentNoteData = function* (experimentId,userId) {
+    // ---- experimentnote ----
+    // experiment2experimentnote
+    // experimentnotes
+
+    // Note, the demo project (used as base for this test) had no items in experimentnotes
+    // Inserting one here, as base for test
+    let fakeNote = {
+        name: "Test Note",
+        note: "Fake note for testing",
+        otype:'experimentnote',
+        owner: userId
+    };
+    let insert_msg = yield r.table('experimentnotes').insert(fakeNote);
+    let key = insert_msg.generated_keys[0];
+    yield r.table('experiment2experimentnote')
+        .insert({experiment_note_id: key, experiment_id: experimentId});
+    return yield r.table('experimentnotes').get(key);
+};
+
+let setUpAdditionalExperimentTaskData = function* (experimentId,userId) {
+    // ---- experimenttask ----
+    // experiment2experimenttask
+    // experimenttask2process
+    // experimenttasks
+    // processes
+
+    let fakeProcess = {
+        otype:  "process" ,
+        does_transform: false ,
+        name:  "Test Process" ,
+        owner: userId,
+        template_id:  "global_As Measured" ,
+        template_name:  "As Measured"
+    };
+
+    let insertMsg = yield r.table('processes').insert(fakeProcess);
+    let processId = insertMsg.generated_keys[0];
+
+    let idList = yield r.table('experiment2experimenttask')
+        .getAll(experimentId,{index:'experiment_id'})
+        .eqJoin('experiment_task_id',r.table('experimenttasks'))
+        .zip().getField('experiment_task_id');
+    let taskId = idList[0];
+
+    let updateMsg = yield r.table('experimenttasks').get(taskId).update({process_id: processId});
+    insertMsg = yield r.table('experimenttask2process')
+        .insert({experiment_task_id: taskId, process_id: processId});
+
+    return yield r.table('experimenttasks').get(taskId);
+};
+
 module.exports = {
     createProject,
     createExperiment,
     createProcess,
     createSamples,
-    addSamplesToProcess
+    createDatasetList,
+    addSamplesToProcess,
+    setUpFakeExperimentNoteData,
+    setUpAdditionalExperimentTaskData
 };

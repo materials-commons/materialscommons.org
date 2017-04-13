@@ -26,6 +26,8 @@ const helper = require(build_project_base + '/build-demo-project-helper');
 const demoProjectConf = require(build_project_base + '/build-demo-project-conf');
 const buildDemoProject = require(build_project_base + '/build-demo-project');
 
+const testHelpers = require('./test-helpers');
+
 const base_project_name = "Test directory";
 
 let random_name = function(){
@@ -89,8 +91,8 @@ before(function*() {
 
     assert.equal(rv.deleted, 7);
 
-    yield setUpFakeExperimentNoteData(experimentId);
-    yield setUpAdditionalExperimentTaskData(experimentId);
+    yield testHelpers.setUpFakeExperimentNoteData(experimentId,userId);
+    yield testHelpers.setUpAdditionalExperimentTaskData(experimentId,userId);
 
 });
 
@@ -177,62 +179,3 @@ describe('Feature - Experiments: ', function() {
         });
     });
 });
-
-let setUpFakeExperimentNoteData = function* (experimentId) {
-    // ---- experimentnote ----
-    // experiment2experimentnote
-    // experimentnotes
-
-    // Note, the demo project (used as base for this test) had no items in experimentnotes
-    // Inserting one here, as base for test
-    let fakeNote = {
-        name: "Test Note",
-        note: "Fake note for testing",
-        otype:'experimentnote',
-        owner: userId
-    };
-    let insert_msg = yield r.table('experimentnotes').insert(fakeNote);
-    let key = insert_msg.generated_keys[0];
-    yield r.table('experiment2experimentnote')
-        .insert({experiment_note_id: key, experiment_id: experimentId});
-};
-
-let setUpAdditionalExperimentTaskData = function* (experimentId) {
-    // ---- experimenttask ----
-    // experiment2experimenttask
-    // experimenttask2process
-    // experimenttasks
-    // processes
-
-    let fakeProcess = {
-        otype:  "process" ,
-        does_transform: true ,
-        name:  "Test Process" ,
-        owner: userId,
-        template_id:  "global_SEM" ,
-        template_name:  "SEM"
-    };
-
-    let insertMsg = yield r.table('processes').insert(fakeProcess);
-    assert.isOk(insertMsg.generated_keys);
-    assert.equal(insertMsg.generated_keys.length,1);
-    let processId = insertMsg.generated_keys[0];
-
-    let idList = yield r.table('experiment2experimenttask')
-         .getAll(experimentId,{index:'experiment_id'})
-         .eqJoin('experiment_task_id',r.table('experimenttasks'))
-         .zip().getField('experiment_task_id');
-    assert.isOk(idList);
-    assert.equal(idList.length, 1);
-    let taskId = idList[0];
-
-    let updateMsg = yield r.table('experimenttasks').get(taskId).update({process_id: processId});
-    assert.isOk(updateMsg);
-    assert.isOk(updateMsg.replaced);
-    assert.equal(updateMsg.replaced,1);
-
-    insertMsg = yield r.table('experimenttask2process')
-        .insert({experiment_task_id: taskId, process_id: processId});
-    assert.isOk(insertMsg.generated_keys);
-    assert.equal(insertMsg.generated_keys.length,1);
-};
