@@ -1,7 +1,14 @@
 class MCTemplateBuilderMeasurementsComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(templateUnits) {
         this.measurements = [];
+        this.templateUnits = templateUnits;
+    }
+
+    addUnits() {
+        this.templateUnits.showChoices().then(
+            (unitType) => console.log('unitType chosen', unitType)
+        )
     }
 }
 

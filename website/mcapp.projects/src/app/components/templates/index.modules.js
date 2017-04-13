@@ -1,3 +1,4 @@
+import './mc-template-builder/template-units.service';
 import './mc-template-builder/mc-template-builder-description.component';
 import './mc-template-builder/mc-template-builder-measurements.component';
 import './mc-template-builder/mc-template-builder-review.component';

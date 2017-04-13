@@ -1,0 +1,34 @@
+<md-dialog flex="60">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Choose Units
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <div class="md-accordion" ng-repeat="unitType in $ctrl.unitTypes | orderBy:'name'">
+            <md-toolbar ng-clickx="unitType.expanded = !unitType.expanded; unitType.searchBy = ''">
+                <div class="md-toolbar-tools">
+                    <h2 ng-class="unitType.cssClass">
+                        <md-checkbox ng-model="unitType.selected" ng-change="$ctrl.done(unitType)"></md-checkbox>
+                        <i class="fa fa-fw" ng-class="unitType.icon"></i>{{unitType.name}}
+                    </h2>
+                    <span flex=""></span>
+                    <span ng-click="unitType.expanded = !unitType.expanded"
+                          ng-class="{expandCollapse:true, active:unitType.expanded}"></span>
+                </div>
+            </md-toolbar>
+            <div class="dataContent" ng-class="{activeContent:unitType.expanded}"
+                 ng-style="unitType.margin && {'margin-bottom': '7px'}">
+            </div>
+            <div ng-repeat="u in unitType.units"
+                 ng-click="$ctrl.chooseTemplate(template)"
+                 class="dataContent"
+                 ng-class="{activeContent:unitType.expanded}">
+                {{u}}
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>

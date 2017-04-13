@@ -1,7 +1,6 @@
 class MCTemplateBuilderElementsComponentController {
     /*@ngInject*/
     constructor() {
-        console.log('mcTemplateBuilderElements');
         this.measurements = [];
         this.setup = [{
             attribute: "instrument",
