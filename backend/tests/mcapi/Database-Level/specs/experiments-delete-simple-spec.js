@@ -57,28 +57,17 @@ beforeEach(function*() {
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId,user.id);
 
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user,demoProjectConf.datapathPrefix);
+    let valOrError = yield testHelpers.createDemoTestProject(user);
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;
     experiment = results.experiment;
-    processList = results.processes;
-    sampleList = results.samples;
-    fileList = results.files;
+    processList = results.processList;
+    sampleList = results.sampleList;
+    fileList = results.fileList;
 
-    let name = random_name();
-    let description = "Changed the name of the demo project to " + name;
-    let updateData = {
-        name: name,
-        description: description
-    };
-    let updated_project = yield projects.update(project.id, updateData);
-    assert.equal(updated_project.otype, "project");
-    assert.equal(updated_project.owner, userId);
-    assert.equal(updated_project.name, name);
-    assert.equal(updated_project.description, description);
-    assert.equal(updated_project.id,project.id);
-    project = updated_project;
+    assert.equal(project.otype, "project");
+    assert.equal(project.owner, userId);
 
     datasetList = yield testHelpers.createDatasetList(experiment,processList,userId);
 
