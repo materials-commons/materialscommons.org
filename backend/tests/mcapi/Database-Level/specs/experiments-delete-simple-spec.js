@@ -124,6 +124,8 @@ describe('Feature - Experiments: ', function() {
 
             yield testProcessesSamples({assertExists: true});
 
+            console.log(experimentNote);
+
             yield testExperimentNotes({assertExists: true});
 
             // delete experiment
