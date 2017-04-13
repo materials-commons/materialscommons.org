@@ -1,11 +1,25 @@
 class MCTemplateBuilderSetupComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(templateUnits) {
+        this.unit = '';
         this.setup = [{
             name: 'Instrument',
             attribute: 'instrument',
             properties: []
         }];
+        this.templateUnits = templateUnits;
+    }
+
+    addUnits(property) {
+        this.templateUnits.showChoices().then(
+            (unitType) => property.units = unitType.units
+        )
+    }
+
+    addNewUnit(property) {
+        property.units.push(this.unit);
+        property.editUnits = false;
+        this.unit = '';
     }
 }
 

@@ -42,6 +42,7 @@ class MCTemplateBuilderElementsComponentController {
                           {choices = [], required = false, units = [], description = ""} = {
                               choices: [],
                               required: false,
+                              editUnits: false,
                               units: [],
                               description: ""
                           }) {

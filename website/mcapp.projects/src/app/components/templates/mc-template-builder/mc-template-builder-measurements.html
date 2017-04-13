@@ -1,5 +1,5 @@
 <div>
-    <label>Drop Template Measurements Here</label>
+    <p class="md-subhead">Drag and drop the sample attributes to measure into this space.</p>
     <ul dnd-list="$ctrl.measurements" ng-class="{'dnd-list-empty': !$ctrl.measurements.length}">
         <li ng-repeat="m in $ctrl.measurements"
             dnd-moved="$ctrl.measurements.splice($index, 1)"
@@ -13,15 +13,23 @@
                         <input ng-model="m.name">
                     </md-input-container>
                     <div layout="row">
-                        <md-button class="md-primary" ng-if="m.units.length" ng-click="$ctrl.editUnits()">
+                        <md-button class="md-primary" ng-if="m.units.length" ng-click="m.editUnits = true">
                             edit units
                         </md-button>
-                        <md-button class="md-primary" ng-if="!m.units.length" ng-click="$ctrl.addUnits()">
+                        <md-button class="md-primary" ng-if="!m.units.length" ng-click="$ctrl.addUnits(m)">
                             add units
                         </md-button>
                     </div>
                     <ul>
-                        <li ng-repeat="u in m.units">{{u}}</li>
+                        <li ng-repeat="u in m.units" flex="50">
+                            <div layout="row" layout-align="start space-between" flex="100">
+                                <span flex="100">{{u}}</span>
+                                <a ng-click="m.units.splice($index, 1)"><i class="fa fa-fw fa-times"></i></a>
+                            </div>
+                        </li>
+                        <li ng-show="m.editUnits">
+                            <input ng-model="$ctrl.unit" on-enter="$ctrl.addNewUnit(m)">
+                        </li>
                     </ul>
                 </div>
             </div>
