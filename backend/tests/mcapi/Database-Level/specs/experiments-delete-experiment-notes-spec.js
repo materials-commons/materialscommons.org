@@ -150,7 +150,7 @@ describe('Feature - Experiments: ', function() {
                 .getAll(taskId,{index:'experiment_task_id'})
                 .eqJoin('process_id',r.table('processes'))
                 .zip().getField('process_id');
-            delete_msg = yield r.table('processes').getAll(r.args([...idList])).delete();
+            let delete_msg = yield r.table('processes').getAll(r.args([...idList])).delete();
             assert.equal(delete_msg.deleted, 1);
 
             delete_msg = yield r.table('experimenttask2process')
@@ -161,7 +161,7 @@ describe('Feature - Experiments: ', function() {
                 .getAll(experimentId,{index:'experiment_id'})
                 .eqJoin('experiment_task_id',r.table('experimenttasks'))
                 .zip().getField('experiment_task_id');
-            let delete_msg = yield r.table('experimenttasks').getAll(r.args([...idList])).delete();
+            delete_msg = yield r.table('experimenttasks').getAll(r.args([...idList])).delete();
             assert.equal(delete_msg.deleted, 1);
 
             delete_msg = yield r.table('experiment2experimenttask')
