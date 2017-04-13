@@ -779,13 +779,11 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 sampleNames.push(demoProjectConf.sampleNameData[sampleIndexList[i]]);
             }
 
-            console.log("processName: ", process.name);
-            console.log("sampleNames: ", sampleNames);
-
             valOrError = yield helper.createOrFindProcessOutputSamples(project, experiment, process, sampleNames);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindProcessOutputSamples: " + valOrError.error);
 
             let samples = valOrError.val;
+
             assert.isOk(samples);
             assert.lengthOf(samples, sampleNames.length);
             for (let i = 0; i < sampleNames.length; i++) {
@@ -794,17 +792,18 @@ describe('Feature - User - Build Demo Project Support: ', function () {
                 assert.equal(name, sample.name);
             }
 
+            valOrError = yield helper.createOrFindDemoProcess(project, experiment, processName, templateId);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProcess: " + valOrError.error);
+
+            process = valOrError.val;
+
             let processData = demoProjectConf.processesData[0];
             let measurement = processData.measurements[0];
-
-            console.log(process);
-            console.log(measurement);
 
             valOrError = yield helper.updateMeasurementForProcessSamples(process, measurement);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindMeasurement: " + valOrError.error);
 
             samples = valOrError.val;
-            console.log("Samples: ", samples);
             let sample = samples[0];
             let updatedProcess = null;
             sample.processes.forEach((probe) => {
