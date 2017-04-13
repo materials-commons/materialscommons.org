@@ -119,19 +119,9 @@ describe('Feature - Experiments: ', function() {
             let experiment_id = experiment.id;
             assert.isOk(experiment_id);
 
-            // test that structures exist - datasets
-            let idList = [];
-            for (let i = 0; i < datasetList.length; i++){
-                idList.push(datasetList[i].id);
-            }
+            testDatasetsExist({assertExists: true});
 
-            let check = yield r.table('dataset2process').getAll(r.args([...idList]),{index:'dataset_id'});
-            assert.isOk(check);
-            assert.equal(check.length,2);
-
-            check = yield r.table('experiment2dataset').getAll(r.args([...idList]),{index:'dataset_id'});
-            assert.isOk(check);
-            assert.equal(check.length,2);
+            // test that structures exist - best measure history
 
             // delete experiment
             let results = yield experimentDelete.deleteExperiment(experiment_id, {deleteProcesses: true,dryRun: false});
@@ -140,20 +130,34 @@ describe('Feature - Experiments: ', function() {
             assert.isOk(results.val.datasets);
             assert.equal(results.val.datasets.length,2);
 
-            // test that structures are deleted - datasets
-            check = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
-            let dataset_list = check.val;
-            assert.isOk(dataset_list);
-            assert.equal(dataset_list.length,0);
-
-            check = yield r.table('dataset2process').getAll(r.args([...idList]),{index:'dataset_id'});
-            assert.isOk(check);
-            assert.equal(check.length,0);
-
-            check = yield r.table('experiment2dataset').getAll(r.args([...idList]),{index:'dataset_id'});
-            assert.isOk(check);
-            assert.equal(check.length,0);
+            testDatasetsExist({assertExists: false});
 
         });
     });
 });
+
+function* testDatasetsExist(options) {
+
+    let count = 0;
+    if (options && options.assertExists) {
+        count = 2;
+    }
+
+    let idList = [];
+    for (let i = 0; i < datasetList.length; i++){
+        idList.push(datasetList[i].id);
+    }
+
+    let check = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
+    let dataset_list = check.val;
+    assert.isOk(dataset_list);
+    assert.equal(dataset_list.length,count);
+
+    check = yield r.table('dataset2process').getAll(r.args([...idList]),{index:'dataset_id'});
+    assert.isOk(check);
+    assert.equal(check.length,count);
+
+    check = yield r.table('experiment2dataset').getAll(r.args([...idList]),{index:'dataset_id'});
+    assert.isOk(check);
+    assert.equal(check.length,count);
+}
