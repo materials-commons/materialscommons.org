@@ -15,6 +15,7 @@ class MCTemplateBuilderElementsComponentController {
     }
 
     _loadMeasurements() {
+        this.measurements.push(this.constructor.createProperty(`No Units`, "number", 102, {units: []}));
         this.measurements.push(this.constructor.createProperty("Temperature", "number"));
         for (let i = 0; i < 100; i++) {
             this.measurements.push(this.constructor.createProperty(`${i} - Composition`, "composition", i, {units: ["at%", "wt%", "atoms"]}));
@@ -22,6 +23,7 @@ class MCTemplateBuilderElementsComponentController {
     }
 
     _loadSetup() {
+        this.setup[0].properties.push(this.constructor.createProperty(`No Units`, "number", 101, {units: []}));
         for (let i = 0; i < 100; i++) {
             this.setup[0].properties.push(this.constructor.createProperty(`${i} - Property`, "number", i, {units: ["c", "f"]}));
         }
