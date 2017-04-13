@@ -9,8 +9,8 @@ const processes = require('./processes');
 
 function* deleteExperiment(projectId, experimentId, options) {
 
-    let deleteProcesses = !!options.deleteProcesses;
-    let dryRun = !!options.dryRun;
+    let deleteProcesses = !!(options && options.deleteProcesses);
+    let dryRun = !!(options && options.dryRun);
 
     console.log("deleteProcesses: ", deleteProcesses);
     console.log("dryRun: ", dryRun);
@@ -91,8 +91,21 @@ function* deleteExperiment(projectId, experimentId, options) {
         }
     } // else?
 
-    console.log("sampleIdSet.size: ", sampleIdSet.size);
     overallResults['samples'] = [...sampleIdSet];
+
+    idList = yield r.table('experiment2experimentnote')
+        .getAll(experimentId,{index:'experiment_id'})
+        .eqJoin('experiment_note_id',r.table('experimentnotes'))
+        .zip().getField('experiment_note_id');
+
+    let delete_msg1 = yield r.table('experimentnotes').getAll(r.args([...idList])).delete();
+
+    let delete_msg2 = yield r.table('experiment2experimentnote')
+        .getAll(experimentId,{index:'experiment_id'}).delete();
+
+    if ((delete_msg1.deleted === idList.length) && (delete_msg2.deleted === idList.length)) {
+        overallResults['experiment_notes'] = idList;
+    }
 
     return {val: overallResults};
 }
