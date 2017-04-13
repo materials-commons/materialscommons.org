@@ -107,6 +107,32 @@ function* deleteExperiment(projectId, experimentId, options) {
         overallResults['experiment_notes'] = idList;
     }
 
+    // get taskId and processId
+    let taskidList = yield r.table('experiment2experimenttask')
+        .getAll(experimentId,{index:'experiment_id'})
+        .eqJoin('experiment_task_id',r.table('experimenttasks'))
+        .zip().getField('experiment_task_id');
+
+    idList = yield r.table('experimenttask2process')
+        .getAll(r.args([...taskidList]),{index:'experiment_task_id'})
+        .eqJoin('process_id',r.table('processes'))
+        .zip().getField('process_id');
+    delete_msg = yield r.table('processes').getAll(r.args([...idList])).delete();
+    if (delete_msg.deleted === idList.length) {
+        overallResults['experiment_task_processes'] = idList;
+    }
+
+    yield r.table('experimenttask2process')
+        .getAll(taskidList,{index:'experiment_task_id'}).delete();
+
+    delete_msg = yield r.table('experimenttasks').getAll(r.args([...taskidList])).delete();
+    if (delete_msg.deleted === taskidList.length) {
+        overallResults['experiment_tasks'] = taskidList;
+    }
+
+    delete_msg = yield r.table('experiment2experimenttask')
+        .getAll(experimentId,{index:'experiment_id'}).delete();
+
     return {val: overallResults};
 }
 

@@ -124,9 +124,9 @@ describe('Feature - Experiments: ', function() {
 
             yield testProcessesSamples({assertExists: true});
 
-            console.log(experimentNote);
-
             yield testExperimentNotes({assertExists: true});
+
+            yield testExperimentTasks({assertExists: true});
 
             // delete experiment
             let results = yield experimentDelete
@@ -143,6 +143,10 @@ describe('Feature - Experiments: ', function() {
             assert.equal(results.val.samples.length,8);
             assert.isOk(results.val.experiment_notes);
             assert.equal(results.val.experiment_notes.length,1);
+            assert.isOk(results.val.experiment_tasks);
+            assert.equal(results.val.experiment_tasks.length,1);
+            assert.isOk(results.val.experiment_task_processes);
+            assert.equal(results.val.experiment_task_processes.length,1);
 
             yield testDatasets({assertExists: false});
 
@@ -151,6 +155,8 @@ describe('Feature - Experiments: ', function() {
             yield testProcessesSamples({assertExists: false});
 
             yield testExperimentNotes({assertExists: false});
+
+            // yield testExperimentTasks({assertExists: false});
 
         });
     });
@@ -235,11 +241,17 @@ function* testExperimentNotes(options) {
     }
 
     let results = yield r.table('experiment2experimentnote')
-        .getAll(experiment.id,{index:'experiment_id'})
-        .eqJoin('experiment_note_id',r.table('experimentnotes'))
-        .zip().getField('experiment_note_id');
-
+        .getAll(experiment.id,{index:'experiment_id'});
+    assert.isOk(results);
     assert.equal(results.length, count);
+
+    results = yield r.table('experimentnotes').get(experimentNote.id);
+    if (count === 1) {
+        assert.isOk(results);
+        assert.equal(results.otype,'experimentnote');
+    } else {
+        assert.isNull(results);
+    }
 
     results = yield r.table('experiment2experimentnote')
         .getAll(experiment.id,{index:'experiment_id'});
@@ -249,5 +261,38 @@ function* testExperimentNotes(options) {
 }
 
 function* testExperimentTasks(options) {
+
+    let count = 0;
+    if (options && options.assertExists) {
+        count = 1;
+    }
+
+    console.log(experimentTask);
+    let taskId = experimentTask.id;
+    let processId = experimentTask.process_id;
+
+    // experiment2experimenttask
+    // experimenttask2process
+    // experimenttasks
+    // processes
+
+    let idList = yield r.table('experimenttask2process')
+        .getAll(taskId,{index:'experiment_task_id'});
+    assert.isOk(idList);
+    assert.equal(idList.length,count);
+
+    //    .eqJoin('process_id',r.table('processes'))
+    //    .zip().getField('process_id');
+
+    //delete_msg = yield r.table('experimenttask2process')
+    //    .getAll(taskId,{index:'experiment_task_id'}).delete();
+
+    //idList = yield r.table('experiment2experimenttask')
+    //    .getAll(experimentId,{index:'experiment_id'})
+    //    .eqJoin('experiment_task_id',r.table('experimenttasks'))
+    //    .zip().getField('experiment_task_id');
+
+    //delete_msg = yield r.table('experiment2experimenttask')
+    //    .getAll(experimentId,{index:'experiment_id'}).delete();
 
 }
