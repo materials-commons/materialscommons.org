@@ -89,15 +89,12 @@ describe('Feature - Experiments: ', function() {
             let experiment_id = experiment.id;
             assert.isOk(experiment_id);
 
-            // test that structures exist - datasets
             let idList = [];
             for (let i = 0; i < datasetList.length; i++){
                 idList.push(datasetList[i].id);
             }
 
-            let check = yield r.table('experiment2dataset').getAll(r.args([...idList]),{index:'dataset_id'});
-            assert.isOk(check);
-            assert.equal(check.length,2);
+            yield testDatasets({assertExists: true});
 
             // publish one of the datasets
             let datasetId = idList[0];
@@ -108,7 +105,7 @@ describe('Feature - Experiments: ', function() {
             assert(results.val.published);
 
             // delete experiment - fails
-            results = yield experimentDelete.deleteExperiment(experiment_id, {deleteProcesses: true,dryRun: false});
+            results = yield experimentDelete.deleteExperiment(project_id,experiment_id, {deleteProcesses: true, dryRun: false});
             assert.isOk(results);
             assert.isOk(results.error);
 
@@ -119,24 +116,37 @@ describe('Feature - Experiments: ', function() {
             let experiment_id = experiment.id;
             assert.isOk(experiment_id);
 
-            testDatasetsExist({assertExists: true});
+            yield testDatasets({assertExists: true});
 
-            // test that structures exist - best measure history
+            yield testBestMearureHistroy({assertExists: true});
+
+            yield testProcessesSamples({assertExists: true});
 
             // delete experiment
-            let results = yield experimentDelete.deleteExperiment(experiment_id, {deleteProcesses: true,dryRun: false});
+            let results = yield experimentDelete
+                .deleteExperiment(project_id,experiment_id, {deleteProcesses: true,dryRun: false});
             assert.isOk(results);
             assert.isOk(results.val);
             assert.isOk(results.val.datasets);
             assert.equal(results.val.datasets.length,2);
+            assert.isOk(results.val.best_measure_history);
+            assert.equal(results.val.best_measure_history.length,1);
+            assert.isOk(results.val.processes);
+            assert.equal(results.val.processes.length,5);
+            assert.isOk(results.val.samples);
+            assert.equal(results.val.samples.length,8);
 
-            testDatasetsExist({assertExists: false});
+            yield testDatasets({assertExists: false});
+
+            yield testBestMearureHistroy({assertExists: false});
+
+            yield testProcessesSamples({assertExists: false});
 
         });
     });
 });
 
-function* testDatasetsExist(options) {
+function* testDatasets(options) {
 
     let count = 0;
     if (options && options.assertExists) {
@@ -148,7 +158,7 @@ function* testDatasetsExist(options) {
         idList.push(datasetList[i].id);
     }
 
-    let check = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
+    let check = yield experimentDatasets.getDatasetsForExperiment(experiment.id);
     let dataset_list = check.val;
     assert.isOk(dataset_list);
     assert.equal(dataset_list.length,count);
@@ -160,4 +170,49 @@ function* testDatasetsExist(options) {
     check = yield r.table('experiment2dataset').getAll(r.args([...idList]),{index:'dataset_id'});
     assert.isOk(check);
     assert.equal(check.length,count);
+}
+
+function* testBestMearureHistroy(options) {
+
+    let count = 0;
+    if (options && options.assertExists) {
+        count = 1;
+    }
+
+    let idList = yield r.table('experiment2sample')
+        .getAll(experiment.id,{index:'experiment_id'})
+        .eqJoin('sample_id',r.table('samples')).zip()
+        .eqJoin('sample_id',r.table('sample2propertyset'),{index: 'sample_id'}).zip()
+        .eqJoin('property_set_id',r.table('propertysets')).zip()
+        .eqJoin('property_set_id',r.table('propertyset2property'),{index: 'property_set_id'}).zip()
+        .eqJoin('property_id',r.table('properties')).zip()
+        .eqJoin('property_id',r.table('best_measure_history'),{index: 'property_id'}).zip()
+        .getField('property_id');
+
+    assert.isOk(idList);
+    assert.equal(idList.length,count);
+}
+
+function* testProcessesSamples(options) {
+
+    let processCount = 0;
+    let sampleCount = 0;
+    if (options && options.assertExists) {
+        processCount = 5;
+        sampleCount = 8;
+    }
+    let sampleList = yield r.db('materialscommons').table('experiment2sample')
+        .getAll(experiment.id,{index:'experiment_id'})
+        .eqJoin('sample_id',r.db('materialscommons').table('samples')).zip()
+        .getField('sample_id');
+    assert.isOk(sampleList);
+    assert.equal(sampleList.length,sampleCount);
+
+    let simple = true;
+    let results = yield experiments.getProcessesForExperiment(experiment.id, simple);
+    assert.isOk(results);
+    assert.isOk(results.val);
+    let procList = results.val;
+    assert.equal(procList.length, processCount);
+
 }
