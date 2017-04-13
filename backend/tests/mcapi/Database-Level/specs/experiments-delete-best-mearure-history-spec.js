@@ -99,7 +99,7 @@ describe('Feature - Experiments: ', function() {
                 .eqJoin('property_set_id',r.table('propertyset2property'),{index: 'property_set_id'}).zip()
                 .eqJoin('property_id',r.table('properties')).zip()
                 .eqJoin('property_id',r.table('best_measure_history'),{index: 'property_id'}).zip()
-                .getField('property_id')
+                .getField('property_id');
             let delete_msg = yield r.table('best_measure_history')
                 .getAll(r.args([...idList]),{index: 'property_id'}).delete();
             assert.equal(delete_msg.deleted, 1);
