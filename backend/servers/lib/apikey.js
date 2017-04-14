@@ -11,7 +11,6 @@ module.exports = function(users) {
     let whiteList = {
         "/login": true,
         "/accounts": true,
-        "/templates": true,
         "/users/validate/": true,
         "/users/rvalidate/": true
     };
