@@ -1,8 +1,8 @@
 <div layout="row" flex="100">
     <div layout="column" flex="25" layout-margin>
         <div layout="row">
-            <md-button class="md-primary">done</md-button>
-            <md-button class="md-warn">cancel</md-button>
+            <md-button class="md-primary" ng-click="$ctrl.done()">done</md-button>
+            <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
         </div>
         <mc-template-builder-elements ng-if="$ctrl.currentTab === 1 || $ctrl.currentTab === 2"
                                       elements="$ctrl.whichElements" xflex="25" xlayout-margin>

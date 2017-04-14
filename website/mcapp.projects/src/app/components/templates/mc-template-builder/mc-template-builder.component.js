@@ -1,8 +1,15 @@
 class MCTemplateBuilderComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(templatesAPI, toast) {
+        this.templatesAPI = templatesAPI;
+        this.toast = toast;
+
         this.whichElements = 'measurements';
-        this.template = {
+        this.template = MCTemplateBuilderComponentController.emptyTemplate();
+    }
+
+    static emptyTemplate() {
+        return {
             name: '',
             process_type: 'create',
             template_description: '',
@@ -14,6 +21,17 @@ class MCTemplateBuilderComponentController {
             }],
             measurements: []
         };
+    }
+
+    done() {
+        this.templatesAPI.createTemplate(this.template).then(
+            () => null,
+            () => this.toast.error('Unable to create template')
+        );
+    }
+
+    cancel() {
+        this.template = MCTemplateBuilderComponentController.emptyTemplate();
     }
 }
 
