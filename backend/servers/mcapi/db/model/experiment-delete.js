@@ -12,9 +12,6 @@ function* deleteExperiment(projectId, experimentId, options) {
     let deleteProcesses = !!(options && options.deleteProcesses);
     let dryRun = !!(options && options.dryRun);
 
-    console.log("deleteProcesses: ", deleteProcesses);
-    console.log("dryRun: ", dryRun);
-
     let hasPublishedDatasets = yield testForPublishedDataasets(experimentId);
     if (hasPublishedDatasets) {
         return {error: "Can not delete an experiment with published datasets"}

@@ -53,8 +53,6 @@ before(function*() {
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
-
-    console.log("Before function of dexeriments delete");
 });
 
 describe('Feature - Experiments: ', function () {
@@ -313,9 +311,6 @@ function* setup() {
     experimentTask = yield testHelpers.setUpAdditionalExperimentTaskData(experiment.id, userId);
 
     yield setUpFakeNotesAndReviews();
-
-    console.log("Project Name: ", project.name);
-    console.log("Experiment id: ", experiment.id);
 }
 
 function checkResults(results) {
