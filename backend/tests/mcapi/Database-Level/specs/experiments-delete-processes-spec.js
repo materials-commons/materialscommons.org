@@ -162,9 +162,9 @@ describe('Feature - Experiments: ', function() {
 
             // ... but, in rare cases, there my be samples in the experiment that are in no process
 
-            let sampleList = yield r.db('materialscommons').table('experiment2sample')
+            let sampleList = yield r.table('experiment2sample')
                 .getAll(experiment_id,{index:'experiment_id'})
-                .eqJoin('sample_id',r.db('materialscommons').table('samples')).zip()
+                .eqJoin('sample_id',r.table('samples')).zip()
                 .getField('sample_id');
 
             rv = yield r.table('samples').getAll(r.args([...sampleList])).delete();
@@ -173,7 +173,7 @@ describe('Feature - Experiments: ', function() {
 
             // and the sample entries for the experiment are left in experiment2sample
 
-            rv = yield r.db('materialscommons').table('experiment2sample')
+            rv = yield r.table('experiment2sample')
                 .getAll(experiment_id,{index:'experiment_id'}).delete();
 
             assert.equal(rv.deleted, 8);

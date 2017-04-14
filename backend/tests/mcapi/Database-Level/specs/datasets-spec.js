@@ -33,7 +33,7 @@ let user1Id = random_user();
 before(function*() {
     let user = yield dbModelUsers.getUser(user1Id);
     if (!user) {
-        let results = yield r.db('materialscommons').table('users').insert({
+        let results = yield r.table('users').insert({
             admin: false,
             affiliation: "",
             avatar: "",
@@ -63,7 +63,7 @@ describe('Feature - Datasets: ', function() {
 after(function*() {
     let user = yield dbModelUsers.getUser(user1Id);
     if (user) {
-        let results = yield r.db('materialscommons').table('users').get(user1Id).delete();
+        let results = yield r.table('users').get(user1Id).delete();
         assert.equal(results.deleted,1, "The User was correctly deleted");
     } else {
         assert.isNull(user,"The user still exists at end");
