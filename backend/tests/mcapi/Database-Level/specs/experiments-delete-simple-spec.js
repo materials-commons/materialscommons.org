@@ -23,10 +23,6 @@ const processes = require(backend_base + '/processes');
 const experimentDatasets = require(backend_base + '/experiment-datasets');
 const samples = require(backend_base + '/samples');
 
-const helper = require(build_project_base + '/build-demo-project-helper');
-const demoProjectConf = require(build_project_base + '/build-demo-project-conf');
-const buildDemoProject = require(build_project_base + '/build-demo-project');
-
 const testHelpers = require('./test-helpers');
 
 const experimentDelete = require(backend_base + '/experiment-delete');
@@ -48,10 +44,12 @@ let fileList = null;
 let datasetList = null;
 let experimentNote = null;
 let experimentTask = null;
+let reviews_count = 0;
+let notes_count = 0;
 
 beforeEach(function*() {
 
-    this.timeout(8000); // this test suite can take up to 8 seconds
+    this.timeout(8000); // tests in this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
@@ -78,6 +76,8 @@ beforeEach(function*() {
 
     experimentNote = yield testHelpers.setUpFakeExperimentNoteData(experiment.id, userId);
     experimentTask = yield testHelpers.setUpAdditionalExperimentTaskData(experiment.id, userId);
+
+    yield setUpFakeNotesAndReviews();
 
 });
 
@@ -128,6 +128,10 @@ describe('Feature - Experiments: ', function () {
 
             yield testExperimentTasks({assertExists: true});
 
+            yield testFileLinks({assertExists: true});
+
+            yield testNotesAndReviews({assertExists: true});
+
             // delete experiment
             let results = yield experimentDelete
                 .deleteExperiment(project_id, experiment_id, {deleteProcesses: true, dryRun: false});
@@ -147,6 +151,10 @@ describe('Feature - Experiments: ', function () {
             assert.equal(results.val.experiment_tasks.length, 1);
             assert.isOk(results.val.experiment_task_processes);
             assert.equal(results.val.experiment_task_processes.length, 1);
+            assert.isOk(results.val.reviews);
+            assert.equal(results.val.reviews.length, 1);
+            assert.isOk(results.val.notes);
+            assert.equal(results.val.notes.length, 1);
 
             yield testDatasets({assertExists: false});
 
@@ -157,6 +165,10 @@ describe('Feature - Experiments: ', function () {
             yield testExperimentNotes({assertExists: false});
 
             yield testExperimentTasks({assertExists: false});
+
+            yield testFileLinks({assertExists: false});
+
+            yield testNotesAndReviews({assertExists: false});
 
         });
     });
@@ -289,5 +301,168 @@ function* testExperimentTasks(options) {
         .getAll(taskId);
     assert.isOk(idList);
     assert.equal(idList.length, count);
+
+}
+
+function* testFileLinks(options){
+    let count = 0;
+    if (options && options.assertExists) {
+        count = 16;
+    }
+
+    let idList = [];
+    for (let i = 0; i < fileList.length; i++) {
+        idList.push(fileList[i].id);
+    }
+
+    let linkList = yield r.table('experiment2datafile').getAll(r.args(idList),{index: 'datafile_id'});
+
+    assert.isOk(linkList);
+    assert.equal(linkList.length, count);
+
+}
+
+function* testNotesAndReviews(options){
+
+    let counts = [0, 0, 0, 0];
+    if (options && options.assertExists) {
+        counts = [1, 1, notes_count, reviews_count];
+    }
+
+    let countOfNotes = counts[0];
+    let countOfReviews = counts[1];
+    let countOfNoteItems = counts[2];
+    let countOfReviewItems = counts[3];
+
+    let id_list = [];
+
+    for (let i = 0; i < processList.length; i++) {
+        id_list.push(processList[i].id);
+    }
+
+    for (let i = 0; i < sampleList.length; i++) {
+        id_list.push(sampleList[i].id);
+    }
+
+    for (let i = 0; i < fileList.length; i++) {
+        id_list.push(fileList[i].id);
+    }
+
+    let entities = yield r.table('note2item').getAll(r.args(id_list),{index: 'item_id'});
+
+    assert.equal(entities.length, countOfNoteItems);
+
+    let noteIdSet = new Set();
+    for (let i = 0; i < entities.length; i++){
+        noteIdSet = noteIdSet.add(entities[i].note_id);
+    }
+
+    assert.equal(noteIdSet.size, countOfNotes);
+
+    entities = yield r.table('review2item').getAll(r.args(id_list),{index: 'item_id'});
+
+    assert.equal(entities.length, countOfReviewItems);
+
+    let reviewIdSet = new Set();
+    for (let i = 0; i < entities.length; i++){
+        reviewIdSet = reviewIdSet.add(entities[i].review_id);
+    }
+
+    assert.equal(reviewIdSet.size, countOfReviews);
+
+}
+
+function* setUpFakeNotesAndReviews() {
+    // set up fake note data
+    let fake_note_entry = {
+        title: "Fake note/review entry for testing",
+        note: "Test of fake node/review",
+        owner: project.owner,
+        projectId: project.id,
+    };
+
+    let insert_msg = yield r.table('notes').insert(fake_note_entry);
+    let noteId = insert_msg.generated_keys[0];
+
+    // set up fake review data
+    let fake_review_entry = {
+        title: "Fake note/review entry for testing",
+        review: "Test of fake node/review",
+        owner: project.owner,
+        projectId: project.id,
+    };
+
+    insert_msg = yield r.table('reviews').insert(fake_review_entry);
+    let reviewId = insert_msg.generated_keys[0];
+
+    let entities = [];
+    for (let i = 0; i < processList.length; i++) {
+        let note2item = {
+            item_id: processList[i].id,
+            item_type: 'process',
+            note_id: noteId
+        };
+        entities.push(note2item);
+    }
+
+    for (let i = 0; i < sampleList.length; i++) {
+        let note2item = {
+            item_id: sampleList[i].id,
+            item_type: 'sample',
+            note_id: noteId
+        };
+        entities.push(note2item);
+    }
+
+    for (let i = 0; i < fileList.length; i++) {
+        let note2item = {
+            item_id: fileList[i].id,
+            item_type: 'files',
+            note_id: noteId
+        };
+        entities.push(note2item);
+    }
+
+    insert_msg = yield r.table('note2item').insert(entities);
+
+    assert.equal(insert_msg.generated_keys.length,entities.length);
+
+    notes_count = entities.length;
+
+    entities = [];
+    for (let i = 0; i < processList.length; i++) {
+        let review2item = {
+            item_id: processList[i].id,
+            item_type: 'process',
+            review_id: reviewId
+        };
+        entities.push(review2item);
+    }
+
+    for (let i = 0; i < sampleList.length; i++) {
+        let review2item = {
+            item_id: sampleList[i].id,
+            item_type: 'sample',
+            review_id: reviewId
+        };
+        entities.push(review2item);
+    }
+
+    for (let i = 0; i < fileList.length; i++) {
+        let review2item = {
+            item_id: fileList[i].id,
+            item_type: 'files',
+            review_id: reviewId
+        };
+        entities.push(review2item);
+    }
+
+    insert_msg = yield r.table('review2item').insert(entities);
+
+    assert.equal(insert_msg.generated_keys.length,entities.length);
+
+    reviews_count = entities.length;
+
+    yield testNotesAndReviews({assertExists: true});
 
 }

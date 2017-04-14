@@ -132,6 +132,39 @@ function* deleteExperiment(projectId, experimentId, options) {
     delete_msg = yield r.table('experiment2experimenttask')
         .getAll(experimentId, {index: 'experiment_id'}).delete();
 
+    let fileLinkIds = yield r.table('experiment2datafile')
+        .getAll(experimentId,{index:'experiment_id'}).getField('datafile_id');
+
+    delete_msg = yield r.table('experiment2datafile')
+        .getAll(experimentId, {index: 'experiment_id'}).delete();
+
+    idList = fileLinkIds;
+    idList = idList.concat(overallResults.processes);
+    idList = idList.concat(overallResults.samples);
+
+    let noteIdSet = new Set();
+    let noteItems = yield r.table('note2item').getAll(r.args(idList),{index:'item_id'});
+    for (let i = 0; i < noteItems.length; i++) {
+        let noteId = noteItems[i].note_id;
+        noteIdSet.add(noteId);
+    }
+    let noteIdList = [...noteIdSet];
+    yield r.table('note2item').getAll(r.args(noteIdList),{index: 'note_id'}).delete();
+    yield r.table('notes').getAll(r.args(noteIdList)).delete();
+    overallResults['notes'] = noteIdList;
+
+    let reviewIdSet = new Set();
+    let reviewItems = yield r.table('review2item').getAll(r.args(idList),{index:'item_id'});
+    for (let i = 0; i < reviewItems.length; i++) {
+        let reviewId = reviewItems[i].review_id;
+        reviewIdSet.add(reviewId);
+    }
+    let reviewIdList = [...reviewIdSet];
+    yield r.table('review2item').getAll(r.args(reviewIdList),{index: 'review_id'}).delete();
+    yield r.table('reviews').getAll(r.args(reviewIdList)).delete();
+    overallResults['reviews'] = reviewIdList;
+
+
     return {val: overallResults};
 }
 
