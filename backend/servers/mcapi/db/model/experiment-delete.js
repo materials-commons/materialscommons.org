@@ -15,8 +15,52 @@ function* deleteExperiment(projectId, experimentId, options) {
     console.log("deleteProcesses: ", deleteProcesses);
     console.log("dryRun: ", dryRun);
 
+    let results = yield experimentDatasets.getDatasetsForExperiment(experimentId);
+    let datasetList = results.val;
+
+    let hasPublishedDatasets = yield testForPublishedDataasets(experimentId);
+    if (hasPublishedDatasets) {
+        return {error: "Can not delete an experiment with published datasets"}
+    }
+
     let overallResults = {};
 
+    overallResults['datasets'] = yield deleteDataSets(experimentId, dryRun);
+
+    if (deleteProcesses) {
+        let partialResults = yield deleteProcessesSamplesSetupAndMeasure(projectId, experimentId, dryRun);
+        overallResults['best_measure_history'] = partialResults.best_measure_history;
+        overallResults['processes'] = partialResults.processes;
+        overallResults['samples'] = partialResults.samples;
+    }
+
+    overallResults['experiment_notes'] = yield deleteExperimentNotes(experimentId, dryRun);
+
+    let partialResults = yield deleteExperimentTasks(experimentId, dryRun);
+    overallResults['experiment_task_processes'] = partialResults.experiment_task_processes;
+    overallResults['experiment_tasks'] = partialResults.experiment_tasks;
+
+    let fileLinkIds = yield deleteExperimentFileLinks(experimentId, dryRun);
+
+    let allPosibleItems = fileLinkIds;
+    allPosibleItems = allPosibleItems.concat(overallResults.processes);
+    allPosibleItems = allPosibleItems.concat(overallResults.samples);
+
+    overallResults['notes'] = yield deleteNotes(allPosibleItems, dryRun);
+    overallResults['reviews'] = yield deleteReviews(allPosibleItems, dryRun);
+
+    yield r.table('experiments').get(experimentId).delete();
+
+    overallResults['experiments'] = [experimentId];
+
+    return {val: overallResults};
+}
+
+module.exports = {
+    deleteExperiment
+};
+
+function* testForPublishedDataasets(experimentId) {
     let results = yield experimentDatasets.getDatasetsForExperiment(experimentId);
     let datasetList = results.val;
 
@@ -27,9 +71,12 @@ function* deleteExperiment(projectId, experimentId, options) {
             hasPublishedDatasets = true;
         }
     }
-    if (hasPublishedDatasets) {
-        return {error: "Can not delete an experiment with published datasets"}
-    }
+    return hasPublishedDatasets;
+}
+
+function* deleteDataSets(experimentId, dryRun) {
+    let results = yield experimentDatasets.getDatasetsForExperiment(experimentId);
+    let datasetList = results.val;
 
     let idList = [];
     for (let i = 0; i < datasetList.length; i++) {
@@ -39,9 +86,13 @@ function* deleteExperiment(projectId, experimentId, options) {
             idList.push(dataset.id);
         }
     }
-    overallResults['datasets'] = idList;
+    return idList;
+}
 
-    idList = yield r.table('experiment2sample')
+function* deleteProcessesSamplesSetupAndMeasure(projectId, experimentId, dryRun) {
+    let partialResults = {};
+
+    let idList = yield r.table('experiment2sample')
         .getAll(experimentId, {index: 'experiment_id'})
         .eqJoin('sample_id', r.table('samples')).zip()
         .eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'}).zip()
@@ -53,13 +104,13 @@ function* deleteExperiment(projectId, experimentId, options) {
     let delete_msg = yield r.table('best_measure_history')
         .getAll(r.args([...idList]), {index: 'property_id'}).delete();
     if (delete_msg.deleted === idList.length) {
-        overallResults['best_measure_history'] = idList;
+        partialResults['best_measure_history'] = idList;
     } // else ?
 
     let sampleIdSet = new Set();
     idList = [];
     let simple = true;
-    results = yield experiments.getProcessesForExperiment(experimentId, simple);
+    let results = yield experiments.getProcessesForExperiment(experimentId, simple);
     let processList = results.val;
 
     for (let i = 0; i < processList.length; i++) {
@@ -76,11 +127,11 @@ function* deleteExperiment(projectId, experimentId, options) {
         yield processes.deleteProcess(projectId, process.id);
     }
 
-    overallResults['processes'] = idList;
+    partialResults['processes'] = idList;
 
-    let sampleList = yield r.db('materialscommons').table('experiment2sample')
+    let sampleList = yield r.table('experiment2sample')
         .getAll(experimentId, {index: 'experiment_id'})
-        .eqJoin('sample_id', r.db('materialscommons').table('samples')).zip()
+        .eqJoin('sample_id', r.table('samples')).zip()
         .getField('sample_id');
 
     results = yield r.table('samples').getAll(r.args([...sampleList])).delete();
@@ -91,9 +142,14 @@ function* deleteExperiment(projectId, experimentId, options) {
         }
     } // else?
 
-    overallResults['samples'] = [...sampleIdSet];
+    partialResults['samples'] = [...sampleIdSet];
 
-    idList = yield r.table('experiment2experimentnote')
+    return partialResults;
+}
+
+function* deleteExperimentNotes(experimentId, dryRun) {
+    let ret = [];
+    let idList = yield r.table('experiment2experimentnote')
         .getAll(experimentId, {index: 'experiment_id'})
         .eqJoin('experiment_note_id', r.table('experimentnotes'))
         .zip().getField('experiment_note_id');
@@ -104,21 +160,27 @@ function* deleteExperiment(projectId, experimentId, options) {
         .getAll(experimentId, {index: 'experiment_id'}).delete();
 
     if ((delete_msg1.deleted === idList.length) && (delete_msg2.deleted === idList.length)) {
-        overallResults['experiment_notes'] = idList;
-    }
+        ret = idList;
+    } // else?
+
+    return ret;
+}
+
+function* deleteExperimentTasks(experimentId, dryRun) {
+    let partialResults = {};
 
     let taskidList = yield r.table('experiment2experimenttask')
         .getAll(experimentId, {index: 'experiment_id'})
         .eqJoin('experiment_task_id', r.table('experimenttasks'))
         .zip().getField('experiment_task_id');
 
-    idList = yield r.table('experimenttask2process')
+    let idList = yield r.table('experimenttask2process')
         .getAll(r.args([...taskidList]), {index: 'experiment_task_id'})
         .eqJoin('process_id', r.table('processes'))
         .zip().getField('process_id');
-    delete_msg = yield r.table('processes').getAll(r.args([...idList])).delete();
+    let delete_msg = yield r.table('processes').getAll(r.args([...idList])).delete();
     if (delete_msg.deleted === idList.length) {
-        overallResults['experiment_task_processes'] = idList;
+        partialResults['experiment_task_processes'] = idList;
     }
 
     yield r.table('experimenttask2process')
@@ -126,51 +188,53 @@ function* deleteExperiment(projectId, experimentId, options) {
 
     delete_msg = yield r.table('experimenttasks').getAll(r.args([...taskidList])).delete();
     if (delete_msg.deleted === taskidList.length) {
-        overallResults['experiment_tasks'] = taskidList;
+        partialResults['experiment_tasks'] = taskidList;
     }
 
     delete_msg = yield r.table('experiment2experimenttask')
         .getAll(experimentId, {index: 'experiment_id'}).delete();
 
-    let fileLinkIds = yield r.table('experiment2datafile')
-        .getAll(experimentId,{index:'experiment_id'}).getField('datafile_id');
+    return partialResults;
+}
 
-    delete_msg = yield r.table('experiment2datafile')
+function* deleteExperimentFileLinks(experimentId, dryRun) {
+    let fileLinkIds = yield r.table('experiment2datafile')
+        .getAll(experimentId, {index: 'experiment_id'}).getField('datafile_id');
+
+    let delete_msg = yield r.table('experiment2datafile')
         .getAll(experimentId, {index: 'experiment_id'}).delete();
 
-    idList = fileLinkIds;
-    idList = idList.concat(overallResults.processes);
-    idList = idList.concat(overallResults.samples);
+    return fileLinkIds;
+}
 
+function* deleteNotes(allPosibleItems, dryRun) {
     let noteIdSet = new Set();
-    let noteItems = yield r.table('note2item').getAll(r.args(idList),{index:'item_id'});
+
+    let noteItems = yield r.table('note2item').getAll(r.args(allPosibleItems), {index: 'item_id'});
     for (let i = 0; i < noteItems.length; i++) {
         let noteId = noteItems[i].note_id;
         noteIdSet.add(noteId);
     }
-    let noteIdList = [...noteIdSet];
-    yield r.table('note2item').getAll(r.args(noteIdList),{index: 'note_id'}).delete();
-    yield r.table('notes').getAll(r.args(noteIdList)).delete();
-    overallResults['notes'] = noteIdList;
 
+    let noteIdList = [...noteIdSet];
+    yield r.table('note2item').getAll(r.args(noteIdList), {index: 'note_id'}).delete();
+    yield r.table('notes').getAll(r.args(noteIdList)).delete();
+
+    return noteIdList;
+}
+
+function* deleteReviews(allPosibleItems, dryRun) {
     let reviewIdSet = new Set();
-    let reviewItems = yield r.table('review2item').getAll(r.args(idList),{index:'item_id'});
+
+    let reviewItems = yield r.table('review2item').getAll(r.args(allPosibleItems), {index: 'item_id'});
     for (let i = 0; i < reviewItems.length; i++) {
         let reviewId = reviewItems[i].review_id;
         reviewIdSet.add(reviewId);
     }
+
     let reviewIdList = [...reviewIdSet];
-    yield r.table('review2item').getAll(r.args(reviewIdList),{index: 'review_id'}).delete();
+    yield r.table('review2item').getAll(r.args(reviewIdList), {index: 'review_id'}).delete();
     yield r.table('reviews').getAll(r.args(reviewIdList)).delete();
-    overallResults['reviews'] = reviewIdList;
 
-    yield r.table('experiments').get(experimentId).delete();
-
-    overallResults['experiments'] = [experimentId];
-
-    return {val: overallResults};
+    return reviewIdList;
 }
-
-module.exports = {
-    deleteExperiment
-};

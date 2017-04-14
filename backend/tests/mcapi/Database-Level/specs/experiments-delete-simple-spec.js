@@ -114,7 +114,7 @@ describe('Feature - Experiments: ', function () {
             yield testDatasets({assertExists: true});
 
         });
-        it('deletes all datasets, processes, samples, tasks, and links to files', function*() {
+        it('deletes experiment and all its parts', function*() {
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
