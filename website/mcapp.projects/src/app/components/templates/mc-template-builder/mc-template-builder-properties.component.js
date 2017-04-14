@@ -14,7 +14,7 @@ class MCTemplateBuilderPropertiesComponentController {
     }
 
     checkIfEmpty(property) {
-        property.hasUnitGroup = units.length;
+        property.hasUnitGroup = property.units.length;
     }
 }
 
