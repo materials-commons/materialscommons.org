@@ -193,7 +193,7 @@ function* createOrFindInputSamplesForProcess(project, experiment, process, sampl
             sampleList.forEach((sample) => {
                 let found = false;
                 if (resultsingSamples.length > 0) {
-                    resultsingSamples.each((foundSample) => {
+                    resultsingSamples.forEach((foundSample) => {
                         if (foundSample.id == sample.id) {
                             found = true;
                         }
