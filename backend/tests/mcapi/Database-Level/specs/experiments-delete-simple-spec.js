@@ -155,6 +155,47 @@ describe('Feature - Experiments: ', function () {
             yield testNotesAndReviews({assertExists: false});
 
         });
+        it('with deleteProcess false - deletes experiment, but not process, samples, etc.', function*() {
+            let project_id = project.id;
+            assert.isOk(project_id);
+            let experiment_id = experiment.id;
+            assert.isOk(experiment_id);
+
+            yield testDatasets({assertExists: true});
+
+            yield testBestMearureHistroy({assertExists: true});
+
+            yield testProcessesSamples({assertExists: true});
+
+            yield testExperimentNotes({assertExists: true});
+
+            yield testExperimentTasks({assertExists: true});
+
+            yield testFileLinks({assertExists: true});
+
+            yield testNotesAndReviews({assertExists: true});
+
+            // delete experiment
+            let results = yield experimentDelete
+                .deleteExperiment(project_id, experiment_id, {deleteProcesses: false, dryRun: false});
+
+            checkResultsForNotDeleteProcess(results);
+
+            yield testDatasets({assertExists: false});
+
+            yield testBestMearureHistroy({assertExists: true});
+
+            yield testProcessesSamples({assertExists: true});
+
+            yield testExperimentNotes({assertExists: false});
+
+            yield testExperimentTasks({assertExists: false});
+
+            yield testFileLinks({assertExists: false});
+
+            yield testNotesAndReviews({assertExists: false});
+
+        });
     });
 });
 
@@ -169,6 +210,26 @@ function checkResults(results) {
     assert.equal(results.val.processes.length, 5);
     assert.isOk(results.val.samples);
     assert.equal(results.val.samples.length, 8);
+    assert.isOk(results.val.experiment_notes);
+    assert.equal(results.val.experiment_notes.length, 1);
+    assert.isOk(results.val.experiment_tasks);
+    assert.equal(results.val.experiment_tasks.length, 1);
+    assert.isOk(results.val.experiment_task_processes);
+    assert.equal(results.val.experiment_task_processes.length, 1);
+    assert.isOk(results.val.reviews);
+    assert.equal(results.val.reviews.length, 1);
+    assert.isOk(results.val.notes);
+    assert.equal(results.val.notes.length, 1);
+    assert.isOk(results.val.experiments);
+    assert.equal(results.val.experiments.length, 1);
+    assert.equal(results.val.experiments[0],experiment.id);
+}
+
+function checkResultsForNotDeleteProcess(results){
+    assert.isOk(results);
+    assert.isOk(results.val);
+    assert.isOk(results.val.datasets);
+    assert.equal(results.val.datasets.length, 2);
     assert.isOk(results.val.experiment_notes);
     assert.equal(results.val.experiment_notes.length, 1);
     assert.isOk(results.val.experiment_tasks);
