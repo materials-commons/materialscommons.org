@@ -35,6 +35,7 @@ let random_name = function () {
 };
 
 let userId = "test@test.mc";
+let user = null;
 
 let project = null;
 let experiment = null;
@@ -47,47 +48,23 @@ let experimentTask = null;
 let reviews_count = 0;
 let notes_count = 0;
 
-beforeEach(function*() {
+before(function*() {
 
-    this.timeout(8000); // tests in this test suite can take up to 8 seconds
-
-    let user = yield dbModelUsers.getUser(userId);
+    user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
 
-    let valOrError = yield testHelpers.createDemoTestProject(user);
-    assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
-    let results = valOrError.val;
-    project = results.project;
-    experiment = results.experiment;
-    processList = results.processList;
-    sampleList = results.sampleList;
-    fileList = results.fileList;
-
-    assert.equal(project.otype, "project");
-    assert.equal(project.owner, userId);
-
-    datasetList = yield testHelpers.createDatasetList(experiment, processList, userId);
-
-    // Note: create fake sample that is not part of a process for testing
-    results = yield r.table('samples').insert({'name': 'fake sample', 'otype': 'sample', 'owner': 'noone'});
-    let key = results.generated_keys[0];
-    yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment.id});
-    yield r.table('project2sample').insert({sample_id: key, project_id: project.id});
-
-    experimentNote = yield testHelpers.setUpFakeExperimentNoteData(experiment.id, userId);
-    experimentTask = yield testHelpers.setUpAdditionalExperimentTaskData(experiment.id, userId);
-
-    yield setUpFakeNotesAndReviews();
-
-    console.log("Project Name: ", project.name);
-    console.log("Experiment id: ", experiment.id);
-
+    console.log("Before function of dexeriments delete");
 });
 
 describe('Feature - Experiments: ', function () {
     describe('Delete Experiment: ', function () {
         it('does not delete an experiment with a published dataset', function*() {
+
+            this.timeout(8000); // test take up to 8 seconds
+
+            yield setup();
+
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -117,6 +94,11 @@ describe('Feature - Experiments: ', function () {
 
         });
         it('deletes experiment and all its parts', function*() {
+
+            this.timeout(8000); // test take up to 8 seconds
+
+            yield setup();
+
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -160,6 +142,11 @@ describe('Feature - Experiments: ', function () {
 
         });
         it('with deleteProcess false - deletes experiment, but not process, samples, etc.', function*() {
+
+            this.timeout(8000); // test take up to 8 seconds
+
+            yield setup();
+
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -203,6 +190,11 @@ describe('Feature - Experiments: ', function () {
 
         });
         it('with dry run true, delete process true - shows all to be deleted', function*() {
+
+            this.timeout(8000); // test take up to 8 seconds
+
+            yield setup();
+
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -246,6 +238,11 @@ describe('Feature - Experiments: ', function () {
 
         });
         it('with dry run true, delete process false - shows some to be deleted', function*() {
+
+            this.timeout(8000); // test take up to 8 seconds
+
+            yield setup();
+
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -290,6 +287,36 @@ describe('Feature - Experiments: ', function () {
         });
     });
 });
+
+function* setup() {
+    let valOrError = yield testHelpers.createDemoTestProject(user);
+    assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
+    let results = valOrError.val;
+    project = results.project;
+    experiment = results.experiment;
+    processList = results.processList;
+    sampleList = results.sampleList;
+    fileList = results.fileList;
+
+    assert.equal(project.otype, "project");
+    assert.equal(project.owner, userId);
+
+    datasetList = yield testHelpers.createDatasetList(experiment, processList, userId);
+
+    // Note: create fake sample that is not part of a process for testing
+    results = yield r.table('samples').insert({'name': 'fake sample', 'otype': 'sample', 'owner': 'noone'});
+    let key = results.generated_keys[0];
+    yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment.id});
+    yield r.table('project2sample').insert({sample_id: key, project_id: project.id});
+
+    experimentNote = yield testHelpers.setUpFakeExperimentNoteData(experiment.id, userId);
+    experimentTask = yield testHelpers.setUpAdditionalExperimentTaskData(experiment.id, userId);
+
+    yield setUpFakeNotesAndReviews();
+
+    console.log("Project Name: ", project.name);
+    console.log("Experiment id: ", experiment.id);
+}
 
 function checkResults(results) {
     assert.isOk(results);
