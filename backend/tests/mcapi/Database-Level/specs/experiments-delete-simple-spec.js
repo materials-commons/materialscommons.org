@@ -73,6 +73,7 @@ beforeEach(function*() {
     results = yield r.table('samples').insert({'name': 'fake sample', 'otype': 'sample', 'owner': 'noone'});
     let key = results.generated_keys[0];
     yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment.id});
+    yield r.table('project2sample').insert({sample_id: key, project_id: project.id});
 
     experimentNote = yield testHelpers.setUpFakeExperimentNoteData(experiment.id, userId);
     experimentTask = yield testHelpers.setUpAdditionalExperimentTaskData(experiment.id, userId);
@@ -80,11 +81,12 @@ beforeEach(function*() {
     yield setUpFakeNotesAndReviews();
 
     console.log("Project Name: ", project.name);
+    console.log("Experiment id: ", experiment.id);
 
 });
 
 describe('Feature - Experiments: ', function () {
-    describe('Delete Experiment - simple case: ', function () {
+    describe('Delete Experiment: ', function () {
         it('does not delete an experiment with a published dataset', function*() {
             let project_id = project.id;
             assert.isOk(project_id);
@@ -140,6 +142,8 @@ describe('Feature - Experiments: ', function () {
 
             checkResults(results);
 
+            yield checkLinks(experiment_id);
+
             yield testDatasets({assertExists: false});
 
             yield testBestMearureHistroy({assertExists: false});
@@ -180,6 +184,8 @@ describe('Feature - Experiments: ', function () {
                 .deleteExperiment(project_id, experiment_id, {deleteProcesses: false, dryRun: false});
 
             checkResultsForNotDeleteProcess(results);
+
+            yield checkLinks(experiment_id);
 
             yield testDatasets({assertExists: false});
 
@@ -230,6 +236,12 @@ function checkResultsForNotDeleteProcess(results){
     assert.isOk(results.val);
     assert.isOk(results.val.datasets);
     assert.equal(results.val.datasets.length, 2);
+    assert.isOk(results.val.best_measure_history);
+    assert.equal(results.val.best_measure_history.length, 0);
+    assert.isOk(results.val.processes);
+    assert.equal(results.val.processes.length, 0);
+    assert.isOk(results.val.samples);
+    assert.equal(results.val.samples.length, 0);
     assert.isOk(results.val.experiment_notes);
     assert.equal(results.val.experiment_notes.length, 1);
     assert.isOk(results.val.experiment_tasks);
@@ -243,6 +255,27 @@ function checkResultsForNotDeleteProcess(results){
     assert.isOk(results.val.experiments);
     assert.equal(results.val.experiments.length, 1);
     assert.equal(results.val.experiments[0],experiment.id);
+}
+
+function* checkLinks(experiment_id){
+    let tables = [
+        'experiment2datafile',
+        'experiment2dataset',
+        'experiment2experimentnote',
+        'experiment2experimenttask',
+        'experiment2process',
+        'experiment2sample',
+        'project2experiment'
+    ];
+
+    for (let i = 0; i < tables.length; i++) {
+        let table = tables[i];
+        let list = yield r.table(table).getAll(experiment_id,{index: 'experiment_id'});
+        let l = list.length;
+        console.log(table, l);
+        let message = `expected no links in ${table}, but found ${l} for experment id = ${experiment_id}`
+        assert.equal(l,0,message);
+    }
 }
 
 function* testDatasets(options) {
@@ -278,8 +311,8 @@ function* testBestMearureHistroy(options) {
         count = 1;
     }
 
-    let idList = yield r.table('experiment2sample')
-        .getAll(experiment.id, {index: 'experiment_id'})
+    let idList = yield r.table('project2sample')
+        .getAll(project.id, {index: 'project_id'})
         .eqJoin('sample_id', r.table('samples')).zip()
         .eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'}).zip()
         .eqJoin('property_set_id', r.table('propertysets')).zip()
@@ -300,15 +333,14 @@ function* testProcessesSamples(options) {
         processCount = 5;
         sampleCount = 8;
     }
-    let sampleList = yield r.db('materialscommons').table('experiment2sample')
-        .getAll(experiment.id, {index: 'experiment_id'})
-        .eqJoin('sample_id', r.db('materialscommons').table('samples')).zip()
+    let sampleList = yield r.table('project2sample')
+        .getAll(project.id, {index: 'project_id'})
+        .eqJoin('sample_id', r.table('samples')).zip()
         .getField('sample_id');
     assert.isOk(sampleList);
     assert.equal(sampleList.length, sampleCount);
 
-    let simple = true;
-    let results = yield experiments.getProcessesForExperiment(experiment.id, simple);
+    let results = yield processes.getProjectProcesses(project.id);
     assert.isOk(results);
     assert.isOk(results.val);
     let procList = results.val;

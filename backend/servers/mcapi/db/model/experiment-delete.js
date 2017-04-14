@@ -32,8 +32,11 @@ function* deleteExperiment(projectId, experimentId, options) {
         overallResults['best_measure_history'] = partialResults.best_measure_history;
         overallResults['processes'] = partialResults.processes;
         overallResults['samples'] = partialResults.samples;
+    } else {
+        overallResults['best_measure_history'] = [];
+        overallResults['processes'] = [];
+        overallResults['samples'] = [];
     }
-
     overallResults['experiment_notes'] = yield deleteExperimentNotes(experimentId, dryRun);
 
     let partialResults = yield deleteExperimentTasks(experimentId, dryRun);
@@ -48,6 +51,8 @@ function* deleteExperiment(projectId, experimentId, options) {
 
     overallResults['notes'] = yield deleteNotes(allPosibleItems, dryRun);
     overallResults['reviews'] = yield deleteReviews(allPosibleItems, dryRun);
+
+    yield clearAllRemainingLinks(experimentId);
 
     yield r.table('experiments').get(experimentId).delete();
 
@@ -237,4 +242,22 @@ function* deleteReviews(allPosibleItems, dryRun) {
     yield r.table('reviews').getAll(r.args(reviewIdList)).delete();
 
     return reviewIdList;
+}
+
+function* clearAllRemainingLinks(experimentId) {
+    let tables = [
+        'experiment2datafile',
+        'experiment2dataset',
+        'experiment2experimentnote',
+        'experiment2experimenttask',
+        'experiment2process',
+        'experiment2sample',
+        'project2experiment'
+    ];
+
+    for (let i = 0; i < tables.length; i++) {
+        let table = tables[i];
+        let list = yield r.table(table)
+            .getAll(experimentId,{index: 'experiment_id'}).delete();
+    }
 }
