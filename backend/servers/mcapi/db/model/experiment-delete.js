@@ -1,7 +1,5 @@
 const r = require('../r');
-const dbExec = require('./run');
 const db = require('./db');
-const model = require('./model');
 
 const experimentDatasets = require('./experiment-datasets');
 const experiments = require('./experiments');
