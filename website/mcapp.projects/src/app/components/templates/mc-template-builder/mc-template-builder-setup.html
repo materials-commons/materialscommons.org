@@ -1,4 +1,7 @@
-<div>
+<mc-template-builder-properties properties="$ctrl.template.setup[0].properties"
+                                message="Drag and drop your setup properties into this space.">
+</mc-template-builder-properties>
+<div ng-if="false">
     <p class="md-subhead">Drag and drop your setup properties into this space.</p>
     <ul dnd-list="$ctrl.setup[0].properties" ng-class="{'dnd-list-empty': !$ctrl.setup[0].properties.length}">
         <li ng-repeat="p in $ctrl.setup[0].properties"

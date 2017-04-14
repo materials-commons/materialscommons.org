@@ -7,7 +7,11 @@ class MCTemplateBuilderComponentController {
             process_type: 'create',
             template_description: '',
             does_transform: false,
-            setup: [],
+            setup: [{
+                name: 'Instrument',
+                attribute: 'instrument',
+                properties: []
+            }],
             measurements: []
         };
     }

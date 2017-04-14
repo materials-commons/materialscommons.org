@@ -1,0 +1,35 @@
+<div>
+    <p class="md-subhead">{{$ctrl.message}}</p>
+    <ul dnd-list="$ctrl.properties" ng-class="{'dnd-list-empty': !$ctrl.properties.length}">
+        <li ng-repeat="p in $ctrl.properties"
+            dnd-moved="$ctrl.properties.splice($index, 1)"
+            dnd-effect-allowed="move"
+            dnd-draggable="p">
+            <div dnd-nodrag>
+                <div dnd-handle class="cursor-grab"><i class="fa fa-fw fa-bars"></i></div>
+                <div layout="column" class="margin-top-10">
+                    <div>
+                        <label>Type</label> {{p.otype}}
+                    </div>
+                    <div layout="row">
+                        <label>Name</label>
+                        <input ng-model="p.name" class="mc-input-as-line" flex="90">
+                    </div>
+                    <div layout="row">
+                        <md-button class="md-primary" ng-show="!p.units.length" ng-click="$ctrl.addUnits(p)">
+                            add units
+                        </md-button>
+                        <md-button class="md-warn" ng-show="p.units.length"
+                                   ng-click="p.units.length = 0">
+                            clear units
+                        </md-button>
+                    </div>
+                    <div ng-show="p.units.length || p.hasUnitGroup">
+                        <label>Units</label>
+                        <md-chips ng-model="p.units" md-on-remove="$ctrl.checkIfEmpty(p)"></md-chips>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

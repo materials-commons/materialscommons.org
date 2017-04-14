@@ -9,8 +9,9 @@
             <md-toolbar ng-clickx="unitType.expanded = !unitType.expanded; unitType.searchBy = ''">
                 <div class="md-toolbar-tools">
                     <h2 ng-class="unitType.cssClass">
-                        <md-checkbox ng-model="unitType.selected" ng-change="$ctrl.done(unitType)"></md-checkbox>
-                        <i class="fa fa-fw" ng-class="unitType.icon"></i>{{unitType.name}}
+                        <md-button class="md-warn" ng-click="$ctrl.done(unitType)" style="color: white">Select Units
+                        </md-button>
+                        {{unitType.name}}
                     </h2>
                     <span flex=""></span>
                     <span ng-click="unitType.expanded = !unitType.expanded"
