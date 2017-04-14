@@ -202,6 +202,92 @@ describe('Feature - Experiments: ', function () {
             yield testNotesAndReviews({assertExists: false});
 
         });
+        it('with dry run true, delete process true - shows all to be deleted', function*() {
+            let project_id = project.id;
+            assert.isOk(project_id);
+            let experiment_id = experiment.id;
+            assert.isOk(experiment_id);
+
+            yield testDatasets({assertExists: true});
+
+            yield testBestMearureHistroy({assertExists: true});
+
+            yield testProcessesSamples({assertExists: true});
+
+            yield testExperimentNotes({assertExists: true});
+
+            yield testExperimentTasks({assertExists: true});
+
+            yield testFileLinks({assertExists: true});
+
+            yield testNotesAndReviews({assertExists: true});
+
+            // delete experiment
+            let results = yield experimentDelete
+                .deleteExperiment(project_id, experiment_id, {deleteProcesses: true, dryRun: true});
+
+            checkResults(results);
+
+            yield checkLinks(experiment_id, {forDryRun: true});
+
+            yield testDatasets({assertExists: true});
+
+            yield testBestMearureHistroy({assertExists: true});
+
+            yield testProcessesSamples({assertExists: true});
+
+            yield testExperimentNotes({assertExists: true});
+
+            yield testExperimentTasks({assertExists: true});
+
+            yield testFileLinks({assertExists: true});
+
+            yield testNotesAndReviews({assertExists: true});
+
+        });
+        it('with dry run true, delete process false - shows some to be deleted', function*() {
+            let project_id = project.id;
+            assert.isOk(project_id);
+            let experiment_id = experiment.id;
+            assert.isOk(experiment_id);
+
+            yield testDatasets({assertExists: true});
+
+            yield testBestMearureHistroy({assertExists: true});
+
+            yield testProcessesSamples({assertExists: true});
+
+            yield testExperimentNotes({assertExists: true});
+
+            yield testExperimentTasks({assertExists: true});
+
+            yield testFileLinks({assertExists: true});
+
+            yield testNotesAndReviews({assertExists: true});
+
+            // delete experiment
+            let results = yield experimentDelete
+                .deleteExperiment(project_id, experiment_id, {deleteProcesses: false, dryRun: true});
+
+            checkResultsForNotDeleteProcess(results);
+
+            yield checkLinks(experiment_id, {forDryRun: true});
+
+            yield testDatasets({assertExists: true});
+
+            yield testBestMearureHistroy({assertExists: true});
+
+            yield testProcessesSamples({assertExists: true});
+
+            yield testExperimentNotes({assertExists: true});
+
+            yield testExperimentTasks({assertExists: true});
+
+            yield testFileLinks({assertExists: true});
+
+            yield testNotesAndReviews({assertExists: true});
+
+        });
     });
 });
 
@@ -257,7 +343,10 @@ function checkResultsForNotDeleteProcess(results){
     assert.equal(results.val.experiments[0],experiment.id);
 }
 
-function* checkLinks(experiment_id){
+function* checkLinks(experiment_id, options){
+
+    let forDryRun = options && options.forDryRun;
+
     let tables = [
         'experiment2datafile',
         'experiment2dataset',
@@ -268,13 +357,25 @@ function* checkLinks(experiment_id){
         'project2experiment'
     ];
 
-    for (let i = 0; i < tables.length; i++) {
-        let table = tables[i];
-        let list = yield r.table(table).getAll(experiment_id,{index: 'experiment_id'});
-        let l = list.length;
-        console.log(table, l);
-        let message = `expected no links in ${table}, but found ${l} for experment id = ${experiment_id}`
-        assert.equal(l,0,message);
+    if (forDryRun) {
+        let lengths = [16,2,1,1,5,8,1];
+        for (let i = 0; i < tables.length; i++) {
+            let table = tables[i];
+            let list = yield r.table(table).getAll(experiment_id, {index: 'experiment_id'});
+            let expectedLength = lengths[i];
+            let l = list.length;
+            let message = `missing links in ${table} for experment id = ${experiment_id}`
+            assert.equal(l,expectedLength,message);
+        }
+
+    } else {
+        for (let i = 0; i < tables.length; i++) {
+            let table = tables[i];
+            let list = yield r.table(table).getAll(experiment_id,{index: 'experiment_id'});
+            let l = list.length;
+            let message = `expected no links in ${table}, but found ${l} for experment id = ${experiment_id}`
+            assert.equal(l,0,message);
+        }
     }
 }
 
