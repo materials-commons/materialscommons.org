@@ -79,6 +79,8 @@ beforeEach(function*() {
 
     yield setUpFakeNotesAndReviews();
 
+    console.log("Project Name: ", project.name);
+
 });
 
 describe('Feature - Experiments: ', function () {
@@ -135,26 +137,8 @@ describe('Feature - Experiments: ', function () {
             // delete experiment
             let results = yield experimentDelete
                 .deleteExperiment(project_id, experiment_id, {deleteProcesses: true, dryRun: false});
-            assert.isOk(results);
-            assert.isOk(results.val);
-            assert.isOk(results.val.datasets);
-            assert.equal(results.val.datasets.length, 2);
-            assert.isOk(results.val.best_measure_history);
-            assert.equal(results.val.best_measure_history.length, 1);
-            assert.isOk(results.val.processes);
-            assert.equal(results.val.processes.length, 5);
-            assert.isOk(results.val.samples);
-            assert.equal(results.val.samples.length, 8);
-            assert.isOk(results.val.experiment_notes);
-            assert.equal(results.val.experiment_notes.length, 1);
-            assert.isOk(results.val.experiment_tasks);
-            assert.equal(results.val.experiment_tasks.length, 1);
-            assert.isOk(results.val.experiment_task_processes);
-            assert.equal(results.val.experiment_task_processes.length, 1);
-            assert.isOk(results.val.reviews);
-            assert.equal(results.val.reviews.length, 1);
-            assert.isOk(results.val.notes);
-            assert.equal(results.val.notes.length, 1);
+
+            checkResults(results);
 
             yield testDatasets({assertExists: false});
 
@@ -173,6 +157,32 @@ describe('Feature - Experiments: ', function () {
         });
     });
 });
+
+function checkResults(results) {
+    assert.isOk(results);
+    assert.isOk(results.val);
+    assert.isOk(results.val.datasets);
+    assert.equal(results.val.datasets.length, 2);
+    assert.isOk(results.val.best_measure_history);
+    assert.equal(results.val.best_measure_history.length, 1);
+    assert.isOk(results.val.processes);
+    assert.equal(results.val.processes.length, 5);
+    assert.isOk(results.val.samples);
+    assert.equal(results.val.samples.length, 8);
+    assert.isOk(results.val.experiment_notes);
+    assert.equal(results.val.experiment_notes.length, 1);
+    assert.isOk(results.val.experiment_tasks);
+    assert.equal(results.val.experiment_tasks.length, 1);
+    assert.isOk(results.val.experiment_task_processes);
+    assert.equal(results.val.experiment_task_processes.length, 1);
+    assert.isOk(results.val.reviews);
+    assert.equal(results.val.reviews.length, 1);
+    assert.isOk(results.val.notes);
+    assert.equal(results.val.notes.length, 1);
+    assert.isOk(results.val.experiments);
+    assert.equal(results.val.experiments.length, 1);
+    assert.equal(results.val.experiments[0],experiment.id);
+}
 
 function* testDatasets(options) {
 

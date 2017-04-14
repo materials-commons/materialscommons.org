@@ -164,6 +164,9 @@ function* deleteExperiment(projectId, experimentId, options) {
     yield r.table('reviews').getAll(r.args(reviewIdList)).delete();
     overallResults['reviews'] = reviewIdList;
 
+    yield r.table('experiments').get(experimentId).delete();
+
+    overallResults['experiments'] = [experimentId];
 
     return {val: overallResults};
 }
