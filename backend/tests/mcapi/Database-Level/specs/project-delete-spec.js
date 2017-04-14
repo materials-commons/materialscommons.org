@@ -17,17 +17,12 @@ const backend_base = mcapi_base + "/db/model";
 
 const dbModelUsers = require(backend_base + '/users');
 const projects = require(backend_base + '/projects');
+const experimentDatasets = require(backend_base + '/experiment-datasets');
+
 
 const testHelpers = require('./test-helpers');
 
-const experimentDelete = require(backend_base + '/experiment-delete');
-
-const base_project_name = "Test directory";
-
-let random_name = function () {
-    let number = Math.floor(Math.random() * 10000);
-    return base_project_name + number;
-};
+const projectDelete = require(backend_base + '/project-delete');
 
 let userId = "test@test.mc";
 let user = null;
@@ -50,9 +45,9 @@ before(function*() {
     assert.equal(userId, user.id);
 });
 
-describe('Feature - Experiments: ', function () {
-    describe('Delete Experiment: ', function () {
-        it('does not delete an project with any published datasets', function*() {
+describe('Feature - Projects: ', function () {
+    describe('Delete Project: ', function () {
+        it('does not delete a project with any published datasets', function*() {
 
             this.timeout(8000); // test take up to 8 seconds
 
@@ -79,7 +74,7 @@ describe('Feature - Experiments: ', function () {
             assert(results.val.published);
 
             // delete project - fails
-            results = yield experimentDelete.deleteProject(project_id);
+            results = yield projectDelete.deleteProject(project_id);
             assert.isOk(results);
             assert.isOk(results.error);
 
@@ -111,6 +106,8 @@ function* setup() {
     yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment.id});
     yield r.table('project2sample').insert({sample_id: key, project_id: project.id});
 
+    console.log('Project name: ', project.name);
+    console.log('Experiment id: ', experiment.id);
 }
 
 function* testDatasets(options) {
