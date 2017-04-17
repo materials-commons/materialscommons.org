@@ -13,7 +13,8 @@
                     </div>
                     <div layout="row">
                         <label>Name</label>
-                        <input ng-model="p.name" class="mc-input-as-line" flex="90">
+                        <input ng-model="p.name" class="mc-input-as-line" flex="90"
+                               ng-change="$ctrl.updateAttribute(p)">
                     </div>
                     <div layout="row">
                         <md-button class="md-primary" ng-show="!p.units.length" ng-click="$ctrl.addUnits(p)">

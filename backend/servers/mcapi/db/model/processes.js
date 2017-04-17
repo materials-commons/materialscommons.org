@@ -163,6 +163,13 @@ function* createProcessTemplate(template) {
     return rv;
 }
 
+function* updateExistingTemplate(template) {
+    let rv = {};
+    yield r.table('templates').get(template.id).update(template);
+    rv.val = yield getTemplate(template.id);
+    return rv;
+}
+
 module.exports = {
     getProcess,
     getProjectProcesses,
@@ -173,4 +180,5 @@ module.exports = {
     datasetsForProcess,
     getTemplate,
     createProcessTemplate,
+    updateExistingTemplate
 };

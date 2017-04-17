@@ -1,4 +1,10 @@
-<div layout="row" flex="100">
+<div layout="column" ng-if="!$ctrl.templateLoaded" layout-align="center center">
+    <div layout="row" layout-align="center center">
+        <md-button class="md-primary" ng-click="$ctrl.createNew()">create new template</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.editExisting()">edit existing template</md-button>
+    </div>
+</div>
+<div layout="row" flex="100" ng-if="$ctrl.templateLoaded">
     <div layout="column" flex="25" layout-margin>
         <div layout="row">
             <md-button class="md-primary" ng-click="$ctrl.done()">done</md-button>

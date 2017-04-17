@@ -57,16 +57,20 @@ class TemplatePropertyTypesService {
     getSetupPropertyTypes() {
         return this.$q.when(this.setupPropertyTypes);
     }
+
+    nameToAttr(name) {
+        return _nameToAttr(name)
+    }
 }
 
-function nameToAttr(name) {
+function _nameToAttr(name) {
     return name.replace(/\s+/g, '_').replace(/\//g, '_').replace(/-/g, '_').toLowerCase()
 }
 
 function toSelectionChoices(choices) {
     return choices.map(choice => ({
         name: choice,
-        value: nameToAttr(choice)
+        value: _nameToAttr(choice)
     }))
 }
 
@@ -79,7 +83,7 @@ function createProperty(name, otype, {choices = [], required = false, units = []
                         }) {
     return {
         name: name,
-        attribute: nameToAttr(name),
+        attribute: _nameToAttr(name),
         description: description,
         otype: otype,
         choices: toSelectionChoices(choices),

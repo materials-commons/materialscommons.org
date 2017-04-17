@@ -1,7 +1,8 @@
 class MCTemplateBuilderPropertiesComponentController {
     /*@ngInject*/
-    constructor(templateUnits) {
+    constructor(templateUnits, templatePropertyTypes) {
         this.templateUnits = templateUnits;
+        this.templatePropertyTypes = templatePropertyTypes;
     }
 
     addUnits(property) {
@@ -11,6 +12,10 @@ class MCTemplateBuilderPropertiesComponentController {
                 property.hasUnitGroup = true;
             }
         )
+    }
+
+    updateAttribute(property) {
+        property.attribute = this.templatePropertyTypes.nameToAttr(property.name);
     }
 
     checkIfEmpty(property) {
