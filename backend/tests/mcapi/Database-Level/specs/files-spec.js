@@ -1,5 +1,6 @@
 'use strict';
 require('mocha');
+import {it} from 'mocha';
 require('co-mocha');
 const chai = require('chai');
 const assert = require('chai').assert;
@@ -10,63 +11,60 @@ const r = require('rethinkdbdash')({
 });
 
 const backend_base = '../../../..';
-const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
-const projects = require(backend_base + '/servers/mcapi/db/model/projects');
-const directories = require(backend_base + '/servers/mcapi/db/model/directories');
+const db_model = backend_base + '/servers/mcapi/db/model/';
+const dbModelUsers = require(db_model + 'users');
+const projects = require(db_model + 'projects');
+const directories = require(db_model + 'directories');
+const files = require(db_model + 'files');
 
-const base_user_id = 'thisIsAUserForTestingONLY!';
-const fullname = "Test User";
-const base_project_name = "Test project - test 1: ";
+const testHelpers = require('./test-helpers');
+
+const base_project_name = "Test file project - ";
 
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
     return base_project_name + number;
 };
 
-let random_user = function(){
-    let number = Math.floor(Math.random()*10000);
-    return base_user_id + number + "@mc.org";
-};
+let userId = "test@test.mc";
+let user = null;
 
-let user1Id = random_user();
+let project = null;
 
 before(function*() {
-    let user = yield dbModelUsers.getUser(user1Id);
-    if (!user) {
-        let results = yield r.table('users').insert({
-            admin: false,
-            affiliation: "",
-            avatar: "",
-            description: "",
-            email: user1Id,
-            fullname: fullname,
-            homepage: "",
-            id: user1Id,
-            name: fullname,
-            preferences: {
-                tags: [],
-                templates: []
-            }
-        });
-        assert.equal(results.inserted, 1, "The User was correctly inserted");
-    } else {
-        assert.equal(user.id,user1Id, "Wrong test user, id = " + user.id);
-    }
+
+    this.timeout(8000); // setup can take up to 8 seconds
+
+    user = yield dbModelUsers.getUser(userId);
+    assert.isOk(user, "No test user available = " + userId);
+    assert.equal(userId, user.id);
+
+    project = yield testHelpers.createProject(random_name(),"Project for testing files");
+
+    let file1 = yield testHelpers.createFileFromDemoProjectFileSet(0);
+    let file2 = yield testHelpers.createFileFromDemoProjectFileSet(0);
+    let file3 = yield testHelpers.createFileFromDemoProjectFileSet(1);
+
 });
 
 describe('Feature - Files: ', function() {
-    describe('Function level', function () {
-        it('individual test level');
+    describe('Get File Information', function () {
+        it('get by id');
+        it('get by checksum');
+        it('get by id list')
     });
 });
 
-after(function*() {
-    let user = yield dbModelUsers.getUser(user1Id);
-    if (user) {
-        let results = yield r.table('users').get(user1Id).delete();
-        assert.equal(results.deleted,1, "The User was correctly deleted");
-    } else {
-        assert.isNull(user,"The user still exists at end");
-    }
-});
 
+/*
+ get,
+ getAllByChecksum,
+ getList,
+ fetchOrCreateFileFromLocalPath,
+ create,
+ update,
+ pushVersion,
+ deleteFile,
+ byPath,
+ getVersions
+*/
