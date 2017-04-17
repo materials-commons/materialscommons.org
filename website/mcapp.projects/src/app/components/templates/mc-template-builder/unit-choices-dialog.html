@@ -1,32 +1,18 @@
-<md-dialog flex="60">
+<md-dialog flex="60" style="height: 70vh">
     <md-toolbar layout="row">
         <div layout-margin>
             Choose Units
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
-        <div class="md-accordion" ng-repeat="unitType in $ctrl.unitTypes | orderBy:'name'">
-            <md-toolbar ng-clickx="unitType.expanded = !unitType.expanded; unitType.searchBy = ''">
-                <div class="md-toolbar-tools">
-                    <h2 ng-class="unitType.cssClass">
-                        <md-button class="md-warn" ng-click="$ctrl.done(unitType)" style="color: white">Select Units
-                        </md-button>
-                        {{unitType.name}}
-                    </h2>
-                    <span flex=""></span>
-                    <span ng-click="unitType.expanded = !unitType.expanded"
-                          ng-class="{expandCollapse:true, active:unitType.expanded}"></span>
-                </div>
-            </md-toolbar>
-            <div class="dataContent" ng-class="{activeContent:unitType.expanded}"
-                 ng-style="unitType.margin && {'margin-bottom': '7px'}">
-            </div>
-            <div ng-repeat="u in unitType.units"
-                 ng-click="$ctrl.chooseTemplate(template)"
-                 class="dataContent"
-                 ng-class="{activeContent:unitType.expanded}">
-                {{u}}
-            </div>
+        <div layout="row">
+            <input class="mc-input-as-line" placeholder="Search Units..." ng-model="$ctrl.search" flex="60">
+        </div>
+        <div class="md-accordion" ng-repeat="unitType in $ctrl.unitTypes | filter:$ctrl.search | orderBy:'name'">
+            <h3 class="md-title">{{unitType.name}}
+                <md-button class="md-primary" ng-click="$ctrl.done(unitType)">select</md-button>
+            </h3>
+            <md-chips ng-model="unitType.units" readonly="true"></md-chips>
         </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">
