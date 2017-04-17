@@ -39,17 +39,29 @@ before(function*() {
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
 
-    project = yield testHelpers.createProject(random_name(),"Project for testing files");
+    let results = yield testHelpers.createProject(random_name(),user);
+    assert.isOk(results);
+    assert.isOk(results.val);
+    project = results.val;
+    assert.equal(project.owner,userId);
 
-    let file1 = yield testHelpers.createFileFromDemoProjectFileSet(0);
-    let file2 = yield testHelpers.createFileFromDemoProjectFileSet(0);
-    let file3 = yield testHelpers.createFileFromDemoProjectFileSet(1);
+    console.log("Project Name: ", project.name);
 
 });
 
 describe('Feature - Files: ', function() {
     describe('Get File Information', function () {
-        it('get by id');
+        it('get by id', function* (){
+            let file = yield testHelpers.createFileFromDemoFileSet(project,0,user);
+            assert.isOk(file);
+            assert.equal(file.owner,userId);
+
+            let fileId = file.id;
+            let fetchedFile = yield files.get(fileId);
+            assert.equal(file.id, fetchedFile.id);
+            assert.equal(file.name,fetchedFile.name);
+            assert.equal(file.owner,fetchedFile.owner);
+        });
         it('get by checksum');
         it('get by id list')
     });
