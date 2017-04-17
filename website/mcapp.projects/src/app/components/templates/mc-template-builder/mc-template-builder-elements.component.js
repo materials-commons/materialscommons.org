@@ -8,9 +8,7 @@ class MCTemplateBuilderElementsComponentController {
 
     $onInit() {
         this.templatePropertyTypes.getMeasurementPropertyTypes().then(
-            (measurementTypes) => {
-                this.measurements = measurementTypes
-            }
+            (measurementTypes) => this.measurements = measurementTypes
         );
 
         this.templatePropertyTypes.getSetupPropertyTypes().then(
