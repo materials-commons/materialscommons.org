@@ -8,11 +8,6 @@
             <div dnd-nodrag>
                 <div layout="row" layout-align="space-between center">
                     <div dnd-handle class="cursor-grab"><i class="fa fa-fw fa-bars"></i></div>
-                    <div layout="row" flex="40" layout-align="center center">
-                        <label class="padding-left-10">Name</label>
-                        <input ng-model="p.name" class="mc-input-as-line" flex="60"
-                               ng-change="$ctrl.updateAttribute(p)" placeholder="Name...">
-                    </div>
                     <div>
                         <label>Type</label> {{p.otype}}
                     </div>
@@ -27,8 +22,12 @@
                     </div>
                     <a ng-click="$ctrl.properties.splice($index, 1)" class="md-warn"><i class="fa fa-fw fa-remove"></i></a>
                 </div>
+                <div layout="row" flex="100" layout-align="start center">
+                    <label>Name</label>
+                    <input ng-model="p.name" class="mc-input-as-line" flex="80"
+                           ng-change="$ctrl.updateAttribute(p)" placeholder="Name...">
+                </div>
                 <div layout="row" class="margin-top-10">
-
                     <div ng-show="p.units.length || p.hasUnitGroup" layout="row">
                         <label>Units</label>
                         <md-chips ng-model="p.units" md-on-remove="$ctrl.checkIfEmpty(p)"></md-chips>
@@ -36,12 +35,15 @@
                     <div ng-show="p.otype === 'selection'" layout="column" flex=="40">
                         <label>Select choices</label>
                         <div layout="row" ng-repeat="choice in p.choices">
-                            <input class="mc-input-as-line" ng-model="choice.name"
+                            <input class="mc-input-as-line margin-left-15" ng-model="choice.name"
                                    ng-change="$ctrl.updateChoice(choice)" flex="70">
                             <a ng-click="p.choices.splice($index, 1)" class="md-warn"><i class="fa fa-fw fa-remove"></i></a>
                         </div>
-                        <input class="mc-input-as-line" placeholder="Add selection choice..." ng-model="p.newChoice"
-                               on-enter="$ctrl.addChoice(p)">
+                        <div layout="row">
+                            <input class="mc-input-as-line margin-left-15" placeholder="Add selection choice..."
+                                   ng-model="p.newChoice"
+                                   on-enter="$ctrl.addChoice(p)" flex="70">
+                        </div>
                     </div>
                 </div>
             </div>

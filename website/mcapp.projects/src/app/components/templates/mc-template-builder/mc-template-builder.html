@@ -14,7 +14,7 @@
         <mc-template-builder-elements ng-if="$ctrl.currentTab === 1 || $ctrl.currentTab === 2"
                                       elements="$ctrl.whichElements" xflex="25" xlayout-margin>
         </mc-template-builder-elements>
-        <span xflex=25 xlayout-margin ng-if="$ctrl.currentTab === 0 || $ctrl.currentTab === 3"></span>
+        <span ng-if="$ctrl.currentTab === 0 || $ctrl.currentTab === 3"></span>
     </div>
     <md-tabs md-selected="$ctrl.currentTab" md-stretch-tabs md-dynamic-height flex="100" layout-margin>
         <md-tab>
