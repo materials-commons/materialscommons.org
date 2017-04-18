@@ -52,6 +52,13 @@ class MCTemplateBuilderComponentController {
     }
 
     done() {
+        // If user added new selection choices then there is an extra newChoice field that we need to delete.
+        this.template.setup[0].properties.forEach(p => {
+            if (p.hasOwnProperty('newChoice')) {
+                delete p.newChoice;
+            }
+        });
+
         if (!this.existingTemplate) {
             this.templatesAPI.createTemplate(this.template).then(
                 () => {
