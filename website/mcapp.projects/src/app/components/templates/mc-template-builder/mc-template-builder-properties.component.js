@@ -18,6 +18,19 @@ class MCTemplateBuilderPropertiesComponentController {
         property.attribute = this.templatePropertyTypes.nameToAttr(property.name);
     }
 
+    addChoice(property) {
+        let c = {
+            name: property.newChoice,
+            value: this.templatePropertyTypes.nameToAttr(property.newChoice)
+        };
+        property.choices.push(c);
+        property.newChoice = '';
+    }
+
+    updateChoice(choice) {
+        choice.value = this.templatePropertyTypes.nameToAttr(choice.name);
+    }
+
     checkIfEmpty(property) {
         property.hasUnitGroup = property.units.length;
     }

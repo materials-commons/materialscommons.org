@@ -6,7 +6,10 @@
             dnd-effect-allowed="move"
             dnd-draggable="p">
             <div dnd-nodrag>
-                <div dnd-handle class="cursor-grab"><i class="fa fa-fw fa-bars"></i></div>
+                <div layout="row" layout-align="start space-between">
+                    <div dnd-handle class="cursor-grab" flex="100"><i class="fa fa-fw fa-bars"></i></div>
+                    <a ng-click="$ctrl.properties.splice($index, 1)" class="md-warn"><i class="fa fa-fw fa-remove"></i></a>
+                </div>
                 <div layout="column" class="margin-top-10">
                     <div>
                         <label>Type</label> {{p.otype}}
@@ -16,7 +19,7 @@
                         <input ng-model="p.name" class="mc-input-as-line" flex="90"
                                ng-change="$ctrl.updateAttribute(p)">
                     </div>
-                    <div layout="row">
+                    <div layout="row" ng-hide="p.otype === 'selection' || p.otype === 'date'">
                         <md-button class="md-primary" ng-show="!p.units.length" ng-click="$ctrl.addUnits(p)">
                             add units
                         </md-button>
@@ -28,6 +31,16 @@
                     <div ng-show="p.units.length || p.hasUnitGroup">
                         <label>Units</label>
                         <md-chips ng-model="p.units" md-on-remove="$ctrl.checkIfEmpty(p)"></md-chips>
+                    </div>
+                    <div ng-show="p.otype === 'selection'" layout="column" flex=="40">
+                        <label>Select choices</label>
+                        <div layout="row" ng-repeat="choice in p.choices">
+                            <input class="mc-input-as-line" ng-model="choice.name"
+                                   ng-change="$ctrl.updateChoice(choice)" flex="70">
+                            <a ng-click="p.choices.splice($index, 1)" class="md-warn"><i class="fa fa-fw fa-remove"></i></a>
+                        </div>
+                        <input class="mc-input-as-line" placeholder="Add selection choice..." ng-model="p.newChoice"
+                               on-enter="$ctrl.addChoice(p)">
                     </div>
                 </div>
             </div>
