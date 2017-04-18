@@ -531,7 +531,7 @@ table.md-table tr.md-row:last-child {
  * The dnd-list should always have a min-height,
  * otherwise you can't drop to it once it's empty
  */
-ul[dnd-list] {
+.mc-template ul[dnd-list] {
   min-height: 42px;
   padding-left: 0;
 }
@@ -542,7 +542,7 @@ ul[dnd-list] {
  * sense to hide it to give the user the feeling
  * that he's actually moving it.
  */
-ul[dnd-list] .dndDraggingSource {
+.mc-template ul[dnd-list] .dndDraggingSource {
   display: none;
 }
 
@@ -551,13 +551,13 @@ ul[dnd-list] .dndDraggingSource {
  * added to the dnd-list while the user is dragging
  * over it.
  */
-ul[dnd-list] .dndPlaceholder {
+.mc-template ul[dnd-list] .dndPlaceholder {
   background-color: #ddd;
   display: block;
   min-height: 42px;
 }
 
-ul[dnd-list] li {
+.mc-template ul[dnd-list] li {
   margin-top: 10px;
   background-color: #fff;
   border: 1px solid #ddd;
@@ -572,7 +572,7 @@ ul[dnd-list] li {
 /**
  * Show selected elements in green
  */
-ul[dnd-list] li.selected {
+.mc-template ul[dnd-list] li.selected {
   background-color: #dff0d8;
   color: #3c763d;
 }
