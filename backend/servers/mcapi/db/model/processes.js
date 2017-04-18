@@ -80,7 +80,7 @@ function* deleteProcess(projectId, processId) {
         // remove project2process records with projectId, and processId
         yield r.table('project2process').getAll([projectId, processId], {index: 'project_process'}).delete();
 
-        // if other records with processId exist, then there are other projects using the project, done!
+        // if other records with processId exist, then there are other projects using the process, done!
         let project2processOther = yield r.table('project2process').filter({process_id: processId});
         if (project2processOther.length === 0) {
             // remove experiment2process records with processId
@@ -119,7 +119,7 @@ function* deleteProcess(projectId, processId) {
                 }
             }
 
-            // remote process2Sample records with proceeeId
+            // remote process2Sample records with processId
             //   for each such sample, if there are no other records, delete sample
             let process2Sample = yield r.table('process2sample').filter({process_id: processId});
             let sampleIdValues = process2Sample.map(record => record.sample_id);

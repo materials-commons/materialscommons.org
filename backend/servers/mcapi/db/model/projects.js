@@ -2,6 +2,7 @@ const r = require('../r');
 const run = require('./run');
 const model = require('./model');
 const getSingle = require('./get-single');
+const renameTopDirHelper = require('./directory-rename');
 const _ = require('lodash');
 
 function* createProject(user, attrs) {
@@ -148,9 +149,12 @@ function addComputed(rql) {
 
 function* update(projectID, attrs) {
     const pattrs = {};
+    let oldName = '';
 
     if (attrs.name) {
         pattrs.name = attrs.name;
+        let projectData = yield r.table('projects').get(projectID);
+        oldName = projectData.name;
     }
 
     if (attrs.description) {
@@ -195,7 +199,17 @@ function* update(projectID, attrs) {
         });
     }
 
+    if (attrs.name) {
+        yield renameTopDirectory(oldName, attrs.name);
+    }
+
     return yield r.table('projects').get(projectID);
+}
+
+function* renameTopDirectory(oldName, newName){
+    let dirsList = yield r.table('datadirs').getAll(oldName,{index: 'name'});
+    let directoryID = dirsList[0].id;
+    yield renameTopDirHelper.renameDirectory(directoryID,newName);
 }
 
 function differenceByField(from, others, field) {

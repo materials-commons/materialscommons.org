@@ -32,10 +32,6 @@ const helper = require(mcapi_base + 'build-demo/build-demo-project-helper');
 const demoProjectConf = require(mcapi_base + 'build-demo/build-demo-project-conf');
 const buildDemoProject = require(mcapi_base + 'build-demo/build-demo-project');
 
-const fullname = "Test User";
-const user_apikey = "ThisIsAJunkKey";
-const user1Id = "mctest@mc.org";
-
 const base_project_name = "Demo project test: ";
 
 const demoProjectTestUserId = 'test@test.mc';
@@ -47,38 +43,20 @@ let random_name = function () {
 };
 
 before(function*() {
-    let user = yield dbModelUsers.getUser(user1Id);
-    if (!user) {
-        let results = yield r.db('materialscommons').table('users').insert({
-            admin: false,
-            affiliation: "",
-            avatar: "",
-            description: "",
-            email: user1Id,
-            apikey: user_apikey,
-            fullname: fullname,
-            homepage: "",
-            id: user1Id,
-            name: fullname,
-            preferences: {
-                tags: [],
-                templates: []
-            }
-        });
-        assert.equal(results.inserted, 1, "The User was correctly inserted");
-    } else {
-        assert.equal(user.id, user1Id, "Wrong test user, id = " + user.id);
-    }
+
+    this.timeout(8000); // some tests in this test suite can take up to 8 seconds
+
+    let user = yield dbModelUsers.getUser(demoProjectTestUserId);
+    assert.isOk(user, "Missing test user, id = " + demoProjectTestUserId);
 });
 
 describe('Feature - User - Build Demo Project Support: ', function () {
     describe('User for test', function () {
         it('exists', function *() {
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user, "test user exists");
-            assert.equal(user.apikey, user_apikey);
-            assert.equal(user.id, user1Id);
-            assert.equal(user.name, fullname);
+            assert.equal(user.apikey,demoProjectTestUserKey);
+            assert.equal(user.id, demoProjectTestUserId);
         })
     });
     describe('List of files for build', function () {
@@ -98,7 +76,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             }
         });
         it('can be inserted in database', function*() {
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user, "test user exists");
             let projectName = random_name();
             let attrs = {
@@ -177,7 +155,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             assert.lengthOf(missingFiles, 0);
         });
         it('adds all files to top dir of a test Demo Project', function*() {
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.isNotNull(user, "test user exists");
 
             let projectName = random_name();
@@ -767,6 +745,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
         });
         it('add the measurement values for the only Process with a measurement', function*() {
+
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);
 
@@ -783,21 +762,48 @@ describe('Feature - User - Build Demo Project Support: ', function () {
             valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
 
-            // Note: refresh process list. If they were created for the first time on the above call, then the
-            // body of the returned process is not sufficently decorated to support inserting properties;
-            // however, on refresh it is. Needs to be investigated.
-            valOrError = yield helper.createOrFindAllDemoProcesses(project, experiment);
-            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindAllDemoProcesses: " + valOrError.error);
+            let mapEntry = demoProjectConf.outputSampleIndexMap[0];
 
-            let processes = valOrError.val;
-            let process = processes[0];
+            processData = demoProjectConf.processesData[mapEntry.processIndex];
+            let processName = processData.name;
+            let templateId = processData.templateId;
+
+            valOrError = yield helper.createOrFindDemoProcess(project, experiment, processName, templateId);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProcess: " + valOrError.error);
+
+            let process = valOrError.val;
+
+            let sampleIndexList = mapEntry.sampleIndexList;
+            let sampleNames = [];
+            for (let i = 0; i < sampleIndexList.length; i++) {
+                sampleNames.push(demoProjectConf.sampleNameData[sampleIndexList[i]]);
+            }
+
+            valOrError = yield helper.createOrFindProcessOutputSamples(project, experiment, process, sampleNames);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindProcessOutputSamples: " + valOrError.error);
+
+            let samples = valOrError.val;
+
+            assert.isOk(samples);
+            assert.lengthOf(samples, sampleNames.length);
+            for (let i = 0; i < sampleNames.length; i++) {
+                let sample = samples[i];
+                let name = sampleNames[i];
+                assert.equal(name, sample.name);
+            }
+
+            valOrError = yield helper.createOrFindDemoProcess(project, experiment, processName, templateId);
+            assert.isUndefined(valOrError.error, "Unexpected error from createOrFindDemoProcess: " + valOrError.error);
+
+            process = valOrError.val;
+
             let processData = demoProjectConf.processesData[0];
             let measurement = processData.measurements[0];
 
             valOrError = yield helper.updateMeasurementForProcessSamples(process, measurement);
             assert.isUndefined(valOrError.error, "Unexpected error from createOrFindMeasurement: " + valOrError.error);
 
-            let samples = valOrError.val;
+            samples = valOrError.val;
             let sample = samples[0];
             let updatedProcess = null;
             sample.processes.forEach((probe) => {
@@ -938,5 +944,3 @@ describe('Feature - User - Build Demo Project Support: ', function () {
         });
     });
 });
-
-

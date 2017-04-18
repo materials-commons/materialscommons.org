@@ -13,6 +13,7 @@ const r = require('rethinkdbdash')({
 const backend_base = '../../../..';
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const projects = require(backend_base + '/servers/mcapi/db/model/projects');
+const directories = require(backend_base + '/servers/mcapi/db/model/directories');
 
 const base_user_id = 'thisIsAUserForTestingONLY!';
 const fullname = "Test User";
@@ -23,41 +24,17 @@ let random_name = function(){
     return base_project_name + number;
 };
 
-let random_user = function(){
-    let number = Math.floor(Math.random()*10000);
-    return base_user_id + number + "@mc.org";
-};
-
-let user1Id = random_user();
+let userId = "test@test.mc";
 
 before(function*() {
-    let user = yield dbModelUsers.getUser(user1Id);
-    if (!user) {
-        let results = yield r.db('materialscommons').table('users').insert({
-            admin: false,
-            affiliation: "",
-            avatar: "",
-            description: "",
-            email: user1Id,
-            fullname: fullname,
-            homepage: "",
-            id: user1Id,
-            name: fullname,
-            preferences: {
-                tags: [],
-                templates: []
-            }
-        });
-        assert.equal(results.inserted, 1, "The User was correctly inserted");
-    } else {
-        assert.equal(user.id,user1Id, "Wrong test user, id = " + user.id);
-    }
+    let user = yield dbModelUsers.getUser(userId);
+    assert.isOk(user,"No test user available = " + userId);
 });
 
 describe('Feature - projects: ', function() {
     describe('Create project', function() {
         it('create project and get project back', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             assert.isNotNull(user,"test user exists");
             let attrs = {
@@ -69,12 +46,12 @@ describe('Feature - projects: ', function() {
             assert.equal(project.otype, "project");
             assert.equal(project.name, project_name);
             assert.equal(project.owner, user.id);
-            assert.equal(project.owner, user1Id);
+            assert.equal(project.owner, userId);
             assert.equal(project.users.length,1);
-            assert.equal(project.users[0].user_id, user1Id);
+            assert.equal(project.users[0].user_id, userId);
         });
         it ('create project and find project in all projects', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             assert.isNotNull(user,"test user exists");
             let attrs = {
@@ -84,7 +61,7 @@ describe('Feature - projects: ', function() {
             let ret = yield projects.createProject(user,attrs);
             let project = ret.val;
             assert.equal(project.name, project_name);
-            assert.equal(project.users[0].user_id, user1Id);
+            assert.equal(project.users[0].user_id, userId);
             let project_list = yield projects.all();
             let found_project = null;
             project_list.forEach(function(p){
@@ -95,10 +72,10 @@ describe('Feature - projects: ', function() {
             assert.isNotNull(found_project);
             assert.equal(found_project.otype, "project");
             assert.equal(found_project.owner, user.id);
-            assert.equal(found_project.owner, user1Id);
+            assert.equal(found_project.owner, userId);
         });
         it ('create project and find project by user', function*() {
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             assert.isNotNull(user, "test user exists");
             let attrs = {
@@ -108,7 +85,7 @@ describe('Feature - projects: ', function() {
             let ret = yield projects.createProject(user, attrs);
             let project = ret.val;
             assert.equal(project.name, project_name);
-            assert.equal(project.users[0].user_id, user1Id);
+            assert.equal(project.users[0].user_id, userId);
             let project_list = yield projects.forUser(user);
             let found_project = null;
             project_list.forEach(function (p) {
@@ -119,14 +96,14 @@ describe('Feature - projects: ', function() {
             assert.isNotNull(found_project);
             assert.equal(found_project.otype, "project");
             assert.equal(found_project.owner, user.id);
-            assert.equal(found_project.owner, user1Id);
+            assert.equal(found_project.owner, userId);
             assert.equal(found_project.users.length, 1);
             // NOTE: field is user, here, but user_id in test above!!!
             // is this the correct behaivor???
-            assert.equal(found_project.users[0].user, user1Id);
+            assert.equal(found_project.users[0].user, userId);
         });
         it ('create project, find by user, has full set of properties', function*(){
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             assert.isNotNull(user,"test user exists");
             let attrs = {
@@ -145,9 +122,9 @@ describe('Feature - projects: ', function() {
             assert.isNotNull(found_project);
             assert.equal(found_project.otype, "project");
             assert.equal(found_project.owner, user.id);
-            assert.equal(found_project.owner, user1Id);
+            assert.equal(found_project.owner, userId);
             assert.equal(found_project.users.length,1);
-            assert.equal(found_project.users[0].user, user1Id);
+            assert.equal(found_project.users[0].user, userId);
             assert.isTrue(found_project.hasOwnProperty('events'));
             assert.equal(found_project.events.length,0);
             assert.isTrue(found_project.hasOwnProperty('processes'));
@@ -162,7 +139,7 @@ describe('Feature - projects: ', function() {
     });
     describe('Update project', function() {
         it('create project, update name and description', function*() {
-            let user = yield dbModelUsers.getUser(user1Id);
+            let user = yield dbModelUsers.getUser(userId);
             let project_name = random_name();
             assert.isNotNull(user, "test user exists");
             let attrs = {
@@ -173,8 +150,12 @@ describe('Feature - projects: ', function() {
             let project = ret.val;
             assert.equal(project.otype, "project");
             assert.equal(project.name, project_name);
-            assert.equal(project.owner, user1Id);
-            let name = "Another Name";
+            assert.equal(project.owner, userId);
+            let top_directory = yield directories.get(project.id,'top');
+            assert.equal(top_directory.otype, "directory");
+            assert.equal(top_directory.name, project_name);
+
+            let name = random_name();
             let description = "An alternate description";
             let update_attrs = {
                 name: name,
@@ -182,19 +163,12 @@ describe('Feature - projects: ', function() {
             };
             let updated_project = yield projects.update(project.id, update_attrs);
             assert.equal(updated_project.otype, "project");
-            assert.equal(updated_project.owner, user1Id);
+            assert.equal(updated_project.owner, userId);
             assert.equal(updated_project.name, name);
             assert.equal(updated_project.description, description);
+            top_directory =  yield directories.get(project.id,'top');
+            assert.equal(top_directory.otype, "directory");
+            assert.equal(top_directory.name, name);
         });
     });
-});
-
-after(function*() {
-    let user = yield dbModelUsers.getUser(user1Id);
-    if (user) {
-        let results = yield r.db('materialscommons').table('users').get(user1Id).delete();
-        assert.equal(results.deleted,1, "The User was correctly deleted");
-    } else {
-        assert.isNull(user,"The user still exists at end");
-    }
 });
