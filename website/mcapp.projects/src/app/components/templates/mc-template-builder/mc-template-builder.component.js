@@ -72,7 +72,8 @@ class MCTemplateBuilderComponentController {
     }
 
     cancel() {
-        this.template = MCTemplateBuilderComponentController.emptyTemplate();
+        this.templateLoaded = false;
+        this.existingTemplate = false;
     }
 }
 
