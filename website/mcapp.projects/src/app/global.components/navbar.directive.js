@@ -20,6 +20,7 @@ class NavbarComponentController {
         this.navbarSearchText = this.inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
         this.user = User.attr().fullname;
         this.isAdmin = User.attr().admin;
+        this.isBetaUser = User.attr().beta_user;
         this.$mdDialog = $mdDialog;
     }
 
