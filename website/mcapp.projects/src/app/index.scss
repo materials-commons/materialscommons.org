@@ -78,7 +78,7 @@ $mc-import-samples-color: #b2bfdb;
 
 .project-card:hover {
   /*background-color: #2196f3;*/
-  box-shadow: 5px 5px 5px 0px #a3a3a3;
+  box-shadow: 5px 5px 5px 0 #a3a3a3;
 }
 
 /* Customize md toast */
@@ -524,4 +524,69 @@ a.always-white, a.always-white:link, a.always-white:visited, a.always-white:hove
 
 table.md-table tr.md-row:last-child {
   border-bottom: 2px solid #b9b9b9;
+}
+
+/* ************************** */
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
+ */
+ul[dnd-list] {
+  min-height: 42px;
+  padding-left: 0;
+}
+
+/**
+ * The dndDraggingSource class will be applied to
+ * the source element of a drag operation. It makes
+ * sense to hide it to give the user the feeling
+ * that he's actually moving it.
+ */
+ul[dnd-list] .dndDraggingSource {
+  display: none;
+}
+
+/**
+ * An element with .dndPlaceholder class will be
+ * added to the dnd-list while the user is dragging
+ * over it.
+ */
+ul[dnd-list] .dndPlaceholder {
+  background-color: #ddd;
+  display: block;
+  min-height: 42px;
+}
+
+ul[dnd-list] li {
+  margin-top: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  //border-top-right-radius: 4px;
+  //border-top-left-radius: 4px;
+  border-radius: 4px;
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: -1px;
+}
+
+/**
+ * Show selected elements in green
+ */
+ul[dnd-list] li.selected {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.dnd-list-empty {
+  background-color: #ddd;
+}
+
+/* ******************************* */
+.radio-description {
+  font-size: 0.9em;
+  color: grey;
+}
+
+.cursor-grab {
+  cursor: grab;
 }

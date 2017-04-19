@@ -1,0 +1,41 @@
+<mc-template-builder-properties properties="$ctrl.template.setup[0].properties"
+                                message="Drag and drop your setup properties into this space.">
+</mc-template-builder-properties>
+<div ng-if="false">
+    <p class="md-subhead">Drag and drop your setup properties into this space.</p>
+    <ul dnd-list="$ctrl.setup[0].properties" ng-class="{'dnd-list-empty': !$ctrl.setup[0].properties.length}">
+        <li ng-repeat="p in $ctrl.setup[0].properties"
+            dnd-moved="$ctrl.setup[0].properties.splice($index, 1)"
+            dnd-effect-allowed="move"
+            dnd-draggable="p">
+            <div dnd-nodrag>
+                <div dnd-handle class="cursor-grab"><i class="fa fa-fw fa-bars"></i></div>
+                <div layout="column" class="margin-top-10">
+                    <md-input-container>
+                        <label>Name</label>
+                        <input ng-model="p.name">
+                    </md-input-container>
+                    <div layout="row">
+                        <md-button class="md-primary" ng-if="p.units.length" ng-click="p.editUnits = true">
+                            edit units
+                        </md-button>
+                        <md-button class="md-primary" ng-if="!p.units.length" ng-click="$ctrl.addUnits()">
+                            add units
+                        </md-button>
+                    </div>
+                    <ul>
+                        <li ng-repeat="u in p.units" flex="50">
+                            <div layout="row" layout-align="start space-between" flex="100">
+                                <span flex="100">{{u}}</span>
+                                <a ng-click="p.units.splice($index, 1)"><i class="fa fa-fw fa-times"></i></a>
+                            </div>
+                        </li>
+                        <li ng-show="p.editUnits">
+                            <input ng-model="$ctrl.unit" on-enter="$ctrl.addNewUnit(p)">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

@@ -66,13 +66,15 @@ function* updateProcess(processId, updateArgs) {
 
 function* datasetsForProcess(processId) {
     let dataset2process = yield r.table('dataset2process').filter({process_id: processId}).coerceTo('array');
-    if (dataset2process.length == 0) return [];
+    if (dataset2process.length === 0) {
+        return [];
+    }
     let datasetIdValues = dataset2process.map(record => record.dataset_id);
     return yield r.expr(datasetIdValues).map(r.db('materialscommons').table('datasets').get(r.row)).coerceTo('array');
 }
 
 function* deleteProcess(projectId, processId) {
-    var i;
+    let i;
 
     try {
         // remove project2process records with projectId, and processId
@@ -80,7 +82,7 @@ function* deleteProcess(projectId, processId) {
 
         // if other records with processId exist, then there are other projects using the process, done!
         let project2processOther = yield r.table('project2process').filter({process_id: processId});
-        if (project2processOther.length == 0) {
+        if (project2processOther.length === 0) {
             // remove experiment2process records with processId
             yield r.table('experiment2process').filter({process_id: processId}).delete();
 
@@ -96,7 +98,7 @@ function* deleteProcess(projectId, processId) {
                 for (i = 0; i < experimentTaskIdValues.length; i++) {
                     let id = experimentTaskIdValues[i];
                     let hits = yield r.table('experimenttask2process').filter({experimentaltask_id: id});
-                    if (!hits || (hits && (hits.length == 0))) {
+                    if (!hits || (hits && (hits.length === 0))) {
                         yield r.table('experimenttasks').get(id).delete();
                     }
                 }
@@ -111,7 +113,7 @@ function* deleteProcess(projectId, processId) {
                 for (i = 0; i < measurementIdValues.length; i++) {
                     let id = measurementIdValues[i];
                     let hits = yield r.table('process2measurement').filter({measurement_id: id});
-                    if (!hits || (hits && (hits.length == 0))) {
+                    if (!hits || (hits && (hits.length === 0))) {
                         yield r.table('measurements').get(id).delete();
                     }
                 }
@@ -126,7 +128,7 @@ function* deleteProcess(projectId, processId) {
                 for (i = 0; i < sampleIdValues.length; i++) {
                     let id = sampleIdValues[i];
                     let hits = yield r.table('process2sample').filter({sample_id: id});
-                    if (!hits || (hits && (hits.length == 0))) {
+                    if (!hits || (hits && (hits.length === 0))) {
                         yield r.table('samples').get(id).delete();
                     }
                 }
@@ -149,6 +151,24 @@ function* deleteProcess(projectId, processId) {
     return {val: "Process Deleted"};
 }
 
+function* createProcessTemplate(template) {
+    let rv = {};
+
+    let results = yield r.table('templates').insert(template);
+    if (results.errors) {
+        rv.error = `Template ${template.id} already exists`;
+    } else {
+        rv.val = yield getTemplate(template.id);
+    }
+    return rv;
+}
+
+function* updateExistingTemplate(template) {
+    let rv = {};
+    yield r.table('templates').get(template.id).update(template);
+    rv.val = yield getTemplate(template.id);
+    return rv;
+}
 
 module.exports = {
     getProcess,
@@ -158,5 +178,7 @@ module.exports = {
     updateProcess,
     deleteProcess,
     datasetsForProcess,
-    getTemplate
+    getTemplate,
+    createProcessTemplate,
+    updateExistingTemplate
 };

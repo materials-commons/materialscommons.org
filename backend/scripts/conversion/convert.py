@@ -140,18 +140,26 @@ def add_demo_installed_attribute(conn):
         r.table('users').get(p['owner']).update({'demo_installed': True}).run(conn)
 
 
+def add_beta_flag_to_users(conn):
+    print "Adding beta flag to all users..."
+    r.table('users').update({'beta_user': False}).run(conn)
+    print "Done."
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
 
-    fix_missing_property_sets(conn)
-    update_projects_with_new_fields(conn)
+    # fix_missing_property_sets(conn)
+    # update_projects_with_new_fields(conn)
     # add_collaborators_to_projects(conn)
     # fix_experiment_collaborators(conn)
-    fix_file_upload_count_to_uploaded(conn)
-    add_demo_installed_attribute(conn)
+    # fix_file_upload_count_to_uploaded(conn)
+    # add_demo_installed_attribute(conn)
+
+    add_beta_flag_to_users(conn)
 
 
 if __name__ == "__main__":

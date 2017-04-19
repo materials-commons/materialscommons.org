@@ -9,3 +9,4 @@ import './accounts-api.service';
 import './project-file-tree-api.service';
 import './notes-api.service';
 import './datasets-api.service';
+import './templates-api.service';

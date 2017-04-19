@@ -1,29 +1,101 @@
 class MCTemplateBuilderComponentController {
     /*@ngInject*/
-    constructor() {
-        this.sections = [{
-            name: '',
-            description: '',
-            setup: [],
-            measurements: []
-        }];
+    constructor(templatesAPI, toast, $mdDialog) {
+        this.templatesAPI = templatesAPI;
+        this.toast = toast;
+        this.$mdDialog = $mdDialog;
+
+        this.whichElements = 'measurements';
+        this.templateLoaded = false;
+        this.existingTemplate = false;
     }
 
-    addSection() {
-        this.sections.push({
+    static emptyTemplate() {
+        return {
             name: '',
-            description: '',
-            setup: [],
+            process_type: 'create',
+            template_description: '',
+            does_transform: false,
+            setup: [{
+                name: 'Instrument',
+                attribute: 'instrument',
+                properties: []
+            }],
             measurements: []
+        };
+    }
+
+    createNew() {
+        this.templateLoaded = true;
+        this.template = MCTemplateBuilderComponentController.emptyTemplate();
+    }
+
+    editExisting() {
+        this.templatesAPI.getAllTemplates().then(
+            templates => this.$mdDialog.show({
+                templateUrl: 'app/components/templates/mc-template-builder/choose-existing-template-dialog.html',
+                controller: ChooseExistingTemplateDialogController,
+                controllerAs: '$ctrl',
+                bindToController: true,
+                multiple: true,
+                locals: {
+                    templates: templates
+                }
+            }).then(
+                (template) => {
+                    this.template = template;
+                    this.templateLoaded = true;
+                    this.existingTemplate = true;
+                }
+            )
+        );
+    }
+
+    done() {
+        // If user added new selection choices then there is an extra newChoice field that we need to delete.
+        this.template.setup[0].properties.forEach(p => {
+            if (p.hasOwnProperty('newChoice')) {
+                delete p.newChoice;
+            }
         });
+
+        if (!this.existingTemplate) {
+            this.templatesAPI.createTemplate(this.template).then(
+                () => {
+                    this.templateLoaded = false;
+                    this.existingTemplate = false;
+                },
+                () => this.toast.error('Unable to create template')
+            );
+        } else {
+            this.templatesAPI.updateTemplate(this.template).then(
+                () => {
+                    this.templateLoaded = false;
+                    this.existingTemplate = false;
+                },
+                () => this.toast.error('Unable to update existing template')
+            );
+        }
     }
 
-    addSectionSetupProperty(section) {
-        section.setup.push({name: ''});
+    cancel() {
+        this.templateLoaded = false;
+        this.existingTemplate = false;
+    }
+}
+
+class ChooseExistingTemplateDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
     }
 
-    addSectionMeasurementProperty(section) {
-        section.measurements.push({name: ''});
+    done(template) {
+        this.$mdDialog.hide(template);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 

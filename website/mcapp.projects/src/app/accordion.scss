@@ -34,7 +34,7 @@
   -webkit-transform: rotate(0deg);
   transform: rotate(0deg);
   content: "|";
-  margin-top: -3px;
+  margin-top: -2px;
 }
 
 .md-accordion .expandCollapse:after {
@@ -42,14 +42,14 @@
   -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
   content: "|";
-  margin-left: -3px;
+  margin-left: -2px;
 }
 
 .md-accordion .active:before {
   opacity: 1;
   -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
-  margin-left: 3px;
+  margin-left: 2px;
   margin-top: 0px;
 }
 

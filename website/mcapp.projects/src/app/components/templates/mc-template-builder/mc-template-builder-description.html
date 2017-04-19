@@ -1,0 +1,35 @@
+<div layout="column" layout-margin>
+    <md-input-container class="margin-top-20">
+        <label>Name</label>
+        <input ng-model="$ctrl.template.name">
+    </md-input-container>
+
+    <md-input-container>
+        <label>Description</label>
+        <input ng-model="$ctrl.template.template_description">
+    </md-input-container>
+
+    <label>Template Type</label>
+    <md-radio-group ng-model="$ctrl.template.process_type">
+        <md-radio-button value="create" class="md-primary md-align-top-left">
+            Create Samples
+            <br/>
+            <span class="radio-description">Template will create new samples.</span>
+        </md-radio-button>
+        <md-radio-button value="transform" class="md-primary md-align-top-left">
+            Transforms Samples
+            <br/>
+            <span class="radio-description">Template transforms samples.</span>
+        </md-radio-button>
+        <md-radio-button value="analysis" class="md-primary md-align-top-left">
+            Analysis
+            <br/>
+            <span class="radio-description">Template is used to analyze measurements.</span>
+        </md-radio-button>
+        <md-radio-button value="measurement" class="md-primary md-align-top-left">
+            Measurement
+            <br/>
+            <span class="radio-description">Template measures attributes of a sample.</span>
+        </md-radio-button>
+    </md-radio-group>
+</div>

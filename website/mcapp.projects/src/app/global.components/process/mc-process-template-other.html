@@ -17,6 +17,15 @@
         </process-settings2>
     </div>
 
+    <span flex></span>
+    <div layout="column" flex="45" class="margin-top-10">
+        <process-measurements measurements="$ctrl.process.measurements"
+                              samples="$ctrl.process.output_samples"
+                              process-id="$ctrl.process.id"
+                              template="$ctrl.process">
+        </process-measurements>
+    </div>
+
     <mc-process-template-samples-list process="$ctrl.process"></mc-process-template-samples-list>
     <mc-process-template-files-list process="$ctrl.process"></mc-process-template-files-list>
 </div>
