@@ -1,6 +1,6 @@
-<div layout="row" layout-align="start center">
-    <div style="margin-top:45px">
-        <md-input-container class="md-block">
+<div layout="row" layout-align="start center" flex="100">
+    <div style="margin-top:45px" flex>
+        <md-input-container class="md-block" flex="70">
             <label>{{::$ctrl.setting.name}}</label>
             <md-select ng-model="$ctrl.setting.value"
                        ng-model-options="{trackBy: '$value.name'}"
