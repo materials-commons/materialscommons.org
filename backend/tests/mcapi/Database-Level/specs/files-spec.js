@@ -62,7 +62,31 @@ describe('Feature - Files: ', function() {
             assert.equal(file.name,fetchedFile.name);
             assert.equal(file.owner,fetchedFile.owner);
         });
-        it('get by checksum');
+        it('get by checksum', function* () {
+            let file = yield testHelpers.createFileFromDemoFileSet(project,1,user);
+            assert.isOk(file);
+            assert.equal(file.owner,userId);
+
+            let checksum = file.checksum;
+            let results = yield files.getAllByChecksum(checksum);
+            assert.isOk(results);
+            let fetchedFileList = [...results];
+            assert.isOk(fetchedFileList);
+            console.log(fetchedFileList.length);
+
+            let target = null;
+            fetchedFileList.forEach((foundFile) => {
+                assert.equal(foundFile.owner,userId);
+                if (foundFile.id === file.id) {
+                    target = foundFile;
+                }
+            });
+            assert.isOk(target);
+            assert.equal(file.id, target.id);
+            assert.equal(file.name,target.name);
+            assert.equal(file.owner,target.owner);
+        });
+
         it('get by id list')
     });
 });
