@@ -102,8 +102,125 @@ describe('Feature - Files: ', function() {
                 assert(found, `failed to find file ${file.name} in query results`);
             })
         });
+        it('get by file path in project', function*() {
+            let file = yield testHelpers.createFileFromDemoFileSet(project,4,user);
+            assert.isOk(file);
+            assert.equal(file.owner,userId);
+
+            let top_directory = yield directories.get(project.id,'top');
+            let from_dir = '/';
+            let path = 'SubDir/AnotherDir';
+            let dir_args = {
+                from_dir: from_dir,
+                path: path
+            };
+            let result = yield directories.create(project.id,project.name,dir_args);
+            assert.isTrue(result.hasOwnProperty('val'));
+            let dir_list = result.val;
+            assert.equal(dir_list.length, 2);
+            assert.equal(dir_list[0].name,project.name + '/SubDir');
+            assert.equal(dir_list[1].name,project.name + '/SubDir/AnotherDir');
+
+            let targetDir = dir_list[1];
+
+            let updateArgs = {
+                move : {
+                    new_directory_id: targetDir.id,
+                    old_directory_id: top_directory.id
+                }
+            };
+
+            yield files.update(file.id,project.id,user,updateArgs);
+
+            let probe = yield directories.fileInDirectoryByName(targetDir.id,file.name);
+            assert.isOk(probe);
+            assert.equal(probe.owner,userId);
+            assert.equal(probe.id,file.id);
+
+            let filePath = project.name + "/" + path + "/" + file.name;
+            let valOrError = yield files.byPath(project.id,filePath);
+            assert.isOk(valOrError);
+            probe = valOrError.val;
+            assert.isOk(probe);
+            assert.equal(probe.owner,userId);
+            assert.equal(probe.id,file.id);
+
+            filePath = "bogas" + "/" + path + "/" + file.name;
+            valOrError = yield files.byPath(project.id,filePath);
+            assert.isOk(valOrError);
+            assert.isOk(valOrError.error);
+            assert.equal(valOrError.error,'No matching file');
+        });
     });
     describe('File Update', function () {
+        it('will rename a file', function* () {
+            let newName = 'Another name for photo.jpg';
+            let oldName = 'L124_photo.jpg';
+
+            let file = yield testHelpers.createFileFromDemoFileSet(project,1,user);
+            assert.isOk(file);
+            assert.equal(file.owner,userId);
+            assert.equal(file.name,oldName);
+
+            let updateArgs = {
+                name: newName
+            };
+
+            let valOrError = yield files.update(file.id,project.id,user,updateArgs);
+            assert.isOk(valOrError);
+            assert.isOk(valOrError.val);
+            let probe = valOrError.val;
+            assert.isOk(probe);
+            assert.equal(probe.owner,userId);
+            assert.equal(probe.name,newName);
+            assert.equal(probe.id,file.id);
+        });
+        it('will not let you rename a file to a name in use', function* () {
+            let newName = 'Another name for photo.jpg';
+            let oldName = 'L124_photo.jpg';
+
+            let file = yield testHelpers.createFileFromDemoFileSet(project,1,user);
+            assert.isOk(file);
+            assert.equal(file.owner,userId);
+            assert.equal(file.name,oldName);
+
+            let anotherFile = yield testHelpers.createFileFromDemoFileSet(project,2,user);
+            assert.isOk(anotherFile);
+            assert.equal(anotherFile.owner,userId);
+            newName = anotherFile.name;
+
+            let updateArgs = {
+                name: newName
+            };
+
+            let valOrError = yield files.update(file.id,project.id,user,updateArgs);
+            assert.isOk(valOrError);
+            assert.isOk(valOrError.error, "Expected an error return");
+            let message = `Unexpected error message: ${valOrError.error}`;
+            assert(valOrError.error.indexOf("already exists") > -1, message);
+        });
+        it('will change the description of a file', function* () {
+            let description = 'This is a test description - ' + project.name;
+
+            let file = yield testHelpers.createFileFromDemoFileSet(project,1,user);
+            assert.isOk(file);
+            assert.equal(file.owner,userId);
+            assert.equal(file.name,oldName);
+
+            let updateArgs = {
+                description: description
+            };
+
+            let valOrError = yield files.update(file.id,project.id,user,updateArgs);
+            assert.isOk(valOrError);
+            assert.isOk(valOrError.val);
+            let probe = valOrError.val;
+            assert.isOk(probe);
+            assert.equal(probe.owner,userId);
+            assert.equal(probe.id,file.id);
+            assert(probe.description !== file.description);
+
+        });
         it('will move a file', function* () {
             let file = yield testHelpers.createFileFromDemoFileSet(project,2,user);
             assert.isOk(file);
@@ -145,19 +262,7 @@ describe('Feature - Files: ', function() {
 
 
 /*
- fetchOrCreateFileFromLocalPath,
- create,
  update,
  deleteFile,
  byPath,
 */
-
-/* updates:
- name
- description
- tags
- notes
- processes
- samples
- move
- */
