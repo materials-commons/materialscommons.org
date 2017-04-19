@@ -102,15 +102,55 @@ describe('Feature - Files: ', function() {
                 assert(found, `failed to find file ${file.name} in query results`);
             })
         });
-        it('supports different versions of the file', function* () {
+        it('will move a file', function* () {
+            let file = yield testHelpers.createFileFromDemoFileSet(project,2,user);
+            assert.isOk(file);
+            assert.equal(file.owner,userId);
+
+            let top_directory = yield directories.get(project.id,'top');
+            let from_dir = '/';
+            let path = 'SubDir/AnotherDir';
+            let dir_args = {
+                from_dir: from_dir,
+                path: path
+            };
+            let result = yield directories.create(project.id,project.name,dir_args);
+            assert.isTrue(result.hasOwnProperty('val'));
+            let dir_list = result.val;
+            assert.equal(dir_list.length, 2);
+            assert.equal(dir_list[0].name,project.name + '/SubDir');
+            assert.equal(dir_list[1].name,project.name + '/SubDir/AnotherDir');
+
+            let targetDir = dir_list[1];
+
+            let updateArgs = {
+                move : {
+                    new_directory_id: targetDir.id,
+                    old_directory_id: top_directory.id
+                }
+            };
+
+            yield files.update(file.id,project.id,user,updateArgs);
+
+            let probe = yield directories.fileInDirectoryByName(targetDir.id,file.name);
+            assert.isOk(probe);
+            assert.equal(probe.owner,userId);
+            assert.equal(probe.id,file.id);
+
+        });
+        it('supports different versions of the file - same directory', function* () {
             let file1 = yield testHelpers.createFileFromDemoFileSet(project,1,user);
             assert.isOk(file1);
             assert.equal(file1.owner,userId);
+
+            // create faked version of file
             let file2 = yield testHelpers.createFileFromDemoFileSet(project,2,user);
             assert.isOk(file2);
             assert.equal(file2.owner,userId);
+            let file3 = yield testHelpers.createFileFromDemoFileSet(project,3,user);
+            assert.isOk(file3);
+            assert.equal(file3.owner,userId);
 
-            // create faked version of file
             let fileWithVersion = yield files.pushVersion(file2, file1);
             assert.isOk(fileWithVersion);
             assert.equal(fileWithVersion.id,file2.id);
@@ -122,10 +162,25 @@ describe('Feature - Files: ', function() {
             assert.isFalse(otherVersion.current);
             assert.isTrue(fileWithVersion.current);
 
-            // console.log(file1.id,file2.id);
+            fileWithVersion = yield files.pushVersion(file3, file2);
+            assert.isOk(fileWithVersion);
+            assert.equal(fileWithVersion.id,file3.id);
+            assert.isOk(fileWithVersion.parent);
+            assert.equal(fileWithVersion.parent,file2.id);
+            otherVersion = yield files.get(fileWithVersion.parent);
+            assert.isOk(otherVersion);
+            assert.equal(otherVersion.id,file2.id);
+            assert.isFalse(otherVersion.current);
+            assert.isTrue(fileWithVersion.current);
 
-            // let versions = yield files.getVersions(fileWithVersion.id);
-            // console.log(versions);
+            let versions = yield files.getVersions(fileWithVersion.id);
+            assert.isOk(versions);
+            assert.isOk(versions.val);
+            let probe =versions.val;
+            assert.equal(probe.length,2,"Some versions of the file are missing");
+
+            assert.equal(probe[0].id, file2.id);
+            assert.equal(probe[1].id, file1.id);
 
         });
     });
@@ -144,3 +199,13 @@ describe('Feature - Files: ', function() {
  byPath,
  getVersions
 */
+
+/* updates:
+ name
+ description
+ tags
+ notes
+ processes
+ samples
+ move
+ */
