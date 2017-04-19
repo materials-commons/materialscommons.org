@@ -381,33 +381,16 @@ function* getVersions(fileID) {
         return {val: []};
     }
 
-    let files = [];
+    let fileIdList = [];
 
-    // get all files in the given files directory
-    let rql = r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'})
-        .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
-        .eqJoin('datafile_id', r.table('datafiles')).zip();
-    let allDirFiles = yield runQuery(rql);
-    let filesIdMap = _.indexBy(allDirFiles, 'id');
     let current = f;
-    while (true) {
-        let parentFile = filesIdMap[current.id];
-        files.push(
-            {
-                otype: 'file',
-                size: parentFile.size,
-                name: parentFile.name,
-                path: parentFile.name,
-                mediatype: parentFile.mediatype,
-                checksum: parentFile.checksum,
-                id: parentFile.id
-            });
-        if (parentFile.parent !== '') {
-            current = parentFile;
-        } else {
-            break;
-        }
+    while (current.parent) {
+        fileIdList.push(current.parent);
+        current = current.parent;
     }
+
+    let files = yield r.table('datafiles').getAll(r.args(fileIdList));
+
     return {val: files};
 }
 
