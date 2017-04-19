@@ -72,7 +72,6 @@ describe('Feature - Files: ', function() {
             assert.isOk(results);
             let fetchedFileList = [...results];
             assert.isOk(fetchedFileList);
-            console.log(fetchedFileList.length);
 
             let target = null;
             fetchedFileList.forEach((foundFile) => {
@@ -86,8 +85,49 @@ describe('Feature - Files: ', function() {
             assert.equal(file.name,target.name);
             assert.equal(file.owner,target.owner);
         });
+        it('get by id list', function* (){
+            let file1 = yield testHelpers.createFileFromDemoFileSet(project,1,user);
+            assert.isOk(file1);
+            assert.equal(file1.owner,userId);
+            let file2 = yield testHelpers.createFileFromDemoFileSet(project,2,user);
+            assert.isOk(file2);
+            assert.equal(file2.owner,userId);
 
-        it('get by id list')
+            let idList = [file1.id, file2.id];
+            let fileList = yield files.getList(project.id,idList);
+            assert.isOk(fileList);
+            assert.equal(fileList.length,2);
+            fileList.forEach (file => {
+                let found = (idList.indexOf(file.id) > -1);
+                assert(found, `failed to find file ${file.name} in query results`);
+            })
+        });
+        it('supports different versions of the file', function* () {
+            let file1 = yield testHelpers.createFileFromDemoFileSet(project,1,user);
+            assert.isOk(file1);
+            assert.equal(file1.owner,userId);
+            let file2 = yield testHelpers.createFileFromDemoFileSet(project,2,user);
+            assert.isOk(file2);
+            assert.equal(file2.owner,userId);
+
+            // create faked version of file
+            let fileWithVersion = yield files.pushVersion(file2, file1);
+            assert.isOk(fileWithVersion);
+            assert.equal(fileWithVersion.id,file2.id);
+            assert.isOk(fileWithVersion.parent);
+            assert.equal(fileWithVersion.parent,file1.id);
+            let otherVersion = yield files.get(fileWithVersion.parent);
+            assert.isOk(otherVersion);
+            assert.equal(otherVersion.id,file1.id);
+            assert.isFalse(otherVersion.current);
+            assert.isTrue(fileWithVersion.current);
+
+            // console.log(file1.id,file2.id);
+
+            // let versions = yield files.getVersions(fileWithVersion.id);
+            // console.log(versions);
+
+        });
     });
 });
 
