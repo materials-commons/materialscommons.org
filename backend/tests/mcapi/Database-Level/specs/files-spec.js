@@ -205,7 +205,6 @@ describe('Feature - Files: ', function() {
             let file = yield testHelpers.createFileFromDemoFileSet(project,1,user);
             assert.isOk(file);
             assert.equal(file.owner,userId);
-            assert.equal(file.name,oldName);
 
             let updateArgs = {
                 description: description
@@ -259,10 +258,3 @@ describe('Feature - Files: ', function() {
         });
     });
 });
-
-
-/*
- update,
- deleteFile,
- byPath,
-*/
