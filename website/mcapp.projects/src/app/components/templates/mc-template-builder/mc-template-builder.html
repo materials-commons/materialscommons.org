@@ -1,8 +1,29 @@
-<div layout="column" ng-if="!$ctrl.templateLoaded" layout-align="center center">
-    <div layout="row" layout-align="center center">
-        <md-button class="md-primary" ng-click="$ctrl.createNew()">create new template</md-button>
-        <md-button class="md-primary" ng-click="$ctrl.editExisting()">edit existing template</md-button>
-    </div>
+<div layout="column" ng-if="!$ctrl.templateLoaded" layout-align="center center" flex>
+    <md-button class="md-primary" ng-click="$ctrl.createNew()">create new template</md-button>
+    <input class="mc-input-as-line" placeholder="Search Templates..." ng-model="$ctrl.search" flex>
+    <md-table-container>
+        <table md-table>
+            <thead md-head>
+            <tr md-row>
+                <th md-column>Template</th>
+                <th md-column>Type</th>
+                <th md-column>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr md-row ng-repeat="template in $ctrl.templates | filter:$ctrl.search | orderBy:'name'">
+                <td md-cell><a ng-click="$ctrl.viewTemplate(template)">{{template.name}}</a></td>
+                <td md-cell>{{template.process_type}}</td>
+                <td md-cell>
+                    <div layout="row">
+                        <md-button class="md-primary" ng-click="$ctrl.editTemplate(template)">edit</md-button>
+                        <md-button class="md-primary" ng-click="$ctrl.cloneTemplate(template)">clone</md-button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
 </div>
 <div layout="row" flex="100" ng-if="$ctrl.templateLoaded">
     <div layout="column" flex="25" layout-margin>

@@ -10,6 +10,12 @@ class MCTemplateBuilderComponentController {
         this.existingTemplate = false;
     }
 
+    $onInit() {
+        this.templatesAPI.getAllTemplates().then(
+            (templates) => this.templates = templates
+        );
+    }
+
     static emptyTemplate() {
         return {
             name: '',
@@ -28,6 +34,47 @@ class MCTemplateBuilderComponentController {
     createNew() {
         this.templateLoaded = true;
         this.template = MCTemplateBuilderComponentController.emptyTemplate();
+    }
+
+    editTemplate(template) {
+        this.template = template;
+        this.templateLoaded = true;
+        this.existingTemplate = true;
+    }
+
+    cloneTemplate(template) {
+        template.name = '';
+        delete template.id;
+        this.template = template;
+        this.templateLoaded = true;
+        this.existingTemplate = false;
+    }
+
+    viewTemplate(template) {
+        this.$mdDialog.show({
+            templateUrl: 'app/components/templates/mc-template-builder/view-template-dialog.html',
+            controller: ViewTemplateDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            multiple: true,
+            locals: {
+                template: template
+            }
+        }).then(
+            (command) => {
+                console.log('command', command);
+                switch (command) {
+                    case 'edit':
+                        this.editTemplate(template);
+                        break;
+                    case 'clone':
+                        this.cloneTemplate(template);
+                        break;
+                    default:
+                        this.cancel();
+                }
+            }
+        );
     }
 
     editExisting() {
@@ -79,8 +126,24 @@ class MCTemplateBuilderComponentController {
     }
 
     cancel() {
-        this.templateLoaded = false;
-        this.existingTemplate = false;
+        this.templatesAPI.getAllTemplates().then(
+            (templates) => {
+                this.templates = templates;
+                this.templateLoaded = false;
+                this.existingTemplate = false;
+            }
+        );
+    }
+}
+
+class ViewTemplateDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    close(command) {
+        this.$mdDialog.hide(command);
     }
 }
 
