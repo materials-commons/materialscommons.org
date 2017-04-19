@@ -6,31 +6,31 @@
                 <div ng-switch="::setting.otype">
                     <!--------- number --------->
                     <div ng-switch-when="number">
-                        <mc-attribute-number
-                                setting="setting"
-                                template-id="$ctrl.templateId"
-                                process-id="$ctrl.processId"
-                                attribute="$ctrl.attribute">
+                        <mc-attribute-number flex
+                                             setting="setting"
+                                             template-id="$ctrl.templateId"
+                                             process-id="$ctrl.processId"
+                                             attribute="$ctrl.attribute">
                         </mc-attribute-number>
                     </div>
 
                     <!------- integer ------>
                     <div ng-switch-when="integer">
-                        <mc-attribute-number
-                                setting="setting"
-                                template-id="$ctrl.templateId"
-                                process-id="$ctrl.processId"
-                                attribute="$ctrl.attribute">
+                        <mc-attribute-number flex
+                                             setting="setting"
+                                             template-id="$ctrl.templateId"
+                                             process-id="$ctrl.processId"
+                                             attribute="$ctrl.attribute">
                         </mc-attribute-number>
                     </div>
 
                     <!------- float ------>
                     <div ng-switch-when="float">
-                        <mc-attribute-number
-                                setting="setting"
-                                template-id="$ctrl.templateId"
-                                process-id="$ctrl.processId"
-                                attribute="$ctrl.attribute">
+                        <mc-attribute-number flex
+                                             setting="setting"
+                                             template-id="$ctrl.templateId"
+                                             process-id="$ctrl.processId"
+                                             attribute="$ctrl.attribute">
                         </mc-attribute-number>
                     </div>
 
@@ -46,31 +46,31 @@
 
                     <!--------- date --------->
                     <div ng-switch-when="date">
-                        <mc-attribute-date
-                                setting="setting"
-                                template-id="$ctrl.templateId"
-                                process-id="$ctrl.processId"
-                                attribute="$ctrl.attribute"
+                        <mc-attribute-date flex
+                                           setting="setting"
+                                           template-id="$ctrl.templateId"
+                                           process-id="$ctrl.processId"
+                                           attribute="$ctrl.attribute"
                         ></mc-attribute-date>
                     </div>
 
                     <!--------- selection --------->
                     <div ng-switch-when="selection">
-                        <mc-attribute-selection
-                                setting="setting"
-                                template-id="$ctrl.templateId"
-                                process-id="$ctrl.processId"
-                                attribute="$ctrl.attribute">
+                        <mc-attribute-selection flex
+                                                setting="setting"
+                                                template-id="$ctrl.templateId"
+                                                process-id="$ctrl.processId"
+                                                attribute="$ctrl.attribute">
                         </mc-attribute-selection>
                     </div>
 
                     <!--------- string --------->
                     <div ng-switch-when="string">
-                        <mc-attribute-string
-                                setting="setting"
-                                template-id="$ctrl.templateId"
-                                process-id="$ctrl.processId"
-                                attribute="$ctrl.attribute">
+                        <mc-attribute-string flex
+                                             setting="setting"
+                                             template-id="$ctrl.templateId"
+                                             process-id="$ctrl.processId"
+                                             attribute="$ctrl.attribute">
                         </mc-attribute-string>
                     </div>
 
