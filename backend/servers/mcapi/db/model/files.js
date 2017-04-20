@@ -90,11 +90,10 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
 function* determineUsesidIfNeeded(checksum){
     let usesid = "";
     let checksumHit = yield r.table('datafiles')
-        .getAll(checksum, {index: 'checksum'})
-        .filter({'usesid': ''});
+        .getAll(checksum, {index: 'checksum'});
 
     if (checksumHit && (checksumHit.length > 0)) {
-        usesid = checksumHit[0].id;
+        usesid = checksumHit[0].usesid?checksumHit[0].usesid:checksumHit[0].id;
     }
     return usesid;
 }
@@ -333,6 +332,7 @@ function *deleteFile(fileID) {
     yield r.table('project2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
     yield r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
     yield r.table('experiment2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
+    // yield deletePhysicalFileIfAppropriate(f);
     return {val: f};
 }
 
