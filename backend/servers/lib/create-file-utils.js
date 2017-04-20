@@ -23,26 +23,29 @@ function getTmpUploadDir() {
     return path;
 }
 
-function datafilePath(fileID) {
+function datafilePath(fileId) {
     let base = getFileStoreDir();
-    let file_id = fileID;
-    let part = file_id.split("-")[1];
+    let part = fileId.split("-")[1];
     let partA = part.substring(0, 2);
     let partB = part.substring(2);
     let results = path.join(base,partA);
     results = path.join(results,partB);
-    results = path.join(results,file_id);
+    results = path.join(results,fileId);
     return results;
 }
 
 function* datafilePathExists(fileId) {
-    let path = datafilePath(fileID);
-    let stat = yield fs.stat(path);
+    let path = datafilePath(fileId);
+    let stat = null;
+    try {
+        let stat = yield fs.statAsync(path);
+    } catch (e) {}
+    if (!stat) return false;
     return stat.isFile();
 }
 
-function* moveToStore (sourcePath,fileID) {
-    let destPath = datafilePath(fileID);
+function* moveToStore (sourcePath,fileId) {
+    let destPath = datafilePath(fileId);
     let destDir = path.dirname(destPath);
     yield mkdirpAsync(destDir);
     yield fs.renameAsync(sourcePath, destPath);
