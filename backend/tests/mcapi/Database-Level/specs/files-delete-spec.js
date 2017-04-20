@@ -47,31 +47,13 @@ describe('Feature - Files: ', function() {
 
             let project = yield setupProject();
 
-            let newName = 'Another name for photo.jpg';
-            let oldName = 'L124_photo.jpg';
-
-            let file1 = yield testHelpers.createFileFromDemoFileSet(project,1,user);
+            let file1 = yield testHelpers.createUniqueTestFile(project,user);
             assert.isOk(file1);
             assert.equal(file1.owner,userId);
-            assert.equal(file1.name,oldName);
 
-            let updateArgs = {
-                name: newName
-            };
-
-            let valOrError = yield files.update(file1.id,project.id,user,updateArgs);
-            assert.isOk(valOrError);
-            assert.isOk(valOrError.val);
-            let probe = valOrError.val;
-            assert.isOk(probe);
-            assert.equal(probe.owner,userId);
-            assert.equal(probe.name,newName);
-            assert.equal(probe.id,file1.id);
-
-            let file2 = yield testHelpers.createFileFromDemoFileSet(project,1,user);
+            let file2 = yield testHelpers.createTestFileFromGivenFile(file1,project,user);
             assert.isOk(file2);
             assert.equal(file2.owner,userId);
-            assert.equal(file1.checksum, file2.checksum);
 
             let usesid = file1.id;
             if (file1.usesid) {
@@ -79,7 +61,7 @@ describe('Feature - Files: ', function() {
             }
             assert.equal(file2.usesid, usesid);
 
-            valOrError = yield files.deleteFile(file2.id);
+            let valOrError = yield files.deleteFile(file2.id);
             assert.isOk(valOrError);
             assert.isOk(valOrError.val);
             let fileDeleted = valOrError.val;
@@ -93,31 +75,13 @@ describe('Feature - Files: ', function() {
 
             let project = yield setupProject();
 
-            let newName = 'Another name for photo.jpg';
-            let oldName = 'L124_photo.jpg';
-
-            let file1 = yield testHelpers.createFileFromDemoFileSet(project,1,user);
+            let file1 = yield testHelpers.createUniqueTestFile(project,user);
             assert.isOk(file1);
             assert.equal(file1.owner,userId);
-            assert.equal(file1.name,oldName);
 
-            let updateArgs = {
-                name: newName
-            };
-
-            let valOrError = yield files.update(file1.id,project.id,user,updateArgs);
-            assert.isOk(valOrError);
-            assert.isOk(valOrError.val);
-            let probe = valOrError.val;
-            assert.isOk(probe);
-            assert.equal(probe.owner,userId);
-            assert.equal(probe.name,newName);
-            assert.equal(probe.id,file1.id);
-
-            let file2 = yield testHelpers.createFileFromDemoFileSet(project,1,user);
+            let file2 = yield testHelpers.createTestFileFromGivenFile(file1,project,user);
             assert.isOk(file2);
             assert.equal(file2.owner,userId);
-            assert.equal(file1.checksum, file2.checksum);
 
             let continueFlag = true;
             let checksum = file1.checksum;
@@ -137,7 +101,7 @@ describe('Feature - Files: ', function() {
                     baseFileId = target.usesid;
                 }
 
-                valOrError = yield files.deleteFile(target.id);
+                let valOrError = yield files.deleteFile(target.id);
                 assert.isOk(valOrError);
                 assert.isOk(valOrError.val, valOrError.error);
                 let fileDeleted = valOrError.val;
