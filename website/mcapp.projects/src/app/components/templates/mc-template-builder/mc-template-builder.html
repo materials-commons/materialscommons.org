@@ -3,17 +3,21 @@
     <input class="mc-input-as-line" placeholder="Search Templates..." ng-model="$ctrl.search" flex>
     <md-table-container>
         <table md-table>
-            <thead md-head>
+            <thead md-head md-order="$ctrl.sortOrder">
             <tr md-row>
-                <th md-column>Template</th>
-                <th md-column>Type</th>
+                <th md-column md-order-by="name">Template</th>
+                <th md-column>Description</th>
+                <th md-column md-order-by="process_type">Type</th>
+                <th md-column md-order-by="does_transform">Transforms?</th>
                 <th md-column>Action</th>
             </tr>
             </thead>
             <tbody>
-            <tr md-row ng-repeat="template in $ctrl.templates | filter:$ctrl.search | orderBy:'name'">
+            <tr md-row ng-repeat="template in $ctrl.templates | filter:$ctrl.search | orderBy:$ctrl.sortOrder">
                 <td md-cell><a ng-click="$ctrl.viewTemplate(template)">{{template.name}}</a></td>
+                <td md-cell>{{template.template_description}}</td>
                 <td md-cell>{{template.process_type}}</td>
+                <td md-cell>{{template.does_transform ? 'Yes' : 'No'}}</td>
                 <td md-cell>
                     <div layout="row">
                         <md-button class="md-primary" ng-click="$ctrl.editTemplate(template)">edit</md-button>

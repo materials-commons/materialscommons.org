@@ -5,6 +5,7 @@ class MCTemplateBuilderComponentController {
         this.toast = toast;
         this.$mdDialog = $mdDialog;
 
+        this.sortOrder = 'name';
         this.whichElements = 'measurements';
         this.templateLoaded = false;
         this.existingTemplate = false;
