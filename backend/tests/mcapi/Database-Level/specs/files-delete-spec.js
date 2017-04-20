@@ -123,10 +123,11 @@ describe('Feature - Files: ', function() {
                     assert(isNotDeleted,message);
                     continueFlag = true;
                 } else {
-                    console.log("should have deleted physical file, but does not");
+                    console.log("should have deleted physical file");
                     console.log(isNotDeleted, baseFileId);
+                    console.log("path: ", yield fileUtils.datafilePath(baseFileId));
                     let message = `Physical file for id ${baseFileId} was not deleted.`;
-//                    assert.isFalse(isNotDeleted,message);
+                    assert.isFalse(isNotDeleted,message);
                     continueFlag = false;
                 }
 
