@@ -2,6 +2,7 @@ const Promise = require("bluebird");
 const fs = Promise.promisifyAll(require('fs'));
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const mkdirpSync = require('mkdirp');
+const fileExistsSync = require('fs').existsSync;
 const path = require('path');
 
 function getFileStoreDir() {
@@ -36,12 +37,7 @@ function datafilePath(fileId) {
 
 function* datafilePathExists(fileId) {
     let path = datafilePath(fileId);
-    let stat = null;
-    try {
-        let stat = yield fs.statAsync(path);
-    } catch (e) {}
-    if (!stat) return false;
-    return stat.isFile();
+    return fileExistsSync(path);
 }
 
 function* moveToStore (sourcePath,fileId) {
