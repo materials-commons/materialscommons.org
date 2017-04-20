@@ -81,11 +81,35 @@ describe('Feature - Projects: ', function () {
             yield testDatasets({assertExists: true});
 
         });
+        it('supports a dry run mode', function*() {
+            this.timeout(8000); // test take up to 8 seconds
+
+            yield setup();
+
+            let dryRun = true;
+
+            let project_id = project.id;
+            assert.isOk(project_id);
+            let experiment_id = experiment.id;
+            assert.isOk(experiment_id);
+
+            let results = yield projectDelete.deleteProject(project_id, {dryRun: dryRun});
+            assert.isOk(results);
+            let tally = results.val;
+            assert.isOk(tally);
+
+            //yield checkTally(tally, project_id);
+            //yield confirmDemoProjectCoverage(tally, {dryRun: dryRun})
+
+        });
+        it('deletes the indicated project')
     });
 });
 
 
 function* setup() {
+
+    // create a renamed demo project for testing
     let valOrError = yield testHelpers.createDemoTestProject(user);
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
@@ -134,5 +158,72 @@ function* testDatasets(options) {
     check = yield r.table('experiment2dataset').getAll(r.args([...idList]), {index: 'dataset_id'});
     assert.isOk(check);
     assert.equal(check.length, count);
+}
+
+function* checkTally(tally, projectId) {
+
+    let experimentCount = 1;
+    let datasetCount = 2;
+    let fileCount = 16;
+    let sampleCount = 1;
+
+    assert.isOk(tally.project);
+    assert.equal(tally.project.id,projectId);
+
+    console.log(tally.project);
+
+    assert.isOk(tally.experiments);
+    assert.equal(tally.experiments.length, experimentCount);
+
+    assert.isOk(tally.datasets);
+    assert.equal(tally.datasets.length, datasetCount);
+
+    assert.isOk(tally.files);
+    assert.equal(tally.files.length, fileCount);
+
+    assert.isOk(tally.samples);
+    assert.equal(tally.samples.length, sampleCount);
+
+}
+
+function* confirmDemoProjectCoverage(project, tally, options) {
+
+    let dryRun = options && options.dryRun;
+
+    yield checkLinks(projectId,{dryRun: dryRun});
+}
+
+function* checkLinks(projectId, options){
+
+    let forDryRun = options && options.forDryRun;
+
+    let tables = [
+        'project2datadir' ,
+        'project2datafile' ,
+        'project2experiment' ,
+        'project2process' ,
+        'project2sample'
+    ];
+
+    if (forDryRun) {
+        let lengths = [2,16,1,5,8];
+        for (let i = 0; i < tables.length; i++) {
+            let table = tables[i];
+            let list = yield r.table(table).getAll(experiment_id, {index: 'experiment_id'});
+            let expectedLength = lengths[i];
+            let l = list.length;
+            let message = `missing links in ${table} for experment id = ${experiment_id}`
+            assert.equal(l,expectedLength,message);
+        }
+
+    } else {
+        for (let i = 0; i < tables.length; i++) {
+            let table = tables[i];
+            let list = yield r.table(table).getAll(experiment_id,{index: 'experiment_id'});
+            let l = list.length;
+            let message = `expected no links in ${table}, but found ${l} for experment id = ${experiment_id}`
+            assert.equal(l,0,message);
+        }
+    }
 }
 
