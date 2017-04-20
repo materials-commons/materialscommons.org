@@ -87,13 +87,13 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
     return file;
 }
 
-function* determineUsesidIfNeeded(checksum){
+function* determineUsesidIfNeeded(checksum) {
     let usesid = "";
     let checksumHit = yield r.table('datafiles')
         .getAll(checksum, {index: 'checksum'});
 
     if (checksumHit && (checksumHit.length > 0)) {
-        usesid = checksumHit[0].usesid?checksumHit[0].usesid:checksumHit[0].id;
+        usesid = checksumHit[0].usesid ? checksumHit[0].usesid : checksumHit[0].id;
     }
     return usesid;
 }
@@ -332,8 +332,18 @@ function *deleteFile(fileID) {
     yield r.table('project2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
     yield r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
     yield r.table('experiment2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
-    // yield deletePhysicalFileIfAppropriate(f);
+    yield deletePhysicalFileIfAppropriate(f);
     return {val: f};
+}
+
+function* deletePhysicalFileIfAppropriate(file) {
+    let count = yield r.table('datafiles').getAll(file.checksum, {index: 'checksum'}).count();
+    if (count === 0) {
+        let baseId = file.id;
+        if (file.usesid) baseId = file.usesid;
+        let filePath = fileUtils.datafilePath(baseId);
+        let x = yield fileUtils.removeFileInStore(baseId);
+    }
 }
 
 function* byPath(projectID, filePath) {

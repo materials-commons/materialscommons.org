@@ -25,8 +25,8 @@ const testHelpers = require('./test-helpers');
 
 const base_project_name = "Test file project - ";
 
-let random_name = function(){
-    let number = Math.floor(Math.random()*10000);
+let random_name = function () {
+    let number = Math.floor(Math.random() * 10000);
     return base_project_name + number;
 };
 
@@ -41,19 +41,19 @@ before(function*() {
 
 });
 
-describe('Feature - Files: ', function() {
+describe('Feature - Files: ', function () {
     describe('Delete', function () {
-        it('Will delete a file that has the uses id set', function* () {
+        it('Will delete a file that has the uses id set', function*() {
 
             let project = yield setupProject();
 
-            let file1 = yield testHelpers.createUniqueTestFile(project,user);
+            let file1 = yield testHelpers.createUniqueTestFile(project, user);
             assert.isOk(file1);
-            assert.equal(file1.owner,userId);
+            assert.equal(file1.owner, userId);
 
-            let file2 = yield testHelpers.createTestFileFromGivenFile(file1,project,user);
+            let file2 = yield testHelpers.createTestFileFromGivenFile(file1, project, user);
             assert.isOk(file2);
-            assert.equal(file2.owner,userId);
+            assert.equal(file2.owner, userId);
 
             let usesid = file1.id;
             if (file1.usesid) {
@@ -66,22 +66,22 @@ describe('Feature - Files: ', function() {
             assert.isOk(valOrError.val);
             let fileDeleted = valOrError.val;
 
-            assert.equal(fileDeleted.id,file2.id);
+            assert.equal(fileDeleted.id, file2.id);
 
             let message = `Physical file for id ${file2.id} unexpectedly missing.`;
-            assert(fileUtils.datafilePathExists(file2.id),message)
+            assert(fileUtils.datafilePathExists(file2.id), message)
         });
-        it('Will delete a file but keep physical file when needed', function* () {
+        it('Will delete a file but keep physical file when needed', function*() {
 
             let project = yield setupProject();
 
-            let file1 = yield testHelpers.createUniqueTestFile(project,user);
+            let file1 = yield testHelpers.createUniqueTestFile(project, user);
             assert.isOk(file1);
-            assert.equal(file1.owner,userId);
+            assert.equal(file1.owner, userId);
 
-            let file2 = yield testHelpers.createTestFileFromGivenFile(file1,project,user);
+            let file2 = yield testHelpers.createTestFileFromGivenFile(file1, project, user);
             assert.isOk(file2);
-            assert.equal(file2.owner,userId);
+            assert.equal(file2.owner, userId);
 
             let continueFlag = true;
             let checksum = file1.checksum;
@@ -106,7 +106,7 @@ describe('Feature - Files: ', function() {
                 assert.isOk(valOrError.val, valOrError.error);
                 let fileDeleted = valOrError.val;
 
-                assert.equal(fileDeleted.id,target.id);
+                assert.equal(fileDeleted.id, target.id);
                 results = yield files.getAllByChecksum(checksum);
                 assert.isOk(results);
                 fetchedFileList = [...results];
@@ -114,40 +114,32 @@ describe('Feature - Files: ', function() {
 
                 let fileNumber2 = fetchedFileList.length;
 
-                assert.equal((fileNumber1-fileNumber2),1);
+                assert.equal((fileNumber1 - fileNumber2), 1);
 
                 let isNotDeleted = yield fileUtils.datafilePathExists(baseFileId);
 
                 if (fileNumber2 > 0) {
-                    let message = `Physical file for id ${baseFileId} unexpectedly missing.`;
-                    assert(isNotDeleted,message);
+                    let message = `Physical file for id ${baseFileId} unexpectedly missing`;
+                    assert(isNotDeleted, message);
                     continueFlag = true;
                 } else {
-                    console.log("should have deleted physical file");
-                    console.log(isNotDeleted, baseFileId);
-                    console.log("path: ", yield fileUtils.datafilePath(baseFileId));
-                    let message = `Physical file for id ${baseFileId} was not deleted.`;
-                    assert.isFalse(isNotDeleted,message);
+                    let message = `Physical file for id ${baseFileId} was not deleted`;
+                    assert.isFalse(isNotDeleted, message);
                     continueFlag = false;
                 }
 
-                console.log("Number of files left: ", fileNumber2);
-
             }
-            console.log("done")
         });
     });
 });
 
 function* setupProject() {
 
-    let results = yield testHelpers.createProject(random_name(),user);
+    let results = yield testHelpers.createProject(random_name(), user);
     assert.isOk(results);
     assert.isOk(results.val);
     let project = results.val;
-    assert.equal(project.owner,userId);
-
-    console.log("Project Name: ", project.name);
+    assert.equal(project.owner, userId);
 
     return project;
 
