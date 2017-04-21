@@ -38,6 +38,9 @@ function* deleteProject(projectId, options) {
         }
     }
 
+    let processIdList = yield r.table("project2process")
+        .getAll(projectId,{index: "project_id"}).getField('process_id');
+
     let fileIdList = yield r.table("project2datafile")
         .getAll(projectId,{index: "project_id"}).getField('datafile_id');
 
@@ -72,14 +75,16 @@ function* deleteProject(projectId, options) {
             experiments: deletedExperiments,
             datasets: datasets,
             files: fileIdList,
+            processes: processIdList,
             samples: samples
         }
     };
 
     if (!dryRun) {
         yield deleteSamples(samples);
-        yield deleteFiles(fileIdList)
-//        yield deleteLinks(projectId);
+        yield deleteProcesses(processIdList);
+        yield deleteFiles(fileIdList);
+        yield deleteLinks(projectId);
         yield deteleProjectRecord(projectId);
     }
 
@@ -109,7 +114,15 @@ function* testForPublishedDatasets(projectId){
 }
 
 function* deleteSamples(samples) {
-    console.log("Number of samples: " + samples.length);
+    let sampleIdList = [];
+    samples.forEach((sample) => {
+        sampleIdList.push(sample.id);
+    });
+    yield r.table("samples").getAll(r.args(sampleIdList)).delete();
+}
+
+function* deleteProcesses(processIdList) {
+    yield r.table("processes").getAll(r.args(processIdList)).delete();
 }
 
 function* deleteFiles(fileIdList) {
@@ -133,5 +146,5 @@ function* deleteLinks(projectId) {
 }
 
 function* deteleProjectRecord(projectId) {
-    console.log("Delete project record:", projectId);
+    yield r.table("projects").get(projectId).delete();
 }
