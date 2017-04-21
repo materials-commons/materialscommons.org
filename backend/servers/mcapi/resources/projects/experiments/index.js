@@ -1,5 +1,5 @@
 const experiments = require('../../../db/model/experiments');
-const experimentDelete = require('./experiments-delete');
+const experimentDelete = require('../../../db/model/experiment-delete');
 const check = require('../../../db/model/check');
 const schema = require('../../../schema');
 const parse = require('co-body');
@@ -111,7 +111,45 @@ function* createExperiment(next) {
 function* deleteExperiment(next) {
     let project_id = this.params.project_id;
     let experiment_id = this.params.experiment_id;
-    let rv = experimentDelete.deleteExperiment(projectId, experimentId);
+    let options = {
+        dryRun: false,
+        deleteProcesses: false
+    };
+    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id,options);
+    if (rv.error) {
+        this.status = status.NOT_ACCEPTABLE;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
+}
+
+function* deleteExperimentFully(next) {
+    let project_id = this.params.project_id;
+    let experiment_id = this.params.experiment_id;
+    let options = {
+        dryRun: false,
+        deleteProcesses: true
+    };
+    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id,options);
+    if (rv.error) {
+        this.status = status.NOT_ACCEPTABLE;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
+}
+
+function* deleteExperimentDryRun(next) {
+    let project_id = this.params.project_id;
+    let experiment_id = this.params.experiment_id;
+    let options = {
+        dryRun: true,
+        deleteProcesses: true
+    };
+    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id,options);
     if (rv.error) {
         this.status = status.NOT_ACCEPTABLE;
         this.body = rv;
@@ -143,6 +181,8 @@ function createResource() {
     router.delete('/:experiment_id', deleteExperiment);
     router.put('/:experiment_id', updateExperiment);
     router.get('/:experiment_id/files', getFilesForExperiment);
+    router.get('/:experiment_id/delete/dryrun', deleteExperimentDryRun);
+    router.delete('/:experiment_id/delete/fully', deleteExperimentFully);
 
     let datasetsResource = datasets.createResource();
     router.use('/:experiment_id/datasets', datasetsResource.routes(), datasetsResource.allowedMethods());
