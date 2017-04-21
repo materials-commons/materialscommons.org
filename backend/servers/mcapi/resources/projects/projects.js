@@ -1,4 +1,5 @@
 const projects = require('../../db/model/projects');
+const projectDelete = require('../../db/model/project-delete');
 const parse = require('co-body');
 const status = require('http-status');
 const ra = require('../resource-access');
@@ -41,6 +42,34 @@ function* getProject(next) {
     yield next;
 }
 
+function* deleteProject(next) {
+    let options = {
+        dryRun: false
+    }
+    let rv = yield projectDelete.deleteProject(this.params.project_id,options);
+    if (rv.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
+}
+
+function* deleteProjectDryRun(next) {
+    let options = {
+        dryRun: true
+    }
+    let rv = yield projectDelete.deleteProject(this.params.project_id,options);
+    if (rv.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
+}
+
 function* update(next) {
     let attrs = yield parse(this);
     this.body = yield projects.update(this.params.project_id, attrs);
@@ -54,6 +83,9 @@ function createResource() {
     router.use('/:project_id', ra.validateProjectAccess);
     router.put('/:project_id', update);
     router.get('/:project_id', getProject);
+    router.delete('/:project_id', ra.validateProjectOwner, deleteProject);
+    router.get('/:project_id/delete/dryrun', ra.validateProjectOwner, deleteProjectDryRun);
+
 
     let samplesResource = samples.createResource();
     router.use('/:project_id/samples', samplesResource.routes(), samplesResource.allowedMethods());

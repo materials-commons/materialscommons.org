@@ -178,11 +178,11 @@ function createResource() {
     router.use('/:experiment_id', ra.validateExperimentInProject);
 
     router.get('/:experiment_id', getExperiment);
-    router.delete('/:experiment_id', deleteExperiment);
+    router.delete('/:experiment_id', ra.validateExperimentOwner, deleteExperiment);
     router.put('/:experiment_id', updateExperiment);
     router.get('/:experiment_id/files', getFilesForExperiment);
-    router.get('/:experiment_id/delete/dryrun', deleteExperimentDryRun);
-    router.delete('/:experiment_id/delete/fully', deleteExperimentFully);
+    router.get('/:experiment_id/delete/dryrun', ra.validateExperimentOwner, deleteExperimentDryRun);
+    router.delete('/:experiment_id/delete/fully', ra.validateExperimentOwner, deleteExperimentFully);
 
     let datasetsResource = datasets.createResource();
     router.use('/:experiment_id/datasets', datasetsResource.routes(), datasetsResource.allowedMethods());

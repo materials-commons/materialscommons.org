@@ -25,6 +25,32 @@ function* validateProjectAccess(next) {
     yield next;
 }
 
+function* validateProjectOwner(next) {
+    let projectId = this.params.project_id;
+    if (projectId) {
+        let isOwner = check.isUserProjectOwner(this.reqctx.user.id,projectId);
+        if (!isOwner) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: 'Only the project owner can delete a project'};
+            return this.status;
+        }
+    }
+    yield next;
+}
+
+function* validateExperimentOwner(next) {
+    let experimentId = this.params.experiment_id;
+    if (experimentId) {
+        let isOwner = check.isUserExperimentOwner(this.reqctx.user.id,experimentId);
+        if (!isOwner) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: 'Only the experiment owner can delete an experiment'};
+            return this.status;
+        }
+    }
+    yield next;
+}
+
 function* validateExperimentInProject(next) {
     let projectId = this.params.project_id;
     let experimentId = this.params.experiment_id;
@@ -151,6 +177,8 @@ function* validateNoteInExperiment(next) {
 
 module.exports = {
     validateProjectAccess,
+    validateProjectOwner,
+    validateExperimentOwner,
     validateExperimentInProject,
     validateDatasetInExperiment,
     validateSampleInExperiment,
