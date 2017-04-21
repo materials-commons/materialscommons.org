@@ -47,8 +47,6 @@ before(function*() {
     assert.equal(project.users.length,1);
     assert.equal(project.users[0].user_id, userId);
 
-    console.log("project name: ", projectName);
-
     // create an experiment
     let experimentName = "Experment For Test";
     results = yield testHelpers.createExperiment(project,experimentName);

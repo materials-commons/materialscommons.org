@@ -161,8 +161,6 @@ function* createRenamedDemoProject() {
     assert.isOk(sampleIdList);
     assert.equal(sampleIdList.length,8);
 
-    console.log('Project name: ', project.name);
-    console.log('Project id: ', project.id);
 }
 
 function* testDatasets(options) {

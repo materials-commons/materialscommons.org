@@ -129,7 +129,6 @@ before(function*() {
     // reuse an existing sample for that process
     let sampleToUse = sample_list[1];
     results = yield addSamplesToProcess(project,extraExperiment,extraProcess,[sampleToUse]);
-//    console.log(results);
 
 });
 

@@ -13,8 +13,6 @@ function* deleteProject(projectId, options) {
     let errorAddIn =
         " WARNING. The project may have been partially deleted - project state unknown.";
 
-    console.log("dryRun: ",dryRun);
-
     let hasPublishedDatasets = yield testForPublishedDatasets(projectId);
     if (hasPublishedDatasets) {
         return {error: "Can not delete an experiment with published datasets"}

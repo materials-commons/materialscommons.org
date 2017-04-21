@@ -45,8 +45,6 @@ before(function*() {
     project = results.val;
     assert.equal(project.owner,userId);
 
-    console.log("Project Name: ", project.name);
-
 });
 
 describe('Feature - Files: ', function() {
