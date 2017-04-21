@@ -18,7 +18,7 @@ const backend_base = mcapi_base + "/db/model";
 const dbModelUsers = require(backend_base + '/users');
 const projects = require(backend_base + '/projects');
 const experimentDatasets = require(backend_base + '/experiment-datasets');
-
+const processes = require(backend_base + '/processes');
 
 const testHelpers = require('./test-helpers');
 
@@ -29,14 +29,10 @@ let user = null;
 
 let project = null;
 let experiment = null;
-let processList = null;
-let sampleList = null;
-let fileList = null;
-let datasetList = null;
-let experimentNote = null;
-let experimentTask = null;
-let reviews_count = 0;
-let notes_count = 0;
+let processIdList = [];
+let sampleIdList = [];
+let fileIdList = [];
+let datasetIdList = [];
 
 before(function*() {
 
@@ -49,24 +45,17 @@ describe('Feature - Projects: ', function () {
     describe('Delete Project: ', function () {
         it('does not delete a project with any published datasets', function*() {
 
-            this.timeout(8000); // test take up to 8 seconds
-
-            yield setup();
+            yield createRenamedDemoProject();
 
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
             assert.isOk(experiment_id);
 
-            let idList = [];
-            for (let i = 0; i < datasetList.length; i++) {
-                idList.push(datasetList[i].id);
-            }
-
             yield testDatasets({assertExists: true});
 
             // publish one of the datasets
-            let datasetId = idList[0];
+            let datasetId = datasetIdList[0];
             let results = yield experimentDatasets.publishDataset(datasetId);
             assert.isOk(results);
             assert.isOk(results.val);
@@ -84,30 +73,48 @@ describe('Feature - Projects: ', function () {
         it('supports a dry run mode', function*() {
             this.timeout(8000); // test take up to 8 seconds
 
-            yield setup();
+            yield createRenamedDemoProject();
 
             let dryRun = true;
 
+            assert.isOk(project);
             let project_id = project.id;
             assert.isOk(project_id);
-            let experiment_id = experiment.id;
-            assert.isOk(experiment_id);
 
             let results = yield projectDelete.deleteProject(project_id, {dryRun: dryRun});
             assert.isOk(results);
             let tally = results.val;
             assert.isOk(tally);
 
-            //yield checkTally(tally, project_id);
-            //yield confirmDemoProjectCoverage(tally, {dryRun: dryRun})
+            yield checkTally(tally, project_id);
+            yield confirmDemoProjectCoverage(tally, {dryRun: dryRun})
 
         });
-        it('deletes the indicated project')
+        it('deletes the indicated project', function*() {
+            this.timeout(8000); // test take up to 8 seconds
+
+            yield createRenamedDemoProject();
+
+            let dryRun = false;
+
+            assert.isOk(project);
+            let project_id = project.id;
+            assert.isOk(project_id);
+
+            let results = yield projectDelete.deleteProject(project_id, {dryRun: dryRun});
+            assert.isOk(results);
+            let tally = results.val;
+            assert.isOk(tally);
+
+            yield checkTally(tally, project_id);
+            yield confirmDemoProjectCoverage(tally, {dryRun: dryRun})
+
+        });
     });
 });
 
 
-function* setup() {
+function* createRenamedDemoProject() {
 
     // create a renamed demo project for testing
     let valOrError = yield testHelpers.createDemoTestProject(user);
@@ -115,14 +122,28 @@ function* setup() {
     let results = valOrError.val;
     project = results.project;
     experiment = results.experiment;
-    processList = results.processList;
-    sampleList = results.sampleList;
-    fileList = results.fileList;
-
     assert.equal(project.otype, "project");
     assert.equal(project.owner, userId);
 
-    datasetList = yield testHelpers.createDatasetList(experiment, processList, userId);
+    let processList = results.processList;
+    processList.forEach((process) => {
+        processIdList.push(process.id);
+    });
+    assert.equal(processIdList.length,5);
+
+    let fileList = results.fileList;
+    fileIdList = [];
+    fileList.forEach((file) => {
+        fileIdList.push(file.id);
+    });
+    assert.equal(fileIdList.length,16);
+
+    datasetIdList = [];
+    let datasetList = yield testHelpers.createDatasetList(experiment, processList, userId);
+    datasetList.forEach((dataset) => {
+        datasetIdList.push(dataset.id);
+    });
+    assert.equal(datasetIdList.length,2);
 
     // Note: create fake sample that is not part of a process for testing
     results = yield r.table('samples').insert({'name': 'fake sample', 'otype': 'sample', 'owner': 'noone'});
@@ -130,7 +151,15 @@ function* setup() {
     yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment.id});
     yield r.table('project2sample').insert({sample_id: key, project_id: project.id});
 
+    sampleIdList = yield r.table('project2sample')
+        .getAll(project.id, {index: 'project_id'})
+        .eqJoin('sample_id', r.table('samples')).zip()
+        .getField('sample_id');
+    assert.isOk(sampleIdList);
+    assert.equal(sampleIdList.length,8);
+
     console.log('Project name: ', project.name);
+    console.log('Project id: ', project.id);
     console.log('Experiment id: ', experiment.id);
 }
 
@@ -141,21 +170,16 @@ function* testDatasets(options) {
         count = 2;
     }
 
-    let idList = [];
-    for (let i = 0; i < datasetList.length; i++) {
-        idList.push(datasetList[i].id);
-    }
-
     let check = yield experimentDatasets.getDatasetsForExperiment(experiment.id);
     let dataset_list = check.val;
     assert.isOk(dataset_list);
     assert.equal(dataset_list.length, count);
 
-    check = yield r.table('dataset2process').getAll(r.args([...idList]), {index: 'dataset_id'});
+    check = yield r.table('dataset2process').getAll(r.args(datasetIdList), {index: 'dataset_id'});
     assert.isOk(check);
     assert.equal(check.length, count);
 
-    check = yield r.table('experiment2dataset').getAll(r.args([...idList]), {index: 'dataset_id'});
+    check = yield r.table('experiment2dataset').getAll(r.args(datasetIdList), {index: 'dataset_id'});
     assert.isOk(check);
     assert.equal(check.length, count);
 }
@@ -165,12 +189,10 @@ function* checkTally(tally, projectId) {
     let experimentCount = 1;
     let datasetCount = 2;
     let fileCount = 16;
-    let sampleCount = 1;
+    let sampleCount = 8;
 
     assert.isOk(tally.project);
     assert.equal(tally.project.id,projectId);
-
-    console.log(tally.project);
 
     assert.isOk(tally.experiments);
     assert.equal(tally.experiments.length, experimentCount);
@@ -186,16 +208,25 @@ function* checkTally(tally, projectId) {
 
 }
 
-function* confirmDemoProjectCoverage(project, tally, options) {
+function* confirmDemoProjectCoverage(tally, options) {
 
     let dryRun = options && options.dryRun;
 
-    yield checkLinks(projectId,{dryRun: dryRun});
+    // yield checkLinks(options);
+
+    yield testDatasets({assertExists: dryRun});
+
+    yield testProcesses({assertExists: dryRun});
+
+    yield testSamples({assertExists: dryRun});
+
+    yield testFiles({assertExists: dryRun});
+
 }
 
-function* checkLinks(projectId, options){
+function* checkLinks(options){
 
-    let forDryRun = options && options.forDryRun;
+    let forDryRun = options && options.dryRun;
 
     let tables = [
         'project2datadir' ,
@@ -206,24 +237,63 @@ function* checkLinks(projectId, options){
     ];
 
     if (forDryRun) {
-        let lengths = [2,16,1,5,8];
+        let lengths = [1,16,1,5,8];
         for (let i = 0; i < tables.length; i++) {
             let table = tables[i];
-            let list = yield r.table(table).getAll(experiment_id, {index: 'experiment_id'});
+            let list = yield r.table(table).getAll(project.id, {index: 'project_id'});
             let expectedLength = lengths[i];
             let l = list.length;
-            let message = `missing links in ${table} for experment id = ${experiment_id}`
+            let message = `missing links in ${table} for project id = ${project.id}`
             assert.equal(l,expectedLength,message);
         }
 
     } else {
         for (let i = 0; i < tables.length; i++) {
             let table = tables[i];
-            let list = yield r.table(table).getAll(experiment_id,{index: 'experiment_id'});
+            let list = yield r.table(table).getAll(project.id, {index: 'project_id'});
             let l = list.length;
-            let message = `expected no links in ${table}, but found ${l} for experment id = ${experiment_id}`
+            let message = `expected no links in ${table}, `
+                +  `but found ${l} links for project id = ${project.id}`
             assert.equal(l,0,message);
         }
     }
 }
 
+function* testSamples(options) {
+
+    let sampleCount = 0;
+    if (options && options.assertExists) {
+        sampleCount = 8;
+    }
+
+    let probeList = yield r.table('samples').getAll(r.args(sampleIdList));
+    assert.isOk(probeList);
+    assert.equal(probeList.length, sampleCount);
+
+}
+
+function* testProcesses(options) {
+
+    let processCount = 0;
+    if (options && options.assertExists) {
+        processCount = 5;
+    }
+
+    let probeList = yield yield r.table('processes').getAll(r.args(processIdList));
+    assert.isOk(probeList);
+    assert.equal(probeList.length, processCount);
+
+}
+
+function* testFiles(options){
+    let count = 0;
+
+    if (options && options.assertExists) {
+        count = 16;
+    }
+
+    let list = yield r.table('datafiles').getAll(r.args(fileIdList));
+    assert.isOk(list);
+    assert.equal(list.length, count);
+
+}
