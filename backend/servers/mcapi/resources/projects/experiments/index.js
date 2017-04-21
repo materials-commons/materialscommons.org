@@ -1,4 +1,5 @@
 const experiments = require('../../../db/model/experiments');
+const experimentDelete = require('./experiments-delete');
 const check = require('../../../db/model/check');
 const schema = require('../../../schema');
 const parse = require('co-body');
@@ -108,6 +109,15 @@ function* createExperiment(next) {
 }
 
 function* deleteExperiment(next) {
+    let project_id = this.params.project_id;
+    let experiment_id = this.params.experiment_id;
+    let rv = experimentDelete.deleteExperiment(projectId, experimentId);
+    if (rv.error) {
+        this.status = status.NOT_ACCEPTABLE;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
     yield next;
 }
 
