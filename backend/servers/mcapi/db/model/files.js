@@ -6,6 +6,12 @@ const model = require('./model');
 const path = require('path');
 const fileUtils = require('../../../lib/create-file-utils');
 
+// As of 19 April 2017, it appears that this function is not being used.
+// Specifically, files in the demo project, at this time, do not have
+// a project_id field, and that field is not in the file specification in
+// the object model, model.js -- no UI errors were found for the demo project
+// and the project appears to be getting file counts from the function
+// addComputed in project.js - also see Issue #1026 - Terry Weymouth
 function* countInProject(ids, projectID) {
     let rql = r.table('datafiles').getAll(r.args(ids));
     return yield rql.filter({project_id: projectID}).count();
@@ -81,14 +87,13 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
     return file;
 }
 
-function* determineUsesidIfNeeded(checksum){
+function* determineUsesidIfNeeded(checksum) {
     let usesid = "";
     let checksumHit = yield r.table('datafiles')
-        .getAll(checksum, {index: 'checksum'})
-        .filter({'usesid': ''});
+        .getAll(checksum, {index: 'checksum'});
 
     if (checksumHit && (checksumHit.length > 0)) {
-        usesid = checksumHit[0].id;
+        usesid = checksumHit[0].usesid ? checksumHit[0].usesid : checksumHit[0].id;
     }
     return usesid;
 }
@@ -125,7 +130,8 @@ function* pushVersion(newFile, oldFile) {
 // getList gets the details for the given file ids
 function* getList(projectID, fileIDs) {
     let rql = r.table('datafiles').getAll(r.args(fileIDs))
-        .eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'}).zip()
+        .eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'})
+        .without([{right: 'id'}]).zip()
         .filter({project_id: projectID})
         .merge(function (file) {
             return {
@@ -326,7 +332,18 @@ function *deleteFile(fileID) {
     yield r.table('project2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
     yield r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
     yield r.table('experiment2datafile').getAll(fileID, {index: 'datafile_id'}).delete();
+    yield deletePhysicalFileIfAppropriate(f);
     return {val: f};
+}
+
+function* deletePhysicalFileIfAppropriate(file) {
+    let count = yield r.table('datafiles').getAll(file.checksum, {index: 'checksum'}).count();
+    if (count === 0) {
+        let baseId = file.id;
+        if (file.usesid) baseId = file.usesid;
+        let filePath = fileUtils.datafilePath(baseId);
+        let x = yield fileUtils.removeFileInStore(baseId);
+    }
 }
 
 function* byPath(projectID, filePath) {
@@ -374,34 +391,26 @@ function* getVersions(fileID) {
         return {val: []};
     }
 
-    let files = [];
-
     // get all files in the given files directory
+    // normally, prefetch all potential parents
     let rql = r.table('datadir2datafile').getAll(fileID, {index: 'datafile_id'})
         .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
         .eqJoin('datafile_id', r.table('datafiles')).zip();
     let allDirFiles = yield runQuery(rql);
     let filesIdMap = _.indexBy(allDirFiles, 'id');
+
+    let fileList = [];
     let current = f;
-    while (true) {
-        let parentFile = filesIdMap[current.id];
-        files.push(
-            {
-                otype: 'file',
-                size: parentFile.size,
-                name: parentFile.name,
-                path: parentFile.name,
-                mediatype: parentFile.mediatype,
-                checksum: parentFile.checksum,
-                id: parentFile.id
-            });
-        if (parentFile.parent !== '') {
-            current = parentFile;
-        } else {
-            break;
+    while (current.parent) {
+        let file = filesIdMap[current.parent];
+        if (!file) { // in rare cases, the file may have been moved!
+            file = yield get(current.parent);
         }
+        fileList.push(file);
+        current = file;
     }
-    return {val: files};
+
+    return {val: fileList};
 }
 
 module.exports = {

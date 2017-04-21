@@ -1,17 +1,27 @@
 'use strict';
+const os = require('os');
+const fs = require('fs');
+const path = require('path');
 require('mocha');
 require('co-mocha');
+const promise = require('bluebird');
+const md5File = promise.promisify(require('md5-file'));
+const copy = require('copy');
+const copyOne = promise.promisify(copy.one);
+const mkdirpAsync = promise.promisify(require('mkdirp'));
 
 const r = require('rethinkdbdash')({
     db: process.env.MCDB || 'materialscommons',
     port: process.env.MCDB_PORT || 30815
 });
 
+const lib_base = '../../../../servers/lib';
 const mcapi_base = '../../../../servers/mcapi';
 const backend_base = mcapi_base + "/db/model";
 const build_project_base = mcapi_base + "/build-demo";
 
-const dbModelUsers = require(backend_base + '/users');
+const fileUtils = require(lib_base + "/create-file-utils");
+
 const projects = require(backend_base + '/projects');
 const directories = require(backend_base + '/directories');
 const experiments = require(backend_base + '/experiments');
@@ -19,7 +29,7 @@ const processes = require(backend_base + '/processes');
 const samples = require(backend_base + '/samples');
 const experimentDatasets = require(backend_base + '/experiment-datasets');
 
-const demoProjecthelper = require(build_project_base + '/build-demo-project-helper');
+const demoProjectHelper = require(build_project_base + '/build-demo-project-helper');
 const demoProjectConf = require(build_project_base + '/build-demo-project-conf');
 const demoProjectBuild = require(build_project_base + '/build-demo-project');
 
@@ -28,6 +38,13 @@ const base_project_name = "TestProject-";
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
     return base_project_name + number;
+};
+
+let random_file_name = function(prefix){
+    let number = Math.floor(Math.random()*10000);
+    let str = prefix + "-file-" + number + ".txt";
+    str = str.replace(/ /g,'');
+    return str;
 };
 
 function* createDemoTestProject(user) {
@@ -102,6 +119,34 @@ function* createSamples(project, experiment, process, sampleNameList) {
     let ret = yield samples.createSamples(project.id, process.id, sampleNameArgs, project.owner);
     // ret == val.ok_val or error.error
     return ret;
+}
+
+function* createFileFromDemoFileSet(project,demoFileIndex,user) {
+    let tempDir = os.tmpdir();
+    let top_directory = yield directories.get(project.id, 'top');
+    let checksumFilenameAndMimetype = demoProjectHelper.filesDescriptions()[demoFileIndex];
+    let expectedChecksum = checksumFilenameAndMimetype[0];
+    let filename = checksumFilenameAndMimetype[1];
+    let mimetype = checksumFilenameAndMimetype[2];
+    let path = demoProjectConf.datapathPrefix + `${demoProjectConf.datapath}/${filename}`;
+    let checksum = yield md5File(path);
+    if (expectedChecksum == checksum) {
+        let stats = fs.statSync(path);
+        let fileSizeInBytes = stats.size;
+        let source = yield copyOne(path, tempDir);
+        path = source.path;
+        let args = {
+            name: filename,
+            checksum: checksum,
+            mediatype: fileUtils.mediaTypeDescriptionsFromMime(mimetype),
+            filesize: fileSizeInBytes,
+            filepath: path
+        };
+        let file = yield directories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
+        return file;
+    } else {
+        return null;
+    }
 }
 
 function* addSamplesToProcess(project, experiment, process, sampleList) {
@@ -216,6 +261,45 @@ let setUpAdditionalExperimentTaskData = function* (experimentId,userId) {
     return yield r.table('experimenttasks').get(taskId);
 };
 
+let createUniqueTestFile = function* (project, user) {
+    let top_directory = yield directories.get(project.id, 'top');
+    let tempDir = os.tmpdir();
+    let filename = random_file_name(project.name);
+    let mimetype = "text/plain";
+    let filePath = path.join(tempDir,'generated-test-files/',filename);
+    let uniqueString = `Content of test file ${filename} at ${filePath}`;
+    let base = path.dirname(filePath);
+    yield mkdirpAsync(base);
+    yield fs.writeFileAsync(filePath,uniqueString);
+    let checksum = yield md5File(filePath);
+    let stats = fs.statSync(filePath);
+    let fileSizeInBytes = stats.size;
+    let args = {
+         name: filename,
+         checksum: checksum,
+         mediatype: fileUtils.mediaTypeDescriptionsFromMime(mimetype),
+         filesize: fileSizeInBytes,
+         filepath: filePath
+    };
+    let file = yield directories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
+    return file;
+};
+
+let createTestFileFromGivenFile = function* (file, project, user) {
+    let top_directory = yield directories.get(project.id, 'top');
+    let filename = random_file_name(project.name);
+    let filePath = fileUtils.datafilePath(file.id);
+    let args = {
+        name: filename,
+        checksum: file.checksum,
+        mediatype: file.mediatype,
+        filesize: file.fileSizeInBytes,
+        filepath: filePath
+    };
+    let anotherFile = yield directories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
+    return anotherFile;
+};
+
 module.exports = {
     createDemoTestProject,
     createProject,
@@ -223,7 +307,10 @@ module.exports = {
     createProcess,
     createSamples,
     createDatasetList,
+    createFileFromDemoFileSet,
     addSamplesToProcess,
     setUpFakeExperimentNoteData,
-    setUpAdditionalExperimentTaskData
+    setUpAdditionalExperimentTaskData,
+    createUniqueTestFile,
+    createTestFileFromGivenFile
 };
