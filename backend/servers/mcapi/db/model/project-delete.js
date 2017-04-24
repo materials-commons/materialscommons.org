@@ -135,7 +135,8 @@ function* deleteLinks(projectId) {
         'project2datafile' ,
         'project2experiment' ,
         'project2process' ,
-        'project2sample'
+        'project2sample',
+        'access'
     ];
 
     for (let i = 0; i < tables.length; i++) {
