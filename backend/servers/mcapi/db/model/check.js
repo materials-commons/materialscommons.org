@@ -144,12 +144,12 @@ function* userHasProjectAccess(userId, projectId) {
 
 function* isUserProjectOwner(userId, projectId) {
     let projectOwner = yield r.table('projects').get(projectId).getField('owner');
-    return userId === projectOwner
+    return userId === projectOwner;
 }
 
 function* isUserExperimentOwner(userId, projectId) {
     let projectOwner = yield r.table('experiments').get(projectId).getField('owner');
-    return userId === projectOwner
+    return userId === projectOwner;
 }
 
 function* directoryInProject(projectId, directoryId) {

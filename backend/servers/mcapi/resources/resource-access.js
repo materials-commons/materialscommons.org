@@ -28,7 +28,7 @@ function* validateProjectAccess(next) {
 function* validateProjectOwner(next) {
     let projectId = this.params.project_id;
     if (projectId) {
-        let isOwner = check.isUserProjectOwner(this.reqctx.user.id,projectId);
+        let isOwner = yield check.isUserProjectOwner(this.reqctx.user.id, projectId);
         if (!isOwner) {
             this.status = httpStatus.BAD_REQUEST;
             this.body = {error: 'Only the project owner can delete a project'};
@@ -41,7 +41,7 @@ function* validateProjectOwner(next) {
 function* validateExperimentOwner(next) {
     let experimentId = this.params.experiment_id;
     if (experimentId) {
-        let isOwner = check.isUserExperimentOwner(this.reqctx.user.id,experimentId);
+        let isOwner = yield check.isUserExperimentOwner(this.reqctx.user.id, experimentId);
         if (!isOwner) {
             this.status = httpStatus.BAD_REQUEST;
             this.body = {error: 'Only the experiment owner can delete an experiment'};
