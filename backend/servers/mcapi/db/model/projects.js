@@ -206,10 +206,10 @@ function* update(projectID, attrs) {
     return yield r.table('projects').get(projectID);
 }
 
-function* renameTopDirectory(oldName, newName){
-    let dirsList = yield r.table('datadirs').getAll(oldName,{index: 'name'});
+function* renameTopDirectory(oldName, newName) {
+    let dirsList = yield r.table('datadirs').getAll(oldName, {index: 'name'});
     let directoryID = dirsList[0].id;
-    yield renameTopDirHelper.renameDirectory(directoryID,newName);
+    yield renameTopDirHelper.renameDirectory(directoryID, newName);
 }
 
 function differenceByField(from, others, field) {
