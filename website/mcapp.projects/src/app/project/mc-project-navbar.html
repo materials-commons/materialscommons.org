@@ -59,7 +59,7 @@
                ng-mouseleave="$ctrl.editField = false"
                class="mc-input-as-line md-title text-white">
         <a class="md-title" style="color: white" ui-sref="project.home" tooltip="{{::$ctrl.project.name}}">
-            {{::$ctrl.project.name | truncate:30:'...'}}
+            {{$ctrl.project.name | truncate:30:'...'}}
         </a>
         <a style="color:white;" ui-sref="projects.list">switch</a>
     </div>
