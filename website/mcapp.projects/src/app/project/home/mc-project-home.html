@@ -1,6 +1,9 @@
 <div layout="row" layout-fill layout-align="start stretch">
     <div flex="30" layout="column" layout-margin>
-        <span class="md-title">{{$ctrl.project.name}}</span>
+        <div layout="row" layout-align="start center">
+            <span class="md-title">{{$ctrl.project.name}}</span>
+            <md-button ng-click="$ctrl.renameProject()" class="md-primary">rename project</md-button>
+        </div>
         <div layout="column">
             <label>Description</label>
             <textarea class="mc-text-area md-subhead" type="text"

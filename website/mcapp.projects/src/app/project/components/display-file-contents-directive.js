@@ -12,10 +12,9 @@ function displayFileContentsDirective() {
     };
 }
 
+/*@ngInject*/
 function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage) {
-    'ngInject';
-
-    var ctrl = this;
+    const ctrl = this;
     ctrl.fileSrc = mcfile.src(ctrl.file.id);
     ctrl.showImage = showImage;
     ctrl.downloadSrc = downloadSrc;
@@ -38,22 +37,21 @@ function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage) {
     function determineFileType(mediatype) {
         if (isImage(mediatype.mime)) {
             return "image";
-        } else {
-            if (isOfficeFile(mediatype.mime)) {
+        }
+        if (isOfficeFile(mediatype.mime)) {
+            return "office";
+        }
+        switch (mediatype.mime) {
+            case "application/pdf":
+                return "pdf";
+            case "application/vnd.ms-excel":
                 return "office";
-            }
-            switch (mediatype.mime) {
-                case "application/pdf":
-                    return "pdf";
-                case "application/vnd.ms-excel":
-                    return "office";
-                case "":
-                    return "office";
-                case "application/octet-stream":
-                    return "binary";
-                default:
-                    return mediatype.mime;
-            }
+            case "":
+                return "office";
+            case "application/octet-stream":
+                return "binary";
+            default:
+                return mediatype.mime;
         }
     }
 
