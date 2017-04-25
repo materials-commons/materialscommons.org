@@ -9,7 +9,6 @@
             </div>
         </div>
         <div ng-switch-when="pdf">
-            {{view.fileSrc}}
             <div class="embed-responsive embed-responsive-4by3">
                 <embed class="col-xs-8 embed-responsive-item"
                        ng-src="{{view.fileSrc}}">
@@ -17,21 +16,12 @@
             </div>
         </div>
         <div ng-switch-when="office">
-            <div>
-                {{view.fileSrc}}
-                <!--<div ng-if="view.file.size <= 10000"-->
-                <!--ng-click="view.showImage(view.file)"-->
-                <!--hljs include="view.fileSrc">-->
-                <!--</div>-->
-                <div class="embed-responsive embed-responsive-4by3">
-                    <embed class="col-xs-8 embed-responsive-item"
-                           ng-src="{{view.fileSrc}}">
-                    </embed>
-                </div>
-                <!--<i class="fa fa-fw fa-file-word-o"></i>-->
-                <!--<a ng-href="{{view.downloadSrc()}}" class="text-uppercase small"-->
-                <!--download="{{view.file.name}}"> Download</a> the office file-->
+            <div class="embed-responsive embed-responsive-4by3">
+                <embed class="col-xs-8 embed-responsive-item"
+                       ng-src="{{view.fileSrc}}">
+                </embed>
             </div>
+
         </div>
         <div ng-switch-when="binary">
             <span><i class="fa fa-fw fa-file-o"></i>Binary file cannot be displayed</span>
