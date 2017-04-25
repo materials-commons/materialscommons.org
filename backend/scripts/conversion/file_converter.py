@@ -77,9 +77,10 @@ def convert_office_doc_if_needed(f):
     if ofile is None:
         print "Unknown file name: %s, id: %s" % (f['name'], f['id'])
         return
-    pdir = tempfile.mkdtemp(dir="/tmp")
+
     ofile_mcdir = get_mcdir(ofile)
     conv_dir = conversion_dir_path_from(ofile_mcdir, f)
+    pdir = tempfile.mkdtemp(dir="/tmp")
     mkdirp(conv_dir)
     command = "libreoffice -env:UserInstallation=file://%s --headless --convert-to pdf --outdir %s %s" % (
         pdir, conv_dir, ofile)
