@@ -6,10 +6,13 @@ from optparse import OptionParser
 
 def compute_project_size(project_id, conn):
     total = 0
+    count = 0
     for f in r.table('project2datafile').get_all(project_id, index="project_id").eq_join('datafile_id', r.table(
             'datafiles')).zip().run(conn):
         total = total + f['size']
-    print "Total size %s" % sizeof_fmt(total)
+        count = count + 1
+    print "Total files : %s" % "{:,}".format(count)
+    print "Project size: %s" % sizeof_fmt(total)
 
 
 def sizeof_fmt(num, suffix='B'):
