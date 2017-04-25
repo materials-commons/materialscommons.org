@@ -235,11 +235,12 @@ function* checkLinks(options){
         'project2datafile' ,
         'project2experiment' ,
         'project2process' ,
-        'project2sample'
+        'project2sample',
+        'access'
     ];
 
     if (forDryRun) {
-        let lengths = [1,16,1,5,8];
+        let lengths = [1,16,1,5,8,1];
         for (let i = 0; i < tables.length; i++) {
             let table = tables[i];
             let list = yield r.table(table).getAll(project.id, {index: 'project_id'});

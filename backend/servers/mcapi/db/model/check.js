@@ -142,6 +142,16 @@ function* userHasProjectAccess(userId, projectId) {
     return accessEntries.length !== 0;
 }
 
+function* isUserProjectOwner(userId, projectId) {
+    let projectOwner = yield r.table('projects').get(projectId).getField('owner');
+    return userId === projectOwner;
+}
+
+function* isUserExperimentOwner(userId, projectId) {
+    let projectOwner = yield r.table('experiments').get(projectId).getField('owner');
+    return userId === projectOwner;
+}
+
 function* directoryInProject(projectId, directoryId) {
     let matches = yield r.table('project2datadir').getAll([projectId, directoryId], {index: 'project_datadir'});
     return matches.length !== 0;
@@ -178,6 +188,8 @@ module.exports = {
     sampleHasPropertySet,
     allSamplesInProject,
     userHasProjectAccess,
+    isUserProjectOwner,
+    isUserExperimentOwner,
     directoryInProject,
     processInProject
 };
