@@ -44,10 +44,6 @@ function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage) {
         switch (mediatype.mime) {
             case "application/pdf":
                 return "pdf";
-            case "application/vnd.ms-excel":
-                return "office";
-            case "":
-                return "office";
             case "application/octet-stream":
                 return "binary";
             default:
