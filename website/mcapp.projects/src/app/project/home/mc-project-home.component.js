@@ -1,66 +1,85 @@
 import {Experiment} from '../experiments/experiment/components/tasks/experiment.model';
 
-angular.module('materialscommons').component('mcProjectHome', {
-    templateUrl: 'app/project/home/mc-project-home.html',
-    controller: MCProjectHomeComponentController
-});
+class MCProjectHomeComponentController {
+    /*@ngInject*/
 
-/*@ngInject*/
-function MCProjectHomeComponentController($scope, mcstate, experimentsAPI, toast, $state,
-                                          $stateParams, projectsAPI, editorOpts, $mdDialog) {
-    const ctrl = this;
-    ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
-    ctrl.projectLoaded = true;
-    ctrl.experimentType = 'active';
-    ctrl.experiments = [];
-    let projectOverview = ctrl.project.overview;
+    constructor($scope, mcstate, experimentsAPI, toast, $state, $stateParams, projectsAPI, editorOpts, $mdDialog) {
+        this.experimentsAPI = experimentsAPI;
+        this.toast = toast;
+        this.$stateParams = $stateParams;
+        this.$state = $state;
+        this.projectsAPI = projectsAPI;
+        this.$mdDialog = $mdDialog;
 
-    $scope.editorOptions = editorOpts({height: 65, width: 50});
+        this.project = mcstate.get(mcstate.CURRENT$PROJECT);
+        this.projectLoaded = true;
+        this.experimentType = 'active';
+        this.experiments = [];
+        this.projectOverview = this.project.overview;
 
-    ctrl.$onInit = () => {
-        experimentsAPI.getAllForProject($stateParams.project_id).then(
+        $scope.editorOptions = editorOpts({height: 65, width: 50});
+    }
+
+    $onInit() {
+        this.experimentsAPI.getAllForProject(this.$stateParams.project_id).then(
             (experiments) => {
-                ctrl.experiments = experiments;
+                this.experiments = experiments;
             },
-            () => toast.error('Unable to retrieve experiments for project')
+            () => this.toast.error('Unable to retrieve experiments for project')
         );
-    };
+    }
 
-    ctrl.updateProjectOverview = () => {
-        if (projectOverview === ctrl.project.overview) {
+    updateProjectOverview() {
+        if (this.projectOverview === this.project.overview) {
             return;
         }
 
-        if (ctrl.project.overview === null) {
+        if (this.project.overview === null) {
             return;
         }
 
-        projectsAPI.updateProject($stateParams.project_id, {overview: ctrl.project.overview})
+        this.projectsAPI.updateProject(this.$stateParams.project_id, {overview: this.project.overview})
             .then(
-                () => projectOverview = ctrl.project.overview,
-                () => toast.error('Unable to update project overview')
+                () => this.projectOverview = this.project.overview,
+                () => this.toast.error('Unable to update project overview')
             );
-    };
+    }
 
-    ctrl.updateProjectDescription = () => {
-        projectsAPI.updateProject($stateParams.project_id, {description: ctrl.project.description}).then(
+    updateProjectDescription() {
+        this.projectsAPI.updateProject(this.$stateParams.project_id, {description: this.project.description}).then(
             () => null,
-            () => toast.error('Unable to update project description')
+            () => this.toast.error('Unable to update project description')
         );
-    };
+    }
 
-    ctrl.startNewExperiment = () => {
-        $mdDialog.show({
+    startNewExperiment() {
+        this.$mdDialog.show({
             templateUrl: 'app/project/experiments/create-experiment-dialog.html',
             controller: CreateNewExperimentDialogController,
             controllerAs: 'ctrl',
             bindToController: true
         }).then(
             (e) => {
-                $state.go('project.experiment.details', {experiment_id: e.id});
+                this.$state.go('project.experiment.details', {experiment_id: e.id});
             }
         );
-    };
+    }
+
+    renameProject() {
+        this.$mdDialog.show({
+            templateUrl: 'app/project/home/rename-project-dialog.html',
+            controller: RenameProjectDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                project: this.project
+            }
+        }).then(
+            (newName) => {
+                this.project.name = newName;
+            }
+        );
+    }
 }
 
 class CreateNewExperimentDialogController {
@@ -92,3 +111,32 @@ class CreateNewExperimentDialogController {
         this.$mdDialog.cancel();
     }
 }
+
+class RenameProjectDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, projectsAPI, toast) {
+        this.$mdDialog = $mdDialog;
+        this.projectsAPI = projectsAPI;
+        this.toast = toast;
+        this.newProjectName = '';
+    }
+
+    done() {
+        this.projectsAPI.updateProject(this.project.id, {name: this.newProjectName}).then(
+            () => this.$mdDialog.hide(this.newProjectName),
+            () => {
+                this.toast.error('Failed to rename project');
+                this.$mdDialog.cancel();
+            }
+        );
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+angular.module('materialscommons').component('mcProjectHome', {
+    templateUrl: 'app/project/home/mc-project-home.html',
+    controller: MCProjectHomeComponentController
+});
