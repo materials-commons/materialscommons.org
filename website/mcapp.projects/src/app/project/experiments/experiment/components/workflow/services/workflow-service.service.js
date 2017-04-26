@@ -32,7 +32,6 @@ class WorkflowService {
     }
 
     cloneProcess(projectId, experimentId, process) {
-        console.log('cloneProcess', process);
         let p = angular.copy(process);
         p.input_samples.forEach(s => s.selected = true);
         p.output_samples.forEach(s => s.selected = true);
@@ -69,7 +68,7 @@ class WorkflowService {
             .then(
                 process => {
                     let numberOfSamples = process.output_samples.length;
-                    if (numberOfSamples == 0) {
+                    if (numberOfSamples === 0) {
                         this.deleteNodeAndProcess2(projectId, experimentId, processId);
                     } else {
                         this.confirmAndDeleteProcess(projectId, experimentId, process);
@@ -82,7 +81,7 @@ class WorkflowService {
     confirmAndDeleteProcess(projectId, experimentId, process) {
         let processName = process.name;
         let numberOfSamples = process.output_samples.length;
-        let samples = " output sample" + ((numberOfSamples != 1) ? "s" : "");
+        let samples = " output sample" + ((numberOfSamples !== 1) ? "s" : "");
         let processInfo = processName + " - has " + numberOfSamples + samples + ".";
         let confirm = this.$mdDialog.confirm()
             .title('This process has output samples: Delete node and Samples?')

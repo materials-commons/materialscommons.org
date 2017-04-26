@@ -63,7 +63,6 @@ class MCTemplateBuilderComponentController {
             }
         }).then(
             (command) => {
-                console.log('command', command);
                 switch (command) {
                     case 'edit':
                         this.editTemplate(template);
