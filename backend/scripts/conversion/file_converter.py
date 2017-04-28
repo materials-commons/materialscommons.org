@@ -81,11 +81,12 @@ def convert_office_doc_if_needed(f):
     ofile_mcdir = get_mcdir(ofile)
     conv_dir = conversion_dir_path_from(ofile_mcdir, f)
     pdir = tempfile.mkdtemp(dir="/tmp")
+    converted_file_path = os.path.join("/tmp", os.path.basename(ofile) + ".pdf")
     mkdirp(conv_dir)
-    command = "libreoffice -env:UserInstallation=file://%s --headless --convert-to pdf --outdir %s %s" % (
-        pdir, conv_dir, ofile)
-    print "Running command '%s'" % command
-    os.system(command)
+    cmd = "libreoffice -env:UserInstallation=file://%s --headless --convert-to pdf --outdir /tmp %s; cp %s %s; rm -f %s" % (
+        pdir, ofile, converted_file_path, conv_dir, converted_file_path)
+    print "Running command '%s'" % cmd
+    os.system(cmd)
     shutil.rmtree(pdir)
 
 
