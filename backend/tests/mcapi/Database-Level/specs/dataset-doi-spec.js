@@ -13,6 +13,8 @@ const backend_base = '../../../..';
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
 const projects = require(backend_base + '/servers/mcapi/db/model/projects');
 
+const testHelpers = require('./test-helpers');
+
 const base_project_name = "Test doi - ";
 
 let random_name = function(){
