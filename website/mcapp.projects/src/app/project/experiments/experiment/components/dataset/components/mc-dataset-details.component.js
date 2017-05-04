@@ -67,6 +67,23 @@ class MCDatasetDetailsComponentController {
         this.updateDataset();
     }
 
+    addDoi() {
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/set-doi-dialog.html',
+            controllerAs: '$ctrl',
+            controller: SetDatasetDoiDialogController,
+            bindToController: true,
+            locals: {
+                dataset: this.dataset
+            }
+        }).then(
+            () => {
+                this.dataset.published = true;
+                this.navbarOnChange.fireChange();
+            }
+        );
+    }
+
     updateDataset() {
         this.datasetsAPI.updateDatasetDetails(this.projectId, this.experimentId, this.datasetId, this.dataset)
             .then(
@@ -158,6 +175,38 @@ class UnpublishDatasetDialogController {
                 () => this.$mdDialog.hide(),
                 () => {
                     this.toast.error('Unable to unpublish dataset');
+                    this.$mdDialog.cancel();
+                }
+            );
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class SetDatasetDoiDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, $stateParams, toast, datasetsAPI) {
+        this.$mdDialog = $mdDialog;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.datasetId = $stateParams.dataset_id;
+        this.toast = toast;
+        this.datasetsAPI = datasetsAPI;
+        this.doiTitle = "This is the title"; //this.dataset.name;
+//        this.doiAuthor = (this.dataset.authors.length > 0)?this,dataset.authors[0]:"No author";
+//        this.doiAbstract = this.dataset.description;
+//        this.doiPublicationDate = now().toString();
+    }
+
+    setDoi() {
+        this.datasetsAPI.setDoi(this.projectId, this.experimentId, this.datasetId,
+            this.doiTitle, this.doiAuthor, this.doiAbstract, this.doiPublicationDate)
+            .then(
+                () => this.$mdDialog.hide(),
+                () => {
+                    this.toast.error('Unable to set dataset DOI value');
                     this.$mdDialog.cancel();
                 }
             );
