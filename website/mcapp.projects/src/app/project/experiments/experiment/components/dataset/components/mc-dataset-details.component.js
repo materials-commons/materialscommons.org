@@ -188,21 +188,27 @@ class UnpublishDatasetDialogController {
 class SetDatasetDoiDialogController {
     /*@ngInject*/
     constructor($mdDialog, $stateParams, toast, datasetsAPI) {
+        console.log(this.dataset)
         this.$mdDialog = $mdDialog;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.datasetId = $stateParams.dataset_id;
         this.toast = toast;
         this.datasetsAPI = datasetsAPI;
-        this.doiTitle = "This is the title"; //this.dataset.name;
-//        this.doiAuthor = (this.dataset.authors.length > 0)?this,dataset.authors[0]:"No author";
-//        this.doiAbstract = this.dataset.description;
-//        this.doiPublicationDate = now().toString();
+        this.doiTitle = this.dataset.title;
+        let author = "";
+        if (this.dataset.authors.length > 0) {
+            author = this.dataset.authors[0].firstname
+                + " " + this.dataset.authors[0].lastname;
+        }
+        this.doiAuthor = author;
+        this.doiPublicationDate = moment().format("YYYY");
+        this.doiDescription = this.dataset.description;
     }
 
     setDoi() {
         this.datasetsAPI.setDoi(this.projectId, this.experimentId, this.datasetId,
-            this.doiTitle, this.doiAuthor, this.doiAbstract, this.doiPublicationDate)
+            this.doiTitle, this.doiAuthor, this.doiDescription, this.doiPublicationDate)
             .then(
                 () => this.$mdDialog.hide(),
                 () => {

@@ -1,34 +1,45 @@
 <md-dialog flex="80">
     <md-toolbar layout="row">
         <div layout-margin>
-            Set DOI for {{$ctrl.dataset.name}}
+            Set DOI for {{$ctrl.dataset.title}}
         </div>
     </md-toolbar>
-    <md-dialog-content layout-margin>
-        <p>
-            Adding a DOI to your publication indicates that you do not intend to change the
-            content of this publish dataset, except for minor corrections.
-        </p>
-        <p>
-            A dataset that has been published with a DOI can be withdrawn and deleted.
-            In which case, the DOI will be marked as unavailable, and the dataset record
-            will be deleted.
-        </p>
+    <div layout-margin layout="column">
+    <md-dialog-content>
+        Adding a DOI to your publication indicates that you do not intend to change the
+        content of this publish dataset, except for minor corrections.
+        A dataset that has been published with a DOI can be withdrawn and deleted.
+        In which case, the DOI will be marked as unavailable, and the Materials Commons
+        dataset record will be deleted.
+        Once published with a DOI, if you wish to delete a dataset, please contact the
+        adminstrative staff at help@materialscommons.org. (* Indicates required fields)
     </md-dialog-content>
-    <md-input-container class="md-block margin-top-10">
+    </div>
+    <md-input-container class="md-block">
         <label>Title</label>
-        <input ng-model="$ctrl.doiTitle"
+        <input name="title"
+               ng-model="$ctrl.doiTitle" required
                ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
         >
     </md-input-container>
-    <md-input-container class="md-block margin-top-10">
+    <md-input-container class="md-block">
         <label>Author</label>
+        <input ng-model="$ctrl.doiAuthor" required
+               ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+        >
     </md-input-container>
-    <md-input-container class="md-block margin-top-10">
+    <md-input-container class="md-block">
         <label>Publication Date</label>
+        <input ng-model="$ctrl.doiPublicationDate" required
+               ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+        >
     </md-input-container>
-    <md-input-container class="md-block margin-top-10">
-        <label>Abstract</label>
+    <md-input-container class="md-block">
+        <label>Description</label>
+        <textarea rows="3" cols="50"
+               ng-model="$ctrl.doiDescription"
+               ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+        >
     </md-input-container>
     <md-dialog-actions layout="row">
         <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
