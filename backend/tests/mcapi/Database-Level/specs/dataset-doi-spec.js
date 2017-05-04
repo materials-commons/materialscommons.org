@@ -4,14 +4,18 @@ require('co-mocha');
 const chai = require('chai');
 const assert = require('chai').assert;
 
+const request = require('request-promise');
+
 const r = require('rethinkdbdash')({
     db: process.env.MCDB || 'materialscommons',
     port: process.env.MCDB_PORT || 30815
 });
 
 const backend_base = '../../../..';
-const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
-const projects = require(backend_base + '/servers/mcapi/db/model/projects');
+const model_base = backend_base + '/servers/mcapi/db/model/';
+const dbModelUsers = require(model_base + 'users');
+const projects = require(model_base + 'projects');
+const datasetDoi = require(model_base + 'experiment-datasets-doi');
 
 const testHelpers = require('./test-helpers');
 
@@ -27,6 +31,8 @@ let user = null;
 
 let project = null;
 
+let doiUrl = "https://ezid.lib.purdue.edu/";
+
 before(function*() {
 
     user = yield dbModelUsers.getUser(userId);
@@ -41,8 +47,24 @@ before(function*() {
 
 });
 
-describe('Feature - Measurments: ', function() {
-    describe('Function level', function () {
-        it('individual test level');
+describe('Feature - Dataset: ', function() {
+    describe('DOI Request - ', function () {
+        it('checks DOI server status - raw', function* () {
+            let url = doiUrl + "status"
+            let options = {
+                method: 'GET',
+                uri: url,
+                resolveWithFullResponse: true
+            };
+            let response = yield request(options);
+            assert.isOk(response);
+            assert.isOk(response.statusCode);
+            assert.equal(response.statusCode,"200");
+            assert.isOk(response.body);
+            assert.equal(response.body,"success: EZID is up");
+        });
+        it('checks DOI server status - backend', function* () {
+            let ok = yield datasetDoi.doiServerStatusIsOK();
+        });
     });
 });
