@@ -66,5 +66,23 @@ describe('Feature - Dataset: ', function() {
         it('checks DOI server status - backend', function* () {
             let ok = yield datasetDoi.doiServerStatusIsOK();
         });
+        it('creates a test DOI', function* () {
+            let title = "Test DOI - Title";
+            let author = "First Author";
+            let date = "2017";
+            let description = "The is a test description";
+            let other = {
+                description: description,
+                test: true
+            };
+            let datasetId = null;
+            console.log("Other args: ", other);
+            let response = yield datasetDoi.doiCreate(datasetId, title, author, date, other);
+            assert.isOk(response);
+            assert.isOk(response.statusCode);
+            assert.equal(response.statusCode,"200");
+            assert.isOk(response.body);
+            console.log(response.body);
+        })
     });
 });
