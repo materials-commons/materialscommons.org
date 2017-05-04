@@ -1,5 +1,24 @@
 # Release Notes
 
+## 28 April 2017
+### [Materials Commons Projects](https://materialscommons.org/mcapp)
+- :star: **New Feature:** A new template builder has been released to a limited set of beta users. The template builder will allow users to create new process templates and modify existing templates.
+- :star: **New Feature:** Added the ability to rename projects.
+- :star: **New Feature:** Office documents (Excel, Word, and PowerPoint) can now be viewed online as PDFs.
+- :star: **Improvement:** The look and feel for account request and password reset emails was improved.
+- :boom: **Fixed:** Other bug fixes.
+
+### [Materials Commons Data](https://materialscommons.org/mcpub)
+- :star: **Improvement:** The public data site now loads much faster.
+- :star: **Improvement:** The site now gives feedback to the user when performing long operations.
+- :star: **Improvement:** The look and feel for account request and password reset emails was improved.
+- :boom: **Fixed:** Other bug fixes.
+
+### [Materials Commons Python API](https://materialscommons.org/mcpub)
+- :star: **New Feature:** Added the ability to delete projects, experiments, files and other items.
+- :star: **Improvement:** Added the ability to rename objects on the server.
+- :boom: **Fixed:** Other bug fixes.
+
 ## 31 March 2017
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 This release focused on ease of use and workflow improvements. Notably we added the ability to clone processes.
