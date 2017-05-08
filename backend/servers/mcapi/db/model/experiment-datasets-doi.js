@@ -18,11 +18,12 @@ function* doiServerStatusIsOK() {
         resolveWithFullResponse: true
     };
     let response = yield request(options);
-    return ((response.statusCode === "200")
-        && (response.body === "success: EZID is up"));
+    console.log(response.body);
+    return ((response.statusCode == "200")
+        && (response.body == "success: EZID is up"));
 }
 
-function* doiCreate(datasetId, title, author, date, otherArgs) {
+function* doiMint(datasetId, title, author, date, otherArgs) {
     let namespace = doiNamespace;
     let user = doiUser;
     let pw = doiPW;
@@ -33,37 +34,45 @@ function* doiCreate(datasetId, title, author, date, otherArgs) {
         pw = doiTestPW;
         delete otherArgs['test'];
     }
-    let createCall = "id/" + namespace;
+
+    console.log('DOI: namespace = ',namespace);
+    console.log('DOI: user = ',user);
+    console.log('DOI: pw = ',pw);
+
+    let createCall = "shoulder/" + namespace;
     let url = doiUrl + createCall;
+    let body = "datasite.creator: " + author + "\n"
+            + "datasite.title: " + title + "\n"
+            + "datasite.publicationdate: " + date + "\n"
+            + "datasite.publisher: " + doiPublisher;
+
     let options = {
-        method: 'PUT',
-        header: {
-            "Content-Type": "text/plain; charset=UTF-8"
-        },
-        form: {
-            who: author,
-            what: title,
-            when: date,
-            publisher: doiPublisher
-        },
-        auth: {
-            user: user,
-            pass: pw
-        },
+        method: 'POST', // POST = Mint operation
+        body: body,
         uri: url,
-        resolveWithFullResponse: true
+        auth : {
+            user : 'apitest',
+            pass : 'apitest',
+            sendImmediately : false
+        },
+        headers: { 'Content-Type': 'text/plain'}
     };
-    if (otherArgs) {
-        for (let key in otherArgs) {
-            options.form[key] = otherArgs.key;
-        }
+
+    console.log("DOI url: ", url);
+    console.log("DOI request: ",options);
+    console.log("DOI body");
+    console.log(body);
+    let response = null;
+    try {
+        response = yield request(options);
+    } catch (e) {
+        response = e;
     }
-    console.log("url: ", url);
-    console.log("making request: ",options);
-    return response = yield request(options);
+    console.log(response);
+    return response;
 }
 
 module.exports = {
     doiServerStatusIsOK,
-    doiCreate
+    doiMint
 };
