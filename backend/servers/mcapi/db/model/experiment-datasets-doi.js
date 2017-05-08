@@ -1,14 +1,20 @@
 const r = require('../r');
 const request = require('request-promise');
 
-let doiUrl = "https://ezid.lib.purdue.edu/";
-let doiTestNamespace = "doi:10.5072/FK2"; // - only test ID's for now!
-let doiTestUser = process.env.DOITESTUSER;
-let doiTestPW = process.env.DOITESTPW;
+const datasets = require('./experiment-datasets');
+
+let doiUrl = process.env.DOISERVICEURL || 'https://ezid.lib.purdue.edu/';
+let doiPublisher = process.env.DOIPUBLISHER || "Materials Commons";
+let publicationURLBase = process.env.DOIPUBLICATIONBASE;
+
 let doiNamespace = process.env.DOINAMESPACE;
 let doiUser = process.env.DOIUSER;
-let doiPW = process.env.DOIPW;
-let doiPublisher = process.env.DOIPUBLISHER || "Materials Commons";
+let doiPassword = process.env.DOIPW;
+
+// for testing
+let doiTestNamespace = process.env.DOITESTNAMESPACE;
+let doiTestUser = process.env.DOITESTUSER;
+let doiTestPassword = process.env.DOITESTPW;
 
 function* doiServerStatusIsOK() {
     let url = doiUrl + "status";
@@ -18,61 +24,72 @@ function* doiServerStatusIsOK() {
         resolveWithFullResponse: true
     };
     let response = yield request(options);
-    console.log(response.body);
     return ((response.statusCode == "200")
         && (response.body == "success: EZID is up"));
 }
 
-function* doiMint(datasetId, title, author, date, otherArgs) {
+function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
     let namespace = doiNamespace;
     let user = doiUser;
-    let pw = doiPW;
+    let pw = doiPassword;
 
     if (otherArgs && otherArgs.test) {
         namespace = doiTestNamespace;
         user = doiTestUser;
-        pw = doiTestPW;
+        pw = doiTestPassword;
         delete otherArgs['test'];
     }
 
-    console.log('DOI: namespace = ',namespace);
-    console.log('DOI: user = ',user);
-    console.log('DOI: pw = ',pw);
-
+    let publisher = doiPublisher;
+    let targetUrl = publicationURLBase + "#/details/" + datasetId;
     let createCall = "shoulder/" + namespace;
     let url = doiUrl + createCall;
-    let body = "datasite.creator: " + author + "\n"
-            + "datasite.title: " + title + "\n"
-            + "datasite.publicationdate: " + date + "\n"
-            + "datasite.publisher: " + doiPublisher;
+    let body = "_target: " + targetUrl + "\n"
+        + "datacite.creator: " + creator + "\n"
+        + "datacite.title: " + title + "\n"
+        + "datacite.publisher: " + publisher + "\n"
+        + "datacite.publicationyear: " + publicationYear + "\n"
+        + "datacite.resourcetype: Dataset";
 
     let options = {
         method: 'POST', // POST = Mint operation
         body: body,
         uri: url,
         auth : {
-            user : 'apitest',
-            pass : 'apitest',
+            user: user,
+            pass: pw,
             sendImmediately : false
         },
         headers: { 'Content-Type': 'text/plain'}
     };
 
-    console.log("DOI url: ", url);
-    console.log("DOI request: ",options);
-    console.log("DOI body");
-    console.log(body);
-    let response = null;
+    let doi = null;
     try {
-        response = yield request(options);
+        let response = yield request(options);
+        let matches = response.match(/doi:\S*/i);
+        doi = matches[0];
     } catch (e) {
-        response = e;
+        return {
+            error: e
+        };
     }
-    console.log(response);
-    return response;
+
+    let status = yield r.table('datasets').get(datasetId).update({doi: doi});
+    if (status.replaced != 1) {
+        return {
+            error: `Update of DOI in dataset, ${datasetId}, failed.`
+        };
+    }
+
+    return yield datasets.getDataset(datasetId);
+}
+
+function doiUrlLink(doi) {
+    return `${doiUrl}/id/${doi}`;
 }
 
 module.exports = {
     doiServerStatusIsOK,
-    doiMint
+    doiMint,
+    doiUrlLink
 };

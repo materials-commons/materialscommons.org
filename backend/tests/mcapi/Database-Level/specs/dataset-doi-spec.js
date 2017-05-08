@@ -26,9 +26,11 @@ let user = null;
 let project = null;
 let experiment = null;
 let processList = null;
-let datasetList = null;
+let dataset1 = null;
+let dataset2 = null;
 
-let doiNamespace = process.env.DOINAMESPACE;
+let doiPublisher = process.env.DOIPUBLISHER;
+let doiNamespace = process.env.DOITESTNAMESPACE;
 let doiUser = process.env.DOITESTUSER;
 let doiPassword = process.env.DOITESTPW;
 let publicationURLBase = process.env.DOIPUBLICATIONBASE;
@@ -39,6 +41,7 @@ before(function*() {
     this.timeout(8000); // test setup can take up to 8 seconds
 
     // check for all env variables
+    assert.isOk(doiPublisher, "Missing process.env.DOIPUBLISHER");
     assert.isOk(doiNamespace, "Missing process.env.DOINAMESPACE");
     assert.isOk(doiUser, "Missing process.env.DOITESTUSER");
     assert.isOk(doiPassword, "Missing process.env.DOITESTPW");
@@ -51,21 +54,19 @@ before(function*() {
 
     let results = yield testHelpers.createDemoTestProject(user);
     assert.isOk(results);
-    if (results.error) {
-        console.log(results);
-    }
     assert.isOk(results.val);
     project = results.val.project;
     experiment = results.val.experiment;
     assert.equal(project.owner, userId);
-    console.log("Test project name: " + project.name);
-    console.log("Test project id: " + project.id);
-    console.log("Test experiment name: " + experiment.name);
-    console.log("Test experiment id: " + experiment.id);
+    //console.log("Test project name: " + project.name);
+    //console.log("Test project id: " + project.id);
 
     processList = results.val.processList;
-    datasetList = yield testHelpers.createDatasetList(experiment, processList, user.id);
-    console.log(datasetList.length);
+    let datasetList = yield testHelpers.createDatasetList(experiment, processList, user.id);
+    assert.equal(datasetList.length, 2);
+    dataset1 = datasetList[0];
+    dataset2 = datasetList[1];
+
 });
 
 describe('Feature - Dataset: ', function () {
@@ -100,19 +101,17 @@ describe('Feature - Dataset: ', function () {
             assert.isOk(publicationURLBase);
             assert.isOk(doiUrl);
 
-            let dataset = datasetList[1];
-
-            assert.isOk(dataset);
-            assert.isOk(dataset.id);
+            assert.isOk(dataset1);
+            assert.isOk(dataset1.id);
 
             let createCall = "shoulder/" + doiNamespace;
             let url = doiUrl + createCall;
 
+            let publisher = doiPublisher;
+            let targetUrl = publicationURLBase + "#/details/" + dataset1.id;
             let creator = "Test Author";
             let title = "Test Title - " + project.name;
-            let publisher = "Materials Commons - testing";
             let publicationYear = "2017";
-            let targetUrl = publicationURLBase + "#/details/" + dataset.id;
 
             let body = "_target: " + targetUrl + "\n"
                 + "datacite.creator: " + creator + "\n"
@@ -133,26 +132,48 @@ describe('Feature - Dataset: ', function () {
                 headers: {'Content-Type': 'text/plain'}
             };
 
-            let response = null;
-            response = yield request(options);
+            let response = yield request(options);
 
             assert.isOk(response);
 
             let matches = response.match(/doi:\S*/i);
             let doi = matches[0];
-            // let link = doiUrl + "id/" + doi;
 
-            console.log('Dataset id: ', dataset.id);
-            console.log('DOI: ',doi);
-
-            let status = yield r.table('datasets').get(dataset.id).update({doi: doi})
+            let status = yield r.table('datasets').get(dataset1.id).update({doi: doi});
             assert.equal(status.replaced,1);
 
-            let valOrError = yield datasets.getDataset(dataset.id);
+            let valOrError = yield datasets.getDataset(dataset1.id);
             assert.isOk(valOrError);
             assert.isOk(valOrError.val);
-            dataset = valOrError.val;
+            let dataset = valOrError.val;
             assert.equal(dataset.doi, doi);
+        });
+        it("mints a new DOI and puts into dataset record", function*() {
+            let creator = "Test Author";
+            let title = "Test Title - " + project.name;
+            let publicationYear = "2017";
+
+            let testArgs = {
+                test: true
+            };
+
+            let valOrError =
+                yield datasetDoi.doiMint(dataset2.id, title, creator, publicationYear, testArgs);
+            assert.isOk(valOrError);
+            assert.isOk(valOrError.val);
+            let dataset = valOrError.val;
+            assert.isOk(dataset.doi);
+            let link = datasetDoi.doiUrlLink(dataset.doi);
+
+            let options = {
+                method: 'GET',
+                uri: link,
+                headers: {'Content-Type': 'text/plain'}
+            };
+            // get metadata!
+            let response = yield request(options);
+            assert.isOk(response);
+            assert.isTrue(response.startsWith("success: " + dataset.doi));
         });
     });
 });
