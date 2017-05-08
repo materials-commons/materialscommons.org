@@ -95,6 +95,9 @@ before_script:
   - pushd backend/scripts/templates/
   - ./run.sh
   - popd
+  - pushd backend/scripts
+  - source setupDoiEnv.sh
+  - popd
   - pushd backend
   - gulp build-mcapi-server
   - sleep 5
