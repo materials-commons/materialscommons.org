@@ -38,6 +38,13 @@ before(function*() {
 
     this.timeout(8000); // test setup can take up to 8 seconds
 
+    // check for all env variables
+    assert.isOk(doiNamespace, "Missing process.env.DOINAMESPACE");
+    assert.isOk(doiUser, "Missing process.env.DOITESTUSER");
+    assert.isOk(doiPassword, "Missing process.env.DOITESTPW");
+    assert.isOk(publicationURLBase, "Missing process.env.DOIPUBLICATIONBASE");
+    assert.isOk(doiUrl, "Missing process.env.DOISERVICEURL");
+
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
