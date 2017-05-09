@@ -112,12 +112,15 @@ describe('Feature - Dataset: ', function () {
             let creator = "Test Author";
             let title = "Test Title - " + project.name;
             let publicationYear = "2017";
+            let description = "This is a test project in Materials commons used for " +
+                "testing the the Mint command in the DOI API (REST) suite.";
 
             let body = "_target: " + targetUrl + "\n"
                 + "datacite.creator: " + creator + "\n"
                 + "datacite.title: " + title + "\n"
                 + "datacite.publisher: " + publisher + "\n"
                 + "datacite.publicationyear: " + publicationYear + "\n"
+                + "datasite.description:" + description + "\n"
                 + "datacite.resourcetype: Dataset";
 
             let options = {
@@ -140,7 +143,7 @@ describe('Feature - Dataset: ', function () {
             let doi = matches[0];
 
             let status = yield r.table('datasets').get(dataset1.id).update({doi: doi});
-            assert.equal(status.replaced,1);
+            assert.equal(status.replaced, 1);
 
             let valOrError = yield datasets.getDataset(dataset1.id);
             assert.isOk(valOrError);
@@ -152,9 +155,12 @@ describe('Feature - Dataset: ', function () {
             let creator = "Test Author";
             let title = "Test Title - " + project.name;
             let publicationYear = "2017";
+            let description = "This is a test project in Materials commons used for " +
+                "testing the the Mint command in the DOI API (REST) suite.";
 
             let testArgs = {
-                test: true
+                test: true,
+                description: description
             };
 
             let valOrError =
@@ -174,6 +180,16 @@ describe('Feature - Dataset: ', function () {
             let response = yield request(options);
             assert.isOk(response);
             assert.isTrue(response.startsWith("success: " + dataset.doi));
+        });
+        it("gets metadata for an existing DOI", function*() {
+            let knownDoi = "doi:10.13016/M20J4P";
+            // let knownDoi = "doi:10.5072/FK2G73F14J";
+            let metadata = yield datasetDoi.doiGetMetadata(knownDoi);
+            assert.isOk(metadata);
+            // console.log(metadata);
+            let matches = metadata.match(/doi:\S*/i);
+            let matchingDoi = matches[0];
+            assert.equal(knownDoi, matchingDoi);
         });
     });
 });

@@ -25,19 +25,23 @@ function* doiServerStatusIsOK() {
     };
     let response = yield request(options);
     return ((response.statusCode == "200")
-        && (response.body == "success: EZID is up"));
+    && (response.body == "success: EZID is up"));
 }
 
 function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
     let namespace = doiNamespace;
     let user = doiUser;
     let pw = doiPassword;
+    let description = null;
 
     if (otherArgs && otherArgs.test) {
         namespace = doiTestNamespace;
         user = doiTestUser;
         pw = doiTestPassword;
         delete otherArgs['test'];
+    }
+    if (otherArgs && otherArgs.description) {
+        description = otherArgs.description;
     }
 
     let publisher = doiPublisher;
@@ -51,16 +55,20 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
         + "datacite.publicationyear: " + publicationYear + "\n"
         + "datacite.resourcetype: Dataset";
 
+    if (description) {
+        body = "datasite.description:" + description + "\n" + body;
+    }
+
     let options = {
         method: 'POST', // POST = Mint operation
         body: body,
         uri: url,
-        auth : {
+        auth: {
             user: user,
             pass: pw,
-            sendImmediately : false
+            sendImmediately: false
         },
-        headers: { 'Content-Type': 'text/plain'}
+        headers: {'Content-Type': 'text/plain'}
     };
 
     let doi = null;
@@ -84,12 +92,27 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
     return yield datasets.getDataset(datasetId);
 }
 
+function* doiGetMetadata(doi) {
+    let link = doiUrlLink(doi);
+
+    // console.log("link: ", link);
+
+    let options = {
+        method: 'GET',
+        uri: link,
+        headers: {'Content-Type': 'text/plain'}
+    };
+
+    return yield request(options);
+}
+
 function doiUrlLink(doi) {
-    return `${doiUrl}/id/${doi}`;
+    return `${doiUrl}id/${doi}`;
 }
 
 module.exports = {
     doiServerStatusIsOK,
     doiMint,
+    doiGetMetadata,
     doiUrlLink
 };
