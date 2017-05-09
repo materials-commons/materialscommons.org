@@ -1,4 +1,5 @@
 const experimentDatasets = require('../../../db/model/experiment-datasets');
+const experimentDatasetsDoi = require('../../../db/model/experiment-datasets-doi');
 const check = require('../../../db/model/check');
 const schema = require('../../../schema');
 const parse = require('co-body');
@@ -383,6 +384,59 @@ function* unpublishDataset(next) {
     yield next;
 }
 
+function* createAndAddNewDoi(next, datasetId, processArgs) {
+    let ok = yield experimentDatasetsDoi.doiServerStatusIsOk();
+    if (!ok) {
+        this.status = status.SERVICE_UNAVAILABLE;
+        this.body = "DOI Service is Unavaiable";
+    } else {
+        let error = validateDoiMintingArgs(processArgs);
+        if (error) {
+            this.status = status.UNAUTHORIZED;
+            this.body = error;
+        }
+        else {
+            let otherArgs = {}
+            if (processArgs.description) {
+                otherArgs.description = processArgs.description;
+            }
+            let dataset = yield experimentDatasetsDoi.doiMint(this.params.dataset_id,
+                processArgs.title,processArgs.author,processArgs.publication_year,otherArgs);
+            this.body = dataset;
+        }
+    }
+
+    yield next;
+}
+
+function validateDoiMintingArgs(processArgs) {
+    if (!processArgs.title) {
+        return {error: 'Bad arguments - title is a required field'};
+    }
+    if (!processArgs.author) {
+        return {error: 'Bad arguments - author is a required field'};
+    }
+    if (!processArgs.publication_year) {
+        return {error: 'Bad arguments - publication_year is a required field'};
+    }
+    return null;
+}
+
+function getDoiLink(next,doiId){
+    this.body = experimentDatasetsDoi.doiUrlLink(doiId);
+    yield next;
+}
+
+function* doiServerStatus(next) {
+    this.body = yield experimentDatasetsDoi.doiServerStatusIsOK();
+    yield next;
+}
+
+function* getDoiMetadata(doiId) {
+    this.body = yield experimentDatasetsDoi.doiGetMetadata(doiId);
+    yield next;
+}
+
 function createResource() {
     const router = new Router();
     router.get('/', getDatasetsForExperiment);
@@ -399,6 +453,14 @@ function createResource() {
     router.get('/:dataset_id/samples', getSamplesForDataset);
     router.put('/:dataset_id/files', updateFilesInDataset);
     router.put('/:dataset_id/processes', updateProcessesInDataset);
+
+    router.post('/:dataset_id/doi',createAndAddNewDoi);
+    router.get('/:dataset_id/doi/:doi_id', getDoiMetadata);
+    // router.put('/:dataset_id/doi/:doi_id', updateDoiMetadata);
+    router.get('/:dataset_id/doi/:doi_id/link', getDoiLink);
+
+    router.get('/:dataset_id/doiserverstatus',doiServerStatus);
+
     router.delete('/:dataset_id', deleteDatasetFromExperiment);
 
     return router;
@@ -407,3 +469,7 @@ function createResource() {
 module.exports = {
     createResource
 };
+
+// http://mctest.localhost/api/v2/projects/aaf60d8a-2fa2-4d57-b5f7-65289955bd6f/experiments/05ed147f-a187-4e93-871f-9ce11e00d3ee/datasets/0c10708a-6649-47b6-a902-8336afa5083c/doi/doi%3A10.5072%2FFK2G73F14J
+
+
