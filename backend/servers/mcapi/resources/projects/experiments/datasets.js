@@ -384,24 +384,30 @@ function* unpublishDataset(next) {
     yield next;
 }
 
-function* createAndAddNewDoi(next, datasetId, processArgs) {
-    let ok = yield experimentDatasetsDoi.doiServerStatusIsOk();
+function* createAndAddNewDoi(next) {
+    let processArgs = yield parse(this);
+    let datasetId = this.params.dataset_id;
+    console.log('createAndAddNewDoi', datasetId, processArgs);
+    let ok = yield experimentDatasetsDoi.doiServerStatusIsOK();
     if (!ok) {
         this.status = status.SERVICE_UNAVAILABLE;
         this.body = "DOI Service is Unavaiable";
     } else {
+        console.log('createAndAddNewDoi ok');
         let error = validateDoiMintingArgs(processArgs);
+        console.log('createAndAddNewDoi error', error);
         if (error) {
             this.status = status.UNAUTHORIZED;
             this.body = error;
         }
         else {
+            console.log('createAndAddNewDoi no error');
             let otherArgs = {}
             if (processArgs.description) {
                 otherArgs.description = processArgs.description;
             }
             let dataset = yield experimentDatasetsDoi.doiMint(this.params.dataset_id,
-                processArgs.title,processArgs.author,processArgs.publication_year,otherArgs);
+                processArgs.title, processArgs.author, processArgs.publication_year, otherArgs);
             this.body = dataset;
         }
     }
@@ -422,7 +428,7 @@ function validateDoiMintingArgs(processArgs) {
     return null;
 }
 
-function getDoiLink(next,doiId){
+function* getDoiLink(next, doiId) {
     this.body = experimentDatasetsDoi.doiUrlLink(doiId);
     yield next;
 }
@@ -454,12 +460,12 @@ function createResource() {
     router.put('/:dataset_id/files', updateFilesInDataset);
     router.put('/:dataset_id/processes', updateProcessesInDataset);
 
-    router.post('/:dataset_id/doi',createAndAddNewDoi);
+    router.post('/:dataset_id/doi', createAndAddNewDoi);
     router.get('/:dataset_id/doi/:doi_id', getDoiMetadata);
     // router.put('/:dataset_id/doi/:doi_id', updateDoiMetadata);
     router.get('/:dataset_id/doi/:doi_id/link', getDoiLink);
 
-    router.get('/:dataset_id/doiserverstatus',doiServerStatus);
+    router.get('/:dataset_id/doiserverstatus', doiServerStatus);
 
     router.delete('/:dataset_id', deleteDatasetFromExperiment);
 

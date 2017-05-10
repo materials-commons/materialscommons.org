@@ -18,9 +18,9 @@ export DOIPUBLICATIONBASE='http://mcpub.localhost/'
 # for production use of DOI API
 export DOINAMESPACE='doi:10.5072/FK2'
 export DOIUSER=apitest
-export DOIPW=apitest
+export DOIPW=
 
 # for test use of DOI API
 export DOITESTNAMESPACE='doi:10.5072/FK2'
 export DOITESTUSER=apitest
-export DOITESTPW=apitest
+export DOITESTPW=
