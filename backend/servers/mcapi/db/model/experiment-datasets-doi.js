@@ -77,7 +77,6 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
         let matches = response.match(/doi:\S*/i);
         doi = matches[0];
     } catch (e) {
-        console.log("request error: ", e.message);
         return {
             error: e
         };
@@ -90,11 +89,7 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
         };
     }
 
-    let results = yield datasets.getDataset(datasetId);
-
-    console.log(results);
-
-    return results;
+    return yield datasets.getDataset(datasetId);
 }
 
 function* doiGetMetadata(doi) {

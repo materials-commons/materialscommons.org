@@ -386,7 +386,6 @@ function* unpublishDataset(next) {
 
 function* createAndAddNewDoi(next) {
     let processArgs = yield parse(this);
-    let datasetId = this.params.dataset_id;
     let ok = yield experimentDatasetsDoi.doiServerStatusIsOK();
     if (!ok) {
         this.status = status.SERVICE_UNAVAILABLE;
@@ -398,7 +397,7 @@ function* createAndAddNewDoi(next) {
             this.body = error;
         }
         else {
-            let otherArgs = {}
+            let otherArgs = {};
             if (processArgs.description) {
                 otherArgs.description = processArgs.description;
             }
@@ -445,13 +444,12 @@ function* validateDoiServerSetup(next) {
     let doiUser = process.env.DOIUSER;
     let doiPassword = process.env.DOIPW;
     let envOk = !!(publicationURLBase && doiNamespace && doiUser && doiUser);
-    console.log("Checcking DOI server env: ", envOk);
     if (!envOk) {
         let missing = [];
         if (!publicationURLBase) missing.push("DOIPUBLICATIONBASE");
         if (!doiNamespace) missing.push("DOINAMESPACE");
         if (!doiUser) missing.push("DOIUSER");
-        if (!doiPassword) missing.push("DOIPW")
+        if (!doiPassword) missing.push("DOIPW");
         let message = "DOI server setup is missing env settings: " + missing.join();
         this.status = status.UNPROCESSABLE_ENTITY;
         this.body = {error: message};
