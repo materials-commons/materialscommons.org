@@ -73,13 +73,11 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
 
     let doi = null;
     try {
-        console.log("just before request");
         let response = yield request(options);
-        console.log("just after request");
         let matches = response.match(/doi:\S*/i);
         doi = matches[0];
     } catch (e) {
-        console.log("request error: ",e.message);
+        console.log("request error: ", e.message);
         return {
             error: e
         };

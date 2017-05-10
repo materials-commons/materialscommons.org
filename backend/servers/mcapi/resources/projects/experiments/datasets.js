@@ -387,21 +387,17 @@ function* unpublishDataset(next) {
 function* createAndAddNewDoi(next) {
     let processArgs = yield parse(this);
     let datasetId = this.params.dataset_id;
-    console.log('createAndAddNewDoi', datasetId, processArgs);
     let ok = yield experimentDatasetsDoi.doiServerStatusIsOK();
     if (!ok) {
         this.status = status.SERVICE_UNAVAILABLE;
         this.body = "DOI Service is Unavaiable";
     } else {
-        console.log('createAndAddNewDoi ok');
         let error = validateDoiMintingArgs(processArgs);
-        console.log('createAndAddNewDoi error', error);
         if (error) {
             this.status = status.UNAUTHORIZED;
             this.body = error;
         }
         else {
-            console.log('createAndAddNewDoi no error');
             let otherArgs = {}
             if (processArgs.description) {
                 otherArgs.description = processArgs.description;
@@ -443,6 +439,27 @@ function* getDoiMetadata(doiId) {
     yield next;
 }
 
+function* validateDoiServerSetup(next) {
+    let publicationURLBase = process.env.DOIPUBLICATIONBASE;
+    let doiNamespace = process.env.DOINAMESPACE;
+    let doiUser = process.env.DOIUSER;
+    let doiPassword = process.env.DOIPW;
+    let envOk = !!(publicationURLBase && doiNamespace && doiUser && doiUser);
+    console.log("Checcking DOI server env: ", envOk);
+    if (!envOk) {
+        let missing = [];
+        if (!publicationURLBase) missing.push("DOIPUBLICATIONBASE");
+        if (!doiNamespace) missing.push("DOINAMESPACE");
+        if (!doiUser) missing.push("DOIUSER");
+        if (!doiPassword) missing.push("DOIPW")
+        let message = "DOI server setup is missing env settings: " + missing.join();
+        this.status = status.UNPROCESSABLE_ENTITY;
+        this.body = {error: message};
+        return this.status;
+    }
+    yield next;
+}
+
 function createResource() {
     const router = new Router();
     router.get('/', getDatasetsForExperiment);
@@ -459,6 +476,8 @@ function createResource() {
     router.get('/:dataset_id/samples', getSamplesForDataset);
     router.put('/:dataset_id/files', updateFilesInDataset);
     router.put('/:dataset_id/processes', updateProcessesInDataset);
+
+    router.use('/:dataset_id/doi', validateDoiServerSetup);
 
     router.post('/:dataset_id/doi', createAndAddNewDoi);
     router.get('/:dataset_id/doi/:doi_id', getDoiMetadata);
