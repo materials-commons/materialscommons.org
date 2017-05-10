@@ -92,10 +92,11 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
     return yield datasets.getDataset(datasetId);
 }
 
-function* doiGetMetadata(doi) {
-    let link = doiUrlLink(doi);
+function* doiGetMetadata(datasetId) {
+    let dataset = yield datasets.getDataset(datasetId);
+    let doi = dataset.val.doi;
 
-    // console.log("link: ", link);
+    let link = doiUrlLink(doi);
 
     let options = {
         method: 'GET',
@@ -103,16 +104,52 @@ function* doiGetMetadata(doi) {
         headers: {'Content-Type': 'text/plain'}
     };
 
-    return yield request(options);
+    let response = null;
+    try {
+        response = yield request(options);
+    } catch (e) {
+        return {
+            error: e
+        };
+    }
+
+    let matches = response.match(/doi:\S*/i);
+    if (doi != matches[0]) {
+        return {error: "Matadata not available for doi: " + doi};
+    }
+
+    return parseNameValueList(response);
+
+}
+
+function* doiGetServerLink(datasetId) {
+    let dataset = yield datasets.getDataset(datasetId);
+    let doi = dataset.val.doi;
+    return doiUrlLink(doi);
 }
 
 function doiUrlLink(doi) {
     return `${doiUrl}id/${doi}`;
 }
 
+function parseNameValueList(linesInAString) {
+    let ret = {};
+    let lines = linesInAString.split('\n');
+    for (let line of lines) {
+        line = line.trim();
+        let index = line.indexOf(':');
+        if (index > -1) {
+            let key = line.substr(0, index).trim();
+            let value = line.substr(index + 1).trim();
+            ret[key] = value;
+        }
+    }
+    return ret;
+}
+
 module.exports = {
     doiServerStatusIsOK,
     doiMint,
     doiGetMetadata,
-    doiUrlLink
+    doiGetServerLink
 };

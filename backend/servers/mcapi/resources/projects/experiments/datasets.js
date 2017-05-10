@@ -423,18 +423,36 @@ function validateDoiMintingArgs(processArgs) {
     return null;
 }
 
-function* getDoiLink(next, doiId) {
-    this.body = experimentDatasetsDoi.doiUrlLink(doiId);
+function* getDoiServerLink(next) {
+    let rv = yield experimentDatasetsDoi.doiGetServerLink(this.params.dataset_id);
+    if (rv.error) {
+        this.status = status.UNAUTHORIZED;
+        this.body = rv;
+    } else {
+        this.body = {val: rv};
+    }
     yield next;
 }
 
 function* doiServerStatus(next) {
-    this.body = yield experimentDatasetsDoi.doiServerStatusIsOK();
+    let rv = yield experimentDatasetsDoi.doiServerStatusIsOK();
+    if (rv.error) {
+        this.status = status.UNAUTHORIZED;
+        this.body = rv;
+    } else {
+        this.body = rv;
+    }
     yield next;
 }
 
-function* getDoiMetadata(doiId) {
-    this.body = yield experimentDatasetsDoi.doiGetMetadata(doiId);
+function* getDoiMetadata(next) {
+    let rv = yield experimentDatasetsDoi.doiGetMetadata(this.params.dataset_id);
+    if (rv.error) {
+        this.status = status.UNAUTHORIZED;
+        this.body = rv;
+    } else {
+        this.body = rv;
+    }
     yield next;
 }
 
@@ -453,6 +471,16 @@ function* validateDoiServerSetup(next) {
         let message = "DOI server setup is missing env settings: " + missing.join();
         this.status = status.UNPROCESSABLE_ENTITY;
         this.body = {error: message};
+        return this.status;
+    }
+    yield next;
+}
+
+function* validateHasDoi(next) {
+    let rv = yield experimentDatasets.getDataset(this.params.dataset_id);
+    if (!(rv.val && rv.val.doi)) {
+        this.status = status.BAD_REQUEST;
+        this.body = {error: "dataset does not have a DOI value"};
         return this.status;
     }
     yield next;
@@ -478,9 +506,9 @@ function createResource() {
     router.use('/:dataset_id/doi', validateDoiServerSetup);
 
     router.post('/:dataset_id/doi', createAndAddNewDoi);
-    router.get('/:dataset_id/doi/:doi_id', getDoiMetadata);
-    // router.put('/:dataset_id/doi/:doi_id', updateDoiMetadata);
-    router.get('/:dataset_id/doi/:doi_id/link', getDoiLink);
+    router.get('/:dataset_id/doi', validateHasDoi, getDoiMetadata);
+    // router.put('/:dataset_id/doi', updateDoiMetadata);
+    router.get('/:dataset_id/doi/link', validateHasDoi, getDoiServerLink);
 
     router.get('/:dataset_id/doiserverstatus', doiServerStatus);
 
