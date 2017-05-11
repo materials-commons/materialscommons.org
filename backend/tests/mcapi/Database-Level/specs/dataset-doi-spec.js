@@ -93,7 +93,7 @@ describe('Feature - Dataset: ', function () {
         });
         it('creates a test DOI - raw', function*() {
 
-            this.timeout(4000); // test can take up to 4 seconds
+            this.timeout(6000); // test can take up to 6 seconds
 
             assert.isOk(doiNamespace);
             assert.isOk(doiUser);
@@ -120,7 +120,7 @@ describe('Feature - Dataset: ', function () {
                 + "datacite.title: " + title + "\n"
                 + "datacite.publisher: " + publisher + "\n"
                 + "datacite.publicationyear: " + publicationYear + "\n"
-                + "datasite.description:" + description + "\n"
+                + "datacite.description:" + description + "\n"
                 + "datacite.resourcetype: Dataset";
 
             let options = {
@@ -152,6 +152,9 @@ describe('Feature - Dataset: ', function () {
             assert.equal(dataset.doi, doi);
         });
         it("mints a new DOI and puts into dataset record", function*() {
+
+            this.timeout(6000); // test can take up to 6 seconds
+
             let creator = "Test Author";
             let title = "Test Title - " + project.name;
             let publicationYear = "2017";
@@ -169,27 +172,16 @@ describe('Feature - Dataset: ', function () {
             assert.isOk(valOrError.val);
             let dataset = valOrError.val;
             assert.isOk(dataset.doi);
-            let link = datasetDoi.doiUrlLink(dataset.doi);
 
-            let options = {
-                method: 'GET',
-                uri: link,
-                headers: {'Content-Type': 'text/plain'}
-            };
-            // get metadata!
-            let response = yield request(options);
-            assert.isOk(response);
-            assert.isTrue(response.startsWith("success: " + dataset.doi));
-        });
-        it("gets metadata for an existing DOI", function*() {
-            let knownDoi = "doi:10.13016/M20J4P";
-            // let knownDoi = "doi:10.5072/FK2G73F14J";
-            let metadata = yield datasetDoi.doiGetMetadata(knownDoi);
+            let doi = dataset.doi;
+
+            let metadata = yield datasetDoi.doiGetMetadata(dataset2.id);
             assert.isOk(metadata);
-            // console.log(metadata);
-            let matches = metadata.match(/doi:\S*/i);
-            let matchingDoi = matches[0];
-            assert.equal(knownDoi, matchingDoi);
+            assert.isOk(metadata.success);
+            assert.equal(metadata.success, doi);
+            assert.equal(metadata['datacite.creator'], creator);
+            assert.equal(metadata['datacite.publicationyear'], publicationYear);
+            assert.equal(metadata['datacite.description'], description);
         });
     });
 });

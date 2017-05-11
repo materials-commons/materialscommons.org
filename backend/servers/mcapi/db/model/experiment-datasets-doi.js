@@ -56,7 +56,7 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
         + "datacite.resourcetype: Dataset";
 
     if (description) {
-        body = "datasite.description:" + description + "\n" + body;
+        body = "datacite.description:" + description + "\n" + body;
     }
 
     let options = {
