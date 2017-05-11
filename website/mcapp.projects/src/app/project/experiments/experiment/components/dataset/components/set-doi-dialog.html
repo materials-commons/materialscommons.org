@@ -15,34 +15,48 @@
         adminstrative staff at help@materialscommons.org. (* Indicates required fields)
     </md-dialog-content>
     </div>
-    <md-input-container class="md-block">
-        <label>Title</label>
-        <input name="title"
-               ng-model="$ctrl.doiTitle" required
-               ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-        >
-    </md-input-container>
-    <md-input-container class="md-block">
-        <label>Author</label>
-        <input ng-model="$ctrl.doiAuthor" required
-               ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-        >
-    </md-input-container>
-    <md-input-container class="md-block">
-        <label>Publication Date</label>
-        <input ng-model="$ctrl.doiPublicationDate" required
-               ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-        >
-    </md-input-container>
-    <md-input-container class="md-block">
-        <label>Description</label>
-        <textarea rows="3" cols="50"
-               ng-model="$ctrl.doiDescription"
-               ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-        ></textarea>
-    </md-input-container>
-    <md-dialog-actions layout="row">
-        <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
-        <md-button class="md-primary" ng-click="$ctrl.setDoi()">generate DOI</md-button>
-    </md-dialog-actions>
+    <form name="doiForm">
+        <md-input-container class="md-block">
+            <label>Title</label>
+            <input name="title"
+                   ng-model="$ctrl.doiTitle" required
+                   ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+            >
+            <div ng-messages="doiForm.title.$error">
+                <div ng-message="required">Title is required!</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Author</label>
+            <input name="author"
+                   ng-model="$ctrl.doiAuthor" required
+                   ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+            >
+            <div ng-messages="doiForm.author.$error">
+                <div ng-message="required">Author is required!</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Publication Date</label>
+            <input name="year"
+                   ng-model="$ctrl.doiPublicationDate" required
+                   ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+            >
+            <div ng-messages="doiForm.date.$error">
+                <div ng-message="required">Publication year is required!</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Description</label>
+            <textarea rows="3" cols="50"
+                   ng-model="$ctrl.doiDescription"
+                   ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+            ></textarea>
+        </md-input-container>
+        <md-dialog-actions layout="row">
+            <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
+
+            <md-button class="md-primary" ng-click="$ctrl.setDoi()" ng-disabled="doiForm.$invalid">generate DOI</md-button>
+        </md-dialog-actions>
+    </form>
 </md-dialog>
