@@ -15,7 +15,7 @@
         adminstrative staff at help@materialscommons.org. (* Indicates required fields)
     </md-dialog-content>
     </div>
-    <form name="doiForm">
+    <form name="doiForm" novalidate>
         <md-input-container class="md-block">
             <label>Title</label>
             <input name="title"
@@ -42,7 +42,7 @@
                    ng-model="$ctrl.doiPublicationDate" required
                    ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
             >
-            <div ng-messages="doiForm.date.$error">
+            <div ng-messages="doiForm.year.$error">
                 <div ng-message="required">Publication year is required!</div>
             </div>
         </md-input-container>
@@ -55,7 +55,6 @@
         </md-input-container>
         <md-dialog-actions layout="row">
             <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
-
             <md-button class="md-primary" ng-click="$ctrl.setDoi()" ng-disabled="doiForm.$invalid">generate DOI</md-button>
         </md-dialog-actions>
     </form>
