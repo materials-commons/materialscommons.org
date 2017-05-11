@@ -104,6 +104,8 @@ before_script:
   - node sbin/mcapi/mcapi.js -p $MCAPI_SERVER_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
   - sleep 5
   - popd
+  - echo $DOIPUBLISHER
+  - echo $DOIPUBLICATIONBASE
 
 script:
   - npm run-script test-no-html
