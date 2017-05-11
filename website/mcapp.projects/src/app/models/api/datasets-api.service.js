@@ -66,6 +66,29 @@ class DatasetsAPIService {
     unpublishDataset(projectId, experimentId, datasetId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('unpublish').customPUT({});
     }
+
+    createNewDoi(projectId, experimentId, datasetId, details){
+        // Details: 'title', 'author', 'publication_year', 'description' (optional)
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('doi').customPOST(details);
+    }
+
+    getDoiMetadata(projectId, experimentId, datasetId){
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('doi').get();
+    }
+
+    // updateDoiMetadata(projectId, experimentId, datasetId, details) {
+    //   Details: (all optional) 'title', 'author', 'publication_year', 'details'
+    //   return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('doi').customPut({details});
+    // }
+
+    getDoiExternalLink(projectId, experimentId, datasetId){
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('doi').one('link').get();
+    }
+
+    getDoiServerStatus(projectId, experimentId, datasetId){
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('doiserverstatus').get();
+    }
+
 }
 
 angular.module('materialscommons').service('datasetsAPI', DatasetsAPIService);

@@ -74,7 +74,7 @@
                     </md-button>
                 </div>
                 <div ng-if="$ctrl.dataset.doi" layout="row">
-                    DOI: {{$ctrl.dataset.doi}}
+                    DOI: &nbsp; <a ng-href="{{$ctrl.dataset.doi_url}}" target="_blank">{{$ctrl.dataset.doi}}</a>
                 </div>
             </div>
         </div>

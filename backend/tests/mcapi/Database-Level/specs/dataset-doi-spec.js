@@ -23,6 +23,8 @@ const testHelpers = require('./test-helpers');
 let userId = "test@test.mc";
 let user = null;
 
+let base_project_name = "Test doi - ";
+
 let project = null;
 let experiment = null;
 let processList = null;
@@ -35,6 +37,11 @@ let doiUser = process.env.DOITESTUSER;
 let doiPassword = process.env.DOITESTPW;
 let publicationURLBase = process.env.DOIPUBLICATIONBASE;
 let doiUrl = process.env.DOISERVICEURL;
+
+let random_name = function(){
+    let number = Math.floor(Math.random()*10000);
+    return base_project_name + number;
+};
 
 before(function*() {
 
@@ -58,8 +65,15 @@ before(function*() {
     project = results.val.project;
     experiment = results.val.experiment;
     assert.equal(project.owner, userId);
-    //console.log("Test project name: " + project.name);
-    //console.log("Test project id: " + project.id);
+    let name = random_name();
+    let description = "Changed the name of the demo project to " + name;
+    let updateData = {
+        name: name,
+        description: description
+    };
+    project = yield projects.update(project.id, updateData);
+    console.log("Test project name: " + project.name);
+    console.log("Test project id: " + project.id);
 
     processList = results.val.processList;
     let datasetList = yield testHelpers.createDatasetList(experiment, processList, user.id);
