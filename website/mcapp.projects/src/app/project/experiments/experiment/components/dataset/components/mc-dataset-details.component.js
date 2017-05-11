@@ -208,7 +208,7 @@ class SetDatasetDoiDialogController {
                 + " " + this.dataset.authors[0].lastname;
         }
         this.doiAuthor = author;
-        this.doiPublicationDate = moment().format("YYYY");
+        this.doiPublicationDate = (new Date()).getFullYear();
         this.doiDescription = this.dataset.description;
     }
 
