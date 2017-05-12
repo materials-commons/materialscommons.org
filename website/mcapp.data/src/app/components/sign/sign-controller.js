@@ -32,7 +32,7 @@ export class SignController {
     login() {
         this.userService.login(this.user.email, this.user.password)
             .then(
-                (user)=> {
+                (user) => {
                     this.user = user.plain();
                     this.userService.setAuthenticated(true, this.user);
                     this.Restangular.setDefaultRequestParams(['post', 'get', 'put', 'remove'], {apikey: this.userService.apikey()});
@@ -51,7 +51,7 @@ export class SignController {
             .then(
                 () => {
                     this.showSuccessMsg = true;
-                    this.$timeout(() => this.$uibModalInstance.close(), 20*this.second);
+                    this.$timeout(() => this.$uibModalInstance.close(), 20 * this.second);
                 },
                 (e) => {
                     let options = {closeButton: true, timeOut: 0};
@@ -65,9 +65,9 @@ export class SignController {
             .then(
                 () => {
                     this.showSuccessMsg = true;
-                    this.$timeout(() => this.$uibModalInstance.close(), 20*this.second);
+                    this.$timeout(() => this.$uibModalInstance.close(), 20 * this.second);
                 },
-                (e)=>{
+                (e) => {
                     let options = {closeButton: true, timeOut: 0};
                     this.toastr.error(e.data.error, this.user.email, options);
 

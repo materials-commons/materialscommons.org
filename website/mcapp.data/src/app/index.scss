@@ -1,5 +1,5 @@
-
 @import "variables";
+
 /**
  *  If you want to override some bootstrap variables, you have to change values here.
  *  The list of variables are listed here bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss
@@ -24,14 +24,15 @@ $fa-font-path: "../../bower_components/font-awesome/fonts";
   padding: 0.2em 0;
 }
 
-.field-label{
+.field-label {
   color: $label;
 }
-.field-value{
+
+.field-value {
   color: $values;
 }
 
-.title{
+.title {
   color: $heading;
 }
 
@@ -41,13 +42,13 @@ $fa-font-path: "../../bower_components/font-awesome/fonts";
   color: $values;
 }
 
-tags-input .tags{
+tags-input .tags {
   border: none;
   box-shadow: none;
   background-color: white;
 }
 
-tags-input[disabled] .tags{
+tags-input[disabled] .tags {
   background-color: #ffffff;
 }
 
@@ -59,7 +60,7 @@ tags-input[disabled] .tags{
   .navbar-header {
     float: none;
   }
-  .navbar-left,.navbar-right {
+  .navbar-left, .navbar-right {
     float: none !important;
   }
   .navbar-toggle {
@@ -67,28 +68,28 @@ tags-input[disabled] .tags{
   }
   .navbar-collapse {
     border-top: 1px solid transparent;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   .navbar-fixed-top {
     top: 0;
     border-width: 0 0 1px;
   }
   .navbar-collapse.collapse {
-    display: none!important;
+    display: none !important;
   }
   .navbar-nav {
-    float: none!important;
+    float: none !important;
     margin-top: 7.5px;
   }
-  .navbar-nav>li {
+  .navbar-nav > li {
     float: none;
   }
-  .navbar-nav>li>a {
+  .navbar-nav > li > a {
     padding-top: 10px;
     padding-bottom: 10px;
   }
-  .collapse.in{
-    display:block !important;
+  .collapse.in {
+    display: block !important;
   }
 }
 

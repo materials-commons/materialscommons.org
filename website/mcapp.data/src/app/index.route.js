@@ -15,13 +15,13 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             // sticky: true,
             // dsr: true,
             resolve: {
-                tags: ["actionsService", function(actionsService) {
+                tags: ["actionsService", function (actionsService) {
                     return actionsService.getAllTags();
                 }],
-                datasetsCount: ["releaseService", function(releaseService) {
+                datasetsCount: ["releaseService", function (releaseService) {
                     return releaseService.getAllCount();
                 }],
-                authorsCount: ["actionsService", function(actionsService) {
+                authorsCount: ["actionsService", function (actionsService) {
                     return actionsService.getAllAuthorsCount();
                 }]
             }
@@ -31,7 +31,7 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'TopDatasetsController',
             controllerAs: 'ctrl',
             resolve: {
-                datasets: ["releaseService", function(releaseService) {
+                datasets: ["releaseService", function (releaseService) {
                     return releaseService.topViews();
                 }]
             },
@@ -42,7 +42,7 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'RecentDatasetsController',
             controllerAs: 'ctrl',
             resolve: {
-                datasets: ["releaseService", function(releaseService) {
+                datasets: ["releaseService", function (releaseService) {
                     return releaseService.getRecent();
                 }]
             },
@@ -54,7 +54,7 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'SearchController',
             controllerAs: 'search',
             resolve: {
-                results: ["searchService", "$stateParams", function(searchService, $stateParams) {
+                results: ["searchService", "$stateParams", function (searchService, $stateParams) {
                     return searchService.search($stateParams.selection, $stateParams.searchTerm);
                 }]
             }
@@ -65,7 +65,7 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'DetailsController',
             controllerAs: 'ctrl',
             resolve: {
-                dataset: ["releaseService", "$stateParams", function(releaseService, $stateParams) {
+                dataset: ["releaseService", "$stateParams", function (releaseService, $stateParams) {
                     return releaseService.getByID($stateParams.id);
                 }]
             },
@@ -83,13 +83,13 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'BrowseController',
             controllerAs: 'ctrl',
             resolve: {
-                tagsCount: ["actionsService", function(actionsService) {
+                tagsCount: ["actionsService", function (actionsService) {
                     return actionsService.getAllTagsCount();
                 }],
-                datasetsCount: ["releaseService", function(releaseService) {
+                datasetsCount: ["releaseService", function (releaseService) {
                     return releaseService.getAllCount();
                 }],
-                authorsCount: ["actionsService", function(actionsService) {
+                authorsCount: ["actionsService", function (actionsService) {
                     return actionsService.getAllAuthorsCount();
                 }]
             },
@@ -101,7 +101,7 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'BrowseDatasetsController',
             controllerAs: 'ctrl',
             resolve: {
-                datasets: ["releaseService", function(releaseService) {
+                datasets: ["releaseService", function (releaseService) {
                     return releaseService.getAll();
                 }]
             },
@@ -113,7 +113,7 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'BrowseTagsController',
             controllerAs: 'ctrl',
             resolve: {
-                tags: ["actionsService", function(actionsService) {
+                tags: ["actionsService", function (actionsService) {
                     return actionsService.getAllTags();
                 }]
             },
@@ -125,7 +125,7 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'BrowseAuthorsController',
             controllerAs: 'ctrl',
             resolve: {
-                authors: ["actionsService", function(actionsService) {
+                authors: ["actionsService", function (actionsService) {
                     return actionsService.getAllAuthors();
                 }]
             },
@@ -137,7 +137,7 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'TagController',
             controllerAs: 'ctrl',
             resolve: {
-                results: ["actionsService", "$stateParams", function(actionsService, $stateParams) {
+                results: ["actionsService", "$stateParams", function (actionsService, $stateParams) {
                     return actionsService.getDatasetsByTag($stateParams.id);
                 }]
             },

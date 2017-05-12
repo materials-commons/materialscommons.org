@@ -25,7 +25,9 @@
                         <i>Datasets</i>
                         <ul>
                             <div class="row form-horizontal" ng-repeat="dataset in ctrl.datasetForTag(tag.id).data">
-                                <li><mcpub-dataset-overview dataset="dataset"></mcpub-dataset-overview></li>
+                                <li>
+                                    <mcpub-dataset-overview dataset="dataset"></mcpub-dataset-overview>
+                                </li>
                             </div>
                         </ul>
                     </div>

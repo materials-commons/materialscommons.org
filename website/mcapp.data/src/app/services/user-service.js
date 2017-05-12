@@ -57,8 +57,8 @@ export class userService {
         });
 
         modalInstance.result.then(
-            ()=> null,
-            ()=>this.$log.info('Modal dismissed at : ' + new Date())
+            () => null,
+            () => this.$log.info('Modal dismissed at : ' + new Date())
         );
     }
 }

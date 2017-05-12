@@ -1,18 +1,18 @@
-.form-login{
+.form-login {
   margin-right: auto;
   margin-left: auto;
   padding: 50px;
   width: 500px;
 
-  .form-group{
+  .form-group {
     padding-bottom: 10px;
   }
-  label.required:after{
+  label.required:after {
     content: " *";
     color: red;
   }
 }
 
-.highlight{
+.highlight {
   border-bottom: 2px solid $orange;
 }
