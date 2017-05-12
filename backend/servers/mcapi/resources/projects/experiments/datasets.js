@@ -401,9 +401,8 @@ function* createAndAddNewDoi(next) {
             if (processArgs.description) {
                 otherArgs.description = processArgs.description;
             }
-            let dataset = yield experimentDatasetsDoi.doiMint(this.params.dataset_id,
+            this.body = yield experimentDatasetsDoi.doiMint(this.params.dataset_id,
                 processArgs.title, processArgs.author, processArgs.publication_year, otherArgs);
-            this.body = dataset;
         }
     }
 
@@ -457,17 +456,17 @@ function* getDoiMetadata(next) {
 }
 
 function* validateDoiServerSetup(next) {
-    let publicationURLBase = process.env.DOIPUBLICATIONBASE;
-    let doiNamespace = process.env.DOINAMESPACE;
-    let doiUser = process.env.DOIUSER;
-    let doiPassword = process.env.DOIPW;
+    let publicationURLBase = process.env.MC_DOI_PUBLICATION_BASE;
+    let doiNamespace = process.env.MC_DOI_NAMESPACE;
+    let doiUser = process.env.MC_DOI_USER;
+    let doiPassword = process.env.MC_DOI_PW;
     let envOk = !!(publicationURLBase && doiNamespace && doiUser && doiUser);
     if (!envOk) {
         let missing = [];
-        if (!publicationURLBase) missing.push("DOIPUBLICATIONBASE");
-        if (!doiNamespace) missing.push("DOINAMESPACE");
-        if (!doiUser) missing.push("DOIUSER");
-        if (!doiPassword) missing.push("DOIPW");
+        if (!publicationURLBase) missing.push("MC_DOI_PUBLICATION_BASE");
+        if (!doiNamespace) missing.push("MC_DOI_NAMESPACE");
+        if (!doiUser) missing.push("MC_DOI_USER");
+        if (!doiPassword) missing.push("MC_DOI_PW");
         let message = "DOI server setup is missing env settings: " + missing.join();
         this.status = status.UNPROCESSABLE_ENTITY;
         this.body = {error: message};

@@ -3,18 +3,14 @@ const request = require('request-promise');
 
 const datasets = require('./experiment-datasets');
 
-let doiUrl = process.env.DOISERVICEURL || 'https://ezid.lib.purdue.edu/';
-let doiPublisher = process.env.DOIPUBLISHER || "Materials Commons";
-let publicationURLBase = process.env.DOIPUBLICATIONBASE;
+let doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
+let doiPublisher = process.env.MC_DOI_PUBLISHER || "Materials Commons";
+let publicationURLBase = process.env.MC_DOI_PUBLICATION_BASE;
 
-let doiNamespace = process.env.DOINAMESPACE;
-let doiUser = process.env.DOIUSER;
-let doiPassword = process.env.DOIPW;
+let doiNamespace = process.env.MC_DOI_NAMESPACE;
+let doiUser = process.env.MC_DOI_USER;
+let doiPassword = process.env.MC_DOI_PW;
 
-// for testing
-let doiTestNamespace = process.env.DOITESTNAMESPACE;
-let doiTestUser = process.env.DOITESTUSER;
-let doiTestPassword = process.env.DOITESTPW;
 
 function* doiServerStatusIsOK() {
     let url = doiUrl + "status";
@@ -34,18 +30,12 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
     let pw = doiPassword;
     let description = null;
 
-    if (otherArgs && otherArgs.test) {
-        namespace = doiTestNamespace;
-        user = doiTestUser;
-        pw = doiTestPassword;
-        delete otherArgs['test'];
-    }
     if (otherArgs && otherArgs.description) {
         description = otherArgs.description;
     }
 
     let publisher = doiPublisher;
-    let targetUrl = publicationURLBase + "#/details/" + datasetId;
+    let targetUrl = publicationURLBase + "/" + datasetId;
     let createCall = "shoulder/" + namespace;
     let url = doiUrl + createCall;
     let body = "_target: " + targetUrl + "\n"
@@ -140,8 +130,7 @@ function parseNameValueList(linesInAString) {
         let index = line.indexOf(':');
         if (index > -1) {
             let key = line.substr(0, index).trim();
-            let value = line.substr(index + 1).trim();
-            ret[key] = value;
+            ret[key] = line.substr(index + 1).trim();
         }
     }
     return ret;
