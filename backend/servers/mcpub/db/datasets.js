@@ -5,6 +5,8 @@ const Promise = require('bluebird');
 const fsa = Promise.promisifyAll(require('fs'));
 const fs = require('fs');
 
+const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
+
 module.exports.getAll = function*(next) {
     this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
         return {
@@ -76,6 +78,9 @@ module.exports.getOne = function*(next) {
             this.body.appreciate = true;
         }
     }
+    if (this.body.doi) {
+        this.body.doi_url = doiUrlLink(this.body.doi);
+    }
     yield next;
 };
 
@@ -93,5 +98,9 @@ module.exports.getMockReleases = function*() {
     this.body = [{DOI: "ABC123"}, {DOI: "DEF123"}]
 };
 
+function doiUrlLink(doi) {
+    if (!doi) return "";
+    return `${doiUrl}id/${doi}`;
+}
 
 
