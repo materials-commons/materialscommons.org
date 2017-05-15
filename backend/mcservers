@@ -18,10 +18,22 @@ function is_running()
     ps -eo "pid,command" | grep "$1" | grep "$2" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' '
 }
 
+function docker_instance_running()
+{
+    docker ps -a | grep "$1\$" | grep "Up "
+}
+
 function start_servers()
 {
     echo Starting $SERVERTYPE servers...
     mkdir $MC_LOG_DIR 2> /dev/null
+
+    R=$(docker_instance_running $MC_ES_NAME)
+    if [ "$R" = "" ]; then
+        echo "  Starting Elasticsearch instance $MC_ES_NAME..."
+        docker start $MC_ES_NAME
+    fi
+
     R=$(is_running "rethinkdb" "driver-port $MCDB_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting rethinkdb..."
@@ -82,6 +94,11 @@ function start_servers()
 function stop_servers()
 {
     echo Stopping $SERVERTYPE servers....
+
+    R=$(docker_instance_running $MC_ES_NAME)
+    if [ "$R" != "" ]; then
+        docker stop $MC_ES_NAME
+    fi
 
     ps -eo "pid,command" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
@@ -150,6 +167,15 @@ function stop_named_server()
             fi
             ;;
 
+        es)
+            echo Stopping Elasticsearch...
+            R=$(docker_instance_running ${MC_ES_NAME})
+            if [ "$R" != "" ]; then
+                docker stop $MC_ES_NAME
+                echo Stopped Elasticsearch docker instance ${MC_ES_NAME}
+            fi
+            ;;
+
         *)
             echo "Unknown server: $1"
             exit 1
@@ -183,6 +209,14 @@ function restart_named_server()
             node sbin/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
             ;;
 
+        es)
+            echo "  Start Elasticsearch docker instance ${MC_ES_NAME}..."
+            R=$(docker_instance_running ${MC_ES_NAME})
+            if [ "$R" = "" ]; then
+                docker start ${MC_ES_NAME}
+            fi
+            ;;
+
         *)
             echo "Unknown server: $1"
             exit 1
@@ -202,6 +236,12 @@ function status_servers()
     echo
     echo "RethinkDB (production):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
+    echo
+    echo "Elasticsearch (production):"
+    R=$(docker_instance_running mc-es)
+    if [ "$R" != "" ]; then
+        echo ${R}
+    fi
     echo
     echo "MCAPI Server (production):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
@@ -223,6 +263,12 @@ function status_servers()
     export MC_PUB_SERVICE_PORT=5026
     echo "RethinkDB (test/unit):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
+    echo
+    echo "Elasticsearch (test/unit):"
+    R=$(docker_instance_running mc-es-test)
+    if [ "$R" != "" ]; then
+        echo ${R}
+    fi
     echo
     echo "MCAPI Server (test/unit):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
@@ -317,6 +363,7 @@ if [ $TESTSERVER = "t" ]; then
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
     export MC_ES_URL="http://localhost:9500"
+    export MC_ES_NAME="mc-es-test"
     export MC_LOG_DIR=/var/log/materialscommons/test
     if [ "$MCDB_FILE" = "" ]; then
         export MCDB_FILE=~/test_data/rethinkdb_dump_test_data.tar.gz
@@ -347,6 +394,7 @@ elif [ $TESTSERVER = "u" ]; then
     export RETHINKDB_HTTP_PORT=8090
     export RETHINKDB_CLUSTER_PORT=31815
     export MC_ES_URL="http://localhost:9500"
+    export MC_ES_NAME="mc-es-test"
     export MC_LOG_DIR=/tmp
     if [ "$MCDB_FILE" = "" ]; then
         export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
@@ -373,6 +421,7 @@ elif [ "$TESTSERVER" = "p" ]; then
     export RETHINKDB_CLUSTER_PORT=29015
     export MCDB_DIR=~
     export MC_ES_URL="http://localhost:9200"
+    export MC_ES_NAME="mc-es"
     export MC_LOG_DIR=/var/log/materialscommons/production
     if [ $(hostname) = "materialscommons" ]; then
         export MCDIR=/mcfs/data/materialscommons
