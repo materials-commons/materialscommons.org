@@ -26,7 +26,7 @@ function start_servers()
     if [ "$R" = "" ]; then
         echo "  Starting rethinkdb..."
         (cd $MCDB_DIR; rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon)
-        sleep 10
+        scripts/db_running.py --port $MCDB_PORT
         echo "  Setting up database..."
         scripts/dbcreate.py
         if [ $TESTSERVER != false ]; then
