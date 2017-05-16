@@ -630,6 +630,11 @@ case "$CMD" in
         stop_servers
         ;;
 
+    srestart)
+        must_be_mcuser
+        restart_named_server ${MC_SERVICE_NAME}
+        ;;
+
     sr)
         must_be_mcuser
         restart_named_server ${MC_SERVICE_NAME}
