@@ -369,7 +369,7 @@ function tail_servers() {
 
 function update_mc() {
     export DB_BACKUP=/tmp/rethinkdb.update.tar.gz
-    echo "Updating Materials Commons deployment..."
+    echo "Updating Materials Commons deployment ${SERVERTYPE}..."
     echo "  Updating code for materialscommons.org and mcstore...."
     git pull
     (cd ${MCSTORE_SRC}; git pull)
