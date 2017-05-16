@@ -408,6 +408,12 @@ function update_mc() {
     echo "Updating mcapp.projects dependencies..."
     (cd ../website/mcapp.projects; bower install)
 
+    if [ "$SERVERTYPE" = "prod" ]; then
+        (cd ../website; ./deploy.sh)
+    elif [ "$SERVERTYPE" = "test" ]; then
+        (cd ../website; ./deploy.sh)
+    fi
+
     echo "  All updates completed..."
     echo "  Starting servers..."
     start_servers
