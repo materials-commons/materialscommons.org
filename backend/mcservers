@@ -418,6 +418,8 @@ function update_mc() {
     echo "  Starting servers..."
     start_servers
 
+    status_servers
+
     read -p "Delete database backup created for the update [y/n]? " -n 1 -r
     echo
     if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
