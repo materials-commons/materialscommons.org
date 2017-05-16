@@ -528,6 +528,7 @@ function setup_server_env()
         fi
     fi
 }
+
 export MCDB_NAME="materialscommons"
 export MCDB_TYPE="rethinkdb"
 
