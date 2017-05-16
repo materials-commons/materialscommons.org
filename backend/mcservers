@@ -547,16 +547,16 @@ TESTSERVER="u"
 SERVERTYPE="unit"
 REINIT=f
 
-MICROSERVICE=""
+MC_SERVICE_NAME=""
 
 CMD=$1
 shift
 
 if [ "$CMD" = "sstop" ]; then
-    MICROSERVICE=$1
+    MC_SERVICE_NAME=$1
     shift
 elif [ "$CMD" = "sr" ]; then
-    MICROSERVICE=$1
+    MC_SERVICE_NAME=$1
     shift
 fi
 
@@ -598,12 +598,12 @@ case "$CMD" in
 
     sstop)
         must_be_mcuser
-        stop_named_server ${MICROSERVICE}
+        stop_named_server ${MC_SERVICE_NAME}
         ;;
 
     sr)
         must_be_mcuser
-        restart_named_server ${MICROSERVICE}
+        restart_named_server ${MC_SERVICE_NAME}
         ;;
 
     status)
