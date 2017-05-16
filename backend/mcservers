@@ -1,18 +1,5 @@
 #!/bin/sh
 
-CMD="$1"
-
-TESTING="$2"
-INITFLAG="$3"
-TESTSERVER=false
-SERVERTYPE="unit"
-
-if [ "$1" = "sstop" ]; then
-    export TESTING="$3"
-elif [ "$1" = "sr" ]; then
-    export TESTING="$3"
-fi
-
 function is_running()
 {
     ps -eo "pid,command" | grep "$1" | grep "$2" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' '
@@ -21,6 +8,24 @@ function is_running()
 function docker_instance_running()
 {
     docker ps -a | grep "$1\$" | grep "Up "
+}
+
+function build_mcstored()
+{
+    if [ "$NOBUILD" = "" ]; then
+        (cd ${MCSTORE_SRC}; make server)
+        cp ${MCSTORE_SRC}/server/mcstore/main/mcstored ${MCSTOREDBIN}
+    fi
+}
+
+function must_be_mcuser()
+{
+    if [ "$USER" != "$MCUSER" ]; then
+        if [ "$USER" != "root" ]; then
+            echo "You must be ${MCUSER} or root to perform this action..."
+            exit 1
+        fi
+    fi
 }
 
 function start_servers()
@@ -64,7 +69,8 @@ function start_servers()
     R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
     if [ "$R" = "" ]; then
         echo "  Starting mcstored..."
-        mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
+        build_mcstored
+        ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 
@@ -93,6 +99,18 @@ function start_servers()
 
 function stop_servers()
 {
+    if [ "$TESTSERVER" = "p" ]; then
+        echo "**** You are stopping PRODUCTION ****"
+        read -p "Are you sure you want to do this [y/n]? " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            exit 0
+        else
+            echo "Shutting down production in 5 seconds CTRL-C to abort..."
+            sleep 5
+        fi
+    fi
+
     echo Stopping $SERVERTYPE servers....
 
     R=$(docker_instance_running $MC_ES_NAME)
@@ -194,7 +212,8 @@ function restart_named_server()
 
         mcstored)
             echo "  Starting mcstored..."
-            mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
+            build_mcstored
+            ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
             ;;
 
         mcapi)
@@ -330,162 +349,260 @@ function tail_servers() {
     tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} -f ${D}/mcpub.out.${ST}
 }
 
+function update_mc() {
+    export DB_BACKUP=/tmp/rethinkdb.update.tar.gz
+    echo "Updating Materials Commons deployment..."
+    echo "  Updating code for materialscommons.org and mcstore...."
+    git pull
+    (cd ${MCSTORE_SRC}; git pull)
+
+    echo "  Creating database backup..."
+    rm -f ${DB_BACKUP}
+    (rethinkdb dump -c localhost:${MCDB_PORT} -f ${DB_BACKUP})
+    echo You can restore from the database backup at ${DB_BACKUP}
+
+    echo "  Performing optional conversion on database..."
+    read -p "Do you want to run the conversion script [y/n]? " -n 1 -r
+    echo
+    if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
+        echo "  Skipping conversion..."
+    else
+        echo "Please stop nginx before starting conversion..."
+        read -p "Has nginx been stopped [y/n]? " -n 1 -r
+        if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
+            echo "You did not stop nginx, exiting update..."
+            exit 1
+        fi
+        echo "  Performing database conversion..."
+        stop_named_server mcstored
+        scripts/conversion/convert.py --port ${MCDB_PORT}
+    fi
+
+    echo "  Stopping servers..."
+    stop_servers
+
+    echo "  Updating server dependencies..."
+    npm install
+
+    echo "Updating mcapp.data dependencies..."
+    (cd ../website/mcapp.data; bower install)
+
+    echo "Updating mcapp.projects dependencies..."
+    (cd ../website/mcapp.projects; bower install)
+
+    echo "  All updates completed..."
+    echo "  Starting servers..."
+    start_servers
+
+    read -p "Delete database backup created for the update [y/n]? " -n 1 -r
+    echo
+    if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
+        echo "Keeping database backup located at ${DB_BACKUP}"
+    else
+        echo "Deleting database backup at ${DB_BACKUP}"
+        rm -f ${DB_BACKUP}
+    fi
+
+    echo "Update completed."
+    echo "*** If you stopped nginx, please restart it ***"
+}
+
+function setup_server_env()
+{
+    if [ "$TESTSERVER" = "t" ]; then
+        export MC_SERVICE_PORT=5002
+        export MC_API_SERVICE_PORT=5004
+        export MC_PUB_SERVICE_PORT=5026
+        export MCDB_PORT=30815
+        export MCDB_DIR=~/testdb
+        export MCDB_CONNECTION="localhost:$MCDB_PORT"
+        export RETHINKDB_HTTP_PORT=8090
+        export RETHINKDB_CLUSTER_PORT=31815
+        export MCSTOREDBIN=testbin/mcstored
+        export MC_ES_URL="http://localhost:9500"
+        export MC_ES_NAME="mc-es-test"
+        export MC_LOG_DIR=/var/log/materialscommons/test
+        if [ "$MCDB_FILE" = "" ]; then
+            export MCDB_FILE=~/test_data/rethinkdb_dump_test_data.tar.gz
+        fi
+
+        if [ $(hostname) = "materialscommons" ]; then
+            export MCDIR=/mcfs/data/test:/mcfs/data/materialscommons
+        else
+            export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
+        fi
+        export MCFS_HTTP_PORT=5012
+
+        if [ -f /etc/materialscommons/config.test ]; then
+            . /etc/materialscommons/config.test
+        fi
+
+        if [ ! -d $MCDB_DIR ]; then
+            mkdir $MCDB_DIR
+        fi
+
+        if [ "$REINIT" = "t" ]; then
+            (cd $MCDB_DIR; rm -rf rethinkdb_data)
+        fi
+    elif [ "$TESTSERVER" = "u" ]; then
+        export MC_SERVICE_PORT=5002
+        export MC_API_SERVICE_PORT=5004
+        export MC_PUB_SERVICE_PORT=5026
+        export MCDB_PORT=30815
+        export MCDB_CONNECTION="localhost:$MCDB_PORT"
+        export MCDB_DIR=~/testdb
+        export RETHINKDB_HTTP_PORT=8090
+        export RETHINKDB_CLUSTER_PORT=31815
+        export MCSTOREDBIN=testbin/mcstored
+        export MC_ES_URL="http://localhost:9500"
+        export MC_ES_NAME="mc-es-test"
+        export MC_LOG_DIR=/tmp
+        if [ "$MCDB_FILE" = "" ]; then
+            export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
+        fi
+        export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
+        export MCFS_HTTP_PORT=5012
+
+        if [ -f /etc/materialscommons/config.unit ]; then
+            . /etc/materialscommons/config.unit
+        fi
+
+        if [ ! -d $MCDB_DIR ]; then
+            mkdir $MCDB_DIR
+        fi
+
+        if [ "$REINIT" = "t" ]; then
+            (cd $MCDB_DIR; rm -rf rethinkdb_data)
+        fi
+    elif [ "$TESTSERVER" = "p" ]; then
+        export MCDB_PORT=28015
+        export MCDB_CONNECTION="localhost:$MCDB_PORT"
+        export MC_API_SERVICE_PORT=3000
+        export MC_PUB_SERVICE_PORT=5014
+        export MC_SERVICE_PORT=5000
+        export RETHINKDB_HTTP_PORT=8080
+        export RETHINKDB_CLUSTER_PORT=29015
+        export MCSTOREDBIN=prodbin/mcstored
+        export MCDB_DIR=~
+        export MC_ES_URL="http://localhost:9200"
+        export MC_ES_NAME="mc-es"
+        export MC_LOG_DIR=/var/log/materialscommons/production
+        if [ $(hostname) = "materialscommons" ]; then
+            export MCDIR=/mcfs/data/materialscommons
+        else
+            export MCDIR=~/mcdir/mcfs/data/materialscommons:/mcfs/data/materialscommons
+        fi
+        export MCFS_HTTP_PORT=5010
+
+        if [ -f /etc/materialscommons/config.prod ]; then
+            . /etc/materialscommons/config.prod
+        fi
+    else
+        # Default to unit
+        export MC_SERVICE_PORT=5002
+        export MC_API_SERVICE_PORT=5004
+        export MC_PUB_SERVICE_PORT=5026
+        export MCDB_PORT=30815
+        export MCDB_CONNECTION="localhost:$MCDB_PORT"
+        export MCDB_DIR=~/testdb
+        export RETHINKDB_HTTP_PORT=8090
+        export RETHINKDB_CLUSTER_PORT=31815
+        export MCSTOREDBIN=testbin/mcstored
+        export MC_ES_URL="http://localhost:9500"
+        if [ "$MCDB_FILE" = "" ]; then
+            export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
+        fi
+        export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
+        export MCFS_HTTP_PORT=5012
+
+        if [ -f /etc/materialscommons/config.unit ]; then
+            . /etc/materialscommons/config.unit
+        fi
+
+        if [ ! -d $MCDB_DIR ]; then
+            mkdir $MCDB_DIR
+        fi
+
+        if [ "$REINIT" = "t" ]; then
+            (cd $MCDB_DIR; rm -rf rethinkdb_data)
+        fi
+    fi
+}
 export MCDB_NAME="materialscommons"
 export MCDB_TYPE="rethinkdb"
 
-if [ "$TESTING" = "-u" ]; then
-    TESTSERVER=u
-    SERVERTYPE="unit"
-elif [ "$TESTING" = "-t" ]; then
-    TESTSERVER=t
-    SERVERTYPE="test"
-elif [ "$TESTING" = "-p" ]; then
-    TESTSERVER=p
-    SERVERTYPE="production"
-else
-    TESTSERVER=u
-    SERVERTYPE="unit"
+if [ -f /etc/materialscommons/config.global ]; then
+    . /etc/materialscommons/config.global
 fi
 
+if [ "$MCUSER" = "" ]; then
+    export MCUSER=$USER
+fi
+
+export MCSTORE_SRC=$HOME/workspace/src/github.com/materials-commons/mcstore
+
+# Set defaults
+TESTSERVER="u"
+SERVERTYPE="unit"
 REINIT=f
 
-if [ "$INITFLAG" = "-r" ]; then
-    REINIT=t
+MICROSERVICE=""
+
+CMD=$1
+shift
+
+if [ "$CMD" = "sstop" ]; then
+    MICROSERVICE=$1
+    shift
+elif [ "$CMD" = "sr" ]; then
+    MICROSERVICE=$1
+    shift
 fi
 
-if [ $TESTSERVER = "t" ]; then
-    export MC_SERVICE_PORT=5002
-    export MC_API_SERVICE_PORT=5004
-    export MC_PUB_SERVICE_PORT=5026
-    export MCDB_PORT=30815
-    export MCDB_DIR=~/testdb
-    export MCDB_CONNECTION="localhost:$MCDB_PORT"
-    export RETHINKDB_HTTP_PORT=8090
-    export RETHINKDB_CLUSTER_PORT=31815
-    export MC_ES_URL="http://localhost:9500"
-    export MC_ES_NAME="mc-es-test"
-    export MC_LOG_DIR=/var/log/materialscommons/test
-    if [ "$MCDB_FILE" = "" ]; then
-        export MCDB_FILE=~/test_data/rethinkdb_dump_test_data.tar.gz
-    fi
-    if [ $(hostname) = "materialscommons" ]; then
-        export MCDIR=/mcfs/data/test:/mcfs/data/materialscommons
-    else
-        export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
-    fi
-    export MCFS_HTTP_PORT=5012
+while test $# -gt 0; do
+    case "$1" in
+        -u)
+            TESTSERVER=u
+            SERVERTYPE="unit"
+            ;;
+        -t)
+            TESTSERVER=t
+            SERVERTYPE="test"
+            ;;
+        -p)
+            TESTSERVER=p
+            SERVERTYPE="production"
+            ;;
+        -n)
+            NOBUILD="-n"
+            ;;
+        -r)
+            REINIT=t
+            ;;
+    esac
+    shift
+done
 
-    if [ -f /etc/materialscommons/config.test ]; then
-        . /etc/materialscommons/config.test
-    fi
-    if [ ! -d $MCDB_DIR ]; then
-        mkdir $MCDB_DIR
-    fi
-    if [ "$REINIT" = "t" ]; then
-        (cd $MCDB_DIR; rm -rf rethinkdb_data)
-    fi
-elif [ $TESTSERVER = "u" ]; then
-    export MC_SERVICE_PORT=5002
-    export MC_API_SERVICE_PORT=5004
-    export MC_PUB_SERVICE_PORT=5026
-    export MCDB_PORT=30815
-    export MCDB_CONNECTION="localhost:$MCDB_PORT"
-    export MCDB_DIR=~/testdb
-    export RETHINKDB_HTTP_PORT=8090
-    export RETHINKDB_CLUSTER_PORT=31815
-    export MC_ES_URL="http://localhost:9500"
-    export MC_ES_NAME="mc-es-test"
-    export MC_LOG_DIR=/tmp
-    if [ "$MCDB_FILE" = "" ]; then
-        export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
-    fi
-    export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
-    export MCFS_HTTP_PORT=5012
-
-    if [ -f /etc/materialscommons/config.unit ]; then
-        . /etc/materialscommons/config.unit
-    fi
-    if [ ! -d $MCDB_DIR ]; then
-        mkdir $MCDB_DIR
-    fi
-    if [ "$REINIT" = "t" ]; then
-        (cd $MCDB_DIR; rm -rf rethinkdb_data)
-    fi
-elif [ "$TESTSERVER" = "p" ]; then
-    export MCDB_PORT=28015
-    export MCDB_CONNECTION="localhost:$MCDB_PORT"
-    export MC_API_SERVICE_PORT=3000
-    export MC_PUB_SERVICE_PORT=5014
-    export MC_SERVICE_PORT=5000
-    export RETHINKDB_HTTP_PORT=8080
-    export RETHINKDB_CLUSTER_PORT=29015
-    export MCDB_DIR=~
-    export MC_ES_URL="http://localhost:9200"
-    export MC_ES_NAME="mc-es"
-    export MC_LOG_DIR=/var/log/materialscommons/production
-    if [ $(hostname) = "materialscommons" ]; then
-        export MCDIR=/mcfs/data/materialscommons
-    else
-        export MCDIR=~/mcdir/mcfs/data/materialscommons:/mcfs/data/materialscommons
-    fi
-    export MCFS_HTTP_PORT=5010
-
-    if [ -f /etc/materialscommons/config.prod ]; then
-        . /etc/materialscommons/config.prod
-    fi
-else
-    # Default to unit
-    export MC_SERVICE_PORT=5002
-    export MC_API_SERVICE_PORT=5004
-    export MC_PUB_SERVICE_PORT=5026
-    export MCDB_PORT=30815
-    export MCDB_CONNECTION="localhost:$MCDB_PORT"
-    export MCDB_DIR=~/testdb
-    export RETHINKDB_HTTP_PORT=8090
-    export RETHINKDB_CLUSTER_PORT=31815
-    export MC_ES_URL="http://localhost:9500"
-    if [ "$MCDB_FILE" = "" ]; then
-        export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
-    fi
-    export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
-    export MCFS_HTTP_PORT=5012
-
-    if [ -f /etc/materialscommons/config.unit ]; then
-        . /etc/materialscommons/config.unit
-    fi
-    if [ ! -d $MCDB_DIR ]; then
-        mkdir $MCDB_DIR
-    fi
-    if [ "$REINIT" = "t" ]; then
-        (cd $MCDB_DIR; rm -rf rethinkdb_data)
-    fi
-fi
+setup_server_env
 
 case "$CMD" in
     start)
+        must_be_mcuser
         start_servers
         ;;
     stop)
-        if [ $TESTSERVER = "p" ]; then
-            echo "**** You are stopping PRODUCTION ****"
-            read -p "Are you sure you want to do this [y/n]? " -n 1 -r
-            echo
-            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-                exit 0
-            else
-                echo "Shutting down production in 5 seconds CTRL-C to abort..."
-                sleep 5
-            fi
-        fi
+        must_be_mcuser
         stop_servers
         ;;
 
     sstop)
-        stop_named_server $2
+        must_be_mcuser
+        stop_named_server ${MICROSERVICE}
         ;;
 
     sr)
-        restart_named_server $2
+        must_be_mcuser
+        restart_named_server ${MICROSERVICE}
         ;;
 
     status)
@@ -498,6 +615,11 @@ case "$CMD" in
 
     tail)
         tail_servers
+        ;;
+
+    update)
+        must_be_mcuser
+        update_mc
         ;;
 
     "")
