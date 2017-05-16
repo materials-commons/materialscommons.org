@@ -303,10 +303,25 @@ function status_servers()
     echo
 }
 
+function config_file() {
+    BASE="/etc/materialscommons/config"
+
+    case "$SERVERTYPE" in
+        production)
+            echo ${BASE}.prod
+            ;;
+        *)
+            echo ${BASE}.${SERVERTYPE}
+            ;;
+    esac
+}
+
 function show_env()
 {
-    echo "========= ${SERVERTYPE} ========="
-    echo " Environment: "
+    echo "======================== ${SERVERTYPE} ========================"
+    echo
+    echo " Environment and Setup Variables: "
+    echo "   MCUSER:                 ${MCUSER}"
     echo "   MCDB_PORT:              ${MCDB_PORT}"
     echo "   MC_SERVICE_PORT:        ${MC_SERVICE_PORT}"
     echo "   MC_API_SERVICE_PORT:    ${MC_API_SERVICE_PORT}"
@@ -318,26 +333,29 @@ function show_env()
     echo "   MCFS_HTTP_PORT:         ${MCFS_HTTP_PORT}"
     echo "   MCDB_CONNECTION:        ${MCDB_CONNECTION}"
     echo "   MC_ES_URL:              ${MC_ES_URL}"
+    echo "   MC_ES_NAME              ${MC_ES_NAME}"
+    echo "   MCDB_FILE:              ${MCDB_FILE}"
+    echo "   MCSTORE_SRC:            ${MCSTORE_SRC}"
+    echo
     echo " Binary paths:"
     echo "   rethinkdb binary:       $(which rethinkdb)"
-    echo "   mcapiserver.py binary:  $(which mcapiserver.py)"
-    echo "   mcstored binary:        $(which mcstored)"
+    echo "   mcapiserver.py binary:  ./mcapiserver.py"
+    echo "   mcstored binary:        ${MCSTOREDBIN}"
     echo "   mcapi.js binary:        sbin/mcapi.js"
+    echo "   mcpub.js binary:        sbin/mcpub.js"
+    echo
     echo " Commands: "
     echo "   rethinkdb command:      rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon"
-    echo "   mcapiserver.py command: mcapiserver.py -p $MC_SERVICE_PORT > /tmp/mcapiserver.out.${SERVERTYPE} 2>&1&"
-    echo "   mcstored command:       mcstored --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:$MCDB_PORT --es-url=${MC_ES_URL} > /tmp/mcstored.out.${SERVERTYPE} 2>&1&"
-    echo "   mcapi.js command:       gulp build-server && node sbin/mcapi.js -p $MC_API_SERVICE_PORT > /tmp/mcapi.out.${SERVERTYPE} 2>&1&"
-    if [ ${SERVERTYPE} = "production" ]; then
-        echo "   Elasticsearch command:  sudo docker start mc-es"
-    else
-        echo "   Elasticsearch command:  sudo docker start mc-es-test"
-    fi
+    echo "   elasticsearch command:  docker start ${MC_ES_NAME}"
+    echo "   mcapiserver.py command: mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&"
+    echo "   mcstored command:       ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:$MCDB_PORT --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&"
+    echo "   mcapi.js command:       gulp build-mcapi-server && node sbin/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&"
+    echo "   mcpub.js command:       gulp build-mcpub-server && node sbin/mcpub.js -p $MC_PUB_SERVICE_PORT > /tmp/mcpub.out.${SERVERTYPE} 2>&1&"
     echo
-    echo
-    echo "*** You will need to start the docker container for Elasticsearch ***"
-    echo "*** before starting the servers with 'mcservers start' command.   ***"
-    echo
+    echo " Environment Files:"
+    echo "   Path: /etc/materialscommons/config.global"
+    configfile=$(config_file)
+    echo "   Path: ${configfile}"
     echo
 }
 
@@ -509,6 +527,8 @@ function setup_server_env()
         export RETHINKDB_CLUSTER_PORT=31815
         export MCSTOREDBIN=testbin/mcstored
         export MC_ES_URL="http://localhost:9500"
+        export MC_ES_NAME="mc-es-test"
+        export MC_LOG_DIR="/tmp"
         if [ "$MCDB_FILE" = "" ]; then
             export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
         fi
