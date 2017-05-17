@@ -363,6 +363,7 @@ function* getSamplesForDataset(next) {
 }
 
 function* publishDataset(next) {
+    console.log("in resource/dataset/publishDataset");
     let rv = yield experimentDatasets.publishDataset(this.params.dataset_id);
     if (rv.error) {
         this.status = status.UNAUTHORIZED;
@@ -494,7 +495,7 @@ function createResource() {
 
     router.get('/:dataset_id', getDatasetForExperiment);
     router.put('/:dataset_id', updateDatasetForExperiment);
-    router.put('/:dataset_id/publish', publishDataset);
+    router.put('/:dataset_id/publish', ra.validateDatasetForPublication,publishDataset);
     router.put('/:dataset_id/unpublish', unpublishDataset);
     router.put('/:dataset_id/samples/:sample_id', ra.validateSampleInExperiment, addSampleToDataset);
     router.put('/:dataset_id/samples', updateSamplesInDataset);

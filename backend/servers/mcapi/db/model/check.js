@@ -112,6 +112,25 @@ function* experimentHasDataset(experimentId, datasetId) {
     return datasets.length !== 0;
 }
 
+function* datasetHasSamples(datasetId) {
+    console.log("in datasetHasSamples");
+    let directlyInDS = yield r.table('dataset2sample').getAll(datasetId,{index: 'dataset_id'});
+    if (directlyInDS.length !== 0) {
+        return true;
+    }
+    let inDSProcesses = yield r.table('dataset2process')
+        .getAll(datasetId,{index: 'dataset_id'})
+        .eqJoin('process_id',r.table('process2sample'),{index: 'process_id'});
+    return inDSProcesses.length !== 0;
+}
+
+function* datasetHasProcesses(datasetId) {
+    console.log("in datasetHasProcesses");
+    let joins = yield r.table('dataset2process').getAll(datasetId,{index: 'dataset_id'});
+    console.log(joins);
+    return joins.length !== 0;
+}
+
 function* taskProcessIsUnused(taskId) {
     let task = yield r.table('experimenttasks').get(taskId);
     if (task.process_id === '') {
@@ -183,6 +202,8 @@ module.exports = {
     processInExperiment,
     fileInProject,
     experimentHasDataset,
+    datasetHasSamples,
+    datasetHasProcesses,
     taskProcessIsUnused,
     sampleInProject,
     sampleHasPropertySet,

@@ -124,9 +124,11 @@ describe('Feature - Datasets: ', function () {
         });
         it("will not publish a dataset without processes or samples", function* (){
             let results = yield experimentDatasets.publishDataset(dataset2.id);
-            console.log(results);
             assert.isOk(results);
-            assert.isOk(results.val);
+            assert.isOk(results.error);
+            let error = results.error;
+            assert.isTrue(error.startsWith("Can not publish dataset"));
+            assert.isTrue(error.endsWith(" no samples"));
         });
     });
 });
