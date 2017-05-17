@@ -12,7 +12,7 @@ function docker_instance_running()
 
 function build_mcstored()
 {
-    if [ "$NOBUILD" = "" ]; then
+    if [ ${COMPILE_MCSTORE} = "t" ]; then
         (cd ${MCSTORE_SRC}; make server)
         cp ${MCSTORE_SRC}/server/mcstore/main/mcstored ${MCSTOREDBIN}
     fi
@@ -368,30 +368,21 @@ function tail_servers() {
 }
 
 function update_mc() {
-    export DB_BACKUP=/tmp/rethinkdb.update.tar.gz
+    export DB_BACKUP=/tmp/rethinkdb.update.${SERVERTYPE}.tar.gz
     echo "Updating Materials Commons deployment..."
     echo "  Updating code for materialscommons.org and mcstore...."
     git pull
     (cd ${MCSTORE_SRC}; git pull)
 
-    echo "  Creating database backup..."
-    rm -f ${DB_BACKUP}
-    (rethinkdb dump -c localhost:${MCDB_PORT} -f ${DB_BACKUP})
-    echo You can restore from the database backup at ${DB_BACKUP}
+    if [ "$BACKUP_DATABASE" = "t" ]; then
+        echo "  Creating database backup..."
+        rm -f ${DB_BACKUP}
+        (rethinkdb dump -c localhost:${MCDB_PORT} -f ${DB_BACKUP})
+        echo You can restore from the database backup at ${DB_BACKUP}
+    fi
 
-    echo "  Performing optional conversion on database..."
-    read -p "Do you want to run the conversion script [y/n]? " -n 1 -r
-    echo
-    if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
-        echo "  Skipping conversion..."
-    else
-        echo "Please stop nginx before starting conversion..."
-        read -p "Has nginx been stopped [y/n]? " -n 1 -r
-        if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
-            echo "You did not stop nginx, exiting update..."
-            exit 1
-        fi
-        echo "  Performing database conversion..."
+    if [ "$RUN_CONVERT" = "t" ]; then
+        echo "  Performing optional conversion on database..."
         stop_named_server mcstored
         scripts/conversion/convert.py --port ${MCDB_PORT}
     fi
@@ -412,21 +403,23 @@ function update_mc() {
     echo "  Starting servers..."
     start_servers
 
-    read -p "Delete database backup created for the update [y/n]? " -n 1 -r
-    echo
-    if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
-        echo "Keeping database backup located at ${DB_BACKUP}"
-    else
-        echo "Deleting database backup at ${DB_BACKUP}"
-        rm -f ${DB_BACKUP}
-    fi
-
     echo "Update completed."
+    echo "If there are problems you can restore the previous version with mcservers restore command."
     echo "*** If you stopped nginx, please restart it ***"
 }
 
-function setup_server_env()
-{
+function restore_mc() {
+    RUN_CONVERT=f
+    BACKUP_DATABASE=f
+    if [ "$RESTORE_BRANCH" != "" ]; then
+        git checkout ${RESTORE_BRANCH}
+    fi
+    export MCDB_FILE=/tmp/rethinkdb.update.${SERVERTYPE}.tar.gz
+    export REINIT=t
+    update_mc
+}
+
+function setup_server_env() {
     if [ "$TESTSERVER" = "t" ]; then
         export MC_SERVICE_PORT=5002
         export MC_API_SERVICE_PORT=5004
@@ -588,8 +581,11 @@ export MCSTORE_SRC=$HOME/workspace/src/github.com/materials-commons/mcstore
 TESTSERVER="u"
 SERVERTYPE="unit"
 REINIT=f
-
+RUN_CONVERT=f
+RESTORE_BRANCH=""
+COMPILE_MCSTORE=t
 MC_SERVICE_NAME=""
+BACKUP_DATABASE=t
 
 CMD=$1
 shift
@@ -607,6 +603,13 @@ fi
 
 while test $# -gt 0; do
     case "$1" in
+        --branch)
+            shift
+            RESTORE_BRANCH=$1
+            ;;
+        --run-convert)
+            RUN_CONVERT=t
+            ;;
         -u)
             TESTSERVER=u
             SERVERTYPE="unit"
@@ -619,8 +622,11 @@ while test $# -gt 0; do
             TESTSERVER=p
             SERVERTYPE="production"
             ;;
-        -n)
-            NOBUILD="-n"
+        --no-compile-mcstore)
+            COMPILE_MCSTORE=f
+            ;;
+        --no-backup)
+            BACKUP_DATABASE=f
             ;;
         -r)
             REINIT=t
@@ -678,7 +684,13 @@ case "$CMD" in
         tail_servers
         ;;
 
+    restore)
+        must_be_mcuser
+        restore_mc
+        ;;
+
     update)
+        BACKUP_DATABASE=t
         must_be_mcuser
         update_mc
         ;;
