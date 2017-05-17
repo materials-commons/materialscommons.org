@@ -346,6 +346,7 @@ function Dataset(title, owner) {
     let now = r.now();
     this.owner = owner;
     this.title = title;
+    this.otype='dataset';
     this.institution = "";
     this.authors = [];
     this.birthtime = now;
