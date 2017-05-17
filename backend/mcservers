@@ -411,8 +411,12 @@ function update_mc() {
 function restore_mc() {
     RUN_CONVERT=f
     BACKUP_DATABASE=f
-    if [ "$RESTORE_BRANCH" != "" ]; then
-        git checkout ${RESTORE_BRANCH}
+    if [ "$MC_RESTORE_BRANCH" != "" ]; then
+        git checkout ${MC_RESTORE_BRANCH}
+    fi
+
+    if [ "$MCSTORE_RESTORE_BRANCH" != "" ]; then
+        (cd ${MCSTORE_SRC}; git checkout ${MCSTORE_RESTORE_BRANCH})
     fi
     export MCDB_FILE=/tmp/rethinkdb.update.${SERVERTYPE}.tar.gz
     export REINIT=t
@@ -582,7 +586,8 @@ TESTSERVER="u"
 SERVERTYPE="unit"
 REINIT=f
 RUN_CONVERT=f
-RESTORE_BRANCH=""
+MC_RESTORE_BRANCH=""
+MCSTORE_RESTORE_BRANCH=""
 COMPILE_MCSTORE=t
 MC_SERVICE_NAME=""
 BACKUP_DATABASE=t
@@ -603,9 +608,13 @@ fi
 
 while test $# -gt 0; do
     case "$1" in
-        --branch)
+        --mc-branch)
             shift
-            RESTORE_BRANCH=$1
+            MC_RESTORE_BRANCH=$1
+            ;;
+        --mcstore-branch)
+            shift
+            MCSTORE_RESTORE_BRANCH=$1
             ;;
         --run-convert)
             RUN_CONVERT=t
