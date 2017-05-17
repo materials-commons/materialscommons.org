@@ -31,12 +31,12 @@ let processList = null;
 let dataset1 = null;
 let dataset2 = null;
 
-let doiPublisher = process.env.DOIPUBLISHER;
-let doiNamespace = process.env.DOITESTNAMESPACE;
-let doiUser = process.env.DOITESTUSER;
-let doiPassword = process.env.DOITESTPW;
-let publicationURLBase = process.env.DOIPUBLICATIONBASE;
-let doiUrl = process.env.DOISERVICEURL;
+let doiPublisher = process.env.MC_DOI_PUBLISHER;
+let doiNamespace = process.env.MC_DOI_NAMESPACE;
+let doiUser = process.env.MC_DOI_USER;
+let doiPassword = process.env.MC_DOI_PW;
+let publicationURLBase = process.env.MC_DOI_PUBLICATION_BASE;
+let doiUrl = process.env.MC_DOI_SERVICE_URL;
 
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
@@ -48,12 +48,12 @@ before(function*() {
     this.timeout(8000); // test setup can take up to 8 seconds
 
     // check for all env variables
-    assert.isOk(doiPublisher, "Missing process.env.DOIPUBLISHER");
-    assert.isOk(doiNamespace, "Missing process.env.DOINAMESPACE");
-    assert.isOk(doiUser, "Missing process.env.DOITESTUSER");
-    assert.isOk(doiPassword, "Missing process.env.DOITESTPW");
-    assert.isOk(publicationURLBase, "Missing process.env.DOIPUBLICATIONBASE");
-    assert.isOk(doiUrl, "Missing process.env.DOISERVICEURL");
+    assert.isOk(doiPublisher, "Missing process.env.MC_DOI_PUBLISHER");
+    assert.isOk(doiNamespace, "Missing process.env.MC_DOI_NAMESPACE");
+    assert.isOk(doiUser, "Missing process.env.MC_DOI_USER");
+    assert.isOk(doiPassword, "Missing process.env.MC_DOI_PW");
+    assert.isOk(publicationURLBase, "Missing process.env.MC_DOI_PUBLICATION_BASE");
+    assert.isOk(doiUrl, "Missing process.env.MC_DOI_SERVICE_URL");
 
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
@@ -175,19 +175,21 @@ describe('Feature - Dataset: ', function () {
             let description = "This is a test project in Materials commons used for " +
                 "testing the the Mint command in the DOI API (REST) suite.";
 
-            let testArgs = {
-                test: true,
+            let optionalArgs = {
                 description: description
             };
 
             let valOrError =
-                yield datasetDoi.doiMint(dataset2.id, title, creator, publicationYear, testArgs);
+                yield datasetDoi.doiMint(dataset2.id, title, creator, publicationYear, optionalArgs);
             assert.isOk(valOrError);
             assert.isOk(valOrError.val);
             let dataset = valOrError.val;
             assert.isOk(dataset.doi);
-
             let doi = dataset.doi;
+            assert.isTrue(doi.startsWith("doi:10.5072/FK"));
+
+            let link = yield datasetDoi.doiGetServerLink(dataset2.id);
+            assert.isTrue(link.startsWith("https://ezid.lib.purdue.edu/id/doi:10.5072/FK"));
 
             let metadata = yield datasetDoi.doiGetMetadata(dataset2.id);
             assert.isOk(metadata);
@@ -196,6 +198,10 @@ describe('Feature - Dataset: ', function () {
             assert.equal(metadata['datacite.creator'], creator);
             assert.equal(metadata['datacite.publicationyear'], publicationYear);
             assert.equal(metadata['datacite.description'], description);
+
+            let target = metadata['_target'];
+            let expected_target = "http://mcpub.localhost/#/details/" + dataset2.id;
+            assert.equal(target, expected_target);
         });
     });
 });

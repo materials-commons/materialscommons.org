@@ -1,12 +1,12 @@
 export function LoginDirective() {
-  'ngInject';
+    'ngInject';
 
-  let directive = {
-    restrict: 'E',
-    templateUrl: 'app/components/sign/login/login.html',
-    scope: true
-  };
-  return directive;
+    let directive = {
+        restrict: 'E',
+        templateUrl: 'app/components/sign/login/login.html',
+        scope: true
+    };
+    return directive;
 }
 
 

@@ -4,25 +4,28 @@
             <label for="firstname" class="required">First Name</label>
             <div><input placeholder="First Name" type="text" name="firstName" id="firstName" class="form-control"
                         ng-model="ctrl.user.firstName" required="required"/></div>
-      <span ng-show="form.firstName.$dirty && form.firstName.$error.required"
-            class="help-block">First name is required</span>
+            <span ng-show="form.firstName.$dirty && form.firstName.$error.required"
+                  class="help-block">First name is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': form.lastName.$dirty && form.lastName.$error.required }">
             <label for="lastname" class="required">Last Name</label>
             <input placeholder="Last Name" type="text" name="lastName" id="lastname" class="form-control"
                    ng-model="ctrl.user.lastName" required/>
-      <span ng-show="form.lastName.$dirty && form.lastName.$error.required"
-            class="help-block">Last name is required</span>
+            <span ng-show="form.lastName.$dirty && form.lastName.$error.required"
+                  class="help-block">Last name is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': form.email.$dirty && form.email.$error.required }">
             <label for="email" class="required">Email</label>
-            <input placeholder="Email" type="email" name="email" id="email" class="form-control" ng-model="ctrl.user.email"
+            <input placeholder="Email" type="email" name="email" id="email" class="form-control"
+                   ng-model="ctrl.user.email"
                    required/>
-            <span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">Username is required</span>
+            <span ng-show="form.email.$dirty && form.email.$error.required"
+                  class="help-block">Username is required</span>
         </div>
 
         <div class="form-actions">
-            <button type="submit" ng-disabled="form.$invalid || ctrl.dataLoading" class="btn btn-primary">Register</button>
+            <button type="submit" ng-disabled="form.$invalid || ctrl.dataLoading" class="btn btn-primary">Register
+            </button>
         </div>
     </form>
     <div ng-show="ctrl.showSuccessMsg">

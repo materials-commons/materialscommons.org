@@ -36,6 +36,10 @@ env:
     - MCDB_FILE=test_data/test_rethinkdb_dump.tar.gz
     - RETHINKDB_CLUSTER_PORT=31815
     - RETHINKDB_HTTP_PORT=8090
+    - MC_DOI_SERVICE_URL=https://ezid.lib.purdue.edu/
+    - MC_DOI_PUBLISHER='Materials Commons'
+    - MC_DOI_PUBLICATION_BASE=http://mcpub.localhost/#/details
+    - MC_DOI_NAMESPACE='doi:10.5072/FK2'
 
 before_install:
   - export MC_APP_DIR=`pwd`
@@ -94,9 +98,6 @@ before_script:
   - cd $MC_APP_DIR
   - pushd backend/scripts/templates/
   - ./run.sh
-  - popd
-  - pushd backend/scripts
-  - source setupDoiEnv.sh
   - popd
   - pushd backend
   - gulp build-mcapi-server

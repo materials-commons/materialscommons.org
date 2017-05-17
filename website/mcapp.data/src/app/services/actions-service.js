@@ -24,7 +24,7 @@ export class actionsService {
     }
 
     getAllActions(dataset_id) {
-        return this.pubAPI('actions').customGET(dataset_id).then(function(result) {
+        return this.pubAPI('actions').customGET(dataset_id).then(function (result) {
             return result.plain();
         });
     }
@@ -34,7 +34,7 @@ export class actionsService {
             message: msg,
             user_id: user_id,
             dataset_id: dataset_id
-        }).then(()=> {
+        }).then(() => {
             this.toastr.success("Your comment has been registered");
         });
     }
@@ -64,51 +64,51 @@ export class actionsService {
 
 
     getAllTags() {
-        return this.pubAPI('tags').getList().then(function(tags) {
+        return this.pubAPI('tags').getList().then(function (tags) {
             return tags.plain();
         });
     }
 
     getTagsByCount() {
-        return this.pubAPI('tags').one('bycount').getList().then(function(tags) {
+        return this.pubAPI('tags').one('bycount').getList().then(function (tags) {
             return tags.plain();
         });
     }
 
     getAllTagsCount() {
-        return this.pubAPI('tags').one('count').get().then(function(tags) {
+        return this.pubAPI('tags').one('count').get().then(function (tags) {
             return tags.count;
         });
     }
 
 
     getProcessTypes() {
-        return this.pubAPI('processes').one('types').getList().then(function(process_types) {
+        return this.pubAPI('processes').one('types').getList().then(function (process_types) {
             return process_types.plain();
         });
     }
 
     getSamples() {
-        return this.pubAPI('samples').getList().then(function(samples) {
+        return this.pubAPI('samples').getList().then(function (samples) {
             return samples.plain();
         });
     }
 
     getDatasetsByTag(tag) {
-        return this.pubAPI('tags', tag).one('datasets').getList().then(function(tags) {
+        return this.pubAPI('tags', tag).one('datasets').getList().then(function (tags) {
             let res = tags.plain();
             return res;
         });
     }
 
     getAllAuthors() {
-        return this.pubAPI('authors').one('datasets').getList().then(function(authors) {
+        return this.pubAPI('authors').one('datasets').getList().then(function (authors) {
             return authors.plain();
         });
     }
 
     getAllAuthorsCount() {
-        return this.pubAPI('authors').one('count').get().then(function(authors) {
+        return this.pubAPI('authors').one('count').get().then(function (authors) {
             return authors.count;
         });
     }

@@ -1,41 +1,40 @@
-label{
+label {
   font-weight: normal;
   margin-bottom: 0px;
 }
 
-.text-light{
+.text-light {
   color: grey;
 }
 
-.jumbotron.custom{
+.jumbotron.custom {
   background-color: $orange;
   //margin-top: 50px;
 }
 
-.nav.nav-tabs{
-  li{
-    a{
+.nav.nav-tabs {
+  li {
+    a {
       color: $orange;
       font-weight: bold;
     }
   }
 }
 
-.theme{
+.theme {
   color: $orange;
 }
 
-hr{
+hr {
   border-color: $divider;
   margin-top: 10px;
 }
 
-.form-group{
+.form-group {
   margin-bottom: 5px;
 }
 
-
-a:hover{
+a:hover {
   cursor: pointer;
 }
 

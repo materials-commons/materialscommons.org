@@ -1,9 +1,9 @@
-export function HomeTabDirective(){
-  'ngInject';
+export function HomeTabDirective() {
+    'ngInject';
 
-  let directive ={
-    restrict: 'E',
-    templateUrl: 'app/home/home-tabs.html'
-  };
-  return directive;
+    let directive = {
+        restrict: 'E',
+        templateUrl: 'app/home/home-tabs.html'
+    };
+    return directive;
 }

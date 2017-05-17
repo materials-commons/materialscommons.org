@@ -32,13 +32,13 @@ export class ValidateController {
         });
 
         modalInstance.result.then(
-            ()=> {
+            () => {
                 this.accountsAPI.setUserFromRegistrationData(this.validationId, this.password1)
                     .then(
                         () => {
                             this.userService.login(this.registration.email, this.password1)
                                 .then(
-                                    (user)=> {
+                                    (user) => {
                                         this.userService.setAuthenticated(true, user.plain());
                                         this.Restangular.setDefaultRequestParams(['post', 'get', 'put', 'remove'], {apikey: this.userService.apikey()});
                                         this.$state.go('home.top');

@@ -80,7 +80,7 @@ export class DetailsController {
             size: 'lg',
             keyboard: true,
             resolve: {
-                file: function() {
+                file: function () {
                     return file;
                 }
             }

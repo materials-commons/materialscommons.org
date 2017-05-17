@@ -1,4 +1,13 @@
 <div ng-switch on="ctrl.property">
+    <!-- DOI -->
+    <div ng-switch-when="DOI">
+        <div class="form-group">
+            <label class="col-sm-2 field-label">{{ctrl.property}}</label>
+            <div class="col-sm-10 field-value">
+                <a ng-href="{{ctrl.value.doi_url}}" target="_blank">{{ctrl.value.doi}}</a>
+            </div>
+        </div>
+    </div>
     <!-- Author -->
     <div ng-switch-when="Author">
         <div class="form-group">
@@ -22,7 +31,7 @@
                     Download zipfile is still building; check back later.
                 </span>
                 <span ng-if="ctrl.user && ctrl.isDownloadAvaiable(ctrl.value)">
-                    <a  href="{{ctrl.urlForDownload(ctrl.value)}}" download="{{ctrl.filenameForDownload(ctrl.value)}}"
+                    <a href="{{ctrl.urlForDownload(ctrl.value)}}" download="{{ctrl.filenameForDownload(ctrl.value)}}"
                        class="theme">
                         <i class="fa fa-fw fa-download"></i>
                         Download Dataset - {{ctrl.value.file_count}} files
@@ -57,7 +66,7 @@
                         <li ng-if="paper.title">
                             <div class="paper-title"></span><b>{{paper.title}}</b>
                                 <span ng-if="paper.link"><a href="{{paper.link}}"><i
-                                    class="fa fa-fw fa-file-text-o"></i></a></span>
+                                        class="fa fa-fw fa-file-text-o"></i></a></span>
                             </div>
                         </li>
                     </div>
@@ -70,7 +79,8 @@
         <div class="form-group">
             <label class="col-sm-2 field-label">{{ctrl.property}}</label>
             <div class="col-sm-10 field-value">
-                <span ng-if="ctrl.value.name !== ''">{{ctrl.value.name}} <a ng-href="{{ctrl.value.link}}" target="_blank">View license</a></span>
+                <span ng-if="ctrl.value.name !== ''">{{ctrl.value.name}} <a ng-href="{{ctrl.value.link}}"
+                                                                            target="_blank">View license</a></span>
                 <span ng-if="ctrl.value.name === ''">No license</span>
             </div>
         </div>

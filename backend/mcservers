@@ -1,12 +1,10 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-function is_running()
-{
+function is_running() {
     ps -eo "pid,command" | grep "$1" | grep "$2" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' '
 }
 
-function docker_instance_running()
-{
+function docker_instance_running() {
     docker ps -a | grep "$1\$" | grep "Up "
 }
 
@@ -18,8 +16,7 @@ function build_mcstored()
     fi
 }
 
-function must_be_mcuser()
-{
+function must_be_mcuser() {
     if [ "$USER" != "$MCUSER" ]; then
         if [ "$USER" != "root" ]; then
             echo "You must be ${MCUSER} or root to perform this action..."
@@ -28,8 +25,7 @@ function must_be_mcuser()
     fi
 }
 
-function start_servers()
-{
+function start_servers() {
     echo Starting $SERVERTYPE servers...
     mkdir $MC_LOG_DIR 2> /dev/null
 
@@ -97,8 +93,7 @@ function start_servers()
     echo Started $SERVERTYPE.
 }
 
-function stop_servers()
-{
+function stop_servers() {
     if [ "$TESTSERVER" = "p" ]; then
         echo "**** You are stopping PRODUCTION ****"
         read -p "Are you sure you want to do this [y/n]? " -n 1 -r
@@ -146,8 +141,7 @@ function stop_servers()
     echo Stopped $SERVERTYPE.
 }
 
-function stop_named_server()
-{
+function stop_named_server() {
     case "$1" in
         mcapiserver)
             echo Stopping mcapiserver...
@@ -201,8 +195,7 @@ function stop_named_server()
     esac
 }
 
-function restart_named_server()
-{
+function restart_named_server() {
     stop_named_server $1
     case "$1" in
         mcapiserver)
@@ -246,8 +239,7 @@ function restart_named_server()
     echo Restarted Server $1 for server type $SERVERTYPE.
 }
 
-function status_servers()
-{
+function status_servers() {
     export MCDB_PORT=28015
     export MC_SERVICE_PORT=5000
     export MC_API_SERVICE_PORT=3000
@@ -316,8 +308,7 @@ function config_file() {
     esac
 }
 
-function show_env()
-{
+function show_env() {
     echo "======================== ${SERVERTYPE} ========================"
     echo
     echo " Environment and Setup Variables: "
@@ -399,9 +390,16 @@ function update_mc() {
     echo "Updating mcapp.projects dependencies..."
     (cd ../website/mcapp.projects; bower install)
 
+    if [ "$SERVERTYPE" = "prod" ]; then
+        (cd ../website; ./deploy.sh)
+    elif [ "$SERVERTYPE" = "test" ]; then
+        (cd ../website; ./deploy.sh)
+    fi
+
     echo "  All updates completed..."
     echo "  Starting servers..."
     start_servers
+    status_servers
 
     echo "Update completed."
     echo "If there are problems you can restore the previous version with mcservers restore command."

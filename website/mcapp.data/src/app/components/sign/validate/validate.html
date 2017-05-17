@@ -11,7 +11,8 @@
         </div>
         <div class="form-group" ng-class="{ 'has-error': form.password2.$dirty && form.password2.$error.required }">
             <label for="password2" class="required">Re-enter Password</label>
-            <input placeholder="Re-enter password..." type="password" name="password2" id="password2" class="form-control"
+            <input placeholder="Re-enter password..." type="password" name="password2" id="password2"
+                   class="form-control"
                    ng-model="ctrl.password2" required/>
             <span ng-show="form.password2.$dirty && form.password2.$error.required" class="help-block">Passwords must match</span>
         </div>

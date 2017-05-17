@@ -9,19 +9,19 @@ export class releaseService {
     }
 
     getAll() {
-        return this.pubAPI('datasets').getList().then(function(releases) {
+        return this.pubAPI('datasets').getList().then(function (releases) {
             return releases.plain();
         });
     }
 
     getAllCount() {
-        return this.pubAPI('datasets').one('filter').one('count').get().then(function(releases) {
+        return this.pubAPI('datasets').one('filter').one('count').get().then(function (releases) {
             return releases.count;
         });
     }
 
     getRecent() {
-        return this.pubAPI('datasets').one('filter').one('recent').getList().then(function(datasets) {
+        return this.pubAPI('datasets').one('filter').one('recent').getList().then(function (datasets) {
             for (let ds of datasets) {
                 ds.birthtime = new Date(ds.birthtime);
             }
@@ -30,18 +30,18 @@ export class releaseService {
     }
 
     topViews() {
-        return this.pubAPI('datasets').one('filter').one('views').getList().then(function(releases) {
+        return this.pubAPI('datasets').one('filter').one('views').getList().then(function (releases) {
             return releases.plain();
         });
     }
 
     getByID(id) {
         if (this.user) {
-            return this.pubAPI('datasets', id).get().then(function(dataset) {
+            return this.pubAPI('datasets', id).get().then(function (dataset) {
                 return dataset.plain();
             });
         } else {
-            return this.pubAPI('datasets', id).get().then(function(dataset) {
+            return this.pubAPI('datasets', id).get().then(function (dataset) {
                 return dataset.plain();
             });
         }
