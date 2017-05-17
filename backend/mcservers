@@ -362,7 +362,15 @@ function update_mc() {
     export DB_BACKUP=/tmp/rethinkdb.update.${SERVERTYPE}.tar.gz
     echo "Updating Materials Commons deployment..."
     echo "  Updating code for materialscommons.org and mcstore...."
+
+    if [ "$MC_BRANCH" != "" ]; then
+        git checkout ${MC_BRANCH}
+    fi
     git pull
+
+    if [ "$MCSTORE_BRANCH" != "" ]; then
+        (cd ${MCSTORE_SRC}; git checkout ${MCSTORE_BRANCH})
+    fi
     (cd ${MCSTORE_SRC}; git pull)
 
     if [ "$BACKUP_DATABASE" = "t" ]; then
@@ -409,6 +417,8 @@ function update_mc() {
 function restore_mc() {
     RUN_CONVERT=f
     BACKUP_DATABASE=f
+    MCSTORE_BRANCH=""
+    MC_BRANCH=""
     if [ "$MC_RESTORE_BRANCH" != "" ]; then
         git checkout ${MC_RESTORE_BRANCH}
     fi
@@ -586,6 +596,8 @@ REINIT=f
 RUN_CONVERT=f
 MC_RESTORE_BRANCH=""
 MCSTORE_RESTORE_BRANCH=""
+MC_BRANCH=""
+MCSTORE_BRANCH=""
 COMPILE_MCSTORE=t
 MC_SERVICE_NAME=""
 BACKUP_DATABASE=t
@@ -606,13 +618,21 @@ fi
 
 while test $# -gt 0; do
     case "$1" in
-        --mc-branch)
+        --mc-restore-branch)
             shift
             MC_RESTORE_BRANCH=$1
             ;;
-        --mcstore-branch)
+        --mcstore-restore-branch)
             shift
             MCSTORE_RESTORE_BRANCH=$1
+            ;;
+        --mc-branch)
+            shift
+            MC_BRANCH=$1
+            ;;
+        --mcstore-branch)
+            shift
+            MCSTORE_BRANCH=$1
             ;;
         --run-convert)
             RUN_CONVERT=t
