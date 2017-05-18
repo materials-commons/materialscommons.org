@@ -31,6 +31,7 @@ function* getDatasetsForExperiment(experimentId) {
 function* getDataset(datasetId) {
     let rql = commonQueries.datasetDetailsRql(r.table('datasets').get(datasetId), r);
     let dataset = yield rql.run();
+    console.log("In getDataset: ",dataset.title, dataset.processes.length);
     return {val: dataset};
 }
 
@@ -163,6 +164,9 @@ function* updateFilesInDataset(datasetId, filesToAdd, filesToDelete) {
 }
 
 function* updateProcessesInDataset(datasetId, processesToAdd, processesToDelete) {
+    let xx = yield getDataset(datasetId);
+    console.log("in updateProcessesInDataset: ", xx.val.title, xx.val.processes.length);
+
     if (processesToAdd.length) {
         let add = processesToAdd.map(p => new model.Dataset2Process(datasetId, p.id));
         let indexEntries = add.map(p => [p.dataset_id, p.process_id]);
@@ -178,6 +182,8 @@ function* updateProcessesInDataset(datasetId, processesToAdd, processesToDelete)
         yield r.table('dataset2process').getAll(r.args(toDelete), {index: 'dataset_process'}).delete();
     }
 
+    xx = yield getDataset(datasetId);
+    console.log("in updateProcessesInDataset: ", xx.val.title, xx.val.processes.length);
     return yield getDataset(datasetId);
 }
 

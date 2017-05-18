@@ -79,6 +79,7 @@ before(function*() {
 
     console.log("Project name: " + project.name);
 
+    // dataset1 contains a process with samples, should be able to publish.
     let processesToAdd = [
         {id: process_list[0].id}
     ];
@@ -90,17 +91,25 @@ before(function*() {
         description: "Dataset for testing"
     };
 
+    console.log("create dataset1");
     let result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
     dataset1 = result.val;
     assert.isOk(dataset1);
 
-    yield experimentDatasets.updateProcessesInDataset(dataset1.id, processesToAdd, processesToDelete);
+    console.log("add process to dataset1");
+    results = yield experimentDatasets.updateProcessesInDataset(dataset1.id, processesToAdd, processesToDelete);
+    dataset1 = result.val;
+    assert.isOk(dataset1);
+    console.log("In test setup: ",dataset1.title, dataset1.processes);
+    console.log("In test setup: ",dataset1.title, dataset1.processes.length);
 
+    // dataset2 contains no processes or samples, should not do able to publish.
     datasetArgs = {
         title: "Test Dataset2",
         description: "Dataset for testing"
     };
 
+    console.log("create dataset2");
     result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
     dataset2 = result.val;
     assert.isOk(dataset2);
