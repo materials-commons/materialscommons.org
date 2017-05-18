@@ -363,7 +363,6 @@ function* getSamplesForDataset(next) {
 }
 
 function* publishDataset(next) {
-    console.log("in resource/dataset/publishDataset");
     let rv = yield experimentDatasets.publishDataset(this.params.dataset_id);
     if (rv.error) {
         this.status = status.UNAUTHORIZED;

@@ -76,7 +76,6 @@ function* validateDatasetInExperiment(next) {
 }
 
 function* validateDatasetForPublication(next) {
-    console.log("in validateDatasetForPublication");
     let datasetId = this.params.dataset_id;
     let hasSamples = yield check.datasetHasSamples(datasetId);
     if (!hasSamples) {
@@ -90,7 +89,6 @@ function* validateDatasetForPublication(next) {
         this.body = {error: `Can not publish dataset, ${datasetId}, no processes`};
         return this.status;
     }
-    console.log("in validateDatasetForPublication is ok");
     yield next;
 }
 
