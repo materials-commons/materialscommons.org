@@ -253,7 +253,7 @@ function restart_named_server() {
     esac
 
     disown -a
-    echo Restarted Server $1 for server type $SERVERTYPE.
+    echo Restarted Server $1 for server type ${SERVERTYPE}.
 }
 
 function ps_servers() {
@@ -477,12 +477,12 @@ function setup_server_env() {
             . /etc/materialscommons/config.test
         fi
 
-        if [ ! -d $MCDB_DIR ]; then
-            mkdir $MCDB_DIR
+        if [ ! -d ${MCDB_DIR} ]; then
+            mkdir -p ${MCDB_DIR}
         fi
 
         if [ "$REINIT" = "t" ]; then
-            (cd $MCDB_DIR; rm -rf rethinkdb_data)
+            (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
         fi
     elif [ "$TESTSERVER" = "u" ]; then
         export MC_SERVICE_PORT=5002
@@ -507,12 +507,12 @@ function setup_server_env() {
             . /etc/materialscommons/config.unit
         fi
 
-        if [ ! -d $MCDB_DIR ]; then
-            mkdir $MCDB_DIR
+        if [ ! -d ${MCDB_DIR} ]; then
+            mkdir ${MCDB_DIR}
         fi
 
         if [ "$REINIT" = "t" ]; then
-            (cd $MCDB_DIR; rm -rf rethinkdb_data)
+            (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
         fi
     elif [ "$TESTSERVER" = "p" ]; then
         export MCDB_PORT=28015
@@ -561,12 +561,12 @@ function setup_server_env() {
             . /etc/materialscommons/config.unit
         fi
 
-        if [ ! -d $MCDB_DIR ]; then
-            mkdir $MCDB_DIR
+        if [ ! -d ${MCDB_DIR} ]; then
+            mkdir ${MCDB_DIR}
         fi
 
         if [ "$REINIT" = "t" ]; then
-            (cd $MCDB_DIR; rm -rf rethinkdb_data)
+            (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
         fi
     fi
 }
@@ -615,7 +615,7 @@ if [ -f /etc/materialscommons/config.global ]; then
 fi
 
 if [ "$MCUSER" = "" ]; then
-    export MCUSER=$USER
+    export MCUSER=${USER}
 fi
 
 export MCSTORE_SRC=$HOME/workspace/src/github.com/materials-commons/mcstore
