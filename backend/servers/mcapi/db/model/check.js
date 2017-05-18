@@ -113,7 +113,6 @@ function* experimentHasDataset(experimentId, datasetId) {
 }
 
 function* datasetHasSamples(datasetId) {
-    console.log("in datasetHasSamples");
     let directlyInDS = yield r.table('dataset2sample').getAll(datasetId,{index: 'dataset_id'});
     if (directlyInDS.length !== 0) {
         return true;
@@ -125,9 +124,7 @@ function* datasetHasSamples(datasetId) {
 }
 
 function* datasetHasProcesses(datasetId) {
-    console.log("in datasetHasProcesses");
     let joins = yield r.table('dataset2process').getAll(datasetId,{index: 'dataset_id'});
-    console.log(joins);
     return joins.length !== 0;
 }
 

@@ -77,8 +77,6 @@ before(function*() {
     assert.equal(updated_project.id, project_id);
     project = updated_project;
 
-    console.log("Project name: " + project.name);
-
     // dataset1 contains a process with samples, should be able to publish.
     let processesToAdd = [
         {id: process_list[0].id}
@@ -91,17 +89,22 @@ before(function*() {
         description: "Dataset for testing"
     };
 
-    console.log("create dataset1");
-    let result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
-    dataset1 = result.val;
+    results = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
+    dataset1 = results.val;
     assert.isOk(dataset1);
 
-    console.log("add process to dataset1");
     results = yield experimentDatasets.updateProcessesInDataset(dataset1.id, processesToAdd, processesToDelete);
-    dataset1 = result.val;
+    dataset1 = results.val;
     assert.isOk(dataset1);
-    console.log("In test setup: ",dataset1.title, dataset1.processes);
-    console.log("In test setup: ",dataset1.title, dataset1.processes.length);
+    assert.isOk(dataset1.processes);
+    assert.equal(dataset1.processes.length, 1);
+
+    let probe = dataset1.processes[0];
+    assert.equal(probe.otype, "process");
+    assert.equal(probe.template_id, 'global_Create Samples');
+    assert.equal(probe.output_samples.length, 1);
+    assert.equal(probe.category, 'create_sample');
+
 
     // dataset2 contains no processes or samples, should not do able to publish.
     datasetArgs = {
@@ -109,10 +112,11 @@ before(function*() {
         description: "Dataset for testing"
     };
 
-    console.log("create dataset2");
-    result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
-    dataset2 = result.val;
+    results = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
+    dataset2 = results.val;
     assert.isOk(dataset2);
+    assert.isOk(dataset2.processes);
+    assert.equal(dataset2.processes.length, 0);
 
     results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
     let dataset_list = results.val;
@@ -137,7 +141,7 @@ describe('Feature - Datasets: ', function () {
             assert.isOk(results.error);
             let error = results.error;
             assert.isTrue(error.startsWith("Can not publish dataset"));
-            assert.isTrue(error.endsWith(" no samples"));
+            assert.isTrue(error.endsWith(" it needs both processes and samples."));
         });
     });
 });
