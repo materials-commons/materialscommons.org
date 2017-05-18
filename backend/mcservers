@@ -582,6 +582,7 @@ function show_help() {
     echo "    -p: Production environment"
     echo "    -n: Do not recompile mcstored"
     echo "    -r: Reload database from file pointed at by MCDB_FILE env variable"
+    echo "    --ps: Show servers"
     echo "    --mc-restore-branch: Branch to checkout from materialscommons.org repo when using the restore command"
     echo "    --mcstore-restore-branch: Branch to checkout from mcstore repo when using the restore command"
     echo "    --mc-branch: Branch to checkout from materialscommons.org repo when using the restore command"
@@ -591,8 +592,8 @@ function show_help() {
     echo "    --no-backup: Doesn't perform a backup of the database when performing an update"
     echo
     echo "  help: Displays this help message and exits."
-    echo "  start [-u | -t | -p] [-n] [-r]: Starts servers. Will only start servers not currently running."
-    echo "  stop [-u | -t | -p]: Stops all servers."
+    echo "  start [-u | -t | -p] [-n] [-r] [--ps]: Starts servers. Will only start servers not currently running."
+    echo "  stop [-u | -t | -p] [--ps]: Stops all servers."
     echo "  sr|srestart <server-name>  [-u | -t | -p] [-n]: Restart the named server in the given environment- mcapiserver|mcstored|mcapi|mcpub|es."
     echo "  ss|sstop <server-name>  [-u | -t | -p]: Stop the named server in the given environment - mcapiserver|mcstored|mcapi|mcpub|es."
     echo "  ss <server-name>  [-u | -t | -p]: Stop the named server in the given environment - mcapiserver|mcstored|mcapi|mcpub|es."
@@ -631,6 +632,7 @@ MCSTORE_BRANCH=""
 COMPILE_MCSTORE=t
 MC_SERVICE_NAME=""
 BACKUP_DATABASE=t
+SHOW_SERVERS=f
 
 CMD=$1
 shift
@@ -695,6 +697,9 @@ while test $# -gt 0; do
             TESTSERVER=t
             SERVERTYPE="test"
             ;;
+        --ps)
+            SHOW_SERVERS=t
+            ;;
         -p)
             TESTSERVER=p
             SERVERTYPE="production"
@@ -726,14 +731,18 @@ case "$CMD" in
     start)
         must_be_mcuser
         start_servers
-        ps_servers
+        if [ "$SHOW_SERVERS" = "t" ]; then
+            ps_servers
+        fi
         ;;
 
     stop)
         must_be_mcuser
         stop_servers
         sleep 2
-        ps_servers
+        if [ "$SHOW_SERVERS" = "t" ]; then
+            ps_servers
+        fi
         ;;
 
     srestart)
