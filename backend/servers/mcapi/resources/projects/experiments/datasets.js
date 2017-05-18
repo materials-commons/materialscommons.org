@@ -494,7 +494,7 @@ function createResource() {
 
     router.get('/:dataset_id', getDatasetForExperiment);
     router.put('/:dataset_id', updateDatasetForExperiment);
-    router.put('/:dataset_id/publish', ra.validateDatasetForPublication,publishDataset);
+    router.put('/:dataset_id/publish', ra.validateDatasetForPublication, publishDataset);
     router.put('/:dataset_id/unpublish', unpublishDataset);
     router.put('/:dataset_id/samples/:sample_id', ra.validateSampleInExperiment, addSampleToDataset);
     router.put('/:dataset_id/samples', updateSamplesInDataset);

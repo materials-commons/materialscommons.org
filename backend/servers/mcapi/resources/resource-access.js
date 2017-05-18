@@ -80,13 +80,13 @@ function* validateDatasetForPublication(next) {
     let hasSamples = yield check.datasetHasSamples(datasetId);
     if (!hasSamples) {
         this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `Can not publish dataset, ${datasetId}, no samples`};
+        this.body = {error: `Cannot publish dataset, ${datasetId}, no samples`};
         return this.status;
     }
     let hasProcesses = yield check.datasetHasProcesses(datasetId);
     if (!hasProcesses) {
         this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `Can not publish dataset, ${datasetId}, no processes`};
+        this.body = {error: `Cannot publish dataset, ${datasetId}, no processes`};
         return this.status;
     }
     yield next;
