@@ -104,20 +104,31 @@ class MCDatasetDetailsComponentController {
     }
 
     publishDataset() {
-        this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/publish-dataset-dialog.html',
-            controllerAs: '$ctrl',
-            controller: PublishDatasetDialogController,
-            bindToController: true,
-            locals: {
-                dataset: this.dataset
-            }
-        }).then(
-            () => {
-                this.dataset.published = true;
-                this.navbarOnChange.fireChange();
-            }
-        );
+        console.log(this.dataset);
+        let verified = false;
+        let processes = this.dataset.processes;
+        for (let i = 0; (i < processes.length) && (!verified); i++) {
+            verified = processes[i].output_samples.length > 0;
+            console.log(verified, processes[i].name);
+        }
+        if (!verified) {
+            this.toast.error("Dataset can not be published. It is lacking a process that produces a sample");
+        } else {
+            this.$mdDialog.show({
+                templateUrl: 'app/project/experiments/experiment/components/dataset/components/publish-dataset-dialog.html',
+                controllerAs: '$ctrl',
+                controller: PublishDatasetDialogController,
+                bindToController: true,
+                locals: {
+                    dataset: this.dataset
+                }
+            }).then(
+                () => {
+                    this.dataset.published = true;
+                    this.navbarOnChange.fireChange();
+                }
+            );
+        }
     }
 
     unpublishDataset() {
