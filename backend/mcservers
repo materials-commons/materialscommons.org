@@ -25,72 +25,146 @@ function must_be_mcuser() {
     fi
 }
 
-function start_servers() {
-    echo Starting $SERVERTYPE servers...
-    mkdir $MC_LOG_DIR 2> /dev/null
-
-    R=$(docker_instance_running $MC_ES_NAME)
+function start_es() {
+    R=$(docker_instance_running ${MC_ES_NAME})
     if [ "$R" = "" ]; then
-        echo "  Starting Elasticsearch instance $MC_ES_NAME..."
-        docker start $MC_ES_NAME
+        echo "Starting Elasticsearch instance ${MC_ES_NAME} ($SERVERTYPE)..."
+        docker start ${MC_ES_NAME}
     fi
+}
 
+function stop_es() {
+    echo "Stopping Elasticsearch ($SERVERTYPE)..."
+    R=$(docker_instance_running ${MC_ES_NAME})
+    if [ "$R" != "" ]; then
+        docker stop ${MC_ES_NAME}
+        echo "  Stopped Elasticsearch docker instance ${MC_ES_NAME}"
+    fi
+}
+
+function start_rethinkdb() {
     R=$(is_running "rethinkdb" "driver-port $MCDB_PORT")
     if [ "$R" = "" ]; then
-        echo "  Starting rethinkdb..."
-        (cd $MCDB_DIR; rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon)
-        scripts/db_running.py --port $MCDB_PORT
-        echo "  Setting up database..."
+        echo "Starting rethinkdb ($SERVERTYPE)..."
+        (cd ${MCDB_DIR}; rethinkdb --driver-port ${MCDB_PORT} --cluster-port ${RETHINKDB_CLUSTER_PORT} --http-port ${RETHINKDB_HTTP_PORT} --daemon)
+        scripts/db_running.py --port ${MCDB_PORT}
+        echo "Setting up database..."
         scripts/dbcreate.py
-        if [ $TESTSERVER != false ]; then
+        if [ ${TESTSERVER} != false ]; then
             if [ "$REINIT" = "t" ]; then
                 echo "  Restoring from file $MCDB_FILE..."
-                cp $MCDB_FILE $MCDB_DIR
-                FILE=$(basename $MCDB_FILE)
-                rethinkdb restore $MCDB_DIR/$FILE --connect localhost:$MCDB_PORT --force
+                cp ${MCDB_FILE} ${MCDB_DIR}
+                FILE=$(basename ${MCDB_FILE})
+                rethinkdb restore ${MCDB_DIR}/${FILE} --connect localhost:${MCDB_PORT} --force
                 if [ $? -ne 0 ]; then
-                    rethinkdb restore $MCDB_DIR/$FILE --connect localhost:$MCDB_PORT --force
+                    rethinkdb restore ${MCDB_DIR}/${FILE} --connect localhost:${MCDB_PORT} --force
                 fi
             fi
         fi
     fi
+}
 
+function stop_rethinkdb() {
+    echo "Stopping rethinkdb ($SERVERTYPE)..."
+    RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$RPID" != "" ]; then
+        kill ${RPID}
+        echo "  Stopped rethinkdb with pid ${RPID}"
+    fi
+}
+
+function start_mcapiserver() {
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
     if [ "$R" = "" ]; then
-        echo "  Starting mcapiserver..."
-        ./mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
+        echo "Starting mcapiserver ($SERVERTYPE)..."
+        ./mcapiserver.py -p ${MC_SERVICE_PORT} > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
+}
 
+function stop_mcapiserver() {
+    echo "Stopping mcapiserver (${SERVERTYPE})..."
+    ps -eo "pid,command" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    do
+        kill ${line}
+        echo "  Stopped mcapiserver with pid ${line}"
+    done
+}
+
+function start_mcstored() {
     R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
     if [ "$R" = "" ]; then
-        echo "  Starting mcstored..."
+        echo "Starting mcstored ($SERVERTYPE)..."
         build_mcstored
         ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
+}
+
+function stop_mcstored() {
+    echo "Stopping mcstored ($SERVERTYPE)..."
+    MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$MCSTORED_PID" != "" ]; then
+        kill ${MCSTORED_PID}
+        echo "  Stopped mcstored with pid $MCSTORED_PID"
+    fi
+}
+
+function start_mcapi() {
+    R=$(is_running "sbin/mcapi/mcapi.js" "p $MC_API_SERVICE_PORT")
+    if [ "$R" = "" ]; then
+        echo "Starting mcapi ($SERVERTYPE)..."
+        gulp build-mcapi-server
+        node sbin/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
+}
+
+function stop_mcapi() {
+    echo "Stopping mcapi ($SERVERTYPE)..."
+    MCAPI_PID=$(ps -eo "pid,command" | grep "mcapi.js" | grep "p $MC_API_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$MCAPI_PID" != "" ]; then
+        kill ${MCAPI_PID}
+        echo "  Stopped mcapi with pid $MCAPI_PID"
+    fi
+}
+
+function start_mcpub() {
+    R=$(is_running "sbin/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
+    if [ "$R" = "" ]; then
+        echo "Starting mcpub ($SERVERTYPE)..."
+        gulp build-mcpub-server
+        node sbin/mcpub/mcpub.js -p ${MC_PUB_SERVICE_PORT} > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
+}
+
+function stop_mcpub() {
+    echo "Stopping mcpub ($SERVERTYPE)..."
+    MCPUB_PID=$(ps -eo "pid,command" | grep "mcpub.js" | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$MCPUB_PID" != "" ]; then
+        kill ${MCPUB_PID}
+        echo "  Stopped mcpub with pid $MCPUB_PID"
+    fi
+}
+
+function start_servers() {
+    echo Starting ${SERVERTYPE} servers...
+    mkdir -p ${MC_LOG_DIR} 2> /dev/null
+
+    start_es
+    start_rethinkdb
+    start_mcapiserver
+    start_mcstored
 
     echo "  Building server lib..."
     gulp build-lib
 
-    R=$(is_running "sbin/mcapi/mcapi.js" "p $MC_API_SERVICE_PORT")
-    if [ "$R" = "" ]; then
-        echo "  Starting mcapi..."
-        gulp build-mcapi-server
-        node sbin/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
-        sleep 1
-    fi
-
-    R=$(is_running "sbin/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
-    if [ "$R" = "" ]; then
-        echo "  Starting mcpub..."
-        gulp build-mcpub-server
-        node sbin/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
-        sleep 1
-    fi
+    start_mcapi
+    start_mcpub
 
     disown -a
-    echo Started $SERVERTYPE.
+    echo Started ${SERVERTYPE}.
 }
 
 function stop_servers() {
@@ -106,86 +180,38 @@ function stop_servers() {
         fi
     fi
 
-    echo Stopping $SERVERTYPE servers....
+    echo Stopping ${SERVERTYPE} servers....
 
-    R=$(docker_instance_running $MC_ES_NAME)
-    if [ "$R" != "" ]; then
-        docker stop $MC_ES_NAME
-    fi
+    stop_es
+    stop_mcapiserver
+    stop_mcstored
+    stop_mcapi
+    stop_mcpub
+    stop_rethinkdb
 
-    ps -eo "pid,command" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
-    do
-        kill $line
-    done
-
-    MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-    if [ "$MCSTORED_PID" != "" ]; then
-        kill $MCSTORED_PID
-    fi
-
-    MCAPI_PID=$(ps -eo "pid,command" | grep "mcapi.js" | grep "p $MC_API_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-    if [ "$MCAPI_PID" != "" ]; then
-        kill $MCAPI_PID
-    fi
-
-    MCPUB_PID=$(ps -eo "pid,command" | grep "mcpub.js" | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-    if [ "$MCPUB_PID" != "" ]; then
-        kill $MCPUB_PID
-    fi
-
-    RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
-    if [ "$RPID" != "" ]; then
-        kill $RPID
-    fi
-
-    echo Stopped $SERVERTYPE.
+    echo Stopped ${SERVERTYPE}.
 }
 
 function stop_named_server() {
     case "$1" in
         mcapiserver)
-            echo Stopping mcapiserver...
-            ps -eo "pid,command" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
-            do
-                kill $line
-                echo Stopped mcapiserver with pid $line
-            done
+            stop_mcapiserver
             ;;
 
         mcstored)
-            echo Stopping mcstored...
-            MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-            if [ "$MCSTORED_PID" != "" ]; then
-                kill $MCSTORED_PID
-                echo Stopped mcstored with pid $MCSTORED_PID
-            fi
+            stop_mcstored
             ;;
 
         mcapi)
-            echo Stopping mcapi...
-            MCAPI_PID=$(ps -eo "pid,command" | grep "mcapi.js" | grep "p $MC_API_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-            if [ "$MCAPI_PID" != "" ]; then
-                kill $MCAPI_PID
-                echo Stopped mcapi with pid $MCAPI_PID
-            fi
+            stop_mcapi
             ;;
 
         mcpub)
-            echo Stopping mcpub...
-            MCPUB_PID=$(ps -eo "pid,command" | grep "mcpub.js" | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-            if [ "$MCPUB_PID" != "" ]; then
-                kill $MCPUB_PID
-                echo Stopped mcpub with pid $MCPUB_PID
-            fi
+            stop_mcpub
             ;;
 
         es)
-            echo Stopping Elasticsearch...
-            R=$(docker_instance_running ${MC_ES_NAME})
-            if [ "$R" != "" ]; then
-                docker stop $MC_ES_NAME
-                echo Stopped Elasticsearch docker instance ${MC_ES_NAME}
-            fi
+            stop_es
             ;;
 
         *)
@@ -199,34 +225,25 @@ function restart_named_server() {
     stop_named_server $1
     case "$1" in
         mcapiserver)
-            echo "  Starting mcapiserver..."
-            ./mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
+            start_mcapiserver
             ;;
 
         mcstored)
-            echo "  Starting mcstored..."
-            build_mcstored
-            ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
+            start_mcstored
             ;;
 
         mcapi)
-            echo "  Starting mcapi..."
             gulp build-mcapi-server-lib
-            node sbin/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+            start_mcapi
             ;;
 
         mcpub)
-            echo "  Starting mcpub..."
             gulp build-mcpub-server-lib
-            node sbin/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
+            start_mcpub
             ;;
 
         es)
-            echo "  Start Elasticsearch docker instance ${MC_ES_NAME}..."
-            R=$(docker_instance_running ${MC_ES_NAME})
-            if [ "$R" = "" ]; then
-                docker start ${MC_ES_NAME}
-            fi
+            start_es
             ;;
 
         *)
@@ -624,7 +641,19 @@ if [ "$CMD" = "sstop" ]; then
         show_help
     fi
     shift
+elif [ "$CMD" = "ss" ]; then
+    MC_SERVICE_NAME=$1
+    if [ "$MC_SERVICE_NAME" = "-h" ]; then
+        show_help
+    fi
+    shift
 elif [ "$CMD" = "sr" ]; then
+    MC_SERVICE_NAME=$1
+    if [ "$MC_SERVICE_NAME" = "-h" ]; then
+        show_help
+    fi
+    shift
+elif [ "$CMD" = "srestart" ]; then
     MC_SERVICE_NAME=$1
     if [ "$MC_SERVICE_NAME" = "-h" ]; then
         show_help
@@ -632,7 +661,6 @@ elif [ "$CMD" = "sr" ]; then
     shift
 elif [ "$CMD" = "-h" ]; then
     show_help
-    exit 0
 fi
 
 while test $# -gt 0; do
@@ -698,11 +726,14 @@ case "$CMD" in
     start)
         must_be_mcuser
         start_servers
+        ps_servers
         ;;
 
     stop)
         must_be_mcuser
         stop_servers
+        sleep 2
+        ps_servers
         ;;
 
     srestart)
