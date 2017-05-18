@@ -55,6 +55,12 @@ before(function*() {
     assert.isOk(publicationURLBase, "Missing process.env.MC_DOI_PUBLICATION_BASE");
     assert.isOk(doiUrl, "Missing process.env.MC_DOI_SERVICE_URL");
 
+    let namespaceErrorMessage =
+        "The DOI tests can only be run on the DOI test namespace with the test user" +
+        " and password; make sure that the env vailables are set correctly." +
+        " if you are not sure, ask!";
+    
+    assert.equal(doiNamespace,'doi:10.5072/FK2',namespaceErrorMessage);
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
@@ -72,8 +78,6 @@ before(function*() {
         description: description
     };
     project = yield projects.update(project.id, updateData);
-    console.log("Test project name: " + project.name);
-    console.log("Test project id: " + project.id);
 
     processList = results.val.processList;
     let datasetList = yield testHelpers.createDatasetList(experiment, processList, user.id);
