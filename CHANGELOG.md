@@ -1,5 +1,16 @@
 # Release Notes
 
+## 31 May 2017
+### [Materials Commons Projects](https://materialscommons.org/mcapp)
+This release focused on improvements to the publishing process. Support for DOIs was added to the system.
+- :star: **New Feature:** DOI Support added to publishing datasets.
+- :star: **Improvement:** Updates related to API support.
+- :boom: **Fixed:** Other bug fixes.
+
+### [Materials Commons Data](https://materialscommons.org/mcpub)
+This release focused on improvements to the publishing process. Support for DOIs was added to the system.
+- :star: **New Feature:** DOI Support added to publishing datasets.
+
 ## 28 April 2017
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 - :star: **New Feature:** A new template builder has been released to a limited set of beta users. The template builder will allow users to create new process templates and modify existing templates.
