@@ -83,7 +83,7 @@ before(function*() {
 
 });
 
-describe('Feature - Dataset: ', function () {
+describe.skip('Feature - Dataset: ', function () {
     describe('DOI Request - ', function () {
         it('checks DOI server status - raw', function*() {
 
