@@ -35,6 +35,14 @@ class MCDatasetDetailsComponentController {
         if (!this.dataset.keywords) {
             this.dataset.keywords = [];
         }
+        if (this.dataset.doi) {
+            datasetsAPI.getDoiExternalLink(this.projectId, this.experimentId, this.datasetId).then(
+                urlResult => {
+                    this.dataset.doi_url = urlResult.val;
+                    this.navbarOnChange.fireChange();
+                }
+            )
+        }
     }
 
     addAuthor() {
@@ -65,6 +73,22 @@ class MCDatasetDetailsComponentController {
     removePaper(index) {
         this.dataset.papers.splice(index, 1);
         this.updateDataset();
+    }
+
+    addDoi() {
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/dataset/components/set-doi-dialog.html',
+            controllerAs: '$ctrl',
+            controller: SetDatasetDoiDialogController,
+            bindToController: true,
+            locals: {
+                dataset: this.dataset
+            }
+        }).then(
+            () => {
+                this.navbarOnChange.fireChange();
+            }
+        );
     }
 
     updateDataset() {
@@ -158,6 +182,58 @@ class UnpublishDatasetDialogController {
                 () => this.$mdDialog.hide(),
                 () => {
                     this.toast.error('Unable to unpublish dataset');
+                    this.$mdDialog.cancel();
+                }
+            );
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class SetDatasetDoiDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, $stateParams, toast, datasetsAPI) {
+        this.$mdDialog = $mdDialog;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.datasetId = $stateParams.dataset_id;
+        this.toast = toast;
+        this.datasetsAPI = datasetsAPI;
+        this.doiTitle = this.dataset.title;
+        let author = "";
+        if (this.dataset.authors.length > 0) {
+            author = this.dataset.authors[0].firstname
+                + " " + this.dataset.authors[0].lastname;
+        }
+        this.doiAuthor = author;
+        this.doiPublicationDate = (new Date()).getFullYear();
+        this.doiDescription = this.dataset.description;
+    }
+
+    setDoi() {
+        let details = {
+            title: this.doiTitle,
+            author: this.doiAuthor,
+            publication_year: this.doiPublicationDate
+        };
+        if (this.doiDescription) {
+            details.description = this.doiDescription;
+        }
+        this.datasetsAPI.createNewDoi(this.projectId, this.experimentId, this.datasetId, details)
+            .then(
+                (result) => {
+                    this.dataset.doi = result.val.doi;
+                    this.datasetsAPI.getDoiExternalLink(this.projectId, this.experimentId, this.datasetId).then(
+                        urlResult => {
+                            this.dataset.doi_url = urlResult.val;
+                            this.$mdDialog.hide();
+                        }
+                    )
+                },
+                () => {
+                    this.toast.error('Unable to set dataset DOI value');
                     this.$mdDialog.cancel();
                 }
             );

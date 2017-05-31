@@ -1,16 +1,16 @@
 export class PopUpController {
-  constructor(file, $uibModalInstance) {
-    'ngInject';
-    this.file = file;
-    this.$uibModalInstance = $uibModalInstance;
-  }
+    constructor(file, $uibModalInstance) {
+        'ngInject';
+        this.file = file;
+        this.$uibModalInstance = $uibModalInstance;
+    }
 
-  ok() {
-    this.$uibModalInstance.close();
-  }
+    ok() {
+        this.$uibModalInstance.close();
+    }
 
-  cancel() {
-    this.$uibModalInstance.dismiss('cancel');
-  }
+    cancel() {
+        this.$uibModalInstance.dismiss('cancel');
+    }
 }
 

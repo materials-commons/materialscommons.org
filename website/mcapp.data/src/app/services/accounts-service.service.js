@@ -30,12 +30,12 @@ export class AccountsService {
         return this.mcapi('users').one('validate', uuid).get();
     }
 
-    getUserForResetPassword(uuid){
-        return this.mcapi("users").one('rvalidate',uuid).get();
+    getUserForResetPassword(uuid) {
+        return this.mcapi("users").one('rvalidate', uuid).get();
     }
 
-    resetUserPasswordWithValidate(uuid,password) {
-        return this.Restangular.one('user').one('rvalidate',uuid).one('finish').customPOST({
+    resetUserPasswordWithValidate(uuid, password) {
+        return this.Restangular.one('user').one('rvalidate', uuid).one('finish').customPOST({
             password: password
         });
     }

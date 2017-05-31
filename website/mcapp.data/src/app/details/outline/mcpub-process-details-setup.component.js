@@ -22,7 +22,7 @@ export class MCPubProcessDetailsSetupComponentController {
     }
 
     removeEmpty() {
-        return function(prop) {
+        return function (prop) {
             return prop.value !== '';
         }
     }

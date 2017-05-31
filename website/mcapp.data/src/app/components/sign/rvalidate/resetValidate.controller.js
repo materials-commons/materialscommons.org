@@ -17,6 +17,7 @@ export class ResetValidateController {
                 (e) => this.message = e.data.error
             );
     }
+
     validateAndLogin() {
         if (!this.allFieldsValid()) {
             return;
@@ -27,7 +28,7 @@ export class ResetValidateController {
                 () => {
                     this.userService.login(this.user.email, this.password1)
                         .then(
-                            (user)=> {
+                            (user) => {
                                 this.userService.setAuthenticated(true, user.plain());
                                 this.Restangular.setDefaultRequestParams(['post', 'get', 'put', 'remove'], {apikey: this.userService.apikey()});
                                 this.$state.go('home.top');
