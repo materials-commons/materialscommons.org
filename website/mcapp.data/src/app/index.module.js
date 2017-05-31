@@ -49,10 +49,10 @@ import {SearchModel} from './services/search-model.service';
 import {focusService} from './services/focus.service';
 import {onEnterDirective} from './directives/on-enter.directive';
 
-angular.module('mcpub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria',
+angular.module('mcpub', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria',
     'restangular', 'ui.router', 'ui.bootstrap', 'toastr', 'ct.ui.router.extras',
     'angularUtils.directives.dirPagination', 'RecursionHelper',
-    'ngTagsInput', 'ngFileUpload', 'blockUI'])
+    'ngTagsInput', 'ngFileUpload', 'blockUI', 'ngMaterial'])
     .config(config)
     .config(routerConfig)
     .run(runBlock)
