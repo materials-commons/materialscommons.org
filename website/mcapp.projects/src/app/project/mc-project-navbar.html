@@ -46,6 +46,11 @@
                     <span><i class="fa fa-fw fa-gears"></i>Settings</span>
                 </md-tab-label>
             </md-tab>
+            <md-tab ui-sref="project.dashboard" ng-if="$ctrl.isBetaUser">
+                <md-tab-label>
+                    <span><i class="fa fa-fw fa-university"></i>Public</span>
+                </md-tab-label>
+            </md-tab>
         </md-tabs>
     </div>
     <span flex></span>

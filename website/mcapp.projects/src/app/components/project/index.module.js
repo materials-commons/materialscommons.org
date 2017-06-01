@@ -1,0 +1,1 @@
+import './mc-project-dashboard/mc-project-dashboard.component';
