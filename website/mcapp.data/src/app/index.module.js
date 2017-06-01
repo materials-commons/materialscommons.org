@@ -28,7 +28,7 @@ import {MCPubProcessDetailsSetupComponentController} from './details/outline/mcp
 import {DatasetDetailsSummaryDirective} from './details/mcpub-dataset-details-summary.directive';
 import {DatasetDetailsOtherdsDirective} from './details/mcpub-dataset-details-otherds.directive';
 import {DatasetDetailsVotesController} from './details/mcpub-dataset-details-votes.component';
-import {NavbarDirective} from '../app/components/navbar/navbar.directive';
+import {MCPubNavbarDirective} from '../app/components/navbar/mcpub-navbar.directive';
 import {HomeTabDirective} from '../app/home/home-tab-directive';
 import {MCPubSearchbarDirective} from '../app/directives/mcpub-searchbar.directive';
 import {PropertyValueDirective} from '../app/directives/property-value-directive';
@@ -71,7 +71,7 @@ angular.module('mcpub', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', '
     .controller('BrowseAuthorsController', BrowseAuthorsController)
     .controller('ValidateController', ValidateController)
     .controller('ResetValidateController', ResetValidateController)
-    .directive('mcpubNavbar', NavbarDirective)
+    .directive('mcpubNavbar', MCPubNavbarDirective)
     .directive('homeTabDirective', HomeTabDirective)
     .directive('mcpubSearchbar', MCPubSearchbarDirective)
     .directive('propertyValue', PropertyValueDirective)
