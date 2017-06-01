@@ -30,8 +30,8 @@ function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $aria
     });
 }
 
-appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText', '$mdThemingProvider'];
-function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText, $mdThemingProvider) {
+appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText'];
+function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     // appRun will run when the application starts up and before any controllers have run.
@@ -57,8 +57,6 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
     });
 
     $rootScope.$on('$destroy', function() { unregister(); });
-
-    $mdThemingProvider.theme('default').primaryPalette('blue').accentPalette('red');
 }
 
 function isStateRequiringALogin(stateName) {
