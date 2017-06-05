@@ -241,9 +241,21 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/sample/:sample_id',
             template: '<mc-sample></mc-sample>'
         })
-        .state('project.dashboard', {
-            url: '/dashboard',
-            template: '<mc-project-dashboard></mc-project-dashboard>'
+        .state('project.datasets', {
+            url: '/datasets',
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state('project.datasets.list', {
+            url: '/list',
+            template: '<mc-project-datasets></mc-project-datasets>'
+        })
+        .state('project.datasets.dataset', {
+            url: '/dataset/:dataset_id',
+            template: '<mc-dataset-overview dataset="$resolve.dataset"></mc-dataset-overview>',
+            resolve: {
+                dataset: [() => ({name: 'hello world'})]
+            }
         })
         .state('project.settings', {
             url: '/settings',
