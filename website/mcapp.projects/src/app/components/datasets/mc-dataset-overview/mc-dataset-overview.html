@@ -1,7 +1,7 @@
 <div layout="column" layout-margin>
     {{$ctrl.dataset.title}}
     <mc-dataset-overview-summary dataset="$ctrl.dataset"></mc-dataset-overview-summary>
-    <mc-dataset-overview-outline dataset="$ctrl.dataset"></mc-dataset-overview-outline>
+    <mc-processes-workflow processes="$ctrl.dataset.processes"></mc-processes-workflow>
     <h4>
         Files ({{::$ctrl.dataset.files.length}})
         <a ng-click="$ctrl.showFiles = !$ctrl.showFiles">{{ctrl.showFiles ? "Hide" : "View"}}</a>
