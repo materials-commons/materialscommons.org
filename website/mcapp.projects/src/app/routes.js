@@ -254,7 +254,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/dataset/:dataset_id',
             template: '<mc-dataset-overview dataset="$resolve.dataset"></mc-dataset-overview>',
             resolve: {
-                dataset: [() => ({name: 'hello world'})]
+                dataset: ['$stateParams', 'datasetsAPI',
+                    ($stateParams, datasetsAPI) => datasetsAPI.getDataset('e634ee47-b217-4547-a345-5007cd146dbd', '511930bd-96a5-4678-9626-ef79aceb75b5', '57490e70-df32-4592-8a6f-8a6cfbd36174')
+                ]
             }
         })
         .state('project.settings', {
