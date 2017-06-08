@@ -75,6 +75,23 @@ function* validateDatasetInExperiment(next) {
     yield next;
 }
 
+function* validateDatasetForPublication(next) {
+    let datasetId = this.params.dataset_id;
+    let hasSamples = yield check.datasetHasSamples(datasetId);
+    if (!hasSamples) {
+        this.status = httpStatus.BAD_REQUEST;
+        this.body = {error: `Cannot publish dataset, ${datasetId}, no samples`};
+        return this.status;
+    }
+    let hasProcesses = yield check.datasetHasProcesses(datasetId);
+    if (!hasProcesses) {
+        this.status = httpStatus.BAD_REQUEST;
+        this.body = {error: `Cannot publish dataset, ${datasetId}, no processes`};
+        return this.status;
+    }
+    yield next;
+}
+
 function* validateSampleInExperiment(next) {
     let isInExperiment = yield check.sampleInExperiment(this.params.experiment_id, this.params.sample_id);
     if (!isInExperiment) {
@@ -181,6 +198,7 @@ module.exports = {
     validateExperimentOwner,
     validateExperimentInProject,
     validateDatasetInExperiment,
+    validateDatasetForPublication,
     validateSampleInExperiment,
     validateProcessInExperiment,
     validateSampleInProject,

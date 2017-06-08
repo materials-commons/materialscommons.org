@@ -7,6 +7,7 @@ const archiver = require('archiver');
 const dbExec = require('./run');
 const db = require('./db');
 const model = require('./model');
+const check = require('./check');
 const commonQueries = require('../../../lib/common-queries');
 const _ = require('lodash');
 const util = require('./util');
@@ -186,6 +187,11 @@ function* updateDataset(datasetId, datasetArgs) {
 }
 
 function* publishDataset(datasetId) {
+    let hasProcesses = yield check.datasetHasProcesses(datasetId);
+    let hasSamples = yield check.datasetHasSamples(datasetId);
+    if (!hasProcesses || !hasSamples) {
+        return {error: `Can not publish dataset, ${datasetId}, it needs both processes and samples.`}
+    }
     yield publishDatasetKeywords(datasetId);
     yield publishDatasetProcesses(datasetId);
     yield publishDatasetSamples(datasetId);
