@@ -9,6 +9,7 @@ import './login/index.module';
 import './join/index.module';
 import './project/index.module';
 import './components/index.module';
+import './data/index.module';
 import './util/util';
 
 angular.module('materialscommons')

@@ -270,7 +270,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('data.home', {
             url: '/home',
-            template: 'data home'
+            template: '<mc-data-home></mc-data-home>'
         });
 
     $urlRouterProvider.otherwise('/login');
