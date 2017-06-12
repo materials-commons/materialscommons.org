@@ -2,13 +2,15 @@
     {{$ctrl.dataset.title}}
     <mc-dataset-overview-summary dataset="$ctrl.dataset"></mc-dataset-overview-summary>
     <mc-processes-workflow processes="$ctrl.dataset.processes"></mc-processes-workflow>
-    <h4>
-        Files ({{::$ctrl.dataset.files.length}})
-        <a ng-click="$ctrl.showFiles = !$ctrl.showFiles">{{ctrl.showFiles ? "Hide" : "View"}}</a>
-    </h4>
-    <p>
-        View a list of all the files that comprise this dataset, including thumbnails of all the images.
-    </p>
-    <mc-dataset-overview-files-list ng-if="$ctrl.showFiles"
-                                    files="$ctrl.dataset.files"></mc-dataset-overview-files-list>
+    <div ng-if="$ctrl.dataset.files">
+        <h4>
+            Files ({{::$ctrl.dataset.files.length}})
+            <a ng-click="$ctrl.showFiles = !$ctrl.showFiles">{{$ctrl.showFiles ? "Hide" : "View"}}</a>
+        </h4>
+        <p>
+            View a list of all the files that comprise this dataset, including thumbnails of all the images.
+        </p>
+        <mc-dataset-overview-files-list ng-if="$ctrl.showFiles"
+                                        files="$ctrl.dataset.files"></mc-dataset-overview-files-list>
+    </div>
 </div>
