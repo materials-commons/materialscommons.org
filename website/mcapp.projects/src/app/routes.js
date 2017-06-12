@@ -266,7 +266,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('data', {
             url: '/data',
             abstract: true,
-            template: '<div ui-view></div>'
+            template: '<div ui-view flex></div>'
         })
         .state('data.home', {
             url: '/home',
