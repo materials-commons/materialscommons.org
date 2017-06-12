@@ -80,6 +80,17 @@ class NavbarComponentController {
         this.$state.go('login');
     }
 
+    switchSites() {
+        this.$mdDialog.show({
+            templateUrl: 'app/global.components/switch-sites.html',
+            controller: MCSwitchSitesDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true
+        }).then(
+            (sref) => this.$state.go(sref)
+        );
+    }
+
     switchToUser() {
         this.$mdDialog.show({
             templateUrl: 'app/global.components/switch-user-dialog.html',
@@ -105,6 +116,21 @@ class MCSwitchUserDialogController {
             () => this.toast.error(`Unable to switch to user ${this.email}`)
         );
         this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class MCSwitchSitesDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    switchTo(sref) {
+        this.$mdDialog.hide(sref);
     }
 
     cancel() {
