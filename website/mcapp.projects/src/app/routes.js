@@ -262,6 +262,15 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.settings', {
             url: '/settings',
             template: '<mc-project-settings></mc-project-settings>'
+        })
+        .state('data', {
+            url: '/data',
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state('data.home', {
+            url: '/home',
+            template: 'data home'
         });
 
     $urlRouterProvider.otherwise('/login');
