@@ -268,9 +268,36 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<div ui-view flex></div>'
         })
+        .state('data.dataset', {
+            url: '/dataset/:dataset_id',
+            template: '<mc-dataset-overview dataset="$resolve.dataset"></mc-dataset-overview>',
+            resolve: {
+                dataset: ['publicDatasetsAPI', '$stateParams',
+                    (publicDatasetsAPI, $stateParams) => publicDatasetsAPI.getDataset($stateParams.dataset_id)
+                ]
+            }
+        })
         .state('data.home', {
             url: '/home',
             template: '<mc-data-home></mc-data-home>'
+        })
+        .state('data.home.recent', {
+            url: '/recent',
+            template: '<mc-dataset-list datasets="$resolve.datasets" details-route="data.dataset"></mc-dataset-list>',
+            resolve: {
+                datasets: ['publicDatasetsAPI',
+                    (publicDatasetsAPI) => publicDatasetsAPI.getRecent()
+                ]
+            }
+        })
+        .state('data.home.top', {
+            url: '/top',
+            template: '<mc-dataset-list datasets="$resolve.datasets" details-route="data.dataset"></mc-dataset-list>',
+            resolve: {
+                datasets: ['publicDatasetsAPI',
+                    (publicDatasetsAPI) => publicDatasetsAPI.getTopViewed()
+                ]
+            }
         });
 
     $urlRouterProvider.otherwise('/login');

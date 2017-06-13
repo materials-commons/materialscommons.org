@@ -26,16 +26,16 @@ angular.module('materialscommons').component('mcDatasetPropertyFiles', {
         <label ng-if="$ctrl.isAuthenticated && $ctrl.dataset.published">Download</label>
         <label ng-if="$ctrl.isAuthenticated && !$ctrl.dataset.published">Files</label>
         <label ng-if="!$ctrl.isAuthenticated">Files</label>
-        <span ng-if="!$ctrl.isAuthenticated">{{$ctrl.dataset.files}} files</span>
-        <span ng-if="$ctrl.isAuthenticated && !$ctrl.dataset.published">{{$ctrl.dataset.files}} files</span>
+        <span ng-if="!$ctrl.isAuthenticated">{{$ctrl.dataset.files.length}} files</span>
+        <span ng-if="$ctrl.isAuthenticated && !$ctrl.dataset.published">{{$ctrl.dataset.files.length}} files</span>
         <span ng-if="$ctrl.isAuthenticated && $ctrl.dataset.published && !$ctrl.isDownloadAvailable()">
-            {{$ctrl.dataset.files}} files.
+            {{$ctrl.dataset.files.length}} files.
             Download zipfile is still building; check back later.
         </span>
         <span ng-if="$ctrl.isAuthenticated && $ctrl.dataset.published && $ctrl.isDownloadAvailable()">
             <a href="{{$ctrl.urlForDownload()}}" download="{{$ctrl.filenameForDownload()}}">
                 <i class="fa fa-fw fa-download"></i>
-                Download Dataset - {{$ctrl.dataset.files}} files
+                Download Dataset - {{$ctrl.dataset.files.length}} files
             </a>
             ({{$ctrl.dataset.zip.size | bytes}})
         </span>

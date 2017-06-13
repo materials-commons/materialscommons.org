@@ -1,5 +1,5 @@
 <h4 class="md-subhead">
-    <a ui-sref="project.datasets.dataset({dataset_id: $ctrl.dataset.id})">{{$ctrl.dataset.title}}</a>
+    <a ng-click="$ctrl.gotoDetailsRoute()">{{$ctrl.dataset.title}}</a>
 </h4>
 <p class="small action-count">
     {{$ctrl.dataset.views}} views
