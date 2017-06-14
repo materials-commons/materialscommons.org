@@ -204,7 +204,7 @@ function* insertDir(projectID, parentID, owner, dirPath) {
 }
 
 function* update(projectID, directoryID, updateArgs) {
-    let guard = yield isTopLevelDir(projectID,directoryID)
+    let guard = yield isTopLevelDir(projectID, directoryID)
     if (guard) {
         return {
             error: "Can not move or rename top level directory"
@@ -217,7 +217,7 @@ function* update(projectID, directoryID, updateArgs) {
     }
 }
 
-function* isTopLevelDir(projectID,directoryID){
+function* isTopLevelDir(projectID, directoryID) {
     let projectNameData = yield r.table('projects').get(projectID).pluck('name');
     let directoryNameData = yield r.table('datadirs').get(directoryID).pluck('name');
     return (projectNameData.name == directoryNameData.name);
@@ -244,7 +244,7 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
 
     yield r.table('datadirs').get(directoryID).update(updateFields);
 
-    let directoryList = yield r.table('datadirs').getAll(directoryID,{index: 'parent'});
+    let directoryList = yield r.table('datadirs').getAll(directoryID, {index: 'parent'});
     if (directoryList && directoryList.length > 0) {
 
         let directoryIdSet = new Set();
@@ -257,7 +257,7 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
         let oldSize = 0;
         while (size != oldSize) {
             oldSize = size;
-            directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]),{index: 'parent'});
+            directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]), {index: 'parent'});
             for (let i = 0; i < directoryList.length; i++) {
                 directoryIdSet.add(directoryList[i].id);
             }
@@ -267,10 +267,10 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
         directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]));
         for (let i = 0; i < directoryList.length; i++) {
             let directory = directoryList[i];
-            directory.name = directory.name.replace(currentPath,newPath);
+            directory.name = directory.name.replace(currentPath, newPath);
         }
 
-        yield r.table('datadirs').insert(directoryList,{conflict: 'update'});
+        yield r.table('datadirs').insert(directoryList, {conflict: 'update'});
     }
 
     let rv = {};
@@ -280,7 +280,7 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
 
 function* renameDirectory(directoryID, renameArgs) {
     let newName = renameArgs.new_name;
-    yield renameHelper.renameDirectory(directoryID,newName);
+    yield renameHelper.renameDirectory(directoryID, newName);
 
     let rv = {};
     rv.val = yield directoryByID(directoryID);
@@ -312,7 +312,7 @@ function peerDirectories(dirID) {
     return dbExec(rql);
 }
 
-function* ingestSingleLocalFile(projectId, directoryId, userId, args){
+function* ingestSingleLocalFile(projectId, directoryId, userId, args) {
     let filename = args.name;
     let checksum = args.checksum;
     //let mediatype = args.mediatype;
@@ -332,17 +332,17 @@ function* ingestSingleLocalFile(projectId, directoryId, userId, args){
     return file;
 }
 
-function* addFileToDirectory(dirID,fileID){
-    let link = new model.DataDir2DataFile(dirID,fileID);
+function* addFileToDirectory(dirID, fileID) {
+    let link = new model.DataDir2DataFile(dirID, fileID);
     yield r.table('datadir2datafile').insert(link);
 }
 
-function* fileInDirectoryByName(dirId,filename) {
+function* fileInDirectoryByName(dirId, filename) {
     let matches = yield r.table('datadir2datafile')
-        .getAll(dirId,{index:'datadir_id'})
-        .eqJoin('datafile_id',r.table('datafiles'))
-        .without({left: "id", left: "datafile_id", left:"datadir_id"})
-        .zip().filter({name:filename,current:true});
+        .getAll(dirId, {index: 'datadir_id'})
+        .eqJoin('datafile_id', r.table('datafiles'))
+        .without({left: "id", left: "datafile_id", left: "datadir_id"})
+        .zip().filter({name: filename, current: true});
     if (matches) return matches[0];
     else return {}
 }
@@ -358,7 +358,7 @@ function* isEmpty(dirID) {
 }
 
 function* remove(projectID, dirID) {
-    let guard = yield isTopLevelDir(projectID,dirID)
+    let guard = yield isTopLevelDir(projectID, dirID)
     if (guard) {
         return {
             error: "Can not delete top level directory"
