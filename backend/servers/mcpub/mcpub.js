@@ -1,23 +1,23 @@
-var cliArgs = require('command-line-args');
-var koa = require('koa');
-var router = require('koa-router')();
-var datasets = require('./db/datasets');
-var user = require('./db/user');
-var action = require('./db/actions');
-var appreciate = require('./db/appreciate');
-var browse = require('./db/browse');
-var view = require('./db/view');
-var tag = require('./db/tag');
-var comment = require('./db/comment');
-var download = require('./db/download');
-var path = require('path');
+const cliArgs = require('command-line-args');
+const koa = require('koa');
+const router = require('koa-router')();
+const datasets = require('./db/datasets');
+const user = require('./db/user');
+const action = require('./db/actions');
+const appreciate = require('./db/appreciate');
+const browse = require('./db/browse');
+const view = require('./db/view');
+const tag = require('./db/tag');
+const comment = require('./db/comment');
+const download = require('./db/download');
+const path = require('path');
 //var koaBody = require('koa-body')({
 //    multipart: true,
 //    formidable: {uploadDir: './../assets/user-images'},
 //    keepExtensions: true
 //});
-var r = require('./dash');
-var apikey = require('./apikey')();
+const r = require('./dash');
+const apikey = require('./apikey')();
 
 // Look for changes on the users table. If a change it detected then invalidate
 // the apikey cache so it will be reloaded.
@@ -26,7 +26,7 @@ r.db('materialscommons').table('users').changes().toStream().on('data', function
     apikeyCache.clear()
 });
 
-var app = koa();
+const app = koa();
 app.use(apikey);
 router.get('/datasets', datasets.getAll);
 router.get('/datasets/:id', datasets.getOne);
@@ -45,6 +45,7 @@ router.put('/tags', tag.removeTag);
 router.get('/tags', tag.getAllTags);
 router.get('/tags/count', tag.getAllCount);
 router.get('/tags/bycount', tag.getTagsByCount);
+router.get('/tags/popular', tag.getMostPopularTags);
 router.get('/tags/:id/datasets', tag.getDatasetsByTag);
 router.get('/processes/types', browse.getProcessTypes);
 router.get('/samples', browse.getSamples);
@@ -57,12 +58,12 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 if (!module.parent) {
-    var cli = cliArgs([
+    const cli = cliArgs([
         {name: 'port', type: Number, alias: 'p', description: 'Port to listen on'}
     ]);
 
-    var options = cli.parse();
-    var port = options.port || 5006;
+    const options = cli.parse();
+    const port = options.port || 5006;
     console.log('MCPUB listening on port: ' + port + ' pid: ' + process.pid);
     app.listen(port);
 }
