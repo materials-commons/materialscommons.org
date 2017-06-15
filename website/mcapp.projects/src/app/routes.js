@@ -279,7 +279,14 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('data.home', {
             url: '/home',
-            template: '<mc-data-home></mc-data-home>'
+            template: '<mc-data-home tags="$resolve.tags"></mc-data-home>',
+            resolve: {
+                tags: ['publicTagsAPI',
+                    (publicTagsAPI) => publicTagsAPI.getPopularTags().then(
+                        (tags) => tags.map(t => t.tag)
+                    )
+                ]
+            }
         })
         .state('data.home.recent', {
             url: '/recent',
