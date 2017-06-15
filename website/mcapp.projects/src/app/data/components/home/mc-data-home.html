@@ -18,10 +18,10 @@
                 <md-tab-label>Recent Datasets</md-tab-label>
             </md-tab>
         </md-tabs>
+        <div layout-margin ui-view></div>
     </div>
-    <div layout-margin flex="30">
+    <div flex="30" layout-margin>
         <h1>Popular tags</h1>
         <md-chips ng-model="$ctrl.tags" readonly="true"></md-chips>
     </div>
 </div>
-<div flex="50" flex-offset="10" ui-view></div>
