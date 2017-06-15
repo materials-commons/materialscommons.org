@@ -30,6 +30,10 @@ function* removeFileInStore(fileId) {
     return yield fs.unlinkAsync(datafilePath(fileId));
 }
 
+function* removeFileByPath(path) {
+    return yield fs.unlinkAsync(path);
+}
+
 function datafilePath(fileId) {
     let base = getFileStoreDir();
     let part = fileId.split("-")[1];
@@ -119,5 +123,6 @@ module.exports = {
     datafilePath,
     datafilePathExists,
     removeFileInStore,
+    removeFileByPath,
     mediaTypeDescriptionsFromMime,
 };

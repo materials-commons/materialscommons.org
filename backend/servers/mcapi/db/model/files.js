@@ -68,7 +68,11 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
 
     let usesid = yield determineUsesidIfNeeded(checksum);
     if (!usesid) {
+        console.log("Moved file: ", filepath);
         yield fileUtils.moveToStore(filepath, fileId);
+    } else {
+        console.log("Deleted file: ", filepath);
+        yield fileUtils.removeFileByPath(filepath)
     }
 
     let fileArgs = {
