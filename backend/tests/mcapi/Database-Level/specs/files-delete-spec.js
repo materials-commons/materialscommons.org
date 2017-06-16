@@ -41,35 +41,45 @@ before(function*() {
 
 });
 
-describe('Feature - Files: ', function () {
+describe.skip('Feature - Files: ', function () {
     describe('Delete', function () {
         it('Will delete a file that has the uses id set', function*() {
 
             let project = yield setupProject();
 
-            let file1 = yield testHelpers.createUniqueTestFile(project, user);
+            let file1 = yield testHelpers.createFileFromDemoFileSet(project, 1, user);
             assert.isOk(file1);
             assert.equal(file1.owner, userId);
 
-            let file2 = yield testHelpers.createTestFileFromGivenFile(file1, project, user);
-            assert.isOk(file2);
-            assert.equal(file2.owner, userId);
+            let fileWithUsesId = file1;
 
-            let usesid = file1.id;
-            if (file1.usesid) {
-                usesid = file1.usesid;
+            console.log("file1: ", file1.id);
+
+            if (file1.usesid == '') {
+                let file2 = yield testHelpers.createFileFromDemoFileSet(project, 1, user);
+                assert.isOk(file2);
+                assert.equal(file2.owner, userId);
+
+                assert.equal(file1.checksum, file2.checksum);
+                assert.isOk(file2.usersid);
+
+                console.log("file2: ", file1.id);
+
+                fileWithUsesId = file2;
             }
-            assert.equal(file2.usesid, usesid);
 
-            let valOrError = yield files.deleteFile(file2.id);
+            console.log("fileWithUsesId: ", fileWithUsesId.id);
+            console.log("it's usesid: ", fileWithUsesId.usesid);
+
+            let valOrError = yield files.deleteFile(fileWithUsesId.id);
             assert.isOk(valOrError);
             assert.isOk(valOrError.val);
             let fileDeleted = valOrError.val;
 
-            assert.equal(fileDeleted.id, file2.id);
+            assert.equal(fileDeleted.id, fileWithUsesId.id);
 
-            let message = `Physical file for id ${file2.id} unexpectedly missing.`;
-            assert(fileUtils.datafilePathExists(file2.id), message)
+            let message = `Physical file for id ${fileWithUsesId.id} unexpectedly missing.`;
+            assert(fileUtils.datafilePathExists(fileWithUsesId.id), message)
         });
         it('Will delete a file but keep physical file when needed', function*() {
 
