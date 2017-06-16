@@ -134,9 +134,6 @@ function* createFileFromDemoFileSet(project,demoFileIndex,user) {
         let stats = fs.statSync(filepath);
         let fileSizeInBytes = stats.size;
         let source = yield copyOne(filepath, tempDir);
-        console.log(tempDir)
-        console.log(filepath)
-        console.log(source.path)
         filepath = source.path;
         let args = {
             name: filename,
