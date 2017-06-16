@@ -307,5 +307,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             }
         });
 
-    $urlRouterProvider.otherwise('/login');
+    // $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/data/home/top');
 }
