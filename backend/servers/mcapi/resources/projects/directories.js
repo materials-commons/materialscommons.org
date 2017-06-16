@@ -46,6 +46,18 @@ function* create(next) {
     yield next;
 }
 
+function* createMultipleSubDirectories(next){
+    let args = yield parse(this);
+    let project_id = this.params.project_id;
+    let directory_id = this.params.directory_id;
+    console.log(args);
+    console.log(args.paths);
+    let results = []
+
+    this.body =
+    yield next;
+}
+
 function prepareDirArgs(projectID, dirArgs) {
     schema.createDirectory.stripNonSchemaAttrs(dirArgs);
     dirArgs.project_id = projectID;
@@ -163,6 +175,8 @@ function createResource() {
     router.get('/:directory_id', get);
     router.put('/:directory_id', update);
     router.delete('/:directory_id', remove);
+
+    router.post('/:directory_id', createMultipleSubDirectories);
 
     router.post('/:directory_id/fileupload', koaBody, uploadFileToProjectDirectory);
     return router;
