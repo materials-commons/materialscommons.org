@@ -51,7 +51,10 @@
                 <i class="fa fa-fw fa-question-circle"></i>
             </a>
         </div>
-        <div layout="row" flex layout-sm="column" layout-align="space-between">
+        <md-button ng-if="!$ctrl.isAuthenticated" ng-click="$ctrl.loginOrRegister()">
+            Login/Register
+        </md-button>
+        <div layout="row" ng-if="$ctrl.isAuthenticated" flex layout-sm="column" layout-align="space-between">
             <md-button ng-show="false">Help</md-button>
             <md-menu>
                 <md-button ng-click="$mdOpenMenu($event)">

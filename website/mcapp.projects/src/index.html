@@ -29,7 +29,7 @@
 <body layout="row" ng-controller="MCAppController as ctrl" ng-cloak>
 
 <div layout="column" flex="100">
-    <navbar ng-if="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
+    <navbar ng-ifx="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
     <mc-project-navbar ng-if="ctrl.inProject()"></mc-project-navbar>
     <md-content flex layout="column">
         <ui-view flex layout="column"></ui-view>
