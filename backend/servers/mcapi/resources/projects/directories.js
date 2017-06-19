@@ -46,6 +46,47 @@ function* create(next) {
     yield next;
 }
 
+function* createMultipleSubDirectories(next){
+    let args = yield parse(this);
+    let project_id = this.params.project_id;
+    let directory_id = this.params.directory_id;
+    let paths = args.paths;
+    let results = [];
+    let errors = null;
+    for (let i = 0; i < paths.length; i++){
+        let path = paths[i];
+        let dirArgs = {
+            project_id: project_id,
+            from_dir: directory_id,
+            path: path
+        };
+        errors = yield validateDirArgs(dirArgs);
+        if (errors != null) {
+            this.status = httpStatus.BAD_REQUEST;
+            brake;
+        }
+        let rv = yield directories.create(this.params.project_id, this.reqctx.project.name, dirArgs);
+        if (rv.error) {
+            errors = rv.error;
+            this.status = httpStatus.NOT_ACCEPTABLE;
+            brake;
+        } else {
+            results = results.concat(rv.val);
+        }
+    }
+    if (errors == null) {
+        let table = {}
+        for (let i = 0; i < results.length; i++) {
+            let path = results[i].name;
+            table[path] = results[i];
+        }
+        this.body = {val: table};
+    } else {
+        this.body = {error: errors};
+    }
+    yield next;
+}
+
 function prepareDirArgs(projectID, dirArgs) {
     schema.createDirectory.stripNonSchemaAttrs(dirArgs);
     dirArgs.project_id = projectID;
@@ -163,6 +204,8 @@ function createResource() {
     router.get('/:directory_id', get);
     router.put('/:directory_id', update);
     router.delete('/:directory_id', remove);
+
+    router.post('/:directory_id', createMultipleSubDirectories);
 
     router.post('/:directory_id/fileupload', koaBody, uploadFileToProjectDirectory);
     return router;
