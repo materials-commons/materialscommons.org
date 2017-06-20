@@ -2,7 +2,7 @@
     <md-tab>
         <md-tab-label>Setup</md-tab-label>
         <md-tab-body>
-            <div layout="column" flex="45" class="margin-top-10">
+            <div layout="column" class="margin-top-10">
                 <process-settings2 settings="$ctrl.process.setup[0].properties"
                                    attribute="$ctrl.process.setup[0].attribute"
                                    process-id="$ctrl.process.id"
@@ -15,7 +15,7 @@
     <md-tab>
         <md-tab-label>Samples ({{$ctrl.process.output_samples.length}})</md-tab-label>
         <md-tab-body>
-            <div layout="column" flex="45">
+            <div layout="column">
                 <div layout="column" layout-align="start start">
                     <h4 class="md-title">
                         Samples ({{$ctrl.process.output_samples.length}})
@@ -65,7 +65,7 @@
     <md-tab>
         <md-tab-label>Measurements</md-tab-label>
         <md-tab-body>
-            <div layout="column" flex="45" class="margin-top-10">
+            <div layout="column" class="margin-top-10">
                 <process-measurements measurements="$ctrl.process.measurements"
                                       samples="$ctrl.process.output_samples"
                                       process-id="$ctrl.process.id"

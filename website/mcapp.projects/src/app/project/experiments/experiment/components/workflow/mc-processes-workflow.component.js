@@ -17,6 +17,7 @@ class MCProcessesWorkflowComponentController {
         this.mcstate = mcstate;
         this.mcbus = mcbus;
         this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
+        this.showWorkspace = true;
     }
 
     $onInit() {

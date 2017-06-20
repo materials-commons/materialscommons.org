@@ -2,7 +2,7 @@
     <md-tab>
         <md-tab-label>Setup</md-tab-label>
         <md-tab-body>
-            <div layout="column" flex="45" class="margin-top-10">
+            <div layout="column" class="margin-top-10">
                 <process-settings2 settings="$ctrl.process.setup[0].properties"
                                    attribute="$ctrl.process.setup[0].attribute"
                                    process-id="$ctrl.process.id"
@@ -28,7 +28,7 @@
     <md-tab>
         <md-tab-label>Sections</md-tab-label>
         <md-tab-body>
-            <div layout="column" flex="45">
+            <div layout="column">
                 <div layout="row" layout-align="start center">
                     <h4 class="md-title">Sections ({{$ctrl.filterOutputSamples().length}})</h4>
                     <md-button class="md-primary" ng-disabled="!$ctrl.process.input_samples.length"
@@ -81,7 +81,7 @@
     <md-tab>
         <md-tab-label>Measurements</md-tab-label>
         <md-tab-body>
-            <div layout="column" flex="45" class="margin-top-10">
+            <div layout="column" class="margin-top-10">
                 <process-measurements measurements="$ctrl.process.measurements"
                                       samples="$ctrl.process.output_samples"
                                       process-id="$ctrl.process.id"
