@@ -1,38 +1,24 @@
 class MCWorkflowProcessTemplatesComponentController {
     /*@ngInit*/
-    constructor(templates) {
+    constructor(templates, workflowProcessTemplatesService) {
         this.templates = templates.get();
-        this.templateTypes = [
-            {
-                title: 'CREATE SAMPLES',
-                cssClass: 'mc-create-samples-color',
-                icon: 'fa-cubes',
-                margin: true,
-                templates: this.templates.filter(t => t.process_type === 'create')
-            },
-            {
-                title: 'TRANSFORMATION',
-                cssClass: 'mc-transform-color',
-                icon: 'fa-exclamation-triangle',
-                templates: this.templates.filter(t => t.process_type === 'transform')
-            },
-            {
-                title: 'MEASUREMENT',
-                cssClass: 'mc-measurement-color',
-                icon: 'fa-circle',
-                templates: this.templates.filter(t => t.process_type === 'measurement')
-            },
-            {
-                title: 'ANALYSIS',
-                cssClass: 'mc-analysis-color',
-                icon: 'fa-square',
-                templates: this.templates.filter(t => t.process_type === 'analysis')
-            }
-        ];
+        this.recentlySelectedTemplates = workflowProcessTemplatesService.getRecentTemplates();
+        this.sortOrder = workflowProcessTemplatesService.sortOrder;
+        this.sortOrderRecentlySelected = workflowProcessTemplatesService.sortOrderRecentlySelected;
+        this.workflowProcessTemplatesService = workflowProcessTemplatesService;
+    }
+
+    $onDestroy() {
+        this.workflowProcessTemplatesService.sortOrder = this.sortOrder;
+        this.workflowProcessTemplatesService.sortOrderRecentlySelected = this.sortOrderRecentlySelected;
     }
 
     chooseTemplate(t) {
         if (this.onSelected) {
+            let i = _.findIndex(this.recentlySelectedTemplates, {name: t.name});
+            if (i === -1) {
+                this.recentlySelectedTemplates.push(t);
+            }
             this.onSelected({templateId: t.name, processId: ''});
         }
     }
