@@ -1,25 +1,16 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
 
+        <md-button ng-click="$ctrl.addProcess()">
+            <i class="fa fa-fw fa-plus"></i> ADD PROCESS
+        </md-button>
+
+        <md-button ng-disabled="$ctrl.selectedProcess === null"
+                   ng-click="$ctrl.cloneProcess()" md-menu-align-target>
+            CLONE PROCESS
+        </md-button>
+
         <md-menu-bar>
-            <md-menu>
-                <md-button md-icon-button ng-click="$mdMenu.open()">
-                    <i class="fa fa-fw fa-plus"></i>add
-                </md-button>
-                <md-menu-content width="4">
-                    <md-menu-item class="md-ident">
-                        <md-button ng-click="$ctrl.addProcess()">
-                            ADD NEW PROCESS
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button ng-disabled="$ctrl.selectedProcess === null"
-                                   ng-click="$ctrl.cloneProcess()" md-menu-align-target>
-                            CLONE SELECTED PROCESS
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
             <md-menu>
                 <md-button ng-click="$mdMenu.open()">
                     <i md-menu-origin class="fa fa-fw fa-eye"></i>view
