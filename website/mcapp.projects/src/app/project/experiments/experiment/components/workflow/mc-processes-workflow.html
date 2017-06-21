@@ -16,13 +16,15 @@
             </div>
         </div>
     </div>
-    <div ng-show="$ctrl.showGraphView">
-        <md-divider></md-divider>
-        <md-button ng-click="$ctrl.showWorkspace = !$ctrl.showWorkspace" style="margin-bottom:20px">Show/Hide
-            Workspace
-        </md-button>
-        <mc-process-template ng-if="$ctrl.selectedProcess" process="$ctrl.selectedProcess"
-                             on-change="$ctrl.onChange()">
-        </mc-process-template>
+    <div ng-if="$ctrl.isBetaUser">
+        <div ng-show="$ctrl.showGraphView">
+            <md-divider></md-divider>
+            <md-button ng-click="$ctrl.showWorkspace = !$ctrl.showWorkspace" style="margin-bottom:20px">Show/Hide
+                Workspace
+            </md-button>
+            <mc-process-template ng-if="$ctrl.selectedProcess" process="$ctrl.selectedProcess"
+                                 on-change="$ctrl.onChange()">
+            </mc-process-template>
+        </div>
     </div>
 </div>
