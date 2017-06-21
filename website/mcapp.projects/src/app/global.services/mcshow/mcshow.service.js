@@ -18,7 +18,7 @@ class MCShowService {
     }
 
     processDetailsDialog(process, multiple = true) {
-        this.$mdDialog.show({
+        return this.$mdDialog.show({
                 templateUrl: 'app/project/experiments/experiment/components/workflow/mc-process-details-dialog.html',
                 controller: MCProcessDetailsDialogController,
                 controllerAs: '$ctrl',
@@ -78,7 +78,7 @@ class MCProcessDetailsDialogController {
     }
 
     done() {
-        this.$mdDialog.hide();
+        this.$mdDialog.hide(this.process);
     }
 
     deleteProcess() {

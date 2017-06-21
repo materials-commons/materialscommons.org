@@ -45,10 +45,8 @@ class MCProcessesWorkflowGraphComponentController {
             let matchesById = _.indexBy(matches, 'id');
             let matchingNodes = this.cy.nodes().filter((i, ele) => {
                 let processId = ele.data('details').id;
-                if ((processId in matchesById)) {
-                    return false;
-                }
-                return true;
+                return (!(processId in matchesById));
+
             });
             this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
             this.cy.layout({name: 'dagre', fit: true});
@@ -79,10 +77,8 @@ class MCProcessesWorkflowGraphComponentController {
             let matchesById = _.indexBy(matchingProcesses, 'id');
             let matchingNodes = this.cy.nodes().filter((i, ele) => {
                 let processId = ele.data('details').id;
-                if ((processId in matchesById)) {
-                    return false;
-                }
-                return true;
+                return (!(processId in matchesById));
+
             });
             this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
             this.cy.layout({name: 'dagre', fit: true});
@@ -244,7 +240,9 @@ class MCProcessesWorkflowGraphComponentController {
         if (target.isNode()) {
             let process = this.getProcessFromEvent(event);
             this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, process.id).then(
-                p => this.mcshow.processDetailsDialog(p, false)
+                p => this.mcshow.processDetailsDialog(p, false).then(
+                    updatedProcess => target.data('name', updatedProcess.name)
+                )
             );
         }
     }
