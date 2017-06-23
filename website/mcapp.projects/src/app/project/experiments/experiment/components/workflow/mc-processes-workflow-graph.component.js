@@ -235,8 +235,7 @@ class MCProcessesWorkflowGraphComponentController {
                     title: 'Delete Process',
                     selector: 'node',
                     onClickFunction: (event) => this._deleteProcess(event)
-                },
-
+                }
             ]
         };
         this.cy.contextMenus(options);
