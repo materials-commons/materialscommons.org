@@ -56,6 +56,11 @@ function* getAllByChecksum(checksum) {
     return files;
 }
 
+function* clearUploadedFileByLocalPath(args) {
+    let filepath = args.filepath;
+    yield fileUtils.removeFileByPath(filepath)
+}
+
 function* fetchOrCreateFileFromLocalPath(userid, args) {
     let filename = args.name;
     let checksum = args.checksum;
@@ -65,10 +70,11 @@ function* fetchOrCreateFileFromLocalPath(userid, args) {
     let parentFile = args.parent;
 
     let fileId = yield r.uuid();
-
     let usesid = yield determineUsesidIfNeeded(checksum);
     if (!usesid) {
         yield fileUtils.moveToStore(filepath, fileId);
+    } else {
+        yield fileUtils.removeFileByPath(filepath)
     }
 
     let fileArgs = {
@@ -419,6 +425,7 @@ module.exports = {
     getAllByChecksum,
     getList,
     fetchOrCreateFileFromLocalPath,
+    clearUploadedFileByLocalPath,
     create,
     update,
     pushVersion,

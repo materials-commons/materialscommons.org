@@ -32,19 +32,20 @@ module.exports.zipFilename = function(dataset) {
     return filename + ".zip";
 };
 
-module.exports.zipEntry = function(datafile) {   // sets fileName and sourcePath
+module.exports.zipEntry = function(datafile) {   // sets fileName, filePath, and sourcePath
     var base = module.exports.getBase();
     var writeName = sanitize(datafile.name);
     var readName = datafile.id;
     if (datafile.usesid) {
         readName = datafile.usesid;
     }
+    var filePath = datafile.dir[0].name + "/";
     var parts = readName.split("-");
     var part = parts[1];
     var partA = part.substring(0, 2);
     var partB = part.substring(2);
     var path = base + "/" + partA + "/" + partB + "/" + readName;
-    return {fileName: writeName, sourcePath: path, checksum: datafile.checksum};
+    return {fileName: writeName, filePath: filePath, sourcePath: path, checksum: datafile.checksum};
 };
 
 module.exports.getBase = function() {

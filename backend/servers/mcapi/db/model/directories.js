@@ -327,6 +327,8 @@ function* ingestSingleLocalFile(projectId, directoryId, userId, args) {
 
         yield addFileToDirectory(directoryId, file.id);
         yield projects.addFileToProject(projectId, file.id);
+    } else {
+        yield files.clearUploadedFileByLocalPath(args);
     }
 
     return file;
