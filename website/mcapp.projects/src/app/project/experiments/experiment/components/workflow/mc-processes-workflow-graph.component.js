@@ -222,14 +222,21 @@ class MCProcessesWorkflowGraphComponentController {
                     title: 'Clone Process',
                     selector: 'node',
                     onClickFunction: (event) => this._cloneProcess(event)
-                }
-                // ,
-                // {
-                //     id: 'delete-process',
-                //     title: 'Delete Process',
-                //     selector: 'node',
-                //     onClickFunction: (event) => this._deleteProcess(event)
-                // }
+                },
+                {
+                    id: 'add-child',
+                    title: 'Add Child',
+                    selector: 'node',
+                    hasTrailingDivider: true,
+                    onClickFunction: (event) => this._addChild(event)
+                },
+                {
+                    id: 'delete-process',
+                    title: 'Delete Process',
+                    selector: 'node',
+                    onClickFunction: (event) => this._deleteProcess(event)
+                },
+
             ]
         };
         this.cy.contextMenus(options);
@@ -252,8 +259,23 @@ class MCProcessesWorkflowGraphComponentController {
         this.workflowService.cloneProcess(this.projectId, this.experimentId, process);
     }
 
-    _deleteProcess() {
+    _deleteProcess(event) {
+        let process = this.getProcessFromEvent(event);
+        this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, process.id);
+    }
 
+    _addChild(event) {
+        let process = this.getProcessFromEvent(event);
+        this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/workflow/mc-process-templates-dialog.html',
+            controller: SelectProcessTemplateDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            multiple: true,
+            locals: {
+                parentProcess: process
+            }
+        });
     }
 
     getProcessFromEvent(event) {
@@ -262,6 +284,27 @@ class MCProcessesWorkflowGraphComponentController {
         let process = this.processes.filter((p) => p.id === processId)[0];
         process.hasChildren = (target.outgoers().length > 0);
         return process;
+    }
+
+}
+
+class SelectProcessTemplateDialogController {
+    /*@ngInject*/
+    constructor($stateParams, $mdDialog, workflowService) {
+        this.$mdDialog = $mdDialog;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.workflowService = workflowService;
+        this.keepOpen = false;
+    }
+
+    addSelectedProcessTemplate(templateId) {
+        this.workflowService.addChildProcessFromTemplate(templateId, this.projectId, this.experimentId,
+            this.parentProcess, this.keepOpen)
+    }
+
+    done() {
+        this.$mdDialog.hide();
     }
 
 }
