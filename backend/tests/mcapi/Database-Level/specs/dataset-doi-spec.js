@@ -72,8 +72,8 @@ before(function*() {
         description: description
     };
     project = yield projects.update(project.id, updateData);
-    console.log("Test project name: " + project.name);
-    console.log("Test project id: " + project.id);
+    // console.log("Test project name: " + project.name);
+    // console.log("Test project id: " + project.id);
 
     processList = results.val.processList;
     let datasetList = yield testHelpers.createDatasetList(experiment, processList, user.id);
