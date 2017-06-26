@@ -7,7 +7,7 @@ This release focused on improvments to the workflow editor.
 - :star: **New Feature:** Separated clone and add into separate buttons rather than in a drop down item to reduce clicks.
 - :star: **New Feature:** Added right click to delete a workflow node.
 - :star: **New Feature:** Added right click to add a child node and automatically bring over samples.
-- :boot: **Fixed:** Other miscellaneous bug fixes.
+- :boom: **Fixed:** Other miscellaneous bug fixes.
 
 ### [Materials Commons Data](https://materialscommons.org/mcpub)
 No changes. We are working on directly integrating the two materials commons sites together.
