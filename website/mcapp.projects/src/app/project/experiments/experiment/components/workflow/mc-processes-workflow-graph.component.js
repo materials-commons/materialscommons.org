@@ -204,7 +204,18 @@ class MCProcessesWorkflowGraphComponentController {
         //});
         this.cy.layout({name: 'dagre', fit: true});
         this.cy.panzoom();
-        this.ctxMenu = this.setupContextMenus()
+        this.ctxMenu = this.setupContextMenus();
+        let edgeConfig = {
+            toggleOffOnLeave: true,
+            handleNodes: 'node',
+            handleSize: 10,
+            edgeType: () => 'flat',
+            complete: (source, target) => {
+                console.log('edgehandle complete');
+            }
+        };
+
+        this.cy.edgehandles(edgeConfig);
     }
 
     setupContextMenus() {
