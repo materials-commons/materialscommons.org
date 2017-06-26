@@ -1,7 +1,7 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
     constructor(experimentsAPI, $stateParams, toast, experimentProcessesService, datasetsAPI,
-                workflowService, mcstate, mcbus) {
+                workflowService, mcstate, mcbus, User) {
         this.myName = 'MCProcessesWorkflow';
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
@@ -17,6 +17,8 @@ class MCProcessesWorkflowComponentController {
         this.mcstate = mcstate;
         this.mcbus = mcbus;
         this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
+        this.showWorkspace = true;
+        this.isBetaUser = User.isBetaUser();
     }
 
     $onInit() {
@@ -25,11 +27,7 @@ class MCProcessesWorkflowComponentController {
         this.mcbus.subscribe('WORKFLOW$CHANGE', this.myName, onChangeCB);
 
         this.mcbus.subscribe('WORKFLOW$VIEW', this.myName, (whichView) => {
-            if (whichView === 'graph') {
-                this.showGraphView = true;
-            } else {
-                this.showGraphView = false;
-            }
+            this.showGraphView = whichView === 'graph';
         });
     }
 

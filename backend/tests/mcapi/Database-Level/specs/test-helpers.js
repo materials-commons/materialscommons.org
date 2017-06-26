@@ -128,19 +128,19 @@ function* createFileFromDemoFileSet(project,demoFileIndex,user) {
     let expectedChecksum = checksumFilenameAndMimetype[0];
     let filename = checksumFilenameAndMimetype[1];
     let mimetype = checksumFilenameAndMimetype[2];
-    let path = demoProjectConf.datapathPrefix + `${demoProjectConf.datapath}/${filename}`;
-    let checksum = yield md5File(path);
+    let filepath = demoProjectConf.datapathPrefix + `${demoProjectConf.datapath}/${filename}`;
+    let checksum = yield md5File(filepath);
     if (expectedChecksum == checksum) {
-        let stats = fs.statSync(path);
+        let stats = fs.statSync(filepath);
         let fileSizeInBytes = stats.size;
-        let source = yield copyOne(path, tempDir);
-        path = source.path;
+        let source = yield copyOne(filepath, tempDir);
+        filepath = source.path;
         let args = {
             name: filename,
             checksum: checksum,
             mediatype: fileUtils.mediaTypeDescriptionsFromMime(mimetype),
             filesize: fileSizeInBytes,
-            filepath: path
+            filepath: filepath
         };
         let file = yield directories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
         return file;
@@ -261,45 +261,6 @@ let setUpAdditionalExperimentTaskData = function* (experimentId,userId) {
     return yield r.table('experimenttasks').get(taskId);
 };
 
-let createUniqueTestFile = function* (project, user) {
-    let top_directory = yield directories.get(project.id, 'top');
-    let tempDir = os.tmpdir();
-    let filename = random_file_name(project.name);
-    let mimetype = "text/plain";
-    let filePath = path.join(tempDir,'generated-test-files/',filename);
-    let uniqueString = `Content of test file ${filename} at ${filePath}`;
-    let base = path.dirname(filePath);
-    yield mkdirpAsync(base);
-    yield fs.writeFileAsync(filePath,uniqueString);
-    let checksum = yield md5File(filePath);
-    let stats = fs.statSync(filePath);
-    let fileSizeInBytes = stats.size;
-    let args = {
-         name: filename,
-         checksum: checksum,
-         mediatype: fileUtils.mediaTypeDescriptionsFromMime(mimetype),
-         filesize: fileSizeInBytes,
-         filepath: filePath
-    };
-    let file = yield directories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
-    return file;
-};
-
-let createTestFileFromGivenFile = function* (file, project, user) {
-    let top_directory = yield directories.get(project.id, 'top');
-    let filename = random_file_name(project.name);
-    let filePath = fileUtils.datafilePath(file.id);
-    let args = {
-        name: filename,
-        checksum: file.checksum,
-        mediatype: file.mediatype,
-        filesize: file.fileSizeInBytes,
-        filepath: filePath
-    };
-    let anotherFile = yield directories.ingestSingleLocalFile(project.id, top_directory.id, user.id, args);
-    return anotherFile;
-};
-
 module.exports = {
     createDemoTestProject,
     createProject,
@@ -311,6 +272,4 @@ module.exports = {
     addSamplesToProcess,
     setUpFakeExperimentNoteData,
     setUpAdditionalExperimentTaskData,
-    createUniqueTestFile,
-    createTestFileFromGivenFile
 };

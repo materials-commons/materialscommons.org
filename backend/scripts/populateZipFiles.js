@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 'use strict';
+const path = require('path');
 
 const program = require('commander');
 const Promise = require("bluebird");
 const fsa = Promise.promisifyAll(require("fs"));
-const archiver = require('archiver');
-const path = require('path');
+const achiver = require('archiver');
 
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const zipFileUtils = require('../servers/lib/zipFileUtils.js');
 
-//const defaultPort =  28015; // true default
-const defaultPort = 30815; // localhost version
+const defaultPort =  28015; // true default
+// const defaultPort = 30815; // localhost version
 
 let parameters = getControlParameters();
 
@@ -114,17 +114,30 @@ function* publishDatasetZipFile(r, datasetId) {
         yield mkdirpAsync(zipDirPath);
 
         let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
-        let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
-
+        let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds))
+            .merge((df) => {
+                return {
+                    dir: r.table('datadir2datafile').getAll(df('id'), {index: 'datafile_id'})
+                        .eqJoin('datadir_id', r.table('datadirs')).zip().coerceTo('array')
+                }
+            });
         let nameSourceList = [];
         var seenThisOne = {};
 
         for (var i = 0; i < datafiles.length; i++) {
             let df = datafiles[i];
 
-            let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, sourcePath
+            let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, filePath, sourcePath
+            let filePath = zipEntry.filePath;
             let path = zipEntry.sourcePath;
             let name = zipEntry.fileName;
+
+            console.log('-------------');
+            console.log('name = ', name);
+            console.log('filePath = ', filePath);
+            console.log('sourcePath = ', path);
+            console.log('name = ',name);
+
             let checksum = zipEntry.checksum;
             name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
             let stream = fsa.createReadStream(path, {
@@ -134,7 +147,7 @@ function* publishDatasetZipFile(r, datasetId) {
                 mode: 0o666,
                 autoClose: true
             });
-            nameSourceList.push({name: name, source: stream});
+            nameSourceList.push({name: name, path: filePath, source: stream});
         }
 
         console.log("For id = " + datasetId + ", there are " + nameSourceList.length + " files");
@@ -142,7 +155,7 @@ function* publishDatasetZipFile(r, datasetId) {
         var output = fsa.createWriteStream(fillPathAndFilename);
 
         let retP = new Promise(function (resolve, reject) {
-            var archive = archiver('zip');
+            var archive = achiver('zip');
 
             output.on('close', function () {
                 let zipfileSize = archive.pointer();
@@ -167,7 +180,7 @@ function* publishDatasetZipFile(r, datasetId) {
             archive.pipe(output);
 
             nameSourceList.forEach(ns => {
-                let pathAndName = pathForFileInZip + ns.name;
+                let pathAndName = pathForFileInZip + ns.path + ns.name;
                 archive.append(ns.source, {name: pathAndName});
             });
 

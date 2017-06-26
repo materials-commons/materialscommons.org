@@ -10,14 +10,14 @@
 
     <label>Notes</label>
     <div md-whiteframe layout-margin>
-            <div ckeditor="editorOptions"
-                 ng-model="$ctrl.process.description"
-                 ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                 ng-change="$ctrl.updateProcessDescription()"
-                 contenteditable="true">
-                {{$ctrl.process.description}}
-            </div>
+        <div ckeditor="editorOptions"
+             ng-model="$ctrl.process.description"
+             ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+             ng-change="$ctrl.updateProcessDescription()"
+             contenteditable="true">
+            {{$ctrl.process.description}}
         </div>
+    </div>
 
     <mc-process-template-create-samples ng-if="$ctrl.process.category === 'create_sample'"
                                         process="$ctrl.process"
