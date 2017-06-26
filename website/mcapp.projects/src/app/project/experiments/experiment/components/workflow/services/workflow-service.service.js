@@ -27,8 +27,49 @@ class WorkflowService {
                         () => this.sendProcessChangeEvent(projectId, experimentId)
                     );
                 },
-                () => this.toast.error('Unable to add samples')
+                () => this.toast.error('Unable to create process from template')
             );
+    }
+
+    addChildProcessFromTemplate(templateId, projectId, experimentId, parentProcess, multiple = true) {
+        this.experimentsAPI.createProcessFromTemplate(projectId, experimentId, `global_${templateId}`)
+            .then(
+                (process) => {
+                    let p = this.templates.loadTemplateFromProcess(process.template_name, process);
+
+                    let samplesToAdd = parentProcess.output_samples.map(s => ({
+                        id: s.id,
+                        property_set_id: s.property_set_id,
+                        command: 'add'
+                    }));
+
+                    let samplesArgs = {
+                        template_id: process.template_id,
+                        samples: samplesToAdd,
+                        process_id: process.id
+                    };
+
+                    this.experimentsAPI.updateProcess(projectId, experimentId, process.id, samplesArgs).then(
+                        (pUpdated) => {
+                            p.input_samples = pUpdated.input_samples;
+                            this.$mdDialog.show({
+                                templateUrl: 'app/project/experiments/experiment/components/workflow/new-process-dialog.html',
+                                controllerAs: '$ctrl',
+                                controller: NewProcessDialogController,
+                                bindToController: true,
+                                multiple: multiple,
+                                locals: {
+                                    process: p
+                                }
+                            }).then(
+                                () => this.sendProcessChangeEvent(projectId, experimentId)
+                            )
+                        }
+                    )
+
+                },
+                () => this.toast.error('Unable to create child process')
+            )
     }
 
     cloneProcess(projectId, experimentId, process) {

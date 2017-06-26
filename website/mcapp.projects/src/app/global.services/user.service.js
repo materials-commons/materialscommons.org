@@ -41,6 +41,10 @@ function UserService($window, $log, Restangular) {
             return self.mcuser;
         },
 
+        isBetaUser: function () {
+            return self.mcuser ? self.mcuser.beta_user : false
+        },
+
         favorites: function(projectID) {
             if (!(projectID in self.mcuser.favorites)) {
                 self.mcuser.favorites[projectID] = {

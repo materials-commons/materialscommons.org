@@ -6,6 +6,7 @@ class MCProjectHomeRemindersComponentController {
 
     removeReminder(index) {
         this.project.reminders.splice(index, 1);
+        this.projectsAPI.updateProject(this.project.id, {reminders: this.project.reminders});
     }
 
     addReminder() {

@@ -1,16 +1,30 @@
 <div>
-    <div layout="row" style="margin-right:15px; padding-top: 10px">
-        <div flex="" style="min-height:75vh">
-            <mc-workflow-toolbar></mc-workflow-toolbar>
-            <mc-processes-workflow-graph ng-show="$ctrl.showGraphView"
-                                         processes="$ctrl.processes"
-                                         highlight-processes="$ctrl.highlightProcesses">
-            </mc-processes-workflow-graph>
-            <mc-processes-workflow-outline ng-show="!$ctrl.showGraphView"
-                                           highlight-processes="$ctrl.highlightProcesses"
-                                           dataset="$ctrl.dataset"
-                                           processes="$ctrl.processes">
-            </mc-processes-workflow-outline>
+    <div ng-show="$ctrl.showWorkspace">
+        <div layout="row" style="margin-right:15px; padding-top: 10px">
+            <div flex="" style="min-height:75vh">
+
+                <mc-workflow-toolbar></mc-workflow-toolbar>
+                <mc-processes-workflow-graph ng-show="$ctrl.showGraphView"
+                                             processes="$ctrl.processes"
+                                             highlight-processes="$ctrl.highlightProcesses">
+                </mc-processes-workflow-graph>
+                <mc-processes-workflow-outline ng-show="!$ctrl.showGraphView"
+                                               highlight-processes="$ctrl.highlightProcesses"
+                                               dataset="$ctrl.dataset"
+                                               processes="$ctrl.processes">
+                </mc-processes-workflow-outline>
+            </div>
+        </div>
+    </div>
+    <div ng-if="$ctrl.isBetaUser">
+        <div ng-show="$ctrl.showGraphView">
+            <md-divider></md-divider>
+            <md-button ng-click="$ctrl.showWorkspace = !$ctrl.showWorkspace" style="margin-bottom:20px">Show/Hide
+                Workspace
+            </md-button>
+            <mc-process-template ng-if="$ctrl.selectedProcess" process="$ctrl.selectedProcess"
+                                 on-change="$ctrl.onChange()">
+            </mc-process-template>
         </div>
     </div>
 </div>

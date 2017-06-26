@@ -1,5 +1,23 @@
 # Release Notes
 
+## 28 May 2017
+### [Materials Commons Projects](https://materialscommons.org/mcapp)
+This release focused on improvments to the workflow editor.
+- :star: **New Feature:** Reworked the process for picking templates to reduce clicks. Templates that are used, float to the top.
+- :star: **New Feature:** Separated clone and add into separate buttons rather than in a drop down item to reduce clicks.
+- :star: **New Feature:** Added right click to delete a workflow node.
+- :star: **New Feature:** Added right click to add a child node and automatically bring over samples.
+- :boot: **Fixed:** Other miscellaneous bug fixes.
+
+### [Materials Commons Data](https://materialscommons.org/mcpub)
+No changes. We are working on directly integrating the two materials commons sites together.
+
+### [Materials Commons Python API](https://github.com/materials-commons/mcapi)
+This release focused on documentation and upload speed. We are also exploring using the API to create scripts to automate workflow creation.
+- :star: **New Feature:** [Help pages](https://materials-commons.github.io/python-api/) available on API.
+- :star: **New Feature:** Parallel file upload introduced to improve multi-file upload speeds.
+- :star: **Improvement:** Other miscellaneous fixes and small features.
+
 ## 31 May 2017
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 This release focused on improvements to the publishing process. Support for DOIs was added to the system.
