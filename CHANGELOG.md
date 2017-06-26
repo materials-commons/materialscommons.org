@@ -1,6 +1,6 @@
 # Release Notes
 
-## 28 May 2017
+## 26 June 2017
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 This release focused on improvments to the workflow editor.
 - :star: **New Feature:** Reworked the process for picking templates to reduce clicks. Templates that are used, float to the top.
