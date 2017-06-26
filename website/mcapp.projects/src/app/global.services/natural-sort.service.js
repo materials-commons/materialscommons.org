@@ -4,7 +4,7 @@ function naturalSortService() {
             return "00000000000000000000".slice(value.length);
         },        // Converts a value to a string.  Null and undefined are converted to ''
         toString = function(value) {
-            if (value === null || value === undefined) {
+            if (value === null || angular.isUndefined(value)) {
                 return '';
             }
             return '' + value;
@@ -30,8 +30,8 @@ function naturalSortService() {
     return {
         naturalValue: naturalValue,
         naturalSort: function(a, b) {
-            a = natValue(a);
-            b = natValue(b);
+            a = naturalValue(a);
+            b = naturalValue(b);
             return (a < b) ? -1 : ((a > b) ? 1 : 0);
         },
         naturalOnField: function(field) {
