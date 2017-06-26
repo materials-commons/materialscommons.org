@@ -120,14 +120,26 @@ class MCProcessesWorkflowGraphComponentController {
                         'text-halign': 'center',
                         'background-color': 'data(color)',
                         color: 'black',
-                        'text-outline-color': 'data(color)',
+                        //'text-outline-color': 'data(color)',
+                        'text-outline-color': (ele) => {
+                            let c = ele.data('color');
+                            return c ? c : '#fff';
+                        },
                         'font-size': '18px',
                         'font-weight': 'bold',
                         'text-outline-width': '5px',
                         'text-outline-opacity': 1,
                         'border-width': '4px',
-                        'border-color': 'data(highlight)',
-                        shape: 'data(shape)',
+                        //'border-color': 'data(highlight)',
+                        'border-color': (ele) => {
+                            let highlight = ele.data('highlight');
+                            return highlight ? highlight : '#fff';
+                        },
+                        //shape: 'data(shape)',
+                        shape: (ele) => {
+                            let shape = ele.data('shape');
+                            return shape ? shape : 'triangle';
+                        },
                         width: '80px',
                         height: '80px'
                     }
@@ -212,6 +224,11 @@ class MCProcessesWorkflowGraphComponentController {
             edgeType: () => 'flat',
             complete: (source, target) => {
                 console.log('edgehandle complete');
+            },
+            start: (source) => {
+                console.log('start', source);
+                // let target = event.cyTarget;
+                // console.log('data(id)', target.data('id'));
             }
         };
 
