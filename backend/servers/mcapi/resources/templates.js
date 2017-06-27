@@ -59,8 +59,8 @@ function createResource() {
     const router = new Router();
 
     router.get('/', getProcessTemplates);
-    router.post('/', createProcessTemplate);
-    router.put('/:template_id', ra.validateTemplateExists, updateProcessTemplate);
+    router.post('/',createProcessTemplate);
+    router.put('/:template_id', ra.validateTemplateExists, ra.validateTemplateAccess,  updateProcessTemplate);
 
     return router;
 }

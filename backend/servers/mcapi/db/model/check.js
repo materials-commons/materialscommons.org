@@ -52,6 +52,16 @@ function* templateExists(templateId) {
     return matches.length !== 0;
 }
 
+function* templateIsOwnedBy(templateId, userId) {
+    let templateOwner = yield r.table('templates').get(templateId).getField('owner');
+    return templateOwner === userId;
+}
+
+function* isTemplateAdmin(userId) {
+    let user = yield t.table('users').get(userId);
+    return (user && (user.isTemplateAdmin))
+}
+
 function* isTemplateForTask(templateId, taskId) {
     let task = yield r.table('experimenttasks').get(taskId);
     return task.template_id === templateId;
@@ -172,6 +182,8 @@ module.exports = {
     noteInExperiment,
     taskIsUsingProcess,
     templateExists,
+    templateIsOwnedBy,
+    isTemplateAdmin,
     isTemplateForTask,
     isTemplateForProcess,
     allSamplesInExperiment,
