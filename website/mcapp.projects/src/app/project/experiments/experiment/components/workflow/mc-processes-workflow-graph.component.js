@@ -221,18 +221,69 @@ class MCProcessesWorkflowGraphComponentController {
             toggleOffOnLeave: true,
             handleNodes: 'node',
             handleSize: 10,
-            edgeType: () => 'flat',
-            complete: (source, target) => {
-                console.log('edgehandle complete');
+            edgeType: (source, target) => {
+                let sourceProcess = source.data('details');
+                let targetProcess = target.data('details');
+                if (sourceProcess.output_samples.length === 0) {
+                    // source process has not output samples
+                    return null;
+                } else if (targetProcess.template_name === 'Create Samples') {
+                    // Create samples cannot be a target
+                    return null;
+                } else if (this.targetHasAllSourceSamples(targetProcess.input_samples, sourceProcess.output_samples)) {
+                    // Target already has all the source samples
+                    return null;
+                }
+                return 'flat';
             },
-            start: (source) => {
-                console.log('start', source);
-                // let target = event.cyTarget;
-                // console.log('data(id)', target.data('id'));
+            complete: (source, target, addedEntities) => {
+                let sourceProcess = source.data('details');
+                let targetProcess = target.data('details');
+                if (sourceProcess.output_samples.length === 1) {
+                    this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, sourceProcess.output_samples).then(
+                        (process) => target.data('details', process)
+                    );
+                } else {
+                    this.workflowService.chooseSamplesFromSource(sourceProcess).then(
+                        (samples) => {
+                            if (!samples.length) {
+                                // No samples brought over, delete edge
+                                addedEntities[0].remove();
+                            } else {
+                                this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, samples).then(
+                                    (process) => target.data('details', process)
+                                );
+                            }
+                        }
+                    );
+                }
+                //console.log('addedEntities', addedEntities, addedEntities[0].isEdge());
             }
         };
 
         this.cy.edgehandles(edgeConfig);
+    }
+
+    targetHasAllSourceSamples(targetSamples, sourceSamples) {
+        let sourceSamplesSeen = {};
+        sourceSamples.forEach((s) => {
+            sourceSamplesSeen[`${s.sample_id}/${s.property_set_id}`] = false;
+        });
+
+        targetSamples.forEach(s => {
+            let key = `${s.sample_id}/${s.property_set_id}`;
+            if (key in sourceSamplesSeen) {
+                sourceSamplesSeen[key] = true;
+            }
+        });
+        let hasAllSamples = true;
+        _.forOwn(sourceSamplesSeen, (value) => {
+            if (!value) {
+                hasAllSamples = false;
+            }
+        });
+
+        return hasAllSamples;
     }
 
     setupContextMenus() {
