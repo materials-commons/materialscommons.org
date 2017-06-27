@@ -241,7 +241,10 @@ class MCProcessesWorkflowGraphComponentController {
                 let targetProcess = target.data('details');
                 if (sourceProcess.output_samples.length === 1) {
                     this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, sourceProcess.output_samples).then(
-                        (process) => target.data('details', process)
+                        (process) => {
+                            this.replaceProcess(process);
+                            target.data('details', process);
+                        }
                     );
                 } else {
                     this.workflowService.chooseSamplesFromSource(sourceProcess).then(
@@ -251,7 +254,10 @@ class MCProcessesWorkflowGraphComponentController {
                                 addedEntities[0].remove();
                             } else {
                                 this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, samples).then(
-                                    (process) => target.data('details', process)
+                                    (process) => {
+                                        this.replaceProcess(process);
+                                        target.data('details', process);
+                                    }
                                 );
                             }
                         }
@@ -262,6 +268,14 @@ class MCProcessesWorkflowGraphComponentController {
         };
 
         this.cy.edgehandles(edgeConfig);
+    }
+
+    replaceProcess(process) {
+        let i = _.findIndex(this.processes, p => p.id === process.id);
+        if (i !== -1) {
+            this.processes.splice(i, 1);
+            this.processes.push(process);
+        }
     }
 
     targetHasAllSourceSamples(targetSamples, sourceSamples) {
