@@ -1,13 +1,13 @@
 # Release Notes
 
-## 28 May 2017
+## 26 June 2017
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 This release focused on improvments to the workflow editor.
 - :star: **New Feature:** Reworked the process for picking templates to reduce clicks. Templates that are used, float to the top.
 - :star: **New Feature:** Separated clone and add into separate buttons rather than in a drop down item to reduce clicks.
 - :star: **New Feature:** Added right click to delete a workflow node.
 - :star: **New Feature:** Added right click to add a child node and automatically bring over samples.
-- :boot: **Fixed:** Other miscellaneous bug fixes.
+- :boom: **Fixed:** Other miscellaneous bug fixes.
 
 ### [Materials Commons Data](https://materialscommons.org/mcpub)
 No changes. We are working on directly integrating the two materials commons sites together.
