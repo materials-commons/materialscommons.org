@@ -1,6 +1,63 @@
 class ProcessGraphService {
     /*@ngInject*/
-    constructor() {}
+    constructor() {
+    }
+
+    createProcessNode(process) {
+        return {
+            data: {
+                id: process.id,
+                name: process.name,
+                details: process,
+                color: ProcessGraphService.processColor(process),
+                shape: ProcessGraphService.processShape(process),
+                highlight: ProcessGraphService.highlightColor(process, [])
+            }
+        };
+    }
+
+    createEdge(sourceProcessId, targetProcessId, edgeName) {
+        return {
+            data: {
+                id: `${targetProcessId}_${sourceProcessId}`,
+                source: sourceProcessId,
+                target: targetProcessId,
+                name: edgeName
+            }
+        };
+    }
+
+    createConnectingEdges(targetProcess, processes) {
+        let sample2InputProcesses = {},
+            edges = [];
+        targetProcess.input_samples.forEach(s => {
+            let id = `${s.id}/${s.property_set_id}`;
+            if (!(id in sample2InputProcesses)) {
+                sample2InputProcesses[id] = [];
+            }
+            sample2InputProcesses[id].push(targetProcess);
+        });
+        processes.filter(p => p.does_transform).forEach(p => {
+            p.output_samples.forEach(s => {
+                let id = `${s.id}/${s.property_set_id}`;
+                let processes = sample2InputProcesses[id];
+                if (processes && processes.length) {
+                    processes.forEach(proc => {
+                        edges.push({
+                            data: {
+                                id: `${proc.id}_${p.id}`,
+                                source: p.id,
+                                target: proc.id,
+                                name: s.name
+                            }
+                        });
+                    });
+                }
+            });
+        });
+
+        return edges;
+    }
 
     build(processes, highlight) {
         let sample2InputProcesses = {};
