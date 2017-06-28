@@ -152,6 +152,14 @@ def add_template_admin_flag_to_users(conn):
     print "Done."
 
 
+def add_template_owner(conn):
+    print "Adding 'template-admin' as owner for all templates..."
+    r.table('templates').update({'owner': 'template-admin'}).run(conn)
+    r.table('templates').index_create('owner').run(conn)
+    r.table('templates').index_wait().run(conn)
+    print "Done."
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
@@ -166,6 +174,7 @@ def main():
     # add_demo_installed_attribute(conn)
     # add_beta_flag_to_users(conn)
     add_template_admin_flag_to_users(conn)
+    add_template_owner(conn)
 
 if __name__ == "__main__":
     main()

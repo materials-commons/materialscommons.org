@@ -53,12 +53,14 @@ function* templateExists(templateId) {
 }
 
 function* templateIsOwnedBy(templateId, userId) {
+    console.log('in templateIsOwnedBy', templateId, userId);
     let templateOwner = yield r.table('templates').get(templateId).getField('owner');
+    console.log('in templateIsOwnedBy', templateOwner);
     return templateOwner === userId;
 }
 
 function* isTemplateAdmin(userId) {
-    let user = yield t.table('users').get(userId);
+    let user = yield r.table('users').get(userId);
     return (user && (user.isTemplateAdmin))
 }
 
