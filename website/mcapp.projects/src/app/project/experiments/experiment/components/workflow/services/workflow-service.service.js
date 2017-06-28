@@ -40,7 +40,10 @@ class WorkflowService {
                             process: p
                         }
                     }).then(
-                        () => this.sendProcessChangeEvent(projectId, experimentId)
+                        () => {
+                            this.mcbus.send('PROCESS$ADD', process);
+                            //this.sendProcessChangeEvent(projectId, experimentId);
+                        }
                     );
                 },
                 () => this.toast.error('Unable to create process from template')
