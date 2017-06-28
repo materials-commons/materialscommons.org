@@ -1,9 +1,10 @@
 class MCTemplateBuilderComponentController {
     /*@ngInject*/
-    constructor(templatesAPI, toast, $mdDialog) {
+    constructor(templatesAPI, toast, $mdDialog, User) {
         this.templatesAPI = templatesAPI;
         this.toast = toast;
         this.$mdDialog = $mdDialog;
+        this.user = User;
 
         this.sortOrder = 'name';
         this.whichElements = 'measurements';
@@ -13,7 +14,14 @@ class MCTemplateBuilderComponentController {
 
     $onInit() {
         this.templatesAPI.getAllTemplates().then(
-            (templates) => this.templates = templates
+            (templates) => {
+                console.log(this.user.attr().id)
+                for (let i = 0; i < templates.length; i++) {
+                    let t = templates[i];
+                    t.can_edit = this.user.isTemplateAdmin() || (this.user.attr().id == t.owner);
+                }
+                this.templates = templates
+            }
         );
     }
 
