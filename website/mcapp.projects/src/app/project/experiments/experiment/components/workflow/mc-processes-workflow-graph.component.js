@@ -226,12 +226,15 @@ class MCProcessesWorkflowGraphComponentController {
                 let targetProcess = target.data('details');
                 if (sourceProcess.output_samples.length === 0) {
                     // source process has not output samples
+                    this.showAlert('No output samples to connect to process.');
                     return null;
                 } else if (targetProcess.template_name === 'Create Samples') {
                     // Create samples cannot be a target
+                    this.showAlert('Create Samples process type cannot be a target.');
                     return null;
                 } else if (this.targetHasAllSourceSamples(targetProcess.input_samples, sourceProcess.output_samples)) {
                     // Target already has all the source samples
+                    this.showAlert('Processes are already connected.');
                     return null;
                 }
                 return 'flat';
@@ -276,6 +279,13 @@ class MCProcessesWorkflowGraphComponentController {
             this.processes.splice(i, 1);
             this.processes.push(process);
         }
+    }
+
+    showAlert(message) {
+        this.$mdDialog.show(this.$mdDialog.alert()
+            .title('Invalid Target Process')
+            .textContent(message)
+            .ok('dismiss'));
     }
 
     targetHasAllSourceSamples(targetSamples, sourceSamples) {
