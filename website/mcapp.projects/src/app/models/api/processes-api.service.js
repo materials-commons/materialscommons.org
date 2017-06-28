@@ -7,6 +7,10 @@ class ProcessesAPIService {
         return this.projectsAPIRoute(projectId).one('processes', processId).customPUT(updateArgs);
     }
 
+    getProcess(projectId, processId) {
+        return this.projectsAPIRoute(projectId).one('processes', processId).get();
+    }
+
     getDeleteProcessPreConditions(projectId,processId) {
         return this.projectsAPIRoute(projectId).one('processes', processId).get();
     }

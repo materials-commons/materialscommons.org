@@ -29,9 +29,14 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
         this.mcbus.subscribe('PROCESS$ADD', this.myName, (process) => {
-            this.processes.push(process);
             let node = this.processGraph.createProcessNode(process);
             this.cy.add(node);
+            let edges = this.processGraph.createConnectingEdges(process, this.processes);
+            console.log('edges', edges);
+            if (edges.length) {
+                this.cy.add(edges);
+            }
+            this.processes.push(process);
         });
         this.mcbus.subscribe('PROCESS$DELETE', this.myName, (process) => console.log('PROCESS$DELETE', process));
         this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));

@@ -40,8 +40,8 @@ class WorkflowService {
                             process: p
                         }
                     }).then(
-                        () => {
-                            this.mcbus.send('PROCESS$ADD', process);
+                        (proc) => {
+                            this.mcbus.send('PROCESS$ADD', proc);
                             //this.sendProcessChangeEvent(projectId, experimentId);
                         }
                     );
@@ -205,7 +205,9 @@ class NewProcessDialogController {
     }
 
     done() {
-        this.$mdDialog.hide();
+        this.processesAPI.getProcess(this.projectId, this.process.id).then(
+            (p) => this.$mdDialog.hide(p)
+        );
     }
 
     cancel() {
