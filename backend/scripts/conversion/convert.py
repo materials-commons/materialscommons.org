@@ -155,9 +155,15 @@ def add_template_admin_flag_to_users(conn):
 def add_template_owner(conn):
     print "Adding 'template-admin' as owner for all templates..."
     r.table('templates').update({'owner': 'template-admin'}).run(conn)
-    r.table('templates').index_create('owner').run(conn)
-    r.table('templates').index_wait().run(conn)
     print "Done."
+
+def template_owner_as_index(conn):
+    print "Setting 'owner' as secondary index for templates..."
+    index_list = r.table('templates').index_list().run(conn)
+    if not 'owner' in index_list:
+        r.table('templates').index_create('owner').run(conn)
+        r.table('templates').index_wait().run(conn)
+    print 'Done.'
 
 
 def main():
@@ -175,6 +181,7 @@ def main():
     # add_beta_flag_to_users(conn)
     add_template_admin_flag_to_users(conn)
     add_template_owner(conn)
+    template_owner_as_index(conn)
 
 if __name__ == "__main__":
     main()
