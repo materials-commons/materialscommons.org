@@ -59,7 +59,7 @@ function* templateIsOwnedBy(templateId, userId) {
 
 function* isTemplateAdmin(userId) {
     let user = yield r.table('users').get(userId);
-    return (user && (user.isTemplateAdmin))
+    return (user && (user.is_template_admin))
 }
 
 function* isTemplateForTask(templateId, taskId) {

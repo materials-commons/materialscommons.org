@@ -148,7 +148,7 @@ def add_beta_flag_to_users(conn):
 
 def add_template_admin_flag_to_users(conn):
     print "Adding template admin flag to all users..."
-    r.table('users').update({'isTemplateAdmin' : False}).run(conn)
+    r.table('users').update({'is_template_admin' : False}).run(conn)
     print "Done."
 
 
