@@ -156,34 +156,26 @@ function* validateTaskInExperiment(next) {
 }
 
 function* validateTemplateExists(next) {
-    console.log('in validateTemplateExists');
     let templateExists = yield check.templateExists(this.params.template_id);
-    console.log(templateExists);
     if (!templateExists) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such template ${this.params.template_id}`};
         console.log(this.body);
         return this.status;
     }
-    console.log('validateTemplateExists: ok');
     yield next;
 }
 
 function* validateTemplateAccess(next) {
-    console.log('in validateTemplateAccess');
     let isOwner = yield check.templateIsOwnedBy(this.params.template_id, this.reqctx.user.id);
-    console.log('isOwner', isOwner);
     if (!isOwner) {
         let isAdmin = yield check.isTemplateAdmin(this.reqctx.user.id);
-        console.log('isAdmin', isAdmin);
         if (! isAdmin) {
             this.status = httpStatus.UNAUTHORIZED;
             this.body = {error: `user does not have access to this template, ${this.params.template_id}`};
-            console.log(this.body);
             return this.status
         }
     }
-    console.log('validateTemplateAccess ok');
     yield next;
 }
 

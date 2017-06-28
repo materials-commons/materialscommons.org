@@ -53,9 +53,7 @@ function* templateExists(templateId) {
 }
 
 function* templateIsOwnedBy(templateId, userId) {
-    console.log('in templateIsOwnedBy', templateId, userId);
     let templateOwner = yield r.table('templates').get(templateId).getField('owner');
-    console.log('in templateIsOwnedBy', templateOwner);
     return templateOwner === userId;
 }
 
