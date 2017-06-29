@@ -9,6 +9,22 @@ class WorkflowService {
         this.$mdDialog = $mdDialog;
     }
 
+    chooseSamplesFromSource(source) {
+        console.log('chooseSamplesFromSource', source);
+        return this.$mdDialog.show({
+            templateUrl: 'app/project/experiments/experiment/components/workflow/services/choose-source-samples-dialog.html',
+            controllerAs: '$ctrl',
+            controller: ChooseSamplesFromSourceDialogController,
+            bindToController: true,
+            multiple: true,
+            locals: {
+                source: source
+            }
+        }).then(
+            (samples) => samples
+        );
+    }
+
     addProcessFromTemplate(templateId, projectId, experimentId, multiple = true) {
         this.experimentsAPI.createProcessFromTemplate(projectId, experimentId, `global_${templateId}`)
             .then(
@@ -29,6 +45,24 @@ class WorkflowService {
                 },
                 () => this.toast.error('Unable to create process from template')
             );
+    }
+
+    addSamplesToProcess(projectId, experimentId, process, samples) {
+        let samplesToAdd = samples.map(s => ({
+            id: s.id,
+            property_set_id: s.property_set_id,
+            command: 'add'
+        }));
+
+        let samplesArgs = {
+            template_id: process.template_id,
+            samples: samplesToAdd,
+            process_id: process.id
+        };
+
+        return this.experimentsAPI.updateProcess(projectId, experimentId, process.id, samplesArgs).then(
+            (process) => process
+        );
     }
 
     addChildProcessFromTemplate(templateId, projectId, experimentId, parentProcess, multiple = true) {
@@ -176,6 +210,35 @@ class NewProcessDialogController {
             () => this.$mdDialog.cancel(),
             () => this.$mdDialog.cancel()
         );
+    }
+}
+
+class ChooseSamplesFromSourceDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.samples = this.source.output_samples.map(s => ({
+            name: s.name,
+            id: s.id,
+            property_set_id: s.property_set_id,
+            selected: true
+        }));
+    }
+
+    clearAll() {
+        this.samples.forEach(s => s.selected = false);
+    }
+
+    selectAll() {
+        this.samples.forEach(s => s.selected = true);
+    }
+
+    done() {
+        this.$mdDialog.hide(this.samples.filter(s => s.selected));
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 
