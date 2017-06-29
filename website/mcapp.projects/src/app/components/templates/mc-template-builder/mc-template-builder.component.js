@@ -15,7 +15,6 @@ class MCTemplateBuilderComponentController {
     $onInit() {
         this.templatesAPI.getAllTemplates().then(
             (templates) => {
-                console.log(this.user.attr().id)
                 for (let i = 0; i < templates.length; i++) {
                     let t = templates[i];
                     t.can_edit = this.user.isTemplateAdmin() || (this.user.attr().id == t.owner);

@@ -160,7 +160,6 @@ function* validateTemplateExists(next) {
     if (!templateExists) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = {error: `No such template ${this.params.template_id}`};
-        console.log(this.body);
         return this.status;
     }
     yield next;
