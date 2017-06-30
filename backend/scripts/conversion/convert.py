@@ -145,6 +145,9 @@ def add_beta_flag_to_users(conn):
     r.table('users').update({'beta_user': False}).run(conn)
     print "Done."
 
+def create_user_profile_table(conn):
+    r.tableCreate("userprofiles")
+    r.table("userprofiles").index_create("user_id").run(conn)
 
 def main():
     parser = OptionParser()
@@ -160,7 +163,7 @@ def main():
     # add_demo_installed_attribute(conn)
 
     add_beta_flag_to_users(conn)
-
+    create_user_profile_table(conn)
 
 if __name__ == "__main__":
     main()
