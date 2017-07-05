@@ -11,8 +11,8 @@ function createResources() {
     let templatesResource = templates.createResource();
     router.use('/templates', templatesResource.routes(), templatesResource.allowedMethods());
 
-    let templatesResource = templates.createResource();
-    router.use('/profiles', templatesResource.routes(), profiles.allowedMethods());
+    let profilesResource = profiles.createResource();
+    router.use('/profiles', profilesResource.routes(), profilesResource.allowedMethods());
 
     users.createResource(router);
 

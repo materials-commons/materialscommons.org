@@ -1,8 +1,10 @@
+const Router = require('koa-router');
+const parse = require('co-body');
 const profiles = require('../db/model/user_profiles');
 
 function* getValueFromProfile(next) {
     let name = this.params.name;
-    let userId = this.reqctx.user.id
+    let userId = this.reqctx.user.id;
     let rv = yield profiles.getFromUserProfile(userId, name);
     if (rv == null) rv = '';
     this.body = {
@@ -11,12 +13,12 @@ function* getValueFromProfile(next) {
     yield next;
 }
 
-function* updaeValueInPreofile(next) {
+function* updateValueInProfile(next) {
     let name = this.params.name;
-    let userId = this.reqctx.user.id
+    let userId = this.reqctx.user.id;
     let attrs = yield parse(this);
     let value = attrs.value;
-    let rv = yield profiles.clearFromUserProfile(userId, name, value);
+    let rv = yield profiles.storeInUserProfile(userId, name, value);
     if (rv == null) rv = '';
     this.body = {
         val: rv
@@ -27,7 +29,7 @@ function* updaeValueInPreofile(next) {
 
 function* deleteValueInPreofile(next) {
     let name = this.params.name;
-    let userId = this.reqctx.user.id
+    let userId = this.reqctx.user.id;
     let rv = yield profiles.clearFromUserProfile(userId, name);
     if (rv == null) rv = '';
     this.body = {
