@@ -15,8 +15,8 @@
                 <input ng-model="$ctrl.password" type="password" on-enter="$ctrl.login()">
             </md-input-container>
         </form>
-        <!--<span>Forgot your password? <a ui-sref="">Reset it.</a></span>-->
-        <!--<span>Not a member? <a ui-sref="">Join now</a></span>-->
+        <span>Forgot your password? <a ui-sref="reset" ng-click="$ctrl.cancel()">Reset it.</a></span>
+        <span>Not a member? <a ui-sref="join" ng-click="$ctrl.cancel()">Join now</a></span>
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
