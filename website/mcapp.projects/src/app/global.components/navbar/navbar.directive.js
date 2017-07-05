@@ -95,10 +95,10 @@ class NavbarComponentController {
             controllerAs: '$ctrl',
             bindToController: true
         }).then(
-            (loginResult) => {
+            () => {
                 this.user = this.User.attr().fullname;
                 this.isAdmin = this.User.attr().admin;
-                this.isBetaUser = this.User.attr().beta_user;
+                this.isBetaUser = this.User.isBetaUser();
                 this.isAuthenticated = this.User.isAuthenticated();
             }
         )
@@ -163,7 +163,7 @@ class MCLoginDialogController {
     login() {
         this.mcapi('/user/%/apikey', this.email, this.password)
             .success((u) => {
-                this.$mdDialog.hide({action: 'login'});
+                this.$mdDialog.hide();
                 this.User.setAuthenticated(true, u);
                 this.Restangular.setDefaultRequestParams({apikey: this.User.apikey()});
                 // if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
@@ -185,10 +185,6 @@ class MCLoginDialogController {
 
     cancel() {
         this.$mdDialog.cancel();
-    }
-
-    register() {
-        console.log('Register for account');
     }
 }
 
