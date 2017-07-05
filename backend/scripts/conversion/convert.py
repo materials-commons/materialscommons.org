@@ -146,8 +146,11 @@ def add_beta_flag_to_users(conn):
     print "Done."
 
 def create_user_profile_table(conn):
-    r.tableCreate("userprofiles")
-    r.table("userprofiles").index_create("user_id").run(conn)
+    print "Create table 'userprofiles' ..."
+    if not r.table_list().contains("userprofiles"):
+        r.table_create("userprofiles").run(conn)
+        r.table("userprofiles").index_create("user_id").run(conn)
+    print "Done."
 
 def main():
     parser = OptionParser()
