@@ -1,20 +1,17 @@
-export function NavbarDirective() {
-    'ngInject';
-
-    let directive = {
+/*@ngInject*/
+export function MCPubNavbarDirective() {
+    return {
         restrict: 'E',
-        templateUrl: 'app/components/navbar/navbar.html',
-        controller: NavbarController,
+        templateUrl: 'app/components/navbar/mcpub-navbar.html',
+        controller: MCPubNavbarDirectiveController,
         controllerAs: 'ctrl',
         bindToController: true
     };
-
-    return directive;
 }
 
-class NavbarController {
+class MCPubNavbarDirectiveController {
+    /*@ngInject*/
     constructor(userService, $uibModal, $log, $state) {
-        'ngInject';
         this.userService = userService;
         this.$uibModal = $uibModal;
         this.$log = $log;

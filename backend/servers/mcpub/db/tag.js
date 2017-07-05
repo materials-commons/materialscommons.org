@@ -1,26 +1,26 @@
-var r = require('./../dash');
-var parse = require('co-body');
-var httpStatus = require('http-status');
-var defineSchema = require('./../schema/define')();
-var tag = require('./model/tag')();
-var clone = require('clone');
+const r = require('./../dash');
+const parse = require('co-body');
+const httpStatus = require('http-status');
+const defineSchema = require('./../schema/define')();
+const tag = require('./model/tag')();
+const clone = require('clone');
 
 module.exports.addTag = function*(next) {
     'use strict';
-    var params = yield parse(this);
-    var copyParams = clone(params);
-    var tagSchema = defineSchema.tags;
-    var rv;
-    var err = yield tagSchema.validateAsync(params);
+    const params = yield parse(this);
+    const copyParams = clone(params);
+    const tagSchema = defineSchema.tags;
+    let rv;
+    const err = yield tagSchema.validateAsync(params);
     if (err) {
         this['throw'](httpStatus.NOT_FOUND, 'Validation error: ' + err);
     }
-    var is_tag = yield tag.getTag(params.tag);
+    let is_tag = yield tag.getTag(params.tag);
     if (!is_tag) {
         prepareTag(params);
         rv = yield tag.insert(params);
     }
-    var exists = yield tag.getTag2Dataset(copyParams);
+    const exists = yield tag.getTag2Dataset(copyParams);
     if (exists.length !== 0) {
         this['throw'](httpStatus.CONFLICT, 'Duplicate request');
     } else {
@@ -32,8 +32,8 @@ module.exports.addTag = function*(next) {
 };
 
 module.exports.removeTag = function*(next) {
-    var params = yield parse(this);
-    var join = yield tag.getTag2Dataset(params);
+    let params = yield parse(this);
+    let join = yield tag.getTag2Dataset(params);
     if (join.length > 0) {
         // removed user test - see issues #789 - Terry Weymouth Fri Oct 7, 2016
         // if (params.user_id === join[0].user_id) {
@@ -41,8 +41,8 @@ module.exports.removeTag = function*(next) {
             this.status = 200;
             // remove tag if no related databases
             let hits = yield tag.getAllDatasetsForTag(params.tag);
-            if (hits.length == 0) {
-                let del = yield tag.deleteTag(params.tag);
+        if (hits.length === 0) {
+            yield tag.deleteTag(params.tag);
             }
         // }
         // else {
@@ -73,6 +73,14 @@ module.exports.getAllTags = function*(next) {
         return tagAndCount.count;
     });
     this.body = res;
+    yield next;
+};
+
+module.exports.getMostPopularTags = function*(next) {
+    this.body = yield r.table('tags').eqJoin('id', r.table('tag2dataset'), {index: 'tag'}).zip()
+        .group(r.row('tag')).count().ungroup().orderBy(r.desc('reduction'))
+        .map((doc) => ({tag: doc('group'), count: doc('reduction')}))
+        .limit(20);
     yield next;
 };
 

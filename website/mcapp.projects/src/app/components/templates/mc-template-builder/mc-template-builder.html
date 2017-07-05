@@ -20,8 +20,8 @@
                 <td md-cell>{{template.does_transform ? 'Yes' : 'No'}}</td>
                 <td md-cell>
                     <div layout="row">
-                        <md-button class="md-primary" ng-click="$ctrl.editTemplate(template)">edit</md-button>
                         <md-button class="md-primary" ng-click="$ctrl.cloneTemplate(template)">clone</md-button>
+                        <md-button ng-if="template.can_edit" class="md-primary" ng-click="$ctrl.editTemplate(template)">edit</md-button>
                     </div>
                 </td>
             </tr>

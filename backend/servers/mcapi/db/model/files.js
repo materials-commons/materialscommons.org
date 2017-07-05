@@ -19,7 +19,7 @@ function* countInProject(ids, projectID) {
 
 // get details on a file
 function* get(file_id) {
-    let rql = r.table('datafiles').get(file_id).merge(function () {
+    let rql = r.table('datafiles').get(file_id).merge(function() {
         return {
             tags: r.table('tag2item').getAll(file_id, {index: 'item_id'})
                 .orderBy('tag_id')
@@ -32,11 +32,11 @@ function* get(file_id) {
                 .coerceTo('array'),
             processes: r.table('process2file').getAll(file_id, {index: 'datafile_id'})
                 .eqJoin('process_id', r.table('processes')).zip()
-                .merge(function (proc) {
+                .merge(function(proc) {
                     return {
                         setup: r.table('process2setup').getAll(proc('process_id'), {index: 'process_id'})
                             .eqJoin('setup_id', r.table('setups')).zip()
-                            .merge(function (setup) {
+                            .merge(function(setup) {
                                 return {
                                     properties: r.table('setupproperties')
                                         .getAll(setup('setup_id'), {index: 'setup_id'})
@@ -139,7 +139,7 @@ function* getList(projectID, fileIDs) {
         .eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'})
         .without([{right: 'id'}]).zip()
         .filter({project_id: projectID})
-        .merge(function (file) {
+        .merge(function(file) {
             return {
                 tags: r.table('tag2item').getAll(file('datafile_id'), {index: 'item_id'}).orderBy('tag_id').pluck(
                     'tag_id').coerceTo('array'),

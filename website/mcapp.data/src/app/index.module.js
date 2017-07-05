@@ -28,7 +28,7 @@ import {MCPubProcessDetailsSetupComponentController} from './details/outline/mcp
 import {DatasetDetailsSummaryDirective} from './details/mcpub-dataset-details-summary.directive';
 import {DatasetDetailsOtherdsDirective} from './details/mcpub-dataset-details-otherds.directive';
 import {DatasetDetailsVotesController} from './details/mcpub-dataset-details-votes.component';
-import {NavbarDirective} from '../app/components/navbar/navbar.directive';
+import {MCPubNavbarDirective} from '../app/components/navbar/mcpub-navbar.directive';
 import {HomeTabDirective} from '../app/home/home-tab-directive';
 import {MCPubSearchbarDirective} from '../app/directives/mcpub-searchbar.directive';
 import {PropertyValueDirective} from '../app/directives/property-value-directive';
@@ -49,10 +49,10 @@ import {SearchModel} from './services/search-model.service';
 import {focusService} from './services/focus.service';
 import {onEnterDirective} from './directives/on-enter.directive';
 
-angular.module('mcpub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria',
+angular.module('mcpub', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria',
     'restangular', 'ui.router', 'ui.bootstrap', 'toastr', 'ct.ui.router.extras',
     'angularUtils.directives.dirPagination', 'RecursionHelper',
-    'ngTagsInput', 'ngFileUpload', 'blockUI'])
+    'ngTagsInput', 'ngFileUpload', 'blockUI', 'ngMaterial'])
     .config(config)
     .config(routerConfig)
     .run(runBlock)
@@ -71,7 +71,7 @@ angular.module('mcpub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngM
     .controller('BrowseAuthorsController', BrowseAuthorsController)
     .controller('ValidateController', ValidateController)
     .controller('ResetValidateController', ResetValidateController)
-    .directive('mcpubNavbar', NavbarDirective)
+    .directive('mcpubNavbar', MCPubNavbarDirective)
     .directive('homeTabDirective', HomeTabDirective)
     .directive('mcpubSearchbar', MCPubSearchbarDirective)
     .directive('propertyValue', PropertyValueDirective)

@@ -9,6 +9,7 @@ import './login/index.module';
 import './join/index.module';
 import './project/index.module';
 import './components/index.module';
+import './data/index.module';
 import './util/util';
 
 angular.module('materialscommons')
@@ -48,7 +49,8 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
         if (!User.isAuthenticated() && isStateRequiringALogin(toState.name)) {
             event.preventDefault();
-            $state.go('login');
+            // $state.go('login');
+            $state.go('data.home.top');
         }
 
         if (!toState.name.startsWith('project.search')) {
@@ -60,13 +62,15 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
 }
 
 function isStateRequiringALogin(stateName) {
+    if (stateName.startsWith('data.')) {
+        return false;
+    }
     switch (stateName) {
         case 'login':
         case 'join':
         case 'reset':
         case 'validate':
         case 'rvalidate':
-        case 'releasenotes':
             return false;
         default:
             return true;
