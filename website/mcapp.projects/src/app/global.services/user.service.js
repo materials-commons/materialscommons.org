@@ -45,7 +45,7 @@ function UserService($window, $log, Restangular) {
             return self.mcuser ? self.mcuser.beta_user : false
         },
 
-        isTemplateAdmin: function() {
+        isTemplateAdmin: function () {
             return self.mcuser ? self.mcuser.is_template_admin : false
         },
 

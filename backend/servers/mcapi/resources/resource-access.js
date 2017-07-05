@@ -169,7 +169,7 @@ function* validateTemplateAccess(next) {
     let isOwner = yield check.templateIsOwnedBy(this.params.template_id, this.reqctx.user.id);
     if (!isOwner) {
         let isAdmin = yield check.isTemplateAdmin(this.reqctx.user.id);
-        if (! isAdmin) {
+        if (!isAdmin) {
             this.status = httpStatus.UNAUTHORIZED;
             this.body = {error: `user does not have access to this template, ${this.params.template_id}`};
             return this.status
