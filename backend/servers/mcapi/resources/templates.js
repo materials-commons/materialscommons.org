@@ -20,9 +20,9 @@ function* createProcessTemplate(next) {
     let errors = yield validateTemplate(template);
     if (errors !== null) {
         this.status = status.BAD_REQUEST;
-        this.body = rv;
+        this.body = errors;
     } else {
-        let rv = yield processes.createProcessTemplate(template);
+        let rv = yield processes.createProcessTemplate(template,this.reqctx.user.id);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
             this.body = rv;
@@ -45,7 +45,8 @@ function* validateTemplate(template) {
 
 function* updateProcessTemplate(next) {
     let template = yield parse(this);
-    let rv = yield processes.updateExistingTemplate(template);
+    let template_id = this.params.template_id
+    let rv = yield processes.updateExistingTemplate(template_id,template);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
         this.body = rv;
@@ -59,8 +60,8 @@ function createResource() {
     const router = new Router();
 
     router.get('/', getProcessTemplates);
-    router.post('/', createProcessTemplate);
-    router.put('/:template_id', ra.validateTemplateExists, updateProcessTemplate);
+    router.post('/',createProcessTemplate);
+    router.put('/:template_id', ra.validateTemplateExists, ra.validateTemplateAccess,  updateProcessTemplate);
 
     return router;
 }

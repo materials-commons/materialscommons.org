@@ -21,6 +21,7 @@ class TemplateBase {
     constructor(name, processType, doesTransform, destructive) {
         this.name = name;
         this.process_name = name;
+        this.owner = "template-admin";
         this.process_type = processType;
         this.description = name;
         this.category = "";

@@ -32,7 +32,7 @@ def create_mc_tables():
     create_mc_table("machines")
 
     create_mc_table("projects", "name", "owner")
-    create_mc_table("templates")
+    create_mc_table("templates","owner")
     create_mc_table("ui")
 
     create_mc_table("samples", "project_id")
