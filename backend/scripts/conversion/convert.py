@@ -147,9 +147,11 @@ def add_beta_flag_to_users(conn):
 
 def create_user_profile_table(conn):
     print "Create table 'userprofiles' ..."
-    if not r.table_list().contains("userprofiles"):
+    if not r.table_list().contains("userprofiles").run(conn):
         r.table_create("userprofiles").run(conn)
         r.table("userprofiles").index_create("user_id").run(conn)
+    else:
+        print "table 'userprofiles' already exists"
     print "Done."
 
 def main():
