@@ -10,7 +10,6 @@
         <p>
             View a list of all the files that comprise this dataset, including thumbnails of all the images.
         </p>
-        <mc-dataset-overview-files-list ng-if="$ctrl.showFiles"
-                                        files="$ctrl.dataset.files"></mc-dataset-overview-files-list>
+        <mc-dataset-overview-files ng-if="$ctrl.showFiles" dataset="$ctrl.dataset"></mc-dataset-overview-files>
     </div>
 </div>

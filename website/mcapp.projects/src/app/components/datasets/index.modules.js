@@ -10,3 +10,4 @@ import './properties/mc-dataset-propery-doi.component';
 import './properties/mc-dataset-property-papers.component';
 import './mc-dataset-overview/mc-dataset-overview.component';
 import './mc-dataset-overview/mc-dataset-overview-summary.component';
+import './mc-dataset-overview/mc-dataset-overview-files.component';
