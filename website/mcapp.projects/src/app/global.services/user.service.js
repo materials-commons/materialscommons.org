@@ -45,6 +45,10 @@ function UserService($window, $log, Restangular) {
             return self.mcuser ? self.mcuser.beta_user : false
         },
 
+        isTemplateAdmin: function() {
+            return self.mcuser ? self.mcuser.is_template_admin : false
+        },
+
         favorites: function(projectID) {
             if (!(projectID in self.mcuser.favorites)) {
                 self.mcuser.favorites[projectID] = {
