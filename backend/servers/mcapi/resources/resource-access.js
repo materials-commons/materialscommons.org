@@ -165,6 +165,19 @@ function* validateTemplateExists(next) {
     yield next;
 }
 
+function* validateTemplateAccess(next) {
+    let isOwner = yield check.templateIsOwnedBy(this.params.template_id, this.reqctx.user.id);
+    if (!isOwner) {
+        let isAdmin = yield check.isTemplateAdmin(this.reqctx.user.id);
+        if (! isAdmin) {
+            this.status = httpStatus.UNAUTHORIZED;
+            this.body = {error: `user does not have access to this template, ${this.params.template_id}`};
+            return this.status
+        }
+    }
+    yield next;
+}
+
 function* validateNoteInExperiment(next) {
     let isInExperiment = yield check.noteInExperiment(this.params.experiment_id, this.params.note_id);
     if (!isInExperiment) {
@@ -188,6 +201,7 @@ module.exports = {
     validateProcessInProject,
     validateFileInProject,
     validateTaskInExperiment,
+    validateTemplateAccess,
     validateTemplateExists,
     validateNoteInExperiment
 };
