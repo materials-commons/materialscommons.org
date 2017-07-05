@@ -120,14 +120,26 @@ class MCProcessesWorkflowGraphComponentController {
                         'text-halign': 'center',
                         'background-color': 'data(color)',
                         color: 'black',
-                        'text-outline-color': 'data(color)',
+                        //'text-outline-color': 'data(color)',
+                        'text-outline-color': (ele) => {
+                            let c = ele.data('color');
+                            return c ? c : '#fff';
+                        },
                         'font-size': '18px',
                         'font-weight': 'bold',
                         'text-outline-width': '5px',
                         'text-outline-opacity': 1,
                         'border-width': '4px',
-                        'border-color': 'data(highlight)',
-                        shape: 'data(shape)',
+                        //'border-color': 'data(highlight)',
+                        'border-color': (ele) => {
+                            let highlight = ele.data('highlight');
+                            return highlight ? highlight : '#fff';
+                        },
+                        //shape: 'data(shape)',
+                        shape: (ele) => {
+                            let shape = ele.data('shape');
+                            return shape ? shape : 'triangle';
+                        },
                         width: '80px',
                         height: '80px'
                     }
@@ -204,7 +216,98 @@ class MCProcessesWorkflowGraphComponentController {
         //});
         this.cy.layout({name: 'dagre', fit: true});
         this.cy.panzoom();
-        this.ctxMenu = this.setupContextMenus()
+        this.ctxMenu = this.setupContextMenus();
+        let edgeConfig = {
+            toggleOffOnLeave: true,
+            handleNodes: 'node',
+            handleSize: 10,
+            edgeType: (source, target) => {
+                let sourceProcess = source.data('details');
+                let targetProcess = target.data('details');
+                if (sourceProcess.output_samples.length === 0) {
+                    // source process has not output samples
+                    this.showAlert('No output samples to connect to process.');
+                    return null;
+                } else if (targetProcess.template_name === 'Create Samples') {
+                    // Create samples cannot be a target
+                    this.showAlert('Create Samples process type cannot be a target.');
+                    return null;
+                } else if (this.targetHasAllSourceSamples(targetProcess.input_samples, sourceProcess.output_samples)) {
+                    // Target already has all the source samples
+                    this.showAlert('Processes are already connected.');
+                    return null;
+                }
+                return 'flat';
+            },
+            complete: (source, target, addedEntities) => {
+                let sourceProcess = source.data('details');
+                let targetProcess = target.data('details');
+                if (sourceProcess.output_samples.length === 1) {
+                    this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, sourceProcess.output_samples).then(
+                        (process) => {
+                            this.replaceProcess(process);
+                            target.data('details', process);
+                        }
+                    );
+                } else {
+                    this.workflowService.chooseSamplesFromSource(sourceProcess).then(
+                        (samples) => {
+                            if (!samples.length) {
+                                // No samples brought over, delete edge
+                                addedEntities[0].remove();
+                            } else {
+                                this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, samples).then(
+                                    (process) => {
+                                        this.replaceProcess(process);
+                                        target.data('details', process);
+                                    }
+                                );
+                            }
+                        }
+                    );
+                }
+                //console.log('addedEntities', addedEntities, addedEntities[0].isEdge());
+            }
+        };
+
+        this.cy.edgehandles(edgeConfig);
+    }
+
+    replaceProcess(process) {
+        let i = _.findIndex(this.processes, p => p.id === process.id);
+        if (i !== -1) {
+            this.processes.splice(i, 1);
+            this.processes.push(process);
+        }
+    }
+
+    showAlert(message) {
+        this.$mdDialog.show(this.$mdDialog.alert()
+            .title('Invalid Target Process')
+            .textContent(message)
+            .ok('dismiss'));
+    }
+
+    targetHasAllSourceSamples(targetSamples, sourceSamples) {
+        let sourceSamplesSeen = {};
+        sourceSamples.forEach((s) => {
+            sourceSamplesSeen[`${s.sample_id}/${s.property_set_id}`] = false;
+        });
+
+        targetSamples.forEach(s => {
+            let key = `${s.sample_id}/${s.property_set_id}`;
+            if (key in sourceSamplesSeen) {
+                sourceSamplesSeen[key] = true;
+            }
+        });
+        let hasAllSamples = true;
+        _.forOwn(sourceSamplesSeen, (value) => {
+            if (!value) {
+                hasAllSamples = false;
+            }
+        });
+
+        return hasAllSamples;
     }
 
     setupContextMenus() {
