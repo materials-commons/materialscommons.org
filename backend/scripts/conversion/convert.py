@@ -145,15 +145,6 @@ def add_beta_flag_to_users(conn):
     r.table('users').update({'beta_user': False}).run(conn)
     print "Done."
 
-def create_user_profile_table(conn):
-    print "Create table 'userprofiles' ..."
-    if not r.table_list().contains("userprofiles").run(conn):
-        r.table_create("userprofiles").run(conn)
-        r.table("userprofiles").index_create("user_id").run(conn)
-    else:
-        print "table 'userprofiles' already exists"
-    print "Done."
-
 def add_template_admin_flag_to_users(conn):
     print "Adding template admin flag to all users..."
     r.table('users').update({'is_template_admin' : False}).run(conn)
@@ -163,6 +154,15 @@ def add_template_admin_flag_to_users(conn):
 def add_template_owner(conn):
     print "Adding 'template-admin' as owner for all templates..."
     r.table('templates').update({'owner': 'template-admin'}).run(conn)
+    print "Done."
+
+def create_user_profile_table(conn):
+    print "Create table 'userprofiles' ..."
+    if not r.table_list().contains("userprofiles").run(conn):
+        r.table_create("userprofiles").run(conn)
+        r.table("userprofiles").index_create("user_id").run(conn)
+    else:
+        print "table 'userprofiles' already exists"
     print "Done."
 
 def main():
@@ -181,8 +181,8 @@ def main():
     add_template_admin_flag_to_users(conn)
     add_template_owner(conn)
 
-    add_beta_flag_to_users(conn)
     create_user_profile_table(conn)
+
 
 if __name__ == "__main__":
     main()
