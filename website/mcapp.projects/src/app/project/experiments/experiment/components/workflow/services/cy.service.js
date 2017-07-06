@@ -1,3 +1,4 @@
+/* global cytoscape:true */
 class CyService {
     /*@ngInject*/
     constructor($mdDialog) {
