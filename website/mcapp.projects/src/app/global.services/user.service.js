@@ -45,7 +45,7 @@ function UserService($window, $log, Restangular) {
             return self.mcuser ? self.mcuser.beta_user : false
         },
 
-        isTemplateAdmin: function() {
+        isTemplateAdmin: function () {
             return self.mcuser ? self.mcuser.is_template_admin : false
         },
 
@@ -61,6 +61,15 @@ function UserService($window, $log, Restangular) {
         addToFavorites: function(projectID, templateName) {
             self.mcuser.favorites[projectID].processes.push(templateName);
             $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
+        },
+
+        getFromProfile: function(name) {
+            return Restangular.one('v2').one('profiles').one(name);
+        },
+
+        setInProfile: function(name, value) {
+            return Restangular.one('v2').one('profiles').one(name)
+                .customPUT({value: value});
         },
 
         removeFromFavorites: function(projectID, templateName) {
