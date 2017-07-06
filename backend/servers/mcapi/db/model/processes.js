@@ -151,7 +151,7 @@ function* deleteProcess(projectId, processId) {
     return {val: "Process Deleted"};
 }
 
-function* createProcessTemplate(template,owner) {
+function* createProcessTemplate(template, owner) {
     let rv = {};
 
     template.owner = owner;
@@ -165,7 +165,7 @@ function* createProcessTemplate(template,owner) {
     return rv;
 }
 
-function* updateExistingTemplate(template_id,template) {
+function* updateExistingTemplate(template_id, template) {
     let rv = {};
     yield r.table('templates').get(template_id).update(template);
     rv.val = yield getTemplate(template_id);

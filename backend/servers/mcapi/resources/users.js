@@ -1,5 +1,6 @@
 const users = require('../db/model/users');
 const check = require('../db/model/check');
+const profiles = require('../db/model/user_profiles');
 const schema = require('../schema');
 const parse = require('co-body');
 const status = require('http-status');
@@ -134,6 +135,66 @@ function* becomeUser(next) {
         }
     }
 
+    yield next;
+}
+
+function* getValueFromProfile(next) {
+    let name = this.params.name;
+    let userId = this.params.user_id;
+    let checkUserId = this.reqctx.user.id;
+    if (userId != checkUserId) {
+        this.body = {
+            error: 'Current user, ' + checkUserId + ', is not requesting user, ' + userId
+        };
+        this.status = status.UNAUTHORIZED;
+    } else {
+        let rv = yield profiles.getFromUserProfile(userId, name);
+        if (rv == null) rv = '';
+        this.body = {
+            val: rv
+        };
+    }
+    yield next;
+}
+
+function* updateValueInProfile(next) {
+    let name = this.params.name;
+    let userId = this.params.user_id;
+    let checkUserId = this.reqctx.user.id;
+    if (userId != checkUserId) {
+        this.body = {
+            error: 'Current user, ' + checkUserId + ', is not requesting user, ' + userId
+        };
+        this.status = status.UNAUTHORIZED;
+    } else {
+        let attrs = yield parse(this);
+        let value = attrs.value;
+        let rv = yield profiles.storeInUserProfile(userId, name, value);
+        if (rv == null) rv = '';
+        this.body = {
+            val: rv
+        };
+    }
+    yield next;
+}
+
+
+function* deleteValueInPreofile(next) {
+    let name = this.params.name;
+    let userId = this.params.user_id;
+    let checkUserId = this.reqctx.user.id;
+    if (userId != checkUserId) {
+        this.body = {
+            error: 'Current user, ' + checkUserId + ', is not requesting user, ' + userId
+        };
+        this.status = status.UNAUTHORIZED;
+    } else {
+        let rv = yield profiles.clearFromUserProfile(userId, name);
+        if (rv == null) rv = '';
+        this.body = {
+            val: rv
+        };
+    }
     yield next;
 }
 
@@ -411,6 +472,9 @@ function createResource(router) {
     router.put('/users/:project_id', ra.validateProjectAccess, updateProjectFavorites);
     router.put('/users', updateUserSettings);
     router.get('/users/:user_id', getUser);
+    router.get('/users/:user_id/profiles/:name',getValueFromProfile);
+    router.put('/users/:user_id/profiles/:name',updateValueInProfile);
+    router.delete('/users/:user_id/profiles/:name',deleteValueInPreofile);
     router.put('/users_become', becomeUser);
     router.get('/users/validate/:validation_id', getUserRegistrationFromUuid);
     router.get('/users/rvalidate/:validation_id', getUserForPasswordResetFromUuid);
