@@ -1,7 +1,7 @@
 /* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter, $mdDialog, mcshow) {
+    constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter, $mdDialog, mcshow, workflowState) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
@@ -16,6 +16,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcshow = mcshow;
         this.removedNodes = null;
         this.navigator = null;
+        this.workflowState = workflowState;
     }
 
     $onInit() {
@@ -197,18 +198,21 @@ class MCProcessesWorkflowGraphComponentController {
             let target = event.cyTarget;
             if (!target.isNode && !target.isEdge) {
                 this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                this.mcProcessesWorkflow.setSelectedProcess(null);
+                this.workflowState.updateSelectedProcessForExperiment(this.projectId, this.experimentId, null);
+                //this.mcProcessesWorkflow.setSelectedProcess(null);
             } else if (target.isNode()) {
                 //let edges = target.connectedEdges();
                 //edges.forEach((e) => console.log('source is ' + e.data('source')));
                 //console.log(target.connectedEdges());
                 let processId = target.data('id');
                 let process = this.processes.filter((p) => p.id === processId)[0];
-                this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
-                this.mcProcessesWorkflow.setSelectedProcess(processId, (target.outgoers().length > 0));
+                this.workflowState.updateSelectedProcessForExperiment(this.projectId, this.experimentId, process, (target.outgoers().length > 0));
+                //this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
+                //this.mcProcessesWorkflow.setSelectedProcess(processId, (target.outgoers().length > 0));
             } else if (target.isEdge()) {
-                this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                this.mcProcessesWorkflow.setSelectedProcess(null);
+                //this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
+                //this.mcProcessesWorkflow.setSelectedProcess(null);
+                this.workflowState.updateSelectedProcessForExperiment(this.projectId, this.experimentId, null);
             }
         });
         // Use this to show/hide certain menu items
@@ -434,8 +438,5 @@ angular.module('materialscommons').component('mcProcessesWorkflowGraph', {
     bindings: {
         processes: '<',
         highlightProcesses: '<'
-    },
-    require: {
-        mcProcessesWorkflow: '^mcProcessesWorkflow'
     }
 });

@@ -1,7 +1,7 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
     constructor(experimentsAPI, $stateParams, toast, experimentProcessesService, datasetsAPI,
-                workflowService, mcstate, mcbus, User) {
+                workflowService, mcstate, mcbus, User, workflowState) {
         this.myName = 'MCProcessesWorkflow';
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
@@ -16,7 +16,8 @@ class MCProcessesWorkflowComponentController {
         this.workflowService = workflowService;
         this.mcstate = mcstate;
         this.mcbus = mcbus;
-        this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
+        workflowState.setDataset(this.dataset);
+        //this.datasetProcesses = this.dataset ? _.indexBy(this.dataset.processes, 'id') : {};
         this.showWorkspace = true;
         this.isBetaUser = User.isBetaUser();
     }
@@ -64,29 +65,6 @@ class MCProcessesWorkflowComponentController {
                 (processes) => this.processes = processes,
                 () => this.toast.error('Error retrieving processes for experiment')
             );
-    }
-
-    inDataset() {
-        if (!this.selectedProcess) {
-            return false;
-        }
-        return (this.selectedProcess.id in this.datasetProcesses);
-    }
-
-    removeFromDataset() {
-        let p = this.selectedProcess;
-        this.datasetsAPI.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [], [p.id]).then(
-            () => this.experimentProcessesService.removeProcessFromDataset(p, this.dataset, this.datasetProcesses),
-            () => this.toast.error(`Unable to remove process from dataset ${p.name}`)
-        );
-    }
-
-    addToDataset() {
-        let p = this.selectedProcess;
-        this.datasetsAPI.updateProcessesInDataset(this.projectId, this.experimentId, this.datasetId, [p.id], []).then(
-            () => this.experimentProcessesService.addProcessToDataset(p, this.dataset, this.datasetProcesses),
-            () => this.toast.error(`Unable to add process to dataset ${p.name}`)
-        );
     }
 }
 

@@ -39,3 +39,4 @@ import './workflow/services/workflow-filters-service.service';
 import './workflow/services/mc-clone-process-select-samples.component';
 import './workflow/services/mc-clone-process-select-files.component';
 import './workflow/services/workflow-process-templates.service';
+import './workflow/services/workflow-state.service';

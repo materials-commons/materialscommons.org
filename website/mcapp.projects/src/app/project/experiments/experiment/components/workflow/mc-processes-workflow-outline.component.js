@@ -1,7 +1,7 @@
 class MCProcessesWorkflowOutlineComponentController {
     /*@ngInject*/
     constructor(processTree, datasetsAPI, experimentsAPI, $stateParams, toast, workflowService,
-                experimentProcessesService, mcbus) {
+                experimentProcessesService, mcbus, workflowState) {
         this.processTree = processTree;
         this.datasetsAPI = datasetsAPI;
         this.experimentsAPI = experimentsAPI;
@@ -13,6 +13,8 @@ class MCProcessesWorkflowOutlineComponentController {
         this.workflowService = workflowService;
         this.experimentProcessesService = experimentProcessesService;
         this.mcbus = mcbus;
+        this.workflowState = workflowState;
+        this.workflowState.setDataset(this.dataset);
     }
 
     $onInit() {
@@ -24,7 +26,7 @@ class MCProcessesWorkflowOutlineComponentController {
             this.buildOutline();
         };
 
-        this.datasetProcesses = this.mcProcessesWorkflow.datasetProcesses;
+        this.datasetProcesses = this.workflowState.datasetProcesses;
 
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
         this.buildOutline();
@@ -62,9 +64,13 @@ class MCProcessesWorkflowOutlineComponentController {
         this.processTree.clearSelected(this.root);
         p.selected = true;
         this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, p.id).then(
-            process => this.process = process
+            process => {
+                this.process = process;
+                process.hasChildren = p.children.length;
+                this.workflowState.setSelectedProcess(process);
+            }
         );
-        this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
+        //this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
     }
 
     toggle(p) {
@@ -155,8 +161,5 @@ angular.module('materialscommons').component('mcProcessesWorkflowOutline', {
         processes: '<',
         highlightProcesses: '<',
         dataset: '<'
-    },
-    require: {
-        mcProcessesWorkflow: '^mcProcessesWorkflow'
     }
 });
