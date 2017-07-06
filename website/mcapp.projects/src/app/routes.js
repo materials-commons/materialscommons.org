@@ -241,10 +241,72 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/sample/:sample_id',
             template: '<mc-sample></mc-sample>'
         })
+        .state('project.datasets', {
+            url: '/datasets',
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state('project.datasets.list', {
+            url: '/list',
+            template: '<mc-project-datasets></mc-project-datasets>'
+        })
+        .state('project.datasets.dataset', {
+            url: '/dataset/:dataset_id',
+            template: '<mc-dataset-overview dataset="$resolve.dataset"></mc-dataset-overview>',
+            resolve: {
+                dataset: ['$stateParams', 'datasetsAPI',
+                    ($stateParams, datasetsAPI) => datasetsAPI.getDataset('e634ee47-b217-4547-a345-5007cd146dbd', '511930bd-96a5-4678-9626-ef79aceb75b5', '57490e70-df32-4592-8a6f-8a6cfbd36174')
+                ]
+            }
+        })
         .state('project.settings', {
             url: '/settings',
             template: '<mc-project-settings></mc-project-settings>'
+        })
+        .state('data', {
+            url: '/data',
+            abstract: true,
+            template: '<div ui-view flex></div>'
+        })
+        .state('data.dataset', {
+            url: '/dataset/:dataset_id',
+            template: '<mc-dataset-overview dataset="$resolve.dataset"></mc-dataset-overview>',
+            resolve: {
+                dataset: ['publicDatasetsAPI', '$stateParams',
+                    (publicDatasetsAPI, $stateParams) => publicDatasetsAPI.getDataset($stateParams.dataset_id)
+                ]
+            }
+        })
+        .state('data.home', {
+            url: '/home',
+            template: '<mc-data-home tags="$resolve.tags"></mc-data-home>',
+            resolve: {
+                tags: ['publicTagsAPI',
+                    (publicTagsAPI) => publicTagsAPI.getPopularTags().then(
+                        (tags) => tags.map(t => t.tag)
+                    )
+                ]
+            }
+        })
+        .state('data.home.recent', {
+            url: '/recent',
+            template: '<mc-dataset-list datasets="$resolve.datasets" details-route="data.dataset"></mc-dataset-list>',
+            resolve: {
+                datasets: ['publicDatasetsAPI',
+                    (publicDatasetsAPI) => publicDatasetsAPI.getRecent()
+                ]
+            }
+        })
+        .state('data.home.top', {
+            url: '/top',
+            template: '<mc-dataset-list datasets="$resolve.datasets" details-route="data.dataset"></mc-dataset-list>',
+            resolve: {
+                datasets: ['publicDatasetsAPI',
+                    (publicDatasetsAPI) => publicDatasetsAPI.getTopViewed()
+                ]
+            }
         });
 
-    $urlRouterProvider.otherwise('/login');
+    // $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/data/home/top');
 }

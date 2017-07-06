@@ -2,7 +2,7 @@
 class NavbarComponentController {
     /*@ngInject*/
     constructor(User, $state, $stateParams, searchQueryText, mcstate, navbarOnChange, projectsAPI, demoProjectService,
-                blockUI, toast, mcbus, $mdDialog) {
+                blockUI, toast, mcbus, $mdDialog, $timeout) {
         this.User = User;
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -18,9 +18,14 @@ class NavbarComponentController {
         this.project = mcstate.get(mcstate.CURRENT$PROJECT);
         this.query = searchQueryText.get();
         this.navbarSearchText = this.inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
-        this.user = User.attr().fullname;
-        this.isAdmin = User.attr().admin;
+        if (User.isAuthenticated()) {
+            this.user = User.attr().fullname;
+            this.isAdmin = User.attr().admin;
+            this.isBetaUser = User.attr().beta_user;
+        }
+        this.isAuthenticated = User.isAuthenticated();
         this.$mdDialog = $mdDialog;
+        this.$timeout = $timeout;
     }
 
     $onInit() {
@@ -76,12 +81,43 @@ class NavbarComponentController {
 
     logout() {
         this.User.setAuthenticated(false);
-        this.$state.go('login');
+        this.user = "";
+        this.isAdmin = false;
+        this.isBetaUser = false;
+        this.isAuthenticated = this.User.isAuthenticated();
+        this.$state.go('data.home.top');
+    }
+
+    loginOrRegister() {
+        this.$mdDialog.show({
+            templateUrl: 'app/global.components/navbar/login-dialog.html',
+            controller: MCLoginDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true
+        }).then(
+            () => {
+                this.user = this.User.attr().fullname;
+                this.isAdmin = this.User.attr().admin;
+                this.isBetaUser = this.User.isBetaUser();
+                this.isAuthenticated = this.User.isAuthenticated();
+            }
+        )
+    }
+
+    switchSites() {
+        this.$mdDialog.show({
+            templateUrl: 'app/global.components/navbar/switch-sites.html',
+            controller: MCSwitchSitesDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true
+        }).then(
+            (sref) => this.$state.go(sref)
+        );
     }
 
     switchToUser() {
         this.$mdDialog.show({
-            templateUrl: 'app/global.components/switch-user-dialog.html',
+            templateUrl: 'app/global.components/navbar/switch-user-dialog.html',
             controller: MCSwitchUserDialogController,
             controllerAs: '$ctrl',
             bindToController: true
@@ -111,8 +147,64 @@ class MCSwitchUserDialogController {
     }
 }
 
+class MCLoginDialogController {
+    /*@ngInject*/
+    constructor(User, $mdDialog, toast, mcapi, Restangular, $state) {
+        this.User = User;
+        this.$mdDialog = $mdDialog;
+        this.toast = toast;
+        this.mcapi = mcapi;
+        this.Restangular = Restangular;
+        this.$state = $state;
+        this.email = '';
+        this.password = '';
+    }
+
+    login() {
+        this.mcapi('/user/%/apikey', this.email, this.password)
+            .success((u) => {
+                this.$mdDialog.hide();
+                this.User.setAuthenticated(true, u);
+                this.Restangular.setDefaultRequestParams({apikey: this.User.apikey()});
+                // if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
+                //     this.$state.go('project.experiment.workflow', {
+                //         project_id: u.default_project,
+                //         experiment_id: u.default_experiment
+                //     });
+                // } else if (u.default_project && u.default_project !== '') {
+                //     this.$state.go('project.home', {project_id: u.default_project});
+                // } else {
+                //     this.$state.go('projects.list');
+                // }
+            })
+            .error((reason) => {
+                this.message = "Incorrect Password/Username!";
+                this.toast.error(reason.error);
+            }).put({password: this.password});
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class MCSwitchSitesDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    switchTo(sref) {
+        this.$mdDialog.hide(sref);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
 angular.module('materialscommons').component('navbar', {
-    templateUrl: 'app/global.components/navbar.html',
+    templateUrl: 'app/global.components/navbar/navbar.html',
     controller: NavbarComponentController
 });
 

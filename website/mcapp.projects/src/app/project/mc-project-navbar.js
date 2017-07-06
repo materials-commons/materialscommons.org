@@ -5,7 +5,7 @@ angular.module('materialscommons').component("mcProjectNavbar", {
 
 /*@ngInject*/
 function MCProjectNavbarComponentController(mcstate, $state, $rootScope, $scope, $mdSidenav,
-                                            quickbarSamples, $stateParams) {
+                                            quickbarSamples, $stateParams, User) {
     const ctrl = this;
 
     ctrl.showQuickbar = false;
@@ -15,6 +15,7 @@ function MCProjectNavbarComponentController(mcstate, $state, $rootScope, $scope,
     ctrl.projectSamples = [];
     ctrl.experimentSamples = [];
     ctrl.datasetSamples = [];
+    ctrl.isBetaUser = User.attr().beta_user;
 
     const unregister = $rootScope.$on('$stateChangeSuccess', function() {
         ctrl.currentTab = getCurrentTabIndex();
@@ -64,6 +65,8 @@ function MCProjectNavbarComponentController(mcstate, $state, $rootScope, $scope,
             return 3;
         } else if ($state.includes('project.settings')) {
             return 4;
+        } else if ($state.includes('project.dashboard')) {
+            return 5;
         }
 
         return 0;

@@ -28,6 +28,19 @@ class MCProcessesWorkflowGraphComponentController {
         };
 
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
+        this.mcbus.subscribe('PROCESS$ADD', this.myName, (process) => {
+            let node = this.processGraph.createProcessNode(process);
+            this.cy.add(node);
+            let edges = this.processGraph.createConnectingEdges(process, this.processes);
+            console.log('edges', edges);
+            if (edges.length) {
+                this.cy.add(edges);
+            }
+            this.processes.push(process);
+        });
+        this.mcbus.subscribe('PROCESS$DELETE', this.myName, (process) => console.log('PROCESS$DELETE', process));
+        this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));
+        this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
 
         let searchcb = (search) => {
             if (search === '') {
@@ -89,6 +102,10 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcbus.leave('PROCESSES$CHANGE', this.myName);
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
         this.mcbus.leave('WORKFLOW$RESET', this.myName);
+        this.mcbus.leave('PROCESS$ADD', this.myName);
+        this.mcbus.leave('PROCESS$DELETE', this.myName);
+        this.mcbus.leave('EDGE$ADD', this.myName);
+        this.mcbus.leave('EDGE$DELETE', this.myName);
         if (this.navigator !== null) {
             this.navigator.destroy();
         }

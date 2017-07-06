@@ -94,9 +94,9 @@ function prepareDirArgs(projectID, dirArgs) {
 }
 
 function validateDirArgs(dirArgs) {
-    return schema.createDirectory.validateAsync(dirArgs).then(function () {
+    return schema.createDirectory.validateAsync(dirArgs).then(function() {
         return null;
-    }, function (errors) {
+    }, function(errors) {
         return errors;
     });
 }
@@ -138,17 +138,17 @@ function* validateUpdateArgs(projectID, directoryID, updateArgs) {
 }
 
 function validateMoveArgs(moveArgs) {
-    return schema.moveDirectory.validateAsync(moveArgs).then(function () {
+    return schema.moveDirectory.validateAsync(moveArgs).then(function() {
         return null;
-    }, function (errors) {
+    }, function(errors) {
         return errors;
     });
 }
 
 function validateRenameArgs(renameArgs) {
-    return schema.renameDirectory.validateAsync(renameArgs).then(function () {
+    return schema.renameDirectory.validateAsync(renameArgs).then(function() {
         return null;
-    }, function (errors) {
+    }, function(errors) {
         return errors;
     });
 }
