@@ -26,6 +26,12 @@ class PublicDatasetsAPIService {
             (dataset) => dataset.plain()
         );
     }
+
+    getDatasetProcess(datasetId, processId) {
+        return this.publicAPIRoute('datasets').one(datasetId).one('processes', processId).get().then(
+            (process) => process.plain()
+        )
+    }
 }
 
 

@@ -10,3 +10,6 @@ import './project-file-tree-api.service';
 import './notes-api.service';
 import './datasets-api.service';
 import './templates-api.service';
+import './public-tags-api.service';
+import './public-datasets-api.service';
+import './public-api-route.service';
