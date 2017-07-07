@@ -254,11 +254,11 @@ function* addProcessFromTemplate(projectId, experimentId, templateId, owner) {
     let procId = yield processCommon.createProcessFromTemplate(projectId, template, owner);
     let e2proc = new model.Experiment2Process(experimentId, procId);
     yield r.table('experiment2process').insert(e2proc);
-    return yield processCommon.getProcess(procId);
+    return yield processCommon.getProcess(r, procId);
 }
 
 function* cloneProcess(projectId, experimentId, processId, owner, cloneArgs) {
-    let process = yield processCommon.getProcess(processId);
+    let process = yield processCommon.getProcess(r, processId);
     process = process.val;
     let createdProcess = yield addProcessFromTemplate(projectId, experimentId, process.template_id, owner);
     createdProcess = createdProcess.val;
@@ -291,7 +291,7 @@ function* cloneProcess(projectId, experimentId, processId, owner, cloneArgs) {
 
     // TODO: Add measurements
 
-    return yield processCommon.getProcess(createdProcess.id);
+    return yield processCommon.getProcess(r, createdProcess.id);
 }
 
 function* updateProcess(experimentId, processId, properties, files, samples) {
@@ -301,7 +301,7 @@ function* updateProcess(experimentId, processId, properties, files, samples) {
         return errors;
     }
 
-    return yield processCommon.getProcess(processId);
+    return yield processCommon.getProcess(r, processId);
 }
 
 function* updateTaskTemplate(taskId, experimentId, processId, properties, files, samples) {
