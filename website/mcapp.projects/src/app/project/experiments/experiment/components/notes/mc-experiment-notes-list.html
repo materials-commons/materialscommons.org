@@ -1,6 +1,7 @@
 <div layout="column" layout-margin>
+    <div ng-if="$ctrl.experiment.notes.length == 0">(No notes in project)</div>
     <md-content ui-tree="$ctrl.treeOptions" id="notes-tree-root">
-        <ol ui-tree-nodes ng-model="$ctrl.experiment.notes" style="margin-right: 8px">
+        <ol ui-tree-nodes ng-model="" style="margin-right: 8px">
             <li dir-paginate="note in $ctrl.experiment.notes | itemsPerPage:20" flex ui-tree-node>
                 <div ui-tree-handle
                      ng-click="$ctrl.setCurrent(note, $event)"

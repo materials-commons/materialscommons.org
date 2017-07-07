@@ -72,6 +72,33 @@ describe('Feature - Projects: ', function () {
             yield testDatasets({assertExists: true});
 
         });
+        it('does not delete a project if any dataset in any experiment has a DOI', function*() {
+            this.timeout(8000); // test take up to 8 seconds
+
+            yield createRenamedDemoProject();
+
+            let project_id = project.id;
+            assert.isOk(project_id);
+            let experiment_id = experiment.id;
+            assert.isOk(experiment_id);
+
+            yield testDatasets({assertExists: true});
+
+            // fake a doi on one of the datasets
+            let datasetId = datasetIdList[0];
+            let fakeDOI = "fakeDOI";
+            let status = yield r.table('datasets').get(datasetId).update({doi: fakeDOI});
+            if (status.replaced != 1) {
+                assert.fail(`Update of DOI in dataset, ${datasetId}, failed.`);
+            }
+
+            // delete project - fails
+            let results = yield projectDelete.deleteProject(project_id);
+            assert.isOk(results);
+            assert.isOk(results.error);
+
+            yield testDatasets({assertExists: true});
+        });
         it('supports a dry run mode', function*() {
             this.timeout(8000); // test take up to 8 seconds
 

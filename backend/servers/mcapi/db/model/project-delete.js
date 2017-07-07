@@ -15,7 +15,12 @@ function* deleteProject(projectId, options) {
 
     let hasPublishedDatasets = yield testForPublishedDatasets(projectId);
     if (hasPublishedDatasets) {
-        return {error: "Can not delete an experiment with published datasets"}
+        return {error: "Can not delete a project that has any experiment with a published datasets"}
+    }
+
+    let hasDOIAssigned = yield testForDOIAssigned(projectId);
+    if (hasDOIAssigned) {
+        return {error: "Can not delete a project that has any experiment with a DOI assigned"}
     }
 
     let results = yield projects.getProject(projectId);
@@ -104,6 +109,23 @@ function* testForPublishedDatasets(projectId){
         for (let j = 0; j < datasetList.length; j++) {
             let dataset = datasetList[j];
             if (datasetList[j].published) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function* testForDOIAssigned(projectId){
+
+    let results = yield experiments.getAllForProject(projectId);
+    let experimentList = results.val;
+
+    for (let i = 0; i < experimentList.length; i++) {
+        let datasetList = experimentList[i].datasets;
+        for (let j = 0; j < datasetList.length; j++) {
+            let dataset = datasetList[j];
+            if (datasetList[j].doi) {
                 return true;
             }
         }
