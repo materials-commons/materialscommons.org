@@ -1,7 +1,6 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
-    constructor($stateParams, mcstate, mcbus, User, workflowState, experimentsAPI) {
-        this.mcstate = mcstate;
+    constructor($stateParams, mcbus, User, workflowState, experimentsAPI) {
         this.mcbus = mcbus;
         this.workflowState = workflowState;
         this.experimentsAPI = experimentsAPI;
