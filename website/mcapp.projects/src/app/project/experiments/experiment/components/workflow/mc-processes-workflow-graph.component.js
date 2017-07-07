@@ -1,7 +1,7 @@
-/* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter, $mdDialog, mcshow, workflowState) {
+    constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter,
+                $mdDialog, mcshow, workflowState, cyGraph) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
@@ -17,6 +17,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.removedNodes = null;
         this.navigator = null;
         this.workflowState = workflowState;
+        this.cyGraph = cyGraph;
     }
 
     $onInit() {
@@ -126,172 +127,39 @@ class MCProcessesWorkflowGraphComponentController {
     allProcessesGraph() {
         let g = this.processGraph.build(this.processes, this.highlightProcesses);
         this.samples = g.samples;
-        this.cy = cytoscape({
-            container: document.getElementById('processesGraph'),
-            elements: g.elements,
-            style: [
-                {
-                    selector: 'node',
-                    style: {
-                        'content': 'data(name)',
-                        'text-valign': 'center',
-                        'text-halign': 'center',
-                        'background-color': 'data(color)',
-                        color: 'black',
-                        //'text-outline-color': 'data(color)',
-                        'text-outline-color': (ele) => {
-                            let c = ele.data('color');
-                            return c ? c : '#fff';
-                        },
-                        'font-size': '18px',
-                        'font-weight': 'bold',
-                        'text-outline-width': '5px',
-                        'text-outline-opacity': 1,
-                        'border-width': '4px',
-                        //'border-color': 'data(highlight)',
-                        'border-color': (ele) => {
-                            let highlight = ele.data('highlight');
-                            return highlight ? highlight : '#fff';
-                        },
-                        //shape: 'data(shape)',
-                        shape: (ele) => {
-                            let shape = ele.data('shape');
-                            return shape ? shape : 'triangle';
-                        },
-                        width: '80px',
-                        height: '80px'
-                    }
-                },
-                {
-                    selector: 'edge',
-                    style: {
-                        'width': 4,
-                        'target-arrow-shape': 'triangle',
-                        //'target-arrow-color': '#9dbaea',
-                        'curve-style': 'bezier',
-                        'content': 'data(name)',
-                        'font-weight': 'bold',
-                        'text-outline-color': '#555',
-                        'text-outline-width': '3px',
-                        'color': '#fff'
-                    }
-                },
-                {
-                    selector: 'node:selected',
-                    style: {
-                        'border-width': '8px',
-                        'border-color': '#2196f3',
-                        color: '#2196f3'
-                    }
-                },
-                {
-                    selector: 'edge:selected',
-                    style: {
-                        'background-color': '#2196f3',
-                        'text-outline-color': '#2196f3'
-                    }
-                }
-            ]
-        });
+        this.cy = this.cyGraph.createGraph(g.elements, 'processesGraph');
+        this.cyGraph.setOnClickForExperiment(this.cy, this.projectId, this.experimentId);
 
-        this.cy.on('click', event => {
-            let target = event.cyTarget;
-            if (!target.isNode && !target.isEdge) {
-                this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                this.workflowState.updateSelectedProcessForExperiment(this.projectId, this.experimentId, null);
-                //this.mcProcessesWorkflow.setSelectedProcess(null);
-            } else if (target.isNode()) {
-                //let edges = target.connectedEdges();
-                //edges.forEach((e) => console.log('source is ' + e.data('source')));
-                //console.log(target.connectedEdges());
-                let processId = target.data('id');
-                let process = this.processes.filter((p) => p.id === processId)[0];
-                this.workflowState.updateSelectedProcessForExperiment(this.projectId, this.experimentId, process, (target.outgoers().length > 0));
-                //this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
-                //this.mcProcessesWorkflow.setSelectedProcess(processId, (target.outgoers().length > 0));
-            } else if (target.isEdge()) {
-                //this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                //this.mcProcessesWorkflow.setSelectedProcess(null);
-                this.workflowState.updateSelectedProcessForExperiment(this.projectId, this.experimentId, null);
-            }
-        });
-        // Use this to show/hide certain menu items
-        // this.cy.on('cxttap', event => {
-        //     console.log('cxttap');
-        //     let target = event.cyTarget;
-        //     if (target.isNode()) {
-        //         console.log(' -- target is node', target.data('name'));
-        //     }
-        // });
-
-
-        //this.cy.on('mouseover', function(event) {
-        //    let target = event.cyTarget;
-        //    if (target.data) {
-        //        //log('target', target.data('name'));
-        //    }
-        //    // Need to install qtip or some other
-        //    //target.qtip({
-        //    //    content: target.data('name')
-        //    //});
-        //});
-        this.cy.layout({name: 'dagre', fit: true});
-        this.cy.panzoom();
         this.ctxMenu = this.setupContextMenus();
-        let edgeConfig = {
-            toggleOffOnLeave: true,
-            handleNodes: 'node',
-            handleSize: 10,
-            edgeType: (source, target) => {
-                let sourceProcess = source.data('details');
-                let targetProcess = target.data('details');
-                if (sourceProcess.output_samples.length === 0) {
-                    // source process has not output samples
-                    this.showAlert('No output samples to connect to process.');
-                    return null;
-                } else if (targetProcess.template_name === 'Create Samples') {
-                    // Create samples cannot be a target
-                    this.showAlert('Create Samples process type cannot be a target.');
-                    return null;
-                } else if (this.targetHasAllSourceSamples(targetProcess.input_samples, sourceProcess.output_samples)) {
-                    // Target already has all the source samples
-                    this.showAlert('Processes are already connected.');
-                    return null;
-                }
-                return 'flat';
-            },
-            complete: (source, target, addedEntities) => {
-                let sourceProcess = source.data('details');
-                let targetProcess = target.data('details');
-                if (sourceProcess.output_samples.length === 1) {
-                    this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, sourceProcess.output_samples).then(
-                        (process) => {
-                            this.replaceProcess(process);
-                            target.data('details', process);
+        let completeFN = (source, target, addedEntities) => {
+            let sourceProcess = source.data('details');
+            let targetProcess = target.data('details');
+            if (sourceProcess.output_samples.length === 1) {
+                this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, sourceProcess.output_samples).then(
+                    (process) => {
+                        this.replaceProcess(process);
+                        target.data('details', process);
+                    }
+                );
+            } else {
+                this.workflowService.chooseSamplesFromSource(sourceProcess).then(
+                    (samples) => {
+                        if (!samples.length) {
+                            // No samples brought over, delete edge
+                            addedEntities[0].remove();
+                        } else {
+                            this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, samples).then(
+                                (process) => {
+                                    this.replaceProcess(process);
+                                    target.data('details', process);
+                                }
+                            );
                         }
-                    );
-                } else {
-                    this.workflowService.chooseSamplesFromSource(sourceProcess).then(
-                        (samples) => {
-                            if (!samples.length) {
-                                // No samples brought over, delete edge
-                                addedEntities[0].remove();
-                            } else {
-                                this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, samples).then(
-                                    (process) => {
-                                        this.replaceProcess(process);
-                                        target.data('details', process);
-                                    }
-                                );
-                            }
-                        }
-                    );
-                }
-                //console.log('addedEntities', addedEntities, addedEntities[0].isEdge());
+                    }
+                );
             }
         };
-
-        this.cy.edgehandles(edgeConfig);
+        this.cyGraph.addEdgeHandles(this.cy, completeFN);
     }
 
     replaceProcess(process) {
@@ -300,35 +168,6 @@ class MCProcessesWorkflowGraphComponentController {
             this.processes.splice(i, 1);
             this.processes.push(process);
         }
-    }
-
-    showAlert(message) {
-        this.$mdDialog.show(this.$mdDialog.alert()
-            .title('Invalid Target Process')
-            .textContent(message)
-            .ok('dismiss'));
-    }
-
-    targetHasAllSourceSamples(targetSamples, sourceSamples) {
-        let sourceSamplesSeen = {};
-        sourceSamples.forEach((s) => {
-            sourceSamplesSeen[`${s.sample_id}/${s.property_set_id}`] = false;
-        });
-
-        targetSamples.forEach(s => {
-            let key = `${s.sample_id}/${s.property_set_id}`;
-            if (key in sourceSamplesSeen) {
-                sourceSamplesSeen[key] = true;
-            }
-        });
-        let hasAllSamples = true;
-        _.forOwn(sourceSamplesSeen, (value) => {
-            if (!value) {
-                hasAllSamples = false;
-            }
-        });
-
-        return hasAllSamples;
     }
 
     setupContextMenus() {

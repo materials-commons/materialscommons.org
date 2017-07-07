@@ -1,8 +1,9 @@
 /* global cytoscape:true */
-class CyService {
+class CyGraphService {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, workflowState) {
         this.$mdDialog = $mdDialog;
+        this.workflowState = workflowState;
     }
 
     createGraph(elements, domId) {
@@ -18,7 +19,6 @@ class CyService {
                         'text-halign': 'center',
                         'background-color': 'data(color)',
                         color: 'black',
-                        //'text-outline-color': 'data(color)',
                         'text-outline-color': (ele) => {
                             let c = ele.data('color');
                             return c ? c : '#fff';
@@ -28,12 +28,10 @@ class CyService {
                         'text-outline-width': '5px',
                         'text-outline-opacity': 1,
                         'border-width': '4px',
-                        //'border-color': 'data(highlight)',
                         'border-color': (ele) => {
                             let highlight = ele.data('highlight');
                             return highlight ? highlight : '#fff';
                         },
-                        //shape: 'data(shape)',
                         shape: (ele) => {
                             let shape = ele.data('shape');
                             return shape ? shape : 'triangle';
@@ -47,7 +45,6 @@ class CyService {
                     style: {
                         'width': 4,
                         'target-arrow-shape': 'triangle',
-                        //'target-arrow-color': '#9dbaea',
                         'curve-style': 'bezier',
                         'content': 'data(name)',
                         'font-weight': 'bold',
@@ -80,6 +77,21 @@ class CyService {
         return cy;
     }
 
+    setOnClickForExperiment(cy, projectId, experimentId) {
+        cy.on('click', event => {
+            let target = event.cyTarget;
+            if (!target.isNode && !target.isEdge) {
+                this.workflowState.updateSelectedProcessForExperiment(projectId, experimentId, null);
+            } else if (target.isNode()) {
+                let process = target.data('details');
+                this.workflowState.updateSelectedProcessForExperiment(projectId, experimentId, process,
+                    (target.outgoers().length > 0));
+            } else if (target.isEdge()) {
+                this.workflowState.updateSelectedProcessForExperiment(projectId, experimentId, null);
+            }
+        });
+    }
+
     addEdgeHandles(cy, completeFN) {
         let edgeConfig = {
             toggleOffOnLeave: true,
@@ -90,15 +102,15 @@ class CyService {
                 let targetProcess = target.data('details');
                 if (sourceProcess.output_samples.length === 0) {
                     // source process has not output samples
-                    this.showAlert('No output samples to connect to process.');
+                    this._showAlert('No output samples to connect to process.');
                     return null;
                 } else if (targetProcess.template_name === 'Create Samples') {
                     // Create samples cannot be a target
-                    this.showAlert('Create Samples process type cannot be a target.');
+                    this._showAlert('Create Samples process type cannot be a target.');
                     return null;
-                } else if (CyService._targetHasAllSourceSamples(targetProcess.input_samples, sourceProcess.output_samples)) {
+                } else if (CyGraphService._targetHasAllSourceSamples(targetProcess.input_samples, sourceProcess.output_samples)) {
                     // Target already has all the source samples
-                    this.showAlert('Processes are already connected.');
+                    this._showAlert('Processes are already connected.');
                     return null;
                 }
                 return 'flat';
@@ -131,13 +143,34 @@ class CyService {
         return hasAllSamples;
     }
 
-    showAlert(message) {
+    _showAlert(message) {
         this.$mdDialog.show(this.$mdDialog.alert()
             .title('Invalid Target Process')
             .textContent(message)
             .ok('dismiss'));
     }
 
+// Use this to show/hide certain menu items
+    // this.cy.on('cxttap', event => {
+    //     console.log('cxttap');
+    //     let target = event.cyTarget;
+    //     if (target.isNode()) {
+    //         console.log(' -- target is node', target.data('name'));
+    //     }
+    // });
+
+
+    //this.cy.on('mouseover', function(event) {
+    //    let target = event.cyTarget;
+    //    if (target.data) {
+    //        //log('target', target.data('name'));
+    //    }
+    //    // Need to install qtip or some other
+    //    //target.qtip({
+    //    //    content: target.data('name')
+    //    //});
+    //});
+
 }
 
-angular.module('materialscommons').service('cy', CyService);
+angular.module('materialscommons').service('cyGraph', CyGraphService);

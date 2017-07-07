@@ -48,4 +48,4 @@ import './workflow/services/mc-clone-process-select-samples.component';
 import './workflow/services/mc-clone-process-select-files.component';
 import './workflow/services/workflow-process-templates.service';
 import './workflow/services/workflow-state.service';
-import './workflow/services/cy.service';
+import './workflow/services/cy-graph.service';
