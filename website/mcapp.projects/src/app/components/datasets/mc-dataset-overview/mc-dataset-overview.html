@@ -1,7 +1,9 @@
 <div layout="column" layout-margin>
     {{$ctrl.dataset.title}}
     <mc-dataset-overview-summary dataset="$ctrl.dataset"></mc-dataset-overview-summary>
-    <mc-processes-workflow processes="$ctrl.dataset.processes"></mc-processes-workflow>
+    <mc-processes-workflow ng-if="$ctrl.showProcessesWorkflow"
+                           processes="$ctrl.dataset.processes"></mc-processes-workflow>
+    <mc-dataset-workflow ng-if="!$ctrl.showProcessesWorkflow" dataset="$ctrl.dataset"></mc-dataset-workflow>
     <div ng-if="$ctrl.dataset.files">
         <h4>
             Files ({{::$ctrl.dataset.files.length}})

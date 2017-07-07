@@ -2,6 +2,7 @@ class MCDatasetOverviewComponentController {
     /*@ngInject*/
     constructor(User) {
         this.showFiles = User.isAuthenticated();
+        this.showProcessesWorkflow = false;
     }
 }
 
