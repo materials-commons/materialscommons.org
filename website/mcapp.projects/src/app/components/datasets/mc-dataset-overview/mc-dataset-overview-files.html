@@ -11,29 +11,16 @@
             <tbody>
             <tr ng-show="!$ctrl.isAuthenticated"
                 dir-paginate="file in $ctrl.dataset.files | itemsPerPage: 12">
-                <td ng-if="$ctrl.user">
-                    <div ng-if="$ctrl.isImage(file.mediatype.mime)">
-                        <md-button class="md-primary" ui-sref="project.files.file({file_id: file.id})"
-                                   aria-label="view file">
-                            <img class="img-thumbnail" height="140" width="140"
-                                 ng-src="{{$ctrl.fileSrc(file.id)}}">
-                        </md-button>
-                    </div>
-                    <!--<display-file-contents file="file"></display-file-contents>-->
-                </td>
                 <td>{{file.name}}</td>
                 <td>{{file.mediatype.mime}}</td>
-                <td>{{file.size | bytesFilter}}</td>
+                <td>{{file.size | bytes}}</td>
             </tr>
             <tr ng-show="$ctrl.isAuthenticated" ng-click="$ctrl.openImage(file)"
                 dir-paginate="file in $ctrl.dataset.files | itemsPerPage: 12">
                 <td>
                     <div ng-if="$ctrl.isImage(file.mediatype.mime)">
-                        <md-button class="md-primary" ui-sref="project.files.file({file_id: file.id})"
-                                   aria-label="view file">
-                            <img class="img-thumbnail" height="140" width="140"
-                                 ng-src="{{$ctrl.fileSrc(file.id)}}">
-                        </md-button>
+                        <img class="img-thumbnail" height="140" width="140"
+                             ng-src="{{$ctrl.fileSrc(file.original_id)}}">
                     </div>
                 </td>
                 <td>{{file.name}}</td>
