@@ -98,8 +98,8 @@ function createResource() {
     router.delete('/:project_id', ra.validateProjectOwner, deleteProject);
     router.get('/:project_id/delete/dryrun', ra.validateProjectOwner, deleteProjectDryRun);
 
-    router.get('/:project_id/access', getUserAccessForProject);
-    router.put('/:project_id/access', updateUserAccessForProject);
+    router.get('/:project_id/access', ra.validateProjectOwner, getUserAccessForProject);
+    router.put('/:project_id/access', ra.validateProjectOwner, updateUserAccessForProject);
 
     let samplesResource = samples.createResource();
     router.use('/:project_id/samples', samplesResource.routes(), samplesResource.allowedMethods());
