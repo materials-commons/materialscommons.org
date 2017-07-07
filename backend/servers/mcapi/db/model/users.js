@@ -10,7 +10,7 @@ function* getUsers() {
 
 // getAllUsersExternal returns all the users in the database; cleaned for external only
 function* getAllUsersExternal() {
-    return yield r.table('users').without('admin', 'apikey', 'password');
+    return yield r.table('users').without('admin', 'isTemplateAdmin', 'apikey', 'password');
 }
 
 // getUser gets the user by index. If no index is given then it
