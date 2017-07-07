@@ -4,6 +4,8 @@ class MCDatasetWorkflowComponentController {
         this.mcbus = mcbus;
         this.workflowState = workflowState;
         this.toast = toast;
+        this.showWorkspace = true;
+        this.showGraphView = true;
     }
 
     $onInit() {
