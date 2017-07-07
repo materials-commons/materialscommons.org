@@ -424,6 +424,12 @@ a {
   position: absolute;
 }
 
+#datasetGraph {
+  width: 90%;
+  height: 75%;
+  position: absolute;
+}
+
 .outline-node-selected {
   background-color: $mc-dark-grey;
 }
