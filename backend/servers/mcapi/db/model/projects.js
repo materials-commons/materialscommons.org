@@ -259,7 +259,13 @@ function* updateUserAccessForProject(projectId, attrs){
         }
     }
     if (attrs.action == 'delete') {
-
+        let user_id = attrs.user_id;
+        let hit = yield r.table("access").getAll(projectId,{index: 'project_id'})
+            .filter({user_id: user_id})
+        if ( hit.length != 0 ) {
+            yield r.table("access").get(hit[0].id).delete();
+        }
+        results = {val: user_id};
     }
     return results;
 }
