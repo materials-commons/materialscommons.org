@@ -4,8 +4,8 @@ const getSingle = require('./get-single');
 const model = require('./model');
 
 // getUsers returns all the users in the database.
-function getUsers() {
-    return r.table('users').run();
+function* getUsers() {
+    return r.table('users').without('admin', 'apikey', 'password');
 }
 
 // getUser gets the user by index. If no index is given then it
