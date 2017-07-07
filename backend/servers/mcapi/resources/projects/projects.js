@@ -76,6 +76,18 @@ function* update(next) {
     yield next;
 }
 
+function* getUserAccessForProject(next) {
+    this.body = yield projects.getUserAccessForProject(this.params.project_id);
+    yield next;
+}
+
+function* updateUserAccessForProject(next) {
+    let attrs = yield parse(this);
+    this.body = yield projects.updateUserAccessForProject(this.params.project_id,attrs);
+    yield next;
+}
+
+
 function createResource() {
     const router = new Router();
     router.get('/', all);
@@ -86,6 +98,8 @@ function createResource() {
     router.delete('/:project_id', ra.validateProjectOwner, deleteProject);
     router.get('/:project_id/delete/dryrun', ra.validateProjectOwner, deleteProjectDryRun);
 
+    router.get('/:project_id/access', getUserAccessForProject);
+    router.put('/:project_id/access', updateUserAccessForProject);
 
     let samplesResource = samples.createResource();
     router.use('/:project_id/samples', samplesResource.routes(), samplesResource.allowedMethods());

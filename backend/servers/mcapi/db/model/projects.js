@@ -235,6 +235,23 @@ function* addFileToProject(projectID, fileID) {
     yield r.table('project2datafile').insert(link);
 }
 
+function* getUserAccessForProject(projectId){
+    let results = yield r.table('access').getAll(projectId, {index: 'project_id'}).pluck('user_id');
+    return {val: results};
+}
+
+function* updateUserAccessForProject(projectId, attrs){
+    let results = {error: "Bad action request - updateUserAccessForProject - " + attrs.action}
+    if (attrs.action == 'add') {
+
+    }
+    if (attrs.action == 'delete') {
+
+    }
+    return results;
+}
+
+
 module.exports = {
     all: all,
     createProject,
@@ -244,5 +261,7 @@ module.exports = {
     },
     addFileToProject,
     getProject: getProject,
-    update: update
+    update: update,
+    getUserAccessForProject,
+    updateUserAccessForProject
 };
