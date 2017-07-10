@@ -1,9 +1,9 @@
 class WorkflowStateService {
     /*@ngInject*/
-    constructor(mcstate, experimentsAPI, publidDatasetsAPI, toast) {
+    constructor(mcstate, experimentsAPI, publicDatasetsAPI, toast) {
         this.mcstate = mcstate;
         this.experimentsAPI = experimentsAPI;
-        this.publicDatasetsAPI = publidDatasetsAPI;
+        this.publicDatasetsAPI = publicDatasetsAPI;
         this.toast = toast;
 
         this.processes = [];
