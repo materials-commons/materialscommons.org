@@ -1,9 +1,30 @@
 class MCDatasetWorkflowToolbarComponentController {
     /*@ngInject*/
-    constructor(mcbus, mcstate) {
+    constructor(mcbus, mcstate, publicDatasetsAPI, mcshow) {
         this.mcbus = mcbus;
-        this.showingWorkflowGraph = true;
         this.mcstate = mcstate;
+        this.publicDatasetsAPI = publicDatasetsAPI;
+        this.mcshow = mcshow;
+
+        this.showingWorkflowGraph = true;
+    }
+
+    $onInit() {
+        let cb = (selected) => this.$timeout(() => {
+            this.selectedProcess = selected;
+            console.log('cb selected', selected)
+        });
+        this.mcstate.subscribe(this.mcstate.SELECTED$PROCESS, this.myName, cb);
+    }
+
+    $onDestroy() {
+        this.mcstate.leave(this.mcstate.SELECTED$PROCESS, this.myName);
+    }
+
+    showSelectedProcess() {
+        this.publicDatasetsAPI.getDatasetProcess(this.dataset.id, this.selectedProcess.id).then(
+            p => this.mcshow.processDetailsDialogRO(p, false)
+        );
     }
 
     toggleNavigator() {

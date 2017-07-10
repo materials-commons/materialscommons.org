@@ -84,12 +84,27 @@ class CyGraphService {
                 this.workflowState.updateSelectedProcessForExperiment(projectId, experimentId, null);
             } else if (target.isNode()) {
                 let process = target.data('details');
-                this.workflowState.updateSelectedProcessForExperiment(projectId, experimentId, process,
-                    (target.outgoers().length > 0));
+                let hasChildren = (target.outgoers().length > 0);
+                this.workflowState.updateSelectedProcessForExperiment(projectId, experimentId, process, hasChildren);
             } else if (target.isEdge()) {
                 this.workflowState.updateSelectedProcessForExperiment(projectId, experimentId, null);
             }
         });
+    }
+
+    setOnClickForDataset(cy, datasetId) {
+        cy.on('click', event => {
+            let target = event.cyTarget;
+            if (!target.isNode && !target.isEdge) {
+                this.workflowState.updateSelectedProcessForDataset(datasetId, null);
+            } else if (target.isNode()) {
+                let process = target.data('details');
+                let hasChildren = (target.outgoers().length > 0);
+                this.workflowState.updateSelectedProcessForExperiment(datasetId, process, hasChildren);
+            } else if (target.isEdge()) {
+                this.workflowState.updateSelectedProcessForExperiment(datasetId, null);
+            }
+        })
     }
 
     addEdgeHandles(cy, completeFN) {

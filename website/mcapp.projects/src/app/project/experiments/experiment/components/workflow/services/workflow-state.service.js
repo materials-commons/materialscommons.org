@@ -1,8 +1,9 @@
 class WorkflowStateService {
     /*@ngInject*/
-    constructor(mcstate, experimentsAPI, toast) {
+    constructor(mcstate, experimentsAPI, publidDatasetsAPI, toast) {
         this.mcstate = mcstate;
         this.experimentsAPI = experimentsAPI;
+        this.publicDatasetsAPI = publidDatasetsAPI;
         this.toast = toast;
 
         this.processes = [];
@@ -37,6 +38,26 @@ class WorkflowStateService {
                         this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
                     }
                 );
+        } else {
+            this.selectedProcess = null;
+            this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
+        }
+    }
+
+    updateSelectedProcessForDataset(datasetId, process, hasChildren) {
+        if (process) {
+            this.publicDatasetsAPI.getDatasetProcess(datasetId, process.id)
+                .then(
+                    (process) => {
+                        process.hasChildren = hasChildren;
+                        this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
+                    },
+                    () => {
+                        this.toast.error('Unable to retrieve process details');
+                        this.selectedProcess = null;
+                        this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
+                    }
+                )
         } else {
             this.selectedProcess = null;
             this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
