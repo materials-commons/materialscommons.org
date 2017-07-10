@@ -11,10 +11,12 @@ class MCDatasetWorkflowToolbarComponentController {
 
     showWorkflowGraph() {
         this.showingWorkflowGraph = true;
+        this.mcbus.send('WORKFLOW$VIEW', 'graph');
     }
 
     showWorkflowOutline() {
         this.showingWorkflowGraph = false;
+        this.mcbus.send('WORKFLOW$VIEW', 'outline');
     }
 }
 
