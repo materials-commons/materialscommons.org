@@ -409,7 +409,6 @@ function* getVersions(fileID) {
 }
 
 module.exports = {
-    countInProject,
     get,
     getAllByChecksum,
     getList,
