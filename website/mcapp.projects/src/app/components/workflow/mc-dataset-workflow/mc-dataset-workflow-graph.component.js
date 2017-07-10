@@ -45,9 +45,7 @@ class MCDatasetWorkflowGraphComponentController {
         if (target.isNode()) {
             let processId = target.data('id');
             this.publicDatasetsAPI.getDatasetProcess(this.dataset.id, processId).then(
-                p => this.mcshow.processDetailsDialog(p, false).then(
-                    updatedProcess => target.data('name', updatedProcess.name)
-                )
+                p => this.mcshow.processDetailsDialogRO(p, false)
             );
         }
     }
