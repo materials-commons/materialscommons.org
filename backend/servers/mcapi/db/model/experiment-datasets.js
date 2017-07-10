@@ -43,6 +43,10 @@ function* createDatasetForExperiment(experimentId, userId, datasetArgs) {
 }
 
 function* deleteDataset(datasetId) {
+    let dataset = yield getDataset(datasetId);
+    if (dataset.published || dataset.doi) {
+        return {val: false};
+    }
     yield r.table('datasets').get(datasetId).delete();
     yield r.table('experiment2dataset').getAll(datasetId, {index: 'dataset_id'}).delete();
     yield r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();

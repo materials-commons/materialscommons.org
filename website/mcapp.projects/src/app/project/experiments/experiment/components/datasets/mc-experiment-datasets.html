@@ -7,7 +7,7 @@
         <table md-table>
             <thead md-head>
             <tr md-row>
-                <th md-column>Title</th>
+                <th md-column>Title (delete)</th>
                 <th md-column>Description</th>
                 <th md-column># Samples</th>
                 <th md-column># Processes</th>
@@ -18,10 +18,15 @@
             <tbody md-body>
             <tr md-row class="md-row-hover" ng-repeat="ds in $ctrl.datasets | orderBy:'title'">
                 <td md-cell>
-                    <a class="mc-error-color" ng-click="$ctrl.removeDataset(ds.id)">
-                        <i class="fa fa-fw fa-remove"></i>
-                    </a>
                     <a ng-click="$ctrl.openDataset(ds.id)">{{::ds.title}}</a>
+                    <span ng-if="ds.published ">
+                        (<i class="fa fa-fw fa-ban"></i>)
+                    </span>
+                    <span class="mc-error-color" ng-if="!ds.published ">
+                        (<a class="mc-error-color" ng-click="$ctrl.removeDataset(ds.id)">
+                            <i class="fa fa-fw fa-remove"></i>
+                        </a>)
+                    </span>
                 </td>
                 <td md-cell>{{::ds.description}}</td>
                 <td md-cell>{{::ds.samples}}</td>

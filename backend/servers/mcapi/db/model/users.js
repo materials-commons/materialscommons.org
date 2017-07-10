@@ -3,9 +3,14 @@ const _ = require('lodash');
 const getSingle = require('./get-single');
 const model = require('./model');
 
-// getUsers returns all the users in the database.
-function getUsers() {
-    return r.table('users').run();
+// getUsers returns all the users in the database. Internal use only
+function* getUsers() {
+    return r.table('users');
+}
+
+// getAllUsersExternal returns all the users in the database; cleaned for external only
+function* getAllUsersExternal() {
+    return yield r.table('users').without('admin', 'isTemplateAdmin', 'apikey', 'password');
 }
 
 // getUser gets the user by index. If no index is given then it
@@ -105,6 +110,7 @@ function* getUserRegistrationFromUuid(uuid) {
 
 module.exports = {
     getUsers: getUsers,
+    getAllUsersExternal,
     getUser: getUser,
     get: function(id, index) {
         return getSingle(r, 'users', id, index);

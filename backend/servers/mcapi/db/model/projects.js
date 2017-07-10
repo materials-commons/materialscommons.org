@@ -235,6 +235,42 @@ function* addFileToProject(projectID, fileID) {
     yield r.table('project2datafile').insert(link);
 }
 
+function* getUserAccessForProject(projectId){
+    let results = yield r.table('access').getAll(projectId, {index: 'project_id'}).pluck('user_id');
+    return {val: results};
+}
+
+function* updateUserAccessForProject(projectId, attrs){
+    let results = {error: "Bad action request - updateUserAccessForProject - " + attrs.action}
+    if (attrs.action == 'add') {
+        let user_id = attrs.user_id;
+        let exists = yield r.table('users').get(user_id);
+        if (!exists) {
+            results = {error: "Bad request for add - updateUserAccessForProject - invalid: " + user_id}
+        } else {
+            let duplicate = yield r.table("access").getAll(projectId,{index: 'project_id'})
+                .filter({user_id: user_id});
+            if ( duplicate.length == 0 ) {
+                let name_entry = yield r.table("projects").get(projectId).pluck('name');
+                let access_doc = new model.Access(name_entry['name'], projectId, user_id);
+                yield r.table('access').insert(access_doc);
+            }
+            results = {val: user_id};
+        }
+    }
+    if (attrs.action == 'delete') {
+        let user_id = attrs.user_id;
+        let hit = yield r.table("access").getAll(projectId,{index: 'project_id'})
+            .filter({user_id: user_id});
+        if ( hit.length != 0 ) {
+            yield r.table("access").get(hit[0].id).delete();
+        }
+        results = {val: user_id};
+    }
+    return results;
+}
+
+
 module.exports = {
     all: all,
     createProject,
@@ -244,5 +280,7 @@ module.exports = {
     },
     addFileToProject,
     getProject: getProject,
-    update: update
+    update: update,
+    getUserAccessForProject,
+    updateUserAccessForProject
 };

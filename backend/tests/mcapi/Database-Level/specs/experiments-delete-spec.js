@@ -91,6 +91,40 @@ describe('Feature - Experiments: ', function () {
             yield testDatasets({assertExists: true});
 
         });
+        it('does not delete an experiment with a dataset that has an assigned DOI', function*() {
+
+            this.timeout(8000); // test take up to 8 seconds
+
+            yield setup();
+
+            let project_id = project.id;
+            assert.isOk(project_id);
+            let experiment_id = experiment.id;
+            assert.isOk(experiment_id);
+
+            let idList = [];
+            for (let i = 0; i < datasetList.length; i++) {
+                idList.push(datasetList[i].id);
+            }
+
+            yield testDatasets({assertExists: true});
+
+            // fake a doi on one of the datasets
+            let datasetId = idList[0];
+            let fakeDOI = "fakeDOI";
+            let status = yield r.table('datasets').get(datasetId).update({doi: fakeDOI});
+            if (status.replaced != 1) {
+                assert.fail(`Update of DOI in dataset, ${datasetId}, failed.`);
+            }
+
+            // delete experiment - fails
+            let results = yield experimentDelete.deleteExperiment(project_id, experiment_id);
+            assert.isOk(results);
+            assert.isOk(results.error);
+
+            yield testDatasets({assertExists: true});
+
+        });
         it('deletes experiment and all its parts', function*() {
 
             this.timeout(8000); // test take up to 8 seconds
@@ -187,7 +221,7 @@ describe('Feature - Experiments: ', function () {
             yield testNotesAndReviews({assertExists: false});
 
         });
-        it('with dry run true, delete process true - shows all to be deleted', function*() {
+        it('with dry run true, delete process true - shows all will be deleted', function*() {
 
             this.timeout(8000); // test take up to 8 seconds
 
@@ -235,7 +269,7 @@ describe('Feature - Experiments: ', function () {
             yield testNotesAndReviews({assertExists: true});
 
         });
-        it('with dry run true, delete process false - shows some to be deleted', function*() {
+        it('with dry run true, delete process false - shows some will be deleted', function*() {
 
             this.timeout(8000); // test take up to 8 seconds
 

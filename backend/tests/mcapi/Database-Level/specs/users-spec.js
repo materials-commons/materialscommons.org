@@ -30,8 +30,34 @@ before(function*() {
 });
 
 describe('Feature - Users: ', function() {
+    describe('Standard Test Users', function() {
+        it('each users exist - internal use', function* () {
+            let users = yield dbModelUsers.getUsers();
+            let ids = [];
+            for (let i = 0; i < users.length; i++) {
+                let user = users[i];
+                ids.push(user.id);
+            }
+            assert(ids.indexOf("test@test.mc") > -1);
+            assert(ids.indexOf("another@test.mc") > -1);
+            assert(ids.indexOf("admin@test.mc") > -1);
+            assert(ids.indexOf("tadmin@test.mc") > -1);
+        });
+        it('each users exist - external use', function* () {
+            let users = yield dbModelUsers.getAllUsersExternal();
+            let ids = [];
+            for (let i = 0; i < users.length; i++) {
+                let user = users[i];
+                ids.push(user.id);
+            }
+            assert(ids.indexOf("test@test.mc") > -1);
+            assert(ids.indexOf("another@test.mc") > -1);
+            assert(ids.indexOf("admin@test.mc") > -1);
+            assert(ids.indexOf("tadmin@test.mc") > -1);
+        });
+    });
     describe('User Profile', function () {
-        it('can store values', function* (){
+        it('can store values', function* () {
             let name = random_name("test value - ");
             let value = name;
             let probe = yield dbModelProfile.storeInUserProfile(userId, name, value);

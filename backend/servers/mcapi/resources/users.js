@@ -119,6 +119,12 @@ function* getUser(next) {
     yield next;
 }
 
+function* getAllUsers(next) {
+    let allUsersList = yield users.getAllUsersExternal();
+    this.body = {val: allUsersList};
+    yield next;
+}
+
 function* becomeUser(next) {
     if (!this.reqctx.user.isAdmin) {
         this.status = status.BAD_REQUEST;
@@ -469,9 +475,10 @@ function mailTransportConfig() {
 }
 
 function createResource(router) {
-    router.put('/users/:project_id', ra.validateProjectAccess, updateProjectFavorites);
+    router.get('/users', getAllUsers);
     router.put('/users', updateUserSettings);
     router.get('/users/:user_id', getUser);
+    router.put('/users/:project_id', ra.validateProjectAccess, updateProjectFavorites);
     router.get('/users/:user_id/profiles/:name',getValueFromProfile);
     router.put('/users/:user_id/profiles/:name',updateValueInProfile);
     router.delete('/users/:user_id/profiles/:name',deleteValueInPreofile);

@@ -15,6 +15,11 @@ function* deleteExperiment(projectId, experimentId, options) {
         return {error: "Can not delete an experiment with published datasets"}
     }
 
+    let hasDOIAssigned = yield testForDOIAssigned(experimentId);
+    if (hasDOIAssigned) {
+        return {error: "Can not delete an experiment with a dataset that has a DOI assigned"}
+    }
+
     let overallResults = {};
 
     overallResults['datasets'] = yield deleteDataSets(experimentId, dryRun);
@@ -70,6 +75,20 @@ function* testForPublishedDataasets(experimentId) {
         }
     }
     return hasPublishedDatasets;
+}
+
+function* testForDOIAssigned(experimentId) {
+    let results = yield experimentDatasets.getDatasetsForExperiment(experimentId);
+    let datasetList = results.val;
+
+    let hasDOIAssigned = false;
+    for (let i = 0; i < datasetList.length; i++) {
+        let dataset = datasetList[i];
+        if (dataset.doi) {
+            hasDOIAssigned = true;
+        }
+    }
+    return hasDOIAssigned;
 }
 
 function* deleteDataSets(experimentId, dryRun) {
