@@ -13,10 +13,12 @@
         <span flex></span>
         <div layout="row">
             <a ng-click="$ctrl.showWorkflowGraph()"
+               tooltip="Tree view"
                ng-class="{'view-selected': $ctrl.showingWorkflowGraph}">
                 <i class="fa fa-fw fa-sitemap" style="margin-left: 3px"></i>
             </a>
             <a ng-click="$ctrl.showWorkflowOutline()"
+               tooltip="Outline view"
                ng-class="{'view-selected': !$ctrl.showingWorkflowGraph}">
                 <i class="fa fa-fw fa-th-list" style="margin-left: 3px"></i>
             </a>
