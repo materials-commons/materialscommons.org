@@ -43,7 +43,8 @@ function* createDatasetForExperiment(experimentId, userId, datasetArgs) {
 }
 
 function* deleteDataset(datasetId) {
-    let dataset = yield getDataset(datasetId);
+    let results = yield getDataset(datasetId);
+    let dataset = results.val;
     if (dataset.published || dataset.doi) {
         return {val: false};
     }
