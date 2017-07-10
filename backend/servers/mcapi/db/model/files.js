@@ -6,17 +6,6 @@ const model = require('./model');
 const path = require('path');
 const fileUtils = require('../../../lib/create-file-utils');
 
-// As of 19 April 2017, it appears that this function is not being used.
-// Specifically, files in the demo project, at this time, do not have
-// a project_id field, and that field is not in the file specification in
-// the object model, model.js -- no UI errors were found for the demo project
-// and the project appears to be getting file counts from the function
-// addComputed in project.js - also see Issue #1026 - Terry Weymouth
-function* countInProject(ids, projectID) {
-    let rql = r.table('datafiles').getAll(r.args(ids));
-    return yield rql.filter({project_id: projectID}).count();
-}
-
 // get details on a file
 function* get(file_id) {
     let rql = r.table('datafiles').get(file_id).merge(function() {
