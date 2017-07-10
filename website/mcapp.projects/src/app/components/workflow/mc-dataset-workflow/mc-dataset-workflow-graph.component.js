@@ -1,9 +1,11 @@
 class MCDatasetWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, cyGraph, mcbus, mcshow, publicDatasetsAPI) {
+    constructor(processGraph, cyGraph, mcbus, mcstate, $filter, mcshow, publicDatasetsAPI) {
         this.processGraph = processGraph;
         this.cyGraph = cyGraph;
         this.mcbus = mcbus;
+        this.mcstate = mcstate;
+        this.$filter = $filter;
         this.mcshow = mcshow;
         this.publicDatasetsAPI = publicDatasetsAPI;
 
@@ -21,8 +23,37 @@ class MCDatasetWorkflowGraphComponentController {
                 this.navigator.resize();
             }
         });
+
+        let searchcb = (search) => {
+            if (search === '') {
+                if (this.removedNodes !== null) {
+                    this.removedNodes.restore();
+                    this.cy.layout({name: 'dagre', fit: true});
+                }
+                return;
+            }
+            this.removedNodes = null;
+            let matches = this.$filter('filter')(this.dataset.processes, search);
+            if (!matches.length) {
+                return;
+            }
+            let matchesById = _.indexBy(matches, 'id');
+            let matchingNodes = this.cy.nodes().filter((i, ele) => {
+                let processId = ele.data('details').id;
+                return (!(processId in matchesById));
+
+            });
+            this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
+            this.cy.layout({name: 'dagre', fit: true});
+        };
+
+        this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, searchcb);
     }
 
+    $onDestroy() {
+        this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
+        this.mcbus.leave('WORKFLOW$NAVIGATOR', this.myName);
+    }
 
     allProcessesGraph() {
         let g = this.processGraph.build(this.dataset.processes);

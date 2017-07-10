@@ -1,8 +1,9 @@
 class MCDatasetWorkflowToolbarComponentController {
     /*@ngInject*/
-    constructor(mcbus) {
+    constructor(mcbus, mcstate) {
         this.mcbus = mcbus;
         this.showingWorkflowGraph = true;
+        this.mcstate = mcstate;
     }
 
     toggleNavigator() {
@@ -17,6 +18,10 @@ class MCDatasetWorkflowToolbarComponentController {
     showWorkflowOutline() {
         this.showingWorkflowGraph = false;
         this.mcbus.send('WORKFLOW$VIEW', 'outline');
+    }
+
+    search() {
+        this.mcstate.set('WORKFLOW$SEARCH', this.query);
     }
 }
 
