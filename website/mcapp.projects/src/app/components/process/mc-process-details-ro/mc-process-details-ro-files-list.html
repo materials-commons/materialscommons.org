@@ -1,0 +1,26 @@
+<div flex="100">
+    <table flex="100" style="width:100%">
+        <thead>
+        <th ng-if="$ctrl.isAuthenticated">Thumbnail</th>
+        <th>File Name</th>
+        <th>File Type</th>
+        <th>size</th>
+        </thead>
+        <tbody>
+        <tr ng-if="$ctrl.isAuthenticated" ng-click="$ctrl.openImage(file)"
+            dir-paginate="file in $ctrl.files | itemsPerPage: 12">
+            <td ng-if="$ctrl.isAuthenticated">
+                <div ng-if="$ctrl.isImage(file.mediatype.mime)">
+                    <img class="img-thumbnail" height="140" width="140" ng-src="{{$ctrl.fileSrc(file.original_id)}}">
+                </div>
+            </td>
+            <td>{{file.name}}</td>
+            <td>{{file.mediatype.mime}}</td>
+            <td>{{file.size | bytes}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <dir-pagination-controls></dir-pagination-controls>
+    </div>
+</div>
