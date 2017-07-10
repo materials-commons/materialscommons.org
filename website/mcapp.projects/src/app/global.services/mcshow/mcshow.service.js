@@ -30,6 +30,19 @@ class MCShowService {
             });
     }
 
+    processDetailsDialogRO(process, multiple = true) {
+        this.$mdDialog.show({
+            templateUrl: 'app/global.services/mcshow/process-details-dialog-ro.html',
+            controller: CommonDoneDismissDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            multiple: multiple,
+            locals: {
+                process: process
+            }
+        });
+    }
+
     projectOverviewDialog(project, multiple = true) {
         this.$mdDialog.show({
             templateUrl: 'app/global.services/mcshow/partials/project-overview-dialog.html',
