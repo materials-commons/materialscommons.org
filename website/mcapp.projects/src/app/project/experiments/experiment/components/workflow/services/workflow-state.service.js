@@ -50,7 +50,6 @@ class WorkflowStateService {
     leaveSelectedProcess(name) {
         this.mcstate.leave(this.mcstate.SELECTED$PROCESS, name);
     }
-
 }
 
 angular.module('materialscommons').service('workflowState', WorkflowStateService);
