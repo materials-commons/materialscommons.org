@@ -18,6 +18,21 @@ class MCExperimentDatasetsComponentController {
             );
     }
 
+    canDelete(ds) {
+        return !ds.doi && !ds.published;
+    }
+
+    deleteTooltip (ds) {
+        let tooltip = "Click to delete this dataset.";
+        if (ds.doi) {
+            tooltip = "Can not delete a dataset with an assigned DOI"
+        } else if (ds.published) {
+            tooltip = "Can not delete a dataset that is published; unpublish dataset first."
+        }
+        return tooltip;
+    }
+
+
     createNewDataset() {
         this.$mdDialog.show({
             templateUrl: 'app/project/experiments/experiment/components/datasets/new-dataset-dialog.html',

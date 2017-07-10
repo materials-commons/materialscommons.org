@@ -17,12 +17,12 @@
             </thead>
             <tbody md-body>
             <tr md-row class="md-row-hover" ng-repeat="ds in $ctrl.datasets | orderBy:'title'">
-                <td md-cell>
+                <td md-cell >
                     <a ng-click="$ctrl.openDataset(ds.id)">{{::ds.title}}</a>
-                    <span ng-if="ds.published ">
+                    <span ng-if="!$ctrl.canDelete(ds)" tooltip="{{$ctrl.deleteTooltip(ds)}}">
                         (<i class="fa fa-fw fa-ban"></i>)
                     </span>
-                    <span class="mc-error-color" ng-if="!ds.published ">
+                    <span class="mc-error-color" ng-if="$ctrl.canDelete(ds) " tooltip="{{::$ctrl.deleteTooltip(ds)}}">
                         (<a class="mc-error-color" ng-click="$ctrl.removeDataset(ds.id)">
                             <i class="fa fa-fw fa-remove"></i>
                         </a>)
