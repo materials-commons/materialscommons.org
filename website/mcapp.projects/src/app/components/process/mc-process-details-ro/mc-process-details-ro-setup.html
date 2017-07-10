@@ -1,0 +1,28 @@
+<div>
+    <div ng-if="$ctrl.processHasSetupValues">
+        <h5><strong>Setup</strong></h5>
+        <table ng-if="$ctrl.processHasSetupValues">
+            <thead class="field-value">
+            <th>Setup For</th>
+            <th>Property</th>
+            <th>Value</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat-start="setupItem in $ctrl.processSetupWithValues" ng-show="setupItem.properties.length">
+                <td>{{setupItem.name}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr ng-repeat-end ng-repeat="prop in setupItem.properties | orderBy:'name'">
+                <td></td>
+                <td>{{prop.name}}</td>
+                <td>
+                    <mc-process-details-ro-setup-property-value
+                            property="prop"></mc-process-details-ro-setup-property-value>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <h5 ng-if="!$ctrl.processHasSetupValues"><strong>No setup information</strong></h5>
+</div>
