@@ -104,15 +104,12 @@ class NavbarComponentController {
         )
     }
 
-    switchSites() {
-        this.$mdDialog.show({
-            templateUrl: 'app/global.components/navbar/switch-sites.html',
-            controller: MCSwitchSitesDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true
-        }).then(
-            (sref) => this.$state.go(sref)
-        );
+    projectSiteActive() {
+        return this.$state.current.name.startsWith('project');
+    }
+
+    dataSiteActive() {
+        return this.$state.current.name.startsWith('data');
     }
 
     switchToUser() {
@@ -181,21 +178,6 @@ class MCLoginDialogController {
                 this.message = "Incorrect Password/Username!";
                 this.toast.error(reason.error);
             }).put({password: this.password});
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
-
-class MCSwitchSitesDialogController {
-    /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
-
-    switchTo(sref) {
-        this.$mdDialog.hide(sref);
     }
 
     cancel() {
