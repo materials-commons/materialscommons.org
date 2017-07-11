@@ -49,6 +49,10 @@ class MCProcessesWorkflowOutlineComponentController {
         }
     }
 
+    focusOn(process) {
+        this.mcbus.send('WORKFLOW$HIDEOTHERS', process);
+    }
+
     buildOutline() {
         let t = this.processTree.build(this.processes, this.highlightProcesses);
         this.root = t.root;

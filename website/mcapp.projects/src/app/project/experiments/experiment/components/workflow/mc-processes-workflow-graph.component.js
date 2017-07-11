@@ -65,6 +65,17 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcbus.subscribe('PROCESS$DELETE', this.myName, (process) => console.log('PROCESS$DELETE', process));
         this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
+        this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, process => {
+            let target = this.cy.filter(`node[id = "${process.id}"]`);
+            let nodesToKeep = getRemovableChildren(target).union(target);
+            let nodesToRemove = nodesToKeep.absoluteComplement();
+            let hidden = this.cy.remove(nodesToRemove);
+            if (this.hiddenNodes.length) {
+                this.hiddenNodes = this.hiddenNodes.union(hidden);
+            } else {
+                this.hiddenNodes = hidden;
+            }
+        });
 
         let searchcb = (search) => {
             if (search === '') {
