@@ -75,7 +75,9 @@ class ProcessTreeService {
     }
 
     clearSelected(root) {
-        root.walk((node) => { node.model.selected = false; });
+        root.walk((node) => {
+            node.model.selected = false;
+        });
     }
 
     static buildHighlightedProcesses(highlightProcesses) {
