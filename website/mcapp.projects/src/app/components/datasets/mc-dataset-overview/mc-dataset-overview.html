@@ -1,5 +1,4 @@
 <div layout="column" layout-margin>
-    {{$ctrl.dataset.title}}
     <mc-dataset-overview-summary dataset="$ctrl.dataset"></mc-dataset-overview-summary>
     <mc-processes-workflow ng-if="$ctrl.showProcessesWorkflow"
                            processes="$ctrl.dataset.processes"></mc-processes-workflow>
