@@ -57,7 +57,6 @@ class MCProcessesWorkflowGraphComponentController {
             let node = this.processGraph.createProcessNode(process);
             this.cy.add(node);
             let edges = this.processGraph.createConnectingEdges(process, this.processes);
-            console.log('edges', edges);
             if (edges.length) {
                 this.cy.add(edges);
             }
