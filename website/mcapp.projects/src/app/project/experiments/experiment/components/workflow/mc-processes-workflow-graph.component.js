@@ -1,3 +1,25 @@
+function getRemovableChildren(node) {
+    let nodes = node.successors().filter((i, ele) => {
+        let eleNodes = ele.incomers().filter((i, ele) => ele.isNode());
+        if (eleNodes.length === 1) {
+            return true;
+        } else {
+            // Check if this node connects to target. If it does then it is connected
+            // to multiple nodes at the same level as target and we cannot hide it.
+            let hasTargetAsParent = false;
+            eleNodes.forEach(e => {
+                if (e.data('id') === node.data('id')) {
+                    hasTargetAsParent = true;
+                }
+
+            });
+            return !hasTargetAsParent;
+        }
+    });
+
+    return nodes.union(nodes.connectedEdges());
+}
+
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
     constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter,
@@ -18,6 +40,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.navigator = null;
         this.workflowState = workflowState;
         this.cyGraph = cyGraph;
+        this.hiddenNodes = [];
     }
 
     $onInit() {
@@ -67,6 +90,13 @@ class MCProcessesWorkflowGraphComponentController {
             this.cy.layout({name: 'dagre', fit: true});
         };
 
+        this.mcbus.subscribe('WORKFLOW$RESTOREHIDDEN', this.myName, () => {
+            if (this.hiddenNodes.length) {
+                this.hiddenNodes.restore();
+                this.hiddenNodes = [];
+            }
+        });
+
         this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, searchcb);
         this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => this.allProcessesGraph());
         this.mcbus.subscribe('WORKFLOW$NAVIGATOR', this.myName, () => {
@@ -102,6 +132,7 @@ class MCProcessesWorkflowGraphComponentController {
 
     $onDestroy() {
         this.mcbus.leave('PROCESSES$CHANGE', this.myName);
+        this.mcbus.leave('WORKFLOW$RESTOREHIDDEN', this.myName);
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
         this.mcbus.leave('WORKFLOW$RESET', this.myName);
         this.mcbus.leave('PROCESS$ADD', this.myName);
@@ -190,14 +221,38 @@ class MCProcessesWorkflowGraphComponentController {
                     id: 'add-child',
                     title: 'Add Child',
                     selector: 'node',
-                    hasTrailingDivider: true,
                     onClickFunction: (event) => this._addChild(event)
                 },
                 {
                     id: 'delete-process',
                     title: 'Delete Process',
                     selector: 'node',
+                    hasTrailingDivider: true,
                     onClickFunction: (event) => this._deleteProcess(event)
+                },
+                {
+                    id: 'collapse',
+                    title: 'Collapse',
+                    selector: 'node',
+                    onClickFunction: event => this._collapseNode(event)
+                },
+                {
+                    id: 'expand',
+                    title: 'Expand',
+                    selector: 'node',
+                    onClickFunction: event => this._expandNode(event)
+                },
+                {
+                    id: 'hide',
+                    title: 'Hide',
+                    selector: 'node',
+                    onClickFunction: event => this._hideNode(event)
+                },
+                {
+                    id: 'hide-others',
+                    title: 'Hide Others',
+                    selector: 'node',
+                    onClickFunction: event => this._hideOtherNodes(event)
                 }
             ]
         };
@@ -224,6 +279,52 @@ class MCProcessesWorkflowGraphComponentController {
     _deleteProcess(event) {
         let process = this.getProcessFromEvent(event);
         this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, process.id);
+    }
+
+    _collapseNode(event) {
+        let target = event.cyTarget;
+        let nodes = getRemovableChildren(target);
+        if (nodes.length) {
+            let name = target.data('name');
+            target.data('name', `+ ${name}`);
+            target.data('collapsed', nodes);
+            this.cy.remove(nodes);
+        }
+    }
+
+    _expandNode(event) {
+        let target = event.cyTarget;
+        let collapsed = target.data('collapsed');
+        if (collapsed) {
+            collapsed.restore();
+            let name = target.data('name').substring(1);
+            target.data('name', name);
+            target.data('collapsed', null);
+        }
+    }
+
+    _hideNode(event) {
+        let target = event.cyTarget;
+        let nodes = getRemovableChildren(target);
+        nodes = nodes.union(target);
+        let hidden = this.cy.remove(nodes);
+        if (this.hiddenNodes.length) {
+            this.hiddenNodes = this.hiddenNodes.union(hidden);
+        } else {
+            this.hiddenNodes = hidden;
+        }
+    }
+
+    _hideOtherNodes(event) {
+        let target = event.cyTarget;
+        let nodesToKeep = getRemovableChildren(target).union(target);
+        let nodesToRemove = nodesToKeep.absoluteComplement();
+        let hidden = this.cy.remove(nodesToRemove);
+        if (this.hiddenNodes.length) {
+            this.hiddenNodes = this.hiddenNodes.union(hidden);
+        } else {
+            this.hiddenNodes = hidden;
+        }
     }
 
     _addChild(event) {
