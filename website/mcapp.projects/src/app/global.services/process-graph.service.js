@@ -98,6 +98,7 @@ class ProcessGraphService {
                 }
             };
         });
+
         processes.filter(p => p.does_transform).forEach(p => {
             p.output_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
@@ -144,6 +145,8 @@ class ProcessGraphService {
                 return "#ffecb3";
             case "import":
                 return "#b2dfdb";
+            default:
+                return "#b2dfdb";
         }
     }
 
@@ -158,6 +161,8 @@ class ProcessGraphService {
             case "create":
                 return "diamond";
             case "import":
+                return "diamond";
+            default:
                 return "diamond";
         }
     }
