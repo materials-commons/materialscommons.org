@@ -58,6 +58,10 @@ class MCWorkflowToolbarComponentController {
         this.mcbus.send('WORKFLOW$RESET');
     }
 
+    restoreHiddenProcesses() {
+        this.mcbus.send('WORKFLOW$RESTOREHIDDEN');
+    }
+
     toggleNavigator() {
         this.mcbus.send('WORKFLOW$NAVIGATOR');
     }
