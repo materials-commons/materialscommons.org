@@ -178,35 +178,37 @@ class MCProcessesWorkflowGraphComponentController {
         this.cyGraph.setOnClickForExperiment(this.cy, this.projectId, this.experimentId);
 
         this.ctxMenu = this.setupContextMenus();
-        let completeFN = (source, target, addedEntities) => {
-            let sourceProcess = source.data('details');
-            let targetProcess = target.data('details');
-            if (sourceProcess.output_samples.length === 1) {
-                this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, sourceProcess.output_samples).then(
-                    (process) => {
-                        this.replaceProcess(process);
-                        target.data('details', process);
+        let cb = (source, target, addedEntities) => this._completeFN(source, target, addedEntities);
+        this.cyGraph.addEdgeHandles(this.cy, cb);
+    }
+
+    _completeFN(source, target, addedEntities) {
+        let sourceProcess = source.data('details');
+        let targetProcess = target.data('details');
+        if (sourceProcess.output_samples.length === 1) {
+            this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, sourceProcess.output_samples).then(
+                (process) => {
+                    this.replaceProcess(process);
+                    target.data('details', process);
+                }
+            );
+        } else {
+            this.workflowService.chooseSamplesFromSource(sourceProcess).then(
+                (samples) => {
+                    if (!samples.length) {
+                        // No samples brought over, delete edge
+                        addedEntities[0].remove();
+                    } else {
+                        this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, samples).then(
+                            (process) => {
+                                this.replaceProcess(process);
+                                target.data('details', process);
+                            }
+                        );
                     }
-                );
-            } else {
-                this.workflowService.chooseSamplesFromSource(sourceProcess).then(
-                    (samples) => {
-                        if (!samples.length) {
-                            // No samples brought over, delete edge
-                            addedEntities[0].remove();
-                        } else {
-                            this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, samples).then(
-                                (process) => {
-                                    this.replaceProcess(process);
-                                    target.data('details', process);
-                                }
-                            );
-                        }
-                    }
-                );
-            }
-        };
-        this.cyGraph.addEdgeHandles(this.cy, completeFN);
+                }
+            );
+        }
     }
 
     replaceProcess(process) {
