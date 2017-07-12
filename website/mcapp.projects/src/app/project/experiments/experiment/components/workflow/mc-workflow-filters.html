@@ -1,20 +1,14 @@
-<div layout="column" layout-margin>
-    <div layout="column" layout-align="start start">
-        <md-radio-group layout="column" class="text-uppercase" ng-model="$ctrl.whichFilter">
-            <md-radio-button value="all" class="md-primary">Show entire workflow</md-radio-button>
-            <md-radio-button value="samples" class="md-primary">Show only steps for selected samples</md-radio-button>
-            <md-radio-button value="selected" class="md-primary">Show only selected node and it's children</md-radio-button>
-        </md-radio-group>
-    </div>
-    <div ng-switch="$ctrl.whichFilter">
-        <div ng-switch-when="all">
-            Displaying entire workflow
-        </div>
-        <div ng-switch-when="samples">
-            Show only steps containing the following samples
-        </div>
-        <div ng-switch-when="selected">
-            Show only steps for node xxx and it's children
-        </div>
-    </div>
+<div>
+    <md-button ng-click="$ctrl.showProcessesFilter = false; $ctrl.showSamplesFilter = true">Filter By Samples
+    </md-button>
+    <md-button ng-click="$ctrl.showProcessesFilter = true; $ctrl.showSamplesFilter = false">Filter By Processes
+    </md-button>
+</div>
+
+<div ng-if="$ctrl.showSamplesFilter">
+    <mc-workflow-filters-by-samples></mc-workflow-filters-by-samples>
+</div>
+
+<div ng-if="$ctrl.showProcessesFilter">
+    processes filter
 </div>

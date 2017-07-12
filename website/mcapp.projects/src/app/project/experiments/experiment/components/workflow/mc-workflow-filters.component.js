@@ -1,7 +1,14 @@
 class MCWorkflowFiltersComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(workflowFiltersService, $stateParams) {
         this.whichFilter = 'all';
+        this.workflowFiltersService = workflowFiltersService;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+    }
+
+    filterBySamples() {
+        this.workflowFiltersService.filterBySamples(this.projectId, this.experimentId);
     }
 }
 
