@@ -12,5 +12,5 @@ class MCProcessesWorkflowSidebarComponentController {
 
 angular.module('materialscommons').component('mcProcessesWorkflowSidebar', {
     templateUrl: 'app/project/experiments/experiment/components/workflow/mc-processes-workflow-sidebar.html',
-    controller: MCProcessesWorkflowSidebarComponentController,
+    controller: MCProcessesWorkflowSidebarComponentController
 });
