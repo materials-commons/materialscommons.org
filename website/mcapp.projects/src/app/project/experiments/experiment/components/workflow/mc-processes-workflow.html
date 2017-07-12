@@ -15,16 +15,6 @@
         </div>
         <span flex style="border-left: solid 2px grey; margin-left: 8px" ng-if="$ctrl.showSidebar"></span>
         <div flex="30" ng-if="$ctrl.showSidebar">
-            <div layout="row">
-                <a ng-click="$ctrl.showGraphView = true"
-                   ng-class="{'view-selected': $ctrl.showGraphView}">
-                    <i class="fa fa-fw fa-sitemap" style="margin-left: 3px"></i>
-                </a>
-                <a ng-click="$ctrl.showGraphView = false"
-                   ng-class="{'view-selected': !$ctrl.showGraphView}">
-                    <i class="fa fa-fw fa-th-list" style="margin-left: 3px"></i>
-                </a>
-            </div>
             <md-tabs md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
                 <md-tab ng-if="false">
                     <md-tab-label>
