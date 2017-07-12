@@ -72,9 +72,9 @@
                ng-class="{'view-selected': !$ctrl.showingWorkflowGraph}">
                 <i class="fa fa-fw fa-th-list" style="margin-left: 3px"></i>
             </a>
-            <a ng-click="$ctrl.toggleSidebar()">
+            <a ng-click="$ctrl.toggleSidebar()" tooltip="show/hide sidebar">
                 <i class="fa fa-fw" style="margin-left: 3px"
-                   ng-class="{'fa-expand': !$ctrl.isMaximized, 'fa-compress': $ctrl.isMaximized}"></i>
+                   ng-class="{'fa-sign-out': !$ctrl.isMaximized, 'fa-sign-in': $ctrl.isMaximized}"></i>
             </a>
         </div>
     </div>
