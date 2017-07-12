@@ -1,7 +1,8 @@
 class MCProcessesWorkflowComponentController {
     /*@ngInject*/
-    constructor($stateParams, mcbus, User, workflowState, experimentsAPI, toast) {
+    constructor($stateParams, mcbus, mcstate, User, workflowState, experimentsAPI, toast) {
         this.mcbus = mcbus;
+        this.mcstate = mcstate;
         this.workflowState = workflowState;
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
@@ -15,6 +16,8 @@ class MCProcessesWorkflowComponentController {
         this.currentTab = 0;
         this.showWorkspace = true;
         this.isBetaUser = User.isBetaUser();
+        this.showSidebar = false;
+        this.workspaceSize = 100;
     }
 
     $onInit() {
@@ -22,11 +25,17 @@ class MCProcessesWorkflowComponentController {
             this.showGraphView = whichView === 'graph';
         });
 
+        this.mcstate.subscribe('WORKSPACE$MAXIMIZED', this.myName, (maximized) => {
+            this.showSidebar = !maximized;
+            this.workspaceSize = this.showSidebar ? 65 : 100;
+        });
+
         this.workflowState.subscribeSelectedProcess(this.myName, (process) => this.selectedProcess = process);
     }
 
     $onDestroy() {
         this.mcbus.leave('WORKFLOW$VIEW', this.myName);
+        this.mcstate.leave('WORKSPACE$MAXIMIZED');
         this.workflowState.leaveSelectedProcess(this.myName);
     }
 

@@ -1,18 +1,18 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
 
-        <md-button ng-click="$ctrl.addProcess()">
-            <i class="fa fa-fw fa-plus"></i> ADD PROCESS
+        <md-button ng-click="$ctrl.addProcess()" style="margin-right:0">
+            <i class="fa fa-fw fa-plus"></i> ADD
         </md-button>
 
-        <md-button ng-disabled="$ctrl.selectedProcess === null"
+        <md-button ng-disabled="$ctrl.selectedProcess === null" style="margin-left:0;margin-right:0"
                    ng-click="$ctrl.cloneProcess()" md-menu-align-target>
-            CLONE PROCESS
+            CLONE
         </md-button>
 
-        <md-menu-bar>
+        <md-menu-bar style="margin-left:0; margin-right:0; padding-left: 10px; padding-right: 10px">
             <md-menu>
-                <md-button ng-click="$mdMenu.open()">
+                <md-button ng-click="$mdMenu.open()" style="margin-left:0; margin-right: 0">
                     <i md-menu-origin class="fa fa-fw fa-eye"></i>view
                 </md-button>
                 <md-menu-content width="4">
@@ -33,7 +33,7 @@
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
-            <md-menu>
+            <md-menu ng-if="false">
                 <md-button ng-click="$mdMenu.open()">
                     <i md-menu-origin class="fa fa-fw fa-filter"></i>filter
                 </md-button>
@@ -47,12 +47,12 @@
             </md-menu>
         </md-menu-bar>
         <!--<md-button ng-disabled="$ctrl.selectedProcess == null"><i class="fa fa-fw fa-clone"></i>clone process</md-button>-->
-        <md-button class="md-warn"
+        <md-button class="md-warn" style="margin-left:0;"
                    ng-click="$ctrl.deleteProcess()"
                    ng-disabled="$ctrl.selectedProcess == null || $ctrl.selectedProcess.hasChildren">
             <i class="fa fa-fw fa-trash"></i>delete
         </md-button>
-        <span flex></span>
+        <span flex="5"></span>
         <md-input-container md-no-float flex="20" class="md-input-bottom-0">
             <input placeholder="Search workflow..." type="text" class="mc-navbar-search-input"
                    ng-model="$ctrl.query"
@@ -71,6 +71,10 @@
                tooltip="Outline view"
                ng-class="{'view-selected': !$ctrl.showingWorkflowGraph}">
                 <i class="fa fa-fw fa-th-list" style="margin-left: 3px"></i>
+            </a>
+            <a ng-click="$ctrl.toggleSidebar()">
+                <i class="fa fa-fw" style="margin-left: 3px"
+                   ng-class="{'fa-expand': !$ctrl.isMaximized, 'fa-compress': $ctrl.isMaximized}"></i>
             </a>
         </div>
     </div>

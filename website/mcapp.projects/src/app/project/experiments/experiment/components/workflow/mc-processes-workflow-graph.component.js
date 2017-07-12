@@ -41,6 +41,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.workflowState = workflowState;
         this.cyGraph = cyGraph;
         this.hiddenNodes = [];
+        this.sidebarShowing = false;
     }
 
     $onInit() {
@@ -51,6 +52,10 @@ class MCProcessesWorkflowGraphComponentController {
             this.processes = processes;
             this.allProcessesGraph();
         };
+
+        this.mcstate.subscribe('WORKSPACE$MAXIMIZED', this.myName, (maximized) => {
+            this.sidebarShowing = !maximized;
+        });
 
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
         this.mcbus.subscribe('PROCESS$ADD', this.myName, (process) => {
@@ -149,6 +154,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcbus.leave('PROCESS$DELETE', this.myName);
         this.mcbus.leave('EDGE$ADD', this.myName);
         this.mcbus.leave('EDGE$DELETE', this.myName);
+        this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName);
         if (this.navigator !== null) {
             this.navigator.destroy();
         }

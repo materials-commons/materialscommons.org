@@ -1,30 +1,102 @@
 <div>
-    <div ng-show="$ctrl.showWorkspace">
-        <div layout="row" style="margin-right:15px; padding-top: 10px">
-            <div flex="" style="min-height:75vh">
+    <div layout="row" style="margin-right:15px; padding-top: 10px">
 
-                <mc-workflow-toolbar></mc-workflow-toolbar>
-                <mc-processes-workflow-graph ng-show="$ctrl.showGraphView"
-                                             processes="$ctrl.processes"
-                                             highlight-processes="$ctrl.highlightProcesses">
-                </mc-processes-workflow-graph>
-                <mc-processes-workflow-outline ng-show="!$ctrl.showGraphView"
-                                               highlight-processes="$ctrl.highlightProcesses"
-                                               dataset="$ctrl.dataset"
-                                               processes="$ctrl.processes">
-                </mc-processes-workflow-outline>
-            </div>
+        <div flex="{{$ctrl.workspaceSize}}" style="min-height:75vh">
+            <mc-workflow-toolbar></mc-workflow-toolbar>
+            <mc-processes-workflow-graph ng-show="$ctrl.showGraphView"
+                                         processes="$ctrl.processes"
+                                         highlight-processes="$ctrl.highlightProcesses">
+            </mc-processes-workflow-graph>
+            <mc-processes-workflow-outline ng-show="!$ctrl.showGraphView"
+                                           highlight-processes="$ctrl.highlightProcesses"
+                                           dataset="$ctrl.dataset"
+                                           processes="$ctrl.processes">
+            </mc-processes-workflow-outline>
         </div>
-    </div>
-    <div ng-if="$ctrl.isBetaUser">
-        <div ng-show="$ctrl.showGraphView">
-            <md-divider></md-divider>
-            <md-button ng-click="$ctrl.showWorkspace = !$ctrl.showWorkspace" style="margin-bottom:20px">Show/Hide
-                Workspace
-            </md-button>
-            <mc-process-template ng-if="$ctrl.selectedProcess" process="$ctrl.selectedProcess"
-                                 on-change="$ctrl.onChange()">
-            </mc-process-template>
+        <span flex style="border-left: solid 2px grey; margin-left: 8px" ng-if="$ctrl.showSidebar"></span>
+        <div flex="30" ng-if="$ctrl.showSidebar">
+            <div layout="row">
+                <a ng-click="$ctrl.showGraphView = true"
+                   ng-class="{'view-selected': $ctrl.showGraphView}">
+                    <i class="fa fa-fw fa-sitemap" style="margin-left: 3px"></i>
+                </a>
+                <a ng-click="$ctrl.showGraphView = false"
+                   ng-class="{'view-selected': !$ctrl.showGraphView}">
+                    <i class="fa fa-fw fa-th-list" style="margin-left: 3px"></i>
+                </a>
+            </div>
+            <md-tabs md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
+                <md-tab ng-if="false">
+                    <md-tab-label>
+                        <span><i class="fa fa-fw fa-desktop"></i>Display</span>
+                    </md-tab-label>
+                    <md-tab-body>
+                        <md-content style="maxx-height: 70vh">
+                            <h3 class="md-title">Show</h3>
+                            <md-radio-group ng-model="$ctrl.displayGraph" layout="column"
+                                            ng-change="$ctrl.showSelectedGraph()">
+                                <md-radio-button value="all_processes">All Processes</md-radio-button>
+                                <md-radio-button value="only_transformations">Only Transformation Processes
+                                </md-radio-button>
+                                <md-radio-button value="sample_transformations">Sample Transformations</md-radio-button>
+                            </md-radio-group>
+                            <md-list ng-if="false">
+                                <md-list-item ng-repeat="sample in $ctrl.samples">
+                                    <md-checkbox ng-model="sample.selected"
+                                                 ng-change="$ctrl.filterOnSample(sample)"></md-checkbox>
+                                    <p>{{::sample.name}} (<i class="fa fa-fw fa-code-fork"></i>{{::sample.processes.length}})
+                                    </p>
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab>
+                    <md-tab-label>
+                        <span><i class="fa fa-fw fa-gears"></i>details</span>
+                    </md-tab-label>
+                    <md-tab-body>
+                        <div ng-show="!$ctrl.selectedProcess">
+                            No process selected
+                        </div>
+                        <div ng-show="$ctrl.selectedProcess">
+                            <md-content style="maxx-height: 70vh">
+                                <div layout="row" layout-margin layout-wrap layout-align="end">
+                                    <md-button class="md-primary" ng-if="!$ctrl.selectedProcess.hasChildren"
+                                               ng-click="$ctrl.deleteNodeAndProcessConfirm()">
+                                        Delete process
+                                    </md-button>
+                                    <md-button ng-disabled="true" ng-if="$ctrl.selectedProcess.hasChildren"
+                                               tooltip="Must Delete child nodes before deleting this node">
+                                        To delete: remove 'children' first
+                                    </md-button>
+
+                                    <md-button class="md-primary" ng-click="$ctrl.addToDataset()"
+                                               ng-if="$ctrl.dataset && !$ctrl.inDataset()">
+                                        add to dataset
+                                    </md-button>
+                                    <md-button class="md-warn" ng-click="$ctrl.removeFromDataset()"
+                                               ng-if="$ctrl.dataset && $ctrl.inDataset()">
+                                        remove from dataset
+                                    </md-button>
+                                </div>
+
+                                <mc-process-template process="$ctrl.selectedProcess"
+                                                     on-change="$ctrl.onChange()">
+                                </mc-process-template>
+                            </md-content>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab>
+                    <md-tab-label>
+                        <span><i class="fa fa-fw fa-filter"></i>filters</span>
+                    </md-tab-label>
+                    <md-tab-body>
+                        <mc-workflow-filters></mc-workflow-filters>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
         </div>
     </div>
 </div>
