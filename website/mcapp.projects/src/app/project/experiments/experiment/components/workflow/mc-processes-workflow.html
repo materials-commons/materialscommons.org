@@ -81,7 +81,8 @@
                                     </md-button>
                                 </div>
 
-                                <mc-process-template process="$ctrl.selectedProcess"
+                                <mc-process-template ng-if="$ctrl.selectedProcess"
+                                                     process="$ctrl.selectedProcess"
                                                      on-change="$ctrl.onChange()">
                                 </mc-process-template>
                             </md-content>
