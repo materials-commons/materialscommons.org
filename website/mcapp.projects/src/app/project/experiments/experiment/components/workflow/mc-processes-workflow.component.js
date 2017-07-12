@@ -30,22 +30,22 @@ class MCProcessesWorkflowComponentController {
             this.workspaceSize = this.showSidebar ? 65 : 100;
         });
 
-        this.workflowState.subscribeSelectedProcess(this.myName, (process) => this.selectedProcess = process);
+        // this.workflowState.subscribeSelectedProcess(this.myName, (process) => this.selectedProcess = process);
     }
 
     $onDestroy() {
         this.mcbus.leave('WORKFLOW$VIEW', this.myName);
         this.mcstate.leave('WORKSPACE$MAXIMIZED');
-        this.workflowState.leaveSelectedProcess(this.myName);
+        // this.workflowState.leaveSelectedProcess(this.myName);
     }
 
-    onChange() {
-        this.experimentsAPI.getProcessesForExperiment(this.projectId, this.experimentId)
-            .then(
-                (processes) => this.processes = processes,
-                () => this.toast.error('Error retrieving processes for experiment')
-            );
-    }
+    // onChange() {
+    //     this.experimentsAPI.getProcessesForExperiment(this.projectId, this.experimentId)
+    //         .then(
+    //             (processes) => this.processes = processes,
+    //             () => this.toast.error('Error retrieving processes for experiment')
+    //         );
+    // }
 }
 
 angular.module('materialscommons').component('mcProcessesWorkflow', {
