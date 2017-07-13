@@ -45,7 +45,9 @@
     "ngHandsontable": "^0.13.0",
     "angular-c3-simple": "^0.0.12",
     "angular-drag-and-drop-lists": "^2.1.0",
-    "cytoscape-edgehandles": "^2.13.0"
+    "cytoscape-edgehandles": "^2.13.0",
+    "cytoscape-qtip": "^2.7.1",
+    "qtip2": "^2.2.1"
   },
   "overrides": {
     "cytoscape-panzoom": {
@@ -64,6 +66,12 @@
       "main": [
         "cytoscape.js-navigator.css",
         "cytoscape-navigator.js"
+      ]
+    },
+    "qtip2": {
+      "main": [
+        "jquery.qtip.min.js",
+        "jquery.qtip.min.css"
       ]
     }
   },
