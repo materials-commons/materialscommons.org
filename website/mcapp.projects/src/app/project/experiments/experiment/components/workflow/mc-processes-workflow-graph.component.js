@@ -13,7 +13,7 @@ function getRemovableChildren(node) {
                 }
 
             });
-            return !hasTargetAsParent;
+            return hasTargetAsParent;
         }
     });
 
