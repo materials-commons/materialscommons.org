@@ -1,8 +1,9 @@
 class MCWworkflowFiltersByProcessesComponentController {
     /*@ngInject*/
-    constructor(experimentsAPI, processTree, $stateParams) {
+    constructor(experimentsAPI, processTree, mcbus, $stateParams) {
         this.experimentsAPI = experimentsAPI;
         this.processTree = processTree;
+        this.mcbus = mcbus;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
     }
@@ -15,6 +16,13 @@ class MCWworkflowFiltersByProcessesComponentController {
                 this.rootNode = t.rootNode;
             }
         )
+    }
+
+    applyFilter() {
+        let selected = this.processTree.getSelected(this.root);
+        if (selected.length) {
+            this.mcbus.send('WORKFLOW$HIDEOTHERS', selected[0]);
+        }
     }
 }
 
@@ -57,6 +65,7 @@ angular.module('materialscommons').directive('mcWorkflowFiltersByProcessesDir', 
 
 angular.module('materialscommons').component('mcWorkflowFiltersByProcesses', {
     template: `
+    <md-button ng-click="$ctrl.applyFilter()" class="md-primary">Apply Filter</md-button>
     <ul>
         <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
             <div>
