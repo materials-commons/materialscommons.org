@@ -1,4 +1,12 @@
 <md-tabs md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
+    <md-tab>
+        <md-tab-label>
+            <span><i class="fa fa-fw fa-filter"></i>filters</span>
+        </md-tab-label>
+        <md-tab-body>
+            <mc-workflow-filters></mc-workflow-filters>
+        </md-tab-body>
+    </md-tab>
     <md-tab ng-if="false">
         <md-tab-label>
             <span><i class="fa fa-fw fa-desktop"></i>Display</span>
@@ -60,14 +68,6 @@
                     </mc-process-template>
                 </md-content>
             </div>
-        </md-tab-body>
-    </md-tab>
-    <md-tab>
-        <md-tab-label>
-            <span><i class="fa fa-fw fa-filter"></i>filters</span>
-        </md-tab-label>
-        <md-tab-body>
-            <mc-workflow-filters></mc-workflow-filters>
         </md-tab-body>
     </md-tab>
 </md-tabs>
