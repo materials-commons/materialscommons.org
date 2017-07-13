@@ -1,7 +1,7 @@
 class MCProcessesWorkflowOutlineComponentController {
     /*@ngInject*/
     constructor(processTree, datasetsAPI, experimentsAPI, $stateParams, toast, workflowService,
-                experimentProcessesService, mcbus, workflowState) {
+                experimentProcessesService, mcbus, mcstate, workflowState) {
         this.processTree = processTree;
         this.datasetsAPI = datasetsAPI;
         this.experimentsAPI = experimentsAPI;
@@ -15,6 +15,7 @@ class MCProcessesWorkflowOutlineComponentController {
         this.mcbus = mcbus;
         this.workflowState = workflowState;
         this.workflowState.setDataset(this.dataset);
+        this.mcstate = mcstate;
     }
 
     $onInit() {
@@ -28,12 +29,17 @@ class MCProcessesWorkflowOutlineComponentController {
 
         this.datasetProcesses = this.workflowState.datasetProcesses;
 
+        this.mcstate.subscribe('WORKSPACE$MAXIMIZED', this.myName, (maximized) => {
+            this.sidebarShowing = !maximized;
+        });
+
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
         this.buildOutline();
     }
 
     $onDestroy() {
         this.mcbus.leave('PROCESSES$CHANGE', this.myName);
+        this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName)
     }
 
     // This method will be called implicitly when the component is loaded.

@@ -21,7 +21,6 @@
                         <i class="primary-color fa fa-fw fa-code-fork"></i> {{::node.model.name}}
                     </span>
                     (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
-                    <a ng-click="$ctrl.focusOn(node.model)">Focus</a>
                 </div>
                 <mc-processes-workflow-outline-dir process="node" mc-processes-workflow-outline="$ctrl"
                                                    highlight-processes="$ctrl.highlightProcesses"
@@ -31,7 +30,7 @@
             </li>
         </ul>
     </div>
-    <div flex md-whiteframe class="margin-left-15">
+    <div flex md-whiteframe class="margin-left-15" ng-show="!$ctrl.sidebarShowing">
         <div ng-if="!$ctrl.process" layout-margin layout="center center">
             No process selected
         </div>
