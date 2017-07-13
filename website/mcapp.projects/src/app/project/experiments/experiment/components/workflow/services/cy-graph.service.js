@@ -71,6 +71,33 @@ class CyGraphService {
             ]
         });
 
+        cy.elements().filter((i, ele) => ele.isNode()).qtip({
+            content: function() {
+                return `
+                <h5>${this.data('name')}</h5>
+                <b>Template: </b>${this.data('details').template_name}
+                <br/>
+                <b>Type: </b>${this.data('details').process_type}
+                <br/>
+                <b>Input Samples(${this.data('details').input_samples.length}): </b>${this.data('input_sample_names')}
+                <br/>
+                <b>Output Samples(${this.data('details').output_samples.length}): </b>${this.data('output_sample_names')}
+                <br/>
+                <b>Files(${this.data('details').files.length}): </b>${this.data('file_names')}
+                `;
+            },
+            show: {event: 'mouseenter mouseover'},
+            hide: {event: 'mouseout unfocus'}
+        });
+
+        cy.elements().filter((i, ele) => ele.isEdge()).qtip({
+            content: function() {
+                return this.data('details').names;
+            },
+            show: {event: 'mouseenter mouseover'},
+            hide: {event: 'mouseout unfocus'}
+        });
+
         cy.layout({name: 'dagre', fit: true});
         cy.panzoom();
 
@@ -173,19 +200,6 @@ class CyGraphService {
     //         console.log(' -- target is node', target.data('name'));
     //     }
     // });
-
-
-    //this.cy.on('mouseover', function(event) {
-    //    let target = event.cyTarget;
-    //    if (target.data) {
-    //        //log('target', target.data('name'));
-    //    }
-    //    // Need to install qtip or some other
-    //    //target.qtip({
-    //    //    content: target.data('name')
-    //    //});
-    //});
-
 }
 
 angular.module('materialscommons').service('cyGraph', CyGraphService);
