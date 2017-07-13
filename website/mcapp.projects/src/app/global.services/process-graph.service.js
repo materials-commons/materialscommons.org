@@ -30,7 +30,6 @@ class ProcessGraphService {
     createConnectingEdges(targetProcess, processes) {
         let sample2InputProcesses = {},
             edges = [];
-        console.log('targetProcess', targetProcess);
         targetProcess.input_samples.forEach(s => {
             let id = `${s.id}/${s.property_set_id}`;
             if (!(id in sample2InputProcesses)) {
@@ -92,6 +91,9 @@ class ProcessGraphService {
                     id: p.id,
                     name: p.name,
                     details: p,
+                    input_sample_names: p.input_samples.map(s => s.name).join(','),
+                    output_sample_names: p.output_samples.map(s => s.name).join(','),
+                    file_names: p.files.map(f => f.name).join(','),
                     color: ProcessGraphService.processColor(p),
                     shape: ProcessGraphService.processShape(p),
                     highlight: ProcessGraphService.highlightColor(p, highlightedProcesses)
@@ -99,23 +101,44 @@ class ProcessGraphService {
             };
         });
 
+        let edgesMap = {};
+
         processes.filter(p => p.does_transform).forEach(p => {
             p.output_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
                 let processes = sample2InputProcesses[id];
                 if (processes && processes.length) {
                     processes.forEach(proc => {
-                        elements.push({
-                            data: {
-                                id: `${proc.id}_${p.id}`,
-                                source: p.id,
-                                target: proc.id,
-                                name: s.name
-                            }
-                        });
+                        let edgeId = `${proc.id}_${p.id}`;
+                        if (edgeId in edgesMap) {
+                            let edge = edgesMap[edgeId];
+                            edge.data.details.samples.push(s);
+                            edge.data.details.names += `, ${s.name}`;
+                        } else {
+                            let newEdge = {
+                                data: {
+                                    id: edgeId,
+                                    source: p.id,
+                                    target: proc.id,
+                                    name: s.name,
+                                    details: {
+                                        samples: [s],
+                                        names: s.name
+                                    }
+                                }
+                            };
+                            elements.push(newEdge);
+                            edgesMap[edgeId] = newEdge;
+                        }
                     });
                 }
             });
+        });
+
+        elements.forEach(e => {
+            if (e.data.source && e.data.details.samples.length > 1) {
+                e.data.name += ` + ${e.data.details.samples.length - 1} more`;
+            }
         });
 
         let sampleName2Sample = {};
