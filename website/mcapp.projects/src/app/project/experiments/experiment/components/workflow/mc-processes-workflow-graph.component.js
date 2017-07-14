@@ -1,4 +1,4 @@
-function getRemovableChildren(node) {
+function getRemovableChildren(node, hideOthers = true) {
     let nodes = node.successors().filter((i, ele) => {
         let eleNodes = ele.incomers().filter((i, ele) => ele.isNode());
         if (eleNodes.length === 1) {
@@ -13,7 +13,7 @@ function getRemovableChildren(node) {
                 }
 
             });
-            return hasTargetAsParent;
+            return hideOthers ? hasTargetAsParent : !hasTargetAsParent;
         }
     });
 
@@ -302,7 +302,7 @@ class MCProcessesWorkflowGraphComponentController {
 
     _collapseNode(event) {
         let target = event.cyTarget;
-        let nodes = getRemovableChildren(target);
+        let nodes = getRemovableChildren(target, false);
         if (nodes.length) {
             let name = target.data('name');
             target.data('name', `+ ${name}`);
@@ -324,7 +324,7 @@ class MCProcessesWorkflowGraphComponentController {
 
     _hideNode(event) {
         let target = event.cyTarget;
-        let nodes = getRemovableChildren(target);
+        let nodes = getRemovableChildren(target, false);
         nodes = nodes.union(target);
         let hidden = this.cy.remove(nodes);
         if (this.hiddenNodes.length) {
