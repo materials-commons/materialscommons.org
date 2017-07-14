@@ -9,6 +9,19 @@
     </md-tab>
     <md-tab>
         <md-tab-label>
+            <span><i class="fa fa-fw fa-pencil-square"></i>build</span>
+        </md-tab-label>
+        <md-tab-body>
+            <ul>
+                <li ng-repeat="template in $ctrl.templates | orderBy:'name'">
+                    <a ng-click="$ctrl.addToGraph(template)"><i class="fa fa-fw fa-plus"></i>ADD</a>
+                    {{template.name}}
+                </li>
+            </ul>
+        </md-tab-body>
+    </md-tab>
+    <md-tab>
+        <md-tab-label>
             <span><i class="fa fa-fw fa-gears"></i>details</span>
         </md-tab-label>
         <md-tab-body>
@@ -43,19 +56,6 @@
                     </mc-process-template>
                 </md-content>
             </div>
-        </md-tab-body>
-    </md-tab>
-    <md-tab>
-        <md-tab-label>
-            <span><i class="fa fa-fw fa-pencil-square"></i>build</span>
-        </md-tab-label>
-        <md-tab-body>
-            <ul>
-                <li ng-repeat="template in $ctrl.templates">
-                    {{template.name}}
-                    <a ng-click="$ctrl.addToGraph(template)"><i class="fa fa-fw fa-plus"></i>ADD</a>
-                </li>
-            </ul>
         </md-tab-body>
     </md-tab>
 </md-tabs>
