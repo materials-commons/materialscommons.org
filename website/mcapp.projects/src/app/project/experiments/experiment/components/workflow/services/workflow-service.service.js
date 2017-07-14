@@ -25,6 +25,16 @@ class WorkflowService {
         );
     }
 
+    addProcessFromTemplateNoPopup(templateName, projectId, experimentId) {
+        this.experimentsAPI.createProcessFromTemplate(projectId, experimentId, `global_${templateName}`)
+            .then(
+                (process) => {
+                    let p = this.templates.loadTemplateFromProcess(process.template_name, process);
+                    this.mcbus.send('PROCESS$ADD', p);
+                }
+            );
+    }
+
     addProcessFromTemplate(templateId, projectId, experimentId, multiple = true) {
         this.experimentsAPI.createProcessFromTemplate(projectId, experimentId, `global_${templateId}`)
             .then(
