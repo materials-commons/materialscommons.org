@@ -1,12 +1,23 @@
 class MCProcessesWorkflowSidebarComponentController {
     /*@ngInject*/
-    constructor(workflowState) {
+    constructor(workflowState, templatesAPI, workflowService, $stateParams) {
         this.workflowState = workflowState;
+        this.templatesAPI = templatesAPI;
+        this.workflowService = workflowService;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
         this.selectedProcess = null;
     }
 
     $onInit() {
         this.workflowState.subscribeSelectedProcess(this.myName, (process) => this.selectedProcess = process);
+        this.templatesAPI.getAllTemplates().then(
+            templates => this.templates = templates
+        );
+    }
+
+    addToGraph(template) {
+        this.workflowService.addProcessFromTemplateNoPopup(template.name, this.projectId, this.experimentId);
     }
 }
 

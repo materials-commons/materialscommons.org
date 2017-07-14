@@ -66,6 +66,7 @@ class MCProcessesWorkflowGraphComponentController {
                 this.cy.add(edges);
             }
             this.processes.push(process);
+            this.cy.layout({name: 'dagre', fit: true});
         });
         this.mcbus.subscribe('PROCESS$DELETE', this.myName, (process) => console.log('PROCESS$DELETE', process));
         this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));

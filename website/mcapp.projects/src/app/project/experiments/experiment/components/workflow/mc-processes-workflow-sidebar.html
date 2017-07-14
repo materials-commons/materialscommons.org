@@ -7,31 +7,6 @@
             <mc-workflow-filters></mc-workflow-filters>
         </md-tab-body>
     </md-tab>
-    <md-tab ng-if="false">
-        <md-tab-label>
-            <span><i class="fa fa-fw fa-desktop"></i>Display</span>
-        </md-tab-label>
-        <md-tab-body>
-            <md-content style="maxx-height: 70vh">
-                <h3 class="md-title">Show</h3>
-                <md-radio-group ng-model="$ctrl.displayGraph" layout="column"
-                                ng-change="$ctrl.showSelectedGraph()">
-                    <md-radio-button value="all_processes">All Processes</md-radio-button>
-                    <md-radio-button value="only_transformations">Only Transformation Processes
-                    </md-radio-button>
-                    <md-radio-button value="sample_transformations">Sample Transformations</md-radio-button>
-                </md-radio-group>
-                <md-list ng-if="false">
-                    <md-list-item ng-repeat="sample in $ctrl.samples">
-                        <md-checkbox ng-model="sample.selected"
-                                     ng-change="$ctrl.filterOnSample(sample)"></md-checkbox>
-                        <p>{{::sample.name}} (<i class="fa fa-fw fa-code-fork"></i>{{::sample.processes.length}})
-                        </p>
-                    </md-list-item>
-                </md-list>
-            </md-content>
-        </md-tab-body>
-    </md-tab>
     <md-tab>
         <md-tab-label>
             <span><i class="fa fa-fw fa-gears"></i>details</span>
@@ -42,7 +17,7 @@
             </div>
             <div ng-show="$ctrl.selectedProcess">
                 <md-content style="maxx-height: 70vh">
-                    <div layout="row" layout-margin layout-wrap layout-align="end">
+                    <div layout="row" layout-margin layout-wrap layout-align="end" ng-if="false">
                         <md-button class="md-primary" ng-if="!$ctrl.selectedProcess.hasChildren"
                                    ng-click="$ctrl.deleteNodeAndProcessConfirm()">
                             Delete process
@@ -68,6 +43,19 @@
                     </mc-process-template>
                 </md-content>
             </div>
+        </md-tab-body>
+    </md-tab>
+    <md-tab>
+        <md-tab-label>
+            <span><i class="fa fa-fw fa-pencil-square"></i>build</span>
+        </md-tab-label>
+        <md-tab-body>
+            <ul>
+                <li ng-repeat="template in $ctrl.templates">
+                    {{template.name}}
+                    <a ng-click="$ctrl.addToGraph(template)"><i class="fa fa-fw fa-plus"></i>ADD</a>
+                </li>
+            </ul>
         </md-tab-body>
     </md-tab>
 </md-tabs>
