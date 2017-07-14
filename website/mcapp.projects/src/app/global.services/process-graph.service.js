@@ -38,7 +38,6 @@ class ProcessGraphService {
             sample2InputProcesses[id].push(targetProcess);
         });
 
-        console.log('sample2InputProcesses', sample2InputProcesses);
         processes.filter(p => p.does_transform).forEach(p => {
             p.output_samples.forEach(s => {
                 let id = `${s.id}/${s.property_set_id}`;
