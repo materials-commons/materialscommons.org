@@ -14,7 +14,7 @@ class MCWorkflowToolbarComponentController {
         this.mcshow = mcshow;
         this.query = '';
         this.showingWorkflowGraph = true;
-        this.isMaximized = true;
+        this.isMaximized = false;
     }
 
 
