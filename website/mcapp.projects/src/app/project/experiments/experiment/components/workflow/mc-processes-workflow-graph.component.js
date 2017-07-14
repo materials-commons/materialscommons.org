@@ -135,16 +135,29 @@ class MCProcessesWorkflowGraphComponentController {
             }
 
             let matchingProcesses = [];
+            let isInSampleList = (sampleList, idToMatch) => {
+                for (let i = 0; i < sampleList.length; i++) {
+                    let s = sampleList[i];
+                    if (s.id === idToMatch) {
+                        return true;
+                    }
+                }
+                return false;
+            };
             samples.forEach(sample => {
-                let matches = this.$filter('filter')(this.processes.plain(), sample.id);
-                matchingProcesses = matchingProcesses.concat(matches.map(p => ({id: p.id, seen: false})));
+                let matches = this.processes.filter(p => {
+                    if (isInSampleList(p.input_samples, sample.id)) {
+                        return true;
+                    }
+                    return isInSampleList(p.output_samples, sample.id);
+                });
+                matchingProcesses = matchingProcesses.concat(matches.map(p => ({id: p.id})));
             });
 
             let matchesById = _.indexBy(matchingProcesses, 'id');
             let matchingNodes = this.cy.nodes().filter((i, ele) => {
                 let processId = ele.data('details').id;
                 return (!(processId in matchesById));
-
             });
             this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
             this.cy.layout({name: 'dagre', fit: true});
