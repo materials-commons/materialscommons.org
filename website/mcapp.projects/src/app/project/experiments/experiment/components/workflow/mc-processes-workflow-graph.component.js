@@ -1,5 +1,5 @@
-function getRemovableChildren(node, hideOthers = true) {
-    let nodes = node.successors().filter((i, ele) => {
+function getRemovableSuccessors(node, hideOthers = true) {
+    let removeableNodes = node.successors().filter((i, ele) => {
         let eleNodes = ele.incomers().filter((i, ele) => ele.isNode());
         if (eleNodes.length === 1) {
             return true;
@@ -17,13 +17,13 @@ function getRemovableChildren(node, hideOthers = true) {
         }
     });
 
-    return nodes.union(nodes.connectedEdges());
+    return removeableNodes.union(removeableNodes.connectedEdges());
 }
 
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
     constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter,
-                $mdDialog, mcshow, workflowState, cyGraph) {
+                $mdDialog, mcshow, workflowState, cyGraph, $timeout) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
@@ -41,7 +41,8 @@ class MCProcessesWorkflowGraphComponentController {
         this.workflowState = workflowState;
         this.cyGraph = cyGraph;
         this.hiddenNodes = [];
-        this.sidebarShowing = false;
+        this.sidebarShowing = true;
+        this.$timeout = $timeout;
     }
 
     $onInit() {
@@ -55,6 +56,7 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.mcstate.subscribe('WORKSPACE$MAXIMIZED', this.myName, (maximized) => {
             this.sidebarShowing = !maximized;
+            this.$timeout(() => this.cy.fit(), 200);
         });
 
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
@@ -68,12 +70,15 @@ class MCProcessesWorkflowGraphComponentController {
             this.processes.push(process);
             this.cy.layout({name: 'dagre', fit: true});
         });
-        this.mcbus.subscribe('PROCESS$DELETE', this.myName, (process) => console.log('PROCESS$DELETE', process));
+        this.mcbus.subscribe('PROCESS$DELETE', this.myName, (processId) => {
+            let nodeToRemove = this.cy.filter(`node[id = "${processId}"]`);
+            this.cy.remove(nodeToRemove);
+        });
         this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
         this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, process => {
             let target = this.cy.filter(`node[id = "${process.id}"]`);
-            let nodesToKeep = getRemovableChildren(target).union(target);
+            let nodesToKeep = getRemovableSuccessors(target).union(target);
             let nodesToRemove = nodesToKeep.absoluteComplement();
             let hidden = this.cy.remove(nodesToRemove);
             if (this.hiddenNodes.length) {
@@ -302,7 +307,7 @@ class MCProcessesWorkflowGraphComponentController {
 
     _collapseNode(event) {
         let target = event.cyTarget;
-        let nodes = getRemovableChildren(target, false);
+        let nodes = getRemovableSuccessors(target, false);
         if (nodes.length) {
             let name = target.data('name');
             target.data('name', `+ ${name}`);
@@ -324,7 +329,7 @@ class MCProcessesWorkflowGraphComponentController {
 
     _hideNode(event) {
         let target = event.cyTarget;
-        let nodes = getRemovableChildren(target, false);
+        let nodes = getRemovableSuccessors(target, false);
         nodes = nodes.union(target);
         let hidden = this.cy.remove(nodes);
         if (this.hiddenNodes.length) {
@@ -336,7 +341,7 @@ class MCProcessesWorkflowGraphComponentController {
 
     _hideOtherNodes(event) {
         let target = event.cyTarget;
-        let nodesToKeep = getRemovableChildren(target).union(target);
+        let nodesToKeep = getRemovableSuccessors(target).union(target);
         let nodesToRemove = nodesToKeep.absoluteComplement();
         let hidden = this.cy.remove(nodesToRemove);
         if (this.hiddenNodes.length) {
