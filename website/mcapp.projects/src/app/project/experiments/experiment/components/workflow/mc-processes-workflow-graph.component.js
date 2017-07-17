@@ -73,6 +73,10 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcbus.subscribe('PROCESS$DELETE', this.myName, (processId) => {
             let nodeToRemove = this.cy.filter(`node[id = "${processId}"]`);
             this.cy.remove(nodeToRemove);
+            let i = _.findIndex(this.processes, {id: processId});
+            if (i !== -1) {
+                this.processes.splice(i, 1);
+            }
         });
         this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
