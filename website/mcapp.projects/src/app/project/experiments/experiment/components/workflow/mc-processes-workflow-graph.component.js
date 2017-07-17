@@ -69,6 +69,7 @@ class MCProcessesWorkflowGraphComponentController {
             }
             this.processes.push(process);
             this.cy.layout({name: 'dagre', fit: true});
+            this.cyGraph.setupQTips(this.cy);
         });
         this.mcbus.subscribe('PROCESS$DELETE', this.myName, (processId) => {
             let nodeToRemove = this.cy.filter(`node[id = "${processId}"]`);
