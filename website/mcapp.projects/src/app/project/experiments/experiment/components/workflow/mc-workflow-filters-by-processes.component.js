@@ -21,8 +21,13 @@ class MCWworkflowFiltersByProcessesComponentController {
     applyFilter() {
         let selected = this.processTree.getSelected(this.root);
         if (selected.length) {
-            this.mcbus.send('WORKFLOW$HIDEOTHERS', selected[0]);
+            this.mcbus.send('WORKFLOW$HIDEOTHERS', selected);
         }
+    }
+
+    clearFilter() {
+        this.processTree.clearSelected(this.root);
+        this.mcbus.send('WORKFLOW$RESTOREHIDDEN');
     }
 }
 
@@ -66,6 +71,7 @@ angular.module('materialscommons').directive('mcWorkflowFiltersByProcessesDir', 
 angular.module('materialscommons').component('mcWorkflowFiltersByProcesses', {
     template: `
     <md-button ng-click="$ctrl.applyFilter()" class="md-primary">Apply Filter</md-button>
+    <md-button ng-click="$ctrl.clearFilter()" class="md-primary">Clear Filter</md-button>
     <ul>
         <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
             <div>

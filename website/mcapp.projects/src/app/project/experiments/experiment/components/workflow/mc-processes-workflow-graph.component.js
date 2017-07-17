@@ -76,16 +76,25 @@ class MCProcessesWorkflowGraphComponentController {
         });
         this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
-        this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, process => {
-            let target = this.cy.filter(`node[id = "${process.id}"]`);
-            let nodesToKeep = getRemovableSuccessors(target).union(target);
-            let nodesToRemove = nodesToKeep.absoluteComplement();
+        this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, processes => {
+            let allNodesToKeep = null;
+            processes.forEach(process => {
+                let target = this.cy.filter(`node[id = "${process.id}"]`);
+                let nodesToKeep = getRemovableSuccessors(target).union(target);
+                if (allNodesToKeep === null) {
+                    allNodesToKeep = nodesToKeep;
+                } else {
+                    allNodesToKeep = allNodesToKeep.union(nodesToKeep);
+                }
+            });
+            let nodesToRemove = allNodesToKeep.absoluteComplement();
             let hidden = this.cy.remove(nodesToRemove);
             if (this.hiddenNodes.length) {
                 this.hiddenNodes = this.hiddenNodes.union(hidden);
             } else {
                 this.hiddenNodes = hidden;
             }
+            this.cy.layout({name: 'dagre', fit: true});
         });
 
         let searchcb = (search) => {
@@ -115,6 +124,7 @@ class MCProcessesWorkflowGraphComponentController {
             if (this.hiddenNodes.length) {
                 this.hiddenNodes.restore();
                 this.hiddenNodes = [];
+                this.cy.layout({name: 'dagre', fit: true});
             }
         });
 
