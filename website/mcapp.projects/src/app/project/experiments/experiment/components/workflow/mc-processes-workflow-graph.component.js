@@ -219,6 +219,7 @@ class MCProcessesWorkflowGraphComponentController {
                 (process) => {
                     this.replaceProcess(process);
                     target.data('details', process);
+                    addedEntities[0].data('name', sourceProcess.output_samples[0].name);
                 }
             );
         } else {
@@ -232,6 +233,11 @@ class MCProcessesWorkflowGraphComponentController {
                             (process) => {
                                 this.replaceProcess(process);
                                 target.data('details', process);
+                                if (samples.length > 1) {
+                                    addedEntities[0].data('name', `${samples[0].name} + ${samples.length - 1} more`);
+                                } else {
+                                    addedEntities[0].data('name', `${samples[0].name}`);
+                                }
                             }
                         );
                     }
@@ -254,7 +260,7 @@ class MCProcessesWorkflowGraphComponentController {
                 {
                     id: 'details',
                     title: 'Show Details',
-                    selector: 'node, edge',
+                    selector: 'node',
                     hasTrailingDivider: true,
                     onClickFunction: (event) => this._showDetails(event)
                 },
