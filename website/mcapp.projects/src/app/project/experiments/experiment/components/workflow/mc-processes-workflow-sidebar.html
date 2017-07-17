@@ -12,7 +12,22 @@
             <span><i class="fa fa-fw fa-pencil-square"></i>build</span>
         </md-tab-label>
         <md-tab-body>
-            <ul>
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column>Template</th>
+                        <th md-column>Add?</th>
+                    </tr>
+                    </thead>
+                    <tr md-row class="md-row-hover" ng-repeat="template in $ctrl.templates | orderBy:'name'">
+                        <td md-cell>{{template.name}}</td>
+                        <td md-cell><a ng-click="$ctrl.addToGraph(template)"><i class="fa fa-fw fa-plus"></i>ADD</a>
+                        </td>
+                    </tr>
+                </table>
+            </md-table-container>
+            <ul ng-if="false">
                 <li ng-repeat="template in $ctrl.templates | orderBy:'name'">
                     <a ng-click="$ctrl.addToGraph(template)"><i class="fa fa-fw fa-plus"></i>ADD</a>
                     {{template.name}}
