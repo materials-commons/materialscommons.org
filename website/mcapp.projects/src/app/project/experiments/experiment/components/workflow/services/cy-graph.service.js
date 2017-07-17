@@ -71,6 +71,15 @@ class CyGraphService {
             ]
         });
 
+        this.setupQTips(cy);
+
+        cy.layout({name: 'dagre', fit: true});
+        cy.panzoom();
+
+        return cy;
+    }
+
+    setupQTips(cy) {
         cy.elements().filter((i, ele) => ele.isNode()).qtip({
             content: function() {
                 return `
@@ -97,11 +106,6 @@ class CyGraphService {
             show: {event: 'mouseenter mouseover'},
             hide: {event: 'mouseout unfocus'}
         });
-
-        cy.layout({name: 'dagre', fit: true});
-        cy.panzoom();
-
-        return cy;
     }
 
     setOnClickForExperiment(cy, projectId, experimentId) {

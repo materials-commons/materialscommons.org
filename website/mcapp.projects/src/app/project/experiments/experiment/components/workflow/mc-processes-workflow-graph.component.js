@@ -224,6 +224,12 @@ class MCProcessesWorkflowGraphComponentController {
                     this.replaceProcess(process);
                     target.data('details', process);
                     addedEntities[0].data('name', sourceProcess.output_samples[0].name);
+                    let names = sourceProcess.output_samples.map(s => s.name).join(',');
+                    addedEntities[0].data('details', {
+                        samples: sourceProcess.output_samples,
+                        names: names
+                    });
+                    this.cyGraph.setupQTips(this.cy);
                 }
             );
         } else {
@@ -242,6 +248,13 @@ class MCProcessesWorkflowGraphComponentController {
                                 } else {
                                     addedEntities[0].data('name', `${samples[0].name}`);
                                 }
+
+                                let names = samples.map(s => s.name).join(',');
+                                addedEntities[0].data('details', {
+                                    samples: samples,
+                                    names: names
+                                });
+                                this.cyGraph.setupQTips(this.cy);
                             }
                         );
                     }
