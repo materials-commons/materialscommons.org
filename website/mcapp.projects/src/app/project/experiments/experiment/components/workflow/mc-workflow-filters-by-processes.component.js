@@ -6,6 +6,7 @@ class MCWworkflowFiltersByProcessesComponentController {
         this.mcbus = mcbus;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
+        this.allExpanded = true;
     }
 
     $onInit() {
@@ -28,6 +29,13 @@ class MCWworkflowFiltersByProcessesComponentController {
     clearFilter() {
         this.processTree.clearSelected(this.root);
         this.mcbus.send('WORKFLOW$RESTOREHIDDEN');
+    }
+
+    collapseExpandAll() {
+        this.allExpanded = !this.allExpanded;
+        this.root.walk(node => {
+            node.model.show = this.allExpanded;
+        });
     }
 }
 
@@ -53,7 +61,14 @@ function mcWorkflowFiltersByProcessesDirDirective(RecursionHelper) {
             <li ng-repeat="node in $ctrl.process.children" layout="column">
                 <div>
                     <input type="checkbox" ng-model="node.model.selected">
-                    <span>{{::node.model.name}}</span>
+                    <span>
+                        <a ng-if="node.children.length"
+                           ng-click="node.model.show = !node.model.show">
+                            <i class="primary-color fa fa-fw"
+                               ng-class="{'fa-chevron-right': !node.model.show, 'fa-chevron-down': node.model.show}"></i>
+                        </a>
+                        {{::node.model.name}}
+                    </span>
                 </div>
                 <mc-workflow-filters-by-processes-dir process="node"></mc-workflow-filters-by-processes-dir>
             </li>      
@@ -70,15 +85,25 @@ angular.module('materialscommons').directive('mcWorkflowFiltersByProcessesDir', 
 
 angular.module('materialscommons').component('mcWorkflowFiltersByProcesses', {
     template: `
-    <md-button ng-click="$ctrl.applyFilter()" class="md-primary">Apply Filter</md-button>
-    <md-button ng-click="$ctrl.clearFilter()" class="md-primary">Clear Filter</md-button>
+    <div layout="row">
+        <md-button ng-click="$ctrl.applyFilter()" class="md-primary">Apply Filter</md-button>
+        <md-button ng-click="$ctrl.clearFilter()" class="md-primary">Clear Filter</md-button>
+    </div>
+    <md-button ng-click="$ctrl.collapseExpandAll()">Collapse/Expand All</md-button>
     <ul>
         <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
             <div>
                 <input type="checkbox" ng-model="node.model.selected">
-                <span>{{::node.model.name}}</span>
+                <span>
+                    <a ng-if="node.children.length"
+                       ng-click="node.model.show = !node.model.show">
+                        <i class="primary-color fa fa-fw"
+                           ng-class="{'fa-chevron-right': !node.model.show, 'fa-chevron-down': node.model.show}"></i>
+                    </a>
+                    {{::node.model.name}}
+                </span>
             </div>
-            <mc-workflow-filters-by-processes-dir process="node"></mc-workflow-filters-by-processes-dir>
+            <mc-workflow-filters-by-processes-dir process="node" ng-if="node.model.show"></mc-workflow-filters-by-processes-dir>
         </li>      
     </ul>
     `,
