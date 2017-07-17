@@ -5,8 +5,8 @@ class MCWorkflowFiltersComponentController {
         this.workflowFiltersService = workflowFiltersService;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
-        this.showSamplesFilter = true;
-        this.showProcessesFilter = false;
+        this.showSamplesFilter = false;
+        this.showProcessesFilter = true;
     }
 
     filterBySamples() {
