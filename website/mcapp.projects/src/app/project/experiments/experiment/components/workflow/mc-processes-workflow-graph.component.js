@@ -56,7 +56,7 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.mcstate.subscribe('WORKSPACE$MAXIMIZED', this.myName, (maximized) => {
             this.sidebarShowing = !maximized;
-            this.$timeout(() => this.cy.fit(), 200);
+            this.$timeout(() => this.cy.fit(), 300);
         });
 
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
