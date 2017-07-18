@@ -66,7 +66,7 @@ function mcWorkflowFiltersByProcessesDirDirective(RecursionHelper) {
                         {{::node.model.name}}
                     </span>
                 </div>
-                <mc-workflow-filters-by-processes-dir process="node"></mc-workflow-filters-by-processes-dir>
+                <mc-workflow-filters-by-processes-dir process="node" ng-if="node.model.show"></mc-workflow-filters-by-processes-dir>
             </li>      
         </ul>
         `,
