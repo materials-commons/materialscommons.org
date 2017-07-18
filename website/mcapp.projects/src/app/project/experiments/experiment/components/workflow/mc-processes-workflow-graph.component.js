@@ -189,7 +189,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcbus.leave('EDGE$ADD', this.myName);
         this.mcbus.leave('EDGE$DELETE', this.myName);
         this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName);
-        if (this.navigator !== null) {
+        if (this.navigator) {
             this.navigator.destroy();
         }
     }

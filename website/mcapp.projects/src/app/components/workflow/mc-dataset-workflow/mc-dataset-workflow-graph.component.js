@@ -63,6 +63,9 @@ class MCDatasetWorkflowGraphComponentController {
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
         this.mcbus.leave('WORKFLOW$NAVIGATOR', this.myName);
         this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName);
+        if (this.navigator) {
+            this.navigator.destroy();
+        }
     }
 
     allProcessesGraph() {
