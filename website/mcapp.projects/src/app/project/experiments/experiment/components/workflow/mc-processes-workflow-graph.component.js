@@ -277,51 +277,51 @@ class MCProcessesWorkflowGraphComponentController {
             menuItems: [
                 {
                     id: 'details',
-                    title: 'Show Details',
+                    content: 'Show Details',
                     selector: 'node',
                     hasTrailingDivider: true,
                     onClickFunction: (event) => this._showDetails(event)
                 },
                 {
                     id: 'clone-process',
-                    title: 'Clone Process',
+                    content: 'Clone Process',
                     selector: 'node',
                     onClickFunction: (event) => this._cloneProcess(event)
                 },
                 {
                     id: 'add-child',
-                    title: 'Add Child',
+                    content: 'Add Child',
                     selector: 'node',
                     onClickFunction: (event) => this._addChild(event)
                 },
                 {
                     id: 'delete-process',
-                    title: 'Delete Process',
+                    content: 'Delete Process',
                     selector: 'node',
                     hasTrailingDivider: true,
                     onClickFunction: (event) => this._deleteProcess(event)
                 },
                 {
                     id: 'collapse',
-                    title: 'Collapse',
+                    content: 'Collapse',
                     selector: 'node',
                     onClickFunction: event => this._collapseNode(event)
                 },
                 {
                     id: 'expand',
-                    title: 'Expand',
+                    content: 'Expand',
                     selector: 'node',
                     onClickFunction: event => this._expandNode(event)
                 },
                 {
                     id: 'hide',
-                    title: 'Hide',
+                    content: 'Hide',
                     selector: 'node',
                     onClickFunction: event => this._hideNode(event)
                 },
                 {
                     id: 'hide-others',
-                    title: 'Hide Others',
+                    content: 'Hide Others',
                     selector: 'node',
                     onClickFunction: event => this._hideOtherNodes(event)
                 }
