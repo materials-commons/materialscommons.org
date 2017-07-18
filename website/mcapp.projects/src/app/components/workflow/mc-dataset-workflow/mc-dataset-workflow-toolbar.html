@@ -22,6 +22,10 @@
                ng-class="{'view-selected': !$ctrl.showingWorkflowGraph}">
                 <i class="fa fa-fw fa-th-list" style="margin-left: 3px"></i>
             </a>
+            <a ng-click="$ctrl.toggleSidebar()" tooltip="show/hide sidebar">
+                <i class="fa fa-fw" style="margin-left: 3px"
+                   ng-class="{'fa-arrows-alt': !$ctrl.isMaximized, 'fa-compress': $ctrl.isMaximized}"></i>
+            </a>
         </div>
     </div>
 </md-toolbar>

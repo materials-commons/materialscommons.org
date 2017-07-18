@@ -1,0 +1,27 @@
+<md-tabs md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
+    <md-tab>
+        <md-tab-label>
+            <span><i class="fa fa-fw fa-filter"></i>filters</span>
+        </md-tab-label>
+        <md-tab-body>
+            <mc-dataset-workflow-filters dataset="$ctrl.dataset"></mc-dataset-workflow-filters>
+        </md-tab-body>
+    </md-tab>
+    <md-tab>
+        <md-tab-label>
+            <span><i class="fa fa-fw fa-gears"></i>details</span>
+        </md-tab-label>
+        <md-tab-body>
+            <div ng-show="!$ctrl.selectedProcess">
+                No process selected
+            </div>
+            <div ng-show="$ctrl.selectedProcess">
+                <md-content style="maxx-height: 70vh">
+                    <mc-process-details-ro ng-if="$ctrl.selectedProcess"
+                                           process="$ctrl.selectedProcess">
+                    </mc-process-details-ro>
+                </md-content>
+            </div>
+        </md-tab-body>
+    </md-tab>
+</md-tabs>

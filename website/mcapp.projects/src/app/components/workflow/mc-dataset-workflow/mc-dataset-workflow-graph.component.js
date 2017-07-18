@@ -1,6 +1,6 @@
 class MCDatasetWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, cyGraph, mcbus, mcstate, $filter, mcshow, publicDatasetsAPI) {
+    constructor(processGraph, cyGraph, mcbus, mcstate, $filter, mcshow, publicDatasetsAPI, $stateParams, $timeout) {
         this.processGraph = processGraph;
         this.cyGraph = cyGraph;
         this.mcbus = mcbus;
@@ -8,12 +8,20 @@ class MCDatasetWorkflowGraphComponentController {
         this.$filter = $filter;
         this.mcshow = mcshow;
         this.publicDatasetsAPI = publicDatasetsAPI;
+        this.$timeout = $timeout;
+        this.datasetId = $stateParams.dataset_id;
 
         this.myName = 'MCDatasetWorkflowGraphComponentController';
     }
 
     $onInit() {
-        this.allProcessesGraph();
+        this.mcstate.subscribe('WORKSPACE$MAXIMIZED', this.myName, (maximized) => {
+            this.sidebarShowing = !maximized;
+            this.$timeout(() => {
+                this.cy.fit()
+            }, 200);
+        });
+
         this.mcbus.subscribe('WORKFLOW$NAVIGATOR', this.myName, () => {
             if (this.navigator) {
                 this.navigator.destroy();
@@ -48,16 +56,19 @@ class MCDatasetWorkflowGraphComponentController {
         };
 
         this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, searchcb);
+        this.allProcessesGraph();
     }
 
     $onDestroy() {
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
         this.mcbus.leave('WORKFLOW$NAVIGATOR', this.myName);
+        this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName);
     }
 
     allProcessesGraph() {
         let g = this.processGraph.build(this.dataset.processes);
         this.cy = this.cyGraph.createGraph(g.elements, 'datasetGraph');
+        this.cyGraph.setOnClickForDataset(this.cy, this.datasetId);
         let menu = {
             menuItems: [
                 {

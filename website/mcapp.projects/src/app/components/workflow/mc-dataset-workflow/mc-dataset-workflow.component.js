@@ -1,16 +1,13 @@
 class MCDatasetWorkflowComponentController {
     /*@ngInject*/
-    constructor(mcbus, mcstate, workflowState, $filter, toast) {
+    constructor(mcbus, mcstate) {
         this.mcbus = mcbus;
         this.mcstate = mcstate;
-        this.workflowState = workflowState;
-        this.$filter = $filter;
-        this.toast = toast;
 
-        this.removedNodes = null;
         this.showWorkspace = true;
         this.showGraphView = true;
         this.myName = 'MCDatasetWorkflowComponentController';
+        this.workspaceSize = 100;
     }
 
     $onInit() {
@@ -18,12 +15,14 @@ class MCDatasetWorkflowComponentController {
             this.showGraphView = whichView === 'graph';
         });
 
-        this.workflowState.subscribeSelectedProcess(this.myName, (process) => this.selectedProcess = process);
+        this.mcstate.subscribe('WORKSPACE$MAXIMIZED', this.myName, maximized => {
+            this.showSidebar = !maximized;
+            this.workspaceSize = this.showSidebar ? 65 : 100;
+        })
     }
 
     $onDestroy() {
         this.mcbus.leave('WORKFLOW$VIEW', this.myName);
-        this.workflowState.leaveSelectedProcess(this.myName);
     }
 }
 

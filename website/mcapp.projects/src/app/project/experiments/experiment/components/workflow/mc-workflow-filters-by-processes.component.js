@@ -10,13 +10,9 @@ class MCWworkflowFiltersByProcessesComponentController {
     }
 
     $onInit() {
-        this.experimentsAPI.getProcessesForExperiment(this.projectId, this.experimentId).then(
-            (processes) => {
-                let t = this.processTree.build(processes, []);
-                this.root = t.root;
-                this.rootNode = t.rootNode;
-            }
-        )
+        let t = this.processTree.build(this.processes, []);
+        this.root = t.root;
+        this.rootNode = t.rootNode;
     }
 
     applyFilter() {
@@ -107,5 +103,8 @@ angular.module('materialscommons').component('mcWorkflowFiltersByProcesses', {
         </li>      
     </ul>
     `,
-    controller: MCWworkflowFiltersByProcessesComponentController
+    controller: MCWworkflowFiltersByProcessesComponentController,
+    bindings: {
+        processes: '<'
+    }
 });

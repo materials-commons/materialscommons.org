@@ -7,6 +7,7 @@ class MCProcessesWorkflowSidebarComponentController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.selectedProcess = null;
+        this.myName = 'MCProcessesWorkflowSidebar';
     }
 
     $onInit() {
@@ -14,6 +15,10 @@ class MCProcessesWorkflowSidebarComponentController {
         this.templatesAPI.getAllTemplates().then(
             templates => this.templates = templates
         );
+    }
+
+    $onDestroy() {
+        this.workflowState.leaveSelectedProcess(this.myName);
     }
 
     addToGraph(template) {

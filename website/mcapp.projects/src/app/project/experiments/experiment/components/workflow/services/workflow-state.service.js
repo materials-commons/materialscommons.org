@@ -44,20 +44,10 @@ class WorkflowStateService {
         }
     }
 
-    updateSelectedProcessForDataset(datasetId, process, hasChildren) {
+    updateSelectedProcessForDataset(process, hasChildren) {
         if (process) {
-            this.publicDatasetsAPI.getDatasetProcess(datasetId, process.id)
-                .then(
-                    (process) => {
-                        process.hasChildren = hasChildren;
-                        this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
-                    },
-                    () => {
-                        this.toast.error('Unable to retrieve process details');
-                        this.selectedProcess = null;
-                        this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                    }
-                )
+            process.hasChildren = hasChildren;
+            this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
         } else {
             this.selectedProcess = null;
             this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);

@@ -123,17 +123,17 @@ class CyGraphService {
         });
     }
 
-    setOnClickForDataset(cy, datasetId) {
+    setOnClickForDataset(cy) {
         cy.on('click', event => {
             let target = event.cyTarget;
             if (!target.isNode && !target.isEdge) {
-                this.workflowState.updateSelectedProcessForDataset(datasetId, null);
+                this.workflowState.updateSelectedProcessForDataset(null);
             } else if (target.isNode()) {
                 let process = target.data('details');
                 let hasChildren = (target.outgoers().length > 0);
-                this.workflowState.updateSelectedProcessForExperiment(datasetId, process, hasChildren);
+                this.workflowState.updateSelectedProcessForDataset(process, hasChildren);
             } else if (target.isEdge()) {
-                this.workflowState.updateSelectedProcessForExperiment(datasetId, null);
+                this.workflowState.updateSelectedProcessForDataset(null);
             }
         })
     }
