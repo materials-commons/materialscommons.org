@@ -1,25 +1,3 @@
-function getRemovableSuccessors(node, hideOthers = true) {
-    let removeableNodes = node.successors().filter((i, ele) => {
-        let eleNodes = ele.incomers().filter((i, ele) => ele.isNode());
-        if (eleNodes.length === 1) {
-            return true;
-        } else {
-            // Check if this node connects to target. If it does then it is connected
-            // to multiple nodes at the same level as target and we cannot hide it.
-            let hasTargetAsParent = false;
-            eleNodes.forEach(e => {
-                if (e.data('id') === node.data('id')) {
-                    hasTargetAsParent = true;
-                }
-
-            });
-            return hideOthers ? hasTargetAsParent : !hasTargetAsParent;
-        }
-    });
-
-    return removeableNodes.union(removeableNodes.connectedEdges());
-}
-
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
     constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter,
@@ -85,7 +63,7 @@ class MCProcessesWorkflowGraphComponentController {
             let allNodesToKeep = null;
             processes.forEach(process => {
                 let target = this.cy.filter(`node[id = "${process.id}"]`);
-                let nodesToKeep = getRemovableSuccessors(target).union(target);
+                let nodesToKeep = this.cyGraph.getRemovableSuccessors(target).union(target);
                 if (allNodesToKeep === null) {
                     allNodesToKeep = nodesToKeep;
                 } else {
@@ -305,25 +283,25 @@ class MCProcessesWorkflowGraphComponentController {
                     id: 'collapse',
                     content: 'Collapse',
                     selector: 'node',
-                    onClickFunction: event => this._collapseNode(event)
+                    onClickFunction: event => this.cyGraph.collapseNode(this.cy, event)
                 },
                 {
                     id: 'expand',
                     content: 'Expand',
                     selector: 'node',
-                    onClickFunction: event => this._expandNode(event)
+                    onClickFunction: event => this.cyGraph.expandNode(event)
                 },
                 {
                     id: 'hide',
                     content: 'Hide',
                     selector: 'node',
-                    onClickFunction: event => this._hideNode(event)
+                    onClickFunction: event => this._addToHidden(this.cyGraph.hideNode(this.cy, event))
                 },
                 {
                     id: 'hide-others',
                     content: 'Hide Others',
                     selector: 'node',
-                    onClickFunction: event => this._hideOtherNodes(event)
+                    onClickFunction: event => this._addToHidden(this.cyGraph.hideOtherNodes(this.cy, event))
                 }
             ]
         };
@@ -352,45 +330,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, process.id);
     }
 
-    _collapseNode(event) {
-        let target = event.cyTarget;
-        let nodes = getRemovableSuccessors(target, false);
-        if (nodes.length) {
-            let name = target.data('name');
-            target.data('name', `+ ${name}`);
-            target.data('collapsed', nodes);
-            this.cy.remove(nodes);
-        }
-    }
-
-    _expandNode(event) {
-        let target = event.cyTarget;
-        let collapsed = target.data('collapsed');
-        if (collapsed) {
-            collapsed.restore();
-            let name = target.data('name').substring(1);
-            target.data('name', name);
-            target.data('collapsed', null);
-        }
-    }
-
-    _hideNode(event) {
-        let target = event.cyTarget;
-        let nodes = getRemovableSuccessors(target, false);
-        nodes = nodes.union(target);
-        let hidden = this.cy.remove(nodes);
-        if (this.hiddenNodes.length) {
-            this.hiddenNodes = this.hiddenNodes.union(hidden);
-        } else {
-            this.hiddenNodes = hidden;
-        }
-    }
-
-    _hideOtherNodes(event) {
-        let target = event.cyTarget;
-        let nodesToKeep = getRemovableSuccessors(target).union(target);
-        let nodesToRemove = nodesToKeep.absoluteComplement();
-        let hidden = this.cy.remove(nodesToRemove);
+    _addToHidden(hidden) {
         if (this.hiddenNodes.length) {
             this.hiddenNodes = this.hiddenNodes.union(hidden);
         } else {
