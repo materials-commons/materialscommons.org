@@ -25,6 +25,14 @@ $mc-analysis-color: #d1c4e9;
 $mc-create-samples-color: #ffecb3;
 $mc-import-samples-color: #b2bfdb;
 
+.mc-name-color {
+  color: $mc-md-light-primary-color;
+}
+
+.site-active-color {
+  color: #ffcb0b;
+}
+
 .mc-transform-color {
   color: $mc-transform-color;
 }
