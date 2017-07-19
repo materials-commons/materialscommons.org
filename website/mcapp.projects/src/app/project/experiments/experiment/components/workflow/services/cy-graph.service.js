@@ -1,9 +1,10 @@
 /* global cytoscape:true */
 class CyGraphService {
     /*@ngInject*/
-    constructor($mdDialog, workflowState) {
+    constructor($mdDialog, workflowState, $filter) {
         this.$mdDialog = $mdDialog;
         this.workflowState = workflowState;
+        this.$filter = $filter;
     }
 
     createGraph(elements, domId) {
@@ -81,7 +82,7 @@ class CyGraphService {
 
     setupQTips(cy) {
         cy.elements().filter((i, ele) => ele.isNode()).qtip({
-            content: function() {
+            content: function () {
                 return `
                 <h5>${this.data('name')}</h5>
                 <b>Template: </b>${this.data('details').template_name}
@@ -100,7 +101,7 @@ class CyGraphService {
         });
 
         cy.elements().filter((i, ele) => ele.isEdge()).qtip({
-            content: function() {
+            content: function () {
                 return this.data('details').names;
             },
             show: {event: 'mouseenter mouseover'},
@@ -252,6 +253,59 @@ class CyGraphService {
         let nodesToKeep = this.getRemovableSuccessors(target).union(target);
         let nodesToRemove = nodesToKeep.absoluteComplement();
         return cy.remove(nodesToRemove);
+    }
+
+    filterBySamples(cy, samples, processes) {
+        if (!samples.length) {
+            return null;
+        }
+
+        let matchingProcesses = [];
+
+        samples.forEach(sample => {
+            let matches = processes.filter(p => {
+                if (this._isInSampleList(p.input_samples, sample.id)) {
+                    return true;
+                }
+                return this._isInSampleList(p.output_samples, sample.id);
+            });
+            matchingProcesses = matchingProcesses.concat(matches.map(p => ({id: p.id})));
+        });
+
+        let matchesById = _.indexBy(matchingProcesses, 'id');
+        let matchingNodes = cy.nodes().filter((i, ele) => {
+            let processId = ele.data('details').id;
+            return (!(processId in matchesById));
+        });
+        let removedNodes = cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
+        cy.layout({name: 'dagre', fit: true});
+        return removedNodes;
+    }
+
+    _isInSampleList(sampleList, idToMatch) {
+        for (let i = 0; i < sampleList.length; i++) {
+            let s = sampleList[i];
+            if (s.id === idToMatch) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    searchProcessesInGraph(cy, search, processes) {
+        let matches = this.$filter('filter')(processes.plain(), search);
+        if (!matches.length) {
+            return null;
+        }
+        let matchesById = _.indexBy(matches, 'id');
+        let matchingNodes = cy.nodes().filter((i, ele) => {
+            let processId = ele.data('details').id;
+            return (!(processId in matchesById));
+
+        });
+        let removedNodes = cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
+        this.cy.layout({name: 'dagre', fit: true});
+        return removedNodes;
     }
 
 // Use this to show/hide certain menu items

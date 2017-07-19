@@ -88,19 +88,7 @@ class MCProcessesWorkflowGraphComponentController {
                 }
                 return;
             }
-            this.removedNodes = null;
-            let matches = this.$filter('filter')(this.processes.plain(), search);
-            if (!matches.length) {
-                return;
-            }
-            let matchesById = _.indexBy(matches, 'id');
-            let matchingNodes = this.cy.nodes().filter((i, ele) => {
-                let processId = ele.data('details').id;
-                return (!(processId in matchesById));
-
-            });
-            this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
-            this.cy.layout({name: 'dagre', fit: true});
+            this.removedNodes = this.cyGraph.searchProcessesInGraph(this.cy, search, this.processes);
         };
 
         this.mcbus.subscribe('WORKFLOW$RESTOREHIDDEN', this.myName, () => {
@@ -123,37 +111,7 @@ class MCProcessesWorkflowGraphComponentController {
         });
 
         this.mcbus.subscribe('WORKFLOW$FILTER$BYSAMPLES', this.myName, (samples) => {
-            if (!samples.length) {
-                return;
-            }
-
-            let matchingProcesses = [];
-            let isInSampleList = (sampleList, idToMatch) => {
-                for (let i = 0; i < sampleList.length; i++) {
-                    let s = sampleList[i];
-                    if (s.id === idToMatch) {
-                        return true;
-                    }
-                }
-                return false;
-            };
-            samples.forEach(sample => {
-                let matches = this.processes.filter(p => {
-                    if (isInSampleList(p.input_samples, sample.id)) {
-                        return true;
-                    }
-                    return isInSampleList(p.output_samples, sample.id);
-                });
-                matchingProcesses = matchingProcesses.concat(matches.map(p => ({id: p.id})));
-            });
-
-            let matchesById = _.indexBy(matchingProcesses, 'id');
-            let matchingNodes = this.cy.nodes().filter((i, ele) => {
-                let processId = ele.data('details').id;
-                return (!(processId in matchesById));
-            });
-            this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
-            this.cy.layout({name: 'dagre', fit: true});
+            this.removedNodes = this.cyGraph.filterBySamples(this.cy, samples, this.processes);
         });
     }
 
