@@ -7,7 +7,7 @@ class MCDatasetWorkflowComponentController {
         this.showWorkspace = true;
         this.showGraphView = true;
         this.myName = 'MCDatasetWorkflowComponentController';
-        this.workspaceSize = 100;
+        this.workspaceSize = 65;
     }
 
     $onInit() {
