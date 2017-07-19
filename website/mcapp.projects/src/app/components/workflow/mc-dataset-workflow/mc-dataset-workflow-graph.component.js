@@ -10,6 +10,8 @@ class MCDatasetWorkflowGraphComponentController {
         this.publicDatasetsAPI = publicDatasetsAPI;
         this.$timeout = $timeout;
         this.datasetId = $stateParams.dataset_id;
+        this.hiddenNodes = [];
+        this.sidebarShowing = true;
 
         this.myName = 'MCDatasetWorkflowGraphComponentController';
     }
@@ -30,7 +32,21 @@ class MCDatasetWorkflowGraphComponentController {
             }
         });
 
-        let searchcb = (search) => {
+        this.mcbus.subscribe('WORKFLOW$RESTOREHIDDEN', this.myName, () => {
+            if (this.hiddenNodes.length) {
+                this.hiddenNodes.restore();
+                this.hiddenNodes = [];
+                this.cy.layout({name: 'dagre', fit: true});
+            }
+        });
+
+        this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => this.allProcessesGraph());
+
+        this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, processes => {
+            this._addToHidden(this.cyGraph.hideOtherNodesMultiple(this.cy, processes))
+        });
+
+        this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, (search) => {
             if (search === '') {
                 if (this.removedNodes !== null) {
                     this.removedNodes.restore();
@@ -38,22 +54,13 @@ class MCDatasetWorkflowGraphComponentController {
                 }
                 return;
             }
-            this.removedNodes = null;
-            let matches = this.$filter('filter')(this.dataset.processes, search);
-            if (!matches.length) {
-                return;
-            }
-            let matchesById = _.indexBy(matches, 'id');
-            let matchingNodes = this.cy.nodes().filter((i, ele) => {
-                let processId = ele.data('details').id;
-                return (!(processId in matchesById));
+            this.removedNodes = this.cyGraph.searchProcessesInGraph(this.cy, search, this.dataset.processes);
+        });
 
-            });
-            this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
-            this.cy.layout({name: 'dagre', fit: true});
-        };
+        this.mcbus.subscribe('WORKFLOW$FILTER$BYSAMPLES', this.myName, (samples) => {
+            this.removedNodes = this.cyGraph.filterBySamples(this.cy, samples, this.dataset.processes);
+        });
 
-        this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, searchcb);
         this.allProcessesGraph();
     }
 
@@ -61,6 +68,10 @@ class MCDatasetWorkflowGraphComponentController {
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
         this.mcbus.leave('WORKFLOW$NAVIGATOR', this.myName);
         this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName);
+        this.mcbus.leave('WORKFLOW$RESTOREHIDDEN', this.myName);
+        this.mcbus.leave('WORKFLOW$RESET', this.myName);
+        this.mcbus.leave('WORKFLOW$FILTER$BYSAMPLES', this.myName);
+        this.mcbus.leave('WORKFLOW$HIDEOTHERS', this.myName);
         if (this.navigator) {
             this.navigator.destroy();
         }
@@ -90,6 +101,14 @@ class MCDatasetWorkflowGraphComponentController {
             this.publicDatasetsAPI.getDatasetProcess(this.dataset.id, processId).then(
                 p => this.mcshow.processDetailsDialogRO(p, false)
             );
+        }
+    }
+
+    _addToHidden(hidden) {
+        if (this.hiddenNodes.length) {
+            this.hiddenNodes = this.hiddenNodes.union(hidden);
+        } else {
+            this.hiddenNodes = hidden;
         }
     }
 }
