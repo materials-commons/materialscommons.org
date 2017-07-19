@@ -5,6 +5,14 @@
             <div class="md-list-item-text md-whiteframe-2dp" layout="column">
                 <div class="padding-left-15 padding-top-10">
                     <a>{{sample.name}}</a>
+                    <div ng-if="sample.files.length">
+                        <h3 class="md-subhead">Linked to files</h3>
+                        <ul>
+                            <li ng-repeat="file in sample.files">
+                                <a ng-click="$ctrl.showFile(file)">{{file.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
                     <div layout="row" layout-align="start layout-wrap">
                         <md-button ng-if="$ctrl.process.files.length" ng-click="$ctrl.linkFilesToSample(sample)"
                                    class="md-primary">Link Files
