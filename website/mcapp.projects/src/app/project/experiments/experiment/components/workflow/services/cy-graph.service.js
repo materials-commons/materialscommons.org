@@ -82,7 +82,7 @@ class CyGraphService {
 
     setupQTips(cy) {
         cy.elements().filter((i, ele) => ele.isNode()).qtip({
-            content: function () {
+            content: function() {
                 return `
                 <h5>${this.data('name')}</h5>
                 <b>Template: </b>${this.data('details').template_name}
@@ -101,7 +101,7 @@ class CyGraphService {
         });
 
         cy.elements().filter((i, ele) => ele.isEdge()).qtip({
-            content: function () {
+            content: function() {
                 return this.data('details').names;
             },
             show: {event: 'mouseenter mouseover'},
@@ -255,6 +255,23 @@ class CyGraphService {
         return cy.remove(nodesToRemove);
     }
 
+    hideOtherNodesMultiple(cy, processes) {
+        let allNodesToKeep = null;
+        processes.forEach(process => {
+            let target = cy.filter(`node[id = "${process.id}"]`);
+            let nodesToKeep = this.getRemovableSuccessors(target).union(target);
+            if (allNodesToKeep === null) {
+                allNodesToKeep = nodesToKeep;
+            } else {
+                allNodesToKeep = allNodesToKeep.union(nodesToKeep);
+            }
+        });
+        let nodesToRemove = allNodesToKeep.absoluteComplement();
+        let hidden = cy.remove(nodesToRemove);
+        cy.layout({name: 'dagre', fit: true});
+        return hidden;
+    }
+
     filterBySamples(cy, samples, processes) {
         if (!samples.length) {
             return null;
@@ -304,7 +321,7 @@ class CyGraphService {
 
         });
         let removedNodes = cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
-        this.cy.layout({name: 'dagre', fit: true});
+        cy.layout({name: 'dagre', fit: true});
         return removedNodes;
     }
 
