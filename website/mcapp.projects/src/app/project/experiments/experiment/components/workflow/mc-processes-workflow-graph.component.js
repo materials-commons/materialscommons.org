@@ -63,7 +63,7 @@ class MCProcessesWorkflowGraphComponentController {
             this._addToHidden(this.cyGraph.hideOtherNodesMultiple(this.cy, processes))
         });
 
-        let searchcb = (search) => {
+        this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, (search) => {
             if (search === '') {
                 if (this.removedNodes !== null) {
                     this.removedNodes.restore();
@@ -72,7 +72,7 @@ class MCProcessesWorkflowGraphComponentController {
                 return;
             }
             this.removedNodes = this.cyGraph.searchProcessesInGraph(this.cy, search, this.processes);
-        };
+        });
 
         this.mcbus.subscribe('WORKFLOW$RESTOREHIDDEN', this.myName, () => {
             if (this.hiddenNodes.length) {
@@ -82,7 +82,6 @@ class MCProcessesWorkflowGraphComponentController {
             }
         });
 
-        this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, searchcb);
         this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => this.allProcessesGraph());
         this.mcbus.subscribe('WORKFLOW$NAVIGATOR', this.myName, () => {
             if (this.navigator === null) {
@@ -103,11 +102,15 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcbus.leave('WORKFLOW$RESTOREHIDDEN', this.myName);
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
         this.mcbus.leave('WORKFLOW$RESET', this.myName);
+        this.mcbus.leave('WORKFLOW$FILTER$BYSAMPLES', this.myName);
         this.mcbus.leave('PROCESS$ADD', this.myName);
         this.mcbus.leave('PROCESS$DELETE', this.myName);
         this.mcbus.leave('EDGE$ADD', this.myName);
         this.mcbus.leave('EDGE$DELETE', this.myName);
         this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName);
+        this.mcbus.leave('WORKFLOW$HIDEOTHERS', this.myName);
+        this.mcbus.leave('WORKFLOW$NAVIGATOR', this.myName);
+        this.mcbus.leave('WORKFLOW$RESTOREHIDDEN', this.myName);
         if (this.navigator) {
             this.navigator.destroy();
         }
