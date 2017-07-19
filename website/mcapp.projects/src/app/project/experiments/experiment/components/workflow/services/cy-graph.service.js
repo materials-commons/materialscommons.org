@@ -11,6 +11,7 @@ class CyGraphService {
         let cy = cytoscape({
             container: document.getElementById(domId),
             elements: elements,
+            boxSelectionEnabled: true,
             style: [
                 {
                     selector: 'node',
