@@ -16,11 +16,9 @@
                 No process selected
             </div>
             <div ng-show="$ctrl.selectedProcess">
-                <md-content style="maxx-height: 70vh">
-                    <mc-process-details-ro ng-if="$ctrl.selectedProcess"
-                                           process="$ctrl.selectedProcess">
-                    </mc-process-details-ro>
-                </md-content>
+                <mc-process-details-ro ng-if="$ctrl.selectedProcess"
+                                       process="$ctrl.selectedProcess">
+                </mc-process-details-ro>
             </div>
         </md-tab-body>
     </md-tab>

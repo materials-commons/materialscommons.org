@@ -85,9 +85,34 @@ class MCDatasetWorkflowGraphComponentController {
             menuItems: [
                 {
                     id: 'details',
-                    title: 'Show Details',
+                    content: 'Show Details',
                     selector: 'node',
+                    hasTrailingDivider: true,
                     onClickFunction: (event) => this._showDetails(event)
+                },
+                {
+                    id: 'collapse',
+                    content: 'Collapse',
+                    selector: 'node',
+                    onClickFunction: event => this.cyGraph.collapseNode(this.cy, event)
+                },
+                {
+                    id: 'expand',
+                    content: 'Expand',
+                    selector: 'node',
+                    onClickFunction: event => this.cyGraph.expandNode(event)
+                },
+                {
+                    id: 'hide',
+                    content: 'Hide',
+                    selector: 'node',
+                    onClickFunction: event => this._addToHidden(this.cyGraph.hideNode(this.cy, event))
+                },
+                {
+                    id: 'hide-others',
+                    content: 'Hide Others',
+                    selector: 'node',
+                    onClickFunction: event => this._addToHidden(this.cyGraph.hideOtherNodes(this.cy, event))
                 }
             ]
         };

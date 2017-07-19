@@ -43,6 +43,10 @@ class MCDatasetWorkflowToolbarComponentController {
         this.mcbus.send('WORKFLOW$VIEW', 'outline');
     }
 
+    restoreHidden() {
+        this.mcbus.send('WORKFLOW$RESTOREHIDDEN');
+    }
+
     search() {
         this.mcstate.set('WORKFLOW$SEARCH', this.query);
     }
