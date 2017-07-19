@@ -2,7 +2,9 @@
     <mc-dataset-overview-summary dataset="$ctrl.dataset"></mc-dataset-overview-summary>
     <mc-processes-workflow ng-if="$ctrl.showProcessesWorkflow"
                            processes="$ctrl.dataset.processes"></mc-processes-workflow>
+    <hr/>
     <mc-dataset-workflow ng-if="!$ctrl.showProcessesWorkflow" dataset="$ctrl.dataset"></mc-dataset-workflow>
+    <hr/>
     <div ng-if="$ctrl.dataset.files">
         <h4>
             Files ({{::$ctrl.dataset.files.length}})
