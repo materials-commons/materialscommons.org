@@ -310,7 +310,7 @@ class CyGraphService {
     }
 
     searchProcessesInGraph(cy, search, processes) {
-        let matches = this.$filter('filter')(processes.plain(), search);
+        let matches = this.$filter('filter')(processes, search);
         if (!matches.length) {
             return null;
         }
