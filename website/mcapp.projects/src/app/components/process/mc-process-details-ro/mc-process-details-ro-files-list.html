@@ -3,7 +3,6 @@
         <thead>
         <th ng-if="$ctrl.isAuthenticated">Thumbnail</th>
         <th>File Name</th>
-        <th>File Type</th>
         <th>size</th>
         </thead>
         <tbody>
@@ -14,7 +13,6 @@
                 </div>
             </td>
             <td>{{file.name}}</td>
-            <td>{{file.mediatype.mime}}</td>
             <td>{{file.size | bytes}}</td>
         </tr>
         </tbody>
