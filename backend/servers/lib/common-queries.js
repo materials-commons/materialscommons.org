@@ -178,7 +178,15 @@ function processDetailsRql(rql, r) {
                 .without({right: {'id': true, 'otype': true}}).zip()
                 .coerceTo('array'),
             files: r.table('process2file').getAll(process('id'), {index: 'process_id'})
-                .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+                .eqJoin('datafile_id', r.table('datafiles')).zip()
+                .merge(f => {
+                    return {
+                        samples: r.table('sample2datafile').getAll(f('id'), {index: 'datafile_id'})
+                            .eqJoin('sample_id', r.table('samples')).zip()
+                            .distinct().coerceTo('array')
+                    };
+                })
+                .coerceTo('array'),
             input_files: r.table('process2file').getAll(process('id'), {index: 'process_id'})
                 .filter({direction: 'in'})
                 .eqJoin('datafile_id', r.table('datafiles'))
