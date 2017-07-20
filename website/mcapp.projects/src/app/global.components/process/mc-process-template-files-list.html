@@ -10,6 +10,14 @@
                              ng-src="{{$ctrl.fileSrc(file.id)}}">
                     </a>
                     <a ng-click="$ctrl.showFile(file)">{{file.name}}</a>
+                    <div ng-if="file.samples.length">
+                        <h3 class="md-subhead">Linked to samples</h3>
+                        <ul>
+                            <li ng-repeat="sample in file.samples">
+                                <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
                     <div layout="row" layout-align="start layout-wrap">
                         <md-button ng-click="$ctrl.removeFile(file)" class="md-warn">Remove</md-button>
                         <md-button ng-click="$ctrl.linkFileToSamples(file)"
