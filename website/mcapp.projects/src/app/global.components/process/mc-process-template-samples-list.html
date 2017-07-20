@@ -4,7 +4,7 @@
         <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.process.input_samples | orderBy:'name'">
             <div class="md-list-item-text md-whiteframe-2dp" layout="column">
                 <div class="padding-left-15 padding-top-10">
-                    <a>{{sample.name}}</a>
+                    <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
                     <div ng-if="sample.files.length">
                         <h3 class="md-subhead">Linked to files</h3>
                         <ul>
@@ -29,7 +29,7 @@
         <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.process.output_samples | orderBy:'name'">
             <div class="md-list-item-text md-whiteframe-2dp" layout="column">
                 <div class="padding-left-15 padding-top-10">
-                    <a>{{sample.name}}</a>
+                    <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
                     <div ng-if="sample.files.length">
                         <h3 class="md-subhead">Linked to files</h3>
                         <ul>
