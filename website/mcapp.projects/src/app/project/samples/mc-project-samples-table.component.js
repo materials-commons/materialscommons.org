@@ -9,7 +9,7 @@ angular.module('materialscommons').component('mcProjectSamplesTable', {
 
 /*@ngInject*/
 function MCProjectSamplesTableComponentController($mdDialog) {
-    var ctrl = this;
+    const ctrl = this;
     ctrl.showSample = showSample;
     ctrl.sortOrder = "name";
 
@@ -19,6 +19,7 @@ function MCProjectSamplesTableComponentController($mdDialog) {
             controllerAs: '$ctrl',
             controller: ShowSampleDialogController,
             bindToController: true,
+            multiple: true,
             locals: {
                 sample: sample
             }
