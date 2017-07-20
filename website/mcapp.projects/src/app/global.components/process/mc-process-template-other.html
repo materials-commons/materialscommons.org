@@ -13,7 +13,7 @@
     </md-tab>
 
     <md-tab>
-        <md-tab-label>Samples</md-tab-label>
+        <md-tab-label>Samples ({{$ctrl.process.input_samples.length}})</md-tab-label>
         <md-tab-body>
             <md-button class="md-primary" ng-click="$ctrl.selectSamples()">
                 <i class="fa fa-fw fa-plus"></i>
@@ -24,7 +24,7 @@
     </md-tab>
 
     <md-tab>
-        <md-tab-label>Files</md-tab-label>
+        <md-tab-label>Files ({{$ctrl.process.files.length}})</md-tab-label>
         <md-tab-body>
             <md-button class="md-primary" ng-click="$ctrl.selectFiles()">
                 <i class="fa fa-fw fa-plus"></i>
