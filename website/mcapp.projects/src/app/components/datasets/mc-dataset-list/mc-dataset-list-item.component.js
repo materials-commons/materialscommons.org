@@ -5,7 +5,6 @@ class MCDatasetListItemComponentController {
     }
 
     gotoDetailsRoute() {
-        console.log('gotoDetailsRoute', this.detailsRoute);
         this.$state.go(this.detailsRoute, {dataset_id: this.dataset.id});
     }
 }

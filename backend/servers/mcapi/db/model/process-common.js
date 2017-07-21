@@ -6,8 +6,8 @@ const commonQueries = require('../../../lib/common-queries');
 const dbExec = require('./run');
 const sampleCommon = require('./sample-common');
 
-function* getProcess(processID) {
-    let rql = commonQueries.processDetailsRql(r.table('processes').getAll(processID), r);
+function* getProcess(dbr, processID) {
+    let rql = commonQueries.processDetailsRql(dbr.table('processes').getAll(processID), dbr);
     let process = yield dbExec(rql);
     if (!process.length) {
         return {error: `No such process ${processID}`};
@@ -19,8 +19,8 @@ function* getProcess(processID) {
 }
 
 function mergeTemplateIntoProcess(template, process) {
-    process.setup[0].properties.forEach(function (property) {
-        let i = _.indexOf(template.setup[0].properties, function (template_property) {
+    process.setup[0].properties.forEach(function(property) {
+        let i = _.indexOf(template.setup[0].properties, function(template_property) {
             return template_property.attribute === property.attribute
         });
         if (i > -1) {
@@ -58,16 +58,16 @@ function mergeTemplateIntoProcess(template, process) {
 function convertDatePropertyAttributes(process) {
     if (process.setup) {
         let setup = process.setup;
-        for (var i = 0; i < setup.length; i++) {
+        for (let i = 0; i < setup.length; i++) {
             let s = setup[i];
             if (s.properties) {
                 let properties = s.properties;
-                for (var j = 0; j < properties.length; j++) {
+                for (let j = 0; j < properties.length; j++) {
                     let property = properties[j];
-                    if (property.otype && (property.otype == 'date')) {
+                    if (property.otype && (property.otype === 'date')) {
                         let value = property.value;
                         if (value && value.epoch_time) {
-                            let date = new Date(1000 * value.epoch_time)
+                            let date = new Date(1000 * value.epoch_time);
                             property.value = date.getTime();
                         }
                     }

@@ -68,6 +68,11 @@ def add_template_owner(conn):
     print "Done."
 
 
+def fix_missing_category_for_create_samples(conn):
+    r.table('processes').filter({'template_id': 'global_Create Samples'}).update({'category': 'create_sample'}).run(
+        conn)
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
@@ -78,6 +83,7 @@ def main():
     fix_bad_mcpub_process_types(conn)
     add_template_admin_flag_to_users(conn)
     add_template_owner(conn)
+    fix_missing_category_for_create_samples(conn)
 
 
 if __name__ == "__main__":

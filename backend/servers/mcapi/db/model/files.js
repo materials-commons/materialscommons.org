@@ -18,6 +18,14 @@ function* get(file_id) {
             samples: r.table('sample2datafile').getAll(file_id, {index: 'datafile_id'})
                 .eqJoin('sample_id', r.table('samples')).zip()
                 .distinct()
+                .merge(sample => {
+                    return {
+                        processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
+                            .eqJoin('process_id', r.table('processes')).zip().orderBy('birthtime').coerceTo('array'),
+                        files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
+                            .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+                    };
+                })
                 .coerceTo('array'),
             processes: r.table('process2file').getAll(file_id, {index: 'datafile_id'})
                 .eqJoin('process_id', r.table('processes')).zip()
@@ -40,9 +48,7 @@ function* get(file_id) {
 }
 
 function* getAllByChecksum(checksum) {
-    let files = yield r.table('datafiles')
-        .getAll(checksum, {index: 'checksum'})
-    return files;
+    return yield r.table('datafiles').getAll(checksum, {index: 'checksum'});
 }
 
 function* clearUploadedFileByLocalPath(args) {
@@ -318,7 +324,7 @@ function *deleteFile(fileID) {
     }
 
     if (f.notes.length) {
-        var noteIDs = f.notes.map(n => n.id);
+        let noteIDs = f.notes.map(n => n.id);
         yield r.table('notes').getAll(r.args(noteIDs)).delete();
         yield r.table('note2item').getAll(r.args(noteIDs), {index: 'note_id'}).delete();
     }
@@ -335,9 +341,10 @@ function* deletePhysicalFileIfAppropriate(file) {
     let count = yield r.table('datafiles').getAll(file.checksum, {index: 'checksum'}).count();
     if (count === 0) {
         let baseId = file.id;
-        if (file.usesid) baseId = file.usesid;
-        let filePath = fileUtils.datafilePath(baseId);
-        let x = yield fileUtils.removeFileInStore(baseId);
+        if (file.usesid) {
+            baseId = file.usesid;
+        }
+        yield fileUtils.removeFileInStore(baseId);
     }
 }
 

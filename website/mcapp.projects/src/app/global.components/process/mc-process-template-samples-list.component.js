@@ -1,6 +1,6 @@
 class MCProcessTemplateSamplesListComponentController {
     /*@ngInject*/
-    constructor(processesAPI, toast, $stateParams, sampleLinker, samplesAPI, mcbus, showFileService) {
+    constructor(processesAPI, toast, $stateParams, sampleLinker, samplesAPI, mcbus, showFileService, mcshow) {
         this.processesAPI = processesAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
@@ -8,6 +8,7 @@ class MCProcessTemplateSamplesListComponentController {
         this.samplesAPI = samplesAPI;
         this.mcbus = mcbus;
         this.showFileService = showFileService;
+        this.mcshow = mcshow;
     }
 
     removeSample(s) {
@@ -47,6 +48,10 @@ class MCProcessTemplateSamplesListComponentController {
 
     showFile(f) {
         this.showFileService.showFile(f);
+    }
+
+    showSample(sample) {
+        this.mcshow.sampleDialog(sample);
     }
 }
 

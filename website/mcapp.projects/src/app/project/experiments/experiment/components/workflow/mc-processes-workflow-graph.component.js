@@ -1,7 +1,7 @@
-/* global cytoscape:true */
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter, $mdDialog, mcshow) {
+    constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter,
+                $mdDialog, mcshow, workflowState, cyGraph, $timeout) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
@@ -16,6 +16,11 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcshow = mcshow;
         this.removedNodes = null;
         this.navigator = null;
+        this.workflowState = workflowState;
+        this.cyGraph = cyGraph;
+        this.hiddenNodes = [];
+        this.sidebarShowing = true;
+        this.$timeout = $timeout;
     }
 
     $onInit() {
@@ -27,22 +32,38 @@ class MCProcessesWorkflowGraphComponentController {
             this.allProcessesGraph();
         };
 
+        this.mcstate.subscribe('WORKSPACE$MAXIMIZED', this.myName, (maximized) => {
+            this.sidebarShowing = !maximized;
+            this.$timeout(() => this.cy.fit(), 300);
+        });
+
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
         this.mcbus.subscribe('PROCESS$ADD', this.myName, (process) => {
             let node = this.processGraph.createProcessNode(process);
             this.cy.add(node);
             let edges = this.processGraph.createConnectingEdges(process, this.processes);
-            console.log('edges', edges);
             if (edges.length) {
                 this.cy.add(edges);
             }
             this.processes.push(process);
+            this.cy.layout({name: 'dagre', fit: true});
+            this.cyGraph.setupQTips(this.cy);
         });
-        this.mcbus.subscribe('PROCESS$DELETE', this.myName, (process) => console.log('PROCESS$DELETE', process));
+        this.mcbus.subscribe('PROCESS$DELETE', this.myName, (processId) => {
+            let nodeToRemove = this.cy.filter(`node[id = "${processId}"]`);
+            this.cy.remove(nodeToRemove);
+            let i = _.findIndex(this.processes, {id: processId});
+            if (i !== -1) {
+                this.processes.splice(i, 1);
+            }
+        });
         this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
+        this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, processes => {
+            this._addToHidden(this.cyGraph.hideOtherNodesMultiple(this.cy, processes))
+        });
 
-        let searchcb = (search) => {
+        this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, (search) => {
             if (search === '') {
                 if (this.removedNodes !== null) {
                     this.removedNodes.restore();
@@ -50,22 +71,17 @@ class MCProcessesWorkflowGraphComponentController {
                 }
                 return;
             }
-            this.removedNodes = null;
-            let matches = this.$filter('filter')(this.processes.plain(), search);
-            if (!matches.length) {
-                return;
+            this.removedNodes = this.cyGraph.searchProcessesInGraph(this.cy, search, this.processes);
+        });
+
+        this.mcbus.subscribe('WORKFLOW$RESTOREHIDDEN', this.myName, () => {
+            if (this.hiddenNodes.length) {
+                this.hiddenNodes.restore();
+                this.hiddenNodes = [];
+                this.cy.layout({name: 'dagre', fit: true});
             }
-            let matchesById = _.indexBy(matches, 'id');
-            let matchingNodes = this.cy.nodes().filter((i, ele) => {
-                let processId = ele.data('details').id;
-                return (!(processId in matchesById));
+        });
 
-            });
-            this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
-            this.cy.layout({name: 'dagre', fit: true});
-        };
-
-        this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, searchcb);
         this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => this.allProcessesGraph());
         this.mcbus.subscribe('WORKFLOW$NAVIGATOR', this.myName, () => {
             if (this.navigator === null) {
@@ -77,36 +93,25 @@ class MCProcessesWorkflowGraphComponentController {
         });
 
         this.mcbus.subscribe('WORKFLOW$FILTER$BYSAMPLES', this.myName, (samples) => {
-            if (!samples.length) {
-                return;
-            }
-
-            let matchingProcesses = [];
-            samples.forEach(sample => {
-                let matches = this.$filter('filter')(this.processes.plain(), sample.id);
-                matchingProcesses = matchingProcesses.concat(matches.map(p => ({id: p.id, seen: false})));
-            });
-
-            let matchesById = _.indexBy(matchingProcesses, 'id');
-            let matchingNodes = this.cy.nodes().filter((i, ele) => {
-                let processId = ele.data('details').id;
-                return (!(processId in matchesById));
-
-            });
-            this.removedNodes = this.cy.remove(matchingNodes.union(matchingNodes.connectedEdges()));
-            this.cy.layout({name: 'dagre', fit: true});
+            this.removedNodes = this.cyGraph.filterBySamples(this.cy, samples, this.processes);
         });
     }
 
     $onDestroy() {
         this.mcbus.leave('PROCESSES$CHANGE', this.myName);
+        this.mcbus.leave('WORKFLOW$RESTOREHIDDEN', this.myName);
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
         this.mcbus.leave('WORKFLOW$RESET', this.myName);
+        this.mcbus.leave('WORKFLOW$FILTER$BYSAMPLES', this.myName);
         this.mcbus.leave('PROCESS$ADD', this.myName);
         this.mcbus.leave('PROCESS$DELETE', this.myName);
         this.mcbus.leave('EDGE$ADD', this.myName);
         this.mcbus.leave('EDGE$DELETE', this.myName);
-        if (this.navigator !== null) {
+        this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName);
+        this.mcbus.leave('WORKFLOW$HIDEOTHERS', this.myName);
+        this.mcbus.leave('WORKFLOW$NAVIGATOR', this.myName);
+        this.mcbus.leave('WORKFLOW$RESTOREHIDDEN', this.myName);
+        if (this.navigator) {
             this.navigator.destroy();
         }
     }
@@ -125,169 +130,60 @@ class MCProcessesWorkflowGraphComponentController {
     allProcessesGraph() {
         let g = this.processGraph.build(this.processes, this.highlightProcesses);
         this.samples = g.samples;
-        this.cy = cytoscape({
-            container: document.getElementById('processesGraph'),
-            elements: g.elements,
-            style: [
-                {
-                    selector: 'node',
-                    style: {
-                        'content': 'data(name)',
-                        'text-valign': 'center',
-                        'text-halign': 'center',
-                        'background-color': 'data(color)',
-                        color: 'black',
-                        //'text-outline-color': 'data(color)',
-                        'text-outline-color': (ele) => {
-                            let c = ele.data('color');
-                            return c ? c : '#fff';
-                        },
-                        'font-size': '18px',
-                        'font-weight': 'bold',
-                        'text-outline-width': '5px',
-                        'text-outline-opacity': 1,
-                        'border-width': '4px',
-                        //'border-color': 'data(highlight)',
-                        'border-color': (ele) => {
-                            let highlight = ele.data('highlight');
-                            return highlight ? highlight : '#fff';
-                        },
-                        //shape: 'data(shape)',
-                        shape: (ele) => {
-                            let shape = ele.data('shape');
-                            return shape ? shape : 'triangle';
-                        },
-                        width: '80px',
-                        height: '80px'
-                    }
-                },
-                {
-                    selector: 'edge',
-                    style: {
-                        'width': 4,
-                        'target-arrow-shape': 'triangle',
-                        //'target-arrow-color': '#9dbaea',
-                        'curve-style': 'bezier',
-                        'content': 'data(name)',
-                        'font-weight': 'bold',
-                        'text-outline-color': '#555',
-                        'text-outline-width': '3px',
-                        'color': '#fff'
-                    }
-                },
-                {
-                    selector: 'node:selected',
-                    style: {
-                        'border-width': '8px',
-                        'border-color': '#2196f3',
-                        color: '#2196f3'
-                    }
-                },
-                {
-                    selector: 'edge:selected',
-                    style: {
-                        'background-color': '#2196f3',
-                        'text-outline-color': '#2196f3'
-                    }
-                }
-            ]
-        });
+        this.cy = this.cyGraph.createGraph(g.elements, 'processesGraph');
+        this.cyGraph.setOnClickForExperiment(this.cy, this.projectId, this.experimentId);
 
-        this.cy.on('click', event => {
-            let target = event.cyTarget;
-            if (!target.isNode && !target.isEdge) {
-                this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                this.mcProcessesWorkflow.setSelectedProcess(null);
-            } else if (target.isNode()) {
-                //let edges = target.connectedEdges();
-                //edges.forEach((e) => console.log('source is ' + e.data('source')));
-                //console.log(target.connectedEdges());
-                let processId = target.data('id');
-                let process = this.processes.filter((p) => p.id === processId)[0];
-                this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
-                this.mcProcessesWorkflow.setSelectedProcess(processId, (target.outgoers().length > 0));
-            } else if (target.isEdge()) {
-                this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-                this.mcProcessesWorkflow.setSelectedProcess(null);
-            }
-        });
-        // Use this to show/hide certain menu items
-        // this.cy.on('cxttap', event => {
-        //     console.log('cxttap');
-        //     let target = event.cyTarget;
-        //     if (target.isNode()) {
-        //         console.log(' -- target is node', target.data('name'));
-        //     }
-        // });
-
-
-        //this.cy.on('mouseover', function(event) {
-        //    let target = event.cyTarget;
-        //    if (target.data) {
-        //        //log('target', target.data('name'));
-        //    }
-        //    // Need to install qtip or some other
-        //    //target.qtip({
-        //    //    content: target.data('name')
-        //    //});
-        //});
-        this.cy.layout({name: 'dagre', fit: true});
-        this.cy.panzoom();
         this.ctxMenu = this.setupContextMenus();
-        let edgeConfig = {
-            toggleOffOnLeave: true,
-            handleNodes: 'node',
-            handleSize: 10,
-            edgeType: (source, target) => {
-                let sourceProcess = source.data('details');
-                let targetProcess = target.data('details');
-                if (sourceProcess.output_samples.length === 0) {
-                    // source process has not output samples
-                    this.showAlert('No output samples to connect to process.');
-                    return null;
-                } else if (targetProcess.template_name === 'Create Samples') {
-                    // Create samples cannot be a target
-                    this.showAlert('Create Samples process type cannot be a target.');
-                    return null;
-                } else if (this.targetHasAllSourceSamples(targetProcess.input_samples, sourceProcess.output_samples)) {
-                    // Target already has all the source samples
-                    this.showAlert('Processes are already connected.');
-                    return null;
-                }
-                return 'flat';
-            },
-            complete: (source, target, addedEntities) => {
-                let sourceProcess = source.data('details');
-                let targetProcess = target.data('details');
-                if (sourceProcess.output_samples.length === 1) {
-                    this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, sourceProcess.output_samples).then(
-                        (process) => {
-                            this.replaceProcess(process);
-                            target.data('details', process);
-                        }
-                    );
-                } else {
-                    this.workflowService.chooseSamplesFromSource(sourceProcess).then(
-                        (samples) => {
-                            if (!samples.length) {
-                                // No samples brought over, delete edge
-                                addedEntities[0].remove();
-                            } else {
-                                this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, samples).then(
-                                    (process) => {
-                                        this.replaceProcess(process);
-                                        target.data('details', process);
-                                    }
-                                );
-                            }
-                        }
-                    );
-                }
-                //console.log('addedEntities', addedEntities, addedEntities[0].isEdge());
-            }
-        };
+        let cb = (source, target, addedEntities) => this._completeFN(source, target, addedEntities);
+        this.cyGraph.addEdgeHandles(this.cy, cb);
+    }
 
-        this.cy.edgehandles(edgeConfig);
+    _completeFN(source, target, addedEntities) {
+        let sourceProcess = source.data('details');
+        let targetProcess = target.data('details');
+        if (sourceProcess.output_samples.length === 1) {
+            this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, sourceProcess.output_samples).then(
+                (process) => {
+                    this.replaceProcess(process);
+                    target.data('details', process);
+                    addedEntities[0].data('name', sourceProcess.output_samples[0].name);
+                    let names = sourceProcess.output_samples.map(s => s.name).join(',');
+                    addedEntities[0].data('details', {
+                        samples: sourceProcess.output_samples,
+                        names: names
+                    });
+                    this.cyGraph.setupQTips(this.cy);
+                }
+            );
+        } else {
+            this.workflowService.chooseSamplesFromSource(sourceProcess).then(
+                (samples) => {
+                    if (!samples.length) {
+                        // No samples brought over, delete edge
+                        addedEntities[0].remove();
+                    } else {
+                        this.workflowService.addSamplesToProcess(this.projectId, this.experimentId, targetProcess, samples).then(
+                            (process) => {
+                                this.replaceProcess(process);
+                                target.data('details', process);
+                                if (samples.length > 1) {
+                                    addedEntities[0].data('name', `${samples[0].name} + ${samples.length - 1} more`);
+                                } else {
+                                    addedEntities[0].data('name', `${samples[0].name}`);
+                                }
+
+                                let names = samples.map(s => s.name).join(',');
+                                addedEntities[0].data('details', {
+                                    samples: samples,
+                                    names: names
+                                });
+                                this.cyGraph.setupQTips(this.cy);
+                            }
+                        );
+                    }
+                }
+            );
+        }
     }
 
     replaceProcess(process) {
@@ -298,63 +194,58 @@ class MCProcessesWorkflowGraphComponentController {
         }
     }
 
-    showAlert(message) {
-        this.$mdDialog.show(this.$mdDialog.alert()
-            .title('Invalid Target Process')
-            .textContent(message)
-            .ok('dismiss'));
-    }
-
-    targetHasAllSourceSamples(targetSamples, sourceSamples) {
-        let sourceSamplesSeen = {};
-        sourceSamples.forEach((s) => {
-            sourceSamplesSeen[`${s.sample_id}/${s.property_set_id}`] = false;
-        });
-
-        targetSamples.forEach(s => {
-            let key = `${s.sample_id}/${s.property_set_id}`;
-            if (key in sourceSamplesSeen) {
-                sourceSamplesSeen[key] = true;
-            }
-        });
-        let hasAllSamples = true;
-        _.forOwn(sourceSamplesSeen, (value) => {
-            if (!value) {
-                hasAllSamples = false;
-            }
-        });
-
-        return hasAllSamples;
-    }
-
     setupContextMenus() {
         let options = {
             menuItems: [
                 {
                     id: 'details',
-                    title: 'Show Details',
-                    selector: 'node, edge',
+                    content: 'Show Details',
+                    selector: 'node',
                     hasTrailingDivider: true,
                     onClickFunction: (event) => this._showDetails(event)
                 },
                 {
                     id: 'clone-process',
-                    title: 'Clone Process',
+                    content: 'Clone Process',
                     selector: 'node',
                     onClickFunction: (event) => this._cloneProcess(event)
                 },
                 {
                     id: 'add-child',
-                    title: 'Add Child',
+                    content: 'Add Child',
                     selector: 'node',
-                    hasTrailingDivider: true,
                     onClickFunction: (event) => this._addChild(event)
                 },
                 {
                     id: 'delete-process',
-                    title: 'Delete Process',
+                    content: 'Delete Process',
                     selector: 'node',
+                    hasTrailingDivider: true,
                     onClickFunction: (event) => this._deleteProcess(event)
+                },
+                {
+                    id: 'collapse',
+                    content: 'Collapse',
+                    selector: 'node',
+                    onClickFunction: event => this.cyGraph.collapseNode(this.cy, event)
+                },
+                {
+                    id: 'expand',
+                    content: 'Expand',
+                    selector: 'node',
+                    onClickFunction: event => this.cyGraph.expandNode(event)
+                },
+                {
+                    id: 'hide',
+                    content: 'Hide',
+                    selector: 'node',
+                    onClickFunction: event => this._addToHidden(this.cyGraph.hideNode(this.cy, event))
+                },
+                {
+                    id: 'hide-others',
+                    content: 'Hide Others',
+                    selector: 'node',
+                    onClickFunction: event => this._addToHidden(this.cyGraph.hideOtherNodes(this.cy, event))
                 }
             ]
         };
@@ -381,6 +272,14 @@ class MCProcessesWorkflowGraphComponentController {
     _deleteProcess(event) {
         let process = this.getProcessFromEvent(event);
         this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, process.id);
+    }
+
+    _addToHidden(hidden) {
+        if (this.hiddenNodes.length) {
+            this.hiddenNodes = this.hiddenNodes.union(hidden);
+        } else {
+            this.hiddenNodes = hidden;
+        }
     }
 
     _addChild(event) {
@@ -434,8 +333,5 @@ angular.module('materialscommons').component('mcProcessesWorkflowGraph', {
     bindings: {
         processes: '<',
         highlightProcesses: '<'
-    },
-    require: {
-        mcProcessesWorkflow: '^mcProcessesWorkflow'
     }
 });

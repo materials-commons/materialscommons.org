@@ -3,7 +3,6 @@ const dbExec = require('./run');
 const model = require('./model');
 const db = require('./db');
 const _ = require('lodash');
-const commonQueries = require('../../../lib/common-queries');
 
 function* getSample(sampleID) {
     let rql = r.table('samples').get(sampleID)
@@ -49,7 +48,9 @@ function* getAllSamplesForProject(projectID) {
                     .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
                 experiments: r.table('experiment2sample')
                     .getAll(sample('id'), {index: 'sample_id'})
-                    .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array')
+                    .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array'),
+                files: r.table('sample2datafile').getAll(sample('id'), {index: 'sample_id'})
+                    .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array')
             }
         });
     let samples = yield dbExec(rql);

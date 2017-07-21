@@ -25,6 +25,14 @@ $mc-analysis-color: #d1c4e9;
 $mc-create-samples-color: #ffecb3;
 $mc-import-samples-color: #b2bfdb;
 
+.mc-name-color {
+  color: $mc-md-light-primary-color;
+}
+
+.site-active-color {
+  color: #ffcb0b;
+}
+
 .mc-transform-color {
   color: $mc-transform-color;
 }
@@ -39,6 +47,10 @@ $mc-import-samples-color: #b2bfdb;
 
 .mc-measurement-color {
   color: $mc-measurement-color;
+}
+
+.mc-light-blue-color {
+  color: $mc-light-blue;
 }
 
 .mc-analysis-color {
@@ -419,7 +431,13 @@ a {
 }
 
 #processesGraph {
-  width:90%;
+  width: 60%;
+  height: 85%;
+  position: absolute;
+}
+
+#datasetGraph {
+  width: 60%;
   height: 75%;
   position: absolute;
 }
@@ -449,7 +467,6 @@ md-checkbox.md-checkbox-small {
   padding-left: 0;
 }
 
-
 /*
 ** Do not group these rules.
 **
@@ -457,22 +474,22 @@ md-checkbox.md-checkbox-small {
 ** won't fix. So this is a work around.
 */
 input.mc-navbar-search-input::-webkit-input-placeholder {
-    color: white;
+  color: white;
 }
 
 input.mc-navbar-search-input:-moz-placeholder {
-    /* FF 4-18 */
-    color: white;
+  /* FF 4-18 */
+  color: white;
 }
 
 input.mc-navbar-search-input::-moz-placeholder {
-    /* FF 19+ */
-    color: white;
+  /* FF 19+ */
+  color: white;
 }
 
 input.mc-navbar-search-input:-ms-input-placeholder {
-    /* IE 10+ */
-    color: white;
+  /* IE 10+ */
+  color: white;
 }
 
 md-toast.md-success-toast-theme .md-toast-content {
@@ -493,8 +510,8 @@ md-toast.md-success-toast-theme .md-toast-content {
   font-size: 16px;
 }
 
-a.always-white, a.always-white:link, a.always-white:visited, a.always-white:hover, a.always-white:focus, a.always-white:active{
-  color:#ffffff;
+a.always-white, a.always-white:link, a.always-white:visited, a.always-white:hover, a.always-white:focus, a.always-white:active {
+  color: #ffffff;
   text-transform: uppercase;
 }
 

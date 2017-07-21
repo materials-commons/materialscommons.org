@@ -1,25 +1,27 @@
 <md-toolbar style="background-color: #2c3e50">
     <div class="md-toolbar-tools">
-        <h1>
+        <div layout="column">
+            <h1 class="mc-name-color">MaterialsCommons</h1>
+            <md-divider style="border-top-color:#e7e8ea"></md-divider>
+            <div layout="row" layout-align="space-between">
+                <span class="md-subhead"
+                      ng-class="{'site-active-color': $ctrl.projectSiteActive(), pointer: $ctrl.isAuthenticated}"
+                      ui-sref="projects.list">Projects</span>
+                <span class="md-subhead pointer"
+                      ng-class="{'site-active-color': $ctrl.dataSiteActive()}"
+                      ui-sref="data.home.top">Published Data</span>
+            </div>
+        </div>
+        <h1 ng-if="false">
             <a class="mc-link-no-change" ng-click="$ctrl.switchSites()">
                 <i class="fa fa-fw fa-bars mc-link-no-change"></i>
             </a>
-            <a class="mc-link-no-change" ui-sref="projects.list">
+            <span class="mc-link-no-change" ui-srefx="projects.list">
                 MaterialsCommons <!--<sup style="font-size: 60%; color:yellow">Data</sup>-->
-            </a>
+            </span>
         </h1>
         <md-divider class="md-vertical-divider margin-left-15"
                     style="border-right-color: #4d4d4d"></md-divider>
-        <div ng-show="$ctrl.$stateParams.project_id" hide-sm
-             flex="10" layout="column" layout-fill layout-margin class="margin-left-15">
-            <div flex layout="row" layout-align="center center" class="arrow_box">
-                <h3 class="md-title">Samples</h3>
-            </div>
-        </div>
-        <div ng-show="$ctrl.$stateParams.project_id" layout="column" class="margin-left-15" hide-sm>
-            <span class="md-subhead" style="color:#ff5252">{{$ctrl.unusedSamples.length}} unused</span>
-            <span class="md-subhead">{{$ctrl.measuredSamples.length}} measured</span>
-        </div>
         <div layout="row" hide-md hide-sm layout-align="space-around" flex-gt-md="15" flex="10">
             <div ng-show="$ctrl.$stateParams.project_id" layout="column" layout-align="center center">
                 <a ng-if="$ctrl.project.users.length !== 1" class="md-title" style="color:#4caf50"
@@ -54,6 +56,7 @@
         <md-button ng-if="!$ctrl.isAuthenticated" ng-click="$ctrl.loginOrRegister()">
             Login/Register
         </md-button>
+        <span flex ng-if="$ctrl.isAuthenticated"></span>
         <div layout="row" ng-if="$ctrl.isAuthenticated" flex layout-sm="column" layout-align="space-between">
             <md-button ng-show="false">Help</md-button>
             <md-menu>

@@ -19,6 +19,7 @@ class MCFilesTableComponentController {
             templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
             controllerAs: '$ctrl',
             controller: ShowFileDialogController,
+            multiple: true,
             bindToController: true,
             locals: {
                 file: file

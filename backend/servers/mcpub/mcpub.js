@@ -30,6 +30,7 @@ const app = koa();
 app.use(apikey);
 router.get('/datasets', datasets.getAll);
 router.get('/datasets/:id', datasets.getOne);
+router.get('/datasets/:id/processes/:process_id', datasets.getDatasetProcess);
 router.get('/datasets/filter/count/', datasets.getAllCount);
 router.get('/datasets/filter/recent', datasets.getRecent);
 router.get('/datasets/filter/views', datasets.getTopViews);

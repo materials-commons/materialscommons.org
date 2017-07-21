@@ -1,6 +1,6 @@
 class MCProcessTemplateFilesListComponentController {
     /*@ngInject*/
-    constructor(mcfile, isImage, showFileService, processesAPI, toast, sampleLinker, samplesAPI, $stateParams) {
+    constructor(mcfile, isImage, showFileService, processesAPI, toast, sampleLinker, samplesAPI, $stateParams, mcshow) {
         this.fileSrc = mcfile.src;
         this.isImage = isImage;
         this.showFileService = showFileService;
@@ -8,11 +8,16 @@ class MCProcessTemplateFilesListComponentController {
         this.toast = toast;
         this.sampleLinker = sampleLinker;
         this.samplesAPI = samplesAPI;
+        this.mcshow = mcshow;
         this.projectId = $stateParams.project_id;
     }
 
     showFile(f) {
         this.showFileService.showFile(f);
+    }
+
+    showSample(sample) {
+        this.mcshow.sampleDialog(sample);
     }
 
     removeFile(f) {
@@ -43,8 +48,8 @@ class MCProcessTemplateFilesListComponentController {
     }
 
     updateProcessSamples(sampleId, filesToAdd) {
-        let iInput = _.indexOf(this.process.input_samples, s => s.id == sampleId),
-            iOutput = _.indexOf(this.process.output_samples, s => s.id == sampleId),
+        let iInput = _.indexOf(this.process.input_samples, s => s.id === sampleId),
+            iOutput = _.indexOf(this.process.output_samples, s => s.id === sampleId),
             s;
 
         if (iInput !== -1) {

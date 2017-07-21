@@ -13,7 +13,7 @@
     </md-tab>
 
     <md-tab>
-        <md-tab-label>Samples</md-tab-label>
+        <md-tab-label>Samples ({{$ctrl.process.input_samples.length}})</md-tab-label>
         <md-tab-body>
             <md-button class="md-primary" ng-click="$ctrl.selectSamples()"
                        ng-disabled="$ctrl.process.input_samples.length === 1">
@@ -26,7 +26,7 @@
     </md-tab>
 
     <md-tab>
-        <md-tab-label>Sections</md-tab-label>
+        <md-tab-label>Sections ({{$ctrl.filterOutputSamples().length}})</md-tab-label>
         <md-tab-body>
             <div layout="column">
                 <div layout="row" layout-align="start center">
@@ -66,7 +66,7 @@
     </md-tab>
 
     <md-tab>
-        <md-tab-label>Files</md-tab-label>
+        <md-tab-label>Files ({{$ctrl.process.files.length}})</md-tab-label>
         <md-tab-body>
             <div layout="row">
                 <md-button class="md-primary" ng-click="$ctrl.selectFiles()">
@@ -79,7 +79,7 @@
     </md-tab>
 
     <md-tab>
-        <md-tab-label>Measurements</md-tab-label>
+        <md-tab-label>Composition</md-tab-label>
         <md-tab-body>
             <div layout="column" class="margin-top-10">
                 <process-measurements measurements="$ctrl.process.measurements"

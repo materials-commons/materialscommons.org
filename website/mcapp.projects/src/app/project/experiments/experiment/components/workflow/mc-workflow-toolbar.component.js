@@ -14,12 +14,14 @@ class MCWorkflowToolbarComponentController {
         this.mcshow = mcshow;
         this.query = '';
         this.showingWorkflowGraph = true;
+        this.isMaximized = false;
     }
 
 
     $onInit() {
         let cb = (selected) => this.$timeout(() => this.selectedProcess = selected);
         this.mcstate.subscribe(this.mcstate.SELECTED$PROCESS, this.myName, cb);
+        this.mcstate.set('WORKSPACE$MAXIMIZED', this.isMaximized);
     }
 
     $onDestroy() {
@@ -58,6 +60,10 @@ class MCWorkflowToolbarComponentController {
         this.mcbus.send('WORKFLOW$RESET');
     }
 
+    restoreHiddenProcesses() {
+        this.mcbus.send('WORKFLOW$RESTOREHIDDEN');
+    }
+
     toggleNavigator() {
         this.mcbus.send('WORKFLOW$NAVIGATOR');
     }
@@ -74,6 +80,11 @@ class MCWorkflowToolbarComponentController {
 
     filterBySamples() {
         this.workflowFiltersService.filterBySamples(this.projectId, this.experimentId);
+    }
+
+    toggleSidebar() {
+        this.isMaximized = !this.isMaximized;
+        this.mcstate.set('WORKSPACE$MAXIMIZED', this.isMaximized);
     }
 }
 

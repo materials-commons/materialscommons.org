@@ -1,0 +1,13 @@
+<md-dialog flex="60" style="max-height:85vh; min-height:85vh">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Process Details: {{$ctrl.process.name}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <mc-process-details-ro process="$ctrl.process"></mc-process-details-ro>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+    </md-dialog-actions>
+</md-dialog>

@@ -1,10 +1,9 @@
 <div>
     <h4 class="md-title">{{$ctrl.dataset.title}}</h4>
     <mc-dataset-property-authors dataset="$ctrl.dataset"></mc-dataset-property-authors>
-    <br/>
-    <b ng-if="$ctrl.dataset.description" class="md-subhead">Description</b>
+    <label ng-if="$ctrl.dataset.description">Description</label>
     <i ng-if="!$ctrl.dataset.description">No Description given</i>
-    <p ng-if="$ctrl.dataset.description">{{$ctrl.dataset.description}}</p>
+    <p ng-if="$ctrl.dataset.description" class="margin-left-15">{{$ctrl.dataset.description}}</p>
     <div layout="column" class="margin-top-10">
         <mc-dataset-property-publisher dataset="$ctrl.dataset"></mc-dataset-property-publisher>
         <mc-dataset-property-funding ng-if="$ctrl.dataset.funding"

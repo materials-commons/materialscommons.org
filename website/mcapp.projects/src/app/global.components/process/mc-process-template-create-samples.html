@@ -50,7 +50,7 @@
     </md-tab>
 
     <md-tab>
-        <md-tab-label>Files</md-tab-label>
+        <md-tab-label>Files ({{$ctrl.process.files.length}})</md-tab-label>
         <md-tab-body>
             <div layout="row">
                 <md-button class="md-primary" ng-click="$ctrl.selectFiles()">
@@ -63,7 +63,7 @@
     </md-tab>
 
     <md-tab>
-        <md-tab-label>Measurements</md-tab-label>
+        <md-tab-label>Composition</md-tab-label>
         <md-tab-body>
             <div layout="column" class="margin-top-10">
                 <process-measurements measurements="$ctrl.process.measurements"

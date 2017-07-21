@@ -2,8 +2,8 @@ const r = require('./../dash');
 const commonQueries = require('../../lib/common-queries');
 const zipFileUtils = require('../../lib/zipFileUtils');
 const Promise = require('bluebird');
-const fsa = Promise.promisifyAll(require('fs'));
 const fs = require('fs');
+const processCommon = require('../../mcapi/db/model/process-common');
 
 const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
 
@@ -15,6 +15,12 @@ module.exports.getAll = function*(next) {
             'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
         }
     });
+    yield next;
+};
+
+module.exports.getDatasetProcess = function*(next) {
+    let rv = yield processCommon.getProcess(r, this.params.process_id);
+    this.body = rv.val;
     yield next;
 };
 
@@ -73,7 +79,7 @@ module.exports.getOne = function*(next) {
         }
     });
     if (this.params.user_id) {
-        var is_appreciated = yield r.table('appreciations').getAll([this.params.user_id, this.params.id], {index: 'user_dataset'}).coerceTo('array');
+        const is_appreciated = yield r.table('appreciations').getAll([this.params.user_id, this.params.id], {index: 'user_dataset'}).coerceTo('array');
         if (is_appreciated.length > 0) {
             this.body.appreciate = true;
         }
@@ -99,7 +105,9 @@ module.exports.getMockReleases = function*() {
 };
 
 function doiUrlLink(doi) {
-    if (!doi) return "";
+    if (!doi) {
+        return "";
+    }
     return `${doiUrl}id/${doi}`;
 }
 

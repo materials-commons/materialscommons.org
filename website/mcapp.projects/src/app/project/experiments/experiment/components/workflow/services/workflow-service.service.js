@@ -25,6 +25,16 @@ class WorkflowService {
         );
     }
 
+    addProcessFromTemplateNoPopup(templateName, projectId, experimentId) {
+        this.experimentsAPI.createProcessFromTemplate(projectId, experimentId, `global_${templateName}`)
+            .then(
+                (process) => {
+                    let p = this.templates.loadTemplateFromProcess(process.template_name, process);
+                    this.mcbus.send('PROCESS$ADD', p);
+                }
+            );
+    }
+
     addProcessFromTemplate(templateId, projectId, experimentId, multiple = true) {
         this.experimentsAPI.createProcessFromTemplate(projectId, experimentId, `global_${templateId}`)
             .then(
@@ -126,7 +136,7 @@ class WorkflowService {
         }).then(
             (cloneArgs) => {
                 return this.experimentsAPI.cloneProcess(projectId, experimentId, p.id, cloneArgs).then(
-                    () => this.sendProcessChangeEvent(projectId, experimentId),
+                    (p) => this.mcbus.send('PROCESS$ADD', p),
                     () => this.toast.error('Error cloning process')
                 )
             }
@@ -172,24 +182,9 @@ class WorkflowService {
     }
 
     deleteNodeAndProcess2(projectId, experimentId, processId) {
-        //NOTE: currently the graph is redisplayed after the process is deleted;
-        // so, currently we do not delete the node from the graph itself; the problem
-        // with this approach is that redrawing the graph "blows away"
-        // any local layout that the user has created. Hence, this needs to be
-        // updated so that only the process is deleted, and the node is deleted
-        // from the graph without disturbing the layout. Terry Weymouth - Sept 29, 2016
         this.processesAPI.deleteProcess(projectId, processId)
             .then(
-                () => {
-                    this.experimentsAPI.getProcessesForExperiment(projectId, experimentId)
-                        .then(
-                            (processes) => {
-                                this.mcbus.send('PROCESSES$CHANGE', processes);
-                            },
-                            () => this.toast.error('Error retrieving processes for experiment')
-                        );
-                },
-
+                () => this.mcbus.send('PROCESS$DELETE', processId),
                 error => this.toast.error(error.data.error)
             );
     }

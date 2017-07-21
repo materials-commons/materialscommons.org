@@ -1,0 +1,18 @@
+<div>
+    <div layout="row" style="margin-right:15px; padding-top: 10px">
+        <div flex="{{$ctrl.workspaceSize}}" style="min-height:75vh">
+            <mc-dataset-workflow-toolbar></mc-dataset-workflow-toolbar>
+
+            <mc-dataset-workflow-graph ng-show="$ctrl.showGraphView" dataset="$ctrl.dataset">
+            </mc-dataset-workflow-graph>
+
+            <mc-dataset-workflow-outline ng-show="!$ctrl.showGraphView" dataset="$ctrl.dataset">
+            </mc-dataset-workflow-outline>
+
+        </div>
+        <span flex style="border-left: solid 2px grey; margin-left: 8px" ng-if="$ctrl.showSidebar"></span>
+        <div flex="30" ng-if="$ctrl.showSidebar" style="z-index:5;">
+            <mc-dataset-workflow-sidebar dataset="$ctrl.dataset"></mc-dataset-workflow-sidebar>
+        </div>
+    </div>
+</div>

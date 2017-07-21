@@ -4,7 +4,7 @@ const commonQueries = require('../../../lib/common-queries');
 const processCommon = require('./process-common');
 
 function* getProcess(processID) {
-    return yield processCommon.getProcess(processID);
+    return yield processCommon.getProcess(r, processID);
 }
 
 function* getProjectProcesses(projectID) {
