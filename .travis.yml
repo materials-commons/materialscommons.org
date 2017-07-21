@@ -90,7 +90,8 @@ install:
   - pwd
 
 before_script:
-  - sudo nginx
+  # - sudo nginx
+  # it appears that nginx is already running (started at load time?)
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
   - ls $MCDB_FILE
