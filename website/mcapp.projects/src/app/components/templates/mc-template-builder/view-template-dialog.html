@@ -1,7 +1,7 @@
 <md-dialog flex="60" style="height: 70vh">
     <md-toolbar layout="row">
         <div layout-margin>
-            Choose Existing Template
+            {{$ctrl.template.name}}
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
@@ -32,7 +32,7 @@
         </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">
-        <md-button class="md-primary" ng-click="$ctrl.close('edit')">edit</md-button>
+        <md-button class="md-primary" ng-if="$ctrl.template.can_edit" ng-click="$ctrl.close('edit')">edit</md-button>
         <md-button class="md-primary" ng-click="$ctrl.close('clone')">clone</md-button>
         <md-button class="md-warn" ng-click="$ctrl.close('close')">Close</md-button>
     </md-dialog-actions>
