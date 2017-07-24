@@ -10,7 +10,6 @@ class WorkflowService {
     }
 
     chooseSamplesFromSource(source) {
-        console.log('chooseSamplesFromSource', source);
         return this.$mdDialog.show({
             templateUrl: 'app/project/experiments/experiment/components/workflow/services/choose-source-samples-dialog.html',
             controllerAs: '$ctrl',
