@@ -110,6 +110,20 @@ class CyGraphService {
         });
     }
 
+    disableQTips(cy) {
+        cy.elements().forEach((ele) => {
+            let qtipAPI = ele.qtip('api');
+            qtipAPI.disable(true);
+        });
+    }
+
+    enableQTips(cy) {
+        cy.elements().forEach((ele) => {
+            let qtipAPI = ele.qtip('api');
+            qtipAPI.disable(false);
+        });
+    }
+
     setOnClickForExperiment(cy, projectId, experimentId) {
         cy.on('click', event => {
             let target = event.cyTarget;

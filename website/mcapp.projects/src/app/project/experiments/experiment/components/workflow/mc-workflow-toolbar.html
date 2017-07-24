@@ -21,6 +21,11 @@
                             TOGGLE NAVIGATOR
                         </md-button>
                     </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.toggleTooltips()">
+                            {{$ctrl.tooltipsEnabled ? "DISABLE TOOLTIPS" : "ENABLE TOOLTIPS"}}
+                        </md-button>
+                    </md-menu-item>
                     <md-menu-item ng-show="$ctrl.selectedProcess !== null">
                         <md-button ng-click="$ctrl.showSelectedProcess()" md-menu-align-target>
                             SHOW PROCESS DETAILS

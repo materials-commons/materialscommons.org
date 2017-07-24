@@ -21,6 +21,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.hiddenNodes = [];
         this.sidebarShowing = true;
         this.$timeout = $timeout;
+        this.tooltips = true;
     }
 
     $onInit() {
@@ -48,6 +49,9 @@ class MCProcessesWorkflowGraphComponentController {
             this.processes.push(process);
             this.cy.layout({name: 'dagre', fit: true});
             this.cyGraph.setupQTips(this.cy);
+            if (!this.tooltips) {
+                this.cyGraph.disableQTips(this.cy);
+            }
         });
         this.mcbus.subscribe('PROCESS$DELETE', this.myName, (processId) => {
             let nodeToRemove = this.cy.filter(`node[id = "${processId}"]`);
@@ -94,6 +98,15 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.mcbus.subscribe('WORKFLOW$FILTER$BYSAMPLES', this.myName, (samples) => {
             this.removedNodes = this.cyGraph.filterBySamples(this.cy, samples, this.processes);
+        });
+
+        this.mcstate.subscribe('WORKFLOW$TOOLTIPS', this.myName, (tooltipsEnabled) => {
+            this.tooltips = tooltipsEnabled;
+            if (tooltipsEnabled) {
+                this.cyGraph.enableQTips(this.cy);
+            } else {
+                this.cyGraph.disableQTips(this.cy);
+            }
         });
     }
 

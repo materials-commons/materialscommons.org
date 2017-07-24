@@ -15,6 +15,7 @@ class MCWorkflowToolbarComponentController {
         this.query = '';
         this.showingWorkflowGraph = true;
         this.isMaximized = false;
+        this.tooltipsEnabled = true;
     }
 
 
@@ -66,6 +67,11 @@ class MCWorkflowToolbarComponentController {
 
     toggleNavigator() {
         this.mcbus.send('WORKFLOW$NAVIGATOR');
+    }
+
+    toggleTooltips() {
+        this.tooltipsEnabled = !this.tooltipsEnabled;
+        this.mcstate.set('WORKFLOW$TOOLTIPS', this.tooltipsEnabled);
     }
 
     showWorkflowGraph() {
