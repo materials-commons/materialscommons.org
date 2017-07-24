@@ -166,6 +166,9 @@ class MCProcessesWorkflowGraphComponentController {
                         names: names
                     });
                     this.cyGraph.setupQTips(this.cy);
+                    if (!this.tooltips) {
+                        this.cyGraph.disableQTips(this.cy);
+                    }
                 }
             );
         } else {
@@ -191,6 +194,9 @@ class MCProcessesWorkflowGraphComponentController {
                                     names: names
                                 });
                                 this.cyGraph.setupQTips(this.cy);
+                                if (!this.tooltips) {
+                                    this.cyGraph.disableQTips(this.cy);
+                                }
                             }
                         );
                     }
