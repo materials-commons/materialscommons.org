@@ -12,7 +12,7 @@ const dbModelExperiments = require('../db/model/experiments');
 const dbModelProcesses = require('../db/model/processes');
 const dbModelSamples = require('../db/model/samples');
 const dbModelDirectories = require('../db/model/directories');
-const fileUtils = require('./../../lib/create-file-utils');
+const fileUtils = require('../../lib/create-file-utils');
 
 const demoProjectConf = require('./build-demo-project-conf');
 
