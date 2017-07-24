@@ -2,8 +2,7 @@ downloads
 prod
 .tmp
 dist
+bower_components
 dist.tar.gz
-mcpub
-mcpub.tar.gz
 mcapp
 mcapp.tar.gz

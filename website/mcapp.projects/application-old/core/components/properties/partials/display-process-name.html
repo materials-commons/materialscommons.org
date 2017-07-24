@@ -1,8 +1,0 @@
-<span style="padding-left: 30px;">
-    <img ng-if="currentProcess" src="assets/img/splash/process-icon.png"
-         style="height: 25px;padding-bottom: 10px;">
-    <a ng-click="openProcess(measure.process[0].id)">{{measure.process[0].name}}</a>
-</span>
-<span  ng-if="currentProcess && measure.process[0].id === currentProcess" style="padding-left:20px;">
-    <i style="color:red;" class="fa fa-asterisk"></i>
-</span>

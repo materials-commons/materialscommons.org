@@ -409,16 +409,13 @@ function update_mc() {
     echo "  Updating server dependencies..."
     npm install
 
-    echo "Updating mcapp.data dependencies..."
-    (cd ../website/mcapp.data; bower install)
-
-    echo "Updating mcapp.projects dependencies..."
-    (cd ../website/mcapp.projects; bower install)
+    echo "Updating website dependencies..."
+    (cd ../website; bower install)
 
     if [ "$SERVERTYPE" = "production" ]; then
-        (cd ../website; ./deploy.sh)
+        (cd ../website; ./build.sh)
     elif [ "$SERVERTYPE" = "test" ]; then
-        (cd ../website; ./deploy.sh)
+        (cd ../website; ./build.sh)
     fi
 
     echo "  All updates completed..."
