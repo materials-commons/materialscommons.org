@@ -1,0 +1,18 @@
+<div layout="column" layout-margin>
+    <div layout="row" layout-align="space-between" style="margin-left: 55px; margin-right: 40px">
+        <span>Status</span>
+        <span>Task</span>
+        <span>Flag</span>
+        <!--<span flex-offset="35">Template</span>-->
+    </div>
+    <md-content ui-tree="$ctrl.treeOptions" id="tree-root" ng-if="$ctrl.experiment.tasks.length">
+        <ol ui-tree-nodes ng-model="$ctrl.experiment.tasks" style="margin-right: 8px">
+            <li dir-paginate="task in $ctrl.experiment.tasks | filter:$ctrl.filterBy | itemsPerPage:10" flex
+                ui-tree-node>
+                <mc-experiment-tasks-list-dir task="::task">
+                </mc-experiment-tasks-list-dir>
+            </li>
+        </ol>
+        <dir-pagination-controls></dir-pagination-controls>
+    </md-content>
+</div>

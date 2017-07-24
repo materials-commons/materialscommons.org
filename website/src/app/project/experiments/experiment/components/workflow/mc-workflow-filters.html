@@ -1,0 +1,16 @@
+<div>
+    <md-button ng-click="$ctrl.activateProcessesFilter()">
+        Filter By Processes
+    </md-button>
+    <md-button ng-click="$ctrl.activateSamplesFilter()">
+        Filter By Samples
+    </md-button>
+</div>
+
+<div ng-if="$ctrl.showSamplesFilter && $ctrl.samples">
+    <mc-workflow-filters-by-samples samples="$ctrl.samples"></mc-workflow-filters-by-samples>
+</div>
+
+<div ng-if="$ctrl.showProcessesFilter && $ctrl.processes">
+    <mc-workflow-filters-by-processes processes="$ctrl.processes"></mc-workflow-filters-by-processes>
+</div>

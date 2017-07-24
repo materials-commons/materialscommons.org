@@ -1,0 +1,50 @@
+<div layout="column" flex="100">
+    <div layout="row">
+        <div layout="column" flex="60">
+            <span><i class="fa fa-fw fa-file"></i> {{$ctrl.file.name}}</span>
+            <small class="md-subhead-light">{{::$ctrl.file.size | bytes}}</small>
+        </div>
+        <span flex="20"></span>
+        <div flex>
+            <small ng-show="$ctrl.file.isComplete() && !$ctrl.file.error"
+                   class="mc-success">
+                <strong>Uploaded</strong>
+            </small>
+            <small ng-show="$ctrl.file.error" class="mc-danger">
+                <strong>Upload failed</strong>
+            </small>
+            <a ng-click="$ctrl.removeFromUpload($ctrl.file)">
+                <i class="fa fa-fw fa-close md-warn"></i>
+            </a>
+        </div>
+    </div>
+    <md-progress-linear ng-show="$ctrl.file.isUploading()"
+                        md-mode="determinate"
+                        value="{{$ctrl.file.progress() * 100}}">
+    </md-progress-linear>
+    <!--<div class="progress progress-striped" ng-show="$ctrl.file.isUploading()">-->
+    <!--<div class="progress-bar" role="progressbar"-->
+    <!--aria-valuenow="{{$ctrl.file.progress() * 100}}"-->
+    <!--aria-valuemin="0"-->
+    <!--aria-valuemax="100"-->
+    <!--ng-style="{width: ($ctrl.file.progress() * 100) + '%'}">-->
+    <!--</div>-->
+    <!--</div>-->
+    <div layout="row">
+        <md-button class="md-warn"
+                   ng-click="$ctrl.file.pause()"
+                   ng-show="!$ctrl.file.paused && $ctrl.file.isUploading()">
+            Pause
+        </md-button>
+        <md-button class="md-warn"
+                   ng-click="$ctrl.file.resume()"
+                   ng-show="$ctrl.file.paused">
+            Resume
+        </md-button>
+        <md-button class="md-primary"
+                   ng-click="$ctrl.file.retry()"
+                   ng-show="$ctrl.file.error">
+            Retry
+        </md-button>
+    </div>
+</div>

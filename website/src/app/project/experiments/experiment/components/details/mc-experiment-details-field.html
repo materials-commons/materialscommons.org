@@ -1,0 +1,19 @@
+<div layout="row" flex layout-align="start center">
+    <label flex="30">{{$ctrl.heading}} ({{$ctrl.experiment[$ctrl.field].length}})</label>
+    <md-button ng-click="$ctrl.add($ctrl.field)" class="md-primary">
+        <i class="fa fa-fw fa-plus"></i>
+        add {{$ctrl.label}}
+    </md-button>
+</div>
+<ol>
+    <li layout="row" flex ng-repeat="value in $ctrl.experiment[$ctrl.field] track by $index">
+        <label>{{$index + 1}}. </label>
+        <input type="text" class="mc-input-as-line" flex="85"
+               ng-model="$ctrl.experiment[$ctrl.field][$index]"
+               ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+               ng-change="$ctrl.update($ctrl.field)">
+        <a class="mc-error-color margin-top-10" ng-click="$ctrl.remove($ctrl.field, $index)">
+            <i class="fa fa-fw fa-remove"></i>
+        </a>
+    </li>
+</ol>

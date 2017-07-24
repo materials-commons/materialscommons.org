@@ -1,0 +1,61 @@
+<div>
+    <div id="top" class="row">
+        <header class="splash-header">
+            <div class="row">
+                <h1 style="color: white; padding: 30px;">Materials Commons</h1>
+            </div>
+            <div class="row">
+                <div class="login-splash join-splash">
+                    <form name="setPasswordForm" ng-if="!$ctrl.showSuccessMsg" >
+                        <h4>Reset your password</h4>
+                        <div class="row"> (Resetting password for {{$ctrl.user.fullname}}.)</div>
+
+                        <br />
+
+                        <div class="row">
+                            <input ng-model="$ctrl.password1" name="password1" required class="form-control"
+                                   type="password"
+                                   placeholder="Password">
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <input ng-model="$ctrl.password2" name="password2" required class="form-control"
+                                   type="password"
+                                   placeholder="Re-Enter Password...">
+                        </div>
+
+                        <br />
+
+                        <p style="color:red;" ng-if="$ctrl.message">
+                            <b>{{$ctrl.message}}</b>
+                        </p>
+
+                        <div class="row">
+                            <br>
+                            <button class="btn btn-primary btn-lg" style="width: 100%;"
+                                    ng-click="$ctrl.setPassword(setPasswordForm)">
+                                <span>Reset Password</span>
+                            </button>
+                            <button class="btn btn-cancel btn-lg" style="width: 100%; margin-top: 10px"
+                                    ui-sref="login">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                    <div ng-if="$ctrl.showSuccessMsg">
+                        <p style="color:green">
+                            <b>You have successfully reset your password on Materials Commons.</b>
+                        </p>
+                        <p>
+                            You will be redirected to the login page where you can start using Materials Commons.
+                            If this doesn't happen you can click <a ui-sref="login">here</a> to be taken to the
+                            login page immediately.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<md-dialog flex="40" style="max-height:85vh">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Filter process by samples
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <input type="text" placeholder="Filter samples..."
+               class="mc-input-as-line padding-top-10" ng-model="$ctrl.filterSamplesListBy">
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column>Filter On</th>
+                    <th md-column>Sample</th>
+                    <th md-column># Processes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr md-row class="md-row-hover"
+                    ng-repeat="sample in $ctrl.allSamples | orderBy:'name' | filter:$ctrl.filterSamplesListBy">
+                    <td md-cell>
+                        <md-checkbox aria-label="selected" ng-model="sample.selected"
+                                     ng-change="$ctrl.toggleEntry(sample)">
+                        </md-checkbox>
+                    </td>
+                    <td md-cell>
+                        <a class="md-title" ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
+                    </td>
+                    <td md-cell>Used in {{sample.processes.length}} processes.</td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+    </md-dialog-actions>
+</md-dialog>

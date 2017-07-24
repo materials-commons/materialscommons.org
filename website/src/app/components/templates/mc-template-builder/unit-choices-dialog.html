@@ -1,0 +1,21 @@
+<md-dialog flex="60" style="height: 70vh">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Choose Units
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <div layout="row">
+            <input class="mc-input-as-line" placeholder="Search Units..." ng-model="$ctrl.search" flex="60">
+        </div>
+        <div class="md-accordion" ng-repeat="unitType in $ctrl.unitTypes | filter:$ctrl.search | orderBy:'name'">
+            <h3 class="md-title">{{unitType.name}}
+                <md-button class="md-primary" ng-click="$ctrl.done(unitType)">select</md-button>
+            </h3>
+            <md-chips ng-model="unitType.units" readonly="true"></md-chips>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>

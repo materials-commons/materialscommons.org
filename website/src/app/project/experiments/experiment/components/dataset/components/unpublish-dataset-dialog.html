@@ -1,0 +1,18 @@
+<md-dialog flex="80">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Unpublish dataset {{$ctrl.dataset.name}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <p class="md-warn">
+            You are unpublishing a published dataset. This will remove the dataset from the
+            MaterialsCommons Data site. Before unpublishing the dataset you may wish to
+            consider the impact on users who have looked at or downloaded your dataset.
+        </p>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.cancel()">cancel</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.unpublish()">unpublish</md-button>
+    </md-dialog-actions>
+</md-dialog>

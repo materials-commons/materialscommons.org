@@ -1,0 +1,48 @@
+<md-sidenav class="md-sidenav-right mc-sidebar" flex="60"
+            md-component-id="quickbar"
+            md-is-open="$ctrl.showQuickbar"
+            md-whiteframe="4">
+    <md-content layout-margin class="mc-sidebar">
+        <div layout="row" layout-align="center center">
+            <md-button class="md-warn" ng-click="$ctrl.showQuickbar = false">
+                close
+            </md-button>
+        </div>
+        <div layout="column" layout-align="center stretch" ng-if="false">
+            <md-button class="md-primary md-raised">
+                add new samples to project
+            </md-button>
+            <md-button ng-show="$ctrl.$stateParams.experiment_id" class="md-primary md-raised">
+                add new samples to experiment
+            </md-button>
+        </div>
+        <div ng-show="$ctrl.projectSamples.length">
+            <h3 class="md-subhead"><i class="fa fa-fw fa-rocket"></i>Project Samples</h3>
+            <ul>
+                <li ng-repeat="sample in $ctrl.projectSamples | orderBy:'name'">
+                    <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div ng-show="!$ctrl.projectSamples.length" layout="row" layout-align="center center">
+            <h3 class="md-title">No samples in project</h3>
+        </div>
+
+        <div ng-show="$ctrl.experimentSamples.length">
+            <h3 class="md-subhead"><i class="fa fa-fw fa-flask"></i>Experiment Samples</h3>
+            <ul>
+                <li ng-repeat="sample in $ctrl.experimentSamples | orderBy:'name'">
+                    <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div ng-show="$ctrl.datasetSamples.length">
+            <h3 class="md-subhead"><i class="fa fa-fw fa-database"></i>Dataset Samples</h3>
+            <ul>
+                <li ng-repeat="sample in $ctrl.datasetSamples | orderBy:'name'">
+                    <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
+                </li>
+            </ul>
+        </div>
+    </md-content>
+</md-sidenav>

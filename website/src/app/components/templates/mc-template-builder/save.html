@@ -1,0 +1,72 @@
+<div layout="column" flex="100">
+    <div layout-margin layout-align="center" layout="row">
+        <div layout="column" md-whiteframe="10" flex="50" layout-align="center">
+            <md-toolbar layout="row" style="margin-bottom: 20px">
+                <div layout-margin>
+                    Create New Process Template
+                </div>
+            </md-toolbar>
+            <div layout-margin flex>
+                <md-input-container class="md-block">
+                    <label>Template Name</label>
+                    <input ng-model="$ctrl.templateName" md-select-on-focus>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Description</label>
+                    <textarea ng-model="$ctrl.templateDescription" md-maxlength="150"></textarea>
+                </md-input-container>
+            </div>
+        </div>
+        <md-sidenav md-is-locked-open="true" layout="column" class="template-builder-sidenav" md-whiteframe="8">
+            <a ng-click="$ctrl.addSection()"><i class="fa fa-fw fa-plus-circle"></i>Add Section</a>
+        </md-sidenav>
+    </div>
+    <div>
+        <div layout-margin layout-align="center" layout="row" ng-repeat="section in $ctrl.sections">
+            <div layout="column" md-whiteframe="10" flex="50" layout-align="center">
+                <div layout="row">
+                    <div style="background-color:black; color: white; width: 160px">
+                        <span style="margin-left: 20px">Section {{$index+1}}</span>
+                    </div>
+                    <md-button ng-click="$ctrl.addSectionSetupProperty(section)">Add Setup</md-button>
+                </div>
+                <div layout-margin flex>
+                    <md-input-container class="md-block">
+                        <label>Section Name</label>
+                        <input ng-model="section.name" md-select-on-focus>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Section Description</label>
+                        <textarea ng-model="section.description" md-maxlength="150"></textarea>
+                    </md-input-container>
+                </div>
+                <div layout-margin>
+                    <h3 class="md-subhead">Setup Properties</h3>
+                    <div ng-repeat="property in section.setup">
+                        <input ng-model="property.name">
+                    </div>
+                </div>
+            </div>
+            <div class="template-builder-sidenav">
+            </div>
+        </div>
+        <div layout-margin layout-align="center" layout="row">
+            <div layout="column" md-whiteframe="10" flex="50" layout-align="center">
+                <div layout="row">
+                    <div style="background-color:black; color: white; width: 160px">
+                        <span style="margin-left: 20px">Measurements </span>
+                    </div>
+                    <md-button ng-click="$ctrl.addMeasurementProperty()">Add Measurement</md-button>
+                </div>
+                <div layout-margin flex>
+                    <h3 class="md-subhead">Measurements</h3>
+                    <div ng-repeat="m in $ctrl.measurements">
+                        <input ng-model="m.name">
+                    </div>
+                </div>
+            </div>
+            <div class="template-builder-sidenav">
+            </div>
+        </div>
+    </div>
+</div>

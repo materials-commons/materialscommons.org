@@ -1,0 +1,32 @@
+<md-dialog flex="40">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Quick Tasks
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin layout="column">
+        <div layout="row" flex="80" layout-fill layout-align="space-between center">
+            <div flex>
+                <i class="fa fa-fw fa-star-o cursor-pointer" ng-click="$ctrl.toggleStar($event)"
+                   style="font-size:20px"></i>
+                <input flex="90" layout-fill type="text"
+                       ng-model="$ctrl.task.name"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                       ng-change="$ctrl.onNameChange()"
+                       on-enter="$ctrl.done()"
+                       placeholder="Untitled Task..."
+                       class="mc-input-no-border align-task-element">
+            </div>
+            <div class="align-task-element">
+                <i class="fa fa-fw fa-flag cursor-pointer mc-flag-not-set"
+                   ng-click="$ctrl.toggleFlag('flagged', $event)"></i>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row" layout-align="space-between center">
+        <div>
+            <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+            <md-button class="md-primary" ng-click="$ctrl.addAnother()">Add Another</md-button>
+        </div>
+    </md-dialog-actions>
+</md-dialog>

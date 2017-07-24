@@ -1,0 +1,52 @@
+<div layout="column" layout-margin layout-fill>
+    <div ng-if="$ctrl.results.total !== 0">
+        <h4 class="md-title">Showing top {{$ctrl.results.hits.length}} matches of {{$ctrl.results.total}} found.</h4>
+        <md-list>
+            <md-list-item ng-repeat="hit in $ctrl.results.hits">
+                <div ng-switch="hit._source.otype">
+                    <div ng-switch-when="datafile">
+                        <div layout="row">
+                            <div class="md-list-item-text">
+                                <span>
+                                    <b>{{$index+1}}. </b>
+                                    <i class="fa fa-fw fa-files-o"></i>
+                                    <a ng-click="$ctrl.gotoFilesPage(hit._source)">{{hit._source.name}}</a>
+                                    {{hit._source.mediatype.mime}}
+                                </span>
+                                <span class="row">Path: {{hit._source.path}}</span>
+                            </div>
+                        </div>
+                        <div ng-if="$ctrl.isImage(hit._source.mediatype.mime)">
+                            <a ng-click="$ctrl.openFilePopup(hit._source)">
+                                <img class="img-thumbnail" height="140" width="140"
+                                     ng-src="{{$ctrl.fileSrc(hit._source.id)}}">
+                            </a>
+                        </div>
+                    </div>
+                    <div ng-switch-when="sample">
+                        <div layout="row">
+                            <div class="md-list-item-text">
+                                <span>
+                                    <b>{{$index+1}}.</b>
+                                    <i class="fa fa-fw fa-cubes" style="color: #f0ad4e;"></i>
+                                    <a ng-click="$ctrl.showSample(hit._source)">{{hit._source.name}}</a>
+                                </span>
+                            </div>
+                        </div>
+                        <span>
+                            <a ng-repeat="image in $ctrl.images(hit._source.files) | first:5"
+                               ng-click="$ctrl.openFilePopup(image)">
+                                <img class="img-thumbnail" height="140" width="140"
+                                     ng-src={{$ctrl.fileSrc(image.datafile_id)}}>
+                            </a>
+                            <span ng-if="hit._source.files.length > 5"> ... and {{hit._source.files.length-5}} More</span>
+                        </span>
+                    </div>
+                </div>
+            </md-list-item>
+        </md-list>
+    </div>
+    <div ng-if="$ctrl.results.total === 0">
+        <h4 class="center">No Matches Found</h4>
+    </div>
+</div>

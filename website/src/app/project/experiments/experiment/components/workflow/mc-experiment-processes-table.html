@@ -1,0 +1,47 @@
+<div>
+    <md-table-container>
+        <table md-table>
+            <thead md-head md-order="$ctrl.sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="name">Process</th>
+                <th md-column md-order-by="process_name">Type</th>
+                <th md-column md-order-by="does_transform">Transforms</th>
+                <th md-column>Description</th>
+                <th md-column md-order-by="mtime.epoch_time">Modified</th>
+                <th md-column md-order-by="input_files.length"># Input Files</th>
+                <th md-column md-order-by="output_files.length"># Output Files</th>
+                <th md-column md-order-by="samples.length"># Samples</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row class="md-row-hover pointer"
+                ng-repeat="process in $ctrl.processes | filter:$ctrl.filterBy | orderBy:$ctrl.sortOrder">
+                <td md-cell>
+                    <a class="md-primary" ng-click="$ctrl.showProcess(process)">{{process.name}}</a>
+                </td>
+                <td md-cell>
+                    {{process.process_name}}
+                </td>
+                <td md-cell>
+                    {{process.does_transform ? "Yes" : "No"}}
+                </td>
+                <td md-cell style="width: 20%">
+                    {{process.description}}
+                </td>
+                <td md-cell>
+                    {{process.mtime | toDate}}
+                </td>
+                <td md-cell>
+                    {{process.input_files.length}}
+                </td>
+                <td md-cell>
+                    {{process.output_files.length}}
+                </td>
+                <td md-cell>
+                    {{process.input_samples.length}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>

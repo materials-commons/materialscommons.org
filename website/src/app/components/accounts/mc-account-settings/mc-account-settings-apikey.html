@@ -1,0 +1,8 @@
+<div layout="column" layout-align="start start">
+    <h3 flex="100" class="md-title">API Key</h3>
+    <div layout="row" layout-align="start center">
+        <md-button class="md-primary" ng-click="$ctrl.showAPIKey()">{{ $ctrl.showHideButtonText }}</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.resetAPIKey()">Reset API Key</md-button>
+        <span ng-show="$ctrl.showKey">Your current apikey is: {{ $ctrl.apikey }}</span>
+    </div>
+</div>

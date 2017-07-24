@@ -1,0 +1,18 @@
+<div data-nodrag>
+    <div layout="row" layout-align="space-around center" flex="60">
+        <!--<a class="mc-file-tree-control text-uppercase">-->
+        <!--<i class="fa fa-fw fa-clock-o"></i> previous versions-->
+        <!--</a>-->
+        <a class="mc-file-tree-control text-uppercase" ng-click="$ctrl.promptForRename = !$ctrl.promptForRename">
+            <i class="fa fa-fw fa-pencil-square"></i>rename
+        </a>
+        <a class="mc-file-tree-control text-uppercase" ng-click="$ctrl.deleteFile()">
+            <i class="fa fa-fw fa-trash-o"></i> delete
+        </a>
+    </div>
+    <div ng-if="$ctrl.promptForRename" layout="row">
+        <md-input-container>
+            <input on-enter="$ctrl.renameFile()" ng-model="$ctrl.newFileName">
+        </md-input-container>
+    </div>
+</div>

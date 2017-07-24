@@ -1,0 +1,51 @@
+<md-list>
+    <div ng-if="$ctrl.process.input_samples.length">
+        <md-subheader class="md-no-sticky no-inner-padding"><h4>Input Samples</h4></md-subheader>
+        <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.process.input_samples | orderBy:'name'">
+            <div class="md-list-item-text md-whiteframe-2dp" layout="column">
+                <div class="padding-left-15 padding-top-10">
+                    <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
+                    <div ng-if="sample.files.length">
+                        <h3 class="md-subhead">Linked to files</h3>
+                        <ul>
+                            <li ng-repeat="file in sample.files">
+                                <a ng-click="$ctrl.showFile(file)">{{file.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div layout="row" layout-align="start layout-wrap">
+                        <md-button ng-if="$ctrl.process.files.length" ng-click="$ctrl.linkFilesToSample(sample)"
+                                   class="md-primary">Link Files
+                        </md-button>
+                        <md-button ng-click="$ctrl.removeSample(sample)" class="md-warn">Remove</md-button>
+                    </div>
+                </div>
+            </div>
+        </md-list-item>
+    </div>
+
+    <div ng-if="$ctrl.process.output_samples.length">
+        <md-subheader class="md-no-sticky no-inner-padding"><h4>Output Samples</h4></md-subheader>
+        <md-list-item class="md-3-line" ng-repeat="sample in $ctrl.process.output_samples | orderBy:'name'">
+            <div class="md-list-item-text md-whiteframe-2dp" layout="column">
+                <div class="padding-left-15 padding-top-10">
+                    <a ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
+                    <div ng-if="sample.files.length">
+                        <h3 class="md-subhead">Linked to files</h3>
+                        <ul>
+                            <li ng-repeat="file in sample.files">
+                                <a ng-click="$ctrl.showFile(file)">{{file.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div layout="row" layout-align="start layout-wrap">
+                        <md-button ng-if="$ctrl.process.files.length" ng-click="$ctrl.linkFilesToSample(sample)"
+                                   class="md-primary">Link Files
+                        </md-button>
+                        <md-button ng-click="$ctrl.removeSample(sample)" class="md-warn">Remove</md-button>
+                    </div>
+                </div>
+            </div>
+        </md-list-item>
+    </div>
+</md-list>

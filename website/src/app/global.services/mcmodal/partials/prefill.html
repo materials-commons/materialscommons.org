@@ -1,0 +1,126 @@
+<div class="row">
+    <div class="modal-header">
+        <h4 class="modal-title">Pre-Fill Setup Information for {{ctrl.template.name}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="row">
+                <label class="col-xs-3 control-label">
+                    Process Name:
+                </label>
+
+                <div class="col-xs-6">
+                    <input ng-if="!ctrl.template.prefill" ng-model="ctrl.template.name" class="form-control">
+                    <span ng-if="ctrl.template.prefill">{{ctrl.template.name}}</span>
+                </div>
+            </div>
+            <br>
+            <h4>SETUP</h4>
+            <hr/>
+            <div class="row" ng-repeat="setting in ctrl.template.setup.settings[0].properties">
+                <div ng-switch="setting.property.otype">
+                    <!--------- number --------->
+                    <div ng-switch-when="number">
+                        <label class="col-xs-3 control-label">
+                            {{::setting.property.name}}
+                            <i ng-if="setting.property.required"
+                               class="fa fa-fw fa-asterisk text-danger"></i>
+                        </label>
+
+                        <div class="col-xs-6">
+                            <div class="col-xs-8">
+                                <input type="number"
+                                       name="numberInput"
+                                       step="any"
+                                       class="form-control"
+                                       ng-required="setting.property.required"
+                                       ng-model="setting.property.value">
+
+                                <div ng-if="mainSettingForm.$submitted || mainSettingForm.$touched"
+                                     ng-messages="settingForm.numberInput.$error" class="errors">
+                                    <div ng-message="number">Please enter number.</div>
+                                    <div ng-message="required">Its a required field.</div>
+                                </div>
+                            </div>
+                            <span ng-if="setting.property.units.length === 0">{{::setting.property.unit}}</span>
+                            <span class="col-xs-4" ng-if="setting.property.units.length !== 0">
+                                <select ng-model="setting.property.unit" data-placeholder="Choose"
+                                        class="form-control"
+                                        ng-required="setting.property.required">
+                                    <option value="{{choice}}"
+                                            ng-repeat="choice in setting.property.units">
+                                        {{ choice }}
+                                    </option>
+                                </select>
+                            </span>
+                            <span class="help-block">{{::setting.property.description}}</span>
+                        </div>
+                    </div>
+                    <!--------- selection --------->
+                    <div ng-switch-when="selection">
+                        <label class="col-xs-3 control-label">
+                            {{::setting.property.name}}
+                            <i ng-if="setting.property.required" class="fa fa-fw fa-asterisk text-danger"></i>
+                        </label>
+
+                        <div class="col-xs-6">
+                            <div class="col-xs-8">
+                                <select ng-model="setting.property.value"
+                                        data-placeholder="Choose"
+                                        name="selectInput" class="form-control"
+                                        ng-options="choice as choice.name for choice in setting.property.choices track by choice.value"
+                                        ng-required="setting.property.required">
+                                </select>
+
+                                <div ng-if="mainSettingForm.$submitted || mainSettingForm.$touched"
+                                     ng-messages="settingForm.selectInput.$error" class="errors">
+                                    <div ng-message="required">It's a required field.</div>
+                                </div>
+                            </div>
+                            <span class="help-block">{{::setting.property.description}}</span>
+                        </div>
+                    </div>
+                    <!--------- string --------->
+                    <div ng-switch-when="string">
+                        <label class="col-xs-3 control-label">
+                            {{::setting.property.name}}
+                            <i ng-if="setting.property.required" class="fa fa-fw fa-asterisk text-danger"></i>
+                        </label>
+
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control"
+                                   name="stringInput" ng-required="setting.property.required"
+                                   ng-model="setting.property.value">
+
+                            <div ng-if="mainSettingForm.$submitted || mainSettingForm.$touched"
+                                 ng-messages="settingForm.stringInput.$error" class="errors">
+                                <div ng-message="required">It's a required field.</div>
+                                <div ng-message="text">It's a text field.</div>
+                            </div>
+                            <span class="help-block">{{::setting.property.description}}</span>
+                        </div>
+                    </div>
+                    <!--------- unknown type --------->
+                    <div ng-switch-default>
+                        <span>Unknown template type {{setting.property.otype}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-xs-3">
+            <button ng-click="ctrl.cancel()"
+                    class="btn-details-container btn btn-default btn btn-cancel">
+                Cancel
+            </button>
+        </div>
+        <div class="col-xs-3">
+            <button ng-click="ctrl.ok()"
+                    ng-disabled="isProcessing"
+                    class=" btn btn-default btn-process btn-details-container">Save
+            </button>
+        </div>
+    </div>
+</div>
+

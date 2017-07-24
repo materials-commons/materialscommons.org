@@ -1,0 +1,161 @@
+<div layout="column">
+    <h4 class="md-title">Properties</h4>
+    <md-content layout-padding>
+        <form name="measurementsForm">
+            <div ng-repeat="measurement in $ctrl.measurements">
+                <div ng-switch="::measurement.otype">
+
+                    <!--------- number --------->
+                    <div ng-switch-when="number">
+                        <div layout="row" layout-align="start center">
+                            <md-input-container md-no-float>
+                                <label>{{::measurement.name}}</label>
+                                <input type="number"
+                                       name="numberInput"
+                                       step="any"
+                                       ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                       ng-required="::measurement.required"
+                                       ng-model="measurement.value">
+                            </md-input-container>
+                            <span ng-if="measurement.units.length === 0" class="unit-align">
+                                {{::measurement.unit}}
+                            </span>
+                            <span ng-if="measurement.units.length !== 0">
+                                <md-select ng-model="measurement.unit"
+                                           ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                           aria-label="units"
+                                           class="units-align">
+                                    <md-option ng-repeat="unit in ::measurement.units"
+                                               ng-value="unit">
+                                        {{unit}}
+                                    </md-option>
+                                </md-select>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!--------- integer --------->
+                    <div ng-switch-when="integer">
+                        <div layout="row" layout-align="start center">
+                            <md-input-container md-no-float>
+                                <label>{{::measurement.name}}</label>
+                                <input type="number"
+                                       name="numberInput"
+                                       step="any"
+                                       ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                       ng-required="::measurement.required"
+                                       ng-model="measurement.value">
+                            </md-input-container>
+                            <span ng-if="measurement.units.length === 0" class="unit-align">
+                                {{::measurement.unit}}
+                            </span>
+                            <span ng-if="measurement.units.length !== 0">
+                                <md-select ng-model="measurement.unit"
+                                           ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                           aria-label="units"
+                                           class="units-align">
+                                    <md-option ng-repeat="unit in ::measurement.units"
+                                               ng-value="unit">
+                                        {{unit}}
+                                    </md-option>
+                                </md-select>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!--------- float --------->
+                    <div ng-switch-when="float">
+                        <div layout="row" layout-align="start center">
+                            <md-input-container md-no-float>
+                                <label>{{::measurement.name}}</label>
+                                <input type="number"
+                                       name="numberInput"
+                                       step="any"
+                                       ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                       ng-required="::measurement.required"
+                                       ng-model="measurement.value">
+                            </md-input-container>
+                            <span ng-if="measurement.units.length === 0" class="unit-align">
+                                {{::measurement.unit}}
+                            </span>
+                            <span ng-if="measurement.units.length !== 0">
+                                <md-select ng-model="measurement.unit"
+                                           ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                           aria-label="units"
+                                           class="units-align">
+                                    <md-option ng-repeat="unit in ::measurement.units"
+                                               ng-value="unit">
+                                        {{unit}}
+                                    </md-option>
+                                </md-select>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!------ composition ----->
+                    <div ng-switch-when="composition">
+                        <label>Composition</label>
+                        <periodic-table composition="measurement"></periodic-table>
+                        <md-button class="md-primary" ng-click="$ctrl.addPropertyMeasurement(measurement)">
+                            add composition
+                        </md-button>
+                    </div>
+
+                    <!--------- date --------->
+                    <div ng-switch-when="date">
+                        <label>{{::measurement.name}}</label>
+                        <md-datepicker ng-model="measurement.value"
+                                       ng-change="$ctrl.updateMeasurementProperty(measurement)">
+                        </md-datepicker>
+                    </div>
+
+                    <!--------- selection --------->
+                    <div ng-switch-when="selection">
+                        <div style="margin-top:45px">
+                            <md-input-container class="md-block">
+                                <label>{{::measurement.name}}</label>
+                                <md-select ng-model="measurement.value"
+                                           ng-model-options="{trackBy: '$value.name'}"
+                                           ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                           aria-label="x">
+                                    <md-option ng-value="choice"
+                                               ng-repeat="choice in ::measurement.choices">
+                                        {{::choice.name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <div ng-if="measurement.value.name === 'Other'">
+                            <div style="margin-top:45px">
+                                <md-input-container class="md-block" md-no-float>
+                                    <label>Specify {{::measurement.name}}...</label>
+                                    <input ng-model="measurement.value.value"
+                                           ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                                           ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                           type="text">
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--------- string --------->
+                    <div ng-switch-when="string">
+                        <md-input-container class="md-block">
+                            <label>{{::measurement.name}}</label>
+                            <input type="text" name="stringInput"
+                                   ng-required="::measurement.required"
+                                   ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                                   ng-change="$ctrl.updateMeasurementProperty(measurement)"
+                                   ng-model="measurement.value">
+                        </md-input-container>
+                    </div>
+
+                    <!--------- unknown type --------->
+                    <div ng-switch-default>
+                        <!--<span>Unknown type {{::measurement.otype}}</span>-->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </md-content>
+</div>

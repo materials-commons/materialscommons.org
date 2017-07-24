@@ -1,0 +1,34 @@
+<div layout-margin flex="100">
+    <mc-process-details-ro-setup process-setup="$ctrl.process.setup"></mc-process-details-ro-setup>
+    <div ng-if="::$ctrl.process.input_samples.length" class="margin-top-40">
+        <h5><strong>Input Samples</strong></h5>
+        <ul>
+            <li ng-repeat="sample in ::$ctrl.process.input_samples">
+                {{::sample.name}}
+                <p>{{sample.description}}</p>
+            </li>
+        </ul>
+    </div>
+    <div ng-if="::$ctrl.process.input_samples.length == 0" class="margin-top-40">
+        <h5><strong>No Input Samples</strong></h5>
+    </div>
+    <div ng-if="::$ctrl.process.output_samples.length" class="margin-top-40">
+        <h5><strong>Output Samples</strong></h5>
+        <ul>
+            <li ng-repeat="sample in ::$ctrl.process.output_samples">
+                <h5>{{::sample.name}}</h5>
+                <p>{{sample.description}}</p>
+            </li>
+        </ul>
+    </div>
+    <div ng-if="::$ctrl.process.output_samples.length == 0" class="margin-top-40">
+        <h5><strong>No Output Samples</strong></h5>
+    </div>
+    <div ng-if="::$ctrl.process.files.length" class="margin-top-40">
+        <h5><strong>Files ({{$ctrl.process.files.length}})</strong></h5>
+        <mc-process-details-ro-files-list files="$ctrl.process.files"></mc-process-details-ro-files-list>
+    </div>
+    <div ng-if="::$ctrl.process.files.length == 0" class="margin-top-40">
+        <h5><strong>No files</strong></h5>
+    </div>
+</div>

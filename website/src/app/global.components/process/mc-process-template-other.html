@@ -1,0 +1,49 @@
+<md-tabs md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
+    <md-tab>
+        <md-tab-label>Setup</md-tab-label>
+        <md-tab-body>
+            <div layout="column">
+                <process-settings2 settings="$ctrl.process.setup[0].properties"
+                                   attribute="$ctrl.process.setup[0].attribute"
+                                   template-id="$ctrl.process.template_id"
+                                   process-id="$ctrl.process.id">
+                </process-settings2>
+            </div>
+        </md-tab-body>
+    </md-tab>
+
+    <md-tab>
+        <md-tab-label>Samples ({{$ctrl.process.input_samples.length}})</md-tab-label>
+        <md-tab-body>
+            <md-button class="md-primary" ng-click="$ctrl.selectSamples()">
+                <i class="fa fa-fw fa-plus"></i>
+                samples
+            </md-button>
+            <mc-process-template-samples-list process="$ctrl.process"></mc-process-template-samples-list>
+        </md-tab-body>
+    </md-tab>
+
+    <md-tab>
+        <md-tab-label>Files ({{$ctrl.process.files.length}})</md-tab-label>
+        <md-tab-body>
+            <md-button class="md-primary" ng-click="$ctrl.selectFiles()">
+                <i class="fa fa-fw fa-plus"></i>
+                files
+            </md-button>
+            <mc-process-template-files-list process="$ctrl.process"></mc-process-template-files-list>
+        </md-tab-body>
+    </md-tab>
+
+    <md-tab>
+        <md-tab-label>Measurements</md-tab-label>
+        <md-tab-body>
+            <div layout="column" class="margin-top-10">
+                <process-measurements measurements="$ctrl.process.measurements"
+                                      samples="$ctrl.process.output_samples"
+                                      process-id="$ctrl.process.id"
+                                      template="$ctrl.process">
+                </process-measurements>
+            </div>
+        </md-tab-body>
+    </md-tab>
+</md-tabs>

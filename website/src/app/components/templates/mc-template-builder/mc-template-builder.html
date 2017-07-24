@@ -1,0 +1,73 @@
+<div layout="column" ng-if="!$ctrl.templateLoaded" layout-align="center center" flex>
+    <md-button class="md-primary" ng-click="$ctrl.createNew()">create new template</md-button>
+    <input class="mc-input-as-line" placeholder="Search Templates..." ng-model="$ctrl.search" flex>
+    <md-table-container>
+        <table md-table>
+            <thead md-head md-order="$ctrl.sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="name">Template</th>
+                <th md-column>Description</th>
+                <th md-column md-order-by="process_type">Type</th>
+                <th md-column md-order-by="does_transform">Transforms?</th>
+                <th md-column>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr md-row ng-repeat="template in $ctrl.templates | filter:$ctrl.search | orderBy:$ctrl.sortOrder">
+                <td md-cell><a ng-click="$ctrl.viewTemplate(template)">{{template.name}}</a></td>
+                <td md-cell>{{template.template_description}}</td>
+                <td md-cell>{{template.process_type}}</td>
+                <td md-cell>{{template.does_transform ? 'Yes' : 'No'}}</td>
+                <td md-cell>
+                    <div layout="row">
+                        <md-button class="md-primary" ng-click="$ctrl.cloneTemplate(template)">clone</md-button>
+                        <md-button ng-if="template.can_edit" class="md-primary" ng-click="$ctrl.editTemplate(template)">
+                            edit
+                        </md-button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>
+<div layout="row" flex="100" ng-if="$ctrl.templateLoaded">
+    <div layout="column" flex="25" layout-margin>
+        <div layout="row">
+            <md-button class="md-primary" ng-click="$ctrl.done()" ng-disabled="$ctrl.template.name === ''">done
+            </md-button>
+            <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
+        </div>
+        <mc-template-builder-elements ng-if="$ctrl.currentTab === 1 || $ctrl.currentTab === 2"
+                                      elements="$ctrl.whichElements" xflex="25" xlayout-margin>
+        </mc-template-builder-elements>
+        <span ng-if="$ctrl.currentTab === 0 || $ctrl.currentTab === 3"></span>
+    </div>
+    <md-tabs md-selected="$ctrl.currentTab" md-stretch-tabs md-dynamic-height flex="100" layout-margin>
+        <md-tab>
+            <md-tab-label>Description</md-tab-label>
+            <md-tab-body>
+                <mc-template-builder-description template="$ctrl.template"></mc-template-builder-description>
+            </md-tab-body>
+        </md-tab>
+        <md-tab ng-click="$ctrl.whichElements = 'setup'">
+            <md-tab-label>Setup</md-tab-label>
+            <md-tab-body>
+                <mc-template-builder-setup template="$ctrl.template"></mc-template-builder-setup>
+            </md-tab-body>
+        </md-tab>
+        <md-tab ng-click="$ctrl.whichElements = 'measurements'">
+            <md-tab-label>Sample Attributes</md-tab-label>
+            <md-tab-body>
+                <mc-template-builder-measurements template="$ctrl.template"></mc-template-builder-measurements>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>Review</md-tab-label>
+            <md-tab-body>
+                <mc-template-builder-review template="$ctrl.template"
+                                            ng-if="$ctrl.currentTab === 3"></mc-template-builder-review>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
+</div>

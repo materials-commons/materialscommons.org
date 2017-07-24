@@ -1,0 +1,24 @@
+<div layout="column" layout-margin>
+    <div ng-if="$ctrl.experiment.notes.length == 0">(No notes in project)</div>
+    <md-content ui-tree="$ctrl.treeOptions" id="notes-tree-root">
+        <ol ui-tree-nodes ng-model="" style="margin-right: 8px">
+            <li dir-paginate="note in $ctrl.experiment.notes | itemsPerPage:20" flex ui-tree-node>
+                <div ui-tree-handle
+                     ng-click="$ctrl.setCurrent(note, $event)"
+                     class="tree-node-content mc-experiment-outline-task no-outline {{::note.selectedClass}}">
+                    <div layout="row" layout-fill layout-align="space-between center">
+                        <div>
+                            <i class="fa fa-fw fa-reorder align-task-element"></i>
+                            <input size="30" type="text" data-nodrag
+                                   ng-model="note.name"
+                                   ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                                   ng-change="$ctrl.onNameChange(note)"
+                                   class="mc-input-no-border align-task-element">
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ol>
+        <dir-pagination-controls></dir-pagination-controls>
+    </md-content>
+</div>

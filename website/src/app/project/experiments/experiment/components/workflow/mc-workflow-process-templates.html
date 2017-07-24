@@ -1,0 +1,60 @@
+<div layout="column" layout-align="center center" flex>
+    <input class="mc-input-as-line" placeholder="Search Templates..." ng-model="$ctrl.search" flex>
+
+    <h3>Recently selected templates</h3>
+    <md-table-container>
+        <table md-table>
+            <thead md-head md-order="$ctrl.sortOrderRecentlySelected">
+            <tr md-row>
+                <th md-column md-order-by="name">Template</th>
+                <th md-column>Description</th>
+                <th md-column md-order-by="process_type">Type</th>
+                <th md-column md-order-by="does_transform">Transforms?</th>
+                <th md-column>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr md-row
+                ng-repeat="template in $ctrl.recentlySelectedTemplates | filter:$ctrl.search | orderBy:$ctrl.sortOrderRecentlySelected">
+                <td md-cell><a ng-click="$ctrl.chooseTemplate(template)">{{template.name}}</a></td>
+                <td md-cell>{{template.template_description}}</td>
+                <td md-cell>{{template.process_type}}</td>
+                <td md-cell>{{template.does_transform ? 'Yes' : 'No'}}</td>
+                <td md-cell>
+                    <div layout="row">
+                        <md-button class="md-primary" ng-click="$ctrl.chooseTemplate(template)">select</md-button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <h3>All Templates</h3>
+    <md-table-container>
+        <table md-table>
+            <thead md-head md-order="$ctrl.sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="name">Template</th>
+                <th md-column>Description</th>
+                <th md-column md-order-by="process_type">Type</th>
+                <th md-column md-order-by="does_transform">Transforms?</th>
+                <th md-column>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr md-row ng-repeat="template in $ctrl.templates | filter:$ctrl.search | orderBy:$ctrl.sortOrder">
+                <td md-cell><a ng-click="$ctrl.chooseTemplate(template)">{{template.name}}</a></td>
+                <td md-cell>{{template.template_description}}</td>
+                <td md-cell>{{template.process_type}}</td>
+                <td md-cell>{{template.does_transform ? 'Yes' : 'No'}}</td>
+                <td md-cell>
+                    <div layout="row">
+                        <md-button class="md-primary" ng-click="$ctrl.chooseTemplate(template)">select</md-button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>

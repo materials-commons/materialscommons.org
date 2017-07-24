@@ -1,0 +1,10 @@
+<div layout="column" layout-margin layout-fill layout-wrap>
+    <div ng-switch='$ctrl.template.process_name'>
+        <div ng-switch-when="As Received">
+            <mc-process-create-as-received template="$ctrl.template"></mc-process-create-as-received>
+        </div>
+        <div ng-switch-default>
+            <mc-process-create-other template="$ctrl.template"></mc-process-create-other>
+        </div>
+    </div>
+</div>

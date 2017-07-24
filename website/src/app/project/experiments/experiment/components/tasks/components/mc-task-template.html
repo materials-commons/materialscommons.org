@@ -1,0 +1,10 @@
+<div layout="column" layout-margin layout-fill layout-wrap>
+    <div ng-switch='$ctrl.task.template.template_name'>
+        <div ng-switch-when="Create Samples">
+            <mc-task-template-create-samples task="$ctrl.task"></mc-task-template-create-samples>
+        </div>
+        <div ng-switch-default>
+            <mc-task-template-other task="$ctrl.task"></mc-task-template-other>
+        </div>
+    </div>
+</div>

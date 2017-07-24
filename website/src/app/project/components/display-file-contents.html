@@ -1,0 +1,48 @@
+<div layout="column">
+    <span class="md-subhead">File</span>
+    <div ng-switch="view.fileType">
+        <div ng-switch-when="image">
+            <div flex="40">
+                <md-card>
+                    <img ng-src="{{view.fileSrc}}">
+                </md-card>
+            </div>
+        </div>
+        <div ng-switch-when="pdf">
+            <div class="embed-responsive embed-responsive-4by3">
+                <embed class="col-xs-8 embed-responsive-item"
+                       ng-src="{{view.fileSrc}}">
+                </embed>
+            </div>
+        </div>
+        <div ng-switch-when="office">
+            <div class="embed-responsive embed-responsive-4by3">
+                <embed class="col-xs-8 embed-responsive-item"
+                       ng-src="{{view.fileSrc}}">
+                </embed>
+            </div>
+
+        </div>
+        <div ng-switch-when="binary">
+            <span><i class="fa fa-fw fa-file-o"></i>Binary file cannot be displayed</span>
+        </div>
+        <div ng-switch-default>
+            <div ng-if="view.file.size <= 10000"
+                 ng-click="view.showImage(view.file)"
+                 hljs include="view.fileSrc">
+            </div>
+            <code ng-if="view.file.size > 10000 && view.file.size <= 2000000"
+                  ng-click="view.showImage(view.file)"
+                  style="white-space: pre-line" ng-include="view.fileSrc">
+            </code>
+
+            <div ng-if="view.file.size > 2000000">
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-file fa-stack-1x"></i>
+                    <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                </span>
+                File too big to display
+            </div>
+        </div>
+    </div>
+</div>

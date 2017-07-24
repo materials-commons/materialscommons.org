@@ -1,0 +1,13 @@
+<md-dialog flex="80">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            {{$ctrl.sample.name}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <mc-show-sample sample-id="$ctrl.sample.id"></mc-show-sample>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.done()">done</md-button>
+    </md-dialog-actions>
+</md-dialog>

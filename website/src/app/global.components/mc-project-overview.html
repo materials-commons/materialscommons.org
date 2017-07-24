@@ -1,0 +1,28 @@
+<div flex layout="column">
+    <h3 class="md-title">Project: {{$ctrl.project.name}}</h3>
+    <h3 class="md-subhead">Description</h3>
+    <div md-whiteframe layout-margin>
+        <div>{{$ctrl.project.description ? $ctrl.project.description : "No Description"}}</div>
+    </div>
+    <h3 class="md-subhead">Project Overview</h3>
+    <div md-whiteframe layout-margin flex="30">
+        <div ckeditor="editorOptions" disabled
+             ng-model="$ctrl.project.overview"
+             ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+             ng-change="$ctrl.updateProjectOverview()"
+             contenteditablex="true">
+            {{$ctrl.project.Overview}}
+        </div>
+    </div>
+    <h3 class="md-subhead">Experiments</h3>
+    <div ng-repeat="experiment in $ctrl.project.experiments" layout-margin md-whiteframe layout="column">
+        <label>Experiment: {{experiment.name}}</label>
+        <span>{{experiment.description}}</span>
+    </div>
+    <h3 class="md-subhead">Users</h3>
+    <div md-whiteframe layout-margin>
+        <div ng-repeat="user in $ctrl.project.users">
+            {{user.details.fullname}}
+        </div>
+    </div>
+</div>

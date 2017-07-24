@@ -1,0 +1,14 @@
+<div layout-margin ui-tree="$ctrl.treeOptions" data-nodrop-enabled="true" data-drag-enabled="false">
+    <ol ui-tree-nodes ng-model="$ctrl.files">
+        <li ng-repeat="file in $ctrl.files track by file.data.id" ui-tree-node>
+            <div ui-tree-handle>
+                <a ng-click="file.expand = !file.expand" data-nodrag>
+                    <span ng-if="file.expand"><i class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
+                    <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
+                    {{::file.data.name}}
+                </a>
+            </div>
+            <mc-files-select-dir ng-if="file.expand" file="file" project="$ctrl.project"></mc-files-select-dir>
+        </li>
+    </ol>
+</div>

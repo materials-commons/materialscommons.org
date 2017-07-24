@@ -1,0 +1,25 @@
+<div layout="row">
+    <div layout="column" flex md-whiteframe style="margin-right: 10px">
+        <md-toolbar layout="row">
+            <md-button ng-click="$ctrl.addNote()">
+                <span class="text-white"><i class="fa fa-fw fa-plus"></i>add note</span>
+            </md-button>
+            <md-button ng-click="$ctrl.addTasks()">
+                <span class="text-white"><i class="fa fa-fw fa-tasks"></i>quick tasks</span>
+            </md-button>
+        </md-toolbar>
+        <mc-experiment-notes-list></mc-experiment-notes-list>
+    </div>
+    <div flex="65">
+        <div ng-show="$ctrl.currentNote.note !== null">
+            <textarea ckeditor="editorOptions"
+                      ng-model="$ctrl.currentNote.note"
+                      ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                      ng-change="$ctrl.updateNote()">
+            </textarea>
+        </div>
+        <span ng-show="$ctrl.currentNote.note === null">
+            <h4>No notes in project</h4>
+        </span>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<md-dialog flex="60" style="height: 70vh">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            {{$ctrl.template.name}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <div layout="row">
+            <div flex="70">
+                <md-content style="max-height:80vh; min-height: 40vh">
+                    <mc-process-template process="$ctrl.template" readonly="true"></mc-process-template>
+                </md-content>
+            </div>
+            <div flex="30" layout-margin>
+
+                <md-content style="max-height:80vh; min-height: 40vh">
+                    <h3 class="md-subhead">Setup</h3>
+                    <ul>
+                        <li ng-repeat="p in $ctrl.template.setup[0].properties">
+                            {{p.name}}/{{p.otype}}
+                        </li>
+                    </ul>
+
+                    <h3 class="md-subhead">Measurements</h3>
+                    <ul>
+                        <li ng-repeat="p in $ctrl.template.measurements">
+                            {{p.name}}/{{p.otype}}
+                        </li>
+                    </ul>
+                </md-content>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-if="$ctrl.template.can_edit" ng-click="$ctrl.close('edit')">edit</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.close('clone')">clone</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.close('close')">Close</md-button>
+    </md-dialog-actions>
+</md-dialog>

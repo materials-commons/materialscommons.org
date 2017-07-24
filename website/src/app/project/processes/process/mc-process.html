@@ -1,0 +1,48 @@
+<div layout="column" layout-margin layout-wrap>
+    <div layout="row" layout-align="start center">
+        <h3 class="md-title">{{$ctrl.process.name}}</h3>
+        <span flex></span>
+        <md-button ng-click="$ctrl.edit()" class="md-primary">edit</md-button>
+        <span flex></span>
+    </div>
+    <div layout="row" flex="60" layout-align="space-around center">
+        <span class="md-subhead-light"><i class="fa fa-calendar"></i>{{$ctrl.process.birthtime | toDateString}}</span>
+        <span class="md-subhead-light"><i class="fa fa-user"></i>{{$ctrl.process.owner}}</span>
+        <span flex="40"></span>
+    </div>
+
+    <md-tabs md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
+        <md-tab>
+            <md-tab-label>
+                <span><i class="fa fa-fw fa-gears"></i>setup</span>
+            </md-tab-label>
+            <md-tab-body>
+                <mc-process-setup process="$ctrl.process"></mc-process-setup>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span><i class="fa fa-fw fa-cubes"></i>samples ({{$ctrl.process.input_samples.length}})</span>
+            </md-tab-label>
+            <md-tab-body>
+                <mc-samples samples="$ctrl.process.samples"></mc-samples>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span><i class="fa fa-fw fa-files-o"></i>input files ({{$ctrl.process.input_files.length}})</span>
+            </md-tab-label>
+            <md-tab-body>
+                <mc-files-list files="$ctrl.process.input_files"></mc-files-list>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span><i class="fa fa-fw fa-files-o"></i>output files ({{$ctrl.process.output_files.length}})</span>
+            </md-tab-label>
+            <md-tab-body>
+                <mc-files-list files="$ctrl.process.output_files"></mc-files-list>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
+</div>

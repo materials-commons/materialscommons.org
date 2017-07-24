@@ -1,0 +1,50 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">View Setup Details</h3>
+    </div>
+    <br>
+
+    <div ng-if="ctrl.properties.length === 0">
+        No Setup information
+    </div>
+    <div class="modal-body row">
+        <div class="col-xs-12">
+            <table ng-if="ctrl.properties.length !== 0" class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Choices</th>
+                    <th>Units</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in ctrl.properties">
+                    <td> {{item.property.name}}</td>
+                    <td> {{item.property.otype}}</td>
+                    <td>
+                        <div ng-repeat="choice in item.property.choices">{{choice.name}}</div>
+                        <div ng-if="item.property.choices.length === 0">-</div>
+                    </td>
+                    <td>
+                        <div ng-if="item.property.units.length !== 0"
+                             ng-repeat="unit in item.property.units">{{unit}}
+                        </div>
+                        <div ng-if="item.property.unit && item.property.units.length === 0">{{item.property.unit}}</div>
+                    </td>
+                    <td>
+                        <div ng-if="item.property.value">
+                            {{item.property.value}} <span ng-if="item.property.unit">{{item.property.unit}}</span>
+                        </div>
+                        <div ng-if="!item.property.value"></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="ctrl.dismiss()">Dismiss</button>
+    </div>
+</div>

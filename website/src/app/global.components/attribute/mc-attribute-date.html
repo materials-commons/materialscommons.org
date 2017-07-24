@@ -1,0 +1,6 @@
+<div layout="row" layout-align="start center">
+    <label>{{::$ctrl.setting.name}}</label>
+    <md-datepicker ng-model="$ctrl.date"
+                   ng-change="$ctrl.updateDateProperty($ctrl.setting)">
+    </md-datepicker>
+</div>

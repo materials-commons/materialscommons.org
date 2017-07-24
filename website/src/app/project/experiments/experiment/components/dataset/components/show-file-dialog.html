@@ -1,0 +1,13 @@
+<md-dialog flex="70">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            {{$ctrl.file.name}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <mc-show-file file-id="$ctrl.file.id"></mc-show-file>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.done()">done</md-button>
+    </md-dialog-actions>
+</md-dialog>

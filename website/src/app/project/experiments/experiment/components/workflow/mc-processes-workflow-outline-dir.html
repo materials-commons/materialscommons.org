@@ -1,0 +1,23 @@
+<ul>
+    <li ng-repeat="node in ::$ctrl.process.children" layout="column">
+        <div ng-class="{'outline-node-selected': node.model.selected, 'outline-node-highlight': !node.model.selected && node.model.highlight}">
+            <input ng-change="$ctrl.toggle(node.model)"
+                   aria-label="In dataset" type="checkbox"
+                   ng-model="node.model.inds" ng-if="$ctrl.dataset">
+            <a ng-if="node.children.length" ng-click="node.model.show = !node.model.show">
+                <i class="primary-color fa fa-fw"
+                   ng-class="{'fa-chevron-right': !node.model.show, 'fa-chevron-down': node.model.show}"></i>
+                {{::node.model.name}}
+            </a>
+            <span ng-if="!node.children.length">
+                <i class="primary-color fa fa-fw fa-code-fork"></i> {{::node.model.name}}
+            </span>
+            (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
+        </div>
+        <mc-processes-workflow-outline-dir process="node"
+                                           mc-processes-workflow-outline="$ctrl.mcProcessesWorkflowOutline"
+                                           dataset="$ctrl.dataset"
+                                           ng-if="node.model.show">
+        </mc-processes-workflow-outline-dir>
+    </li>
+</ul>

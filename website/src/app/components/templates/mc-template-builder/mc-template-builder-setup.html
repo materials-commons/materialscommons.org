@@ -1,0 +1,22 @@
+<div layout="row">
+    <div flex="70">
+        <md-content style="max-height:80vh; min-height: 40vh">
+            <mc-template-builder-properties properties="$ctrl.template.setup[0].properties"
+                                            message="Drag and drop your setup properties into this space.">
+            </mc-template-builder-properties>
+        </md-content>
+    </div>
+    <div flex="30" layout-margin>
+        <h3 class="md-subhead">Outline</h3>
+        <md-content style="max-height:80vh; min-height: 40vh">
+            <ul dnd-list="$ctrl.template.setup[0].properties">
+                <li ng-repeat="p in $ctrl.template.setup[0].properties" class="cursor-grab"
+                    dnd-moved="$ctrl.template.setup[0].properties.splice($index, 1)"
+                    dnd-effect-allowed="move"
+                    dnd-draggable="p">
+                    {{p.name}}/{{p.otype}}
+                </li>
+            </ul>
+        </md-content>
+    </div>
+</div>

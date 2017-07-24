@@ -1,0 +1,39 @@
+<div layout="row">
+    <div layout="column" flex md-whiteframe style="margin-right:10px">
+        <md-toolbar layout="column">
+            <div layout="row" layout-align="start center">
+                <md-button ng-click="$ctrl.addTask()">
+                    <span class="text-white">
+                        <i class="fa fa-fw fa-plus"></i>
+                        Add Task
+                    </span>
+                </md-button>
+                <md-button ng-click="$ctrl.addQuickNote()">
+                    <span class="text-white">
+                        <i class="fa fa-fw fa-sticky-note"></i>
+                        Quick Note
+                    </span>
+                </md-button>
+                <div layout="row" layout-align="start center" class="text-uppercase md-subhead task-filter">
+                    <span class="md-button">Filter By:</span>
+                    <i class="fa fa-fw fa-star-o cursor-pointer" ng-click="$ctrl.toggleFilter('starred', $event)"></i>
+                    <i class="fa fa-fw fa-flag-o cursor-pointer" ng-click="$ctrl.toggleFilter('flagged', $event)"></i>
+                    <i class="fa fa-fw fa-check-square-o cursor-pointer"
+                       ng-click="$ctrl.toggleFilter('done', $event)"></i>
+                    <span ng-if="false" class="cursor-pointer mc-light-grey-color" style="padding-left:8px"
+                          ng-click="$ctrl.toggleFilter('all', $event)">
+                        ALL
+                    </span>
+                </div>
+            </div>
+        </md-toolbar>
+
+        <div layout="row" flex>
+            <mc-experiment-tasks-list flex>
+            </mc-experiment-tasks-list>
+        </div>
+    </div>
+    <div flex="45" md-is-locked-open="true">
+        <mc-experiment-task-details task="$ctrl.currentTask"></mc-experiment-task-details>
+    </div>
+</div>

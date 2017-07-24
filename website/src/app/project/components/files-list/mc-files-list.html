@@ -1,0 +1,38 @@
+<div>
+    <div ng-if="$ctrl.files.length">
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column><span>Name</span></th>
+                    <th md-column><span>Size</span></th>
+                    <th md-column><span>Thumbnail</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr md-row ng-repeat="file in $ctrl.files">
+                    <td md-cell>
+                        <div layout="row" layout-align="start center">
+                            <i class="fa fa-files-o fa-fw file-color"></i>
+                            <md-button class="md-primary" ui-sref="project.files.file({file_id: file.id})">
+                                {{file.name}}
+                            </md-button>
+                            {{file.mediatype.mime}}
+                            {{file.size | bytes}}
+                        </div>
+                    </td>
+                    <td md-cell>{{file.size | bytes}}</td>
+                    <td md-cell>
+                        <img ng-if="$ctrl.isImage(file.mediatype.mime)"
+                             class="img-thumbnail" height="140" width="140"
+                             ng-src="{{$ctrl.fileSrc(file.id)}}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </div>
+    <div ng-if="!$ctrl.files.length">
+        <h3 class="md-title text-uppercase">No files</h3>
+    </div>
+</div>

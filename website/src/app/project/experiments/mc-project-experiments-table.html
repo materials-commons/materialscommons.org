@@ -1,0 +1,33 @@
+<div>
+    <md-table-container>
+        <table md-table>
+            <thead md-head md-order="$ctrl.sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="name">Experiment</th>
+                <th md-column md-order-by="status">Status</th>
+                <th md-column>Description</th>
+                <th md-column md-order-by="mtime.epoch_time">Modified</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row class="md-row-hover pointer"
+                ng-repeat="experiment in $ctrl.experiments | filter:$ctrl.filterBy | orderBy:$ctrl.sortOrder">
+                <td md-cell>
+                    <a class="md-primary" ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
+                        {{experiment.name}}
+                    </a>
+                </td>
+                <td md-cell>
+                    {{experiment.status}}
+                </td>
+                <td md-cell style="width: 20%">
+                    {{experiment.description}}
+                </td>
+                <td md-cell>
+                    {{experiment.mtime | toDate}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>

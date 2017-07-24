@@ -1,0 +1,13 @@
+<md-dialog flex="60" style="max-height:85vh">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Project Overview for {{$ctrl.project.name}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <mc-project-overview project="$ctrl.project"></mc-project-overview>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+    </md-dialog-actions>
+</md-dialog>

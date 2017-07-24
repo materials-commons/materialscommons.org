@@ -1,0 +1,28 @@
+<md-dialog flex="40">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Add Multiple Samples
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <p classx="">
+            In the 'Name Template' field fill out the template to construct names. Add
+            the $INDEX field at the point you want to increment the name. For example:
+            SAMPLE_$INDEX will create names of the form SAMPLE_1, SAMPLE_2, etc..
+        </p>
+        <form layout="column" class="dialog-form">
+            <div>
+                <label>Name Template</label>
+                <input type="text" ng-model="$ctrl.nameTemplate">
+            </div>
+            <div>
+                <label>Number of samples</label>
+                <input type="number" ng-model="$ctrl.count">
+            </div>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>
