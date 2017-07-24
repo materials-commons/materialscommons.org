@@ -776,7 +776,6 @@ case "$CMD" in
         ;;
 
     update)
-        BACKUP_DATABASE=t
         must_be_mcuser
         update_mc
         ;;
