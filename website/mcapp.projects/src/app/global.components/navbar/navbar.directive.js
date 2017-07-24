@@ -26,6 +26,8 @@ class NavbarComponentController {
         this.isAuthenticated = User.isAuthenticated();
         this.$mdDialog = $mdDialog;
         this.$timeout = $timeout;
+
+        this.myName = 'NavbarComponentController';
     }
 
     $onInit() {
@@ -42,15 +44,22 @@ class NavbarComponentController {
             }
         });
 
-        this.mcstate.subscribe(this.mcstate.CURRENT$PROJECT, 'navbar', () => {
+        this.mcstate.subscribe(this.mcstate.CURRENT$PROJECT, this.myName, () => {
             this.project = this.mcstate.get(this.mcstate.CURRENT$PROJECT);
             this.published = this.project.datasets.filter(d => d.published);
             this.unusedSamples = this.project.samples.filter(s => s.processes.length === 1);
             this.measuredSamples = this.project.samples.filter(s => s.processes.length > 1);
         });
 
-        this.mcbus.subscribe('USER$NAME', 'NavbarDirectiveController', () => {
+        this.mcbus.subscribe('USER$NAME', this.myName, () => {
             this.user = this.User.attr().fullname;
+        });
+
+        this.mcbus.subscribe('USER$LOGIN', this.myName, () => {
+            this.user = this.User.attr().fullname;
+            this.isAdmin = this.User.attr().admin;
+            this.isBetaUser = this.User.isBetaUser();
+            this.isAuthenticated = this.User.isAuthenticated();
         });
     }
 

@@ -5,7 +5,7 @@ angular.module('materialscommons')
     });
 
 /*@ngInject*/
-function MCLoginController($state, User, toast, mcapi, Restangular) {
+function MCLoginController($state, User, toast, mcapi, Restangular, mcbus) {
     const ctrl = this;
 
     ctrl.message = "";
@@ -31,6 +31,7 @@ function MCLoginController($state, User, toast, mcapi, Restangular) {
                 } else {
                     $state.go('projects.list');
                 }
+                mcbus.send('USER$LOGIN');
             })
             .error(function(reason) {
                 ctrl.message = "Incorrect Password/Username!";
