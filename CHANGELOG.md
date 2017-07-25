@@ -1,5 +1,32 @@
 # Release Notes
 
+## 25 July 2017
+### [Materials Commons Projects](https://materialscommons.org/)
+This release integrated the Materials Commons Data and Materials Commons Projects sites together. The data site is now
+the home page for both sites. In addition this release made significant improvements to the workflow editor, and added
+the workflow graph and outline to the published data site. Lastly a first version of the template editor for creating
+and editing process templates is being released.
+- :star: **New Feature:** Integrated the Projects and Data sites together. Data pages now share the same look and feel as the proojects site.
+- :star: **New Feature:** Workflow Editor - Expand/Collapse nodes.
+- :star: **New Feature:** Workflow Editor - Hide/Hide Other nodes.
+- :star: **New Feature:** Workflow Editor - Added filter by samples.
+- :star: **New Feature:** Workflow Editor - Added filter by processes.
+- :star: **New Feature:** Workflow Editor - Added tooltips to nodes and edges.
+- :star: **New Feature:** Workflow Editor - Added showing/hiding sidebar with details, filters, and add tab.
+- :star: **New Feature:** Workflow Editor - Added sidebar tab to easily add multiple nodes to graph.
+- :star: **New Feature:** Workflow Editor - Allow multiple nodes/edges to be selected by shift click and shift and draw box.
+- :star: **New Feature:** Workflow Editor
+- :star: **New Feature:** Workflow Editor
+- :star: **New Feature:** Added workflow visualization to data site details.
+- :star: **New Feature:** Template editor with the ability to create new templates. Admin users can edit any template.
+- :star: **Improvement:** Workflow Editor - Edge names now indicate if there is more than one sample.
+- :star: **Improvement:** Workflow Editor - Improved file/sample linking and showing the linked items.
+- :star: **Improvement:** Upgraded cytoscape dependencies.
+- :star: **Improvement:** Notes section now displays no notes in a more friendly way.
+- :boom: **Fixed:** Various reports that had blank fields for samples and files.
+- :boom: **Fixed:** Cannot delete datasets that have a DOI assigned to them.
+- :boom: **Fixed:** Other miscellaneous bug fixes.
+
 ## 26 June 2017
 ### [Materials Commons Projects](https://materialscommons.org/mcapp)
 This release focused on improvments to the workflow editor.
