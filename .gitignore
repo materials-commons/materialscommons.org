@@ -17,4 +17,3 @@ bower_components/
 rethinkdb_data/
 mochawesome-reports/
 html/
-package-lock.json
