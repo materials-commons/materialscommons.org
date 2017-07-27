@@ -39,11 +39,12 @@ var server = require('http').createServer(app.callback());
 var io = require('socket.io')(server);
 
 if (!module.parent) {
-    var cli = cliArgs([
+    var optionsDef = [
         {name: 'port', type: Number, alias: 'p', description: 'Port to listen on'}
-    ]);
+    ];
 
-    var options = cli.parse();
+    var options = cliArgs(optionsDef);
+
     var port = options.port || 3000;
     //io.set('origins', `http://localhost:${port}`);
     io.on('connection', function(socket) {
