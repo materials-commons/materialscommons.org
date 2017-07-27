@@ -4,6 +4,7 @@
 .cache
 .tmp
 yarn.lock
+package-lock.json
 nohup.out
 test
 apitest
