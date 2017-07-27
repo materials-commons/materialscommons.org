@@ -114,8 +114,9 @@ function start_mcapi() {
     R=$(is_running "sbin/mcapi/mcapi.js" "p $MC_API_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcapi ($SERVERTYPE)..."
-        gulp build-mcapi-server
-        node sbin/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+        # gulp build-mcapi-server
+        # node sbin/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+        node servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
@@ -133,8 +134,9 @@ function start_mcpub() {
     R=$(is_running "sbin/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcpub ($SERVERTYPE)..."
-        gulp build-mcpub-server
-        node sbin/mcpub/mcpub.js -p ${MC_PUB_SERVICE_PORT} > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
+        # gulp build-mcpub-server
+        # node sbin/mcpub/mcpub.js -p ${MC_PUB_SERVICE_PORT} > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
+        node servers/mcpub/mcpub.js -p ${MC_PUB_SERVICE_PORT} > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
@@ -157,8 +159,8 @@ function start_servers() {
     start_mcapiserver
     start_mcstored
 
-    echo "  Building server lib..."
-    gulp build-lib
+    # echo "  Building server lib..."
+    # gulp build-lib
 
     start_mcapi
     start_mcpub
