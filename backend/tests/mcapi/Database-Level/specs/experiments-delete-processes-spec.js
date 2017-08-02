@@ -149,8 +149,9 @@ describe('Feature - Experiments: ', function() {
             assert.isOk(dataset_list);
             assert.equal(dataset_list.length,0);
 
-            for (let i = 0; i < process_list.length; i++) {
-                let process = process_list[i];
+            for (let i = process_list.length; i > 0; i--) {
+                // delete leaf-nodes first!
+                let process = process_list[i-1];
                 yield processes.deleteProcess(project.id,process.id);
             }
 

@@ -150,7 +150,7 @@ function* deleteProcessesSamplesSetupAndMeasure(projectId, experimentId, dryRun)
         }
         idList.push(process.id);
         if (!dryRun) {
-            yield processes.deleteProcess(projectId, process.id);
+            yield processes.deleteProcess(projectId, process.id, {'force': true});
         }
     }
 
