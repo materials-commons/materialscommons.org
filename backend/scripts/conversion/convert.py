@@ -10,6 +10,13 @@ def msg(s):
     sys.stdout.flush()
 
 
+def run_rql(rql, conn):
+    try:
+        rql.run(conn)
+    except r.RqlRuntimeError:
+        pass
+
+
 def fix_mcpub_missing_process_types(conn):
     print "Fixing missing process_type entries..."
     processes = list(r.db('mcpub').table('processes').filter(~r.row.has_fields('process_type')).run(conn))
@@ -59,7 +66,15 @@ def is_bad_process_type(p):
 def add_template_admin_flag_to_users(conn):
     print "Adding template admin flag to all users..."
     r.table('users').update({'is_template_admin': False}).run(conn)
+
+    add_template_admin('bpuchala@umich.edu', conn)
+    add_template_admin('stvdwtt@umich.edu', conn)
+    add_template_admin('tradiasa@umich.edu', conn)
     print "Done."
+
+
+def add_template_admin(user, conn):
+    run_rql(r.table('users').get(user).update({'is_template_admin': True}), conn)
 
 
 def add_template_owner(conn):
