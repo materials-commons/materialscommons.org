@@ -15,6 +15,7 @@ const mcapi_base = '../../../../servers/mcapi';
 const backend_base = mcapi_base + "/db/model";
 
 const dbModelUsers = require(backend_base + '/users');
+const processes = require(backend_base + '/processes');
 
 const testHelpers = require('./test-helpers');
 
@@ -79,9 +80,104 @@ describe('Feature - Processes: ', function() {
             assert.isOk(ret.val);
             assert.isOk(ret.val.samples);
             assert.equal(ret.val.samples.length,1);
-            let sample = samples[0];
-            console.log(sample);
+            let sample = ret.val.samples[0];
+            ret = yield testHelpers.createProcess(
+                project, experiment, "Test Create Sample Process",'global_SEM');
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            let measurement_process = ret.val;
+            assert.isOk(measurement_process);
+            assert.equal(measurement_process.owner,user.id);
+            ret = yield testHelpers.addSamplesToProcess(
+                project, experiment, measurement_process, [sample]
+            );
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            assert.equal(ret.val.owner,user.id);
+            assert.equal(ret.val.id,measurement_process.id);
         });
-
+        it('deletes two processes leaf first', function*(){
+            let ret = yield testHelpers.createExperiment(project,"Two Processes Delete Experiment");
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            let experiment = ret.val;
+            assert.isOk(experiment);
+            assert.equal(experiment.owner,user.id);
+            ret = yield testHelpers.createProcess(
+                project, experiment, "Test Create Sample Process",'global_Create Samples');
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            let create_sample_process = ret.val;
+            assert.isOk(create_sample_process);
+            assert.equal(create_sample_process.owner,user.id);
+            ret = yield testHelpers.createSamples(
+                project, experiment, create_sample_process, ['Test Sample']
+            );
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            assert.isOk(ret.val.samples);
+            assert.equal(ret.val.samples.length,1);
+            let sample = ret.val.samples[0];
+            ret = yield testHelpers.createProcess(
+                project, experiment, "Test Create Sample Process",'global_SEM');
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            let measurement_process = ret.val;
+            assert.isOk(measurement_process);
+            assert.equal(measurement_process.owner,user.id);
+            ret = yield testHelpers.addSamplesToProcess(
+                project, experiment, measurement_process, [sample]
+            );
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            assert.equal(ret.val.owner,user.id);
+            assert.equal(ret.val.id,measurement_process.id);
+            ret = yield processes.deleteProcess(project.id, measurement_process.id);
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            ret = yield processes.deleteProcess(project.id, create_sample_process.id);
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+        });
+        it('does not allow deleting non-leaf nodes', function*(){
+            let ret = yield testHelpers.createExperiment(project,"Two Processes Delete Experiment");
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            let experiment = ret.val;
+            assert.isOk(experiment);
+            assert.equal(experiment.owner,user.id);
+            ret = yield testHelpers.createProcess(
+                project, experiment, "Test Create Sample Process",'global_Create Samples');
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            let create_sample_process = ret.val;
+            assert.isOk(create_sample_process);
+            assert.equal(create_sample_process.owner,user.id);
+            ret = yield testHelpers.createSamples(
+                project, experiment, create_sample_process, ['Test Sample']
+            );
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            assert.isOk(ret.val.samples);
+            assert.equal(ret.val.samples.length,1);
+            let sample = ret.val.samples[0];
+            ret = yield testHelpers.createProcess(
+                project, experiment, "Test Create Sample Process",'global_SEM');
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            let measurement_process = ret.val;
+            assert.isOk(measurement_process);
+            assert.equal(measurement_process.owner,user.id);
+            ret = yield testHelpers.addSamplesToProcess(
+                project, experiment, measurement_process, [sample]
+            );
+            assert.isOk(ret);
+            assert.isOk(ret.val);
+            assert.equal(ret.val.owner,user.id);
+            assert.equal(ret.val.id,measurement_process.id);
+            ret = yield processes.deleteProcess(project.id, create_sample_process.id);
+            assert.isOk(ret);
+            assert.isOk(ret.error);
+        });
     });
 });
