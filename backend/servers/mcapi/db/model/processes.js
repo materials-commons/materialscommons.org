@@ -181,7 +181,7 @@ function* deleteProcess(projectId, processId, options) {
         return {error: error};
     }
 
-    return {val: "Process Deleted"};
+    return {val: {action: 'deleted', id: processId}};
 }
 
 function* createProcessTemplate(template, owner) {

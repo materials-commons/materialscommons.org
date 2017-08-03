@@ -39,7 +39,6 @@ before(function*() {
     assert.isOk(ret.val);
     project = ret.val;
     assert.equal(project.owner,user.id);
-    console.log("Test project name: ",project.name);
 });
 
 describe('Feature - Processes: ', function() {
