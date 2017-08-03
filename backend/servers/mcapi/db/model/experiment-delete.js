@@ -150,7 +150,7 @@ function* deleteProcessesSamplesSetupAndMeasure(projectId, experimentId, dryRun)
         }
         idList.push(process.id);
         if (!dryRun) {
-            yield processes.deleteProcess(projectId, process.id);
+            yield processes.deleteProcess(projectId, process.id, {'force': true});
         }
     }
 
@@ -302,6 +302,6 @@ function* clearAllRemainingLinks(experimentId) {
     for (let i = 0; i < tables.length; i++) {
         let table = tables[i];
         let list = yield r.table(table)
-            .getAll(experimentId,{index: 'experiment_id'}).delete();
+            .getAll(experimentId, {index: 'experiment_id'}).delete();
     }
 }

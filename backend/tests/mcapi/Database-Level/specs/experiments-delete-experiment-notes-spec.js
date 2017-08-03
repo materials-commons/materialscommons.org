@@ -77,9 +77,10 @@ before(function*() {
     assert.equal(updated_project.id,projectId);
     project = updated_project;
 
-    for (let i = 0; i < process_list.length; i++) {
-        let process = process_list[i];
-        yield processes.deleteProcess(project.id,process.id);
+    for (let i = process_list.length; i > 0; i--) {
+        // delete leaf-nodes first!
+        let process = process_list[i - 1];
+        yield processes.deleteProcess(project.id, process.id);
     }
 
     let simple = true;

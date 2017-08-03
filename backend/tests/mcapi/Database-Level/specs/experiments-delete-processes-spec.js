@@ -28,8 +28,8 @@ const buildDemoProject = require(build_project_base + '/build-demo-project');
 
 const base_project_name = "Test directory";
 
-let random_name = function(){
-    let number = Math.floor(Math.random()*10000);
+let random_name = function () {
+    let number = Math.floor(Math.random() * 10000);
     return base_project_name + number;
 };
 
@@ -47,9 +47,9 @@ before(function*() {
 
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
-    assert.equal(userId,user.id);
+    assert.equal(userId, user.id);
 
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user,demoProjectConf.datapathPrefix);
+    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;
@@ -72,7 +72,7 @@ before(function*() {
     assert.equal(updated_project.owner, userId);
     assert.equal(updated_project.name, name);
     assert.equal(updated_project.description, description);
-    assert.equal(updated_project.id,project_id);
+    assert.equal(updated_project.id, project_id);
     project = updated_project;
 
     let processesToAdd = [
@@ -82,8 +82,8 @@ before(function*() {
     let processesToDelete = [];
 
     let datasetArgs = {
-        title:"Test Dataset1",
-        description:"Dataset for testing"
+        title: "Test Dataset1",
+        description: "Dataset for testing"
     };
 
     let result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
@@ -93,8 +93,8 @@ before(function*() {
     yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete);
 
     datasetArgs = {
-        title:"Test Dataset2",
-        description:"Dataset for testing"
+        title: "Test Dataset2",
+        description: "Dataset for testing"
     };
 
     result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
@@ -106,27 +106,27 @@ before(function*() {
     results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
     let dataset_list = results.val;
     assert.isOk(dataset_list);
-    assert.equal(dataset_list.length,2);
+    assert.equal(dataset_list.length, 2);
 
 });
 
-describe('Feature - Experiments: ', function() {
+describe('Feature - Experiments: ', function () {
     describe('Delete Experiment - in parts: ', function () {
-        it('deletes datasets and deletes all processes and samples', function* (){
+        it('deletes datasets and deletes all processes and samples', function*() {
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
             assert.isOk(experiment_id);
 
             // Note: create fake sample that is not part of a process for testing
-            let rv = yield r.table('samples').insert({'name':'fake sample', 'otype':'sample', 'owner':'noone'})
+            let rv = yield r.table('samples').insert({'name': 'fake sample', 'otype': 'sample', 'owner': 'noone'})
             let key = rv.generated_keys[0];
             yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment_id});
 
             let results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
             let dataset_list = results.val;
             assert.isOk(dataset_list);
-            assert.equal(dataset_list.length,2);
+            assert.equal(dataset_list.length, 2);
 
             let hasPublishedDatasets = false;
             for (let i = 0; i < dataset_list.length; i++) {
@@ -147,24 +147,25 @@ describe('Feature - Experiments: ', function() {
             results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
             dataset_list = results.val;
             assert.isOk(dataset_list);
-            assert.equal(dataset_list.length,0);
+            assert.equal(dataset_list.length, 0);
 
-            for (let i = 0; i < process_list.length; i++) {
-                let process = process_list[i];
-                yield processes.deleteProcess(project.id,process.id);
+            for (let i = process_list.length; i > 0; i--) {
+                // delete leaf-nodes first!
+                let process = process_list[i - 1];
+                yield processes.deleteProcess(project.id, process.id);
             }
 
             let simple = true;
             results = yield experiments.getProcessesForExperiment(experiment_id, simple);
             let proc_list = results.val;
             assert.isOk(proc_list);
-            assert.equal(proc_list.length,0);
+            assert.equal(proc_list.length, 0);
 
             // ... but, in rare cases, there my be samples in the experiment that are in no process
 
             let sampleList = yield r.table('experiment2sample')
-                .getAll(experiment_id,{index:'experiment_id'})
-                .eqJoin('sample_id',r.table('samples')).zip()
+                .getAll(experiment_id, {index: 'experiment_id'})
+                .eqJoin('sample_id', r.table('samples')).zip()
                 .getField('sample_id');
 
             rv = yield r.table('samples').getAll(r.args([...sampleList])).delete();
@@ -174,7 +175,7 @@ describe('Feature - Experiments: ', function() {
             // and the sample entries for the experiment are left in experiment2sample
 
             rv = yield r.table('experiment2sample')
-                .getAll(experiment_id,{index:'experiment_id'}).delete();
+                .getAll(experiment_id, {index: 'experiment_id'}).delete();
 
             assert.equal(rv.deleted, 8);
 
