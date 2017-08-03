@@ -302,6 +302,6 @@ function* clearAllRemainingLinks(experimentId) {
     for (let i = 0; i < tables.length; i++) {
         let table = tables[i];
         let list = yield r.table(table)
-            .getAll(experimentId,{index: 'experiment_id'}).delete();
+            .getAll(experimentId, {index: 'experiment_id'}).delete();
     }
 }

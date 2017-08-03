@@ -79,8 +79,8 @@ before(function*() {
 
     for (let i = process_list.length; i > 0; i--) {
         // delete leaf-nodes first!
-        let process = process_list[i-1];
-        yield processes.deleteProcess(project.id,process.id);
+        let process = process_list[i - 1];
+        yield processes.deleteProcess(project.id, process.id);
     }
 
     let simple = true;
