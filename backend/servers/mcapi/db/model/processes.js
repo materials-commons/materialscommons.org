@@ -73,8 +73,41 @@ function* datasetsForProcess(processId) {
     return yield r.expr(datasetIdValues).map(r.db('materialscommons').table('datasets').get(r.row)).coerceTo('array');
 }
 
-function* deleteProcess(projectId, processId) {
+function* deleteProcess(projectId, processId, options) {
+    let forceDelete = false;
+    if (options && options.force) forceDelete = true;
+
     let i;
+
+    if (!forceDelete) {
+        // can not delete a process that is in a dataset
+        let dataset2process = yield r.table('dataset2process').getAll(processId, {index: 'process_id'});
+        if (dataset2process.length > 0) {
+            return {error: "Can not delete a process that is in a dataset: remove process from dataset(s)"}
+        }
+
+        // can not delete a process that is a non-leaf node in a workflow;
+        // a process a non-leaf node if it has any 'out' sample that is an 'in' sample elsewhere
+        let joinRecords = yield r.table('process2sample').getAll(processId, {index: 'process_id'})
+            .eqJoin('sample_id', r.db('materialscommons').table('process2sample'), {index: 'sample_id'})
+            .map({
+                "p1": r.row("left")("process_id"),
+                "d1": r.row("left")("direction"),
+                "p2": r.row("right")("process_id"),
+                "d2": r.row("right")("direction"),
+                "sample_id": r.row("right")("sample_id")
+            }).filter({'d1': 'out'}).filter({'d2': 'in'});
+        for (i = 0; i < joinRecords.length; i++) {
+            let record = joinRecords[i];
+            if (record.p1 != record.p2) {
+                return {
+                    error: "Can not delete a process, "
+                    + processId
+                    + ", that is not the leaf node of a workflow; delete other processes first"
+                }
+            }
+        }
+    }
 
     try {
         // remove project2process records with projectId, and processId
@@ -148,7 +181,7 @@ function* deleteProcess(projectId, processId) {
         return {error: error};
     }
 
-    return {val: "Process Deleted"};
+    return {val: {action: 'deleted', id: processId}};
 }
 
 function* createProcessTemplate(template, owner) {
