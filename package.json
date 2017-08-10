@@ -48,7 +48,6 @@
     "promise.ify": "^0.3.0",
     "qunitjs": "^2.1.0",
     "request-promise": "^4.2.0",
-    "rethinkdb": "^2.3.3",
     "rethinkdbdash": "^2.3.23",
     "sanitize-filename": "^1.6.0",
     "socket.io": "^2.0.3",
