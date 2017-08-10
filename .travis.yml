@@ -109,4 +109,4 @@ before_script:
   - popd
 
 script:
-  - npm run-script test-no-html
+  - npm test
