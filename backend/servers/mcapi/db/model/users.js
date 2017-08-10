@@ -44,7 +44,7 @@ function* updateProjectFavorites(userID, projectID, attrs) {
         let toDelete = attrs.favorites.processes.filter(p => p.command === 'delete').map(p => p.name);
         let projProcesses = user.favorites[projectID].processes;
         // remove deleted process favorites
-        projProcesses = projProcesses.filter(p => _.indexOf(toDelete, name => name == p, null) === -1);
+        projProcesses = projProcesses.filter(p => _.findIndex(toDelete, name => name == p, null) === -1);
         let toAddFavs = _.difference(toAdd, projProcesses);
         user.favorites[projectID].processes = projProcesses.concat(toAddFavs);
         yield r.table('users').get(userID).update({favorites: user.favorites});

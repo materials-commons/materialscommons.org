@@ -42,7 +42,7 @@ class ProjectAccessCache {
             return false;
         }
 
-        let index = _.indexOf(this.projectAccessCache[project_id], function(a) {
+        let index = _.findIndex(this.projectAccessCache[project_id], function(a) {
             return a.user_id == user.id;
         });
 

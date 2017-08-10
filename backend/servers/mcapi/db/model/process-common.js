@@ -20,7 +20,7 @@ function* getProcess(dbr, processID) {
 
 function mergeTemplateIntoProcess(template, process) {
     process.setup[0].properties.forEach(function(property) {
-        let i = _.indexOf(template.setup[0].properties, function(template_property) {
+        let i = _.findIndex(template.setup[0].properties, function(template_property) {
             return template_property.attribute === property.attribute
         });
         if (i > -1) {
@@ -39,7 +39,7 @@ function mergeTemplateIntoProcess(template, process) {
             // they set.
             if (property.otype === 'selection') {
                 if (property.value.name === 'Other') {
-                    let otherChoicesIndex = _.indexOf(template.setup[0].properties[i].choices,
+                    let otherChoicesIndex = _.findIndex(template.setup[0].properties[i].choices,
                         (c) => c.name === 'Other');
                     if (otherChoicesIndex !== -1) {
                         template.setup[0].properties[i].choices[otherChoicesIndex].value = property.value.value;
@@ -112,7 +112,7 @@ function* removeExistingProcessFileEntries(processId, files) {
     if (files.length) {
         let indexEntries = files.map(f => [processId, f.datafile_id]);
         let matchingEntries = yield r.table('process2file').getAll(r.args(indexEntries), {index: 'process_datafile'});
-        let byFileID = _.indexBy(matchingEntries, 'datafile_id');
+        let byFileID = _.keyBy(matchingEntries, 'datafile_id');
         return files.filter(f => (!(f.datafile_id in byFileID)));
     }
 
@@ -200,7 +200,7 @@ function* removeExistingProcessSampleEntries(processId, samples) {
         let indexEntries = samples.map(s => [processId, s.sample_id, s.property_set_id]);
         let matchingEntries = yield r.table('process2sample')
             .getAll(r.args(indexEntries), {index: 'process_sample_property_set'});
-        let bySampleID = _.indexBy(matchingEntries, 'sample_id');
+        let bySampleID = _.keyBy(matchingEntries, 'sample_id');
         return samples.filter(s => (!(s.sample_id in bySampleID)));
     }
 

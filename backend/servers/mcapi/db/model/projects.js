@@ -186,11 +186,11 @@ function* update(projectID, attrs) {
             project.process_templates = [];
         }
         // remove deleted templates
-        project.process_templates = project.process_templates.filter(p => _.indexOf(deleteTemplates, t => t.name === p.name, null) === -1);
+        project.process_templates = project.process_templates.filter(p => _.findIndex(deleteTemplates, t => t.name === p.name, null) === -1);
 
         // remove templates to update. They will be added back with their new values in
         // the add step.
-        project.process_templates = project.process_templates.filter(p => _.indexOf(updateTemplates, t => t.name === p.name, null) === -1);
+        project.process_templates = project.process_templates.filter(p => _.findIndex(updateTemplates, t => t.name === p.name, null) === -1);
 
         // add new templates if they don't exist
         let toAdd = differenceByField(addTemplates, project.process_templates, 'name');
@@ -224,7 +224,7 @@ function differenceByField(from, others, field) {
     let diff = _.difference(elementsFrom, elementsOthers);
 
     return from.filter(function(entry) {
-        return _.indexOf(diff, function(e) {
+        return _.findIndex(diff, function(e) {
                 return e === entry[field];
             }) !== -1;
     });

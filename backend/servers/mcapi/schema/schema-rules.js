@@ -115,7 +115,7 @@ function isValidPropertyType(what) {
         actual: what,
         expected: `type to be one of ${propertyTypes}`
     };
-    return _.indexOf(propertyTypes, what) === -1 ? invalid : null;
+    return _.findIndex(propertyTypes, what) === -1 ? invalid : null;
 }
 
 // isValidUnit checks the different known types for unit.
@@ -125,7 +125,7 @@ function isValidUnit(what) {
         actual: what,
         expected: `units to be one of ${propertyUnits}`
     };
-    return _.indexOf(propertyUnits, what) === -1 ? invalid : null;
+    return _.findIndex(propertyUnits, what) === -1 ? invalid : null;
 }
 
 // isValidExperimentStatus ensures that the status is set to one
@@ -249,7 +249,7 @@ function mustBeValidMeasurements(measurements, _ignore, done) {
             // sample id.
             error.expected = `measurements to all be for sample ${sampleID}`;
         } else {
-            let index = _.indexOf(measures, function(m) {
+            let index = _.findIndex(measures, function(m) {
                 return m.otype !== measurementType;
             });
             if (index !== -1) {

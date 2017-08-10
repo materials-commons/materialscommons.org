@@ -274,7 +274,7 @@ function* cloneProcess(projectId, experimentId, processId, owner, cloneArgs) {
     // Add setup properties
     for (let sIndex = 0; sIndex < process.setup.length; sIndex++) {
         let properties = process.setup[sIndex].properties;
-        let propMap = _.indexBy(createdProcess.setup[sIndex].properties, 'attribute');
+        let propMap = _.keyBy(createdProcess.setup[sIndex].properties, 'attribute');
         for (let pIndex = 0; pIndex < properties.length; pIndex++) {
             let prop = properties[pIndex];
             let cpProp = propMap[prop.attribute];
@@ -370,7 +370,7 @@ function* removeExistingExperimentFileEntries(experimentId, files) {
     if (files.length) {
         let indexEntries = files.map(f => [experimentId, f.datafile_id]);
         let matchingEntries = yield r.table('experiment2datafile').getAll(r.args(indexEntries), {index: 'experiment_datafile'});
-        const byFileID = _.indexBy(matchingEntries, 'datafile_id');
+        const byFileID = _.keyBy(matchingEntries, 'datafile_id');
         return files.filter(f => (!(f.datafile_id in byFileID)));
     }
 
@@ -381,7 +381,7 @@ function* removeExistingExperimentSampleEntries(experimentId, samples) {
     if (samples.length) {
         let indexEntries = samples.map(s => [experimentId, s.sample_id]);
         let matchingEntries = yield r.table('experiment2sample').getAll(r.args(indexEntries), {index: 'experiment_sample'});
-        const bySampleID = _.indexBy(matchingEntries, 'sample_id');
+        const bySampleID = _.keyBy(matchingEntries, 'sample_id');
         return samples.filter(s => (!(s.sample_id in bySampleID)));
     }
 

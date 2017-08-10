@@ -399,7 +399,7 @@ function* getVersions(fileID) {
         .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
         .eqJoin('datafile_id', r.table('datafiles')).zip();
     let allDirFiles = yield runQuery(rql);
-    let filesIdMap = _.indexBy(allDirFiles, 'id');
+    let filesIdMap = _.keyBy(allDirFiles, 'id');
 
     let fileList = [];
     let current = f;

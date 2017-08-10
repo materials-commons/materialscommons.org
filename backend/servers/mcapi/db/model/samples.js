@@ -273,7 +273,7 @@ function* removeExistingSampleFileEntries(sampleFileEntries) {
     if (sampleFileEntries.length) {
         let indexEntries = sampleFileEntries.map(entry => [entry.sample_id, entry.datafile_id]);
         let matchingEntries = yield r.table('sample2datafile').getAll(r.args(indexEntries), {index: 'sample_file'});
-        let byFileID = _.indexBy(matchingEntries, 'datafile_id');
+        let byFileID = _.keyBy(matchingEntries, 'datafile_id');
         return sampleFileEntries.filter(entry => (!(entry.datafile_id in byFileID)));
     }
     return sampleFileEntries;
