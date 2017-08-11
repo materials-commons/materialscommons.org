@@ -4,6 +4,7 @@ const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const mkdirpSync = require('mkdirp');
 const fileExistsSync = require('fs').existsSync;
 const path = require('path');
+const fsExtra = require('fs-extra');
 
 function getFileStoreDir() {
     let base = process.env.MCDIR;
@@ -54,7 +55,8 @@ function* moveToStore(sourcePath, fileId) {
     let destPath = datafilePath(fileId);
     let destDir = path.dirname(destPath);
     yield mkdirpAsync(destDir);
-    yield fs.renameAsync(sourcePath, destPath);
+    yield fsExtra.copy(sourcePath, destPath);
+    yield fs.unlinkAsync(sourcePath);
 }
 
 function mediaTypeDescriptionsFromMime(mime) {
@@ -114,7 +116,7 @@ const mediaTypeDescriptions = {
     "application/zip": "ZIP",
     "application/msword": "MS-Word",
     "unknown": "Unknown",
-}
+};
 
 module.exports = {
     getFileStoreDir,
