@@ -7,7 +7,7 @@ chalk                            1.1.3    1.1.3    2.1.0  materialscommons
 = del                              2.0.2    2.0.2    3.0.0  materialscommons
 = eslint-loader                    1.1.1    1.1.1    1.9.0  materialscommons
 = eslint-plugin-angular           0.12.0   0.12.0    3.0.0  materialscommons
-D estraverse                       4.1.1    4.1.1    4.2.0  materialscommons
+= estraverse                       4.1.1    4.1.1    4.2.0  materialscommons
 = gulp-angular-templatecache       1.8.1    1.8.1    2.0.0  materialscommons
 = gulp-autoprefixer                3.0.2    3.0.2    4.0.0  materialscommons
 = gulp-babel                       6.1.2    6.1.2    7.0.0  materialscommons
@@ -28,10 +28,10 @@ D estraverse                       4.1.1    4.1.1    4.2.0  materialscommons
 = http-proxy-middleware            0.9.1    0.9.1   0.17.4  materialscommons
 + js-data                          1.8.0    1.8.0   2.10.0  materialscommons
 + js-data-rethinkdb                1.2.0    1.2.0    2.2.0  materialscommons
-karma                          0.13.22  0.13.22    1.7.0  materialscommons
-karma-coverage                   0.5.5    0.5.5    1.1.1  materialscommons
-karma-jasmine                    0.3.8    0.3.8    1.1.0  materialscommons
-karma-ng-html2js-preprocessor    0.2.2    0.2.2    1.0.0  materialscommons
+= karma                          0.13.22  0.13.22    1.7.0  materialscommons
+= karma-coverage                   0.5.5    0.5.5    1.1.1  materialscommons
+= karma-jasmine                    0.3.8    0.3.8    1.1.0  materialscommons
+= karma-ng-html2js-preprocessor    0.2.2    0.2.2    1.0.0  materialscommons
 koa                             0.18.1   0.18.1    2.3.0  materialscommons
 koa-body                         1.6.0    1.6.0    2.3.0  materialscommons
 koa-bodyparser                   2.5.0    2.5.0    4.2.0  materialscommons
@@ -39,16 +39,14 @@ koa-mount                        1.3.0    1.3.0    3.0.0  materialscommons
 koa-router                       5.4.2    5.4.2    7.2.1  materialscommons
 koa-validate                    0.2.11   0.2.11    1.0.7  materialscommons
 * lodash                          3.10.1   3.10.1   4.17.4  materialscommons
-main-bower-files                 2.9.0    2.9.0   2.13.1  materialscommons
+= main-bower-files                 2.9.0    2.9.0   2.13.1  materialscommons
 * mocha                            2.5.3    2.5.3    3.5.0  materialscommons
 * mocha-generators                 1.2.0    1.2.0    2.0.0  materialscommons
 * mochawesome                      1.5.5    1.5.5    2.3.0  materialscommons
-ng-annotate-loader              0.0.10   0.0.10    0.6.1  materialscommons
+= ng-annotate-loader              0.0.10   0.0.10    0.6.1  materialscommons
 * nodemailer                       2.7.2    2.7.2    4.0.1  materialscommons
-webpack-stream                   2.1.1    2.1.1    4.0.0  materialscommons
-wiredep                          2.2.2    2.2.2    4.0.0  materialscommons
+= webpack-stream                   2.1.1    2.1.1    4.0.0  materialscommons
+= wiredep                          2.2.2    2.2.2    4.0.0  materialscommons
 
 * indicates updated to latest
 = used on website side and/or as part of build
-D preserved because Glenn said: don't remove anything in DevDependencies
-    but I cannot verify that it is being used
