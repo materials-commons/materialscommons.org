@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "pretest": "echo 'if running tests locally: be sure and source /etc/materialscommons/config.unit'",
+    "test": "node_modules/.bin/_mocha \"tests/mcapi/Database-level/specs/**/*-spec.js\" ",
+    "test-with-html": "node_modules/.bin/_mocha \"**/specs/**/*-spec.js\" --reporter mochawesome --reporter-options reportDir=html/tests",
+    "test-coverage": "node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha -- \"**/specs/**/*-spec.js\" "
+  },
   "dependencies": {
     "archiver": "^2.0.0",
     "bluebird": "^3.4.6",
