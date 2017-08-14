@@ -3,8 +3,9 @@
 *.dump
 .cache
 .tmp
-package-lock.json
+*.swp
 yarn.lock
+package-lock.json
 nohup.out
 test
 apitest
