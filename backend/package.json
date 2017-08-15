@@ -12,6 +12,7 @@
     "co-body": "^5.1.1",
     "command-line-args": "^4.0.6",
     "copy": "^0.3.0",
+    "fs-extra": "^4.0.1",
     "http-status": "^1.0.1",
     "js-data-schema": "^1.2.5",
     "koa": "^0.18.1",
