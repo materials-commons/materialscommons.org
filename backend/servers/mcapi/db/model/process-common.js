@@ -20,9 +20,7 @@ function* getProcess(dbr, processID) {
 
 function mergeTemplateIntoProcess(template, process) {
     process.setup[0].properties.forEach(function(property) {
-        let i = _.findIndex(template.setup[0].properties, function(template_property) {
-            return template_property.attribute === property.attribute
-        });
+        let i = _.findIndex(template.setup[0].properties, (tprop) => tprop.attribute === property.attribute);
         if (i > -1) {
             template.setup[0].properties[i].value = property.value;
             template.setup[0].properties[i].name = property.name;
@@ -39,8 +37,7 @@ function mergeTemplateIntoProcess(template, process) {
             // they set.
             if (property.otype === 'selection') {
                 if (property.value.name === 'Other') {
-                    let otherChoicesIndex = _.findIndex(template.setup[0].properties[i].choices,
-                        (c) => c.name === 'Other');
+                    let otherChoicesIndex = _.findIndex(template.setup[0].properties[i].choices, (c) => c.name === 'Other');
                     if (otherChoicesIndex !== -1) {
                         template.setup[0].properties[i].choices[otherChoicesIndex].value = property.value.value;
                     }
