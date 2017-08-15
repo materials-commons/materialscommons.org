@@ -311,7 +311,6 @@ function* validateCreateAccount(accountArgs) {
 }
 
 function* createDemoProject(next) {
-    console.log('createDemoProject called');
     let userId = this.params.user_id;
     let checkId = this.reqctx.user.id;
     let user = yield users.getUser(userId);

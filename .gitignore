@@ -3,6 +3,7 @@
 *.dump
 .cache
 .tmp
+*.swp
 yarn.lock
 package-lock.json
 nohup.out
