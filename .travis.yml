@@ -46,6 +46,7 @@ before_install:
   - export MC_APP_DIR=`pwd`
     # RethinkDB
   - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
+  # or --no-check-certificate for wget
   - curl -k https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
     # Yarn
   - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
@@ -106,9 +107,7 @@ before_script:
   - ./run.sh
   - popd
   - pushd backend
-  - gulp build-mcapi-server
-  - sleep 5
-  - node sbin/mcapi/mcapi.js -p $MCAPI_SERVER_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+  - node servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.travis.txt 2>&1&
   - sleep 5
   - popd
 
