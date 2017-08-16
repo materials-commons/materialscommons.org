@@ -112,4 +112,5 @@ before_script:
   - popd
 
 script:
-  - npm test
+  - pushd backend
+  - node_modules/.bin/_mocha "tests/mcapi/Database-level/specs/**/*-spec.js"
