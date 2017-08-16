@@ -112,5 +112,5 @@ before_script:
 
 script:
   - pushd backend
-  - ls -r tests/mcapi/Database-level/specs
+  - ls -R tests/mcapi/Database-level/specs
   - node_modules/.bin/_mocha "tests/mcapi/Database-level/specs/*-spec.js"
