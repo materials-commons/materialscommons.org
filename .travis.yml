@@ -11,6 +11,7 @@ notifications:
 branches:
   except:
   - /^spike-.*$/
+  - update-dependencies
 
 sudo: required
 
@@ -88,6 +89,9 @@ install:
   - sudo cp mctest.localhost.conf /etc/nginx/conf.d/
   - popd
   - pwd
+  - pushd backend
+  - npm install
+  - popd
 
 before_script:
   # - sudo nginx
