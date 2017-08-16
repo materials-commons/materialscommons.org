@@ -111,4 +111,5 @@ before_script:
   - popd
 
 script:
-  - backend/node_modules/.bin/_mocha "**/Database-Level/specs/*-spec.js"
+  - cd backend
+  - node_modules/.bin/_mocha "**/Database-Level/specs/*-spec.js"
