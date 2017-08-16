@@ -111,4 +111,4 @@ before_script:
   - popd
 
 script:
-  - backend/node_modules/.bin/_mocha "tests/mcapi/Database-level/specs/*-spec.js"
+  - backend/node_modules/.bin/_mocha "**/Database-Level/specs/*-spec.js"
