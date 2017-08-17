@@ -83,7 +83,7 @@ class CyGraphService {
 
     setupQTips(cy) {
         cy.elements().filter((i, ele) => ele.isNode()).qtip({
-            content: function() {
+            content: function () {
                 return `
                 <h5>${this.data('name')}</h5>
                 <b>Template: </b>${this.data('details').template_name}
@@ -102,7 +102,7 @@ class CyGraphService {
         });
 
         cy.elements().filter((i, ele) => ele.isEdge()).qtip({
-            content: function() {
+            content: function () {
                 return this.data('details').names;
             },
             show: {event: 'mouseenter mouseover'},
@@ -174,7 +174,11 @@ class CyGraphService {
                     // Target already has all the source samples
                     this._showAlert('Processes are already connected.');
                     return null;
+                } else if (CyGraphService._transformTargetAlreadyHasASample(targetProcess, sourceProcess.output_samples)) {
+                    this._showAlert('Transform process already contains one of the samples.');
+                    return null;
                 }
+
                 return 'flat';
             },
             complete: completeFN
@@ -204,6 +208,23 @@ class CyGraphService {
 
         return hasAllSamples;
     }
+
+    static _transformTargetAlreadyHasASample(targetProcess, sourceSamples) {
+        if (!targetProcess.does_transform) {
+            // No need to check, not a transform process.
+            return false;
+        }
+        let sourceSamplesSeen = {};
+        sourceSamples.forEach(s => sourceSamplesSeen[s.sample_id] = false);
+        let hasOverlappingSample = false;
+        targetProcess.input_samples.forEach(s => {
+            if (s.sample_id in sourceSamplesSeen) {
+                hasOverlappingSample = true;
+            }
+        });
+        return hasOverlappingSample;
+    }
+
 
     _showAlert(message) {
         this.$mdDialog.show(this.$mdDialog.alert()
