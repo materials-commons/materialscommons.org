@@ -34,7 +34,7 @@
     "eslint-plugin-angular": "~0.12.0",
     "estraverse": "~4.1.0",
     "gulp": "~3.9.0",
-    "gulp-angular-templatecache": "~1.8.0",
+    "gulp-angular-templatecache": "~2.0.0",
     "gulp-autoprefixer": "~3.0.2",
     "gulp-babel": "^6.1.2",
     "gulp-check-unused-css": "^2.1.3",
