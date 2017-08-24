@@ -99,12 +99,11 @@ before_script:
   - sudo nginx -s reload
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
-  - ls $MCDB_FILE
-  - rethinkdb restore $MCDB_FILE --connect $MCDB_CONNECTION --force
   - cd $MC_APP_DIR
-  - pushd backend/scripts/templates/
-  - ./run.sh
+  - pushd backend/scripts/testdb/
+  - ./build-test-db.sh
   - popd
+  - cd $MC_APP_DIR
   - pushd backend
   - node servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.travis.txt 2>&1&
   - sleep 5
