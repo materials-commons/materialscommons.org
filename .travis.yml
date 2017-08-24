@@ -55,17 +55,15 @@ before_install:
 install:
   - sudo apt-get install nginx
   - sudo apt-get install rethinkdb
-  - sudo apt-get install yarn
 
   - node --version
 
-  # Note: using yarn because it is more robust to network problems then npm install
-  - yarn install
+  - pip install rethinkdb
+  - pip install Flask
+  - pip install pytest
+  - pip install pbkdf2
 
-  - sudo pip install rethinkdb
-  - sudo pip install Flask
-  - sudo pip install pytest
-  - sudo pip install pbkdf2
+  - pip list
 
   - npm install -g node-gyp@3.5.0
   - npm install -g gulp-cli
@@ -92,6 +90,7 @@ install:
   - pushd backend
   - npm install
   - popd
+  - pip list
 
 before_script:
   # - sudo nginx
@@ -99,10 +98,21 @@ before_script:
   - sudo nginx -s reload
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
+
+  - pip list
   - cd $MC_APP_DIR
-  - pushd backend/scripts/testdb/
-  - bash ./build-test-db.sh
+  - pushd backend/scripts
+  - pip list
+  - python dbcreate.py --port $MCDB_PORT0
+  - pushd testdb
+  - pip list
+  - python makeUsersForTests.py --port $MCDB_PORT --password $MC_USERPW
   - popd
+  - pushd templates
+  - ./run.sh
+  - popd
+  - popd
+
   - cd $MC_APP_DIR
   - pushd backend
   - node servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.travis.txt 2>&1&
@@ -110,5 +120,6 @@ before_script:
   - popd
 
 script:
+  - cd $MC_APP_DIR
   - cd backend
   - node_modules/.bin/_mocha "**/Database-Level/specs/*-spec.js"

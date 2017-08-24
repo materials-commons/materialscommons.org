@@ -5,7 +5,6 @@ from optparse import OptionParser
 from pbkdf2 import crypt
 import uuid
 import sys
-import os
 
 
 class User(object):
@@ -64,19 +63,10 @@ if __name__ == "__main__":
         print "You must specify a password"
         sys.exit(1)
 
-    if options.port is None:
-        options.port = 28015
-
     conn = r.connect('localhost', options.port, db='materialscommons')
 
     make_user(r, "admin", options.password, None, True, False)
     make_user(r, "test", options.password, "totally-bogus", False, False)
     make_user(r, "another", options.password, "another-bogus-account", False, False)
     make_user(r, "tadmin", options.password, None, False, True)
-
-    apiport = 5002
-    if options.port == 28015:
-        apiport = 5000
-    cmd = "mcapihup.sh %d" % (apiport)
-    os.system(cmd)
 

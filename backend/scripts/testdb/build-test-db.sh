@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+set -e
+
 # abort if TEST_ACCOUNT_PW not set and non-empty
-if [ -z "$TEST_ACCOUNT_PW" ]; then
-    echo "TEST_ACCOUNT_PW must be set to a non-empty string"
-    exit
+if [ -z "$MC_USERPW" ]; then
+    echo "MC_USERPW must be set to a non-empty string"
+    exit 1
 fi
 
 # pushd location of script
@@ -19,15 +21,17 @@ fi
 echo "using MCDB_PORT = $MCDB_PORT"
 
 # build basic (e.g 'empty') DB; using standard script
-../dbcreate.py --port $MCDB_PORT
+pushd '../'
+./dbcreate.py --port $MCDB_PORT0
+popd
+
+# add test users
+./makeUsersForTests.py --port $MCDB_PORT --password $MC_USERPW
 
 # add templates
 pushd '../templates/'
 ./run.sh
 popd
-
-# add test users
-./makeUsersForTests.py --port $MCDB_PORT --password $TEST_ACCOUNT_PW
 
 popd
 echo "Done."
