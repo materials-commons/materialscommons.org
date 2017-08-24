@@ -101,7 +101,7 @@ before_script:
   - sleep 5
   - cd $MC_APP_DIR
   - pushd backend/scripts/testdb/
-  - ./build-test-db.sh
+  - bash ./build-test-db.sh
   - popd
   - cd $MC_APP_DIR
   - pushd backend
