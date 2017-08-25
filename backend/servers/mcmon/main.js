@@ -1,4 +1,5 @@
-const r = require('./r');
+const r = require('./src/r');
+const Builder = require('./src/Builder.js')
 
 function driver(watch_list) {
     watch_list.forEach( (item) =>
@@ -15,26 +16,6 @@ function driver(watch_list) {
     );
 }
 
-function action_log (x) {
-    let old_value = x.old_val?x.old_val.published:false;
-    let new_value = x.new_val?x.new_val.published:false;
-    let name = x.old_val?x.old_val.title:(x.new_val?x.new_val.title:"unkn");
-    message = "from " + (old_value?"Published":"Unpublished")
-        + " to " + (new_value?"Published":"Unpublished");
-    console.log(name + ": " + message);
-}
+let builder = new Builder()
 
-const watch_list = [
-    {
-        table_name: 'datasets',
-        filter: (x) => {
-            let old_value = x.old_val?x.old_val.published:false;
-            let new_value = x.new_val?x.new_val.published:false;
-            let change = (old_value != new_value);
-            return change;
-        },
-        action: action_log
-    }
-];
-
-driver(watch_list);
+driver(builder.get_watch_list());

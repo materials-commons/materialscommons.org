@@ -11,7 +11,7 @@ const r = require('rethinkdbdash')({
     db: process.env.MCDB || 'materialscommons',
     port: process.env.MCDB_PORT || 30815
 });
-const mcapi_base = '../../../../servers/mcapi';
+const mcapi_base = '../../../servers/mcapi';
 const backend_base = mcapi_base + "/db/model";
 const build_project_base = mcapi_base + "/build-demo";
 
@@ -49,7 +49,7 @@ before(function*() {
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId,user.id);
 
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user,demoProjectConf.datapathPrefix);
+    let valOrError = yield buildDemoProject.findOrBuildAllParts(user,"./");
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;
