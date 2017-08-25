@@ -92,18 +92,27 @@ function stop_mcapiserver() {
 }
 
 function start_mcstored() {
-    R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
+    R=$(is_running "mcstored.forever.sh" "${SERVERTYPE}")
     if [ "$R" = "" ]; then
         echo "Starting mcstored ($SERVERTYPE)..."
         build_mcstored
-        ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
+        export MC_LOG_DIR
+        export SERVERTYPE
+        export MCSTOREDBIN
+        ./mcstored.forever.sh ${SERVERTYPE} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > /dev/null 2>&1&
         sleep 1
     fi
 }
 
 function stop_mcstored() {
     echo "Stopping mcstored ($SERVERTYPE)..."
-    MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored.forever.sh | grep "${SERVERTYPE}" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$MCSTORED_PID" != "" ]; then
+        kill ${MCSTORED_PID}
+        echo "  Stopped mcstored.forever.sh with pid $MCSTORED_PID"
+    fi
+
+    MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored | grep "db-connect="localhost:$MCDB_PORT"" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
     if [ "$MCSTORED_PID" != "" ]; then
         kill ${MCSTORED_PID}
         echo "  Stopped mcstored with pid $MCSTORED_PID"
