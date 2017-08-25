@@ -92,18 +92,27 @@ function stop_mcapiserver() {
 }
 
 function start_mcstored() {
-    R=$(is_running "mcstored" "db-connect=localhost:$MCDB_PORT")
+    R=$(is_running "mcstored.forever.sh" "${SERVERTYPE}")
     if [ "$R" = "" ]; then
         echo "Starting mcstored ($SERVERTYPE)..."
         build_mcstored
-        ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&
+        export MC_LOG_DIR
+        export SERVERTYPE
+        export MCSTOREDBIN
+        ./mcstored.forever.sh ${SERVERTYPE} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > /dev/null 2>&1&
         sleep 1
     fi
 }
 
 function stop_mcstored() {
     echo "Stopping mcstored ($SERVERTYPE)..."
-    MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored.forever.sh | grep "${SERVERTYPE}" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$MCSTORED_PID" != "" ]; then
+        kill ${MCSTORED_PID}
+        echo "  Stopped mcstored.forever.sh with pid $MCSTORED_PID"
+    fi
+
+    MCSTORED_PID=$(ps -eo "pid,command" | grep mcstored | grep "db-connect="localhost:$MCDB_PORT"" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
     if [ "$MCSTORED_PID" != "" ]; then
         kill ${MCSTORED_PID}
         echo "  Stopped mcstored with pid $MCSTORED_PID"
@@ -114,36 +123,36 @@ function start_mcapi() {
     R=$(is_running "servers/mcapi/mcapi.js" "p $MC_API_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcapi ($SERVERTYPE)..."
-        node servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+        nodemon --watch servers/mcapi --watch servers/lib servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
 
 function stop_mcapi() {
     echo "Stopping mcapi ($SERVERTYPE)..."
-    MCAPI_PID=$(ps -eo "pid,command" | grep "mcapi.js" | grep "p $MC_API_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-    if [ "$MCAPI_PID" != "" ]; then
-        kill ${MCAPI_PID}
-        echo "  Stopped mcapi with pid $MCAPI_PID"
-    fi
+    ps -eo "pid,command" | grep "mcapi.js" | grep "p $MC_API_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    do
+        kill ${line}
+        echo "  Stopped mcapi with pid ${line}"
+    done
 }
 
 function start_mcpub() {
     R=$(is_running "servers/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcpub ($SERVERTYPE)..."
-        node servers/mcpub/mcpub.js -p ${MC_PUB_SERVICE_PORT} > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
+        nodemon --watch servers/mcpub --watch servers/lib servers/mcpub/mcpub.js -p ${MC_PUB_SERVICE_PORT} > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
 
 function stop_mcpub() {
     echo "Stopping mcpub ($SERVERTYPE)..."
-    MCPUB_PID=$(ps -eo "pid,command" | grep "mcpub.js" | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ')
-    if [ "$MCPUB_PID" != "" ]; then
-        kill ${MCPUB_PID}
-        echo "  Stopped mcpub with pid $MCPUB_PID"
-    fi
+    ps -eo "pid,command" | grep "mcpub.js" | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    do
+        kill ${line}
+        echo "  Stopped mcpub with pid ${line}"
+    done
 }
 
 function start_servers() {
@@ -349,8 +358,8 @@ function show_env() {
     echo "   elasticsearch command:  docker start ${MC_ES_NAME}"
     echo "   mcapiserver.py command: mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&"
     echo "   mcstored command:       ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:$MCDB_PORT --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&"
-    echo "   mcapi.js command:       node servers/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&"
-    echo "   mcpub.js command:       node servers/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > /tmp/mcpub.out.${SERVERTYPE} 2>&1&"
+    echo "   mcapi.js command:       nodemon --watch servers/mcapi --watch servers/lib servers/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&"
+    echo "   mcpub.js command:       nodemon --watch servers/mcpub --watch servers/lib servers/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > /tmp/mcpub.out.${SERVERTYPE} 2>&1&"
     echo
     echo " Environment Files:"
     echo "   Path: /etc/materialscommons/config.global"

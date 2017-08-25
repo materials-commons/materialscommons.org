@@ -26,10 +26,10 @@ class MCDatasetDetailsComponentController {
 
         if ($window.location.hostname === 'mctest.localhost') {
             let port = $window.location.port;
-            this.publishedLink = `http://mcpub.localhost:${port}/#/details/${this.datasetId}`;
+            this.publishedLink = `http://mctest.localhost:${port}/#/data/dataset/${this.datasetId}`;
         } else {
             let hostname = $window.location.hostname;
-            this.publishedLink = `https://${hostname}/mcpub/#/details/${this.datasetId}`;
+            this.publishedLink = `https://${hostname}/mcapp/#/data/dataset/${this.datasetId}`;
         }
 
         if (!this.dataset.keywords) {
