@@ -1,10 +1,19 @@
 <div>
     <h4 class="md-title">{{$ctrl.dataset.title}}</h4>
+    <p ng-if="!$ctrl.dataset.published">
+        <em>NOTE - this dataset is currently not published. Most likely it is under revision.
+            For clarification on the status, check with the Materials Commons publisher
+            of the dataset, the authors listed herein, or any author of the related paper(s).
+        </em>
+    </p>
     <mc-dataset-property-authors dataset="$ctrl.dataset"></mc-dataset-property-authors>
     <label ng-if="$ctrl.dataset.description">Description</label>
     <i ng-if="!$ctrl.dataset.description">No Description given</i>
     <p ng-if="$ctrl.dataset.description" class="margin-left-15">{{$ctrl.dataset.description}}</p>
-    <div layout="column" class="margin-top-10">
+    <p ng-if="!$ctrl.dataset.published">
+        <mc-dataset-property-publisher dataset="$ctrl.dataset"></mc-dataset-property-publisher>
+    </p>
+    <div ng-if="$ctrl.dataset.published" layout="column" class="margin-top-10">
         <mc-dataset-property-publisher dataset="$ctrl.dataset"></mc-dataset-property-publisher>
         <mc-dataset-property-funding ng-if="$ctrl.dataset.funding"
                                      dataset="$ctrl.dataset"></mc-dataset-property-funding>
