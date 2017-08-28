@@ -15,6 +15,7 @@
     "fs-extra": "^4.0.1",
     "http-status": "^1.0.1",
     "js-data-schema": "^1.2.5",
+    "klaw-sync": "^3.0.0",
     "koa": "^0.18.1",
     "koa-body": "^1.6.0",
     "koa-bodyparser": "^2.0.1",
