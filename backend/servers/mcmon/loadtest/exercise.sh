@@ -10,5 +10,5 @@ cd ../../..
 i='1'
 while [ $i != 0 ]; do
     node_modules/.bin/_mocha $DIR/toggle-publish.js
-    sleep 2
+    sleep 10
 done

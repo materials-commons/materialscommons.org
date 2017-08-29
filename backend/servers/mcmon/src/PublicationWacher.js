@@ -39,6 +39,7 @@ class PublicationWatcher extends GenericWatcher{
             Promise.coroutine(publishDatasetZipFile)(r,datasetId);
         } else {
             console.log("unpublished ", datasetId, " remove - not implemented");
+            Promise.coroutine(unpublishDatasetZipFile)(r,datasetId);
         }
     }
 
@@ -144,6 +145,24 @@ function* publishDatasetZipFile(r, datasetId) {
         return yield Promise.reject("Error in publishDatasetZipFile: " + error.message);
     }
 }
+
+
+function* unpublishDatasetZipFile(r, datasetId) {
+    try {
+        console.log("delete zip for datasetid =", datasetId);
+        let ds = yield r.db('materialscommons').table('datasets').get(datasetId);
+        let zipDirPath = zipFileUtils.zipDirPath(ds);
+        let zipFileName = zipFileUtils.zipFilename(ds);
+        let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
+
+        //yield fsa.unlinkAsync(fillPathAndFilename);
+
+        console.log("Deleted ", fillPathAndFilename);
+    } catch (error) {
+        return yield Promise.reject("Error in unpublishDatasetZipFile: " + error.message);
+    }
+}
+
 
 function resolveZipfileFilenameDuplicates(seenThisOne, name, checksum) {
     name = name.toLowerCase();
