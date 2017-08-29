@@ -155,7 +155,7 @@ function* unpublishDatasetZipFile(r, datasetId) {
         let zipFileName = zipFileUtils.zipFilename(ds);
         let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
 
-        //yield fsa.unlinkAsync(fillPathAndFilename);
+        yield fsa.unlinkAsync(fillPathAndFilename);
 
         console.log("Deleted ", fillPathAndFilename);
     } catch (error) {
