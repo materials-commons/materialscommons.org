@@ -1,6 +1,7 @@
 GenericWatcher = require('./GenericWatcher.js');
 const Promise = require("bluebird");
 const fsa = Promise.promisifyAll(require("fs"));
+const rimraf = require('rimraf');
 const achiver = require('archiver');
 const r = require('./r');
 
@@ -158,6 +159,10 @@ function* unpublishDatasetZipFile(r, datasetId) {
         yield fsa.unlinkAsync(fillPathAndFilename);
 
         console.log("Deleted ", fillPathAndFilename);
+
+        rimraf.sync(zipDirPath);
+        console.log("Deleted ", zipDirPath);
+
     } catch (error) {
         return yield Promise.reject("Error in unpublishDatasetZipFile: " + error.message);
     }
