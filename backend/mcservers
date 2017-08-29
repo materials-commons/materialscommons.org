@@ -217,6 +217,10 @@ function stop_named_server() {
             stop_es
             ;;
 
+        rethinkdb)
+            stop_rethinkdb
+            ;;
+
         *)
             echo "Unknown server: $1"
             exit 1
@@ -245,6 +249,10 @@ function restart_named_server() {
 
         es)
             start_es
+            ;;
+
+        rethinkdb)
+            start_rethinkdb
             ;;
 
         *)
