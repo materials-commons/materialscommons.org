@@ -1,5 +1,5 @@
 const r = require('./src/r');
-const Builder = require('./src/Builder.js')
+const WatchList = require('./src/WatchList.js')
 
 function driver(watch_list) {
     watch_list.forEach( (item) =>
@@ -16,6 +16,6 @@ function driver(watch_list) {
     );
 }
 
-let builder = new Builder()
+let list_source = new WatchList()
 
-driver(builder.get_watch_list());
+driver(list_source.get_watch_list());
