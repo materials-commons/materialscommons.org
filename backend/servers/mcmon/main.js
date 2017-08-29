@@ -4,7 +4,7 @@ const Builder = require('./src/Builder.js')
 function driver(watch_list) {
     watch_list.forEach( (item) =>
         {
-            r.table(item.table_name).changes().toStream().on(
+            r.table(item.table_name).changes({squash: false}).toStream().on(
                 'data',
                 function(x) {
                     if (item.filter(x)) {
