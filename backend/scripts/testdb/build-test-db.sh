@@ -22,7 +22,7 @@ echo "using MCDB_PORT = $MCDB_PORT"
 
 # build basic (e.g 'empty') DB; using standard script
 pushd '../'
-./dbcreate.py --port $MCDB_PORT0
+./dbcreate.py --port $MCDB_PORT
 popd
 
 # add test users
