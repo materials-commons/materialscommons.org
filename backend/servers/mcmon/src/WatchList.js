@@ -1,6 +1,6 @@
-PublicationWatcher = require('./PublicationWacher');
-UserWatcher = require('./UserWatcher');
-FileWatcher = require('./FileWatcher');
+const PublicationWatcher = require('./PublicationWacher');
+const UserWatcher = require('./UserWatcher');
+const FileWatcher = require('./FileWatcher');
 
 class Builder {
     constructor() {

@@ -1,4 +1,4 @@
-GenericWatcher = require('./GenericWatcher.js');
+const GenericWatcher = require('./GenericWatcher.js');
 
 class UserWatcher extends GenericWatcher{
     constructor() {
