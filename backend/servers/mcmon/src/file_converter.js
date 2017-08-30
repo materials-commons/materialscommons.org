@@ -7,9 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { exec } = require('child_process');
-const { spawn } = require('child_process');
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
-const execAsync = Promise.promisify(exec);
 
 function is_image_to_convert(file){
     let convert_me =
@@ -70,7 +68,7 @@ function converted_file_exists(mc_dir_list, file, ext) {
         let path_entry = mc_dir_list[i];
         let file_path = conversion_file_path_from(path_entry, file, ext);
         if (fs.existsSync(file_path)) {
-            return true;
+            return file_path;
         }
     }
     return false;
@@ -80,9 +78,9 @@ function get_mcdir_from_path(file_path){
     return path.dirname(path.dirname(path.dirname(file_path)));
 }
 
-function run_system_command(command, args) {
+function run_system_command(command) {
     return new Promise(function (resolve, reject) {
-        const task = spawn(command, args);
+        const task = exec(command);
         task.stdout.on('data', (data) => {
             console.log("task stdout", data.toString());
         });
@@ -116,10 +114,9 @@ function* convert_image_if_needed(file, mc_dir_list) {
     }
     ofile_mcdir = get_mcdir_from_path(ofile_path);
     yield mkdirpAsync(conversion_dir_path_from(ofile_mcdir, file));
-    let command = "convert -verbose " + ofile_path
-        + " " + conversion_file_path_from(ofile_mcdir, file, "jpg");
-    command = "convert";
-    args = [ofile_path, conversion_file_path_from(ofile_mcdir, file, "jpg")];
+    let command = "convert " +
+        ofile_path + " " +
+        conversion_file_path_from(ofile_mcdir, file, "jpg");
 
     try {
         ret = yield run_system_command(command,args);
@@ -130,11 +127,69 @@ function* convert_image_if_needed(file, mc_dir_list) {
 }
 
 function* convert_office_doc_if_needed(file, mc_dir_list) {
+    let retP = Promise.resolve();
     console.log("office conversion if needed", file.id, mc_dir_list);
+    if (converted_file_exists(mc_dir_list, file, "pdf")){
+        console.log("File conversion exists", file.name, file.id);
+        return retP;
+    }
+    let ofile_path = originating_file_path(file, mc_dir_list);
+    if (! ofile_path) {
+        console.log("File not in file store", file.name, file.id);
+        return retP;
+    }
+    ofile_mcdir = get_mcdir_from_path(ofile_path);
+    let target_dir = conversion_dir_path_from(ofile_mcdir, file);
+    yield mkdirpAsync(target_dir);
+
+    let id = derive_file_id(file);
+    let tmpdir = "/tmp";
+    let tmppath = path.join(tmpdir, id);
+    let converted_file_path = path.join(tmpdir, id + ".pdf");
+
+    console.log(ofile_mcdir);
+    console.log(converted_file_path);
+    console.log(target_dir);
+
+    let command = "libreoffice" +
+        " -env:UserInstallation=file://" + tmppath +
+        " --headless" +
+        " --convert-to pdf" +
+        " --outdir " + tmpdir +
+        " " + ofile_path + " ; " +
+        "cp " + converted_file_path + " " + target_dir + " ; " +
+        "rm " + converted_file_path;
+
+    //"libreoffice -env:UserInstallation=file:///tmp/tmpj4FJ3g --headless --convert-to pdf --outdir /tmp /Users/weymouth/working/MaterialsCommons/mcdir/64/d7/aeae1229-64d7-4d01-a116-d002b8dbe1b8"
+    console.log("Running command ",command);
+    try {
+        ret = yield run_system_command(command);
+    } catch (error) {
+        return Promise.reject("Error in command execution: " + error.message);
+    }
+    return retP;
 }
 
-function* delete_file_conversion(file) {
-    console.log("Delete conversion file - unimplemented");
+function* delete_file_conversion(file, mc_dir_list) {
+    let retP = Promise.resolve();
+    console.log("Deleteing thumbnail image for:",file.name, file.id);
+    let pdf_file_path = converted_file_exists(mc_dir_list, file, "pdf");
+    let jpg_file_path = converted_file_exists(mc_dir_list, file, "jpg");
+    if ((!pdf_file_path) && (!jpg_file_path)) {
+        console.log('Thumbnail image not in file store');
+        return retP;
+
+    let file_path = pdf_file_path?pdf_file_path:jpg_file_path;
+    let dir = path.dirname(file_path);
+
+    let command = "rm -r dir";
+
+    try {
+        ret = yield run_system_command(command);
+    } catch (error) {
+        return Promise.reject("Error in command execution: " + error.message);
+    }
+    return retP;
 }
 
 function convert_file_if_needed(file, mc_dir_list){
@@ -148,9 +203,9 @@ function convert_file_if_needed(file, mc_dir_list){
     console.log('Done converting file',file.name);
 }
 
-function delete_file_conversion_if_exists(file) {
-    console.log('Removing file conversions for',file.name, file.id);
-    Promise.coroutine(delete_file_conversion)(file);
+function delete_file_conversion_if_exists(file, mc_dir_list) {
+    console.log('Removing thumbnail conversion for',file.name, file.id);
+    Promise.coroutine(delete_file_conversion)(file, mc_dir_list);
     console.log('Done removing file conversions',file.name);
 }
 

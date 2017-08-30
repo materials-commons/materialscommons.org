@@ -7,4 +7,4 @@ cd $DIR
 # cd backend
 cd ../../..
 
-node_modules/.bin/_mocha $DIR/add-file.js -g "image"
+node_modules/.bin/_mocha $DIR/add-file.js -g "office"
