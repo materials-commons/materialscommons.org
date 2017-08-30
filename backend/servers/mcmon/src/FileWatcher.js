@@ -21,10 +21,10 @@ class FileWatcher extends GenericWatcher{
         console.log(name + ": " + message);
         if (created) {
             file_converter.convert_file_if_needed(
-                delta.new_val,this.parameters.getget_mc_dir_paths);
+                delta.new_val,this.parameters.get_mc_dir_paths());
         } else {
             file_converter.delete_file_conversion_if_exists(
-                delta.old_val,this.parameters.getget_mc_dir_paths);
+                delta.old_val,this.parameters.get_mc_dir_paths());
         }
     }
 }
