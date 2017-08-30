@@ -20,9 +20,11 @@ class FileWatcher extends GenericWatcher{
         let message = created?"was created":"was deleted";
         console.log(name + ": " + message);
         if (created) {
-            file_converter.convert_file_if_needed(delta.new_val)
+            file_converter.convert_file_if_needed(
+                delta.new_val,this.parameters.getget_mc_dir_paths);
         } else {
-            file_converter.delete_file_conversion_if_exists(delta.old_val)
+            file_converter.delete_file_conversion_if_exists(
+                delta.old_val,this.parameters.getget_mc_dir_paths);
         }
     }
 }
