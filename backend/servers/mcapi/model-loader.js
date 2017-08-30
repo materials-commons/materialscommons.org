@@ -19,7 +19,5 @@ module.exports = function modelLoader(isParent) {
         model = require('./db/model')(r);
     }
 
-	var x = "glenn";
-
     return model;
 };
