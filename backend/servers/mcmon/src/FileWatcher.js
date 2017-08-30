@@ -18,6 +18,11 @@ class FileWatcher extends GenericWatcher{
         let name = delta.old_val?delta.old_val.name:(delta.new_val?delta.new_val.name:"unkn");
         let message = created?"was created":"was deleted";
         console.log(name + ": " + message);
+        if (created) {
+            file_converter.convert_file_if_needed(delta.new_val)
+        } else {
+            file_converter.delete_file_conversion_if_exists(delta.old_val)
+        }
     }
 }
 
