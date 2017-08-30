@@ -171,18 +171,29 @@ function* convert_office_doc_if_needed(file, mc_dir_list) {
 }
 
 function* delete_file_conversion(file, mc_dir_list) {
-    let retP = Promise.resolve();
     console.log("Deleteing thumbnail image for:",file.name, file.id);
+    let retP = Promise.resolve();
+
+    // only delete thumbnails of where the file no longer exists
+    let ofile_path = originating_file_path(file, mc_dir_list);
+    if (ofile_path) {
+        console.log("Originating file still exists file store", ofile_path);
+        console.log("Skipping delete");
+        return retP;
+    }
+
+
     let pdf_file_path = converted_file_exists(mc_dir_list, file, "pdf");
     let jpg_file_path = converted_file_exists(mc_dir_list, file, "jpg");
     if ((!pdf_file_path) && (!jpg_file_path)) {
         console.log('Thumbnail image not in file store');
         return retP;
+    }
 
     let file_path = pdf_file_path?pdf_file_path:jpg_file_path;
     let dir = path.dirname(file_path);
 
-    let command = "rm -r dir";
+    let command = "rm -r " + dir;
 
     try {
         ret = yield run_system_command(command);
