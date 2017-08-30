@@ -1,6 +1,7 @@
 class GenericWatcher {
 
-    constructor() {
+    constructor(parameters) {
+        this.parameters = parameters;
         this.table_name = null;
     }
 

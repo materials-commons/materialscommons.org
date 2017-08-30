@@ -3,11 +3,11 @@ const UserWatcher = require('./UserWatcher');
 const FileWatcher = require('./FileWatcher');
 
 class Builder {
-    constructor() {
+    constructor(parameters) {
         this.watch_list = [
-            new PublicationWatcher(),
-            new UserWatcher(),
-            new FileWatcher()
+            new PublicationWatcher(parameters),
+            new UserWatcher(parameters),
+            new FileWatcher(parameters)
         ]
     }
 

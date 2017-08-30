@@ -2,8 +2,8 @@ const GenericWatcher = require('./GenericWatcher.js');
 const zip_file_builder = require('./zip_file_builder');
 
 class PublicationWatcher extends GenericWatcher{
-    constructor() {
-        super();
+    constructor(parameters) {
+        super(parameters);
         this.table_name = 'datasets';
     }
 

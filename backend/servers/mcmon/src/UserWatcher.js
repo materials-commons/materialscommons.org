@@ -1,8 +1,8 @@
 const GenericWatcher = require('./GenericWatcher.js');
 
 class UserWatcher extends GenericWatcher{
-    constructor() {
-        super();
+    constructor(parameters) {
+        super(parameters);
         this.table_name = 'users';
     }
 

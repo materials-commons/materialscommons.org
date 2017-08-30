@@ -1,5 +1,6 @@
 const r = require('./src/r');
-const WatchList = require('./src/WatchList.js')
+const WatchList = require('./src/WatchList');
+const Parameters = require('./src/Parameters');
 
 function driver(watch_list) {
     watch_list.forEach( (item) =>
@@ -16,6 +17,12 @@ function driver(watch_list) {
     );
 }
 
-let list_source = new WatchList()
+let parameters = new Parameters();
+if (! parameters.get_mc_dir_paths()) {
+    console.log("Error: MCDIR is not defined.");
+    process.exit()(1);
+}
+
+let list_source = new WatchList(parameters);
 
 driver(list_source.get_watch_list());
