@@ -10,15 +10,21 @@ const mkdirpAsync = Promise.promisify(require('mkdirp'));
 
 const pathForFileInZip = "Dataset/";
 
+let verbose = true;
+
 function* publishDatasetZipFile(r, datasetId) {
     try {
-        console.log("zip", datasetId);
+        if (verbose) {
+            console.log("zip", datasetId);
+        }
         let ds = yield r.db('materialscommons').table('datasets').get(datasetId);
         let zipDirPath = zipFileUtils.zipDirPath(ds);
         let zipFileName = zipFileUtils.zipFilename(ds);
         let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
 
-        console.log("full path and filename: ", fillPathAndFilename);
+        if (verbose) {
+            console.log("full path and filename: ", fillPathAndFilename);
+        }
 
         let ds2dfEntries = yield r.db('materialscommons').table('dataset2datafile')
             .getAll(datasetId, {index: 'dataset_id'}).coerceTo('array');
@@ -51,11 +57,13 @@ function* publishDatasetZipFile(r, datasetId) {
             let path = zipEntry.sourcePath;
             let name = zipEntry.fileName;
 
-            console.log('-------------');
-            console.log('name = ', name);
-            console.log('filePath = ', filePath);
-            console.log('sourcePath = ', path);
-            console.log('name = ',name);
+            if (verbose) {
+                console.log('-------------');
+                console.log('name = ', name);
+                console.log('filePath = ', filePath);
+                console.log('sourcePath = ', path);
+                console.log('name = ',name);
+            }
 
             let checksum = zipEntry.checksum;
             name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
@@ -78,7 +86,9 @@ function* publishDatasetZipFile(r, datasetId) {
 
             output.on('close', function () {
                 let zipfileSize = archive.pointer();
-                console.log('for dataset: ' + datasetId + " with " + zipfileSize + ' total bytes');
+                if (verbose) {
+                    console.log('for dataset: ' + datasetId + " with " + zipfileSize + ' total bytes');
+                }
                 let zip = {size: zipfileSize, filename: zipFileName};
                 r.db('materialscommons').table('datasets').get(datasetId).update({zip: zip}).then(() => {
                     console.log("Dataset zipfile set:", zipFileName,"Process done.")
@@ -102,7 +112,9 @@ function* publishDatasetZipFile(r, datasetId) {
             archive.finalize();
         });
 
-        console.log("Starting of zip file For id = " + datasetId + "... (wait)");
+        if (verbose) {
+            console.log("Starting of zip file For id = " + datasetId + "... (wait)");
+        }
 
         return retP;
 
@@ -113,7 +125,9 @@ function* publishDatasetZipFile(r, datasetId) {
 
 function* unpublishDatasetZipFile(r, datasetId) {
     try {
-        console.log("delete zip for datasetid =", datasetId);
+        if (verbose) {
+            console.log("delete zip for datasetid =", datasetId);
+        }
         let ds = yield r.db('materialscommons').table('datasets').get(datasetId);
         let zipDirPath = zipFileUtils.zipDirPath(ds);
         let zipFileName = zipFileUtils.zipFilename(ds);
@@ -124,7 +138,9 @@ function* unpublishDatasetZipFile(r, datasetId) {
         console.log("Deleted ", fillPathAndFilename);
 
         rimraf.sync(zipDirPath);
-        console.log("Deleted ", zipDirPath);
+        if (verbose) {
+            console.log("Deleted ", zipDirPath);
+        }
 
     } catch (error) {
         return yield Promise.reject("Error in unpublishDatasetZipFile: " + error.message);
@@ -141,7 +157,9 @@ function resolveZipfileFilenameDuplicates(seenThisOne, name, checksum) {
     if (name in seenThisOne) {
         var count = 0;
         if (seenThisOne[name] == checksum) {
-            console.log("Seen this file before: " + name);
+            if (verbose) {
+                console.log("Seen this file before: " + name);
+            }
             return null;
         } else {
             let newName = resolveZipfileFilenameUnique(name, count);
@@ -149,7 +167,9 @@ function resolveZipfileFilenameDuplicates(seenThisOne, name, checksum) {
                 count++;
                 newName = resolveZipfileFilenameUnique(name, count);
             }
-            // console.log(name + " --> " + newName);
+            if (verbose) {
+                console.log(name + " --> " + newName);
+            }
             name = newName;
         }
     }
@@ -162,15 +182,21 @@ function resolveZipfileFilenameUnique(name, count) {
     return parts.name + "_" + count + parts.ext;
 }
 
-function build_zip_file(datasetId) {
+function build_zip_file(datasetId, options) {
+    if (is_verbose_muted(options)) verbose = false;
     Promise.coroutine(publishDatasetZipFile)(r,datasetId);
 }
 
-function remote_zip_file(datasetId){
+function remove_zip_file(datasetId, options){
+    if (is_verbose_muted(options)) verbose = false;
     Promise.coroutine(unpublishDatasetZipFile)(r,datasetId);
+}
+
+function is_verbose_muted(options) {
+    return (options && (options.verbose == false));
 }
 
 module.exports = {
     build_zip_file,
-    remote_zip_file
+    remove_zip_file
 };

@@ -15,21 +15,24 @@ class PublicationWatcher extends GenericWatcher{
     }
 
     action(delta) {
+        let verbose_flag = this.verbose();
         let old_value = delta.old_val?delta.old_val.published:false;
         let new_value = delta.new_val?delta.new_val.published:false;
         let name = delta.old_val?delta.old_val.title:(delta.new_val?delta.new_val.title:"unkn");
         let datasetId = delta.old_val?delta.old_val.id:(delta.new_val?delta.new_val.id:null);
-        let message = "from " + (old_value?"Published":"Unpublished")
-            + " to " + (new_value?"Published":"Unpublished");
-        console.log(name + ": " + message);
+        if (verbose_flag) {
+            let message = "from " + (old_value?"Published":"Unpublished")
+                + " to " + (new_value?"Published":"Unpublished");
+            console.log(name + ": " + message);
+        }
         if (! datasetId) {
             console.log("Failed to build zip file: no id available!");
             console.log(delta);
         }
         if (new_value) { // then published; so, build zip
-            zip_file_builder.build_zip_file(datasetId);
+            zip_file_builder.build_zip_file(datasetId, {verbose: verbose_flag});
         } else {
-            zip_file_builder.remote_zip_file(datasetId);
+            zip_file_builder.remove_zip_file(datasetId, {verbose: verbose_flag});
         }
     }
 

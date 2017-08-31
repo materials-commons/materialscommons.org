@@ -9,6 +9,8 @@ const path = require('path');
 const { exec } = require('child_process');
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 
+let verbose = true;
+
 function is_image_to_convert(file){
     let convert_me =
         (file.mediatype.mime == "image/tiff") ||
@@ -82,20 +84,28 @@ function run_system_command(command) {
     return new Promise(function (resolve, reject) {
         const task = exec(command);
         task.stdout.on('data', (data) => {
-            console.log("task stdout", data.toString());
+            if (verbose) {
+                console.log("task stdout", data.toString());
+            }
         });
 
         task.stderr.on('data', (data) => {
-            console.log("task stderr", data.toString());
+            if (verbose) {
+                console.log("task stderr", data.toString());
+            }
         });
 
         task.on('exit', (code) => {
-            console.log(`task exited with code ${code}`);
+            if (verbose) {
+                console.log(`task exited with code ${code}`);
+            }
             resolve(code);
         });
 
         task.on('error', (error) => {
-            console.log(`task error detected: ${error}`);
+            if (verbose) {
+                console.log(`task error detected: ${error}`);
+            }
             reject(error);
         });
     });
@@ -120,6 +130,7 @@ function* convert_image_if_needed(file, mc_dir_list) {
 
     try {
         ret = yield run_system_command(command);
+        console.log("Create image thumbnail for:", file.name);
         return retP;
     } catch (error) {
         return Promise.reject("Error in convert execution: " + error.message);
@@ -128,7 +139,6 @@ function* convert_image_if_needed(file, mc_dir_list) {
 
 function* convert_office_doc_if_needed(file, mc_dir_list) {
     let retP = Promise.resolve();
-    console.log("office conversion if needed", file.id, mc_dir_list);
     if (converted_file_exists(mc_dir_list, file, "pdf")){
         console.log("File conversion exists", file.name, file.id);
         return retP;
@@ -147,10 +157,6 @@ function* convert_office_doc_if_needed(file, mc_dir_list) {
     let tmppath = path.join(tmpdir, id);
     let converted_file_path = path.join(tmpdir, id + ".pdf");
 
-    console.log(ofile_mcdir);
-    console.log(converted_file_path);
-    console.log(target_dir);
-
     let command = "libreoffice" +
         " -env:UserInstallation=file://" + tmppath +
         " --headless" +
@@ -160,9 +166,12 @@ function* convert_office_doc_if_needed(file, mc_dir_list) {
         "cp " + converted_file_path + " " + target_dir + " ; " +
         "rm " + converted_file_path;
 
-    console.log("Running command ",command);
+    if (verbose) {
+        console.log("Running command ",command);
+    }
     try {
         ret = yield run_system_command(command);
+        console.log("Create office file thumbnail for:", file.name);
     } catch (error) {
         return Promise.reject("Error in libreoffice execution: " + error.message);
     }
@@ -170,17 +179,18 @@ function* convert_office_doc_if_needed(file, mc_dir_list) {
 }
 
 function* delete_file_conversion(file, mc_dir_list) {
-    console.log("Deleteing thumbnail image for:",file.name, file.id);
     let retP = Promise.resolve();
 
     // only delete thumbnails of where the file no longer exists
     let ofile_path = originating_file_path(file, mc_dir_list);
     if (ofile_path) {
-        console.log("Originating file still exists file store", ofile_path);
-        console.log("Skipping delete");
+        console.log("Skipping delete. Originating file still exists file store", ofile_path);
         return retP;
     }
 
+    if (verbose) {
+        console.log("Deleteing thumbnail image for:",file.name, file.id);
+    }
 
     let pdf_file_path = converted_file_exists(mc_dir_list, file, "pdf");
     let jpg_file_path = converted_file_exists(mc_dir_list, file, "jpg");
@@ -202,15 +212,17 @@ function* delete_file_conversion(file, mc_dir_list) {
     return retP;
 }
 
-function convert_file_if_needed(file, mc_dir_list){
-    console.log('Thumbnail conversion',file.name, file.id);
+function convert_file_if_needed(file, mc_dir_list, options){
+    if (is_verbose_muted(options)) verbose = false;
+    if (verbose) {
+        console.log('Thumbnail conversion',file.name, file.id);
+    }
     if (is_image_to_convert(file)) {
         Promise.coroutine(convert_image_if_needed)(file, mc_dir_list);
     }
     else if (is_office_doc(file)) {
         Promise.coroutine(convert_office_doc_if_needed)(file, mc_dir_list);
     }
-    console.log('Done converting file',file.name);
 }
 
 // Note: delay needed on delete because backing file is deleted after database change
@@ -221,13 +233,20 @@ function convert_file_if_needed(file, mc_dir_list){
 let delay = 1000; // one second
 
 function delayed_conditional_thumbnail_delete(file, mc_dir_list) {
-    console.log('Removing thumbnail conversion for', file.name, file.id);
+    if (verbose) {
+        console.log('Removing thumbnail for', file.name, file.id);
+    }
     Promise.coroutine(delete_file_conversion)(file, mc_dir_list);
-    console.log('Done removing file conversions', file.name);
+    console.log('Done removing thumbnail for', file.name);
 }
 
-function delete_file_conversion_if_exists(file, mc_dir_list) {
+function delete_file_conversion_if_exists(file, mc_dir_list, options) {
+    if (is_verbose_muted(options)) verbose = false;
     setTimeout(delayed_conditional_thumbnail_delete, delay, file, mc_dir_list)
+}
+
+function is_verbose_muted(options) {
+    return (options && (options.verbose == false));
 }
 
 module.exports = {
