@@ -119,10 +119,10 @@ function* convert_image_if_needed(file, mc_dir_list) {
         conversion_file_path_from(ofile_mcdir, file, "jpg");
 
     try {
-        ret = yield run_system_command(command,args);
+        ret = yield run_system_command(command);
         return retP;
     } catch (error) {
-        return Promise.reject("Error in command execution: " + error.message);
+        return Promise.reject("Error in convert execution: " + error.message);
     }
 }
 
@@ -160,12 +160,11 @@ function* convert_office_doc_if_needed(file, mc_dir_list) {
         "cp " + converted_file_path + " " + target_dir + " ; " +
         "rm " + converted_file_path;
 
-    //"libreoffice -env:UserInstallation=file:///tmp/tmpj4FJ3g --headless --convert-to pdf --outdir /tmp /Users/weymouth/working/MaterialsCommons/mcdir/64/d7/aeae1229-64d7-4d01-a116-d002b8dbe1b8"
     console.log("Running command ",command);
     try {
         ret = yield run_system_command(command);
     } catch (error) {
-        return Promise.reject("Error in command execution: " + error.message);
+        return Promise.reject("Error in libreoffice execution: " + error.message);
     }
     return retP;
 }
