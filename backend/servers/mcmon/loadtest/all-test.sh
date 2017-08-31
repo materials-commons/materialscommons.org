@@ -7,4 +7,5 @@ cd $DIR
 # cd backend
 cd ../../..
 
-node_modules/.bin/_mocha $DIR/add-file.js
+node_modules/.bin/_mocha $DIR/add-thumbnail-files.js
+node_modules/.bin/_mocha $DIR/publish-dataset.js

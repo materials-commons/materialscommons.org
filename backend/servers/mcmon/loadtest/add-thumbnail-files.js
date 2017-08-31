@@ -26,7 +26,7 @@ const directories = require(mcapi_base + '/db/model/directories');
 const helper = require(mcapi_base + '/build-demo/build-demo-project-helper');
 const demoProjectConf = require(mcapi_base + '/build-demo/build-demo-project-conf');
 
-const base_project_name = "File Conversion test project ";
+const base_project_name = "File Thumbnail test project ";
 
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
@@ -59,7 +59,7 @@ before(function*() {
     assert.equal(top_directory.name, project.name);
 });
 
-describe('Feature - File Conversion: ', function() {
+describe('Feature - File Thumbnails: ', function() {
     it('create office file for conversion', function*(){
         let tempDir = os.tmpdir();
         let checksumFilenameAndMimetype = helper.filesDescriptions()[2];
@@ -88,7 +88,7 @@ describe('Feature - File Conversion: ', function() {
         assert.equal(file.name, filename);
         assert.equal(file.checksum, checksum);
     });
-    it('create single image file for conversion', function*(){
+    it('create image file for conversion', function*(){
         let tempDir = os.tmpdir();
         let checksumFilenameAndMimetype = helper.filesDescriptions()[5];
         let expectedChecksum = checksumFilenameAndMimetype[0];
