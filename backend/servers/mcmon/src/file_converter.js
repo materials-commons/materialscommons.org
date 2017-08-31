@@ -185,7 +185,7 @@ function* delete_file_conversion(file, mc_dir_list) {
     let pdf_file_path = converted_file_exists(mc_dir_list, file, "pdf");
     let jpg_file_path = converted_file_exists(mc_dir_list, file, "jpg");
     if ((!pdf_file_path) && (!jpg_file_path)) {
-        console.log('Thumbnail image not in file store');
+        console.log('Thumbnail image not in file store', derive_file_id(file));
         return retP;
     }
 
@@ -195,7 +195,7 @@ function* delete_file_conversion(file, mc_dir_list) {
     let command = "rm -r " + dir;
 
     try {
-        ret = yield run_system_command(command);
+        yield run_system_command(command);
     } catch (error) {
         return Promise.reject("Error in command execution: " + error.message);
     }
@@ -213,10 +213,21 @@ function convert_file_if_needed(file, mc_dir_list){
     console.log('Done converting file',file.name);
 }
 
-function delete_file_conversion_if_exists(file, mc_dir_list) {
-    console.log('Removing thumbnail conversion for',file.name, file.id);
+// Note: delay needed on delete because backing file is deleted after database change
+// this leads to a race condition in which the file's being present
+// prevents the thumbnail from being deleted. Wait for the case that the backing file
+// is deleted, to allow the corresponding thumbnail to be deleted.
+
+let delay = 1000; // one second
+
+function delayed_conditional_thumbnail_delete(file, mc_dir_list) {
+    console.log('Removing thumbnail conversion for', file.name, file.id);
     Promise.coroutine(delete_file_conversion)(file, mc_dir_list);
-    console.log('Done removing file conversions',file.name);
+    console.log('Done removing file conversions', file.name);
+}
+
+function delete_file_conversion_if_exists(file, mc_dir_list) {
+    setTimeout(delayed_conditional_thumbnail_delete, delay, file, mc_dir_list)
 }
 
 module.exports = {
