@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
-
 set -e
+
+# no-output on pushd and popd
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
+}
 
 # abort if TEST_ACCOUNT_PW not set and non-empty
 if [ -z "$MC_USERPW" ]; then

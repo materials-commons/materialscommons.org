@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+# no-output on pushd and popd
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
+}
+
 # pushd location of script
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 pushd $DIR
