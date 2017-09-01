@@ -73,12 +73,6 @@ install:
   - mkdir .materialscommons
   - sudo mkdir -p /etc/nginx/conf.d
 
-  - git clone --depth=50 --branch=sprint https://github.com/materials-commons/mcapi.git
-  - cd mcapi/python
-  - export MC_PYTHON_API_DIR=`pwd`
-  - sudo pip install -r requirements.txt
-  - sudo python setup.py install
-
   # Note: github does not store or recover empty directories
   #       this is needed for testing - creating empty dir
   - mkdir -p test/test_data/test_upload_data/test_upload_dir/sub_directory_c/empty_dir
@@ -86,11 +80,9 @@ install:
   - cp travisconfig.json ~/.materialscommons/config.json
   - sudo cp mctest.localhost.conf /etc/nginx/conf.d/
   - popd
-  - pwd
   - pushd backend
   - npm install
   - popd
-  - pip list
 
 before_script:
   # - sudo nginx
@@ -99,13 +91,10 @@ before_script:
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
 
-  - pip list
   - cd $MC_APP_DIR
   - pushd backend/scripts
-  - pip list
   - python dbcreate.py --port $MCDB_PORT0
   - pushd testdb
-  - pip list
   - python makeUsersForTests.py --port $MCDB_PORT --password $MC_USERPW
   - popd
   - pushd templates
