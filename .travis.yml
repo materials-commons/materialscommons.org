@@ -71,22 +71,14 @@ install:
 
   - pushd ~
   - mkdir .materialscommons
-  - sudo mkdir -p /etc/nginx/conf.d
+  - popd
 
-  - git clone --depth=50 --branch=sprint https://github.com/materials-commons/mcapi.git
-  - cd mcapi/python
-  - export MC_PYTHON_API_DIR=`pwd`
-  - sudo pip install -r requirements.txt
-  - sudo python setup.py install
-
-  # Note: github does not store or recover empty directories
-  #       this is needed for testing - creating empty dir
-  - mkdir -p test/test_data/test_upload_data/test_upload_dir/sub_directory_c/empty_dir
-  - cd test/test_data/test_config_data
+  - pushd test_data/test_config_data
   - cp travisconfig.json ~/.materialscommons/config.json
+  - sudo mkdir -p /etc/nginx/conf.d
   - sudo cp mctest.localhost.conf /etc/nginx/conf.d/
   - popd
-  - pwd
+
   - pushd backend
   - npm install
   - popd
@@ -98,7 +90,6 @@ before_script:
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
 
-  - cd $MC_APP_DIR
   - pushd backend/scripts
   - python dbcreate.py --port $MCDB_PORT0
   - pushd testdb
@@ -107,15 +98,11 @@ before_script:
   - pushd templates
   - ./run.sh
   - popd
-  - popd
 
-  - cd $MC_APP_DIR
-  - pushd backend
   - node servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.travis.txt 2>&1&
   - sleep 5
   - popd
+  - cd backend
 
 script:
-  - cd $MC_APP_DIR
-  - cd backend
   - node_modules/.bin/_mocha "**/Database-Level/specs/*-spec.js"
