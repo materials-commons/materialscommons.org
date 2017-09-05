@@ -43,11 +43,11 @@ env:
 
 before_install:
   - export MC_APP_DIR=`pwd`
-    # RethinkDB
+  # RethinkDB
   - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
   # or --no-check-certificate for wget
   - curl -k https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
-    # Yarn
+  # Yarn
   - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   - sudo apt-get update
@@ -90,7 +90,6 @@ install:
   - pushd backend
   - npm install
   - popd
-  - pip list
 
 before_script:
   # - sudo nginx
@@ -99,13 +98,10 @@ before_script:
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
 
-  - pip list
   - cd $MC_APP_DIR
   - pushd backend/scripts
-  - pip list
   - python dbcreate.py --port $MCDB_PORT0
   - pushd testdb
-  - pip list
   - python makeUsersForTests.py --port $MCDB_PORT --password $MC_USERPW
   - popd
   - pushd templates
