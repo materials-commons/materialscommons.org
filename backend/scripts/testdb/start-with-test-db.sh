@@ -58,10 +58,12 @@ print_env_and_locations() {
 
 
 start_empty_rethinkdb() {
+    pushd $BACKEND
     echo "Starting rethinkdb with only tables and indexes ..."
     (cd ${MCDB_DIR}; rethinkdb --driver-port ${MCDB_PORT} --cluster-port ${RETHINKDB_CLUSTER_PORT} --http-port ${RETHINKDB_HTTP_PORT} --daemon)
     scripts/db_running.py --port ${MCDB_PORT}
     echo "Started."
+    popd
 }
 
 safely_start_rethinkdb() {
@@ -69,6 +71,14 @@ safely_start_rethinkdb() {
     ./mcservers sstop rethinkdb
     sleep 2
     start_empty_rethinkdb
+    popd
+}
+
+clear_rethinkdb() {
+    pushd $BACKEND
+    echo "Clearing test db"
+    scripts/testdb/deleteDatabases.py --port $MCDB_PORT
+    echo "Emptied test db"
     popd
 }
 
@@ -85,6 +95,7 @@ print_message
 set_locations
 print_env_and_locations
 safely_start_rethinkdb
+clear_rethinkdb
 rebuild_test_database
 
 echo "Done create test DB."
