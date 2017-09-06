@@ -17,7 +17,7 @@ set_env() {
 
 print_message() {
     cat <<- EOF
-This script will start the Materials Commons test environment with
+This script will start RethinkDB for Materials Commons with
 a useful, empty, test database. No projects, Experiments or other
 data is defined. See the content of the script for details.
 There are 4 users defined: test@test.mc, another@test.mc, admin@test.mc,
@@ -58,7 +58,7 @@ print_env_and_locations() {
 
 
 start_empty_rethinkdb() {
-    echo "Starting rethinkdb with no data..."
+    echo "Starting rethinkdb with only tables and indexes ..."
     (cd ${MCDB_DIR}; rethinkdb --driver-port ${MCDB_PORT} --cluster-port ${RETHINKDB_CLUSTER_PORT} --http-port ${RETHINKDB_HTTP_PORT} --daemon)
     scripts/db_running.py --port ${MCDB_PORT}
     echo "Started."
@@ -76,7 +76,7 @@ rebuild_test_database() {
     pushd $BASE
     echo "Building minimal test DB in rethinkdb..."
     MC_USERPW=test build-test-db.sh > /dev/null
-    echo "Built."
+    echo "Built test DB."
     popd
 }
 
