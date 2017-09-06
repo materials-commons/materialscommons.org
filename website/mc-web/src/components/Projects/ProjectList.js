@@ -1,8 +1,37 @@
 import React from 'react';
 import {Table} from 'semantic-ui-react';
+import moment from 'moment';
+
+class ProjectReminders extends React.Component {
+    render() {
+        const reminders = this.props.reminders.map((r, i) => (<li key={r.id}>{r.note}</li>));
+        return (
+            <ul>
+                {reminders}
+            </ul>
+        )
+    }
+}
+
+class ProjectRowEntry extends React.Component {
+    render() {
+        const p = this.props.project;
+        return (
+            <Table.Row>
+                <Table.Cell>{p.name}</Table.Cell>
+                <Table.Cell>{p.owner_details.fullname}</Table.Cell>
+                <Table.Cell>{moment(p.mtime).format('DD/MM/YY')}</Table.Cell>
+                <Table.Cell>{p.files}</Table.Cell>
+                <Table.Cell>{p.users.length}</Table.Cell>
+                <Table.Cell><ProjectReminders reminders={p.reminders}/></Table.Cell>
+            </Table.Row>
+        )
+    }
+}
 
 export default class ProjectsList extends React.Component {
     render() {
+        const projectRows = this.props.projects.map(p => (<ProjectRowEntry key={p.id} project={p}/>));
         return (
             <Table basic='very' selectable>
                 <Table.Header>
@@ -16,22 +45,7 @@ export default class ProjectsList extends React.Component {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    <Table.Row>
-                        <Table.Cell>Demo Project</Table.Cell>
-                        <Table.Cell>Glenn Tarcea</Table.Cell>
-                        <Table.Cell>{'2/23/17'}</Table.Cell>
-                        <Table.Cell>{'0'}</Table.Cell>
-                        <Table.Cell>{'1'}</Table.Cell>
-                        <Table.Cell></Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.Cell>My Project</Table.Cell>
-                        <Table.Cell>Terry Weymouth</Table.Cell>
-                        <Table.Cell>{'2/23/17'}</Table.Cell>
-                        <Table.Cell>{'0'}</Table.Cell>
-                        <Table.Cell>{'1'}</Table.Cell>
-                        <Table.Cell></Table.Cell>
-                    </Table.Row>
+                    {projectRows}
                 </Table.Body>
             </Table>
         )

@@ -4,11 +4,14 @@
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
+    "fuse.js": "^3.1.0",
+    "moment": "^2.18.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.12",
     "semantic-ui-css": "^2.2.12",
-    "semantic-ui-react": "^0.72.0"
+    "semantic-ui-react": "^0.72.0",
+    "shortid": "^2.2.8"
   },
   "scripts": {
     "start": "react-scripts start",

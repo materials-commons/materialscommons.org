@@ -4,6 +4,10 @@ import Navbar from './components/Navbar';
 import Projects from './components/Projects/Projects';
 
 class App extends Component {
+    componentWillMount() {
+
+    }
+
     render() {
         return (
             <div className="App2">
