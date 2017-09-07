@@ -38,7 +38,10 @@ export default class Projects extends React.Component {
 
     componentDidMount() {
         getAllProjects().then(
-            (projects) => this.setState({projects: projects}),
+            (projects) => {
+                this.fuseInstance = new Fuse(projects, this.fuseOptions);
+                this.setState({projects: projects});
+            },
             () => console.log('Failed to retrieve projects')
         );
     }
@@ -48,14 +51,9 @@ export default class Projects extends React.Component {
     };
 
     render() {
-        let myProjects = this.state.projects.filter(p => p.owner === 'gtarcea@umich.edu');
-        let otherProjects = this.state.projects.filter(p => p.owner !== 'gtarcea@umich.edu');
-        if (this.state.projectSearch !== "") {
-            const myFuse = new Fuse(myProjects, this.fuseOptions);
-            const otherFuse = new Fuse(otherProjects, this.fuseOptions);
-            myProjects = myFuse.search(this.state.projectSearch);
-            otherProjects = otherFuse.search(this.state.projectSearch);
-        }
+        const projectsToFilter = this.state.projectSearch === "" ? this.state.projects : this.fuseInstance.search(this.state.projectSearch);
+        const myProjects = projectsToFilter.filter(p => p.owner === 'gtarcea@umich.edu');
+        const otherProjects = projectsToFilter.filter(p => p.owner !== 'gtarcea@umich.edu');
 
         return (
             <div className="ui grid">
