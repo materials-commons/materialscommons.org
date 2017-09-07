@@ -13,7 +13,7 @@ class App extends Component {
                     <Navbar/>
                     <div className="ui App-Main">
                         <Switch>
-                            <Route path="/projects" exact component={Projects}/>
+                            <Route path="/projects" component={Projects}/>
                             <Route path="/datasets" component={Datasets}/>
                             <Redirect to="/datasets"/>
                         </Switch>
