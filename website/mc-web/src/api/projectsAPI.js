@@ -1,7 +1,7 @@
 import axios from 'axios';
 import shortid from 'shortid';
 
-export default function getAllProjects() {
+export function getAllProjects() {
     return axios.get('/api/v2/projects', {
         params: {
             apikey: '472abe203cd411e3a280ac162d80f1bf'

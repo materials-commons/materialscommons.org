@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Menu} from 'semantic-ui-react';
+import {NavLink} from 'react-router-dom';
 
 export default class Navbar extends Component {
     state = {};
@@ -14,12 +15,12 @@ export default class Navbar extends Component {
                 <Menu.Item>
                     <div>
                         <div className="row">
-                            <h3>MaterialsCommons</h3>
+                            <h3 className="mc-name center">MaterialsCommons</h3>
                         </div>
-                        <hr/>
-                        <div className="row">
-                            <span className="column" style={{marginRight: '8px'}}>Projects</span>
-                            <span className="column">Published Data</span>
+                        <hr style={{marginTop: '0', marginBottom: '0'}}/>
+                        <div className="two column row">
+                            <NavLink to="/projects" activeClassName="active" className="toggle-nav mc-subhead" style={{marginRight: '8px'}}>Projects</NavLink>
+                            <NavLink to="/datasets" activeClassName="active" className="toggle-nav mc-subhead">Published Data</NavLink>
                         </div>
                     </div>
                 </Menu.Item>

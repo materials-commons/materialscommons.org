@@ -2,13 +2,13 @@ import React from 'react';
 import SearchProjects from './SearchProjects';
 import ProjectList from './ProjectList';
 import CreateProject from './CreateProject';
-import getAllProjects from '../../api/projectsAPI';
+import { getAllProjects } from '../../api/projectsAPI';
 import Fuse from 'fuse.js';
 
 export default class Projects extends React.Component {
     state = {
         projects: [],
-        projectSearch: ""
+        projectsSearch: ""
     };
 
     fuseOptions = {
@@ -47,11 +47,11 @@ export default class Projects extends React.Component {
     }
 
     handleSearchChange = (searchTerm) => {
-        this.setState({projectSearch: searchTerm});
+        this.setState({projectsSearch: searchTerm});
     };
 
     render() {
-        const projectsToFilter = this.state.projectSearch === "" ? this.state.projects : this.fuseInstance.search(this.state.projectSearch);
+        const projectsToFilter = this.state.projectsSearch === "" ? this.state.projects : this.fuseInstance.search(this.state.projectsSearch);
         const myProjects = projectsToFilter.filter(p => p.owner === 'gtarcea@umich.edu');
         const otherProjects = projectsToFilter.filter(p => p.owner !== 'gtarcea@umich.edu');
 

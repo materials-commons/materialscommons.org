@@ -7,3 +7,25 @@ body {
 .ui.button {
     text-transform: uppercase;
 }
+
+.toggle-nav {
+    color: white;
+}
+
+.toggle-nav.active {
+    color: #ffcb0b;
+}
+
+.mc-subhead {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: .010em;
+    line-height: 24px;
+}
+
+.mc-name {
+    color: #2196F3;
+    font-size: 20px;
+    font-weight: normal;
+    margin-left: 2px;
+}
