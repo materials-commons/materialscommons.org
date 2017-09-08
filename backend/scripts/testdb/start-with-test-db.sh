@@ -59,8 +59,9 @@ print_env_and_locations() {
 
 start_empty_rethinkdb() {
     pushd $BACKEND
-    echo "Starting rethinkdb with only tables and indexes ..."
+    echo "Starting rethinkdb ..."
     (cd ${MCDB_DIR}; rethinkdb --driver-port ${MCDB_PORT} --cluster-port ${RETHINKDB_CLUSTER_PORT} --http-port ${RETHINKDB_HTTP_PORT} --daemon)
+    # db_running.py blocks until DB is up; or exits with error after 100 retries
     scripts/db_running.py --port ${MCDB_PORT}
     echo "Started."
     popd
