@@ -4,7 +4,7 @@ body {
     font-family: sans-serif;
 }
 
-.ui.button {
+.ui.button, .ui.basic.button {
     text-transform: uppercase;
 }
 
@@ -28,4 +28,16 @@ body {
     font-size: 20px;
     font-weight: normal;
     margin-left: 2px;
+}
+
+a {
+    cursor: pointer;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.dropdown.text {
+    text-transform: uppercase;
 }
