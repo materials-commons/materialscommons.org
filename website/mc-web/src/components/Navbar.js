@@ -3,13 +3,7 @@ import {Menu} from 'semantic-ui-react';
 import {NavLink} from 'react-router-dom';
 
 export default class Navbar extends Component {
-    state = {};
-
-    handleItemClick = (e, {name}) => this.setState({activeItem: name});
-
     render() {
-        //const {activeItem} = this.state;
-
         return (
             <Menu fixed='top' inverted>
                 <Menu.Item>
