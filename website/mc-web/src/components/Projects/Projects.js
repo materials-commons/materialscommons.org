@@ -41,8 +41,7 @@ export default class Projects extends React.Component {
             (projects) => {
                 this.fuseInstance = new Fuse(projects, this.fuseOptions);
                 this.setState({projects: projects});
-            },
-            () => console.log('Failed to retrieve projects')
+            }
         );
     }
 
