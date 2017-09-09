@@ -34,10 +34,10 @@ a {
     cursor: pointer;
 }
 
-.uppercase {
+.uppercase-menu div.text {
     text-transform: uppercase;
 }
 
-.dropdown.text {
-    text-transform: uppercase;
+.ui.menu .ui.dropdown .menu > .item {
+    text-transform: uppercase !important;
 }
