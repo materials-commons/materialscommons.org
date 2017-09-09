@@ -55,67 +55,35 @@ class NavbarUserControls extends React.Component {
     };
 
     render() {
-        return (this.state.isLoggedIn ? <UserMenu user={this.state.user.fullname} onLogout={this.handleLogout}/>
-            // <Button onClick={this.handleLogout}>Logout ({this.state.user.fullname})</Button>
-            : <UserLogin onSuccess={this.handleLogin}/>);
+        if (this.state.isLoggedIn) {
+            return (<UserMenu user={this.state.user.fullname} onLogout={this.handleLogout}/>);
+        }
+        return (<UserLogin onSuccess={this.handleLogin}/>);
     }
 }
 
 const NavbarUserControlsWithRouter = withRouter(NavbarUserControls);
 
-/*
-<Menu attached='top'>
-      <Dropdown item icon='wrench' simple>
-        <Dropdown.Menu>
-          <Dropdown.Item>
-            <Icon name='dropdown' />
-            <span className='text'>New</span>
-
-            <Dropdown.Menu>
-              <Dropdown.Item>Document</Dropdown.Item>
-              <Dropdown.Item>Image</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown.Item>
-          <Dropdown.Item>Open</Dropdown.Item>
-          <Dropdown.Item>Save...</Dropdown.Item>
-          <Dropdown.Item>Edit Permissions</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Header>Export</Dropdown.Header>
-          <Dropdown.Item>Share</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-
-      <Menu.Menu position='right'>
-        <div className='ui right aligned category search item'>
-          <div className='ui transparent icon input'>
-            <input className='prompt' type='text' placeholder='Search animals...' />
-            <i className='search link icon' />
-          </div>
-          <div className='results' />
-        </div>
-      </Menu.Menu>
-    </Menu>
-    isAdmin && <Dropdown.Item>SWITCH TO USER</Dropdown.Item>
-                isAdmin && <Dropdown.Divider/>
- */
 class UserMenu extends React.Component {
     render() {
         const isAdmin = userAPI.user().admin;
 
         return (
             <Menu inverted>
-                <Dropdown item simple text={this.props.user} className='uppercase'>
+                <Dropdown item text={this.props.user} className="uppercase-menu">
                     <Dropdown.Menu style={{right: '0', left: 'auto'}}>
-                        <Dropdown.Item>ACCOUNT SETTINGS</Dropdown.Item>
+                        {isAdmin && <Dropdown.Item>switch to user</Dropdown.Item>}
+                        {isAdmin && <Dropdown.Divider/>}
+                        <Dropdown.Item>account settings</Dropdown.Item>
                         <Dropdown.Divider/>
-                        <Dropdown.Item>TEMPLATE BUILDER</Dropdown.Item>
+                        <Dropdown.Item>template builder</Dropdown.Item>
                         <Dropdown.Divider/>
-                        <Dropdown.Item>HELP</Dropdown.Item>
-                        <Dropdown.Item>RELEASE NOTES</Dropdown.Item>
+                        <Dropdown.Item>help</Dropdown.Item>
+                        <Dropdown.Item>release notes</Dropdown.Item>
                         <Dropdown.Divider/>
-                        <Dropdown.Item>BUILD DEMO PROJECT</Dropdown.Item>
+                        <Dropdown.Item>build demo project</Dropdown.Item>
                         <Dropdown.Divider/>
-                        <Dropdown.Item onClick={this.props.onLogout}>LOGOUT</Dropdown.Item>
+                        <Dropdown.Item onClick={this.props.onLogout}>logout</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </Menu>
