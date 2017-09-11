@@ -19,7 +19,7 @@ class ProjectRowEntry extends React.Component {
         const p = this.props.project;
         return (
             <Table.Row>
-                <Table.Cell><Link to={`/project/${p.id}`}>{p.name}</Link></Table.Cell>
+                <Table.Cell><Link to={`/projects/${p.id}`}>{p.name}</Link></Table.Cell>
                 <Table.Cell>{p.owner_details.fullname}</Table.Cell>
                 <Table.Cell>{moment(p.mtime).format('DD/MM/YY')}</Table.Cell>
                 <Table.Cell>{p.files}</Table.Cell>

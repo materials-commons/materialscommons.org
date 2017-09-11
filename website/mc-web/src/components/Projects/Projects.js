@@ -2,10 +2,12 @@ import React from 'react';
 import SearchProjects from './SearchProjects';
 import ProjectList from './ProjectList';
 import CreateProject from './CreateProject';
-import { getAllProjects } from '../../api/projectsAPI';
+import {getAllProjects} from '../../api/projectsAPI';
 import Fuse from 'fuse.js';
+import {Route, Switch, withRouter} from 'react-router-dom';
+import Project from '../Project/Project';
 
-export default class Projects extends React.Component {
+class AllProjects extends React.Component {
     state = {
         projects: [],
         projectsSearch: ""
@@ -79,3 +81,27 @@ export default class Projects extends React.Component {
         )
     }
 }
+
+// <Route path="/abc" render={()=><TestWidget num="2" someProp={100}/>}/>
+// In render function we have the project_id so the project can be looked up and passed to the Project component
+class Projects extends React.Component {
+    componentDidMount() {
+    }
+
+    render() {
+        console.log('this.props', this.props);
+        return (
+            <div>
+                <Switch>
+                    <Route exact path="/projects" component={AllProjects}/>
+                    {/*<Route path="/projects/:project_id" component={Project}/>*/}
+                    <Route path="/projects/:project_id" render={(props) => {console.log('render props', props); return <Project/>}}/>
+                </Switch>
+            </div>
+        )
+    }
+}
+
+const ProjectsWithRouter = withRouter(Projects);
+
+export default ProjectsWithRouter;
