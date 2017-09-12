@@ -6,6 +6,8 @@ import {getAllProjects} from '../../api/projectsAPI';
 import Fuse from 'fuse.js';
 import {Route, Switch, withRouter} from 'react-router-dom';
 import Project from '../Project/Project';
+import _ from 'lodash';
+import {Dimmer, Loader} from 'semantic-ui-react';
 
 class AllProjects extends React.Component {
     state = {
@@ -39,12 +41,7 @@ class AllProjects extends React.Component {
     };
 
     componentDidMount() {
-        getAllProjects().then(
-            (projects) => {
-                this.fuseInstance = new Fuse(projects, this.fuseOptions);
-                this.setState({projects: projects});
-            }
-        );
+        this.fuseInstance = new Fuse(this.props.projects, this.fuseOptions);
     }
 
     handleSearchChange = (searchTerm) => {
@@ -52,7 +49,7 @@ class AllProjects extends React.Component {
     };
 
     render() {
-        const projectsToFilter = this.state.projectsSearch === "" ? this.state.projects : this.fuseInstance.search(this.state.projectsSearch);
+        const projectsToFilter = this.state.projectsSearch === "" ? this.props.projects : this.fuseInstance.search(this.state.projectsSearch);
         const myProjects = projectsToFilter.filter(p => p.owner === 'gtarcea@umich.edu');
         const otherProjects = projectsToFilter.filter(p => p.owner !== 'gtarcea@umich.edu');
 
@@ -85,17 +82,43 @@ class AllProjects extends React.Component {
 // <Route path="/abc" render={()=><TestWidget num="2" someProp={100}/>}/>
 // In render function we have the project_id so the project can be looked up and passed to the Project component
 class Projects extends React.Component {
+    state = {
+        projects: [],
+        loaded: false
+    };
+
     componentDidMount() {
+        getAllProjects().then(
+            (projects) => {
+                this.setState({projects: projects, loaded: true});
+            }
+        );
     }
 
+    findProject = (projectId) => {
+        console.log('looking for ')
+        console.log('this.state.projects', this.state.projects);
+        const proj = _.find(this.state.projects, {id: projectId});
+        console.log('proj = ', proj);
+        return proj;
+    };
+
     render() {
-        console.log('this.props', this.props);
+        if (!this.state.loaded) {
+            return (
+                <Dimmer active={true}>
+                    <Loader/>
+                </Dimmer>
+            )
+        }
+
         return (
             <div>
                 <Switch>
-                    <Route exact path="/projects" component={AllProjects}/>
+                    <Route exact path="/projects" render={() => <AllProjects projects={this.state.projects}/>}/>
                     {/*<Route path="/projects/:project_id" component={Project}/>*/}
-                    <Route path="/projects/:project_id" render={(props) => {console.log('render props', props); return <Project/>}}/>
+                    <Route path="/projects/:project_id"
+                           render={(props) => <Project project={this.findProject(props.match.params.project_id)}/>}/>
                 </Switch>
             </div>
         )
