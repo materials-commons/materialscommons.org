@@ -93,8 +93,6 @@ class AllProjects extends React.Component {
     }
 }
 
-// <Route path="/abc" render={()=><TestWidget num="2" someProp={100}/>}/>
-// In render function we have the project_id so the project can be looked up and passed to the Project component
 class Projects extends React.Component {
     state = {
         projects: [],
@@ -130,7 +128,6 @@ class Projects extends React.Component {
             <div>
                 <Switch>
                     <Route exact path="/projects" render={() => <AllProjects projects={this.state.projects}/>}/>
-                    {/*<Route path="/projects/:project_id" component={Project}/>*/}
                     <Route path="/projects/:project_id"
                            render={(props) => <Project project={this.findProject(props.match.params.project_id)}/>}/>
                 </Switch>
