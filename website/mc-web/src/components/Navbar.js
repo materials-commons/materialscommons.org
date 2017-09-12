@@ -6,7 +6,7 @@ import * as userAPI from '../api/userAPI';
 export default class Navbar extends React.Component {
     render() {
         return (
-            <Menu fixed='top' inverted>
+            <Menu inverted style={{borderRadius: '0', marginBottom: '0'}}>
                 <Menu.Item>
                     <div>
                         <div className="row">
@@ -43,8 +43,6 @@ class NavbarUserControls extends React.Component {
     componentDidMount() {
         if (userAPI.isAuthenticated()) {
             this.setState({isLoggedIn: true, user: userAPI.user()});
-        } else {
-            this.props.history.push("/");
         }
     }
 

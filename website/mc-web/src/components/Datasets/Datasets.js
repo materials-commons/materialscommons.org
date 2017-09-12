@@ -1,7 +1,14 @@
 import React from 'react';
 import {getTopPublicDatasets} from '../../api/datasetsAPI';
+import Navbar from "../Navbar";
 
 //import Fuse from 'fuse.js';
+
+const FixedNavbar = (props) => (
+    <div style={{position: 'fixed', width: '100%'}}>
+        <Navbar/>
+    </div>
+);
 
 export default class Datasets extends React.Component {
     state = {
@@ -17,7 +24,14 @@ export default class Datasets extends React.Component {
 
     render() {
         return (
-            <div>Datasets here</div>
+            <div>
+                <FixedNavbar/>
+                <div className="Main">
+                    <div className="Main-Content">
+                        Datasets here
+                    </div>
+                </div>
+            </div>
         )
     }
 }

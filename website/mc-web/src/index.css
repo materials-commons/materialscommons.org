@@ -2,6 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    overflow: hidden;
 }
 
 .ui.button, .ui.basic.button {
@@ -40,4 +41,25 @@ a {
 
 .ui.menu .ui.dropdown .menu > .item {
     text-transform: uppercase !important;
+}
+
+.Main {
+    position: absolute;
+    top: 87px;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.Main-Project {
+    position: absolute;
+    top: 133px;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.Main-Content {
+    margin-left: 30px;
+    margin-right: 30px;
 }

@@ -8,6 +8,13 @@ import {Route, Switch, withRouter} from 'react-router-dom';
 import Project from '../Project/Project';
 import _ from 'lodash';
 import {Dimmer, Loader} from 'semantic-ui-react';
+import Navbar from "../Navbar";
+
+const FixedNavbar = (props) => (
+    <div style={{position: 'fixed', width: '100%'}}>
+        <Navbar/>
+    </div>
+);
 
 class AllProjects extends React.Component {
     state = {
@@ -54,25 +61,32 @@ class AllProjects extends React.Component {
         const otherProjects = projectsToFilter.filter(p => p.owner !== 'gtarcea@umich.edu');
 
         return (
-            <div className="ui grid">
-                <div className="four column row">
-                    <div className="right floated column">
-                        <CreateProject/>
+            <div>
+                <FixedNavbar/>
+                <div className="Main">
+                    <div className="Main-Content">
+                        <div className="ui grid">
+                            <div className="four column row">
+                                <div className="right floated column">
+                                    <CreateProject/>
+                                </div>
+                            </div>
+
+                            <div className="row centered">
+                                <SearchProjects onChange={this.handleSearchChange}/>
+                            </div>
+
+                            <div className="row">
+                                <h3>My Projects ({myProjects.length}):</h3>
+                                <ProjectList projects={myProjects}/>
+                            </div>
+
+                            <div className="row">
+                                <h3>Projects I'm a member of ({otherProjects.length}):</h3>
+                                <ProjectList projects={otherProjects}/>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div className="row centered">
-                    <SearchProjects onChange={this.handleSearchChange}/>
-                </div>
-
-                <div className="row">
-                    <h3>My Projects ({myProjects.length}):</h3>
-                    <ProjectList projects={myProjects}/>
-                </div>
-
-                <div className="row">
-                    <h3>Projects I'm a member of ({otherProjects.length}):</h3>
-                    <ProjectList projects={otherProjects}/>
                 </div>
             </div>
         )
@@ -96,7 +110,7 @@ class Projects extends React.Component {
     }
 
     findProject = (projectId) => {
-        console.log('looking for ')
+        console.log('looking for ');
         console.log('this.state.projects', this.state.projects);
         const proj = _.find(this.state.projects, {id: projectId});
         console.log('proj = ', proj);
