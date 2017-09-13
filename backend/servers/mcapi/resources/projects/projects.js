@@ -27,7 +27,11 @@ function* create(next){
 
 function* all(next) {
     let user = this.reqctx.user;
-    this.body = yield projects.forUser(user);
+    if (this.query.simple) {
+        this.body = yield projects.forUserSimple(user);
+    } else {
+        this.body = yield projects.forUser(user);
+    }
     yield next;
 }
 
@@ -45,7 +49,7 @@ function* getProject(next) {
 function* deleteProject(next) {
     let options = {
         dryRun: false
-    }
+    };
     let rv = yield projectDelete.deleteProject(this.params.project_id,options);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
@@ -59,7 +63,7 @@ function* deleteProject(next) {
 function* deleteProjectDryRun(next) {
     let options = {
         dryRun: true
-    }
+    };
     let rv = yield projectDelete.deleteProject(this.params.project_id,options);
     if (rv.error) {
         this.status = status.BAD_REQUEST;

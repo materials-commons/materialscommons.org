@@ -22,7 +22,7 @@ class ProjectRowEntry extends React.Component {
                 <Table.Cell><Link to={`/projects/${p.id}`}>{p.name}</Link></Table.Cell>
                 <Table.Cell>{p.owner_details.fullname}</Table.Cell>
                 <Table.Cell>{moment(p.mtime).format('DD/MM/YY')}</Table.Cell>
-                <Table.Cell>{p.files}</Table.Cell>
+                <Table.Cell>{p.files_count}</Table.Cell>
                 <Table.Cell>{p.users.length}</Table.Cell>
                 <Table.Cell><ProjectReminders reminders={p.reminders}/></Table.Cell>
             </Table.Row>

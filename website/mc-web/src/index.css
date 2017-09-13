@@ -45,21 +45,47 @@ a {
 
 .Main {
     position: absolute;
-    top: 87px;
+    top: 92px;
     bottom: 0;
+    width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .Main-Project {
     position: absolute;
-    top: 133px;
+    top: 150px;
     bottom: 0;
+    width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .Main-Content {
-    margin-left: 30px;
-    margin-right: 30px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+textarea {
+    resize: none;
+}
+
+.ui.form textarea {
+    resize: none;
+}
+
+.ui.form {
+    width: 100%;
+}
+
+.marginTop10 {
+    margin-top: 10px;
+}
+
+.marginLeft10 {
+    margin-left: 10px;
+}
+
+.uppercase {
+    text-transform: uppercase;
 }

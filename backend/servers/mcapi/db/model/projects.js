@@ -32,13 +32,13 @@ function* createProject(user, attrs) {
 }
 
 function* getProject(projectId) {
-    let p = yield r.table('projects').get(projectId).merge(function(project) {
+    let p = yield r.table('projects').get(projectId).merge(function (project) {
         return {
             datasets: r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('experiment_id', r.table('experiment2dataset'), {index: 'experiment_id'})
                 .zip().pluck('project_id', 'dataset_id')
                 .eqJoin('dataset_id', r.table('datasets')).zip().coerceTo('array'),
-            samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).merge(function(sample) {
+            samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).merge(function (sample) {
                 return {
                     processes: r.table('process2sample').getAll(sample('sample_id'), {index: 'sample_id'})
                         .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
@@ -77,11 +77,44 @@ function all() {
     return run(rql);
 }
 
+function* forUserSimple(user) {
+    let rql = r.table('access').getAll(user.id, {index: 'user_id'})
+        .eqJoin('project_id', r.table('projects')).zip()
+        .merge((project) => ({
+            owner_details: r.table('users').get(project('owner')).pluck('fullname')
+        }));
+    rql = transformDates(rql);
+    rql = addCounts(rql);
+    return yield run(rql);
+}
+
+function addCounts(rql) {
+    rql = rql.merge(function (project) {
+        return {
+            users: r.table('access')
+                .getAll(project('id'), {index: 'project_id'})
+                .map(function (entry) {
+                    return entry.merge({
+                        'user': entry('user_id'),
+                        'details': r.table('users').get(entry('user_id')).pluck('fullname')
+                    });
+                })
+                .pluck('user', 'permissions', 'details')
+                .coerceTo('array'),
+            experiments_count: r.table('project2experiment').getAll(project('id'), {index: 'project_id'}).count(),
+            processes_count: r.table('project2process').getAll(project('id'), {index: 'project_id'}).count(),
+            samples_count: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).count(),
+            files_count: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count()
+        }
+    });
+    return rql;
+}
+
 // forUser returns all the projects for a specific user. It handles
 // the case where a user is an administrator.
 function* forUser(user) {
     let userProjectsRql = r.table('projects').getAll(user.id, {index: 'owner'})
-        .merge(function(project) {
+        .merge(function (project) {
             return {
                 owner_details: r.table('users').get(project('owner')).pluck('fullname')
             }
@@ -106,7 +139,7 @@ function* forUser(user) {
 // transformDates removes the rethinkdb specific date
 // fields
 function transformDates(rql) {
-    rql = rql.merge(function(project) {
+    rql = rql.merge(function (project) {
         return {
             mtime: project('mtime').toEpochTime(),
             birthtime: project('birthtime').toEpochTime()
@@ -118,11 +151,11 @@ function transformDates(rql) {
 // addComputed adds additional attributes to the rql that
 // that are computed from other tables.
 function addComputed(rql) {
-    rql = rql.merge(function(project) {
+    rql = rql.merge(function (project) {
         return {
             users: r.table('access')
                 .getAll(project('id'), {index: 'project_id'})
-                .map(function(entry) {
+                .map(function (entry) {
                     return entry.merge({
                         'user': entry('user_id'),
                         'details': r.table('users').get(entry('user_id')).pluck('fullname')
@@ -178,7 +211,7 @@ function* update(projectID, attrs) {
     }
 
     if (attrs.process_templates) {
-        let addTemplates = attrs.process_templates.filter(p => p.command == 'add').map(p => p.template);
+        let addTemplates = attrs.process_templates.filter(p => p.command === 'add').map(p => p.template);
         let deleteTemplates = attrs.process_templates.filter(p => p.command === 'delete').map(p => p.template);
         let updateTemplates = attrs.process_templates.filter(p => p.command === 'update').map(p => p.template);
         let project = yield r.table('projects').get(projectID);
@@ -213,20 +246,20 @@ function* renameTopDirectory(oldName, newName) {
 }
 
 function differenceByField(from, others, field) {
-    let elementsFrom = from.map(function(entry) {
+    let elementsFrom = from.map(function (entry) {
         return entry[field];
     });
 
-    let elementsOthers = others.map(function(entry) {
+    let elementsOthers = others.map(function (entry) {
         return entry[field];
     });
 
     let diff = _.difference(elementsFrom, elementsOthers);
 
-    return from.filter(function(entry) {
-        return _.findIndex(diff, function(e) {
-                return e === entry[field];
-            }) !== -1;
+    return from.filter(function (entry) {
+        return _.findIndex(diff, function (e) {
+            return e === entry[field];
+        }) !== -1;
     });
 }
 
@@ -235,22 +268,22 @@ function* addFileToProject(projectID, fileID) {
     yield r.table('project2datafile').insert(link);
 }
 
-function* getUserAccessForProject(projectId){
+function* getUserAccessForProject(projectId) {
     let results = yield r.table('access').getAll(projectId, {index: 'project_id'}).pluck('user_id');
     return {val: results};
 }
 
-function* updateUserAccessForProject(projectId, attrs){
-    let results = {error: "Bad action request - updateUserAccessForProject - " + attrs.action}
-    if (attrs.action == 'add') {
+function* updateUserAccessForProject(projectId, attrs) {
+    let results = {error: "Bad action request - updateUserAccessForProject - " + attrs.action};
+    if (attrs.action === 'add') {
         let user_id = attrs.user_id;
         let exists = yield r.table('users').get(user_id);
         if (!exists) {
             results = {error: "Bad request for add - updateUserAccessForProject - invalid: " + user_id}
         } else {
-            let duplicate = yield r.table("access").getAll(projectId,{index: 'project_id'})
+            let duplicate = yield r.table("access").getAll(projectId, {index: 'project_id'})
                 .filter({user_id: user_id});
-            if ( duplicate.length == 0 ) {
+            if (duplicate.length === 0) {
                 let name_entry = yield r.table("projects").get(projectId).pluck('name');
                 let access_doc = new model.Access(name_entry['name'], projectId, user_id);
                 yield r.table('access').insert(access_doc);
@@ -258,11 +291,11 @@ function* updateUserAccessForProject(projectId, attrs){
             results = {val: user_id};
         }
     }
-    if (attrs.action == 'delete') {
+    if (attrs.action === 'delete') {
         let user_id = attrs.user_id;
-        let hit = yield r.table("access").getAll(projectId,{index: 'project_id'})
+        let hit = yield r.table("access").getAll(projectId, {index: 'project_id'})
             .filter({user_id: user_id});
-        if ( hit.length != 0 ) {
+        if (hit.length !== 0) {
             yield r.table("access").get(hit[0].id).delete();
         }
         results = {val: user_id};
@@ -275,7 +308,8 @@ module.exports = {
     all: all,
     createProject,
     forUser: forUser,
-    get: function(id, index) {
+    forUserSimple,
+    get: function (id, index) {
         return getSingle(r, 'projects', id, index);
     },
     addFileToProject,
