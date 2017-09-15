@@ -16,6 +16,7 @@ class MCProjectHomeComponentController {
         this.experimentType = 'active';
         this.experiments = [];
         this.projectOverview = this.project.overview;
+        this.mergingExperiments = false;
 
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
@@ -63,6 +64,26 @@ class MCProjectHomeComponentController {
                 this.$state.go('project.experiment.details', {experiment_id: e.id});
             }
         );
+    }
+
+    startExperimentsMerge() {
+        this.mergingExperiments = true;
+    }
+
+    goOrSelectExperiment(e) {
+        if (this.mergingExperiments) {
+            e.selectedForMerge = !e.selectedForMerge;
+            console.log('selectedForMerge', e.selectedForMerge);
+        } else {
+            console.log("going to workflow");
+            this.$state.go("project.experiment.workflow", {experiment_id: e.id});
+        }
+    }
+
+    finishExperimentsMerge() {
+        this.mergingExperiments = false;
+        this.experiments.forEach(e => e.selectedForMerge = false);
+        this.mergingExperiments = false;
     }
 
     renameProject() {
