@@ -89,3 +89,7 @@ textarea {
 .uppercase {
     text-transform: uppercase;
 }
+
+.pointer {
+    cursor: pointer;
+}
