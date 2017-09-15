@@ -1,0 +1,17 @@
+<md-dialog flex="60">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Merge Experiments
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <md-input-container class="md-block" style="margin-top:40px">
+            <label>Experiment Name</label>
+            <input ng-model="$ctrl.experimentName">
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()">Merge</md-button>
+    </md-dialog-actions>
+</md-dialog>

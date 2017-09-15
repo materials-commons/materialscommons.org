@@ -1,7 +1,7 @@
-<div layout="column" layout-margin md-whiteframe="10" flex="100" style="margin-right: 10px"
-     ng-class="{'merge-experiment': $ctrl.experiment.selectedForMerge}">
+<div layout="column" layout-margin md-whiteframe="10" flex="100" style="margin-right: 10px">
     <div layout="row">
             <span class="md-title" flex>
+                <md-checkbox ng-model="$ctrl.experiment.selected" ng-if="$ctrl.selecting"></md-checkbox>
                 {{$ctrl.experiment.name}}
             </span>
         <span flex="5"></span>
@@ -14,7 +14,7 @@
         <mc-experiment-overview-details experiment="$ctrl.experiment"></mc-experiment-overview-details>
         <div layout="row" style="margin-top: 10px">
             <span class="md-subhead bold">Description:</span>
-            <span class="padding-left-15 md-subhead">{{$ctrl.experiment.description}}/{{$ctrl.experiment.selectedForMerge}}</span>
+            <span class="padding-left-15 md-subhead">{{$ctrl.experiment.description}}</span>
         </div>
     </div>
 </div>

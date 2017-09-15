@@ -17,6 +17,8 @@ class MCProjectHomeComponentController {
         this.experiments = [];
         this.projectOverview = this.project.overview;
         this.mergingExperiments = false;
+        this.deletingExperiments = false;
+        this.selectingExperiments = false;
 
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
@@ -25,6 +27,7 @@ class MCProjectHomeComponentController {
         this.experimentsAPI.getAllForProject(this.$stateParams.project_id).then(
             (experiments) => {
                 this.experiments = experiments;
+                this.experiments.forEach(e => e.selected = false);
             },
             () => this.toast.error('Unable to retrieve experiments for project')
         );
@@ -68,22 +71,74 @@ class MCProjectHomeComponentController {
 
     startExperimentsMerge() {
         this.mergingExperiments = true;
-    }
-
-    goOrSelectExperiment(e) {
-        if (this.mergingExperiments) {
-            e.selectedForMerge = !e.selectedForMerge;
-            console.log('selectedForMerge', e.selectedForMerge);
-        } else {
-            console.log("going to workflow");
-            this.$state.go("project.experiment.workflow", {experiment_id: e.id});
-        }
+        this.selectingExperiments = true;
     }
 
     finishExperimentsMerge() {
+        let selected = this.experiments.filter(e => e.selected);
+        if (!selected.length) {
+            return;
+        }
+        this.$mdDialog.show({
+            templateUrl: 'app/project/home/merge-experiments.html',
+            controller: MergeExperimentsDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                experiments: selected
+            }
+        }).then(
+            () => {
+                this.mergingExperiments = false;
+                this.experiments.forEach(e => e.selected = false);
+                this.selectingExperiments = false;
+            }
+        );
+    }
+
+    cancelMerge() {
         this.mergingExperiments = false;
-        this.experiments.forEach(e => e.selectedForMerge = false);
-        this.mergingExperiments = false;
+        this.experiments.forEach(e => e.selected = false);
+        this.selectingExperiments = false;
+    }
+
+    startExperimentsDelete() {
+        this.deletingExperiments = true;
+        this.selectingExperiments = true;
+    }
+
+    finishExperimentsDelete() {
+        let selected = this.experiments.filter(e => e.selected);
+        if (!selected.length) {
+            return;
+        }
+        let confirmDialog = this.$mdDialog.confirm()
+            .title('Delete Selected Experiments')
+            .textContent('Would you like to delete the selected experiments?')
+            .ok('Delete Experiments')
+            .cancel('cancel');
+        this.$mdDialog.show(confirmDialog).then(
+            () => {
+                console.log('delete experiments');
+                this.clearDelete();
+            },
+            () => {
+                console.log('Canceling delete');
+                this.clearDelete();
+            }
+        )
+    }
+
+    clearDelete() {
+        this.deletingExperiments = false;
+        this.experiments.forEach(e => e.selected = false);
+        this.selectingExperiments = false;
+    }
+
+    gotoWorkflow(e) {
+        if (!this.selectingExperiments) {
+            this.$state.go("project.experiment.workflow", {experiment_id: e.id});
+        }
     }
 
     renameProject() {
@@ -154,6 +209,21 @@ class RenameProjectDialogController {
 
     cancel() {
         this.$mdDialog.cancel();
+    }
+}
+
+class MergeExperimentsDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.hide();
     }
 }
 
