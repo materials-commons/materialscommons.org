@@ -76,7 +76,7 @@ class MCProjectHomeComponentController {
 
     finishExperimentsMerge() {
         let selected = this.experiments.filter(e => e.selected);
-        if (!selected.length) {
+        if (selected.length < 2) {
             return;
         }
         this.$mdDialog.show({
