@@ -1,12 +1,15 @@
 import React from 'react';
 import {Form, Button, Card} from 'semantic-ui-react';
+import moment from 'moment';
+import {Link, withRouter} from 'react-router-dom';
+import shortid from 'shortid';
 
-export default class ProjectExperimentCards extends React.Component {
+export default class ProjectExperiments extends React.Component {
     render() {
         return (
-            <div class="ui grid one column">
+            <div>
                 <ExperimentControls/>
-                <ExperimentCards experiments={this.props.experiments}/>
+                <ExperimentCardsWithRouter experiments={this.props.experiments}/>
             </div>
         )
     }
@@ -36,11 +39,22 @@ class ExperimentCards extends React.Component {
 
     handleChange = () => null;
 
+    onClick = (e) => () => this.handleClick(e);
+
+    handleClick = (e) => console.log('Clicked', e);
+
     render() {
+        console.log('ExperimentCards props', this.props);
+        const params = this.props.match.params;
         const cards = this.props.experiments.map(e => (
-            <Card>
-                <Card.Content>
-                    <Card.Header>{e.name}</Card.Header>
+            <Card fluid key={shortid.generate()}>
+                <Card.Content onClick={this.onClick(e)}>
+                    <Card.Header>
+                        <Link to={`/projects/${params.project_id}/experiments/${e.id}`}>{e.name}</Link>
+                    </Card.Header>
+                    <Card.Meta>
+                        Last Updated: {moment(e.mtime).format('DD/MM/YY')}
+                    </Card.Meta>
                 </Card.Content>
             </Card>
         ));
@@ -51,3 +65,5 @@ class ExperimentCards extends React.Component {
         )
     }
 }
+
+const ExperimentCardsWithRouter = withRouter(ExperimentCards);

@@ -108,11 +108,7 @@ class Projects extends React.Component {
     }
 
     findProject = (projectId) => {
-        console.log('looking for ');
-        console.log('this.state.projects', this.state.projects);
-        const proj = _.find(this.state.projects, {id: projectId});
-        console.log('proj = ', proj);
-        return proj;
+        return _.find(this.state.projects, {id: projectId});
     };
 
     render() {
@@ -125,13 +121,11 @@ class Projects extends React.Component {
         }
 
         return (
-            <div>
-                <Switch>
-                    <Route exact path="/projects" render={() => <AllProjects projects={this.state.projects}/>}/>
-                    <Route path="/projects/:project_id"
-                           render={(props) => <Project project={this.findProject(props.match.params.project_id)}/>}/>
-                </Switch>
-            </div>
+            <Switch>
+                <Route exact path="/projects" render={() => <AllProjects projects={this.state.projects}/>}/>
+                <Route path="/projects/:project_id"
+                       render={(props) => <Project project={this.findProject(props.match.params.project_id)}/>}/>
+            </Switch>
         )
     }
 }
