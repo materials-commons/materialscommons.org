@@ -48,3 +48,5 @@ angular.module('materialscommons').component('mcComments', {
     templateUrl: 'app/components/comments/mc-comments.html',
     controller: MCCommentsComponentController
 });
+
+// angular.module('materialscommons').directive('mcCommentsButton', mcCommentsButtonDirective);

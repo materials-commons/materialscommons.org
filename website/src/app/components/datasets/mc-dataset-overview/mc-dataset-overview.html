@@ -1,19 +1,32 @@
-<div layout="column" layout-margin>
-    <mc-comments></mc-comments>
-    <mc-dataset-overview-summary dataset="$ctrl.dataset"></mc-dataset-overview-summary>
-    <mc-processes-workflow ng-if="$ctrl.showProcessesWorkflow"
-                           processes="$ctrl.dataset.processes"></mc-processes-workflow>
-    <hr/>
-    <mc-dataset-workflow ng-if="!$ctrl.showProcessesWorkflow" dataset="$ctrl.dataset"></mc-dataset-workflow>
-    <hr/>
-    <div ng-if="$ctrl.dataset.files">
-        <h4>
-            Files ({{::$ctrl.dataset.files.length}})
-            <a ng-click="$ctrl.showFiles = !$ctrl.showFiles">{{$ctrl.showFiles ? "Hide" : "View"}}</a>
-        </h4>
-        <p>
-            View a list of all the files that comprise this dataset, including thumbnails of all the images.
-        </p>
-        <mc-dataset-overview-files ng-if="$ctrl.showFiles" dataset="$ctrl.dataset"></mc-dataset-overview-files>
-    </div>
+<div layout-margin style="overflow-x: hidden">
+    <md-tabs md-selected="$ctrl.currentTab" md-stretch-tabs md-dynamic-height>
+        <md-tab>
+            <md-tab-label>Overview</md-tab-label>
+            <md-tab-body>
+                <mc-dataset-overview-summary dataset="$ctrl.dataset"></mc-dataset-overview-summary>
+            </md-tab-body>
+        </md-tab>
+
+        <md-tab>
+            <md-tab-label>Workflow</md-tab-label>
+            <md-tab-body>
+                <mc-dataset-workflow dataset="$ctrl.dataset"></mc-dataset-workflow>
+            </md-tab-body>
+        </md-tab>
+
+        <md-tab>
+            <md-tab-label>Files</md-tab-label>
+            <md-tab-body>
+                <mc-dataset-overview-files dataset="$ctrl.dataset">
+                </mc-dataset-overview-files>
+            </md-tab-body>
+        </md-tab>
+
+        <md-tab>
+            <md-tab-label>Comments</md-tab-label>
+            <md-tab-body>
+                <mc-comments></mc-comments>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
 </div>
