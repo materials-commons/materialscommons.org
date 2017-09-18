@@ -43,11 +43,11 @@ env:
 
 before_install:
   - export MC_APP_DIR=`pwd`
-    # RethinkDB
+  # RethinkDB
   - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
   # or --no-check-certificate for wget
   - curl -k https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
-    # Yarn
+  # Yarn
   - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   - sudo apt-get update
@@ -69,13 +69,16 @@ install:
   - npm install -g gulp-cli
   - npm install -g gulp
 
-  - mkdir -p ~/.materialscommons
-  - sudo mkdir -p /etc/nginx/conf.d
-  - cd $MC_APP_DIR
-  - pushd test_data/travis
+  - pushd ~
+  - mkdir .materialscommons
+  - popd
+
+  - pushd test_data/test_config_data
   - cp travisconfig.json ~/.materialscommons/config.json
+  - sudo mkdir -p /etc/nginx/conf.d
   - sudo cp mctest.localhost.conf /etc/nginx/conf.d/
   - popd
+
   - pushd backend
   - npm install
   - popd
@@ -87,7 +90,6 @@ before_script:
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
 
-  - cd $MC_APP_DIR
   - pushd backend/scripts
   - python dbcreate.py --port $MCDB_PORT0
   - pushd testdb
@@ -96,13 +98,11 @@ before_script:
   - pushd templates
   - ./run.sh
   - popd
-  - popd
-  - pushd backend
+
   - node servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.travis.txt 2>&1&
   - sleep 5
   - popd
+  - cd backend
 
 script:
-  - cd $MC_APP_DIR
-  - cd backend
   - node_modules/.bin/_mocha "**/Database-Level/specs/*-spec.js"

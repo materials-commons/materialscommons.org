@@ -127,7 +127,7 @@ describe('Feature - Experiments: ', function () {
         });
         it('deletes experiment and all its parts', function*() {
 
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(9000); // test take up to 9 seconds
 
             yield setup();
 

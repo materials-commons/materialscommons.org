@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 # no-output on pushd and popd
 pushd () {
@@ -9,12 +8,6 @@ pushd () {
 popd () {
     command popd "$@" > /dev/null
 }
-
-# abort if TEST_ACCOUNT_PW not set and non-empty
-if [ -z "$MC_USERPW" ]; then
-    echo "MC_USERPW must be set to a non-empty string"
-    exit 1
-fi
 
 # pushd location of script
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -28,18 +21,4 @@ if [ -z "$MCDB_PORT" ]; then
 fi
 echo "using MCDB_PORT = $MCDB_PORT"
 
-# build basic (e.g 'empty') DB; using standard script
-pushd '../'
-./dbcreate.py --port $MCDB_PORT
-popd
-
-# add test users
-./makeUsersForTests.py --port $MCDB_PORT --password $MC_USERPW
-
-# add templates
-pushd '../templates/'
-./run.sh
-popd
-
-popd
-echo "Done."
+./deleteDatabases.py --port $MCDB_PORT

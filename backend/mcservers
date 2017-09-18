@@ -155,6 +155,23 @@ function stop_mcpub() {
     done
 }
 
+function start_mcmon() {
+    R=$(is_running "servers/mcmon/main.js" "servertype $SERVERTYPE")
+    if [ "$R" = "" ]; then
+        echo "Starting mcmon ($SERVERTYPE)..."
+        nodemon --watch servers/mcmon/main.js --watch servers/mcmon/src servers/mcmon/main.js --servertype $SERVERTYPE  > ${MC_LOG_DIR}/mcmon.out.${SERVERTYPE} 2>&1&
+    fi
+}
+
+function stop_mcmon() {
+    echo "Stopping mcmon ($SERVERTYPE)..."
+    ps -eo "pid,command" | grep "servers/mcmon/main.js" | grep "servertype $SERVERTYPE" |grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    do
+        kill ${line}
+        echo "  Stopped mcmon with pid ${line}"
+    done
+}
+
 function start_servers() {
     echo Starting ${SERVERTYPE} servers...
     mkdir -p ${MC_LOG_DIR} 2> /dev/null
@@ -165,6 +182,7 @@ function start_servers() {
     start_mcstored
     start_mcapi
     start_mcpub
+    start_mcmon
 
     disown -a
     echo Started ${SERVERTYPE}.
@@ -190,6 +208,7 @@ function stop_servers() {
     stop_mcstored
     stop_mcapi
     stop_mcpub
+    stop_mcmon
     stop_rethinkdb
 
     echo Stopped ${SERVERTYPE}.
@@ -215,6 +234,14 @@ function stop_named_server() {
 
         es)
             stop_es
+            ;;
+
+        rethinkdb)
+            stop_rethinkdb
+            ;;
+
+        mcmon)
+            stop_mcmon
             ;;
 
         *)
@@ -245,6 +272,14 @@ function restart_named_server() {
 
         es)
             start_es
+            ;;
+
+        rethinkdb)
+            start_rethinkdb
+            ;;
+
+        mcmon)
+            start_mcmon
             ;;
 
         *)
@@ -284,6 +319,9 @@ function ps_servers() {
     echo "MCSTORED Server (production):"
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     echo
+    echo "MCMON Server (production):"
+    ps -ef | grep "servers/mcmon/main.js" | grep "servertype production" | grep -v grep
+    echo
     echo ======================================================
     echo
     export MCDB_PORT=30815
@@ -310,6 +348,9 @@ function ps_servers() {
     echo
     echo "MCSTORED Server (test/unit):"
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+    echo
+    echo "MCMON Server (test/unit):"
+    ps -ef | grep "servers/mcmon/main.js" | grep "servertype unit" | grep -v grep
     echo
 }
 
@@ -372,8 +413,8 @@ function tail_servers() {
     D=${MC_LOG_DIR}
     ST=${SERVERTYPE}
     # Ensure files exist
-    touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} ${D}/mcpub.out.${ST}
-    tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} -f ${D}/mcpub.out.${ST}
+    touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} ${D}/mcpub.out.${ST} ${D}/mcmon.out.${ST}
+    tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} -f ${D}/mcpub.out.${ST} -f  ${D}/mcmon.out.${ST}
 }
 
 function update_mc() {
