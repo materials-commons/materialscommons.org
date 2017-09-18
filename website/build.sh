@@ -12,3 +12,4 @@ mv dist mcapp
 rm -rf mcapp/app/external/js/ckeditor
 cp -r src/app/external/js/ckeditor mcapp/app/external/js/ckeditor
 tar zcf mcapp.tar.gz mcapp
+mv mcapp/index*.html mcapp/index.html
