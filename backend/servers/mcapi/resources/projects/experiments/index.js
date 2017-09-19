@@ -78,6 +78,41 @@ function* validateUpdateExperimentArgs(experimentArgs, projectID, experimentID) 
     return isInProject ? null : {error: 'No such experiment'};
 }
 
+function* mergeExperiments(next) {
+    let mergeArgs = yield parse(this);
+    let errors = yield validateMergeExperimentsArgs(mergeArgs, this.params.project_id);
+    if (errors != null) {
+        this.status = status.BAD_REQUEST;
+        this.body = errors;
+    } else {
+        let rv = yield experiments.merge(this.params.project_id, mergeArgs);
+        if (rv.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = rv;
+        } else {
+            this.body = rv.val;
+        }
+    }
+    yield next;
+}
+
+function* validateMergeExperimentsArgs(mergeArgs, projectId) {
+    if (!_.isArray(mergeArgs.experiments)) {
+        return {error: `${mergeArgs.experiments} is not an array of experiment ids`};
+    }
+
+    if (!_.isString(mergeArgs.name) && _.toLength(mergeArgs.name) !== 0) {
+        return {error: `Invalid experiment name ${mergeArgs.name}`}
+    }
+
+    if (!_.isString(mergeArgs.description)) {
+        return {error: `Invalid experiment description`};
+    }
+
+    let allExperimentsInProject = yield check.allExperimentsInProject(projectId, mergeArgs.experiments);
+    return allExperimentsInProject ? null : {error: `Some experiments are unknown`};
+}
+
 function allEntriesAreStrings(items) {
     for (let item in items) {
         if (!_.isString(item)) {
@@ -115,7 +150,7 @@ function* deleteExperiment(next) {
         dryRun: false,
         deleteProcesses: false
     };
-    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id,options);
+    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id, options);
     if (rv.error) {
         this.status = status.NOT_ACCEPTABLE;
         this.body = rv;
@@ -132,7 +167,7 @@ function* deleteExperimentFully(next) {
         dryRun: false,
         deleteProcesses: true
     };
-    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id,options);
+    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id, options);
     if (rv.error) {
         this.status = status.NOT_ACCEPTABLE;
         this.body = rv;
@@ -149,7 +184,7 @@ function* deleteExperimentDryRun(next) {
         dryRun: true,
         deleteProcesses: true
     };
-    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id,options);
+    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id, options);
     if (rv.error) {
         this.status = status.NOT_ACCEPTABLE;
         this.body = rv;
@@ -159,7 +194,52 @@ function* deleteExperimentDryRun(next) {
     yield next;
 }
 
-function *getFilesForExperiment(next) {
+function* deleteExperiments(next) {
+    let deleteArgs = yield parse(this);
+    let options = {
+        dryRun: false,
+        deleteProcesses: true
+    };
+
+    let estatus, errors = [], lastVal;
+
+    let e = yield validateDeleteExperimentsArgs(deleteArgs, this.params.project_id);
+    if (e != null) {
+        this.status = status.BAD_REQUEST;
+        this.body = e;
+    } else {
+        for (let i = 0; i < deleteArgs.experiments.length; i++) {
+            let experimentId = deleteArgs.experiments[i];
+            let rv = yield experimentDelete.deleteExperiment(this.params.project_id, experimentId, options);
+            if (rv.error) {
+                estatus = status.NOT_ACCEPTABLE;
+                errors.push(rv.error);
+            } else {
+                lastVal = rv.val;
+            }
+        }
+    }
+
+    if (estatus === status.NOT_ACCEPTABLE) {
+        this.status = estatus;
+        this.body = errors;
+    } else {
+        this.body = lastVal;
+    }
+
+    yield next;
+}
+
+function* validateDeleteExperimentsArgs(deleteArgs, projectId) {
+    if (!_.isArray(deleteArgs.experiments)) {
+        return {error: `${deleteArgs.experiments} is not an array of experiment ids`};
+    }
+
+    let allExperimentsInProject = yield check.allExperimentsInProject(projectId, deleteArgs.experiments);
+    return allExperimentsInProject ? null : {error: `Some experiments are unknown`};
+}
+
+function* getFilesForExperiment(next) {
     let rv = yield experiments.getFilesForExperiment(this.params.experiment_id);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
@@ -174,6 +254,8 @@ function createResource() {
     const router = new Router();
     router.get('/', getAllExperimentsForProject);
     router.post('/', createExperiment);
+    router.post('/merge', mergeExperiments);
+    router.post('/delete', deleteExperiments);
 
     router.use('/:experiment_id', ra.validateExperimentInProject);
 

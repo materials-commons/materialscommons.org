@@ -89,6 +89,41 @@ function* update(experimentID, updateArgs) {
     return yield get(experimentID);
 }
 
+function* merge(projectId, mergeArgs, owner) {
+    let e = {
+        name: mergeArgs.name,
+        description: mergeArgs.description,
+        project_id: projectId
+    };
+    let rv = yield create(e, owner);
+    let mergeToId = rv.val.id;
+    yield insertUniqueEntriesIntoExperimentTable('experiment2sample', mergeToId, mergeArgs.experiments, 'sample_id');
+    yield insertUniqueEntriesIntoExperimentTable('experiment2process', mergeToId, mergeArgs.experiments, 'process_id');
+    yield insertUniqueEntriesIntoExperimentTable('experiment2datafile', mergeToId, mergeArgs.experiments, 'datafile_id');
+    return yield get(mergeToId);
+}
+
+function* insertUniqueEntriesIntoExperimentTable(table, experimentIdToInsertTo, experimentIds, member) {
+    let uniqIds = yield getUniqueForExperimentTable(table, experimentIds, member);
+    yield insertIntoExperimentTable(table, experimentIdToInsertTo, uniqIds, member);
+}
+
+function* getUniqueForExperimentTable(table, experimentIds, member) {
+    let entries = yield r.table(table).getAll(r.args(experimentIds), {index: 'experiment_id'});
+    return _.uniq(entries.map(entry => entry[member]))
+}
+
+function* insertIntoExperimentTable(table, experimentId, ids, member) {
+    let entriesToInsert = ids.map(id => {
+        let entry = {
+            experiment_id: experimentId,
+        };
+        entry[member] = id;
+        return entry;
+    });
+    yield r.table(table).insert(entriesToInsert);
+}
+
 function* createTask(experimentID, task, owner) {
     let etask = new model.ExperimentTask(task.name, owner);
     if (task.note !== '') {
@@ -446,6 +481,7 @@ module.exports = {
     updateTask,
     deleteTask,
     getExperimentNote,
+    merge,
     createExperimentNote,
     updateExperimentNote,
     deleteExperimentNote,

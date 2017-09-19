@@ -24,7 +24,11 @@ class MCProjectHomeComponentController {
     }
 
     $onInit() {
-        this.experimentsAPI.getAllForProject(this.$stateParams.project_id).then(
+        this.getProjectExperiments();
+    }
+
+    getProjectExperiments() {
+        return this.experimentsAPI.getAllForProject(this.$stateParams.project_id).then(
             (experiments) => {
                 this.experiments = experiments;
                 this.experiments.forEach(e => e.selected = false);
@@ -85,13 +89,14 @@ class MCProjectHomeComponentController {
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
-                experiments: selected
+                experiments: selected,
+                projectId: this.project.id
             }
         }).then(
             () => {
                 this.mergingExperiments = false;
-                this.experiments.forEach(e => e.selected = false);
                 this.selectingExperiments = false;
+                this.getProjectExperiments();
             }
         );
     }
@@ -214,11 +219,19 @@ class RenameProjectDialogController {
 
 class MergeExperimentsDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, experimentsAPI) {
         this.$mdDialog = $mdDialog;
+        this.experimentsAPI = experimentsAPI;
+        this.experimentName = '';
+        this.experimentDescription = '';
     }
 
     done() {
+        let experimentIds = this.experiments.map(e => e.id);
+        this.experimentsAPI.mergeProjects(this.projectId, experimentIds, {
+            name: this.experimentName,
+            description: this.experimentDescription
+        })
         this.$mdDialog.hide();
     }
 

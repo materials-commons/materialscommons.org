@@ -16,6 +16,14 @@ class ExperimentsAPIService {
         return this.projectsAPIRoute(projectID).one('experiments', experimentID).customPUT(what);
     }
 
+    mergeProjects(projectID, experimentIds, newExperimentArgs) {
+        return this.projectsAPIRoute(projectID).one('experiments').one('merge').customPOST({
+            experiments: experimentIds,
+            name: newExperimentArgs.name,
+            description: newExperimentArgs.description
+        });
+    }
+
     getForProject(projectID, experimentID) {
         return this.projectsAPIRoute(projectID).one('experiments', experimentID).customGET();
     }

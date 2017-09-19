@@ -52,13 +52,16 @@ function* validateExperimentOwner(next) {
 }
 
 function* validateExperimentInProject(next) {
-    let projectId = this.params.project_id;
-    let experimentId = this.params.experiment_id;
-    let isInProject = yield check.experimentExistsInProject(projectId, experimentId);
-    if (!isInProject) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such experiment ${experimentId}`};
-        return this.status;
+    console.log('validateExperimentInProject', this.params);
+    if (this.params.experiment_id !== 'merge' && this.params.experiment_id !== 'delete') {
+        let projectId = this.params.project_id;
+        let experimentId = this.params.experiment_id;
+        let isInProject = yield check.experimentExistsInProject(projectId, experimentId);
+        if (!isInProject) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: `No such experiment ${experimentId}`};
+            return this.status;
+        }
     }
     yield next;
 }
