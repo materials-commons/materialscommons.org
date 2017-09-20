@@ -10,9 +10,9 @@ popd () {
 }
 
 set_env() {
-    export MCDB_PORT=30815
-    export RETHINKDB_HTTP_PORT=8090
-    export RETHINKDB_CLUSTER_PORT=31815
+    export MCDB_PORT=40815
+    export RETHINKDB_HTTP_PORT=8070
+    export RETHINKDB_CLUSTER_PORT=41815
 }
 
 print_message() {
