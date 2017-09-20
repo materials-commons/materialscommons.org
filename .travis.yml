@@ -23,7 +23,7 @@ env:
     - MC_SERVICE_PORT=5002
     - MC_API_SERVICE_PORT=5004
     - MC_PUB_SERVICE_PORT=5026
-    - MCDB_PORT=30815
+    - MCDB_PORT=40815
     - MCDB_CONNECTION="localhost:$MCDB_PORT"
     - MCDIR=~/file_data
     - MCDB_DIR=~/testdb
