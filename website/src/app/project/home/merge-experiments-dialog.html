@@ -10,6 +10,12 @@
             merge the samples, process and files from the selected experiments into the new experiment. The selected
             experiments will not be changed.
         </p>
+        <h4 class="md-subhead">You are merging the following experiments:</h4>
+        <ul>
+            <li ng-repeat="e in $ctrl.experiments">
+                {{e.name}}
+            </li>
+        </ul>
         <md-input-container class="md-block" style="margin-top:40px">
             <label>New Experiment Name</label>
             <input ng-model="$ctrl.experimentName">

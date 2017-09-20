@@ -84,7 +84,7 @@ class MCProjectHomeComponentController {
             return;
         }
         this.$mdDialog.show({
-            templateUrl: 'app/project/home/merge-experiments.html',
+            templateUrl: 'app/project/home/merge-experiments-dialog.html',
             controller: MergeExperimentsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -94,10 +94,10 @@ class MCProjectHomeComponentController {
             }
         }).then(
             () => {
-                this.mergingExperiments = false;
-                this.selectingExperiments = false;
+                this.cancelMerge();
                 this.getProjectExperiments();
-            }
+            },
+            () => this.cancelMerge()
         );
     }
 
@@ -117,21 +117,25 @@ class MCProjectHomeComponentController {
         if (!selected.length) {
             return;
         }
-        let confirmDialog = this.$mdDialog.confirm()
-            .title('Delete Selected Experiments')
-            .textContent('Would you like to delete the selected experiments?')
-            .ok('Delete Experiments')
-            .cancel('cancel');
-        this.$mdDialog.show(confirmDialog).then(
+
+        this.$mdDialog.show({
+            templateUrl: 'app/project/home/delete-experiments-dialog.html',
+            controller: DeleteExperimentsDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                experiments: selected,
+                projectId: this.project.id
+            }
+        }).then(
             () => {
-                console.log('delete experiments');
                 this.clearDelete();
+                this.getProjectExperiments();
             },
             () => {
-                console.log('Canceling delete');
                 this.clearDelete();
             }
-        )
+        );
     }
 
     clearDelete() {
@@ -228,15 +232,39 @@ class MergeExperimentsDialogController {
 
     done() {
         let experimentIds = this.experiments.map(e => e.id);
-        this.experimentsAPI.mergeProjects(this.projectId, experimentIds, {
+        this.experimentsAPI.mergeExperiments(this.projectId, experimentIds, {
             name: this.experimentName,
             description: this.experimentDescription
-        })
-        this.$mdDialog.hide();
+        }).then(
+            () => this.$mdDialog.hide(),
+            () => this.$mdDialog.cancel()
+        );
     }
 
     cancel() {
-        this.$mdDialog.hide();
+        this.$mdDialog.cancel();
+    }
+}
+
+class DeleteExperimentsDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, experimentsAPI) {
+        this.$mdDialog = $mdDialog;
+        this.experimentsAPI = experimentsAPI;
+        this.experimentName = '';
+        this.experimentDescription = '';
+    }
+
+    done() {
+        let experimentIds = this.experiments.map(e => e.id);
+        this.experimentsAPI.deleteExperiments(this.projectId, experimentIds).then(
+            () => this.$mdDialog.hide(),
+            () => this.$mdDialog.cancel()
+        );
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 

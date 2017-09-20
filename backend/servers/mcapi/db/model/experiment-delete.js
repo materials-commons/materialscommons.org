@@ -10,7 +10,7 @@ function* deleteExperiment(projectId, experimentId, options) {
     let deleteProcesses = !!(options && options.deleteProcesses);
     let dryRun = !!(options && options.dryRun);
 
-    let hasPublishedDatasets = yield testForPublishedDataasets(experimentId);
+    let hasPublishedDatasets = yield testForPublishedDatasets(experimentId);
     if (hasPublishedDatasets) {
         return {error: "Can not delete an experiment with published datasets"}
     }
@@ -63,7 +63,7 @@ module.exports = {
     deleteExperiment
 };
 
-function* testForPublishedDataasets(experimentId) {
+function* testForPublishedDatasets(experimentId) {
     let results = yield experimentDatasets.getDatasetsForExperiment(experimentId);
     let datasetList = results.val;
 

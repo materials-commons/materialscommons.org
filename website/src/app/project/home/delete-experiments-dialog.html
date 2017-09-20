@@ -1,0 +1,23 @@
+<md-dialog flex="60">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Merge Experiments
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <p>
+            Deleting experiments will delete all the processes associated with an experiment that are not used in another
+            experiment. Files will be untouched and will remain in the project.
+        </p>
+        <h4 class="md-subhead">You are deleting the following experiments:</h4>
+        <ul>
+            <li ng-repeat="e in $ctrl.experiments">
+                {{e.name}}
+            </li>
+        </ul>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()">Delete</md-button>
+    </md-dialog-actions>
+</md-dialog>
