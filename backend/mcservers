@@ -293,6 +293,9 @@ function restart_named_server() {
 }
 
 function ps_servers() {
+    echo
+    echo ===================== Production =====================
+    echo
     export MCDB_PORT=28015
     export MC_SERVICE_PORT=5000
     export MC_API_SERVICE_PORT=3000
@@ -322,21 +325,12 @@ function ps_servers() {
     echo "MCMON Server (production):"
     ps -ef | grep "servers/mcmon/main.js" | grep "servertype production" | grep -v grep
     echo
-    echo ======================================================
+    echo ====================== Test/Dev =====================
     echo
     export MCDB_PORT=30815
     export MC_SERVICE_PORT=5002
     export MC_API_SERVICE_PORT=5004
     export MC_PUB_SERVICE_PORT=5026
-    if [ "$TESTSERVER" = "u" ]; then
-        echo "---- Warning ----"
-        echo "Ports may not be set correctly for unit tests"
-        echo "MCDB_PORT = $MCDB_PORT"
-        echo "MC_SERVICE_PORT = $MC_SERVICE_PORT"
-        echo "MC_API_SERVICE_PORT = $MC_API_SERVICE_PORT"
-        echo "MC_PUB_SERVICE_PORT = $MC_PUB_SERVICE_PORT"
-        echo "---- Warning ----"
-    fi
     echo "RethinkDB (test/dev):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
     echo
@@ -359,8 +353,37 @@ function ps_servers() {
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     echo
     echo "MCMON Server (test/dev):"
-    ps -ef | grep "servers/mcmon/main.js" | grep "servertype unit" | grep -v grep
+    ps -ef | grep "servers/mcmon/main.js" | grep "servertype dev" | grep -v grep
     echo
+    echo "================== Unit test (unit) ================="
+    echo
+    export MCDB_PORT=40815
+    export MC_SERVICE_PORT=5602
+    export MC_API_SERVICE_PORT=5604
+    export MC_PUB_SERVICE_PORT=5626
+    echo "RethinkDB (unit):"
+    ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
+    echo
+    echo "Elasticsearch (test/dev):"
+    R=$(docker_instance_running mc-es-test)
+    if [ "$R" != "" ]; then
+        echo ${R}
+    fi
+    echo
+    echo "MCAPI Server (unit):"
+    ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCAPI Node Server (unit):"
+    ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCPUB Node Server (unit):"
+    ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCSTORED Server (unit):"
+    ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+    echo
+    echo "MCMON Server (unit):"
+    ps -ef | grep "servers/mcmon/main.js" | grep "servertype unit" | grep -v grep
 }
 
 function config_file() {
@@ -395,6 +418,7 @@ function show_env() {
     echo "   MC_ES_NAME              ${MC_ES_NAME}"
     echo "   MCDB_FILE:              ${MCDB_FILE}"
     echo "   MCSTORE_SRC:            ${MCSTORE_SRC}"
+    echo "   MC_LOG_DIR:             ${MC_LOG_DIR}"
     echo
     echo " Binary paths:"
     echo "   rethinkdb binary:       $(which rethinkdb)"
@@ -542,6 +566,36 @@ function setup_server_env() {
         export MCDB_DIR=~/testdb
         export RETHINKDB_HTTP_PORT=8090
         export RETHINKDB_CLUSTER_PORT=31815
+        export MCSTOREDBIN=testbin/mcstored
+        export MC_ES_URL="http://localhost:9500"
+        export MC_ES_NAME="mc-es-test"
+        export MC_LOG_DIR=/tmp
+        if [ "$MCDB_FILE" = "" ]; then
+            export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
+        fi
+        export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
+        export MCFS_HTTP_PORT=5012
+
+        if [ -f /etc/materialscommons/config.dev ]; then
+            . /etc/materialscommons/config.dev
+        fi
+
+        if [ ! -d ${MCDB_DIR} ]; then
+            mkdir ${MCDB_DIR}
+        fi
+
+        if [ "$REINIT" = "t" ]; then
+            (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
+        fi
+    elif [ "$TESTSERVER" = "u" ]; then
+        export MC_SERVICE_PORT=5602
+        export MC_API_SERVICE_PORT=5604
+        export MC_PUB_SERVICE_PORT=5626
+        export MCDB_PORT=40815
+        export MCDB_CONNECTION="localhost:$MCDB_PORT"
+        export MCDB_DIR=~/unitdb
+        export RETHINKDB_HTTP_PORT=8070
+        export RETHINKDB_CLUSTER_PORT=41815
         export MCSTOREDBIN=testbin/mcstored
         export MC_ES_URL="http://localhost:9500"
         export MC_ES_NAME="mc-es-test"
@@ -720,6 +774,9 @@ fi
 
 while test $# -gt 0; do
     case "$1" in
+        -h)
+            show_help
+            ;;
         --mc-restore-branch)
             shift
             MC_RESTORE_BRANCH=$1
@@ -739,23 +796,24 @@ while test $# -gt 0; do
         --run-convert)
             RUN_CONVERT=t
             ;;
+        -u)
+            TESTSERVER=u
+            SERVERTYPE="unit"
+            ;;
         -d)
             TESTSERVER=d
             SERVERTYPE="dev"
-            ;;
-        -h)
-            show_help
             ;;
         -t)
             TESTSERVER=t
             SERVERTYPE="test"
             ;;
-        --ps)
-            SHOW_SERVERS=t
-            ;;
         -p)
             TESTSERVER=p
             SERVERTYPE="production"
+            ;;
+        --ps)
+            SHOW_SERVERS=t
             ;;
         --no-compile-mcstore)
             COMPILE_MCSTORE=f
