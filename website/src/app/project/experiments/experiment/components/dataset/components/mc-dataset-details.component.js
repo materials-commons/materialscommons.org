@@ -24,7 +24,7 @@ class MCDatasetDetailsComponentController {
             }
         ];
 
-        if ($window.location.hostname === 'mctest.localhost') {
+        if ($window.location.hostname === 'mcdev.localhost') {
             let port = $window.location.port;
             this.publishedLink = `http://mctest.localhost:${port}/#/data/dataset/${this.datasetId}`;
         } else {
