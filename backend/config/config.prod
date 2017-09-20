@@ -5,3 +5,15 @@ export MCPUB_BASE_API_LINK=https://materialscommons.org/mcpub/#
 export MC_VERIFY_EMAIL=register@materialscommons.org
 export MC_VERIFY_PASS=if.a.password.is.reguired.for.access
 export MC_SMTP_HOST=smtp.host.com
+
+## DOI
+# Remote DOI service URL
+export MC_DOI_SERVICE_URL=https://ezid.lib.purdue.edu/
+# Publisher label
+export MC_DOI_PUBLISHER='Materials Commons'
+# Dataset Publication (call back) line
+export MC_DOI_PUBLICATION_BASE=http://mcpub.localhost/#/details
+# DOI Identification
+export MC_DOI_NAMESPACE='dev.dio.namespace'
+export MC_DOI_USER=dev_doi_user
+export MC_DOI_PW=dev_doi_pw
