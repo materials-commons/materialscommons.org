@@ -11,7 +11,7 @@ popd () {
 
 print_message() {
     cat <<- EOF
-This script will runs all the test scripts (e.g. *spec.js) mc/backend/test.
+This script runs all the test scripts (e.g. *spec.js) in mc/backend/test.
 Note: it will clear and reload the test database: on port 40815.
 EOF
 }
@@ -45,6 +45,9 @@ set_env() {
     export MC_DOI_NAMESPACE='doi:10.5072/FK2'
     export MC_DOI_USER=apitest
     export MC_DOI_PW=apitest
+
+    # DB port for tests
+    export MCDB_PORT=40815
 }
 
 print_env() {
@@ -53,6 +56,7 @@ print_env() {
     echo " MC_DOI_PUBLISHER  : $MC_DOI_PUBLISHER"
     echo " MC_DOI_NAMESPACE  : $MC_DOI_NAMESPACE"
     echo " MC_DOI_USER       : $MC_DOI_USER"
+    echo " MCDB_PORT         : $MCDB_PORT"
     echo ""
 }
 
@@ -74,7 +78,7 @@ run_all_tests(){
 
 print_message
 set_locations
+build_database
 set_env
 print_env
-build_database
 run_all_tests
