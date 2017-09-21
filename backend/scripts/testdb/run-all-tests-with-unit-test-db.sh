@@ -60,22 +60,20 @@ print_env() {
     echo ""
 }
 
-build_database(){
-    pushd $DIR
-    echo "(start) running shell script 'start-with-test-db.sh' "
-    start-with-test-db.sh
-    echo "(done)  running shell script 'start-with-test-db.sh' "
-    popd
-}
-
-restart_database(){
+stop_all_mcservers() {
     pushd $BACKEND
     echo "Shutting down all mcservers!"
     mcservers stop -u
     mcservers stop -d
     echo "Stopped all mcservers"
-    mcservers sr rethinkdb -u
-    echo "(re)Started only rethinkdb"
+    popd
+}
+
+build_and_start_database(){
+    pushd $DIR
+    echo "(start) running shell script 'start-with-test-db.sh' "
+    start-with-test-db.sh
+    echo "(done)  running shell script 'start-with-test-db.sh' "
     popd
 }
 
@@ -89,8 +87,8 @@ run_all_tests(){
 
 print_message
 set_locations
-build_database
-restart_database
 set_env
 print_env
+stop_all_mcservers
+build_and_start_database
 run_all_tests
