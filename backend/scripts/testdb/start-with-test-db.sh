@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
 
+# default args
+CLEAR="all" # other options are "none", "lite"
+
+# get args
+CMD=$1
+shift
+if [ "$CMD" = "-c" ]; then
+    option=$1
+    if [ "$option" = "none" ]; then
+        CLEAR=$option
+    fi
+    if [ "$option" = "lite" ]; then
+        CLEAR=$option
+    fi
+fi
+
 # no-output on pushd and popd
 pushd () {
     command pushd "$@" > /dev/null
@@ -21,6 +37,9 @@ set_env() {
     fi
     if [ -z "${RETHINKDB_CLUSTER_PORT}" ]; then
         export RETHINKDB_CLUSTER_PORT=41815
+    fi
+    if [ ! -d ${MCDB_DIR} ]; then
+        mkdir ${MCDB_DIR}
     fi
 }
 
@@ -66,16 +85,23 @@ print_env_and_locations() {
     echo "======================================================="
 }
 
+print_clear_option() {
+    echo "Use option -c to control clearing of the database"
+    echo "  none => database is not cleared"
+    echo "  lite => database tables are cleared and reset"
+    echo "  all => database is stopped; deleted; started; rebuilt "
+    echo "  default = all"
+    echo "current setting:"
+    echo "  -c ${CLEAR}"
+}
 
-start_empty_rethinkdb() {
-    pushd $BACKEND
-
+delete_database_files() {
     echo "Clearing database dir: ${MCDB_DIR} "
-    if [ ! -d ${MCDB_DIR} ]; then
-        mkdir ${MCDB_DIR}
-    fi
     (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
+}
 
+start_rethinkdb(){
+    pushd $BACKEND
     echo "Starting rethinkdb (${MCDB_PORT})..."
     (cd ${MCDB_DIR}; rethinkdb --driver-port ${MCDB_PORT} --cluster-port ${RETHINKDB_CLUSTER_PORT} --http-port ${RETHINKDB_HTTP_PORT} --daemon)
     # db_running.py blocks until DB is up; or exits with error after 100 retries
@@ -84,11 +110,10 @@ start_empty_rethinkdb() {
     popd
 }
 
-safely_start_rethinkdb() {
+stop_rethinkbd() {
     pushd $BACKEND
     ./mcservers sstop rethinkdb -u
     sleep 2
-    start_empty_rethinkdb
     popd
 }
 
@@ -112,8 +137,13 @@ set_env
 print_message
 set_locations
 print_env_and_locations
-safely_start_rethinkdb
-clear_rethinkdb
-rebuild_test_database
-
-echo "Done create test DB."
+print_clear_option
+if [ "${CLEAR}" = "all" ]; then
+    echo "Completely rebuilding test DB."
+    stop_rethinkbd
+    delete_database_files
+    start_rethinkdb
+    clear_rethinkdb
+    rebuild_test_database
+    echo "Done create test DB."
+fi
