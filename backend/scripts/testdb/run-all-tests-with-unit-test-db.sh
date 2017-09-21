@@ -1,21 +1,5 @@
 #!/usr/bin/env bash
 
-# default args
-CLEAR="all" # other options are "none", "lite"
-
-# get args
-CMD=$1
-shift
-if [ "$CMD" = "-c" ]; then
-    option=$1
-    if [ "$option" = "none" ]; then
-        CLEAR=$option
-    fi
-    if [ "$option" = "lite" ]; then
-        CLEAR=$option
-    fi
-fi
-
 # no-output on pushd and popd
 pushd () {
     command pushd "$@" > /dev/null
@@ -27,12 +11,15 @@ popd () {
 
 print_message() {
     cat <<- EOF
-This script runs all the test scripts (e.g. *spec.js) in mc/backend/test.
-Note: it will clear and reload the test database - by default on port 40815.
-Or use the environmrnt variables (below) to set port used in these tests.
+This script runs all the test scripts indicated by the pattern TEST_PATTERN.
+If GREP_PATTERN is set it will be used as the -g option in mocha test.
+If TEST_CONTINUOUS is set, then the tests will be run in monitor mode; rerunning when
+there are any changes to the files/directories (colon-seperated) in TEST_CONTINUOUS. For example:
+TEST_CONTINUOUS=servers/mcapi/db/model/experiments.js:servers/mcapi/resources/projects/experiments
+means that nodemon would be run with the settings
+--watch servers/mcapi/db/model/experiments.js --watch servers/mcapi/resources/projects/experiments
 EOF
 }
-
 
 set_locations() {
     # location of this script, scripts, backend
@@ -80,6 +67,11 @@ set_env() {
         export MCDB_PORT=40815
     fi
 
+    # Default TEST_PATTERN
+    if [ -z "${TEST_PATTERN}" ];then
+        export TEST_PATTERN="tests/mcapi/Database-Level/specs/project-delete-spec.js"
+    fi
+
 }
 
 print_env() {
@@ -89,22 +81,45 @@ print_env() {
     echo " MC_DOI_NAMESPACE  : $MC_DOI_NAMESPACE"
     echo " MC_DOI_USER       : $MC_DOI_USER"
     echo " MCDB_PORT         : $MCDB_PORT"
+    echo " TEST_PATTERN      : $TEST_PATTERN"
+    if [ -z "${TEST_CONTINUOUS}" ]; then
+    echo " TEST_CONTINUOUS   : (is not set)"
+    else
+    echo " TEST_CONTINUOUS   : $TEST_CONTINUOUS"
+    fi
+    if [ -z "${GREP_PATTERN}" ]; then
+    echo " GREP_PATTERN   : (is not set)"
+    else
+    echo " GREP_PATTERN   : $GREP_PATTERN"
+    fi
     echo ""
-}
-
-build_and_start_database(){
-    pushd $DIR
-    echo "(start) running shell script 'start-with-test-db.sh' "
-    start-with-test-db.sh -c $CLEAR
-    echo "(done)  running shell script 'start-with-test-db.sh' "
-    popd
 }
 
 run_all_tests(){
     pushd $BACKEND
-    echo "(start) running tests - eg. 'npm test' "
-    node_modules/.bin/_mocha "tests/mcapi/Database-Level/specs/*-spec.js"
-    echo "(done)  running tests"
+    echo "(start) monitoring tests in TEST_PATTERN"
+    if [ -z "${GREP_PATTERN}" ]; then
+        node_modules/.bin/_mocha "${TEST_PATTERN}"
+    else
+        node_modules/.bin/_mocha "${TEST_PATTERN}" -g "${GREP_PATTERN}"
+    fi
+    popd
+}
+
+monitor_tests(){
+    pushd $BACKEND
+    echo "(start) monitoring tests in TEST_PATTERN"
+    watches=""
+    while read -d ":" part; do
+        watches="$watches --watch $part"
+    done <<< ${TEST_CONTINUOUS}
+    watches="$watches --watch $part"
+    echo "watching: $watches"
+    if [ -z "${GREP_PATTERN}" ]; then
+        nodemon ${watches} node_modules/.bin/_mocha "${TEST_PATTERN}"
+    else
+        nodemon ${watches} node_modules/.bin/_mocha "${TEST_PATTERN}" -g "${GREP_PATTERN}"
+    fi
     popd
 }
 
@@ -112,5 +127,8 @@ print_message
 set_locations
 set_env
 print_env
-build_and_start_database
-run_all_tests
+if [ -z "${TEST_CONTINUOUS}" ]; then
+    run_all_tests
+else
+    monitor_tests
+fi
