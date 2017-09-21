@@ -30,6 +30,32 @@ set_locations() {
     popd
 }
 
+set_env() {
+    ## DOI
+    # Remote DOI service URL
+    export MC_DOI_SERVICE_URL=https://ezid.lib.purdue.edu/
+
+    # Publisher label
+    export MC_DOI_PUBLISHER='Materials Commons'
+
+    # Dataset Publication (call back) line
+    export MC_DOI_PUBLICATION_BASE=http://mcpub.localhost/#/details
+
+    # DOI Identification
+    export MC_DOI_NAMESPACE='doi:10.5072/FK2'
+    export MC_DOI_USER=apitest
+    export MC_DOI_PW=apitest
+}
+
+print_env() {
+    echo " = = = = Test env = = = ="
+    echo " MC_DOI_SERVICE_URL: $MC_DOI_SERVICE_URL"
+    echo " MC_DOI_PUBLISHER  : $MC_DOI_PUBLISHER"
+    echo " MC_DOI_NAMESPACE  : $MC_DOI_NAMESPACE"
+    echo " MC_DOI_USER       : $MC_DOI_USER"
+    echo ""
+}
+
 build_database(){
     pushd $DIR
     echo "(start) running shell script 'start-with-test-db.sh' "
@@ -41,12 +67,14 @@ build_database(){
 run_all_tests(){
     pushd $BACKEND
     echo "(start) running tests - eg. 'npm test' "
-    MCDB_PORT=40815 node_modules/.bin/_mocha "tests/mcapi/Database-level/specs/**/*-spec.js"
+    node_modules/.bin/_mocha "tests/mcapi/Database-level/specs/**/*-spec.js"
     echo "(done)  running tests"
     popd
 }
 
 print_message
 set_locations
+set_env
+print_env
 build_database
 run_all_tests
