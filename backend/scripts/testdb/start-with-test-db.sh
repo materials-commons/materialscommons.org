@@ -69,7 +69,7 @@ start_empty_rethinkdb() {
 
 safely_start_rethinkdb() {
     pushd $BACKEND
-    ./mcservers sstop rethinkdb
+    ./mcservers sstop rethinkdb -u
     sleep 2
     start_empty_rethinkdb
     popd
