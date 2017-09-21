@@ -68,6 +68,17 @@ build_database(){
     popd
 }
 
+restart_database(){
+    pushd $BACKEND
+    echo "Shutting down all mcservers!"
+    mcservers stop -u
+    mcservers stop -d
+    echo "Stopped all mcservers"
+    mcservers sr rethinkdb -u
+    echo "(re)Started only rethinkdb"
+    popd
+}
+
 run_all_tests(){
     pushd $BACKEND
     echo "(start) running tests - eg. 'npm test' "
@@ -79,6 +90,7 @@ run_all_tests(){
 print_message
 set_locations
 build_database
+restart_database
 set_env
 print_env
 run_all_tests
