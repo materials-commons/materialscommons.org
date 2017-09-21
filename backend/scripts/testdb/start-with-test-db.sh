@@ -10,10 +10,18 @@ popd () {
 }
 
 set_env() {
-    export MCDB_DIR=~/unitdb
-    export MCDB_PORT=40815
-    export RETHINKDB_HTTP_PORT=8070
-    export RETHINKDB_CLUSTER_PORT=41815
+    if [ -z "${MCDB_DIR}" ]; then
+        export MCDB_DIR=~/unitdb
+    fi
+    if [ -z "${MCDB_PORT}" ]; then
+        export MCDB_PORT=40815
+    fi
+    if [ -z "${RETHINKDB_HTTP_PORT}" ]; then
+        export RETHINKDB_HTTP_PORT=8070
+    fi
+    if [ -z "${RETHINKDB_CLUSTER_PORT}" ]; then
+        export RETHINKDB_CLUSTER_PORT=41815
+    fi
 }
 
 print_message() {
@@ -63,12 +71,12 @@ start_empty_rethinkdb() {
     pushd $BACKEND
 
     echo "Clearing database dir: ${MCDB_DIR} "
-    (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
-
-    echo "Starting rethinkdb (${MCDB_PORT})..."
     if [ ! -d ${MCDB_DIR} ]; then
         mkdir ${MCDB_DIR}
     fi
+    (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
+
+    echo "Starting rethinkdb (${MCDB_PORT})..."
     (cd ${MCDB_DIR}; rethinkdb --driver-port ${MCDB_PORT} --cluster-port ${RETHINKDB_CLUSTER_PORT} --http-port ${RETHINKDB_HTTP_PORT} --daemon)
     # db_running.py blocks until DB is up; or exits with error after 100 retries
     scripts/db_running.py --port ${MCDB_PORT}

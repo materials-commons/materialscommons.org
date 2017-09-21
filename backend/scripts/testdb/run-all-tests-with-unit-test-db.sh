@@ -30,24 +30,38 @@ set_locations() {
     popd
 }
 
+
 set_env() {
     ## DOI
     # Remote DOI service URL
-    export MC_DOI_SERVICE_URL=https://ezid.lib.purdue.edu/
-
+    if [ -z "${MC_DOI_SERVICE_URL}" ]; then
+        export MC_DOI_SERVICE_URL=https://ezid.lib.purdue.edu/
+    fi
     # Publisher label
-    export MC_DOI_PUBLISHER='Materials Commons'
-
+    if [ -z "${MC_DOI_PUBLISHER}" ]; then
+        export MC_DOI_PUBLISHER='Materials Commons'
+    fi
     # Dataset Publication (call back) line
-    export MC_DOI_PUBLICATION_BASE=http://mcpub.localhost/#/details
+    if [ -z "${MC_DOI_PUBLICATION_BASE}" ]; then
+        export MC_DOI_PUBLICATION_BASE=http://mcpub.localhost/#/details
+    fi
 
     # DOI Identification
-    export MC_DOI_NAMESPACE='doi:10.5072/FK2'
-    export MC_DOI_USER=apitest
-    export MC_DOI_PW=apitest
+    if [ -z "${MC_DOI_NAMESPACE}" ]; then
+        export MC_DOI_NAMESPACE='doi:10.5072/FK2'
+    fi
+    if [ -z "${MC_DOI_USER}" ]; then
+        export MC_DOI_USER=apitest
+    fi
+    if [ -z "${MC_DOI_PW}" ]; then
+        export MC_DOI_PW=apitest
+    fi
 
     # DB port for tests
-    export MCDB_PORT=40815
+    if [ -z "${MCDB_PORT}" ]; then
+        export MCDB_PORT=40815
+    fi
+
 }
 
 print_env() {
