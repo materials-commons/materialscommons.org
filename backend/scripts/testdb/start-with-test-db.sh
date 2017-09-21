@@ -10,6 +10,7 @@ popd () {
 }
 
 set_env() {
+    export MCDB_DIR=~/unitdb
     export MCDB_PORT=40815
     export RETHINKDB_HTTP_PORT=8070
     export RETHINKDB_CLUSTER_PORT=41815
@@ -50,6 +51,7 @@ print_env_and_locations() {
     echo "  SCRIPTS   ${SCRIPTS} "
     echo "  BACKEND - the location of the materialscommons.org/backend folder"
     echo "  BACKEND   ${BACKEND} "
+    echo "  MCDB_DIR                ${MCDB_DIR} "
     echo "  MCDB_PORT               ${MCDB_PORT} "
     echo "  RETHINKDB_HTTP_PORT     ${RETHINKDB_HTTP_PORT} "
     echo "  RETHINKDB_CLUSTER_PORT  ${RETHINKDB_CLUSTER_PORT} "
@@ -59,11 +61,18 @@ print_env_and_locations() {
 
 start_empty_rethinkdb() {
     pushd $BACKEND
+
+    echo "Clearing database dir: ${MCDB_DIR} "
+    (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
+
     echo "Starting rethinkdb (${MCDB_PORT})..."
+    if [ ! -d ${MCDB_DIR} ]; then
+        mkdir ${MCDB_DIR}
+    fi
     (cd ${MCDB_DIR}; rethinkdb --driver-port ${MCDB_PORT} --cluster-port ${RETHINKDB_CLUSTER_PORT} --http-port ${RETHINKDB_HTTP_PORT} --daemon)
     # db_running.py blocks until DB is up; or exits with error after 100 retries
     scripts/db_running.py --port ${MCDB_PORT}
-    echo "Started."
+    echo "Started rethinkdb."
     popd
 }
 

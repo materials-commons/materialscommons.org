@@ -60,15 +60,6 @@ print_env() {
     echo ""
 }
 
-stop_all_mcservers() {
-    pushd $BACKEND
-    echo "Shutting down all mcservers!"
-    mcservers stop -u
-    mcservers stop -d
-    echo "Stopped all mcservers"
-    popd
-}
-
 build_and_start_database(){
     pushd $DIR
     echo "(start) running shell script 'start-with-test-db.sh' "
@@ -89,6 +80,5 @@ print_message
 set_locations
 set_env
 print_env
-stop_all_mcservers
 build_and_start_database
 run_all_tests
