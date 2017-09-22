@@ -1,8 +1,6 @@
 language: node_js
 node_js:
   - '8.2.1'
-python:
-  - '2.7.13'
 
 notifications:
   email:
@@ -49,6 +47,8 @@ cache:
     - $HOME/.pyenv_cache
 
 before_install:
+  - pyenv versions
+  - pyenv global '2.7.13'
   - python --version
   - export MC_APP_DIR=`pwd`
   # RethinkDB
