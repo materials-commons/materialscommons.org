@@ -41,7 +41,20 @@ env:
     - MC_DOI_PUBLICATION_BASE=http://mcpub.localhost/#/details
     - MC_DOI_NAMESPACE='doi:10.5072/FK2'
 
+    - PYENV_VERSION='2.7.13'
+    - PYENV_VERSION_STRING='Python 2.7.13'
+
+cache:
+  - pip
+  - directories:
+    - $HOME/.pyenv_cache
+
 before_install:
+  - if [[ -n "$PYENV_VERSION" ]]; then
+      wget https://github.com/praekeltfoundation/travis-pyenv/releases/download/0.4.0/setup-pyenv.sh
+      source setup-pyenv.sh
+    fi
+
   - python --version
   - export MC_APP_DIR=`pwd`
   # RethinkDB
