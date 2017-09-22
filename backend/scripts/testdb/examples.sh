@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 ## NOTE all of these examples assume that you are starting in the directory
-## materialscommons.org/backend
+## materialscommons.org/backend; all these examples presume
+## the default setting for MCDB_PORT and other environment variables
 
 ## batch run of all tests in backend/tests/**/specs/*-spec.js (the default)
 ## starting with a completely rebuild database on the default port
