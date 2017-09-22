@@ -3,10 +3,16 @@
 # default args
 CLEAR="all" # other options are "none", "lite"
 
-# get args
+# get startup type args
 CMD=$1
 shift
-if [ "$CMD" = "-c" ]; then
+if [ "$CMD" = "-h" ]; then
+    print_help
+    exit
+elif [ "$CMD" = "help" ]; then
+    print_help
+    exit
+elif [ "$CMD" = "-c" ]; then
     option=$1
     if [ "$option" = "none" ]; then
         CLEAR=$option
@@ -45,14 +51,10 @@ set_env() {
 
 print_message() {
     cat <<- EOF
-This script will start RethinkDB for Materials Commons with
-a useful, empty, test database. No projects, Experiments or other
-data is defined. See the content of the script for details.
-There are 4 users defined: test@test.mc, another@test.mc, admin@test.mc,
-and tadmin@test.mc. For each user the password is set to 'test' and
-specific apikeys are set for the users 'test' and 'another'. The user
-'admin' is defined as an admin, and the user 'tadmin' is defined as a
-template admin. See makeUserForTest.py for details on users.
+Rebuilding rethinkDB for Materials Commons with a useful, empty, test database:
+no projects, experiments or other data is defined; templates are loaded; and
+4 test users defined: test@test.mc, another@test.mc, admin@test.mc,
+and tadmin@test.mc. See makeUserForTest.py for details on users.
 EOF
 }
 
@@ -87,13 +89,25 @@ print_env_and_locations() {
 
 print_clear_option() {
     echo "Use option -c to control clearing of the database"
-    echo "  none => database is not cleared"
-    echo "  lite => database tables are cleared and reset"
+    echo "  none => database started if not running; but not cleared"
+    echo "  lite => database started if not running; tables (except users and templates) are cleared"
     echo "  all => database is stopped; deleted; started; rebuilt "
     echo "  default = all"
     echo "current setting:"
     echo "  -c ${CLEAR}"
 }
+
+check_rethinkdb() {
+    echo "Looking for rethinkdb..."
+    RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$RPID" = "" ]; then
+        echo "   Database not running on port $MCDB_PORT (MCDB_PORT)"
+        return -1
+    fi
+    echo "  Database found on port $MCDB_PORT (MCDB_PORT)"
+    return 0
+}
+
 
 delete_database_files() {
     echo "Clearing database dir: ${MCDB_DIR} "
@@ -112,14 +126,19 @@ start_rethinkdb(){
 
 stop_rethinkbd() {
     pushd $BACKEND
-    ./mcservers sstop rethinkdb -u
+    echo "Stopping rethinkdb on port MCDB_PORT ($MCDB_PORT)..."
+    RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$RPID" != "" ]; then
+        kill ${RPID}
+        echo "  Stopped rethinkdb with pid ${RPID}"
+    fi
     sleep 2
     popd
 }
 
 clear_rethinkdb() {
     pushd $BACKEND
-    echo "Clearing test db"
+    echo "Clearing all databases in rethinkdb"
     scripts/testdb/deleteDatabases.py --port $MCDB_PORT
     echo "Emptied test db"
     popd
@@ -145,5 +164,17 @@ if [ "${CLEAR}" = "all" ]; then
     start_rethinkdb
     clear_rethinkdb
     rebuild_test_database
-    echo "Done create test DB."
+    echo "Done creating and starting test DB."
+elif [ "${CLEAR}" = "lite" ]; then
+    echo "Starting test DB (if not running); clearing data tables"
+    if ! check_rethinkdb; then
+        start_rethinkdb
+    fi
+    echo "Clear here! - missing"
+else
+    echo "Starting test DB (if not running)"
+    if ! check_rethinkdb; then
+        start_rethinkdb
+    fi
 fi
+echo "Done."

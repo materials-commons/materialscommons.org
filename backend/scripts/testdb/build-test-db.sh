@@ -23,10 +23,9 @@ pushd $DIR
 # check that MCDB_PORT is available
 if [ -z "$MCDB_PORT" ]; then
     echo "MCDB_PORT must be set to the RETHINKDB port number"
-    echo "Setting MCDB_PORT to default value for tests: 30815"
-    export MCDB_PORT=30815
+    exit 1
 fi
-echo "using MCDB_PORT = $MCDB_PORT"
+echo "Rethingdb rebuild - using MCDB_PORT = $MCDB_PORT"
 
 # build basic (e.g 'empty') DB; using standard script
 pushd '../'
@@ -42,4 +41,4 @@ pushd '../templates/'
 popd
 
 popd
-echo "Done."
+echo "Done with Rethingdb rebuild."

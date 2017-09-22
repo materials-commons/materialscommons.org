@@ -95,9 +95,20 @@ print_env() {
     echo ""
 }
 
+check_rethinkdb() {
+    echo "Looking for rethinkdb..."
+    RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
+    if [ "$RPID" = "" ]; then
+        echo "   Database not running on port $MCDB_PORT (MCDB_PORT); please start it!"
+        return -1
+    fi
+    echo "  Database found on port $MCDB_PORT (MCDB_PORT)"
+    return 0
+}
+
 run_all_tests(){
     pushd $BACKEND
-    echo "(start) monitoring tests in TEST_PATTERN"
+    echo "(start) run all tests in TEST_PATTERN"
     if [ -z "${GREP_PATTERN}" ]; then
         node_modules/.bin/_mocha "${TEST_PATTERN}"
     else
@@ -127,6 +138,9 @@ print_message
 set_locations
 set_env
 print_env
+if ! check_rethinkdb; then
+    exit -1
+fi
 if [ -z "${TEST_CONTINUOUS}" ]; then
     run_all_tests
 else
