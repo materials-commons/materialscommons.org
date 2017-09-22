@@ -131,6 +131,14 @@ stop_rethinkbd() {
     popd
 }
 
+clear_all_db_tables(){
+    pushd $BACKEND
+    echo "Clearing all tables in database in rethinkdb"
+    scripts/testdb/deleteDatabases.py --port $MCDB_PORT
+    echo "Cleared test db"
+    popd
+}
+
 clear_rethinkdb() {
     pushd $BACKEND
     echo "Clearing all databases in rethinkdb"
@@ -164,7 +172,7 @@ elif [ "${CLEAR}" = "lite" ]; then
     if ! check_rethinkdb; then
         start_rethinkdb
     fi
-    echo "Clear here! - missing"
+    clear_all_db_tables
 else
     echo "Starting test DB (if not running)"
     if ! check_rethinkdb; then

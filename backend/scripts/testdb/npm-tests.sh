@@ -25,5 +25,6 @@ do_all() {
     popd
 }
 
+# NOTE: using default for MCDB_PORT =
 set_locations
 do_all
