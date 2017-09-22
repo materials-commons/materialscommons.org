@@ -50,10 +50,11 @@ cache:
     - $HOME/.pyenv_cache
 
 before_install:
-  - if [[ -n "$PYENV_VERSION" ]]; then
-      wget https://github.com/praekeltfoundation/travis-pyenv/releases/download/0.4.0/setup-pyenv.sh
-      source setup-pyenv.sh
-    fi
+  - |
+      if [[ -n "$PYENV_VERSION" ]]; then
+        wget https://github.com/praekeltfoundation/travis-pyenv/releases/download/0.4.0/setup-pyenv.sh
+        source setup-pyenv.sh
+      fi
 
   - python --version
   - export MC_APP_DIR=`pwd`
