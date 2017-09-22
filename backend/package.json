@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "scripts/testdb/run-all-tests-with-unit-test-db.sh"
+    "test": "scripts/testdb/npm-tests.sh"
   },
   "dependencies": {
     "archiver": "^2.0.0",

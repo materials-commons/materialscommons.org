@@ -4,5 +4,7 @@
 ## materialscommons.org/backend
 
 ## batch run of all tests in backend/tests/**/specs/*-spec.js
-## starting with a completely rebuild database
-# scripts/testdb/set
+## starting with a completely rebuild database on the default port
+## default for setup is 'all' = completely rebuild test databases
+# scripts/testdb/setup-and-start-test-db.sh
+# export

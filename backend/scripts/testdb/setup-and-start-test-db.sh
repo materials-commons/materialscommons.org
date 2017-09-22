@@ -109,11 +109,6 @@ check_rethinkdb() {
 }
 
 
-delete_database_files() {
-    echo "Clearing database dir: ${MCDB_DIR} "
-    (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
-}
-
 start_rethinkdb(){
     pushd $BACKEND
     echo "Starting rethinkdb (${MCDB_PORT})..."
@@ -160,7 +155,6 @@ print_clear_option
 if [ "${CLEAR}" = "all" ]; then
     echo "Completely rebuilding test DB."
     stop_rethinkbd
-    delete_database_files
     start_rethinkdb
     clear_rethinkdb
     rebuild_test_database
@@ -177,4 +171,4 @@ else
         start_rethinkdb
     fi
 fi
-echo "Done."
+echo "Done with setup and starting rethinkdb."

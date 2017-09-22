@@ -69,7 +69,7 @@ set_env() {
 
     # Default TEST_PATTERN
     if [ -z "${TEST_PATTERN}" ];then
-        export TEST_PATTERN="tests/mcapi/Database-Level/specs/project-delete-spec.js"
+        export TEST_PATTERN="tests/**/specs/*-spec.js"
     fi
 
 }
@@ -108,10 +108,11 @@ check_rethinkdb() {
 
 run_all_tests(){
     pushd $BACKEND
-    echo "(start) run all tests in TEST_PATTERN"
     if [ -z "${GREP_PATTERN}" ]; then
+        echo "(start) run all tests in TEST_PATTERN"
         node_modules/.bin/_mocha "${TEST_PATTERN}"
     else
+        echo "(start) run all tests in TEST_PATTERN with GREP_PATTERN applied"
         node_modules/.bin/_mocha "${TEST_PATTERN}" -g "${GREP_PATTERN}"
     fi
     popd
