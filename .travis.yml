@@ -41,11 +41,6 @@ env:
     - MC_DOI_PUBLICATION_BASE=http://mcpub.localhost/#/details
     - MC_DOI_NAMESPACE='doi:10.5072/FK2'
 
-cache:
-  - pip
-  - directories:
-    - $HOME/.pyenv_cache
-
 before_install:
   - pyenv versions
   - pyenv global '2.7.13'
