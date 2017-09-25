@@ -172,6 +172,15 @@ function stop_mcmon() {
     done
 }
 
+function check_nginx() {
+    R=$(ps -eo "pid,command" | grep nginx | grep "worker process")
+    if [ "$R" = "" ]; then
+        echo "---------------- WARNING ----------------"
+        echo "|  nginx does not appear to be running  |"
+        echo "---------------- WARNING ----------------"
+    fi
+}
+
 function start_servers() {
     echo Starting ${SERVERTYPE} servers...
     mkdir -p ${MC_LOG_DIR} 2> /dev/null
@@ -903,3 +912,6 @@ case "$CMD" in
         exit 1
         ;;
 esac
+
+check_nginx
+
