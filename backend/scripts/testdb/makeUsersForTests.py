@@ -60,7 +60,7 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
     if options.password is None:
-        print "You must specify a password"
+        print("You must specify a password")
         sys.exit(1)
 
     conn = r.connect('localhost', options.port, db='materialscommons')
