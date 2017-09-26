@@ -7,10 +7,10 @@ CLEAR="all" # other options are "none", "lite"
 CMD=$1
 shift
 if [ "$CMD" = "-h" ]; then
-    print_help
+    print_clear_option
     exit
 elif [ "$CMD" = "help" ]; then
-    print_help
+    print_clear_option
     exit
 elif [ "$CMD" = "-c" ]; then
     option=$1
