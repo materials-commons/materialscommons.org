@@ -3,6 +3,16 @@
 # default args
 CLEAR="all" # other options are "none", "lite"
 
+print_clear_option() {
+    echo "Use option -c to control clearing of the database"
+    echo "  none => database started if not running; but not cleared"
+    echo "  lite => database started if not running; tables (except users and templates) are cleared"
+    echo "  all => database is stopped; deleted; started; rebuilt (including templates and test users)"
+    echo "  default = all"
+    echo "current setting:"
+    echo "  -c ${CLEAR}"
+}
+
 # get startup type args
 CMD=$1
 shift
@@ -85,16 +95,6 @@ print_env_and_locations() {
     echo "  RETHINKDB_HTTP_PORT     ${RETHINKDB_HTTP_PORT} "
     echo "  RETHINKDB_CLUSTER_PORT  ${RETHINKDB_CLUSTER_PORT} "
     echo "======================================================="
-}
-
-print_clear_option() {
-    echo "Use option -c to control clearing of the database"
-    echo "  none => database started if not running; but not cleared"
-    echo "  lite => database started if not running; tables (except users and templates) are cleared"
-    echo "  all => database is stopped; deleted; started; rebuilt "
-    echo "  default = all"
-    echo "current setting:"
-    echo "  -c ${CLEAR}"
 }
 
 check_rethinkdb() {
