@@ -22,6 +22,6 @@ if __name__ == "__main__":
             ret = r.db_drop(db).run(conn)
             dropped = ret['dbs_dropped']
             if dropped:
-                print "dropped: " + db
+                print("dropped: " + db)
 
-    print "done."
+    print("done.")
