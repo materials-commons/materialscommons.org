@@ -29,15 +29,15 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
     if options.retry < 1:
-        print "Retry count must be a positive number: %d" % options.retry
+        print("Retry count must be a positive number: %d" % options.retry)
         sys.exit(1)
 
     if options.sleep < 1:
-        print "Sleep time must be a positive number: %d" % options.sleep
+        print("Sleep time must be a positive number: %d" % options.sleep)
         sys.exit(1)
 
     for i in range(0, options.retry):
-        # print "Attempting to connect to rethinkdb on port %d (%d)" % (options.port, i)
+        # print("Attempting to connect to rethinkdb on port %d (%d)" % (options.port, i) )
         if connect(options.port):
             sys.exit(0)
         time.sleep(options.sleep)
