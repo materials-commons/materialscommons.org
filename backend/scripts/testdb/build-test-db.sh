@@ -36,7 +36,7 @@ popd
 ./makeUsersForTests.py --port $MCDB_PORT --password $MC_USERPW
 
 # add templates
-./templates.js
+./loadtemplates.js
 
 popd
 echo "Done with Rethingdb rebuild."
