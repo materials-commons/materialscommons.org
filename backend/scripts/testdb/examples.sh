@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -e
+#!/bin/bash -e
 
 ## NOTE all of these examples assume that you are starting in the directory
 ## materialscommons.org/backend; all these examples presume

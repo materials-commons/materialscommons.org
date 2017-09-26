@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -e
+#!/bin/bash -e
 set -e
 
 # no-output on pushd and popd

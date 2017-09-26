@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -e
+#!/bin/bash -e
 
 # default args
 CLEAR="all" # other options are "none", "lite"
