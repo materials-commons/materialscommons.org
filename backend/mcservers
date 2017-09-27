@@ -302,14 +302,14 @@ function restart_named_server() {
 }
 
 function ps_servers() {
+    export __SAVE_TESTSERVER=$TESTSERVER
+    export __SAVE_SERVERTYPE=$SERVERTYPE
     echo
-    echo ===================== Production =====================
+    echo "===================== Production (-p) ====================="
     echo
-    export MCDB_PORT=28015
-    export MC_SERVICE_PORT=5000
-    export MC_API_SERVICE_PORT=3000
-    export MC_PUB_SERVICE_PORT=5014
-    echo
+    export TESTSERVER=p
+    export SERVERTYPE=production
+    setup_server_env
     echo "RethinkDB (production):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
     echo
@@ -334,42 +334,69 @@ function ps_servers() {
     echo "MCMON Server (production):"
     ps -ef | grep "servers/mcmon/main.js" | grep "servertype production" | grep -v grep
     echo
-    echo ====================== Test/Dev =====================
+    echo "====================== Test (-t) ====================="
     echo
-    export MCDB_PORT=30815
-    export MC_SERVICE_PORT=5002
-    export MC_API_SERVICE_PORT=5004
-    export MC_PUB_SERVICE_PORT=5026
-    echo "RethinkDB (test/dev):"
+    export TESTSERVER=t
+    export SERVERTYPE=test
+    setup_server_env
+    echo "RethinkDB (test):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
     echo
-    echo "Elasticsearch (test/dev):"
+    echo "Elasticsearch (test):"
     R=$(docker_instance_running mc-es-test)
     if [ "$R" != "" ]; then
         echo ${R}
     fi
     echo
-    echo "MCAPI Server (test/dev):"
+    echo "MCAPI Server (test):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCAPI Node Server (test/dev):"
+    echo "MCAPI Node Server (test):"
     ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCPUB Node Server (test/dev):"
+    echo "MCPUB Node Server (test):"
     ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCSTORED Server (test/dev):"
+    echo "MCSTORED Server (test):"
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     echo
-    echo "MCMON Server (test/dev):"
+    echo "MCMON Server (test):"
     ps -ef | grep "servers/mcmon/main.js" | grep "servertype dev" | grep -v grep
     echo
-    echo "================== Unit test (unit) ================="
+    echo "====================== Dev (-d) ====================="
     echo
-    export MCDB_PORT=40815
-    export MC_SERVICE_PORT=5602
-    export MC_API_SERVICE_PORT=5604
-    export MC_PUB_SERVICE_PORT=5626
+    export TESTSERVER=d
+    export SERVERTYPE=dev
+    setup_server_env
+    echo "RethinkDB (dev):"
+    ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
+    echo
+    echo "Elasticsearch (dev):"
+    R=$(docker_instance_running mc-es-test)
+    if [ "$R" != "" ]; then
+        echo ${R}
+    fi
+    echo
+    echo "MCAPI Server (dev):"
+    ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCAPI Node Server (dev):"
+    ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCPUB Node Server (dev):"
+    ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCSTORED Server (dev):"
+    ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+    echo
+    echo "MCMON Server (dev):"
+    ps -ef | grep "servers/mcmon/main.js" | grep "servertype dev" | grep -v grep
+    echo
+    echo "================== Unit test (-u) ================="
+    echo
+    export TESTSERVER=p
+    export SERVERTYPE=production
+    setup_server_env
     echo "RethinkDB (unit):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
     echo
@@ -393,6 +420,10 @@ function ps_servers() {
     echo
     echo "MCMON Server (unit):"
     ps -ef | grep "servers/mcmon/main.js" | grep "servertype unit" | grep -v grep
+
+    export TESTSERVER=$__SAVE_TESTSERVER
+    export SERVERTYPE=$__SAVE_SERVERTYPE
+    setup_server_env
 }
 
 function config_file() {
