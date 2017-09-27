@@ -394,8 +394,8 @@ function ps_servers() {
     echo
     echo "================== Unit test (-u) ================="
     echo
-    export TESTSERVER=p
-    export SERVERTYPE=production
+    export TESTSERVER=u
+    export SERVERTYPE=unit
     setup_server_env
     echo "RethinkDB (unit):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
