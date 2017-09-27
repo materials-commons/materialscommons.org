@@ -125,7 +125,7 @@ stop_rethinkbd() {
 clear_all_db_tables(){
     pushd $BACKEND
     echo "Clearing all tables in database in rethinkdb"
-    scripts/testdb/deleteDatabases.py --port $MCDB_PORT
+    scripts/testdb/delete-databases.py --port $MCDB_PORT
     echo "Cleared test db"
     popd
 }
@@ -133,7 +133,7 @@ clear_all_db_tables(){
 clear_rethinkdb() {
     pushd $BACKEND
     echo "Clearing all databases in rethinkdb"
-    scripts/testdb/deleteDatabases.py --port $MCDB_PORT
+    scripts/testdb/delete-databases.py --port $MCDB_PORT
     echo "Emptied test db"
     popd
 }
@@ -141,7 +141,7 @@ clear_rethinkdb() {
 rebuild_test_database() {
     pushd $BASE
     echo "Building minimal test DB in rethinkdb..."
-    MC_USERPW=test build-test-db.sh
+    MC_USERPW=test ./build-test-db.sh
     echo "Built test DB."
     popd
 }

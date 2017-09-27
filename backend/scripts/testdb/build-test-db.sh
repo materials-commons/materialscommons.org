@@ -46,7 +46,7 @@ ${SCRIPTS}/dbcreate.py --port $MCDB_PORT
 ${SCRIPTS}/templates/run.sh
 
 # add test users
-./makeUsersForTests.py --port $MCDB_PORT --password $MC_USERPW
+./make-user-for-tests.py --port $MCDB_PORT --password $MC_USERPW
 
 
 echo "Done with Rethinkdb rebuild."
