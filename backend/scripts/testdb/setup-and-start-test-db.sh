@@ -46,7 +46,7 @@ print_message() {
 Rebuilding rethinkDB for Materials Commons with a useful, empty, test database:
 no projects, experiments or other data is defined; templates are loaded; and
 4 test users defined: test@test.mc, another@test.mc, admin@test.mc,
-and tadmin@test.mc. See makeUserForTest.py for details on users.
+and tadmin@test.mc. See make-users-for-test.py for details on users.
 EOF
 }
 

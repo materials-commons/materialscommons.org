@@ -50,7 +50,7 @@ pushd ${SCRIPTS}/templates
 popd
 
 # add test users
-./make-user-for-tests.py --port $MCDB_PORT --password $MC_USERPW
+./make-users-for-tests.py --port $MCDB_PORT --password $MC_USERPW
 
 
 echo "Done with Rethinkdb rebuild."
