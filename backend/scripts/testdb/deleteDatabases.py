@@ -9,7 +9,7 @@ import sys
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-p", "--port", dest="port", type="int",
-                      help="rethinkdb port", default=30815)
+                      help="rethinkdb port", default=40815)
 
     (options, args) = parser.parse_args()
 
@@ -22,6 +22,6 @@ if __name__ == "__main__":
             ret = r.db_drop(db).run(conn)
             dropped = ret['dbs_dropped']
             if dropped:
-                print "dropped: " + db
+                print("dropped: " + db)
 
-    print "done."
+    print("done.")

@@ -46,8 +46,8 @@ def make_user(r, part_name, full_name, pw, key, admin, tadmin):
     u = User(email, full_name, email, pwhash, apikey, admin, tadmin)
     r.table('users').insert(u.__dict__).run(conn)
 
-    print "Addred user: " + email + " with password: " + pw + ", apikey: " + apikey\
-        + ", admin: " + str(admin) + ", tadmin: " + str(tadmin)
+    print("Addred user: " + email + " with password: " + pw + ", apikey: " + apikey\
+        + ", admin: " + str(admin) + ", tadmin: " + str(tadmin))
 
 
 if __name__ == "__main__":
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
     if options.password is None:
-        print "You must specify a password"
+        print("You must specify a password")
         sys.exit(1)
 
     conn = r.connect('localhost', options.port, db='materialscommons')

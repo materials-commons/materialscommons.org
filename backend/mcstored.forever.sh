@@ -7,6 +7,9 @@ CURRENT_RETRY=0
 if [ "${SERVERTYPE}" = "unit" ]; then
     MAX_RETRIES=3
 fi
+if [ "${SERVERTYPE}" = "dev" ]; then
+    MAX_RETRIES=3
+fi
 LOG_FILE=${MC_LOG_DIR}/mcstored.out.${SERVERTYPE}
 while [ 1 ];
 do

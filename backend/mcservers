@@ -172,6 +172,15 @@ function stop_mcmon() {
     done
 }
 
+function check_nginx() {
+    R=$(ps -eo "pid,command" | grep nginx | grep "worker process")
+    if [ "$R" = "" ]; then
+        echo "---------------- WARNING ----------------"
+        echo "|  nginx does not appear to be running  |"
+        echo "---------------- WARNING ----------------"
+    fi
+}
+
 function start_servers() {
     echo Starting ${SERVERTYPE} servers...
     mkdir -p ${MC_LOG_DIR} 2> /dev/null
@@ -293,11 +302,14 @@ function restart_named_server() {
 }
 
 function ps_servers() {
-    export MCDB_PORT=28015
-    export MC_SERVICE_PORT=5000
-    export MC_API_SERVICE_PORT=3000
-    export MC_PUB_SERVICE_PORT=5014
+    export __SAVE_TESTSERVER=$TESTSERVER
+    export __SAVE_SERVERTYPE=$SERVERTYPE
     echo
+    echo "===================== Production (-p) ====================="
+    echo
+    export TESTSERVER=p
+    export SERVERTYPE=production
+    setup_server_env
     echo "RethinkDB (production):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
     echo
@@ -322,36 +334,96 @@ function ps_servers() {
     echo "MCMON Server (production):"
     ps -ef | grep "servers/mcmon/main.js" | grep "servertype production" | grep -v grep
     echo
-    echo ======================================================
+    echo "====================== Test (-t) ====================="
     echo
-    export MCDB_PORT=30815
-    export MC_SERVICE_PORT=5002
-    export MC_API_SERVICE_PORT=5004
-    export MC_PUB_SERVICE_PORT=5026
-    echo "RethinkDB (test/unit):"
+    export TESTSERVER=t
+    export SERVERTYPE=test
+    setup_server_env
+    echo "RethinkDB (test):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
     echo
-    echo "Elasticsearch (test/unit):"
+    echo "Elasticsearch (test):"
     R=$(docker_instance_running mc-es-test)
     if [ "$R" != "" ]; then
         echo ${R}
     fi
     echo
-    echo "MCAPI Server (test/unit):"
+    echo "MCAPI Server (test):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCAPI Node Server (test/unit):"
+    echo "MCAPI Node Server (test):"
     ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCPUB Node Server (test/unit):"
+    echo "MCPUB Node Server (test):"
     ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCSTORED Server (test/unit):"
+    echo "MCSTORED Server (test):"
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     echo
-    echo "MCMON Server (test/unit):"
-    ps -ef | grep "servers/mcmon/main.js" | grep "servertype unit" | grep -v grep
+    echo "MCMON Server (test):"
+    ps -ef | grep "servers/mcmon/main.js" | grep "servertype dev" | grep -v grep
     echo
+    echo "====================== Dev (-d) ====================="
+    echo
+    export TESTSERVER=d
+    export SERVERTYPE=dev
+    setup_server_env
+    echo "RethinkDB (dev):"
+    ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
+    echo
+    echo "Elasticsearch (dev):"
+    R=$(docker_instance_running mc-es-test)
+    if [ "$R" != "" ]; then
+        echo ${R}
+    fi
+    echo
+    echo "MCAPI Server (dev):"
+    ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCAPI Node Server (dev):"
+    ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCPUB Node Server (dev):"
+    ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCSTORED Server (dev):"
+    ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+    echo
+    echo "MCMON Server (dev):"
+    ps -ef | grep "servers/mcmon/main.js" | grep "servertype dev" | grep -v grep
+    echo
+    echo "================== Unit test (-u) ================="
+    echo
+    export TESTSERVER=u
+    export SERVERTYPE=unit
+    setup_server_env
+    echo "RethinkDB (unit):"
+    ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
+    echo
+    echo "Elasticsearch (test/dev):"
+    R=$(docker_instance_running mc-es-test)
+    if [ "$R" != "" ]; then
+        echo ${R}
+    fi
+    echo
+    echo "MCAPI Server (unit):"
+    ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCAPI Node Server (unit):"
+    ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCPUB Node Server (unit):"
+    ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
+    echo
+    echo "MCSTORED Server (unit):"
+    ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+    echo
+    echo "MCMON Server (unit):"
+    ps -ef | grep "servers/mcmon/main.js" | grep "servertype unit" | grep -v grep
+
+    export TESTSERVER=$__SAVE_TESTSERVER
+    export SERVERTYPE=$__SAVE_SERVERTYPE
+    setup_server_env
 }
 
 function config_file() {
@@ -386,6 +458,7 @@ function show_env() {
     echo "   MC_ES_NAME              ${MC_ES_NAME}"
     echo "   MCDB_FILE:              ${MCDB_FILE}"
     echo "   MCSTORE_SRC:            ${MCSTORE_SRC}"
+    echo "   MC_LOG_DIR:             ${MC_LOG_DIR}"
     echo
     echo " Binary paths:"
     echo "   rethinkdb binary:       $(which rethinkdb)"
@@ -524,7 +597,7 @@ function setup_server_env() {
         if [ "$REINIT" = "t" ]; then
             (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
         fi
-    elif [ "$TESTSERVER" = "u" ]; then
+    elif [ "$TESTSERVER" = "d" ]; then
         export MC_SERVICE_PORT=5002
         export MC_API_SERVICE_PORT=5004
         export MC_PUB_SERVICE_PORT=5026
@@ -543,8 +616,38 @@ function setup_server_env() {
         export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
         export MCFS_HTTP_PORT=5012
 
-        if [ -f /etc/materialscommons/config.unit ]; then
-            . /etc/materialscommons/config.unit
+        if [ -f /etc/materialscommons/config.dev ]; then
+            . /etc/materialscommons/config.dev
+        fi
+
+        if [ ! -d ${MCDB_DIR} ]; then
+            mkdir ${MCDB_DIR}
+        fi
+
+        if [ "$REINIT" = "t" ]; then
+            (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
+        fi
+    elif [ "$TESTSERVER" = "u" ]; then
+        export MC_SERVICE_PORT=5602
+        export MC_API_SERVICE_PORT=5604
+        export MC_PUB_SERVICE_PORT=5626
+        export MCDB_PORT=40815
+        export MCDB_CONNECTION="localhost:$MCDB_PORT"
+        export MCDB_DIR=~/unitdb
+        export RETHINKDB_HTTP_PORT=8070
+        export RETHINKDB_CLUSTER_PORT=41815
+        export MCSTOREDBIN=testbin/mcstored
+        export MC_ES_URL="http://localhost:9500"
+        export MC_ES_NAME="mc-es-test"
+        export MC_LOG_DIR=/tmp
+        if [ "$MCDB_FILE" = "" ]; then
+            export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
+        fi
+        export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
+        export MCFS_HTTP_PORT=5012
+
+        if [ -f /etc/materialscommons/config.dev ]; then
+            . /etc/materialscommons/config.dev
         fi
 
         if [ ! -d ${MCDB_DIR} ]; then
@@ -577,47 +680,20 @@ function setup_server_env() {
         if [ -f /etc/materialscommons/config.prod ]; then
             . /etc/materialscommons/config.prod
         fi
-    else
-        # Default to unit
-        export MC_SERVICE_PORT=5002
-        export MC_API_SERVICE_PORT=5004
-        export MC_PUB_SERVICE_PORT=5026
-        export MCDB_PORT=30815
-        export MCDB_CONNECTION="localhost:$MCDB_PORT"
-        export MCDB_DIR=~/testdb
-        export RETHINKDB_HTTP_PORT=8090
-        export RETHINKDB_CLUSTER_PORT=31815
-        export MCSTOREDBIN=testbin/mcstored
-        export MC_ES_URL="http://localhost:9500"
-        export MC_ES_NAME="mc-es-test"
-        export MC_LOG_DIR="/tmp"
-        if [ "$MCDB_FILE" = "" ]; then
-            export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
-        fi
-        export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
-        export MCFS_HTTP_PORT=5012
-
-        if [ -f /etc/materialscommons/config.unit ]; then
-            . /etc/materialscommons/config.unit
-        fi
-
-        if [ ! -d ${MCDB_DIR} ]; then
-            mkdir ${MCDB_DIR}
-        fi
-
-        if [ "$REINIT" = "t" ]; then
-            (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
-        fi
+   else
+        # Default to dev
+        export TESTSERVER=d
+        setup_server_env
     fi
 }
 
 function show_help() {
     echo "mcservers [start|stop|sr|ss|ps|env|tail|update|help]"
     echo "  The mcservers command with no arguments will run the ps command."
-    echo "  If no environment flagged is specified mcservers defaults to -u"
+    echo "  If no environment flagged is specified mcservers defaults to -d"
     echo
     echo "    -h: Displays this help message and exits"
-    echo "    -u: Unit environment"
+    echo "    -d: Dev environment"
     echo "    -t: Test environment"
     echo "    -p: Production environment"
     echo "    -n: Do not recompile mcstored"
@@ -632,17 +708,17 @@ function show_help() {
     echo "    --no-backup: Doesn't perform a backup of the database when performing an update"
     echo
     echo "  help: Displays this help message and exits."
-    echo "  start [-u | -t | -p] [-n] [-r] [--ps]: Starts servers. Will only start servers not currently running."
-    echo "  stop [-u | -t | -p] [--ps]: Stops all servers."
-    echo "  sr|srestart <server-name>  [-u | -t | -p] [-n]: Restart the named server in the given environment- mcapiserver|mcstored|mcapi|mcpub|es."
-    echo "  ss|sstop <server-name>  [-u | -t | -p]: Stop the named server in the given environment - mcapiserver|mcstored|mcapi|mcpub|es."
-    echo "  ss <server-name>  [-u | -t | -p]: Stop the named server in the given environment - mcapiserver|mcstored|mcapi|mcpub|es."
+    echo "  start [-d | -t | -p] [-n] [-r] [--ps]: Starts servers. Will only start servers not currently running."
+    echo "  stop [-d | -t | -p] [--ps]: Stops all servers."
+    echo "  sr|srestart <server-name>  [-d | -t | -p] [-n]: Restart the named server in the given environment- mcapiserver|mcstored|mcapi|mcpub|es."
+    echo "  ss|sstop <server-name>  [-d | -t | -p]: Stop the named server in the given environment - mcapiserver|mcstored|mcapi|mcpub|es."
+    echo "  ss <server-name>  [-d | -t | -p]: Stop the named server in the given environment - mcapiserver|mcstored|mcapi|mcpub|es."
     echo "  ps: Shows the status for all given services in all the environments."
     echo "  env: Shows the paths, environment variables, and other info for all the environments."
-    echo "  tail [-u | -t | -p]: Tails all the logs for all servers for the given environment."
-    echo "  update [-u | -t | -p] [-n] [-r]: Updates Materials Commons from the current branch for the given environment. Includes mcstore repository."
+    echo "  tail [-d | -t | -p]: Tails all the logs for all servers for the given environment."
+    echo "  update [-d | -t | -p] [-n] [-r]: Updates Materials Commons from the current branch for the given environment. Includes mcstore repository."
     echo "         [--mc-branch <branch>] [--mcstore-branch <branch>] [--no-backup] [--run-convert]"
-    echo "  restore [-u | -t | -p]: Restores the previous update by reloading from the database backup and optionally checking out from the given branches."
+    echo "  restore [-d | -t | -p]: Restores the previous update by reloading from the database backup and optionally checking out from the given branches."
     echo "          [--mc-restore-branch <branch>] [--mcstore-restore-branch <branch>]"
     exit 0
 }
@@ -661,8 +737,8 @@ fi
 export MCSTORE_SRC=$HOME/workspace/src/github.com/materials-commons/mcstore
 
 # Set defaults
-TESTSERVER="u"
-SERVERTYPE="unit"
+TESTSERVER="d"
+SERVERTYPE="dev"
 REINIT=f
 RUN_CONVERT=f
 MC_RESTORE_BRANCH=""
@@ -707,6 +783,9 @@ fi
 
 while test $# -gt 0; do
     case "$1" in
+        -h)
+            show_help
+            ;;
         --mc-restore-branch)
             shift
             MC_RESTORE_BRANCH=$1
@@ -730,19 +809,20 @@ while test $# -gt 0; do
             TESTSERVER=u
             SERVERTYPE="unit"
             ;;
-        -h)
-            show_help
+        -d)
+            TESTSERVER=d
+            SERVERTYPE="dev"
             ;;
         -t)
             TESTSERVER=t
             SERVERTYPE="test"
             ;;
-        --ps)
-            SHOW_SERVERS=t
-            ;;
         -p)
             TESTSERVER=p
             SERVERTYPE="production"
+            ;;
+        --ps)
+            SHOW_SERVERS=t
             ;;
         --no-compile-mcstore)
             COMPILE_MCSTORE=f
@@ -832,3 +912,6 @@ case "$CMD" in
         exit 1
         ;;
 esac
+
+check_nginx
+
