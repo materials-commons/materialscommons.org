@@ -37,6 +37,12 @@ set_locations() {
 
 
 set_env() {
+    if [ -z "$SERVERTYPE" ]; then
+        export SERVERTYPE=dev
+    fi
+
+    source ${BACKEND}/env/${SERVERTYPE}.sh
+
     ## DOI
     # Remote DOI service URL
     if [ -z "${MC_DOI_SERVICE_URL}" ]; then
@@ -62,11 +68,6 @@ set_env() {
         export MC_DOI_PW=apitest
     fi
 
-    # DB port for tests
-    if [ -z "${MCDB_PORT}" ]; then
-        export MCDB_PORT=40815
-    fi
-
     # Default TEST_PATTERN
     if [ -z "${TEST_PATTERN}" ];then
         export TEST_PATTERN="tests/**/specs/*-spec.js"
@@ -88,9 +89,9 @@ print_env() {
     echo " TEST_CONTINUOUS   : $TEST_CONTINUOUS"
     fi
     if [ -z "${GREP_PATTERN}" ]; then
-    echo " GREP_PATTERN   : (is not set)"
+    echo " GREP_PATTERN      : (is not set)"
     else
-    echo " GREP_PATTERN   : $GREP_PATTERN"
+    echo " GREP_PATTERN      : $GREP_PATTERN"
     fi
     echo ""
 }
