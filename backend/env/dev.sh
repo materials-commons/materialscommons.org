@@ -23,7 +23,7 @@ if [ -f /etc/materialscommons/config.dev ]; then
 fi
 
 if [ ! -d ${MCDB_DIR} ]; then
-    mkdir ${MCDB_DIR}
+    mkdir -p ${MCDB_DIR}
 fi
 
 if [ "$REINIT" = "t" ]; then
