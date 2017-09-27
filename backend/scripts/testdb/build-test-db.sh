@@ -35,7 +35,7 @@ fi
 
 echo "Rethinkdb rebuild - using MCDB_PORT = $MCDB_PORT"
 
-# NOTE: Assumptions = emtry database, running on $MCDB_PORT
+# NOTE: Assumptions = empty database, running on $MCDB_PORT
 
 set_locations
 
