@@ -40,10 +40,14 @@ echo "Rethinkdb rebuild - using MCDB_PORT = $MCDB_PORT"
 set_locations
 
 # build basic (e.g 'empty') DB; using standard script
-${SCRIPTS}/dbcreate.py --port $MCDB_PORT
+pushd ${SCRIPTS}/
+./dbcreate.py --port $MCDB_PORT
+popd
 
 # add templates
-${SCRIPTS}/templates/run.sh
+pushd ${SCRIPTS}/templates
+./run.sh
+popd
 
 # add test users
 ./make-user-for-tests.py --port $MCDB_PORT --password $MC_USERPW
