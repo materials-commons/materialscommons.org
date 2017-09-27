@@ -24,6 +24,10 @@ class ExperimentsAPIService {
         });
     }
 
+    deleteProcess(projectId, experimentId, processId) {
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('processes', processId).customDELETE();
+    }
+
     deleteExperiments(projectId, experimentIds) {
         return this.projectsAPIRoute(projectId).one('experiments').one('delete').customPOST({
             experiments: experimentIds
@@ -105,13 +109,13 @@ class ExperimentsAPIService {
     convertDatePropertyAttributes(process) {
         if (process.setup) {
             let setup = process.setup;
-            for (var i = 0; i < setup.length; i++) {
+            for (let i = 0; i < setup.length; i++) {
                 let s = setup[i];
                 if (s.properties) {
                     let properties = s.properties;
-                    for (var j = 0; j < properties.length; j++) {
+                    for (let j = 0; j < properties.length; j++) {
                         let property = properties[j];
-                        if (property.otype && (property.otype == 'date')){
+                        if (property.otype && (property.otype === 'date')) {
                             if (property.value) {
                                 property.value = this.convertDateValueFromTransport(property.value);
                             }

@@ -181,7 +181,7 @@ class WorkflowService {
     }
 
     deleteNodeAndProcess2(projectId, experimentId, processId) {
-        this.processesAPI.deleteProcess(projectId, processId)
+        this.experimentsAPI.deleteProcess(projectId, experimentId, processId)
             .then(
                 () => this.mcbus.send('PROCESS$DELETE', processId),
                 error => this.toast.error(error.data.error)

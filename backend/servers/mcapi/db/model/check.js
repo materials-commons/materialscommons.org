@@ -178,6 +178,13 @@ function* processInProject(projectId, processId) {
     return matches.length !== 0;
 }
 
+function* processInPublishedDataset(processId) {
+    let datasets = yield r.table('dataset2process').getAll(processId, {index: 'process_id'})
+        .eqJoin('dataset_id', r.table('datasets')).zip();
+    let publishedDatasets = datasets.filter(d => d.published);
+    return publishedDatasets.length !== 0;
+}
+
 module.exports = {
     allSamplesInDataset,
     allFilesInDataset,
@@ -210,5 +217,6 @@ module.exports = {
     isUserProjectOwner,
     isUserExperimentOwner,
     directoryInProject,
-    processInProject
+    processInProject,
+    processInPublishedDataset
 };

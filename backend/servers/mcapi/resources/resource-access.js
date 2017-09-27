@@ -52,7 +52,6 @@ function* validateExperimentOwner(next) {
 }
 
 function* validateExperimentInProject(next) {
-    console.log('validateExperimentInProject', this.params);
     if (this.params.experiment_id !== 'merge' && this.params.experiment_id !== 'delete') {
         let projectId = this.params.project_id;
         let experimentId = this.params.experiment_id;

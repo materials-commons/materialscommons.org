@@ -6,6 +6,7 @@ const commonQueries = require('../../../lib/common-queries');
 const processCommon = require('./process-common');
 const sampleCommon = require('./sample-common');
 const _ = require('lodash');
+const processes = require('./processes');
 
 function* getAllForProject(projectID) {
     let rql = r.table('project2experiment').getAll(projectID, {index: 'project_id'})
@@ -214,7 +215,7 @@ function* deleteTask(experimentID, taskID) {
     let oldIndex = old.changes[0].old_val.index;
     yield updateTasksAboveDeleted(experimentID, oldParentID, oldIndex);
     if (old.process_id) {
-        yield deleteProcess(experimentID, old.process_id);
+        yield quickDeleteExperimentProcess(experimentID, old.process_id);
     }
     return {val: old.changes[0].old_val};
 }
@@ -471,6 +472,23 @@ function* getFilesForExperiment(experimentId) {
     return {val: files};
 }
 
+function* quickDeleteExperimentProcess(projectId, experimentId, processId) {
+    let experiments = yield processes.processExperiments(processId);
+    if (experiments.length) {
+        // in more than one experiment so we can do quickDeleteProcess and then the
+        // other cleanup.
+        yield processes.quickDeleteProcess(projectId, processId);
+    }
+
+    yield r.table('experiment2process').getAll([experimentId, processId], {index: 'experiment_process'}).delete();
+
+    let experimentDatasets = yield r.table('experiment2dataset').getAll(experimentId, {index: 'experiment_id'});
+    let datasetProcesses = experimentDatasets.map(ed => [ed.dataset_id, processId]);
+    yield r.table('dataset2process').getAll(r.args(datasetProcesses), {index: 'dataset_process'}).delete();
+
+    return true;
+}
+
 module.exports = {
     getAllForProject,
     get,
@@ -494,5 +512,6 @@ module.exports = {
     getFilesForExperiment,
     addProcessFromTemplate,
     cloneProcess,
-    updateProcess
+    updateProcess,
+    quickDeleteExperimentProcess
 };

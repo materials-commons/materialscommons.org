@@ -1,9 +1,27 @@
 const r = require('../r');
-const db = require('./db');
-
 const experimentDatasets = require('./experiment-datasets');
 const experiments = require('./experiments');
 const processes = require('./processes');
+
+function* quickDeleteExperiment(projectId, experimentId) {
+    let hasPublishedDatasets = yield testForPublishedDatasets(experimentId);
+    if (hasPublishedDatasets) {
+        return {error: "Can not delete an experiment with published datasets"}
+    }
+
+    let hasDOIAssigned = yield testForDOIAssigned(experimentId);
+    if (hasDOIAssigned) {
+        return {error: "Can not delete an experiment with a dataset that has a DOI assigned"}
+    }
+
+    yield r.table('project2experiment').getAll(experimentId, {index: 'experiment_id'}).delete();
+
+    const sampleGroups = yield r.db('materialscommons').table('experiment2sample').group('sample_id');
+    const samplesToDelete = sampleGroups.filter(sg => sg.reduction.length < 2 && sg.group[0].experiment_id === experimentId)
+        .map(sg => sg.group);
+    yield r.table('project2sample').getAll(samplesToDelete, {index: 'sample_id'}).delete();
+    return {val: 'deleted'};
+}
 
 function* deleteExperiment(projectId, experimentId, options) {
 
@@ -58,10 +76,6 @@ function* deleteExperiment(projectId, experimentId, options) {
 
     return {val: overallResults};
 }
-
-module.exports = {
-    deleteExperiment
-};
 
 function* testForPublishedDatasets(experimentId) {
     let results = yield experimentDatasets.getDatasetsForExperiment(experimentId);
@@ -233,7 +247,7 @@ function* deleteExperimentTasks(experimentId, dryRun) {
             partialResults['experiment_tasks'] = taskidList;
         }
 
-        delete_msg = yield r.table('experiment2experimenttask')
+        yield r.table('experiment2experimenttask')
             .getAll(experimentId, {index: 'experiment_id'}).delete();
     }
     return partialResults;
@@ -301,7 +315,10 @@ function* clearAllRemainingLinks(experimentId) {
 
     for (let i = 0; i < tables.length; i++) {
         let table = tables[i];
-        let list = yield r.table(table)
-            .getAll(experimentId, {index: 'experiment_id'}).delete();
+        yield r.table(table).getAll(experimentId, {index: 'experiment_id'}).delete();
     }
 }
+
+module.exports = {
+    deleteExperiment: quickDeleteExperiment
+};

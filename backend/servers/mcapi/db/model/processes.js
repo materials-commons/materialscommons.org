@@ -73,6 +73,70 @@ function* datasetsForProcess(processId) {
     return yield r.expr(datasetIdValues).map(r.db('materialscommons').table('datasets').get(r.row)).coerceTo('array');
 }
 
+function* quickDeleteProcess(projectId, processId) {
+    const isLeaf = yield isLeafNode(processId);
+    if (!isLeaf) {
+        return {error: `Process ${processId} isn't a leaf node`};
+    }
+
+    let experiments = yield processExperiments(processId);
+    if (experiments.length > 1) {
+        return {error: `Process is in multiple experiments`};
+    }
+
+    let process = yield getProcess(processId);
+    process = process.val;
+
+    yield r.table('project2process').getAll([projectId, processId], {index: 'project_process'}).delete();
+
+    let process2sampleout = yield r.table('process2sample').getAll(processId, {index: 'process_id'})
+        .filter({direction: 'out'});
+    if (process.does_transform) {
+        yield r.table('process2sample').getAll(processId, {index: 'process_id'}).filter({direction: 'out'}).delete();
+        let samplePropertySets = process2sampleout.map(p2s => [p2s.sample_id, p2s.property_set_id]);
+        yield r.table('sample2propertyset').getAll(r.args(samplePropertySets), {index: 'sample_property_set'}).delete();
+    } else if (process.process_type === 'create') {
+        let projectSamples = process2sampleout.map(p2s => [projectId, p2s.sample_id]);
+        yield r.table('project2sample').getAll(r.args(projectSamples), {index: 'project_sample'}).delete();
+    }
+
+    if (process2sampleout.length) {
+        let toInsert = process2sampleout.map(p2s => ({
+            project_id: projectId,
+            process_id: processId,
+            sample_id: p2s.sample_id,
+            property_set_id: p2s.property_set_id
+        }));
+        yield r.table('deletedprocesses').insert(toInsert);
+    } else {
+        yield r.table('deletedprocesses').insert({
+            project_id: projectId,
+            process_id: processId,
+            sample_id: '',
+            property_set_id: ''
+        });
+    }
+
+    return {val: {action: 'deleted', id: processId}};
+}
+
+function* isLeafNode(processId) {
+    // can not delete a process that is a non-leaf node in a workflow;
+    // a process is a non-leaf node if it has any 'out' sample that is an 'in' sample elsewhere
+    let outputSamples = yield r.table('process2sample').getAll(processId, {index: 'process_id'})
+        .filter({direction: 'out'});
+    if (!outputSamples.length) {
+        // no output samples, so must be a leaf node
+        return true;
+    }
+    let samplePropSetPairs = outputSamples.map(e => [e.sample_id, e.property_set_id]);
+    let usingAsInputs = yield r.table('process2sample')
+        .getAll(r.args(samplePropSetPairs), {index: 'sample_property_set'})
+        .filter({direction: 'in'});
+    // If length is zero then process is a leaf node
+    return usingAsInputs.length === 0;
+}
+
 function* deleteProcess(projectId, processId, options) {
     let forceDelete = false;
     if (options && options.force) forceDelete = true;
@@ -87,7 +151,7 @@ function* deleteProcess(projectId, processId, options) {
         }
 
         // can not delete a process that is a non-leaf node in a workflow;
-        // a process a non-leaf node if it has any 'out' sample that is an 'in' sample elsewhere
+        // a process is a non-leaf node if it has any 'out' sample that is an 'in' sample elsewhere
         let outputSamples = yield r.table('process2sample').getAll(processId, {index: 'process_id'})
             .filter({direction: 'out'});
         let samplePropSetPairs = outputSamples.map(e => [e.sample_id, e.property_set_id]);
@@ -197,15 +261,24 @@ function* updateExistingTemplate(template_id, template) {
     return rv;
 }
 
+function* processExperiments(processId) {
+    return yield r.table('experiment2process').getAll(processId, {index: 'process_id'})
+        .eqJoin('experiment_id', r.table('experiments')).zip();
+}
+
 module.exports = {
     getProcess,
     getProjectProcesses,
     getProcessTemplates,
     createProcessFromTemplate,
     updateProcess,
-    deleteProcess,
+    //deleteProcess,
+    quickDeleteProcess,
+    deleteProcess: quickDeleteProcess, // alias deleteProcess to quickDeleteProcess for now.
     datasetsForProcess,
     getTemplate,
     createProcessTemplate,
-    updateExistingTemplate
+    updateExistingTemplate,
+    isLeafNode,
+    processExperiments,
 };
