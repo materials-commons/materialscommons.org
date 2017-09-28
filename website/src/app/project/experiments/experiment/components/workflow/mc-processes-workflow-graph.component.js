@@ -78,6 +78,12 @@ class MCProcessesWorkflowGraphComponentController {
             this.removedNodes = this.cyGraph.searchProcessesInGraph(this.cy, search, this.processes);
         });
 
+        this.mcbus.subscribe('PROCESS$CHANGE', this.myName, process => {
+            let nodeToUpdate = this.cy.filter(`node[id="${process.id}"]`).forEach((ele, i) => {
+                ele.data('name', process.name);
+            });
+        });
+
         this.mcbus.subscribe('WORKFLOW$RESTOREHIDDEN', this.myName, () => {
             if (this.hiddenNodes.length) {
                 this.hiddenNodes.restore();

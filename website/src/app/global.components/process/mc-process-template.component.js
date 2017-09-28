@@ -1,11 +1,12 @@
 class MCProcessTemplateComponentController {
     /*@ngInject*/
-    constructor($scope, editorOpts, processesAPI, toast, $stateParams) {
+    constructor($scope, editorOpts, processesAPI, toast, $stateParams, mcbus) {
         this.processesAPI = processesAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
         $scope.editorOptions = editorOpts({height: 25, width: 20});
         this.processDescription = this.process.description;
+        this.mcbus = mcbus;
     }
 
     updateProcessName() {
@@ -18,6 +19,7 @@ class MCProcessTemplateComponentController {
                     if (this.onChange) {
                         this.onChange();
                     }
+                    this.mcbus.send('PROCESS$CHANGE', this.process);
                 },
                 () => this.toast.error('Unable to update process name')
             );
