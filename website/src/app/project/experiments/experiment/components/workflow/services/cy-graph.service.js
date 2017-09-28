@@ -82,8 +82,18 @@ class CyGraphService {
     }
 
     setupQTips(cy) {
+        cy.elements().forEach((ele) => {
+            if (ele && _.isFunction(ele.qtip)) {
+                try {
+                    let qtipAPI = ele.qtip('api');
+                    qtipAPI.destroy();
+                } catch (e) {
+
+                }
+            }
+        });
         cy.elements().filter((i, ele) => ele.isNode()).qtip({
-            content: function () {
+            content: function() {
                 return `
                 <h5>${this.data('name')}</h5>
                 <b>Template: </b>${this.data('details').template_name}
@@ -102,7 +112,7 @@ class CyGraphService {
         });
 
         cy.elements().filter((i, ele) => ele.isEdge()).qtip({
-            content: function () {
+            content: function() {
                 return this.data('details').names;
             },
             show: {event: 'mouseenter mouseover'},
@@ -112,6 +122,7 @@ class CyGraphService {
 
     disableQTips(cy) {
         cy.elements().forEach((ele) => {
+            console.log('disable', ele.data('name'));
             let qtipAPI = ele.qtip('api');
             qtipAPI.disable(true);
         });
