@@ -1,11 +1,19 @@
 class MCProjStoreService {
     constructor() {
-        this.projects = {};
+        this.store = {
+            projects: {},
+            currentProject: null,
+            currentExperiment: null
+        };
         this.bus = {
             'PROJECT$CHANGE': [],
             'EXPERIMENT$CHANGE': [],
             'PROCESS$CHANGE': [],
-            'SAMPLE$CHANGE': []
+            'SAMPLE$CHANGE': [],
+            'PROJECT$ADD': [],
+            'EXPERIMENT$ADD': [],
+            'PROCESS$ADD': [],
+            'SAMPLE$ADD': []
         };
     }
 
@@ -31,27 +39,75 @@ class MCProjStoreService {
         switch (which) {
             case this.constructor.PROJECT$CHANGE:
                 return true;
-                break;
             case this.constructor.PROCESS$CHANGE:
                 return true;
-                break;
             case this.constructor.EXPERIMENT$CHANGE:
                 return true;
-                break;
             case this.constructor.SAMPLE$CHANGE:
                 return true;
-                break;
+            case this.constructor.PROJECT$ADD:
+                return true;
+            case this.constructor.EXPERIMENT$ADD:
+                return true;
+            case this.constructor.PROCESS$ADD:
+                return true;
+            case this.constructor.SAMPLE$ADD:
+                return true;
             default:
                 return false;
         }
     }
 
+    getProjects() {
+        _.values(this.store.projects);
+    }
+
     addProject(project) {
-        this.projects[project.id] = project;
+        this.store.projects[project.id] = project;
+        this._fire()
     }
 
     updateProject(id, fn) {
-        let proj = _.findKey(this.projects);
+        let proj = _.findKey(this.store.projects, {id: id});
+        if (proj) {
+            fn(proj);
+        }
+
+        this._fire(this.PROJECT$CHANGE, proj);
+    }
+
+    updateCurrentProject(fn) {
+        if (this.store.currentProject) {
+            fn(this.store.currentProject);
+        }
+    }
+
+    setCurrentProject(id) {
+        this.store.currentProject = _.findKey(this.store.projects, {id: id});
+    }
+
+    getCurrentProject() {
+        return this.store.currentProject;
+    }
+
+    setCurrentExperiment(id) {
+        this.store.currentExperiment = _.findKey(this.store.currentProject.experiments, {id: id});
+    }
+
+    getCurrentExperiment() {
+        return this.store.currentExperiment;
+    }
+
+    updateCurrentExperiment(fn) {
+        if (this.store.currentExperiment) {
+            fn(this.store.currentExperiment);
+        }
+    }
+
+    _fire(which, ...args) {
+        for (let fn in this.bus[which]) {
+            fn(...args);
+        }
     }
 
     get PROJECT$CHANGE() {
@@ -69,12 +125,32 @@ class MCProjStoreService {
     get SAMPLE$CHANGE() {
         return this.constructor.SAMPLE$CHANGE;
     }
+
+    get PROJECT$ADD() {
+        return this.constructor.PROCESS$ADD;
+    }
+
+    get EXPERIMENT$ADD() {
+        return this.constructor.EXPERIMENT$ADD;
+    }
+
+    get PROCESS$ADD() {
+        return this.constructor.PROCESS$ADD;
+    }
+
+    get SAMPLE$ADD() {
+        return this.constructor.SAMPLE$ADD;
+    }
 }
 
 MCProjStoreService.PROJECT$CHANGE = 'PROJECT$CHANGE';
 MCProjStoreService.EXPERIMENT$CHANGE = 'EXPERIMENT$CHANGE';
 MCProjStoreService.PROCESS$CHANGE = 'PROCESS$CHANGE';
 MCProjStoreService.SAMPLE$CHANGE = 'SAMPLE$CHANGE';
+MCProjStoreService.PROJECT$ADD = 'PROJECT$ADD';
+MCProjStoreService.EXPERIMENT$ADD = 'EXPERIMENT$ADD';
+MCProjStoreService.PROCESS$ADD = 'PROCESS$ADD';
+MCProjStoreService.SAMPLE$ADD = 'SAMPLE$ADD';
 
 
 angular.module('materialscommons').service('mcprojstore', MCProjStoreService);
