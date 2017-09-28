@@ -79,7 +79,7 @@ class MCProcessesWorkflowGraphComponentController {
         });
 
         this.mcbus.subscribe('PROCESS$CHANGE', this.myName, process => {
-            let nodeToUpdate = this.cy.filter(`node[id="${process.id}"]`).forEach((ele, i) => {
+            this.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
                 ele.data('name', process.name);
             });
         });
