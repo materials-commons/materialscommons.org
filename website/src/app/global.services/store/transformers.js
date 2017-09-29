@@ -1,7 +1,7 @@
 function projectTransformer(project) {
     let p = project;
     p.experiments = _.indexBy(project.experiments, 'id');
-    p.samples = _.indexBy(project.samples);
+    p.samples = _.indexBy(project.samples, 'id');
     return p;
 }
 
