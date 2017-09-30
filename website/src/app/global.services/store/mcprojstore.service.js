@@ -119,7 +119,6 @@ class MCProjStoreService {
     addProjects(...projects) {
         this.mcstore.add(store => {
             projects.forEach(p => {
-                console.log('addProjects', p);
                 store.projects[p.id] = p;
             });
         });
