@@ -33,12 +33,22 @@ class MCProjectsComponentController {
     }
 
     getUserProjects() {
-        this.ProjectModel.getProjectsForCurrentUser().then(
-            (projects) => {
-                this.myProjects = projects.filter(p => p.owner === this.mcuser.email);
-                this.joinedProjects = projects.filter(p => p.owner !== this.mcuser.email);
-            }
-        );
+        let projects = this.mcprojstore.projects;
+        if (projects.length) {
+            this._fillProjects(projects);
+        } else {
+            this.ProjectModel.getProjectsForCurrentUser().then(
+                (projects) => {
+                    this.mcprojstore.addProjects(...projects);
+                    this._fillProjects(this.mcprojstore.projects)
+                }
+            );
+        }
+    }
+
+    _fillProjects(projects) {
+        this.myProjects = projects.filter(p => p.owner === this.mcuser.email);
+        this.joinedProjects = projects.filter(p => p.owner !== this.mcuser.email);
     }
 
     buildDemoProject() {
