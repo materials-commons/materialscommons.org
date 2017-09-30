@@ -30,7 +30,6 @@ class MCProjStoreService {
         this.OTEXPERIMENT = 'OTEXPERIMENT';
         this.OTPROCESS = 'OTPROCESS';
         this.knownOTypes = [this.OTPROJECT, this.OTEXPERIMENT, this.OTPROCESS];
-
     }
 
     reset() {
