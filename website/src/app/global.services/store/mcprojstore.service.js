@@ -84,6 +84,9 @@ class MCProjStoreService {
             const currentProject = getCurrentProjectFromStore(store);
             fn(currentProject.experiments);
         }
+
+        // Force subscriptions on projects to fire by generating an update to current project that doesn't do anything.
+        this.updateCurrentProject(() => {});
     }
 
     _fnFireProcess(event, store, fn) {
@@ -94,6 +97,9 @@ class MCProjStoreService {
             const currentExperiment = getCurrentExperimentFromStore(store);
             fn(currentExperiment.processes);
         }
+
+        // Force subscription on experiments to fire by generating an update to current experiment that doesn't do anything.
+        this.updateCurrentExperiment(() => {});
     }
 
     addProject(project) {
