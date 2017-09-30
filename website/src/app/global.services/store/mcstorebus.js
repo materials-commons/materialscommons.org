@@ -14,9 +14,9 @@ export default class MCStoreBus {
 
         this.bus[evName].push(listener);
         return () => {
-            const index = this.bus[which].indexOf(listener);
+            const index = this.bus[evName].indexOf(listener);
             if (index !== -1) {
-                this.bus[which].splice(index, 1);
+                this.bus[evName].splice(index, 1);
             }
         };
     }

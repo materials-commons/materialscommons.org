@@ -1,6 +1,6 @@
 import MCStoreBus from './mcstorebus';
 
-export class MCStore {
+export default class MCStore {
     constructor(initialState) {
         this.store = initialState;
         this.bus = new MCStoreBus();

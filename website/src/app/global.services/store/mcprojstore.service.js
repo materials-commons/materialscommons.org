@@ -33,6 +33,15 @@ class MCProjStoreService {
 
     }
 
+    reset() {
+        this.store = new MCStore({
+            projects: {},
+            currentProjectId: null,
+            currentExperimentId: null,
+            currentProcessId: null
+        });
+    }
+
     get projects() {
         return _.values(this.store.projects);
     }
@@ -86,7 +95,8 @@ class MCProjStoreService {
         }
 
         // Force subscriptions on projects to fire by generating an update to current project that doesn't do anything.
-        this.updateCurrentProject(() => {});
+        this.updateCurrentProject(() => {
+        });
     }
 
     _fnFireProcess(event, store, fn) {
@@ -99,12 +109,21 @@ class MCProjStoreService {
         }
 
         // Force subscription on experiments to fire by generating an update to current experiment that doesn't do anything.
-        this.updateCurrentExperiment(() => {});
+        this.updateCurrentExperiment(() => {
+        });
     }
 
     addProject(project) {
         this.store.add(store => {
             store.projects[project.id] = project;
+        });
+    }
+
+    addProjects(...projects) {
+        this.store.add(store => {
+            projects.forEach(p => {
+                store.projects[p.id] = p;
+            });
         });
     }
 
@@ -141,7 +160,7 @@ class MCProjStoreService {
         });
     }
 
-    updateCurrentExperiment(experiment) {
+    updateCurrentExperiment(fn) {
         this.store.update(store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             fn(currentExperiment);
@@ -185,7 +204,7 @@ class MCProjStoreService {
         });
     }
 
-    updateCurrentProcess(p) {
+    updateCurrentProcess(fn) {
         this.store.update(store => {
             const currentProcess = getCurrentProcessFromStore(store);
             fn(currentProcess);

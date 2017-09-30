@@ -1,6 +1,6 @@
 class MCProjectsComponentController {
     /*@ngInject*/
-    constructor($mdDialog, User, mcbus, ProjectModel, blockUI, demoProjectService, toast) {
+    constructor($mdDialog, User, mcbus, ProjectModel, blockUI, demoProjectService, toast, mcprojstore) {
         this.$mdDialog = $mdDialog;
         this.User = User;
         this.mcbus = mcbus;
@@ -9,6 +9,7 @@ class MCProjectsComponentController {
         this.demoProjectService = demoProjectService;
         this.toast = toast;
         this.mcuser = User.attr();
+        this.mcprojstore = mcprojstore;
         this.myProjects = [];
         this.joinedProjects = [];
     }
