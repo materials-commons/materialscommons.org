@@ -29,7 +29,7 @@ class MCProjStoreService {
         this.OTPROJECT = 'OTPROJECT';
         this.OTEXPERIMENT = 'OTEXPERIMENT';
         this.OTPROCESS = 'OTPROCESS';
-        this.knownOTypes = [this.OTPROJECT, this.OTEXPERIMENT, this.OTPROCESS];
+        this._knownOTypes = [this.OTPROJECT, this.OTEXPERIMENT, this.OTPROCESS];
     }
 
     reset() {
@@ -53,7 +53,7 @@ class MCProjStoreService {
     }
 
     _knownOType(otype) {
-        return _.findIndex(this.knownOTypes, otype) !== -1;
+        return _.findIndex(this._knownOTypes, otype) !== -1;
     }
 
     _subscribe(otype, event, fn) {
@@ -94,8 +94,7 @@ class MCProjStoreService {
         }
 
         // Force subscriptions on projects to fire by generating an update to current project that doesn't do anything.
-        this.updateCurrentProject(() => {
-        });
+        this.updateCurrentProject(() => null);
     }
 
     _fnFireProcess(event, store, fn) {
@@ -108,8 +107,7 @@ class MCProjStoreService {
         }
 
         // Force subscription on experiments to fire by generating an update to current experiment that doesn't do anything.
-        this.updateCurrentExperiment(() => {
-        });
+        this.updateCurrentExperiment(() => null);
     }
 
     addProject(project) {
