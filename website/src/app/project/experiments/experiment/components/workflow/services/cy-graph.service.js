@@ -88,7 +88,7 @@ class CyGraphService {
                     let qtipAPI = ele.qtip('api');
                     qtipAPI.destroy();
                 } catch (e) {
-
+                    //console.log(e);
                 }
             }
         });
