@@ -1,5 +1,17 @@
 import MCStoreBus from './mcstorebus';
 
+export const EVTYPE = {
+    EVUPDATE: 'EVUPDATE',
+    EVREMOVE: 'EVREMOVE',
+    EVADD: 'EVADD'
+};
+
+const _KNOWN_EVENTS = _.values(EVTYPE);
+
+function isKnownEvent(event) {
+    return _.findIndex(_KNOWN_EVENTS, event) !== -1;
+}
+
 export default class MCStore {
     constructor(initialState) {
         this.store = initialState;

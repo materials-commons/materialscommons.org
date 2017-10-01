@@ -48,6 +48,7 @@ function* getProject(projectId) {
                 .eqJoin('user_id', r.table('users')).without({
                     'right': {
                         id: true,
+                        apikey: true,
                         admin: true,
                         affiliation: true,
                         avatar: true,
