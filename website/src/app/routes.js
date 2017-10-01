@@ -62,7 +62,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             template: '<ui-view flex="100" layout="column"></ui-view>',
             resolve: {
                 _project: ["$stateParams", "projectsAPI", "mcstate",
-                    // Inject projects so that it resolves before looking up the project.
                     function($stateParams, projectsAPI, mcstate) {
                         return projectsAPI.getProject($stateParams.project_id)
                             .then(function(proj) {
