@@ -3,7 +3,7 @@ import {Experiment} from '../experiments/experiment/components/tasks/experiment.
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, mcstate, experimentsAPI, toast, $state, $stateParams, projectsAPI, editorOpts, $mdDialog) {
+    constructor($scope, mcstate, experimentsAPI, toast, $state, $stateParams, projectsAPI, editorOpts, $mdDialog, mcprojstore) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
@@ -19,6 +19,7 @@ class MCProjectHomeComponentController {
         this.mergingExperiments = false;
         this.deletingExperiments = false;
         this.selectingExperiments = false;
+        this.mcprojstore = mcprojstore;
 
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
