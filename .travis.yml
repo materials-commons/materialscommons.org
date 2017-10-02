@@ -93,19 +93,7 @@ before_script:
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
 
-  - pushd backend/scripts
-  - python dbcreate.py --port $MCDB_PORT0
-  - pushd testdb
-  - python makeUsersForTests.py --port $MCDB_PORT --password $MC_USERPW
-  - popd
-  - pushd templates
-  - ./run.sh
-  - popd
-
-  - node servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.travis.txt 2>&1&
-  - sleep 5
-  - popd
   - cd backend
 
 script:
-  - node_modules/.bin/_mocha "**/Database-Level/specs/*-spec.js"
+  - npm test

@@ -16,7 +16,12 @@ set_locations() {
 
 do_all() {
     pushd $DIR
+    # normally use 'unit'; use 'dev' to run tests in dev environment
+    # export SERVERTYPE=dev
+    export SERVERTYPE=unit
     ./setup-and-start-test-db.sh -c all
+    # use this TEST_PATTHEN for running short tests of this script
+    # export TEST_PATTERN="tests/mcapi/Database-Level/specs/projects-spec.js"
     # Note - temporarily restricting test to only /tests/mcapi/Database-level
     # when broken tests are fixed this restriction can be lifted -
     # then use default TEST_PATTERN

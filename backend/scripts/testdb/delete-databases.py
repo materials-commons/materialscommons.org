@@ -2,9 +2,6 @@
 
 import rethinkdb as r
 from optparse import OptionParser
-from pbkdf2 import crypt
-import uuid
-import sys
 
 if __name__ == "__main__":
     parser = OptionParser()

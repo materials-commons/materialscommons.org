@@ -6,7 +6,8 @@ class Builder {
     constructor(parameters) {
         this.watch_list = [
             new PublicationWatcher(parameters),
-            new UserWatcher(parameters),
+// TODO: advnace User Watcher to admin-like user monitoring.
+//            new UserWatcher(parameters),
             new FileWatcher(parameters)
         ]
     }
