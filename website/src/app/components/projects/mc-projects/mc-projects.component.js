@@ -16,9 +16,13 @@ class MCProjectsComponentController {
 
     $onInit() {
         this.getUserProjects();
-        this.mcbus.subscribe('PROJECTS$REFRESH', 'MCProjectsComponentController', () => {
-            this.getUserProjects();
-        });
+        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVADD,
+            projects => this._fillProjects(_.values(projects))
+        );
+    }
+
+    $onDestroy() {
+        this.unsubscribe();
     }
 
     createNewProject() {
@@ -34,16 +38,7 @@ class MCProjectsComponentController {
 
     getUserProjects() {
         let projects = this.mcprojstore.projects;
-        if (projects.length) {
-            this._fillProjects(projects);
-        } else {
-            this.ProjectModel.getProjectsForCurrentUser().then(
-                (projects) => {
-                    this.mcprojstore.addProjects(...projects);
-                    this._fillProjects(this.mcprojstore.projects)
-                }
-            );
-        }
+        this._fillProjects(projects);
     }
 
     _fillProjects(projects) {
