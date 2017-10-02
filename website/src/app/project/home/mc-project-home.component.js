@@ -3,16 +3,14 @@ import {Experiment} from '../experiments/experiment/components/tasks/experiment.
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, mcstate, experimentsAPI, toast, $state, $stateParams, projectsAPI, editorOpts, $mdDialog, mcprojstore) {
+    constructor($scope, experimentsAPI, toast, $state, $stateParams, projectsAPI, editorOpts, $mdDialog, mcprojstore) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.projectsAPI = projectsAPI;
         this.$mdDialog = $mdDialog;
-
-        this.project = mcstate.get(mcstate.CURRENT$PROJECT);
-        this.projectLoaded = true;
+        this.project = mcprojstore.getProject(this.$stateParams.project_id);
         this.experimentType = 'active';
         this.experiments = [];
         this.projectOverview = this.project.overview;
