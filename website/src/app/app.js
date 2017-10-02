@@ -32,9 +32,9 @@ function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $aria
     });
 }
 
-appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText'];
+appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText', "templates"];
 
-function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText) {
+function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText, templates) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     // appRun will run when the application starts up and before any controllers have run.
@@ -45,6 +45,9 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
     // the apikey param in Restangular.
     if (User.isAuthenticated()) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
+        templates.getServerTemplates().then(
+            (t) => templates.set(t)
+        );
     }
 
     const unregister = $rootScope.$on('$stateChangeStart', function (event, toState) {
