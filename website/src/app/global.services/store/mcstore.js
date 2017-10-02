@@ -9,7 +9,7 @@ export const EVTYPE = {
 const _KNOWN_EVENTS = _.values(EVTYPE);
 
 function isKnownEvent(event) {
-    return _.findIndex(_KNOWN_EVENTS, event) !== -1;
+    return _KNOWN_EVENTS.indexOf(event) !== -1;
 }
 
 export class MCStore {
