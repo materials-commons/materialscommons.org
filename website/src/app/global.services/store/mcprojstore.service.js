@@ -1,18 +1,5 @@
 import {MCStore, EVTYPE} from './mcstore';
-
-function getCurrentProjectFromStore(store) {
-    return store.projects[store.currentProjectId];
-}
-
-function getCurrentExperimentFromStore(store) {
-    const currentProj = getCurrentProjectFromStore(store);
-    return currentProj.experiments[store.currentExperimentId];
-}
-
-function getCurrentProcessFromStore(store) {
-    const currentExperiment = getCurrentExperimentFromStore(store);
-    return currentExperiment.processes[store.currentProcessId];
-}
+import transformers from './transformers';
 
 class MCProjStoreService {
     constructor() {
@@ -45,81 +32,21 @@ class MCProjStoreService {
         return _.values(this.mcstore.store.projects);
     }
 
-    subscribe(otype, event, fn) {
-        if (!this._knownOType(otype)) {
-            throw new Error(`Unknown Object Type ${otype}`);
-        }
-        return this._subscribe(otype, event, fn);
-    }
-
-    _knownOType(otype) {
-        return _.findIndex(this._knownOTypes, otype) !== -1;
-    }
-
-    _subscribe(otype, event, fn) {
-        return this.mcstore.subscribe(event, store => {
-            this._fnFire(otype, event, store, fn);
-        });
-    }
-
-    _fnFire(otype, event, store, fn) {
-        switch (otype) {
-            case 'PROJECT':
-                return this._fnFireProject(event, store, fn);
-            case 'EXPERIMENT':
-                return this._fnFireExperiment(event, store, fn);
-            case 'PROCESS':
-                return this._fnFireProcess(event, store, fn);
-            default:
-                return;
-        }
-    }
-
-    _fnFireProject(event, store, fn) {
-        if (event === EVTYPE.EVUPDATE) {
-            const currentProj = getCurrentProjectFromStore(store);
-            fn(currentProj);
-        } else {
-            fn(store.projects);
-        }
-    }
-
-    _fnFireExperiment(event, store, fn) {
-        if (event === EVTYPE.EVUPDATE) {
-            const currentExperiment = getCurrentExperimentFromStore(store);
-            fn(currentExperiment);
-        } else {
-            const currentProject = getCurrentProjectFromStore(store);
-            fn(currentProject.experiments);
-        }
-
-        // Force subscriptions on projects to fire by generating an update to current project that doesn't do anything.
-        this.updateCurrentProject(() => null);
-    }
-
-    _fnFireProcess(event, store, fn) {
-        if (event === EVTYPE.EVUPDATE) {
-            const currentProcess = getCurrentProcessFromStore(store);
-            fn(currentProcess);
-        } else {
-            const currentExperiment = getCurrentExperimentFromStore(store);
-            fn(currentExperiment.processes);
-        }
-
-        // Force subscription on experiments to fire by generating an update to current experiment that doesn't do anything.
-        this.updateCurrentExperiment(() => null);
+    getProject(projectId) {
+        this.mcstore.currentProjectId = projectId;
+        return this.mcstore.store.projects[projectId];
     }
 
     addProject(project) {
         this.mcstore.add(store => {
-            store.projects[project.id] = project;
+            store.projects[project.id] = transformers.projectTransformer(project);
         });
     }
 
     addProjects(...projects) {
         this.mcstore.add(store => {
             projects.forEach(p => {
-                store.projects[p.id] = p;
+                store.projects[p.id] = transformers.projectTransformer(p);
             });
         });
     }
@@ -227,6 +154,85 @@ class MCProjStoreService {
     _getCurrentProcess() {
         return this._getCurrentExperiment().processes[this.mcstore.store.currentProcessId];
     }
+
+    subscribe(otype, event, fn) {
+        if (!this._knownOType(otype)) {
+            throw new Error(`Unknown Object Type ${otype}`);
+        }
+        return this._subscribe(otype, event, fn);
+    }
+
+    _knownOType(otype) {
+        return this._knownOTypes.indexOf(otype) !== -1;
+    }
+
+    _subscribe(otype, event, fn) {
+        return this.mcstore.subscribe(event, store => {
+            this._fnFire(otype, event, store, fn);
+        });
+    }
+
+    _fnFire(otype, event, store, fn) {
+        switch (otype) {
+            case this.OTPROJECT:
+                return _fnFireProject(event, store, fn);
+            case this.OTEXPERIMENT:
+                return _fnFireExperiment(event, store, fn);
+            case this.OTPROCESS:
+                return _fnFireProcess(event, store, fn);
+            default:
+                return;
+        }
+    }
 }
 
 angular.module('materialscommons').service('mcprojstore', MCProjStoreService);
+
+function getCurrentProjectFromStore(store) {
+    return store.projects[store.currentProjectId];
+}
+
+function getCurrentExperimentFromStore(store) {
+    const currentProj = getCurrentProjectFromStore(store);
+    return currentProj.experiments[store.currentExperimentId];
+}
+
+function getCurrentProcessFromStore(store) {
+    const currentExperiment = getCurrentExperimentFromStore(store);
+    return currentExperiment.processes[store.currentProcessId];
+}
+
+function _fnFireProject(event, store, fn) {
+    if (event === EVTYPE.EVUPDATE) {
+        const currentProj = getCurrentProjectFromStore(store);
+        fn(currentProj);
+    } else {
+        fn(store.projects);
+    }
+}
+
+function _fnFireExperiment(event, store, fn) {
+    if (event === EVTYPE.EVUPDATE) {
+        const currentExperiment = getCurrentExperimentFromStore(store);
+        fn(currentExperiment);
+    } else {
+        const currentProject = getCurrentProjectFromStore(store);
+        fn(currentProject.experiments);
+    }
+
+    // Force subscriptions on projects to fire by generating an update to current project that doesn't do anything.
+    this.updateCurrentProject(() => null);
+}
+
+function _fnFireProcess(event, store, fn) {
+    if (event === EVTYPE.EVUPDATE) {
+        const currentProcess = getCurrentProcessFromStore(store);
+        fn(currentProcess);
+    } else {
+        const currentExperiment = getCurrentExperimentFromStore(store);
+        fn(currentExperiment.processes);
+    }
+
+    // Force subscription on experiments to fire by generating an update to current experiment that doesn't do anything.
+    this.updateCurrentExperiment(() => null);
+}
