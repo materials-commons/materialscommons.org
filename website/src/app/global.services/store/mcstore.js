@@ -12,7 +12,7 @@ function isKnownEvent(event) {
     return _.findIndex(_KNOWN_EVENTS, event) !== -1;
 }
 
-export default class MCStore {
+export class MCStore {
     constructor(initialState) {
         this.store = initialState;
         this.bus = new MCStoreBus();
@@ -23,7 +23,7 @@ export default class MCStore {
     }
 
     subscribe(event, fn) {
-        if (!this._knownEvent(event)) {
+        if (!isKnownEvent(event)) {
             throw new Error(`Unknown Event ${event}`);
         }
 

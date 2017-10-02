@@ -1,4 +1,4 @@
-import MCStore from './mcstore';
+import {MCStore, EVTYPE} from './mcstore';
 
 function getCurrentProjectFromStore(store) {
     return store.projects[store.currentProjectId];
@@ -23,9 +23,9 @@ class MCProjStoreService {
             currentProcessId: null
         });
 
-        this.EVADD = this.mcstore.EVADD;
-        this.EVREMOVE = this.mcstore.EVREMOVE;
-        this.EVUPDATE = this.mcstore.EVUPDATE;
+        this.EVADD = EVTYPE.EVADD;
+        this.EVREMOVE = EVTYPE.EVREMOVE;
+        this.EVUPDATE = EVTYPE.EVUPDATE;
         this.OTPROJECT = 'OTPROJECT';
         this.OTEXPERIMENT = 'OTEXPERIMENT';
         this.OTPROCESS = 'OTPROCESS';
@@ -76,7 +76,7 @@ class MCProjStoreService {
     }
 
     _fnFireProject(event, store, fn) {
-        if (event === this.mcstore.EVUPDATE) {
+        if (event === EVTYPE.EVUPDATE) {
             const currentProj = getCurrentProjectFromStore(store);
             fn(currentProj);
         } else {
@@ -85,7 +85,7 @@ class MCProjStoreService {
     }
 
     _fnFireExperiment(event, store, fn) {
-        if (event === this.mcstore.EVUPDATE) {
+        if (event === EVTYPE.EVUPDATE) {
             const currentExperiment = getCurrentExperimentFromStore(store);
             fn(currentExperiment);
         } else {
@@ -98,7 +98,7 @@ class MCProjStoreService {
     }
 
     _fnFireProcess(event, store, fn) {
-        if (event === this.mcstore.EVUPDATE) {
+        if (event === EVTYPE.EVUPDATE) {
             const currentProcess = getCurrentProcessFromStore(store);
             fn(currentProcess);
         } else {
