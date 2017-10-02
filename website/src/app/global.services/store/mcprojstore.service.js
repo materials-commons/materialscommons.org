@@ -33,7 +33,7 @@ class MCProjStoreService {
     }
 
     getProject(projectId) {
-        this.mcstore.currentProjectId = projectId;
+        this.mcstore.store.currentProjectId = projectId;
         return this.mcstore.store.projects[projectId];
     }
 
