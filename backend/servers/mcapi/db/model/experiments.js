@@ -37,10 +37,12 @@ function* getAllForProject(projectID) {
                     .eqJoin('datafile_id', r.table('datafiles')).zip()
                     .orderBy('name')
                     .coerceTo('array'),
-                processes: r.table('experiment2process').getAll(experiment('id'), {index: 'experiment_id'})
-                    .eqJoin('process_id', r.table('processes')).zip()
-                    .orderBy('name')
-                    .coerceTo('array'),
+                processes: commonQueries.processDetailsRql(r.table('experiment2process').getAll(experiment('id'), {index: 'experiment_id'})
+                    .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array'),
+                // processes: r.table('experiment2process').getAll(experiment('id'), {index: 'experiment_id'})
+                //     .eqJoin('process_id', r.table('processes')).zip()
+                //     .orderBy('name')
+                //     .coerceTo('array'),
                 datasets: r.table('experiment2dataset').getAll(experiment('id'), {index: 'experiment_id'})
                     .eqJoin('dataset_id', r.table('datasets')).zip()
                     .orderBy('title')
