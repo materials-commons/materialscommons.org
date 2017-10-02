@@ -27,13 +27,10 @@ class MCProjectHomeComponentController {
     }
 
     getProjectExperiments() {
-        return this.experimentsAPI.getAllForProject(this.$stateParams.project_id).then(
-            (experiments) => {
-                this.experiments = experiments;
-                this.experiments.forEach(e => e.selected = false);
-            },
-            () => this.toast.error('Unable to retrieve experiments for project')
-        );
+        this.experiments = _.values(this.project.experiments).map(e => {
+            e.selected = false;
+            return e;
+        });
     }
 
     updateProjectOverview() {
