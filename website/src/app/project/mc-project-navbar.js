@@ -4,13 +4,13 @@ angular.module('materialscommons').component("mcProjectNavbar", {
 });
 
 /*@ngInject*/
-function MCProjectNavbarComponentController(mcstate, $state, $rootScope, $scope, $mdSidenav,
-                                            quickbarSamples, $stateParams, User) {
+function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSidenav,
+                                            quickbarSamples, $stateParams, User, mcprojstore) {
     const ctrl = this;
 
     ctrl.showQuickbar = false;
     ctrl.currentTab = getCurrentTabIndex();
-    ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
+    ctrl.project = mcprojstore.getProject($stateParams.project_id);
     ctrl.projectName = ctrl.project.name;
     ctrl.projectSamples = [];
     ctrl.experimentSamples = [];
