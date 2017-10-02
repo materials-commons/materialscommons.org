@@ -74,7 +74,7 @@ class MCProjStoreService {
     }
 
     _getCurrentProject() {
-        return this.mcstore.projects[this.mcstore.store.currentProjectId];
+        return this.mcstore.store.projects[this.mcstore.store.currentProjectId];
     }
 
     addExperiment(experiment) {
@@ -116,6 +116,15 @@ class MCProjStoreService {
         this.mcstore.store.currentExperimentId = e.id;
     }
 
+    getExperiment(experimentId) {
+        this.mcstore.store.currentExperimentId = experimentId;
+        return this._getCurrentExperiment();
+    }
+
+    setCurrentExperiment(experimentId) {
+        this.mcstore.store.currentExperimentId = experimentId;
+    }
+
     _getCurrentExperiment() {
         const currentProject = this._getCurrentProject();
         return currentProject.experiments[this.mcstore.store.currentExperimentId];
@@ -149,6 +158,15 @@ class MCProjStoreService {
 
     set currentProcess(p) {
         this.mcstore.store.currentProcessId = p.id;
+    }
+
+    getProcess(processId) {
+        this.setCurrentProcess(processId);
+        return this._getCurrentProcess();
+    }
+
+    setCurrentProcess(processId) {
+        this.mcstore.store.currentProcessId = processId;
     }
 
     _getCurrentProcess() {
