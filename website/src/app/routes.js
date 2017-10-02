@@ -105,15 +105,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                             return p;
                         }
                     );
-                }],
-
-                _templates: ["templates", function (templates) {
-                    return templates.getServerTemplates().then(
-                        (t) => {
-                            templates.set(t);
-                            return t;
-                        }
-                    );
                 }]
             }
         })
