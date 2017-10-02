@@ -61,14 +61,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<ui-view flex="100" layout="column"></ui-view>',
             resolve: {
-                _project: ["$stateParams", "projectsAPI", "mcstate",
-                    function($stateParams, projectsAPI, mcstate) {
-                        return projectsAPI.getProject($stateParams.project_id)
-                            .then(function(proj) {
-                                mcstate.set(mcstate.CURRENT$PROJECT, proj);
-                                return proj;
-                            });
-                    }],
                 _templates: ["templates", function(templates) {
                     return templates.getServerTemplates().then(
                         (t) => {
