@@ -1,6 +1,6 @@
 function projectTransformer(project) {
     let p = project;
-    p.fullExperimentsLoaded = false;
+    p.experimentsFullyLoaded = false;
     p.experiments = _.indexBy(project.experiments, 'id');
     p.samples = _.indexBy(project.samples, 'id');
     return p;
