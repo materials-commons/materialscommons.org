@@ -123,22 +123,23 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment', {
             url: '/experiment/:experiment_id',
-            template: `<mc-experiment></mc-experiment>`,
-            resolve: {
-                experiment: ['experimentsAPI', 'toast', 'toUITask', '$stateParams', 'mcstate',
-                    function (experimentsAPI, toast, toUITask, $stateParams, mcstate) {
-                        return experimentsAPI.getForProject($stateParams.project_id, $stateParams.experiment_id)
-                            .then(
-                                (e) => {
-                                    e.tasks.forEach((task) => toUITask(task));
-                                    mcstate.set(mcstate.CURRENT$EXPERIMENT, e);
-                                    return e;
-                                },
-                                () => toast.error('Failed to retrieve experiment')
-                            );
-                    }
-                ]
-            }
+            template: `<mc-experiment></mc-experiment>`
+            //,
+            // resolve: {
+            //     experiment: ['experimentsAPI', 'toast', 'toUITask', '$stateParams', 'mcstate',
+            //         function (experimentsAPI, toast, toUITask, $stateParams, mcstate) {
+            //             return experimentsAPI.getForProject($stateParams.project_id, $stateParams.experiment_id)
+            //                 .then(
+            //                     (e) => {
+            //                         e.tasks.forEach((task) => toUITask(task));
+            //                         mcstate.set(mcstate.CURRENT$EXPERIMENT, e);
+            //                         return e;
+            //                     },
+            //                     () => toast.error('Failed to retrieve experiment')
+            //                 );
+            //         }
+            //     ]
+            // }
         })
         .state('project.experiment.details', {
             url: '/details',
