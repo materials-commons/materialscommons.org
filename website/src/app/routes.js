@@ -24,7 +24,25 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('projects', {
             url: '/projects',
             abstract: true,
-            template: '<div ui-view></div>'
+            template: '<div ui-view></div>',
+            resolve: {
+                _db: ["mcprojstore", function (mcprojstore) {
+                    return mcprojstore.ready();
+                }],
+                _projects: ["mcprojstore", "ProjectModel", "_db", function (mcprojstore, ProjectModel) {
+                    let projects = mcprojstore.projects;
+                    if (projects.length) {
+                        return projects;
+                    }
+
+                    return ProjectModel.getProjectsForCurrentUser().then(
+                        (projects) => {
+                            mcprojstore.addProjects(...projects);
+                            return mcprojstore.projects;
+                        }
+                    );
+                }]
+            }
         })
         .state('projects.list', {
             url: '/list',
@@ -61,8 +79,11 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<ui-view flex="100" layout="column"></ui-view>',
             resolve: {
-                /* inject _projects to force next resolve to wait */
-                _project: ["mcprojstore", "$stateParams", "experimentsAPI", function (mcprojstore, $stateParams, experimentsAPI) {
+                _db: ["mcprojstore", function (mcprojstore) {
+                    return mcprojstore.ready();
+                }],
+                /* inject _db to force next resolve to wait for store to ready ready*/
+                _project: ["mcprojstore", "$stateParams", "experimentsAPI", "_db", function (mcprojstore, $stateParams, experimentsAPI) {
                     let p = mcprojstore.getProject($stateParams.project_id);
                     if (p.experimentsFullyLoaded) {
                         return p;
