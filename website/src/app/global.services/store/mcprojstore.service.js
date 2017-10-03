@@ -28,6 +28,10 @@ class MCProjStoreService {
         });
     }
 
+    remove() {
+        this.mcstore.removeStore();
+    }
+
     get projects() {
         return _.values(this.mcstore.store.projects);
     }
