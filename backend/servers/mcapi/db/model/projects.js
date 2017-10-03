@@ -49,6 +49,10 @@ function* getProject(projectId) {
                     'right': {
                         id: true,
                         admin: true,
+                        tadmin: true,
+                        apikey: true,
+                        demo_installed: true,
+                        notes: true,
                         affiliation: true,
                         avatar: true,
                         birthtime: true,
