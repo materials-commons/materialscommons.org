@@ -3,7 +3,7 @@ import transformers from './transformers';
 
 class MCProjStoreService {
     constructor() {
-        this.mcstore = new MCStore({
+        this.mcstore = new MCStore("mcprojstore", {
             projects: {},
             currentProjectId: null,
             currentExperimentId: null,

@@ -13,8 +13,11 @@ function isKnownEvent(event) {
 }
 
 export class MCStore {
-    constructor(initialState) {
+    constructor(name, initialState) {
         this.store = initialState;
+        window.sessionStorage.setItem(name, angular.toJson(this.store));
+        this.name = name;
+        this.loaded = false;
         this.bus = new MCStoreBus();
         this.EVUPDATE = 'EVUPDATE';
         this.EVREMOVE = 'EVREMOVE';
@@ -30,10 +33,6 @@ export class MCStore {
         return this.bus.subscribe(event, fn);
     }
 
-    _knownEvent(event) {
-        return _.findIndex(this.knownEvents, event) !== -1;
-    }
-
     update(fn) {
         this._performStoreAction(this.EVUPDATE, fn);
     }
@@ -47,7 +46,26 @@ export class MCStore {
     }
 
     _performStoreAction(event, fn) {
-        fn(this.store);
+        this.set(fn);
         this.bus.fireEvent(event, this.store);
+    }
+
+    getStore() {
+        this._ensureStoreLoaded();
+        return this.store;
+    }
+
+    // Sets a value in the store without firing actions
+    set(fn) {
+        this._ensureStoreLoaded();
+        fn(this.store);
+        window.sessionStorage.setItem(this.name, angular.toJson(this.store));
+    }
+
+    _ensureStoreLoaded() {
+        if (!this.loaded) {
+            this.store = angular.fromJson(window.sessionStorage.getItem(this.name));
+            this.loaded = true;
+        }
     }
 }
