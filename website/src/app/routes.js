@@ -150,7 +150,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/processes',
             template: '<mc-processes-workflow processes="$resolve.processes"></mc-processes-workflow>',
             resolve: {
-                processes: ['mcprojstore', '$stateParams',
+                processes: ['mcprojstore', '$stateParams', "_db",
                     (mcprojstore, $stateParams) => {
                         let e = mcprojstore.getExperiment($stateParams.experiment_id);
                         return e.processes;
