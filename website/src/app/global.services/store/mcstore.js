@@ -15,23 +15,38 @@ function isKnownEvent(event) {
 export class MCStore {
     constructor(name, initialState) {
         this.name = name;
-        try {
-            this.store = angular.fromJson(window.sessionStorage.getItem(name));
-        } catch (err) {
-            this.store = initialState;
-            window.sessionStorage.setItem(name, angular.toJson(this.store));
-        }
+        this.db = localforage.createInstance({name: name});
+        this.storeInitialized = false;
+        this.store = initialState;
         this.bus = new MCStoreBus();
+    }
+
+    storeReady() {
+        if (this.storeInitialized) {
+            return Promise.resolve(null);
+        }
+
+        return this.db.getItem(this.name).then(
+            value => {
+                if (!value) {
+                    return this.db.setItem(this.name, this.store).then(() => this.storeInitialized = true);
+                } else {
+                    this.store = value;
+                    this.storeInitialized = true;
+                    return null;
+                }
+            }
+        );
     }
 
     reset(initialState) {
         this.store = initialState;
-        window.sessionStorage.setItem(name, angular.toJson(this.store));
+        this.db.setItem(this.name, this.store);
     }
 
     removeStore() {
         this.store = null;
-        window.sessionStorage.removeItem(this.name);
+        this.db.removeItem(this.name);
     }
 
     subscribe(event, fn) {
@@ -43,15 +58,15 @@ export class MCStore {
     }
 
     update(fn) {
-        this._performStoreAction(this.EVUPDATE, fn);
+        this._performStoreAction(EVTYPE.EVUPDATE, fn);
     }
 
     remove(fn) {
-        this._performStoreAction(this.EVREMOVE, fn);
+        this._performStoreAction(EVTYPE.EVREMOVE, fn);
     }
 
     add(fn) {
-        this._performStoreAction(this.EVADD, fn);
+        this._performStoreAction(EVTYPE.EVADD, fn);
     }
 
     _performStoreAction(event, fn) {
@@ -66,6 +81,6 @@ export class MCStore {
     // Sets a value in the store without firing events
     set(fn) {
         fn(this.store);
-        window.sessionStorage.setItem(this.name, angular.toJson(this.store));
+        this.db.setItem(this.name, this.store);
     }
 }

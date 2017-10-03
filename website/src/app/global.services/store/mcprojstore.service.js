@@ -19,6 +19,10 @@ class MCProjStoreService {
         this._knownOTypes = [this.OTPROJECT, this.OTEXPERIMENT, this.OTPROCESS];
     }
 
+    ready() {
+        return this.mcstore.storeReady();
+    }
+
     reset() {
         this.mcstore.reset({
             projects: {},
