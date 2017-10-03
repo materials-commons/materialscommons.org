@@ -2,7 +2,7 @@
 class NavbarComponentController {
     /*@ngInject*/
     constructor(User, $state, $stateParams, searchQueryText, mcstate, navbarOnChange, projectsAPI, demoProjectService,
-                blockUI, toast, mcbus, $mdDialog, $timeout) {
+                blockUI, toast, mcbus, $mdDialog, $timeout, mcprojstore) {
         this.User = User;
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -26,6 +26,7 @@ class NavbarComponentController {
         this.isAuthenticated = User.isAuthenticated();
         this.$mdDialog = $mdDialog;
         this.$timeout = $timeout;
+        this.mcprojstore = mcprojstore;
 
         this.myName = 'NavbarComponentController';
     }
@@ -95,6 +96,7 @@ class NavbarComponentController {
         this.isBetaUser = false;
         this.isAuthenticated = this.User.isAuthenticated();
         this.$state.go('data.home.top');
+        this.mcprojstore.reset();
     }
 
     loginOrRegister() {
@@ -133,16 +135,20 @@ class NavbarComponentController {
 
 class MCSwitchUserDialogController {
     /*@ngInject*/
-    constructor(User, $mdDialog, toast) {
+    constructor(User, $mdDialog, toast, mcprojstore) {
         this.User = User;
         this.$mdDialog = $mdDialog;
         this.toast = toast;
+        this.mcprojstore = mcprojstore;
         this.email = "";
     }
 
     done() {
         this.User.switchToUser(this.email).then(
-            (user) => this.User.setAuthenticated(true, user.plain()),
+            (user) => {
+                this.User.setAuthenticated(true, user.plain());
+                this.mcprojstore.reset();
+            },
             () => this.toast.error(`Unable to switch to user ${this.email}`)
         );
         this.$mdDialog.hide();
