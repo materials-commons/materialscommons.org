@@ -91,8 +91,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
 
                     return experimentsAPI.getAllForProject($stateParams.project_id).then(
                         (experiments) => {
-                            mcprojstore.updateCurrentProject((project) => {
-                                project.experiments = _.indexBy(experiments, 'id');
+                            mcprojstore.updateCurrentProject((project, transformers) => {
+                                let transformedExperiments = experiments.map(e => transformers.transformExperiment(e));
+                                project.experiments = _.indexBy(transformedExperiments, 'id');
                                 project.experimentsFullyLoaded = true;
                             });
                             return p;
@@ -153,7 +154,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.workflow', {
             url: '/processes',
-            template: '<mc-processes-workflow processes="$resolve.experiment.processes"></mc-processes-workflow>'
+            template: '<mc-processes-workflow processes="$resolve.processes"></mc-processes-workflow>',
+            resolve: {
+                processes: ["experiment", (experiment) => _.values(experiment.processes)]
+            }
         })
         .state('project.experiment.samples', {
             url: '/samples',
