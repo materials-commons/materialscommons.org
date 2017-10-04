@@ -10,7 +10,6 @@ const smtpTransport = require('nodemailer-smtp-transport');
 const mailTransport = mailTransportConfig();
 const ra = require('./resource-access');
 const buildDemoProject = require('../build-demo/build-demo-project');
-const os = require('os');
 const Mailgen = require('mailgen');
 
 function* updateProjectFavorites(next) {
@@ -148,14 +147,14 @@ function* getValueFromProfile(next) {
     let name = this.params.name;
     let userId = this.params.user_id;
     let checkUserId = this.reqctx.user.id;
-    if (userId != checkUserId) {
+    if (userId !== checkUserId) {
         this.body = {
             error: 'Current user, ' + checkUserId + ', is not requesting user, ' + userId
         };
         this.status = status.UNAUTHORIZED;
     } else {
         let rv = yield profiles.getFromUserProfile(userId, name);
-        if (rv == null) rv = '';
+        if (rv === null) rv = '';
         this.body = {
             val: rv
         };
@@ -167,7 +166,7 @@ function* updateValueInProfile(next) {
     let name = this.params.name;
     let userId = this.params.user_id;
     let checkUserId = this.reqctx.user.id;
-    if (userId != checkUserId) {
+    if (userId !== checkUserId) {
         this.body = {
             error: 'Current user, ' + checkUserId + ', is not requesting user, ' + userId
         };
@@ -176,7 +175,7 @@ function* updateValueInProfile(next) {
         let attrs = yield parse(this);
         let value = attrs.value;
         let rv = yield profiles.storeInUserProfile(userId, name, value);
-        if (rv == null) rv = '';
+        if (rv === null) rv = '';
         this.body = {
             val: rv
         };
@@ -189,14 +188,14 @@ function* deleteValueInPreofile(next) {
     let name = this.params.name;
     let userId = this.params.user_id;
     let checkUserId = this.reqctx.user.id;
-    if (userId != checkUserId) {
+    if (userId !== checkUserId) {
         this.body = {
             error: 'Current user, ' + checkUserId + ', is not requesting user, ' + userId
         };
         this.status = status.UNAUTHORIZED;
     } else {
         let rv = yield profiles.clearFromUserProfile(userId, name);
-        if (rv == null) rv = '';
+        if (rv === null) rv = '';
         this.body = {
             val: rv
         };
@@ -342,10 +341,10 @@ function* createDemoProjectRequest(user) {
     let last = parts[parts.length - 1];
 
     if ((last !== "backend") && (last !== "materialscommons.org")) {
-        let message = 'Can not create proejct with process running in unexpected base dir: ';
+        let message = 'Cannot create project with process running in unexpected base dir: ';
         message = message + current_dir;
         console.log("Build demo project fails - " + message);
-        return {error: "Can not create demo project: admin see log"};
+        return {error: "Cannot create demo project: admin see log"};
     }
 
     let prefix = current_dir + "/backend/";
@@ -353,12 +352,7 @@ function* createDemoProjectRequest(user) {
         prefix = current_dir + "/";
     }
 
-    let ret = yield buildDemoProject.findOrBuildAllParts(user, prefix);
-
-    if (!ret.error) {
-        ret.val = "Created project: " + ret.val.project.name;
-    }
-    return ret;
+    return yield buildDemoProject.findOrBuildAllParts(user, prefix);
 }
 
 function emailResetLinkToUser(userData, site) {
@@ -403,7 +397,7 @@ function emailResetLinkToUser(userData, site) {
     };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function(error) {
+    transporter.sendMail(mailOptions, function (error) {
         if (error !== null) {
             console.log(error);
         }
@@ -455,7 +449,7 @@ function emailValidationLinkToUser(userData, site) {
     };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, function(error) {
+    transporter.sendMail(mailOptions, function (error) {
         if (error !== null) {
             console.log(error);
         }
@@ -478,9 +472,9 @@ function createResource(router) {
     router.put('/users', updateUserSettings);
     router.get('/users/:user_id', getUser);
     router.put('/users/:project_id', ra.validateProjectAccess, updateProjectFavorites);
-    router.get('/users/:user_id/profiles/:name',getValueFromProfile);
-    router.put('/users/:user_id/profiles/:name',updateValueInProfile);
-    router.delete('/users/:user_id/profiles/:name',deleteValueInPreofile);
+    router.get('/users/:user_id/profiles/:name', getValueFromProfile);
+    router.put('/users/:user_id/profiles/:name', updateValueInProfile);
+    router.delete('/users/:user_id/profiles/:name', deleteValueInPreofile);
     router.put('/users_become', becomeUser);
     router.get('/users/validate/:validation_id', getUserRegistrationFromUuid);
     router.get('/users/rvalidate/:validation_id', getUserForPasswordResetFromUuid);
