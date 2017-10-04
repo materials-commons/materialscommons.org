@@ -14,7 +14,7 @@ class MCWorkflowFiltersComponentController {
     }
 
     activateProcessesFilter() {
-        this.processes = this.mcprojstore.currentExperiment.processes;
+        this.processes = _.values(this.mcprojstore.currentExperiment.processes);
         this.showProcessesFilter = true;
         this.showSamplesFilter = false;
         // this.experimentsAPI.getProcessesForExperiment(this.projectId, this.experimentId).then(
