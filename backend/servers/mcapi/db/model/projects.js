@@ -51,7 +51,6 @@ function* getProject(projectId) {
                         apikey: true,
                         admin: true,
                         tadmin: true,
-                        apikey: true,
                         demo_installed: true,
                         notes: true,
                         affiliation: true,
