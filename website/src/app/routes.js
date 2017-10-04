@@ -116,7 +116,12 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment', {
             url: '/experiment/:experiment_id',
-            template: `<mc-experiment></mc-experiment>`
+            template: `<mc-experiment></mc-experiment>`,
+            resolve: {
+                experiment: ["mcprojstore", "$stateParams", "_db",
+                    (mcprojstore, $stateParams) => mcprojstore.getExperiment($stateParams.experiment_id)
+                ]
+            }
             //,
             // resolve: {
             //     experiment: ['experimentsAPI', 'toast', 'toUITask', '$stateParams', 'mcstate',
@@ -148,16 +153,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.workflow', {
             url: '/processes',
-            template: '<mc-processes-workflow processes="$resolve.processes"></mc-processes-workflow>',
-            resolve: {
-                processes: ['mcprojstore', '$stateParams', "_db",
-                    (mcprojstore, $stateParams) => {
-                        let e = mcprojstore.getExperiment($stateParams.experiment_id);
-                        return e.processes;
-                    }
-                    // experimentsAPI.getProcessesForExperiment($stateParams.project_id, $stateParams.experiment_id)
-                ]
-            }
+            template: '<mc-processes-workflow processes="$resolve.experiment.processes"></mc-processes-workflow>'
         })
         .state('project.experiment.samples', {
             url: '/samples',
