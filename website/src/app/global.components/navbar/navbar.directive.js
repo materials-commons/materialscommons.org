@@ -187,7 +187,7 @@ class MCLoginDialogController {
                 // }
             })
             .error((reason) => {
-                this.message = "Incorrect Password/Username!";
+                this.message = "Incorrect Username or Password.";
                 this.toast.error(reason.error);
             }).put({password: this.password});
     }
