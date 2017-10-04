@@ -61,6 +61,13 @@ class MCProcessesWorkflowGraphComponentController {
                 this.processes.splice(i, 1);
             }
         });
+
+        this.mcbus.subscribe('PROCESS$CHANGE', this.myName, process => {
+            this.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
+                ele.data('name', process.name);
+            });
+        });
+
         this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
         this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, processes => {
@@ -76,12 +83,6 @@ class MCProcessesWorkflowGraphComponentController {
                 return;
             }
             this.removedNodes = this.cyGraph.searchProcessesInGraph(this.cy, search, this.processes);
-        });
-
-        this.mcbus.subscribe('PROCESS$CHANGE', this.myName, process => {
-            this.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
-                ele.data('name', process.name);
-            });
         });
 
         this.mcbus.subscribe('WORKFLOW$RESTOREHIDDEN', this.myName, () => {
