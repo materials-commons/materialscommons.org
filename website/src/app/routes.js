@@ -92,7 +92,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     return experimentsAPI.getAllForProject($stateParams.project_id).then(
                         (experiments) => {
                             mcprojstore.updateCurrentProject((project) => {
-                                project.experiments = _.indexBy(experiments.plain(), 'id');
+                                project.experiments = _.indexBy(experiments, 'id');
                                 project.experimentsFullyLoaded = true;
                             });
                             return p;
