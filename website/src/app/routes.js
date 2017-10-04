@@ -26,10 +26,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<div ui-view></div>',
             resolve: {
-                _db: ["mcprojstore", function (mcprojstore) {
+                _projstore: ["mcprojstore", function (mcprojstore) {
                     return mcprojstore.ready();
                 }],
-                _projects: ["mcprojstore", "ProjectModel", "_db", function (mcprojstore, ProjectModel) {
+                _projects: ["mcprojstore", "ProjectModel", "_projstore", function (mcprojstore, ProjectModel) {
                     let projects = mcprojstore.projects;
                     if (projects.length) {
                         return projects;
@@ -79,11 +79,11 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<ui-view flex="100" layout="column"></ui-view>',
             resolve: {
-                _db: ["mcprojstore", function (mcprojstore) {
+                _projstore: ["mcprojstore", function (mcprojstore) {
                     return mcprojstore.ready();
                 }],
-                /* inject _db to force next resolve to wait for store to ready ready*/
-                _project: ["mcprojstore", "$stateParams", "experimentsAPI", "_db", function (mcprojstore, $stateParams, experimentsAPI) {
+                /* inject _projstore to force next resolve to wait for store to ready ready*/
+                _project: ["mcprojstore", "$stateParams", "experimentsAPI", "_projstore", function (mcprojstore, $stateParams, experimentsAPI) {
                     let p = mcprojstore.getProject($stateParams.project_id);
                     if (p.experimentsFullyLoaded) {
                         return p;
@@ -118,7 +118,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/experiment/:experiment_id',
             template: `<mc-experiment></mc-experiment>`,
             resolve: {
-                experiment: ["mcprojstore", "$stateParams", "_db",
+                experiment: ["mcprojstore", "$stateParams", "_projstore",
                     (mcprojstore, $stateParams) => mcprojstore.getExperiment($stateParams.experiment_id)
                 ]
             }
