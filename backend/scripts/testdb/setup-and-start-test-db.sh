@@ -125,7 +125,7 @@ stop_rethinkbd() {
 clear_all_db_tables(){
     pushd $BACKEND
     echo "Clearing all tables in database in rethinkdb"
-    scripts/testdb/delete-databases.py --port $MCDB_PORT
+    scripts/testdb/clear-database-tables.py --port $MCDB_PORT
     echo "Cleared test db"
     popd
 }
