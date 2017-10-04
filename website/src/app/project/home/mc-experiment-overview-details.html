@@ -6,11 +6,11 @@
                 {{::$ctrl.experiment.publications.length | number}} {{::$ctrl.pubPlural()}}
             </th>
             <th style="font-weight: normal">
-                {{::$ctrl.experiment.samples.length | number}} <i class="fa fa-fw fa-cubes"></i>
+                {{::$ctrl.experiment.samples | toSize | number}} <i class="fa fa-fw fa-cubes"></i>
                 ({{::$ctrl.samplePlural()}})
             </th>
             <th style="font-weight: normal">
-                {{::$ctrl.experiment.processes.length | number}} <i class="fa fa-fw fa-code-fork"></i>({{::$ctrl.processPlural()}})
+                {{::$ctrl.experiment.processes | toSize | number}} <i class="fa fa-fw fa-code-fork"></i>({{::$ctrl.processPlural()}})
             </th>
         </tr>
         <tr>

@@ -1,6 +1,6 @@
 import { bytesFilter } from './bytes';
 import { toDateStringFilter, toDateFilter } from './todatestring-filter';
-import './to-array.filter';
+import './to-size.filter';
 
 angular.module('materialscommons')
     .filter('bytes', bytesFilter)
