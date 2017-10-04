@@ -1,6 +1,5 @@
 /*@ngInject*/
 function projectsAPIService(Restangular) {
-    let onChangeFn = null;
     const projectsAPIRoute = _.partial(Restangular.one('v2').one, 'projects');
 
     return {
@@ -17,12 +16,7 @@ function projectsAPIService(Restangular) {
             return Restangular.one('v2').one('projects').customPOST({
                 name: projectName,
                 description: projectDescription
-            }).then(function(p) {
-                if (onChangeFn) {
-                    onChangeFn(p);
-                }
-                return p;
-            })
+            }).then(p => p.plain());
         },
 
         getProjectSamples: function(projectID) {
@@ -45,12 +39,7 @@ function projectsAPIService(Restangular) {
         },
 
         updateProjectProcess: function(projectID, process) {
-            return projectsAPIRoute(projectID).one('processes', process.id).customPUT(process).then(function(p) {
-                if (onChangeFn) {
-                    onChangeFn(p);
-                }
-                return p;
-            });
+            return projectsAPIRoute(projectID).one('processes', process.id).customPUT(process).then(p => p.plain());
         },
 
         updateProject: function(projectID, projectAttrs) {
@@ -58,12 +47,7 @@ function projectsAPIService(Restangular) {
         },
 
         createProjectProcess: function(projectID, process) {
-            return projectsAPIRoute(projectID).one('processes').customPOST(process).then(function(p) {
-                if (onChangeFn) {
-                    onChangeFn(p);
-                }
-                return p;
-            });
+            return projectsAPIRoute(projectID).one('processes').customPOST(process).then(p => p.plain());
         },
 
         getProjectDirectory: function(projectID, dirID) {
@@ -82,23 +66,11 @@ function projectsAPIService(Restangular) {
             return projectsAPIRoute(projectID).one('directories').customPOST({
                 from_dir: fromDirID,
                 path: path
-            }).then(function(dirs) {
-                if (onChangeFn) {
-                    onChangeFn(fromDirID, dirs);
-                }
-                return dirs;
-            });
+            }).then(dirs => dirs);
         },
 
         getProjectFile: function(projectID, fileID) {
             return projectsAPIRoute(projectID).one('files', fileID).get();
-        },
-
-        onChange: function(scope, fn) {
-            onChangeFn = fn;
-            scope.$on('$destroy', function() {
-                onChangeFn = null;
-            });
         }
     }
 }
