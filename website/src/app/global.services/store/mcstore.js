@@ -81,6 +81,8 @@ export class MCStore {
     // Sets a value in the store without firing events
     set(fn) {
         fn(this.store);
-        this.db.setItem(this.name, this.store);
+        this.db.setItem(this.name, this.store).then(
+            () => null
+        ).catch(err => console.log('failed to update', err));
     }
 }
