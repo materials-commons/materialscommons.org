@@ -49,14 +49,14 @@ class MCProjStoreService {
 
     addProject(project) {
         this.mcstore.add(store => {
-            store.projects[project.id] = transformers.projectTransformer(project);
+            store.projects[project.id] = transformers.transformProject(project);
         });
     }
 
     addProjects(...projects) {
         this.mcstore.add(store => {
             projects.forEach(p => {
-                store.projects[p.id] = transformers.projectTransformer(p);
+                store.projects[p.id] = transformers.transformProject(p);
             });
         });
     }
@@ -64,7 +64,7 @@ class MCProjStoreService {
     updateCurrentProject(fn) {
         this.mcstore.update(store => {
             const currentProj = getCurrentProjectFromStore(store);
-            fn(currentProj);
+            fn(currentProj, transformers);
         });
     }
 
@@ -206,14 +206,49 @@ class MCProjStoreService {
     _fnFire(otype, event, store, fn) {
         switch (otype) {
             case this.OTPROJECT:
-                return _fnFireProject(event, store, fn);
+                return this._fnFireProject(event, store, fn);
             case this.OTEXPERIMENT:
-                return _fnFireExperiment(event, store, fn);
+                return this._fnFireExperiment(event, store, fn);
             case this.OTPROCESS:
-                return _fnFireProcess(event, store, fn);
+                return this._fnFireProcess(event, store, fn);
             default:
                 return;
         }
+    }
+
+    _fnFireProject(event, store, fn) {
+        if (event === this.EVUPDATE || event === this.EVSET) {
+            const currentProj = getCurrentProjectFromStore(store);
+            fn(currentProj);
+        } else {
+            fn(store.projects);
+        }
+    }
+
+    _fnFireExperiment(event, store, fn) {
+        if (event === this.EVUPDATE || event === this.EVSET) {
+            const currentExperiment = getCurrentExperimentFromStore(store);
+            fn(currentExperiment);
+        } else {
+            const currentProject = getCurrentProjectFromStore(store);
+            fn(currentProject.experiments);
+        }
+
+        // Force subscriptions on projects to fire by generating an update to current project that doesn't do anything.
+        this.updateCurrentProject(() => null);
+    }
+
+    _fnFireProcess(event, store, fn) {
+        if (event === this.EVUPDATE || event === this.EVSET) {
+            const currentProcess = getCurrentProcessFromStore(store);
+            fn(currentProcess);
+        } else {
+            const currentExperiment = getCurrentExperimentFromStore(store);
+            fn(currentExperiment.processes);
+        }
+
+        // Force subscription on experiments to fire by generating an update to current experiment that doesn't do anything.
+        this.updateCurrentExperiment(() => null);
     }
 }
 
@@ -233,37 +268,3 @@ function getCurrentProcessFromStore(store) {
     return currentExperiment.processes[store.currentProcessId];
 }
 
-function _fnFireProject(event, store, fn) {
-    if (event === EVTYPE.EVUPDATE || event === EVTYPE.EVSET) {
-        const currentProj = getCurrentProjectFromStore(store);
-        fn(currentProj);
-    } else {
-        fn(store.projects);
-    }
-}
-
-function _fnFireExperiment(event, store, fn) {
-    if (event === EVTYPE.EVUPDATE || event === EVTYPE.EVSET) {
-        const currentExperiment = getCurrentExperimentFromStore(store);
-        fn(currentExperiment);
-    } else {
-        const currentProject = getCurrentProjectFromStore(store);
-        fn(currentProject.experiments);
-    }
-
-    // Force subscriptions on projects to fire by generating an update to current project that doesn't do anything.
-    this.updateCurrentProject(() => null);
-}
-
-function _fnFireProcess(event, store, fn) {
-    if (event === EVTYPE.EVUPDATE || event === EVTYPE.EVSET) {
-        const currentProcess = getCurrentProcessFromStore(store);
-        fn(currentProcess);
-    } else {
-        const currentExperiment = getCurrentExperimentFromStore(store);
-        fn(currentExperiment.processes);
-    }
-
-    // Force subscription on experiments to fire by generating an update to current experiment that doesn't do anything.
-    this.updateCurrentExperiment(() => null);
-}
