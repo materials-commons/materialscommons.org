@@ -62,7 +62,7 @@ class NavbarComponentController {
     buildDemoProject() {
         this.blockUI.start("Building demo project (this may take a few seconds)...");
         this.demoProjectService.buildDemoProject(this.User.attr().email).then(
-            () => {
+            (p) => {
                 this.mcprojstore.addProject(p);
                 this.blockUI.stop();
             },
