@@ -13,6 +13,7 @@ class MCProjStoreService {
         this.EVADD = EVTYPE.EVADD;
         this.EVREMOVE = EVTYPE.EVREMOVE;
         this.EVUPDATE = EVTYPE.EVUPDATE;
+        this.EVSET = EVTYPE.EVSET;
         this.OTPROJECT = 'OTPROJECT';
         this.OTEXPERIMENT = 'OTEXPERIMENT';
         this.OTPROCESS = 'OTPROCESS';
@@ -233,7 +234,7 @@ function getCurrentProcessFromStore(store) {
 }
 
 function _fnFireProject(event, store, fn) {
-    if (event === EVTYPE.EVUPDATE) {
+    if (event === EVTYPE.EVUPDATE || event === EVTYPE.EVSET) {
         const currentProj = getCurrentProjectFromStore(store);
         fn(currentProj);
     } else {
@@ -242,7 +243,7 @@ function _fnFireProject(event, store, fn) {
 }
 
 function _fnFireExperiment(event, store, fn) {
-    if (event === EVTYPE.EVUPDATE) {
+    if (event === EVTYPE.EVUPDATE || event === EVTYPE.EVSET) {
         const currentExperiment = getCurrentExperimentFromStore(store);
         fn(currentExperiment);
     } else {
@@ -255,7 +256,7 @@ function _fnFireExperiment(event, store, fn) {
 }
 
 function _fnFireProcess(event, store, fn) {
-    if (event === EVTYPE.EVUPDATE) {
+    if (event === EVTYPE.EVUPDATE || event === EVTYPE.EVSET) {
         const currentProcess = getCurrentProcessFromStore(store);
         fn(currentProcess);
     } else {
