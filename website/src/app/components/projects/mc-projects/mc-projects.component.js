@@ -1,10 +1,8 @@
 class MCProjectsComponentController {
     /*@ngInject*/
-    constructor($mdDialog, User, mcbus, ProjectModel, blockUI, demoProjectService, toast, mcprojstore) {
+    constructor($mdDialog, User, blockUI, demoProjectService, toast, mcprojstore) {
         this.$mdDialog = $mdDialog;
         this.User = User;
-        this.mcbus = mcbus;
-        this.ProjectModel = ProjectModel;
         this.blockUI = blockUI;
         this.demoProjectService = demoProjectService;
         this.toast = toast;
@@ -32,7 +30,7 @@ class MCProjectsComponentController {
             controllerAs: '$ctrl',
             bindToController: true
         }).then(
-            () => this.getUserProjects()
+            (p) => this.mcprojstore.addProject(p)
         );
     }
 
@@ -47,13 +45,13 @@ class MCProjectsComponentController {
     }
 
     buildDemoProject() {
-        this.blockUI.start("Building demo project (this may take a few seconds)...");
+        this.blockUI.start("Building demo project (this may take up to a minute)...");
         this.demoProjectService.buildDemoProject(this.mcuser.email).then(
-            () => {
+            (p) => {
                 this.mcuser.demo_installed = true;
                 this.User.save();
+                this.mcprojstore.addProject(p);
                 this.blockUI.stop();
-                this.mcbus.send('PROJECTS$REFRESH');
             },
             (error) => {
                 this.blockUI.stop();
@@ -84,7 +82,7 @@ class CreateNewProjectDialogController {
         if (this.name !== '') {
             this.projectsAPI.createProject(this.name, this.description)
                 .then(
-                    () => this.$mdDialog.hide(),
+                    (p) => this.$mdDialog.hide(p),
                     () => this.toast.error('Unable to create project')
                 );
         }
