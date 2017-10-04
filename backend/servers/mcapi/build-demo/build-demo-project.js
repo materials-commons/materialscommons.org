@@ -1,6 +1,5 @@
 const helper = require('./build-demo-project-helper');
 const demoConfig = require('./build-demo-project-conf');
-const projects = require('../db/model/projects');
 
 function* findOrBuildAllParts(user, datapathPrefix) {
     let project = null;
@@ -65,7 +64,14 @@ function* findOrBuildAllParts(user, datapathPrefix) {
     }
 
     if (!ret.error) {
-        return yield projects.getProject(project.id);
+        let processes = ret.val;
+        ret.val = {
+            project: project,
+            experiment: experiment,
+            processes: processes,
+            samples: samples,
+            files: files
+        };
     }
     return ret;
 }

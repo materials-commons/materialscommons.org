@@ -1,4 +1,5 @@
 const users = require('../db/model/users');
+const projects = require('../db/model/projects');
 const check = require('../db/model/check');
 const profiles = require('../db/model/user_profiles');
 const schema = require('../schema');
@@ -352,7 +353,13 @@ function* createDemoProjectRequest(user) {
         prefix = current_dir + "/";
     }
 
-    return yield buildDemoProject.findOrBuildAllParts(user, prefix);
+    let ret = yield buildDemoProject.findOrBuildAllParts(user, prefix);
+
+    if (!ret.error) {
+        ret = yield projects.getProject(ret.val.project.id);
+    }
+
+    return ret;
 }
 
 function emailResetLinkToUser(userData, site) {
