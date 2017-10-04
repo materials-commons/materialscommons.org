@@ -17,7 +17,8 @@ def clear_mcpub_tables():
     table_list = run(r.db('mcpub').table_list())
 
     for table in table_list:
-        clear_table("mcpub",table)
+        if not table == 'users':
+            clear_table("mcpub",table)
 
     run(r.db('mcpub').wait())
 
@@ -26,7 +27,7 @@ def clear_table(db,table):
 
 def run(rql):
     try:
-        rql.run()
+        return rql.run()
     except r.RqlRuntimeError:
         pass
 
