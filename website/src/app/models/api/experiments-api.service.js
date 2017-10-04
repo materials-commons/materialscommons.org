@@ -5,7 +5,7 @@ class ExperimentsAPIService {
     }
 
     getAllForProject(projectID) {
-        return this.projectsAPIRoute(projectID).one('experiments').getList();
+        return this.projectsAPIRoute(projectID).one('experiments').getList().then(experiments => experiments.plain());
     }
 
     createForProject(projectID, experiment) {
