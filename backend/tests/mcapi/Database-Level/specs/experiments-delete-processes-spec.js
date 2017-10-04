@@ -42,14 +42,17 @@ let sample_list = null;
 let file_list = null;
 
 before(function*() {
-
     this.timeout(8000); // this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
 
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
+    console.log("before hook", user.id, demoProjectConf.datapathPrefix);
+    console.log("current working directory", process.cwd());
+
+//    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
+    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd()+'/');
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;
@@ -60,6 +63,8 @@ before(function*() {
 
     let project_id = project.id;
     let experiment_id = experiment.id;
+
+    console.log("before hook", project_id, experiment_id);
 
     let name = random_name();
     let description = "Changed the name of the demo project to " + name;
