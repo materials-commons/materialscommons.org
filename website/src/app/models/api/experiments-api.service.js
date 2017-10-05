@@ -21,7 +21,7 @@ class ExperimentsAPIService {
             experiments: experimentIds,
             name: newExperimentArgs.name,
             description: newExperimentArgs.description
-        });
+        }).then(e => e.plain());
     }
 
     deleteProcess(projectId, experimentId, processId) {
