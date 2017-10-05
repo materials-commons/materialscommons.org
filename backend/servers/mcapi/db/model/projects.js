@@ -32,44 +32,16 @@ function* createProject(user, attrs) {
 }
 
 function* getProject(projectId) {
-    let p = yield r.table('projects').get(projectId).merge(function (project) {
-        return {
-            datasets: r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
-                .eqJoin('experiment_id', r.table('experiment2dataset'), {index: 'experiment_id'})
-                .zip().pluck('project_id', 'dataset_id')
-                .eqJoin('dataset_id', r.table('datasets')).zip().coerceTo('array'),
-            samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).merge(function (sample) {
-                return {
-                    processes: r.table('process2sample').getAll(sample('sample_id'), {index: 'sample_id'})
-                        .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
-                }
-            }).coerceTo('array'),
-            users: r.table('access').getAll(projectId, {index: 'project_id'})
-                .eqJoin('user_id', r.table('users')).without({
-                    'right': {
-                        id: true,
-                        apikey: true,
-                        admin: true,
-                        tadmin: true,
-                        demo_installed: true,
-                        notes: true,
-                        affiliation: true,
-                        avatar: true,
-                        birthtime: true,
-                        description: true,
-                        email: true,
-                        homepage: true,
-                        last_login: true,
-                        mtime: true,
-                        name: true,
-                        password: true,
-                        preferences: true,
-                        otype: true
-                    }
-                }).zip().coerceTo('array')
-        }
-    });
-    return {val: p};
+    let rql = r.table('projects').get(projectId)
+        .merge(function (project) {
+            return {
+                owner_details: r.table('users').get(project('owner')).pluck('fullname')
+            }
+        });
+    rql = transformDates(rql);
+    rql = addComputed(rql);
+    let project = yield run(rql);
+    return {val: project};
 }
 
 
