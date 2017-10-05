@@ -120,7 +120,7 @@ class MCProjectHomeComponentController {
         }).then(
             () => {
                 this.cancelMerge();
-                this.getProjectExperiments();
+                this._reloadComponentState();
             },
             () => this.cancelMerge()
         );
@@ -155,7 +155,7 @@ class MCProjectHomeComponentController {
         }).then(
             () => {
                 this.clearDelete();
-                this.getProjectExperiments();
+                this._reloadComponentState();
             },
             () => {
                 this.clearDelete();
@@ -214,7 +214,6 @@ class CreateNewExperimentDialogController {
         this.experimentsAPI.createForProject(this.projectID, e)
             .then(
                 (createdExperiment) => {
-                    console.log('createdExperiment', createdExperiment);
                     this.mcprojstore.addExperiment(createdExperiment).then(
                         () => {
                             this.mcprojstore.currentExperiment = createdExperiment;
@@ -263,9 +262,10 @@ class RenameProjectDialogController {
 
 class MergeExperimentsDialogController {
     /*@ngInject*/
-    constructor($mdDialog, experimentsAPI) {
+    constructor($mdDialog, experimentsAPI, mcprojstore) {
         this.$mdDialog = $mdDialog;
         this.experimentsAPI = experimentsAPI;
+        this.mcprojstore = mcprojstore;
         this.experimentName = '';
         this.experimentDescription = '';
     }
@@ -276,7 +276,11 @@ class MergeExperimentsDialogController {
             name: this.experimentName,
             description: this.experimentDescription
         }).then(
-            () => this.$mdDialog.hide(),
+            (e) => {
+                this.mcprojstore.addExperiment(e).then(
+                    () => this.$mdDialog.hide(e)
+                );
+            },
             () => this.$mdDialog.cancel()
         );
     }
@@ -300,8 +304,9 @@ class DeleteExperimentsDialogController {
         let experimentIds = this.experiments.map(e => e.id);
         this.experimentsAPI.deleteExperiments(this.projectId, experimentIds).then(
             () => {
-
-                this.$mdDialog.hide();
+                this.mcprojstore.removeExperiments(...this.experiments).then(
+                    () => this.$mdDialog.hide()
+                );
             },
             () => this.$mdDialog.cancel()
         );
