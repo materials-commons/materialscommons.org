@@ -25,7 +25,7 @@ class MCProjStoreService {
     }
 
     reset() {
-        this.mcstore.reset({
+        return this.mcstore.reset({
             projects: {},
             currentProjectId: null,
             currentExperimentId: null,
@@ -34,7 +34,7 @@ class MCProjStoreService {
     }
 
     remove() {
-        this.mcstore.removeStore();
+        return this.mcstore.removeStore();
     }
 
     get projects() {
@@ -48,13 +48,13 @@ class MCProjStoreService {
     }
 
     addProject(project) {
-        this.mcstore.add(store => {
+        return this.mcstore.add(store => {
             store.projects[project.id] = transformers.transformProject(project);
         });
     }
 
     addProjects(...projects) {
-        this.mcstore.add(store => {
+        return this.mcstore.add(store => {
             projects.forEach(p => {
                 store.projects[p.id] = transformers.transformProject(p);
             });
@@ -62,14 +62,14 @@ class MCProjStoreService {
     }
 
     updateCurrentProject(fn) {
-        this.mcstore.update(store => {
+        return this.mcstore.update(store => {
             const currentProj = getCurrentProjectFromStore(store);
             fn(currentProj, transformers);
         });
     }
 
     removeCurrentProject() {
-        this.mcstore.remove(store => {
+        return this.mcstore.remove(store => {
             delete store.projects[store.currentProjectId];
             store.currentProjectId = store.currentExperimentId = store.currentProcessId = null;
         });
@@ -89,21 +89,21 @@ class MCProjStoreService {
     }
 
     addExperiment(experiment) {
-        this.mcstore.add(store => {
+        return this.mcstore.add(store => {
             const currentProject = getCurrentProjectFromStore(store);
             currentProject.experiments[experiment.id] = experiment;
         });
     }
 
     updateCurrentExperiment(fn) {
-        this.mcstore.update(store => {
+        return this.mcstore.update(store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             fn(currentExperiment);
         })
     }
 
     removeCurrentExperiment() {
-        this.mcstore.remove(store => {
+        return this.mcstore.remove(store => {
             const currentProject = getCurrentProjectFromStore(store);
             delete currentProject.experiments[store.currentExperimentId];
             store.currentExperimentId = null;
@@ -111,7 +111,7 @@ class MCProjStoreService {
     }
 
     removeExperiments(...experiments) {
-        this.mcstore.remove(store => {
+        return this.mcstore.remove(store => {
             const currentProject = getCurrentProjectFromStore(store);
             experiments.forEach(e => {
                 delete currentProject.experiments[e.id];
@@ -133,7 +133,7 @@ class MCProjStoreService {
     }
 
     setCurrentExperiment(experimentId) {
-        this.mcstore.set(store => store.currentExperimentId = experimentId);
+        return this.mcstore.set(store => store.currentExperimentId = experimentId);
     }
 
     _getCurrentExperiment() {
@@ -143,21 +143,21 @@ class MCProjStoreService {
     }
 
     addProcess(p) {
-        this.mcstore.add(store => {
+        return this.mcstore.add(store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             currentExperiment.processes[p.id] = p;
         });
     }
 
     updateCurrentProcess(fn) {
-        this.mcstore.update(store => {
+        return this.mcstore.update(store => {
             const currentProcess = getCurrentProcessFromStore(store);
             fn(currentProcess);
         });
     }
 
     removeCurrentProcess() {
-        this.mcstore.remove(store => {
+        return this.mcstore.remove(store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             delete currentExperiment.processes[store.currentProcessId];
             store.currentProcessId = null;
@@ -178,7 +178,7 @@ class MCProjStoreService {
     }
 
     setCurrentProcess(processId) {
-        this.mcstore.set(store => store.currentProcessId = processId);
+        return this.mcstore.set(store => store.currentProcessId = processId);
     }
 
     _getCurrentProcess() {

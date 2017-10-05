@@ -42,12 +42,12 @@ export class MCStore {
 
     reset(initialState) {
         this.store = initialState;
-        this.db.setItem(this.name, this.store);
+        return this.db.setItem(this.name, this.store);
     }
 
     removeStore() {
         this.store = null;
-        this.db.removeItem(this.name);
+        return this.db.removeItem(this.name);
     }
 
     subscribe(event, fn) {
@@ -59,20 +59,21 @@ export class MCStore {
     }
 
     update(fn) {
-        this._performStoreAction(EVTYPE.EVUPDATE, fn);
+        return this._performStoreAction(EVTYPE.EVUPDATE, fn);
     }
 
     remove(fn) {
-        this._performStoreAction(EVTYPE.EVREMOVE, fn);
+        return this._performStoreAction(EVTYPE.EVREMOVE, fn);
     }
 
     add(fn) {
-        this._performStoreAction(EVTYPE.EVADD, fn);
+        return this._performStoreAction(EVTYPE.EVADD, fn);
     }
 
     _performStoreAction(event, fn) {
-        this._setNoFire(fn);
-        this.bus.fireEvent(event, this.store);
+        return this._setNoFire(fn).then(
+            () => this.bus.fireEvent(event, this.store)
+        );
     }
 
     getStore() {
@@ -82,7 +83,7 @@ export class MCStore {
     // Allows user to set a value and fire the EVSET event
     set(fn) {
         fn(this.store);
-        this.db.setItem(this.name, this.store).then(
+        return this.db.setItem(this.name, this.store).then(
             () => this.bus.fireEvent(EVTYPE.EVSET, this.store)
         ).catch(err => console.log('failed to update', err));
     }
@@ -90,7 +91,7 @@ export class MCStore {
     // Sets a value in the store.
     _setNoFire(fn) {
         fn(this.store);
-        this.db.setItem(this.name, this.store).then(
+        return this.db.setItem(this.name, this.store).then(
             () => null
         ).catch(err => console.log('failed to update', err));
     }
