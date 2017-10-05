@@ -3,7 +3,7 @@ import transformers from './transformers';
 
 class MCProjStoreService {
     /*@ngInject*/
-    constructor($timeout, $q) {
+    constructor($q) {
         this.mcstore = new MCStore("mcprojstore", {
             projects: {},
             currentProjectId: null,
@@ -11,7 +11,6 @@ class MCProjStoreService {
             currentProcessId: null
         });
 
-        this.$timeout = $timeout;
         this.$q = $q;
         this.EVADD = EVTYPE.EVADD;
         this.EVREMOVE = EVTYPE.EVREMOVE;
@@ -101,7 +100,6 @@ class MCProjStoreService {
     }
 
     addExperiment(experiment) {
-        console.log('adding experiment', experiment);
         return this._ngwrap(this.mcstore.add(store => {
             const currentProject = getCurrentProjectFromStore(store);
             currentProject.experiments[experiment.id] = transformers.transformExperiment(experiment);
