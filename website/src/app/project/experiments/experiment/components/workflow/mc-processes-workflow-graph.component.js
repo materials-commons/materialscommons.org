@@ -1,7 +1,7 @@
 class MCProcessesWorkflowGraphComponentController {
     /*@ngInject*/
     constructor(processGraph, workflowService, mcbus, experimentsAPI, $stateParams, mcstate, $filter,
-                $mdDialog, mcshow, workflowState, cyGraph, $timeout) {
+                $mdDialog, mcshow, workflowState, cyGraph, $timeout, mcprojstore) {
         this.cy = null;
         this.processGraph = processGraph;
         this.workflowService = workflowService;
@@ -21,6 +21,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.hiddenNodes = [];
         this.sidebarShowing = true;
         this.$timeout = $timeout;
+        this.mcprojstore = mcprojstore;
         this.tooltips = true;
     }
 
@@ -63,6 +64,12 @@ class MCProcessesWorkflowGraphComponentController {
         });
 
         this.mcbus.subscribe('PROCESS$CHANGE', this.myName, process => {
+            this.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
+                ele.data('name', process.name);
+            });
+        });
+
+        this.procUpdateUnsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVUPDATE, process => {
             this.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
                 ele.data('name', process.name);
             });
@@ -118,6 +125,7 @@ class MCProcessesWorkflowGraphComponentController {
     }
 
     $onDestroy() {
+        this.procUpdateUnsubscribe();
         this.mcbus.leave('PROCESSES$CHANGE', this.myName);
         this.mcbus.leave('WORKFLOW$RESTOREHIDDEN', this.myName);
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
@@ -153,7 +161,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.cy = this.cyGraph.createGraph(g.elements, 'processesGraph');
         this.cyGraph.setOnClickForExperiment(this.cy, this.projectId, this.experimentId);
 
-        this.ctxMenu = this.setupContextMenus();
+        this.setupContextMenus();
         let cb = (source, target, addedEntities) => this._completeFN(source, target, addedEntities);
         this.cyGraph.addEdgeHandles(this.cy, cb);
     }
