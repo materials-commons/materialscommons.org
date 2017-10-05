@@ -235,7 +235,7 @@ class MCProjStoreService {
         }
 
         // Force subscriptions on projects to fire by generating an update to current project that doesn't do anything.
-        this.updateCurrentProject(() => null);
+        //this.updateCurrentProject(() => null);
     }
 
     _fnFireProcess(event, store, fn) {
@@ -248,7 +248,7 @@ class MCProjStoreService {
         }
 
         // Force subscription on experiments to fire by generating an update to current experiment that doesn't do anything.
-        this.updateCurrentExperiment(() => null);
+        //this.updateCurrentExperiment(() => null);
     }
 }
 
