@@ -137,7 +137,7 @@ function* isLeafNode(processId) {
     return usingAsInputs.length === 0;
 }
 
-function* deleteProcess(projectId, processId, options) {
+function* deleteProcessFull(projectId, processId, options) {
     let forceDelete = false;
     if (options && options.force) forceDelete = true;
 
@@ -272,7 +272,7 @@ module.exports = {
     getProcessTemplates,
     createProcessFromTemplate,
     updateProcess,
-    //deleteProcess,
+    deleteProcessFull,
     quickDeleteProcess,
     deleteProcess: quickDeleteProcess, // alias deleteProcess to quickDeleteProcess for now.
     datasetsForProcess,
