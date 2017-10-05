@@ -9,7 +9,7 @@ class ExperimentsAPIService {
     }
 
     createForProject(projectID, experiment) {
-        return this.projectsAPIRoute(projectID).one('experiments').customPOST(experiment);
+        return this.projectsAPIRoute(projectID).one('experiments').customPOST(experiment).then((e) => e.plain());
     }
 
     updateForProject(projectID, experimentID, what) {
