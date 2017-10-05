@@ -23,7 +23,7 @@ function* quickDeleteExperiment(projectId, experimentId) {
     return {val: 'deleted'};
 }
 
-function* deleteExperiment(projectId, experimentId, options) {
+function* deleteExperimentFull(projectId, experimentId, options) {
 
     let deleteProcesses = !!(options && options.deleteProcesses);
     let dryRun = !!(options && options.dryRun);
@@ -164,7 +164,7 @@ function* deleteProcessesSamplesSetupAndMeasure(projectId, experimentId, dryRun)
         }
         idList.push(process.id);
         if (!dryRun) {
-            yield processes.deleteProcess(projectId, process.id, {'force': true});
+            yield processes.deleteProcessFull(projectId, process.id, {'force': true});
         }
     }
 
@@ -320,5 +320,6 @@ function* clearAllRemainingLinks(experimentId) {
 }
 
 module.exports = {
-    deleteExperiment: quickDeleteExperiment
+    deleteExperiment: quickDeleteExperiment,
+    deleteExperimentFull
 };

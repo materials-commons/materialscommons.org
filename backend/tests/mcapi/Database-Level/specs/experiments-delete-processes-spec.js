@@ -48,8 +48,6 @@ before(function*() {
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
 
-    console.log("before hook", user.id, demoProjectConf.datapathPrefix);
-    console.log("current working directory", process.cwd());
 
 //    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
     let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd()+'/');
@@ -63,8 +61,6 @@ before(function*() {
 
     let project_id = project.id;
     let experiment_id = experiment.id;
-
-    console.log("before hook", project_id, experiment_id);
 
     let name = random_name();
     let description = "Changed the name of the demo project to " + name;
@@ -117,7 +113,7 @@ before(function*() {
 
 describe('Feature - Experiments: ', function () {
     describe('Delete Experiment - in parts: ', function () {
-        it('deletes datasets and deletes all processes and samples', function*() {
+        it('deletes all datasets and deletes all processes and samples', function*() {
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -157,7 +153,7 @@ describe('Feature - Experiments: ', function () {
             for (let i = process_list.length; i > 0; i--) {
                 // delete leaf-nodes first!
                 let process = process_list[i - 1];
-                yield processes.deleteProcess(project.id, process.id);
+                yield processes.deleteProcessFull(project.id, process.id);
             }
 
             let simple = true;
