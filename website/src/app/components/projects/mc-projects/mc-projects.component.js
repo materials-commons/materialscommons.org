@@ -1,6 +1,6 @@
 class MCProjectsComponentController {
     /*@ngInject*/
-    constructor($mdDialog, User, blockUI, demoProjectService, toast, mcprojstore) {
+    constructor($mdDialog, User, blockUI, demoProjectService, toast, mcprojstore, ProjectModel, $timeout) {
         this.$mdDialog = $mdDialog;
         this.User = User;
         this.blockUI = blockUI;
@@ -8,14 +8,18 @@ class MCProjectsComponentController {
         this.toast = toast;
         this.mcuser = User.attr();
         this.mcprojstore = mcprojstore;
+        this.ProjectModel = ProjectModel;
         this.myProjects = [];
         this.joinedProjects = [];
+        this.$timeout = $timeout;
     }
 
     $onInit() {
         this.getUserProjects();
         this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVADD,
-            projects => this._fillProjects(_.values(projects))
+            projects => {
+                this.$timeout(() => this._fillProjects(_.values(projects)));
+            }
         );
     }
 
@@ -65,6 +69,18 @@ class MCProjectsComponentController {
         this.mcuser.demo_installed = true;
         this.User.save();
         this.User.updateDemoInstalled(true);
+    }
+
+    refreshProjects() {
+        this.mcprojstore.reset().then(
+            () => {
+                this.ProjectModel.getProjectsForCurrentUser().then(
+                    (projects) => {
+                        this.mcprojstore.addProjects(...projects);
+                    }
+                );
+            }
+        )
     }
 }
 
