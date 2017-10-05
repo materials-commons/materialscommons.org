@@ -3,7 +3,7 @@ import transformers from './transformers';
 
 class MCProjStoreService {
     /*@ngInject*/
-    constructor($q) {
+    constructor($timeout, $q) {
         this.mcstore = new MCStore("mcprojstore", {
             projects: {},
             currentProjectId: null,
@@ -11,6 +11,7 @@ class MCProjStoreService {
             currentProcessId: null
         });
 
+        this.$timeout = $timeout;
         this.$q = $q;
         this.EVADD = EVTYPE.EVADD;
         this.EVREMOVE = EVTYPE.EVREMOVE;
@@ -216,7 +217,7 @@ class MCProjStoreService {
 
     _subscribe(otype, event, fn) {
         return this.mcstore.subscribe(event, store => {
-            this._fnFire(otype, event, store, fn);
+            this.$timeout(() => this._fnFire(otype, event, store, fn));
         });
     }
 
