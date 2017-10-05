@@ -1,6 +1,6 @@
 class MCProjectsComponentController {
     /*@ngInject*/
-    constructor($mdDialog, User, blockUI, demoProjectService, toast, mcprojstore, ProjectModel, $timeout) {
+    constructor($mdDialog, User, blockUI, demoProjectService, toast, mcprojstore, ProjectModel) {
         this.$mdDialog = $mdDialog;
         this.User = User;
         this.blockUI = blockUI;
@@ -11,16 +11,12 @@ class MCProjectsComponentController {
         this.ProjectModel = ProjectModel;
         this.myProjects = [];
         this.joinedProjects = [];
-        this.$timeout = $timeout;
     }
 
     $onInit() {
         this.getUserProjects();
         this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVADD,
-            projects => {
-                this.$timeout(() => this._fillProjects(_.values(projects)));
-            }
-        );
+            projects => this._fillProjects(_.values(projects)));
     }
 
     $onDestroy() {
