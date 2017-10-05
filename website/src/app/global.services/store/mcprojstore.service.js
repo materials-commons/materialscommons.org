@@ -91,7 +91,7 @@ class MCProjStoreService {
     addExperiment(experiment) {
         return this.mcstore.add(store => {
             const currentProject = getCurrentProjectFromStore(store);
-            currentProject.experiments[experiment.id] = experiment;
+            currentProject.experiments[experiment.id] = transformers.transformExperiment(experiment);
         });
     }
 
