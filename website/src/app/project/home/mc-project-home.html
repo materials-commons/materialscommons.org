@@ -3,6 +3,10 @@
         <div layout="row" layout-align="start center">
             <span class="md-title">{{$ctrl.project.name}}</span>
             <md-button ng-click="$ctrl.renameProject()" class="md-primary">rename project</md-button>
+            <md-button class="md-primary" ng-click="$ctrl.refreshProject()">
+                <md-tooltip>Refresh project state from server</md-tooltip>
+                <i class="fa fa-fw fa-refresh"></i>Refresh
+            </md-button>
         </div>
         <div layout="column">
             <label>Description</label>
@@ -64,7 +68,6 @@
                        ng-if="$ctrl.deletingExperiments">
                 Cancel Delete
             </md-button>
-
         </div>
         <div layout="row" layout-wrap>
             <mc-experiment-overview experiment="experiment" flex="50" flex-md="70" flex-sm="70" flex-xs="100"
