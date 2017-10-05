@@ -38,7 +38,7 @@ function ProjectModelService(projectsAPI) {
             return p;
         }
 
-        static get(id) {
+        static getProjectForCurrentUser(id) {
             return projectsAPI.getProject(id).then(
                 (project) => Project.fromJSON(project)
             );
