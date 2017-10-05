@@ -53,7 +53,7 @@ function* deleteProject(projectId, options) {
     for (let i = 0; i < experimentList.length; i++) {
         let experiment = experimentList[i];
         let results = yield experimentDelete
-            .deleteExperiment(projectId, experiment.id, {deleteProcesses: true, dryRun: dryRun});
+            .deleteExperimentFull(projectId, experiment.id, {deleteProcesses: true, dryRun: dryRun});
         if (results.val) {
             let tally = results.val;
             deletedExperiments.push(
