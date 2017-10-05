@@ -10,9 +10,15 @@ const processes = require('./processes');
 
 function* getAllForProject(projectID) {
     let rql = r.table('project2experiment').getAll(projectID, {index: 'project_id'})
-        .eqJoin('experiment_id', r.table('experiments')).zip()
-        .merge((experiment) => {
-            return {
+        .eqJoin('experiment_id', r.table('experiments')).zip();
+    rql = addExperimentComputed(rql);
+    let experiments = yield dbExec(rql);
+    return {val: experiments};
+}
+
+function addExperimentComputed(rql) {
+    rql = rql.merge((experiment) => {
+        return {
                 tasks: r.table('experiment2experimenttask')
                     .getAll(experiment('id'), {index: 'experiment_id'})
                     .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
@@ -48,29 +54,15 @@ function* getAllForProject(projectID) {
                     .orderBy('title')
                     .coerceTo('array')
             }
-        });
-    let experiments = yield dbExec(rql);
-    return {val: experiments};
+    });
+
+    return rql;
 }
 
 // Get assumes that validating the experiment for the project has already occured.
 function* get(experimentID) {
-    let rql = r.table('experiments').get(experimentID)
-        .merge((experiment) => {
-            return {
-                tasks: r.table('experiment2experimenttask')
-                    .getAll(experiment('id'), {index: 'experiment_id'})
-                    .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
-                    .filter({parent_id: ''})
-                    .orderBy('index')
-                    .coerceTo('array'),
-                notes: r.table('experiment2experimentnote')
-                    .getAll(experiment('id'), {index: 'experiment_id'})
-                    .eqJoin('experiment_note_id', r.table('experimentnotes')).zip()
-                    .orderBy('name')
-                    .coerceTo('array')
-            }
-        });
+    let rql = r.table('experiments').get(experimentID);
+    rql = addExperimentComputed(rql);
     let experiment = yield dbExec(rql);
     experiment.tasks.forEach((task) => task.tasks = []);
     return {val: experiment};
