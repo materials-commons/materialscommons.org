@@ -129,16 +129,29 @@ function transformDates(rql) {
 function addComputed(rql) {
     rql = rql.merge(function (project) {
         return {
-            users: r.table('access')
-                .getAll(project('id'), {index: 'project_id'})
-                .map(function (entry) {
-                    return entry.merge({
-                        'user': entry('user_id'),
-                        'details': r.table('users').get(entry('user_id')).pluck('fullname')
-                    });
-                })
-                .pluck('user', 'permissions', 'details')
-                .coerceTo('array'),
+            users: r.table('access').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('user_id', r.table('users')).without({
+                    'right': {
+                        id: true,
+                        apikey: true,
+                        admin: true,
+                        tadmin: true,
+                        demo_installed: true,
+                        notes: true,
+                        affiliation: true,
+                        avatar: true,
+                        birthtime: true,
+                        description: true,
+                        email: true,
+                        homepage: true,
+                        last_login: true,
+                        mtime: true,
+                        name: true,
+                        password: true,
+                        preferences: true,
+                        otype: true
+                    }
+                }).zip().coerceTo('array'),
             events: r.table('events')
                 .getAll(project('id'), {index: 'project_id'})
                 .coerceTo('array'),
