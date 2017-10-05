@@ -2,7 +2,8 @@ import {MCStore, EVTYPE} from './mcstore';
 import transformers from './transformers';
 
 class MCProjStoreService {
-    constructor() {
+    /*@ngInject*/
+    constructor($timeout, $q) {
         this.mcstore = new MCStore("mcprojstore", {
             projects: {},
             currentProjectId: null,
@@ -10,6 +11,8 @@ class MCProjStoreService {
             currentProcessId: null
         });
 
+        this.$timeout = $timeout;
+        this.$q = $q;
         this.EVADD = EVTYPE.EVADD;
         this.EVREMOVE = EVTYPE.EVREMOVE;
         this.EVUPDATE = EVTYPE.EVUPDATE;
@@ -21,20 +24,20 @@ class MCProjStoreService {
     }
 
     ready() {
-        return this.mcstore.storeReady();
+        return this._ngwrap(this.mcstore.storeReady());
     }
 
     reset() {
-        return this.mcstore.reset({
+        return this._ngwrap(this.mcstore.reset({
             projects: {},
             currentProjectId: null,
             currentExperimentId: null,
             currentProcessId: null
-        });
+        }));
     }
 
     remove() {
-        return this.mcstore.removeStore();
+        return this._ngwrap(this.mcstore.removeStore());
     }
 
     get projects() {
@@ -48,31 +51,40 @@ class MCProjStoreService {
     }
 
     addProject(project) {
-        return this.mcstore.add(store => {
+        return this._ngwrap(this.mcstore.add(store => {
             store.projects[project.id] = transformers.transformProject(project);
-        });
+        }));
     }
 
     addProjects(...projects) {
-        return this.mcstore.add(store => {
+        return this._ngwrap(this.mcstore.add(store => {
             projects.forEach(p => {
                 store.projects[p.id] = transformers.transformProject(p);
             });
-        });
+        }));
     }
 
+    // updateCurrentProject2(fn) {
+    //     let deferred = this.$q.defer();
+    //     this.mcstore.update(store => {
+    //         const currentProj = getCurrentProjectFromStore(store);
+    //         fn(currentProj, transformers);
+    //     }).then(() => deferred.resolve());
+    //     return deferred.promise;
+    // }
+
     updateCurrentProject(fn) {
-        return this.mcstore.update(store => {
+        return this._ngwrap(this.mcstore.update(store => {
             const currentProj = getCurrentProjectFromStore(store);
             fn(currentProj, transformers);
-        });
+        }));
     }
 
     removeCurrentProject() {
-        return this.mcstore.remove(store => {
+        return this._ngwrap(this.mcstore.remove(store => {
             delete store.projects[store.currentProjectId];
             store.currentProjectId = store.currentExperimentId = store.currentProcessId = null;
-        });
+        }));
     }
 
     get currentProject() {
@@ -89,34 +101,35 @@ class MCProjStoreService {
     }
 
     addExperiment(experiment) {
-        return this.mcstore.add(store => {
+        console.log('adding experiment', experiment);
+        return this._ngwrap(this.mcstore.add(store => {
             const currentProject = getCurrentProjectFromStore(store);
             currentProject.experiments[experiment.id] = transformers.transformExperiment(experiment);
-        });
+        }));
     }
 
     updateCurrentExperiment(fn) {
-        return this.mcstore.update(store => {
+        return this._ngwrap(this.mcstore.update(store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             fn(currentExperiment);
-        })
+        }));
     }
 
     removeCurrentExperiment() {
-        return this.mcstore.remove(store => {
+        return this._ngwrap(this.mcstore.remove(store => {
             const currentProject = getCurrentProjectFromStore(store);
             delete currentProject.experiments[store.currentExperimentId];
             store.currentExperimentId = null;
-        })
+        }));
     }
 
     removeExperiments(...experiments) {
-        return this.mcstore.remove(store => {
+        return this._ngwrap(this.mcstore.remove(store => {
             const currentProject = getCurrentProjectFromStore(store);
             experiments.forEach(e => {
                 delete currentProject.experiments[e.id];
             });
-        });
+        }));
     }
 
     get currentExperiment() {
@@ -143,25 +156,25 @@ class MCProjStoreService {
     }
 
     addProcess(p) {
-        return this.mcstore.add(store => {
+        return this._ngwrap(this.mcstore.add(store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             currentExperiment.processes[p.id] = p;
-        });
+        }));
     }
 
     updateCurrentProcess(fn) {
-        return this.mcstore.update(store => {
+        return this._ngwrap(this.mcstore.update(store => {
             const currentProcess = getCurrentProcessFromStore(store);
             fn(currentProcess);
-        });
+        }));
     }
 
     removeCurrentProcess() {
-        return this.mcstore.remove(store => {
+        return this._ngwrap(this.mcstore.remove(store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             delete currentExperiment.processes[store.currentProcessId];
             store.currentProcessId = null;
-        });
+        }));
     }
 
     get currentProcess() {
@@ -184,6 +197,12 @@ class MCProjStoreService {
     _getCurrentProcess() {
         let store = this.mcstore.getStore();
         return this._getCurrentExperiment().processes[store.currentProcessId];
+    }
+
+    _ngwrap(promise) {
+        let deferred = this.$q.defer();
+        promise.then(() => deferred.resolve());
+        return deferred.promise;
     }
 
     subscribe(otype, event, fn) {
