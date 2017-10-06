@@ -93,11 +93,6 @@ function* deleteProject(projectId, options) {
     return ret;
 }
 
-module.exports = {
-    deleteProject
-};
-
-
 function* testForPublishedDatasets(projectId) {
 
     let results = yield experiments.getAllForProject(projectId);
@@ -166,3 +161,13 @@ function* deleteLinks(projectId) {
 function* deleteProjectRecord(projectId) {
     yield r.table("projects").get(projectId).delete();
 }
+
+function* quickProjectDelete(projectId) {
+    yield r.table('projects').get(projectId).update({owner: 'delete@materialscommons.org'});
+    yield r.table('access').getAll(projectId, {index: 'project_id'}).delete();
+}
+
+module.exports = {
+    deleteProject,
+    quickProjectDelete
+};
