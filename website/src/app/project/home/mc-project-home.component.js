@@ -3,14 +3,11 @@ import {Experiment} from '../experiments/experiment/components/tasks/experiment.
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, experimentsAPI, toast, $state, $stateParams, projectsAPI, editorOpts, $mdDialog, mcprojstore,
-                ProjectModel, User) {
+    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, mcprojstore) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
-        this.user = User.u();
         this.$stateParams = $stateParams;
         this.$state = $state;
-        this.projectsAPI = projectsAPI;
         this.$mdDialog = $mdDialog;
         this.project = mcprojstore.getProject(this.$stateParams.project_id);
         this.experimentType = 'active';
@@ -20,13 +17,18 @@ class MCProjectHomeComponentController {
         this.deletingExperiments = false;
         this.selectingExperiments = false;
         this.mcprojstore = mcprojstore;
-        this.ProjectModel = ProjectModel;
-
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
 
     $onInit() {
+        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVADD, () => {
+            this._reloadExperiments()
+        });
         this.getProjectExperiments();
+    }
+
+    $onDestroy() {
+        this.unsubscribe();
     }
 
     getProjectExperiments() {
@@ -50,14 +52,6 @@ class MCProjectHomeComponentController {
                 () => this.projectOverview = this.project.overview,
                 () => this.toast.error('Unable to update project overview')
             );
-    }
-
-    refreshProject() {
-        this.ProjectModel.getProjectForCurrentUser(this.$stateParams.project_id).then(
-            (project) => this.mcprojstore.addProject(project).then(
-                () => this._reloadExperiments()
-            )
-        );
     }
 
     _reloadExperiments() {
@@ -188,24 +182,6 @@ class MCProjectHomeComponentController {
         }).then(
             (newName) => {
                 this.project.name = newName;
-            }
-        );
-    }
-
-    deleteProject() {
-        let deleteDialog = this.$mdDialog.confirm()
-            .title(`Delete project: ${this.project.name}`)
-            .textContent('Deleting a project is a permanent operation - all information with the project will be removed.')
-            .ariaLabel('Delete Project')
-            .ok('Delect Project')
-            .cancel('cancel');
-
-        this.$mdDialog.show(deleteDialog).then(
-            () => {
-                this.projectsAPI.deleteProject(this.project.id).then(
-                    () => this.mcprojstore.removeCurrentProject().then(() => this.$state.go('projects.list')),
-                    () => this.toast.error('Failed to delete project')
-                )
             }
         );
     }

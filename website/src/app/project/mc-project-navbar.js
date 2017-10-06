@@ -4,8 +4,8 @@ angular.module('materialscommons').component("mcProjectNavbar", {
 });
 
 /*@ngInject*/
-function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSidenav,
-                                            quickbarSamples, $stateParams, User, mcprojstore) {
+function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSidenav, ProjectModel, $mdDialog, toast,
+                                            projectsAPI, quickbarSamples, $stateParams, User, mcprojstore) {
     const ctrl = this;
 
     ctrl.showQuickbar = false;
@@ -16,6 +16,7 @@ function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSiden
     ctrl.experimentSamples = [];
     ctrl.datasetSamples = [];
     ctrl.isBetaUser = User.attr().beta_user;
+    ctrl.user = User.u();
 
     const unregister = $rootScope.$on('$stateChangeSuccess', function() {
         ctrl.currentTab = getCurrentTabIndex();
@@ -50,6 +51,28 @@ function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSiden
         } else {
             ctrl.showQuickbar = false;
         }
+    };
+
+    ctrl.refreshProject = () => {
+        ProjectModel.getProjectForCurrentUser($stateParams.project_id).then((p) => mcprojstore.addProject(p));
+    };
+
+    ctrl.deleteProject = () => {
+        let deleteDialog = $mdDialog.confirm()
+            .title(`Delete project: ${ctrl.project.name}`)
+            .textContent('Deleting a project is a permanent operation - all information with the project will be removed.')
+            .ariaLabel('Delete Project')
+            .ok('Delect Project')
+            .cancel('cancel');
+
+        $mdDialog.show(deleteDialog).then(
+            () => {
+                projectsAPI.deleteProject(ctrl.project.id).then(
+                    () => mcprojstore.removeCurrentProject().then(() => $state.go('projects.list')),
+                    () => toast.error('Failed to delete project')
+                )
+            }
+        );
     };
 
     /////////////////////

@@ -3,13 +3,6 @@
         <div layout="row" layout-align="start center">
             <span class="md-title">{{$ctrl.project.name}}</span>
             <md-button ng-click="$ctrl.renameProject()" class="md-primary">rename project</md-button>
-            <md-button class="md-primary" ng-click="$ctrl.refreshProject()">
-                <md-tooltip>Refresh project state from server</md-tooltip>
-                <i class="fa fa-fw fa-refresh"></i>Refresh
-            </md-button>
-            <md-button class="md-warn" ng-click="$ctrl.deleteProject()" ng-if="$ctrl.user === $ctrl.project.owner">
-                <i class="fa fa-fw fa-trash"></i>Delete
-            </md-button>
         </div>
         <div layout="column">
             <label>Description</label>

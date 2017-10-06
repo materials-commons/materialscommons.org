@@ -67,6 +67,13 @@
             {{$ctrl.project.name | truncate:30:'...'}}
         </a>
         <a style="color:white;" ui-sref="projects.list">switch</a>
+        <a style="color:white" ng-click="$ctrl.refreshProject()">
+            <md-tooltip>Refresh project state from server</md-tooltip>
+            <i class="fa fa-fw fa-refresh"></i>REFRESH
+        </a>
+        <a style="color:#ff5330" ng-click="$ctrl.deleteProject()" ng-if="$ctrl.user === $ctrl.project.owner">
+            <i class="fa fa-fw fa-trash"></i>DELETE
+        </a>
     </div>
     <span flex></span>
     <a ng-if="false" class="text-white" style="color:white" ng-click="$ctrl.toggleQuickbar()">QUICKBAR</a>
