@@ -9,10 +9,8 @@ class MCProjectHomeComponentController {
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.$mdDialog = $mdDialog;
-        this.project = mcprojstore.getProject(this.$stateParams.project_id);
         this.experimentType = 'active';
         this.experiments = [];
-        this.projectOverview = this.project.overview;
         this.mergingExperiments = false;
         this.deletingExperiments = false;
         this.selectingExperiments = false;
@@ -21,10 +19,10 @@ class MCProjectHomeComponentController {
     }
 
     $onInit() {
-        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVADD, () => {
-            this._reloadExperiments()
+        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVUPDATE, () => {
+            this._reloadComponentState();
         });
-        this.getProjectExperiments();
+        this._reloadComponentState();
     }
 
     $onDestroy() {
@@ -54,22 +52,9 @@ class MCProjectHomeComponentController {
             );
     }
 
-    _reloadExperiments() {
-        this.experimentsAPI.getAllForProject(this.$stateParams.project_id).then(
-            (experiments) => this._updateProjectExperiments(experiments)
-        );
-    }
-
-    _updateProjectExperiments(experiments) {
-        this.mcprojstore.updateCurrentProject((project, transformers) => {
-            let transformedExperiments = experiments.map(e => transformers.transformExperiment(e));
-            project.experiments = _.indexBy(transformedExperiments, 'id');
-            project.experimentsFullyLoaded = true;
-        }).then(() => this._reloadComponentState());
-    }
-
     _reloadComponentState() {
         this.project = this.mcprojstore.getProject(this.$stateParams.project_id);
+        this.projectOverview = this.project.overview;
         this.getProjectExperiments();
     }
 
