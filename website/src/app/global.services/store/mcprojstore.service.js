@@ -145,7 +145,7 @@ class MCProjStoreService {
     }
 
     setCurrentExperiment(experimentId) {
-        return this.mcstore.set(store => store.currentExperimentId = experimentId);
+        return this.mcstore.set(this.OTEXPERIMENT, store => store.currentExperimentId = experimentId);
     }
 
     _getCurrentExperiment() {
@@ -191,7 +191,7 @@ class MCProjStoreService {
     }
 
     set currentProcess(p) {
-        this.mcstore.set(store => store.currentProcessId = p.id);
+        this.mcstore.set(this.OTPROCESS, store => store.currentProcessId = p.id);
     }
 
     getProcess(processId) {
@@ -218,16 +218,18 @@ class MCProjStoreService {
         if (!this._knownOType(otype)) {
             throw new Error(`Unknown Object Type ${otype}`);
         }
-        return this._subscribe(event, fn);
+        return this._subscribe(event, otype, fn);
     }
 
     _knownOType(otype) {
         return this._knownOTypes.indexOf(otype) !== -1;
     }
 
-    _subscribe(event, fn) {
+    _subscribe(event, myotype, fn) {
         return this.mcstore.subscribe(event, (otype, store) => {
-            this.$timeout(() => this._fnFire(otype, event, store, fn));
+            if (myotype === otype) {
+                this.$timeout(() => this._fnFire(otype, event, store, fn));
+            }
         });
     }
 
