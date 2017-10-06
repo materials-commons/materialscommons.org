@@ -98,7 +98,7 @@ class ExperimentsAPIService {
 
     createProcessFromTemplate(projectId, experimentId, templateId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('processes').one('templates', templateId)
-            .customPOST();
+            .customPOST().then(p => p.plain());
     }
 
     cloneProcess(projectId, experimentId, processId, cloneArgs) {
