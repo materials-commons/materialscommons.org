@@ -176,6 +176,16 @@ class MCProjStoreService {
         }));
     }
 
+    removeProcessById(processId) {
+        return this._ngwrap(this.mcstore.remove(store => {
+            const currentExperiment = getCurrentExperimentFromStore(store);
+            delete currentExperiment.processes[store.processId];
+            if (store.currentProcessId === processId) {
+                store.currentProcessId = null;
+            }
+        }));
+    }
+
     get currentProcess() {
         return this._getCurrentProcess();
     }
