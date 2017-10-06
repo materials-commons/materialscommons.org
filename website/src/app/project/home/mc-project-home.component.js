@@ -4,9 +4,10 @@ class MCProjectHomeComponentController {
     /*@ngInject*/
 
     constructor($scope, experimentsAPI, toast, $state, $stateParams, projectsAPI, editorOpts, $mdDialog, mcprojstore,
-                ProjectModel) {
+                ProjectModel, User) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
+        this.user = User.u();
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.projectsAPI = projectsAPI;
@@ -187,6 +188,24 @@ class MCProjectHomeComponentController {
         }).then(
             (newName) => {
                 this.project.name = newName;
+            }
+        );
+    }
+
+    deleteProject() {
+        let deleteDialog = this.$mdDialog.confirm()
+            .title(`Delete project: ${this.project.name}`)
+            .textContent('Deleting a project is a permanent operation - all information with the project will be removed.')
+            .ariaLabel('Delete Project')
+            .ok('Delect Project')
+            .cancel('cancel');
+
+        this.$mdDialog.show(deleteDialog).then(
+            () => {
+                this.projectsAPI.deleteProject(this.project.id).then(
+                    () => this.mcprojstore.removeCurrentProject().then(() => this.$state.go('projects.list')),
+                    () => this.toast.error('Failed to delete project')
+                )
             }
         );
     }
