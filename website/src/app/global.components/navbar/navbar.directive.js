@@ -36,11 +36,16 @@ class NavbarComponentController {
             this.project = proj;
             let experiments = _.values(this.project.experiments);
             this.published = 0;
-            experiments.forEach(e => e.datasets.forEach(d => {
-                if (d.published) {
-                    this.published++;
-                }
-            }));
+            experiments.forEach(
+                e => {
+                    if (e.datasets) {
+                        e.datasets.forEach(d => {
+                            if (d.published) {
+                                this.published++;
+                            }
+                        })
+                    }
+                });
         });
 
         this.mcbus.subscribe('USER$NAME', this.myName, () => {
