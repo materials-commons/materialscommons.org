@@ -45,19 +45,19 @@ class MCProjStoreService {
     }
 
     getProject(projectId) {
-        this.mcstore.set(store => store.currentProjectId = projectId);
+        this.mcstore.set(this.OTPROJECT, store => store.currentProjectId = projectId);
         let store = this.mcstore.getStore();
         return store.projects[projectId];
     }
 
     addProject(project) {
-        return this._ngwrap(this.mcstore.add(store => {
+        return this._ngwrap(this.mcstore.add(this.OTPROJECT, store => {
             store.projects[project.id] = transformers.transformProject(project);
         }));
     }
 
     addProjects(...projects) {
-        return this._ngwrap(this.mcstore.add(store => {
+        return this._ngwrap(this.mcstore.add(this.OTPROJECT, store => {
             projects.forEach(p => {
                 store.projects[p.id] = transformers.transformProject(p);
             });
@@ -74,14 +74,14 @@ class MCProjStoreService {
     // }
 
     updateCurrentProject(fn) {
-        return this._ngwrap(this.mcstore.update(store => {
+        return this._ngwrap(this.mcstore.update(this.OTPROJECT, store => {
             const currentProj = getCurrentProjectFromStore(store);
             fn(currentProj, transformers);
         }));
     }
 
     removeCurrentProject() {
-        return this._ngwrap(this.mcstore.remove(store => {
+        return this._ngwrap(this.mcstore.remove(this.OTPROJECT, store => {
             delete store.projects[store.currentProjectId];
             store.currentProjectId = store.currentExperimentId = store.currentProcessId = null;
         }));
@@ -92,7 +92,7 @@ class MCProjStoreService {
     }
 
     set currentProject(proj) {
-        this.mcstore.set((store) => store.currentProjectId = proj.id);
+        this.mcstore.set(this.OTPROJECT, (store) => store.currentProjectId = proj.id);
     }
 
     _getCurrentProject() {
@@ -101,21 +101,21 @@ class MCProjStoreService {
     }
 
     addExperiment(experiment) {
-        return this._ngwrap(this.mcstore.add(store => {
+        return this._ngwrap(this.mcstore.add(this.OTEXPERIMENT, store => {
             const currentProject = getCurrentProjectFromStore(store);
             currentProject.experiments[experiment.id] = transformers.transformExperiment(experiment);
         }));
     }
 
     updateCurrentExperiment(fn) {
-        return this._ngwrap(this.mcstore.update(store => {
+        return this._ngwrap(this.mcstore.update(this.OTEXPERIMENT, store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             fn(currentExperiment);
         }));
     }
 
     removeCurrentExperiment() {
-        return this._ngwrap(this.mcstore.remove(store => {
+        return this._ngwrap(this.mcstore.remove(this.OTEXPERIMENT, store => {
             const currentProject = getCurrentProjectFromStore(store);
             delete currentProject.experiments[store.currentExperimentId];
             store.currentExperimentId = null;
@@ -123,7 +123,7 @@ class MCProjStoreService {
     }
 
     removeExperiments(...experiments) {
-        return this._ngwrap(this.mcstore.remove(store => {
+        return this._ngwrap(this.mcstore.remove(this.OTEXPERIMENT, store => {
             const currentProject = getCurrentProjectFromStore(store);
             experiments.forEach(e => {
                 delete currentProject.experiments[e.id];
@@ -136,11 +136,11 @@ class MCProjStoreService {
     }
 
     set currentExperiment(e) {
-        this.mcstore.set(store => store.currentExperimentId = e.id);
+        this.mcstore.set(this.OTEXPERIMENT, store => store.currentExperimentId = e.id);
     }
 
     getExperiment(experimentId) {
-        this.mcstore.set(store => store.currentExperimentId = experimentId);
+        this.mcstore.set(this.OTEXPERIMENT, store => store.currentExperimentId = experimentId);
         return this._getCurrentExperiment();
     }
 
@@ -155,21 +155,21 @@ class MCProjStoreService {
     }
 
     addProcess(p) {
-        return this._ngwrap(this.mcstore.add(store => {
+        return this._ngwrap(this.mcstore.add(this.OTPROCESS, store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             currentExperiment.processes[p.id] = p;
         }));
     }
 
     updateCurrentProcess(fn) {
-        return this._ngwrap(this.mcstore.update(store => {
+        return this._ngwrap(this.mcstore.update(this.OTPROCESS, store => {
             const currentProcess = getCurrentProcessFromStore(store);
             fn(currentProcess);
         }));
     }
 
     removeCurrentProcess() {
-        return this._ngwrap(this.mcstore.remove(store => {
+        return this._ngwrap(this.mcstore.remove(this.OTPROCESS, store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             delete currentExperiment.processes[store.currentProcessId];
             store.currentProcessId = null;
@@ -177,7 +177,7 @@ class MCProjStoreService {
     }
 
     removeProcessById(processId) {
-        return this._ngwrap(this.mcstore.remove(store => {
+        return this._ngwrap(this.mcstore.remove(this.OTPROCESS, store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
             delete currentExperiment.processes[processId];
             if (store.currentProcessId === processId) {
@@ -200,7 +200,7 @@ class MCProjStoreService {
     }
 
     setCurrentProcess(processId) {
-        return this.mcstore.set(store => store.currentProcessId = processId);
+        return this.mcstore.set(this.OTPROCESS, store => store.currentProcessId = processId);
     }
 
     _getCurrentProcess() {
@@ -218,15 +218,15 @@ class MCProjStoreService {
         if (!this._knownOType(otype)) {
             throw new Error(`Unknown Object Type ${otype}`);
         }
-        return this._subscribe(otype, event, fn);
+        return this._subscribe(event, fn);
     }
 
     _knownOType(otype) {
         return this._knownOTypes.indexOf(otype) !== -1;
     }
 
-    _subscribe(otype, event, fn) {
-        return this.mcstore.subscribe(event, store => {
+    _subscribe(event, fn) {
+        return this.mcstore.subscribe(event, (otype, store) => {
             this.$timeout(() => this._fnFire(otype, event, store, fn));
         });
     }

@@ -58,21 +58,21 @@ export class MCStore {
         return this.bus.subscribe(event, fn);
     }
 
-    update(fn) {
-        return this._performStoreAction(EVTYPE.EVUPDATE, fn);
+    update(arg, fn) {
+        return this._performStoreAction(EVTYPE.EVUPDATE, arg, fn);
     }
 
-    remove(fn) {
-        return this._performStoreAction(EVTYPE.EVREMOVE, fn);
+    remove(arg, fn) {
+        return this._performStoreAction(EVTYPE.EVREMOVE, arg, fn);
     }
 
-    add(fn) {
-        return this._performStoreAction(EVTYPE.EVADD, fn);
+    add(arg, fn) {
+        return this._performStoreAction(EVTYPE.EVADD, arg, fn);
     }
 
-    _performStoreAction(event, fn) {
+    _performStoreAction(event, arg, fn) {
         return this._setNoFire(fn).then(
-            () => this.bus.fireEvent(event, this.store)
+            () => this.bus.fireEvent(event, arg, this.store)
         );
     }
 
@@ -81,10 +81,10 @@ export class MCStore {
     }
 
     // Allows user to set a value and fire the EVSET event
-    set(fn) {
+    set(arg, fn) {
         fn(this.store);
         return this.db.setItem(this.name, this.store).then(
-            () => this.bus.fireEvent(EVTYPE.EVSET, this.store)
+            () => this.bus.fireEvent(EVTYPE.EVSET, arg, this.store)
         ).catch(err => console.log('failed to update', err));
     }
 
