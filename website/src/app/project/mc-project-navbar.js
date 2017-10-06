@@ -5,7 +5,7 @@ angular.module('materialscommons').component("mcProjectNavbar", {
 
 /*@ngInject*/
 function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSidenav, ProjectModel, $mdDialog, toast,
-                                            projectsAPI, quickbarSamples, $stateParams, User, mcprojstore) {
+                                            projectsAPI, experimentsAPI, quickbarSamples, $stateParams, User, mcprojstore) {
     const ctrl = this;
 
     ctrl.showQuickbar = false;
@@ -54,7 +54,11 @@ function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSiden
     };
 
     ctrl.refreshProject = () => {
-        ProjectModel.getProjectForCurrentUser($stateParams.project_id).then((p) => mcprojstore.addProject(p));
+        ProjectModel.getProjectForCurrentUser($stateParams.project_id).then(
+            (p) => {
+                experimentsAPI.getAllForProject(p.id).then((experiments) => _updateProjectExperiments(p, experiments))
+            }
+        );
     };
 
     ctrl.deleteProject = () => {
@@ -93,5 +97,15 @@ function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSiden
         }
 
         return 0;
+    }
+
+    function _updateProjectExperiments(project, experiments) {
+        mcprojstore.updateCurrentProject((currentProject, transformers) => {
+            let transformedExperiments = experiments.map(e => transformers.transformExperiment(e));
+            project.experiments = _.indexBy(transformedExperiments, 'id');
+            project.experimentsFullyLoaded = true;
+            currentProject = project;
+            console.log('set currentProject to', currentProject);
+        });
     }
 }
