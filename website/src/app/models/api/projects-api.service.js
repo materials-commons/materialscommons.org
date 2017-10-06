@@ -5,7 +5,11 @@ function projectsAPIService(Restangular) {
     return {
 
         getAllProjects: function() {
-            return projectsAPIRoute().getList();
+            return projectsAPIRoute().getList().then(projects => projects.plain());
+        },
+
+        deleteProject: function (projectId) {
+            return projectsAPIRoute(projectId).customDELETE().then(rv => rv.plain());
         },
 
         getProject: function(projectId) {
