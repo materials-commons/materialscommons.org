@@ -49,7 +49,7 @@ class MCExperimentOverviewDetailsComponentController {
     }
 
     filePlural() {
-        return this.experiment.file_count === 1 ? 'File' : 'Files';
+        return this.experiment.files_count === 1 ? 'File' : 'Files';
     }
 
     notePlural() {
