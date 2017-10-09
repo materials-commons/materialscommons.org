@@ -29,9 +29,9 @@
     <div layout="column" flex layout-margin>
         <div layout="row" layout-align="center center">
             <md-radio-group layout="row" class="text-uppercase" ng-model="$ctrl.experimentType">
-                <md-radio-button value="active" class="md-primary">Active Experiments</md-radio-button>
-                <md-radio-button value="done" class="md-primary">Completed Experiments</md-radio-button>
-                <md-radio-button value="on-hold" class="md-warn">On Hold Experiments</md-radio-button>
+                <md-radio-button value="active" class="md-primary">Active Experiments ({{$ctrl.activeExperimentsCount}})</md-radio-button>
+                <md-radio-button value="done" class="md-primary">Completed Experiments ({{$ctrl.doneExperimentsCount}})</md-radio-button>
+                <md-radio-button value="on-hold" class="md-warn">On Hold Experiments ({{$ctrl.onholdExperimentsCount}})</md-radio-button>
             </md-radio-group>
         </div>
         <div layout="row" layout-align="start center">

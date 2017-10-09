@@ -55,6 +55,10 @@ class MCProjectHomeComponentController {
     _reloadComponentState() {
         this.project = this.mcprojstore.getProject(this.$stateParams.project_id);
         this.projectOverview = this.project.overview;
+        let experimentsList = _.values(this.project.experiments);
+        this.activeExperimentsCount = experimentsList.filter(e => e.status === 'active').length;
+        this.onholdExperimentsCount = experimentsList.filter(e => e.status === 'on-hold').length;
+        this.doneExperimentsCount = experimentsList.filter(e => e.status === 'done').length;
         this.getProjectExperiments();
     }
 
