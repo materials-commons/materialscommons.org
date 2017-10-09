@@ -227,6 +227,16 @@ function* validateProcessIsDeletable(processId) {
     return null;
 }
 
+function* getProcessFiles(next) {
+    let rv = yield processes.processFiles(this.params.process_id);
+    if (rv.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
+}
 
 function createResource() {
     const router = new Router();
@@ -239,6 +249,7 @@ function createResource() {
     router.put('/:process_id', updateExperimentProcess);
     router.get('/:process_id', getProcess);
     router.post('/:process_id/clone', cloneProcess);
+    router.get('/:process_id/files', getProcessFiles);
     router.delete('/:process_id', deleteProcessFromExperiment);
 
     return router;

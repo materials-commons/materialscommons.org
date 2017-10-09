@@ -266,6 +266,20 @@ function* processExperiments(processId) {
         .eqJoin('experiment_id', r.table('experiments')).zip();
 }
 
+function* processFiles(processId) {
+    let rv = {};
+    rv.val = yield r.table('process2file').getAll(processId, {index: 'process_id'})
+        .eqJoin('datafile_id', r.table('datafiles')).zip()
+        .merge(f => {
+            return {
+                samples: r.table('sample2datafile').getAll(f('id'), {index: 'datafile_id'})
+                    .eqJoin('sample_id', r.table('samples')).zip()
+                    .distinct().coerceTo('array')
+            };
+        });
+    return rv;
+}
+
 module.exports = {
     getProcess,
     getProjectProcesses,
@@ -281,4 +295,5 @@ module.exports = {
     updateExistingTemplate,
     isLeafNode,
     processExperiments,
+    processFiles
 };

@@ -46,7 +46,7 @@
         <md-tab-label>
             <span><i class="fa fa-fw fa-gears"></i>details</span>
         </md-tab-label>
-        <md-tab-body>
+        <md-tab-body ng-if="$ctrl.currentTab === 2">
             <div ng-show="!$ctrl.selectedProcess">
                 No process selected
             </div>

@@ -10,6 +10,22 @@ class MCProcessTemplateComponentController {
         this.mcprojstore = mcprojstore;
     }
 
+    $onInit() {
+        if (!this.process.filesLoaded && this.process.files_count) {
+            this.processesAPI.getProcessFiles(this.projectId, this.process.id).then(
+                (files) => {
+                    this.mcprojstore.updateCurrentProcess(currentProcess => {
+                        currentProcess.files = files;
+                        currentProcess.filesLoaded = true;
+                    }).then(() => {
+                        this.process.files = files;
+                        this.process.filesLoaded = true;
+                    });
+                }
+            );
+        }
+    }
+
     updateProcessName() {
         if (this.readonly) {
             return;

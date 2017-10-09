@@ -104,7 +104,7 @@ class CyGraphService {
                 <br/>
                 <b>Output Samples(${this.data('details').output_samples.length}): </b>${this.data('output_sample_names')}
                 <br/>
-                <b>Files(${this.data('details').files.length}): </b>${this.data('file_names')}
+                <b>Files(${this.data('details').files_count}): </b>${this.data('file_names')}
                 `;
             },
             show: {event: 'mouseenter mouseover'},
