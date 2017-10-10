@@ -1,7 +1,7 @@
 class MCProcessesWorkflowOutlineComponentController {
     /*@ngInject*/
     constructor(processTree, datasetsAPI, experimentsAPI, $stateParams, toast, workflowService,
-                experimentProcessesService, mcbus, mcstate, workflowState) {
+                experimentProcessesService, mcbus, mcstate, workflowState, mcprojstore) {
         this.processTree = processTree;
         this.datasetsAPI = datasetsAPI;
         this.experimentsAPI = experimentsAPI;
@@ -16,6 +16,8 @@ class MCProcessesWorkflowOutlineComponentController {
         this.workflowState = workflowState;
         this.workflowState.setDataset(this.dataset);
         this.mcstate = mcstate;
+        this.mcprojstore = mcprojstore;
+        this.sidebarShowing = true;
     }
 
     $onInit() {
@@ -33,6 +35,11 @@ class MCProcessesWorkflowOutlineComponentController {
             this.sidebarShowing = !maximized;
         });
 
+        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVUPDATE, () => {
+            let currentExperiment = this.mcprojstore.currentExperiment;
+            this.processes = _.values(currentExperiment.processes);
+            this.buildOutline();
+        });
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
         this.buildOutline();
     }
@@ -73,13 +80,14 @@ class MCProcessesWorkflowOutlineComponentController {
     showDetails(p) {
         this.processTree.clearSelected(this.root);
         p.selected = true;
-        this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, p.id).then(
-            process => {
-                this.process = process;
-                process.hasChildren = p.children.length;
-                this.workflowState.setSelectedProcess(process);
-            }
-        );
+        this.mcprojstore.currentProcess = p;
+        // this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, p.id).then(
+        //     process => {
+        //         this.process = process;
+        //         process.hasChildren = p.children.length;
+        //         this.workflowState.setSelectedProcess(process);
+        //     }
+        // );
         //this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
     }
 
