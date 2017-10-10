@@ -57,7 +57,7 @@ def create_mc_tables():
     create_compound_index('project2datafile', 'project_datafile', ['project_id', 'datafile_id'])
 
     create_mc_table("tag2item", "tag_id", "item_id")
-    create_mc_table("comment2item", "comment_id", "item_id")
+    create_mc_table("comments", "owner", "item_id", "item_type")
     create_mc_table("note2item", "note_id", "item_id")
     create_mc_table("review2item", "review_id", "item_id")
 
