@@ -24,8 +24,9 @@ class MCProcessesWorkflowOutlineComponentController {
         // To preserve this binding pass this.allProcessesGraph bound to an arrow function. Arrow
         // functions lexically scope, so this in the arrow function is the this for
         // MCProcessGraphOutlineComponentController
-        let cb = (processes) => {
-            this.processes = processes;
+        let cb = () => {
+            let currentExperiment = this.mcprojstore.currentExperiment;
+            this.processes = _.values(currentExperiment.processes);
             this.buildOutline();
         };
 
@@ -35,17 +36,16 @@ class MCProcessesWorkflowOutlineComponentController {
             this.sidebarShowing = !maximized;
         });
 
-        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVUPDATE, () => {
-            let currentExperiment = this.mcprojstore.currentExperiment;
-            this.processes = _.values(currentExperiment.processes);
-            this.buildOutline();
-        });
-        this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
+        this.unsubscribeUpdate = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVUPDATE, cb);
+        this.unsubscribeAdd = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVADD, cb);
+        this.unsubscribeRemove = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVREMOVE, cb);
         this.buildOutline();
     }
 
     $onDestroy() {
-        this.mcbus.leave('PROCESSES$CHANGE', this.myName);
+        this.unsubscribeUpdate();
+        this.unsubscribeAdd();
+        this.unsubscribeRemove();
         this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName)
     }
 
