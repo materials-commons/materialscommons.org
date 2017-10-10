@@ -81,14 +81,7 @@ class MCProcessesWorkflowOutlineComponentController {
         this.processTree.clearSelected(this.root);
         p.selected = true;
         this.mcprojstore.currentProcess = p;
-        // this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, p.id).then(
-        //     process => {
-        //         this.process = process;
-        //         process.hasChildren = p.children.length;
-        //         this.workflowState.setSelectedProcess(process);
-        //     }
-        // );
-        //this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
+        this.process = this.mcprojstore.currentProcess;
     }
 
     toggle(p) {
