@@ -522,9 +522,11 @@ function update_mc() {
     stop_servers
 
     echo "  Updating server dependencies..."
+    rm -f package-lock.json
     npm install
 
     echo "Updating website dependencies..."
+    (cd ../website; rm -f package-lock.json)
     (cd ../website; npm install)
     (cd ../website; bower install)
 
