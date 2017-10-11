@@ -9,7 +9,7 @@ class AccountsAPIService {
         return this.apiService('accounts').customPOST({
             fullname: fullname,
             email: email
-        });
+        }).then(a => a.plain());
     }
 
     createResetPasswordRequest(email) {
