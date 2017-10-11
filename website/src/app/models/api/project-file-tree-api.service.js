@@ -32,7 +32,7 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles) {
                 rename: {
                     new_name: newDirectoryName
                 }
-            }).then(dirs => dir.plain());
+            }).then(dirs => dirs.plain());
         },
 
         renameProjectFile: function(projectID, fileID, newFileName) {
