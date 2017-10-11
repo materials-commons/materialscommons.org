@@ -1,4 +1,5 @@
 const GenericWatcher = require('./GenericWatcher.js');
+const commentNotifier = require('./commentNotifier.js');
 
 class CommentWatcher extends GenericWatcher{
     constructor(parameters) {
@@ -21,11 +22,11 @@ class CommentWatcher extends GenericWatcher{
         let type = new_value.item_type;
         let text = new_value.text;
         if (verbose_flag) {
-            console.log(table_name, owner, "comment: ", text);
+            console.log(this.table_name, owner, "comment: ", text);
         }
         // notify all owners of previous comments on this item of the new comment
+        commentNotifier.notifyOtherUsers(owner,id);
     }
-
 }
 
 module.exports = CommentWatcher;

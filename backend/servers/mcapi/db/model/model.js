@@ -417,6 +417,19 @@ function DataDir2DataFile(dirId,datafileId) {
     this.datafile_id = datafileId;
 }
 
+function Comment(item_id, item_type, owner, text) {
+    this.otype = "comment";
+    let now = r.now();
+    this.birthtime = now;
+    this.mtime = now;
+    this.atime = now;
+
+    this.owner = owner;
+    this.text = text;
+    this.item_id = item_id;
+    this.item_type = item_type;
+}
+
 module.exports = {
     Project: Project,
     Access: Access,
@@ -466,6 +479,7 @@ module.exports = {
     Dataset2Datafile,
     DataFile,
     Project2DataFile,
-    DataDir2DataFile
+    DataDir2DataFile,
+    Comment
 };
 
