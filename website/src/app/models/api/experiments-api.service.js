@@ -70,7 +70,7 @@ class ExperimentsAPIService {
         return this.projectsAPIRoute(projectId)
             .one('experiments', experimentId)
             .one('processes', processId).customPUT(updateArgs)
-            .then((process) => this.convertDatePropertyAttributes(process));
+            .then((process) => this.convertDatePropertyAttributes(process.plain()));
     }
 
     deleteTask(projectID, experimentID, taskID) {
