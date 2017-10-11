@@ -8,24 +8,20 @@ class CommentWatcher extends GenericWatcher{
     }
 
     filter(x) {
-        let old_value = x.old_val?true:false;
-        let new_value = x.new_val?true:false;
-        let trigger = (new_value && !old_value);
+        let trigger = (x.new_value && !x.old_value);
         return trigger;
     }
 
     action(delta) {
         let verbose_flag = this.verbose();
-        let new_value = delta.new_val;
-        let owner = new_value.owner;
-        let id = new_value.item_id;
-        let type = new_value.item_type;
-        let text = new_value.text;
-        if (verbose_flag) {
-            console.log(this.table_name, owner, "comment: ", text);
-        }
+        let comment = delta.new_val;
         // notify all owners of previous comments on this item of the new comment
-        commentNotifier.notifyOtherUsers(owner,id);
+
+        console.log("Before call to notifyOtherUsers", comment.id);
+
+        await commentNotifier.notifyOtherUsers(comment);
+
+        console.log("After call to notifyOtherUsers", comment.id);
     }
 }
 
