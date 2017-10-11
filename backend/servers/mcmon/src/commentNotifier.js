@@ -1,4 +1,3 @@
-const Promise = require("bluebird");
 const r = require('./r');
 
 const backendBase = '../../..';
@@ -32,7 +31,6 @@ async function getOtherUsersFor (comment) {
 
 async function notify(user, comment) {
     console.log("Notify: ", user, " of ", comment.id);
-    yield Promise.delay(500);
 }
 
 async function notifyOtherUsers (comment) {
