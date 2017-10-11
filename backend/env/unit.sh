@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Note: often this will be redundent, but it simplifies use
+# source to set all environment variables for the type of server
+export SERVERTYPE=unit
+
 export MC_SERVICE_PORT=5602
 export MC_API_SERVICE_PORT=5604
 export MC_PUB_SERVICE_PORT=5626
