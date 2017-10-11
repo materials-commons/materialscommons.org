@@ -2,18 +2,16 @@ const r = require('./r');
 
 const Promise = require('bluebird');
 
-const backendBase = '../../..';
-const mcapiBase = backendBase + '/servers/mcapi';
-
-const dbModelBase = mcapiBase + '/db/model'
-const comments = require(dbModelBase + '/comments');
+const commentsDatabase = require('../../mcapi/db/model/comments');
 
 let verbose = true;
 
 function* getOtherUsersFor (comment) {
     console.log("getOtherUsersFor", comment.id);
 
-    let allComments = yield comments.getAllFor(comment.item_id);
+    let valComments = yield commentsDatabase.getAllForItem(comment.item_id);
+    console.log(valComments);
+    allComments = valComments.val;
     console.log(allComments);
 
     let matchedUsers = [];
@@ -38,6 +36,7 @@ function* notify(user, comment) {
 }
 
 function* promiseNotify(comment) {
+    console.log(commentsDatabase);
     console.log("promiseNotify start", comment.id);
     let otherUsers = yield getOtherUsersFor(comment);
     console.log("promiseNotify - otherUsers = ", otherUsers);
@@ -49,7 +48,10 @@ function* promiseNotify(comment) {
 
 function notifyOtherUsers (comment) {
     console.log("notifyOtherUsers - start")
-    Promise.coroutine(promiseNotify)(comment).then("notifyOtherUsers - done");
+    Promise.coroutine(promiseNotify)(comment)
+        .then(() => {
+            console.log("notifyOtherUsers - done");
+        });
     console.log("notifyOtherUsers - return")
 }
 

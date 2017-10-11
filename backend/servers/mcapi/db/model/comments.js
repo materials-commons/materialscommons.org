@@ -11,16 +11,12 @@ function* get(id) {
     return ret;
 }
 
-function* getAllForItem(item_id) {
-
-    let comments = yield dbExec(r.table("comments")
-        .getAll(item_id,{index: item_id})
-    )
-
-    let ret = {error: `comments not found for item_id = ${item_id}`};
-    if (comments)
-        return {val: comments};
-    return ret;
+function* getAllForItem(itemId) {
+    console.log("getAllForItem ", itemId);
+    let comments = yield r.table("comments")
+        .getAll(itemId,{index: 'item_id'})
+    console.log("getAllForItem", comments)
+    return {val: comments};
 }
 
 function* addComment(item_id, item_type, owner, text) {
