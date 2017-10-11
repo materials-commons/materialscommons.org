@@ -1,6 +1,4 @@
 const directories = require('../../db/model/directories');
-const projects = require('../../db/model/projects');
-const files = require('../../db/model/files');
 const schema = require('../../schema');
 const parse = require('co-body');
 const httpStatus = require('http-status');
@@ -31,7 +29,7 @@ function* create(next) {
     dirArgs = prepareDirArgs(this.params.project_id, dirArgs);
 
     let errors = yield validateDirArgs(dirArgs);
-    if (errors != null) {
+    if (errors !== null) {
         this.status = httpStatus.BAD_REQUEST;
         this.body = errors;
     } else {
@@ -46,14 +44,14 @@ function* create(next) {
     yield next;
 }
 
-function* createMultipleSubDirectories(next){
+function* createMultipleSubDirectories(next) {
     let args = yield parse(this);
     let project_id = this.params.project_id;
     let directory_id = this.params.directory_id;
     let paths = args.paths;
     let results = [];
     let errors = null;
-    for (let i = 0; i < paths.length; i++){
+    for (let i = 0; i < paths.length; i++) {
         let path = paths[i];
         let dirArgs = {
             project_id: project_id,
@@ -61,21 +59,21 @@ function* createMultipleSubDirectories(next){
             path: path
         };
         errors = yield validateDirArgs(dirArgs);
-        if (errors != null) {
+        if (errors !== null) {
             this.status = httpStatus.BAD_REQUEST;
-            brake;
+            break;
         }
         let rv = yield directories.create(this.params.project_id, this.reqctx.project.name, dirArgs);
         if (rv.error) {
             errors = rv.error;
             this.status = httpStatus.NOT_ACCEPTABLE;
-            brake;
+            break;
         } else {
             results = results.concat(rv.val);
         }
     }
-    if (errors == null) {
-        let table = {}
+    if (errors === null) {
+        let table = {};
         for (let i = 0; i < results.length; i++) {
             let path = results[i].name;
             table[path] = results[i];
@@ -94,9 +92,9 @@ function prepareDirArgs(projectID, dirArgs) {
 }
 
 function validateDirArgs(dirArgs) {
-    return schema.createDirectory.validateAsync(dirArgs).then(function() {
+    return schema.createDirectory.validateAsync(dirArgs).then(function () {
         return null;
-    }, function(errors) {
+    }, function (errors) {
         return errors;
     });
 }
@@ -138,17 +136,17 @@ function* validateUpdateArgs(projectID, directoryID, updateArgs) {
 }
 
 function validateMoveArgs(moveArgs) {
-    return schema.moveDirectory.validateAsync(moveArgs).then(function() {
+    return schema.moveDirectory.validateAsync(moveArgs).then(function () {
         return null;
-    }, function(errors) {
+    }, function (errors) {
         return errors;
     });
 }
 
 function validateRenameArgs(renameArgs) {
-    return schema.renameDirectory.validateAsync(renameArgs).then(function() {
+    return schema.renameDirectory.validateAsync(renameArgs).then(function () {
         return null;
-    }, function(errors) {
+    }, function (errors) {
         return errors;
     });
 }
