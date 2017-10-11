@@ -8,7 +8,7 @@ class CommentWatcher extends GenericWatcher{
     }
 
     filter(x) {
-        let trigger = (x.new_value && !x.old_value);
+        let trigger = (x.new_val && (!x.old_val));
         return trigger;
     }
 
@@ -19,7 +19,7 @@ class CommentWatcher extends GenericWatcher{
 
         console.log("Before call to notifyOtherUsers", comment.id);
 
-        await commentNotifier.notifyOtherUsers(comment);
+        commentNotifier.notifyOtherUsers(comment);
 
         console.log("After call to notifyOtherUsers", comment.id);
     }

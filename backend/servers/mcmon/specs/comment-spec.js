@@ -116,6 +116,33 @@ describe('Feature - Monitoring comments table: ', function() {
         });
     });
     describe('comments by multiple authors: ', function () {
+        it('is triggered by two authors', function* (){
+            for (let i = 0; i < otherUserIds.length; i++) {
+                let userId = otherUserIds[i];
+                let user = yield dbModelUsers.getUser(userId);
+                assert.isOk(user, "No test user available = " + userId);
+                assert.equal(userId,user.id);
+            }
+            let users = [userId].concat(otherUserIds);
+            let fakeItemId = random_name('fakeItem');
+            let fakeItemType = 'fake';
+            let baseText = "This is a fake comment on item = " + fakeItemId + " and type = " + fakeItemType;
+            for (let i = 0; i < 2; i++) {
+                let postUserId = users[i];
+                let tag = " instance " + i + " user " + postUserId;
+                let commentText = baseText + tag;
+                let errorOrVal = yield commentsBackend.addComment(fakeItemId, fakeItemType, postUserId, commentText);
+                assert.isOk(errorOrVal);
+                assert.isOk(errorOrVal.val);
+                let comment = errorOrVal.val;
+                assert.isOk(comment.id);
+                assert.equal(comment.otype, 'comment');
+                assert.equal(comment.owner, postUserId);
+                assert.equal(comment.item_id, fakeItemId);
+                assert.equal(comment.item_type, fakeItemType);
+                console.log("Did trigger, " + i + ", for item_id = " + fakeItemId);
+            }
+        });
         it('is triggered by multiple comments', function* (){
             for (let i = 0; i < otherUserIds.length; i++) {
                 let userId = otherUserIds[i];

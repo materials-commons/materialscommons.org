@@ -1,5 +1,7 @@
 const r = require('./r');
 
+const Promise = require('bluebird');
+
 const backendBase = '../../..';
 const mcapiBase = backendBase + '/servers/mcapi';
 
@@ -8,7 +10,7 @@ const comments = require(dbModelBase + '/comments');
 
 let verbose = true;
 
-async function getOtherUsersFor (comment) {
+function* getOtherUsersFor (comment) {
     console.log("getOtherUsersFor", comment.id);
 
     let allComments = yield comments.getAllFor(comment.item_id);
@@ -29,18 +31,26 @@ async function getOtherUsersFor (comment) {
     return matchedUsers;
 }
 
-async function notify(user, comment) {
-    console.log("Notify: ", user, " of ", comment.id);
+function* notify(user, comment) {
+    console.log("Simulate Notify - start: ", user, " of ", comment.id);
+    yield Promise.delay(500);
+    console.log("Simulate Notify -  done: ", user, " of ", comment.id);
 }
 
-async function notifyOtherUsers (comment) {
-    console.log("for ", effectedComment.id);
-    let otherUsers = await getOtherUsersFor(effectedComment);
-    console.log("otherUsers = ", otherUsers);
+function* promiseNotify(comment) {
+    console.log("promiseNotify start", comment.id);
+    let otherUsers = yield getOtherUsersFor(comment);
+    console.log("promiseNotify - otherUsers = ", otherUsers);
     for (let i = 0; i < otherUsers.length; i++ ) {
-        await notify(user, effectedComment);
+        yield notify(user, comment);
     }
-    console.log("done ", effectedComment.id);
+    console.log("promiseNotify done ", comment.id);
+}
+
+function notifyOtherUsers (comment) {
+    console.log("notifyOtherUsers - start")
+    Promise.coroutine(promiseNotify)(comment).then("notifyOtherUsers - done");
+    console.log("notifyOtherUsers - return")
 }
 
 module.exports = {
