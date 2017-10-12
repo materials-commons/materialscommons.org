@@ -13,7 +13,8 @@
     </md-tab>
 
     <md-tab>
-        <md-tab-label>Samples ({{$ctrl.process.input_samples.length}})</md-tab-label>
+        <md-tab-label>Samples ({{$ctrl.process.input_samples.length}}/{{$ctrl.process.output_samples.length}})
+        </md-tab-label>
         <md-tab-body>
             <md-button class="md-primary" ng-click="$ctrl.selectSamples()">
                 <i class="fa fa-fw fa-plus"></i>
