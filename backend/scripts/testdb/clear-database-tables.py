@@ -23,11 +23,14 @@ def clear_mcpub_tables():
     run(r.db('mcpub').wait())
 
 def clear_table(db,table):
-    run(r.db('db').table(table).delete())
+    # table names are returned in unicode - but need string for call
+    table = table.encode('utf-8')
+    run(r.db(db).table(table).delete())
 
 def run(rql):
     try:
-        return rql.run()
+        ret = rql.run()
+        return ret
     except r.RqlRuntimeError:
         pass
 
