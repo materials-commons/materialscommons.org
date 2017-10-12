@@ -3,7 +3,7 @@ import {Experiment} from '../experiments/experiment/components/tasks/experiment.
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, mcprojstore) {
+    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, projectsAPI, mcprojstore) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
@@ -15,6 +15,7 @@ class MCProjectHomeComponentController {
         this.deletingExperiments = false;
         this.selectingExperiments = false;
         this.mcprojstore = mcprojstore;
+        this.projectsAPI = projectsAPI;
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
 
@@ -47,7 +48,13 @@ class MCProjectHomeComponentController {
 
         this.projectsAPI.updateProject(this.$stateParams.project_id, {overview: this.project.overview})
             .then(
-                () => this.projectOverview = this.project.overview,
+                () => {
+                    this.projectOverview = this.project.overview;
+                    this.mcprojstore.updateCurrentProject(currentProj => {
+                        currentProj.overview = this.project.overview;
+                        return currentProj;
+                    });
+                },
                 () => this.toast.error('Unable to update project overview')
             );
     }
@@ -64,7 +71,12 @@ class MCProjectHomeComponentController {
 
     updateProjectDescription() {
         this.projectsAPI.updateProject(this.$stateParams.project_id, {description: this.project.description}).then(
-            () => null,
+            () => {
+                this.mcprojstore.updateCurrentProject(currentProj => {
+                    currentProj.description = this.project.description;
+                    return currentProj;
+                });
+            },
             () => this.toast.error('Unable to update project description')
         );
     }
@@ -229,6 +241,7 @@ class RenameProjectDialogController {
             () => {
                 this.mcprojstore.updateCurrentProject((currentProject) => {
                     currentProject.name = this.newProjectName;
+                    return currentProject;
                 });
                 this.$mdDialog.hide(this.newProjectName);
             },

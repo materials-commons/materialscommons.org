@@ -36,6 +36,7 @@ function MCProjectSettingsComponentController(mcapi, User, toast, mcprojstore) {
                 if (i !== -1) {
                     mcprojstore.updateCurrentProject((currentProject => {
                         currentProject.users.splice(i, 1);
+                        return currentProject;
                     })).then(
                         () => {
                             ctrl.project = mcprojstore.currentProject;
@@ -71,6 +72,7 @@ function MCProjectSettingsComponentController(mcapi, User, toast, mcprojstore) {
                             'project_id': ctrl.project.id,
                             'project_name': ctrl.project.name
                         });
+                        return currentProject;
                     }).then(() => {
                         ctrl.project = mcprojstore.currentProject;
                         userToAdd.selected = false;

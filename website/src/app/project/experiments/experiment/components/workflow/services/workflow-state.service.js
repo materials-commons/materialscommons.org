@@ -28,6 +28,7 @@ class WorkflowStateService {
             this.mcprojstore.currentProcess = process;
             this.mcprojstore.updateCurrentProcess((currentProcess) => {
                 currentProcess.hasChildren = hasChildren;
+                return currentProcess;
             });
             // this.experimentsAPI.getProcessForExperiment(projectId, experimentId, process.id)
             //     .then(

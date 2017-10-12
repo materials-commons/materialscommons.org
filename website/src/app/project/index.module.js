@@ -1,5 +1,5 @@
 import './mc-project.component';
-import './mc-project-navbar';
+import './mc-project-navbar.component';
 import './components/index.module';
 import './experiments/index.module';
 import './files/index.module';

@@ -5,7 +5,7 @@ angular.module('materialscommons').component("mcProjectNavbar", {
 
 /*@ngInject*/
 function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSidenav, ProjectModel, $mdDialog, toast,
-                                            projectsAPI, experimentsAPI, quickbarSamples, $stateParams, User, mcprojstore) {
+                                            projectsAPI, quickbarSamples, $stateParams, User, mcprojstore) {
     const ctrl = this;
 
     ctrl.showQuickbar = false;
@@ -18,11 +18,11 @@ function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSiden
     ctrl.isBetaUser = User.attr().beta_user;
     ctrl.user = User.u();
 
-    const unregister = $rootScope.$on('$stateChangeSuccess', function() {
+    const unregister = $rootScope.$on('$stateChangeSuccess', function () {
         ctrl.currentTab = getCurrentTabIndex();
     });
 
-    $scope.$on('$destroy', function() {
+    $scope.$on('$destroy', function () {
         unregister();
     });
 
@@ -100,7 +100,7 @@ function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSiden
             let transformedExperiments = project.experiments.map(e => transformers.transformExperiment(e));
             project.experiments = _.indexBy(transformedExperiments, 'id');
             project.experimentsFullyLoaded = true;
-            currentProject = project;
+            return project;
         });
     }
 }
