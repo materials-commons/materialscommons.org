@@ -1,5 +1,5 @@
-const GenericWatcher = require('./GenericWatcher.js');
-const zip_file_builder = require('./zip_file_builder');
+const GenericWatcher = require('./generic-watcher.js');
+const zip_file_builder = require('./zip-file-builder');
 
 class PublicationWatcher extends GenericWatcher{
     constructor(parameters) {

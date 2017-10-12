@@ -1,5 +1,5 @@
-const GenericWatcher = require('./GenericWatcher.js');
-const commentNotifier = require('./commentNotifier.js');
+const GenericWatcher = require('./generic-watcher.js');
+const commentNotifier = require('./comment-notifier.js');
 
 class CommentWatcher extends GenericWatcher{
     constructor(parameters) {

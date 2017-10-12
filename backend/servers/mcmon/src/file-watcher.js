@@ -1,5 +1,5 @@
-const GenericWatcher = require('./GenericWatcher');
-const file_converter = require('./file_converter');
+const GenericWatcher = require('./generic-watcher');
+const file_converter = require('./file-converter');
 
 class FileWatcher extends GenericWatcher{
     constructor(parameters) {

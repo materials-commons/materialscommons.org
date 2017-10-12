@@ -1,4 +1,4 @@
-const GenericWatcher = require('./GenericWatcher.js');
+const GenericWatcher = require('./generic-watcher.js');
 
 // TODO: expand this usage to logging user activity. Possibly by watching multiple tables.
 

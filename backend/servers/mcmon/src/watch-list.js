@@ -1,13 +1,13 @@
-const PublicationWatcher = require('./PublicationWacher');
-const UserWatcher = require('./UserWatcher');
-const FileWatcher = require('./FileWatcher');
-const CommentWatcher = require('./CommentWatcher');
+const PublicationWatcher = require('./publication-wacher');
+const UserWatcher = require('./user-watcher');
+const FileWatcher = require('./file-watcher');
+const CommentWatcher = require('./comment-watcher');
 
 class Builder {
     constructor(parameters) {
         this.watch_list = [
             new PublicationWatcher(parameters),
-// TODO: advance User Watcher to admin-like user monitoring.
+// TODO: advance UserWatcher to admin-like user monitoring.
 //            new UserWatcher(parameters),
             new FileWatcher(parameters),
             new CommentWatcher(parameters)
