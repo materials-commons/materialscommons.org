@@ -69,6 +69,12 @@ class MCProcessesWorkflowGraphComponentController {
             });
         });
 
+        this.projectUnsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVUPDATE, () => {
+            const currentExperiment = this.mcprojstore.currentExperiment;
+            this.processes = _.values(currentExperiment.processes);
+            this.allProcessesGraph();
+        });
+
         this.procUpdateUnsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVUPDATE, process => {
             this.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
                 ele.data('name', process.name);
@@ -126,6 +132,7 @@ class MCProcessesWorkflowGraphComponentController {
 
     $onDestroy() {
         this.procUpdateUnsubscribe();
+        this.projectUnsubscribe();
         this.mcbus.leave('PROCESSES$CHANGE', this.myName);
         this.mcbus.leave('WORKFLOW$RESTOREHIDDEN', this.myName);
         this.mcstate.leave('WORKFLOW$SEARCH', this.myName);
