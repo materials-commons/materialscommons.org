@@ -11,12 +11,16 @@ class ProcessesAPIService {
         return this.projectsAPIRoute(projectId).one('processes', processId).get();
     }
 
-    getDeleteProcessPreConditions(projectId,processId) {
+    getDeleteProcessPreConditions(projectId, processId) {
         return this.projectsAPIRoute(projectId).one('processes', processId).get();
     }
 
-    deleteProcess(projectId,processId) {
+    deleteProcess(projectId, processId) {
         return this.projectsAPIRoute(projectId).one('processes', processId).remove();
+    }
+
+    getProcessFiles(projectId, processId) {
+        return this.projectsAPIRoute(projectId).one('processes', processId).one('files').getList().then(files => files.plain());
     }
 
     updateFilesInProcess(projectId, processId, fileIdsToAdd, fileIdsToDelete) {

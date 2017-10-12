@@ -5,15 +5,33 @@ class ExperimentsAPIService {
     }
 
     getAllForProject(projectID) {
-        return this.projectsAPIRoute(projectID).one('experiments').getList();
+        return this.projectsAPIRoute(projectID).one('experiments').getList().then(experiments => experiments.plain());
     }
 
     createForProject(projectID, experiment) {
-        return this.projectsAPIRoute(projectID).one('experiments').customPOST(experiment);
+        return this.projectsAPIRoute(projectID).one('experiments').customPOST(experiment).then((e) => e.plain());
     }
 
     updateForProject(projectID, experimentID, what) {
         return this.projectsAPIRoute(projectID).one('experiments', experimentID).customPUT(what);
+    }
+
+    mergeExperiments(projectID, experimentIds, newExperimentArgs) {
+        return this.projectsAPIRoute(projectID).one('experiments').one('merge').customPOST({
+            experiments: experimentIds,
+            name: newExperimentArgs.name,
+            description: newExperimentArgs.description
+        }).then(e => e.plain());
+    }
+
+    deleteProcess(projectId, experimentId, processId) {
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('processes', processId).customDELETE();
+    }
+
+    deleteExperiments(projectId, experimentIds) {
+        return this.projectsAPIRoute(projectId).one('experiments').one('delete').customPOST({
+            experiments: experimentIds
+        });
     }
 
     getForProject(projectID, experimentID) {
@@ -80,7 +98,7 @@ class ExperimentsAPIService {
 
     createProcessFromTemplate(projectId, experimentId, templateId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('processes').one('templates', templateId)
-            .customPOST();
+            .customPOST().then(p => p.plain());
     }
 
     cloneProcess(projectId, experimentId, processId, cloneArgs) {
@@ -91,13 +109,13 @@ class ExperimentsAPIService {
     convertDatePropertyAttributes(process) {
         if (process.setup) {
             let setup = process.setup;
-            for (var i = 0; i < setup.length; i++) {
+            for (let i = 0; i < setup.length; i++) {
                 let s = setup[i];
                 if (s.properties) {
                     let properties = s.properties;
-                    for (var j = 0; j < properties.length; j++) {
+                    for (let j = 0; j < properties.length; j++) {
                         let property = properties[j];
-                        if (property.otype && (property.otype == 'date')){
+                        if (property.otype && (property.otype === 'date')) {
                             if (property.value) {
                                 property.value = this.convertDateValueFromTransport(property.value);
                             }

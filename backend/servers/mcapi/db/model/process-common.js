@@ -239,12 +239,17 @@ function* createSetup(processID, settings) {
         // setting variable so we can return a setting object with
         // all of its properties.
         // TODO: Add into an array and then batch insert into setupproperties
+        let props = [];
         for (let j = 0; j < current.properties.length; j++) {
             let p = current.properties[j];
             let val = p.value;
             let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
                 p.otype, val, p.unit);
-            yield db.insert('setupproperties', prop);
+            props.push(prop);
+        }
+
+        if (props.length) {
+            yield db.insert('setupproperties', props);
         }
     }
 }

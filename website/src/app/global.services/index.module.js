@@ -28,5 +28,6 @@ import './select-items/select-items.service';
 import './mcshow/mcshow.service';
 import './demo-project.service';
 import './natural-sort.service';
+import './store/mcprojstore.service';
 
 

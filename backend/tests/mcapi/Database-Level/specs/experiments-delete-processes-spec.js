@@ -42,14 +42,15 @@ let sample_list = null;
 let file_list = null;
 
 before(function*() {
-
     this.timeout(8000); // this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
 
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
+
+//    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
+    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd()+'/');
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;
@@ -112,7 +113,7 @@ before(function*() {
 
 describe('Feature - Experiments: ', function () {
     describe('Delete Experiment - in parts: ', function () {
-        it('deletes datasets and deletes all processes and samples', function*() {
+        it('deletes all datasets and deletes all processes and samples', function*() {
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -152,7 +153,7 @@ describe('Feature - Experiments: ', function () {
             for (let i = process_list.length; i > 0; i--) {
                 // delete leaf-nodes first!
                 let process = process_list[i - 1];
-                yield processes.deleteProcess(project.id, process.id);
+                yield processes.deleteProcessFull(project.id, process.id);
             }
 
             let simple = true;

@@ -5,7 +5,7 @@ class MCExperimentOverviewDetailsComponentController {
     }
 
     $onInit() {
-        this.usedSamples = this.experiment.samples.filter(s => s.process_count > 1);
+        this.usedSamples = _.values(this.experiment.samples).filter(s => s.process_count > 1);
         this.publishedDatasets = this.experiment.datasets.filter(ds => ds.published);
         this.completedTasks = this.experiment.tasks.filter(t => t.flags.done);
     }
@@ -49,7 +49,7 @@ class MCExperimentOverviewDetailsComponentController {
     }
 
     filePlural() {
-        return this.experiment.files.length === 1 ? 'File' : 'Files';
+        return this.experiment.files_count === 1 ? 'File' : 'Files';
     }
 
     notePlural() {

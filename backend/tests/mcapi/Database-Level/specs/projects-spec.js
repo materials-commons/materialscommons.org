@@ -65,7 +65,7 @@ describe('Feature - projects: ', function() {
             let project_list = yield projects.all();
             let found_project = null;
             project_list.forEach(function(p){
-                if (p.name == project_name) {
+                if (p.name === project_name) {
                     found_project = p;
                 }
             });
@@ -89,7 +89,7 @@ describe('Feature - projects: ', function() {
             let project_list = yield projects.forUser(user);
             let found_project = null;
             project_list.forEach(function (p) {
-                if (p.name == project_name) {
+                if (p.name === project_name) {
                     found_project = p;
                 }
             });
@@ -100,7 +100,7 @@ describe('Feature - projects: ', function() {
             assert.equal(found_project.users.length, 1);
             // NOTE: field is user, here, but user_id in test above!!!
             // is this the correct behaivor???
-            assert.equal(found_project.users[0].user, userId);
+            assert.equal(found_project.users[0].user_id, userId);
         });
         it ('create project, find by user, has full set of properties', function*(){
             let user = yield dbModelUsers.getUser(userId);
@@ -115,7 +115,7 @@ describe('Feature - projects: ', function() {
             let project_list = yield projects.forUser(user);
             let found_project = null;
             project_list.forEach(function(p){
-                if (p.name == project_name) {
+                if (p.name === project_name) {
                     found_project = p;
                 }
             });
@@ -124,7 +124,7 @@ describe('Feature - projects: ', function() {
             assert.equal(found_project.owner, user.id);
             assert.equal(found_project.owner, userId);
             assert.equal(found_project.users.length,1);
-            assert.equal(found_project.users[0].user, userId);
+            assert.equal(found_project.users[0].user_id, userId);
             assert.isTrue(found_project.hasOwnProperty('events'));
             assert.equal(found_project.events.length,0);
             assert.isTrue(found_project.hasOwnProperty('processes'));

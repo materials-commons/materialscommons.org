@@ -1,7 +1,6 @@
 const experiments = require('../../../db/model/experiments');
 const processes = require('../../../db/model/processes');
 const check = require('../../../db/model/check');
-const schema = require('../../../schema');
 const parse = require('co-body');
 const status = require('http-status');
 const _ = require('lodash');
@@ -9,7 +8,7 @@ const validators = require('./validators');
 const ra = require('../../resource-access');
 const Router = require('koa-router');
 
-function *getProcessesForExperiment(next) {
+function* getProcessesForExperiment(next) {
     let simple = !!this.query.simple;
     let rv = yield experiments.getProcessesForExperiment(this.params.experiment_id, simple);
     if (rv.error) {
@@ -38,7 +37,7 @@ function* updateExperimentProcess(next) {
     updateArgs.process_id = this.params.process_id;
     updateArgs = convertPropertyDateValues(updateArgs);
     let errors = yield validateUpdateExperimentProcessTemplateArgs(updateArgs, this.params);
-    if (errors != null) {
+    if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
     } else {
@@ -134,7 +133,7 @@ function convertPropertyDateValues(updateArgs) {
         let props = updateArgs.properties;
         for (let i = 0; i < props.length; i++) {
             let property = props[i];
-            if (property.otype == 'date') {
+            if (property.otype === 'date') {
                 try {
                     property.value = new Date(property.value);
                 } catch (e) {
@@ -149,7 +148,7 @@ function* cloneProcess(next) {
     let cloneArgs = yield parse(this);
     cloneArgs = setDefaultCloneArgValues(cloneArgs);
     let errors = yield validateCloneArgs(this.params.project_id, cloneArgs);
-    if (errors != null) {
+    if (errors !== null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
     } else {
@@ -198,6 +197,46 @@ function* validateCloneArgs(projectId, cloneArgs) {
     return null;
 }
 
+function* deleteProcessFromExperiment(next) {
+    let errors = yield validateProcessIsDeletable(this.params.process_id);
+    if (errors !== null) {
+        this.status = status.BAD_REQUEST;
+        this.body = errors;
+    } else {
+        let rv = yield experiments.quickDeleteExperimentProcess(this.params.project_id, this.params.experiment_id, this.params.process_id);
+        if (rv.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = rv;
+        } else {
+            this.body = rv.val;
+        }
+    }
+    yield next;
+}
+
+function* validateProcessIsDeletable(processId) {
+    let isLeafNode = yield processes.isLeafNode(processId);
+    if (!isLeafNode) {
+        return {error: `Process ${processId} is not a leaf node`};
+    }
+
+    if (yield check.processInPublishedDataset(processId)) {
+        return {error: `Process in published dataset`};
+    }
+
+    return null;
+}
+
+function* getProcessFiles(next) {
+    let rv = yield processes.processFiles(this.params.process_id);
+    if (rv.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
+}
 
 function createResource() {
     const router = new Router();
@@ -210,6 +249,8 @@ function createResource() {
     router.put('/:process_id', updateExperimentProcess);
     router.get('/:process_id', getProcess);
     router.post('/:process_id/clone', cloneProcess);
+    router.get('/:process_id/files', getProcessFiles);
+    router.delete('/:process_id', deleteProcessFromExperiment);
 
     return router;
 }

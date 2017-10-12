@@ -23,7 +23,8 @@
     "bytesToSizeStr": true,
     "Flow": true,
     "removeById": true,
-    "differenceById": true
+    "differenceById": true,
+    "localforage": true
   },
   "rules": {
     "angular/log": 0,

@@ -6,12 +6,19 @@ const commonQueries = require('../../../lib/common-queries');
 const processCommon = require('./process-common');
 const sampleCommon = require('./sample-common');
 const _ = require('lodash');
+const processes = require('./processes');
 
 function* getAllForProject(projectID) {
     let rql = r.table('project2experiment').getAll(projectID, {index: 'project_id'})
-        .eqJoin('experiment_id', r.table('experiments')).zip()
-        .merge((experiment) => {
-            return {
+        .eqJoin('experiment_id', r.table('experiments')).zip();
+    rql = addExperimentComputed(rql);
+    let experiments = yield dbExec(rql);
+    return {val: experiments};
+}
+
+function addExperimentComputed(rql) {
+    rql = rql.merge((experiment) => {
+        return {
                 tasks: r.table('experiment2experimenttask')
                     .getAll(experiment('id'), {index: 'experiment_id'})
                     .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
@@ -32,42 +39,23 @@ function* getAllForProject(projectID) {
                     })
                     .orderBy('name')
                     .coerceTo('array'),
-                files: r.table('experiment2datafile').getAll(experiment('id'), {index: 'experiment_id'})
-                    .eqJoin('datafile_id', r.table('datafiles')).zip()
-                    .orderBy('name')
-                    .coerceTo('array'),
-                processes: r.table('experiment2process').getAll(experiment('id'), {index: 'experiment_id'})
-                    .eqJoin('process_id', r.table('processes')).zip()
-                    .orderBy('name')
-                    .coerceTo('array'),
+                files_count: r.table('experiment2datafile').getAll(experiment('id'), {index: 'experiment_id'}).count(),
+                processes: commonQueries.processDetailsRql(r.table('experiment2process').getAll(experiment('id'), {index: 'experiment_id'})
+                    .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array'),
                 datasets: r.table('experiment2dataset').getAll(experiment('id'), {index: 'experiment_id'})
                     .eqJoin('dataset_id', r.table('datasets')).zip()
                     .orderBy('title')
                     .coerceTo('array')
             }
-        });
-    let experiments = yield dbExec(rql);
-    return {val: experiments};
+    });
+
+    return rql;
 }
 
 // Get assumes that validating the experiment for the project has already occured.
 function* get(experimentID) {
-    let rql = r.table('experiments').get(experimentID)
-        .merge((experiment) => {
-            return {
-                tasks: r.table('experiment2experimenttask')
-                    .getAll(experiment('id'), {index: 'experiment_id'})
-                    .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
-                    .filter({parent_id: ''})
-                    .orderBy('index')
-                    .coerceTo('array'),
-                notes: r.table('experiment2experimentnote')
-                    .getAll(experiment('id'), {index: 'experiment_id'})
-                    .eqJoin('experiment_note_id', r.table('experimentnotes')).zip()
-                    .orderBy('name')
-                    .coerceTo('array')
-            }
-        });
+    let rql = r.table('experiments').get(experimentID);
+    rql = addExperimentComputed(rql);
     let experiment = yield dbExec(rql);
     experiment.tasks.forEach((task) => task.tasks = []);
     return {val: experiment};
@@ -87,6 +75,41 @@ function* create(experiment, owner) {
 function* update(experimentID, updateArgs) {
     yield db.update('experiments', experimentID, updateArgs);
     return yield get(experimentID);
+}
+
+function* merge(projectId, mergeArgs, owner) {
+    let e = {
+        name: mergeArgs.name,
+        description: mergeArgs.description,
+        project_id: projectId
+    };
+    let rv = yield create(e, owner);
+    let mergeToId = rv.val.id;
+    yield insertUniqueEntriesIntoExperimentTable('experiment2sample', mergeToId, mergeArgs.experiments, 'sample_id');
+    yield insertUniqueEntriesIntoExperimentTable('experiment2process', mergeToId, mergeArgs.experiments, 'process_id');
+    yield insertUniqueEntriesIntoExperimentTable('experiment2datafile', mergeToId, mergeArgs.experiments, 'datafile_id');
+    return yield get(mergeToId);
+}
+
+function* insertUniqueEntriesIntoExperimentTable(table, experimentIdToInsertTo, experimentIds, member) {
+    let uniqIds = yield getUniqueForExperimentTable(table, experimentIds, member);
+    yield insertIntoExperimentTable(table, experimentIdToInsertTo, uniqIds, member);
+}
+
+function* getUniqueForExperimentTable(table, experimentIds, member) {
+    let entries = yield r.table(table).getAll(r.args(experimentIds), {index: 'experiment_id'});
+    return _.uniq(entries.map(entry => entry[member]))
+}
+
+function* insertIntoExperimentTable(table, experimentId, ids, member) {
+    let entriesToInsert = ids.map(id => {
+        let entry = {
+            experiment_id: experimentId,
+        };
+        entry[member] = id;
+        return entry;
+    });
+    yield r.table(table).insert(entriesToInsert);
 }
 
 function* createTask(experimentID, task, owner) {
@@ -179,7 +202,7 @@ function* deleteTask(experimentID, taskID) {
     let oldIndex = old.changes[0].old_val.index;
     yield updateTasksAboveDeleted(experimentID, oldParentID, oldIndex);
     if (old.process_id) {
-        yield deleteProcess(experimentID, old.process_id);
+        yield quickDeleteExperimentProcess(experimentID, old.process_id);
     }
     return {val: old.changes[0].old_val};
 }
@@ -436,6 +459,23 @@ function* getFilesForExperiment(experimentId) {
     return {val: files};
 }
 
+function* quickDeleteExperimentProcess(projectId, experimentId, processId) {
+    let experiments = yield processes.processExperiments(processId);
+    if (experiments.length) {
+        // in more than one experiment so we can do quickDeleteProcess and then the
+        // other cleanup.
+        yield processes.quickDeleteProcess(projectId, processId);
+    }
+
+    yield r.table('experiment2process').getAll([experimentId, processId], {index: 'experiment_process'}).delete();
+
+    let experimentDatasets = yield r.table('experiment2dataset').getAll(experimentId, {index: 'experiment_id'});
+    let datasetProcesses = experimentDatasets.map(ed => [ed.dataset_id, processId]);
+    yield r.table('dataset2process').getAll(r.args(datasetProcesses), {index: 'dataset_process'}).delete();
+
+    return true;
+}
+
 module.exports = {
     getAllForProject,
     get,
@@ -446,6 +486,7 @@ module.exports = {
     updateTask,
     deleteTask,
     getExperimentNote,
+    merge,
     createExperimentNote,
     updateExperimentNote,
     deleteExperimentNote,
@@ -458,5 +499,7 @@ module.exports = {
     getFilesForExperiment,
     addProcessFromTemplate,
     cloneProcess,
-    updateProcess
+    updateProcess,
+    quickDeleteExperimentProcess,
+    addExperimentComputed
 };

@@ -1,22 +1,18 @@
 /*@ngInject*/
 class NavbarComponentController {
     /*@ngInject*/
-    constructor(User, $state, $stateParams, searchQueryText, mcstate, navbarOnChange, projectsAPI, demoProjectService,
-                blockUI, toast, mcbus, $mdDialog, $timeout) {
+    constructor(User, $state, mcbus, $stateParams, searchQueryText, demoProjectService,
+                blockUI, toast, $mdDialog, mcprojstore) {
         this.User = User;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.searchQueryText = searchQueryText;
-        this.mcstate = mcstate;
-        this.navbarOnChange = navbarOnChange;
-        this.projectsAPI = projectsAPI;
         this.demoProjectService = demoProjectService;
         this.blockUI = blockUI;
         this.toast = toast;
-        this.mcbus = mcbus;
         this.inProjectsState = $state.includes('projects');
-        this.project = mcstate.get(mcstate.CURRENT$PROJECT);
         this.query = searchQueryText.get();
+        this.mcbus = mcbus;
         this.navbarSearchText = this.inProjectsState ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
         if (User.isAuthenticated()) {
             this.user = User.attr().fullname;
@@ -25,7 +21,8 @@ class NavbarComponentController {
         }
         this.isAuthenticated = User.isAuthenticated();
         this.$mdDialog = $mdDialog;
-        this.$timeout = $timeout;
+        this.mcprojstore = mcprojstore;
+        this.project = this.mcprojstore.currentProject;
 
         this.myName = 'NavbarComponentController';
     }
@@ -35,20 +32,20 @@ class NavbarComponentController {
             this.query = this.searchQueryText.get();
         });
 
-        this.navbarOnChange.setOnChange(() => {
-            // Hack, change this later
-            if (this.$stateParams.project_id) {
-                this.projectsAPI.getProject(this.$stateParams.project_id).then(
-                    (proj) => this.mcstate.set(this.mcstate.CURRENT$PROJECT, proj)
-                );
-            }
-        });
-
-        this.mcstate.subscribe(this.mcstate.CURRENT$PROJECT, this.myName, () => {
-            this.project = this.mcstate.get(this.mcstate.CURRENT$PROJECT);
-            this.published = this.project.datasets.filter(d => d.published);
-            this.unusedSamples = this.project.samples.filter(s => s.processes.length === 1);
-            this.measuredSamples = this.project.samples.filter(s => s.processes.length > 1);
+        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVSET, (proj) => {
+            this.project = proj;
+            let experiments = _.values(this.project.experiments);
+            this.published = 0;
+            experiments.forEach(
+                e => {
+                    if (e.datasets) {
+                        e.datasets.forEach(d => {
+                            if (d.published) {
+                                this.published++;
+                            }
+                        })
+                    }
+                });
         });
 
         this.mcbus.subscribe('USER$NAME', this.myName, () => {
@@ -63,12 +60,16 @@ class NavbarComponentController {
         });
     }
 
+    $onDestroy() {
+        this.unsubscribe();
+    }
+
     buildDemoProject() {
         this.blockUI.start("Building demo project (this may take a few seconds)...");
         this.demoProjectService.buildDemoProject(this.User.attr().email).then(
-            () => {
+            (p) => {
+                this.mcprojstore.addProject(p);
                 this.blockUI.stop();
-                this.mcbus.send('PROJECTS$REFRESH');
             },
             (error) => {
                 this.blockUI.stop();
@@ -95,6 +96,7 @@ class NavbarComponentController {
         this.isBetaUser = false;
         this.isAuthenticated = this.User.isAuthenticated();
         this.$state.go('data.home.top');
+        this.mcprojstore.reset();
     }
 
     loginOrRegister() {
@@ -133,16 +135,20 @@ class NavbarComponentController {
 
 class MCSwitchUserDialogController {
     /*@ngInject*/
-    constructor(User, $mdDialog, toast) {
+    constructor(User, $mdDialog, toast, mcprojstore) {
         this.User = User;
         this.$mdDialog = $mdDialog;
         this.toast = toast;
+        this.mcprojstore = mcprojstore;
         this.email = "";
     }
 
     done() {
         this.User.switchToUser(this.email).then(
-            (user) => this.User.setAuthenticated(true, user.plain()),
+            (user) => {
+                this.User.setAuthenticated(true, user.plain());
+                this.mcprojstore.reset();
+            },
             () => this.toast.error(`Unable to switch to user ${this.email}`)
         );
         this.$mdDialog.hide();
@@ -155,12 +161,13 @@ class MCSwitchUserDialogController {
 
 class MCLoginDialogController {
     /*@ngInject*/
-    constructor(User, $mdDialog, toast, mcapi, Restangular, $state) {
+    constructor(User, $mdDialog, toast, mcapi, Restangular, templates, $state) {
         this.User = User;
         this.$mdDialog = $mdDialog;
         this.toast = toast;
         this.mcapi = mcapi;
         this.Restangular = Restangular;
+        this.templates = templates;
         this.$state = $state;
         this.email = '';
         this.password = '';
@@ -172,6 +179,7 @@ class MCLoginDialogController {
                 this.$mdDialog.hide();
                 this.User.setAuthenticated(true, u);
                 this.Restangular.setDefaultRequestParams({apikey: this.User.apikey()});
+                this.templates.getServerTemplates().then((t) => this.templates.set(t));
                 // if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
                 //     this.$state.go('project.experiment.workflow', {
                 //         project_id: u.default_project,
@@ -184,7 +192,7 @@ class MCLoginDialogController {
                 // }
             })
             .error((reason) => {
-                this.message = "Incorrect Password/Username!";
+                this.message = "Incorrect Username or Password.";
                 this.toast.error(reason.error);
             }).put({password: this.password});
     }
@@ -198,4 +206,3 @@ angular.module('materialscommons').component('navbar', {
     templateUrl: 'app/global.components/navbar/navbar.html',
     controller: NavbarComponentController
 });
-

@@ -4,18 +4,19 @@ angular.module('materialscommons').component("mcProjectNavbar", {
 });
 
 /*@ngInject*/
-function MCProjectNavbarComponentController(mcstate, $state, $rootScope, $scope, $mdSidenav,
-                                            quickbarSamples, $stateParams, User) {
+function MCProjectNavbarComponentController($state, $rootScope, $scope, $mdSidenav, ProjectModel, $mdDialog, toast,
+                                            projectsAPI, experimentsAPI, quickbarSamples, $stateParams, User, mcprojstore) {
     const ctrl = this;
 
     ctrl.showQuickbar = false;
     ctrl.currentTab = getCurrentTabIndex();
-    ctrl.project = mcstate.get(mcstate.CURRENT$PROJECT);
+    ctrl.project = mcprojstore.getProject($stateParams.project_id);
     ctrl.projectName = ctrl.project.name;
     ctrl.projectSamples = [];
     ctrl.experimentSamples = [];
     ctrl.datasetSamples = [];
     ctrl.isBetaUser = User.attr().beta_user;
+    ctrl.user = User.u();
 
     const unregister = $rootScope.$on('$stateChangeSuccess', function() {
         ctrl.currentTab = getCurrentTabIndex();
@@ -52,6 +53,28 @@ function MCProjectNavbarComponentController(mcstate, $state, $rootScope, $scope,
         }
     };
 
+    ctrl.refreshProject = () => {
+        ProjectModel.getProjectForCurrentUser($stateParams.project_id).then((p) => _updateProjectExperiments(p));
+    };
+
+    ctrl.deleteProject = () => {
+        let deleteDialog = $mdDialog.confirm()
+            .title(`Delete project: ${ctrl.project.name}`)
+            .textContent('Deleting a project is a permanent operation - all information with the project will be removed.')
+            .ariaLabel('Delete Project')
+            .ok('Delect Project')
+            .cancel('cancel');
+
+        $mdDialog.show(deleteDialog).then(
+            () => {
+                projectsAPI.deleteProject(ctrl.project.id).then(
+                    () => mcprojstore.removeCurrentProject().then(() => $state.go('projects.list')),
+                    () => toast.error('Failed to delete project')
+                )
+            }
+        );
+    };
+
     /////////////////////
 
     function getCurrentTabIndex() {
@@ -70,5 +93,14 @@ function MCProjectNavbarComponentController(mcstate, $state, $rootScope, $scope,
         }
 
         return 0;
+    }
+
+    function _updateProjectExperiments(project) {
+        mcprojstore.updateCurrentProject((currentProject, transformers) => {
+            let transformedExperiments = project.experiments.map(e => transformers.transformExperiment(e));
+            project.experiments = _.indexBy(transformedExperiments, 'id');
+            project.experimentsFullyLoaded = true;
+            currentProject = project;
+        });
     }
 }

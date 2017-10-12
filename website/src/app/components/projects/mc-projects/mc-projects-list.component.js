@@ -5,6 +5,14 @@ class MCProjectsListComponentController {
         this.sortOrder = 'name';
     }
 
+    experimentsCount(project) {
+        return _.keys(project.experiments).length;
+    }
+
+    samplesCount(project) {
+        return _.keys(project.samples).length;
+    }
+
     showProjectOverview(project) {
         this.mcshow.projectOverviewDialog(project);
     }

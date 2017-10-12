@@ -5,7 +5,7 @@ angular.module('materialscommons')
     });
 
 /*@ngInject*/
-function MCLoginController($state, User, toast, mcapi, Restangular, mcbus) {
+function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templates) {
     const ctrl = this;
 
     ctrl.message = "";
@@ -21,6 +21,9 @@ function MCLoginController($state, User, toast, mcapi, Restangular, mcbus) {
             .success(function(u) {
                 User.setAuthenticated(true, u);
                 Restangular.setDefaultRequestParams({apikey: User.apikey()});
+                templates.getServerTemplates().then(
+                    (t) => templates.set(t)
+                );
                 if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
                     $state.go('project.experiment.workflow', {
                         project_id: u.default_project,

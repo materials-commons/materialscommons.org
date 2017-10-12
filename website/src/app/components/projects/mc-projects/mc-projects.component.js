@@ -1,23 +1,26 @@
 class MCProjectsComponentController {
     /*@ngInject*/
-    constructor($mdDialog, User, mcbus, ProjectModel, blockUI, demoProjectService, toast) {
+    constructor($mdDialog, User, blockUI, demoProjectService, toast, mcprojstore, ProjectModel) {
         this.$mdDialog = $mdDialog;
         this.User = User;
-        this.mcbus = mcbus;
-        this.ProjectModel = ProjectModel;
         this.blockUI = blockUI;
         this.demoProjectService = demoProjectService;
         this.toast = toast;
         this.mcuser = User.attr();
+        this.mcprojstore = mcprojstore;
+        this.ProjectModel = ProjectModel;
         this.myProjects = [];
         this.joinedProjects = [];
     }
 
     $onInit() {
         this.getUserProjects();
-        this.mcbus.subscribe('PROJECTS$REFRESH', 'MCProjectsComponentController', () => {
-            this.getUserProjects();
-        });
+        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVADD,
+            projects => this._fillProjects(_.values(projects)));
+    }
+
+    $onDestroy() {
+        this.unsubscribe();
     }
 
     createNewProject() {
@@ -27,27 +30,28 @@ class MCProjectsComponentController {
             controllerAs: '$ctrl',
             bindToController: true
         }).then(
-            () => this.getUserProjects()
+            (p) => this.mcprojstore.addProject(p)
         );
     }
 
     getUserProjects() {
-        this.ProjectModel.getProjectsForCurrentUser().then(
-            (projects) => {
-                this.myProjects = projects.filter(p => p.owner === this.mcuser.email);
-                this.joinedProjects = projects.filter(p => p.owner !== this.mcuser.email);
-            }
-        );
+        let projects = this.mcprojstore.projects;
+        this._fillProjects(projects);
+    }
+
+    _fillProjects(projects) {
+        this.myProjects = projects.filter(p => p.owner === this.mcuser.email);
+        this.joinedProjects = projects.filter(p => p.owner !== this.mcuser.email);
     }
 
     buildDemoProject() {
-        this.blockUI.start("Building demo project (this may take a few seconds)...");
+        this.blockUI.start("Building demo project (this may take up to a minute)...");
         this.demoProjectService.buildDemoProject(this.mcuser.email).then(
-            () => {
+            (p) => {
                 this.mcuser.demo_installed = true;
                 this.User.save();
+                this.mcprojstore.addProject(p);
                 this.blockUI.stop();
-                this.mcbus.send('PROJECTS$REFRESH');
             },
             (error) => {
                 this.blockUI.stop();
@@ -61,6 +65,18 @@ class MCProjectsComponentController {
         this.mcuser.demo_installed = true;
         this.User.save();
         this.User.updateDemoInstalled(true);
+    }
+
+    refreshProjects() {
+        this.mcprojstore.reset().then(
+            () => {
+                this.ProjectModel.getProjectsForCurrentUser().then(
+                    (projects) => {
+                        this.mcprojstore.addProjects(...projects);
+                    }
+                );
+            }
+        )
     }
 }
 
@@ -78,7 +94,7 @@ class CreateNewProjectDialogController {
         if (this.name !== '') {
             this.projectsAPI.createProject(this.name, this.description)
                 .then(
-                    () => this.$mdDialog.hide(),
+                    (p) => this.$mdDialog.hide(p),
                     () => this.toast.error('Unable to create project')
                 );
         }

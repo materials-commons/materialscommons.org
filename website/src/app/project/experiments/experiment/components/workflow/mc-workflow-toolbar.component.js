@@ -1,6 +1,7 @@
 class MCWorkflowToolbarComponentController {
     /*@ngInject*/
-    constructor(workflowService, workflowFiltersService, $timeout, $mdDialog, $stateParams, mcstate, mcbus, mcshow) {
+    constructor(workflowService, workflowFiltersService, $timeout, $mdDialog, $stateParams, mcstate, mcbus,
+                mcshow, mcprojstore) {
         this.myName = "mcWorkflowToolbar";
         this.workflowService = workflowService;
         this.workflowFiltersService = workflowFiltersService;
@@ -12,6 +13,7 @@ class MCWorkflowToolbarComponentController {
         this.experimentId = $stateParams.experiment_id;
         this.mcbus = mcbus;
         this.mcshow = mcshow;
+        this.mcprojstore = mcprojstore;
         this.query = '';
         this.showingWorkflowGraph = true;
         this.isMaximized = false;
@@ -20,13 +22,17 @@ class MCWorkflowToolbarComponentController {
 
 
     $onInit() {
-        let cb = (selected) => this.$timeout(() => this.selectedProcess = selected);
-        this.mcstate.subscribe(this.mcstate.SELECTED$PROCESS, this.myName, cb);
+        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVSET, (process) => {
+            this.selectedProcess = process;
+        });
+        //let cb = (selected) => this.$timeout(() => this.selectedProcess = selected);
+        //this.mcstate.subscribe(this.mcstate.SELECTED$PROCESS, this.myName, cb);
         this.mcstate.set('WORKSPACE$MAXIMIZED', this.isMaximized);
     }
 
     $onDestroy() {
-        this.mcstate.leave(this.mcstate.SELECTED$PROCESS, this.myName);
+        this.unsubscribe();
+        //this.mcstate.leave(this.mcstate.SELECTED$PROCESS, this.myName);
     }
 
     addProcess() {

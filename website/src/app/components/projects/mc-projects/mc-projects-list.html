@@ -30,8 +30,8 @@
                         {{project.name}}
                     </a>
                     <div layout="row">
-                        <span tooltip="Experiments"><i class="fa fa-fw fa-flask"></i>{{project.experiments.length | number}}</span>
-                        <span tooltip="Samples" class="padding-left-10"><i class="fa fa-fw fa-cubes"></i>{{project.samples.length | number}}</span>
+                        <span tooltip="Experiments"><i class="fa fa-fw fa-flask"></i>{{$ctrl.experimentsCount(project) | number}}</span>
+                        <span tooltip="Samples" class="padding-left-10"><i class="fa fa-fw fa-cubes"></i>{{$ctrl.samplesCount(project) | number}}</span>
                         <span tooltip="Processes" class="padding-left-10"><i class="fa fa-fw fa-code-fork"></i>{{project.processes.length | number}}</span>
                     </div>
                     <span>{{project.description}}</span>

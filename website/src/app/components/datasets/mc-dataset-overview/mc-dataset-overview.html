@@ -1,4 +1,5 @@
 <div layout-margin>
+    <h4 class="md-title">Dataset: {{$ctrl.dataset.title}}</h4>
     <md-tabs md-selected="$ctrl.currentTab" md-stretch-tabs md-dynamic-height>
         <md-tab>
             <md-tab-label>Overview</md-tab-label>
@@ -22,7 +23,7 @@
             </md-tab-body>
         </md-tab>
 
-        <md-tab>
+        <md-tab ng-if="false">
             <md-tab-label>Comments</md-tab-label>
             <md-tab-body>
                 <mc-comments></mc-comments>

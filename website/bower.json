@@ -47,7 +47,8 @@
     "angular-drag-and-drop-lists": "^2.1.0",
     "cytoscape-edgehandles": "^2.13.0",
     "cytoscape-qtip": "^2.7.1",
-    "qtip2": "^2.2.1"
+    "qtip2": "^2.2.1",
+    "localforage": "^1.5.0"
   },
   "overrides": {
     "cytoscape-panzoom": {

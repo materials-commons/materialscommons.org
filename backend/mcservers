@@ -361,7 +361,7 @@ function ps_servers() {
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     echo
     echo "MCMON Server (test):"
-    ps -ef | grep "servers/mcmon/main.js" | grep "servertype dev" | grep -v grep
+    ps -ef | grep "servers/mcmon/main.js" | grep "servertype test" | grep -v grep
     echo
     echo "====================== Dev (-d) ====================="
     echo
@@ -522,9 +522,11 @@ function update_mc() {
     stop_servers
 
     echo "  Updating server dependencies..."
+    rm -f package-lock.json
     npm install
 
     echo "Updating website dependencies..."
+    (cd ../website; rm -f package-lock.json)
     (cd ../website; npm install)
     (cd ../website; bower install)
 

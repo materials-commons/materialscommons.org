@@ -92,7 +92,7 @@ class ProcessGraphService {
                     details: p,
                     input_sample_names: p.input_samples.map(s => s.name).join(','),
                     output_sample_names: p.output_samples.map(s => s.name).join(','),
-                    file_names: p.files.map(f => f.name).join(','),
+                    file_names: ProcessGraphService.buildFileNames(p),
                     color: ProcessGraphService.processColor(p),
                     shape: ProcessGraphService.processShape(p),
                     highlight: ProcessGraphService.highlightColor(p, highlightedProcesses)
@@ -153,6 +153,22 @@ class ProcessGraphService {
         let samples = _.values(sampleName2Sample);
 
         return {elements, samples};
+    }
+
+    static buildFileNames(process) {
+        if (process.files.length === 0 && process.files_count) {
+            return "Files list will load when you view process details...";
+        }
+
+        if (process.files.length === 0 && process.files_count === 0) {
+            return "No files..."
+        }
+        if (process.files.length > 20) {
+            let first20 = process.files.slice(1,19);
+            let names = first20.map(f => f.name).join(',') + `<br/>Plus ${process.files.length - 20} more...`;
+            return names;
+        }
+        return process.files.map(f => f.name).join(',');
     }
 
     static processColor(p) {

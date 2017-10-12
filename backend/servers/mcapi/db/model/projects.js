@@ -4,6 +4,7 @@ const model = require('./model');
 const getSingle = require('./get-single');
 const renameTopDirHelper = require('./directory-rename');
 const _ = require('lodash');
+const experiments = require('./experiments');
 
 function* createProject(user, attrs) {
     let name = attrs.name;
@@ -32,44 +33,16 @@ function* createProject(user, attrs) {
 }
 
 function* getProject(projectId) {
-    let p = yield r.table('projects').get(projectId).merge(function (project) {
-        return {
-            datasets: r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
-                .eqJoin('experiment_id', r.table('experiment2dataset'), {index: 'experiment_id'})
-                .zip().pluck('project_id', 'dataset_id')
-                .eqJoin('dataset_id', r.table('datasets')).zip().coerceTo('array'),
-            samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).merge(function (sample) {
-                return {
-                    processes: r.table('process2sample').getAll(sample('sample_id'), {index: 'sample_id'})
-                        .eqJoin('process_id', r.table('processes')).zip().coerceTo('array')
-                }
-            }).coerceTo('array'),
-            users: r.table('access').getAll(projectId, {index: 'project_id'})
-                .eqJoin('user_id', r.table('users')).without({
-                    'right': {
-                        id: true,
-                        admin: true,
-                        tadmin: true,
-                        apikey: true,
-                        demo_installed: true,
-                        notes: true,
-                        affiliation: true,
-                        avatar: true,
-                        birthtime: true,
-                        description: true,
-                        email: true,
-                        homepage: true,
-                        last_login: true,
-                        mtime: true,
-                        name: true,
-                        password: true,
-                        preferences: true,
-                        otype: true
-                    }
-                }).zip().coerceTo('array')
-        }
-    });
-    return {val: p};
+    let rql = r.table('projects').get(projectId)
+        .merge(function (project) {
+            return {
+                owner_details: r.table('users').get(project('owner')).pluck('fullname')
+            }
+        });
+    rql = transformDates(rql);
+    rql = addComputed(rql, true);
+    let project = yield run(rql);
+    return {val: project};
 }
 
 
@@ -124,7 +97,7 @@ function* forUser(user) {
             }
         });
     userProjectsRql = transformDates(userProjectsRql);
-    userProjectsRql = addComputed(userProjectsRql);
+    userProjectsRql = addComputed(userProjectsRql, false);
 
     let memberOfRql = r.table('access').getAll(user.id, {index: 'user_id'})
         .eqJoin('project_id', r.table('projects')).zip().filter(r.row('owner').ne(user.id))
@@ -133,7 +106,7 @@ function* forUser(user) {
         }));
 
     memberOfRql = transformDates(memberOfRql);
-    memberOfRql = addComputed(memberOfRql);
+    memberOfRql = addComputed(memberOfRql, false);
 
     let usersProjects = yield run(userProjectsRql);
     let memberProjects = yield run(memberOfRql);
@@ -154,23 +127,38 @@ function transformDates(rql) {
 
 // addComputed adds additional attributes to the rql that
 // that are computed from other tables.
-function addComputed(rql) {
+function addComputed(rql, fullExperiment) {
     rql = rql.merge(function (project) {
         return {
-            users: r.table('access')
-                .getAll(project('id'), {index: 'project_id'})
-                .map(function (entry) {
-                    return entry.merge({
-                        'user': entry('user_id'),
-                        'details': r.table('users').get(entry('user_id')).pluck('fullname')
-                    });
-                })
-                .pluck('user', 'permissions', 'details')
-                .coerceTo('array'),
+            users: r.table('access').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('user_id', r.table('users')).without({
+                    'right': {
+                        id: true,
+                        apikey: true,
+                        admin: true,
+                        tadmin: true,
+                        demo_installed: true,
+                        notes: true,
+                        affiliation: true,
+                        avatar: true,
+                        birthtime: true,
+                        description: true,
+                        email: true,
+                        homepage: true,
+                        last_login: true,
+                        mtime: true,
+                        name: true,
+                        password: true,
+                        preferences: true,
+                        otype: true
+                    }
+                }).zip().coerceTo('array'),
             events: r.table('events')
                 .getAll(project('id'), {index: 'project_id'})
                 .coerceTo('array'),
-            experiments: r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
+            experiments: fullExperiment ? experiments.addExperimentComputed(r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
+                .eqJoin('experiment_id', r.table('experiments')).zip()).coerceTo('array') :
+                r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array'),
             processes: r.table('project2process').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
