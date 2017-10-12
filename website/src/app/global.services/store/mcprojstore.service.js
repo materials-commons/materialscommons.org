@@ -214,6 +214,13 @@ class MCProjStoreService {
         return deferred.promise;
     }
 
+    multisubscribe(otype, fn, ...events) {
+        let unsubscribes = events.map(e => this.subscribe(otype, e, fn));
+        return () => {
+            unsubscribes.forEach(f => f())
+        };
+    }
+
     subscribe(otype, event, fn) {
         if (!this._knownOType(otype)) {
             throw new Error(`Unknown Object Type ${otype}`);
