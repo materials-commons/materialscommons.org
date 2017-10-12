@@ -9,7 +9,7 @@ let verbose = true;
 function* getOtherUsersFor (comment) {
     console.log("getOtherUsersFor", comment.id);
 
-    let valComments = yield commentsDatabase.getAllForItem(comment.item_id);
+    let valComments = yield * commentsDatabase.getAllForItem(comment.item_id);
     console.log(valComments);
     allComments = valComments.val;
     console.log(allComments);

@@ -142,6 +142,8 @@ describe('Feature - Monitoring comments table: ', function() {
                 assert.equal(comment.item_type, fakeItemType);
                 console.log("Did trigger, " + i + ", for item_id = " + fakeItemId);
             }
+            let checks = yield r.table('comments').getAll(fakeItemId,{index: 'item_id'});
+            console.log(checks);
         });
         it('is triggered by multiple comments', function* (){
             for (let i = 0; i < otherUserIds.length; i++) {

@@ -14,8 +14,8 @@ function* get(id) {
 function* getAllForItem(itemId) {
     console.log("getAllForItem ", itemId);
     let comments = yield r.table("comments")
-        .getAll(itemId,{index: 'item_id'})
-    console.log("getAllForItem", comments)
+        .getAll(itemId,{index: 'item_id'});
+    console.log("getAllForItem", comments);
     return {val: comments};
 }
 
