@@ -10,9 +10,8 @@ function* getOtherUsersFor (comment) {
     console.log("getOtherUsersFor", comment.id);
 
     let valComments = yield * commentsDatabase.getAllForItem(comment.item_id);
-    console.log(valComments);
     allComments = valComments.val;
-    console.log(allComments);
+    console.log("got comments: ", allComments.length);
 
     let matchedUsers = [];
     allComments.forEach((probe) => {
@@ -31,17 +30,17 @@ function* getOtherUsersFor (comment) {
 
 function* notify(user, comment) {
     console.log("Simulate Notify - start: ", user, " of ", comment.id);
-    yield Promise.delay(500);
+    console.log("here is where we send e-mail");
     console.log("Simulate Notify -  done: ", user, " of ", comment.id);
 }
 
 function* promiseNotify(comment) {
-    console.log(commentsDatabase);
     console.log("promiseNotify start", comment.id);
-    let otherUsers = yield getOtherUsersFor(comment);
-    console.log("promiseNotify - otherUsers = ", otherUsers);
+    let otherUsers = yield * getOtherUsersFor(comment);
+    console.log("promiseNotify - otherUsers count = ", otherUsers.length);
     for (let i = 0; i < otherUsers.length; i++ ) {
-        yield notify(user, comment);
+        let user = otherUsers[i];
+        yield * notify(user, comment);
     }
     console.log("promiseNotify done ", comment.id);
 }
