@@ -13,6 +13,11 @@ function* getAllUsersExternal() {
     return yield r.table('users').without('admin', 'isTemplateAdmin', 'apikey', 'password');
 }
 
+// getAllUsersExternal returns the user; cleaned for external only
+function* getUserExternal(id) {
+    return yield r.table('users').get(id).without('admin', 'isTemplateAdmin', 'apikey', 'password');
+}
+
 // getUser gets the user by index. If no index is given then it
 // uses the primary key.
 function* getUser(id, index) {
@@ -111,6 +116,7 @@ function* getUserRegistrationFromUuid(uuid) {
 module.exports = {
     getUsers: getUsers,
     getAllUsersExternal,
+    getUserExternal,
     getUser: getUser,
     get: function(id, index) {
         return getSingle(r, 'users', id, index);
