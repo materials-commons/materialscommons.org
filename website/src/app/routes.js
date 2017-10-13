@@ -95,6 +95,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                                 let transformedExperiments = experiments.map(e => transformers.transformExperiment(e));
                                 project.experiments = _.indexBy(transformedExperiments, 'id');
                                 project.experimentsFullyLoaded = true;
+                                return project;
                             });
                             return p;
                         }

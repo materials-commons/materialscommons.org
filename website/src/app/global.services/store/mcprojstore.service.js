@@ -64,19 +64,10 @@ class MCProjStoreService {
         }));
     }
 
-    // updateCurrentProject2(fn) {
-    //     let deferred = this.$q.defer();
-    //     this.mcstore.update(store => {
-    //         const currentProj = getCurrentProjectFromStore(store);
-    //         fn(currentProj, transformers);
-    //     }).then(() => deferred.resolve());
-    //     return deferred.promise;
-    // }
-
     updateCurrentProject(fn) {
         return this._ngwrap(this.mcstore.update(this.OTPROJECT, store => {
             const currentProj = getCurrentProjectFromStore(store);
-            fn(currentProj, transformers);
+            store.projects[store.currentProjectId] = fn(currentProj, transformers);
         }));
     }
 
@@ -110,7 +101,9 @@ class MCProjStoreService {
     updateCurrentExperiment(fn) {
         return this._ngwrap(this.mcstore.update(this.OTEXPERIMENT, store => {
             const currentExperiment = getCurrentExperimentFromStore(store);
-            fn(currentExperiment);
+            let updated = fn(currentExperiment);
+            const currentProject = getCurrentProjectFromStore(store);
+            currentProject.experiments[store.currentExperimentId] = updated;
         }));
     }
 
@@ -164,7 +157,9 @@ class MCProjStoreService {
     updateCurrentProcess(fn) {
         return this._ngwrap(this.mcstore.update(this.OTPROCESS, store => {
             const currentProcess = getCurrentProcessFromStore(store);
-            fn(currentProcess);
+            let updated = fn(currentProcess);
+            const currentExperiment = getCurrentExperimentFromStore(store);
+            currentExperiment.processes[store.currentProcessId] = updated;
         }));
     }
 
@@ -212,6 +207,13 @@ class MCProjStoreService {
         let deferred = this.$q.defer();
         promise.then(() => deferred.resolve());
         return deferred.promise;
+    }
+
+    multisubscribe(otype, fn, ...events) {
+        let unsubscribes = events.map(e => this.subscribe(otype, e, fn));
+        return () => {
+            unsubscribes.forEach(f => f())
+        };
     }
 
     subscribe(otype, event, fn) {

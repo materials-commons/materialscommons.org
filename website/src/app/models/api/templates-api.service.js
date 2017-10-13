@@ -4,15 +4,15 @@ class TemplatesAPIService {
     }
 
     createTemplate(template) {
-        return this.Restangular.one('v2').one('templates').customPOST(template);
+        return this.Restangular.one('v2').one('templates').customPOST(template).then(template => template.plain());
     }
 
     getAllTemplates() {
-        return this.Restangular.one('v2').one('templates').get();
+        return this.Restangular.one('v2').one('templates').get().then(templates => templates.plain());
     }
 
     updateTemplate(template) {
-        return this.Restangular.one('v2').one('templates', template.id).customPUT(template);
+        return this.Restangular.one('v2').one('templates', template.id).customPUT(template).then(t => t.plain());
     }
 }
 

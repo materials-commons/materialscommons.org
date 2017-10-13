@@ -4,14 +4,16 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles) {
         getDirectory: function(projectID, directoryID) {
             return projectsAPIRoute(projectID).one('directories', directoryID).get()
                 .then(function(files) {
-                    return gridFiles.toGridChildren(files);
+                    let plainFiles = files.plain();
+                    return gridFiles.toGridChildren(plainFiles);
                 });
         },
 
         getProjectRoot: function(projectID) {
             return projectsAPIRoute(projectID).one('directories').get()
                 .then(function(files) {
-                    return gridFiles.toGrid(files);
+                    let plainFiles = files.plain();
+                    return gridFiles.toGrid(plainFiles);
                 });
         },
 
@@ -20,7 +22,8 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles) {
                 from_dir: fromDirID,
                 path: path
             }).then(function(dirs) {
-                return dirs.dirs[0];
+                let plainDirs = dirs.plain();
+                return plainDirs.dirs[0];
             });
         },
 
@@ -29,13 +32,13 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles) {
                 rename: {
                     new_name: newDirectoryName
                 }
-            });
+            }).then(dirs => dirs.plain());
         },
 
         renameProjectFile: function(projectID, fileID, newFileName) {
             return projectsAPIRoute(projectID).one('files', fileID).customPUT({
                 name: newFileName
-            });
+            }).then(f => f.plain());
         }
     };
 }

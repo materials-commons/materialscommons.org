@@ -1,16 +1,32 @@
 class MCWworkflowFiltersByProcessesComponentController {
     /*@ngInject*/
-    constructor(experimentsAPI, processTree, mcbus, $stateParams) {
+    constructor(experimentsAPI, processTree, mcbus, mcprojstore, $stateParams) {
         this.experimentsAPI = experimentsAPI;
         this.processTree = processTree;
         this.mcbus = mcbus;
+        this.mcprojstore = mcprojstore;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.allExpanded = true;
     }
 
     $onInit() {
-        let t = this.processTree.build(this.processes, []);
+        this.buildProcessFilter(this.processes);
+        let cb = () => {
+            let currentExperiment = this.mcprojstore.currentExperiment;
+            let processes = _.values(currentExperiment.processes);
+            this.buildProcessFilter(processes);
+        };
+        this.unsubscribe = this.mcprojstore.multisubscribe(this.mcprojstore.OTPROCESS, cb,
+            this.mcprojstore.EVADD, this.mcprojstore.EVUPDATE, this.mcprojstore.EVREMOVE);
+    }
+
+    $onDestroy() {
+        this.unsubscribe();
+    }
+
+    buildProcessFilter(processes) {
+        let t = this.processTree.build(processes, []);
         this.root = t.root;
         this.rootNode = t.rootNode;
     }

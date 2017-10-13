@@ -17,6 +17,7 @@ class MCProcessTemplateComponentController {
                     this.mcprojstore.updateCurrentProcess(currentProcess => {
                         currentProcess.files = files;
                         currentProcess.filesLoaded = true;
+                        return currentProcess;
                     }).then(() => {
                         this.process.files = files;
                         this.process.filesLoaded = true;
@@ -39,6 +40,7 @@ class MCProcessTemplateComponentController {
                     //this.mcbus.send('PROCESS$CHANGE', this.process);
                     this.mcprojstore.updateCurrentProcess(currentProcess => {
                         currentProcess.name = this.process.name;
+                        return currentProcess;
                     });
                 },
                 () => this.toast.error('Unable to update process name')

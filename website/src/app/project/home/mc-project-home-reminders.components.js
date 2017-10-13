@@ -1,12 +1,20 @@
 class MCProjectHomeRemindersComponentController {
     /*@ngInject*/
-    constructor(projectsAPI) {
+    constructor(projectsAPI, mcprojstore) {
         this.projectsAPI = projectsAPI;
+        this.mcprojstore = mcprojstore;
     }
 
     removeReminder(index) {
         this.project.reminders.splice(index, 1);
-        this.projectsAPI.updateProject(this.project.id, {reminders: this.project.reminders});
+        this.projectsAPI.updateProject(this.project.id, {reminders: this.project.reminders}).then(
+            () => {
+                this.mcprojstore.updateCurrentProject((currentProj) => {
+                    currentProj.reminders = this.project.reminders;
+                    return currentProj;
+                });
+            }
+        );
     }
 
     addReminder() {
@@ -14,7 +22,14 @@ class MCProjectHomeRemindersComponentController {
     }
 
     updateReminders() {
-        this.projectsAPI.updateProject(this.project.id, {reminders: this.project.reminders});
+        this.projectsAPI.updateProject(this.project.id, {reminders: this.project.reminders}).then(
+            () => {
+                this.mcprojstore.updateCurrentProject((currentProj) => {
+                    currentProj.reminders = this.project.reminders;
+                    return currentProj;
+                });
+            }
+        );
     }
 }
 
