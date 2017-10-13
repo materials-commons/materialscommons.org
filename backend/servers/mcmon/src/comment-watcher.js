@@ -18,12 +18,7 @@ class CommentWatcher extends GenericWatcher{
         // notify all owners of previous comments on this item of the new comment
         // note: this is asynchronous, the call will return *before* the
         //   the notifications, if any, are sent.
-
-        console.log("---------- Before call to notifyOtherUsers", comment.id);
-
         commentNotifier.notifyOtherUsers(comment);
-
-        console.log("---------- After call to notifyOtherUsers", comment.id);
     }
 }
 
