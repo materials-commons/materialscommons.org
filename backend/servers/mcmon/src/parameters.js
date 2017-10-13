@@ -2,7 +2,7 @@ class Parameters {
 
     constructor() {
         this.mc_dir_paths = null;
-        this.server_type = "unit";
+        this.server_type = process.env.SERVERTYPE || "dev";
         if (process.env.MCDIR) {
             let path_list = process.env.MCDIR;
             let paths = path_list.split(":");
@@ -14,8 +14,7 @@ class Parameters {
         return this.mc_dir_paths
     }
 
-    set_server_type(type){
-        if (!type) type = 'unit';
+    set_server_type(type = 'unit'){
         this.server_type = type;
     }
 

@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const mailTransport = mailTransportConfig();
-const supressSending = true;
+supressSending = true;
 
 let oldTracer = "";
 let tracer = "";
@@ -8,7 +8,8 @@ let tracer = "";
 // TODO: this send function has much in common the use user verification emails in mcapi; unify?
 // Note: cross-ref - backend/servers/mcapi/resources/users.js emailResetLinkToUser and emailValidationLinkToUser
 
-function mailCommentNotification(userToNotify, comment, objectName, author, otherAuthors, verbose=false) {
+function mailCommentNotification(userToNotify, comment, objectName, author, otherAuthors,
+    verbose=false, supressSending = true) {
     if (verbose) {
         tracer = comment.id.substring(0,5);
         if (tracer !== oldTracer) {

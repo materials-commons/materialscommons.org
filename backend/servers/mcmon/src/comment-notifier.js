@@ -6,19 +6,18 @@ const commentsDatabase = require('../../mcapi/db/model/comments');
 const usersDatabase = require('../../mcapi/db/model/users');
 const mailer = require('./comment-mailer')
 
-function notifyOtherUsers (comment, verbose=false) {
-    verbose = true;
-    Promise.coroutine(promiseNotify)(comment, verbose)
+function notifyOtherUsers (comment, verbose=false, supressSending=false) {
+    Promise.coroutine(promiseNotify)(comment, verbose, supressSending)
 }
 
-function* promiseNotify(comment, verbose) {
+function* promiseNotify(comment, verbose, supressSending) {
     let tracer = comment.id.substring(0,5);
     let otherAuthors = yield * getOtherUsersFor(comment);
     commentAuthor = yield * usersDatabase.getUserExternal(comment.owner);
     let objectName = yield * itemNameFrom(comment);
     for (let i = 0; i < otherAuthors.length; i++ ) {
         let user = otherAuthors[i];
-        mailer.mailCommentNotification(user, comment, objectName, commentAuthor, otherAuthors, verbose);
+        mailer.mailCommentNotification(user, comment, objectName, commentAuthor, otherAuthors, verbose, supressSending);
     }
 }
 
