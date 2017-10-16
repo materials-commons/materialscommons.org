@@ -1,6 +1,6 @@
 angular.module('materialscommons').factory('projectTreeModel', projectTreeModelService);
 
-function projectTreeModelService(mcstate) {
+function projectTreeModelService(mcprojstore) {
     'ngInject';
 
     return {
@@ -9,7 +9,7 @@ function projectTreeModelService(mcstate) {
         },
 
         root: function() {
-            const files = mcstate.get(mcstate.CURRENT$PROJECT).files[0],
+            const files = mcprojstore.currentProject.files[0],
                 treeModel = new TreeModel();
             return treeModel.parse(files);
         }

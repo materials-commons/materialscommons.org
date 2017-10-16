@@ -1,5 +1,6 @@
 angular.module('materialscommons').factory('fileTreeMoveService', fileTreeMoveService);
-function fileTreeMoveService(projectsAPIRoute, mcstate) {
+
+function fileTreeMoveService(projectsAPIRoute, mcprojstore) {
     'ngInject';
 
     function moveFileOnServer(fileID, oldDirID, newDirID) {
@@ -9,7 +10,7 @@ function fileTreeMoveService(projectsAPIRoute, mcstate) {
                 new_directory_id: newDirID
             }
         };
-        const projectID = mcstate.get(mcstate.CURRENT$PROJECT).id;
+        const projectID = mcprojstore.currentProject.id;
         return projectsAPIRoute(projectID).one('files', fileID).customPUT(moveArgs);
     }
 
@@ -19,7 +20,7 @@ function fileTreeMoveService(projectsAPIRoute, mcstate) {
                 new_directory_id: newDirID
             }
         };
-        const projectID = mcstate.get(mcstate.CURRENT$PROJECT).id;
+        const projectID = mcprojstore.currentProject.id;
         return projectsAPIRoute(projectID).one('directories', dirID).customPUT(moveArgs);
     }
 
@@ -30,7 +31,7 @@ function fileTreeMoveService(projectsAPIRoute, mcstate) {
     }
 
     function getTreeRoot() {
-        const files = mcstate.get(mcstate.CURRENT$PROJECT).files[0],
+        const files = mcprojstore.currentProject.files[0],
             treeModel = new TreeModel();
         return treeModel.parse(files);
     }

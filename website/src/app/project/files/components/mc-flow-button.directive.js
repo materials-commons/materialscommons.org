@@ -1,6 +1,6 @@
 angular.module('materialscommons').directive("mcFlowButton", mcFlowButtonDirective);
 
-function mcFlowButtonDirective(mcFlow, mcstate, mcapi, User, $log) {
+function mcFlowButtonDirective(mcFlow, mcprojstore, mcapi, User, $log) {
     'ngInject';
 
     return {
@@ -87,7 +87,7 @@ function mcFlowButtonDirective(mcFlow, mcstate, mcapi, User, $log) {
 
                     // When new files are added, simply append them to the overall list
                     input.addEventListener('change', function(e) {
-                        const proj = mcstate.get(mcstate.CURRENT$PROJECT);
+                        const proj = mcprojstore.currentProject;
                         each(e.target.files, function(f) {
                             const req = {
                                 project_id: proj.id,

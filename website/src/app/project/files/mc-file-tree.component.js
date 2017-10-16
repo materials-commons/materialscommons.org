@@ -102,9 +102,10 @@ function mcFileTreeDirDirective(RecursionHelper) {
 }
 
 /*@ngInject*/
-function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcstate, $state) {
+function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcprojstore, $state) {
     const ctrl = this;
-    ctrl.projectID = mcstate.get(mcstate.CURRENT$PROJECT).id;
+    let proj = mcprojstore.currentProject;
+    ctrl.projectID = proj.id;
     ctrl.files = ctrl.file.children;
     ctrl.placeholderName = placeholderName;
 
@@ -149,8 +150,9 @@ function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcstate, $state) {
     }
 
     function clearActiveStateInAllNodes() {
+        const proj = mcprojstore.currentProject;
         const treeModel = new TreeModel(),
-            root = treeModel.parse(mcstate.get(mcstate.CURRENT$PROJECT).files[0]);
+            root = treeModel.parse(proj.files[0]);
         root.walk(function (treeNode) {
             treeNode.model.active = false;
         });
