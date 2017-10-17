@@ -5,7 +5,7 @@ angular.module('materialscommons')
     });
 
 /*@ngInject*/
-function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templates) {
+function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templates, mcprojstore) {
     const ctrl = this;
 
     ctrl.message = "";
@@ -24,17 +24,19 @@ function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templ
                 templates.getServerTemplates().then(
                     (t) => templates.set(t)
                 );
-                if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
-                    $state.go('project.experiment.workflow', {
-                        project_id: u.default_project,
-                        experiment_id: u.default_experiment
-                    });
-                } else if (u.default_project && u.default_project !== '') {
-                    $state.go('project.home', {project_id: u.default_project});
-                } else {
-                    $state.go('projects.list');
-                }
-                mcbus.send('USER$LOGIN');
+                mcprojstore.reset().then(() => {
+                    if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
+                        $state.go('project.experiment.workflow', {
+                            project_id: u.default_project,
+                            experiment_id: u.default_experiment
+                        });
+                    } else if (u.default_project && u.default_project !== '') {
+                        $state.go('project.home', {project_id: u.default_project});
+                    } else {
+                        $state.go('projects.list');
+                    }
+                    mcbus.send('USER$LOGIN');
+                });
             })
             .error(function(reason) {
                 ctrl.message = "Incorrect Password/Username!";
