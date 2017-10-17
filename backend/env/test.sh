@@ -4,16 +4,16 @@
 # source to set all environment variables for the type of server
 export SERVERTYPE=test
 
-export MC_SERVICE_PORT=5002
-export MC_API_SERVICE_PORT=5004
-export MC_PUB_SERVICE_PORT=5026
-export MCDB_PORT=30815
+export MC_SERVICE_PORT=6002
+export MC_API_SERVICE_PORT=6004
+export MC_PUB_SERVICE_PORT=6026
+export MCDB_PORT=50815
 export MCDB_CONNECTION="localhost:$MCDB_PORT"
 export MCDB_DIR=~/testdb
-export RETHINKDB_HTTP_PORT=8090
-export RETHINKDB_CLUSTER_PORT=31815
+export RETHINKDB_HTTP_PORT=9090
+export RETHINKDB_CLUSTER_PORT=51815
 export MCSTOREDBIN=testbin/mcstored
-export MC_ES_URL="http://localhost:9500"
+export MC_ES_URL="http://localhost:9800"
 export MC_ES_NAME="mc-es-test"
 export MC_LOG_DIR=/var/log/materialscommons/test
 if [ "$MCDB_FILE" = "" ]; then
@@ -25,7 +25,7 @@ if [ $(hostname) = "materialscommons" ]; then
 else
     export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
 fi
-export MCFS_HTTP_PORT=5012
+export MCFS_HTTP_PORT=6012
 
 if [ -f /etc/materialscommons/config.test ]; then
     . /etc/materialscommons/config.test
