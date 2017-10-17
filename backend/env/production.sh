@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Note: often this will be redundent, but it simplifies use
+# source to set all environment variables for the type of server
+export SERVERTYPE=production
+
 export MCDB_PORT=28015
 export MCDB_CONNECTION="localhost:$MCDB_PORT"
 export MC_API_SERVICE_PORT=3000

@@ -161,7 +161,7 @@ class MCSwitchUserDialogController {
 
 class MCLoginDialogController {
     /*@ngInject*/
-    constructor(User, $mdDialog, toast, mcapi, Restangular, templates, $state) {
+    constructor(User, $mdDialog, toast, mcapi, Restangular, templates, $state, mcprojstore) {
         this.User = User;
         this.$mdDialog = $mdDialog;
         this.toast = toast;
@@ -171,15 +171,16 @@ class MCLoginDialogController {
         this.$state = $state;
         this.email = '';
         this.password = '';
+        this.mcprojstore = mcprojstore;
     }
 
     login() {
         this.mcapi('/user/%/apikey', this.email, this.password)
             .success((u) => {
-                this.$mdDialog.hide();
                 this.User.setAuthenticated(true, u);
                 this.Restangular.setDefaultRequestParams({apikey: this.User.apikey()});
                 this.templates.getServerTemplates().then((t) => this.templates.set(t));
+                this.mcprojstore.reset().then(() => this.$mdDialog.hide());
                 // if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
                 //     this.$state.go('project.experiment.workflow', {
                 //         project_id: u.default_project,

@@ -301,129 +301,55 @@ function restart_named_server() {
     echo Restarted Server $1 for server type ${SERVERTYPE}.
 }
 
-function ps_servers() {
-    export __SAVE_TESTSERVER=$TESTSERVER
-    export __SAVE_SERVERTYPE=$SERVERTYPE
+function ps_server_env() {
+    SERVERTYPE=$1
+    TESTSERVER=$2
+    ES_CONTAINER=$3
     echo
-    echo "===================== Production (-p) ====================="
+    echo "===================== ${SERVERTYPE} (-${TESTSERVER}) ====================="
     echo
-    export TESTSERVER=p
-    export SERVERTYPE=production
     setup_server_env
-    echo "RethinkDB (production):"
+    echo "RethinkDB (${SERVERTYPE}):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
     echo
-    echo "Elasticsearch (production):"
-    R=$(docker_instance_running mc-es)
+    echo "Elasticsearch (${SERVERTYPE}):"
+    R=$(docker_instance_running ${MC_ES_NAME})
     if [ "$R" != "" ]; then
         echo ${R}
     fi
     echo
-    echo "MCAPI Server (production):"
+    echo "MCAPI Server (${SERVERTYPE}):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCAPI Node Server (production):"
+    echo "MCAPI Node Server (${SERVERTYPE}):"
     ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCPUB Node Server (production):"
+    echo "MCPUB Node Server (${SERVERTYPE}):"
     ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
     echo
-    echo "MCSTORED Server (production):"
+    echo "MCSTORED Server (${SERVERTYPE}):"
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
     echo
-    echo "MCMON Server (production):"
-    ps -ef | grep "servers/mcmon/main.js" | grep "servertype production" | grep -v grep
-    echo
-    echo "====================== Test (-t) ====================="
-    echo
-    export TESTSERVER=t
-    export SERVERTYPE=test
-    setup_server_env
-    echo "RethinkDB (test):"
-    ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
-    echo
-    echo "Elasticsearch (test):"
-    R=$(docker_instance_running mc-es-test)
-    if [ "$R" != "" ]; then
-        echo ${R}
-    fi
-    echo
-    echo "MCAPI Server (test):"
-    ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
-    echo
-    echo "MCAPI Node Server (test):"
-    ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
-    echo
-    echo "MCPUB Node Server (test):"
-    ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
-    echo
-    echo "MCSTORED Server (test):"
-    ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
-    echo
-    echo "MCMON Server (test):"
-    ps -ef | grep "servers/mcmon/main.js" | grep "servertype test" | grep -v grep
-    echo
-    echo "====================== Dev (-d) ====================="
-    echo
-    export TESTSERVER=d
-    export SERVERTYPE=dev
-    setup_server_env
-    echo "RethinkDB (dev):"
-    ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
-    echo
-    echo "Elasticsearch (dev):"
-    R=$(docker_instance_running mc-es-test)
-    if [ "$R" != "" ]; then
-        echo ${R}
-    fi
-    echo
-    echo "MCAPI Server (dev):"
-    ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
-    echo
-    echo "MCAPI Node Server (dev):"
-    ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
-    echo
-    echo "MCPUB Node Server (dev):"
-    ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
-    echo
-    echo "MCSTORED Server (dev):"
-    ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
-    echo
-    echo "MCMON Server (dev):"
-    ps -ef | grep "servers/mcmon/main.js" | grep "servertype dev" | grep -v grep
-    echo
-    echo "================== Unit test (-u) ================="
-    echo
-    export TESTSERVER=u
-    export SERVERTYPE=unit
-    setup_server_env
-    echo "RethinkDB (unit):"
-    ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
-    echo
-    echo "Elasticsearch (test/dev):"
-    R=$(docker_instance_running mc-es-test)
-    if [ "$R" != "" ]; then
-        echo ${R}
-    fi
-    echo
-    echo "MCAPI Server (unit):"
-    ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
-    echo
-    echo "MCAPI Node Server (unit):"
-    ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
-    echo
-    echo "MCPUB Node Server (unit):"
-    ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
-    echo
-    echo "MCSTORED Server (unit):"
-    ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
-    echo
-    echo "MCMON Server (unit):"
-    ps -ef | grep "servers/mcmon/main.js" | grep "servertype unit" | grep -v grep
+    echo "MCMON Server (${SERVERTYPE}):"
+    ps -ef | grep "servers/mcmon/main.js" | grep "servertype ${SERVERTYPE}" | grep -v grep
+}
 
-    export TESTSERVER=$__SAVE_TESTSERVER
-    export SERVERTYPE=$__SAVE_SERVERTYPE
-    setup_server_env
+function ps_servers() {
+    if [ ${PS_ALL_SERVERS} = "t" ]; then
+        export __SAVE_TESTSERVER=${TESTSERVER}
+        export __SAVE_SERVERTYPE=${SERVERTYPE}
+
+        ps_server_env "production" "p"
+        ps_server_env "test" "t"
+        ps_server_env "dev" "d"
+        ps_server_env "unit" "u"
+
+        export TESTSERVER=${__SAVE_TESTSERVER}
+        export SERVERTYPE=${__SAVE_SERVERTYPE}
+        setup_server_env
+    else
+        ps_server_env ${SERVERTYPE} ${TESTSERVER}
+    fi
 }
 
 function config_file() {
@@ -633,6 +559,7 @@ COMPILE_MCSTORE=t
 MC_SERVICE_NAME=""
 BACKUP_DATABASE=t
 SHOW_SERVERS=f
+PS_ALL_SERVERS=t
 
 CMD=$1
 shift
@@ -692,18 +619,22 @@ while test $# -gt 0; do
         -u)
             TESTSERVER=u
             SERVERTYPE="unit"
+            PS_ALL_SERVERS=f
             ;;
         -d)
             TESTSERVER=d
             SERVERTYPE="dev"
+            PS_ALL_SERVERS=f
             ;;
         -t)
             TESTSERVER=t
             SERVERTYPE="test"
+            PS_ALL_SERVERS=f
             ;;
         -p)
             TESTSERVER=p
             SERVERTYPE="production"
+            PS_ALL_SERVERS=f
             ;;
         --ps)
             SHOW_SERVERS=t
@@ -785,6 +716,34 @@ case "$CMD" in
     update)
         must_be_mcuser
         update_mc
+        ;;
+
+    -u)
+        TESTSERVER=u
+        SERVERTYPE="unit"
+        PS_ALL_SERVERS=f
+        ps_servers
+        ;;
+
+    -d)
+        TESTSERVER=d
+        SERVERTYPE="dev"
+        PS_ALL_SERVERS=f
+        ps_servers
+        ;;
+
+    -t)
+        TESTSERVER=t
+        SERVERTYPE="test"
+        PS_ALL_SERVERS=f
+        ps_servers
+        ;;
+
+    -p)
+        TESTSERVER=p
+        SERVERTYPE="production"
+        PS_ALL_SERVERS=f
+        ps_servers
         ;;
 
     "")

@@ -32,6 +32,12 @@ class PublicDatasetsAPIService {
             (process) => process.plain()
         )
     }
+
+    getDatasetsForTag(tag) {
+        return this.publicAPIRoute('tags', tag).one('datasets').getList().then(
+            (datasets) => datasets.plain()
+        )
+    }
 }
 
 
