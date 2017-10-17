@@ -21,10 +21,10 @@ function loadEmptyPlaceHolder(dir) {
 }
 
 /*@ngInject*/
-function MCFileTreeComponentController(mcstate, $state, $stateParams, projectFileTreeAPI,
-                                       fileTreeMoveService, mcFlow) {
+function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI,
+                                       fileTreeMoveService, mcFlow, mcprojstore) {
     const ctrl = this,
-        proj = mcstate.get(mcstate.CURRENT$PROJECT);
+        proj = mcprojstore.currentProject;
     ctrl.projectID = proj.id;
     ctrl.flow = mcFlow.get();
 
@@ -55,7 +55,7 @@ function MCFileTreeComponentController(mcstate, $state, $stateParams, projectFil
         beforeDrop: function (event) {
             const dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
                 srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
-            if (srcDir.data.id == dest.data.id) {
+            if (srcDir.data.id === dest.data.id) {
                 // Reject move - attempt to move the file/directory around under it's
                 // current directory;
                 return false;
@@ -102,9 +102,10 @@ function mcFileTreeDirDirective(RecursionHelper) {
 }
 
 /*@ngInject*/
-function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcstate, $state) {
+function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcprojstore, $state) {
     const ctrl = this;
-    ctrl.projectID = mcstate.get(mcstate.CURRENT$PROJECT).id;
+    let proj = mcprojstore.currentProject;
+    ctrl.projectID = proj.id;
     ctrl.files = ctrl.file.children;
     ctrl.placeholderName = placeholderName;
 
@@ -149,8 +150,9 @@ function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcstate, $state) {
     }
 
     function clearActiveStateInAllNodes() {
+        const proj = mcprojstore.currentProject;
         const treeModel = new TreeModel(),
-            root = treeModel.parse(mcstate.get(mcstate.CURRENT$PROJECT).files[0]);
+            root = treeModel.parse(proj.files[0]);
         root.walk(function (treeNode) {
             treeNode.model.active = false;
         });
