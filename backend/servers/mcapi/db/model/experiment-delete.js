@@ -20,7 +20,7 @@ function* quickDeleteExperiment(projectId, experimentId) {
     const samplesToDelete = sampleGroups.filter(sg => sg.reduction.length < 2 && sg.group[0].experiment_id === experimentId)
         .map(sg => sg.group);
     yield r.table('project2sample').getAll(samplesToDelete, {index: 'sample_id'}).delete();
-    return {val: 'deleted'};
+    return {val: {experiment_id: experimentId}};
 }
 
 function* deleteExperimentFull(projectId, experimentId, options) {
