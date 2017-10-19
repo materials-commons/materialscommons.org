@@ -76,7 +76,7 @@ function* datasetsForProcess(processId) {
 function* quickDeleteProcess(projectId, processId) {
     const isLeaf = yield isLeafNode(processId);
     if (!isLeaf) {
-        return {error: `Process ${processId} isn't a leaf node`};
+        return {error: `Process ${processId} is not a leaf node`};
     }
 
     let experiments = yield processExperiments(processId);
@@ -87,7 +87,9 @@ function* quickDeleteProcess(projectId, processId) {
     let process = yield getProcess(processId);
     process = process.val;
 
+    // Note: deleting a process implies that it is deleted from ALL experiments!
     yield r.table('project2process').getAll([projectId, processId], {index: 'project_process'}).delete();
+    yield r.table('experiment2process').getAll(processId, {index: 'process_id'}).delete();
 
     let process2sampleout = yield r.table('process2sample').getAll(processId, {index: 'process_id'})
         .filter({direction: 'out'});
