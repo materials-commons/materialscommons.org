@@ -1,30 +1,30 @@
-const r = require('../r');
+const r = require('actionhero').api.r;
 const request = require('request-promise');
 
 const datasets = require('./experiment-datasets');
 
-let doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
-let doiPublisher = process.env.MC_DOI_PUBLISHER || "Materials Commons";
-let publicationURLBase = process.env.MC_DOI_PUBLICATION_BASE;
+const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
+const doiPublisher = process.env.MC_DOI_PUBLISHER || "Materials Commons";
+const publicationURLBase = process.env.MC_DOI_PUBLICATION_BASE;
 
-let doiNamespace = process.env.MC_DOI_NAMESPACE;
-let doiUser = process.env.MC_DOI_USER;
-let doiPassword = process.env.MC_DOI_PW;
+const doiNamespace = process.env.MC_DOI_NAMESPACE;
+const doiUser = process.env.MC_DOI_USER;
+const doiPassword = process.env.MC_DOI_PW;
 
 
-function* doiServerStatusIsOK() {
+async function doiServerStatusIsOK() {
     let url = doiUrl + "status";
     let options = {
         method: 'GET',
         uri: url,
         resolveWithFullResponse: true
     };
-    let response = yield request(options);
-    return ((response.statusCode == "200")
-    && (response.body == "success: EZID is up"));
+    let response = await request(options);
+    return ((response.statusCode === "200")
+        && (response.body === "success: EZID is up"));
 }
 
-function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
+async function doiMint(datasetId, title, creator, publicationYear, otherArgs) {
     let namespace = doiNamespace;
     let user = doiUser;
     let pw = doiPassword;
@@ -63,7 +63,7 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
 
     let doi = null;
     try {
-        let response = yield request(options);
+        let response = await request(options);
         let matches = response.match(/doi:\S*/i);
         doi = matches[0];
     } catch (e) {
@@ -72,18 +72,18 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
         };
     }
 
-    let status = yield r.table('datasets').get(datasetId).update({doi: doi});
+    let status = await r.table('datasets').get(datasetId).update({doi: doi});
     if (status.replaced != 1) {
         return {
             error: `Update of DOI in dataset, ${datasetId}, failed.`
         };
     }
 
-    return yield datasets.getDataset(datasetId);
+    return await datasets.getDataset(datasetId);
 }
 
-function* doiGetMetadata(datasetId) {
-    let dataset = yield datasets.getDataset(datasetId);
+async function doiGetMetadata(datasetId) {
+    let dataset = await datasets.getDataset(datasetId);
     let doi = dataset.val.doi;
 
     let link = doiUrlLink(doi);
@@ -96,7 +96,7 @@ function* doiGetMetadata(datasetId) {
 
     let response = null;
     try {
-        response = yield request(options);
+        response = await request(options);
     } catch (e) {
         return {
             error: e
@@ -104,16 +104,15 @@ function* doiGetMetadata(datasetId) {
     }
 
     let matches = response.match(/doi:\S*/i);
-    if (doi != matches[0]) {
+    if (doi !== matches[0]) {
         return {error: "Matadata not available for doi: " + doi};
     }
 
     return parseNameValueList(response);
-
 }
 
-function* doiGetServerLink(datasetId) {
-    let dataset = yield datasets.getDataset(datasetId);
+async function doiGetServerLink(datasetId) {
+    let dataset = await datasets.getDataset(datasetId);
     let doi = dataset.val.doi;
     return doiUrlLink(doi);
 }

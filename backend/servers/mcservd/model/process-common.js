@@ -1,18 +1,18 @@
-const r = require('../r');
+const r = require('actionhero').api.r;
 const model = require('./model');
 const _ = require('lodash');
 const db = require('./db');
-const commonQueries = require('../../../lib/common-queries');
+const commonQueries = require('../lib/common-queries');
 const dbExec = require('./run');
 const sampleCommon = require('./sample-common');
 
-function* getProcess(dbr, processID) {
+async function getProcess(dbr, processID) {
     let rql = commonQueries.processDetailsRql(dbr.table('processes').getAll(processID), dbr);
-    let process = yield dbExec(rql);
+    let process = await dbExec(rql);
     if (!process.length) {
         return {error: `No such process ${processID}`};
     }
-    let template = yield r.table('templates').get(`global_${process[0].template_name}`);
+    let template = await r.table('templates').get(`global_${process[0].template_name}`);
     process = mergeTemplateIntoProcess(template, process[0]);
     process = convertDatePropertyAttributes(process);
     return {val: process};
@@ -75,40 +75,40 @@ function convertDatePropertyAttributes(process) {
     return process;
 }
 
-function* processIsUnused(processId) {
-    let filesInProcess = yield r.table('process2file').getAll(processId, {index: 'process_id'});
+async function processIsUnused(processId) {
+    let filesInProcess = await r.table('process2file').getAll(processId, {index: 'process_id'});
     if (filesInProcess.length) {
         return false;
     }
 
-    let samplesInProcess = yield r.table('process2sample').getAll(processId, {index: 'process_id'});
+    let samplesInProcess = await r.table('process2sample').getAll(processId, {index: 'process_id'});
     if (samplesInProcess.length) {
         return false;
     }
 
-    let processInDatasets = yield r.table('dataset2process').getAll(processId, {index: 'process_id'});
+    let processInDatasets = await r.table('dataset2process').getAll(processId, {index: 'process_id'});
     return processInDatasets.length === 0;
 }
 
-function* updateProcessFiles(processId, files) {
+async function updateProcessFiles(processId, files) {
     let filesToAddToProcess = files.filter(f => f.command === 'add').map(f => new model.Process2File(processId, f.id, ''));
-    filesToAddToProcess = yield removeExistingProcessFileEntries(processId, filesToAddToProcess);
+    filesToAddToProcess = await removeExistingProcessFileEntries(processId, filesToAddToProcess);
     if (filesToAddToProcess.length) {
-        yield r.table('process2file').insert(filesToAddToProcess);
+        await r.table('process2file').insert(filesToAddToProcess);
     }
 
     let filesToDeleteFromProcess = files.filter(f => f.command === 'delete').map(f => [processId, f.id]);
     if (filesToDeleteFromProcess.length) {
-        yield r.table('process2file').getAll(r.args(filesToDeleteFromProcess), {index: 'process_datafile'}).delete();
+        await r.table('process2file').getAll(r.args(filesToDeleteFromProcess), {index: 'process_datafile'}).delete();
     }
 
     return null;
 }
 
-function* removeExistingProcessFileEntries(processId, files) {
+async function removeExistingProcessFileEntries(processId, files) {
     if (files.length) {
         let indexEntries = files.map(f => [processId, f.datafile_id]);
-        let matchingEntries = yield r.table('process2file').getAll(r.args(indexEntries), {index: 'process_datafile'});
+        let matchingEntries = await r.table('process2file').getAll(r.args(indexEntries), {index: 'process_datafile'});
         let byFileID = _.keyBy(matchingEntries, 'datafile_id');
         return files.filter(f => (!(f.datafile_id in byFileID)));
     }
@@ -116,13 +116,13 @@ function* removeExistingProcessFileEntries(processId, files) {
     return files;
 }
 
-function* updateProperties(properties) {
+async function updateProperties(properties) {
     // Validate that the retrieved property matches that we are updating
     let errors = [];
     for (let i = 0; i < properties.length; i++) {
         let property = properties[i];
         // getAll returns an array
-        let existingPropertyMatches = yield r.table('setupproperties')
+        let existingPropertyMatches = await r.table('setupproperties')
             .getAll([property.id, property.setup_id], {index: 'id_setup_id'});
         if (!existingPropertyMatches.length) {
             // Skip, bad property
@@ -138,7 +138,7 @@ function* updateProperties(properties) {
             existingProperty.value = property.value;
             existingProperty.unit = property.unit;
             existingProperty.description = property.description;
-            yield r.table('setupproperties').get(property.id).update(existingProperty);
+            await r.table('setupproperties').get(property.id).update(existingProperty);
         }
     }
 
@@ -149,53 +149,53 @@ function* updateProperties(properties) {
     return null;
 }
 
-function* updateProcessSamples(process, samples) {
+async function updateProcessSamples(process, samples) {
     let processId = process.id;
     let samplesToAddToProcess = samples.filter(s => s.command === 'add')
         .map(s => new model.Process2Sample(processId, s.id, s.property_set_id, 'in'));
-    samplesToAddToProcess = yield removeExistingProcessSampleEntries(processId, samplesToAddToProcess);
+    samplesToAddToProcess = await removeExistingProcessSampleEntries(processId, samplesToAddToProcess);
     if (samplesToAddToProcess.length) {
-        yield r.table('process2sample').insert(samplesToAddToProcess);
+        await r.table('process2sample').insert(samplesToAddToProcess);
     }
 
     if (process.does_transform) {
         for (let i = 0; i < samplesToAddToProcess.length; i++) {
             let sampleEntry = samplesToAddToProcess[i];
             let ps = new model.PropertySet(true, sampleEntry.property_set_id);
-            let added = yield db.insert('propertysets', ps);
-            yield r.table('sample2propertyset')
+            let added = await db.insert('propertysets', ps);
+            await r.table('sample2propertyset')
                 .getAll([sampleEntry.sample_id, sampleEntry.property_set_id], {index: 'sample_property_set'})
                 .update({current: false});
             let s2ps = new model.Sample2PropertySet(sampleEntry.sample_id, added.id, true);
-            yield r.table('sample2propertyset').insert(s2ps);
+            await r.table('sample2propertyset').insert(s2ps);
             let outp2s = new model.Process2Sample(processId, sampleEntry.sample_id, added.id, 'out');
-            yield r.table('process2sample').insert(outp2s);
+            await r.table('process2sample').insert(outp2s);
         }
     }
 
     let samplesToDeleteFromProcess = samples.filter(s => s.command === 'delete')
         .map(s => [processId, s.id, s.property_set_id]);
     let sampleIds = samples.filter(s => s.command === 'delete').map(s => s.id);
-    let canBeDeleted = yield sampleCommon.canDeleteSamples(sampleIds, processId);
+    let canBeDeleted = await sampleCommon.canDeleteSamples(sampleIds, processId);
     if (!canBeDeleted) {
         // Ugh... work around - don't delete if used in other processes.
         return 'Some samples used in other processes - cannot be deleted.';
     }
     if (samplesToDeleteFromProcess.length) {
-        yield r.table('process2sample')
+        await r.table('process2sample')
             .getAll(r.args(samplesToDeleteFromProcess), {index: 'process_sample_property_set'}).delete();
     }
 
-    yield sampleCommon.removeUnusedSamples(sampleIds);
+    await sampleCommon.removeUnusedSamples(sampleIds);
 
     return null;
 }
 
 
-function* removeExistingProcessSampleEntries(processId, samples) {
+async function removeExistingProcessSampleEntries(processId, samples) {
     if (samples.length) {
         let indexEntries = samples.map(s => [processId, s.sample_id, s.property_set_id]);
-        let matchingEntries = yield r.table('process2sample')
+        let matchingEntries = await r.table('process2sample')
             .getAll(r.args(indexEntries), {index: 'process_sample_property_set'});
         let bySampleID = _.keyBy(matchingEntries, 'sample_id');
         return samples.filter(s => (!(s.sample_id in bySampleID)));
@@ -204,36 +204,36 @@ function* removeExistingProcessSampleEntries(processId, samples) {
     return samples;
 }
 
-function* createProcessFromTemplate(projectId, template, owner) {
+async function createProcessFromTemplate(projectId, template, owner) {
     let p = new model.Process(template.name, owner, template.id, template.does_transform);
     // TODO: Fix ugly hack, template id is global_<name>, the substring removes the global_ part.
     p.process_type = template.process_type;
     p.template_name = template.id.substring(7);
     p.category = template.category;
-    let proc = yield addProcess(projectId, p);
-    yield createSetup(proc.id, template.setup);
+    let proc = await addProcess(projectId, p);
+    await createSetup(proc.id, template.setup);
     return proc.id;
 }
 
 // addProcess inserts the process and add it to the project.
-function* addProcess(projectID, process) {
-    let p = yield db.insert('processes', process);
+async function addProcess(projectID, process) {
+    let p = await db.insert('processes', process);
     let p2proc = new model.Project2Process(projectID, p.id);
-    yield db.insert('project2process', p2proc);
+    await db.insert('project2process', p2proc);
     return p;
 }
 
-function* createSetup(processID, settings) {
+async function createSetup(processID, settings) {
     for (let i = 0; i < settings.length; i++) {
         let current = settings[i];
 
         // Create the setting
         let s = new model.Setups(current.name, current.attribute);
-        let setup = yield db.insert('setups', s);
+        let setup = await db.insert('setups', s);
 
         // Associate it with the process
         let p2s = new model.Process2Setup(processID, setup.id);
-        yield db.insert('process2setup', p2s);
+        await db.insert('process2setup', p2s);
 
         // Create each property for the setting. Add these to the
         // setting variable so we can return a setting object with
@@ -249,7 +249,7 @@ function* createSetup(processID, settings) {
         }
 
         if (props.length) {
-            yield db.insert('setupproperties', props);
+            await db.insert('setupproperties', props);
         }
     }
 }

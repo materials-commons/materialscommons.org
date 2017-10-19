@@ -1,16 +1,14 @@
-module.exports = function getSingle(r, table, id, index) {
-    let run = require('./run');
+const run = require('./run');
+
+module.exports = async function getSingle(r, table, id, index) {
+
     if (index) {
-        return run(r.table(table).getAll(id, {index: index}))
-            .then(function(matches) {
-                if (matches.length !== 0) {
-                    return matches[0];
-                }
-                return null;
-            });
+        let matches = await run(r.table(table).getAll(id, {index: index}));
+        if (matches.length !== 0) {
+            return matches[0];
+        }
+        return null;
     }
 
-    return run(r.table(table).get(id)).then(function(item) {
-        return item;
-    });
+    return await run(r.table(table).get(id));
 };

@@ -8,15 +8,22 @@ const projects = require('./projects');
 const renameHelper = require('./directory-rename');
 const getSingle = require('./get-single');
 
-const get = async (projectID, directoryID) => {
+async function get(projectID, directoryID) {
     if (directoryID === "top") {
-        return await topLevelDir(projectID);
+        return topLevelDir(projectID);
     } else {
-        return await directoryByID(directoryID);
+        return directoryByID(directoryID);
     }
-};
+}
 
-const topLevelDir = async (projectID) => {
+async function getAll(projectId) {
+    return await r.table('project2datadir')
+        .getAll(projectId, {index: 'project_id'})
+        .eqJoin('datadir_id', r.db('materialscommons').table('datadirs')).zip()
+        .pluck('name', 'id').orderBy('name');
+}
+
+async function topLevelDir(projectID) {
     let rql = r.table('projects').getAll(projectID)
         .eqJoin('name', r.table('datadirs'), {index: 'name'}).zip()
         .eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip()
@@ -32,9 +39,9 @@ const topLevelDir = async (projectID) => {
         });
     let results = await dbExec(rql);
     return toDir(results[0]);
-};
+}
 
-const directoryByID = async (directoryID) => {
+async function directoryByID(directoryID) {
     let rql = r.table('project2datadir').getAll(directoryID, {index: 'datadir_id'})
         .eqJoin('datadir_id', r.table('datadirs')).zip()
         .merge(function(ddir) {
@@ -47,8 +54,8 @@ const directoryByID = async (directoryID) => {
             }
         });
     let results = await dbExec(rql);
-    return toDir(results[0]);
-};
+    return toDir(results[0])
+}
 
 function toDir(results) {
     let dir = {
@@ -89,27 +96,20 @@ function toDir(results) {
     return dir;
 }
 
-const getAll = async (projectId) => {
-    return await r.table('project2datadir')
-        .getAll(projectId, {index: 'project_id'})
-        .eqJoin('datadir_id', r.db('materialscommons').table('datadirs')).zip()
-        .pluck('name', 'id').orderBy('name');
-};
-
 // create will create a directory path. It will create all children in the path, skipping
 // any entries that exist. Starting paths can be specified in 3 different ways:
 // from_dir is an id => start creating directories starting from id
 // from_dir == '/' => start creating directories starting from project root
 // from_dir == /path/of/directories' => start creating directories from leaf (must be valid)
-const create = async (projectID, projectName, dirArgs) => {
+async function create(projectID, projectName, dirArgs) {
     if (dirArgs.from_dir.startsWith('/')) {
         return await createFromPath(projectID, projectName, dirArgs);
     } else {
         return await createFromDirID(projectID, dirArgs);
     }
-};
+}
 
-const createFromDirID = async (projectID, dirArgs) => {
+async function createFromDirID(projectID, dirArgs) {
     let startingDir = await dirById(dirArgs.from_dir, projectID);
     if (!startingDir) {
         return {
@@ -120,26 +120,26 @@ const createFromDirID = async (projectID, dirArgs) => {
     return {
         val: created
     };
-};
+}
 
-const dirByPath = async (projectID, dirPath) => {
+async function dirByPath(projectID, dirPath) {
     let rql = r.table('datadirs').getAll(dirPath, {index: 'name'}).filter({project: projectID});
     let dirs = await dbExec(rql);
     if (dirs.length) {
         return dirs[0];
     }
     return null;
-};
+}
 
-const dirById = async (dirID) => {
+async function dirById(dirID, projectID) {
     let dir = await getSingle(r, 'datadirs', dirID);
     if (!dir) {
         return null;
     }
     return dir;
-};
+}
 
-const createFromPath = async (projectID, projectName, dirArgs) => {
+async function createFromPath(projectID, projectName, dirArgs) {
     let dirPath = dirArgs.from_dir === '/' ? projectName : projectName + dirArgs.from_dir;
     let startingDir = await dirByPath(projectID, dirPath);
     if (!startingDir) {
@@ -152,7 +152,7 @@ const createFromPath = async (projectID, projectName, dirArgs) => {
     return {
         val: created
     };
-};
+}
 
 function dirSegments(from) {
     let cleaned = trimStartingSlashes(from);
@@ -166,7 +166,7 @@ function trimStartingSlashes(from) {
     return from;
 }
 
-const createDirs = async (projectID, startingDir, dirSegments) => {
+async function createDirs(projectID, startingDir, dirSegments) {
     let existing = true;
     let dirPath = startingDir.name;
     let dirEntry = startingDir;
@@ -195,18 +195,18 @@ const createDirs = async (projectID, startingDir, dirSegments) => {
         }
     }
     return createdDirs;
-};
+}
 
-const insertDir = async(projectID, parentID, owner, dirPath) => {
+async function insertDir(projectID, parentID, owner, dirPath) {
     let dir = new model.Directory(dirPath, owner, projectID, parentID);
     let newDir = await db.insert('datadirs', dir);
     let proj2dir = new model.Project2DataDir(projectID, newDir.id);
     await db.insert('project2datadir', proj2dir);
     return newDir;
-};
+}
 
-const update = async(projectID, directoryID, updateArgs) => {
-    let guard = await isTopLevelDir(projectID, directoryID)
+async function update(projectID, directoryID, updateArgs) {
+    let guard = await isTopLevelDir(projectID, directoryID);
     if (guard) {
         return {
             error: "Can not move or rename top level directory"
@@ -219,23 +219,23 @@ const update = async(projectID, directoryID, updateArgs) => {
     }
 }
 
-function* isTopLevelDir(projectID, directoryID) {
-    let projectNameData = yield r.table('projects').get(projectID).pluck('name');
-    let directoryNameData = yield r.table('datadirs').get(directoryID).pluck('name');
-    return (projectNameData.name == directoryNameData.name);
+async function isTopLevelDir(projectID, directoryID) {
+    let projectNameData = await r.table('projects').get(projectID).pluck('name');
+    let directoryNameData = await r.table('datadirs').get(directoryID).pluck('name');
+    return (projectNameData.name === directoryNameData.name);
 }
 
-function* moveDirectory(projectID, directoryID, moveArgs) {
+async function moveDirectory(projectID, directoryID, moveArgs) {
     // Validate that the new directory is in the project
     let findDirRql = r.table('project2datadir')
         .getAll([projectID, moveArgs.new_directory_id], {index: 'project_datadir'});
-    let matches = yield dbExec(findDirRql);
+    let matches = await dbExec(findDirRql);
     if (!matches.length) {
         return {error: 'Directory not in project'};
     }
 
-    let newDir = yield dbExec(r.table('datadirs').get(moveArgs.new_directory_id));
-    let updateDir = yield dbExec(r.table('datadirs').get(directoryID));
+    let newDir = await dbExec(r.table('datadirs').get(moveArgs.new_directory_id));
+    let updateDir = await dbExec(r.table('datadirs').get(directoryID));
     let currentPath = updateDir.name;
 
     let updateFields = {
@@ -244,9 +244,9 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
     };
     let newPath = updateFields.name;
 
-    yield r.table('datadirs').get(directoryID).update(updateFields);
+    await r.table('datadirs').get(directoryID).update(updateFields);
 
-    let directoryList = yield r.table('datadirs').getAll(directoryID, {index: 'parent'});
+    let directoryList = await r.table('datadirs').getAll(directoryID, {index: 'parent'});
     if (directoryList && directoryList.length > 0) {
 
         let directoryIdSet = new Set();
@@ -257,46 +257,44 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
 
         let size = directoryIdSet.size;
         let oldSize = 0;
-        while (size != oldSize) {
+        while (size !== oldSize) {
             oldSize = size;
-            directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]), {index: 'parent'});
+            directoryList = await r.table('datadirs').getAll(r.args([...directoryIdSet]), {index: 'parent'});
             for (let i = 0; i < directoryList.length; i++) {
                 directoryIdSet.add(directoryList[i].id);
             }
             size = directoryIdSet.size;
         }
 
-        directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]));
+        directoryList = await r.table('datadirs').getAll(r.args([...directoryIdSet]));
         for (let i = 0; i < directoryList.length; i++) {
             let directory = directoryList[i];
             directory.name = directory.name.replace(currentPath, newPath);
         }
 
-        yield r.table('datadirs').insert(directoryList, {conflict: 'update'});
+        await r.table('datadirs').insert(directoryList, {conflict: 'update'});
     }
 
     let rv = {};
-    rv.val = yield directoryByID(directoryID);
+    rv.val = await directoryByID(directoryID);
     return rv;
 }
 
-function* renameDirectory(directoryID, renameArgs) {
+async function renameDirectory(directoryID, renameArgs) {
     let newName = renameArgs.new_name;
-    yield renameHelper.renameDirectory(directoryID, newName);
+    await renameHelper.renameDirectory(directoryID, newName);
 
     let rv = {};
-    rv.val = yield directoryByID(directoryID);
+    rv.val = await directoryByID(directoryID);
     return rv;
 }
 
-function findInProject(projectID, _key, dir) {
+async function findInProject(projectID, _key, dir) {
     if (dir.startsWith('/')) {
-        return dbExec(r.table('datadirs').getAll(dir, {index: 'name'}))
-            .then(function(d) {
-                return dbExec(r.table('project2datadir').getAll([projectID, d.id], {index: 'project_datadir'}));
-            });
+        let d = await dbExec(r.table('datadirs').getAll(dir, {index: 'name'}));
+        return await dbExec(r.table('project2datadir').getAll([projectID, d.id], {index: 'project_datadir'}));
     } else {
-        return r.table('project2datadir').getAll([projectID, dir], {index: 'project_datadir'}).run();
+        return await r.table('project2datadir').getAll([projectID, dir], {index: 'project_datadir'});
     }
 }
 
@@ -314,35 +312,36 @@ function peerDirectories(dirID) {
     return dbExec(rql);
 }
 
-function* ingestSingleLocalFile(projectId, directoryId, userId, args) {
+async function ingestSingleLocalFile(projectId, directoryId, userId, args) {
     let filename = args.name;
     let checksum = args.checksum;
     //let mediatype = args.mediatype;
     //let filesize = args.filesize;
     //let filePath = args.filepath;
 
-    let file = yield fileInDirectoryByName(directoryId, filename);
+    let file = await fileInDirectoryByName(directoryId, filename);
 
-    if (!file || !(file.checksum == checksum)) {
+    if (!file || !(file.checksum === checksum)) {
         args.parent = file;
-        file = yield files.fetchOrCreateFileFromLocalPath(userId, args);
+        file = await files.fetchOrCreateFileFromLocalPath(userId, args);
 
-        yield addFileToDirectory(directoryId, file.id);
-        yield projects.addFileToProject(projectId, file.id);
+        await addFileToDirectory(directoryId, file.id);
+        await projects.addFileToProject(projectId, file.id);
     } else {
-        yield files.clearUploadedFileByLocalPath(args);
+        await files.clearUploadedFileByLocalPath(args);
     }
 
     return file;
 }
 
-function* addFileToDirectory(dirID, fileID) {
+async function addFileToDirectory(dirID, fileID) {
     let link = new model.DataDir2DataFile(dirID, fileID);
-    yield r.table('datadir2datafile').insert(link);
+    await r.table('datadir2datafile').insert(link);
 }
 
-function* fileInDirectoryByName(dirId, filename) {
-    let matches = yield r.table('datadir2datafile')
+//TODO: multiple left statements to fix
+async function fileInDirectoryByName(dirId, filename) {
+    let matches = await r.table('datadir2datafile')
         .getAll(dirId, {index: 'datadir_id'})
         .eqJoin('datafile_id', r.table('datafiles'))
         .without({left: "id", left: "datafile_id", left: "datadir_id"})
@@ -351,29 +350,29 @@ function* fileInDirectoryByName(dirId, filename) {
     else return {}
 }
 
-function* isEmpty(dirID) {
-    let childrenDirs = yield dbExec(r.table('datadirs').getAll(dirID, {index: 'parent'}));
+async function isEmpty(dirID) {
+    let childrenDirs = await dbExec(r.table('datadirs').getAll(dirID, {index: 'parent'}));
     if (childrenDirs.length) {
         return false;
     }
 
-    let childrenFiles = yield dbExec(r.table('datadir2datafile').getAll(dirID, {index: 'datadir_id'}));
+    let childrenFiles = await dbExec(r.table('datadir2datafile').getAll(dirID, {index: 'datadir_id'}));
     return childrenFiles.length === 0;
 }
 
-function* remove(projectID, dirID) {
-    let guard = yield isTopLevelDir(projectID, dirID)
+async function remove(projectID, dirID) {
+    let guard = await isTopLevelDir(projectID, dirID);
     if (guard) {
         return {
             error: "Can not delete top level directory"
         }
     }
-    let rv = yield r.table('datadirs').get(dirID).delete();
+    let rv = await r.table('datadirs').get(dirID).delete();
     if (!rv || !rv.deleted) {
         return {error: 'Unable to delete'};
     }
 
-    rv = yield r.table('project2datadir').getAll([projectID, dirID], {index: 'project_datadir'}).delete();
+    rv = await r.table('project2datadir').getAll([projectID, dirID], {index: 'project_datadir'}).delete();
     if (!rv || !rv.deleted) {
         return {error: 'Unable to delete'};
     }

@@ -1,28 +1,27 @@
-const r = require('../r');
-
+const r = require('actionhero').api.r;
 const experiments = require('./experiments');
 const experimentDelete = require('./experiment-delete');
 const projects = require('./projects');
 const files = require('./files');
 
-function* deleteProject(projectId, options) {
+async function deleteProject(projectId, options) {
 
     let dryRun = !!(options && options.dryRun);
 
     let errorAddIn =
         " WARNING. The project may have been partially deleted - project state unknown.";
 
-    let hasPublishedDatasets = yield testForPublishedDatasets(projectId);
+    let hasPublishedDatasets = await testForPublishedDatasets(projectId);
     if (hasPublishedDatasets) {
         return {error: "Can not delete a project that has any experiment with a published datasets"}
     }
 
-    let hasDOIAssigned = yield testForDOIAssigned(projectId);
+    let hasDOIAssigned = await testForDOIAssigned(projectId);
     if (hasDOIAssigned) {
         return {error: "Can not delete a project that has any experiment with a DOI assigned"}
     }
 
-    let results = yield projects.getProject(projectId);
+    let results = await projects.getProject(projectId);
 
     let project = null;
     let datasets = [];
@@ -40,19 +39,19 @@ function* deleteProject(projectId, options) {
         }
     }
 
-    let processIdList = yield r.table("project2process")
+    let processIdList = await r.table("project2process")
         .getAll(projectId, {index: "project_id"}).getField('process_id');
 
-    let fileIdList = yield r.table("project2datafile")
+    let fileIdList = await r.table("project2datafile")
         .getAll(projectId, {index: "project_id"}).getField('datafile_id');
 
-    results = yield experiments.getAllForProject(projectId);
+    results = await experiments.getAllForProject(projectId);
     let experimentList = results.val;
 
     let deletedExperiments = [];
     for (let i = 0; i < experimentList.length; i++) {
         let experiment = experimentList[i];
-        let results = yield experimentDelete
+        let results = await experimentDelete
             .deleteExperimentFull(projectId, experiment.id, {deleteProcesses: true, dryRun: dryRun});
         if (results.val) {
             let tally = results.val;
@@ -83,19 +82,19 @@ function* deleteProject(projectId, options) {
     };
 
     if (!dryRun) {
-        yield deleteSamples(samples);
-        yield deleteProcesses(processIdList);
-        yield deleteFiles(fileIdList);
-        yield deleteLinks(projectId);
-        yield deleteProjectRecord(projectId);
+        await deleteSamples(samples);
+        await deleteProcesses(processIdList);
+        await deleteFiles(fileIdList);
+        await deleteLinks(projectId);
+        await deleteProjectRecord(projectId);
     }
 
     return ret;
 }
 
-function* testForPublishedDatasets(projectId) {
+async function testForPublishedDatasets(projectId) {
 
-    let results = yield experiments.getAllForProject(projectId);
+    let results = await experiments.getAllForProject(projectId);
     let experimentList = results.val;
 
     for (let i = 0; i < experimentList.length; i++) {
@@ -109,9 +108,9 @@ function* testForPublishedDatasets(projectId) {
     return false;
 }
 
-function* testForDOIAssigned(projectId) {
+async function testForDOIAssigned(projectId) {
 
-    let results = yield experiments.getAllForProject(projectId);
+    let results = await experiments.getAllForProject(projectId);
     let experimentList = results.val;
 
     for (let i = 0; i < experimentList.length; i++) {
@@ -125,25 +124,25 @@ function* testForDOIAssigned(projectId) {
     return false;
 }
 
-function* deleteSamples(samples) {
+async function deleteSamples(samples) {
     let sampleIdList = [];
     samples.forEach((sample) => {
         sampleIdList.push(sample.id);
     });
-    yield r.table("samples").getAll(r.args(sampleIdList)).delete();
+    await r.table("samples").getAll(r.args(sampleIdList)).delete();
 }
 
-function* deleteProcesses(processIdList) {
-    yield r.table("processes").getAll(r.args(processIdList)).delete();
+async function deleteProcesses(processIdList) {
+    await r.table("processes").getAll(r.args(processIdList)).delete();
 }
 
-function* deleteFiles(fileIdList) {
+async function deleteFiles(fileIdList) {
     for (let i = 0; i < fileIdList.length; i++) {
-        yield files.deleteFile(fileIdList[i]);
+        await files.deleteFile(fileIdList[i]);
     }
 }
 
-function* deleteLinks(projectId) {
+async function deleteLinks(projectId) {
     let tables = [
         'project2datadir',
         'project2datafile',
@@ -154,17 +153,17 @@ function* deleteLinks(projectId) {
     ];
 
     for (let i = 0; i < tables.length; i++) {
-        yield r.table(tables[i]).getAll(projectId, {index: 'project_id'}).delete();
+        await r.table(tables[i]).getAll(projectId, {index: 'project_id'}).delete();
     }
 }
 
-function* deleteProjectRecord(projectId) {
-    yield r.table("projects").get(projectId).delete();
+async function deleteProjectRecord(projectId) {
+    await r.table("projects").get(projectId).delete();
 }
 
-function* quickProjectDelete(projectId) {
-    yield r.table('projects').get(projectId).update({owner: 'delete@materialscommons.org'});
-    yield r.table('access').getAll(projectId, {index: 'project_id'}).delete();
+async function quickProjectDelete(projectId) {
+    await r.table('projects').get(projectId).update({owner: 'delete@materialscommons.org'});
+    await r.table('access').getAll(projectId, {index: 'project_id'}).delete();
 }
 
 module.exports = {

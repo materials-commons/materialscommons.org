@@ -1,35 +1,35 @@
-const r = require('../r');
+const r = require('actionhero').api.r;
 const _ = require('lodash');
 const getSingle = require('./get-single');
 const model = require('./model');
 
 // getUsers returns all the users in the database. Internal use only
-function* getUsers() {
+async function getUsers() {
     return r.table('users');
 }
 
 // getAllUsersExternal returns all the users in the database; cleaned for external only
-function* getAllUsersExternal() {
-    return yield r.table('users').without('admin', 'isTemplateAdmin', 'apikey', 'password');
+async function getAllUsersExternal() {
+    return await r.table('users').without('admin', 'isTemplateAdmin', 'apikey', 'password');
 }
 
 // getUser gets the user by index. If no index is given then it
 // uses the primary key.
-function* getUser(id, index) {
+async function getUser(id, index) {
     if (index) {
-        let matches = yield r.table('users').getAll(id, {index: index}).run();
+        let matches = await r.table('users').getAll(id, {index: index}).run();
         if (matches.length !== 0) {
             return matches[0];
         }
         return null;
     }
-    return yield r.table('users').get(id).run();
+    return await r.table('users').get(id).run();
 }
 
-function* updateProjectFavorites(userID, projectID, attrs) {
+async function updateProjectFavorites(userID, projectID, attrs) {
     if (attrs.favorites) {
         // TODO: validate the projectID exists
-        let user = yield r.table('users').get(userID);
+        let user = await r.table('users').get(userID);
         if (!user.favorites) {
             user.favorites = {};
         }
@@ -44,35 +44,35 @@ function* updateProjectFavorites(userID, projectID, attrs) {
         let toDelete = attrs.favorites.processes.filter(p => p.command === 'delete').map(p => p.name);
         let projProcesses = user.favorites[projectID].processes;
         // remove deleted process favorites
-        projProcesses = projProcesses.filter(p => _.findIndex(toDelete, name => name == p, null) === -1);
+        projProcesses = projProcesses.filter(p => _.findIndex(toDelete, name => name === p, null) === -1);
         let toAddFavs = _.difference(toAdd, projProcesses);
         user.favorites[projectID].processes = projProcesses.concat(toAddFavs);
-        yield r.table('users').get(userID).update({favorites: user.favorites});
+        await r.table('users').get(userID).update({favorites: user.favorites});
     }
-    return yield r.table('users').get(userID).without('admin', 'apikey', 'password');
+    return await r.table('users').get(userID).without('admin', 'apikey', 'password');
 }
 
-function* updateUserSettings(userId, settings) {
-    yield r.table('users').get(userId).update(settings);
-    let user = yield r.table('users').get(userId).without('admin', 'apikey', 'password');
+async function updateUserSettings(userId, settings) {
+    await r.table('users').get(userId).update(settings);
+    let user = await r.table('users').get(userId).without('admin', 'apikey', 'password');
     return {val: user};
 }
 
-function* createPasswordResetRequest(user) {
-    let validate_uuid = yield r.uuid();
-    return yield setUserPasswordResetFlag(user.id, validate_uuid);
+async function createPasswordResetRequest(user) {
+    let validate_uuid = await r.uuid();
+    return await setUserPasswordResetFlag(user.id, validate_uuid);
 }
 
-function* setUserPasswordResetFlag(userId, validate_uuid) {
-    return yield r.table('users').get(userId).update({reset_password: true, validate_uuid: validate_uuid});
+async function setUserPasswordResetFlag(userId, validate_uuid) {
+    return await r.table('users').get(userId).update({reset_password: true, validate_uuid: validate_uuid});
 }
 
-function* clearUserPasswordResetFlag(userId) {
-    return yield r.table('users').get(userId).replace(r.row.without('reset_password', 'validate_uuid'));
+async function clearUserPasswordResetFlag(userId) {
+    return await r.table('users').get(userId).replace(r.row.without('reset_password', 'validate_uuid'));
 }
 
-function* getUserForPasswordResetFromUuid(uuid) {
-    let results = yield r.table('users')
+async function getUserForPasswordResetFromUuid(uuid) {
+    let results = await r.table('users')
         .getAll(uuid, {index: 'validate_uuid'}).without('apikey', 'password');
     if (!results.length) {
         return {error: "No validated user record. Please retry."};
@@ -81,15 +81,15 @@ function* getUserForPasswordResetFromUuid(uuid) {
     return {val: user};
 }
 
-function* createUnverifiedAccount(account) {
-    let apikey = yield r.uuid(),
+async function createUnverifiedAccount(account) {
+    let apikey = await r.uuid(),
         user = new model.User(account.email, account.fullname, apikey.replace(/-/g, ''));
-    user.validate_uuid = yield r.uuid();
-    let u = yield r.table('users').get(account.email);
+    user.validate_uuid = await r.uuid();
+    let u = await r.table('users').get(account.email);
     if (u) {
         return {error: "User account already exists: " + account.email};
     }
-    let rv = yield r.table('account_requests').insert(user, {returnChanges: true});
+    let rv = await r.table('account_requests').insert(user, {returnChanges: true});
     if (rv.errors) {
         return {error: "Validation was already sent: " + account.email};
     }
@@ -97,8 +97,8 @@ function* createUnverifiedAccount(account) {
     return {val: rv.changes[0].new_val};
 }
 
-function* getUserRegistrationFromUuid(uuid) {
-    let results = yield r.table('account_requests').getAll(uuid, {index: 'validate_uuid'});
+async function getUserRegistrationFromUuid(uuid) {
+    let results = await r.table('account_requests').getAll(uuid, {index: 'validate_uuid'});
     if (!results.length) {
         return {error: "User validation record does not exists: " + uuid};
     }

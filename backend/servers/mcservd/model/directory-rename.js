@@ -1,7 +1,7 @@
-const r = require('../r');
+const r = require('actionhero').api.r;
 
-function* renameDirectory(directoryID, newName) {
-    let baseDirectory = yield r.table('datadirs').get(directoryID);
+async function renameDirectory(directoryID, newName) {
+    let baseDirectory = await r.table('datadirs').get(directoryID);
     let currentPath = baseDirectory.name;
     let parts = currentPath.split('/');
     parts[parts.length - 1] = newName;
@@ -10,22 +10,22 @@ function* renameDirectory(directoryID, newName) {
     let directoryIdSet = new Set([directoryID]);
     let size = directoryIdSet.size;
     let oldSize = 0;
-    while (size != oldSize) {
+    while (size !== oldSize) {
         oldSize = size;
-        let directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]),{index: 'parent'});
+        let directoryList = await r.table('datadirs').getAll(r.args([...directoryIdSet]), {index: 'parent'});
         for (let i = 0; i < directoryList.length; i++) {
             directoryIdSet.add(directoryList[i].id);
         }
         size = directoryIdSet.size;
     }
 
-    let directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]));
+    let directoryList = await r.table('datadirs').getAll(r.args([...directoryIdSet]));
     for (let i = 0; i < directoryList.length; i++) {
         let directory = directoryList[i];
-        directory.name = directory.name.replace(currentPath,newPath);
+        directory.name = directory.name.replace(currentPath, newPath);
     }
 
-    yield r.table('datadirs').insert(directoryList,{conflict: 'update'});
+    await r.table('datadirs').insert(directoryList, {conflict: 'update'});
 }
 
 module.exports = {
