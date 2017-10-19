@@ -86,7 +86,7 @@ function* deleteProcess(next) {
             this.status = status.BAD_REQUEST;
             this.body = rv;
         } else {
-            this.body = rv;
+            this.body = rv.val;
         }
     }
     yield next;
