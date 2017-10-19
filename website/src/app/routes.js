@@ -314,6 +314,15 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 ]
             }
         })
+        .state('data.tag', {
+            url: '/tag/:tag',
+            template: '<mc-dataset-list datasets="$resolve.datasets" details-route="data.dataset" layout-margin></mc-dataset-list>',
+            resolve: {
+                datasets: ['publicDatasetsAPI', '$stateParams',
+                    (publicDatasetsAPI, $stateParams) => publicDatasetsAPI.getDatasetsForTag($stateParams.tag)
+                ]
+            }
+        })
         .state('data.home.recent', {
             url: '/recent',
             template: '<mc-dataset-list datasets="$resolve.datasets" details-route="data.dataset"></mc-dataset-list>',

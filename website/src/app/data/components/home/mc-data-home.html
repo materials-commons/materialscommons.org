@@ -21,6 +21,11 @@
     </div>
     <div flex="30" layout-margin>
         <h1>Popular tags</h1>
-        <md-chips ng-model="$ctrl.tags" readonly="true"></md-chips>
+        <a ui-sref="data.tag({tag:'Magnesium'})">Click here</a>
+        <md-chips ng-model="$ctrl.tags" md-removable="false" md-on-select="$ctrl.selected($chip)">
+            <md-chip-template>
+                <span class="pointer">{{$chip}}</span>
+            </md-chip-template>
+        </md-chips>
     </div>
 </div>

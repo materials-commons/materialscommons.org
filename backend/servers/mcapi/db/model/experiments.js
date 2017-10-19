@@ -461,9 +461,7 @@ function* getFilesForExperiment(experimentId) {
 
 function* quickDeleteExperimentProcess(projectId, experimentId, processId) {
     let experiments = yield processes.processExperiments(processId);
-    if (experiments.length) {
-        // in more than one experiment so we can do quickDeleteProcess and then the
-        // other cleanup.
+    if (experiments.length === 1) {
         yield processes.quickDeleteProcess(projectId, processId);
     }
 

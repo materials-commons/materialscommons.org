@@ -95,8 +95,7 @@ module.exports.getDatasetsByTag = function*(next) {
         .eqJoin('dataset_id', r.db("materialscommons").table('datasets')).zip()
         .merge(function(ds) {
             return {
-                'files': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
-                    .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+                'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
                 'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
                 'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
             }
