@@ -13,7 +13,7 @@ module.exports = class AllPublishedDatasetsAction extends Action {
     }
 };
 
-model.exports = class TopViewedPublishedDatasetsAction extends Action {
+module.exports = class TopViewedPublishedDatasetsAction extends Action {
     constructor() {
         super();
         this.name = 'topViewedPublishedDatasets';
@@ -25,7 +25,7 @@ model.exports = class TopViewedPublishedDatasetsAction extends Action {
     }
 };
 
-model.exports = class RecentlyPublishedDatasetsAction extends Action {
+module.exports = class RecentlyPublishedDatasetsAction extends Action {
     constructor() {
         super();
         this.name = 'recentlyPublishedDatasets';
@@ -37,7 +37,7 @@ model.exports = class RecentlyPublishedDatasetsAction extends Action {
     }
 };
 
-model.exports = class GetPublishedDatasetAction extends Action {
+module.exports = class GetPublishedDatasetAction extends Action {
     constructor() {
         super();
         this.name = 'getPublishedDataset';
