@@ -5,7 +5,10 @@ node_js:
 notifications:
   email:
     recipients:
-      weymouth@umich.edu
+        - weymouth@umich.edu
+        - gtarcea@umich.edu
+    on_success: change
+    on_failure: always
 
 # blocklist - branches not used for testing: any branch starting with 'spike'
 branches:
