@@ -1,4 +1,5 @@
-const r = require('actionhero').api.r;
+const {api} = require('actionhero');
+const r = api.r;
 const run = require('./run');
 const model = require('./model');
 const getSingle = require('./get-single');
