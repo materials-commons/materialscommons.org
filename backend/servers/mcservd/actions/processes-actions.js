@@ -1,6 +1,6 @@
 const {Action} = require('actionhero');
 
-module.exports = class ListProcessesAction extends Action {
+module.exports.ListProcessesAction = class ListProcessesAction extends Action {
     constructor() {
         super();
         this.name = 'listProcesses';
@@ -12,7 +12,7 @@ module.exports = class ListProcessesAction extends Action {
     }
 };
 
-module.exports = class CreateProcessAction extends Action {
+module.exports.CreateProcessAction = class CreateProcessAction extends Action {
     constructor() {
         super();
         this.name = 'createProcess';
@@ -24,7 +24,7 @@ module.exports = class CreateProcessAction extends Action {
     }
 };
 
-module.exports = class GetProcessAction extends Action {
+module.exports.GetProcessAction = class GetProcessAction extends Action {
     constructor() {
         super();
         this.name = 'getProcess';
@@ -36,7 +36,7 @@ module.exports = class GetProcessAction extends Action {
     }
 };
 
-module.exports = class UpdateProcessAction extends Action {
+module.exports.UpdateProcessAction = class UpdateProcessAction extends Action {
     constructor() {
         super();
         this.name = 'updateProcess';
@@ -48,7 +48,7 @@ module.exports = class UpdateProcessAction extends Action {
     }
 };
 
-module.exports = class DeleteProcessAction extends Action {
+module.exports.DeleteProcessAction = class DeleteProcessAction extends Action {
     constructor() {
         super();
         this.name = 'deleteProcess';
@@ -60,7 +60,7 @@ module.exports = class DeleteProcessAction extends Action {
     }
 };
 
-module.exports = class CloneProcessAction extends Action {
+module.exports.CloneProcessAction = class CloneProcessAction extends Action {
     constructor() {
         super();
         this.name = 'CloneProcess';
@@ -72,7 +72,7 @@ module.exports = class CloneProcessAction extends Action {
     }
 };
 
-module.exports = class GetProcessFilesAction extends Action {
+module.exports.GetProcessFilesAction = class GetProcessFilesAction extends Action {
     constructor() {
         super();
         this.name = 'getProcessFiles';

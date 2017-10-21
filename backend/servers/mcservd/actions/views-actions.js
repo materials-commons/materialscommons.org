@@ -1,6 +1,6 @@
 const {Action} = require('actionhero');
 
-module.exports = class ListViewsAction extends Action {
+module.exports.ListViewsAction = class ListViewsAction extends Action {
     constructor() {
         super();
         this.name = 'listViews';
@@ -12,7 +12,7 @@ module.exports = class ListViewsAction extends Action {
     }
 };
 
-module.exports = class CreateViewAction extends Action {
+module.exports.CreateViewAction = class CreateViewAction extends Action {
     constructor() {
         super();
         this.name = 'createView';
@@ -24,7 +24,7 @@ module.exports = class CreateViewAction extends Action {
     }
 };
 
-module.exports = class GetViewAction extends Action {
+module.exports.GetViewAction = class GetViewAction extends Action {
     constructor() {
         super();
         this.name = 'getView';
@@ -36,7 +36,7 @@ module.exports = class GetViewAction extends Action {
     }
 };
 
-module.exports = class UpdateViewAction extends Action {
+module.exports.UpdateViewAction = class UpdateViewAction extends Action {
     constructor() {
         super();
         this.name = 'updateView';
@@ -48,7 +48,7 @@ module.exports = class UpdateViewAction extends Action {
     }
 };
 
-module.exports = class DeleteViewAction extends Action {
+module.exports.DeleteViewAction = class DeleteViewAction extends Action {
     constructor() {
         super();
         this.name = 'deleteView';
@@ -60,7 +60,7 @@ module.exports = class DeleteViewAction extends Action {
     }
 };
 
-module.exports = class CloneViewAction extends Action {
+module.exports.CloneViewAction = class CloneViewAction extends Action {
     constructor() {
         super();
         this.name = 'cloneView';

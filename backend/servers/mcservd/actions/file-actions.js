@@ -1,6 +1,6 @@
 const {Action} = require('actionhero');
 
-module.exports = class CreateFileAction extends Action {
+module.exports.CreateFileAction = class CreateFileAction extends Action {
     constructor() {
         super();
         this.name = 'createFile';
@@ -12,7 +12,7 @@ module.exports = class CreateFileAction extends Action {
     }
 };
 
-module.exports = class GetFileAction extends Action {
+module.exports.GetFileAction = class GetFileAction extends Action {
     constructor() {
         super();
         this.name = 'getFile';
@@ -24,7 +24,7 @@ module.exports = class GetFileAction extends Action {
     }
 };
 
-module.exports = class UpdateFileAction extends Action {
+module.exports.UpdateFileAction = class UpdateFileAction extends Action {
     constructor() {
         super();
         this.name = 'updateFile';
@@ -36,7 +36,7 @@ module.exports = class UpdateFileAction extends Action {
     }
 };
 
-module.exports = class DeleteFileAction extends Action {
+module.exports.DeleteFileAction = class DeleteFileAction extends Action {
     constructor() {
         super();
         this.name = 'deleteFile';
@@ -48,7 +48,7 @@ module.exports = class DeleteFileAction extends Action {
     }
 };
 
-module.exports = class DownloadFileAction extends Action {
+module.exports.DownloadFileAction = class DownloadFileAction extends Action {
     constructor() {
         super();
         this.name = 'downloadFile';
@@ -60,7 +60,7 @@ module.exports = class DownloadFileAction extends Action {
     }
 };
 
-module.exports = class UploadFileAction extends Action {
+module.exports.UploadFileAction = class UploadFileAction extends Action {
     constructor() {
         super();
         this.name = 'uploadFile';
@@ -72,10 +72,10 @@ module.exports = class UploadFileAction extends Action {
     }
 };
 
-module.exports = class UploadFileByIdAction extends Action {
+module.exports.UploadFileForIdAction = class UploadFileForIdAction extends Action {
     constructor() {
         super();
-        this.name = 'File';
+        this.name = 'uploadFileForId';
         this.description = 'Uploads a file to the given file id only if there is not a file already uploaded';
     }
 

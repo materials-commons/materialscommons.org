@@ -1,7 +1,7 @@
 const {Action} = require('actionhero');
 const datasets = require('../model/datasets');
 
-module.exports = class AllPublishedDatasetsAction extends Action {
+module.exports.AllPublishedDatasetsAction = class AllPublishedDatasetsAction extends Action {
     constructor() {
         super();
         this.name = 'allPublishedDatasets';
@@ -13,7 +13,7 @@ module.exports = class AllPublishedDatasetsAction extends Action {
     }
 };
 
-module.exports = class TopViewedPublishedDatasetsAction extends Action {
+module.exports.TopViewedPublishedDatasetsAction = class TopViewedPublishedDatasetsAction extends Action {
     constructor() {
         super();
         this.name = 'topViewedPublishedDatasets';
@@ -25,7 +25,7 @@ module.exports = class TopViewedPublishedDatasetsAction extends Action {
     }
 };
 
-module.exports = class RecentlyPublishedDatasetsAction extends Action {
+module.exports.RecentlyPublishedDatasetsAction = class RecentlyPublishedDatasetsAction extends Action {
     constructor() {
         super();
         this.name = 'recentlyPublishedDatasets';
@@ -37,7 +37,7 @@ module.exports = class RecentlyPublishedDatasetsAction extends Action {
     }
 };
 
-module.exports = class GetPublishedDatasetAction extends Action {
+module.exports.GetPublishedDatasetAction = class GetPublishedDatasetAction extends Action {
     constructor() {
         super();
         this.name = 'getPublishedDataset';

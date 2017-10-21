@@ -1,6 +1,6 @@
 const {Action} = require('actionhero');
 
-module.exports = class ListUsersAction extends Action {
+module.exports.ListUsersAction = class ListUsersAction extends Action {
     constructor() {
         super();
         this.name = 'listUsers';
@@ -12,7 +12,7 @@ module.exports = class ListUsersAction extends Action {
     }
 };
 
-module.exports = class CreateUserAction extends Action {
+module.exports.CreateUserAction = class CreateUserAction extends Action {
     constructor() {
         super();
         this.name = 'createUser';
@@ -24,7 +24,7 @@ module.exports = class CreateUserAction extends Action {
     }
 };
 
-module.exports = class GetUserAction extends Action {
+module.exports.GetUserAction = class GetUserAction extends Action {
     constructor() {
         super();
         this.name = 'getUser';
@@ -36,7 +36,7 @@ module.exports = class GetUserAction extends Action {
     }
 };
 
-module.exports = class UpdateUserAction extends Action {
+module.exports.UpdateUserAction = class UpdateUserAction extends Action {
     constructor() {
         super();
         this.name = 'updateUser';
@@ -48,7 +48,7 @@ module.exports = class UpdateUserAction extends Action {
     }
 };
 
-module.exports = class DeleteUserAction extends Action {
+module.exports.DeleteUserAction = class DeleteUserAction extends Action {
     constructor() {
         super();
         this.name = 'deleteUser';
@@ -60,7 +60,7 @@ module.exports = class DeleteUserAction extends Action {
     }
 };
 
-module.exports = class AuthenticateUserAction extends Action {
+module.exports.AuthenticateUserAction = class AuthenticateUserAction extends Action {
     constructor() {
         super();
         this.name = 'authenticateUser';

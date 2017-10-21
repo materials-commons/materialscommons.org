@@ -1,6 +1,6 @@
 const {Action} = require('actionhero');
 
-module.exports = class ListProjectsAction extends Action {
+module.exports.ListProjectsAction = class ListProjectsAction extends Action {
     constructor() {
         super();
         this.name = 'listProjects';
@@ -12,7 +12,7 @@ module.exports = class ListProjectsAction extends Action {
     }
 };
 
-module.exports = class CreateProjectAction extends Action {
+module.exports.CreateProjectAction = class CreateProjectAction extends Action {
     constructor() {
         super();
         this.name = 'createProject';
@@ -24,7 +24,7 @@ module.exports = class CreateProjectAction extends Action {
     }
 };
 
-module.exports = class GetProjectAction extends Action {
+module.exports.GetProjectAction = class GetProjectAction extends Action {
     constructor() {
         super();
         this.name = 'getProject';
@@ -36,7 +36,7 @@ module.exports = class GetProjectAction extends Action {
     }
 };
 
-module.exports = class UpdateProjectAction extends Action {
+module.exports.UpdateProjectAction = class UpdateProjectAction extends Action {
     constructor() {
         super();
         this.name = 'updateProject';
@@ -48,7 +48,7 @@ module.exports = class UpdateProjectAction extends Action {
     }
 };
 
-module.exports = class DeleteProjectAction extends Action {
+module.exports.DeleteProjectAction = class DeleteProjectAction extends Action {
     constructor() {
         super();
         this.name = 'deleteProject';
@@ -60,7 +60,7 @@ module.exports = class DeleteProjectAction extends Action {
     }
 };
 
-module.exports = class CloneProjectAction extends Action {
+module.exports.CloneProjectAction = class CloneProjectAction extends Action {
     constructor() {
         super();
         this.name = 'cloneProject';
@@ -72,7 +72,7 @@ module.exports = class CloneProjectAction extends Action {
     }
 };
 
-module.exports = class GetProjectViewsAction extends Action {
+module.exports.GetProjectViewsAction = class GetProjectViewsAction extends Action {
     constructor() {
         super();
         this.name = 'getProjectViews';
@@ -84,7 +84,7 @@ module.exports = class GetProjectViewsAction extends Action {
     }
 };
 
-module.exports = class UpdateProjectViewsAction extends Action {
+module.exports.UpdateProjectViewsAction = class UpdateProjectViewsAction extends Action {
     constructor() {
         super();
         this.name = 'updateProjectViews';

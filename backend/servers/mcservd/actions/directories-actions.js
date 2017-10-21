@@ -1,6 +1,6 @@
 const {Action} = require('actionhero');
 
-module.exports = class ListDirectoriesAction extends Action {
+module.exports.ListDirectoriesAction = class ListDirectoriesAction extends Action {
     constructor() {
         super();
         this.name = 'listDirectories';
@@ -12,7 +12,7 @@ module.exports = class ListDirectoriesAction extends Action {
     }
 };
 
-module.exports = class CreateDirectoryAction extends Action {
+module.exports.CreateDirectoryAction = class CreateDirectoryAction extends Action {
     constructor() {
         super();
         this.name = 'createDirectory';
@@ -24,7 +24,7 @@ module.exports = class CreateDirectoryAction extends Action {
     }
 };
 
-module.exports = class GetDirectoryAction extends Action {
+module.exports.GetDirectoryAction = class GetDirectoryAction extends Action {
     constructor() {
         super();
         this.name = 'getDirectory';
@@ -36,7 +36,7 @@ module.exports = class GetDirectoryAction extends Action {
     }
 };
 
-module.exports = class UpdateDirectoryAction extends Action {
+module.exports.UpdateDirectoryAction = class UpdateDirectoryAction extends Action {
     constructor() {
         super();
         this.name = 'updateDirectory';
@@ -48,7 +48,7 @@ module.exports = class UpdateDirectoryAction extends Action {
     }
 };
 
-module.exports = class DeleteDirectoryAction extends Action {
+module.exports.DeleteDirectoryAction = class DeleteDirectoryAction extends Action {
     constructor() {
         super();
         this.name = 'deleteDirectory';

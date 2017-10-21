@@ -1,6 +1,6 @@
 const {Action} = require('actionhero');
 
-module.exports = class ListSamplesAction extends Action {
+module.exports.ListSamplesAction = class ListSamplesAction extends Action {
     constructor() {
         super();
         this.name = 'listSamples';
@@ -12,7 +12,7 @@ module.exports = class ListSamplesAction extends Action {
     }
 };
 
-module.exports = class CreateSampleAction extends Action {
+module.exports.CreateSampleAction = class CreateSampleAction extends Action {
     constructor() {
         super();
         this.name = 'createSample';
@@ -24,7 +24,7 @@ module.exports = class CreateSampleAction extends Action {
     }
 };
 
-module.exports = class GetSampleAction extends Action {
+module.exports.GetSampleAction = class GetSampleAction extends Action {
     constructor() {
         super();
         this.name = 'getSample';
@@ -36,7 +36,7 @@ module.exports = class GetSampleAction extends Action {
     }
 };
 
-module.exports = class UpdateSampleAction extends Action {
+module.exports.UpdateSampleAction = class UpdateSampleAction extends Action {
     constructor() {
         super();
         this.name = 'updateSample';
@@ -48,7 +48,7 @@ module.exports = class UpdateSampleAction extends Action {
     }
 };
 
-module.exports = class DeleteSampleAction extends Action {
+module.exports.DeleteSampleAction = class DeleteSampleAction extends Action {
     constructor() {
         super();
         this.name = 'deleteSample';
@@ -60,7 +60,7 @@ module.exports = class DeleteSampleAction extends Action {
     }
 };
 
-module.exports = class CloneSampleAction extends Action {
+module.exports.CloneSampleAction = class CloneSampleAction extends Action {
     constructor() {
         super();
         this.name = 'cloneSample';
@@ -72,7 +72,7 @@ module.exports = class CloneSampleAction extends Action {
     }
 };
 
-module.exports = class GetSampleFilesAction extends Action {
+module.exports.GetSampleFilesAction = class GetSampleFilesAction extends Action {
     constructor() {
         super();
         this.name = 'getSampleFiles';

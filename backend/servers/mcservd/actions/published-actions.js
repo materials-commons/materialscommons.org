@@ -1,6 +1,6 @@
 const {Action} = require('actionhero');
 
-module.exports = class ListPublishedAction extends Action {
+module.exports.ListPublishedAction = class ListPublishedAction extends Action {
     constructor() {
         super();
         this.name = 'listPublished';
@@ -12,7 +12,7 @@ module.exports = class ListPublishedAction extends Action {
     }
 };
 
-module.exports = class ListPublishedProjectsAction extends Action {
+module.exports.ListPublishedProjectsAction = class ListPublishedProjectsAction extends Action {
     constructor() {
         super();
         this.name = 'listPublishedProjects';
@@ -24,7 +24,7 @@ module.exports = class ListPublishedProjectsAction extends Action {
     }
 };
 
-module.exports = class GetPublishedProjectAction extends Action {
+module.exports.GetPublishedProjectAction = class GetPublishedProjectAction extends Action {
     constructor() {
         super();
         this.name = 'getPublishedProject';
@@ -36,7 +36,7 @@ module.exports = class GetPublishedProjectAction extends Action {
     }
 };
 
-module.exports = class ListPublishedProjectViewsAction extends Action {
+module.exports.ListPublishedProjectViewsAction = class ListPublishedProjectViewsAction extends Action {
     constructor() {
         super();
         this.name = 'listPublishedProjectViews';
@@ -48,7 +48,7 @@ module.exports = class ListPublishedProjectViewsAction extends Action {
     }
 };
 
-module.exports = class GetPublishedProjectViewAction extends Action {
+module.exports.GetPublishedProjectViewAction = class GetPublishedProjectViewAction extends Action {
     constructor() {
         super();
         this.name = 'getPublishedProjectView';
@@ -60,7 +60,7 @@ module.exports = class GetPublishedProjectViewAction extends Action {
     }
 };
 
-module.exports = class ListPublishedViewsAction extends Action {
+module.exports.ListPublishedViewsAction = class ListPublishedViewsAction extends Action {
     constructor() {
         super();
         this.name = 'listPublishedViews';
@@ -72,7 +72,7 @@ module.exports = class ListPublishedViewsAction extends Action {
     }
 };
 
-module.exports = class GetPublishedViewAction extends Action {
+module.exports.GetPublishedViewAction = class GetPublishedViewAction extends Action {
     constructor() {
         super();
         this.name = 'getPublishedView';
