@@ -2,7 +2,7 @@
 
 shift
 > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE}
-MAX_RETRIES=20
+MAX_RETRIES=200
 CURRENT_RETRY=0
 if [ "${SERVERTYPE}" = "unit" ]; then
     MAX_RETRIES=3
