@@ -3,6 +3,7 @@ const fsa = Promise.promisifyAll(require("fs"));
 const rimraf = require('rimraf');
 const achiver = require('archiver');
 const r = require('./r');
+const path = require('path');
 
 const zipFileUtils = require('../../../servers/lib/zipFileUtils');
 
@@ -31,7 +32,7 @@ function* publishDatasetZipFile(r, datasetId) {
 
         if (!ds2dfEntries.length) {
             console.log('no datafiles, no zip for id = ' + datasetId);
-            return new Promise(function (resolve, reject) {
+            return new Promise(function(resolve, reject) {
                 resolve()
             });
         }
@@ -47,9 +48,9 @@ function* publishDatasetZipFile(r, datasetId) {
                 }
             });
         let nameSourceList = [];
-        var seenThisOne = {};
+        const seenThisOne = {};
 
-        for (var i = 0; i < datafiles.length; i++) {
+        for (let i = 0; i < datafiles.length; i++) {
             let df = datafiles[i];
 
             let zipEntry = zipFileUtils.zipEntry(df); // sets fileName, checksum, filePath, sourcePath
@@ -62,7 +63,7 @@ function* publishDatasetZipFile(r, datasetId) {
                 console.log('name = ', name);
                 console.log('filePath = ', filePath);
                 console.log('sourcePath = ', path);
-                console.log('name = ',name);
+                console.log('name = ', name);
             }
 
             let checksum = zipEntry.checksum;
@@ -79,26 +80,26 @@ function* publishDatasetZipFile(r, datasetId) {
 
         console.log("For id = " + datasetId + ", there are " + nameSourceList.length + " files");
 
-        var output = fsa.createWriteStream(fillPathAndFilename);
+        let output = fsa.createWriteStream(fillPathAndFilename);
 
-        let retP = new Promise(function (resolve, reject) {
-            var archive = achiver('zip');
+        let retP = new Promise(function(resolve, reject) {
+            let archive = achiver('zip');
 
-            output.on('close', function () {
+            output.on('close', function() {
                 let zipfileSize = archive.pointer();
                 if (verbose) {
                     console.log('for dataset: ' + datasetId + " with " + zipfileSize + ' total bytes');
                 }
                 let zip = {size: zipfileSize, filename: zipFileName};
                 r.db('materialscommons').table('datasets').get(datasetId).update({zip: zip}).then(() => {
-                    console.log("Dataset zipfile set:", zipFileName,"Process done.")
+                    console.log("Dataset zipfile set:", zipFileName, "Process done.");
                     resolve();
                 });
             });
 
             archive.on('error', reject);
 
-            archive.on('close', function () {
+            archive.on('close', function() {
                 console.log('archive close');
             });
 
@@ -155,8 +156,8 @@ function resolveZipfileFilenameDuplicates(seenThisOne, name, checksum) {
     }
 
     if (name in seenThisOne) {
-        var count = 0;
-        if (seenThisOne[name] == checksum) {
+        let count = 0;
+        if (seenThisOne[name] === checksum) {
             if (verbose) {
                 console.log("Seen this file before: " + name);
             }
@@ -184,16 +185,16 @@ function resolveZipfileFilenameUnique(name, count) {
 
 function build_zip_file(datasetId, options) {
     if (is_verbose_muted(options)) verbose = false;
-    Promise.coroutine(publishDatasetZipFile)(r,datasetId);
+    Promise.coroutine(publishDatasetZipFile)(r, datasetId);
 }
 
-function remove_zip_file(datasetId, options){
+function remove_zip_file(datasetId, options) {
     if (is_verbose_muted(options)) verbose = false;
-    Promise.coroutine(unpublishDatasetZipFile)(r,datasetId);
+    Promise.coroutine(unpublishDatasetZipFile)(r, datasetId);
 }
 
 function is_verbose_muted(options) {
-    return (options && (options.verbose == false));
+    return (options && (options.verbose === false));
 }
 
 module.exports = {
