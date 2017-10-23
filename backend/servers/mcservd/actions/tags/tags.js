@@ -8,6 +8,6 @@ module.exports = class HelloSubdirAction extends Action {
     }
 
     async run({response}) {
-        response.hellosubdir = {msg: 'hellosubdir'};
+        response.val = {msg: 'hellosubdir'};
     }
 };
