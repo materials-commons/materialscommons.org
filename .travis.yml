@@ -5,7 +5,10 @@ node_js:
 notifications:
   email:
     recipients:
-      weymouth@umich.edu
+        - weymouth@umich.edu
+        - gtarcea@umich.edu
+    on_success: change
+    on_failure: always
 
 # blocklist - branches not used for testing: any branch starting with 'spike'
 branches:
@@ -23,7 +26,7 @@ env:
     - MC_SERVICE_PORT=5002
     - MC_API_SERVICE_PORT=5004
     - MC_PUB_SERVICE_PORT=5026
-    - MCDB_PORT=30815
+    - MCDB_PORT=40815
     - MCDB_CONNECTION="localhost:$MCDB_PORT"
     - MCDIR=~/file_data
     - MCDB_DIR=~/testdb
@@ -42,11 +45,15 @@ env:
     - MC_DOI_NAMESPACE='doi:10.5072/FK2'
 
 before_install:
+  - pyenv versions
+  - pyenv global '2.7.13'
+  - python --version
   - export MC_APP_DIR=`pwd`
-    # RethinkDB
+  # RethinkDB
   - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
-  - wget -qO- https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
-    # Yarn
+  # or --no-check-certificate for wget
+  - curl -k https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
+  # Yarn
   - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   - sudo apt-get update
@@ -54,17 +61,15 @@ before_install:
 install:
   - sudo apt-get install nginx
   - sudo apt-get install rethinkdb
-  - sudo apt-get install yarn
 
   - node --version
 
-  # Note: using yarn because it is more robust to network problems then npm install
-  - yarn install
+  - pip install rethinkdb
+  - pip install Flask
+  - pip install pytest
+  - pip install pbkdf2
 
-  - sudo pip install rethinkdb
-  - sudo pip install Flask
-  - sudo pip install pytest
-  - sudo pip install pbkdf2
+  - pip list
 
   - npm install -g node-gyp@3.5.0
   - npm install -g gulp-cli
@@ -72,22 +77,17 @@ install:
 
   - pushd ~
   - mkdir .materialscommons
-  - sudo mkdir -p /etc/nginx/conf.d
+  - popd
 
-  - git clone --depth=50 --branch=sprint https://github.com/materials-commons/mcapi.git
-  - cd mcapi/python
-  - export MC_PYTHON_API_DIR=`pwd`
-  - sudo pip install -r requirements.txt
-  - sudo python setup.py install
-
-  # Note: github does not store or recover empty directories
-  #       this is needed for testing - creating empty dir
-  - mkdir -p test/test_data/test_upload_data/test_upload_dir/sub_directory_c/empty_dir
-  - cd test/test_data/test_config_data
+  - pushd test_data/test_config_data
   - cp travisconfig.json ~/.materialscommons/config.json
+  - sudo mkdir -p /etc/nginx/conf.d
   - sudo cp mctest.localhost.conf /etc/nginx/conf.d/
   - popd
-  - pwd
+
+  - pushd backend
+  - npm install
+  - popd
 
 before_script:
   # - sudo nginx
@@ -95,18 +95,8 @@ before_script:
   - sudo nginx -s reload
   - rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon
   - sleep 5
-  - ls $MCDB_FILE
-  - rethinkdb restore $MCDB_FILE --connect $MCDB_CONNECTION --force
-  - cd $MC_APP_DIR
-  - pushd backend/scripts/templates/
-  - ./run.sh
-  - popd
-  - pushd backend
-  - gulp build-mcapi-server
-  - sleep 5
-  - node sbin/mcapi/mcapi.js -p $MCAPI_SERVER_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
-  - sleep 5
-  - popd
+
+  - cd backend
 
 script:
-  - npm run-script test-no-html
+  - npm test

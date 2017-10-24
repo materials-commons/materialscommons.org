@@ -23,7 +23,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if options.experiment_id is None:
-        print "YOu must supply an experiment id"
+        print "You must supply an experiment id"
         sys.exit(1)
 
     if options.port is None:

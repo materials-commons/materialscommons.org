@@ -7,7 +7,7 @@
                                          processes="$ctrl.processes"
                                          highlight-processes="$ctrl.highlightProcesses">
             </mc-processes-workflow-graph>
-            <mc-processes-workflow-outline ng-show="!$ctrl.showGraphView"
+            <mc-processes-workflow-outline ng-if="!$ctrl.showGraphView"
                                            highlight-processes="$ctrl.highlightProcesses"
                                            dataset="$ctrl.dataset"
                                            processes="$ctrl.processes">

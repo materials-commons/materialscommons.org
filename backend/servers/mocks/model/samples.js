@@ -36,7 +36,7 @@ function create(sample) {
 function update(id, fields) {
     'use strict';
     return promise.resolve().then(function() {
-        let index = _.indexOf(samples, function(sample) {
+        let index = _.findIndex(samples, function(sample) {
             return sample.id == id;
         });
         if (index === -1) {
@@ -107,7 +107,7 @@ function getMeasurements(sampleID, measurements) {
                 // list of measurements we were passed. If we find a
                 // match append the measurement to measures.
                 attr.measurements.forEach(function(m) {
-                    let index = _.indexOf(measurements, function(id) {
+                    let index = _.findIndex(measurements, function(id) {
                         return id === m.id;
                     });
                     if (index !== -1) {
@@ -133,7 +133,7 @@ function getAttributesFromAS(asetID, attrs) {
         // is then append it to attributes.
         matches.forEach(function(attrSet) {
             attrSet.attributes.forEach(function(attr) {
-                let index = _.indexOf(attrs, function(id) {
+                let index = _.findIndex(attrs, function(id) {
                     return id === attr.id;
                 });
                 if (index !== -1) {

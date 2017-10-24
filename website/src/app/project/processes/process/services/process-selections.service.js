@@ -1,10 +1,11 @@
 angular.module('materialscommons').factory('processSelections', processSelectionsService);
 
-function processSelectionsService(selectItems, differenceById, mcstate) {
+function processSelectionsService(selectItems, differenceById, mcprojstore) {
     'ngInject';
     return {
         selectSamples: function (processSamples) {
-            let projectId = mcstate.get(mcstate.CURRENT$PROJECT).id;
+            let proj = mcprojstore.currentProject,
+                projectId = proj.id;
             selectItems.samplesFromProject(projectId).then(function (item) {
                 const uniqueSamples = differenceById(item.samples, processSamples);
                 uniqueSamples.forEach(function (sample) {
@@ -21,7 +22,8 @@ function processSelectionsService(selectItems, differenceById, mcstate) {
         },
 
         selectUpdatedSamples: function (processSamples, updatedSamples) {
-            let projectId = mcstate.get(mcstate.CURRENT$PROJECT).id;
+            let proj = mcprojstore.currentProject,
+                projectId = proj.id;
             selectItems.samples(projectId).then(function (item) {
                 const uniqueSamples = differenceById(item.samples, processSamples);
                 uniqueSamples.forEach(function (sample) {

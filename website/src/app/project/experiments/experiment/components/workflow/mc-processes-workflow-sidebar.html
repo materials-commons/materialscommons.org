@@ -12,6 +12,12 @@
             <span><i class="fa fa-fw fa-pencil-square"></i>build</span>
         </md-tab-label>
         <md-tab-body>
+            <div class="margin-top-30">
+                <input ng-model="$ctrl.query" ng-model-options="{debounce:200}"
+                       flex="30"
+                       placeholder="Search templates..." type="text"
+                       class="mc-input-as-line margin-left-15 md-subhead">
+            </div>
             <md-table-container>
                 <table md-table>
                     <thead md-head>
@@ -20,7 +26,8 @@
                         <th md-column>Add?</th>
                     </tr>
                     </thead>
-                    <tr md-row class="md-row-hover" ng-repeat="template in $ctrl.templates | orderBy:'name'">
+                    <tr md-row class="md-row-hover"
+                        ng-repeat="template in $ctrl.templates | filter:$ctrl.query | orderBy:'name'">
                         <td md-cell>{{template.name}}</td>
                         <td md-cell><a ng-click="$ctrl.addToGraph(template)"><i class="fa fa-fw fa-plus"></i>ADD</a>
                         </td>
@@ -39,7 +46,7 @@
         <md-tab-label>
             <span><i class="fa fa-fw fa-gears"></i>details</span>
         </md-tab-label>
-        <md-tab-body>
+        <md-tab-body ng-if="$ctrl.currentTab === 2">
             <div ng-show="!$ctrl.selectedProcess">
                 No process selected
             </div>
@@ -66,8 +73,7 @@
                     </div>
 
                     <mc-process-template ng-if="$ctrl.selectedProcess"
-                                         process="$ctrl.selectedProcess"
-                                         on-change="$ctrl.onChange()">
+                                         process="$ctrl.selectedProcess">
                     </mc-process-template>
                 </md-content>
             </div>

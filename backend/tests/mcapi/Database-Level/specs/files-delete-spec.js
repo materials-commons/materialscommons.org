@@ -1,6 +1,6 @@
 'use strict';
 require('mocha');
-import {it} from 'mocha';
+const it = require('mocha').it;
 require('co-mocha');
 const chai = require('chai');
 const assert = require('chai').assert;

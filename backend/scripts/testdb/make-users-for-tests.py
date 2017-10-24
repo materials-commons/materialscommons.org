@@ -5,14 +5,13 @@ from optparse import OptionParser
 from pbkdf2 import crypt
 import uuid
 import sys
-import os
 
 
 class User(object):
-    def __init__(self, name, email, password, apikey, admin, tadmin):
+    def __init__(self, name, fullname, email, password, apikey, admin, tadmin):
         self.name = name
         self.email = email
-        self.fullname = name
+        self.fullname = fullname
         self.password = password
         self.id = email
         self.apikey = apikey
@@ -38,17 +37,17 @@ def make_password_hash(password):
     return crypt(password, salt, iterations=4000)
 
 
-def make_user(r, part_name, pw, key, admin, tadmin):
+def make_user(r, part_name, full_name, pw, key, admin, tadmin):
     pwhash = make_password_hash(pw)
     email = part_name + "@test.mc"
     apikey = key
     if (not apikey):
         apikey = uuid.uuid1().hex
-    u = User(email, email, pwhash, apikey, admin, tadmin)
+    u = User(email, full_name, email, pwhash, apikey, admin, tadmin)
     r.table('users').insert(u.__dict__).run(conn)
 
-    print "Addred user: " + email + " with password: " + pw + ", apikey: " + apikey\
-        + ", admin: " + str(admin) + ", tadmin: " + str(tadmin)
+    print("Addred user: " + email + " with password: " + pw + ", apikey: " + apikey
+        + ", admin: " + str(admin) + ", tadmin: " + str(tadmin))
 
 
 if __name__ == "__main__":
@@ -61,22 +60,13 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
     if options.password is None:
-        print "You must specify a password"
+        print("You must specify a password")
         sys.exit(1)
-
-    if options.port is None:
-        options.port = 28015
 
     conn = r.connect('localhost', options.port, db='materialscommons')
 
-    make_user(r, "admin", options.password, None, True, False)
-    make_user(r, "test", options.password, "totally-bogus", False, False)
-    make_user(r, "another", options.password, "another-bogus-account", False, False)
-    make_user(r, "tadmin", options.password, None, False, True)
-
-    apiport = 5002
-    if options.port == 28015:
-        apiport = 5000
-    cmd = "mcapihup.sh %d" % (apiport)
-    os.system(cmd)
+    make_user(r, "admin", "Test Admin", options.password, None, True, False)
+    make_user(r, "test", "Test User One", options.password, "totally-bogus", False, False)
+    make_user(r, "another", "Test User Two", options.password, "another-bogus-account", False, False)
+    make_user(r, "tadmin", "Test Template Admin", options.password, None, False, True)
 

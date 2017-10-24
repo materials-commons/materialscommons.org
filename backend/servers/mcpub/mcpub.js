@@ -59,11 +59,10 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 if (!module.parent) {
-    const cli = cliArgs([
+    const optionsDef = [
         {name: 'port', type: Number, alias: 'p', description: 'Port to listen on'}
-    ]);
-
-    const options = cli.parse();
+    ];
+    const options = cliArgs(optionsDef);
     const port = options.port || 5006;
     console.log('MCPUB listening on port: ' + port + ' pid: ' + process.pid);
     app.listen(port);

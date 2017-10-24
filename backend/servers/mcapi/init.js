@@ -4,18 +4,18 @@ module.exports = function() {
     let _ = require('lodash');
     var self = {};
 
-    // extendedIndexOf extends the lodash indexOf implementation to support
+    // extendedFindIndex extends the lodash findIndex implementation to support
     // passing a function to check for equality.
-    function extendedIndexOf(array, test) {
+    function extendedFindIndex(array, test) {
 
         // save a reference to the core implementation
-        self.indexOfValue = _.indexOf;
-        return indexOf;
+        self.findIndexValue = _.findIndex;
+        return findIndex;
 
         /////
-        function indexOf(array, test) {
-            // delegate to standard indexOf if the test isn't a function
-            if (!_.isFunction(test)) { return self.indexOfValue(array, test); }
+        function findIndex(array, test) {
+            // delegate to standard findIndex if the test isn't a function
+            if (!_.isFunction(test)) { return self.findIndexValue(array, test); }
             // otherwise, look for the index
             for (var x = 0; x < array.length; x++) {
                 if (test(array[x])) { return x; }
@@ -25,11 +25,11 @@ module.exports = function() {
         }
     }
 
-    // indexOfWhen will apply the function fn to the result if
+    // findIndexWhen will apply the function fn to the result if
     // a match is found and return true. If no match is found
     // it will return false;
     function when(array, test, fn) {
-        var index = _.indexOf(array, test);
+        var index = _.findIndex(array, test);
         if (index !== -1) {
             fn(array[index]);
             return true;
@@ -39,10 +39,10 @@ module.exports = function() {
     }
 
     // using .mixin allows both wrapped and unwrapped calls:
-    // _(array).indexOf(...) and _.indexOf(array, ...)
+    // _(array).findIndex(...) and _.findIndex(array, ...)
     _.mixin({
         // return the index of the first array element passing a test
-        indexOf: extendedIndexOf(),
+        findIndex: extendedFindIndex(),
         when: when
     });
 };

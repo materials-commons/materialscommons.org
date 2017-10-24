@@ -52,9 +52,9 @@ function* download(next) {
                 id = file.usesid;
             }
             let size = file.size;
-            this.set('ContentType',contentType);
+            this.set('Content-Type',contentType);
             this.set('Content-Disposition', 'attachment; filename=' + filename);
-            this.set('ContentLength',size);
+            this.set('Content-Length',size);
 
             let filepath = fileUtils.datafilePath(id);
 

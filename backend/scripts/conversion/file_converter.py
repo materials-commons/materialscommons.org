@@ -154,6 +154,8 @@ if __name__ == "__main__":
     parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
     parser.add_option("-m", "--mcdir", dest="mcdir", type="string", help="mcdir path", default="/mcfs/data/test")
     (options, args) = parser.parse_args()
+    print "RethinkDB port = " + str(options.port)
+    print "MCDIR = " + options.mcdir
     conn = r.connect('localhost', options.port, db="materialscommons")
     mcdirpaths = options.mcdir.split(":")
     fix_mediatypes(conn)

@@ -3,30 +3,38 @@ import {Experiment} from '../experiments/experiment/components/tasks/experiment.
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, mcstate, experimentsAPI, toast, $state, $stateParams, projectsAPI, editorOpts, $mdDialog) {
+    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, projectsAPI, mcprojstore) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
         this.$state = $state;
-        this.projectsAPI = projectsAPI;
         this.$mdDialog = $mdDialog;
-
-        this.project = mcstate.get(mcstate.CURRENT$PROJECT);
-        this.projectLoaded = true;
         this.experimentType = 'active';
         this.experiments = [];
-        this.projectOverview = this.project.overview;
-
+        this.mergingExperiments = false;
+        this.deletingExperiments = false;
+        this.selectingExperiments = false;
+        this.mcprojstore = mcprojstore;
+        this.projectsAPI = projectsAPI;
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
 
     $onInit() {
-        this.experimentsAPI.getAllForProject(this.$stateParams.project_id).then(
-            (experiments) => {
-                this.experiments = experiments;
-            },
-            () => this.toast.error('Unable to retrieve experiments for project')
-        );
+        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVUPDATE, () => {
+            this._reloadComponentState();
+        });
+        this._reloadComponentState();
+    }
+
+    $onDestroy() {
+        this.unsubscribe();
+    }
+
+    getProjectExperiments() {
+        this.experiments = _.values(this.project.experiments).map(e => {
+            e.selected = false;
+            return e;
+        });
     }
 
     updateProjectOverview() {
@@ -40,14 +48,35 @@ class MCProjectHomeComponentController {
 
         this.projectsAPI.updateProject(this.$stateParams.project_id, {overview: this.project.overview})
             .then(
-                () => this.projectOverview = this.project.overview,
+                () => {
+                    this.projectOverview = this.project.overview;
+                    this.mcprojstore.updateCurrentProject(currentProj => {
+                        currentProj.overview = this.project.overview;
+                        return currentProj;
+                    });
+                },
                 () => this.toast.error('Unable to update project overview')
             );
     }
 
+    _reloadComponentState() {
+        this.project = this.mcprojstore.getProject(this.$stateParams.project_id);
+        this.projectOverview = this.project.overview;
+        let experimentsList = _.values(this.project.experiments);
+        this.activeExperimentsCount = experimentsList.filter(e => e.status === 'active').length;
+        this.onholdExperimentsCount = experimentsList.filter(e => e.status === 'on-hold').length;
+        this.doneExperimentsCount = experimentsList.filter(e => e.status === 'done').length;
+        this.getProjectExperiments();
+    }
+
     updateProjectDescription() {
         this.projectsAPI.updateProject(this.$stateParams.project_id, {description: this.project.description}).then(
-            () => null,
+            () => {
+                this.mcprojstore.updateCurrentProject(currentProj => {
+                    currentProj.description = this.project.description;
+                    return currentProj;
+                });
+            },
             () => this.toast.error('Unable to update project description')
         );
     }
@@ -63,6 +92,83 @@ class MCProjectHomeComponentController {
                 this.$state.go('project.experiment.details', {experiment_id: e.id});
             }
         );
+    }
+
+    startExperimentsMerge() {
+        this.mergingExperiments = true;
+        this.selectingExperiments = true;
+    }
+
+    finishExperimentsMerge() {
+        let selected = this.experiments.filter(e => e.selected);
+        if (selected.length < 2) {
+            return;
+        }
+        this.$mdDialog.show({
+            templateUrl: 'app/project/home/merge-experiments-dialog.html',
+            controller: MergeExperimentsDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                experiments: selected,
+                projectId: this.project.id
+            }
+        }).then(
+            () => {
+                this.cancelMerge();
+                this._reloadComponentState();
+            },
+            () => this.cancelMerge()
+        );
+    }
+
+    cancelMerge() {
+        this.mergingExperiments = false;
+        this.experiments.forEach(e => e.selected = false);
+        this.selectingExperiments = false;
+    }
+
+    startExperimentsDelete() {
+        this.deletingExperiments = true;
+        this.selectingExperiments = true;
+    }
+
+    finishExperimentsDelete() {
+        let selected = this.experiments.filter(e => e.selected);
+        if (!selected.length) {
+            return;
+        }
+
+        this.$mdDialog.show({
+            templateUrl: 'app/project/home/delete-experiments-dialog.html',
+            controller: DeleteExperimentsDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                experiments: selected,
+                projectId: this.project.id
+            }
+        }).then(
+            () => {
+                this.clearDelete();
+                this._reloadComponentState();
+            },
+            () => {
+                this.clearDelete();
+            }
+        );
+    }
+
+    clearDelete() {
+        this.deletingExperiments = false;
+        this.experiments.forEach(e => e.selected = false);
+        this.selectingExperiments = false;
+    }
+
+    gotoWorkflow(e) {
+        if (!this.selectingExperiments) {
+            this.$state.go("project.experiment.workflow", {experiment_id: e.id});
+        }
     }
 
     renameProject() {
@@ -84,13 +190,14 @@ class MCProjectHomeComponentController {
 
 class CreateNewExperimentDialogController {
     /*@ngInject*/
-    constructor($mdDialog, experimentsAPI, $stateParams, toast) {
+    constructor($mdDialog, experimentsAPI, $stateParams, toast, mcprojstore) {
         this.$mdDialog = $mdDialog;
         this.name = '';
         this.description = '';
         this.projectID = $stateParams.project_id;
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
+        this.mcprojstore = mcprojstore;
     }
 
     submit() {
@@ -102,7 +209,14 @@ class CreateNewExperimentDialogController {
         e.description = this.description;
         this.experimentsAPI.createForProject(this.projectID, e)
             .then(
-                (createdExperiment) => this.$mdDialog.hide(createdExperiment),
+                (createdExperiment) => {
+                    this.mcprojstore.addExperiment(createdExperiment).then(
+                        () => {
+                            this.mcprojstore.currentExperiment = createdExperiment;
+                            this.$mdDialog.hide(createdExperiment);
+                        }
+                    );
+                },
                 () => this.toast.error('create experiment failed')
             );
     }
@@ -114,20 +228,84 @@ class CreateNewExperimentDialogController {
 
 class RenameProjectDialogController {
     /*@ngInject*/
-    constructor($mdDialog, projectsAPI, toast) {
+    constructor($mdDialog, projectsAPI, toast, mcprojstore) {
         this.$mdDialog = $mdDialog;
         this.projectsAPI = projectsAPI;
         this.toast = toast;
+        this.mcprojstore = mcprojstore;
         this.newProjectName = '';
     }
 
     done() {
         this.projectsAPI.updateProject(this.project.id, {name: this.newProjectName}).then(
-            () => this.$mdDialog.hide(this.newProjectName),
+            () => {
+                this.mcprojstore.updateCurrentProject((currentProject) => {
+                    currentProject.name = this.newProjectName;
+                    return currentProject;
+                });
+                this.$mdDialog.hide(this.newProjectName);
+            },
             () => {
                 this.toast.error('Failed to rename project');
                 this.$mdDialog.cancel();
             }
+        );
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class MergeExperimentsDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, experimentsAPI, mcprojstore) {
+        this.$mdDialog = $mdDialog;
+        this.experimentsAPI = experimentsAPI;
+        this.mcprojstore = mcprojstore;
+        this.experimentName = '';
+        this.experimentDescription = '';
+    }
+
+    done() {
+        let experimentIds = this.experiments.map(e => e.id);
+        this.experimentsAPI.mergeExperiments(this.projectId, experimentIds, {
+            name: this.experimentName,
+            description: this.experimentDescription
+        }).then(
+            (e) => {
+                this.mcprojstore.addExperiment(e).then(
+                    () => this.$mdDialog.hide(e)
+                );
+            },
+            () => this.$mdDialog.cancel()
+        );
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class DeleteExperimentsDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, experimentsAPI, mcprojstore) {
+        this.$mdDialog = $mdDialog;
+        this.experimentsAPI = experimentsAPI;
+        this.experimentName = '';
+        this.experimentDescription = '';
+        this.mcprojstore = mcprojstore;
+    }
+
+    done() {
+        let experimentIds = this.experiments.map(e => e.id);
+        this.experimentsAPI.deleteExperiments(this.projectId, experimentIds).then(
+            () => {
+                this.mcprojstore.removeExperiments(...this.experiments).then(
+                    () => this.$mdDialog.hide()
+                );
+            },
+            () => this.$mdDialog.cancel()
         );
     }
 

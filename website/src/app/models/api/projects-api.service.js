@@ -1,104 +1,81 @@
 /*@ngInject*/
 function projectsAPIService(Restangular) {
-    let onChangeFn = null;
     const projectsAPIRoute = _.partial(Restangular.one('v2').one, 'projects');
 
     return {
 
         getAllProjects: function() {
-            return projectsAPIRoute().getList();
+            return projectsAPIRoute().getList().then(projects => projects.plain());
+        },
+
+        deleteProject: function (projectId) {
+            return projectsAPIRoute(projectId).customDELETE().then(rv => rv.plain());
         },
 
         getProject: function(projectId) {
-            return projectsAPIRoute(projectId).get();
+            return projectsAPIRoute(projectId).get().then(p => p.plain());
         },
 
         createProject: function(projectName, projectDescription) {
             return Restangular.one('v2').one('projects').customPOST({
                 name: projectName,
                 description: projectDescription
-            }).then(function(p) {
-                if (onChangeFn) {
-                    onChangeFn(p);
-                }
-                return p;
-            })
+            }).then(p => p.plain());
         },
 
         getProjectSamples: function(projectID) {
-            return projectsAPIRoute(projectID).one('samples').getList();
+            return projectsAPIRoute(projectID).one('samples').getList().then(samples => samples.plain());
         },
 
         getProjectSample: function(projectID, sampleID) {
             return Restangular.one('sample').one('details', sampleID).get()
                 .then(function(samples) {
-                    return samples[0];
+                    let s = samples.plain();
+                    return s[0];
                 });
         },
 
         getProjectProcesses: function(projectID) {
-            return projectsAPIRoute(projectID).one('processes').getList();
+            return projectsAPIRoute(projectID).one('processes').getList().then(processes => processes.plain());
         },
 
         getProjectProcess: function(projectId, processId) {
-            return projectsAPIRoute(projectId).one('processes', processId).get();
+            return projectsAPIRoute(projectId).one('processes', processId).get().then(process => process.plain());
         },
 
         updateProjectProcess: function(projectID, process) {
-            return projectsAPIRoute(projectID).one('processes', process.id).customPUT(process).then(function(p) {
-                if (onChangeFn) {
-                    onChangeFn(p);
-                }
-                return p;
-            });
+            return projectsAPIRoute(projectID).one('processes', process.id).customPUT(process).then(p => p.plain());
         },
 
         updateProject: function(projectID, projectAttrs) {
-            return projectsAPIRoute(projectID).customPUT(projectAttrs);
+            return projectsAPIRoute(projectID).customPUT(projectAttrs).then(p => p.plain());
         },
 
         createProjectProcess: function(projectID, process) {
-            return projectsAPIRoute(projectID).one('processes').customPOST(process).then(function(p) {
-                if (onChangeFn) {
-                    onChangeFn(p);
-                }
-                return p;
-            });
+            return projectsAPIRoute(projectID).one('processes').customPOST(process).then(p => p.plain());
         },
 
         getProjectDirectory: function(projectID, dirID) {
             if (!dirID) {
-                return projectsAPIRoute(projectID).one('directories').get();
+                return projectsAPIRoute(projectID).one('directories').get().then(d => d.plain());
             } else {
-                return projectsAPIRoute(projectID).one('directories', dirID).get();
+                return projectsAPIRoute(projectID).one('directories', dirID).get().then(d => d.plain());
             }
         },
 
         getAllProjectDirectories: function(projectId) {
-            return projectsAPIRoute(projectId).one('directories', 'all').getList();
+            return projectsAPIRoute(projectId).one('directories', 'all').getList().then(dirs => dirs.plain());
         },
 
         createProjectDir: function(projectID, fromDirID, path) {
             return projectsAPIRoute(projectID).one('directories').customPOST({
                 from_dir: fromDirID,
                 path: path
-            }).then(function(dirs) {
-                if (onChangeFn) {
-                    onChangeFn(fromDirID, dirs);
-                }
-                return dirs;
-            });
+            }).then(dirs => dirs.plain());
         },
 
         getProjectFile: function(projectID, fileID) {
-            return projectsAPIRoute(projectID).one('files', fileID).get();
-        },
-
-        onChange: function(scope, fn) {
-            onChangeFn = fn;
-            scope.$on('$destroy', function() {
-                onChangeFn = null;
-            });
+            return projectsAPIRoute(projectID).one('files', fileID).get().then(f => f.plain());
         }
     }
 }

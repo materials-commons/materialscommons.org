@@ -24,7 +24,25 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('projects', {
             url: '/projects',
             abstract: true,
-            template: '<div ui-view></div>'
+            template: '<div ui-view></div>',
+            resolve: {
+                _projstore: ["mcprojstore", function (mcprojstore) {
+                    return mcprojstore.ready();
+                }],
+                _projects: ["mcprojstore", "ProjectModel", "_projstore", function (mcprojstore, ProjectModel) {
+                    let projects = mcprojstore.projects;
+                    if (projects.length) {
+                        return projects;
+                    }
+
+                    return ProjectModel.getProjectsForCurrentUser().then(
+                        (projects) => {
+                            mcprojstore.addProjects(...projects);
+                            return mcprojstore.projects;
+                        }
+                    );
+                }]
+            }
         })
         .state('projects.list', {
             url: '/list',
@@ -61,20 +79,25 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<ui-view flex="100" layout="column"></ui-view>',
             resolve: {
-                _project: ["$stateParams", "projectsAPI", "mcstate",
-                    // Inject projects so that it resolves before looking up the project.
-                    function($stateParams, projectsAPI, mcstate) {
-                        return projectsAPI.getProject($stateParams.project_id)
-                            .then(function(proj) {
-                                mcstate.set(mcstate.CURRENT$PROJECT, proj);
-                                return proj;
+                _projstore: ["mcprojstore", function (mcprojstore) {
+                    return mcprojstore.ready();
+                }],
+                /* inject _projstore to force next resolve to wait for store to ready ready*/
+                _project: ["mcprojstore", "$stateParams", "experimentsAPI", "_projstore", function (mcprojstore, $stateParams, experimentsAPI) {
+                    let p = mcprojstore.getProject($stateParams.project_id);
+                    if (p.experimentsFullyLoaded) {
+                        return p;
+                    }
+
+                    return experimentsAPI.getAllForProject($stateParams.project_id).then(
+                        (experiments) => {
+                            mcprojstore.updateCurrentProject((project, transformers) => {
+                                let transformedExperiments = experiments.map(e => transformers.transformExperiment(e));
+                                project.experiments = _.indexBy(transformedExperiments, 'id');
+                                project.experimentsFullyLoaded = true;
+                                return project;
                             });
-                    }],
-                _templates: ["templates", function(templates) {
-                    return templates.getServerTemplates().then(
-                        (t) => {
-                            templates.set(t);
-                            return t;
+                            return p;
                         }
                     );
                 }]
@@ -97,20 +120,26 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/experiment/:experiment_id',
             template: `<mc-experiment></mc-experiment>`,
             resolve: {
-                experiment: ['experimentsAPI', 'toast', 'toUITask', '$stateParams', 'mcstate',
-                    function(experimentsAPI, toast, toUITask, $stateParams, mcstate) {
-                        return experimentsAPI.getForProject($stateParams.project_id, $stateParams.experiment_id)
-                            .then(
-                                (e) => {
-                                    e.tasks.forEach((task) => toUITask(task));
-                                    mcstate.set(mcstate.CURRENT$EXPERIMENT, e);
-                                    return e;
-                                },
-                                () => toast.error('Failed to retrieve experiment')
-                            );
-                    }
+                experiment: ["mcprojstore", "$stateParams", "_projstore",
+                    (mcprojstore, $stateParams) => mcprojstore.getExperiment($stateParams.experiment_id)
                 ]
             }
+            //,
+            // resolve: {
+            //     experiment: ['experimentsAPI', 'toast', 'toUITask', '$stateParams', 'mcstate',
+            //         function (experimentsAPI, toast, toUITask, $stateParams, mcstate) {
+            //             return experimentsAPI.getForProject($stateParams.project_id, $stateParams.experiment_id)
+            //                 .then(
+            //                     (e) => {
+            //                         e.tasks.forEach((task) => toUITask(task));
+            //                         mcstate.set(mcstate.CURRENT$EXPERIMENT, e);
+            //                         return e;
+            //                     },
+            //                     () => toast.error('Failed to retrieve experiment')
+            //                 );
+            //         }
+            //     ]
+            // }
         })
         .state('project.experiment.details', {
             url: '/details',
@@ -128,10 +157,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/processes',
             template: '<mc-processes-workflow processes="$resolve.processes"></mc-processes-workflow>',
             resolve: {
-                processes: ['experimentsAPI', '$stateParams',
-                    (experimentsAPI, $stateParams) =>
-                        experimentsAPI.getProcessesForExperiment($stateParams.project_id, $stateParams.experiment_id)
-                ]
+                processes: ["experiment", (experiment) => _.values(experiment.processes)]
             }
         })
         .state('project.experiment.samples', {
@@ -179,7 +205,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/sample/:sample_id',
             template: '<mc-show-sample sample-id="ctrl.sampleId"></mc-show-sample>',
             controllerAs: 'ctrl',
-            controller: ['$stateParams', function($stateParams) {
+            controller: ['$stateParams', function ($stateParams) {
                 this.sampleId = $stateParams.sample_id;
             }]
         })
@@ -285,6 +311,15 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     (publicTagsAPI) => publicTagsAPI.getPopularTags().then(
                         (tags) => tags.map(t => t.tag)
                     )
+                ]
+            }
+        })
+        .state('data.tag', {
+            url: '/tag/:tag',
+            template: '<mc-dataset-list datasets="$resolve.datasets" details-route="data.dataset" layout-margin></mc-dataset-list>',
+            resolve: {
+                datasets: ['publicDatasetsAPI', '$stateParams',
+                    (publicDatasetsAPI, $stateParams) => publicDatasetsAPI.getDatasetsForTag($stateParams.tag)
                 ]
             }
         })

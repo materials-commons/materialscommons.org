@@ -8,7 +8,7 @@ angular.module('materialscommons').component('mcDirOverview', {
 });
 
 /*@ngInject*/
-function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, mcstate, toast, isImage) {
+function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, mcprojstore, toast, isImage) {
     const ctrl = this;
 
     ctrl.viewFiles = viewFiles;
@@ -95,7 +95,7 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
 
     function shareSelectedFiles() {
         const toUserName = function(u) { return u.user_id;};
-        const proj = mcstate.get(mcstate.CURRENT$PROJECT);
+        const proj = mcprojstore.currentProject;
         const users = proj.users.map(toUserName);
         mcmodal.chooseUsers(users).then(function(chosenUsers) { // eslint-disable-line no-unused-vars
             // log('users chosen', chosenUsers);

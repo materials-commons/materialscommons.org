@@ -1,12 +1,13 @@
 class WorkflowService {
     /*@ngInject*/
-    constructor(experimentsAPI, processesAPI, mcbus, templates, toast, $mdDialog) {
+    constructor(experimentsAPI, processesAPI, mcbus, templates, toast, $mdDialog, mcprojstore) {
         this.experimentsAPI = experimentsAPI;
         this.processesAPI = processesAPI;
         this.mcbus = mcbus;
         this.templates = templates;
         this.toast = toast;
         this.$mdDialog = $mdDialog;
+        this.mcprojstore = mcprojstore;
     }
 
     chooseSamplesFromSource(source) {
@@ -29,7 +30,9 @@ class WorkflowService {
             .then(
                 (process) => {
                     let p = this.templates.loadTemplateFromProcess(process.template_name, process);
-                    this.mcbus.send('PROCESS$ADD', p);
+                    this.mcprojstore.addProcess(p).then(
+                        () => this.mcbus.send('PROCESS$ADD', p)
+                    )
                 }
             );
     }
@@ -49,10 +52,7 @@ class WorkflowService {
                             process: p
                         }
                     }).then(
-                        (proc) => {
-                            this.mcbus.send('PROCESS$ADD', proc);
-                            //this.sendProcessChangeEvent(projectId, experimentId);
-                        }
+                        (proc) => this.mcprojstore.addProcess(p).then(() => this.mcbus.send('PROCESS$ADD', proc))
                     );
                 },
                 () => this.toast.error('Unable to create process from template')
@@ -73,8 +73,7 @@ class WorkflowService {
         };
 
         return this.experimentsAPI.updateProcess(projectId, experimentId, process.id, samplesArgs).then(
-            (process) => process
-        );
+            (process) => this.mcprojstore.addProcess(process).then(() => process));
     }
 
     addChildProcessFromTemplate(templateId, projectId, experimentId, parentProcess, multiple = true) {
@@ -181,9 +180,9 @@ class WorkflowService {
     }
 
     deleteNodeAndProcess2(projectId, experimentId, processId) {
-        this.processesAPI.deleteProcess(projectId, processId)
+        this.experimentsAPI.deleteProcess(projectId, experimentId, processId)
             .then(
-                () => this.mcbus.send('PROCESS$DELETE', processId),
+                () => this.mcprojstore.removeProcessById(processId).then(() => this.mcbus.send('PROCESS$DELETE', processId)),
                 error => this.toast.error(error.data.error)
             );
     }

@@ -1,6 +1,6 @@
 'use strict';
 require('mocha');
-import {it} from 'mocha';
+const it = require('mocha').it;
 require('co-mocha');
 const _ = require('lodash');
 const chai = require('chai');
@@ -88,7 +88,7 @@ describe('Feature - Projects: ', function () {
             let datasetId = datasetIdList[0];
             let fakeDOI = "fakeDOI";
             let status = yield r.table('datasets').get(datasetId).update({doi: fakeDOI});
-            if (status.replaced != 1) {
+            if (status.replaced !== 1) {
                 assert.fail(`Update of DOI in dataset, ${datasetId}, failed.`);
             }
 
@@ -224,8 +224,8 @@ function* checkTally(tally, projectId) {
     assert.isOk(tally.experiments);
     assert.equal(tally.experiments.length, experimentCount);
 
-    assert.isOk(tally.datasets);
-    assert.equal(tally.datasets.length, datasetCount);
+    // assert.isOk(tally.datasets);
+    // assert.equal(tally.datasets.length, datasetCount);
 
     assert.isOk(tally.files);
     assert.equal(tally.files.length, fileCount);
@@ -273,7 +273,7 @@ function* checkLinks(options){
             let list = yield r.table(table).getAll(project.id, {index: 'project_id'});
             let expectedLength = lengths[i];
             let l = list.length;
-            let message = `missing links in ${table} for project id = ${project.id}`
+            let message = `missing links in ${table} for project id = ${project.id}`;
             assert.equal(l,expectedLength,message);
         }
 
@@ -283,7 +283,7 @@ function* checkLinks(options){
             let list = yield r.table(table).getAll(project.id, {index: 'project_id'});
             let l = list.length;
             let message = `expected no links in ${table}, `
-                +  `but found ${l} links for project id = ${project.id}`
+                + `but found ${l} links for project id = ${project.id}`;
             assert.equal(l,0,message);
         }
     }

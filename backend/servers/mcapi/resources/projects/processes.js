@@ -86,7 +86,7 @@ function* deleteProcess(next) {
             this.status = status.BAD_REQUEST;
             this.body = rv;
         } else {
-            this.body = rv;
+            this.body = rv.val;
         }
     }
     yield next;
@@ -239,6 +239,17 @@ function* validateSample(projectId, sample) {
     return null;
 }
 
+function* getProcessFiles(next) {
+    let rv = yield processes.processFiles(this.params.process_id);
+    if (rv.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
+}
+
 function createResource() {
     const router = new Router();
 
@@ -249,6 +260,7 @@ function createResource() {
     router.use('/:process_id', ra.validateProcessInProject);
     router.get('/:process_id', getProcess);
     router.put('/:process_id', updateProcess);
+    router.get('/:process_id/files', getProcessFiles);
     router.delete('/:process_id', deleteProcess);
 
     return router;

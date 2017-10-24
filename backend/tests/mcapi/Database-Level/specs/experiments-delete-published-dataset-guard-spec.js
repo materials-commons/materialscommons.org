@@ -1,6 +1,6 @@
 'use strict';
 require('mocha');
-import {it} from 'mocha';
+const it = require('mocha').it;
 require('co-mocha');
 const _ = require('lodash');
 const chai = require('chai');
@@ -49,7 +49,8 @@ before(function*() {
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId,user.id);
 
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user,demoProjectConf.datapathPrefix);
+//    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
+    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd()+'/');
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;

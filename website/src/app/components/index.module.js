@@ -8,3 +8,4 @@ import './projects/index.module';
 import './samples/index.modules';
 import './templates/index.modules';
 import './workflow/index.modules';
+import './comments/index.modules';

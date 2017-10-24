@@ -2,6 +2,7 @@
 function ProjectModelService(projectsAPI) {
     class Project {
         constructor(id, name, owner) {
+            this.otype = 'project';
             this.id = id;
             this.name = name;
             this.owner = owner;
@@ -38,7 +39,7 @@ function ProjectModelService(projectsAPI) {
             return p;
         }
 
-        static get(id) {
+        static getProjectForCurrentUser(id) {
             return projectsAPI.getProject(id).then(
                 (project) => Project.fromJSON(project)
             );

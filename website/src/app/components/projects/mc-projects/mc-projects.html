@@ -1,17 +1,23 @@
 <div layout="row" flex="100" layout-margin>
     <div layout="column" flex>
         <div layout="row" layout-align="end">
-            <md-button ng-show="!$ctrl.mcuser.demo_installed" ng-click="$ctrl.buildDemoProject()"
-                       class="md-warn md-raised" flex="30">
-                Add Demo Project
-            </md-button>
+            <div layout="column" layout-align="stretch" flex="30" ng-show="!$ctrl.mcuser.demo_installed">
+                <md-button ng-click="$ctrl.buildDemoProject()"
+                           class="md-warn md-raised">
+                    Add Demo Project
+                </md-button>
+            </div>
             <md-checkbox ng-model="$ctrl.hideAddDemo" ng-change="$ctrl.hideDemoProjectButton()"
                          ng-show="!$ctrl.mcuser.demo_installed">
                 Don't show this again
             </md-checkbox>
             <span flex="5"></span>
             <md-button class="md-primary md-raised" ng-click="$ctrl.createNewProject()">create project</md-button>
-
+            <span flex="5"></span>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.refreshProjects()">
+                <md-tooltip>Refresh projects from server</md-tooltip>
+                <i class="fa fa-fw fa-refresh"></i>Refresh
+            </md-button>
         </div>
         <div layout="row" layout-align="center">
             <md-button class="md-warn" ng-click="$ctrl.query = ''">clear search</md-button>

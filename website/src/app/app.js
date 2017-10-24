@@ -1,6 +1,6 @@
 import './index.module';
-import { setupRoutes } from './routes.js';
-import { MCAppController } from './mc-app.controller';
+import {setupRoutes} from './routes.js';
+import {MCAppController} from './mc-app.controller';
 import './global.services/index.module';
 import './models/index.module';
 import './global.filters/index.module';
@@ -20,6 +20,7 @@ angular.module('materialscommons')
 
 appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$ariaProvider', '$compileProvider',
     'hljsServiceProvider'];
+
 function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider, $compileProvider, hljsServiceProvider) {
     setupMaterialsTheme($mdThemingProvider);
     setupRoutes($stateProvider, $urlRouterProvider);
@@ -31,8 +32,9 @@ function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $aria
     });
 }
 
-appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText'];
-function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText) {
+appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText', "templates"];
+
+function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText, templates) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     // appRun will run when the application starts up and before any controllers have run.
@@ -43,9 +45,12 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
     // the apikey param in Restangular.
     if (User.isAuthenticated()) {
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
+        templates.getServerTemplates().then(
+            (t) => templates.set(t)
+        );
     }
 
-    const unregister = $rootScope.$on('$stateChangeStart', function(event, toState) {
+    const unregister = $rootScope.$on('$stateChangeStart', function (event, toState) {
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
         if (!User.isAuthenticated() && isStateRequiringALogin(toState.name)) {
             event.preventDefault();
@@ -58,7 +63,9 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
         }
     });
 
-    $rootScope.$on('$destroy', function() { unregister(); });
+    $rootScope.$on('$destroy', function () {
+        unregister();
+    });
 }
 
 function isStateRequiringALogin(stateName) {

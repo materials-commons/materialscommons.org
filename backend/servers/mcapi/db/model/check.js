@@ -102,6 +102,12 @@ function* allFilesInProcess(processId, files) {
     return files.length === matches.length;
 }
 
+function* allExperimentsInProject(projectId, experimentIds) {
+    let indexArgs = experimentIds.map(id => [projectId, id]);
+    let matches = yield r.table('project2experiment').getAll(r.args(indexArgs), {index: 'project_experiment'});
+    return matches.length === experimentIds.length;
+}
+
 function* sampleInExperiment(experimentId, sampleId) {
     let samples = yield r.table('experiment2sample').getAll([experimentId, sampleId], {index: 'experiment_sample'});
     return samples.length !== 0;
@@ -172,11 +178,19 @@ function* processInProject(projectId, processId) {
     return matches.length !== 0;
 }
 
+function* processInPublishedDataset(processId) {
+    let datasets = yield r.table('dataset2process').getAll(processId, {index: 'process_id'})
+        .eqJoin('dataset_id', r.table('datasets')).zip();
+    let publishedDatasets = datasets.filter(d => d.published);
+    return publishedDatasets.length !== 0;
+}
+
 module.exports = {
     allSamplesInDataset,
     allFilesInDataset,
     allProcessesInDataset,
     allFilesInProject,
+    allExperimentsInProject,
     experimentExistsInProject,
     taskInExperiment,
     noteInExperiment,
@@ -203,5 +217,6 @@ module.exports = {
     isUserProjectOwner,
     isUserExperimentOwner,
     directoryInProject,
-    processInProject
+    processInProject,
+    processInPublishedDataset
 };

@@ -1,24 +1,28 @@
 class MCProcessesWorkflowSidebarComponentController {
     /*@ngInject*/
-    constructor(workflowState, templatesAPI, workflowService, $stateParams) {
+    constructor(workflowState, templates, workflowService, mcprojstore, $timeout, $stateParams) {
         this.workflowState = workflowState;
-        this.templatesAPI = templatesAPI;
         this.workflowService = workflowService;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
+        this.templates = templates.get();
         this.selectedProcess = null;
-        this.myName = 'MCProcessesWorkflowSidebar';
+        this.mcprojstore = mcprojstore;
+        this.$timeout = $timeout;
+        //this.myName = 'MCProcessesWorkflowSidebar';
     }
 
     $onInit() {
-        this.workflowState.subscribeSelectedProcess(this.myName, (process) => this.selectedProcess = process);
-        this.templatesAPI.getAllTemplates().then(
-            templates => this.templates = templates
-        );
+        //this.workflowState.subscribeSelectedProcess(this.myName, (process) => this.selectedProcess = process);
+        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVSET,
+            process => {
+                this.$timeout(() => this.selectedProcess = process);
+            });
     }
 
     $onDestroy() {
-        this.workflowState.leaveSelectedProcess(this.myName);
+        //this.workflowState.leaveSelectedProcess(this.myName);
+        this.unsubscribe();
     }
 
     addToGraph(template) {

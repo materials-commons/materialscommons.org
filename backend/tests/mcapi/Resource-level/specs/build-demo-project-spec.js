@@ -1,6 +1,6 @@
 'use strict';
 require('mocha');
-import {it} from 'mocha';
+const it = require('mocha').it;
 require('co-mocha');
 const _ = require('lodash');
 const chai = require('chai');
@@ -764,7 +764,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             let mapEntry = demoProjectConf.outputSampleIndexMap[0];
 
-            processData = demoProjectConf.processesData[mapEntry.processIndex];
+            let processData = demoProjectConf.processesData[mapEntry.processIndex];
             let processName = processData.name;
             let templateId = processData.templateId;
 
@@ -797,7 +797,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
 
             process = valOrError.val;
 
-            let processData = demoProjectConf.processesData[0];
+            processData = demoProjectConf.processesData[0];
             let measurement = processData.measurements[0];
 
             valOrError = yield helper.updateMeasurementForProcessSamples(process, measurement);

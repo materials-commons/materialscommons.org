@@ -31,6 +31,8 @@ const experimentDatasets = require(backend_base + '/experiment-datasets');
 
 const demoProjectHelper = require(build_project_base + '/build-demo-project-helper');
 const demoProjectConf = require(build_project_base + '/build-demo-project-conf');
+// correction needed bacause package.json was moved to backend - Terry Weymouth - 14AUG2017
+demoProjectConf.datapathPrefix = path.resolve('./') + '/';
 const demoProjectBuild = require(build_project_base + '/build-demo-project');
 
 const base_project_name = "TestProject-";

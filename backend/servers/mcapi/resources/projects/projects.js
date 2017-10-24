@@ -27,7 +27,11 @@ function* create(next){
 
 function* all(next) {
     let user = this.reqctx.user;
-    this.body = yield projects.forUser(user);
+    if (this.query.simple) {
+        this.body = yield projects.forUserSimple(user);
+    } else {
+        this.body = yield projects.forUser(user);
+    }
     yield next;
 }
 
@@ -43,23 +47,15 @@ function* getProject(next) {
 }
 
 function* deleteProject(next) {
-    let options = {
-        dryRun: false
-    }
-    let rv = yield projectDelete.deleteProject(this.params.project_id,options);
-    if (rv.error) {
-        this.status = status.BAD_REQUEST;
-        this.body = rv;
-    } else {
-        this.body = rv.val;
-    }
+    yield projectDelete.quickProjectDelete(this.params.project_id);
+    this.body = {project_id: this.params.project_id}
     yield next;
 }
 
-function* deleteProjectDryRun(next) {
+function* deleteProjectFull(next) {
     let options = {
-        dryRun: true
-    }
+        dryRun: false
+    };
     let rv = yield projectDelete.deleteProject(this.params.project_id,options);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
@@ -96,7 +92,6 @@ function createResource() {
     router.put('/:project_id', update);
     router.get('/:project_id', getProject);
     router.delete('/:project_id', ra.validateProjectOwner, deleteProject);
-    router.get('/:project_id/delete/dryrun', ra.validateProjectOwner, deleteProjectDryRun);
 
     router.get('/:project_id/access', ra.validateProjectOwner, getUserAccessForProject);
     router.put('/:project_id/access', ra.validateProjectOwner, updateUserAccessForProject);

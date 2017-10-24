@@ -5,19 +5,20 @@ class SamplesAPIService {
 
     addSamplesToExperiment(projectId, experimentId, sampleIds) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('samples')
-            .customPOST({samples: sampleIds});
+            .customPOST({samples: sampleIds}).then(sampleExperimentIds => sampleExperimentIds.plain());
     }
 
     createSamplesInProjectForProcess(projectId, processId, samples) {
-        return this.projectsAPIRoute(projectId).one('samples').customPOST({process_id: processId, samples: samples});
+        return this.projectsAPIRoute(projectId).one('samples')
+            .customPOST({process_id: processId, samples: samples});
     }
 
     getProjectSamples(projectID) {
-        return this.projectsAPIRoute(projectID).one('samples').getList();
+        return this.projectsAPIRoute(projectID).one('samples').getList().then(samples => samples.plain());
     }
 
     getProjectSample(projectId, sampleId) {
-        return this.projectsAPIRoute(projectId).one('samples', sampleId).get();
+        return this.projectsAPIRoute(projectId).one('samples', sampleId).get().then(s => s.plain());
     }
 
     deleteSamplesFromExperiment(projectId, experimentId, processId, sampleIds) {

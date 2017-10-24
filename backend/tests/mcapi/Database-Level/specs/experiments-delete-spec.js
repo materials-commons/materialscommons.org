@@ -1,6 +1,6 @@
 'use strict';
 require('mocha');
-import {it} from 'mocha';
+const it = require('mocha').it;
 require('co-mocha');
 const _ = require('lodash');
 const chai = require('chai');
@@ -84,7 +84,7 @@ describe('Feature - Experiments: ', function () {
             assert(results.val.published);
 
             // delete experiment - fails
-            results = yield experimentDelete.deleteExperiment(project_id, experiment_id);
+            results = yield experimentDelete.deleteExperimentFull(project_id, experiment_id);
             assert.isOk(results);
             assert.isOk(results.error);
 
@@ -118,7 +118,7 @@ describe('Feature - Experiments: ', function () {
             }
 
             // delete experiment - fails
-            let results = yield experimentDelete.deleteExperiment(project_id, experiment_id);
+            let results = yield experimentDelete.deleteExperimentFull(project_id, experiment_id);
             assert.isOk(results);
             assert.isOk(results.error);
 
@@ -127,7 +127,7 @@ describe('Feature - Experiments: ', function () {
         });
         it('deletes experiment and all its parts', function*() {
 
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(9000); // test take up to 9 seconds
 
             yield setup();
 
@@ -152,7 +152,7 @@ describe('Feature - Experiments: ', function () {
 
             // delete experiment
             let results = yield experimentDelete
-                .deleteExperiment(project_id, experiment_id, {deleteProcesses: true, dryRun: false});
+                .deleteExperimentFull(project_id, experiment_id, {deleteProcesses: true, dryRun: false});
 
             checkResults(results);
 
@@ -200,7 +200,7 @@ describe('Feature - Experiments: ', function () {
 
             // delete experiment
             let results = yield experimentDelete
-                .deleteExperiment(project_id, experiment_id, {deleteProcesses: false, dryRun: false});
+                .deleteExperimentFull(project_id, experiment_id, {deleteProcesses: false, dryRun: false});
 
             checkResultsForNotDeleteProcess(results);
 
@@ -248,7 +248,7 @@ describe('Feature - Experiments: ', function () {
 
             // delete experiment
             let results = yield experimentDelete
-                .deleteExperiment(project_id, experiment_id, {deleteProcesses: true, dryRun: true});
+                .deleteExperimentFull(project_id, experiment_id, {deleteProcesses: true, dryRun: true});
 
             checkResults(results);
 
@@ -296,7 +296,7 @@ describe('Feature - Experiments: ', function () {
 
             // delete experiment
             let results = yield experimentDelete
-                .deleteExperiment(project_id, experiment_id, {deleteProcesses: false, dryRun: true});
+                .deleteExperimentFull(project_id, experiment_id, {deleteProcesses: false, dryRun: true});
 
             checkResultsForNotDeleteProcess(results);
 

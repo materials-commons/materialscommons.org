@@ -78,7 +78,7 @@ function* removeExistingProcessEntries(processesToAdd) {
     if (processesToAdd.length) {
         let indexEntries = processesToAdd.map(p => [p.dataset_id, p.process_id]);
         let matchingEntries = yield r.table('dataset2process').getAll(r.args(indexEntries), {index: 'dataset_process'});
-        let matchingEntriesByProcessId = _.indexBy(matchingEntries, 'process_id');
+        let matchingEntriesByProcessId = _.keyBy(matchingEntries, 'process_id');
         return processesToAdd.filter(p => (!(p.process_id in matchingEntriesByProcessId)));
     }
     return processesToAdd;
@@ -112,7 +112,7 @@ function* getSamplesForDataset(datasetId) {
 }
 
 function uniqByKey(items, key) {
-    let uniqItems = _.indexBy(items, key);
+    let uniqItems = _.keyBy(items, key);
     return Object.keys(uniqItems).map(key => uniqItems[key]);
 }
 
@@ -130,7 +130,7 @@ function* addProcessesForSamplesToDataset(datasetId, sampleIds) {
 function* addFilesForProcessesAndSamples(datasetId, processIds, sampleIds) {
     let processFiles = yield r.table('process2file').getAll(r.args(processIds), {index: 'process_id'});
     let sampleFiles = yield r.table('sample2datafile').getAll(r.args(sampleIds), {index: 'sample_id'});
-    let uniqFileIds = _.keys(_.indexBy(processFiles.concat(sampleFiles), 'datafile_id')).map(id => ({id: id}));
+    let uniqFileIds = _.keys(_.keyBy(processFiles.concat(sampleFiles), 'datafile_id')).map(id => ({id: id}));
     if (uniqFileIds.length) {
         yield updateFilesInDataset(datasetId, uniqFileIds, []);
     }
@@ -140,7 +140,7 @@ function* removeExistingSampleEntriesInDataset(samplesToAdd) {
     if (samplesToAdd.length) {
         let indexEntries = samplesToAdd.map(s => [s.dataset_id, s.sample_id]);
         let matchingEntries = yield r.table('dataset2sample').getAll(r.args(indexEntries), {index: 'dataset_sample'});
-        let matchingEntriesBySampleId = _.indexBy(matchingEntries, 'sample_id');
+        let matchingEntriesBySampleId = _.keyBy(matchingEntries, 'sample_id');
         return samplesToAdd.filter(s => (!(s.sample_id in matchingEntriesBySampleId)));
     }
 
@@ -262,7 +262,7 @@ function* publishSetupForProcesses(processes) {
         delete e['id'];
     });
     let insertedSetups = yield r.db('mcpub').table('setups').insert(setupEntries, {returnChanges: 'always'});
-    let setupsByOriginalId = _.indexBy(insertedSetups.changes.map(e => e.new_val), 'original_id');
+    let setupsByOriginalId = _.keyBy(insertedSetups.changes.map(e => e.new_val), 'original_id');
 
     // Modify setupproperties to point to the new ids for each setup.
     setupProperties.forEach(prop => {
@@ -272,7 +272,7 @@ function* publishSetupForProcesses(processes) {
     yield r.db('mcpub').table('setupproperties').insert(setupProperties);
 
     // Update process2setup to use the new process id and the new setup id
-    let processesByOriginalId = _.indexBy(processes, 'original_id');
+    let processesByOriginalId = _.keyBy(processes, 'original_id');
 
     p2sEntries.forEach(e => {
         let process = processesByOriginalId[e.process_id];
@@ -306,8 +306,8 @@ function* publishDatasetSamples(datasetId) {
     let p2sEntries = yield r.table('process2sample').getAll(r.args(originalSampleIds), {index: 'sample_id'});
     let originalProcessIds = p2sEntries.map(e => e.process_id);
     let mcPubProcesses = yield r.db('mcpub').table('processes').getAll(r.args(originalProcessIds), {index: 'original_id'});
-    let processesByOriginalId = _.indexBy(mcPubProcesses, 'original_id');
-    let samplesByOriginalId = _.indexBy(newSamples, 'original_id');
+    let processesByOriginalId = _.keyBy(mcPubProcesses, 'original_id');
+    let samplesByOriginalId = _.keyBy(newSamples, 'original_id');
     p2sEntries.forEach(e => {
         let process = processesByOriginalId[e.process_id];
         let sample = samplesByOriginalId[e.sample_id];
@@ -356,8 +356,8 @@ function* publishDatasetFiles(datasetId) {
     let p2fEntries = yield r.table('process2file').getAll(r.args(originalDFIds), {index: 'datafile_id'});
     let originalProcessIds = p2fEntries.map(e => e.process_id);
     let mcPubProcesses = yield r.db('mcpub').table('processes').getAll(r.args(originalProcessIds), {index: 'original_id'});
-    let processesByOriginalId = _.indexBy(mcPubProcesses, 'original_id');
-    let datafilesByOriginalId = _.indexBy(newDatafiles, 'original_id');
+    let processesByOriginalId = _.keyBy(mcPubProcesses, 'original_id');
+    let datafilesByOriginalId = _.keyBy(newDatafiles, 'original_id');
     p2fEntries.forEach(e => {
         let process = processesByOriginalId[e.process_id];
         let datafile = datafilesByOriginalId[e.datafile_id];

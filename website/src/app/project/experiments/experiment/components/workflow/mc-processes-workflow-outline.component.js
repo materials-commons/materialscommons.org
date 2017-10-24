@@ -1,7 +1,7 @@
 class MCProcessesWorkflowOutlineComponentController {
     /*@ngInject*/
     constructor(processTree, datasetsAPI, experimentsAPI, $stateParams, toast, workflowService,
-                experimentProcessesService, mcbus, mcstate, workflowState) {
+                experimentProcessesService, mcbus, mcstate, workflowState, mcprojstore) {
         this.processTree = processTree;
         this.datasetsAPI = datasetsAPI;
         this.experimentsAPI = experimentsAPI;
@@ -16,14 +16,17 @@ class MCProcessesWorkflowOutlineComponentController {
         this.workflowState = workflowState;
         this.workflowState.setDataset(this.dataset);
         this.mcstate = mcstate;
+        this.mcprojstore = mcprojstore;
+        this.sidebarShowing = true;
     }
 
     $onInit() {
         // To preserve this binding pass this.allProcessesGraph bound to an arrow function. Arrow
         // functions lexically scope, so this in the arrow function is the this for
         // MCProcessGraphOutlineComponentController
-        let cb = (processes) => {
-            this.processes = processes;
+        let cb = () => {
+            let currentExperiment = this.mcprojstore.currentExperiment;
+            this.processes = _.values(currentExperiment.processes);
             this.buildOutline();
         };
 
@@ -33,12 +36,16 @@ class MCProcessesWorkflowOutlineComponentController {
             this.sidebarShowing = !maximized;
         });
 
-        this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
+        this.unsubscribeUpdate = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVUPDATE, cb);
+        this.unsubscribeAdd = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVADD, cb);
+        this.unsubscribeRemove = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVREMOVE, cb);
         this.buildOutline();
     }
 
     $onDestroy() {
-        this.mcbus.leave('PROCESSES$CHANGE', this.myName);
+        this.unsubscribeUpdate();
+        this.unsubscribeAdd();
+        this.unsubscribeRemove();
         this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName)
     }
 
@@ -73,14 +80,8 @@ class MCProcessesWorkflowOutlineComponentController {
     showDetails(p) {
         this.processTree.clearSelected(this.root);
         p.selected = true;
-        this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, p.id).then(
-            process => {
-                this.process = process;
-                process.hasChildren = p.children.length;
-                this.workflowState.setSelectedProcess(process);
-            }
-        );
-        //this.mcProcessesWorkflow.setSelectedProcess(p.id, p.children.length !== 0);
+        this.mcprojstore.currentProcess = p;
+        this.process = this.mcprojstore.currentProcess;
     }
 
     toggle(p) {

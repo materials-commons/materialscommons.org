@@ -1,8 +1,9 @@
 <div layout="column" layout-margin md-whiteframe="10" flex="100" style="margin-right: 10px">
     <div layout="row">
-        <span class="md-title" flex>
-            {{$ctrl.experiment.name}}
-        </span>
+            <span class="md-title" flex>
+                <md-checkbox ng-model="$ctrl.experiment.selected" ng-if="$ctrl.selecting"></md-checkbox>
+                {{$ctrl.experiment.name}}
+            </span>
         <span flex="5"></span>
         <div layout-align="start start" flex>
             <span class="md-subhead">Last Updated: {{$ctrl.experiment.mtime | toDate}}</span>

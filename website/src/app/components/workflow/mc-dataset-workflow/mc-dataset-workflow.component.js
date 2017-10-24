@@ -8,6 +8,7 @@ class MCDatasetWorkflowComponentController {
         this.showGraphView = true;
         this.myName = 'MCDatasetWorkflowComponentController';
         this.workspaceSize = 65;
+        this.showSidebar = true;
     }
 
     $onInit() {
@@ -23,6 +24,7 @@ class MCDatasetWorkflowComponentController {
 
     $onDestroy() {
         this.mcbus.leave('WORKFLOW$VIEW', this.myName);
+        this.mcstate.leave('WORKSPACE$MAXIMIZED', this.myName);
     }
 }
 

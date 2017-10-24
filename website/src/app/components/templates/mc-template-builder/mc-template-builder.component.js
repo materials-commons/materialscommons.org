@@ -17,7 +17,7 @@ class MCTemplateBuilderComponentController {
             (templates) => {
                 for (let i = 0; i < templates.length; i++) {
                     let t = templates[i];
-                    t.can_edit = this.user.isTemplateAdmin() || (this.user.attr().id == t.owner);
+                    t.can_edit = this.user.isTemplateAdmin() || (this.user.attr().id === t.owner);
                 }
                 this.templates = templates
             }
@@ -115,7 +115,11 @@ class MCTemplateBuilderComponentController {
 
         if (!this.existingTemplate) {
             this.templatesAPI.createTemplate(this.template).then(
-                () => {
+                (t) => {
+                    let i = _.findIndex(this.templates, {id: t.id});
+                    this.templates.splice(i, 1);
+                    t.can_edit = true;
+                    this.templates.push(t);
                     this.templateLoaded = false;
                     this.existingTemplate = false;
                 },
