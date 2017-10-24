@@ -1,4 +1,4 @@
-const r = require('../r');
+const r = require('actionhero').api.r;
 
 function Project(name, description, owner) {
     this.name = name;

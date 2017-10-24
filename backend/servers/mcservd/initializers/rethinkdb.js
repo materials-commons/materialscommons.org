@@ -2,7 +2,7 @@ const {Initializer, api} = require('actionhero');
 const rethinkdbdash = require('rethinkdbdash');
 
 
-module.exports = class RethindbDashInitializer extends Initializer {
+module.exports = class RethinkdbDashInitializer extends Initializer {
     constructor() {
         super();
         this.name = 'rethinkdbdash';
