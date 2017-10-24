@@ -8,7 +8,7 @@ const fileUtils = require('../../../lib/create-file-utils');
 
 // get details on a file
 function* get(file_id) {
-    let rql = r.table('datafiles').get(file_id).merge(function() {
+    let rql = r.table('datafiles').get(file_id).merge(function () {
         return {
             tags: r.table('tag2item').getAll(file_id, {index: 'item_id'})
                 .orderBy('tag_id')
@@ -29,11 +29,11 @@ function* get(file_id) {
                 .coerceTo('array'),
             processes: r.table('process2file').getAll(file_id, {index: 'datafile_id'})
                 .eqJoin('process_id', r.table('processes')).zip()
-                .merge(function(proc) {
+                .merge(function (proc) {
                     return {
                         setup: r.table('process2setup').getAll(proc('process_id'), {index: 'process_id'})
                             .eqJoin('setup_id', r.table('setups')).zip()
-                            .merge(function(setup) {
+                            .merge(function (setup) {
                                 return {
                                     properties: r.table('setupproperties')
                                         .getAll(setup('setup_id'), {index: 'setup_id'})
@@ -45,6 +45,15 @@ function* get(file_id) {
         }
     });
     return runQuery(rql);
+}
+
+function* getFileDatasets(fileId) {
+    return yield r.table("dataset2datafile").getAll("datafile_id", fileId)
+        .eqJoin("dataset_id", r.table("datasets")).zip();
+}
+
+function* getFileSimple(fileId) {
+    return yield r.table('datafiles').get(fileId);
 }
 
 function* getAllByChecksum(checksum) {
@@ -134,7 +143,7 @@ function* getList(projectID, fileIDs) {
         .eqJoin('id', r.table('project2datafile'), {index: 'datafile_id'})
         .without([{right: 'id'}]).zip()
         .filter({project_id: projectID})
-        .merge(function(file) {
+        .merge(function (file) {
             return {
                 tags: r.table('tag2item').getAll(file('datafile_id'), {index: 'item_id'}).orderBy('tag_id').pluck(
                     'tag_id').coerceTo('array'),
@@ -314,7 +323,7 @@ function* updateSamples(fileID, samples) {
 
 // deleteFile deletes a file if that file is not currently used in any
 // processes or samples. It also removes all the files notes.
-function *deleteFile(fileID) {
+function* deleteFile(fileID) {
     let f = yield get(fileID);
 
     if (f.samples.length) {
@@ -368,7 +377,7 @@ function* byPath(projectID, filePath) {
     return {val: f};
 }
 
-function *moveFile(fileID, projectID, moveArgs) {
+function* moveFile(fileID, projectID, moveArgs) {
     // Make sure new directoryID is in project.
     let findDirRql = r.table('project2datadir')
         .getAll([projectID, moveArgs.new_directory_id], {index: 'project_datadir'});
@@ -415,6 +424,12 @@ function* getVersions(fileID) {
     return {val: fileList};
 }
 
+function* getFileProjects(fileId) {
+    return yield r.table("datadir2datafile").getAll("datafile_id", fileId)
+        .eqJoin("datadir_id", r.table("project2datadir"), {index: "datadir_id"}).zip()
+        .eqJoin("project_id", r.Table("projects")).zip()
+}
+
 module.exports = {
     get,
     getAllByChecksum,
@@ -426,5 +441,8 @@ module.exports = {
     pushVersion,
     deleteFile,
     byPath,
-    getVersions
+    getVersions,
+    getFileDatasets,
+    getFileSimple,
+    getFileProjects
 };

@@ -2,7 +2,6 @@ const Promise = require("bluebird");
 const fs = Promise.promisifyAll(require('fs'));
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const mkdirpSync = require('mkdirp');
-const fileExistsSync = require('fs').existsSync;
 const path = require('path');
 const fsExtra = require('fs-extra');
 
@@ -35,20 +34,64 @@ function* removeFileByPath(path) {
     return yield fs.unlinkAsync(path);
 }
 
-function datafilePath(fileId) {
+function datafileDir(fileId) {
     let base = getFileStoreDir();
     let part = fileId.split("-")[1];
     let partA = part.substring(0, 2);
     let partB = part.substring(2);
-    let results = path.join(base, partA);
-    results = path.join(results, partB);
-    results = path.join(results, fileId);
-    return results;
+    return path.join(base, partA, partB);
+}
+
+function datafilePath(fileId) {
+    let dir = datafileDir(fileId);
+    return path.join(dir, fileId);
+}
+
+function datafilePathFromFile(file, orig) {
+    let fileId = file.usesid !== '' ? file.usesid : file.id;
+    if (orig) {
+        return datafilePath(fileId);
+    } else {
+        return getPathUsingConversion(fileId, file.mediatype.mime);
+    }
+}
+
+function getPathUsingConversion(fileId, mime) {
+    let dir = datafileDir(fileId);
+    if (isConvertedImage(mime)) {
+        return path.join(dir, '.conversion', fileId + '.jpg');
+    } else if (isOfficeDoc(mime)) {
+        return path.join(dir, '.conversion', fileId + '.pdf');
+    } else {
+        return path.join(dir, fileId);
+    }
+}
+
+function isOfficeDoc(mime) {
+    return (mime === "application/vnd.ms-excel") ||
+        (mime === "application/vnd.ms-powerpoint") ||
+        (mime === "application/msword") ||
+        (mime === "application/vnd.openxmlformats-officedocument.presentationml.presentation") ||
+        (mime === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ||
+        (mime === "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+}
+
+function isConvertedImage(mime) {
+    switch (mime) {
+        case 'image/tiff':
+            return true;
+        case 'image/x-ms-bmp':
+            return true;
+        case 'image/bmp':
+            return true;
+        default:
+            return false;
+    }
 }
 
 function* datafilePathExists(fileId) {
     let path = datafilePath(fileId);
-    return fileExistsSync(path);
+    return yield fsExtra.pathExists(path);
 }
 
 function* moveToStore(sourcePath, fileId) {
@@ -119,7 +162,6 @@ const mediaTypeDescriptions = {
 };
 
 module.exports = {
-    getFileStoreDir,
     getTmpUploadDir,
     moveToStore,
     datafilePath,
@@ -127,4 +169,5 @@ module.exports = {
     removeFileInStore,
     removeFileByPath,
     mediaTypeDescriptionsFromMime,
+    datafilePathFromFile,
 };
