@@ -3,8 +3,8 @@ const {Initializer, api} = require('actionhero');
 module.exports = class APIKeyInitializer extends Initializer {
     constructor() {
         super();
-        this.name = 'zapikey';
-        this.startPriority = 50;
+        this.name = 'apikey';
+        this.startPriority = 1000;
     }
 
     initialize() {
