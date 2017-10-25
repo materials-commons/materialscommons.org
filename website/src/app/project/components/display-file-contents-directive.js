@@ -13,7 +13,7 @@ function displayFileContentsDirective() {
 }
 
 /*@ngInject*/
-function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage) {
+function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage, $timeout) {
     const ctrl = this;
     ctrl.fileSrc = mcfile.src(ctrl.file.id);
     ctrl.pdfWordId = `${ctrl.file.id}-pdf-word`;
@@ -22,12 +22,6 @@ function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage) {
     ctrl.downloadSrc = downloadSrc;
 
     let embedHtml = `<embed class="col-xs-8 embed-responsive-item" src="${ctrl.fileSrc}"></embed>`;
-
-    if (isOfficeFile(ctrl.file.mediatype.mime)) {
-        $(ctrl.pdfWordId).append(embedHtml);
-    } else if (ctrl.file.mediatype.mime === 'application/pdf') {
-        $(ctrl.pdfId).append(embedHtml);
-    }
 
     let officeTypes = [
         {name: "application/vnd.ms-excel"},
@@ -41,6 +35,12 @@ function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage) {
     let officeTypesMap = _.indexBy(officeTypes, 'name');
 
     ctrl.fileType = determineFileType(ctrl.file.mediatype);
+
+    if (isOfficeFile(ctrl.file.mediatype.mime)) {
+        $timeout(() => $(`#${ctrl.pdfWordId}`).append(embedHtml));
+    } else if (ctrl.file.mediatype.mime === 'application/pdf') {
+        $timeout(() => $(`${ctrl.pdfId}`).append(embedHtml));
+    }
 
     //////////////
 
