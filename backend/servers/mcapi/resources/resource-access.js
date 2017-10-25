@@ -1,8 +1,9 @@
 const access = require('../db/model/access');
 const check = require('../db/model/check');
-let httpStatus = require('http-status');
-let projectAccessCache = require('./project-access-cache')(access);
-let files = require('../db/model/files');
+const httpStatus = require('http-status');
+const projectAccessCache = require('./project-access-cache')(access);
+const files = require('../db/model/files');
+
 
 function* validateProjectAccess(next) {
     let projectID = this.params.project_id;
@@ -215,11 +216,11 @@ function* fileAccessAllowed(fileId, userId) {
         return true;
     }
 
-    let projects = files.getFileProjects(this.params.file_id);
+    let projects = yield files.getFileProjects(fileId);
     for (let i = 0; i < projects.length; i++) {
-        let access = yield access.projectAccessList(projects[i].id);
-        for (let j = 0; j < access.length; j++) {
-            if (access[j].user_id === userId) {
+        let accessEntries = yield access.projectAccessList(projects[i].id);
+        for (let j = 0; j < accessEntries.length; j++) {
+            if (accessEntries[j].user_id === userId) {
                 return true;
             }
         }

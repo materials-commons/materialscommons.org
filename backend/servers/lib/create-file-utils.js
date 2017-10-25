@@ -170,4 +170,6 @@ module.exports = {
     removeFileByPath,
     mediaTypeDescriptionsFromMime,
     datafilePathFromFile,
+    isConvertedImage,
+    isOfficeDoc
 };
