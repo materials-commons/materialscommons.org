@@ -1,0 +1,12 @@
+<div layout-margin>
+    <form name="form">
+        <label>Upload files</label>
+        <div ngf-select ngf-multiple="true" ngf-drop ng-model="$ctrl.files" class="drop-box pointer text-uppercase">
+            select or drop files
+        </div>
+        <md-button type="submit" class="md-primary" ng-click="$ctrl.submit()">submit</md-button>
+    </form>
+    <ul>
+        <li ng-repeat="file in $ctrl.files">{{file.name}}</li>
+    </ul>
+</div>
