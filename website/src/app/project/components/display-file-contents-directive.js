@@ -16,8 +16,18 @@ function displayFileContentsDirective() {
 function DisplayFileContentsDirectiveController(mcfile, mcmodal, isImage) {
     const ctrl = this;
     ctrl.fileSrc = mcfile.src(ctrl.file.id);
+    ctrl.pdfWordId = `${ctrl.file.id}-pdf-word`;
+    ctrl.pdfId = `${ctrl.file.id}-pdf`;
     ctrl.showImage = showImage;
     ctrl.downloadSrc = downloadSrc;
+
+    let embedHtml = `<embed class="col-xs-8 embed-responsive-item" src="${ctrl.fileSrc}"></embed>`;
+
+    if (isOfficeFile(ctrl.file.mediatype.mime)) {
+        $(ctrl.pdfWordId).append(embedHtml);
+    } else if (ctrl.file.mediatype.mime === 'application/pdf') {
+        $(ctrl.pdfId).append(embedHtml);
+    }
 
     let officeTypes = [
         {name: "application/vnd.ms-excel"},

@@ -9,19 +9,12 @@
             </div>
         </div>
         <div ng-switch-when="pdf">
-            <div class="embed-responsive embed-responsive-4by3">
-                <embed class="col-xs-8 embed-responsive-item"
-                       ng-src="{{view.fileSrc}}">
-                </embed>
+            <div class="embed-responsive embed-responsive-4by3" id="{{view.pdfId}}">
             </div>
         </div>
         <div ng-switch-when="office">
-            <div class="embed-responsive embed-responsive-4by3">
-                <embed class="col-xs-8 embed-responsive-item"
-                       ng-src="{{view.fileSrc}}">
-                </embed>
+            <div class="embed-responsive embed-responsive-4by3" id="{{view.pdfWordId}}">
             </div>
-
         </div>
         <div ng-switch-when="binary">
             <span><i class="fa fa-fw fa-file-o"></i>Binary file cannot be displayed</span>
