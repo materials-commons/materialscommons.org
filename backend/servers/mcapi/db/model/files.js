@@ -425,9 +425,9 @@ function* getVersions(fileID) {
 }
 
 function* getFileProjects(fileId) {
-    return yield r.table("datadir2datafile").getAll("datafile_id", fileId)
+    return yield r.table("datadir2datafile").getAll(fileId, {index: 'datafile_id'})
         .eqJoin("datadir_id", r.table("project2datadir"), {index: "datadir_id"}).zip()
-        .eqJoin("project_id", r.Table("projects")).zip()
+        .eqJoin("project_id", r.table("projects")).zip()
 }
 
 module.exports = {
