@@ -1,0 +1,30 @@
+flask
+rethinkdb
+pbkdf2
+
+# If you are running into trouble with missing dependencies;
+# the following may help
+# 
+# For python testing, if we ever get around to it
+# pytest
+#
+# used by loader/tasks/db.py and scripts/tiffconvert.py
+# specifically: from PIL import Image
+# PIL
+#
+# used by loader/tasks/db.py
+# specifically: from celery import Celery
+# celery
+#
+# used by scripts/new-samples/index.py
+# elasticsearch
+#
+# used by scripts/determine_mediatype.py and scripts/mediatypes.py
+# magic
+#
+# used by scripts/list_dataset_file_counts.py
+# specifically: from pathlib import Path
+# pathlib
+#
+# used by email/stompit.py
+# stomp
