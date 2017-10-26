@@ -1,0 +1,3 @@
+mcservd/pids/*
+mcservd/log/*
+mcservd/package-lock.json
