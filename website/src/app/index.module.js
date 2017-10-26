@@ -19,5 +19,5 @@ angular.module('materialscommons', [
     'ngHandsontable',
     'angular-c3-simple',
     'dndLists',
-    'ngFileUpload'
+    'ngFileUpload',
 ]);

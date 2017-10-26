@@ -1,12 +1,16 @@
 class MCFileUploaderComponentController {
     /*@ngInject*/
-    constructor($stateParams, Upload, User, mcprojstore, gridFiles) {
+    constructor($stateParams, Upload, User, mcprojstore, gridFiles, $timeout) {
         this.$stateParams = $stateParams;
         this.Upload = Upload;
         this.User = User;
         this.mcprojstore = mcprojstore;
         this.gridFiles = gridFiles;
         this.files = [];
+        this.uploadFiles = [];
+        this.uploadInProgress = false;
+        this.$timeout = $timeout;
+        this.uploadMessage = '';
     }
 
     $onInit() {
@@ -21,12 +25,33 @@ class MCFileUploaderComponentController {
 
     submit() {
         let {project_id, directory_id} = this.$stateParams;
-        for (let i = 0; i < this.files.length; i++) {
-            this.Upload.upload({
+        this.uploadFiles = this.files.map((f) => ({
+            file: f,
+            progress: 0
+        }));
+        this.uploadInProgress = true;
+        P.map(this.uploadFiles, (f) => {
+            return this.Upload.upload({
                 url: `api/v2/projects/${project_id}/directories/${directory_id}/fileupload?apikey=${this.User.apikey()}`,
-                data: {file: this.files[i]}
-            });
-        }
+                data: {file: f.file}
+            }).then(
+                () => true,
+                () => null,
+                (evt) => {
+                    f.progress = parseInt(100.0 * evt.loaded / evt.total);
+                }
+            )
+        }, {concurrency: 3}).then(
+            () => {
+                this.$timeout(() => {
+                    let uploadCount = this.uploadFiles.length;
+                    this.uploadMessage = `Completed Upload of ${uploadCount} files.`;
+                    this.uploadFiles.length = 0;
+                    this.files.length = 0;
+                    this.uploadInProgress = false;
+                });
+            }
+        )
     }
 }
 
