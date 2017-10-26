@@ -279,6 +279,10 @@ md-checkbox.md-checked.mc-done .md-icon {
 //  background-color: $mc-color-done;
 //}
 
+.no-bullets {
+  list-style: none;
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
@@ -623,4 +627,13 @@ table.md-table tr.md-row:last-child {
   text-align: center;
   padding: 100px 10px;
   margin-left: 10px;
+}
+
+.preview {
+    clear: both;
+}
+
+.preview img, .preview audio, .preview video {
+    max-width: 200px;
+    max-height: 100px;
 }
