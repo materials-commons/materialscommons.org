@@ -11,6 +11,7 @@ class MCFileUploaderComponentController {
         this.uploadInProgress = false;
         this.$timeout = $timeout;
         this.uploadMessage = '';
+        this.uploaded = [];
     }
 
     $onInit() {
@@ -35,7 +36,9 @@ class MCFileUploaderComponentController {
                 url: `api/v2/projects/${project_id}/directories/${directory_id}/fileupload?apikey=${this.User.apikey()}`,
                 data: {file: f.file}
             }).then(
-                () => true,
+                (uploaded) => {
+                    this.uploaded.push(uploaded);
+                },
                 () => null,
                 (evt) => {
                     f.progress = parseInt(100.0 * evt.loaded / evt.total);
@@ -49,6 +52,11 @@ class MCFileUploaderComponentController {
                     this.uploadFiles.length = 0;
                     this.files.length = 0;
                     this.uploadInProgress = false;
+                    if (this.onUploadComplete) {
+                        let uploadedCopy = this.uploaded.slice();
+                        this.onUploadComplete(uploadedCopy);
+                    }
+                    this.uploaded.length = 0;
                 });
             }
         )
@@ -58,4 +66,7 @@ class MCFileUploaderComponentController {
 angular.module('materialscommons').component('mcFileUploader', {
     templateUrl: 'app/project/files/components/mc-file-uploader.html',
     controller: MCFileUploaderComponentController,
+    bindings: {
+        onUploadComplete: '<'
+    }
 });
