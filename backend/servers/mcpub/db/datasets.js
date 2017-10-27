@@ -12,7 +12,8 @@ module.exports.getAll = function*(next) {
         return {
             'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
             'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
-            'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
+            'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count(),
+            'comments': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count()
         }
     });
     yield next;
@@ -36,7 +37,8 @@ module.exports.getRecent = function*(next) {
             return {
                 'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
                 'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
-                'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
+                'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count(),
+                'comments': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count()
             }
         }).limit(10);
     yield next;
@@ -47,7 +49,8 @@ module.exports.getTopViews = function*(next) {
         return {
             'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
             'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
-            'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
+            'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count(),
+            'comments': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count()
         }
     }).orderBy(r.desc('views')).limit(10);
     yield next;
@@ -75,7 +78,13 @@ module.exports.getOne = function*(next) {
             samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).map(function(row) {
                 return r.table('samples').get(row('sample_id'))
             }).coerceTo('array'),
-            publisher: (!ds('owner'))?'unknown':r.db('materialscommons').table('users').get(ds('owner')).getField("fullname")
+            publisher: (!ds('owner'))?'unknown':r.db('materialscommons').table('users').get(ds('owner')).getField("fullname"),
+            comments: r.db('materialscommons')
+                .table('comments').getAll(ds('id'), {index: 'item_id'})
+                .eqJoin('owner', r.db('materialscommons').table('users'))
+                .withFields({'left':'id'},{'left':'otype'},{'left':'owner'},
+                    {'left':'mtime'},{'left':'text'},{'right':'fullname'})
+                .zip().coerceTo('array')
         }
     });
     if (this.params.user_id) {
@@ -110,5 +119,3 @@ function doiUrlLink(doi) {
     }
     return `${doiUrl}id/${doi}`;
 }
-
-

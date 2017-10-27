@@ -192,5 +192,31 @@ describe('Feature - Monitoring comments table: ', function() {
             }
         });
     });
+    describe('totally bogus test: ', function(){
+        it('is a one shot by test@test.mc of comment into table', function* () {
+            let users = ['another@test.mc','tadmin@test.mc',userId];
+            let itemId = '14f57aed-0403-486c-b68a-0c7d88103fb2'; // hand picked dataset id
+            let itemType = 'dataset';
+            let textBase = "Auto-generated comment: ";
+            let filler = "This is extra text to make a longer message.";
+            for (let i = 0; i < 4; i++) {
+                filler = [filler, filler].join(' ');
+            }
+            for (let i = 0; i < users.length; i++) {
+                let postUserId = users[i];
+                let commentText = textBase + i + ". " + filler;
+                let errorOrVal = yield commentsBackend.addComment(itemId, itemType, postUserId, commentText);
+                assert.isOk(errorOrVal);
+                assert.isOk(errorOrVal.val);
+                let comment = errorOrVal.val;
+                assert.isOk(comment.id);
+                assert.equal(comment.otype, 'comment');
+                assert.equal(comment.owner, postUserId);
+                assert.equal(comment.item_id, itemId);
+                assert.equal(comment.item_type, itemType);
+                console.log("Did trigger, " + i + ", for item_id = " + itemId + ", " + postUserId);
+            }
+        });
+    });
 });
 

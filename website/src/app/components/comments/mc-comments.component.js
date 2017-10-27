@@ -1,49 +1,24 @@
 class MCCommentsComponentController {
     constructor(User) {
         this.user = User.u();
-        console.log(this.comments)
-        if (! this.comments) {
-            this.comments = [
-                {
-                    comment: 'First Comment!',
-                    owner: 'tradiasa@umich.edu',
-                    owner_details: {
-                        fullname: 'Tracy Berman'
-                    },
-                    birthtime: Date.now(),
-                    mtime: Date.now()
-                },
-                {
+        this.loggedin = (this.user !== "Login");
+        console.log("Comments: ",comments)
+    }
 
-                    comment: 'This is a comment',
-                    owner: 'gtarcea@umich.edu',
-                    owner_details: {
-                        fullname: 'Glenn Tarcea'
-                    },
-                    birthtime: Date.now(),
-                    mtime: Date.now()
-                },
-                {
-                    comment: 'It works!',
-                    owner: 'bpuchala@umich.edu',
-                    owner_details: {
-                        fullname: 'Brian Puchala'
-                    },
-                    birthtime: Date.now(),
-                    mtime: Date.now()
-                },
-                {
-                    comment: 'Another comment',
-                    owner: 'johnea@umich.edu',
-                    owner_details: {
-                        fullname: 'John Allison'
-                    },
-                    birthtime: Date.now(),
-                    mtime: Date.now()
-                }
-            ]
-        }
+    addComment() {
+        console.log("Add")
+    }
 
+    editComment(id) {
+        console.log("Edit",id)
+    }
+
+    deleteComment(id) {
+        console.log("Delete",id)
+    }
+
+    refreshCommentsList() {
+        console.log("Refresh")
     }
 }
 
