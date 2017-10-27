@@ -1,11 +1,8 @@
 class MCFileUploaderComponentController {
     /*@ngInject*/
-    constructor($stateParams, Upload, User, mcprojstore, gridFiles, $timeout) {
-        this.$stateParams = $stateParams;
+    constructor(Upload, User, $timeout) {
         this.Upload = Upload;
         this.User = User;
-        this.mcprojstore = mcprojstore;
-        this.gridFiles = gridFiles;
         this.files = [];
         this.uploadFiles = [];
         this.uploadInProgress = false;
@@ -14,18 +11,11 @@ class MCFileUploaderComponentController {
         this.uploaded = [];
     }
 
-    $onInit() {
-        let project = this.mcprojstore.currentProject;
-        const entry = this.gridFiles.findEntry(project.files[0], this.$stateParams.directory_id);
-        this.path = entry.model.data.path;
-    }
-
     remove(index) {
         this.files.splice(index, 1);
     }
 
     submit() {
-        let {project_id, directory_id} = this.$stateParams;
         this.uploadFiles = this.files.map((f) => ({
             file: f,
             progress: 0
@@ -33,7 +23,7 @@ class MCFileUploaderComponentController {
         this.uploadInProgress = true;
         P.map(this.uploadFiles, (f) => {
             return this.Upload.upload({
-                url: `api/v2/projects/${project_id}/directories/${directory_id}/fileupload?apikey=${this.User.apikey()}`,
+                url: `api/v2/projects/${this.projectId}/directories/${this.directoryId}/fileupload?apikey=${this.User.apikey()}`,
                 data: {file: f.file}
             }).then(
                 (uploaded) => {
@@ -48,7 +38,7 @@ class MCFileUploaderComponentController {
             () => {
                 this.$timeout(() => {
                     let uploadCount = this.uploadFiles.length;
-                    this.uploadMessage = `Completed Upload of ${uploadCount} files.`;
+                    this.uploadMessage = `Completed Upload of ${uploadCount} ${uploadCount === 1 ? 'file' : 'files'}.`;
                     this.uploadFiles.length = 0;
                     this.files.length = 0;
                     this.uploadInProgress = false;
@@ -67,6 +57,9 @@ angular.module('materialscommons').component('mcFileUploader', {
     templateUrl: 'app/project/files/components/mc-file-uploader.html',
     controller: MCFileUploaderComponentController,
     bindings: {
-        onUploadComplete: '<'
+        onUploadComplete: '<',
+        path: '<',
+        directoryId: '<',
+        projectId: '<'
     }
 });
