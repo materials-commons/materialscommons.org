@@ -27,7 +27,7 @@ class MCFileUploaderComponentController {
                 data: {file: f.file}
             }).then(
                 (uploaded) => {
-                    this.uploaded.push(uploaded);
+                    this.uploaded.push(uploaded.data);
                 },
                 () => null,
                 (evt) => {
@@ -44,7 +44,7 @@ class MCFileUploaderComponentController {
                     this.uploadInProgress = false;
                     if (this.onUploadComplete) {
                         let uploadedCopy = this.uploaded.slice();
-                        this.onUploadComplete(uploadedCopy);
+                        this.onUploadComplete({files: uploadedCopy});
                     }
                     this.uploaded.length = 0;
                 });
@@ -57,7 +57,7 @@ angular.module('materialscommons').component('mcFileUploader', {
     templateUrl: 'app/project/files/components/mc-file-uploader.html',
     controller: MCFileUploaderComponentController,
     bindings: {
-        onUploadComplete: '<',
+        onUploadComplete: '&',
         path: '<',
         directoryId: '<',
         projectId: '<'
