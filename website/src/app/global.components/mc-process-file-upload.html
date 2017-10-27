@@ -9,8 +9,9 @@
             </md-option>
         </md-select>
     </md-input-container>
-    <mc-flow-button dir="$ctrl.dir"></mc-flow-button>
-    <div ng-if="$ctrl.hasUploads()">
-        <mc-file-uploads reset-files="false"></mc-file-uploads>
-    </div>
+    <mc-file-uploader project-id="$ctrl.projectId"
+                      directory-id="$ctrl.dir.data.id"
+                      path="$ctrl.dir.data.name"
+                      on-upload-complete="$ctrl.uploadComplete(files)">
+    </mc-file-uploader>
 </div>
