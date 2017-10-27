@@ -19,9 +19,8 @@ class MCProcessFileUploadComponentController {
     }
 
     uploadComplete(files) {
-        let fileIds = files.map(f => f.id);
-        if (fileIds.length) {
-            this.onUploadComplete({fileIds: fileIds});
+        if (files.length) {
+            this.onUploadComplete({files: files});
         }
     }
 }
