@@ -87,7 +87,7 @@ module.exports.getOne = function*(next) {
                             };
                         }
                     )
-                    .orderBy('mtime')
+                    .orderBy(r.desc('birthtime'))
         };
     });
     if (this.params.user_id) {

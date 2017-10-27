@@ -1,6 +1,6 @@
 <div>
     <md-button ng-if="$ctrl.loggedin"
-               class="md-raised md-primary" ng-click="$ctrl.addComment()">
+               class="md-raised md-primary" ng-click="$ctrl.addEditComment(null)">
         <md-tooltip>Add comment to list</md-tooltip>
         <i class="fa fa-fw fa-plus"></i>add comment
     </md-button>
@@ -11,16 +11,16 @@
     <br />
     <i ng-if="!$ctrl.loggedin">You must be logged in to add comments</i>
     <md-list flex>
-        <md-subheader>Comments</md-subheader>
+        <md-header>Comments</md-header>
         <md-list-item class="md-3-line" ng-repeat="comment in $ctrl.comments">
             <div class="md-list-item-text" layout="column">
-                <span {{ class="mc-md-small"><b>{{comment.fullname}}</b> on {{comment.mtime | date:"MMM d, y h:mm a"}}</span>
+                <span {{ class="mc-md-small"><b>{{comment.user.fullname}}</b> on {{comment.mtime | date:"MMM d, y h:mm a"}}</span>
                 <p class="md-subhead">{{comment.text}}</p>
                 <div ng-if="$ctrl.loggedin" layout="row">
-                    <a ng-click="$ctrl.addComment()">add comment</a>
+                    <a ng-click="$ctrl.addEditComment(null)">add comment</a>
                     <a class="margin-left-15"
                        ng-if="comment.owner === $ctrl.user"
-                       ng-click="$ctrl.editComment(comment.id)">edit</a>
+                       ng-click="$ctrl.addEditComment(comment.id)">edit</a>
                     <a class="margin-left-15"
                        ng-if="comment.owner === $ctrl.user"
                        ng-click="$ctrl.deleteComment(comment.id)">delete</a>
@@ -30,7 +30,7 @@
         </md-list-item>
     </md-list>
     <md-button ng-if="$ctrl.loggedin"
-               class="md-raised md-primary" ng-click="$ctrl.addComment()">
+               class="md-raised md-primary" ng-click="$ctrl.addEditComment(null)">
         <md-tooltip>Add comment to list</md-tooltip>
         <i class="fa fa-fw fa-plus"></i>add comment
     </md-button>

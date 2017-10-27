@@ -6,6 +6,10 @@ class MCDatasetOverviewComponentController {
         console.log("MCDatasetOverviewComponentController");
         console.log("dataset: ", this.dataset);
     }
+
+    commentsUpdated() {
+        console.log("Refetch dataset from server");
+    }
 }
 
 angular.module('materialscommons').component('mcDatasetOverview', {
