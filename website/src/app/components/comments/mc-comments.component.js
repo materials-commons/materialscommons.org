@@ -2,7 +2,8 @@ class MCCommentsComponentController {
     constructor(User) {
         this.user = User.u();
         this.loggedin = (this.user !== "Login");
-        console.log("Comments: ",comments)
+        console.log("MCCommentsComponentController")
+        console.log("comments: ",this.comments)
     }
 
     addComment() {

@@ -3,6 +3,8 @@ class MCDatasetOverviewComponentController {
     constructor(User) {
         this.showFiles = User.isAuthenticated();
         this.showProcessesWorkflow = false;
+        console.log("MCDatasetOverviewComponentController");
+        console.log("dataset: ", this.dataset);
     }
 }
 

@@ -79,13 +79,16 @@ module.exports.getOne = function*(next) {
                 return r.table('samples').get(row('sample_id'))
             }).coerceTo('array'),
             publisher: (!ds('owner'))?'unknown':r.db('materialscommons').table('users').get(ds('owner')).getField("fullname"),
-            comments: r.db('materialscommons')
-                .table('comments').getAll(ds('id'), {index: 'item_id'})
-                .eqJoin('owner', r.db('materialscommons').table('users'))
-                .withFields({'left':'id'},{'left':'otype'},{'left':'owner'},
-                    {'left':'mtime'},{'left':'text'},{'right':'fullname'})
-                .zip().coerceTo('array')
-        }
+            comments: r.db('materialscommons').table('comments')
+                    .getAll(ds('id'), {index:'item_id'}).merge((c) => {
+                        return {
+                            user: r.db('materialscommons').table('users')
+                                .get(c('owner')).pluck('fullname')
+                            };
+                        }
+                    )
+                    .orderBy('mtime')
+        };
     });
     if (this.params.user_id) {
         const is_appreciated = yield r.table('appreciations').getAll([this.params.user_id, this.params.id], {index: 'user_dataset'}).coerceTo('array');
