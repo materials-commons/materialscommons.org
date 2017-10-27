@@ -8,7 +8,7 @@ class MCDatasetOverviewComponentController {
     }
 
     commentsUpdated() {
-        console.log("Refetch dataset from server");
+        console.log("Re-fetch dataset from server");
     }
 }
 

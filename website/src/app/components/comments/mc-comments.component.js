@@ -3,8 +3,9 @@ class MCCommentsComponentController {
         this.user = User.u();
         this.$mdDialog = $mdDialog;
         this.loggedin = (this.user !== "Login");
-        console.log("MCCommentsComponentController")
-        console.log("comments: ",this.comments)
+        console.log("MCCommentsComponentController");
+        console.log("comments: ",this.comments);
+        console.log("onChangeComments: ",this.onChangeComments);
     }
 
     addEditComment(id) {
@@ -41,7 +42,7 @@ class MCCommentsComponentController {
                     console.log("add")
                     console.log("add text: ", values.text);
                 }
-                onChangeComments();
+                this.onChangeComments();
             }
         );
     }
@@ -56,12 +57,12 @@ class MCCommentsComponentController {
             locals: {
                 id: id
             }
-        }).then(() => {onChangeComments();});
+        }).then(() => {this.onChangeComments();});
     }
 
     refreshCommentsList() {
         console.log("Refresh")
-        onChangeComments();
+        this.onChangeComments();
     }
 }
 
