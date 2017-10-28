@@ -249,17 +249,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.files.uploads2', {
             url: '/uploads2/:directory_id',
-            template: '<mc-file-uploader project-id="$resolve.data.projectId" directory-id="$resolve.data.dirId" path="$resolve.data.dirPath"></mc-file-uploader>',
-            resolve: {
-                data: ['gridFiles', 'mcprojstore', '$stateParams',
-                    (gridFiles, mcprojstore, $stateParams) => {
-                        const project = mcprojstore.currentProject;
-                        const entry = gridFiles.findEntry(project.files[0], $stateParams.directory_id);
-                        const path = entry.model.data.path;
-                        return {dirId: $stateParams.directory_id, projectId: $stateParams.project_id, dirPath: path};
-                    }
-                ]
-            }
+            template: '<mc-file-tree-uploader-container></mc-file-tree-uploader-container>'
         })
         .state('project.files.uploads', {
             url: '/uploads',
