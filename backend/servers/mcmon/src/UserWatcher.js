@@ -2,7 +2,7 @@ const GenericWatcher = require('./GenericWatcher.js');
 
 // TODO: expand this usage to logging user activity. Possibly by watching multiple tables.
 
-class UserWatcher extends GenericWatcher{
+class UserWatcher extends GenericWatcher {
     constructor(parameters) {
         super(parameters);
         this.table_name = 'users';

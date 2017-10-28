@@ -1,4 +1,17 @@
 # Release Notes
+## October 2017
+- :star: **New Feature:** Merge experiments - Experiments can now be merged into a single experiment. This allows you to do your work in separate experiments then publish/view as a single whole. Original experiments are kept.
+- :star: **New Feature:** Delete experiments - Experiments can now be deleted when using the web application.
+- :star: **New Feature:** Delete projects - Projects can now be deleted when using the web application.
+- :star: **New Feature:** Refresh view - Users can control when the want to refresh their projects with the latest information from the server.
+- :star: **Improvement:** A number of performance improvments were made. Projects and experiments will now load much faster. Deletes are now nearly instantaneous.
+- :star: **Improvement:** The details page for a public dataset has been reworked to reduce scrolling and make finding the different sections easier.
+- :boom: **Fixed:** Experiments with large numbers of files would appear to hang. Now they load very quickly.
+- :boom: **Fixed:** Clicking on tags in the public datasets didn't do anything. Now clicking on a tag takes you to all the datasets associated with that tag.
+- :boom: **Fixed:** Other miscellaneous bug fixes.
+
+## August 2017
+Performance improvements and changes related to the upcoming Python API release and PRISMS workshop in August.
 
 ## 25 July 2017
 ### [Materials Commons Projects](https://materialscommons.org/)
