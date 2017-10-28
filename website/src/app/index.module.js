@@ -18,5 +18,6 @@ angular.module('materialscommons', [
     'blockUI',
     'ngHandsontable',
     'angular-c3-simple',
-    'dndLists'
+    'dndLists',
+    'ngFileUpload',
 ]);

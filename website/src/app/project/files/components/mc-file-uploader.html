@@ -1,0 +1,42 @@
+<div layout-margin layout="row">
+    <form name="form">
+        <div style="margin-left: 12px; margin-bottom: 8px;">
+            Upload files to directory <b>{{$ctrl.path}}</b>
+        </div>
+        <div ngf-select ngf-multiple="true" ngf-drop ngf-keep="'distinct'" ng-show="!$ctrl.uploadInProgress"
+             ng-model="$ctrl.files" class="drop-box pointer text-uppercase">
+            select or drop files
+        </div>
+    </form>
+    <div>
+        <div layout="row" ng-show="!$ctrl.uploadInProgress">
+            <md-button class="md-warn" ng-show="$ctrl.files.length !== 0" ng-click="$ctrl.files.length = 0">
+                Remove All
+            </md-button>
+            <md-button type="submit" class="md-primary" ng-click="$ctrl.submit()"
+                       ng-disabled="$ctrl.files.length === 0">
+                upload selected files
+            </md-button>
+        </div>
+        <b>{{$ctrl.uploadMessage}}</b>
+        <ul class="no-bullets">
+            <li ng-repeat="file in $ctrl.files" class="margin-top-10" ng-if="$ctrl.uploadFiles.length === 0">
+                <a ng-click="$ctrl.remove($index)" class="mc-error-color">
+                    <i class="fa fa-fw fa-remove"></i>
+                </a>
+                {{file.name}}
+                <div class="preview">
+                    <img ngf-src="file">
+                </div>
+                <hr/>
+            </li>
+            <li ng-repeat="f in $ctrl.uploadFiles" class="margin-top-10" ng-if="$ctrl.uploadFiles.length !== 0">
+                {{f.file.name}}
+                <div class="preview">
+                    <img ngf-src="f.file">
+                </div>
+                <md-progress-linear md-mode="determinate" value="{{f.progress}}"></md-progress-linear>
+            </li>
+        </ul>
+    </div>
+</div>

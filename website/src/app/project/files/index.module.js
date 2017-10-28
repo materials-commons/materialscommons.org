@@ -4,6 +4,8 @@ import './file-tree-delete-service.service';
 import './mc-file-tree.component';
 import './components/mc-flow.service';
 import './components/mc-flow-button.directive';
+import './components/mc-file-tree-uploader-container.component';
+import './components/mc-file-uploader.component';
 import './components/dir/mc-dir.component';
 import './components/dir/mc-dir-overview.component';
 import './components/file/mc-file-description.component';
