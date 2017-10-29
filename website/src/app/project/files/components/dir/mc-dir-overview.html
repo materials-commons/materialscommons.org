@@ -53,8 +53,8 @@
                 {{$ctrl.downloadMessageFlash}}
             </span>
             <span ng-if="$ctrl.downloadState == 'done'">
-                <a ng-href="{{ctrl.downloadURL}}" ng-click="$ctrl.downloadState='none'">
-                    Preparation done click here to download
+                <a ng-href="{{$ctrl.downloadURL}}" ng-click="$ctrl.downloadState='none'">
+                    Preparation done click here to download {{$ctrl.downloadURL}}
                 </a>
             </span>
             <span flex></span>
