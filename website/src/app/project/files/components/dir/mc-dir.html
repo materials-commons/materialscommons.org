@@ -3,6 +3,12 @@
         <h3 class="md-title">
             <i class="fa fa-fw fa-folder-open"></i> {{$ctrl.dir.data.path}}
         </h3>
+        <div layout="row" class="margin-left-30">
+            <md-button class="md-primary">Upload Files</md-button>
+            <md-button class="md-primary">Rename Directory</md-button>
+            <md-button class="md-primary">Move Selected</md-button>
+            <md-button class="md-primary">Delete Selected</md-button>
+        </div>
     </div>
     <mc-dir-overview dir="$ctrl.dir" project="$ctrl.project"></mc-dir-overview>
 </div>
