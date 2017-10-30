@@ -1,51 +1,5 @@
 <div layout="column">
-    <md-checkbox ng-model="$ctrl.filterByType">Filter By Type</md-checkbox>
-    <div layout="row">
-        <span flex></span>
-        <div flex="50">
-            <md-table-container ng-if="$ctrl.filterByType">
-                <table md-table>
-                    <thead md-head>
-                    <tr md-row>
-                        <th md-column>Type</th>
-                        <th md-column>Count</th>
-                        <th md-column>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody md-body>
-                    <tr ng-if="$ctrl.allFiles.files.length" md-row class="md-row-hover">
-                        <td md-cell><i class="fa fa-fw fa-files-o file-color"></i> All</td>
-                        <td md-cell>{{$ctrl.allFiles.files.length}}</td>
-                        <td md-cell>
-                            <md-button class="md-primary"
-                                       ng-click="$ctrl.viewFiles($ctrl.allFiles)">
-                                view files
-                            </md-button>
-                        </td>
-                    </tr>
-                    <tr ng-if="!$ctrl.allFiles.files.length" md-row>
-                        <td md-cell>No files</td>
-                        <td md-cell></td>
-                        <td md-cell></td>
-                    </tr>
-                    <tr md-row class="md-row-hover" ng-repeat="entry in $ctrl.overview | filter:{name: '!Directory'}">
-                        <td md-cell>
-                            <i class="fa fa-fw {{entry.icon}} file-color"></i> {{entry.name}}
-                        </td>
-                        <td md-cell>{{entry.count}}</td>
-                        <td md-cell>
-                            <md-button class="md-primary" ng-if="entry.name !== 'Directory'"
-                                       ng-click="$ctrl.viewFiles(entry)">
-                                view files
-                            </md-button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </md-table-container>
-        </div>
-        <span flex></span>
-    </div>
+    <mc-dir-filter-by-type dir="$ctrl.dir" on-view-selected="$ctrl.viewFiles(selected)"></mc-dir-filter-by-type>
     <div ng-if="$ctrl.files.length">
         <div layout="row">
             <span ng-if="$ctrl.downloadState == 'preparing'">

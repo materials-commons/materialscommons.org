@@ -44,8 +44,8 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
             });
     }
 
-    function viewFiles(entry) {
-        ctrl.files = entry.files.map(function(f) {
+    function viewFiles(selected) {
+        ctrl.files = selected.files.map(function(f) {
             f.selected = false;
             return f;
         });
