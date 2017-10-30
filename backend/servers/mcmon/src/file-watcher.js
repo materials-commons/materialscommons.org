@@ -8,26 +8,26 @@ class FileWatcher extends GenericWatcher {
     }
 
     filter(delta) {
-        let created = (delta.old_val === null) && delta.new_val;
-        let deleted = (delta.new_val === null) && delta.old_val;
-        let change = created || deleted;
-        return change;
+        return true;
     }
 
     action(delta) {
         let verbose_flag = this.verbose();
+        let isDelete = delta.new_val === null;
         let created = (delta.old_val === null) && delta.new_val;
         if (verbose_flag) {
             let name = delta.old_val ? delta.old_val.name : (delta.new_val ? delta.new_val.name : "unkn");
             let message = created ? "to be created" : "to be deleted";
             console.log(name + ": " + message);
         }
-        if (created) {
-            file_converter.convert_file_if_needed(
-                delta.new_val, this.parameters.get_mc_dir_paths(), {verbose: verbose_flag});
-        } else {
+        if (isDelete) {
             file_converter.delete_file_conversion_if_exists(
                 delta.old_val, this.parameters.get_mc_dir_paths(), {verbose: verbose_flag});
+        } else {
+            let f = delta.new_val.mediatype.mime !== '' ? delta.new_val : delta.old_val;
+            if (f) {
+                file_converter.convert_file_if_needed(f, this.parameters.get_mc_dir_paths(), {verbose: verbose_flag});
+            }
         }
     }
 }

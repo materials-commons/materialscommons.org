@@ -13,12 +13,17 @@ function allByProject() {
     });
 }
 
+function* projectAccessList(projectId) {
+    return yield r.table('access').getAll(projectId, {index: 'project_id'});
+}
+
 function adminUsers() {
     return r.table('users').filter({admin: true}).run();
 }
 
 module.exports = {
     allByProject: allByProject,
-    adminUsers: adminUsers
+    adminUsers: adminUsers,
+    projectAccessList
 };
 

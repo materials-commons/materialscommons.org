@@ -3,7 +3,11 @@
         <a class="mc-file-tree-control text-uppercase" ng-click="$ctrl.promptForFolder = !$ctrl.promptForFolder">
             <i class="fa fa-fw fa-plus-square"></i> folder
         </a>
-        <mc-flow-button dir="$ctrl.file"></mc-flow-button>
+        <a class="mc-file-tree-control text-uppercase"
+           ui-sref="project.files.uploads2({directory_id: $ctrl.file.data.id})">
+            <i class="fa fa-fw fa-upload"></i>upload files
+        </a>
+        <!--<mc-flow-button dir="$ctrl.file"></mc-flow-button>-->
         <a ng-if="$ctrl.allowRename" class="mc-file-tree-control text-uppercase"
            ng-click="$ctrl.promptForRename = !$ctrl.promptForRename">
             <i class="fa fa-fw fa-pencil-square"></i>rename

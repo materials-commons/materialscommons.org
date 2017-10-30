@@ -2,6 +2,7 @@ const router = require('koa-router')();
 const projects = require('./projects');
 const users = require('./users');
 const templates = require('./templates');
+const files = require('./files');
 
 function createResources() {
     let projectsResource = projects.createResource();
@@ -9,6 +10,9 @@ function createResources() {
 
     let templatesResource = templates.createResource();
     router.use('/templates', templatesResource.routes(), templatesResource.allowedMethods());
+
+    let filesResource = files.createResource();
+    router.use('/files', filesResource.routes(), filesResource.allowedMethods());
 
     users.createResource(router);
 

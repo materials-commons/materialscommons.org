@@ -1,6 +1,6 @@
 class MCProcessTemplateCreateSamplesComponentController {
     /*@ngInject*/
-    constructor(focus, $mdDialog, samplesAPI, $stateParams, toast, selectItems, experimentsAPI, navbarOnChange) {
+    constructor(focus, $mdDialog, samplesAPI, $stateParams, toast, selectItems, experimentsAPI, navbarOnChange, mcprojstore) {
         this.focus = focus;
         this.$mdDialog = $mdDialog;
         this.samplesAPI = samplesAPI;
@@ -10,6 +10,7 @@ class MCProcessTemplateCreateSamplesComponentController {
         this.selectItems = selectItems;
         this.experimentsAPI = experimentsAPI;
         this.navbarOnChange = navbarOnChange;
+        this.mcprojstore = mcprojstore;
     }
 
     selectFiles() {
@@ -23,7 +24,13 @@ class MCProcessTemplateCreateSamplesComponentController {
                 };
                 this.experimentsAPI.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
                     .then(
-                        (process) => this.process.files = process.files,
+                        () => {
+                            this.process.files = this.process.files.concat(selected.files);
+                            this.mcprojstore.updateCurrentProcess((currentProcess) => {
+                                currentProcess.files = this.process.files;
+                                return currentProcess;
+                            });
+                        },
                         () => this.toast.error('Unable to add files')
                     );
             });
@@ -111,7 +118,7 @@ class AddMultipleSamplesDialogController {
     }
 
     done() {
-        if (this.nameTemplate.indexOf('$INDEX') == -1) {
+        if (this.nameTemplate.indexOf('$INDEX') === -1) {
             this.toast.error(`Template name doesn't contain $INDEX`);
             return;
         }
