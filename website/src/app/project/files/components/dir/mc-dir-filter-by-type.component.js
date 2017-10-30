@@ -13,6 +13,13 @@ class MCDirFilterByTypeComponentController {
     viewSelected(selected) {
         this.onViewSelected({selected: selected});
     }
+
+    filterByTypeChanged() {
+        // Reset view to all files when filterByType is deselected
+        if (!this.filterByType) {
+            this.onViewSelected({selected: this.allFiles});
+        }
+    }
 }
 
 angular.module('materialscommons').component('mcDirFilterByType', {

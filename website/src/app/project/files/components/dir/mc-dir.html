@@ -6,7 +6,9 @@
     </div>
     <div layout="row" class="margin-left-30">
         <div>
-            <md-button class="md-primary md-raised">Upload Files</md-button>
+            <md-button class="md-primary md-raised" ui-sref="project.files.uploads2({directory_id: $ctrl.dir.data.id})">
+                <i class="fa fa-fw fa-upload"></i> Upload Files
+            </md-button>
             <md-button class="md-primary md-raised">Create Directory</md-button>
             <md-button class="md-primary md-raised">Rename Directory</md-button>
             <md-menu>

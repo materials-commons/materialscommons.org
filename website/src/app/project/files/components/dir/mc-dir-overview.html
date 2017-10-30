@@ -19,9 +19,6 @@
                 <md-button ng-if="$ctrl.selectedCount" ng-click="$ctrl.downloadSelectedFiles()">
                     <i class="fa fa-fw fa-download"></i> download selected
                 </md-button>
-                <md-button ng-if="$ctrl.selectedCount" ng-click="$ctrl.shareSelectedFiles()">
-                    <i class="fa fa-fw"></i> share selected
-                </md-button>
                 <md-button ng-if="!$ctrl.selectedCount" ng-click="$ctrl.selectAllFiles()">
                     select all
                 </md-button>
@@ -29,7 +26,7 @@
                     clear selected
                 </md-button>
                 <span flex="10"></span>
-                <md-input-container md-no-float class="md-input-bottom-0" ng-if="!$ctrl.filterByType">
+                <md-input-container md-no-float class="md-input-bottom-0">
                     <input placeholder="Filter by name..."
                            ng-model="$ctrl.fileFilter.name"
                            ng-model-options="{ updateOn: 'default blur', debounce: { default: 200, blur: 0} }">
@@ -53,7 +50,8 @@
                             <div layout="row" layout-align="start center">
                                 <b>{{$index+1}}.</b>
                                 <i class="fa fa-files-o fa-fw file-color"></i>
-                                <md-button class="md-primary" ui-sref="project.files.file({file_id: file.id})" aria-label="view file">
+                                <md-button class="md-primary" ui-sref="project.files.file({file_id: file.id})"
+                                           aria-label="view file">
                                     {{file.name}}
                                 </md-button>
                                 {{file.mediatype.mime}}
@@ -62,14 +60,16 @@
                         </td>
                         <td md-cell>
                             <div ng-if="$ctrl.isImage(file.mediatype.mime)">
-                                <md-button class="md-primary" ui-sref="project.files.file({file_id: file.id})" aria-label="view file">
+                                <md-button class="md-primary" ui-sref="project.files.file({file_id: file.id})"
+                                           aria-label="view file">
                                     <img class="img-thumbnail" height="140" width="140"
                                          ng-src="{{$ctrl.fileSrc(file.id)}}">
                                 </md-button>
                             </div>
                         </td>
                         <td md-cell>
-                            <md-checkbox ng-click="$ctrl.fileSelect(file)" ng-model="file.selected" aria-label="select"></md-checkbox>
+                            <md-checkbox ng-click="$ctrl.fileSelect(file)" ng-model="file.selected"
+                                         aria-label="select"></md-checkbox>
                         </td>
                     </tr>
                     </tbody>

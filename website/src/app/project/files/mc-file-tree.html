@@ -10,7 +10,8 @@
                         <li ng-repeat="file in $ctrl.files track by file.data.id" ui-tree-node>
                             <div ui-tree-handle class="mc-active-tree-node">
                                 <div layout="row" layout-align="start center">
-                                    <a ng-click="file.expand = !file.expand" data-nodrag>
+                                    <!--<a ng-click="file.expand = !file.expand" data-nodrag>-->
+                                    <a ng-click="$ctrl.gotoTopLevel(file)" data-nodrag>
                                 <span ng-if="file.expand"><i
                                         class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
                                 <span ng-if="!file.expand"><i

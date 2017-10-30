@@ -78,6 +78,20 @@ function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI,
             $state.go('project.files.dir', {dir_id: ctrl.files[0].data.id});
         }
     });
+
+    ctrl.gotoTopLevel = function (dir) {
+        clearActiveStateInAllNodes();
+        $state.go('project.files.dir', {dir_id: dir.data.id});
+    };
+
+    function clearActiveStateInAllNodes() {
+        const proj = mcprojstore.currentProject;
+        const treeModel = new TreeModel(),
+            root = treeModel.parse(proj.files[0]);
+        root.walk(function (treeNode) {
+            treeNode.model.active = false;
+        });
+    }
 }
 
 angular.module('materialscommons').directive('mcFileTreeDir', mcFileTreeDirDirective);
