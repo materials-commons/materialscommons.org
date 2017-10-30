@@ -3,7 +3,8 @@ angular.module('materialscommons').component('mcDirOverview', {
     controller: MCDirOverviewComponentController,
     bindings: {
         dir: '=',
-        project: '='
+        project: '=',
+        onSelected: '&'
     }
 });
 
@@ -57,6 +58,7 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
         } else {
             ctrl.selectedCount++;
         }
+        ctrl.onSelected({selected: ctrl.selectedCount !== 0});
     }
 
     function selectAllFiles() {
@@ -65,6 +67,7 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
             f.selected = true;
         });
         ctrl.selectedCount = ctrl.files.length;
+        ctrl.onSelected({selected: ctrl.selectedCount !== 0});
     }
 
     function deselectSelectedFiles() {
@@ -74,6 +77,7 @@ function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular
             }
         });
         ctrl.selectedCount = 0;
+        ctrl.onSelected({selected: ctrl.selectedCount !== 0});
     }
 
     function downloadSelectedFiles() {

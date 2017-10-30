@@ -5,12 +5,16 @@
         </h3>
     </div>
     <div layout="row" class="margin-left-30">
-        <md-button class="md-primary md-raised">Upload Files</md-button>
-        <md-button class="md-primary md-raised">Create Directory</md-button>
-        <md-button class="md-primary md-raised">Rename Directory</md-button>
-        <md-button class="md-primary md-raised">Move Selected</md-button>
-        <md-button class="md-primary md-raised">Delete Selected</md-button>
-        <md-button class="md-primary md-raised">Download Selected</md-button>
+        <div ng-show="!$ctrl.selected">
+            <md-button class="md-primary md-raised">Upload Files</md-button>
+            <md-button class="md-primary md-raised">Create Directory</md-button>
+            <md-button class="md-primary md-raised">Rename Directory</md-button>
+        </div>
+        <div ng-show="$ctrl.selected">
+            <md-button class="md-primary md-raised">Move Selected</md-button>
+            <md-button class="md-primary md-raised">Delete Selected</md-button>
+            <md-button class="md-primary md-raised">Download Selected</md-button>
+        </div>
     </div>
-    <mc-dir-overview dir="$ctrl.dir" project="$ctrl.project"></mc-dir-overview>
+    <mc-dir-overview dir="$ctrl.dir" project="$ctrl.project" on-selected="$ctrl.onSelected(selected)"></mc-dir-overview>
 </div>

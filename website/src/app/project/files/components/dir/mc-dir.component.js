@@ -8,9 +8,15 @@ function MCDirComponentController($stateParams, mcprojstore, gridFiles) {
 
     const ctrl = this;
     ctrl.project = mcprojstore.currentProject;
+    ctrl.selected = false;
+    ctrl.onSelected = onSelected;
 
     const entry = gridFiles.findEntry(ctrl.project.files[0], $stateParams.dir_id);
     if (entry) {
         ctrl.dir = entry.model;
+    }
+
+    function onSelected(selected) {
+        ctrl.selected = selected;
     }
 }
