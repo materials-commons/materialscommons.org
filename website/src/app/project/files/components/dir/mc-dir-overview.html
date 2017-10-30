@@ -1,8 +1,9 @@
 <div layout="column">
+    <md-checkbox ng-model="$ctrl.filterByType">Filter By Type</md-checkbox>
     <div layout="row">
         <span flex></span>
         <div flex="50">
-            <md-table-container>
+            <md-table-container ng-if="$ctrl.filterByType">
                 <table md-table>
                     <thead md-head>
                     <tr md-row>
@@ -74,7 +75,7 @@
                     clear selected
                 </md-button>
                 <span flex="10"></span>
-                <md-input-container md-no-float class="md-input-bottom-0">
+                <md-input-container md-no-float class="md-input-bottom-0" ng-if="!$ctrl.filterByType">
                     <input placeholder="Filter by name..."
                            ng-model="$ctrl.fileFilter.name"
                            ng-model-options="{ updateOn: 'default blur', debounce: { default: 200, blur: 0} }">

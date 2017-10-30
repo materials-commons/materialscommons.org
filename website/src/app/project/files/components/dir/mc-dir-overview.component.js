@@ -11,6 +11,7 @@ angular.module('materialscommons').component('mcDirOverview', {
 function MCDirOverviewComponentController(fileType, mcfile, $filter, Restangular, User, mcmodal, mcprojstore, toast, isImage) {
     const ctrl = this;
 
+    ctrl.filterByType = false;
     ctrl.viewFiles = viewFiles;
     ctrl.fileSrc = mcfile.src;
     ctrl.isImage = isImage;
