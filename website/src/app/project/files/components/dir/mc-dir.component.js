@@ -22,8 +22,6 @@ class MCDirComponentController {
     }
 }
 
-// projectFileTreeAPI.renameProjectDir(ctrl.projectId, ctrl.file.data.id, ctrl.file.data.name)
-//           .then(
 angular.module('materialscommons').component('mcDir', {
     templateUrl: 'app/project/files/components/dir/mc-dir.html',
     controller: MCDirComponentController,
