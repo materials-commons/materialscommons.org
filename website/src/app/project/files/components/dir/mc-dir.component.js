@@ -13,7 +13,6 @@ class MCDirComponentController {
     $onInit() {
         const project = this.mcprojstore.currentProject;
         const entry = this.gridFiles.findEntry(project.files[0], this.dirId);
-        console.log('entry', entry);
         if (entry) {
             this.dir = entry.model;
         }
@@ -24,7 +23,6 @@ class MCDirComponentController {
     }
 
     renameDirectory() {
-        console.log('renameDirectory');
         this.mcFileOpsDialogs.renameDirectory(this.dir).then(
             name => {
                 this.projectFileTreeAPI.renameProjectDir(this.projectId, this.dirId, name)
