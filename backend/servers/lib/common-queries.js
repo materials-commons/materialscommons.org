@@ -41,7 +41,6 @@ function fileDetailsRql(rql, r) {
 
 function datasetDetailsRql(rql, r) {
     return rql.merge(ds => {
-        console.log("datasetDetailsRql");
         return {
             processes: processDetailsRql(r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
                 .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array'),
