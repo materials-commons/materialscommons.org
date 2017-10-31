@@ -17,7 +17,11 @@ function* getAllForItem(itemId) {
     return {val: comments};
 }
 
-function* addComment(item_id, item_type, owner, text) {
+function* addComment(user, attributes) {
+    let owner = user;
+    let item_id = attributes.item_id;
+    let item_type = attributes.item_type;
+    let text = attributes.text;
     let comment = yield db.insert('comments', new model.Comment(item_id, item_type, owner, text));
     let ret = {error: `could not add comment for item_id = ${item_id}`};
     if (comment) {
@@ -26,7 +30,8 @@ function* addComment(item_id, item_type, owner, text) {
     return ret;
 }
 
-function* updateComment(id, text) {
+function* updateComment(id, attributes) {
+    let text = attributes.text;
     let results = yield dbExec(r.table("comments").get(id).update({text: text}));
     if (results.replaced !== 1) {
         return {error: `updateComment - failed, ${id}`};

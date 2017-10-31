@@ -38,93 +38,107 @@ before(function*() {
 describe('Feature - comments: ', function() {
     describe('Create comment', function() {
         it ('add a new comment by the test user', function*(){
-            let item_id = dataset.id;
-            let item_type = dataset.otype;
             let owner = userId;
-            let text = "First comment - by owner of dataset";
-            let results = yield comments.addComment(item_id, item_type, owner, text)
+            let attributes = {
+                item_id: dataset.id,
+                item_type: dataset.otype,
+                text: "First comment - by owner of dataset"
+            }
+            let results = yield comments.addComment(owner, attributes);
             assert.isOk(results);
             assert.isOk(results.val);
             let comment = results.val;
             assert.equal(comment.otype, "comment");
-            assert.equal(comment.item_id, item_id);
-            assert.equal(comment.item_type, item_type);
-            assert.equal(comment.text, text);
+            assert.equal(comment.item_id, attributes.item_id);
+            assert.equal(comment.item_type, attributes.item_type);
+            assert.equal(comment.text, attributes.text);
             assert.equal(comment.owner, userId);
         });
         it ('add a new comment by a another user', function*(){
-            let item_id = dataset.id;
-            let item_type = dataset.otype;
             let owner = anotherUserId;
-            let text = "Another comment - by another user";
-            let results = yield comments.addComment(item_id, item_type, owner, text)
+            let attributes = {
+                item_id: dataset.id,
+                item_type: dataset.otype,
+                text: "Another comment - by another user"
+            }
+            let results = yield comments.addComment(owner, attributes);
             assert.isOk(results);
             assert.isOk(results.val);
             let comment = results.val;
             assert.equal(comment.otype, "comment");
-            assert.equal(comment.item_id, item_id);
-            assert.equal(comment.item_type, item_type);
-            assert.equal(comment.text, text);
+            assert.equal(comment.item_id, attributes.item_id);
+            assert.equal(comment.item_type, attributes.item_type);
+            assert.equal(comment.text, attributes.text);
             assert.equal(comment.owner, anotherUserId);
         });
         it ('add a new comment by a yet another user', function*(){
-            let item_id = dataset.id;
-            let item_type = dataset.otype;
             let owner = yetAnotherUserId;
-            let text = "Another comment - by yet another user";
-            let results = yield comments.addComment(item_id, item_type, owner, text)
+            let attributes = {
+                item_id: dataset.id,
+                item_type: dataset.otype,
+                text: "Another comment - by yet another user"
+            }
+            let results = yield comments.addComment(owner, attributes);
             assert.isOk(results);
             assert.isOk(results.val);
             let comment = results.val;
             assert.equal(comment.otype, "comment");
-            assert.equal(comment.item_id, item_id);
-            assert.equal(comment.item_type, item_type);
-            assert.equal(comment.text, text);
+            assert.equal(comment.item_id, attributes.item_id);
+            assert.equal(comment.item_type, attributes.item_type);
+            assert.equal(comment.text, attributes.text);
             assert.equal(comment.owner, yetAnotherUserId);
         });
     });
     describe('Update comment', function() {
         it ('add and update a comment', function*(){
-            let item_id = dataset.id;
-            let item_type = dataset.otype;
             let owner = userId;
-            let text = "Comment for update - by owner of dataset";
+            let starting_text = "Comment for update - by owner of dataset";
             let updated_text = "Updated text for comment - by owner of dataset";
-            let results = yield comments.addComment(item_id, item_type, owner, text)
+            let attributes = {
+                item_id: dataset.id,
+                item_type: dataset.otype,
+                text: starting_text
+            }
+            let results = yield comments.addComment(owner, attributes);
             assert.isOk(results);
             assert.isOk(results.val);
             let comment = results.val;
             assert.equal(comment.otype, "comment");
-            assert.equal(comment.item_id, item_id);
-            assert.equal(comment.item_type, item_type);
-            assert.equal(comment.text, text);
+            assert.equal(comment.item_id, attributes.item_id);
+            assert.equal(comment.item_type, attributes.item_type);
+            assert.equal(comment.text, starting_text);
             assert.equal(comment.owner, userId);
-            results = yield comments.updateComment(comment.id, updated_text)
+            let update_attributes = {
+                text: updated_text
+            }
+            results = yield comments.updateComment(comment.id, update_attributes);
             assert.isOk(results);
             assert.isOk(results.val);
             let updated_comment = results.val;
             assert.equal(updated_comment.id, comment.id);
             assert.equal(updated_comment.otype, "comment");
-            assert.equal(updated_comment.item_id, item_id);
-            assert.equal(updated_comment.item_type, item_type);
+            assert.equal(updated_comment.item_id, attributes.item_id);
+            assert.equal(updated_comment.item_type, attributes.item_type);
             assert.equal(updated_comment.text, updated_text);
             assert.equal(updated_comment.owner, userId);
         });
     });
     describe('Delete comment', function() {
         it ('add and delete a comment', function*(){
-            let item_id = dataset.id;
-            let item_type = dataset.otype;
             let owner = userId;
-            let text = "Comment for deleting";
-            let results = yield comments.addComment(item_id, item_type, owner, text)
+            let attributes = {
+                item_id: dataset.id,
+                item_type: dataset.otype,
+                text: "Comment for deleting"
+            }
+            let results = yield comments.addComment(owner, attributes);
             assert.isOk(results);
             assert.isOk(results.val);
             let comment = results.val;
             assert.equal(comment.otype, "comment");
-            assert.equal(comment.item_id, item_id);
-            assert.equal(comment.item_type, item_type);
-            assert.equal(comment.text, text);
+            assert.equal(comment.item_id, attributes.item_id);
+            assert.equal(comment.item_type, attributes.item_type);
+            assert.equal(comment.text, attributes.text);
             assert.equal(comment.owner, userId);
             results = yield comments.deleteComment(comment.id)
             assert.isOk(results);
