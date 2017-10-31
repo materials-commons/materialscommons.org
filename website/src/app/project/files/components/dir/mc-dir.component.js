@@ -1,21 +1,8 @@
 class MCDirComponentController {
     /*@ngInject*/
-    constructor($stateParams, mcprojstore, gridFiles, mcFileOpsDialogs, projectFileTreeAPI) {
-        this.dirId = $stateParams.dir_id;
-        this.projectId = $stateParams.project_id;
-        this.mcprojstore = mcprojstore;
-        this.gridFiles = gridFiles;
+    constructor(mcFileOpsDialogs) {
         this.mcFileOpsDialogs = mcFileOpsDialogs;
-        this.projectFileTreeAPI = projectFileTreeAPI;
         this.selected = false;
-    }
-
-    $onInit() {
-        const project = this.mcprojstore.currentProject;
-        const entry = this.gridFiles.findEntry(project.files[0], this.dirId);
-        if (entry) {
-            this.dir = entry.model;
-        }
     }
 
     onSelected(selected) {
@@ -23,20 +10,15 @@ class MCDirComponentController {
     }
 
     renameDirectory() {
-        this.mcFileOpsDialogs.renameDirectory(this.dir).then(
-            name => {
-                this.projectFileTreeAPI.renameProjectDir(this.projectId, this.dirId, name)
-                    .then(
-                        () => {
-                            this.mcprojstore.updateCurrentProject(proj => {
-                                // this.dir points inside of proj
-                                this.dir.data.name = name;
-                                return proj;
-                            });
-                        }
-                    );
-            }
-        );
+        this.mcFileOpsDialogs.renameDirectory(this.dir.data.name).then(name => this.onRenameDir({newDirName: name}));
+    }
+
+    createDirectory() {
+        this.mcFileOpsDialogs.createDirectory(this.dir.data.name).then(name => this.onCreateDir({createDirName: name}));
+    }
+
+    uploadFiles() {
+        this.onUploadFiles();
     }
 }
 
@@ -44,5 +26,11 @@ class MCDirComponentController {
 //           .then(
 angular.module('materialscommons').component('mcDir', {
     templateUrl: 'app/project/files/components/dir/mc-dir.html',
-    controller: MCDirComponentController
+    controller: MCDirComponentController,
+    bindings: {
+        dir: '<',
+        onRenameDir: '&',
+        onCreateDir: '&',
+        onUploadFiles: '&'
+    }
 });
