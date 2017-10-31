@@ -1,67 +1,9 @@
-const placeholderName = '__$$placeholder$$__';
-let dropFolder = null;
-
-function loadEmptyPlaceHolder(dir) {
-    dir.children.push({
-        data: {
-            name: placeholderName,
-            otype: 'file',
-            mediatype: {
-                mime: '',
-                description: ''
-            }
-
-        }
-    });
-}
 
 /*@ngInject*/
-function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI,
-                                       fileTreeMoveService, mcFlow, mcprojstore) {
+function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI, mcprojstore) {
     const ctrl = this,
         proj = mcprojstore.currentProject;
     ctrl.projectID = proj.id;
-    ctrl.flow = mcFlow.get();
-
-    ctrl.treeOptions = {
-        dropped: function (event) {
-            const src = event.source.nodeScope.$modelValue,
-                dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
-                srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
-
-            if (src.data.otype === 'directory') {
-                return fileTreeMoveService.moveDir(src.data.id, dest.data.id).then(() => {
-                    if (!srcDir.children.length) {
-                        loadEmptyPlaceHolder(srcDir);
-                    }
-                    return true;
-                });
-            } else {
-                return fileTreeMoveService.moveFile(src.data.id, srcDir.data.id, dest.data.id).then(() => {
-                    if (!srcDir.children.length) {
-                        loadEmptyPlaceHolder(srcDir);
-                    }
-                    return true;
-                });
-            }
-
-        },
-
-        beforeDrop: function (event) {
-            const dest = dropFolder ? dropFolder : event.dest.nodesScope.$nodeScope.$modelValue,
-                srcDir = event.source.nodeScope.$parentNodeScope.$modelValue;
-            if (srcDir.data.id === dest.data.id) {
-                // Reject move - attempt to move the file/directory around under it's
-                // current directory;
-                return false;
-            } else if (dest.data.otype === 'file') {
-                // Reject move - Move destination is a file.
-                return false;
-            }
-
-            return true;
-        }
-    };
 
     projectFileTreeAPI.getProjectRoot(proj.id).then((files) => {
         proj.files = files;
@@ -121,19 +63,7 @@ function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcprojstore, $stat
     let proj = mcprojstore.currentProject;
     ctrl.projectID = proj.id;
     ctrl.files = ctrl.file.children;
-    ctrl.placeholderName = placeholderName;
-
     ctrl.setActive = setActive;
-
-    ctrl.onMouseEnter = (event, node) => {
-        if (event.buttons) {
-            dropFolder = node.$nodeScope.$modelValue;
-        }
-    };
-
-    ctrl.onMouseLeave = () => {
-        dropFolder = null;
-    };
 
     //////////////////////////
 
@@ -146,9 +76,6 @@ function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcprojstore, $stat
             if (!file.data.childrenLoaded) {
                 projectFileTreeAPI.getDirectory(ctrl.projectID, file.data.id).then(function (files) {
                     file.children = files;
-                    if (!file.children.length) {
-                        loadEmptyPlaceHolder(file);
-                    }
                     file.active = true;
                     file.data.childrenLoaded = true;
                     file.expand = !file.expand;
