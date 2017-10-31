@@ -8,7 +8,6 @@ const appreciate = require('./db/appreciate');
 const browse = require('./db/browse');
 const view = require('./db/view');
 const tag = require('./db/tag');
-const comment = require('./db/comment');
 const download = require('./db/download');
 const path = require('path');
 //var koaBody = require('koa-body')({
@@ -40,7 +39,6 @@ router.get('/actions/:dataset_id', action.getAll);
 router.post('/appreciate', appreciate.addAppreciate);
 router.put('/appreciate/remove', appreciate.removeAppreciation);
 router.post('/views', view.addView);
-router.post('/comments', comment.addComment);
 router.post('/tags', tag.addTag);
 router.put('/tags', tag.removeTag);
 router.get('/tags', tag.getAllTags);

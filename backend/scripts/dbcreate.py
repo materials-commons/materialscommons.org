@@ -179,7 +179,8 @@ def create_mcpub_tables():
     create_mcpub_table("tag2dataset", "tag", "dataset_id")
     create_compound_index("tag2dataset", "tag_dataset", ["tag", "dataset_id"], db="mcpub")
 
-    create_mcpub_table("comments", "dataset_id", "user_id")
+# comments move to mcapi - Nov 2017 - Terry E. Weymouth
+#    create_mcpub_table("comments", "dataset_id", "user_id")
 
     create_mcpub_table("views", "dataset_id")
     create_mcpub_table("samples", "original_id")
