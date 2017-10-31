@@ -114,7 +114,10 @@ function gridFiles() {
             return root.first({strategy: 'pre'}, function(node) {
                 return node.model.data.id === id;
             });
-        }
+        },
+
+        createDirectoryEntry,
+        createFileEntry
     }
 }
 

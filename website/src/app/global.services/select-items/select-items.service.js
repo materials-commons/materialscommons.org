@@ -176,8 +176,8 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
         }
     }
 
-    uploadComplete(fileIds) {
-        selectItemsState.uploadedFiles = fileIds.map(fid => ({id: fid}));
+    uploadComplete(files) {
+        selectItemsState.uploadedFiles = files;
     }
 
     ok() {

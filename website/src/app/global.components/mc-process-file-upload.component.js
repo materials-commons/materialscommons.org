@@ -1,11 +1,9 @@
 class MCProcessFileUploadComponentController {
     /*@ngInject*/
-    constructor(mcFlow, projectsAPI, toast, $stateParams, $timeout) {
-        this.flow = mcFlow.get();
+    constructor(projectsAPI, toast, $stateParams) {
         this.projectsAPI = projectsAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
-        this.$timeout = $timeout;
     }
 
     $onInit() {
@@ -18,22 +16,12 @@ class MCProcessFileUploadComponentController {
             },
             () => this.toast.error('Unable to retrieve directories for project')
         );
-
-        this.flow.on('catchAll', (eventName) => {
-            this.$timeout(() => {
-                if (eventName === 'complete') {
-                    let fileIds = this.flow.files.map(f => f.file_id);
-                    if (fileIds.length) {
-                        this.onUploadComplete({fileIds: fileIds});
-                        this.flow.files.length = 0;
-                    }
-                }
-            });
-        })
     }
 
-    hasUploads() {
-        return this.flow.files.length;
+    uploadComplete(files) {
+        if (files.length) {
+            this.onUploadComplete({files: files});
+        }
     }
 }
 

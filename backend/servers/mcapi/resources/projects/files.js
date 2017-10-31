@@ -48,7 +48,7 @@ function* download(next) {
             let contentType = file.mediatype.mime;
             let filename = file.name;
             let id = file.id;
-            if (file.usesid != ""){
+            if (file.usesid !== "") {
                 id = file.usesid;
             }
             let size = file.size;
@@ -58,7 +58,7 @@ function* download(next) {
 
             let filepath = fileUtils.datafilePath(id);
 
-            if (fileUtils.datafilePathExists(id)) {
+            if (yield fileUtils.datafilePathExists(id)) {
                 this.body = fs.createReadStream(filepath);
             } else {
                 this.status = httpStatus.NOT_FOUND;
