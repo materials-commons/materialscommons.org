@@ -5,13 +5,12 @@
                 <div layout="row" layout-align="center center">
                     <md-button ng-show="$ctrl.flow.files.length" class="md-primary" ui-sref="project.files.uploads">show uploads</md-button>
                 </div>
-                <div ui-tree="$ctrl.treeOptions" flex data-empty-placeholder-enabled="true">
-                    <ol ui-tree-nodes ng-model="$ctrl.files">
-                        <li ng-repeat="file in $ctrl.files track by file.data.id" ui-tree-node>
-                            <div ui-tree-handle class="mc-active-tree-node">
+                <div flex>
+                    <ul ng-model="$ctrl.files" class="padding-left-15">
+                        <li ng-repeat="file in $ctrl.files track by file.data.id">
+                            <div class="mc-active-tree-node">
                                 <div layout="row" layout-align="start center">
-                                    <!--<a ng-click="file.expand = !file.expand" data-nodrag>-->
-                                    <a ng-click="$ctrl.gotoTopLevel(file)" data-nodrag>
+                                    <a ng-click="$ctrl.gotoTopLevel(file)">
                                 <span ng-if="file.expand"><i
                                         class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
                                 <span ng-if="!file.expand"><i
@@ -19,17 +18,10 @@
                                         {{::file.data.name}}
                                     </a>
                                 </div>
-                                <div flex="60" ng-if="file.expand">
-                                    <mc-file-tree-dir-controls file="file"
-                                                               project-id="$ctrl.projectID"
-                                                               no-delete="true"
-                                                               no-rename="true">
-                                    </mc-file-tree-dir-controls>
-                                </div>
                             </div>
                             <mc-file-tree-dir file="file" ng-if="file.expand"></mc-file-tree-dir>
                         </li>
-                    </ol>
+                    </ul>
                 </div>
             </md-content>
         </div>

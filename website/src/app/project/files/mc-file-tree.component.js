@@ -1,8 +1,3 @@
-angular.module('materialscommons').component('mcFileTree', {
-    templateUrl: 'app/project/files/mc-file-tree.html',
-    controller: MCFileTreeComponentController
-});
-
 const placeholderName = '__$$placeholder$$__';
 let dropFolder = null;
 
@@ -94,7 +89,10 @@ function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI,
     }
 }
 
-angular.module('materialscommons').directive('mcFileTreeDir', mcFileTreeDirDirective);
+angular.module('materialscommons').component('mcFileTree', {
+    templateUrl: 'app/project/files/mc-file-tree.html',
+    controller: MCFileTreeComponentController
+});
 
 /*@ngInject*/
 function mcFileTreeDirDirective(RecursionHelper) {
@@ -114,6 +112,8 @@ function mcFileTreeDirDirective(RecursionHelper) {
         }
     }
 }
+
+angular.module('materialscommons').directive('mcFileTreeDir', mcFileTreeDirDirective);
 
 /*@ngInject*/
 function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcprojstore, $state) {
@@ -137,15 +137,14 @@ function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcprojstore, $stat
 
     //////////////////////////
 
-    function setActive(node, file) {
+    function setActive(file) {
         clearActiveStateInAllNodes();
         if (file.data.otype === 'file') {
             file.active = true;
             $state.go('project.files.file', {file_id: file.data.id});
         } else {
-            node.toggle();
             if (!file.data.childrenLoaded) {
-                projectFileTreeAPI.getDirectory(ctrl.projectID, file.data.id).then(function(files) {
+                projectFileTreeAPI.getDirectory(ctrl.projectID, file.data.id).then(function (files) {
                     file.children = files;
                     if (!file.children.length) {
                         loadEmptyPlaceHolder(file);
