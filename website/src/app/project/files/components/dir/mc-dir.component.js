@@ -3,10 +3,12 @@ class MCDirComponentController {
     constructor(mcFileOpsDialogs) {
         this.mcFileOpsDialogs = mcFileOpsDialogs;
         this.selected = false;
+        this.selectedFiles = [];
     }
 
     onSelected(selected) {
-        this.selected = selected;
+        this.selected = selected.length !== 0;
+        this.selectedFiles = selected;
     }
 
     renameDirectory() {
@@ -20,6 +22,10 @@ class MCDirComponentController {
     uploadFiles() {
         this.onUploadFiles();
     }
+
+    handleDownloadFiles(files) {
+        return this.onDownloadFiles({files: files});
+    }
 }
 
 angular.module('materialscommons').component('mcDir', {
@@ -29,6 +35,7 @@ angular.module('materialscommons').component('mcDir', {
         dir: '<',
         onRenameDir: '&',
         onCreateDir: '&',
-        onUploadFiles: '&'
+        onUploadFiles: '&',
+        onDownloadFiles: '&'
     }
 });

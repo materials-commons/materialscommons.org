@@ -52,6 +52,11 @@ class MCDirContainerComponentController {
             return this.project;
         });
     }
+
+    handleDownloadFiles(files) {
+        const fileIds = files.map(f => f.id);
+        return this.projectFileTreeAPI.downloadProjectFiles(fileIds);
+    }
 }
 
 angular.module('materialscommons').component('mcDirContainer', {

@@ -40,5 +40,9 @@
             </md-menu>
         </div>
     </div>
-    <mc-dir-overview dir="$ctrl.dir" project="$ctrl.project" on-selected="$ctrl.onSelected(selected)"></mc-dir-overview>
+    <mc-dir-overview dir="$ctrl.dir"
+                     project="$ctrl.project"
+                     on-download-files="$ctrl.handleDownloadFiles(files)"
+                     on-selected="$ctrl.onSelected(selected)">
+    </mc-dir-overview>
 </div>
