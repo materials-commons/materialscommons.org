@@ -38,7 +38,6 @@ before(function*() {
 describe('Feature - comments: ', function() {
     describe('Create comment', function() {
         it ('add a new comment by the test user', function*(){
-
             let item_id = dataset.id;
             let item_type = dataset.otype;
             let owner = userId;
@@ -85,8 +84,53 @@ describe('Feature - comments: ', function() {
         });
     });
     describe('Update comment', function() {
+        it ('add and update a comment', function*(){
+            let item_id = dataset.id;
+            let item_type = dataset.otype;
+            let owner = userId;
+            let text = "Comment for update - by owner of dataset";
+            let updated_text = "Updated text for comment - by owner of dataset";
+            let results = yield comments.addComment(item_id, item_type, owner, text)
+            assert.isOk(results);
+            assert.isOk(results.val);
+            let comment = results.val;
+            assert.equal(comment.otype, "comment");
+            assert.equal(comment.item_id, item_id);
+            assert.equal(comment.item_type, item_type);
+            assert.equal(comment.text, text);
+            assert.equal(comment.owner, userId);
+            results = yield comments.updateComment(comment.id, updated_text)
+            assert.isOk(results);
+            assert.isOk(results.val);
+            let updated_comment = results.val;
+            assert.equal(updated_comment.id, comment.id);
+            assert.equal(updated_comment.otype, "comment");
+            assert.equal(updated_comment.item_id, item_id);
+            assert.equal(updated_comment.item_type, item_type);
+            assert.equal(updated_comment.text, updated_text);
+            assert.equal(updated_comment.owner, userId);
+        });
     });
     describe('Delete comment', function() {
+        it ('add and delete a comment', function*(){
+            let item_id = dataset.id;
+            let item_type = dataset.otype;
+            let owner = userId;
+            let text = "Comment for deleting";
+            let results = yield comments.addComment(item_id, item_type, owner, text)
+            assert.isOk(results);
+            assert.isOk(results.val);
+            let comment = results.val;
+            assert.equal(comment.otype, "comment");
+            assert.equal(comment.item_id, item_id);
+            assert.equal(comment.item_type, item_type);
+            assert.equal(comment.text, text);
+            assert.equal(comment.owner, userId);
+            results = yield comments.deleteComment(comment.id)
+            assert.isOk(results);
+            assert.isOk(results.deleted);
+            assert.equal(results.deleted, comment.id);
+        });
     });
 });
 

@@ -27,18 +27,19 @@ function* addComment(item_id, item_type, owner, text) {
 }
 
 function* updateComment(id, text) {
-    let results = yield dbExec(r.table("comments").get(id).update(comment));
+    let results = yield dbExec(r.table("comments").get(id).update({text: text}));
     if (results.replaced !== 1) {
-        console.log(`updateComment - failed, ${id}`);
         return {error: `updateComment - failed, ${id}`};
     }
-    console.log(`updateComment - success, ${id}`)
-    return {val: yield get(id)};
+    return yield get(id);
 }
 
 function* deleteComment(id) {
     let results = yield dbExec(r.table("comments").get(id).delete());
-
+    if (results.deleted !== 1) {
+        return {error: `updateComment - failed, ${id}`};
+    }
+    return {deleted: id}
 }
 
 module.exports = {
