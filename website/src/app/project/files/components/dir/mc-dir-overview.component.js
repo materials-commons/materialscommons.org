@@ -68,8 +68,7 @@ angular.module('materialscommons').component('mcDirOverview', {
     templateUrl: 'app/project/files/components/dir/mc-dir-overview.html',
     controller: MCDirOverviewComponentController,
     bindings: {
-        dir: '=',
-        project: '=',
+        dir: '<',
         onSelected: '&'
     }
 });
