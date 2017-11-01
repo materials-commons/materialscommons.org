@@ -1,16 +1,17 @@
 class MCDatasetOverviewComponentController {
     /*@ngInject*/
-    constructor(User,publicDatasetsAPI) {
+    constructor(User, publicDatasetsAPI) {
         this.showFiles = User.isAuthenticated();
         this.showProcessesWorkflow = false;
         this.publicDatasetsAPI = publicDatasetsAPI;
     }
 
     commentsUpdated() {
-        let id =  this.dataset.id
+        let id = this.dataset.id;
         this.publicDatasetsAPI.getDataset(id)
-            .then((dataset) =>{
-            this.dataset.comments = dataset.comments; });
+            .then((dataset) => {
+                this.dataset.comments = dataset.comments;
+            });
     }
 }
 

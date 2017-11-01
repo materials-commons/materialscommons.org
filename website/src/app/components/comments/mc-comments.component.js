@@ -1,5 +1,5 @@
 class MCCommentsComponentController {
-    constructor(User,$mdDialog, commentsAPI) {
+    constructor(User, $mdDialog, commentsAPI) {
         this.user = User.u();
         this.$mdDialog = $mdDialog;
         this.commentsAPIService = commentsAPI;
@@ -22,7 +22,7 @@ class MCCommentsComponentController {
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
-                text: (comment)?comment.text:'',
+                text: (comment) ? comment.text : '',
                 source: comment
             }
         }).then(
@@ -32,15 +32,19 @@ class MCCommentsComponentController {
                     if (values.text !== '')
                         comment.text = values.text;
                     this.commentsAPIService.updateComment(comment)
-                        .then(() => {this.onChangeComments();})
+                        .then(() => {
+                            this.onChangeComments();
+                        });
                 } else {
                     comment = {
                         'text': values.text,
                         'item_type': this.target.otype,
                         'item_id': this.target.id
-                    }
+                    };
                     this.commentsAPIService.createComment(comment)
-                        .then(() => {this.onChangeComments();})
+                        .then(() => {
+                            this.onChangeComments();
+                        });
                 }
             }
         );
@@ -57,7 +61,9 @@ class MCCommentsComponentController {
             }
         }).then(() => {
             this.commentsAPIService.deleteComment(id)
-                .then(() => {this.onChangeComments();})
+                .then(() => {
+                    this.onChangeComments();
+                })
         });
     }
 
