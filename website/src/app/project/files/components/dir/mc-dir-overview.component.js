@@ -50,7 +50,7 @@ class MCDirOverviewComponentController {
             f.selected = true;
         });
         this.selectedCount = this.files.length;
-        ctrl.onSelected({selected: this.files});
+        this.onSelected({selected: this.files});
     }
 
     deselectSelectedFiles() {
