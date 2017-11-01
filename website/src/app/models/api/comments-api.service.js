@@ -13,8 +13,9 @@ class CommentsAPIService {
             .then(comment => comment.plain());
     }
 
-    updateComment(comment) {
-        return this.Restangular.one('v2').one('comments', comment.id).customDELETE()
+    deleteComment(id) {
+        console.log("in deleteComment service - id = ", id);
+        return this.Restangular.one('v2').one('comments', id).customDELETE()
             .then(rv => rv.plain());
     }
 }

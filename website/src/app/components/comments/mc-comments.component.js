@@ -27,7 +27,6 @@ class MCCommentsComponentController {
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
-                id: (comment)?comment.id:null,
                 text: (comment)?comment.text:'',
                 source: comment
             }
@@ -38,7 +37,7 @@ class MCCommentsComponentController {
                     if (values.text !== '')
                         comment.text = values.text;
                     console.log("update", comment);
-                    this.commentsAPIService.createComment(comment)
+                    this.commentsAPIService.updateComment(comment)
                         .then(x => {this.onChangeComments();})
                 } else {
                     comment = {
@@ -47,7 +46,7 @@ class MCCommentsComponentController {
                         'item_id': this.target.id
                     }
                     console.log("add", comment);
-                    this.commentsAPIService.updateComment(comment)
+                    this.commentsAPIService.createComment(comment)
                         .then(x => {this.onChangeComments();})
                 }
             }
@@ -64,9 +63,10 @@ class MCCommentsComponentController {
             locals: {
                 id: id
             }
-        }).then(() => {
-
-            this.onChangeComments();
+        }).then((values) => {
+            console.log("...then, values = ", values);
+            this.commentsAPIService.deleteComment(values.id)
+                .then(x => {this.onChangeComments();})
         });
     }
 
@@ -115,7 +115,6 @@ class DeleteDialogController {
 
     done() {
         console.log("AddEditDialogController: done")
-        console.log("Would delete comment: ", this.id)
         this.$mdDialog.hide();
     }
 
