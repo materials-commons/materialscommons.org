@@ -1,14 +1,16 @@
 class MCDatasetOverviewComponentController {
     /*@ngInject*/
-    constructor(User) {
+    constructor(User,publicDatasetsAPI) {
         this.showFiles = User.isAuthenticated();
         this.showProcessesWorkflow = false;
-        console.log("MCDatasetOverviewComponentController");
-        console.log("dataset: ", this.dataset);
+        this.publicDatasetsAPI = publicDatasetsAPI;
     }
 
     commentsUpdated() {
-        console.log("Re-fetch dataset from server");
+        let id =  this.dataset.id
+        this.publicDatasetsAPI.getDataset(id)
+            .then((dataset) =>{
+            this.dataset.comments = dataset.comments; });
     }
 }
 

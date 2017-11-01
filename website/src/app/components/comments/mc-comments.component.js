@@ -4,13 +4,9 @@ class MCCommentsComponentController {
         this.$mdDialog = $mdDialog;
         this.commentsAPIService = commentsAPI;
         this.loggedin = (this.user !== "Login");
-        console.log("MCCommentsComponentController");
-        console.log("comments: ",this.comments);
-        console.log("onChangeComments: ",this.onChangeComments);
     }
 
     addEditComment(id) {
-        console.log("Add-Edit",id)
         let comment = null;
         if (id) {
             for (let i = 0; i < this.comments.length; i++) {
@@ -20,7 +16,6 @@ class MCCommentsComponentController {
                 }
             }
         }
-        console.log("with text: ", (comment)?comment.text:'');
         this.$mdDialog.show({
             templateUrl: 'app/components/comments/add-edit-comment.html',
             controller: AddEditDialogController,
@@ -36,25 +31,22 @@ class MCCommentsComponentController {
                     comment = values.source;
                     if (values.text !== '')
                         comment.text = values.text;
-                    console.log("update", comment);
                     this.commentsAPIService.updateComment(comment)
-                        .then(x => {this.onChangeComments();})
+                        .then(() => {this.onChangeComments();})
                 } else {
                     comment = {
                         'text': values.text,
                         'item_type': this.target.otype,
                         'item_id': this.target.id
                     }
-                    console.log("add", comment);
                     this.commentsAPIService.createComment(comment)
-                        .then(x => {this.onChangeComments();})
+                        .then(() => {this.onChangeComments();})
                 }
             }
         );
     }
 
     deleteComment(id) {
-        console.log("Delete",id)
         this.$mdDialog.show({
             templateUrl: 'app/components/comments/delete-comment.html',
             controller: DeleteDialogController,
@@ -63,15 +55,13 @@ class MCCommentsComponentController {
             locals: {
                 id: id
             }
-        }).then((values) => {
-            console.log("...then, values = ", values);
-            this.commentsAPIService.deleteComment(values.id)
-                .then(x => {this.onChangeComments();})
+        }).then(() => {
+            this.commentsAPIService.deleteComment(id)
+                .then(() => {this.onChangeComments();})
         });
     }
 
     refreshCommentsList() {
-        console.log("Refresh")
         this.onChangeComments();
     }
 }
@@ -93,7 +83,6 @@ class AddEditDialogController {
     }
 
     done() {
-        console.log("AddEditDialogController: done")
         this.$mdDialog.hide({
             id: this.id,
             text: this.text,
@@ -102,7 +91,6 @@ class AddEditDialogController {
     }
 
     cancel() {
-        console.log("AddEditDialogController: cancel")
         this.$mdDialog.cancel();
     }
 }
@@ -114,12 +102,10 @@ class DeleteDialogController {
     }
 
     done() {
-        console.log("AddEditDialogController: done")
         this.$mdDialog.hide();
     }
 
     cancel() {
-        console.log("AddEditDialogController: cancel")
         this.$mdDialog.cancel();
     }
 }

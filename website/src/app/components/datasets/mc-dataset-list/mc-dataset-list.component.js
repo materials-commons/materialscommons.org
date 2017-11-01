@@ -3,8 +3,6 @@ class MCDatasetListComponentController {
     constructor(mcbus) {
         this.mcbus = mcbus;
         this.myName = 'MCDatasetListComponentController';
-        console.log("MCDatasetListComponentController");
-        console.log(this.datasets);
     }
 
     $onInit() {

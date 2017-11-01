@@ -14,7 +14,6 @@ class CommentsAPIService {
     }
 
     deleteComment(id) {
-        console.log("in deleteComment service - id = ", id);
         return this.Restangular.one('v2').one('comments', id).customDELETE()
             .then(rv => rv.plain());
     }
