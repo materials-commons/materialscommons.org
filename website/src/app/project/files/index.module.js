@@ -9,6 +9,7 @@ import './components/mc-file-uploader.component';
 import './components/mc-file-ops-dialogs.service';
 import './components/dir/mc-dir-container.component';
 import './components/dir/mc-dir-bulk-download-url.component';
+import './components/dir/mc-dir-dnd-move.component';
 import './components/dir/mc-dir.component';
 import './components/dir/mc-dir-overview.component';
 import './components/dir/mc-dir-filter-by-type.component';

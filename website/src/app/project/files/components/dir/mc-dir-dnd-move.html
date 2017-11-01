@@ -1,0 +1,15 @@
+<div>
+    <ul dnd-list="[]" ng-show="$ctrl.moveFiles" class="list-unstyled">
+        <li>
+            <div class="move-drop-box text-uppercase">
+                drag files/directories from tree and drop here to move
+            </div>
+        </li>
+    </ul>
+    <md-button ng-click="$ctrl.moveFiles = false" class="md-primary" ng-show="$ctrl.moveFiles">
+        Done moving files
+    </md-button>
+    <md-button ng-click="$ctrl.moveFiles = true" ng-show="!$ctrl.moveFiles" class="md-primary">
+        Move files here
+    </md-button>
+</div>

@@ -3,6 +3,7 @@
         <h3 class="md-title">
             <i class="fa fa-fw fa-folder-open"></i> {{$ctrl.dir.data.path}}
         </h3>
+        <mc-dir-dnd-move></mc-dir-dnd-move>
     </div>
     <div layout="row" class="margin-left-30">
         <div>
@@ -21,11 +22,6 @@
                     <i class="fa fa-fw fa-caret-down"></i>
                 </md-button>
                 <md-menu-content>
-                    <md-menu-item>
-                        <md-button class="" ng-disabled="!$ctrl.selected">
-                            <i class="fa fa-fw fa-th-list"></i> Move Selected
-                        </md-button>
-                    </md-menu-item>
                     <md-menu-item>
                         <md-button class="" ng-disabled="!$ctrl.selected">
                             <i class="fa fa-fw fa-trash"></i> Delete Selected
