@@ -9,7 +9,7 @@ function createResources() {
     let projectsResource = projects.createResource();
     router.use('/projects', projectsResource.routes(), projectsResource.allowedMethods());
 
-    let commentsResource = projects.createResource();
+    let commentsResource = comments.createResource();
     router.use('/comments', commentsResource.routes(), commentsResource.allowedMethods());
 
     let templatesResource = templates.createResource();

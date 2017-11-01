@@ -47,6 +47,16 @@ function* taskIsUsingProcess(taskID) {
     return task.process_id !== '';
 }
 
+function* commentExists(commentId) {
+    let matches = yield r.table('comments').getAll(commentId);
+    return matches.length !== 0;
+}
+
+function* commentIsOwnedBy(commentId, userId) {
+    let commentOwner = yield r.table('comments').get(commentId).getField('owner');
+    return commentOwner === userId;
+}
+
 function* templateExists(templateId) {
     let matches = yield r.table('templates').getAll(templateId);
     return matches.length !== 0;
@@ -195,6 +205,8 @@ module.exports = {
     taskInExperiment,
     noteInExperiment,
     taskIsUsingProcess,
+    commentExists,
+    commentIsOwnedBy,
     templateExists,
     templateIsOwnedBy,
     isTemplateAdmin,

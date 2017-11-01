@@ -5,7 +5,7 @@ const ra = require('./resource-access');
 
 const comments = require("../db/model/comments");
 
-function* getComment() {
+function* getComment(next) {
     let rv = yield comments.getComment(this.params.comment_id);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
@@ -17,10 +17,10 @@ function* getComment() {
     yield next;
 }
 
-function* createComment() {
+function* addComment(next) {
     let user = this.reqctx.user;
     let attrs = yield parse(this);
-    let rv = yield comments.createComment(user, attrs);
+    let rv = yield comments.addComment(user.id, attrs);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
         this.body = rv;
@@ -31,9 +31,9 @@ function* createComment() {
     yield next;
 }
 
-function* updateComment() {
+function* updateComment(next) {
     let attrs = yield parse(this);
-    let rv = yield comments.createComment(this.params.comment_id, attrs);
+    let rv = yield comments.updateComment(this.params.comment_id, attrs);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
         this.body = rv;
@@ -44,8 +44,8 @@ function* updateComment() {
     yield next;
 }
 
-function* deleteComment() {
-    let rv = yield comments.createComment(this.params.comment_id, attrs);
+function* deleteComment(next) {
+    let rv = yield comments.deleteComment(this.params.comment_id);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
         this.body = rv;
@@ -61,7 +61,7 @@ function createResource() {
 
     router.get('/:comment_id',
         ra.validateCommentExists, ra.validateCommentAccess, getComment);
-    router.post('/', createComment);
+    router.post('/', addComment);
     router.put('/:comment_id',
         ra.validateCommentExists, ra.validateCommentAccess, updateComment);
     router.delete('/:comment_id',

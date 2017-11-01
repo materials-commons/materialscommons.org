@@ -17,8 +17,8 @@ function* getAllForItem(itemId) {
     return {val: comments};
 }
 
-function* addComment(user, attributes) {
-    let owner = user;
+function* addComment(user_id, attributes) {
+    let owner = user_id;
     let item_id = attributes.item_id;
     let item_type = attributes.item_type;
     let text = attributes.text;
