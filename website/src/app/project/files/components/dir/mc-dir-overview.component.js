@@ -1,86 +1,66 @@
-
-/*@ngInject*/
-function MCDirOverviewComponentController(mcfile, $filter, toast, isImage) {
-    const ctrl = this;
-
-    ctrl.filterByType = false;
-    ctrl.viewFiles = viewFiles;
-    ctrl.fileSrc = mcfile.src;
-    ctrl.isImage = isImage;
-    ctrl.allFiles = {
-        files: allFiles()
-    };
-    ctrl.selectedCount = 0;
-    ctrl.downloadSelectedFiles = downloadSelectedFiles;
-    ctrl.fileSelect = fileSelect;
-    ctrl.selectAllFiles = selectAllFiles;
-    ctrl.deselectSelectedFiles = deselectSelectedFiles;
-    ctrl.files = ctrl.allFiles.files;
-    ctrl.fileFilter = {
-        name: ''
-    };
-    ctrl.downloadState = 'none';
-    ctrl.downloadURL = '';
-    ctrl.downloadMessageFlash = '';
-
-    ////////////////
-
-    function allFiles() {
-        return ctrl.dir.children
-            .filter(f => f.data.otype === 'file' && f.data.id).map(f => {
-                f.data.selected = false;
-                return f.data;
-            });
+class MCDirOverviewComponentController {
+    /*@ngInject*/
+    constructor(mcfile, isImage, $filter) {
+        this.fileSrc = mcfile.src;
+        this.isImage = isImage;
+        this.$filter = $filter;
     }
 
-    function viewFiles(selected) {
-        ctrl.files = selected.files.map(function(f) {
+    $onInit() {
+        this.allFiles = {
+            files: this._allFiles()
+        };
+
+        this.fileFilter = {
+            name: ''
+        };
+
+        this.selectedCount = 0;
+        this.files = this.allFiles.files;
+    }
+
+    _allFiles() {
+        return this.dir.children.filter(f => f.data.otype === 'file' && f.data.id).map(f => {
+            f.data.selected = false;
+            return f.data;
+        });
+    }
+
+    viewFiles(selected) {
+        this.files = selected.files.map(function (f) {
             f.selected = false;
             return f;
         });
-        ctrl.selectedCount = 0;
+        this.selectedCount = 0;
     }
 
-    function fileSelect(file) {
+    fileSelect(file) {
         if (file.selected) {
-            ctrl.selectedCount--;
+            this.selectedCount--;
         } else {
-            ctrl.selectedCount++;
+            this.selectedCount++;
         }
-        let selectedFiles = ctrl.files.filter(f => f.selected);
-        ctrl.onSelected({selected: selectedFiles});
+        let selectedFiles = this.files.filter(f => f.selected);
+        this.onSelected({selected: selectedFiles});
     }
 
-    function selectAllFiles() {
-        const filesToSelect = $filter('filter')(ctrl.files, ctrl.fileFilter);
-        filesToSelect.forEach(function(f) {
+    selectAllFiles() {
+        const filesToSelect = this.$filter('filter')(this.files, this.fileFilter);
+        filesToSelect.forEach(function (f) {
             f.selected = true;
         });
-        ctrl.selectedCount = ctrl.files.length;
-        ctrl.onSelected({selected: ctrl.files});
+        this.selectedCount = this.files.length;
+        ctrl.onSelected({selected: this.files});
     }
 
-    function deselectSelectedFiles() {
-        ctrl.files.forEach(function(f) {
+    deselectSelectedFiles() {
+        this.files.forEach(f => {
             if (f.selected) {
                 f.selected = false;
             }
         });
-        ctrl.selectedCount = 0;
-        ctrl.onSelected({selected: []});
-    }
-
-    function downloadSelectedFiles() {
-        ctrl.downloadState = 'preparing';
-        const selectedFiles = ctrl.files.filter(f => f.selected);
-        ctrl.onDownloadFiles({files: selectedFiles}).then(
-            downloadURL => {
-                ctrl.downloadURL = downloadURL;
-                ctrl.downloadState = 'done';
-                deselectSelectedFiles();
-            },
-            () => toast.error('Unable to create file archive.')
-        );
+        this.selectedCount = 0;
+        this.onSelected({selected: []});
     }
 }
 
@@ -90,8 +70,6 @@ angular.module('materialscommons').component('mcDirOverview', {
     bindings: {
         dir: '=',
         project: '=',
-        onSelected: '&',
-        onDownloadFiles: '&'
+        onSelected: '&'
     }
 });
-

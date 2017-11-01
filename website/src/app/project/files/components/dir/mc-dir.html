@@ -32,7 +32,7 @@
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button class="" ng-disabled="!$ctrl.selected">
+                        <md-button class="" ng-disabled="!$ctrl.selected" ng-click="$ctrl.handleDownloadFiles()">
                             <i class="fa fa-fw fa-download"></i> Download Selected
                         </md-button>
                     </md-menu-item>
@@ -40,9 +40,10 @@
             </md-menu>
         </div>
     </div>
+    <mc-dir-bulk-download-url download-state="$ctrl.downloadState" download-url="$ctrl.downloadUrl">
+    </mc-dir-bulk-download-url>
     <mc-dir-overview dir="$ctrl.dir"
                      project="$ctrl.project"
-                     on-download-files="$ctrl.handleDownloadFiles(files)"
                      on-selected="$ctrl.onSelected(selected)">
     </mc-dir-overview>
 </div>

@@ -1,39 +1,20 @@
 <div layout="column">
     <mc-dir-filter-by-type dir="$ctrl.dir" on-view-selected="$ctrl.viewFiles(selected)"></mc-dir-filter-by-type>
     <div ng-if="$ctrl.files.length">
-        <div layout="row">
-            <span ng-if="$ctrl.downloadState == 'preparing'">
-                <i class="fa fa-circle-o-notch fa-spin"></i>
-                Preparing download (this may take some time)...
-                {{$ctrl.downloadMessageFlash}}
-            </span>
-            <span ng-if="$ctrl.downloadState == 'done'">
-                <a ng-href="{{$ctrl.downloadURL}}" ng-click="$ctrl.downloadState='none'">
-                    Preparation done click here to download {{$ctrl.downloadURL}}
-                </a>
-            </span>
-            <span flex></span>
-        </div>
         <div>
-            <div layout="row" ng-if="$ctrl.downloadState === 'none'">
-                <md-button ng-if="$ctrl.selectedCount" ng-click="$ctrl.downloadSelectedFiles()">
-                    <i class="fa fa-fw fa-download"></i> download selected
-                </md-button>
-                <md-button ng-if="!$ctrl.selectedCount" ng-click="$ctrl.selectAllFiles()">
-                    select all
-                </md-button>
-                <md-button ng-if="$ctrl.selectedCount" ng-click="$ctrl.deselectSelectedFiles()">
-                    clear selected
-                </md-button>
-                <span flex="10"></span>
-                <md-input-container md-no-float class="md-input-bottom-0">
-                    <input placeholder="Filter by name..."
-                           ng-model="$ctrl.fileFilter.name"
-                           ng-model-options="{ updateOn: 'default blur', debounce: { default: 200, blur: 0} }">
-                </md-input-container>
-            </div>
+            <md-button ng-if="!$ctrl.selectedCount" ng-click="$ctrl.selectAllFiles()">
+                select all
+            </md-button>
+            <md-button ng-if="$ctrl.selectedCount" ng-click="$ctrl.deselectSelectedFiles()">
+                clear selected
+            </md-button>
+            <span flex="10"></span>
+            <md-input-container md-no-float class="md-input-bottom-0">
+                <input placeholder="Filter by name..."
+                       ng-model="$ctrl.fileFilter.name"
+                       ng-model-options="{ updateOn: 'default blur', debounce: { default: 200, blur: 0} }">
+            </md-input-container>
         </div>
-
         <div>
             <md-table-container>
                 <table md-table>

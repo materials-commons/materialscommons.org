@@ -1,0 +1,9 @@
+<div layout="row">
+    <div ng-if="$ctrl.downloadState === 'preparing'">
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        Preparing download (this may take some time)...
+    </div>
+    <a ng-href="{{$ctrl.downloadUrl}}" ng-click="$ctrl.downloadState='none'" ng-show="$ctrl.downloadState === 'done'">
+        Preparation done click here to download.
+    </a>
+</div>

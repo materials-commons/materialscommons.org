@@ -23,8 +23,14 @@ class MCDirComponentController {
         this.onUploadFiles();
     }
 
-    handleDownloadFiles(files) {
-        return this.onDownloadFiles({files: files});
+    handleDownloadFiles() {
+        this.downloadState = 'preparing';
+        this.onDownloadFiles({files: this.selectedFiles}).then(
+            downloadUrl => {
+                this.downloadUrl = downloadUrl;
+                this.downloadState = 'done';
+            }
+        );
     }
 }
 
