@@ -37,7 +37,7 @@ function* downloadFile(next) {
 
     if (!found) {
         this.status = httpStatus.NOT_FOUND;
-        this.body = {error: 'File not found: ' + filename};
+        this.body = {error: `File not found - name: '${file.name}, id: ${file.id}`};
     }
     yield next;
 }
