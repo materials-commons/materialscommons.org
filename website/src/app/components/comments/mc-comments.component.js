@@ -1,7 +1,8 @@
 class MCCommentsComponentController {
-    constructor(User,$mdDialog) {
+    constructor(User,$mdDialog, commentsAPI) {
         this.user = User.u();
         this.$mdDialog = $mdDialog;
+        this.commentsAPIService = commentsAPI;
         this.loggedin = (this.user !== "Login");
         console.log("MCCommentsComponentController");
         console.log("comments: ",this.comments);
@@ -33,16 +34,22 @@ class MCCommentsComponentController {
         }).then(
             (values) => {
                 if (values.source) {
-                    console.log("update")
-                    console.log("update id:", values.source.id)
-                    console.log("update item_id", values.source.item_id);
-                    console.log("update item_type", values.source.item_type);
-                    console.log("update text: ", values.text);
+                    comment = values.source;
+                    if (values.text !== '')
+                        comment.text = values.text;
+                    console.log("update", comment);
+                    this.commentsAPIService.createComment(comment)
+                        .then(x => {this.onChangeComments();})
                 } else {
-                    console.log("add")
-                    console.log("add text: ", values.text);
+                    comment = {
+                        'text': values.text,
+                        'item_type': this.target.otype,
+                        'item_id': this.target.id
+                    }
+                    console.log("add", comment);
+                    this.commentsAPIService.updateComment(comment)
+                        .then(x => {this.onChangeComments();})
                 }
-                this.onChangeComments();
             }
         );
     }
@@ -57,7 +64,10 @@ class MCCommentsComponentController {
             locals: {
                 id: id
             }
-        }).then(() => {this.onChangeComments();});
+        }).then(() => {
+
+            this.onChangeComments();
+        });
     }
 
     refreshCommentsList() {
@@ -71,6 +81,7 @@ angular.module('materialscommons').component('mcComments', {
     controller: MCCommentsComponentController,
     bindings: {
         comments: '=',
+        target: "<",
         onChangeComments: '&'
     }
 });
