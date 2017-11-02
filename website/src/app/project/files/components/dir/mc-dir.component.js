@@ -4,6 +4,7 @@ class MCDirComponentController {
         this.mcFileOpsDialogs = mcFileOpsDialogs;
         this.selected = false;
         this.selectedFiles = [];
+        this.moveFiles = false;
     }
 
     onSelected(selected) {
