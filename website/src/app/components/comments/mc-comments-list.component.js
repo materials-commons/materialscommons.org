@@ -1,9 +1,10 @@
 class MCCommentsListComponentController {
-    constructor(User, $mdDialog, commentsAPI) {
+    constructor(User, $mdDialog, commentsAPI, publicCommentsAPI) {
         this.user = User.u();
         this.loggedin = (this.user !== "Login");
         this.$mdDialog = $mdDialog;
         this.commentsAPIService = commentsAPI;
+        this.publicCommentsAPIService = publicCommentsAPI;
         this.targetType = this.target.otype;
         this.targetId = this.target.id;
         this.refreshCommentsList();
@@ -71,10 +72,14 @@ class MCCommentsListComponentController {
     }
 
     refreshCommentsList() {
-        this.comments = [{
-            text: "Dummy Comment",
-        }];
-        console.log("Refresh comment list");
+        this.publicCommentsAPIService.getCommentsListFor(this.targetId)
+            .then((rv) => {
+                console.log(rv)
+                this.comments = [{
+                    text: "Dummy Comment",
+                }];
+                console.log("Refresh comment list");
+            });
     }
 }
 
