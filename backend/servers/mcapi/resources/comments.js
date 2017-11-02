@@ -5,6 +5,25 @@ const ra = require('./resource-access');
 
 const comments = require("../db/model/comments");
 
+function* all(next) {
+    let rv = null
+    if (this.query.target) {
+        rv = yield comments.getAllForItem(this.query.target)
+        if (rv.error) {
+            this.status = status.BAD_REQUEST;
+            this.body = rv;
+        } else {
+            // note - rv already contains rv.val
+            this.body = rv;
+        }
+    } else {
+        this.status = status.BAD_REQUEST;
+        this.body = {error: 'get all comments, without a target id, is not implemented'};
+    }
+    yield next;
+}
+
+
 function* getComment(next) {
     let rv = yield comments.getComment(this.params.comment_id);
     if (rv.error) {
@@ -59,9 +78,10 @@ function* deleteComment(next) {
 function createResource() {
     const router = new Router();
 
+    router.get('/', all)
+    router.post('/', addComment);
     router.get('/:comment_id',
         ra.validateCommentExists, ra.validateCommentAccess, getComment);
-    router.post('/', addComment);
     router.put('/:comment_id',
         ra.validateCommentExists, ra.validateCommentAccess, updateComment);
     router.delete('/:comment_id',
