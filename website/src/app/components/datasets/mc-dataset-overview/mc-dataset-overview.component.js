@@ -5,14 +5,6 @@ class MCDatasetOverviewComponentController {
         this.showProcessesWorkflow = false;
         this.publicDatasetsAPI = publicDatasetsAPI;
     }
-
-    commentsUpdated() {
-        let id = this.dataset.id;
-        this.publicDatasetsAPI.getDataset(id)
-            .then((dataset) => {
-                this.dataset.comments = dataset.comments;
-            });
-    }
 }
 
 angular.module('materialscommons').component('mcDatasetOverview', {

@@ -1,9 +1,12 @@
-class MCCommentsComponentController {
+class MCCommentsListComponentController {
     constructor(User, $mdDialog, commentsAPI) {
         this.user = User.u();
+        this.loggedin = (this.user !== "Login");
         this.$mdDialog = $mdDialog;
         this.commentsAPIService = commentsAPI;
-        this.loggedin = (this.user !== "Login");
+        this.targetType = this.target.otype;
+        this.targetId = this.target.id;
+        this.refreshCommentsList();
     }
 
     addEditComment(id) {
@@ -68,17 +71,18 @@ class MCCommentsComponentController {
     }
 
     refreshCommentsList() {
-        this.onChangeComments();
+        this.comments = [{
+            text: "Dummy Comment",
+        }];
+        console.log("Refresh comment list");
     }
 }
 
-angular.module('materialscommons').component('mcComments', {
-    templateUrl: 'app/components/comments/mc-comments.html',
-    controller: MCCommentsComponentController,
+angular.module('materialscommons').component('mcCommentsList', {
+    templateUrl: 'app/components/comments/mc-comments-list.html',
+    controller: MCCommentsListComponentController,
     bindings: {
-        comments: '=',
         target: "<",
-        onChangeComments: '&'
     }
 });
 

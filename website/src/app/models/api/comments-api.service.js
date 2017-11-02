@@ -3,6 +3,10 @@ class CommentsAPIService {
         this.Restangular = Restangular;
     }
 
+    getCommentsListFor(targetId) {
+        return this.Restangular.one('v2').one('comments').get({target_id: targetId})
+    }
+
     createComment(comment) {
         return this.Restangular.one('v2').one('comments').customPOST(comment)
             .then(comment => comment.plain());

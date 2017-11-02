@@ -26,11 +26,7 @@
         <md-tab>
             <md-tab-label>Comments</md-tab-label>
             <md-tab-body>
-                <mc-comments
-                        comments="$ctrl.dataset.comments"
-                        target="$ctrl.dataset"
-                        on-change-comments="$ctrl.commentsUpdated()">
-                </mc-comments>
+                <mc-comments-list target="$ctrl.dataset"></mc-comments-list>
             </md-tab-body>
         </md-tab>
     </md-tabs>

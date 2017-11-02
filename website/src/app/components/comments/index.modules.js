@@ -1,1 +1,1 @@
-import './mc-comments.component';
+import './mc-comments-list.component';
