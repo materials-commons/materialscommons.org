@@ -37,7 +37,7 @@ class MCCommentsListComponentController {
                         comment.text = values.text;
                     this.commentsAPIService.updateComment(comment)
                         .then(() => {
-                            this.onChangeComments();
+                            this.refreshCommentsList();
                         });
                 } else {
                     comment = {
@@ -47,7 +47,7 @@ class MCCommentsListComponentController {
                     };
                     this.commentsAPIService.createComment(comment)
                         .then(() => {
-                            this.onChangeComments();
+                            this.refreshCommentsList();
                         });
                 }
             }
@@ -66,18 +66,16 @@ class MCCommentsListComponentController {
         }).then(() => {
             this.commentsAPIService.deleteComment(id)
                 .then(() => {
-                    this.onChangeComments();
+                    this.refreshCommentsList();
                 })
         });
     }
 
     refreshCommentsList() {
         this.publicCommentsAPIService.getCommentsListFor(this.targetId)
-            .then((rv) => {
-                console.log(rv)
-                this.comments = [{
-                    text: "Dummy Comment",
-                }];
+            .then((commentsList) => {
+                console.log(commentsList)
+                this.comments = commentsList
                 console.log("Refresh comment list");
             });
     }
