@@ -1,13 +1,15 @@
 class MCCommentsListComponentController {
     constructor(User, $mdDialog, commentsAPI, publicCommentsAPI) {
-        this.user = User.u();
-        this.loggedin = (this.user !== "Login");
+        this.userid = User.u();
+        this.loggedin = User.isAuthenticated();
         this.$mdDialog = $mdDialog;
         this.commentsAPIService = commentsAPI;
         this.publicCommentsAPIService = publicCommentsAPI;
         this.targetType = this.target.otype;
         this.targetId = this.target.id;
+        this.comments = [];
         this.refreshCommentsList();
+        console.log("MCCommentsListComponentController");
     }
 
     addEditComment(id) {

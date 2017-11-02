@@ -9,23 +9,12 @@
         <i class="fa fa-fw fa-refresh"></i>Refresh Comments List
     </md-button>
     <br/>
-    <i ng-if="!$ctrl.loggedin">You must be logged in to add comments</i>
+    <i ng-if="!$ctrl.loggedin">You must be logged in to add or modify comments</i>
     <md-list flex>
         <md-header>Comments</md-header>
         <md-list-item class="md-3-line" ng-repeat="comment in $ctrl.comments">
-            <div class="md-list-item-text" layout="column">
-                <span {{ class="mc-md-small"><b>{{comment.user.fullname}}</b> on {{comment.mtime | date:"MMM d, y h:mm a"}}</span>
-                <p class="md-subhead">{{comment.text}}</p>
-                <div ng-if="$ctrl.loggedin" layout="row">
-                    <a ng-click="$ctrl.addEditComment(null)">add comment</a>
-                    <a class="margin-left-15"
-                       ng-if="comment.owner === $ctrl.user"
-                       ng-click="$ctrl.addEditComment(comment.id)">edit</a>
-                    <a class="margin-left-15"
-                       ng-if="comment.owner === $ctrl.user"
-                       ng-click="$ctrl.deleteComment(comment.id)">delete</a>
-                </div>
-            </div>
+            {{comments.text}}
+            <mc-commments-item comment="comment" ></mc-commments-item>
             <md-divider></md-divider>
         </md-list-item>
     </md-list>
