@@ -78,16 +78,7 @@ module.exports.getOne = function*(next) {
             samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).map(function(row) {
                 return r.table('samples').get(row('sample_id'))
             }).coerceTo('array'),
-            publisher: (!ds('owner'))?'unknown':r.db('materialscommons').table('users').get(ds('owner')).getField("fullname"),
-            comments: r.db('materialscommons').table('comments')
-                    .getAll(ds('id'), {index:'item_id'}).merge((c) => {
-                        return {
-                            user: r.db('materialscommons').table('users')
-                                .get(c('owner')).pluck('fullname')
-                            };
-                        }
-                    )
-                    .orderBy(r.desc('birthtime'))
+            publisher: (!ds('owner'))?'unknown':r.db('materialscommons').table('users').get(ds('owner')).getField("fullname")
         };
     });
     if (this.params.user_id) {
