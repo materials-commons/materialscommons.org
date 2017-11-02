@@ -7,6 +7,7 @@ const action = require('./db/actions');
 const appreciate = require('./db/appreciate');
 const browse = require('./db/browse');
 const view = require('./db/view');
+const comments = require('./db/comments');
 const tag = require('./db/tag');
 const download = require('./db/download');
 const path = require('path');
@@ -39,6 +40,7 @@ router.get('/actions/:dataset_id', action.getAll);
 router.post('/appreciate', appreciate.addAppreciate);
 router.put('/appreciate/remove', appreciate.removeAppreciation);
 router.post('/views', view.addView);
+router.get('/comments', comments.get)
 router.post('/tags', tag.addTag);
 router.put('/tags', tag.removeTag);
 router.get('/tags', tag.getAllTags);

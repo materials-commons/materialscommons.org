@@ -50,7 +50,7 @@ module.exports.getTopViews = function*(next) {
             'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
             'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
             'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count(),
-            'comments': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count()
+            'comment_count': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count()
         }
     }).orderBy(r.desc('views')).limit(10);
     yield next;
