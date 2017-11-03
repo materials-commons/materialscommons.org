@@ -13,7 +13,7 @@ class MCCommentsListComponentController {
 
     addComment() {
         this.showAddDialog().then((val) => {
-            let text = val.text
+            let text = val.text;
             if (text !== '') {
                 this.createNewComment(this.targetType, this.targetId, text);
             }
@@ -28,7 +28,9 @@ class MCCommentsListComponentController {
     }
 
     editComment(commentId, text) {
-        this.showEditDialog(text).then((val) => {this.updateComment(commentId, val.text);});
+        this.showEditDialog(text).then((val) => {
+            this.updateComment(commentId, val.text);
+        });
     }
 
     updateComment(commentId, text) {
@@ -38,7 +40,9 @@ class MCCommentsListComponentController {
     }
 
     deleteComment(id) {
-        this.showDeleteDialog().then(() => {this.deleteConfirmed(id);});
+        this.showDeleteDialog().then(() => {
+            this.deleteConfirmed(id);
+        });
     }
 
     showAddDialog() {
@@ -71,19 +75,17 @@ class MCCommentsListComponentController {
         })
     }
 
-    deleteConfirmed(id){
+    deleteConfirmed(id) {
         this.commentsAPIService.deleteComment(id)
             .then(() => {
                 this.refreshCommentsList();
-        });
+            });
     }
 
     refreshCommentsList() {
         this.publicCommentsAPIService.getCommentsListFor(this.targetId)
             .then((commentsList) => {
-                console.log(commentsList);
                 this.comments = commentsList;
-                console.log("Refresh comment list");
             });
     }
 }
@@ -98,27 +100,45 @@ angular.module('materialscommons').component('mcCommentsList', {
 
 class AddDialogController {
     /*@ngInject*/
-    constructor($mdDialog) { this.$mdDialog = $mdDialog; }
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
 
-    done() { this.$mdDialog.hide({ text: this.text }); }
+    done() {
+        this.$mdDialog.hide({text: this.text});
+    }
 
-    cancel() { this.$mdDialog.cancel(); }
+    cancel() {
+        this.$mdDialog.cancel();
+    }
 }
 
 class EditDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {this.$mdDialog = $mdDialog; }
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
 
-    done() { this.$mdDialog.hide({ text: this.text }); }
+    done() {
+        this.$mdDialog.hide({text: this.text});
+    }
 
-    cancel() { this.$mdDialog.cancel(); }
+    cancel() {
+        this.$mdDialog.cancel();
+    }
 }
 
 class DeleteDialogController {
     /*@ngInject*/
-    constructor($mdDialog) { this.$mdDialog = $mdDialog; }
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
 
-    done() { this.$mdDialog.hide(); }
+    done() {
+        this.$mdDialog.hide();
+    }
 
-    cancel() { this.$mdDialog.cancel(); }
+    cancel() {
+        this.$mdDialog.cancel();
+    }
 }

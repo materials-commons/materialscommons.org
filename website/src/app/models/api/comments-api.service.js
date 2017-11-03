@@ -16,7 +16,7 @@ class CommentsAPIService {
     updateComment(commentId, text) {
         let data = {
             text: text
-        }
+        };
         return this.Restangular.one('v2').one('comments', commentId).customPUT(data)
             .then(comment => comment.plain());
     }

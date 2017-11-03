@@ -2,18 +2,17 @@ class MCCommentsItemController {
     constructor(User) {
         this.userid = User.u();
         this.loggedin = User.isAuthenticated();
-        console.log("MCCommentsItemController");
     }
 
     addComment() {
         this.onAdd();
     }
 
-    editComment(){
+    editComment() {
         this.onEdit({id: this.comment.id, text: this.comment.text})
     }
 
-    deleteComment(){
+    deleteComment() {
         this.onDelete({id: this.comment.id});
     }
 }

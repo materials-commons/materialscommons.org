@@ -1,6 +1,6 @@
 <md-list-item class="md-3-line">
     <div class="md-list-item-text" layout="column">
-        <span {{ class="mc-md-small"><b>{{$ctrl.comment.user.fullname}}</b> on {{$ctrl.comment.mtime | date:"MMM d, y h:mm a"}}</span>
+        <span class="mc-md-small"><b>{{$ctrl.comment.user.fullname}}</b> on {{$ctrl.comment.mtime | date:"MMM d, y h:mm a"}}</span>
         <p class="md-subhead">{{$ctrl.comment.text}}</p>
         <div ng-if="$ctrl.loggedin" layout="row">
             <a ng-click="$ctrl.addComment(null)">add comment</a>
