@@ -12,6 +12,10 @@ class MCCommentsListComponentController {
         console.log("MCCommentsListComponentController");
     }
 
+    addComment() {
+        console.log("actually add the comment")
+    }
+
     addEditComment(id) {
         let comment = null;
         if (id) {
@@ -76,8 +80,8 @@ class MCCommentsListComponentController {
     refreshCommentsList() {
         this.publicCommentsAPIService.getCommentsListFor(this.targetId)
             .then((commentsList) => {
-                console.log(commentsList)
-                this.comments = commentsList
+                console.log(commentsList);
+                this.comments = commentsList;
                 console.log("Refresh comment list");
             });
     }

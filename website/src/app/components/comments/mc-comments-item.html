@@ -1,13 +1,16 @@
-<div class="md-list-item-text" layout="column">
-    <span {{ class="mc-md-small"><b>{{$ctrl.comment.user.fullname}}</b> on {{$ctrl.comment.mtime | date:"MMM d, y h:mm a"}}</span>
-    <p class="md-subhead">{{$ctrl.comment.text}}</p>
-    <div ng-if="$ctrl.loggedin" layout="row">
-        <a ng-click="$ctrl.addEditComment(null)">add comment</a>
-        <a class="margin-left-15"
-           ng-if="$ctrl.comment.owner === $ctrl.user"
-           ng-click="$ctrl.addEditComment(comment.id)">edit</a>
-        <a class="margin-left-15"
-           ng-if="$ctrl.comment.owner === $ctrl.user"
-           ng-click="$ctrl.deleteComment(comment.id)">delete</a>
+<md-list-item class="md-3-line">
+    <div class="md-list-item-text" layout="column">
+        <span {{ class="mc-md-small"><b>{{$ctrl.comment.user.fullname}}</b> on {{$ctrl.comment.mtime | date:"MMM d, y h:mm a"}}</span>
+        <p class="md-subhead">{{$ctrl.comment.text}}</p>
+        <div ng-if="$ctrl.loggedin" layout="row">
+            <a ng-click="$ctrl.addEditComment(null)">add comment</a>
+            <a class="margin-left-15"
+               ng-if="$ctrl.comment.owner === $ctrl.user"
+               ng-click="$ctrl.addEditComment(comment.id)">edit</a>
+            <a class="margin-left-15"
+               ng-if="$ctrl.comment.owner === $ctrl.user"
+               ng-click="$ctrl.deleteComment(comment.id)">delete</a>
+        </div>
     </div>
-</div>
+    <md-divider></md-divider>
+</md-list-item>

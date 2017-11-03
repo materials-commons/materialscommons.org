@@ -1,9 +1,5 @@
 <div>
-    <md-button ng-if="$ctrl.loggedin"
-               class="md-raised md-primary" ng-click="$ctrl.addEditComment(null)">
-        <md-tooltip>Add comment to list</md-tooltip>
-        <i class="fa fa-fw fa-plus"></i>add comment
-    </md-button>
+    <mc-add-comment-button action="$ctrl.addComment"></mc-add-comment-button>
     <md-button class="md-raised md-primary" ng-click="$ctrl.refreshCommentsList()">
         <md-tooltip>Refresh comments list from server</md-tooltip>
         <i class="fa fa-fw fa-refresh"></i>Refresh Comments List
@@ -12,11 +8,7 @@
     <i ng-if="!$ctrl.loggedin">You must be logged in to add or modify comments</i>
     <md-list flex>
         <md-header>Comments</md-header>
-        <md-list-item class="md-3-line" ng-repeat="comment in $ctrl.comments">
-            {{comments.text}}
-            <mc-commments-item comment="comment" ></mc-commments-item>
-            <md-divider></md-divider>
-        </md-list-item>
+        <mc-comments-item comment="comment" ng-repeat="comment in $ctrl.comments"></mc-comments-item>
     </md-list>
     <md-button ng-if="$ctrl.loggedin"
                class="md-raised md-primary" ng-click="$ctrl.addEditComment(null)">

@@ -2,7 +2,6 @@ class MCCommentsItemController {
     constructor(User) {
         this.userid = User.u();
         this.loggedin = User.isAuthenticated();
-        console.log("MCCommentsItemController", this.comment)
     }
 }
 
