@@ -1,10 +1,10 @@
 <div flex>
-    <ul ng-model="ctrl.files" class="padding-left-15">
-        <li ng-repeat="file in ctrl.files track by file.data.id | orderBy:'data.name'">
+    <ul class="padding-left-15" dnd-list="$ctrl.files">
+        <li ng-repeat="file in $ctrl.files track by file.data.id | orderBy:'data.name'" dnd-draggable="file">
             <div class="mc-active-tree-node">
                 <div ng-if="file.data.otype === 'directory'">
                     <div layout="row" layout-align="start center">
-                        <a ng-click="ctrl.setActive(file)">
+                        <a ng-click="$ctrl.setActive(file)">
                             <span ng-if="file.expand"><i
                                     class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
                             <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
@@ -13,8 +13,8 @@
                     </div>
                 </div>
                 <div ng-if="file.data.otype === 'file'">
-                    <div ng-if="file.data.name !== ctrl.placeholderName">
-                        <a ng-click="ctrl.setActive(file)">
+                    <div ng-if="file.data.name !== $ctrl.placeholderName">
+                        <a ng-click="$ctrl.setActive(file)">
                             <span><i class="fa fa-fw fa-file file-tree-icon-color"></i></span>
                             {{file.data.name}}
                         </a>

@@ -45,7 +45,7 @@ function mcFileTreeDirDirective(RecursionHelper) {
         },
         controller: MCFileTreeDirDirectiveController,
         replace: true,
-        controllerAs: 'ctrl',
+        controllerAs: '$ctrl',
         bindToController: true,
         templateUrl: 'app/project/files/mc-file-tree-dir.html',
         compile: function (element) {
