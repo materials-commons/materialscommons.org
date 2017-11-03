@@ -4,8 +4,9 @@ class MCAddCommentButtonController {
     }
 
     requestAddCommentAction() {
-        console.log("Make Request to add comment");
-        this.action();
+        console.log("Before: Make Request to add comment");
+        this.action()
+        console.log("After: Make Request to add comment");
     }
 }
 

@@ -13,7 +13,7 @@ class MCCommentsListComponentController {
     }
 
     addComment() {
-        console.log("actually add the comment")
+        console.log("actually add the comment", this.targetType, this.targetId);
     }
 
     addEditComment(id) {
