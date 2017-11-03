@@ -7,6 +7,7 @@ import './components/mc-flow-button.directive';
 import './components/mc-file-tree-uploader-container.component';
 import './components/mc-file-uploader.component';
 import './components/mc-file-ops-dialogs.service';
+import './components/dir/mc-dir-toolbar.component';
 import './components/dir/mc-dir-container.component';
 import './components/dir/mc-dir-bulk-download-url.component';
 import './components/dir/mc-dir-dnd-move.component';

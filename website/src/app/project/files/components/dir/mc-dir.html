@@ -5,42 +5,11 @@
         </h3>
     </div>
     <div layout="row" class="margin-left-30">
-        <div>
-            <md-button class="md-primary md-raised" ng-click="$ctrl.uploadFiles()">
-                <md-tooltip>Upload files</md-tooltip>
-                <i class="fa fa-fw fa-upload"></i>
-            </md-button>
-            <md-button class="md-primary md-raised" ng-click="$ctrl.createDirectory()">
-                <md-tooltip>Create Directory</md-tooltip>
-                <i class="fa fa-fw fa-plus-square"></i>
-            </md-button>
-            <md-button class="md-primary md-raised" ng-click="$ctrl.renameDirectory()">
-                <md-tooltip>Rename Current Directory</md-tooltip>
-                <i class="fa fa-fw fa-pencil-square"></i>
-            </md-button>
-            <md-button class="md-primary md-raised" ng-disabled="!$ctrl.selected"
-                       ng-click="$ctrl.handleDownloadFiles()">
-                <md-tooltip>Download selected files</md-tooltip>
-                <i class="fa fa-fw fa-download"></i>
-            </md-button>
-            <md-button class="md-primary md-raised" ng-disabled="!$ctrl.selected">
-                <md-tooltip>Delete selected files</md-tooltip>
-                <i class="fa fa-fw fa-trash"></i>
-            </md-button>
-            <md-button class="md-primary md-raised" ng-click="$ctrl.moveFiles=true" ng-show="!$ctrl.moveFiles">
-                <md-tooltip>Move files/directories into this directory</md-tooltip>
-                <i class="fa fa-fw fa-arrow-circle-right"></i>
-            </md-button>
-            <md-button class="md-warn md-raised" ng-click="$ctrl.moveFiles=false" ng-show="$ctrl.moveFiles">
-                <md-tooltip>Done moving files/directories</md-tooltip>
-                <i class="fa fa-fw fa-check-circle"></i>
-            </md-button>
-        </div>
+        <mc-dir-toolbar></mc-dir-toolbar>
     </div>
     <mc-dir-dnd-move move-files="$ctrl.moveFiles"></mc-dir-dnd-move>
     <mc-dir-bulk-download-url download-state="$ctrl.downloadState" download-url="$ctrl.downloadUrl">
     </mc-dir-bulk-download-url>
-    <mc-dir-overview dir="$ctrl.dir"
-                     on-selected="$ctrl.onSelected(selected)">
+    <mc-dir-overview dir="$ctrl.dir" on-selected="$ctrl.onSelected(selected)">
     </mc-dir-overview>
 </div>

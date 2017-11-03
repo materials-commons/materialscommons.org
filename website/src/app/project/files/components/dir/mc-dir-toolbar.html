@@ -1,0 +1,31 @@
+<div>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.mcDir.uploadFiles()">
+        <md-tooltip>Upload files</md-tooltip>
+        <i class="fa fa-fw fa-upload"></i>
+    </md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.mcDir.createDirectory()">
+        <md-tooltip>Create Directory</md-tooltip>
+        <i class="fa fa-fw fa-plus-square"></i>
+    </md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.mcDir.renameDirectory()">
+        <md-tooltip>Rename Current Directory</md-tooltip>
+        <i class="fa fa-fw fa-pencil-square"></i>
+    </md-button>
+    <md-button class="md-primary md-raised" ng-disabled="!$ctrl.mcDir.selected"
+               ng-click="$ctrl.mcDir.handleDownloadFiles()">
+        <md-tooltip>Download selected files</md-tooltip>
+        <i class="fa fa-fw fa-download"></i>
+    </md-button>
+    <md-button class="md-primary md-raised" ng-disabled="!$ctrl.mcDir.selected">
+        <md-tooltip>Delete selected files</md-tooltip>
+        <i class="fa fa-fw fa-trash"></i>
+    </md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.mcDir.moveFiles=true" ng-show="!$ctrl.mcDir.moveFiles">
+        <md-tooltip>Move files/directories into this directory</md-tooltip>
+        <i class="fa fa-fw fa-arrow-circle-right"></i>
+    </md-button>
+    <md-button class="md-warn md-raised" ng-click="$ctrl.mcDir.moveFiles=false" ng-show="$ctrl.mcDir.moveFiles">
+        <md-tooltip>Done moving files/directories</md-tooltip>
+        <i class="fa fa-fw fa-check-circle"></i>
+    </md-button>
+</div>
