@@ -3,13 +3,21 @@ class CommentsAPIService {
         this.Restangular = Restangular;
     }
 
-    createComment(comment) {
-        return this.Restangular.one('v2').one('comments').customPOST(comment)
+    createComment(targetType, targetId, text) {
+        let data = {
+            'item_type': targetType,
+            'item_id': targetId,
+            'text': text
+        };
+        return this.Restangular.one('v2').one('comments').customPOST(data)
             .then(comment => comment.plain());
     }
 
-    updateComment(comment) {
-        return this.Restangular.one('v2').one('comments', comment.id).customPUT(comment)
+    updateComment(commentId, text) {
+        let data = {
+            text: text
+        }
+        return this.Restangular.one('v2').one('comments', commentId).customPUT(data)
             .then(comment => comment.plain());
     }
 

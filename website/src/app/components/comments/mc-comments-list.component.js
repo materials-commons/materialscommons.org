@@ -15,39 +15,30 @@ class MCCommentsListComponentController {
         this.showAddDialog().then((val) => {
             let text = val.text
             if (text !== '') {
-                this.createNewComment(text, this.targetType, this.targetId);
+                this.createNewComment(this.targetType, this.targetId, text);
             }
         });
     }
 
-    createNewComment(text, type, id) {
-        let comment = {
-            'text': text,
-            'item_type': type,
-            'item_id': id
-        };
-        this.commentsAPIService.createComment(comment)
+    createNewComment(targetType, targetId, text) {
+        this.commentsAPIService.createComment(targetType, targetId, text)
             .then(() => {
                 this.refreshCommentsList();
             });
     }
 
-    editComment(id, text) {
-        this.showEditDialog(text).then((val) => {this.updateComment(id, val.text);});
+    editComment(commentId, text) {
+        this.showEditDialog(text).then((val) => {this.updateComment(commentId, val.text);});
     }
 
-    updateComment(id, text) {
-        let comment = {
-            id: id,
-            text: text
-        }
-        this.commentsAPIService.updateComment(comment).then(() => {
+    updateComment(commentId, text) {
+        this.commentsAPIService.updateComment(commentId, text).then(() => {
             this.refreshCommentsList();
         });
     }
 
     deleteComment(id) {
-        this.showDeleteDialog(id).then(() => {this.deleteConfirmed(id);});
+        this.showDeleteDialog().then(() => {this.deleteConfirmed(id);});
     }
 
     showAddDialog() {
@@ -71,15 +62,12 @@ class MCCommentsListComponentController {
         })
     }
 
-    showDeleteDialog(id) {
+    showDeleteDialog() {
         return this.$mdDialog.show({
             templateUrl: 'app/components/comments/dialog-delete-comment.html',
             controller: DeleteDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
-            locals: {
-                id: id
-            }
         })
     }
 
