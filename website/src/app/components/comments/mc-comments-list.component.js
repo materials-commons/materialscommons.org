@@ -110,49 +110,27 @@ angular.module('materialscommons').component('mcCommentsList', {
 
 class AddDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
+    constructor($mdDialog) { this.$mdDialog = $mdDialog; }
 
-    done() {
-        this.$mdDialog.hide({
-            text: this.text,
-        });
-    }
+    done() { this.$mdDialog.hide({ text: this.text }); }
 
-    cancel() {
-        this.$mdDialog.cancel();
-    }
+    cancel() { this.$mdDialog.cancel(); }
 }
 
 class EditDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
+    constructor($mdDialog) {this.$mdDialog = $mdDialog; }
 
-    done() {
-        this.$mdDialog.hide({
-            text: this.text,
-        });
-    }
+    done() { this.$mdDialog.hide({ text: this.text }); }
 
-    cancel() {
-        this.$mdDialog.cancel();
-    }
+    cancel() { this.$mdDialog.cancel(); }
 }
 
 class DeleteDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
+    constructor($mdDialog) { this.$mdDialog = $mdDialog; }
 
-    done() {
-        this.$mdDialog.hide();
-    }
+    done() { this.$mdDialog.hide(); }
 
-    cancel() {
-        this.$mdDialog.cancel();
-    }
+    cancel() { this.$mdDialog.cancel(); }
 }
