@@ -9,29 +9,18 @@ class MCCommentsListComponentController {
         this.targetId = this.target.id;
         this.comments = [];
         this.refreshCommentsList();
-        console.log("MCCommentsListComponentController");
     }
 
     addComment() {
         this.showAddDialog().then((val) => {
             let text = val.text
-            console.log(text);
             if (text !== '') {
-                this.sendNewCommentToServer(text, this.targetType, this.targetId);
+                this.createNewComment(text, this.targetType, this.targetId);
             }
         });
     }
 
-    showAddDialog() {
-        return this.$mdDialog.show({
-            templateUrl: 'app/components/comments/add-comment.html',
-            controller: AddDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-        });
-    }
-
-    sendNewCommentToServer(text, type, id) {
+    createNewComment(text, type, id) {
         let comment = {
             'text': text,
             'item_type': type,
@@ -43,64 +32,61 @@ class MCCommentsListComponentController {
             });
     }
 
-    addEditComment(id) {
-        let comment = null;
-        if (id) {
-            for (let i = 0; i < this.comments.length; i++) {
-                if (id === this.comments[i].id) {
-                    comment = this.comments[i];
-                    break;
-                }
-            }
+    editComment(id, text) {
+        this.showEditDialog(text).then((val) => {this.updateComment(id, val.text);});
+    }
+
+    updateComment(id, text) {
+        let comment = {
+            id: id,
+            text: text
         }
-        this.$mdDialog.show({
-            templateUrl: 'app/components/comments/add-edit-comment.html',
-            controller: AddEditDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {
-                text: (comment) ? comment.text : '',
-                source: comment
-            }
-        }).then(
-            (values) => {
-                if (values.source) {
-                    comment = values.source;
-                    if (values.text !== '')
-                        comment.text = values.text;
-                    this.commentsAPIService.updateComment(comment)
-                        .then(() => {
-                            this.refreshCommentsList();
-                        });
-                } else {
-                    comment = {
-                        'text': values.text,
-                        'item_type': this.target.otype,
-                        'item_id': this.target.id
-                    };
-                    this.commentsAPIService.createComment(comment)
-                        .then(() => {
-                            this.refreshCommentsList();
-                        });
-                }
-            }
-        );
+        this.commentsAPIService.updateComment(comment).then(() => {
+            this.refreshCommentsList();
+        });
     }
 
     deleteComment(id) {
-        this.$mdDialog.show({
-            templateUrl: 'app/components/comments/delete-comment.html',
+        this.showDeleteDialog(id).then(() => {this.deleteConfirmed(id);});
+    }
+
+    showAddDialog() {
+        return this.$mdDialog.show({
+            templateUrl: 'app/components/comments/dialog-add-comment.html',
+            controller: AddDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+        });
+    }
+
+    showEditDialog(previousText) {
+        return this.$mdDialog.show({
+            templateUrl: 'app/components/comments/dialog-edit-comment.html',
+            controller: EditDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                text: previousText,
+            }
+        })
+    }
+
+    showDeleteDialog(id) {
+        return this.$mdDialog.show({
+            templateUrl: 'app/components/comments/dialog-delete-comment.html',
             controller: DeleteDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
                 id: id
             }
-        }).then(() => {
-            this.commentsAPIService.deleteComment(id)
-                .then(() => {
-                    this.refreshCommentsList();
-                })
+        })
+    }
+
+    deleteConfirmed(id){
+        this.commentsAPIService.deleteComment(id)
+            .then(() => {
+                this.refreshCommentsList();
         });
     }
 
@@ -147,9 +133,7 @@ class EditDialogController {
 
     done() {
         this.$mdDialog.hide({
-            id: this.id,
             text: this.text,
-            source: this.source
         });
     }
 
