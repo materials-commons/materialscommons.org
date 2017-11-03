@@ -13,7 +13,34 @@ class MCCommentsListComponentController {
     }
 
     addComment() {
-        console.log("actually add the comment", this.targetType, this.targetId);
+        this.showAddDialog().then((val) => {
+            let text = val.text
+            console.log(text);
+            if (text !== '') {
+                this.sendNewCommentToServer(text, this.targetType, this.targetId);
+            }
+        });
+    }
+
+    showAddDialog() {
+        return this.$mdDialog.show({
+            templateUrl: 'app/components/comments/add-comment.html',
+            controller: AddDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+        });
+    }
+
+    sendNewCommentToServer(text, type, id) {
+        let comment = {
+            'text': text,
+            'item_type': type,
+            'item_id': id
+        };
+        this.commentsAPIService.createComment(comment)
+            .then(() => {
+                this.refreshCommentsList();
+            });
     }
 
     addEditComment(id) {
@@ -95,7 +122,24 @@ angular.module('materialscommons').component('mcCommentsList', {
     }
 });
 
-class AddEditDialogController {
+class AddDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.hide({
+            text: this.text,
+        });
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class EditDialogController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;

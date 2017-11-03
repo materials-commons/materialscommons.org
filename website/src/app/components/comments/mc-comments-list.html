@@ -1,23 +1,15 @@
 <div>
-    <mc-add-comment-button action="$ctrl.addComment">
+    <mc-add-comment-button action="$ctrl.addComment()">
     </mc-add-comment-button>
-    <md-button class="md-raised md-primary" ng-click="$ctrl.refreshCommentsList()">
-        <md-tooltip>Refresh comments list from server</md-tooltip>
-        <i class="fa fa-fw fa-refresh"></i>Refresh Comments List
-    </md-button>
-    <br/>
+    <mc-refresh-comments-button action="$ctrl.refreshCommentsList()">
+    </mc-refresh-comments-button>
     <i ng-if="!$ctrl.loggedin">You must be logged in to add or modify comments</i>
     <md-list flex>
         <md-header>Comments</md-header>
         <mc-comments-item comment="comment" ng-repeat="comment in $ctrl.comments"></mc-comments-item>
     </md-list>
-    <md-button ng-if="$ctrl.loggedin"
-               class="md-raised md-primary" ng-click="$ctrl.addEditComment(null)">
-        <md-tooltip>Add comment to list</md-tooltip>
-        <i class="fa fa-fw fa-plus"></i>add comment
-    </md-button>
-    <md-button class="md-raised md-primary" ng-click="$ctrl.refreshCommentsList()">
-        <md-tooltip>Refresh comments list from server</md-tooltip>
-        <i class="fa fa-fw fa-refresh"></i>Refresh Comments List
-    </md-button>
+    <mc-add-comment-button action="$ctrl.addComment()">
+    </mc-add-comment-button>
+    <mc-refresh-comments-button action="$ctrl.refreshCommentsList()">
+    </mc-refresh-comments-button>
 </div>
