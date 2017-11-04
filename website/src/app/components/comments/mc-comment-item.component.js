@@ -1,4 +1,4 @@
-class MCCommentsItemController {
+class MCCommentItemController {
     constructor(User) {
         this.userid = User.u();
         this.loggedin = User.isAuthenticated();
@@ -17,9 +17,9 @@ class MCCommentsItemController {
     }
 }
 
-angular.module('materialscommons').component('mcCommentsItem', {
-    templateUrl: 'app/components/comments/mc-comments-item.html',
-    controller: MCCommentsItemController,
+angular.module('materialscommons').component('mcCommentItem', {
+    templateUrl: 'app/components/comments/mc-comment-item.html',
+    controller: MCCommentItemController,
     bindings: {
         comment: "<",
         onAdd: "&",

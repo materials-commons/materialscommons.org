@@ -48,7 +48,7 @@ class MCCommentsListComponentController {
     showAddDialog() {
         return this.$mdDialog.show({
             templateUrl: 'app/components/comments/dialog-add-comment.html',
-            controller: AddDialogController,
+            controller: AddEditDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
         });
@@ -57,7 +57,7 @@ class MCCommentsListComponentController {
     showEditDialog(previousText) {
         return this.$mdDialog.show({
             templateUrl: 'app/components/comments/dialog-edit-comment.html',
-            controller: EditDialogController,
+            controller: AddEditDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
@@ -98,22 +98,7 @@ angular.module('materialscommons').component('mcCommentsList', {
     }
 });
 
-class AddDialogController {
-    /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
-
-    done() {
-        this.$mdDialog.hide({text: this.text});
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
-
-class EditDialogController {
+class AddEditDialogController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;

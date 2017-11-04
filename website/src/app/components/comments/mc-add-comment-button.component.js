@@ -3,7 +3,7 @@ class MCAddCommentButtonController {
     }
 
     requestAddCommentAction() {
-        this.action()
+        this.onAdd();
     }
 }
 
@@ -11,6 +11,6 @@ angular.module('materialscommons').component('mcAddCommentButton', {
     templateUrl: 'app/components/comments/mc-add-comment-button.html',
     controller: MCAddCommentButtonController,
     bindings: {
-        action: '&'
+        onAdd: '&'
     }
 });

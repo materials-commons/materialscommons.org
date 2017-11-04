@@ -1,20 +1,20 @@
 <div>
-    <mc-add-comment-button action="$ctrl.addComment()" ng-if="$ctrl.loggedin">
+    <mc-add-comment-button on-add="$ctrl.addComment()" ng-if="$ctrl.loggedin">
     </mc-add-comment-button>
-    <mc-refresh-comments-button action="$ctrl.refreshCommentsList()">
+    <mc-refresh-comments-button on-refresh="$ctrl.refreshCommentsList()">
     </mc-refresh-comments-button>
     <div>
         <i ng-if="!$ctrl.loggedin">You must be logged in to add or modify comments</i>
     </div>
     <md-list flex>
         <md-header>Comments</md-header>
-        <mc-comments-item
+        <mc-comment-item
                 comment="comment"
                 ng-repeat="comment in $ctrl.comments"
                 on-add="$ctrl.addComment()"
                 on-edit="$ctrl.editComment(id, text)"
                 on-delete="$ctrl.deleteComment(id)"
-        ></mc-comments-item>
+        ></mc-comment-item>
     </md-list>
     <mc-add-comment-button action="$ctrl.addComment()" ng-if="$ctrl.loggedin">
     </mc-add-comment-button>
