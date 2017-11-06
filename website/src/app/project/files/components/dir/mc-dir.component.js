@@ -7,6 +7,10 @@ class MCDirComponentController {
         this.moveFiles = false;
     }
 
+    $onChanges(changes) {
+        console.log('mcDir on changes', changes);
+    }
+
     onSelected(selected) {
         this.selected = selected.length !== 0;
         this.selectedFiles = selected;
@@ -37,6 +41,10 @@ class MCDirComponentController {
     handleMove(item) {
         return this.onMove({item: item});
     }
+
+    handleDelete() {
+        this.onDelete({items: this.selectedFiles});
+    }
 }
 
 angular.module('materialscommons').component('mcDir', {
@@ -48,6 +56,7 @@ angular.module('materialscommons').component('mcDir', {
         onCreateDir: '&',
         onUploadFiles: '&',
         onDownloadFiles: '&',
+        onDelete: '&',
         onMove: '&'
     }
 });

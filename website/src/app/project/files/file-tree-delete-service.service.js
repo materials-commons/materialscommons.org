@@ -37,17 +37,19 @@ function fileTreeDeleteService(projectTreeModel, projectsAPIRoute, toast) {
 
     return {
         deleteDir: function(projectID, dirID) {
-            return deleteProjectDir(projectID, dirID).then(
-                () => dropNode(dirID),
-                (err) => displayError(err)
-            );
+            return deleteProjectDir(projectID, dirID);
+            //     .then(
+            //     () => dropNode(dirID),
+            //     (err) => displayError(err)
+            // );
         },
 
         deleteFile: function(projectID, fileID) {
-            return deleteProjectFile(projectID, fileID).then(
-                () => dropNode(fileID),
-                (err) => displayError(err)
-            );
+            return deleteProjectFile(projectID, fileID);
+            //     .then(
+            //     () => dropNode(fileID),
+            //     (err) => displayError(err)
+            // );
         }
     }
 }

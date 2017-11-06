@@ -16,7 +16,8 @@
         <md-tooltip>Download selected files</md-tooltip>
         <i class="fa fa-fw fa-download"></i>
     </md-button>
-    <md-button class="md-primary md-raised" ng-disabled="!$ctrl.mcDir.selected">
+    <md-button class="md-primary md-raised" ng-disabled="!$ctrl.mcDir.selected"
+               ng-click="$ctrl.mcDir.handleDelete()">
         <md-tooltip>Delete selected files</md-tooltip>
         <i class="fa fa-fw fa-trash"></i>
     </md-button>

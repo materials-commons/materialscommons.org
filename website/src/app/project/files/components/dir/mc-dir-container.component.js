@@ -1,18 +1,25 @@
 class MCDirContainerComponentController {
     /*@ngInject*/
-    constructor($stateParams, mcprojstore, gridFiles, projectFileTreeAPI, fileTreeMoveService, $state) {
+    constructor($stateParams, mcprojstore, gridFiles, projectFileTreeAPI, fileTreeMoveService, fileTreeDeleteService, $state, $timeout) {
         this.$stateParams = $stateParams;
         this.mcprojstore = mcprojstore;
         this.gridFiles = gridFiles;
         this.projectFileTreeAPI = projectFileTreeAPI;
         this.fileTreeMoveService = fileTreeMoveService;
+        this.fileTreeDeleteService = fileTreeDeleteService;
         this.$state = $state;
+        this.$timeout = $timeout;
     }
 
     $onInit() {
+        this._loadDir();
+    }
+
+    _loadDir() {
         this.project = this.mcprojstore.currentProject;
         const entry = this.gridFiles.findEntry(this.project.files[0], this.$stateParams.dir_id);
         this.dir = entry.model;
+        console.log('this.dir =', this.dir);
     }
 
     handleRenameDir(newDirName) {
@@ -39,8 +46,25 @@ class MCDirContainerComponentController {
         );
     }
 
-    handleDeleteDir() {
-
+    handleDelete(items) {
+        console.log('handleDelete', items);
+        for (let file of items) {
+            console.log('file', file);
+            this.fileTreeDeleteService.deleteFile(this.$stateParams.project_id, file.id).then(
+                () => {
+                    const i = _.findIndex(this.dir.children, (f) => f.data.id === file.id);
+                    if (i !== -1) {
+                        console.log('splicing', i, file.id);
+                        this._updateCurrentProj(() => {
+                            //this.dir.children = this.dir.children.filter(f => f.data.id !== file.id);
+                            this.dir.children.splice(i, 1);
+                            console.log('after filter', this.dir);
+                        }).then(() => this.$timeout(() => this.dir = []));
+                    }
+                }
+            )
+        }
+        console.log('handleDelete', items);
     }
 
     handleUploadFiles() {
@@ -48,7 +72,7 @@ class MCDirContainerComponentController {
     }
 
     _updateCurrentProj(fn) {
-        this.mcprojstore.updateCurrentProject(() => {
+        return this.mcprojstore.updateCurrentProject(() => {
             fn();
             return this.project;
         });
