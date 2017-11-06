@@ -8,12 +8,10 @@ class MCCommentsListComponentController {
         this.targetType = this.target.otype;
         this.targetId = this.target.id;
         this.comments = [];
-        this.showextrabuttons = false;
     }
 
     $onInit() {
         this.refreshCommentsList();
-        this.showextrabuttons 
     }
 
     addComment() {
@@ -72,12 +70,12 @@ class MCCommentsListComponentController {
     }
 
     showDeleteDialog() {
-        return this.$mdDialog.show({
-            templateUrl: 'app/components/comments/dialog-delete-comment.html',
-            controller: DeleteDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-        })
+        var confirm = this.$mdDialog.confirm()
+          .title(`Delete ${this.targetType}.`)
+          .ariaLabel(`Delete ${this.targetType}.`)
+          .ok('Delete')
+          .cancel('Cancel');
+        return this.$mdDialog.show(confirm);
     }
 
     deleteConfirmed(id) {
@@ -111,21 +109,6 @@ class AddEditDialogController {
 
     done() {
         this.$mdDialog.hide({text: this.text});
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
-
-class DeleteDialogController {
-    /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
-
-    done() {
-        this.$mdDialog.hide();
     }
 
     cancel() {
