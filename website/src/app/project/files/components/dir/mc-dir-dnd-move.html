@@ -1,5 +1,5 @@
 <div>
-    <ul dnd-list="[]" ng-show="$ctrl.moveFiles" class="list-unstyled">
+    <ul dnd-list="[]" ng-show="$ctrl.moveFiles" class="list-unstyled" dnd-drop="$ctrl.onDrop(index, item, external, type)">
         <li>
             <div class="move-drop-box text-uppercase">
                 drag files/directories from tree and drop here to move

@@ -33,6 +33,10 @@ class MCDirComponentController {
             }
         );
     }
+
+    handleMove(item) {
+        return this.onMove({item: item});
+    }
 }
 
 angular.module('materialscommons').component('mcDir', {
@@ -43,6 +47,7 @@ angular.module('materialscommons').component('mcDir', {
         onRenameDir: '&',
         onCreateDir: '&',
         onUploadFiles: '&',
-        onDownloadFiles: '&'
+        onDownloadFiles: '&',
+        onMove: '&'
     }
 });

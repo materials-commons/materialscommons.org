@@ -1,7 +1,5 @@
-angular.module('materialscommons').factory('fileTreeMoveService', fileTreeMoveService);
-
+/*@ngInject*/
 function fileTreeMoveService(projectsAPIRoute, mcprojstore) {
-    'ngInject';
 
     function moveFileOnServer(fileID, oldDirID, newDirID) {
         const moveArgs = {
@@ -11,7 +9,7 @@ function fileTreeMoveService(projectsAPIRoute, mcprojstore) {
             }
         };
         const projectID = mcprojstore.currentProject.id;
-        return projectsAPIRoute(projectID).one('files', fileID).customPUT(moveArgs);
+        return projectsAPIRoute(projectID).one('files', fileID).customPUT(moveArgs).then(f => f.plain());
     }
 
     function moveDirOnServer(dirID, newDirID) {
@@ -21,7 +19,7 @@ function fileTreeMoveService(projectsAPIRoute, mcprojstore) {
             }
         };
         const projectID = mcprojstore.currentProject.id;
-        return projectsAPIRoute(projectID).one('directories', dirID).customPUT(moveArgs);
+        return projectsAPIRoute(projectID).one('directories', dirID).customPUT(moveArgs).then(d => d.plain());
     }
 
     function findNodeByID(root, id) {
@@ -38,25 +36,16 @@ function fileTreeMoveService(projectsAPIRoute, mcprojstore) {
 
     return {
         moveFile: function(fileID, oldDirID, newDirID) {
-            const root = getTreeRoot();
-            return moveFileOnServer(fileID, oldDirID, newDirID).then(function(f) {
-                const fileNode = findNodeByID(root, fileID),
-                    dirNode = findNodeByID(root, newDirID);
-                fileNode.drop();
-                dirNode.addChild(fileNode);
-                return f;
-            });
+            return moveFileOnServer(fileID, oldDirID, newDirID).then(f => f);
         },
 
         moveDir: function(dirID, newDirID) {
-            const root = getTreeRoot();
-            return moveDirOnServer(dirID, newDirID).then(function(d) {
-                const dirNode = findNodeByID(root, dirID),
-                    toDirNode = findNodeByID(root, newDirID);
-                dirNode.drop();
-                toDirNode.addChild(dirNode);
-                return d;
-            });
-        }
+            return moveDirOnServer(dirID, newDirID).then(d => d);
+        },
+
+        findNodeByID,
+        getTreeRoot,
     };
 }
+
+angular.module('materialscommons').factory('fileTreeMoveService', fileTreeMoveService);

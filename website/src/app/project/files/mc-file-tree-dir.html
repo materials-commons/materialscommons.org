@@ -1,6 +1,7 @@
 <div flex>
     <ul class="padding-left-15" dnd-list="$ctrl.files">
-        <li ng-repeat="file in $ctrl.files track by file.data.id | orderBy:'data.name'" dnd-draggable="file">
+        <li ng-repeat="file in $ctrl.files track by file.data.id | orderBy:'data.name'" dnd-draggable="file"
+            dnd-moved="$ctrl.files.splice($index, 1)">
             <div class="mc-active-tree-node">
                 <div ng-if="file.data.otype === 'directory'">
                     <div layout="row" layout-align="start center">

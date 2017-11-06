@@ -7,7 +7,7 @@
     <div layout="row" class="margin-left-30">
         <mc-dir-toolbar></mc-dir-toolbar>
     </div>
-    <mc-dir-dnd-move move-files="$ctrl.moveFiles"></mc-dir-dnd-move>
+    <mc-dir-dnd-move move-files="$ctrl.moveFiles" on-move="$ctrl.handleMove(item)"></mc-dir-dnd-move>
     <mc-dir-bulk-download-url download-state="$ctrl.downloadState" download-url="$ctrl.downloadUrl">
     </mc-dir-bulk-download-url>
     <mc-dir-overview dir="$ctrl.dir" on-selected="$ctrl.onSelected(selected)">
