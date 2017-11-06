@@ -8,7 +8,12 @@ class MCCommentsListComponentController {
         this.targetType = this.target.otype;
         this.targetId = this.target.id;
         this.comments = [];
+        this.showextrabuttons = false;
+    }
+
+    $onInit() {
         this.refreshCommentsList();
+        this.showextrabuttons 
     }
 
     addComment() {
