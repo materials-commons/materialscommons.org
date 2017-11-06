@@ -19,8 +19,8 @@
                 on-delete="$ctrl.deleteComment(id)"
         ></mc-comment-item>
     </md-list>
-    <mc-add-comment-button action="$ctrl.addComment()" ng-if="$ctrl.loggedin && ($ctrl.comments.length > 4)">
+    <mc-add-comment-button on-add="$ctrl.addComment()" ng-if="$ctrl.loggedin && ($ctrl.comments.length > 4)">
     </mc-add-comment-button>
-    <mc-refresh-comments-button action="$ctrl.refreshCommentsList()" ng-if="($ctrl.comments.length > 4)">
+    <mc-refresh-comments-button on-refresh="$ctrl.refreshCommentsList()" ng-if="($ctrl.comments.length > 4)">
     </mc-refresh-comments-button>
 </div>
