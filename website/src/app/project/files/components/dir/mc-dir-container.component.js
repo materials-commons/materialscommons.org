@@ -75,6 +75,8 @@ class MCDirContainerComponentController {
                                 this.updated = !this.updated;
                             });
                         }
+                        const root = this.fileTreeMoveService.getTreeRoot();
+                        this.$state.go('project.files.dir', {dir_id: root.model.data.id}, {reload: true});
                     }
                 );
             }
