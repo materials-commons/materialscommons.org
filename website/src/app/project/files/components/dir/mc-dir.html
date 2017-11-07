@@ -2,7 +2,17 @@
     <div layout="row">
         <h3 class="md-title">
             <i class="fa fa-fw fa-folder-open"></i> {{$ctrl.dir.data.path}}
+            <a class="text-uppercase md-warn margin-left-15" ng-click="$ctrl.deleteDir()">
+                <i class="fa fa-fw fa-trash"></i> delete directory
+            </a>
         </h3>
     </div>
-    <mc-dir-overview dir="$ctrl.dir" project="$ctrl.project"></mc-dir-overview>
+    <div layout="row" class="margin-left-30">
+        <mc-dir-toolbar></mc-dir-toolbar>
+    </div>
+    <mc-dir-dnd-move move-files="$ctrl.moveFiles" on-move="$ctrl.handleMove(item)"></mc-dir-dnd-move>
+    <mc-dir-bulk-download-url download-state="$ctrl.downloadState" download-url="$ctrl.downloadUrl">
+    </mc-dir-bulk-download-url>
+    <mc-dir-overview dir="$ctrl.dir" on-selected="$ctrl.onSelected(selected)">
+    </mc-dir-overview>
 </div>

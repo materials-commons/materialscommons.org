@@ -1,39 +1,24 @@
 <div flex>
-    <ol ui-tree-nodes ng-model="ctrl.files">
-        <li ng-repeat="file in ctrl.files track by file.data.id | orderBy:'data.name'" ui-tree-node>
-            <div ui-tree-handle
-                 ng-mouseenter="ctrl.onMouseEnter($event, this)"
-                 ng-mouseleave="ctrl.onMouseLeave($event, this)"
-                 class="mc-active-tree-node" ng-class="{'angular-ui-tree-handle-active': file.active}">
+    <ul class="padding-left-15" dnd-list="$ctrl.files">
+        <li ng-repeat="file in $ctrl.files track by file.data.id | orderBy:'data.name'" dnd-draggable="file"
+            dnd-moved="$ctrl.files.splice($index, 1)">
+            <div class="mc-active-tree-node">
                 <div ng-if="file.data.otype === 'directory'">
                     <div layout="row" layout-align="start center">
-                        <i class="fa fa-fw fa-reorder drag-handle-color"></i>
-                        <a ng-click="ctrl.setActive(this, file)" data-nodrag>
+                        <a ng-click="$ctrl.setActive(file)">
                             <span ng-if="file.expand"><i
                                     class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
-                                <span ng-if="!file.expand"><i
-                                        class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
+                            <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
                             {{file.data.name}}
                         </a>
-                    </div>
-                    <div ng-if="file.active">
-                        <mc-file-tree-dir-controls node="this" file="file" project-id="ctrl.projectID">
-                        </mc-file-tree-dir-controls>
                     </div>
                 </div>
                 <div ng-if="file.data.otype === 'file'">
-                    <div ng-if="file.data.name !== ctrl.placeholderName">
-                        <i class="fa fa-fw fa-reorder drag-handle-color"></i>
-                        <a ng-click="ctrl.setActive(this, file)" data-nodrag>
+                    <div ng-if="file.data.name !== $ctrl.placeholderName">
+                        <a ng-click="$ctrl.setActive(file)">
                             <span><i class="fa fa-fw fa-file file-tree-icon-color"></i></span>
                             {{file.data.name}}
                         </a>
-                    </div>
-                    <div ng-if="file.active">
-                        <mc-file-tree-file-controls node="this" file="file" project-id="ctrl.projectID">
-                        </mc-file-tree-file-controls>
-                    </div>
-                    <div ng-if="file.data.name === ctrl.placeholderName">
                     </div>
                 </div>
             </div>
@@ -41,5 +26,5 @@
                 <mc-file-tree-dir ng-if="file.expand" file="file"></mc-file-tree-dir>
             </div>
         </li>
-    </ol>
+    </ul>
 </div>

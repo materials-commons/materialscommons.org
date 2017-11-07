@@ -14,6 +14,11 @@ function getFileStoreDir() {
     return base
 }
 
+function getFileStoreDirs() {
+    let base = process.env.MCDIR;
+    return base.split(':');
+}
+
 // NOTE: dir for temp uploads should be in same file system
 // as dir for file store; a rename is used to position the final
 // version of the upload file - this is called at build time;
@@ -47,23 +52,41 @@ function datafilePath(fileId) {
     return path.join(dir, fileId);
 }
 
-function datafilePathFromFile(file, orig) {
-    let fileId = file.usesid !== '' ? file.usesid : file.id;
-    if (orig) {
-        return datafilePath(fileId);
-    } else {
-        return getPathUsingConversion(fileId, file.mediatype.mime);
-    }
+
+function constructFileDirPath(fileId) {
+    let part = fileId.split("-")[1];
+    let partA = part.substring(0, 2);
+    let partB = part.substring(2);
+    return path.join(partA, partB)
 }
 
-function getPathUsingConversion(fileId, mime) {
-    let dir = datafileDir(fileId);
+function datafilePathFromDir(dir, fileId) {
+    let fileDir = constructFileDirPath(fileId);
+    return path.join(dir, fileDir, fileId);
+}
+
+function datafilePathsFromFile(file, orig) {
+    let filePaths = [];
+    let fileId = file.usesid !== '' ? file.usesid : file.id;
+    let dirs = getFileStoreDirs();
+    dirs.forEach(d => {
+        if (orig) {
+            filePaths.push(datafilePathFromDir(d, fileId));
+        } else {
+            filePaths.push(getPathUsingConversion(d, fileId, file.mediatype.mime));
+        }
+    });
+    return filePaths;
+}
+
+function getPathUsingConversion(dir, fileId, mime) {
+    let fileDir = constructFileDirPath(fileId);
     if (isConvertedImage(mime)) {
-        return path.join(dir, '.conversion', fileId + '.jpg');
+        return path.join(dir, fileDir, '.conversion', fileId + '.jpg');
     } else if (isOfficeDoc(mime)) {
-        return path.join(dir, '.conversion', fileId + '.pdf');
+        return path.join(dir, fileDir, '.conversion', fileId + '.pdf');
     } else {
-        return path.join(dir, fileId);
+        return path.join(dir, fileDir, fileId);
     }
 }
 
@@ -169,7 +192,7 @@ module.exports = {
     removeFileInStore,
     removeFileByPath,
     mediaTypeDescriptionsFromMime,
-    datafilePathFromFile,
+    datafilePathsFromFile,
     isConvertedImage,
     isOfficeDoc
 };
