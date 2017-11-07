@@ -53,17 +53,31 @@ class MCDirContainerComponentController {
 
     handleDelete(items) {
         for (let file of items) {
-            this.fileTreeDeleteService.deleteFile(this.$stateParams.project_id, file.id).then(
-                () => {
-                    const i = _.findIndex(this.dir.children, (f) => f.data.id === file.id);
-                    if (i !== -1) {
-                        this._updateCurrentProj(() => {
-                            this.dir.children.splice(i, 1);
-                            this.updated = !this.updated;
-                        });
+            if (file.otype === 'file') {
+                this.fileTreeDeleteService.deleteFile(this.$stateParams.project_id, file.id).then(
+                    () => {
+                        const i = _.findIndex(this.dir.children, (f) => f.data.id === file.id);
+                        if (i !== -1) {
+                            this._updateCurrentProj(() => {
+                                this.dir.children.splice(i, 1);
+                                this.updated = !this.updated;
+                            });
+                        }
                     }
-                }
-            )
+                );
+            } else {
+                this.fileTreeDeleteService.deleteDir(this.$stateParams.project_id, file.id).then(
+                    () => {
+                        const i = _.findIndex(this.dir.children, (f) => f.data.id === file.id);
+                        if (i !== -1) {
+                            this._updateCurrentProj(() => {
+                                this.dir.children.splice(i, 1);
+                                this.updated = !this.updated;
+                            });
+                        }
+                    }
+                );
+            }
         }
     }
 

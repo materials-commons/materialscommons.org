@@ -20,6 +20,12 @@ class MCDirComponentController {
         this.mcFileOpsDialogs.createDirectory(this.dir.data.name).then(name => this.onCreateDir({createDirName: name}));
     }
 
+    deleteDir() {
+        this.mcFileOpsDialogs.deleteDir(this.dir.data).then(
+            () => this.onDelete({items: [this.dir.data]})
+        );
+    }
+
     uploadFiles() {
         this.onUploadFiles();
     }
@@ -39,7 +45,9 @@ class MCDirComponentController {
     }
 
     handleDelete() {
-        this.onDelete({items: this.selectedFiles});
+        this.mcFileOpsDialogs.deleteFiles(this.selectedFiles).then(
+            () => this.onDelete({items: this.selectedFiles})
+        );
     }
 }
 

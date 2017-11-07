@@ -27,6 +27,26 @@ class MCFileOpsDialogsService {
             }
         })
     }
+
+    deleteFiles(files) {
+        const confirm = this.$mdDialog.confirm()
+            .title('Delete the following files?')
+            .textContent(files.map(f => f.name).join(', '))
+            .ariaLabel('Please confirm file deletion')
+            .ok('Delete')
+            .cancel('Cancel');
+        return this.$mdDialog.show(confirm);
+    }
+
+    deleteDir(dir) {
+        const confirm = this.$mdDialog.confirm()
+            .title('Delete the following directory?')
+            .textContent(dir.name)
+            .ariaLabel('Please confirm directory deletion')
+            .ok('Delete')
+            .cancel('Cancel');
+        return this.$mdDialog.show(confirm);
+    }
 }
 
 angular.module('materialscommons').service('mcFileOpsDialogs', MCFileOpsDialogsService);
