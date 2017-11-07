@@ -30,11 +30,12 @@
                         <td md-cell>
                             <div layout="row" layout-align="start center">
                                 <b>{{$index+1}}.</b>
-                                <i class="fa fa-files-o fa-fw file-color"></i>
-                                <md-button class="md-primary" ui-sref="project.files.file({file_id: file.id})"
-                                           aria-label="view file">
+                                <i class="fa fa-files-o fa-fw file-color margin-left-15"></i>
+                                <a class="md-primary md-subhead" style="margin: 10px;"
+                                   ui-sref="project.files.file({file_id: file.id})"
+                                   aria-label="view file">
                                     {{file.name}}
-                                </md-button>
+                                </a>
                                 {{file.mediatype.mime}}
                                 {{file.size | bytes}}
                             </div>
