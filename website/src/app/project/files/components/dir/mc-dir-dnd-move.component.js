@@ -4,7 +4,7 @@ class MCDirDNDMoveComponentController {
 
     }
 
-    onDrop(index, item, external, type) {
+    onDrop(index, item) {
         return this.onMove({item: item});
     }
 }
