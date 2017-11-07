@@ -7,10 +7,6 @@ class MCDirComponentController {
         this.moveFiles = false;
     }
 
-    $onChanges(changes) {
-        console.log('mcDir on changes', changes);
-    }
-
     onSelected(selected) {
         this.selected = selected.length !== 0;
         this.selectedFiles = selected;

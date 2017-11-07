@@ -1,8 +1,20 @@
-<mc-dir dir="$ctrl.dir"
-        on-download-files="$ctrl.handleDownloadFiles(files)"
-        on-upload-files="$ctrl.handleUploadFiles()"
-        on-create-dir="$ctrl.handleCreateDir(createDirName)"
-        on-move="$ctrl.handleMove(item)"
-        on-delete="$ctrl.handleDelete(items)"
-        on-rename-dir="$ctrl.handleRenameDir(newDirName)">
-</mc-dir>
+<div>
+    <mc-dir ng-if="$ctrl.updated"
+            dir="$ctrl.dir"
+            on-download-files="$ctrl.handleDownloadFiles(files)"
+            on-upload-files="$ctrl.handleUploadFiles()"
+            on-create-dir="$ctrl.handleCreateDir(createDirName)"
+            on-move="$ctrl.handleMove(item)"
+            on-delete="$ctrl.handleDelete(items)"
+            on-rename-dir="$ctrl.handleRenameDir(newDirName)">
+    </mc-dir>
+    <mc-dir ng-if="!$ctrl.updated"
+            dir="$ctrl.dir"
+            on-download-files="$ctrl.handleDownloadFiles(files)"
+            on-upload-files="$ctrl.handleUploadFiles()"
+            on-create-dir="$ctrl.handleCreateDir(createDirName)"
+            on-move="$ctrl.handleMove(item)"
+            on-delete="$ctrl.handleDelete(items)"
+            on-rename-dir="$ctrl.handleRenameDir(newDirName)">
+    </mc-dir>
+</div>

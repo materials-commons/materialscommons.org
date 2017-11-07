@@ -9,6 +9,12 @@ class MCDirContainerComponentController {
         this.fileTreeDeleteService = fileTreeDeleteService;
         this.$state = $state;
         this.$timeout = $timeout;
+        /*
+        The updated flag is used to toggle which mc-dir component is displayed. This is a work around since
+        AngularJS is not detecting changes in the dir.children array. Toggling the flag causes the mc-dir
+        component in the template to re-render so changes are picked up.
+         */
+        this.updated = false;
     }
 
     $onInit() {
@@ -19,7 +25,6 @@ class MCDirContainerComponentController {
         this.project = this.mcprojstore.currentProject;
         const entry = this.gridFiles.findEntry(this.project.files[0], this.$stateParams.dir_id);
         this.dir = entry.model;
-        console.log('this.dir =', this.dir);
     }
 
     handleRenameDir(newDirName) {
@@ -47,24 +52,19 @@ class MCDirContainerComponentController {
     }
 
     handleDelete(items) {
-        console.log('handleDelete', items);
         for (let file of items) {
-            console.log('file', file);
             this.fileTreeDeleteService.deleteFile(this.$stateParams.project_id, file.id).then(
                 () => {
                     const i = _.findIndex(this.dir.children, (f) => f.data.id === file.id);
                     if (i !== -1) {
-                        console.log('splicing', i, file.id);
                         this._updateCurrentProj(() => {
-                            //this.dir.children = this.dir.children.filter(f => f.data.id !== file.id);
                             this.dir.children.splice(i, 1);
-                            console.log('after filter', this.dir);
-                        }).then(() => this.$timeout(() => this.dir = []));
+                            this.updated = !this.updated;
+                        });
                     }
                 }
             )
         }
-        console.log('handleDelete', items);
     }
 
     handleUploadFiles() {
