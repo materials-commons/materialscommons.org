@@ -7,6 +7,7 @@ module.exports.AllPublishedDatasetsAction = class AllPublishedDatasetsAction ext
         this.name = 'allPublishedDatasets';
         this.do_not_authenticate = true;
         this.description = 'Returns all datasets that have been published';
+        this.do_not_authenticate = true;
     }
 
     async run({response}) {
@@ -19,6 +20,7 @@ module.exports.TopViewedPublishedDatasetsAction = class TopViewedPublishedDatase
         super();
         this.name = 'topViewedPublishedDatasets';
         this.description = 'Returns the most viewed datasets';
+        this.do_not_authenticate = true;
     }
 
     async run({response}) {
@@ -31,6 +33,7 @@ module.exports.RecentlyPublishedDatasetsAction = class RecentlyPublishedDatasets
         super();
         this.name = 'recentlyPublishedDatasets';
         this.description = 'Returns most recently published datasets';
+        this.do_not_authenticate = true;
     }
 
     async run({response}) {
@@ -43,6 +46,7 @@ module.exports.GetPublishedDatasetAction = class GetPublishedDatasetAction exten
         super();
         this.name = 'getPublishedDataset';
         this.description = 'Returns the published dataset';
+        this.do_not_authenticate = true;
         this.inputs = {
             dataset_id: {
                 required: true
