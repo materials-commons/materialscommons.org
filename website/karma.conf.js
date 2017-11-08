@@ -128,11 +128,10 @@ module.exports = function (config) {
 
         frameworks: ['jasmine'],
 
-        // browsers : ['PhantomJS','Chrome'],
+//        browsers : ['Chrome','ChromeHeadless'],
         browsers : ['Chrome'],
 
         plugins: [
-            'karma-phantomjs-launcher',
             'karma-chrome-launcher',
             'karma-coverage',
             'karma-jasmine',
