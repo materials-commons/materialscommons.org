@@ -1,7 +1,7 @@
 {
   "author": "YOU <YOU@example.com>",
-  "name": "my_actionhero_project",
-  "description": "my actionhero project",
+  "name": "mcservd",
+  "description": "API server for materials commons",
   "version": "0.1.0",
   "engines": {
     "node": ">=8.0.0"
