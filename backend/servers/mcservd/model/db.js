@@ -1,4 +1,4 @@
-const r = require('actionhero').api.r;
+const r = require('../lib/r');
 const _ = require('lodash');
 
 async function update(table, id, json) {
@@ -26,7 +26,7 @@ async function insert(table, json, options) {
     }
     let rql = r.table(table);
     let result = await rql.insert(json, {returnChanges: 'always'}).run();
-    if (result.changes.length == 1) {
+    if (result.changes.length === 1) {
         let val = result.changes[0].new_val;
         return asArray ? [val] : val;
     } else {

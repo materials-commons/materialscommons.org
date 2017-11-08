@@ -265,7 +265,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.files.dir', {
             url: '/dir/:dir_id',
-            template: '<mc-dir></mc-dir>'
+            template: '<mc-dir-container></mc-dir-container>'
         })
         .state('project.sample', {
             url: '/sample/:sample_id',

@@ -1,4 +1,4 @@
-const r = require('actionhero').api.r;
+const r = require('../lib/r');
 const commonQueries = require('../lib/queries/common-queries');
 
 module.exports.getAll = async () => {

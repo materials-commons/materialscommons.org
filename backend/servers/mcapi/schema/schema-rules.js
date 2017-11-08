@@ -5,7 +5,7 @@ const path = require('path');
 const model = {
     'directories': directories,
     'samples': samples
-}
+};
 
 let propertyTypes = [
     'number',
@@ -104,7 +104,7 @@ function mustExistInProject(what, modelName, done) {
                     actual: what,
                     expected: `${what} should exist in project ${project_id} error ${err}`
                 };
-                done(err);
+                done(error);
             });
 }
 
@@ -315,8 +315,8 @@ function mustNotExistInParentDirectory(name, idKey, done) {
                         expected: `${name} not to exist in directory`
                     };
                 }
-                done(error);
             }
+            done(error);
         },
         (e) => {
             error = {
