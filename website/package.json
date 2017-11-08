@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "angular-mocks": "^1.5.9",
+    "angular-mocks": "^1.6.6",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-istanbul": "^0.12.2",
@@ -67,6 +67,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-mocha-reporter": "^2.2.1",
     "karma-ng-html2js-preprocessor": "~1.0.0",
+    "karma-phantomjs-launcher": "^1.0.4",
     "klaw-sync": "^3.0.0",
     "main-bower-files": "~2.13.1",
     "ng-annotate-loader": "0.6.1",
