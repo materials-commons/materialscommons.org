@@ -1,4 +1,4 @@
-const r = require('actionhero').api.r;
+const r = require('../lib/r');
 const processCommon = require('./process-common');
 
 async function allSamplesInDataset(datasetId, sampleIds) {

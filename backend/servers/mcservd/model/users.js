@@ -1,4 +1,4 @@
-const r = require('actionhero').api.r;
+const r = require('../lib/r');
 const _ = require('lodash');
 const getSingle = require('./get-single');
 const model = require('./model');

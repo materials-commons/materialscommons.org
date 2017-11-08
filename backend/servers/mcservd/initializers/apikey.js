@@ -1,4 +1,5 @@
 const {Initializer, api} = require('actionhero');
+const apikeyCache = require('../lib/apikey-cache');
 
 module.exports = class APIKeyInitializer extends Initializer {
     constructor() {
@@ -12,7 +13,7 @@ module.exports = class APIKeyInitializer extends Initializer {
         //     require('../lib/apikey-cache') in initialize so that rethinkdb initializer has run before the require
         //     statement, otherwise rethinkdb in r is not defined.
         // *************************************************************************************************
-        const apikeyCache = require('../lib/apikey-cache');
+
         const middleware = {
             name: this.name,
             global: true,

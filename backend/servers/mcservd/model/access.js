@@ -1,4 +1,4 @@
-const r = require('actionhero').api.r;
+const r = require('../lib/r');
 
 function allByProject() {
     return r.table('access').run().then(function(allAccess) {
