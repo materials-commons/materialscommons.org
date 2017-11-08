@@ -18,7 +18,7 @@ function listFiles() {
 
     var patterns = wiredep(wiredepOptions).js
         .concat([
-            path.join(conf.paths.tmp, 'serve/app/index.module.js')
+            path.join(conf.paths.src, './app/index.module.js')
         ])
         .concat(pathSrcHtml);
 
@@ -28,47 +28,46 @@ function listFiles() {
         };
     });
 
-//    files.push('../../node_modules/angular/angular.js');              // angular
-    files.push('../../node_modules/angular-mocks/angular-mocks.js');  // to load modules for tests
+    files.push('node_modules/angular-mocks/angular-mocks.js');  // to load modules for tests
 
     // external modules
     files.push({
-        pattern: path.join(conf.paths.src, '/app/external/js/ckeditor/ckeditor.js'),
+        pattern: path.join(conf.paths.src, './app/external/js/ckeditor/ckeditor.js'),
         included: true,
         served: true,
         watched: false
     });
 
     files.push({
-        pattern: path.join(conf.paths.src, '/app/external/js/angular-filter.js'),
+        pattern: path.join(conf.paths.src, './app/external/js/angular-filter.js'),
         included: true,
         served: true,
         watched: false
     });
 
     files.push({
-        pattern: path.join(conf.paths.src, '/app/external/js/flow.js'),
+        pattern: path.join(conf.paths.src, './app/external/js/flow.js'),
         included: true,
         served: true,
         watched: false
     });
 
     files.push({
-        pattern: path.join(conf.paths.src, '/app/external/js/highlight.pack.js'),
+        pattern: path.join(conf.paths.src, './app/external/js/highlight.pack.js'),
         included: true,
         served: true,
         watched: false
     });
 
     files.push({
-        pattern: path.join(conf.paths.src, '/app/external/js/lodash.min.js'),
+        pattern: path.join(conf.paths.src, './app/external/js/lodash.min.js'),
         included: true,
         served: true,
         watched: false
     });
 
     files.push({
-        pattern: path.join(conf.paths.src, '/app/external/js/TreeModel-min.js'),
+        pattern: path.join(conf.paths.src, './app/external/js/TreeModel-min.js'),
         included: true,
         served: true,
         watched: false
@@ -76,7 +75,7 @@ function listFiles() {
 
     // source code
     files.push({
-        pattern: path.join(conf.paths.src, '/app/**/*.js'),
+        pattern: path.join(conf.paths.src, './app/**/*.js'),
         included: false,
         served: false,
         watched: true
@@ -84,7 +83,7 @@ function listFiles() {
 
     // assets
     files.push({
-        pattern: path.join(conf.paths.src, '/assets/**/*'),
+        pattern: path.join(conf.paths.src, './assets/**/*'),
         included: false,
         served: true,
         watched: false
@@ -129,11 +128,10 @@ module.exports = function (config) {
 
         frameworks: ['jasmine'],
 
-        // browsers : ['PhantomJS','Chrome'],
+//        browsers : ['Chrome','ChromeHeadless'],
         browsers : ['Chrome'],
 
         plugins: [
-            'karma-phantomjs-launcher',
             'karma-chrome-launcher',
             'karma-coverage',
             'karma-jasmine',
