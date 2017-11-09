@@ -7,7 +7,6 @@ module.exports.AllPublishedDatasetsAction = class AllPublishedDatasetsAction ext
         this.name = 'allPublishedDatasets';
         this.do_not_authenticate = true;
         this.description = 'Returns all datasets that have been published';
-        this.do_not_authenticate = true;
     }
 
     async run({response}) {
