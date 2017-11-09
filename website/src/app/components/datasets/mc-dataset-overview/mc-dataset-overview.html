@@ -11,7 +11,7 @@
         <md-tab>
             <md-tab-label>Workflow</md-tab-label>
             <md-tab-body>
-                <mc-dataset-workflow dataset="$ctrl.dataset"></mc-dataset-workflow>
+                <mc-dataset-workflow dataset="$ctrl.dataset" ng-if="$ctrl.currentTab === 1"></mc-dataset-workflow>
             </md-tab-body>
         </md-tab>
 
