@@ -1,4 +1,4 @@
-describe('mc-projects tests', () => {
+xdescribe('mc-projects tests', () => {
     let component = '<mc-projects></mc-projects>',
         element, controller, demoProjectBuilderCalled = false;
 

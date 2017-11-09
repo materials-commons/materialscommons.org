@@ -1,4 +1,4 @@
-describe('mc-process-template component', () => {
+xdescribe('mc-process-template component', () => {
     let parentScope,
         element;
 
