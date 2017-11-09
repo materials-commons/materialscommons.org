@@ -7,6 +7,7 @@ class MCDatasetListItemComponentController {
     gotoDetailsRoute() {
         this.$state.go(this.detailsRoute, {dataset_id: this.dataset.id});
     }
+
 }
 
 angular.module('materialscommons').component('mcDatasetListItem', {

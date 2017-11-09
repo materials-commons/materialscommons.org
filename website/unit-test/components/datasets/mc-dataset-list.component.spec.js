@@ -1,4 +1,4 @@
-xdescribe('mc-datasets tests', () => {
+describe('mc-datasets tests', () => {
     let component = '<mc-dataset-list></mc-dataset-list>',
         element, controller;
 
@@ -55,8 +55,11 @@ xdescribe('mc-datasets tests', () => {
             let scope = $rootScope.$new();
             element = angular.element(component);
             element = $compile(element)(scope);
+            console.log(element);
             scope.$digest();
-            controller = element.controller('mcDatasetList');
+            console.log(element);
+            controller = element.controller('');
+            console.log(controller);
         }));
 
         it('should have a defined controller', () => {

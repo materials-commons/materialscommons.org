@@ -7,6 +7,27 @@ class MCDatasetListComponentController {
 
     $onInit() {
         this.mcbus.subscribe('MCDATA$SEARCH', this.myName, (query) => this.query = query);
+        for (let i = 0; i < this.datasets.length; i++) {
+            // fake crowd curation attributes
+            let dataset = this.datasets[i];
+            let stats = {
+                comment_count: dataset.comment_count,
+                unique_view_count: {
+                    authenticated: 4,
+                    anonymous: 2
+                },
+                download_count: 8,
+                favorite_count: 10
+            };
+            dataset.stats = stats;
+            console.log(i,'Dataset title:', dataset.title);
+            console.log(dataset);
+            console.log(dataset.stats.unique_view_count.anonymous);
+            console.log(dataset.stats.unique_view_count.authenticated);
+            console.log(dataset.stats.comment_count);
+            console.log(dataset.stats.download_count);
+            console.log(dataset.stats.favorite_count);
+        }
     }
 
     $onDestroy() {
@@ -22,3 +43,4 @@ angular.module('materialscommons').component('mcDatasetList', {
         detailsRoute: '@'
     }
 });
+
