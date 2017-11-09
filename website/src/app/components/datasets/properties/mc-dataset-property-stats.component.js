@@ -4,17 +4,19 @@ class MCDatasetPropertyStatsComponentController {
     }
 
     $onInit() {
-        // Fake dataset counts until REST/server available
-        let stats = {
-            comment_count: this.dataset.comment_count,
-            unique_view_count: {
-                authenticated: 4,
-                anonymous: 2
-            },
-            download_count: 8,
-            favorite_count: 10
-        };
-        this.dataset.stats = stats;
+        if (!this.dataset.stats) {
+            // Fake dataset counts until REST/server available
+            let stats = {
+                comment_count: this.dataset.comment_count,
+                unique_view_count: {
+                    authenticated: 4,
+                    anonymous: 2
+                },
+                download_count: 8,
+                favorite_count: 10
+            };
+            this.dataset.stats = stats;
+        }
     }
 
     totalViews(stats) {

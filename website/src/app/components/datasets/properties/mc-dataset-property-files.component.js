@@ -26,7 +26,7 @@ angular.module('materialscommons').component('mcDatasetPropertyFiles', {
         <label ng-if="$ctrl.isAuthenticated && $ctrl.dataset.published">Download</label>
         <label ng-if="$ctrl.isAuthenticated && !$ctrl.dataset.published">Files</label>
         <label ng-if="!$ctrl.isAuthenticated">Files</label>
-        <span ng-if="!$ctrl.isAuthenticated">{{$ctrl.dataset.files.length}} files (Login to download)</span>
+        <span ng-if="!$ctrl.isAuthenticated">{{$ctrl.dataset.files.length}} files (Login and refresh page to see download link)</span>
         <span ng-if="$ctrl.isAuthenticated && !$ctrl.dataset.published">{{$ctrl.dataset.files.length}} files</span>
         <span ng-if="$ctrl.isAuthenticated && $ctrl.dataset.published && !$ctrl.isDownloadAvailable()">
             {{$ctrl.dataset.files.length}} files.
