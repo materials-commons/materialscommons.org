@@ -9,7 +9,7 @@ const renameHelper = require('./directory-rename');
 const getSingle = require('./get-single');
 
 function* get(projectID, directoryID) {
-    if (directoryID == "top") {
+    if (directoryID === "top") {
         return topLevelDir(projectID);
     } else {
         return directoryByID(directoryID);
@@ -129,7 +129,7 @@ function* dirByPath(projectID, dirPath) {
     return null;
 }
 
-function* dirById(dirID, projectID) {
+function* dirById(dirID) {
     let dir = yield getSingle(r, 'datadirs', dirID);
     if (!dir) {
         return null;
@@ -204,7 +204,7 @@ function* insertDir(projectID, parentID, owner, dirPath) {
 }
 
 function* update(projectID, directoryID, updateArgs) {
-    let guard = yield isTopLevelDir(projectID, directoryID)
+    let guard = yield isTopLevelDir(projectID, directoryID);
     if (guard) {
         return {
             error: "Can not move or rename top level directory"
@@ -220,7 +220,7 @@ function* update(projectID, directoryID, updateArgs) {
 function* isTopLevelDir(projectID, directoryID) {
     let projectNameData = yield r.table('projects').get(projectID).pluck('name');
     let directoryNameData = yield r.table('datadirs').get(directoryID).pluck('name');
-    return (projectNameData.name == directoryNameData.name);
+    return (projectNameData.name === directoryNameData.name);
 }
 
 function* moveDirectory(projectID, directoryID, moveArgs) {
@@ -255,7 +255,7 @@ function* moveDirectory(projectID, directoryID, moveArgs) {
 
         let size = directoryIdSet.size;
         let oldSize = 0;
-        while (size != oldSize) {
+        while (size !== oldSize) {
             oldSize = size;
             directoryList = yield r.table('datadirs').getAll(r.args([...directoryIdSet]), {index: 'parent'});
             for (let i = 0; i < directoryList.length; i++) {
@@ -321,7 +321,7 @@ function* ingestSingleLocalFile(projectId, directoryId, userId, args) {
 
     let file = yield fileInDirectoryByName(directoryId, filename);
 
-    if (!file || !(file.checksum == checksum)) {
+    if (!file || !(file.checksum === checksum)) {
         args.parent = file;
         file = yield files.fetchOrCreateFileFromLocalPath(userId, args);
 
@@ -360,7 +360,7 @@ function* isEmpty(dirID) {
 }
 
 function* remove(projectID, dirID) {
-    let guard = yield isTopLevelDir(projectID, dirID)
+    let guard = yield isTopLevelDir(projectID, dirID);
     if (guard) {
         return {
             error: "Can not delete top level directory"

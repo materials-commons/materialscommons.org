@@ -24,7 +24,8 @@
     "Flow": true,
     "removeById": true,
     "differenceById": true,
-    "localforage": true
+    "localforage": true,
+    "P": true
   },
   "rules": {
     "angular/log": 0,

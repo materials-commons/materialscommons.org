@@ -1,7 +1,9 @@
 const access = require('../db/model/access');
 const check = require('../db/model/check');
-let httpStatus = require('http-status');
-let projectAccessCache = require('./project-access-cache')(access);
+const httpStatus = require('http-status');
+const projectAccessCache = require('./project-access-cache')(access);
+const files = require('../db/model/files');
+
 
 function* validateProjectAccess(next) {
     let projectID = this.params.project_id;
@@ -190,6 +192,54 @@ function* validateNoteInExperiment(next) {
     yield next;
 }
 
+function* validateFileAccess(next) {
+    let file = yield files.getFileSimple(this.params.file_id);
+    if (!file) {
+        this.status = httpStatus.BAD_REQUEST;
+        this.body = {error: `No such file ${this.params.file_id}`};
+        return this.status;
+    }
+
+    let accessAllowed = yield fileAccessAllowed(this.params.file_id, this.reqctx.user.id);
+    if (!accessAllowed) {
+        this.status = httpStatus.BAD_REQUEST;
+        this.body = {error: `No such file ${this.params.file_id}`};
+        return this.status;
+    }
+
+    this.reqctx.file = file;
+    yield next;
+}
+
+function* fileAccessAllowed(fileId, userId) {
+    if (yield isInPublishedDataset(fileId)) {
+        return true;
+    }
+
+    let projects = yield files.getFileProjects(fileId);
+    for (let i = 0; i < projects.length; i++) {
+        let accessEntries = yield access.projectAccessList(projects[i].id);
+        for (let j = 0; j < accessEntries.length; j++) {
+            if (accessEntries[j].user_id === userId) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function* isInPublishedDataset(fileId) {
+    let datasets = yield files.getFileDatasets(fileId);
+    for (let i = 0; i < datasets.length; i++) {
+        if (datasets.published) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 module.exports = {
     validateProjectAccess,
     validateProjectOwner,
@@ -205,5 +255,6 @@ module.exports = {
     validateTaskInExperiment,
     validateTemplateAccess,
     validateTemplateExists,
-    validateNoteInExperiment
+    validateNoteInExperiment,
+    validateFileAccess
 };

@@ -1,0 +1,17 @@
+<md-dialog flex="60">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>Create Directory in: {{$ctrl.parentDirName}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <md-input-container class="md-block" style="margin-top:40px">
+            <label>New Directory Name</label>
+            <input ng-model="$ctrl.newDirName" on-enter="$ctrl.done()">
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()">Rename</md-button>
+    </md-dialog-actions>
+</md-dialog>

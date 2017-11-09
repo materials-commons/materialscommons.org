@@ -1,6 +1,6 @@
 class MCProcessTemplateOtherComponentController {
     /*@ngInject*/
-    constructor(sampleLinker, processEdit, selectItems, experimentsAPI, toast, $stateParams, navbarOnChange) {
+    constructor(sampleLinker, processEdit, selectItems, experimentsAPI, toast, $stateParams, navbarOnChange, mcprojstore) {
         this.sampleLinker = sampleLinker;
         this.processEdit = processEdit;
         this.selectItems = selectItems;
@@ -9,6 +9,7 @@ class MCProcessTemplateOtherComponentController {
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.navbarOnChange = navbarOnChange;
+        this.mcprojstore = mcprojstore;
     }
 
     linkFilesToSample(sample, input_files, output_files) {
@@ -28,7 +29,13 @@ class MCProcessTemplateOtherComponentController {
                 };
                 this.experimentsAPI.updateProcess(this.projectId, this.experimentId, this.process.id, filesArgs)
                     .then(
-                        (process) => this.process.files = process.files,
+                        () => {
+                            this.process.files = this.process.files.concat(selected.files);
+                            this.mcprojstore.updateCurrentProcess((currentProcess) => {
+                                currentProcess.files = this.process.files;
+                                return currentProcess;
+                            });
+                        },
                         () => this.toast.error('Unable to add files')
                     );
             });
@@ -57,7 +64,11 @@ class MCProcessTemplateOtherComponentController {
                 this.experimentsAPI.updateProcess(this.projectId, this.experimentId, this.process.id, samplesArgs)
                     .then(
                         (p) => {
+                            p.files = this.process.files;
                             this.process = p;
+                            this.mcprojstore.updateCurrentProcess((currentProcess, transformers) => {
+                                return transformers.transformProcess(p);
+                            });
                             this.navbarOnChange.fireChange();
                             if (this.onChange) {
                                 this.onChange();
