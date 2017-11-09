@@ -9,6 +9,7 @@
     <label ng-if="$ctrl.dataset.description">Description</label>
     <i ng-if="!$ctrl.dataset.description">No Description given</i>
     <p ng-if="$ctrl.dataset.description" class="margin-left-15">{{$ctrl.dataset.description}}</p>
+    <mc_dataset-property-stats dataset="$ctrl.dataset"></mc_dataset-property-stats>
     <p ng-if="!$ctrl.dataset.published">
         <mc-dataset-property-publisher dataset="$ctrl.dataset"></mc-dataset-property-publisher>
     </p>

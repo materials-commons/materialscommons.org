@@ -4,7 +4,7 @@
     <mc-refresh-comments-button on-refresh="$ctrl.refreshCommentsList()">
     </mc-refresh-comments-button>
     <div ng-if="!$ctrl.loggedin">
-        <i>You must be logged in to add or modify comments</i>
+        <i>You must log in and refresh page to add or modify comments</i>
     </div>
     <div ng-if="($ctrl.comments.length == 0)">
         <i>There are no comments for this {{$ctrl.targetType}}</i>

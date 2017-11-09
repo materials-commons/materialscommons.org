@@ -5,15 +5,15 @@
             <thead class="field-value">
             <th ng-if="$ctrl.isAuthenticated">Thumbnail</th>
             <th>File Name</th>
-            <th>File Type</th>
-            <th>size</th>
+            <th ng-if="!$ctrl.isAuthenticated">Details</th>
+            <th ng-if="$ctrl.isAuthenticated">File Type</th>
+            <th ng-if="$ctrl.isAuthenticated">size</th>
             </thead>
             <tbody>
             <tr ng-show="!$ctrl.isAuthenticated"
                 dir-paginate="file in $ctrl.dataset.files | itemsPerPage: 12">
                 <td>{{file.name}}</td>
-                <td>{{file.mediatype.mime}}</td>
-                <td>{{file.size | bytes}}</td>
+                <td><i>Log in and refresh page to see details.</i></td>
             </tr>
             <tr ng-show="$ctrl.isAuthenticated" ng-click="$ctrl.openImage(file)"
                 dir-paginate="file in $ctrl.dataset.files | itemsPerPage: 12">

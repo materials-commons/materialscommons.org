@@ -20,13 +20,6 @@ class MCDatasetListComponentController {
                 favorite_count: 10
             };
             dataset.stats = stats;
-            console.log(i,'Dataset title:', dataset.title);
-            console.log(dataset);
-            console.log(dataset.stats.unique_view_count.anonymous);
-            console.log(dataset.stats.unique_view_count.authenticated);
-            console.log(dataset.stats.comment_count);
-            console.log(dataset.stats.download_count);
-            console.log(dataset.stats.favorite_count);
         }
     }
 

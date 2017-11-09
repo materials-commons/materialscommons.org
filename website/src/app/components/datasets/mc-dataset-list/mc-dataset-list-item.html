@@ -1,9 +1,9 @@
 <h4 class="md-subhead">
     <a ng-click="$ctrl.gotoDetailsRoute()">{{$ctrl.dataset.title}}</a>
 </h4>
-<mc_dataset-property-stats dataset="$ctrl.dataset"></mc_dataset-property-stats>
 <p class="field-value">{{$ctrl.dataset.description}}</p>
 <div layout="column" class="margin-top-10">
+    <mc_dataset-property-stats dataset="$ctrl.dataset"></mc_dataset-property-stats>
     <mc-dataset-property-authors dataset="$ctrl.dataset"></mc-dataset-property-authors>
     <mc-dataset-property-license dataset="$ctrl.dataset"></mc-dataset-property-license>
     <mc-dataset-property-files dataset="$ctrl.dataset"></mc-dataset-property-files>
