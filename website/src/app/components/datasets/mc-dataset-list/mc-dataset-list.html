@@ -1,4 +1,4 @@
-<div ng-repeat="dataset in $ctrl.datasets | orderBy:$ctrl.orderByThisValue | filter:$ctrl.query as filtered">
+<div>
     <h1 ng-show="$ctrl.query">Showing {{filtered.length}} search results</h1>
     <md-input-container>
         <label>Sort By</label>
@@ -6,6 +6,8 @@
             <md-option ng-value="opt" ng-repeat="opt in $ctrl.sortByChoices">{{ opt }}</md-option>
         </md-select>
     </md-input-container>
-    <mc-dataset-list-item dataset="dataset" details-route="$ctrl.detailsRoute"></mc-dataset-list-item>
+    <div ng-repeat="dataset in $ctrl.datasets | orderBy:$ctrl.orderByField():true | filter:$ctrl.query as filtered">
+        <mc-dataset-list-item dataset="dataset" details-route="$ctrl.detailsRoute"></mc-dataset-list-item>
+    </div>
+    <h1 ng-show="filtered && filtered.length === 0">No matches found</h1>
 </div>
-<h1 ng-show="filtered && filtered.length === 0">No matches found</h1>
