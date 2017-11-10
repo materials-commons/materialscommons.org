@@ -8,7 +8,7 @@ class MCDatasetOverviewComponentController {
     }
 
     onFavoriteAction(){
-        console.log("Clicked on select as favorite.", dataset.title);
+        console.log("Clicked on select as favorite.", this.dataset.title);
         this.showFavoriteDialog().then((val) => {
             let text = val.text;
             this.createNewFavorite(text);
@@ -21,14 +21,16 @@ class MCDatasetOverviewComponentController {
     }
 
     showFavoriteDialog() {
+        let dataset = this.dataset;
+        console.log("dataset.title: ", dataset.title);
         return this.$mdDialog.show({
             templateUrl: 'app/components/datasets/mc-dataset-overview/dialog-select-favorite.html',
             controller: AddFavoriteDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
-                text: '' //,
-//                dataset: this.dataset
+                text: '',
+                dataset: dataset
             }
         })
     }
