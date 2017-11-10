@@ -7,7 +7,7 @@ class MCDatasetOverviewComponentController {
         this.publicDatasetsAPI = publicDatasetsAPI;
     }
 
-    onFavoriteAction(dataset){
+    onFavoriteAction(){
         console.log("Clicked on select as favorite.", dataset.title);
         this.showFavoriteDialog().then((val) => {
             let text = val.text;
@@ -27,8 +27,8 @@ class MCDatasetOverviewComponentController {
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
-                text: '',
-                dataset: this.dataset
+                text: '' //,
+//                dataset: this.dataset
             }
         })
     }
