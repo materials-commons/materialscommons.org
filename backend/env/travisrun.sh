@@ -5,7 +5,7 @@
 
 # Note: often this will be redundent, but it simplifies use
 # source to set all environment variables for the type of server
-export SERVERTYPE=dev
+export SERVERTYPE=travis
 
 export MC_SERVICE_PORT=5002
 export MC_API_SERVICE_PORT=5004
@@ -37,5 +37,6 @@ if [ "$REINIT" = "t" ]; then
     (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
 fi
 
-MCAPID_COMMAND="npx actionhero start"
-MCAPI_PORT=5028
+export MCAPID_COMMAND="MCSERVERTYPE=${SERVERTYPE} npx actionhero start"
+export MCAPI_PORT=5028
+export REDIS_PORT=5031

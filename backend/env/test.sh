@@ -39,5 +39,6 @@ if [ "$REINIT" = "t" ]; then
     (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
 fi
 
-MCAPID_COMMAND="npx actionhero start cluster"
-MCAPID_PORT=6028
+export MCAPID_COMMAND="MCSERVERTYPE=${SERVERTYPE} npx actionhero start cluster"
+export MCAPID_PORT=6028
+export REDIS_PORT=7379

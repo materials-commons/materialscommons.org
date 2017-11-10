@@ -176,14 +176,14 @@ function start_redis() {
     R=$(is_running "redis-server" "${REDIS_PORT}")
     if [ "$R" = "" ]; then
         echo "Starting redis (${SERVERTYPE})..."
-        redis-server > ${MC_LOG_DIR}/redis.out.${SERVERTYPE} 2>&1&
+        redis-server --port ${REDIS_PORT} > ${MC_LOG_DIR}/redis.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
 
 function stop_redis() {
     echo "Stopping redis ($SERVERTYPE)..."
-    ps -eo "pid,command" | grep "redis-server" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    ps -eo "pid,command" | grep "redis-server" | grep "${REDIS_PORT}" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
         kill ${line}
         echo "  Stopped redis-server with pid ${line}"
@@ -191,11 +191,21 @@ function stop_redis() {
 }
 
 function start_mcapid() {
-    echo "start mcapid"
+    R=$(is_running "${MCAPID_COMMAND}" " ")
+    if [ "$R" = "" ]; then
+        echo "Start mcapid server (${SERVERTYPE})..."
+        "${MCAPID_COMMAND}" > ${MC_LOG_DIR}/mcapid.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
 }
 
 function stop_mcapid() {
-    echo "stop mcapid"
+    echo "Stopping mcapid (${SERVERTYPE})..."
+    ps -eo "pid,command" | grep "${MCAPID_COMMAND}" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    do
+        kill ${line}
+        echo "  Stopped mcapid server with pid ${line}"
+    done
 }
 
 function check_nginx() {
@@ -219,6 +229,7 @@ function start_servers() {
     start_mcpub
     start_mcmon
     start_redis
+    start_mcapid
 
     disown -a
     echo Started ${SERVERTYPE}.
@@ -245,6 +256,7 @@ function stop_servers() {
     stop_mcapi
     stop_mcpub
     stop_mcmon
+    stop_mcapid
     stop_rethinkdb
     stop_redis
 
@@ -283,6 +295,10 @@ function stop_named_server() {
 
         redis)
             stop_redis
+            ;;
+
+        mcapid)
+            stop_mcapid
             ;;
 
         *)
@@ -327,6 +343,10 @@ function restart_named_server() {
             start_redis
             ;;
 
+        mcapid)
+            start_mcapid
+            ;;
+
         *)
             echo "Unknown server: $1"
             exit 1
@@ -345,32 +365,44 @@ function ps_server_env() {
     echo "===================== ${SERVERTYPE} (-${TESTSERVER}) ====================="
     echo
     setup_server_env
+
     echo "RethinkDB (${SERVERTYPE}):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
+
+    echo
+    echo "REDIS (${SERVERTYPE}):"
+    ps -ef | grep "redis-server" | grep "${REDIS_PORT}" | grep -v grep
+
     echo
     echo "Elasticsearch (${SERVERTYPE}):"
     R=$(docker_instance_running ${MC_ES_NAME})
     if [ "$R" != "" ]; then
         echo ${R}
     fi
+
     echo
     echo "MCAPI Server (${SERVERTYPE}):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
+
     echo
     echo "MCAPI Node Server (${SERVERTYPE}):"
     ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
+
     echo
     echo "MCPUB Node Server (${SERVERTYPE}):"
     ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
+
     echo
     echo "MCSTORED Server (${SERVERTYPE}):"
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+
     echo
     echo "MCMON Server (${SERVERTYPE}):"
     ps -ef | grep "servers/mcmon/main.js" | grep "servertype ${SERVERTYPE}" | grep -v grep
+
     echo
-    echo "REDIS (${SERVERTYPE}):"
-    ps -ef | grep "redis-server" | grep "${REDIS_PORT}" | grep -v grep
+    echo "MCAPID Server (${SERVERTYPE}):"
+    ps -ef | grep "${MCAPID_COMMAND}" | grep -v grep
 }
 
 function ps_servers() {
@@ -451,8 +483,9 @@ function tail_servers() {
     D=${MC_LOG_DIR}
     ST=${SERVERTYPE}
     # Ensure files exist
-    touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} ${D}/mcpub.out.${ST} ${D}/mcmon.out.${ST}
-    tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} -f ${D}/mcpub.out.${ST} -f  ${D}/mcmon.out.${ST}
+    touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} ${D}/mcpub.out.${ST} ${D}/mcmon.out.${ST} ${D}/redis.out.${ST} ${D}/mcapid.out.${ST}
+    tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} -f ${D}/mcpub.out.${ST} -f ${D}/mcmon.out.${ST} \
+        -f ${D}/redis.out.${ST} -f ${D}/mcapid.out.${ST}
 }
 
 function update_mc() {
@@ -598,7 +631,7 @@ COMPILE_MCSTORE=t
 MC_SERVICE_NAME=""
 BACKUP_DATABASE=t
 SHOW_SERVERS=f
-PS_ALL_SERVERS=t
+#PS_ALL_SERVERS=t
 REDIS_PORT=6379
 
 CMD=$1
@@ -787,6 +820,9 @@ case "$CMD" in
         ;;
 
     "")
+        TESTSERVER=d
+        SERVERTYPE="dev"
+        PS_ALL_SERVERS=f
         ps_servers
         ;;
 
