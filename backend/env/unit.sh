@@ -34,6 +34,6 @@ if [ "$REINIT" = "t" ]; then
     (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
 fi
 
-export MCAPID_COMMAND="MCSERVERTYPE=${SERVERTYPE} start.sh"
+export MCAPID_COMMAND="start.sh mcapid-${SERVERTYPE}"
 export MCAPID_PORT=5628
 export REDIS_PORT=5679

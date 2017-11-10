@@ -27,6 +27,6 @@ if [ -f /etc/materialscommons/config.prod ]; then
     . /etc/materialscommons/config.prod
 fi
 
-export MCAPID_COMMAND="MCSERVERTYPE=${SERVERTYPE} npx actionhero start cluster"
+export MCAPID_COMMAND="npx actionhero start cluster --workerTitlePrefix=mcapid-${SERVERTYPE}"
 export MCAPID_PORT=5016
 export REDIS_PORT=6379

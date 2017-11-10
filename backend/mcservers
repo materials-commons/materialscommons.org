@@ -191,17 +191,18 @@ function stop_redis() {
 }
 
 function start_mcapid() {
-    R=$(is_running "${MCAPID_COMMAND}" " ")
+    R=$(is_running "mcapid-${SERVERTYPE}" " ")
     if [ "$R" = "" ]; then
         echo "Start mcapid server (${SERVERTYPE})..."
-        "${MCAPID_COMMAND}" > ${MC_LOG_DIR}/mcapid.out.${SERVERTYPE} 2>&1&
+        echo "${MCAPID_COMMAND}"
+        (cd servers/mcapid; sh -c "${MCAPID_COMMAND}" > ${MC_LOG_DIR}/mcapid.out.${SERVERTYPE} 2>&1&)
         sleep 1
     fi
 }
 
 function stop_mcapid() {
     echo "Stopping mcapid (${SERVERTYPE})..."
-    ps -eo "pid,command" | grep "${MCAPID_COMMAND}" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    ps -eo "pid,command" | grep "mcapid-${SERVERTYPE}" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
         kill ${line}
         echo "  Stopped mcapid server with pid ${line}"
@@ -402,7 +403,7 @@ function ps_server_env() {
 
     echo
     echo "MCAPID Server (${SERVERTYPE}):"
-    ps -ef | grep "${MCAPID_COMMAND}" | grep -v grep
+    ps -ef | grep "mcapid-${SERVERTYPE}" | grep -v grep
 }
 
 function ps_servers() {
