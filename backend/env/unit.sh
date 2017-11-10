@@ -33,3 +33,6 @@ fi
 if [ "$REINIT" = "t" ]; then
     (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
 fi
+
+MCAPID_COMMAND="start.sh"
+MCAPID_PORT=5628

@@ -26,3 +26,6 @@ export MCFS_HTTP_PORT=5010
 if [ -f /etc/materialscommons/config.prod ]; then
     . /etc/materialscommons/config.prod
 fi
+
+MCAPID_COMMAND="npx actionhero start cluster"
+MCAPID_PORT=5016

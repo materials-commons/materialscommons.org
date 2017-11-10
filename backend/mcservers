@@ -165,11 +165,37 @@ function start_mcmon() {
 
 function stop_mcmon() {
     echo "Stopping mcmon ($SERVERTYPE)..."
-    ps -eo "pid,command" | grep "servers/mcmon/main.js" | grep "servertype $SERVERTYPE" |grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    ps -eo "pid,command" | grep "servers/mcmon/main.js" | grep "servertype $SERVERTYPE" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
         kill ${line}
         echo "  Stopped mcmon with pid ${line}"
     done
+}
+
+function start_redis() {
+    R=$(is_running "redis-server" "${REDIS_PORT}")
+    if [ "$R" = "" ]; then
+        echo "Starting redis (${SERVERTYPE})..."
+        redis-server > ${MC_LOG_DIR}/redis.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
+}
+
+function stop_redis() {
+    echo "Stopping redis ($SERVERTYPE)..."
+    ps -eo "pid,command" | grep "redis-server" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    do
+        kill ${line}
+        echo "  Stopped redis-server with pid ${line}"
+    done
+}
+
+function start_mcapid() {
+    echo "start mcapid"
+}
+
+function stop_mcapid() {
+    echo "stop mcapid"
 }
 
 function check_nginx() {
@@ -192,6 +218,7 @@ function start_servers() {
     start_mcapi
     start_mcpub
     start_mcmon
+    start_redis
 
     disown -a
     echo Started ${SERVERTYPE}.
@@ -219,6 +246,7 @@ function stop_servers() {
     stop_mcpub
     stop_mcmon
     stop_rethinkdb
+    stop_redis
 
     echo Stopped ${SERVERTYPE}.
 }
@@ -251,6 +279,10 @@ function stop_named_server() {
 
         mcmon)
             stop_mcmon
+            ;;
+
+        redis)
+            stop_redis
             ;;
 
         *)
@@ -289,6 +321,10 @@ function restart_named_server() {
 
         mcmon)
             start_mcmon
+            ;;
+
+        redis)
+            start_redis
             ;;
 
         *)
@@ -332,6 +368,9 @@ function ps_server_env() {
     echo
     echo "MCMON Server (${SERVERTYPE}):"
     ps -ef | grep "servers/mcmon/main.js" | grep "servertype ${SERVERTYPE}" | grep -v grep
+    echo
+    echo "REDIS (${SERVERTYPE}):"
+    ps -ef | grep "redis-server" | grep "${REDIS_PORT}" | grep -v grep
 }
 
 function ps_servers() {
@@ -560,6 +599,7 @@ MC_SERVICE_NAME=""
 BACKUP_DATABASE=t
 SHOW_SERVERS=f
 PS_ALL_SERVERS=t
+REDIS_PORT=6379
 
 CMD=$1
 shift

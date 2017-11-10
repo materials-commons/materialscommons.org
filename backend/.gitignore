@@ -4,3 +4,4 @@ sbin
 package-lock.json
 node_modules
 npm-debug.log
+dump.rdb

@@ -38,3 +38,6 @@ fi
 if [ "$REINIT" = "t" ]; then
     (cd ${MCDB_DIR}; rm -rf rethinkdb_data)
 fi
+
+MCAPID_COMMAND="npx actionhero start cluster"
+MCAPID_PORT=6028
