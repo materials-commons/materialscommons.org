@@ -44,6 +44,21 @@ function stop_es() {
 
 function start_rethinkdb() {
     R=$(is_running "rethinkdb" "driver-port $MCDB_PORT")
+    if [ ! -d "${MCDB_DIR}" ]; then
+        echo ${MCDB_DIR} does not exist, please create and restart
+        exit 1
+    fi
+
+    if [ ! -w "${MCDB_DIR}" ]; then
+        echo "${MCDB_DIR}" is not writable, please correct permissions and restart
+        exit 1
+    fi
+
+    if [ ! -r "${MCDB_DIR}" ]; then
+        echo ${MCDB_DIR} is not readable, please correct permissions and restart
+        exit 1
+    fi
+
     if [ "$R" = "" ]; then
         echo "Starting rethinkdb ($SERVERTYPE)..."
         (cd ${MCDB_DIR}; rethinkdb --driver-port ${MCDB_PORT} --cluster-port ${RETHINKDB_CLUSTER_PORT} --http-port ${RETHINKDB_HTTP_PORT} --daemon)
@@ -489,10 +504,31 @@ function tail_servers() {
         -f ${D}/redis.out.${ST} -f ${D}/mcapid.out.${ST}
 }
 
-function update_mc() {
+function setup_deploy_dir() {
+    if [ ${SERVERTYPE} = "test" -o ${SERVERTYPE} = "production" ]; then
+        echo "Setting up ${MC_DEPLOY_DIR}..."
+        mkdir -p "${MC_DEPLOY_DIR}/bin"
+        mkdir -p "${MC_DEPLOY_DIR}/backend"
+        mkdir -p "${MC_DEPLOY_DIR}/website"
+    fi
+}
+
+function deploy_website() {
+    cp -r ../website/mcapp.tar.gz "${MC_DEPLOY_DIR}/website"
+    rm -rf "${MC_DEPLOY_DIR}/website/mcapp" "${MC_DEPLOY_DIR}/mcapp.tar.gz"
+    (cd "${MC_DEPLOY_DIR}/website"; tar zxf mcapp.tar.gz)
+}
+
+function deploy_backend() {
+    (cd ..; rm -rf "${MC_DEPLOY_DIR}/backend"; cp -r backend "${MC_DEPLOY_DIR}")
+}
+
+function deploy_mc() {
     export DB_BACKUP=/tmp/rethinkdb.update.${SERVERTYPE}.tar.gz
-    echo "Updating Materials Commons deployment..."
+    echo "Deploying Materials Commons deployment..."
     echo "  Updating code for materialscommons.org and mcstore...."
+
+    setup_deploy_dir
 
     if [ "$MC_BRANCH" != "" ]; then
         git checkout ${MC_BRANCH}
@@ -533,6 +569,12 @@ function update_mc() {
         (cd ../website; ./build.sh)
     elif [ "$SERVERTYPE" = "test" ]; then
         (cd ../website; ./build.sh)
+    fi
+
+    if [ ${SERVERTYPE} = "test" -o ${SERVERTYPE} = "production" ]; then
+        deploy_website
+        deploy_backend
+        cd "${MC_DEPLOY_DIR}/backend"
     fi
 
     echo "  All updates completed..."
@@ -599,7 +641,7 @@ function show_help() {
     echo "  ps: Shows the status for all given services in all the environments."
     echo "  env: Shows the paths, environment variables, and other info for all the environments."
     echo "  tail [-d | -t | -p]: Tails all the logs for all servers for the given environment."
-    echo "  update [-d | -t | -p] [-n] [-r]: Updates Materials Commons from the current branch for the given environment. Includes mcstore repository."
+    echo "  deploy [-d | -t | -p] [-n] [-r]: Updates and deploys Materials Commons from the current branch for the given environment. Includes mcstore repository."
     echo "         [--mc-branch <branch>] [--mcstore-branch <branch>] [--no-backup] [--run-convert]"
     echo "  restore [-d | -t | -p]: Restores the previous update by reloading from the database backup and optionally checking out from the given branches."
     echo "          [--mc-restore-branch <branch>] [--mcstore-restore-branch <branch>]"
@@ -787,9 +829,9 @@ case "$CMD" in
         restore_mc
         ;;
 
-    update)
+    deploy)
         must_be_mcuser
-        update_mc
+        deploy_mc
         ;;
 
     -u)
