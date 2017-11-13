@@ -3,7 +3,7 @@
     "test": "scripts/testdb/npm-tests.sh"
   },
   "dependencies": {
-    "actionhero": "^18.0.1",
+    "actionhero": "^18.0.2",
     "archiver": "^2.0.0",
     "bluebird": "^3.4.6",
     "co": "^4.5.1",
