@@ -237,6 +237,10 @@ function start_servers() {
     echo Starting ${SERVERTYPE} servers...
     mkdir -p ${MC_LOG_DIR} 2> /dev/null
 
+    if [ ${SERVERTYPE} = "test" -o ${SERVERTYPE} = "production" ]; then
+        cd "${MC_DEPLOY_DIR}/backend"
+    fi
+
     start_es
     start_rethinkdb
     start_mcapiserver
@@ -574,7 +578,6 @@ function deploy_mc() {
     if [ ${SERVERTYPE} = "test" -o ${SERVERTYPE} = "production" ]; then
         deploy_website
         deploy_backend
-        cd "${MC_DEPLOY_DIR}/backend"
     fi
 
     echo "  All updates completed..."
