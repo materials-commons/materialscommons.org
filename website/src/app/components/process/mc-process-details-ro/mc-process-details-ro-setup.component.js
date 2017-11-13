@@ -2,11 +2,16 @@ class MCProcessDetailsROSetupComponentController {
     /*@ngInject*/
     constructor($filter) {
         this.$filter = $filter;
-        this.processSetupWithValues = [];
-        this.processHasSetupValues = false;
+
     }
 
     $onInit() {
+        this.initSetupValues();
+    }
+
+    initSetupValues() {
+        this.processSetupWithValues = [];
+        this.processHasSetupValues = false;
         for (let i = 0; i < this.processSetup.length; i++) {
             this.processSetupWithValues.push(this.processSetup.slice(i)[0]);
             let properties = this.processSetupWithValues[i].properties;
@@ -18,6 +23,13 @@ class MCProcessDetailsROSetupComponentController {
                 this.processHasSetupValues = true;
                 break;
             }
+        }
+    }
+
+    $onChanges(changes) {
+        if (!changes.processSetup.isFirstChange()) {
+            this.processSetup = changes.processSetup.currentValue;
+            this.initSetupValues();
         }
     }
 

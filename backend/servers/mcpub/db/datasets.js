@@ -40,7 +40,7 @@ module.exports.getRecent = function*(next) {
                 'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count(),
                 'comments': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count()
             }
-        }).limit(10);
+        }); //.limit(10);
     yield next;
 };
 
@@ -52,7 +52,7 @@ module.exports.getTopViews = function*(next) {
             'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count(),
             'comment_count': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count()
         }
-    }).orderBy(r.desc('views')).limit(10);
+    }).orderBy(r.desc('views'));//.limit(10);
     yield next;
 };
 

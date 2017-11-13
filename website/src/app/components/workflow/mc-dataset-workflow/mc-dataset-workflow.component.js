@@ -3,15 +3,14 @@ class MCDatasetWorkflowComponentController {
     constructor(mcbus, mcstate) {
         this.mcbus = mcbus;
         this.mcstate = mcstate;
-
-        this.showWorkspace = true;
-        this.showGraphView = true;
         this.myName = 'MCDatasetWorkflowComponentController';
-        this.workspaceSize = 65;
-        this.showSidebar = true;
     }
 
     $onInit() {
+        this.workspaceSize = 65;
+        this.showSidebar = true;
+        this.showGraphView = true;
+
         this.mcbus.subscribe('WORKFLOW$VIEW', this.myName, (whichView) => {
             this.showGraphView = whichView === 'graph';
         });
