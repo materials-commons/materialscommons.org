@@ -565,7 +565,6 @@ function deploy_mc() {
     npm install
 
     (cd servers/mcapid; rm -f package-lock.json; npm install)
-    (cd ../website; rm -f package-lock.json; npm install)
 
     echo "Updating website dependencies..."
     (cd ../website; rm -f package-lock.json)
