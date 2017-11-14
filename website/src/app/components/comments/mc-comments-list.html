@@ -1,8 +1,6 @@
 <div>
     <mc-add-comment-button on-add="$ctrl.addComment()" ng-if="$ctrl.loggedin">
     </mc-add-comment-button>
-    <mc-refresh-comments-button on-refresh="$ctrl.refreshCommentsList()">
-    </mc-refresh-comments-button>
     <div ng-if="!$ctrl.loggedin">
         <i>You must log in and refresh page to add or modify comments</i>
     </div>
@@ -21,6 +19,4 @@
     </md-list>
     <mc-add-comment-button on-add="$ctrl.addComment()" ng-if="$ctrl.loggedin && ($ctrl.comments.length > 4)">
     </mc-add-comment-button>
-    <mc-refresh-comments-button on-refresh="$ctrl.refreshCommentsList()" ng-if="($ctrl.comments.length > 4)">
-    </mc-refresh-comments-button>
 </div>

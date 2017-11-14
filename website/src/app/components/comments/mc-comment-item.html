@@ -1,16 +1,16 @@
 <md-list-item class="md-3-line">
     <div class="md-list-item-text" layout="column">
-        <span class="mc-md-small"><b>{{$ctrl.comment.user.fullname}}</b> on {{$ctrl.comment.mtime | date:"MMM d, y h:mm a"}}</span>
-        <p class="md-subhead">{{$ctrl.comment.text}}</p>
-        <div ng-if="$ctrl.loggedin" layout="row">
-            <a ng-click="$ctrl.addComment(null)">add comment</a>
+        <span class="mc-md-small"><b>{{$ctrl.comment.user.fullname}}</b> on {{$ctrl.comment.mtime | date:"MMM d, y h:mm a"}}
+        <span ng-if="$ctrl.loggedin">
             <a class="margin-left-15"
                ng-if="$ctrl.comment.owner === $ctrl.userid"
                ng-click="$ctrl.editComment(comment.id)">edit</a>
             <a class="margin-left-15"
                ng-if="$ctrl.comment.owner === $ctrl.userid"
                ng-click="$ctrl.deleteComment(comment.id)">delete</a>
-        </div>
+        </span>
+        </span>
+        <p class="md-subhead">{{$ctrl.comment.text}}</p>
     </div>
     <md-divider></md-divider>
 </md-list-item>

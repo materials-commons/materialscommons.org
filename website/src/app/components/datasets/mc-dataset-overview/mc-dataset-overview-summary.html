@@ -5,10 +5,8 @@
             of the dataset, the authors listed herein, or any author of the related paper(s).
         </em>
     </p>
-    <mc_dataset-property-stats dataset="$ctrl.dataset"></mc_dataset-property-stats>
-    <label ng-if="$ctrl.dataset.description">Description</label>
-    <i ng-if="!$ctrl.dataset.description">No Description given</i>
-    <p ng-if="$ctrl.dataset.description" class="margin-left-15">{{$ctrl.dataset.description}}</p>
+    <mc-dataset-property-stats dataset="$ctrl.dataset"></mc-dataset-property-stats>
+    <mc-dataset-property-description dataset="$ctrl.dataset"></mc-dataset-property-description>
     <mc-dataset-property-authors dataset="$ctrl.dataset"></mc-dataset-property-authors>
     <p ng-if="!$ctrl.dataset.published">
         <mc-dataset-property-publisher dataset="$ctrl.dataset"></mc-dataset-property-publisher>
