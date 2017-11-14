@@ -65,14 +65,14 @@ class PublicDatasetsAPIService {
 
     augmentDatasetWithStats(i,dataset) {
         let stats = {
-            comment_count: dataset.comment_count,
+            comment_count: dataset.comment_count || 3,
             unique_view_count: {
-                authenticated: 14 + 2*i,
-                anonymous: 15 - i,
-                total: 29 + i
+                authenticated: 4,
+                anonymous: 5,
+                total: 9
             },
-            download_count: 20 + i,
-            favorite_count: 30 - 1
+            download_count: 2,
+            useful_count: 6
         };
         dataset.stats = stats;
         return dataset;

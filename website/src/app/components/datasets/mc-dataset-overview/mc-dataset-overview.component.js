@@ -1,38 +1,40 @@
 class MCDatasetOverviewComponentController {
     /*@ngInject*/
     constructor(User, $mdDialog, publicDatasetsAPI) {
-        this.showFiles = User.isAuthenticated();
+        this.isAuthenticated = User.isAuthenticated();
+        this.userId = User.u();
+        // Dataset fake stats: waiting on service interface
+        this.markedAsUseful = true;
+        // Dataset fake stats: waiting on service interface
+        this.othersMarkedAsUseful = true;
         this.$mdDialog = $mdDialog;
         this.showProcessesWorkflow = false;
         this.publicDatasetsAPI = publicDatasetsAPI;
     }
 
-    onFavoriteAction(){
-        console.log("Clicked on select as favorite.", this.dataset.title);
-        this.showFavoriteDialog().then((val) => {
+    otherCount() {
+        return 5;
+    }
+
+    otherWord() {
+        if (this.otherCount() === 1) return "other";
+        return "others";
+    }
+
+    onMarkAsUseful(){
+        console.log("User marked dataset as useful", this.userId, this.dataset.title);
+    }
+
+    onUnmarkAsUseful() {
+        console.log("User unmarked dataset as useful", this.userId, this.dataset.title);
+    }
+
+    onShowOthersUseful() {
+        console.log("Show others who marked this as useful", this.userId, this.dataset.title);
+        this.showOthersUsefulDialog().then((val) => {
             let text = val.text;
             this.createNewFavorite(text);
         });
-    }
-
-    createNewFavorite(text) {
-        console.log("Created favorate annotation for dataset: ", this.dataset.title);
-        console.log("With optional annotation: ", text);
-    }
-
-    showFavoriteDialog() {
-        let dataset = this.dataset;
-        console.log("dataset.title: ", dataset.title);
-        return this.$mdDialog.show({
-            templateUrl: 'app/components/datasets/mc-dataset-overview/dialog-select-favorite.html',
-            controller: AddFavoriteDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {
-                text: '',
-                dataset: dataset
-            }
-        })
     }
 
 }
@@ -46,19 +48,5 @@ angular.module('materialscommons').component('mcDatasetOverview', {
 });
 
 
-class AddFavoriteDialogController {
-    /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
-
-    done() {
-        this.$mdDialog.hide({text: this.text});
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
 
 
