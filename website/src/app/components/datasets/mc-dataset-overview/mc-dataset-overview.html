@@ -7,7 +7,7 @@
         <span ng-if="!$ctrl.markedAsUseful">
             <span ng-if="$ctrl.othersMarkedAsUseful">
                 Marked as useful by {{$ctrl.otherCount()}}
-                <a ng-click="$ctrl.onShowOthersUeful()">{{$ctrl.otherWord()}}</a>.
+                <a ng-click="$ctrl.onShowOthersUseful()">{{$ctrl.otherWord()}}</a>.
             </span>
             Mark this dataset as <a ng-click="$ctrl.onMarkAsUseful()">useful</a>.
         </span>
@@ -16,7 +16,7 @@
             (You
             <span ng-if="$ctrl.othersMarkedAsUseful">
                 and {{$ctrl.otherCount()}}
-                <a ng-click="$ctrl.onShowOthersUeful()">{{$ctrl.otherWord()}}</a>
+                <a ng-click="$ctrl.onShowOthersUseful()">{{$ctrl.otherWord()}}</a>
             </span>
             have marked this dataset as Useful.)
         </span>
