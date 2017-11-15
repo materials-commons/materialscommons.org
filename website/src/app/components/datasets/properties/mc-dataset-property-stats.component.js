@@ -29,10 +29,22 @@ angular.module('materialscommons').component('mcDatasetPropertyStats', {
     template: `
         <p>
             <span class="small action-count">
-                <span style="padding-left: 10px;">{{$ctrl.totalViews($ctrl.dataset.stats)}} Views</span>
-                <span style="padding-left: 10px;">{{$ctrl.dataset.stats.comment_count}} Comments</span>
-                <span style="padding-left: 10px;">{{$ctrl.dataset.stats.download_count}} Downloads</span>
-                <span style="padding-left: 10px;">{{$ctrl.dataset.stats.useful_count}} Users marked this dataset as Useful</span>
+                <span ng-if="$ctrl.totalViews($ctrl.dataset.stats)==1" style="padding-left: 10px;">
+                    {{$ctrl.totalViews($ctrl.dataset.stats)}} View</span>
+                <span ng-if="$ctrl.totalViews($ctrl.dataset.stats)!=1" style="padding-left: 10px;">
+                    {{$ctrl.totalViews($ctrl.dataset.stats)}} Views</span>
+                <span ng-if="$ctrl.dataset.stats.comment_count==1" style="padding-left: 10px;">
+                    {{$ctrl.dataset.stats.comment_count}} Comment</span>
+                <span ng-if="$ctrl.dataset.stats.comment_count!=1" style="padding-left: 10px;">
+                    {{$ctrl.dataset.stats.comment_count}} Comments</span>
+                <span ng-if="$ctrl.dataset.stats.download_count!=1" style="padding-left: 10px;">
+                    {{$ctrl.dataset.stats.download_count}} Download</span>
+                <span ng-if="$ctrl.dataset.stats.download_count!=1" style="padding-left: 10px;">
+                    {{$ctrl.dataset.stats.download_count}} Downloads</span>
+                <span ng-if="$ctrl.dataset.stats.useful_count==1" style="padding-left: 10px;">
+                    {{$ctrl.dataset.stats.useful_count}} User found this data useful</span>
+                <span ng-if="$ctrl.dataset.stats.useful_count>1" style="padding-left: 10px;">
+                    {{$ctrl.dataset.stats.useful_count}} Users found this data useful</span>
             </span>
         </p>
     `,
