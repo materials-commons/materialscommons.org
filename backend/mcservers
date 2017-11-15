@@ -44,6 +44,21 @@ function stop_es() {
 
 function start_rethinkdb() {
     R=$(is_running "rethinkdb" "driver-port $MCDB_PORT")
+    if [ ! -d "${MCDB_DIR}" ]; then
+        echo ${MCDB_DIR} does not exist, please create and restart
+        exit 1
+    fi
+
+    if [ ! -w "${MCDB_DIR}" ]; then
+        echo "${MCDB_DIR}" is not writable, please correct permissions and restart
+        exit 1
+    fi
+
+    if [ ! -r "${MCDB_DIR}" ]; then
+        echo ${MCDB_DIR} is not readable, please correct permissions and restart
+        exit 1
+    fi
+
     if [ "$R" = "" ]; then
         echo "Starting rethinkdb ($SERVERTYPE)..."
         (cd ${MCDB_DIR}; rethinkdb --driver-port ${MCDB_PORT} --cluster-port ${RETHINKDB_CLUSTER_PORT} --http-port ${RETHINKDB_HTTP_PORT} --daemon)
@@ -165,10 +180,47 @@ function start_mcmon() {
 
 function stop_mcmon() {
     echo "Stopping mcmon ($SERVERTYPE)..."
-    ps -eo "pid,command" | grep "servers/mcmon/main.js" | grep "servertype $SERVERTYPE" |grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    ps -eo "pid,command" | grep "servers/mcmon/main.js" | grep "servertype $SERVERTYPE" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
         kill ${line}
         echo "  Stopped mcmon with pid ${line}"
+    done
+}
+
+function start_redis() {
+    R=$(is_running "redis-server" "${REDIS_PORT}")
+    if [ "$R" = "" ]; then
+        echo "Starting redis (${SERVERTYPE})..."
+        redis-server --port ${REDIS_PORT} > ${MC_LOG_DIR}/redis.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
+}
+
+function stop_redis() {
+    echo "Stopping redis ($SERVERTYPE)..."
+    ps -eo "pid,command" | grep "redis-server" | grep "${REDIS_PORT}" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    do
+        kill ${line}
+        echo "  Stopped redis-server with pid ${line}"
+    done
+}
+
+function start_mcapid() {
+    R=$(is_running "mcapid-${SERVERTYPE}" " ")
+    if [ "$R" = "" ]; then
+        echo "Start mcapid server (${SERVERTYPE})..."
+        echo "${MCAPID_COMMAND}"
+        (cd servers/mcapid; sh -c "${MCAPID_COMMAND}" > ${MC_LOG_DIR}/mcapid.out.${SERVERTYPE} 2>&1&)
+        sleep 1
+    fi
+}
+
+function stop_mcapid() {
+    echo "Stopping mcapid (${SERVERTYPE})..."
+    ps -eo "pid,command" | grep "mcapid-${SERVERTYPE}" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    do
+        kill ${line}
+        echo "  Stopped mcapid server with pid ${line}"
     done
 }
 
@@ -185,6 +237,10 @@ function start_servers() {
     echo Starting ${SERVERTYPE} servers...
     mkdir -p ${MC_LOG_DIR} 2> /dev/null
 
+    if [ ${SERVERTYPE} = "test" -o ${SERVERTYPE} = "production" ]; then
+        cd "${MC_DEPLOY_DIR}/backend"
+    fi
+
     start_es
     start_rethinkdb
     start_mcapiserver
@@ -192,6 +248,8 @@ function start_servers() {
     start_mcapi
     start_mcpub
     start_mcmon
+    start_redis
+    start_mcapid
 
     disown -a
     echo Started ${SERVERTYPE}.
@@ -218,7 +276,9 @@ function stop_servers() {
     stop_mcapi
     stop_mcpub
     stop_mcmon
+    stop_mcapid
     stop_rethinkdb
+    stop_redis
 
     echo Stopped ${SERVERTYPE}.
 }
@@ -251,6 +311,14 @@ function stop_named_server() {
 
         mcmon)
             stop_mcmon
+            ;;
+
+        redis)
+            stop_redis
+            ;;
+
+        mcapid)
+            stop_mcapid
             ;;
 
         *)
@@ -291,6 +359,14 @@ function restart_named_server() {
             start_mcmon
             ;;
 
+        redis)
+            start_redis
+            ;;
+
+        mcapid)
+            start_mcapid
+            ;;
+
         *)
             echo "Unknown server: $1"
             exit 1
@@ -309,29 +385,44 @@ function ps_server_env() {
     echo "===================== ${SERVERTYPE} (-${TESTSERVER}) ====================="
     echo
     setup_server_env
+
     echo "RethinkDB (${SERVERTYPE}):"
     ps -ef | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep
+
+    echo
+    echo "REDIS (${SERVERTYPE}):"
+    ps -ef | grep "redis-server" | grep "${REDIS_PORT}" | grep -v grep
+
     echo
     echo "Elasticsearch (${SERVERTYPE}):"
     R=$(docker_instance_running ${MC_ES_NAME})
     if [ "$R" != "" ]; then
         echo ${R}
     fi
+
     echo
     echo "MCAPI Server (${SERVERTYPE}):"
     ps -ef | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep
+
     echo
     echo "MCAPI Node Server (${SERVERTYPE}):"
     ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
+
     echo
     echo "MCPUB Node Server (${SERVERTYPE}):"
     ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
+
     echo
     echo "MCSTORED Server (${SERVERTYPE}):"
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
+
     echo
     echo "MCMON Server (${SERVERTYPE}):"
     ps -ef | grep "servers/mcmon/main.js" | grep "servertype ${SERVERTYPE}" | grep -v grep
+
+    echo
+    echo "MCAPID Server (${SERVERTYPE}):"
+    ps -ef | grep "mcapid-${SERVERTYPE}" | grep -v grep
 }
 
 function ps_servers() {
@@ -412,14 +503,36 @@ function tail_servers() {
     D=${MC_LOG_DIR}
     ST=${SERVERTYPE}
     # Ensure files exist
-    touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} ${D}/mcpub.out.${ST} ${D}/mcmon.out.${ST}
-    tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} -f ${D}/mcpub.out.${ST} -f  ${D}/mcmon.out.${ST}
+    touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} ${D}/mcpub.out.${ST} ${D}/mcmon.out.${ST} ${D}/redis.out.${ST} ${D}/mcapid.out.${ST}
+    tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} -f ${D}/mcpub.out.${ST} -f ${D}/mcmon.out.${ST} \
+        -f ${D}/redis.out.${ST} -f ${D}/mcapid.out.${ST}
 }
 
-function update_mc() {
+function setup_deploy_dir() {
+    if [ ${SERVERTYPE} = "test" -o ${SERVERTYPE} = "production" ]; then
+        echo "Setting up ${MC_DEPLOY_DIR}..."
+        mkdir -p "${MC_DEPLOY_DIR}/bin"
+        mkdir -p "${MC_DEPLOY_DIR}/backend"
+        mkdir -p "${MC_DEPLOY_DIR}/website"
+    fi
+}
+
+function deploy_website() {
+    cp -r ../website/mcapp.tar.gz "${MC_DEPLOY_DIR}/website"
+    rm -rf "${MC_DEPLOY_DIR}/website/mcapp" "${MC_DEPLOY_DIR}/mcapp.tar.gz"
+    (cd "${MC_DEPLOY_DIR}/website"; tar zxf mcapp.tar.gz)
+}
+
+function deploy_backend() {
+    (cd ..; rm -rf "${MC_DEPLOY_DIR}/backend"; cp -r backend "${MC_DEPLOY_DIR}")
+}
+
+function deploy_mc() {
     export DB_BACKUP=/tmp/rethinkdb.update.${SERVERTYPE}.tar.gz
-    echo "Updating Materials Commons deployment..."
+    echo "Deploying Materials Commons deployment..."
     echo "  Updating code for materialscommons.org and mcstore...."
+
+    setup_deploy_dir
 
     if [ "$MC_BRANCH" != "" ]; then
         git checkout ${MC_BRANCH}
@@ -451,6 +564,8 @@ function update_mc() {
     rm -f package-lock.json
     npm install
 
+    (cd servers/mcapid; rm -f package-lock.json; npm install)
+
     echo "Updating website dependencies..."
     (cd ../website; rm -f package-lock.json)
     (cd ../website; npm install)
@@ -460,6 +575,11 @@ function update_mc() {
         (cd ../website; ./build.sh)
     elif [ "$SERVERTYPE" = "test" ]; then
         (cd ../website; ./build.sh)
+    fi
+
+    if [ ${SERVERTYPE} = "test" -o ${SERVERTYPE} = "production" ]; then
+        deploy_website
+        deploy_backend
     fi
 
     echo "  All updates completed..."
@@ -526,7 +646,7 @@ function show_help() {
     echo "  ps: Shows the status for all given services in all the environments."
     echo "  env: Shows the paths, environment variables, and other info for all the environments."
     echo "  tail [-d | -t | -p]: Tails all the logs for all servers for the given environment."
-    echo "  update [-d | -t | -p] [-n] [-r]: Updates Materials Commons from the current branch for the given environment. Includes mcstore repository."
+    echo "  deploy [-d | -t | -p] [-n] [-r]: Updates and deploys Materials Commons from the current branch for the given environment. Includes mcstore repository."
     echo "         [--mc-branch <branch>] [--mcstore-branch <branch>] [--no-backup] [--run-convert]"
     echo "  restore [-d | -t | -p]: Restores the previous update by reloading from the database backup and optionally checking out from the given branches."
     echo "          [--mc-restore-branch <branch>] [--mcstore-restore-branch <branch>]"
@@ -559,7 +679,8 @@ COMPILE_MCSTORE=t
 MC_SERVICE_NAME=""
 BACKUP_DATABASE=t
 SHOW_SERVERS=f
-PS_ALL_SERVERS=t
+#PS_ALL_SERVERS=t
+REDIS_PORT=6379
 
 CMD=$1
 shift
@@ -713,9 +834,9 @@ case "$CMD" in
         restore_mc
         ;;
 
-    update)
+    deploy)
         must_be_mcuser
-        update_mc
+        deploy_mc
         ;;
 
     -u)
@@ -747,6 +868,9 @@ case "$CMD" in
         ;;
 
     "")
+        TESTSERVER=d
+        SERVERTYPE="dev"
+        PS_ALL_SERVERS=f
         ps_servers
         ;;
 

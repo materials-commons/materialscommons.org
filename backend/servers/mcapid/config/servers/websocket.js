@@ -51,7 +51,7 @@ exports['default'] = {
       }
     }
   }
-}
+};
 
 exports['test'] = {
   servers: {

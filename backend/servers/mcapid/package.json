@@ -1,6 +1,6 @@
 {
   "author": "YOU <YOU@example.com>",
-  "name": "mcservd",
+  "name": "mcapid",
   "description": "API server for materials commons",
   "version": "0.1.0",
   "engines": {

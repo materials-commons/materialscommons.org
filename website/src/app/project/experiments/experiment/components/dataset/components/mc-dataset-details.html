@@ -59,7 +59,8 @@
             </a>
             <md-chips class="margin-top-20"
                       ng-model="$ctrl.dataset.keywords"
-                      placeholder="Keywords"
+                      placeholder="Keywords: add one"
+                      md-add-on-blur="true"
                       delete-button-label="Remove keyword"
                       md-on-add="$ctrl.updateDataset()"
                       md-on-remove="$ctrl.updateDataset()"
