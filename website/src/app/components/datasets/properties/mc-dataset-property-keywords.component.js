@@ -6,10 +6,10 @@ class MCDatasetPropertyKeywordsComponentController {
 
 angular.module('materialscommons').component('mcDatasetPropertyKeywords', {
     template: `
-        <label>Keywords</label>
+        <label>Keywords/Tags</label>
         <span style="padding-left: 5px;"
                 ng-repeat="keyword in $ctrl.dataset.keywords">
-            {{keyword}}
+            '{{keyword}}'
         </span>
     `,
     controller: MCDatasetPropertyKeywordsComponentController,
