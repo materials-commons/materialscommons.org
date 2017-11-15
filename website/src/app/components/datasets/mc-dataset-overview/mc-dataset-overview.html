@@ -4,21 +4,12 @@
         You must log in (and refresh page) to mark any dataset as useful
     </p>
     <p class="md-accent" ng-if="$ctrl.isAuthenticated">
-        <span ng-if="!$ctrl.markedAsUseful">
-            <span ng-if="$ctrl.othersMarkedAsUseful">
-                Marked as useful by {{$ctrl.otherCount()}}
-                <a ng-click="$ctrl.onShowOthersUseful()">{{$ctrl.otherWord()}}</a>.
-            </span>
-            Mark this dataset as <a ng-click="$ctrl.onMarkAsUseful()">useful</a>.
-        </span>
-        <span ng-if="$ctrl.markedAsUseful">
-             <a ng-click="$ctrl.onUnmarkAsUseful()">Unmark</a>.
-            (You
-            <span ng-if="$ctrl.othersMarkedAsUseful">
-                and {{$ctrl.otherCount()}}
-                <a ng-click="$ctrl.onShowOthersUseful()">{{$ctrl.otherWord()}}</a>
-            </span>
-            have marked this dataset as Useful.)
+        <input type="checkbox" ng-checked="$ctrl.markedAsUseful"
+               ng-click="$ctrl.onToggleUseful()" />
+        <span> I found this dataset useful. </span>
+        <span ng-if="$ctrl.othersMarkedAsUseful">
+            Marked as useful by {{$ctrl.otherCount()}}
+            <a ng-click="$ctrl.onShowOthersUseful()">{{$ctrl.otherWord()}}</a>.
         </span>
     </p>
     <md-tabs md-selected="$ctrl.currentTab" md-stretch-tabs md-dynamic-height>

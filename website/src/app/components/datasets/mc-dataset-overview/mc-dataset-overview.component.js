@@ -21,12 +21,17 @@ class MCDatasetOverviewComponentController {
         return "others";
     }
 
-    onMarkAsUseful(){
-        console.log("User marked dataset as useful", this.userId, this.dataset.title);
+    onToggleUseful(){
+        this.markedAsUseful = !this.markedAsUseful
+        if (this.markedAsUseful) {
+            console.log("User marked dataset as useful", this.userId, this.dataset.title);
+        }
+        else {
+            console.log("User unmarked dataset as useful", this.userId, this.dataset.title);
+        }
     }
 
     onUnmarkAsUseful() {
-        console.log("User unmarked dataset as useful", this.userId, this.dataset.title);
     }
 
     onShowOthersUseful() {
