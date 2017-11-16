@@ -89,6 +89,27 @@ class PublicDatasetsAPIService {
         )
     }
 
+    updateUseful(userId, datasetId, isUseful) {
+        console.log("updateUseful", userId, datasetId, isUseful);
+        let usefulParams = {
+            item_type: 'dataset',
+            item_id: datasetId,
+            user_id: userId,
+            action: isUseful?"add":"delete"
+        }
+        console.log("updateUseful", usefulParams);
+        return this.publicAPIRoute('useful').customPOST(usefulParams).then(
+            () => {
+                this.getDataset(datasetId).then(
+                    (dataset) => {
+                        console.log(dataset);
+                        return dataset;
+                    }
+                )
+            }
+        )
+    }
+
     // augment dataset with fake stats values - for GUI development
     augmentDatasetWithStats(dataset) {
         let stats = {

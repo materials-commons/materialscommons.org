@@ -19,11 +19,7 @@ class MCDatasetOverviewComponentController {
             userId = this.userId;
         }
         let datasetId = this.dataset.id;
-        this.publicDatasetsAPI.datasetWasViewed(userId, datasetId).then(
-            (dataset) => {
-                this.dataset = dataset;
-            }
-        );
+        this.publicDatasetsAPI.datasetWasViewed(userId, datasetId);
     }
 
     otherCount() {
@@ -43,9 +39,7 @@ class MCDatasetOverviewComponentController {
         else {
             console.log("User unmarked dataset as useful", this.userId, this.dataset.title);
         }
-    }
-
-    onUnmarkAsUseful() {
+        this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, this.markedAsUseful);
     }
 
     onShowOthersUseful() {
