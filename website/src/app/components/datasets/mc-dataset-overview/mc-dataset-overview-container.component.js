@@ -41,8 +41,8 @@ class MCDatasetOverviewContainerComponentController {
         console.log("called onToggleUseful",markedAsUseful);
         this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, markedAsUseful)
             .then((dataset) => {
-                console.log("onToggleUseful",dataset);
-                this.datasetHolder.dataset = setUsefulMarkerValues(dataset);
+                console.log("finished onToggleUseful", dataset);
+                this.datasetHolder.dataset = this.setUsefulMarkerValues(dataset);
             }
         );
     }

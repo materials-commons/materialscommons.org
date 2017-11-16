@@ -47,7 +47,7 @@ angular.module('materialscommons').component('mcDatasetOverview', {
     controller: MCDatasetOverviewComponentController,
     bindings: {
         dataset: '<',
-        onToggleUseful: '@'
+        onToggleUseful: '&'
     }
 });
 
