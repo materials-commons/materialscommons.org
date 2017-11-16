@@ -182,7 +182,13 @@ def create_mcpub_tables():
 # comments move to mcapi - Nov 2017 - Terry E. Weymouth
 #    create_mcpub_table("comments", "dataset_id", "user_id")
 
-    create_mcpub_table("views", "dataset_id")
+# views changed - now using view2item - where the view information is in that table
+#    create_mcpub_table("views", "dataset_id")
+
+    create_mcpub_table("views2item", "user_id", "item_id", "item_type")
+    create_compound_index("views2item", "user_type", ["user_id", "item_type"], db='mcpub')
+    create_compound_index("views2item", "user_item", ["user_id", "item_id"], db='mcpub')
+
     create_mcpub_table("samples", "original_id")
     create_mcpub_table("datasets", "owner")
     create_mcpub_table("dataset2sample", "dataset_id", "sample_id")

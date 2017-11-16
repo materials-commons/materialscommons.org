@@ -12,6 +12,20 @@ class MCDatasetOverviewComponentController {
         this.publicDatasetsAPI = publicDatasetsAPI;
     }
 
+    $onInit() {
+        console.log("Public Dataset Overview initialized");
+        let userId = '';
+        if (this.isAuthenticated) {
+            userId = this.userId;
+        }
+        let datasetId = this.dataset.id;
+        this.publicDatasetsAPI.datasetWasViewed(userId, datasetId).then(
+            (dataset) => {
+                this.dataset = dataset;
+            }
+        );
+    }
+
     otherCount() {
         return 5;
     }

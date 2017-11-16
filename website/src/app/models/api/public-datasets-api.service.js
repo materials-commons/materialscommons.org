@@ -71,6 +71,24 @@ class PublicDatasetsAPIService {
         );
     }
 
+    datasetWasViewed(userId, datasetId) {
+        let viewParams = {
+            item_type: 'dataset',
+            item_id: datasetId,
+            user_id: userId
+        };
+        return this.publicAPIRoute('views').customPOST(viewParams).then(
+            () => {
+                this.getDataset(datasetId).then(
+                    (dataset) => {
+                        console.log(dataset);
+                        return dataset;
+                    }
+                )
+            }
+        )
+    }
+
     // augment dataset with fake stats values - for GUI development
     augmentDatasetWithStats(dataset) {
         let stats = {
