@@ -42,7 +42,7 @@ class MCDatasetOverviewContainerComponentController {
         this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, markedAsUseful)
             .then((dataset) => {
                 console.log("finished onToggleUseful", dataset);
-                this.datasetHolder.dataset = this.setUsefulMarkerValues(dataset);
+                this.dataset = this.setUsefulMarkerValues(dataset);
             }
         );
     }
@@ -54,7 +54,7 @@ angular.module('materialscommons').component('mcDatasetOverviewContainer', {
         <mc-dataset-overview 
             ng-if="$ctrl.dataset"
             dataset="$ctrl.dataset"
-            onToggleUseful="$ctrl.onToggleUseful()"
+            on-toggle-useful="$ctrl.onToggleUseful()"
             >
         </mc-dataset-overview>
     `,
