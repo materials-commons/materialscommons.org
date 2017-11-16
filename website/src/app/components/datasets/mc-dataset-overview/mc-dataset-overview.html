@@ -4,14 +4,14 @@
         You must log in (and refresh page) to mark any dataset as useful
     </p>
     <p class="md-accent" ng-if="$ctrl.isAuthenticated">
-        <input type="checkbox" ng-checked="$ctrl.markedAsUseful"
+        <input type="checkbox" ng-checked="$ctrl.dataset.markedAsUseful"
                ng-click="$ctrl.onToggleUseful()" />
         <span> I found this dataset useful. </span>
-        <span ng-if="$ctrl.othersMarkedAsUsefulCount > 1">
+        <span ng-if="$ctrl.dataset.othersMarkedAsUsefulCount > 1">
             Others <a ng-click="$ctrl.onShowOthersUseful()">users</a>
-            who found this data useful, {{$ctrl.othersMarkedAsUsefulCount}}.
+            who found this data useful, {{$ctrl.dataset.othersMarkedAsUsefulCount}}.
         </span>
-        <span ng-if="$ctrl.othersMarkedAsUsefulCount === 1">
+        <span ng-if="$ctrl.dataset.othersMarkedAsUsefulCount === 1">
             One other <a ng-click="$ctrl.onShowOthersUseful()">user</a>
             found this data useful.
         </span>

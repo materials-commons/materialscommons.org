@@ -57,7 +57,7 @@ class PublicDatasetsAPIService {
         };
         return this.publicAPIRoute('views').customPOST(viewParams).then(
             () => {
-                this.getDataset(datasetId).then(
+                return this.getDataset(datasetId).then(
                     (dataset) => {
                         return dataset;
                     }
@@ -76,7 +76,7 @@ class PublicDatasetsAPIService {
         return this.publicAPIRoute('useful').customPOST(usefulParams).then(
             () => {
                 console.log("updateUseful: then from publicAPIRoute call;");
-                this.getDataset(datasetId).then(
+                return this.getDataset(datasetId).then(
                     (dataset) => {
                         console.log("updateUseful: then from getDataset call;");
                         console.log('getDataset: ',dataset);

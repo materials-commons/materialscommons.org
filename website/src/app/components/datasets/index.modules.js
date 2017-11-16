@@ -1,5 +1,6 @@
 import './mc-dataset-list/mc-dataset-list.component';
 import './mc-dataset-list/mc-dataset-list-item.component';
+import './mc-dataset-overview/mc-dataset-overview-container.component';
 import './mc-dataset-overview/mc-dataset-overview.component';
 import './mc-dataset-overview/mc-dataset-overview-summary.component';
 import './mc-dataset-overview/mc-dataset-overview-files.component';

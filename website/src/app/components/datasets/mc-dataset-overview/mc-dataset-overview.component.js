@@ -9,45 +9,17 @@ class MCDatasetOverviewComponentController {
     }
 
     $onInit() {
-        console.log('MCDatasetOverviewComponentController.$onInit()', this.dataset);
         let userId = '';
         if (this.isAuthenticated) {
             userId = this.userId;
         }
-        let datasetId = this.dataset.id;
-
-        this.setUsefulMarkerValues();
-
-        this.publicDatasetsAPI.datasetWasViewed(userId, datasetId);
+        console.log("MCDatasetOverviewComponentController; $onInit(): ", this.dataset);
     }
 
     $onChanges(changes) {
-        console.log('-->',changes);
-    }
-
-    setUsefulMarkerValues() {
-        console.log('setUsefulMarkerValues', this.dataset);
-        this.markedAsUseful = false;
-        this.othersMarkedAsUsefulCount = 0;
-        let interestedUsers = this.dataset.stats.interested_users;
-        for (let i = 0; i < interestedUsers.length; i++) {
-            if (interestedUsers[i].user_id === this.userId){
-                this.markedAsUseful = true;
-            } else {
-                this.othersMarkedAsUsefulCount += 1;
-            }
+        if (!changes.dataset.isFirstChange()) {
+            console.log('-->',changes.dataset);
         }
-    }
-
-    onToggleUseful(){
-        this.markedAsUseful = !this.markedAsUseful;
-        this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, this.markedAsUseful)
-            .then((dataset) => {
-                console.log("onToggleUseful",dataset);
-                this.dataset = dataset;
-                this.setUsefulMarkerValues();
-            }
-        );
     }
 
     onShowOthersUseful() {
@@ -73,7 +45,8 @@ angular.module('materialscommons').component('mcDatasetOverview', {
     templateUrl: 'app/components/datasets/mc-dataset-overview/mc-dataset-overview.html',
     controller: MCDatasetOverviewComponentController,
     bindings: {
-        dataset: '<'
+        dataset: '<',
+        onToggleUseful: '@'
     }
 });
 
