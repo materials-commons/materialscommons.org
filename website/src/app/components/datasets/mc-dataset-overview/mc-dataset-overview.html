@@ -7,9 +7,13 @@
         <input type="checkbox" ng-checked="$ctrl.markedAsUseful"
                ng-click="$ctrl.onToggleUseful()" />
         <span> I found this dataset useful. </span>
-        <span ng-if="$ctrl.othersMarkedAsUseful">
-            Marked as useful by {{$ctrl.otherCount()}}
-            <a ng-click="$ctrl.onShowOthersUseful()">{{$ctrl.otherWord()}}</a>.
+        <span ng-if="$ctrl.othersMarkedAsUsefulCount > 1">
+            Others <a ng-click="$ctrl.onShowOthersUseful()">users</a>
+            who found this data useful, {{$ctrl.othersMarkedAsUsefulCount}}.
+        </span>
+        <span ng-if="$ctrl.othersMarkedAsUsefulCount === 1">
+            One other <a ng-click="$ctrl.onShowOthersUseful()">user</a>
+            found this data useful.
         </span>
     </p>
     <md-tabs md-selected="$ctrl.currentTab" md-stretch-tabs md-dynamic-height>

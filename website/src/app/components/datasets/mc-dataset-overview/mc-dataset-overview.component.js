@@ -3,42 +3,27 @@ class MCDatasetOverviewComponentController {
     constructor(User, $mdDialog, publicDatasetsAPI) {
         this.isAuthenticated = User.isAuthenticated();
         this.userId = User.u();
-        // Dataset fake stats: waiting on service interface
-        this.markedAsUseful = true;
-        // Dataset fake stats: waiting on service interface
-        this.othersMarkedAsUseful = true;
         this.$mdDialog = $mdDialog;
         this.showProcessesWorkflow = false;
         this.publicDatasetsAPI = publicDatasetsAPI;
     }
 
     $onInit() {
-        console.log("Public Dataset Overview initialized");
         let userId = '';
         if (this.isAuthenticated) {
             userId = this.userId;
         }
         let datasetId = this.dataset.id;
+
+        // Dataset fake stats: waiting on service interface
+        this.markedAsUseful = true;
+        this.othersMarkedAsUsefulCount = 5;
+
         this.publicDatasetsAPI.datasetWasViewed(userId, datasetId);
     }
 
-    otherCount() {
-        return 5;
-    }
-
-    otherWord() {
-        if (this.otherCount() === 1) return "other";
-        return "others";
-    }
-
     onToggleUseful(){
-        this.markedAsUseful = !this.markedAsUseful
-        if (this.markedAsUseful) {
-            console.log("User marked dataset as useful", this.userId, this.dataset.title);
-        }
-        else {
-            console.log("User unmarked dataset as useful", this.userId, this.dataset.title);
-        }
+        this.markedAsUseful = !this.markedAsUseful;
         this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, this.markedAsUseful);
     }
 
