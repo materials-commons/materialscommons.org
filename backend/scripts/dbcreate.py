@@ -189,6 +189,10 @@ def create_mcpub_tables():
     create_compound_index("views2item", "user_type", ["user_id", "item_type"], db='mcpub')
     create_compound_index("views2item", "user_item", ["user_id", "item_id"], db='mcpub')
 
+    create_mcpub_table("useful2item", "user_id", "item_id", "item_type")
+    create_compound_index("useful2item", "user_type", ["user_id", "item_type"], db='mcpub')
+    create_compound_index("useful2item", "user_item", ["user_id", "item_id"], db='mcpub')
+
     create_mcpub_table("samples", "original_id")
     create_mcpub_table("datasets", "owner")
     create_mcpub_table("dataset2sample", "dataset_id", "sample_id")
