@@ -9,39 +9,53 @@ class MCDatasetOverviewComponentController {
     }
 
     $onInit() {
+        console.log('MCDatasetOverviewComponentController.$onInit()', this.dataset);
         let userId = '';
         if (this.isAuthenticated) {
             userId = this.userId;
         }
         let datasetId = this.dataset.id;
 
-        // Dataset fake stats: waiting on service interface
-        this.markedAsUseful = true;
-        this.othersMarkedAsUsefulCount = 5;
+        this.setUsefulMarkerValues();
 
         this.publicDatasetsAPI.datasetWasViewed(userId, datasetId);
     }
 
+    $onChanges(changes) {
+        console.log('-->',changes);
+    }
+
+    setUsefulMarkerValues() {
+        console.log('setUsefulMarkerValues', this.dataset);
+        this.markedAsUseful = false;
+        this.othersMarkedAsUsefulCount = 0;
+        let interestedUsers = this.dataset.stats.interested_users;
+        for (let i = 0; i < interestedUsers.length; i++) {
+            if (interestedUsers[i].user_id === this.userId){
+                this.markedAsUseful = true;
+            } else {
+                this.othersMarkedAsUsefulCount += 1;
+            }
+        }
+    }
+
     onToggleUseful(){
         this.markedAsUseful = !this.markedAsUseful;
-        this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, this.markedAsUseful);
+        this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, this.markedAsUseful)
+            .then((dataset) => {
+                console.log("onToggleUseful",dataset);
+                this.dataset = dataset;
+                this.setUsefulMarkerValues();
+            }
+        );
     }
 
     onShowOthersUseful() {
-        console.log("Show others who marked this as useful", this.userId, this.dataset.title);
-        this.dataset.useful= {others: [
-            {id: 'one@test.mc', fullname: 'Other One'},
-            {id: 'two@test.mc', fullname: 'Other Two'},
-            {id: 'three@test.mc', fullname: 'Other Three'},
-            {id: 'four@test.mc', fullname: 'Other Four'},
-        ]};
         this.showOthersUsefulDialog()
     }
 
     showOthersUsefulDialog() {
         let dataset = this.dataset;
-        console.log("dataset.title: ", dataset.title);
-        console.log("dataset.useful.others = ", dataset.useful.others);
         return this.$mdDialog.show({
             templateUrl: 'app/components/datasets/mc-dataset-overview/dialog-show-useful-others.html',
             controller: ShowUsefulOtherDialogController,

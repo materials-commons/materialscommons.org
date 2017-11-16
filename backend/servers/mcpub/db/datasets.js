@@ -8,14 +8,19 @@ const processCommon = require('../../mcapi/db/model/process-common');
 const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
 
 module.exports.getAll = function*(next) {
-    this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
-        return {
-            'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
-            'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
-            'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count(),
-            'comments': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count()
-        }
-    });
+    this.body = yield getAllDatasets();
+    yield next;
+};
+
+// deprecated
+module.exports.getRecent = function*(next) {
+    this.body = yield getAllDatasets();
+    yield next;
+};
+
+// deprecated
+module.exports.getTopViews = function*(next) {
+    this.body = yield getAllDatasets();
     yield next;
 };
 
@@ -28,31 +33,6 @@ module.exports.getDatasetProcess = function*(next) {
 module.exports.getAllCount = function*(next) {
     let count = yield r.db('materialscommons').table('datasets').filter({published: true}).count();
     this.body = {count: count};
-    yield next;
-};
-
-module.exports.getRecent = function*(next) {
-    this.body = yield r.db('materialscommons').table('datasets').filter({published: true})
-        .orderBy(r.desc('birthtime')).merge(function(ds) {
-            return {
-                'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
-                'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
-                'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count(),
-                'comments': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count()
-            }
-        }); //.limit(10);
-    yield next;
-};
-
-module.exports.getTopViews = function*(next) {
-    this.body = yield r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
-        return {
-            'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
-            'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
-            'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count(),
-            'comment_count': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count()
-        }
-    }).orderBy(r.desc('views'));//.limit(10);
     yield next;
 };
 
@@ -78,7 +58,20 @@ module.exports.getOne = function*(next) {
             samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).map(function(row) {
                 return r.table('samples').get(row('sample_id'))
             }).coerceTo('array'),
-            publisher: (!ds('owner'))?'unknown':r.db('materialscommons').table('users').get(ds('owner')).getField("fullname")
+            publisher: (!ds('owner'))?
+                {id: null, fullname:'unknown'}:
+                r.db('materialscommons').table('users').get(ds('owner')).pluck(['id','fullname']),
+            'stats': {
+                'unique_view_count': {
+                    'total': r.table('view2item').getAll(ds('id'), {index: 'item_id'}).count()
+                    // also, eventually, 'anonymous': items with user_ids that are not users
+                    //   and 'authenticated': items with user_ids that are users
+                },
+                'comment_count': r.db('materialscommons').table('comments')
+                    .getAll(ds('id'), {index: 'item_id'}).count(),
+                'interested_users': r.table('useful2item').getAll(ds('id'), {index: 'item_id'}).pluck('user_id').coerceTo('array'),
+                'download_count': 0     // how do I get this?!!
+            }
         };
     });
     if (this.params.user_id) {
@@ -106,6 +99,24 @@ module.exports.getZipfile = function*(next) {
 module.exports.getMockReleases = function*() {
     this.body = [{DOI: "ABC123"}, {DOI: "DEF123"}]
 };
+
+function* getAllDatasets() {
+    return yield r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
+        return {
+            'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
+            'stats': {
+                'unique_view_count': {
+                    'total': r.table('view2item').getAll(ds('id'), {index: 'item_id'}).count()
+                    // also, eventually, 'anonymous': items with user_ids that are not users
+                    //   and 'authenticated': items with user_ids that are users
+                },
+                'comment_count': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count(),
+                'interested_users': [], // list from useful table by item_id
+                'download_count': 0     // how do I get this?!!
+            }
+        }
+    });
+}
 
 function doiUrlLink(doi) {
     if (!doi) {

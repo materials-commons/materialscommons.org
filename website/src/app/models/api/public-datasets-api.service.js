@@ -8,12 +8,6 @@ class PublicDatasetsAPIService {
         return this.publicAPIRoute('datasets').one('filter').one('views').getList().then(
             (datasets) => {
                 datasets = datasets.plain();
-                // augment each dataset with fake stats values - for GUI development
-                // augment each dateset with enhanced publisher value - for GUI development
-                for (let i = 0; i < datasets.length; i++){
-                    datasets[i] = this.augmentDatasetWithStats(datasets[i]);
-                    datasets[i] = this.augmentDatasetPublisher(datasets[i]);
-                }
                 return datasets;
             }
         );
@@ -26,12 +20,6 @@ class PublicDatasetsAPIService {
                     ds.birthtime = new Date(ds.birthtime);
                 }
                 datasets = datasets.plain();
-                // augment each dataset with fake stats values - for GUI development
-                // augment each dateset with enhanced publisher value - for GUI development
-                for (let i = 0; i < datasets.length; i++){
-                    datasets[i] = this.augmentDatasetWithStats(datasets[i]);
-                    datasets[i] = this.augmentDatasetPublisher(datasets[i]);
-                }
                 return datasets;
             }
         );
@@ -41,10 +29,6 @@ class PublicDatasetsAPIService {
         return this.publicAPIRoute('datasets', datasetId).get().then(
             (dataset) => {
                 dataset = dataset.plain();
-                // augment dataset with fake stats values - for GUI development
-                dataset = this.augmentDatasetWithStats(dataset);
-                // augment dateset with enhanced publisher value - for GUI development
-                dataset = this.augmentDatasetPublisher(dataset)
                 return dataset;
             }
         );
@@ -60,12 +44,6 @@ class PublicDatasetsAPIService {
         return this.publicAPIRoute('tags', tag).one('datasets').getList().then(
             (datasets) => {
                 datasets = datasets.plain();
-                // augment each dataset with fake stats values - for GUI development
-                // augment each dateset with enhanced publisher value - for GUI development
-                for (let i = 0; i < datasets.length; i++){
-                    datasets[i] = this.augmentDatasetWithStats(datasets[i]);
-                    datasets[i] = this.augmentDatasetPublisher(datasets[i]);
-                }
                 return datasets;
             }
         );
@@ -81,7 +59,6 @@ class PublicDatasetsAPIService {
             () => {
                 this.getDataset(datasetId).then(
                     (dataset) => {
-                        console.log(dataset);
                         return dataset;
                     }
                 )
@@ -90,52 +67,25 @@ class PublicDatasetsAPIService {
     }
 
     updateUseful(userId, datasetId, isUseful) {
-        console.log("updateUseful", userId, datasetId, isUseful);
         let usefulParams = {
             item_type: 'dataset',
             item_id: datasetId,
             user_id: userId,
             action: isUseful?"add":"delete"
-        }
-        console.log("updateUseful", usefulParams);
+        };
         return this.publicAPIRoute('useful').customPOST(usefulParams).then(
             () => {
+                console.log("updateUseful: then from publicAPIRoute call;");
                 this.getDataset(datasetId).then(
                     (dataset) => {
-                        console.log(dataset);
+                        console.log("updateUseful: then from getDataset call;");
+                        console.log('getDataset: ',dataset);
                         return dataset;
                     }
                 )
             }
         )
     }
-
-    // augment dataset with fake stats values - for GUI development
-    augmentDatasetWithStats(dataset) {
-        let stats = {
-            comment_count: dataset.comment_count || 3,
-            unique_view_count: {
-                authenticated: 4,
-                anonymous: 5,
-                total: 9
-            },
-            download_count: 2,
-            useful_count: 6
-        };
-        dataset.stats = stats;
-        return dataset;
-    }
-
-    // augment dateset with enhanced publisher value - for GUI development
-    augmentDatasetPublisher(dataset) {
-        let publisher = {
-            fullname: dataset.publisher,
-            email: "fake.email@mc.test"
-        }
-        dataset.publisher = publisher;
-        return dataset;
-    }
-
 }
 
 angular.module('materialscommons').service('publicDatasetsAPI', PublicDatasetsAPIService);
