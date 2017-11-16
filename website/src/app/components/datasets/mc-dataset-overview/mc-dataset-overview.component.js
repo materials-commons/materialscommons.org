@@ -9,17 +9,18 @@ class MCDatasetOverviewComponentController {
     }
 
     $onInit() {
-        let userId = '';
-        if (this.isAuthenticated) {
-            userId = this.userId;
-        }
         console.log("MCDatasetOverviewComponentController; $onInit(): ", this.dataset);
     }
 
     $onChanges(changes) {
         if (!changes.dataset.isFirstChange()) {
-            console.log('-->',changes.dataset);
+            this.dataset = changes.dataset.currentValue;
         }
+    }
+
+    clickUsefulToggle() {
+        console.log("clickUsefulToggle");
+        this.onToggleUseful();
     }
 
     onShowOthersUseful() {

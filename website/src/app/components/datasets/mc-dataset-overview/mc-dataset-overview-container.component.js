@@ -10,11 +10,14 @@ class MCDatasetOverviewContainerComponentController {
     }
 
     $onInit() {
-        console.log('MCDatasetOverviewContainerComponentController: ',
-            this.userId, this.datasetId);
-        this.publicDatasetsAPI.datasetWasViewed(this.userId, this.datasetId).then((dataset) => {
+        console.log('MCDatasetOverviewContainerComponentController: ', this.userId, this.datasetId);
+        let userId = '';
+        if (this.User.isAuthenticated) {
+            userId = this.userId;
+        }
+        this.publicDatasetsAPI.datasetWasViewed(userId, this.datasetId).then((dataset) => {
             dataset = this.setUsefulMarkerValues(dataset);
-            console.log('MCDatasetOverviewContainerComponentController: ', dataset);
+            console.log('after publicDatasetsAPI call: ', dataset);
             this.dataset = dataset;
         });
     }
@@ -34,11 +37,12 @@ class MCDatasetOverviewContainerComponentController {
     }
 
     onToggleUseful(){
-        let datasetId = this.dataset;
-        this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, this.markedAsUseful)
+        let markedAsUseful = !this.dataset.markedAsUseful;
+        console.log("called onToggleUseful",markedAsUseful);
+        this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, markedAsUseful)
             .then((dataset) => {
                 console.log("onToggleUseful",dataset);
-                this.dataset = setUsefulMarkerValues(dataset);
+                this.datasetHolder.dataset = setUsefulMarkerValues(dataset);
             }
         );
     }
@@ -48,8 +52,9 @@ class MCDatasetOverviewContainerComponentController {
 angular.module('materialscommons').component('mcDatasetOverviewContainer', {
     template: `
         <mc-dataset-overview 
-            dataset="$crtl.dataset"
-            onToggleUseful="$crtl.onToggleUseful()"
+            ng-if="$ctrl.dataset"
+            dataset="$ctrl.dataset"
+            onToggleUseful="$ctrl.onToggleUseful()"
             >
         </mc-dataset-overview>
     `,

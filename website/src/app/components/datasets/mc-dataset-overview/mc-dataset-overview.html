@@ -5,7 +5,7 @@
     </p>
     <p class="md-accent" ng-if="$ctrl.isAuthenticated">
         <input type="checkbox" ng-checked="$ctrl.dataset.markedAsUseful"
-               ng-click="$ctrl.onToggleUseful()" />
+               ng-click="$ctrl.clickUsefulToggle()" />
         <span> I found this dataset useful. </span>
         <span ng-if="$ctrl.dataset.othersMarkedAsUsefulCount > 1">
             Others <a ng-click="$ctrl.onShowOthersUseful()">users</a>
