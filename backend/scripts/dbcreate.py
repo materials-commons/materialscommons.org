@@ -185,9 +185,9 @@ def create_mcpub_tables():
 # views changed - now using view2item - where the view information is in that table
 #    create_mcpub_table("views", "dataset_id")
 
-    create_mcpub_table("views2item", "user_id", "item_id", "item_type")
-    create_compound_index("views2item", "user_type", ["user_id", "item_type"], db='mcpub')
-    create_compound_index("views2item", "user_item", ["user_id", "item_id"], db='mcpub')
+    create_mcpub_table("view2item", "user_id", "item_id", "item_type")
+    create_compound_index("view2item", "user_type", ["user_id", "item_type"], db='mcpub')
+    create_compound_index("view2item", "user_item", ["user_id", "item_id"], db='mcpub')
 
     create_mcpub_table("useful2item", "user_id", "item_id", "item_type")
     create_compound_index("useful2item", "user_type", ["user_id", "item_type"], db='mcpub')
