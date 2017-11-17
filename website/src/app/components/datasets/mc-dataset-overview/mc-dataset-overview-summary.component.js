@@ -2,7 +2,7 @@ class MCDatasetOverviewSummaryComponentController {
     /*@ngInject*/
     constructor(User) {
         this.isAuthenticated = User.isAuthenticated();
-        console.log("OverviewSummart - this.onDownloadRequest",this.onDownloadRequest);
+        console.log("OverviewSummart - this.onDownloadRequest", this.onDownloadRequest);
     }
 }
 

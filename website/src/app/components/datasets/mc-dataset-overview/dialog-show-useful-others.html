@@ -1,12 +1,12 @@
 <md-dialog aria-label="Show list of other users who found this dataset useful.">
     <md-toolbar layout="row">
         <div layout-margin>
-            Other users who found this dataset useful... <br />
+            Other users who found this dataset useful... <br/>
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin layout="column">
         <p layout="column">
-            <h5 class="md-title">Dataset: {{$ctrl.dataset.title}}</h5>
+        <h5 class="md-title">Dataset: {{$ctrl.dataset.title}}</h5>
         </p>
         <md-list-item ng-repeat="item in $ctrl.dataset.stats.useful.others">
             {{item.fullname}} ({{item.id}})

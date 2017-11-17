@@ -5,7 +5,7 @@
     </p>
     <p class="md-accent" ng-if="$ctrl.isAuthenticated">
         <input type="checkbox" ng-checked="$ctrl.dataset.markedAsUseful"
-               ng-click="$ctrl.clickUsefulToggle()" />
+               ng-click="$ctrl.clickUsefulToggle()"/>
         <span> I found this dataset useful. </span>
         <span ng-if="$ctrl.dataset.othersMarkedAsUsefulCount > 1">
             Others <a ng-click="$ctrl.onShowOthersUseful()">users</a>
@@ -21,8 +21,8 @@
             <md-tab-label>Overview</md-tab-label>
             <md-tab-body>
                 <mc-dataset-overview-summary
-                    dataset="$ctrl.dataset"
-                    on-download-request="$ctrl.onDownloadRequest()"
+                        dataset="$ctrl.dataset"
+                        on-download-request="$ctrl.onDownloadRequest()"
                 ></mc-dataset-overview-summary>
             </md-tab-body>
         </md-tab>

@@ -1,8 +1,8 @@
 class MCDatasetOverviewContainerComponentController {
     /*@ngInject*/
-    constructor($stateParams,publicDatasetsAPI,User) {
+    constructor($stateParams, publicDatasetsAPI, User) {
         console.log('MCDatasetOverviewContainerComponentController');
-        this.publicDatasetsAPI =  publicDatasetsAPI;
+        this.publicDatasetsAPI = publicDatasetsAPI;
         this.$stateParams = $stateParams;
         this.User = User;
         this.datasetId = this.$stateParams.dataset_id;
@@ -28,7 +28,7 @@ class MCDatasetOverviewContainerComponentController {
         let interestedUsers = dataset.stats.interested_users;
         let otherInterestedUsers = [];
         for (let i = 0; i < interestedUsers.length; i++) {
-            if (interestedUsers[i].email === this.userId){
+            if (interestedUsers[i].email === this.userId) {
                 dataset.markedAsUseful = true;
             } else {
                 otherInterestedUsers.push(interestedUsers[i]);
@@ -39,19 +39,19 @@ class MCDatasetOverviewContainerComponentController {
         return dataset;
     }
 
-    onToggleUseful(){
+    onToggleUseful() {
         let markedAsUseful = !this.dataset.markedAsUseful;
-        console.log("called onToggleUseful",markedAsUseful);
+        console.log("called onToggleUseful", markedAsUseful);
         this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, markedAsUseful)
             .then((dataset) => {
-                let updated_dataset = this.setUsefulMarkerValues(dataset);
-                console.log("finished onToggleUseful", updated_dataset);
-                this.dataset = updated_dataset;
-            }
-        );
+                    let updated_dataset = this.setUsefulMarkerValues(dataset);
+                    console.log("finished onToggleUseful", updated_dataset);
+                    this.dataset = updated_dataset;
+                }
+            );
     }
 
-    onDownloadRequest(){
+    onDownloadRequest() {
         console.log("Increment download count");
         this.dataset.stats.download_count += 1;
     }
