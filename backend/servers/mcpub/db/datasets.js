@@ -69,7 +69,11 @@ module.exports.getOne = function*(next) {
                 },
                 'comment_count': r.db('materialscommons').table('comments')
                     .getAll(ds('id'), {index: 'item_id'}).count(),
-                'interested_users': r.table('useful2item').getAll(ds('id'), {index: 'item_id'}).pluck('user_id').coerceTo('array')
+                'interested_users': r.table('useful2item')
+                    .eqJoin('user_id',r.db('materialscommons')
+                        .table('users'))
+                    .zip().pluck('fullname','email')
+                    .coerceTo('array')
                 //, 'download_count': 0    // this is on main body of dataset, for now, see client-side logic
             }
         };

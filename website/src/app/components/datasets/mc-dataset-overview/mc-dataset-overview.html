@@ -20,7 +20,10 @@
         <md-tab>
             <md-tab-label>Overview</md-tab-label>
             <md-tab-body>
-                <mc-dataset-overview-summary dataset="$ctrl.dataset"></mc-dataset-overview-summary>
+                <mc-dataset-overview-summary
+                    dataset="$ctrl.dataset"
+                    on-download-request="$ctrl.onDownloadRequest()"
+                ></mc-dataset-overview-summary>
             </md-tab-body>
         </md-tab>
 

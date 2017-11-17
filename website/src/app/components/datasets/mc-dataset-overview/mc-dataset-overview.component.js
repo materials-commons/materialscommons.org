@@ -10,6 +10,7 @@ class MCDatasetOverviewComponentController {
 
     $onInit() {
         console.log("MCDatasetOverviewComponentController; $onInit(): ", this.dataset);
+        console.log("this.onDownloadRequested", this.onDownloadRequest);
     }
 
     $onChanges(changes) {
@@ -48,7 +49,8 @@ angular.module('materialscommons').component('mcDatasetOverview', {
     controller: MCDatasetOverviewComponentController,
     bindings: {
         dataset: '<',
-        onToggleUseful: '&'
+        onToggleUseful: '&',
+        onDownloadRequest: '&'
     }
 });
 

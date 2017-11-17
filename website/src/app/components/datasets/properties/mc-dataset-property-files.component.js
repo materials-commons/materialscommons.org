@@ -4,6 +4,7 @@ class MCDatasetPropertyFilesComponentController {
         this.isAuthenticated = User.isAuthenticated();
         this.apikey = User.apikey();
         this.$window = $window;
+        console.log("property - this.onDownloadRequest", this.onDownloadRequest);
     }
 
     isDownloadAvailable() {
@@ -19,6 +20,13 @@ class MCDatasetPropertyFilesComponentController {
     filenameForDownload() {
         return (this.dataset.zip && this.dataset.zip.filename) ? (this.dataset.zip.filename) : "FullDataset.zip";
     }
+
+    onDownload() {
+        console.log("onDownload - clicked");
+        this.onDownloadRequest();
+        console.log("onDownload - reported");
+    }
+
 }
 
 angular.module('materialscommons').component('mcDatasetPropertyFiles', {
@@ -33,7 +41,9 @@ angular.module('materialscommons').component('mcDatasetPropertyFiles', {
             Download zipfile is still building; check back later.
         </span>
         <span ng-if="$ctrl.isAuthenticated && $ctrl.dataset.published && $ctrl.isDownloadAvailable()">
-            <a href="{{$ctrl.urlForDownload()}}" download="{{$ctrl.filenameForDownload()}}">
+            <a href="{{$ctrl.urlForDownload()}}" 
+                    ng-click="$ctrl.onDownload()"
+                    download="{{$ctrl.filenameForDownload()}}">
                 <i class="fa fa-fw fa-download"></i>
                 Download Dataset - {{$ctrl.dataset.files.length}} files
             </a>
@@ -42,6 +52,7 @@ angular.module('materialscommons').component('mcDatasetPropertyFiles', {
     `,
     controller: MCDatasetPropertyFilesComponentController,
     bindings: {
-        dataset: '<'
+        dataset: '<',
+        onDownloadRequest: '&'
     }
 });

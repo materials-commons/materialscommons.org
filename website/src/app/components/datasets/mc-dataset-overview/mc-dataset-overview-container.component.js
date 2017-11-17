@@ -26,13 +26,16 @@ class MCDatasetOverviewContainerComponentController {
         dataset.markedAsUseful = false;
         dataset.othersMarkedAsUsefulCount = 0;
         let interestedUsers = dataset.stats.interested_users;
+        let otherInterestedUsers = [];
         for (let i = 0; i < interestedUsers.length; i++) {
-            if (interestedUsers[i].user_id === this.userId){
+            if (interestedUsers[i].email === this.userId){
                 dataset.markedAsUseful = true;
             } else {
+                otherInterestedUsers.push(interestedUsers[i]);
                 dataset.othersMarkedAsUsefulCount += 1;
             }
         }
+        dataset.otherInterestedUsers = otherInterestedUsers;
         return dataset;
     }
 
@@ -48,6 +51,11 @@ class MCDatasetOverviewContainerComponentController {
         );
     }
 
+    onDownloadRequest(){
+        console.log("Increment download count");
+        this.dataset.stats.download_count += 1;
+    }
+
 }
 
 angular.module('materialscommons').component('mcDatasetOverviewContainer', {
@@ -56,6 +64,7 @@ angular.module('materialscommons').component('mcDatasetOverviewContainer', {
             ng-if="$ctrl.dataset"
             dataset="$ctrl.dataset"
             on-toggle-useful="$ctrl.onToggleUseful()"
+            on-download-request="$ctrl.onDownloadRequest()"
             >
         </mc-dataset-overview>
     `,
