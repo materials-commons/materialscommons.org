@@ -69,17 +69,11 @@ module.exports.getOne = function*(next) {
                 },
                 'comment_count': r.db('materialscommons').table('comments')
                     .getAll(ds('id'), {index: 'item_id'}).count(),
-                'interested_users': r.table('useful2item').getAll(ds('id'), {index: 'item_id'}).pluck('user_id').coerceTo('array'),
-                'download_count': 0     // how do I get this?!!
+                'interested_users': r.table('useful2item').getAll(ds('id'), {index: 'item_id'}).pluck('user_id').coerceTo('array')
+                //, 'download_count': 0    // this is on main body of dataset, for now, see client-side logic
             }
         };
     });
-    if (this.params.user_id) {
-        const is_appreciated = yield r.table('appreciations').getAll([this.params.user_id, this.params.id], {index: 'user_dataset'}).coerceTo('array');
-        if (is_appreciated.length > 0) {
-            this.body.appreciate = true;
-        }
-    }
     if (this.body.doi) {
         this.body.doi_url = doiUrlLink(this.body.doi);
     }
@@ -87,11 +81,10 @@ module.exports.getOne = function*(next) {
 };
 
 module.exports.getZipfile = function*(next) {
-    // console.log("Arrived at getZipfile: " + this.params.id);
     let ds = yield r.db('materialscommons').table('datasets').get(this.params.id);
+    yield r.db('materialscommons').table('datasets').get(this.params.id)
+        .update({download_count: r.row("download_count").add(1).default(1)});
     let fullPath = zipFileUtils.fullPathAndFilename(ds);
-    // console.log("Full path = " + fullPath);
-    // this.body = yield fsa.readFileAsync(fullPath);
     this.body = fs.createReadStream(fullPath, {highWaterMark: 64*1024});
     yield next;
 };
@@ -111,8 +104,8 @@ function* getAllDatasets() {
                     //   and 'authenticated': items with user_ids that are users
                 },
                 'comment_count': r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count(),
-                'interested_users': [], // list from useful table by item_id
-                'download_count': 0     // how do I get this?!!
+                'interested_users': r.table('useful2item').getAll(ds('id'), {index: 'item_id'}).pluck('user_id').coerceTo('array')
+                //, 'download_count': 0    // this is on main body of dataset, for now, see client-side logic
             }
         }
     });

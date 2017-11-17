@@ -1,23 +1,9 @@
 class MCDatasetPropertyStatsComponentController {
     /*@ngInject*/
     constructor() {
-        this.useful_count = 0;
-    }
-
-    $onChanges(changes) {
-        if (!changes.dataset.isFirstChange()) {
-            this.dataset = changes.dataset.currentValue;
-            console.log("dataset changed in stats property");
-            this.usefulCount = this.dataset.stats.interested_users.length;
-            console.log("property-stats: useful_count", this.usefulCount)
-        }
-    }
-
-    $onInit() {
-        this.usefulCount = this.dataset.stats.interested_users.length;
-        console.log("property-stats: useful_count", this.usefulCount)
     }
 }
+
 
 angular.module('materialscommons').component('mcDatasetPropertyStats', {
     template: `
@@ -35,10 +21,10 @@ angular.module('materialscommons').component('mcDatasetPropertyStats', {
                     {{$ctrl.dataset.stats.download_count}} Download</span>
                 <span ng-if="$ctrl.dataset.stats.download_count!=1" style="padding-left: 10px;">
                     {{$ctrl.dataset.stats.download_count}} Downloads</span>
-                <span ng-if="$ctrl.usefulCount==1" style="padding-left: 10px;">
-                    {{$ctrl.usefulCount}} User found this data useful</span>
-                <span ng-if="$ctrl.usefulCount>1" style="padding-left: 10px;">
-                    {{$ctrl.usefulCount}} Users found this data useful</span>
+                <span ng-if="$ctrl.dataset.stats.useful_count==1" style="padding-left: 10px;">
+                    {{$ctrl.dataset.stats.useful_count}} User found this data useful</span>
+                <span ng-if="$ctrl.dataset.stats.useful_count>1" style="padding-left: 10px;">
+                    {{$ctrl.dataset.stats.useful_count}} Users found this data useful</span>
             </span>
         </p>
     `,

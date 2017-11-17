@@ -8,6 +8,7 @@ class PublicDatasetsAPIService {
         return this.publicAPIRoute('datasets').one('filter').one('views').getList().then(
             (datasets) => {
                 datasets = datasets.plain();
+                datasets = this.augmentDatasets(datasets);
                 return datasets;
             }
         );
@@ -20,6 +21,7 @@ class PublicDatasetsAPIService {
                     ds.birthtime = new Date(ds.birthtime);
                 }
                 datasets = datasets.plain();
+                datasets = this.augmentDatasets(datasets);
                 return datasets;
             }
         );
@@ -29,6 +31,7 @@ class PublicDatasetsAPIService {
         return this.publicAPIRoute('datasets', datasetId).get().then(
             (dataset) => {
                 dataset = dataset.plain();
+                dataset = this.augmentDataset(dataset);
                 return dataset;
             }
         );
@@ -44,6 +47,7 @@ class PublicDatasetsAPIService {
         return this.publicAPIRoute('tags', tag).one('datasets').getList().then(
             (datasets) => {
                 datasets = datasets.plain();
+                datasets = this.augmentDatasets(datasets);
                 return datasets;
             }
         );
@@ -62,6 +66,17 @@ class PublicDatasetsAPIService {
                         return dataset;
                     }
                 )
+            }
+        )
+    }
+
+    datasetWasDownloaded(userId, datasetId) {
+        console.log("------------> unimplemented <----------------");
+        console.log("|  datasetWasDownloaded(userId, datasetId)  |")
+        console.log("------------> unimplemented <----------------");
+        return this.getDataset(datasetId).then(
+            (dataset) => {
+                return dataset;
             }
         )
     }
@@ -85,6 +100,21 @@ class PublicDatasetsAPIService {
                 )
             }
         )
+    }
+
+    augmentDataset(dataset) {
+        dataset.stats.useful_count = dataset.stats.interested_users.length;
+        console.log("augmentDataset(dataset): useful_count", dataset.id, dataset.stats.useful_count);
+        dataset.stats.download_count = dataset.download_count || 0;
+        console.log("augmentDataset(dataset): download_count", dataset.id, dataset.stats.download_count);
+        return dataset;
+    }
+
+    augmentDatasets(datasets) {
+        for (let i = 0; i < datasets.length; i++) {
+            datasets[i] = this.augmentDataset(datasets[i]);
+        }
+        return datasets;
     }
 }
 
