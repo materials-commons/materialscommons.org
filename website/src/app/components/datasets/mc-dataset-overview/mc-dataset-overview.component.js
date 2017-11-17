@@ -15,6 +15,7 @@ class MCDatasetOverviewComponentController {
     $onChanges(changes) {
         if (!changes.dataset.isFirstChange()) {
             this.dataset = changes.dataset.currentValue;
+            console.log("dataset changed");
         }
     }
 

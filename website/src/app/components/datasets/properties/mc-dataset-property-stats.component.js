@@ -4,6 +4,15 @@ class MCDatasetPropertyStatsComponentController {
         this.useful_count = 0;
     }
 
+    $onChanges(changes) {
+        if (!changes.dataset.isFirstChange()) {
+            this.dataset = changes.dataset.currentValue;
+            console.log("dataset changed in stats property");
+            this.usefulCount = this.dataset.stats.interested_users.length;
+            console.log("property-stats: useful_count", this.usefulCount)
+        }
+    }
+
     $onInit() {
         this.usefulCount = this.dataset.stats.interested_users.length;
         console.log("property-stats: useful_count", this.usefulCount)
