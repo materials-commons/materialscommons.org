@@ -6,10 +6,10 @@
     </md-toolbar>
     <md-dialog-content layout-margin layout="column">
         <p layout="column">
-        <h5 class="md-title">Dataset: {{$ctrl.dataset.title}}</h5>
+        <p class="md-title">Dataset: {{$ctrl.dataset.title}}</p>
         </p>
-        <md-list-item ng-repeat="item in $ctrl.dataset.stats.useful.others">
-            {{item.fullname}} ({{item.id}})
+        <md-list-item ng-repeat="item in $ctrl.dataset.otherInterestedUsers">
+            {{item.fullname}} ({{item.email}})
         </md-list-item>
     </md-dialog-content>
     <md-dialog-actions layout="column">

@@ -8,20 +8,16 @@ class MCDatasetOverviewComponentController {
         this.publicDatasetsAPI = publicDatasetsAPI;
     }
 
-    $onInit() {
-        console.log("MCDatasetOverviewComponentController; $onInit(): ", this.dataset);
-        console.log("this.onDownloadRequested", this.onDownloadRequest);
-    }
-
     $onChanges(changes) {
         if (!changes.dataset.isFirstChange()) {
             this.dataset = changes.dataset.currentValue;
-            console.log("dataset changed");
+            console.log("dataset changes reported - overview");
+        } else {
+            con
         }
     }
 
     clickUsefulToggle() {
-        console.log("clickUsefulToggle");
         this.onToggleUseful();
     }
 
