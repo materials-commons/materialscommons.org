@@ -19,7 +19,7 @@ class MCProjectsListComponentController {
 }
 
 angular.module('materialscommons').component('mcProjectsList', {
-    templateUrl: 'app/components/projects/mc-projects/mc-projects-list.html',
+    template: require('./mc-projects-list.html'),
     controller: MCProjectsListComponentController,
     bindings: {
         projects: '<',
