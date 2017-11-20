@@ -45,7 +45,9 @@
         <md-tab>
             <md-tab-label>Comments</md-tab-label>
             <md-tab-body>
-                <mc-comments-list target="$ctrl.dataset"></mc-comments-list>
+                <mc-comments-list target="$ctrl.dataset"
+                                  onCommentListChanged="$ctrl.onCommentListChanged()">
+                </mc-comments-list>
             </md-tab-body>
         </md-tab>
     </md-tabs>

@@ -89,6 +89,7 @@ class MCCommentsListComponentController {
         this.publicCommentsAPIService.getCommentsListFor(this.targetId)
             .then((commentsList) => {
                 this.comments = commentsList;
+                this.onCommentListChanged();
             });
     }
 }
@@ -98,6 +99,7 @@ angular.module('materialscommons').component('mcCommentsList', {
     controller: MCCommentsListComponentController,
     bindings: {
         target: "<",
+        onCommentListChanged: ': '&'
     }
 });
 

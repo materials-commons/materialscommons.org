@@ -13,7 +13,7 @@ class MCDatasetOverviewComponentController {
             this.dataset = changes.dataset.currentValue;
             console.log("dataset changes reported - overview");
         } else {
-            con
+            console.log("Boo!")
         }
     }
 
@@ -36,6 +36,10 @@ class MCDatasetOverviewComponentController {
                 dataset: dataset
             }
         })
+    }
+
+    onchange(){
+        console.log("Comments added are not changing data display, in stats display line.");
     }
 
 }
