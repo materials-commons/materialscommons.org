@@ -3,7 +3,6 @@ class MCAddCommentButtonController {
     }
 
     requestAddCommentAction() {
-        console.log("requestAddCommentAction");
         this.onAdd();
     }
 }
