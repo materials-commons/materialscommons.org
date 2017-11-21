@@ -13,7 +13,7 @@ class MCDatasetOverviewComponentController {
             this.dataset = changes.dataset.currentValue;
             console.log("dataset changes reported - overview");
         } else {
-            console.log("Boo!")
+            console.log("Additional Dataset changes", changes.dataset)
         }
     }
 
@@ -23,6 +23,12 @@ class MCDatasetOverviewComponentController {
 
     onShowOthersUseful() {
         this.showOthersUsefulDialog()
+    }
+
+    onDeleteFromCommentCount(){
+        console.log("in MCDatasetOverviewSummaryComponentController...");
+        console.log("  ...onDeleteComment");
+        this.dataset.stats.download_count += -1;
     }
 
     showOthersUsefulDialog() {
@@ -38,9 +44,6 @@ class MCDatasetOverviewComponentController {
         })
     }
 
-    onchange(){
-        console.log("Comments added are not changing data display, in stats display line.");
-    }
 
 }
 
@@ -49,8 +52,10 @@ angular.module('materialscommons').component('mcDatasetOverview', {
     controller: MCDatasetOverviewComponentController,
     bindings: {
         dataset: '<',
-        onToggleUseful: '&',
-        onDownloadRequest: '&'
+        onToggleUseful: '&',          // defined in container
+        onDownloadRequest: '&',       // defined in container
+        onAddToCommentCount: '&',     // defined in container
+        onDeleteFromCommentCount: '&' // defined in container
     }
 });
 

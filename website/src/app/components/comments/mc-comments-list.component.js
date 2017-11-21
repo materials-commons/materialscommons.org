@@ -19,6 +19,8 @@ class MCCommentsListComponentController {
             let text = val.text;
             if (text !== '') {
                 this.createNewComment(this.targetType, this.targetId, text);
+                this.onAddToCommentCount();
+                console.log("add comment");
             }
         });
     }
@@ -71,8 +73,8 @@ class MCCommentsListComponentController {
 
     showDeleteDialog() {
         var confirm = this.$mdDialog.confirm()
-          .title(`Delete ${this.targetType}.`)
-          .ariaLabel(`Delete ${this.targetType}.`)
+          .title(`Delete comment on ${this.targetType}.`)
+          .ariaLabel(`Delete comment on ${this.targetType}.`)
           .ok('Delete')
           .cancel('Cancel');
         return this.$mdDialog.show(confirm);
@@ -82,6 +84,7 @@ class MCCommentsListComponentController {
         this.commentsAPIService.deleteComment(id)
             .then(() => {
                 this.refreshCommentsList();
+                this.onDeleteFromCommentCount();
             });
     }
 
@@ -89,7 +92,6 @@ class MCCommentsListComponentController {
         this.publicCommentsAPIService.getCommentsListFor(this.targetId)
             .then((commentsList) => {
                 this.comments = commentsList;
-                this.onCommentListChanged();
             });
     }
 }
@@ -99,7 +101,8 @@ angular.module('materialscommons').component('mcCommentsList', {
     controller: MCCommentsListComponentController,
     bindings: {
         target: "<",
-        onCommentListChanged: ': '&'
+        onAddToCommentCount: '&',
+        onDeleteFromCommentCount: '&'
     }
 });
 

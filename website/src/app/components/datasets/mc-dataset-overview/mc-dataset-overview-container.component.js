@@ -56,6 +56,18 @@ class MCDatasetOverviewContainerComponentController {
         this.dataset.stats.download_count += 1;
     }
 
+    onAddToCommentCount(){
+        console.log("in MCDatasetOverviewSummaryComponentController...");
+        console.log("  ...onAddComment");
+        this.dataset.stats.download_count += 1;
+    }
+
+    onDeleteFromCommentCount(){
+        console.log("in MCDatasetOverviewSummaryComponentController...");
+        console.log("  ...onDeleteComment");
+        this.dataset.stats.download_count += -1;
+    }
+
 }
 
 angular.module('materialscommons').component('mcDatasetOverviewContainer', {
@@ -65,6 +77,8 @@ angular.module('materialscommons').component('mcDatasetOverviewContainer', {
             dataset="$ctrl.dataset"
             on-toggle-useful="$ctrl.onToggleUseful()"
             on-download-request="$ctrl.onDownloadRequest()"
+            on-add-to-comment-count="$ctrl.onAddToCommentCount()"
+            on-delete-from-comment-count="$crtl.onDeleteFromCommentCount()"
             >
         </mc-dataset-overview>
     `,

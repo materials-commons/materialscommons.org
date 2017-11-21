@@ -46,7 +46,8 @@
             <md-tab-label>Comments</md-tab-label>
             <md-tab-body>
                 <mc-comments-list target="$ctrl.dataset"
-                                  onCommentListChanged="$ctrl.onCommentListChanged()">
+                                  on-add-to-comment-count="$ctrl.onAddToCommentCount()"
+                                  on-delete-from-comment-count="$ctrl.onDeleteFromCommentCount()">
                 </mc-comments-list>
             </md-tab-body>
         </md-tab>
