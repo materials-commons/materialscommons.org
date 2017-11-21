@@ -10,7 +10,7 @@ angular.module('materialscommons').component('mcDatasetPropertyStats', {
         <p>
             <span class="small action-count">
                 <span ng-if="$ctrl.dataset.stats.unique_view_count.total==1" style="padding-left: 10px;">
-                    {{$ctrl.dataset.stats.unique_view_count.total)}} View</span>
+                    {{$ctrl.dataset.stats.unique_view_count.total}} View</span>
                 <span ng-if="$ctrl.dataset.stats.unique_view_count.total!=1" style="padding-left: 10px;">
                     {{$ctrl.dataset.stats.unique_view_count.total}} Views</span>
                 <span ng-if="$ctrl.dataset.stats.comment_count==1" style="padding-left: 10px;">
