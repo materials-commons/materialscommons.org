@@ -87,6 +87,8 @@ def fix_missing_category_for_create_samples(conn):
     r.table('processes').filter({'template_id': 'global_Create Samples'}).update({'category': 'create_sample'}).run(
         conn)
 
+def add_otype_to_dataset(conn):
+    r.db('materialscommons').table('datasets').update({otype: 'dataset'})
 
 def main():
     parser = OptionParser()
@@ -94,11 +96,12 @@ def main():
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
 
-    fix_mcpub_missing_process_types(conn)
-    fix_bad_mcpub_process_types(conn)
-    add_template_admin_flag_to_users(conn)
-    add_template_owner(conn)
-    fix_missing_category_for_create_samples(conn)
+    #fix_mcpub_missing_process_types(conn)
+    #fix_bad_mcpub_process_types(conn)
+    #add_template_admin_flag_to_users(conn)
+    #add_template_owner(conn)
+    #fix_missing_category_for_create_samples(conn)
+    add_otype_to_dataset(conn)
 
 
 if __name__ == "__main__":
