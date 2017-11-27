@@ -87,14 +87,16 @@ def fix_missing_category_for_create_samples(conn):
     r.table('processes').filter({'template_id': 'global_Create Samples'}).update({'category': 'create_sample'}).run(
         conn)
 
+
 def add_otype_to_dataset(conn):
-    r.db('materialscommons').table('datasets').update({otype: 'dataset'})
+    r.db('materialscommons').table('datasets').update({'otype': 'dataset'})
+
 
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
     (options, args) = parser.parse_args()
-    conn = r.connect('localhost', options.port, db="materialscommons")
+    conn = r.connect('localhost', options.port, db="materialscommons").run()
 
     #fix_mcpub_missing_process_types(conn)
     #fix_bad_mcpub_process_types(conn)
