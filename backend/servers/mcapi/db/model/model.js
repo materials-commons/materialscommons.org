@@ -346,7 +346,7 @@ function Dataset(title, owner) {
     let now = r.now();
     this.owner = owner;
     this.title = title;
-    this.otype='dataset';
+    this.otype = 'dataset';
     this.institution = "";
     this.authors = [];
     this.birthtime = now;
@@ -407,12 +407,12 @@ function DataFile(name, owner) {
     this.uploaded = 0;
 }
 
-function Project2DataFile(projectId,datafileId) {
+function Project2DataFile(projectId, datafileId) {
     this.project_id = projectId;
     this.datafile_id = datafileId;
 }
 
-function DataDir2DataFile(dirId,datafileId) {
+function DataDir2DataFile(dirId, datafileId) {
     this.datadir_id = dirId;
     this.datafile_id = datafileId;
 }
