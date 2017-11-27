@@ -18,7 +18,7 @@
                 <td>{{file.mediatype.mime}}</td>
                 <td>{{file.size | bytes}}</td>
             </tr>
-            <tr ng-show="$ctrl.isAuthenticated" ng-click="$ctrl.openImage(file)"
+            <tr ng-show="$ctrl.isAuthenticated"
                 dir-paginate="file in $ctrl.dataset.files | itemsPerPage: 12">
                 <td>
                     <div ng-if="$ctrl.isImage(file.mediatype.mime) && $ctrl.isAuthenticated">
