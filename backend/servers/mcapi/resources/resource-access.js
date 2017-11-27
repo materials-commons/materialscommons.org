@@ -252,7 +252,7 @@ function* fileAccessAllowed(fileId, userId) {
 function* isInPublishedDataset(fileId) {
     let datasets = yield files.getFileDatasets(fileId);
     for (let i = 0; i < datasets.length; i++) {
-        if (datasets.published) {
+        if (datasets[i].published) {
             return true;
         }
     }
