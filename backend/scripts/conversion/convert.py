@@ -89,7 +89,7 @@ def fix_missing_category_for_create_samples(conn):
 
 
 def add_otype_to_dataset(conn):
-    r.db('materialscommons').table('datasets').update({'otype': 'dataset'}).run()
+    r.table('datasets').update({'otype': 'dataset'}).run(conn)
 
 
 def main():
