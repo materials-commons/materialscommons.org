@@ -1,7 +1,6 @@
 class MCDatasetOverviewContainerComponentController {
     /*@ngInject*/
     constructor($stateParams, publicDatasetsAPI, User) {
-        console.log('MCDatasetOverviewContainerComponentController');
         this.publicDatasetsAPI = publicDatasetsAPI;
         this.$stateParams = $stateParams;
         this.User = User;
@@ -10,14 +9,12 @@ class MCDatasetOverviewContainerComponentController {
     }
 
     $onInit() {
-        console.log('MCDatasetOverviewContainerComponentController: ', this.userId, this.datasetId);
         let userId = '';
         if (this.User.isAuthenticated) {
             userId = this.userId;
         }
         this.publicDatasetsAPI.datasetWasViewed(userId, this.datasetId).then((dataset) => {
             dataset = this.setUsefulMarkerValues(dataset);
-            console.log('after publicDatasetsAPI call: ', dataset);
             this.dataset = dataset;
         });
     }
@@ -41,30 +38,23 @@ class MCDatasetOverviewContainerComponentController {
 
     onToggleUseful() {
         let markedAsUseful = !this.dataset.markedAsUseful;
-        console.log("called onToggleUseful", markedAsUseful);
         this.publicDatasetsAPI.updateUseful(this.userId, this.dataset.id, markedAsUseful)
             .then((dataset) => {
                     let updated_dataset = this.setUsefulMarkerValues(dataset);
-                    console.log("finished onToggleUseful", updated_dataset);
                     this.dataset = updated_dataset;
                 }
             );
     }
 
     onDownloadRequest() {
-        console.log("Increment download count");
         this.dataset.stats.download_count += 1;
     }
 
     onAddToCommentCount(){
-        console.log("in MCDatasetOverviewSummaryComponentController...");
-        console.log("  ...onAddComment");
         this.dataset.stats.download_count += 1;
     }
 
     onDeleteFromCommentCount(){
-        console.log("in MCDatasetOverviewSummaryComponentController...");
-        console.log("  ...onDeleteComment");
         this.dataset.stats.download_count += -1;
     }
 

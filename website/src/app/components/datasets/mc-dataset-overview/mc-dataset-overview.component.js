@@ -11,9 +11,6 @@ class MCDatasetOverviewComponentController {
     $onChanges(changes) {
         if (!changes.dataset.isFirstChange()) {
             this.dataset = changes.dataset.currentValue;
-            console.log("dataset changes reported - overview");
-        } else {
-            console.log("Additional Dataset changes", changes.dataset)
         }
     }
 
@@ -26,8 +23,6 @@ class MCDatasetOverviewComponentController {
     }
 
     onDeleteFromCommentCount(){
-        console.log("in MCDatasetOverviewSummaryComponentController...");
-        console.log("  ...onDeleteComment");
         this.dataset.stats.download_count += -1;
     }
 

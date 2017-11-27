@@ -71,9 +71,6 @@ class PublicDatasetsAPIService {
     }
 
     datasetWasDownloaded(userId, datasetId) {
-        console.log("------------> unimplemented <----------------");
-        console.log("|  datasetWasDownloaded(userId, datasetId)  |")
-        console.log("------------> unimplemented <----------------");
         return this.getDataset(datasetId).then(
             (dataset) => {
                 return dataset;
@@ -90,11 +87,8 @@ class PublicDatasetsAPIService {
         };
         return this.publicAPIRoute('useful').customPOST(usefulParams).then(
             () => {
-                console.log("updateUseful: then from publicAPIRoute call;");
                 return this.getDataset(datasetId).then(
                     (dataset) => {
-                        console.log("updateUseful: then from getDataset call;");
-                        console.log('getDataset: ',dataset);
                         return dataset;
                     }
                 )
@@ -104,9 +98,7 @@ class PublicDatasetsAPIService {
 
     augmentDataset(dataset) {
         dataset.stats.useful_count = dataset.stats.interested_users.length;
-        console.log("augmentDataset(dataset): useful_count", dataset.id, dataset.stats.useful_count);
         dataset.stats.download_count = dataset.download_count || 0;
-        console.log("augmentDataset(dataset): download_count", dataset.id, dataset.stats.download_count);
         return dataset;
     }
 

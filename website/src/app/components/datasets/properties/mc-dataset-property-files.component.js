@@ -4,7 +4,6 @@ class MCDatasetPropertyFilesComponentController {
         this.isAuthenticated = User.isAuthenticated();
         this.apikey = User.apikey();
         this.$window = $window;
-        console.log("property - this.onDownloadRequest", this.onDownloadRequest);
     }
 
     isDownloadAvailable() {
@@ -22,9 +21,7 @@ class MCDatasetPropertyFilesComponentController {
     }
 
     onDownload() {
-        console.log("onDownload - clicked");
         this.onDownloadRequest();
-        console.log("onDownload - reported");
     }
 
 }

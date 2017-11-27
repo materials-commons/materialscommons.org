@@ -20,7 +20,6 @@ class MCCommentsListComponentController {
             if (text !== '') {
                 this.createNewComment(this.targetType, this.targetId, text);
                 this.onAddToCommentCount();
-                console.log("add comment");
             }
         });
     }
