@@ -23,7 +23,6 @@ module.exports.addView = function*(next) {
         } else {
             let inserted = yield r.table('view2item')
                 .insert(new model.View(params.user_id, params.item_type, params.item_id));
-            console.log("add view: ", inserted);
             this.status = 200;
             this.body = inserted;
         }
