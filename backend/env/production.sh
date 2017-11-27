@@ -17,12 +17,7 @@ export MCDB_DIR=/var/db/materialscommons/proddb
 export MC_ES_URL="http://localhost:9200"
 export MC_ES_NAME="mc-es"
 export MC_LOG_DIR=/var/log/materialscommons/production
-
-if [ $(hostname) = "materialscommons" ]; then
-    export MCDIR=/mcfs/data/materialscommons
-else
-    export MCDIR=~/mcdir/mcfs/data/materialscommons:/mcfs/data/materialscommons
-fi
+export MCDIR=/mcfs/data/materialscommons
 export MCFS_HTTP_PORT=5010
 
 if [ -f /etc/materialscommons/config.prod ]; then

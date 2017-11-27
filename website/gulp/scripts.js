@@ -16,7 +16,8 @@ function webpackWrapper(watch, test, callback) {
         module: {
             rules: [
                 {enforce: 'pre', test: /\.js$/, exclude: /node_modules/, loader: 'eslint-loader'},
-                {test: /\.js$/, exclude: /node_modules/, loaders: ['ng-annotate-loader', 'babel-loader']}
+                {test: /\.js$/, exclude: /node_modules/, loaders: ['ng-annotate-loader', 'babel-loader']},
+                {test: /\.html$/, exclude: /node_modules/, loader: 'html-loader'}
             ]
         },
         output: {filename: 'index.module.js'}
