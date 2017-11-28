@@ -22,11 +22,7 @@ if [ "$MCDB_FILE" = "" ]; then
     export MCDB_FILE=~/test_data/rethinkdb_dump_test_data.tar.gz
 fi
 
-if [ $(hostname) = "materialscommons" ]; then
-    export MCDIR=/mcfs/data/test:/mcfs/data/materialscommons
-else
-    export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
-fi
+export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/test:/mcfs/data/materialscommons
 export MCFS_HTTP_PORT=6012
 
 if [ -f /etc/materialscommons/config.test ]; then
