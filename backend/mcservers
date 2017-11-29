@@ -518,6 +518,7 @@ function setup_deploy_dir() {
 }
 
 function deploy_website() {
+    mkdir ${MC_DEPLOY_DIR}/website
     cp -r ../website/mcapp.tar.gz "${MC_DEPLOY_DIR}/website"
     rm -rf "${MC_DEPLOY_DIR}/website/mcapp" "${MC_DEPLOY_DIR}/mcapp.tar.gz"
     (cd "${MC_DEPLOY_DIR}/website"; tar zxf mcapp.tar.gz)
