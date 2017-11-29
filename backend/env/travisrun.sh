@@ -5,7 +5,7 @@
 
 # Note: often this will be redundent, but it simplifies use
 # source to set all environment variables for the type of server
-export SERVERTYPE=travis
+export SERVERTYPE=travisrun
 
 export MC_SERVICE_PORT=5002
 export MC_API_SERVICE_PORT=5004
