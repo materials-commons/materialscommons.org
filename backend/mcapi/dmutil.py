@@ -7,7 +7,7 @@ import sys
 
 
 def msg(s):
-    print s
+    print(s)
     sys.stdout.flush()
 
 

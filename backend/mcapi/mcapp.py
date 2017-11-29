@@ -39,7 +39,7 @@ def teardown_request(exception):
 
 @app.errorhandler(mcexceptions.RequiredAttributeException)
 def required_attribute_exception_handler(e):
-    print "Missing attribute: " + e.attr
+    print("Missing attribute: " + e.attr)
     traceback.print_exc()
     return error.not_acceptable("Missing required attribute: " + e.attr)
 

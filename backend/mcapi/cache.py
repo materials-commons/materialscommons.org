@@ -10,7 +10,7 @@ gconn = None
 
 
 def p(msg):
-    print msg
+    print(msg)
     sys.stdout.flush()
 
 
