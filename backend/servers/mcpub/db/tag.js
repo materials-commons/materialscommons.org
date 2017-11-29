@@ -5,7 +5,7 @@ const defineSchema = require('./../schema/define')();
 const tag = require('./model/tag')();
 const clone = require('clone');
 
-module.exports.addTag = function*(next) {
+module.exports.addTag = function* (next) {
     'use strict';
     const params = yield parse(this);
     const copyParams = clone(params);
@@ -31,19 +31,19 @@ module.exports.addTag = function*(next) {
     yield next;
 };
 
-module.exports.removeTag = function*(next) {
+module.exports.removeTag = function* (next) {
     let params = yield parse(this);
     let join = yield tag.getTag2Dataset(params);
     if (join.length > 0) {
         // removed user test - see issues #789 - Terry Weymouth Fri Oct 7, 2016
         // if (params.user_id === join[0].user_id) {
-            this.body = yield tag.deleteTag2Dataset(join[0].id);
-            this.status = 200;
-            // remove tag if no related databases
-            let hits = yield tag.getAllDatasetsForTag(params.tag);
+        this.body = yield tag.deleteTag2Dataset(join[0].id);
+        this.status = 200;
+        // remove tag if no related databases
+        let hits = yield tag.getAllDatasetsForTag(params.tag);
         if (hits.length === 0) {
             yield tag.deleteTag(params.tag);
-            }
+        }
         // }
         // else {
         //    this.throw(httpStatus.FORBIDDEN, 'Unable to delete. User not author: ' + params.user_id);
@@ -54,8 +54,8 @@ module.exports.removeTag = function*(next) {
     yield next;
 };
 
-module.exports.getTagsByCount = function*(next) {
-    this.body = yield r.table('tags').merge(function(tag) {
+module.exports.getTagsByCount = function* (next) {
+    this.body = yield r.table('tags').merge(function (tag) {
         return {
             count: r.table('tag2dataset').getAll(tag('id'), {index: 'tag'}).count()
         }
@@ -63,8 +63,8 @@ module.exports.getTagsByCount = function*(next) {
     yield next;
 };
 
-module.exports.getAllTags = function*(next) {
-    let res = yield r.table('tags').orderBy('id').merge(function(tag) {
+module.exports.getAllTags = function* (next) {
+    let res = yield r.table('tags').orderBy('id').merge(function (tag) {
         return {
             count: r.table('tag2dataset').getAll(tag('id'), {index: 'tag'}).count()
         }
@@ -76,7 +76,7 @@ module.exports.getAllTags = function*(next) {
     yield next;
 };
 
-module.exports.getMostPopularTags = function*(next) {
+module.exports.getMostPopularTags = function* (next) {
     this.body = yield r.table('tags').eqJoin('id', r.table('tag2dataset'), {index: 'tag'}).zip()
         .group(r.row('tag')).count().ungroup().orderBy(r.desc('reduction'))
         .map((doc) => ({tag: doc('group'), count: doc('reduction')}))
@@ -84,20 +84,28 @@ module.exports.getMostPopularTags = function*(next) {
     yield next;
 };
 
-module.exports.getAllCount = function*(next) {
+module.exports.getAllCount = function* (next) {
     let c = yield r.table('tags').count();
     this.body = {count: c};
     yield next;
 };
 
-module.exports.getDatasetsByTag = function*(next) {
+module.exports.getDatasetsByTag = function* (next) {
     this.body = yield r.table('tag2dataset').getAll(this.params.id, {index: 'tag'})
         .eqJoin('dataset_id', r.db("materialscommons").table('datasets')).zip()
-        .merge(function(ds) {
+        .merge(function (ds) {
             return {
-                'file_count': r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
-                'appreciations': r.table('appreciations').getAll(ds('id'), {index: 'dataset_id'}).count(),
-                'views': r.table('views').getAll(ds('id'), {index: 'dataset_id'}).count()
+                file_count: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
+                stats: {
+                    unique_view_count: {
+                        total: r.table('view2item').getAll(ds('id'), {index: 'item_id'}).count()
+                        // also, eventually, 'anonymous': items with user_ids that are not users
+                        //   and 'authenticated': items with user_ids that are users
+                    },
+                    comment_count: r.db('materialscommons').table('comments').getAll(ds('id'), {index: 'item_id'}).count(),
+                    interested_users: r.table('useful2item').getAll(ds('id'), {index: 'item_id'}).pluck('user_id').coerceTo('array')
+                    //, 'download_count': 0    // this is on main body of dataset, for now, see client-side logic
+                }
             }
         });
     yield next;
