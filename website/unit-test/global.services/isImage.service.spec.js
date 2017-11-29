@@ -1,4 +1,4 @@
-describe('MC Service: isImage', function() {
+xdescribe('MC Service: isImage', function() {
     // ref: src/app/global.services/isImage.service.js
 
     beforeEach(module('materialscommons'));

@@ -61,7 +61,7 @@ class MCDatasetWorkflowGraphComponentController {
             this.removedNodes = this.cyGraph.filterBySamples(this.cy, samples, this.dataset.processes);
         });
 
-        this.allProcessesGraph();
+        this.$timeout(() => this.allProcessesGraph(), 500);
     }
 
     $onDestroy() {
@@ -75,6 +75,7 @@ class MCDatasetWorkflowGraphComponentController {
         if (this.navigator) {
             this.navigator.destroy();
         }
+        this.cy.destroy();
     }
 
     allProcessesGraph() {

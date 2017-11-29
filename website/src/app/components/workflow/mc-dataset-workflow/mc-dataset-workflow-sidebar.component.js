@@ -8,7 +8,7 @@ class MCDatasetWorkflowSidebarComponentController {
 
     $onInit() {
         this.workflowState.subscribeSelectedProcess(this.myName, process => {
-            this.selectedProcess = process
+            this.selectedProcess = process;
         });
     }
 

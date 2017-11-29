@@ -5,10 +5,9 @@
             of the dataset, the authors listed herein, or any author of the related paper(s).
         </em>
     </p>
+    <mc-dataset-property-stats dataset="$ctrl.dataset"></mc-dataset-property-stats>
+    <mc-dataset-property-description dataset="$ctrl.dataset"></mc-dataset-property-description>
     <mc-dataset-property-authors dataset="$ctrl.dataset"></mc-dataset-property-authors>
-    <label ng-if="$ctrl.dataset.description">Description</label>
-    <i ng-if="!$ctrl.dataset.description">No Description given</i>
-    <p ng-if="$ctrl.dataset.description" class="margin-left-15">{{$ctrl.dataset.description}}</p>
     <p ng-if="!$ctrl.dataset.published">
         <mc-dataset-property-publisher dataset="$ctrl.dataset"></mc-dataset-property-publisher>
     </p>
@@ -21,6 +20,10 @@
         <mc-dataset-property-paper ng-if="$ctrl.dataset.papers.length > 0"
                                    dataset="$ctrl.dataset"></mc-dataset-property-paper>
         <mc-dataset-property-license dataset="$ctrl.dataset"></mc-dataset-property-license>
-        <mc-dataset-property-files dataset="$ctrl.dataset"></mc-dataset-property-files>
+        <mc-dataset-property-keywords dataset="$ctrl.dataset"></mc-dataset-property-keywords>
+        <mc-dataset-property-files
+                dataset="$ctrl.dataset"
+                on-download-request="$ctrl.onDownloadRequest()"
+        ></mc-dataset-property-files>
     </div>
 </div>

@@ -1,0 +1,18 @@
+<md-dialog aria-label="Show list of other users who found this dataset useful.">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Other users who found this dataset useful... <br/>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin layout="column">
+        <p layout="column">
+        <p class="md-title">Dataset: {{$ctrl.dataset.title}}</p>
+        </p>
+        <md-list-item ng-repeat="item in $ctrl.dataset.otherInterestedUsers">
+            {{item.fullname}} ({{item.email}})
+        </md-list-item>
+    </md-dialog-content>
+    <md-dialog-actions layout="column">
+        <md-button class="md-primary" ng-click="$ctrl.close()">Close</md-button>
+    </md-dialog-actions>
+</md-dialog>

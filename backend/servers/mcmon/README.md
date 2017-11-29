@@ -10,6 +10,6 @@ node main.js
 
 To test running server
 ```bash
-cd tests
+cd loadtest
 ./exercise.sh
 ```

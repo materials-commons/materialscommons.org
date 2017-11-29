@@ -1,7 +1,7 @@
 const cliArgs = require('command-line-args');
 const r = require('./src/r');
-const WatchList = require('./src/WatchList');
-const Parameters = require('./src/Parameters');
+const WatchList = require('./src/watch-list');
+const Parameters = require('./src/parameters');
 
 function driver(watch_list) {
     watch_list.forEach( (item) =>

@@ -1,3 +1,4 @@
+'use strict';
 const cliArgs = require('command-line-args');
 const koa = require('koa');
 const router = require('koa-router')();
@@ -7,10 +8,11 @@ const action = require('./db/actions');
 const appreciate = require('./db/appreciate');
 const browse = require('./db/browse');
 const view = require('./db/view');
+const useful = require('./db/useful');
+const comments = require('./db/comments');
 const tag = require('./db/tag');
-const comment = require('./db/comment');
-const download = require('./db/download');
-const path = require('path');
+//const download = require('./db/download');
+//const path = require('path');
 //var koaBody = require('koa-body')({
 //    multipart: true,
 //    formidable: {uploadDir: './../assets/user-images'},
@@ -23,7 +25,7 @@ const apikey = require('./apikey')();
 // the apikey cache so it will be reloaded.
 const apikeyCache = require('./apikey-cache')();
 r.db('materialscommons').table('users').changes().toStream().on('data', function() {
-    apikeyCache.clear()
+    apikeyCache.clear();
 });
 
 const app = koa();
@@ -31,16 +33,17 @@ app.use(apikey);
 router.get('/datasets', datasets.getAll);
 router.get('/datasets/:id', datasets.getOne);
 router.get('/datasets/:id/processes/:process_id', datasets.getDatasetProcess);
-router.get('/datasets/filter/count/', datasets.getAllCount);
-router.get('/datasets/filter/recent', datasets.getRecent);
-router.get('/datasets/filter/views', datasets.getTopViews);
+router.get('/datasets/filter/count/', datasets.getAllCount); // depricated
+router.get('/datasets/filter/recent', datasets.getRecent); // depricated
+router.get('/datasets/filter/views', datasets.getTopViews); // depricated
 router.get('/datasets/download/:id', datasets.getZipfile);
 router.get('/user/:email', user.get);
 router.get('/actions/:dataset_id', action.getAll);
 router.post('/appreciate', appreciate.addAppreciate);
 router.put('/appreciate/remove', appreciate.removeAppreciation);
-router.post('/views', view.addView);
-router.post('/comments', comment.addComment);
+router.post('/views', view.addView)
+router.post('/useful', useful.updateUseful)
+router.get('/comments', comments.get);
 router.post('/tags', tag.addTag);
 router.put('/tags', tag.removeTag);
 router.get('/tags', tag.getAllTags);

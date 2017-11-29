@@ -1,17 +1,36 @@
 <div layout-margin>
     <h4 class="md-title">Dataset: {{$ctrl.dataset.title}}</h4>
+    <p class="md-accent" ng-if="!$ctrl.isAuthenticated">
+        You must log in (and refresh page) to mark any dataset as useful
+    </p>
+    <p class="md-accent" ng-if="$ctrl.isAuthenticated">
+        <input type="checkbox" ng-checked="$ctrl.dataset.markedAsUseful"
+               ng-click="$ctrl.clickUsefulToggle()"/>
+        <span> I found this dataset useful. </span>
+        <span ng-if="$ctrl.dataset.othersMarkedAsUsefulCount > 1">
+            Others <a ng-click="$ctrl.onShowOthersUseful()">users</a>
+            who found this data useful, {{$ctrl.dataset.othersMarkedAsUsefulCount}}.
+        </span>
+        <span ng-if="$ctrl.dataset.othersMarkedAsUsefulCount === 1">
+            One other <a ng-click="$ctrl.onShowOthersUseful()">user</a>
+            found this data useful.
+        </span>
+    </p>
     <md-tabs md-selected="$ctrl.currentTab" md-stretch-tabs md-dynamic-height>
         <md-tab>
             <md-tab-label>Overview</md-tab-label>
             <md-tab-body>
-                <mc-dataset-overview-summary dataset="$ctrl.dataset"></mc-dataset-overview-summary>
+                <mc-dataset-overview-summary
+                        dataset="$ctrl.dataset"
+                        on-download-request="$ctrl.onDownloadRequest()"
+                ></mc-dataset-overview-summary>
             </md-tab-body>
         </md-tab>
 
         <md-tab>
             <md-tab-label>Workflow</md-tab-label>
             <md-tab-body>
-                <mc-dataset-workflow dataset="$ctrl.dataset"></mc-dataset-workflow>
+                <mc-dataset-workflow dataset="$ctrl.dataset" ng-if="$ctrl.currentTab === 1"></mc-dataset-workflow>
             </md-tab-body>
         </md-tab>
 
@@ -23,10 +42,13 @@
             </md-tab-body>
         </md-tab>
 
-        <md-tab ng-if="false">
+        <md-tab>
             <md-tab-label>Comments</md-tab-label>
             <md-tab-body>
-                <mc-comments></mc-comments>
+                <mc-comments-list target="$ctrl.dataset"
+                                  on-add-to-comment-count="$ctrl.onAddToCommentCount()"
+                                  on-delete-from-comment-count="$ctrl.onDeleteFromCommentCount()">
+                </mc-comments-list>
             </md-tab-body>
         </md-tab>
     </md-tabs>

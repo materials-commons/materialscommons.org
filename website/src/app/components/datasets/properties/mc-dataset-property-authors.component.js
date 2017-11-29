@@ -4,7 +4,7 @@ class MCDatasetPropertyAuthorsComponentController {
     }
 
     formatAuthorList(authors) {
-        if (authors.length === 0) return "(no authors are listed)";
+        if ((!authors) || (authors.length === 0)) return "(no authors are listed)";
         return "By " + authors.map(this.formatAuthor).join('; ');
     }
 

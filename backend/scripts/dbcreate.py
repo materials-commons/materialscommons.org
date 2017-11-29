@@ -16,7 +16,7 @@ def create_mc_tables():
     create_mc_table("account_requests", "validate_uuid")
     create_compound_index("account_requests", "id_validate", ["id", "validate_uuid"])
 
-    create_mc_table("userprofiles","user_id")
+    create_mc_table("userprofiles", "user_id")
 
     # User groups should go away once mcstored is updated
     create_mc_table("usergroups", "owner", "name")
@@ -34,7 +34,9 @@ def create_mc_tables():
     create_mc_table("machines")
 
     create_mc_table("projects", "name", "owner")
-    create_mc_table("templates","owner")
+    create_compound_index("projects", "name_owner", ["name", "owner"])
+
+    create_mc_table("templates", "owner")
     create_mc_table("ui")
 
     create_mc_table("samples", "project_id")
@@ -57,12 +59,12 @@ def create_mc_tables():
     create_compound_index('project2datafile', 'project_datafile', ['project_id', 'datafile_id'])
 
     create_mc_table("tag2item", "tag_id", "item_id")
-    create_mc_table("comment2item", "comment_id", "item_id")
+    create_mc_table("comments", "owner", "item_id", "item_type")
     create_mc_table("note2item", "note_id", "item_id")
     create_mc_table("review2item", "review_id", "item_id")
 
     create_mc_table("datadir2datafile", "datadir_id", "datafile_id")
-    create_compound_index('datadir2datafile', 'datadir_datafile',['datadir_id', 'datafile_id'])
+    create_compound_index('datadir2datafile', 'datadir_datafile', ['datadir_id', 'datafile_id'])
 
     create_mc_table("uploads", "uploads", "project_id")
 
@@ -88,7 +90,8 @@ def create_mc_tables():
     create_compound_index("sample2propertyset", "sample_property_set", ["sample_id", "property_set_id"])
 
     create_mc_table("process2sample", "sample_id", "process_id", "property_set_id", "_type")
-    create_compound_index("process2sample", "process_sample_property_set", ["process_id", "sample_id", "property_set_id"])
+    create_compound_index("process2sample", "process_sample_property_set",
+                          ["process_id", "sample_id", "property_set_id"])
     create_compound_index("process2sample", "process_sample", ["process_id", "sample_id"])
     create_compound_index("process2sample", "sample_property_set", ["sample_id", "property_set_id"])
 
@@ -137,7 +140,8 @@ def create_mc_tables():
 
     create_mc_table("experimentnotes")
     create_mc_table("experiment2experimentnote", "experiment_id", "experiment_note_id")
-    create_compound_index("experiment2experimentnote", "experiment_experiment_note", ["experiment_id", "experiment_note_id"])
+    create_compound_index("experiment2experimentnote", "experiment_experiment_note",
+                          ["experiment_id", "experiment_note_id"])
 
     create_mc_table("datasets", "owner")
 
@@ -175,9 +179,20 @@ def create_mcpub_tables():
     create_mcpub_table("tag2dataset", "tag", "dataset_id")
     create_compound_index("tag2dataset", "tag_dataset", ["tag", "dataset_id"], db="mcpub")
 
-    create_mcpub_table("comments", "dataset_id", "user_id")
+# comments move to mcapi - Nov 2017 - Terry E. Weymouth
+#    create_mcpub_table("comments", "dataset_id", "user_id")
 
-    create_mcpub_table("views", "dataset_id")
+# views changed - now using view2item - where the view information is in that table
+#    create_mcpub_table("views", "dataset_id")
+
+    create_mcpub_table("view2item", "user_id", "item_id", "item_type")
+    create_compound_index("view2item", "user_type", ["user_id", "item_type"], db='mcpub')
+    create_compound_index("view2item", "user_item", ["user_id", "item_id"], db='mcpub')
+
+    create_mcpub_table("useful2item", "user_id", "item_id", "item_type")
+    create_compound_index("useful2item", "user_type", ["user_id", "item_type"], db='mcpub')
+    create_compound_index("useful2item", "user_item", ["user_id", "item_id"], db='mcpub')
+
     create_mcpub_table("samples", "original_id")
     create_mcpub_table("datasets", "owner")
     create_mcpub_table("dataset2sample", "dataset_id", "sample_id")
@@ -240,8 +255,8 @@ def create_mc_table(table, *args):
     for index_name in args:
         create_index(table, index_name)
     run(r.db('materialscommons').table(table).index_wait())
-    
-    
+
+
 def create_mcpub_table(table, *args):
     run(r.db('mcpub').table_create(table))
     run(r.db('mcpub').table(table).wait())
@@ -348,6 +363,7 @@ def run(rql):
         rql.run()
     except r.RqlRuntimeError:
         pass
+
 
 if __name__ == "__main__":
     create_mc_database()

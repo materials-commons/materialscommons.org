@@ -43,7 +43,8 @@ function datasetDetailsRql(rql, r) {
     return rql.merge(ds => {
         return {
             processes: processDetailsRql(r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
-                .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array')
+                .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array'),
+            comments: r.table('comments').getAll(ds('id'),{index: 'item_id'}).coerceTo('array')
         };
     });
 }

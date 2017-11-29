@@ -48,7 +48,7 @@ function* get(file_id) {
 }
 
 function* getFileDatasets(fileId) {
-    return yield r.table("dataset2datafile").getAll("datafile_id", fileId)
+    return yield r.table("dataset2datafile").getAll(fileId, {index: 'datafile_id'})
         .eqJoin("dataset_id", r.table("datasets")).zip();
 }
 

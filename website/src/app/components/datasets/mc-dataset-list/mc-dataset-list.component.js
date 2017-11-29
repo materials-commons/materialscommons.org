@@ -12,6 +12,7 @@ class MCDatasetListComponentController {
     $onDestroy() {
         this.mcbus.leave('MCDATA$SEARCH', this.myName);
     }
+
 }
 
 angular.module('materialscommons').component('mcDatasetList', {
@@ -22,3 +23,4 @@ angular.module('materialscommons').component('mcDatasetList', {
         detailsRoute: '@'
     }
 });
+

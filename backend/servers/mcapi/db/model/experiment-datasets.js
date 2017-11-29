@@ -20,7 +20,8 @@ function* getDatasetsForExperiment(experimentId) {
             return {
                 samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).count(),
                 processes: r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'}).count(),
-                files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count()
+                files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
+                comments: r.table('comments').getAll(ds('id'), {index: 'item_id'}).count()
             }
         });
     let dataset = yield dbExec(rql);

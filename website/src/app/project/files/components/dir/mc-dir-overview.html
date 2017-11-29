@@ -22,14 +22,15 @@
                     <tr md-row>
                         <th md-column>File</th>
                         <th md-column>Thumbnail</th>
-                        <th md-column>Select</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr md-row ng-repeat="file in $ctrl.files | filter:$ctrl.fileFilter">
                         <td md-cell>
                             <div layout="row" layout-align="start center">
-                                <b>{{$index+1}}.</b>
+                                <b style="margin-right: 5px">{{$index+1}}.</b>
+                                <md-checkbox ng-change="$ctrl.fileSelect(file)" ng-model="file.selected"
+                                             aria-label="select"></md-checkbox>
                                 <i class="fa fa-files-o fa-fw file-color margin-left-15"></i>
                                 <a class="md-primary md-subhead" style="margin: 10px;"
                                    ui-sref="project.files.file({file_id: file.id})"
@@ -48,10 +49,6 @@
                                          ng-src="{{$ctrl.fileSrc(file.id)}}">
                                 </md-button>
                             </div>
-                        </td>
-                        <td md-cell>
-                            <md-checkbox ng-change="$ctrl.fileSelect(file)" ng-model="file.selected"
-                                         aria-label="select"></md-checkbox>
                         </td>
                     </tr>
                     </tbody>

@@ -106,6 +106,8 @@ class CreateNewProjectDialogController {
 }
 
 angular.module('materialscommons').component('mcProjects', {
-    templateUrl: 'app/components/projects/mc-projects/mc-projects.html',
+    //templateUrl: 'app/components/projects/mc-projects/mc-projects.html',
+    //template: require('html-loader!./mc-projects.html'),
+    template: require('./mc-projects.html'),
     controller: MCProjectsComponentController
 });

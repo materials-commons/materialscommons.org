@@ -1,0 +1,22 @@
+<div>
+    <mc-add-comment-button on-add="$ctrl.addComment()" ng-if="$ctrl.loggedin">
+    </mc-add-comment-button>
+    <div ng-if="!$ctrl.loggedin">
+        <i>You must log in and refresh page to add or modify comments</i>
+    </div>
+    <div ng-if="($ctrl.comments.length == 0)">
+        <i>There are no comments for this {{$ctrl.targetType}}</i>
+    </div>
+    <md-list flex ng-if="($ctrl.comments.length > 0)">
+        <md-header>Comments ({{$ctrl.comments.length}})</md-header>
+        <mc-comment-item
+                comment="comment"
+                ng-repeat="comment in $ctrl.comments"
+                on-add="$ctrl.addComment()"
+                on-edit="$ctrl.editComment(id, text)"
+                on-delete="$ctrl.deleteComment(id)"
+        ></mc-comment-item>
+    </md-list>
+    <mc-add-comment-button on-add="$ctrl.addComment()" ng-if="$ctrl.loggedin && ($ctrl.comments.length > 4)">
+    </mc-add-comment-button>
+</div>

@@ -19,6 +19,11 @@ class MCDatasetPropertyFilesComponentController {
     filenameForDownload() {
         return (this.dataset.zip && this.dataset.zip.filename) ? (this.dataset.zip.filename) : "FullDataset.zip";
     }
+
+    onDownload() {
+        this.onDownloadRequest();
+    }
+
 }
 
 angular.module('materialscommons').component('mcDatasetPropertyFiles', {
@@ -26,14 +31,16 @@ angular.module('materialscommons').component('mcDatasetPropertyFiles', {
         <label ng-if="$ctrl.isAuthenticated && $ctrl.dataset.published">Download</label>
         <label ng-if="$ctrl.isAuthenticated && !$ctrl.dataset.published">Files</label>
         <label ng-if="!$ctrl.isAuthenticated">Files</label>
-        <span ng-if="!$ctrl.isAuthenticated">{{$ctrl.dataset.files.length}} files (Login to download)</span>
+        <span ng-if="!$ctrl.isAuthenticated">{{$ctrl.dataset.files.length}} files (Login and refresh page to see download link)</span>
         <span ng-if="$ctrl.isAuthenticated && !$ctrl.dataset.published">{{$ctrl.dataset.files.length}} files</span>
         <span ng-if="$ctrl.isAuthenticated && $ctrl.dataset.published && !$ctrl.isDownloadAvailable()">
             {{$ctrl.dataset.files.length}} files.
             Download zipfile is still building; check back later.
         </span>
         <span ng-if="$ctrl.isAuthenticated && $ctrl.dataset.published && $ctrl.isDownloadAvailable()">
-            <a href="{{$ctrl.urlForDownload()}}" download="{{$ctrl.filenameForDownload()}}">
+            <a href="{{$ctrl.urlForDownload()}}" 
+                    ng-click="$ctrl.onDownload()"
+                    download="{{$ctrl.filenameForDownload()}}">
                 <i class="fa fa-fw fa-download"></i>
                 Download Dataset - {{$ctrl.dataset.files.length}} files
             </a>
@@ -42,6 +49,7 @@ angular.module('materialscommons').component('mcDatasetPropertyFiles', {
     `,
     controller: MCDatasetPropertyFilesComponentController,
     bindings: {
-        dataset: '<'
+        dataset: '<',
+        onDownloadRequest: '&'
     }
 });

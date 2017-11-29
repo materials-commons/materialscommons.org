@@ -182,6 +182,26 @@ function* validateTemplateAccess(next) {
     yield next;
 }
 
+function* validateCommentExists(next) {
+    let commentExists = yield check.commentExists(this.params.comment_id);
+    if (!commentExists) {
+        this.status = httpStatus.BAD_REQUEST;
+        this.body = {error: `No such comment ${this.params.comment_id}`};
+        return this.status;
+    }
+    yield next;
+}
+
+function* validateCommentAccess(next) {
+    let isOwner = yield check.commentIsOwnedBy(this.params.comment_id, this.reqctx.user.id);
+    if (!isOwner) {
+        this.status = httpStatus.UNAUTHORIZED;
+        this.body = {error: `user does not have access to this comment, ${this.params.comment_id}`};
+        return this.status
+    }
+    yield next;
+}
+
 function* validateNoteInExperiment(next) {
     let isInExperiment = yield check.noteInExperiment(this.params.experiment_id, this.params.note_id);
     if (!isInExperiment) {
@@ -232,7 +252,7 @@ function* fileAccessAllowed(fileId, userId) {
 function* isInPublishedDataset(fileId) {
     let datasets = yield files.getFileDatasets(fileId);
     for (let i = 0; i < datasets.length; i++) {
-        if (datasets.published) {
+        if (datasets[i].published) {
             return true;
         }
     }
@@ -255,6 +275,8 @@ module.exports = {
     validateTaskInExperiment,
     validateTemplateAccess,
     validateTemplateExists,
+    validateCommentAccess,
+    validateCommentExists,
     validateNoteInExperiment,
     validateFileAccess
 };

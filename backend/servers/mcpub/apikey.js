@@ -12,6 +12,7 @@ module.exports = function() {
         "/datasets": true,
         "/datasets/count": true,
         "/tags": true,
+        "/views": true,
         "/authors/count": true,
         "/datasets/views": true,
         "/datasets/recent": true

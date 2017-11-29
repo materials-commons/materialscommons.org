@@ -1,4 +1,4 @@
-describe('MC Component - controller for: mc-show-process', function () {
+xdescribe('MC Component - controller for: mc-show-process', function () {
     // ref: src/app/global.components/mc-show-process.component.js
 
     let testingProcessId = "056fe1ed-6c1c-48b3-ba63-18d1060e585a";

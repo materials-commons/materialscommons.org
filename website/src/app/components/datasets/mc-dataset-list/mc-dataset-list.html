@@ -1,5 +1,7 @@
-<div ng-repeat="dataset in $ctrl.datasets | filter:$ctrl.query as filtered">
+<div>
     <h1 ng-show="$ctrl.query">Showing {{filtered.length}} search results</h1>
-    <mc-dataset-list-item dataset="dataset" details-route="$ctrl.detailsRoute"></mc-dataset-list-item>
+    <div ng-repeat="dataset in $ctrl.datasets | orderBy:$ctrl.orderByField():true | filter:$ctrl.query as filtered">
+        <mc-dataset-list-item dataset="dataset" details-route="$ctrl.detailsRoute"></mc-dataset-list-item>
+    </div>
+    <h1 ng-show="filtered && filtered.length === 0">No matches found</h1>
 </div>
-<h1 ng-show="filtered && filtered.length === 0">No matches found</h1>

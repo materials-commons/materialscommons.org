@@ -300,12 +300,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('data.dataset', {
             url: '/dataset/:dataset_id',
-            template: '<mc-dataset-overview dataset="$resolve.dataset"></mc-dataset-overview>',
-            resolve: {
-                dataset: ['publicDatasetsAPI', '$stateParams',
-                    (publicDatasetsAPI, $stateParams) => publicDatasetsAPI.getDataset($stateParams.dataset_id)
-                ]
-            }
+            template: '<mc-dataset-overview-container></mc-dataset-overview-container>'
         })
         .state('data.home', {
             url: '/home',

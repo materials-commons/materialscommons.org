@@ -1,8 +1,11 @@
 # Release Notes
 ## November 2017
+- :star: **New Feature:** Add comments section to public datasets.
+- :star: **New Feature:** Add download and view statistics to public datasets.
 - :star: **Improvement:** File upload easier to use. Now shows thumbnails of image files to be uploaded.
 - :star: **Improvement:** Drag and drop for moving files improved.
 - :star: **Improvement:** Multiple changes to UI state improved and fixed so that operations on files are displayed in the UI.
+- :boom: **Fixed:** Other miscellaneous bug fixes.
 
 ## October 2017
 - :star: **New Feature:** Merge experiments - Experiments can now be merged into a single experiment. This allows you to do your work in separate experiments then publish/view as a single whole. Original experiments are kept.

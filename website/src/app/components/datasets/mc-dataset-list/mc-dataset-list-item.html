@@ -1,17 +1,11 @@
 <h4 class="md-subhead">
     <a ng-click="$ctrl.gotoDetailsRoute()">{{$ctrl.dataset.title}}</a>
 </h4>
-<p class="small action-count">
-    {{$ctrl.dataset.views}} views
-    <span style="padding-left: 10px;">{{$ctrl.dataset.appreciations}} Appreciations</span>
-</p>
-<p class="field-value">{{$ctrl.dataset.description}}</p>
+<mc-dataset-property-stats dataset="$ctrl.dataset"></mc-dataset-property-stats>
+<mc-dataset-property-description dataset="$ctrl.dataset"></mc-dataset-property-description>
 <div layout="column" class="margin-top-10">
     <mc-dataset-property-authors dataset="$ctrl.dataset"></mc-dataset-property-authors>
     <mc-dataset-property-license dataset="$ctrl.dataset"></mc-dataset-property-license>
     <mc-dataset-property-files dataset="$ctrl.dataset"></mc-dataset-property-files>
 </div>
-<property-value property="Authors" value="$ctrl.dataset.authors"></property-value>
-<property-value property="License" value="$ctrl.dataset.license"></property-value>
-<property-value property="Files" value="$ctrl.dataset"></property-value>
 <hr/>
