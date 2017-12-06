@@ -94,11 +94,8 @@ def transfer_project_ownership(conn, project_id, to_user):
 
 
 def add_user_to_project(conn, project, user):
-    print user['id']
-    print project['id']
     access_entry = r.table('access').get_all([user['id'], project['id']], index="user_project").run(conn)
     if access_entry is None:
-        print 'here'
         access_entry = Access(user['id'], project['id'], project['name'])
         r.table('access').insert(access_entry.__dict__).run(conn)
 
@@ -147,5 +144,6 @@ if __name__ == "__main__":
     if options.project_id and options.to_user:
         print "Transfering project %s to user %s" % (options.project_id, options.to_user)
         transfer_project_ownership(conn, options.project_id, options.to_user)
+        sys.exit(0)
 
     print "No command specified"
