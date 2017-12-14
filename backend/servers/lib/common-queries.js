@@ -171,12 +171,13 @@ function processDetailsRql(rql, r) {
                     }
                 }).coerceTo('array'),
             measurements: r.table('process2measurement').getAll(process('id'), {index: 'process_id'})
-                .eqJoin('measurement_id', r.table('measurements')).zip() // .filter({otype: 'composition'})
-                .eqJoin('measurement_id', r.db('materialscommons').table('best_measure_history'), {index: 'measurement_id'})
-                .map(function(doc) {
-                    return doc.merge({right: {best_measure_id: doc('right')('id')}})
+                .eqJoin('measurement_id', r.table('measurements')).zip()
+                .merge(p2m => {
+                    return {
+                        is_best_measure: r.db('materialscommons').table('best_measure_history')
+                            .getAll(p2m('measurement_id'), {index: 'measurement_id'}).count()
+                    }
                 })
-                .without({right: {'id': true, 'otype': true}}).zip()
                 .coerceTo('array'),
             files_count: r.table('process2file').getAll(process('id'), {index: 'process_id'}).count(),
             files: [],
