@@ -171,7 +171,7 @@ function processDetailsRql(rql, r) {
                     }
                 }).coerceTo('array'),
             measurements: r.table('process2measurement').getAll(process('id'), {index: 'process_id'})
-                .eqJoin('measurement_id', r.table('measurements')).zip().filter({otype: 'composition'})
+                .eqJoin('measurement_id', r.table('measurements')).zip() // .filter({otype: 'composition'})
                 .eqJoin('measurement_id', r.db('materialscommons').table('best_measure_history'), {index: 'measurement_id'})
                 .map(function(doc) {
                     return doc.merge({right: {best_measure_id: doc('right')('id')}})
