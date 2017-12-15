@@ -46,7 +46,7 @@ env:
 
 before_install:
   - pyenv versions
-  - pyenv global '2.7.14'
+  # - pyenv global '2.7.14'
   - python --version
   - export MC_APP_DIR=`pwd`
   # RethinkDB
