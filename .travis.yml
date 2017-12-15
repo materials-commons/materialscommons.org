@@ -16,8 +16,6 @@ branches:
   - /^spike-.*$/
 
 sudo: required
-dist: trusty
-group: deprecated-2017Q4
 
 addons:
   hosts:
@@ -48,7 +46,7 @@ env:
 
 before_install:
   - pyenv versions
-  - pyenv global '2.7.13'
+  - pyenv global '2.7.14'
   - python --version
   - export MC_APP_DIR=`pwd`
   # RethinkDB
