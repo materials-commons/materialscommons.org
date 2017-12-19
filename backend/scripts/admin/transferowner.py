@@ -29,8 +29,7 @@ def list_all_projects(conn):
     projects = r.table('projects').merge(lambda proj: {'owner_details': r.table('users').get(proj['owner'])}).run(conn)
     for project in projects:
         if project['owner'] != 'delete@materialscommons.org' and project['owner_details']:
-            print "%s: %s (%s/%s)" % (
-            project['name'], project['id'], project['owner'], project['owner_details']['fullname'])
+            print "%s: %s (%s/%s)" % (project['name'], project['id'], project['owner'], project['owner_details']['fullname'])
 
 
 def list_users_projects(conn, user_id):
