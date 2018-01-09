@@ -81,7 +81,7 @@ class MCProcessesWorkflowGraphComponentController {
             });
         });
 
-        this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));
+        this.mcbus.subscribe('EDGE$ADD', this.myName, ({samples, process}) => console.log('EDGE$ADD', samples, process));
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
         this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, processes => {
             this._addToHidden(this.cyGraph.hideOtherNodesMultiple(this.cy, processes))
