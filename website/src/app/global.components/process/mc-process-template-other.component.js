@@ -13,7 +13,7 @@ class MCProcessTemplateOtherComponentController {
     }
 
     linkFilesToSample(sample, input_files, output_files) {
-        this.sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function(linkedFiles) {
+        this.sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function (linkedFiles) {
             sample = this.processEdit.refreshSample(linkedFiles, sample);
         });
     }
@@ -21,7 +21,9 @@ class MCProcessTemplateOtherComponentController {
     selectFiles() {
         this.selectItems.fileTree(true).then(
             (selected) => {
-                let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
+                let files = selected.files.map(f => {
+                    return {id: f.id, command: 'add'};
+                });
                 let filesArgs = {
                     template_id: this.process.template_id,
                     files: files,
@@ -66,8 +68,8 @@ class MCProcessTemplateOtherComponentController {
                         (p) => {
                             p.files = this.process.files;
                             this.process = p;
-                            this.mcprojstore.updateCurrentProcess((currentProcess, transformers) => {
-                                return transformers.transformProcess(p);
+                            this.mcprojstore.updateCurrentProcess(() => {
+                                return p;
                             });
                             this.navbarOnChange.fireChange();
                             if (this.onChange) {
