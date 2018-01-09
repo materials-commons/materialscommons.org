@@ -1,10 +1,11 @@
 class MCTemplateBuilderComponentController {
     /*@ngInject*/
-    constructor(templatesAPI, toast, $mdDialog, User) {
+    constructor(templatesAPI, toast, $mdDialog, User, templates) {
         this.templatesAPI = templatesAPI;
         this.toast = toast;
         this.$mdDialog = $mdDialog;
         this.user = User;
+        this.templatesService = templates;
 
         this.sortOrder = 'name';
         this.whichElements = 'measurements';
@@ -100,6 +101,7 @@ class MCTemplateBuilderComponentController {
                     this.template = template;
                     this.templateLoaded = true;
                     this.existingTemplate = true;
+                    this.templatesService.getServerTemplates().then((t) => this.templatesService.set(t));
                 }
             )
         );
@@ -122,6 +124,7 @@ class MCTemplateBuilderComponentController {
                     this.templates.push(t);
                     this.templateLoaded = false;
                     this.existingTemplate = false;
+                    this.templatesService.getServerTemplates().then((t) => this.templatesService.set(t));
                 },
                 () => this.toast.error('Unable to create template')
             );
@@ -130,6 +133,8 @@ class MCTemplateBuilderComponentController {
                 () => {
                     this.templateLoaded = false;
                     this.existingTemplate = false;
+                    this.templatesService.getServerTemplates().then((t) => this.templatesService.set(t));
+
                 },
                 () => this.toast.error('Unable to update existing template')
             );
