@@ -121,6 +121,13 @@ class MCTemplateBuilderComponentController {
             }
         });
 
+        // Set does_transform flag based on template process type.
+        if (this.template.process_type === 'create' || this.template.process_type === 'transform') {
+            this.template.does_transform = true;
+        } else {
+            this.template.does_transform = false;
+        }
+
         if (!this.existingTemplate) {
             this.templatesAPI.createTemplate(this.template).then(
                 (t) => {
