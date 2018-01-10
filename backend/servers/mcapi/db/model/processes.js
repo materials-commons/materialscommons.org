@@ -97,7 +97,9 @@ function* quickDeleteProcess(projectId, processId) {
     if (process.does_transform) {
         let samplePropertySets = process2sampleout.map(p2s => [p2s.sample_id, p2s.property_set_id]);
         yield r.table('sample2propertyset').getAll(r.args(samplePropertySets), {index: 'sample_property_set'}).delete();
-    } else if (process.process_type === 'create') {
+    }
+
+    if (process.process_type === 'create') {
         let projectSamples = process2sampleout.map(p2s => [projectId, p2s.sample_id]);
         yield r.table('project2sample').getAll(r.args(projectSamples), {index: 'project_sample'}).delete();
     }
