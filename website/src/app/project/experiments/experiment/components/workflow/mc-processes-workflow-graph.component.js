@@ -235,6 +235,11 @@ class MCProcessesWorkflowGraphComponentController {
             const id = `${targetProcess.id}_${sourceProcess.id}`;
             const existingEdge = this.cy.getElementById(id);
             console.log('existingEdge', existingEdge.data('details'));
+            if (existingEdge) {
+
+            } else {
+
+            }
             //const edge =
         });
     }
