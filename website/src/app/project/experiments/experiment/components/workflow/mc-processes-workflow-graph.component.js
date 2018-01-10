@@ -81,7 +81,7 @@ class MCProcessesWorkflowGraphComponentController {
             });
         });
 
-        this.mcbus.subscribe('EDGE$ADD', this.myName, ({samples, process}) => console.log('EDGE$ADD', samples, process));
+        this.mcbus.subscribe('EDGE$ADD', this.myName, ({samples, process}) => this.addEdge(samples, process));
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
         this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, processes => {
             this._addToHidden(this.cyGraph.hideOtherNodesMultiple(this.cy, processes))
@@ -225,6 +225,34 @@ class MCProcessesWorkflowGraphComponentController {
                 }
             );
         }
+    }
+
+    addEdge(samples, targetProcess) {
+        console.log('addEdge', samples, targetProcess);
+        samples.forEach(sample => {
+            const sourceProcess = this.findSourceProcess(sample);
+            console.log('sourceProcess:', sourceProcess);
+            const id = `${targetProcess.id}_${sourceProcess.id}`;
+            const existingEdge = this.cy.getElementById(id);
+            console.log('existingEdge', existingEdge.data('details'));
+            //const edge =
+        });
+    }
+
+    findSourceProcess(sample) {
+        console.log('findSourceProcess sample:', sample);
+        for (let process of this.processes) {
+            if (process.output_samples) {
+                for (let s of process.output_samples) {
+                    if (s.id === sample.id && s.property_set_id === sample.property_set_id) {
+                        console.log('  Found source process:', process);
+                        return process;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     replaceProcess(process) {

@@ -1,6 +1,7 @@
 class MCProcessTemplateOtherComponentController {
     /*@ngInject*/
-    constructor(sampleLinker, processEdit, selectItems, experimentsAPI, toast, $stateParams, navbarOnChange, mcprojstore) {
+    constructor(sampleLinker, processEdit, selectItems, experimentsAPI, toast, $stateParams, navbarOnChange,
+                mcprojstore, mcbus) {
         this.sampleLinker = sampleLinker;
         this.processEdit = processEdit;
         this.selectItems = selectItems;
@@ -10,6 +11,7 @@ class MCProcessTemplateOtherComponentController {
         this.experimentId = $stateParams.experiment_id;
         this.navbarOnChange = navbarOnChange;
         this.mcprojstore = mcprojstore;
+        this.mcbus = mcbus;
     }
 
     linkFilesToSample(sample, input_files, output_files) {
@@ -70,7 +72,11 @@ class MCProcessTemplateOtherComponentController {
                             this.process = p;
                             this.mcprojstore.updateCurrentProcess(() => {
                                 return p;
-                            });
+                            }).then(
+                                () => {
+                                    this.mcbus.send('EDGE$ADD', {samples, process: this.process});
+                                }
+                            );
                             this.navbarOnChange.fireChange();
                             if (this.onChange) {
                                 this.onChange();

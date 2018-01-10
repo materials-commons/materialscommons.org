@@ -16,15 +16,33 @@ class ProcessGraphService {
         };
     }
 
-    createEdge(sourceProcessId, targetProcessId, edgeName) {
+    createEdge(sourceProcessId, targetProcessId, edgeName, sample) {
         return {
             data: {
                 id: `${targetProcessId}_${sourceProcessId}`,
                 source: sourceProcessId,
                 target: targetProcessId,
-                name: edgeName
+                name: edgeName,
+                details: {
+                    samples: [sample],
+                    names: sample.name
+                }
             }
         };
+    }
+
+    addSampleToEdge(edge, sample) {
+        let details = edge.data('details');
+        details.samples.push(sample);
+
+        if (edge.data('details').samples.length > 1) {
+            edge.data('name', `${edge.data('details').samples[0].name} + ${edge.data('details').samples.length - 1} more`);
+            details.names += `, ${details.samples.name}`;
+        }
+
+        edge.data('details', details);
+
+        return edge;
     }
 
     createConnectingEdges(targetProcess, processes) {
@@ -164,7 +182,7 @@ class ProcessGraphService {
             return "No files..."
         }
         if (process.files.length > 20) {
-            let first20 = process.files.slice(1,19);
+            let first20 = process.files.slice(1, 19);
             let names = first20.map(f => f.name).join(',') + `<br/>Plus ${process.files.length - 20} more...`;
             return names;
         }
