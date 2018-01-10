@@ -14,13 +14,20 @@ class MCTemplateBuilderComponentController {
     }
 
     $onInit() {
+        this.loadTemplates(false);
+    }
+
+    loadTemplates(reloadCache) {
         this.templatesAPI.getAllTemplates().then(
             (templates) => {
                 for (let i = 0; i < templates.length; i++) {
                     let t = templates[i];
                     t.can_edit = this.user.isTemplateAdmin() || (this.user.attr().id === t.owner);
                 }
-                this.templates = templates
+                this.templates = templates;
+                if (reloadCache) {
+                    this.templatesService.set(templates);
+                }
             }
         );
     }
@@ -101,7 +108,6 @@ class MCTemplateBuilderComponentController {
                     this.template = template;
                     this.templateLoaded = true;
                     this.existingTemplate = true;
-                    this.templatesService.getServerTemplates().then((t) => this.templatesService.set(t));
                 }
             )
         );
@@ -118,13 +124,9 @@ class MCTemplateBuilderComponentController {
         if (!this.existingTemplate) {
             this.templatesAPI.createTemplate(this.template).then(
                 (t) => {
-                    let i = _.findIndex(this.templates, {id: t.id});
-                    this.templates.splice(i, 1);
-                    t.can_edit = true;
-                    this.templates.push(t);
                     this.templateLoaded = false;
                     this.existingTemplate = false;
-                    this.templatesService.getServerTemplates().then((t) => this.templatesService.set(t));
+                    this.loadTemplates(true);
                 },
                 () => this.toast.error('Unable to create template')
             );
@@ -133,7 +135,7 @@ class MCTemplateBuilderComponentController {
                 () => {
                     this.templateLoaded = false;
                     this.existingTemplate = false;
-                    this.templatesService.getServerTemplates().then((t) => this.templatesService.set(t));
+                    this.loadTemplates(true);
 
                 },
                 () => this.toast.error('Unable to update existing template')
