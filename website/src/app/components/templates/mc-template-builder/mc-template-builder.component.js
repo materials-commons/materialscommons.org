@@ -130,7 +130,7 @@ class MCTemplateBuilderComponentController {
 
         if (!this.existingTemplate) {
             this.templatesAPI.createTemplate(this.template).then(
-                (t) => {
+                () => {
                     this.templateLoaded = false;
                     this.existingTemplate = false;
                     this.loadTemplates(true);
