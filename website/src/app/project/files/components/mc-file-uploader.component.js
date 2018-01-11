@@ -9,6 +9,7 @@ class MCFileUploaderComponentController {
         this.$timeout = $timeout;
         this.uploadMessage = '';
         this.uploaded = [];
+        this.uploadFailures = [];
     }
 
     remove(index) {
@@ -21,6 +22,7 @@ class MCFileUploaderComponentController {
             progress: 0
         }));
         this.uploadInProgress = true;
+        this.uploadFailures = [];
         P.map(this.uploadFiles, (f) => {
             return this.Upload.upload({
                 url: `api/v2/projects/${this.projectId}/directories/${this.directoryId}/fileupload?apikey=${this.User.apikey()}`,
@@ -29,15 +31,20 @@ class MCFileUploaderComponentController {
                 (uploaded) => {
                     this.uploaded.push(uploaded.data);
                 },
-                () => null,
+                (e) => {
+                    this.uploadFailures.push({
+                        file: e.config.data.file.name,
+                        reason: e.status === 413 ? "File too large" : e.statusText
+                    });
+                },
                 (evt) => {
-                    f.progress = parseInt(100.0 * evt.loaded / evt.total);
+                    f.progress = 100.0 * evt.loaded / evt.total;
                 }
             )
         }, {concurrency: 3}).then(
             () => {
                 this.$timeout(() => {
-                    let uploadCount = this.uploadFiles.length;
+                    let uploadCount = this.uploadFiles.length - this.uploadFailures.length;
                     this.uploadMessage = `Completed Upload of ${uploadCount} ${uploadCount === 1 ? 'file' : 'files'}.`;
                     this.uploadFiles.length = 0;
                     this.files.length = 0;
