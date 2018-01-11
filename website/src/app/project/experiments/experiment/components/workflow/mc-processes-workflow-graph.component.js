@@ -106,7 +106,11 @@ class MCProcessesWorkflowGraphComponentController {
             }
         });
 
-        this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => this.allProcessesGraph());
+        this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => {
+            const currentExperiment = this.mcprojstore.currentExperiment;
+            this.processes = _.values(currentExperiment.processes);
+            this.allProcessesGraph()
+        });
         this.mcbus.subscribe('WORKFLOW$NAVIGATOR', this.myName, () => {
             if (this.navigator === null) {
                 this.navigator = this.cy.navigator();
@@ -228,29 +232,24 @@ class MCProcessesWorkflowGraphComponentController {
     }
 
     addEdge(samples, targetProcess) {
-        console.log('addEdge', samples, targetProcess);
         samples.forEach(sample => {
             const sourceProcess = this.findSourceProcess(sample);
-            console.log('sourceProcess:', sourceProcess);
             const id = `${targetProcess.id}_${sourceProcess.id}`;
             const existingEdge = this.cy.getElementById(id);
-            console.log('existingEdge', existingEdge.data('details'));
-            if (existingEdge) {
-
+            if (existingEdge.length) {
+                this.processGraph.addSampleToEdge(existingEdge, sample);
             } else {
-
+                let newEdge = this.processGraph.createEdge(sourceProcess.id, targetProcess.id, sample);
+                this.cy.add([{group: 'edges', data: newEdge}]);
             }
-            //const edge =
         });
     }
 
     findSourceProcess(sample) {
-        console.log('findSourceProcess sample:', sample);
         for (let process of this.processes) {
             if (process.output_samples) {
                 for (let s of process.output_samples) {
                     if (s.id === sample.id && s.property_set_id === sample.property_set_id) {
-                        console.log('  Found source process:', process);
                         return process;
                     }
                 }

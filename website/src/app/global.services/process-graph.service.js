@@ -16,17 +16,15 @@ class ProcessGraphService {
         };
     }
 
-    createEdge(sourceProcessId, targetProcessId, edgeName, sample) {
+    createEdge(sourceProcessId, targetProcessId, sample) {
         return {
-            data: {
-                id: `${targetProcessId}_${sourceProcessId}`,
-                source: sourceProcessId,
-                target: targetProcessId,
-                name: edgeName,
-                details: {
-                    samples: [sample],
-                    names: sample.name
-                }
+            id: `${targetProcessId}_${sourceProcessId}`,
+            source: sourceProcessId,
+            target: targetProcessId,
+            name: sample.name,
+            details: {
+                samples: [sample],
+                names: sample.name
             }
         };
     }

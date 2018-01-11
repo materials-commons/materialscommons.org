@@ -54,7 +54,8 @@ class MCProcessTemplateOtherComponentController {
                             return {
                                 id: s.id,
                                 property_set_id: s.versions[i].property_set_id,
-                                command: 'add'
+                                command: 'add',
+                                name: s.name
                             };
                         }
                     }
@@ -74,7 +75,7 @@ class MCProcessTemplateOtherComponentController {
                                 return p;
                             }).then(
                                 () => {
-                                    this.mcbus.send('EDGE$ADD', {samples, process: this.process});
+                                    this.mcbus.send('EDGE$ADD', {samples: samples, process: this.process});
                                 }
                             );
                             this.navbarOnChange.fireChange();
