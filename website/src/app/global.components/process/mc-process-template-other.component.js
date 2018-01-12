@@ -1,6 +1,7 @@
 class MCProcessTemplateOtherComponentController {
     /*@ngInject*/
-    constructor(sampleLinker, processEdit, selectItems, experimentsAPI, toast, $stateParams, navbarOnChange, mcprojstore) {
+    constructor(sampleLinker, processEdit, selectItems, experimentsAPI, toast, $stateParams, navbarOnChange,
+                mcprojstore, mcbus) {
         this.sampleLinker = sampleLinker;
         this.processEdit = processEdit;
         this.selectItems = selectItems;
@@ -10,10 +11,11 @@ class MCProcessTemplateOtherComponentController {
         this.experimentId = $stateParams.experiment_id;
         this.navbarOnChange = navbarOnChange;
         this.mcprojstore = mcprojstore;
+        this.mcbus = mcbus;
     }
 
     linkFilesToSample(sample, input_files, output_files) {
-        this.sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function(linkedFiles) {
+        this.sampleLinker.linkFilesToSample(sample, input_files, output_files).then(function (linkedFiles) {
             sample = this.processEdit.refreshSample(linkedFiles, sample);
         });
     }
@@ -21,7 +23,9 @@ class MCProcessTemplateOtherComponentController {
     selectFiles() {
         this.selectItems.fileTree(true).then(
             (selected) => {
-                let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
+                let files = selected.files.map(f => {
+                    return {id: f.id, command: 'add'};
+                });
                 let filesArgs = {
                     template_id: this.process.template_id,
                     files: files,
@@ -50,7 +54,8 @@ class MCProcessTemplateOtherComponentController {
                             return {
                                 id: s.id,
                                 property_set_id: s.versions[i].property_set_id,
-                                command: 'add'
+                                command: 'add',
+                                name: s.name
                             };
                         }
                     }
@@ -66,9 +71,13 @@ class MCProcessTemplateOtherComponentController {
                         (p) => {
                             p.files = this.process.files;
                             this.process = p;
-                            this.mcprojstore.updateCurrentProcess((currentProcess, transformers) => {
-                                return transformers.transformProcess(p);
-                            });
+                            this.mcprojstore.updateCurrentProcess(() => {
+                                return p;
+                            }).then(
+                                () => {
+                                    this.mcbus.send('EDGE$ADD', {samples: samples, process: this.process});
+                                }
+                            );
                             this.navbarOnChange.fireChange();
                             if (this.onChange) {
                                 this.onChange();

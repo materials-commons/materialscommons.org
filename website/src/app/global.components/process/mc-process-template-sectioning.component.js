@@ -1,6 +1,7 @@
 class MCProcessTemplateSectioningComponentController {
     /*@ngInject*/
-    constructor(focus, $mdDialog, samplesAPI, $stateParams, toast, selectItems, experimentsAPI, navbarOnChange, mcprojstore) {
+    constructor(focus, $mdDialog, samplesAPI, $stateParams, toast, selectItems, experimentsAPI, navbarOnChange,
+                mcprojstore, mcbus) {
         this.focus = focus;
         this.$mdDialog = $mdDialog;
         this.samplesAPI = samplesAPI;
@@ -11,12 +12,15 @@ class MCProcessTemplateSectioningComponentController {
         this.experimentsAPI = experimentsAPI;
         this.navbarOnChange = navbarOnChange;
         this.mcprojstore = mcprojstore;
+        this.mcbus = mcbus;
     }
 
     selectFiles() {
         this.selectItems.fileTree(true).then(
             (selected) => {
-                let files = selected.files.map(f => { return {id: f.id, command: 'add'}; });
+                let files = selected.files.map(f => {
+                    return {id: f.id, command: 'add'};
+                });
                 let filesArgs = {
                     template_id: this.process.template_id,
                     files: files,
@@ -45,7 +49,8 @@ class MCProcessTemplateSectioningComponentController {
                             return {
                                 id: s.id,
                                 property_set_id: s.versions[i].property_set_id,
-                                command: 'add'
+                                command: 'add',
+                                name: s.name
                             };
                         }
                     }
@@ -60,6 +65,9 @@ class MCProcessTemplateSectioningComponentController {
                     .then(
                         () => {
                             this.process.input_samples = selected.samples;
+                            this.mcprojstore.updateCurrentProcess(() => this.process).then(
+                                () => this.mcbus.send('EDGE$ADD', {samples: samples, process: this.process})
+                            )
                             this.navbarOnChange.fireChange();
                             if (this.onChange) {
                                 this.onChange();
@@ -107,9 +115,9 @@ class MCProcessTemplateSectioningComponentController {
 
     updateSampleName(sample) {
         this.samplesAPI.updateSampleInExperiment(this.projectId, this.experimentId, this.process.id, {
-                id: sample.id,
-                name: sample.name
-            })
+            id: sample.id,
+            name: sample.name
+        })
             .then(
                 () => null,
                 () => this.toast.error('Unable to update sample name')
