@@ -1,28 +1,43 @@
 <div layout="row" layout-fill layout-align="start stretch">
-    <div flex="30" layout="column" layout-margin>
-        <div layout="row" layout-align="start center">
-            <span class="md-title">{{$ctrl.project.name}}</span>
-            <md-button ng-click="$ctrl.renameProject()" class="md-primary">rename project</md-button>
-        </div>
+    <mc-project-sidenav></mc-project-sidenav>
+    <div flex="30" layout="column" layout-margin style="border:#0E2231">
         <div layout="column">
-            <label>Description</label>
-            <textarea class="mc-text-area md-subhead" type="text"
-                      rows="3"
-                      placeholder="Add short project description..."
-                      ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                      ng-change="$ctrl.updateProjectDescription()"
-                      ng-model="$ctrl.project.description"></textarea>
-        </div>
-        <mc-project-home-reminders project="$ctrl.project" style="margin:0"></mc-project-home-reminders>
-        <label>Project Overview</label>
-        <div md-whiteframe="10" layout-margin>
-            <div ckeditor="editorOptions"
-                 class="md-subhead"
-                 ng-model="$ctrl.project.overview"
-                 ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                 ng-change="$ctrl.updateProjectOverview()"
-                 contenteditable="true">
-                {{$ctrl.project.overview}}
+            <div style="background-color: #2196F3; color: white; padding: 10px" flex="100">
+                <span class="white" style="margin-left: 30px">README.md</span>
+            </div>
+            <p>Some description about the project. Example text below</p>
+            <div class="readme file wiki-content">
+
+                <h1 id="markdown-header-mc">Mc</h1>
+                <p><strong>TODO: Add description</strong></p>
+                <h1 id="markdown-header-readme">README</h1>
+                <p>This README would normally document whatever steps are necessary to get your application up and running.</p>
+                <h3 id="markdown-header-what-is-this-repository-for">What is this repository for?</h3>
+                <ul>
+                    <li>Quick summary</li>
+                    <li>Version</li>
+                    <li><a href="https://bitbucket.org/tutorials/markdowndemo">Learn Markdown</a></li>
+                </ul>
+                <h3 id="markdown-header-how-do-i-get-set-up">How do I get set up?</h3>
+                <ul>
+                    <li>Summary of set up</li>
+                    <li>Configuration</li>
+                    <li>Dependencies</li>
+                    <li>Database configuration</li>
+                    <li>How to run tests</li>
+                    <li>Deployment instructions</li>
+                </ul>
+                <h3 id="markdown-header-contribution-guidelines">Contribution guidelines</h3>
+                <ul>
+                    <li>Writing tests</li>
+                    <li>Code review</li>
+                    <li>Other guidelines</li>
+                </ul>
+                <h3 id="markdown-header-who-do-i-talk-to">Who do I talk to?</h3>
+                <ul>
+                    <li>Repo owner or admin</li>
+                    <li>Other community or team contact</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -66,15 +81,62 @@
             </md-button>
         </div>
         <div layout="row" layout-wrap>
-            <mc-experiment-overview experiment="experiment" flex="50" flex-md="70" flex-sm="70" flex-xs="100"
-                                    selecting="$ctrl.selectingExperiments"
-                                    layout-wrap
-                                    layout="row"
-                                    ng-click="$ctrl.gotoWorkflow(experiment)"
-                                    class="cursor-pointer"
-                                    style="min-width:500px"
-                                    ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.experimentType} | orderBy:'name'">
-            </mc-experiment-overview>
+            <md-table-container flex>
+                <table md-table>
+                    <thead md-head md-order="$ctrl.sortOrder">
+                    <tr md-row>
+                        <!--<th md-column md-order-by="status">Status</th>-->
+                        <th md-column md-order-by="name">Name</th>
+                        <th md-column></th>
+                        <th md-column>Description</th>
+                        <th md-column md-order-by="mtime">Modified</th>
+                        <th md-column>
+                            <i class="fa fa-fw fa-files-o"></i> F
+                        </th>
+                        <th md-column>
+                            <i class="fa fa-fw fa-users"></i> P
+                        </th>
+                        <th md-column><i class="fa fa-fw fa-cubes"></i>S</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr md-row class="md-row-hover pointer"
+                        ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
+                        style='border-left-width: 8px;'
+                        ng-repeat="experiment in $ctrl.experiments">
+                        <td md-cell>
+                            <div layout="column">
+                                <a>
+                                    {{experiment.name}}
+                                </a>
+
+                                <span>{{experiment.description}}</span>
+                            </div>
+                        </td>
+                        <td md-cell>
+                            <a ng-click="$ctrl.showProjectOverview(project)">
+                                <i class="fa fa-fw fa-info-circle"></i>
+                            </a>
+                        </td>
+                        <td md-cell>
+                            {{project.owner_details.fullname}}
+                        </td>
+                        <td md-cell>
+                            {{project.mtime | date:'shortDate'}}
+                        </td>
+                        <td md-cell><span tooltip="Files">{{project.files_count | number}}</span></td>
+                        <td md-cell><span tooltip="Users">{{project.users.length | number}}</span></td>
+                        <td md-cell
+                            style="border-right-width: 8px"
+                            ng-class="{'cell-right-odd': $index%2 !== 0, 'cell-right-even': $index%2 ==0}">
+                            <ul>
+                                <li ng-repeat="reminder in project.reminders" class="mc-md-primary-color">{{reminder.note}}</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
         </div>
     </div>
 </div>

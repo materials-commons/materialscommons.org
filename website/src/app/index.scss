@@ -29,6 +29,10 @@ $mc-import-samples-color: #b2bfdb;
   color: $mc-md-light-primary-color;
 }
 
+.mc-white-color {
+  color: white;
+}
+
 .site-active-color {
   color: #ffcb0b;
 }
@@ -304,6 +308,21 @@ md-checkbox.md-checked.mc-done .md-icon {
 .experiment-tools-sidenav md-content {
   //background-color: #e9e9e9;
   background-color: $mc-bar-dark-color;
+}
+
+.project-sidenav {
+  min-width: 150px;
+  max-width: 150px;
+  margin-left: 0px;
+  background-color: $mc-md-primary-color;
+  //background-color: $mc-bar-dark-color;
+  height: 800px;
+  overflow: auto;
+}
+
+.project-sidenav md-content {
+  background-color: $mc-md-primary-color;
+  //background-color: $mc-bar-dark-color;
 }
 
 .template-builder-sidenav {
