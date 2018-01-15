@@ -1,6 +1,6 @@
 <div layout="row" layout-fill layout-align="start stretch">
     <mc-project-sidenav></mc-project-sidenav>
-    <div flex="30" layout="column" layout-margin style="border:#0E2231">
+    <div flex="30" layout="column" layout-margin style="border:#0E2231" ng-if="false">
         <div layout="column">
             <div style="background-color: #2196F3; color: white; padding: 10px" flex="100">
                 <span class="white" style="margin-left: 30px">README.md</span>
@@ -41,102 +41,124 @@
             </div>
         </div>
     </div>
-    <div layout="column" flex layout-margin>
-        <div layout="row" layout-align="center center">
-            <md-radio-group layout="row" class="text-uppercase" ng-model="$ctrl.experimentType">
-                <md-radio-button value="active" class="md-primary">Active Experiments ({{$ctrl.activeExperimentsCount}})</md-radio-button>
-                <md-radio-button value="done" class="md-primary">Completed Experiments ({{$ctrl.doneExperimentsCount}})</md-radio-button>
-                <md-radio-button value="on-hold" class="md-warn">On Hold Experiments ({{$ctrl.onholdExperimentsCount}})</md-radio-button>
-            </md-radio-group>
-        </div>
-        <div layout="row" layout-align="start center">
-            <md-button class="md-primary md-raised" ng-click="$ctrl.startNewExperiment()"
-                       ng-disabled="$ctrl.mergingExperiments || $ctrl.deletingExperiments">
-                <i class="fa fa-fw fa-plus"></i> Start New Experiment
-            </md-button>
-            <md-button class="md-primary md-raised" ng-click="$ctrl.startExperimentsMerge()"
-                       ng-disabled="$ctrl.deletingExperiments"
-                       ng-if="!$ctrl.mergingExperiments">
-                <i class="fa fa-fw fa-compress"></i>Merge Experiments
-            </md-button>
-            <md-button ng-if="$ctrl.mergingExperiments" ng-click="$ctrl.finishExperimentsMerge()"
-                       class="md-raised md-primary">
-                Merge Selected
-            </md-button>
-            <md-button class="md-raised md-warn" ng-click="$ctrl.cancelMerge()"
-                       ng-if="$ctrl.mergingExperiments">
-                Cancel Merge
-            </md-button>
-            <md-button class="md-raised md-warn" ng-click="$ctrl.startExperimentsDelete()"
-                       ng-disabled="$ctrl.mergingExperiments"
-                       ng-if="!$ctrl.deletingExperiments">
-                <i class="fa fa-fw fa-trash"></i>Delete Experiments
-            </md-button>
-            <md-button class="md-raised md-primary" ng-click="$ctrl.finishExperimentsDelete()" ng-if="$ctrl.deletingExperiments">
-                Delete Selected
-            </md-button>
-            <md-button class="md-raised md-warn" ng-click="$ctrl.clearDelete()"
-                       ng-if="$ctrl.deletingExperiments">
-                Cancel Delete
-            </md-button>
-        </div>
-        <div layout="row" layout-wrap>
-            <md-table-container flex>
-                <table md-table>
-                    <thead md-head md-order="$ctrl.sortOrder">
-                    <tr md-row>
-                        <!--<th md-column md-order-by="status">Status</th>-->
-                        <th md-column md-order-by="name">Name</th>
-                        <th md-column></th>
-                        <th md-column>Description</th>
-                        <th md-column md-order-by="mtime">Modified</th>
-                        <th md-column>
-                            <i class="fa fa-fw fa-files-o"></i> F
-                        </th>
-                        <th md-column>
-                            <i class="fa fa-fw fa-users"></i> P
-                        </th>
-                        <th md-column><i class="fa fa-fw fa-cubes"></i>S</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr md-row class="md-row-hover pointer"
-                        ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
-                        style='border-left-width: 8px;'
-                        ng-repeat="experiment in $ctrl.experiments">
-                        <td md-cell>
-                            <div layout="column">
-                                <a>
-                                    {{experiment.name}}
-                                </a>
+    <div layout="row" layout-fill>
+        <div layout="column" flex="80" layout-margin>
+            <div layout="row" layout-align="center center">
+                <md-radio-group layout="row" class="text-uppercase" ng-model="$ctrl.experimentType">
+                    <md-radio-button value="active" class="md-primary">Active Experiments ({{$ctrl.activeExperimentsCount}})</md-radio-button>
+                    <md-radio-button value="done" class="md-primary">Completed Experiments ({{$ctrl.doneExperimentsCount}})</md-radio-button>
+                    <md-radio-button value="on-hold" class="md-warn">On Hold Experiments ({{$ctrl.onholdExperimentsCount}})</md-radio-button>
+                </md-radio-group>
+            </div>
+            <div layout="row" layout-align="start center">
+                <md-button class="md-primary md-raised" ng-click="$ctrl.startNewExperiment()"
+                           ng-disabled="$ctrl.mergingExperiments || $ctrl.deletingExperiments">
+                    <i class="fa fa-fw fa-plus"></i> Start New Experiment
+                </md-button>
+                <md-button class="md-primary md-raised" ng-click="$ctrl.startExperimentsMerge()"
+                           ng-disabled="$ctrl.deletingExperiments"
+                           ng-if="!$ctrl.mergingExperiments">
+                    <i class="fa fa-fw fa-compress"></i>Merge Experiments
+                </md-button>
+                <md-button ng-if="$ctrl.mergingExperiments" ng-click="$ctrl.finishExperimentsMerge()"
+                           class="md-raised md-primary">
+                    Merge Selected
+                </md-button>
+                <md-button class="md-raised md-warn" ng-click="$ctrl.cancelMerge()"
+                           ng-if="$ctrl.mergingExperiments">
+                    Cancel Merge
+                </md-button>
+                <md-button class="md-raised md-warn" ng-click="$ctrl.startExperimentsDelete()"
+                           ng-disabled="$ctrl.mergingExperiments"
+                           ng-if="!$ctrl.deletingExperiments">
+                    <i class="fa fa-fw fa-trash"></i>Delete Experiments
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.finishExperimentsDelete()" ng-if="$ctrl.deletingExperiments">
+                    Delete Selected
+                </md-button>
+                <md-button class="md-raised md-warn" ng-click="$ctrl.clearDelete()"
+                           ng-if="$ctrl.deletingExperiments">
+                    Cancel Delete
+                </md-button>
+            </div>
+            <div layout="row" layout-wrap>
+                <md-table-container flex>
+                    <table md-table>
+                        <thead md-head md-order="$ctrl.sortOrder">
+                        <tr md-row>
+                            <!--<th md-column md-order-by="status">Status</th>-->
+                            <th md-column md-order-by="name">Name</th>
+                            <th md-column></th>
+                            <th md-column>Description</th>
+                            <th md-column md-order-by="mtime">Modified</th>
+                            <th md-column>
+                                <i class="fa fa-fw fa-files-o"></i> F
+                            </th>
+                            <th md-column>
+                                <i class="fa fa-fw fa-users"></i> P
+                            </th>
+                            <th md-column><i class="fa fa-fw fa-cubes"></i>S</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr md-row class="md-row-hover pointer"
+                            ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
+                            style='border-left-width: 8px;'
+                            ng-repeat="experiment in $ctrl.experiments">
+                            <td md-cell>
+                                <div layout="column">
+                                    <a>
+                                        {{experiment.name}}
+                                    </a>
 
-                                <span>{{experiment.description}}</span>
-                            </div>
-                        </td>
-                        <td md-cell>
-                            <a ng-click="$ctrl.showProjectOverview(project)">
-                                <i class="fa fa-fw fa-info-circle"></i>
-                            </a>
-                        </td>
-                        <td md-cell>
-                            {{project.owner_details.fullname}}
-                        </td>
-                        <td md-cell>
-                            {{project.mtime | date:'shortDate'}}
-                        </td>
-                        <td md-cell><span tooltip="Files">{{project.files_count | number}}</span></td>
-                        <td md-cell><span tooltip="Users">{{project.users.length | number}}</span></td>
-                        <td md-cell
-                            style="border-right-width: 8px"
-                            ng-class="{'cell-right-odd': $index%2 !== 0, 'cell-right-even': $index%2 ==0}">
-                            <ul>
-                                <li ng-repeat="reminder in project.reminders" class="mc-md-primary-color">{{reminder.note}}</li>
-                            </ul>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </md-table-container>
+                                    <span>{{experiment.description}}</span>
+                                </div>
+                            </td>
+                            <td md-cell>
+                                <a ng-click="$ctrl.showProjectOverview(project)">
+                                    <i class="fa fa-fw fa-info-circle"></i>
+                                </a>
+                            </td>
+                            <td md-cell>
+                                {{project.owner_details.fullname}}
+                            </td>
+                            <td md-cell>
+                                {{project.mtime | date:'shortDate'}}
+                            </td>
+                            <td md-cell><span tooltip="Files">{{project.files_count | number}}</span></td>
+                            <td md-cell><span tooltip="Users">{{project.users.length | number}}</span></td>
+                            <td md-cell
+                                style="border-right-width: 8px"
+                                ng-class="{'cell-right-odd': $index%2 !== 0, 'cell-right-even': $index%2 ==0}">
+                                <ul>
+                                    <li ng-repeat="reminder in project.reminders" class="mc-md-primary-color">{{reminder.note}}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+            </div>
+        </div>
+        <div layout="column" flex="20">
+            <h1 class="md-title">Activity Feed</h1>
+            <ul class="no-bullets">
+                <li layout="column">
+                    <span><i class="fa fa-fw fa-user"></i>1 Change</span>
+                    <span style="margin-left: 20px">Modified process X....</span>
+                    <span class="mc-name-color">Jake Adams 12-27-2017</span>
+                </li>
+                <li layout="column" class="margin-top-10">
+                    <span><i class="fa fa-fw fa-user"></i>1 Addition</span>
+                    <span style="margin-left: 20px">Added process X....</span>
+                    <span class="mc-name-color">Jake Adams 12-27-2017</span>
+                </li>
+                <li layout="column" class="margin-top-10">
+                    <span><i class="fa fa-fw fa-user"></i>1 Addition</span>
+                    <span style="margin-left: 20px">Added user wey....</span>
+                    <span class="mc-name-color">Jake Adams 12-27-2017</span>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
