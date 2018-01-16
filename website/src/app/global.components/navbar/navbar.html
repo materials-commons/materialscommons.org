@@ -22,7 +22,7 @@
         </h1>
         <md-divider class="md-vertical-divider margin-left-15"
                     style="border-right-color: #4d4d4d"></md-divider>
-        <div layout="row" hide-md hide-sm layout-align="space-around" flex-gt-md="15" flex="10">
+        <div layout="row" hide-md hide-sm layout-align="space-around" flex-gt-md="15" flex="10" ng-if="false">
             <div ng-show="$ctrl.$stateParams.project_id" layout="column" layout-align="center center">
                 <a ng-if="$ctrl.project.users.length !== 1" class="md-title" style="color:#4caf50"
                    ui-sref="project.settings">
