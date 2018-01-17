@@ -1,46 +1,5 @@
 <div layout="row" layout-fill layout-align="start stretch">
     <mc-project-sidenav></mc-project-sidenav>
-    <div flex="30" layout="column" layout-margin style="border:#0E2231" ng-if="false">
-        <div layout="column">
-            <div style="background-color: #2196F3; color: white; padding: 10px" flex="100">
-                <span class="white" style="margin-left: 30px">README.md</span>
-            </div>
-            <p>Some description about the project. Example text below</p>
-            <div class="readme file wiki-content">
-
-                <h1 id="markdown-header-mc">Mc</h1>
-                <p><strong>TODO: Add description</strong></p>
-                <h1 id="markdown-header-readme">README</h1>
-                <p>This README would normally document whatever steps are necessary to get your application up and running.</p>
-                <h3 id="markdown-header-what-is-this-repository-for">What is this repository for?</h3>
-                <ul>
-                    <li>Quick summary</li>
-                    <li>Version</li>
-                    <li><a href="https://bitbucket.org/tutorials/markdowndemo">Learn Markdown</a></li>
-                </ul>
-                <h3 id="markdown-header-how-do-i-get-set-up">How do I get set up?</h3>
-                <ul>
-                    <li>Summary of set up</li>
-                    <li>Configuration</li>
-                    <li>Dependencies</li>
-                    <li>Database configuration</li>
-                    <li>How to run tests</li>
-                    <li>Deployment instructions</li>
-                </ul>
-                <h3 id="markdown-header-contribution-guidelines">Contribution guidelines</h3>
-                <ul>
-                    <li>Writing tests</li>
-                    <li>Code review</li>
-                    <li>Other guidelines</li>
-                </ul>
-                <h3 id="markdown-header-who-do-i-talk-to">Who do I talk to?</h3>
-                <ul>
-                    <li>Repo owner or admin</li>
-                    <li>Other community or team contact</li>
-                </ul>
-            </div>
-        </div>
-    </div>
     <div layout="row" layout-fill>
         <div layout="column" flex="80" layout-margin>
             <div layout="row" layout-align="center center">
@@ -107,7 +66,7 @@
                             ng-repeat="experiment in $ctrl.experiments">
                             <td md-cell>
                                 <div layout="column">
-                                    <a>
+                                    <a ng-click="$ctrl.gotoWorkflow(experiment)">
                                         {{experiment.name}}
                                     </a>
 
