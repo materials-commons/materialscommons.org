@@ -154,7 +154,6 @@ function* addAdditionalParemeters(processId, args){
     });
     yield r.table('setupproperties').insert(properties);
     yield r.table('process2setup').insert(new model.Process2Setup(processId,setupId));
-    console.log("addAdditionalParemeters", processId, setupId);
     return {val: yield getProcess(processId)};
 }
 
