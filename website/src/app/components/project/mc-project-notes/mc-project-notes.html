@@ -1,0 +1,128 @@
+<div layout="row" layout-fill layout-align="start stretch">
+    <mc-project-sidenav></mc-project-sidenav>
+    <div layout="row" layout-fill>
+        <div flex="50" layout-fill layout-margin>
+            <div layout-margin>
+                <h3 class="md-title">To-Dos</h3>
+                <md-list>
+                    <md-list-item>
+                        <md-checkbox ng-model="md1"></md-checkbox>
+                        <p>Task 1</p>
+                        <md-divider></md-divider>
+                    </md-list-item>
+
+                    <md-list-item>
+                        <md-checkbox ng-model="md2"></md-checkbox>
+                        <p>Task 2</p>
+                        <md-divider></md-divider>
+                    </md-list-item>
+
+                    <md-list-item>
+                        <md-checkbox ng-model="md3"></md-checkbox>
+                        <p>Task 3</p>
+                    </md-list-item>
+                </md-list>
+            </div>
+
+            <div layout-margin>
+                <h3 class="md-title">Notes</h3>
+                <md-list>
+                    <md-list-item style="background-color: lightgrey">
+                        <p>Principles: mechanics and ensembles</p>
+                        <md-divider></md-divider>
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p>Note 2</p>
+                        <md-divider></md-divider>
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p>Note 3</p>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </div>
+        <div flex="50" layout-fill layout-margin style="height: 100%">
+            <div layout-margin style="border-left: 2px solid black">
+                <div layout="column">
+                    <h2><span class="mw-headline" id="Principles:_mechanics_and_ensembles">Principles: mechanics and ensembles</span><span
+                            class="mw-editsection"><span class="mw-editsection-bracket"></span></span></h2>
+                    <div role="note" class="hatnote navigation-not-searchable">Main articles: <a href="/wiki/Mechanics" title="Mechanics">Mechanics</a> and <a
+                            href="/wiki/Statistical_ensemble_(mathematical_physics)" title="Statistical ensemble (mathematical physics)">Statistical
+                        ensemble</a></div>
+                    <p>In physics, there are two types of mechanics usually examined: <a href="/wiki/Classical_mechanics" title="Classical mechanics">classical
+                        mechanics</a> and <a href="/wiki/Quantum_mechanics" title="Quantum mechanics">quantum mechanics</a>. For both types of mechanics, the
+                        standard mathematical approach is to consider two concepts:</p>
+                    <ol>
+                        <li>The complete state of the mechanical system at a given time, mathematically encoded as a <a href="/wiki/Phase_space"
+                                                                                                                        title="Phase space">phase point</a>
+                            (classical mechanics) or a pure <a href="/wiki/Quantum_state_vector" class="mw-redirect" title="Quantum state vector">quantum state
+                                vector</a> (quantum mechanics).
+                        </li>
+                        <li>An equation of motion which carries the state forward in time: <a href="/wiki/Hamilton%27s_equations" class="mw-redirect"
+                                                                                              title="Hamilton's equations">Hamilton's equations</a> (classical
+                            mechanics) or the <a href="/wiki/Time-dependent_Schr%C3%B6dinger_equation" class="mw-redirect"
+                                                 title="Time-dependent Schrödinger equation">time-dependent Schrödinger equation</a> (quantum mechanics)
+                        </li>
+                    </ol>
+                    <p>Using these two concepts, the state at any other time, past or future, can in principle be calculated. There is however a disconnection
+                        between these laws and everyday life experiences, as we do not find it necessary (nor even theoretically possible) to know exactly at a
+                        microscopic level the simultaneous positions and velocities of each molecule while carrying out processes at the human scale (for
+                        example, when performing a chemical reaction). Statistical mechanics fills this disconnection between the laws of mechanics and the
+                        practical experience of incomplete knowledge, by adding some uncertainty about which state the system is in.</p>
+                    <p>Whereas ordinary mechanics only considers the behaviour of a single state, statistical mechanics introduces the <a
+                            href="/wiki/Statistical_ensemble_(mathematical_physics)" title="Statistical ensemble (mathematical physics)">statistical
+                        ensemble</a>, which is a large collection of virtual, independent copies of the system in various states. The statistical ensemble is a
+                        <a href="/wiki/Probability_distribution" title="Probability distribution">probability distribution</a> over all possible states of the
+                        system. In classical statistical mechanics, the ensemble is a probability distribution over phase points (as opposed to a single phase
+                        point in ordinary mechanics), usually represented as a distribution in a <a href="/wiki/Phase_space" title="Phase space">phase space</a>
+                        with <a href="/wiki/Canonical_coordinates" title="Canonical coordinates">canonical coordinates</a>. In quantum statistical mechanics,
+                        the ensemble is a probability distribution over pure states,<sup id="cite_ref-5" class="reference"><a href="#cite_note-5">[note
+                            2]</a></sup> and can be compactly summarized as a <a href="/wiki/Density_matrix" title="Density matrix">density matrix</a>.</p>
+                    <p>As is usual for probabilities, the ensemble can be interpreted in different ways:<sup id="cite_ref-gibbs_1-2" class="reference"><a
+                            href="#cite_note-gibbs-1">[1]</a></sup></p>
+                    <ul>
+                        <li>an ensemble can be taken to represent the various possible states that a <i>single system</i> could be in (<a
+                                href="/wiki/Epistemic_probability" class="mw-redirect" title="Epistemic probability">epistemic probability</a>, a form of
+                            knowledge), or
+                        </li>
+                        <li>the members of the ensemble can be understood as the states of the systems in experiments repeated on independent systems which have
+                            been prepared in a similar but imperfectly controlled manner (<a href="/wiki/Empirical_probability" title="Empirical probability">empirical
+                                probability</a>), in the limit of an infinite number of trials.
+                        </li>
+                    </ul>
+                    <p>These two meanings are equivalent for many purposes, and will be used interchangeably in this article.</p>
+                    <p>However the probability is interpreted, each state in the ensemble evolves over time according to the equation of motion. Thus, the
+                        ensemble itself (the probability distribution over states) also evolves, as the virtual systems in the ensemble continually leave one
+                        state and enter another. The ensemble evolution is given by the <a href="/wiki/Liouville%27s_theorem_(Hamiltonian)"
+                                                                                           title="Liouville's theorem (Hamiltonian)">Liouville equation</a>
+                        (classical mechanics) or the <a href="/wiki/Von_Neumann_equation" class="mw-redirect" title="Von Neumann equation">von Neumann
+                            equation</a> (quantum mechanics). These equations are simply derived by the application of the mechanical equation of motion
+                        separately to each virtual system contained in the ensemble, with the probability of the virtual system being conserved over time as it
+                        evolves from state to state.</p>
+                    <p>One special class of ensemble is those ensembles that do not evolve over time. These ensembles are known as <i>equilibrium ensembles</i>
+                        and their condition is known as <i>statistical equilibrium</i>. Statistical equilibrium occurs if, for each state in the ensemble, the
+                        ensemble also contains all of its future and past states with probabilities equal to the probability of being in that state.<sup
+                                id="cite_ref-6" class="reference"><a href="#cite_note-6">[note 3]</a></sup> The study of equilibrium ensembles of isolated
+                        systems is the focus of statistical thermodynamics. Non-equilibrium statistical mechanics addresses the more general case of ensembles
+                        that change over time, and/or ensembles of non-isolated systems.</p>
+                    <h2><span class="mw-headline" id="Statistical_thermodynamics">Statistical thermodynamics</span><span class="mw-editsection"><span
+                            class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Statistical_mechanics&amp;action=edit&amp;section=2"
+                                                                      title="Edit section: Statistical thermodynamics">edit</a><span
+                            class="mw-editsection-bracket">]</span></span></h2>
+                    <p>The primary goal of statistical thermodynamics (also known as equilibrium statistical mechanics) is to derive the <a
+                            href="/wiki/Classical_thermodynamics" class="mw-redirect" title="Classical thermodynamics">classical thermodynamics</a> of materials
+                        in terms of the properties of their constituent particles and the interactions between them. In other words, statistical thermodynamics
+                        provides a connection between the macroscopic properties of materials in <a href="/wiki/Thermodynamic_equilibrium"
+                                                                                                    title="Thermodynamic equilibrium">thermodynamic
+                            equilibrium</a>, and the microscopic behaviours and motions occurring inside the material.</p>
+                    <p>Whereas statistical mechanics proper involves dynamics, here the attention is focussed on <i>statistical equilibrium</i> (steady state).
+                        Statistical equilibrium does not mean that the particles have stopped moving (<a href="/wiki/Mechanical_equilibrium"
+                                                                                                         title="Mechanical equilibrium">mechanical
+                            equilibrium</a>), rather, only that the ensemble is not evolving.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

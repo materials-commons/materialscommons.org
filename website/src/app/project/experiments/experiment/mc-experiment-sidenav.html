@@ -1,36 +1,99 @@
-<md-sidenav md-is-locked-open="true" layout="column" class="experiment-tools-sidenav">
+<md-sidenav md-is-locked-open="true" layout="column" class="project-sidenav">
     <md-content>
-        <div layout="column" layout-align="center center"
-             class="experiment-tool experiment-tool-border-top"
-             ui-sref-active="active" ui-sref="project.experiment.details">
-            <i class="fa fa-fw fa-flask fa-2x"></i>
-            <span>Details</span>
+        <div style="margin-top: 15px; padding: 3px;">
+            <a style="margin-left: 10px; " class="md-subhead white">
+                <i class="fa fa-fw fa-home"></i>Ti 64: Prior Beta Grain Size Reconstruction
+            </a>
         </div>
 
-        <div layout="column" layout-align="center center" class="experiment-tool"
-             ui-sref-active="active" ui-sref="project.experiment.workflow">
-            <i class="fa fa-fw fa-sitemap fa-2x"></i>
-            <span>Workflow</span>
+        <md-divider style="margin-top:8px;"></md-divider>
+
+        <div style="padding: 3px; background-color: #1a82d4;">
+            <a style="margin-left: 30px" class="md-subhead white"><i class="fa fa-fw fa-flask"></i>
+                Recrystalized Ti64 Orientation Image Microscopy
+            </a>
         </div>
 
-        <div layout="column" layout-align="center center" class="experiment-tool"
-             ui-sref-active="active" ui-sref="project.experiment.tasks">
-            <i class="fa fa-fw fa-check-square-o fa-2x"></i>
-            <span>Tasks</span>
+        <div style="padding: 3px;">
+            <a style="margin-left: 45px" class="md-subhead white"><i class="fa fa-fw fa-file-text"></i>Experiment Description</a>
         </div>
 
-        <div layout="column" layout-align="center center" class="experiment-tool"
-             ui-sref-active="active" ui-sref="project.experiment.notes">
-            <i class="fa fa-fw fa-book fa-2x"></i>
-            <span>Notes</span>
+        <div style="padding: 3px;">
+            <a style="margin-left: 45px" class="md-subhead white"><i class="fa fa-fw fa-cubes"></i>Samples</a>
         </div>
 
-        <div layout="column" layout-align="center center" class="experiment-tool"
-             ng-class="{active: $ctrl.$state.includes('project.experiment.datasets')}"
-             ui-sref="project.experiment.datasets.list">
-            <i class="fa fa-fw fa-database fa-2x"></i>
-            <span>Datasets</span>
+        <div style="padding: 3px;">
+            <a style="margin-left: 45px" class="md-subhead white"><i class="fa fa-fw fa-folder"></i>Experiment Files</a>
         </div>
+
+        <div style="padding: 3px;">
+            <a style="margin-left: 45px" class="md-subhead white"><i class="fa fa-fw fa-pencil-square"></i>Template Builder</a>
+        </div>
+
+        <div style="padding: 3px">
+            <a style="margin-left: 45px" class="md-subhead white"><i class="fa fa-fw fa-gears"></i>Settings</a>
+        </div>
+
+        <div style="padding: 3px;">
+            <a style="margin-left: 45px" class="md-subhead white"><i class="fa fa-fw fa-refresh"></i>Refresh</a>
+        </div>
+
+        <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
+
+        <div style="padding: 3px;">
+            <a style="margin-left: 30px" class="md-subhead white">
+                <i class="fa fa-fw fa-folder"></i> Literature
+            </a>
+        </div>
+
+        <div style="padding: 3px;">
+            <a style="margin-left: 30px" class="md-subhead white">
+                <i class="fa fa-fw fa-folder"></i> Presentations
+            </a>
+        </div>
+
+        <div style="padding: 3px;">
+            <a style="margin-left: 30px" class="md-subhead white">
+                <i class="fa fa-fw fa-folder"></i> Working Documents
+            </a>
+        </div>
+
+        <div style="padding: 3px;">
+            <a style="margin-left: 30px" class="md-subhead white">
+                <i class="fa fa-fw fa-folder"></i> Papers
+            </a>
+        </div>
+        <!--<div layout="column" layout-align="center center"-->
+        <!--class="experiment-tool experiment-tool-border-top"-->
+        <!--ui-sref-active="active" ui-sref="project.experiment.details">-->
+        <!--<i class="fa fa-fw fa-flask fa-2x"></i>-->
+        <!--<span>Details</span>-->
+        <!--</div>-->
+
+        <!--<div layout="column" layout-align="center center" class="experiment-tool"-->
+        <!--ui-sref-active="active" ui-sref="project.experiment.workflow">-->
+        <!--<i class="fa fa-fw fa-sitemap fa-2x"></i>-->
+        <!--<span>Workflow</span>-->
+        <!--</div>-->
+
+        <!--<div layout="column" layout-align="center center" class="experiment-tool"-->
+        <!--ui-sref-active="active" ui-sref="project.experiment.tasks">-->
+        <!--<i class="fa fa-fw fa-check-square-o fa-2x"></i>-->
+        <!--<span>Tasks</span>-->
+        <!--</div>-->
+
+        <!--<div layout="column" layout-align="center center" class="experiment-tool"-->
+        <!--ui-sref-active="active" ui-sref="project.experiment.notes">-->
+        <!--<i class="fa fa-fw fa-book fa-2x"></i>-->
+        <!--<span>Notes</span>-->
+        <!--</div>-->
+
+        <!--<div layout="column" layout-align="center center" class="experiment-tool"-->
+        <!--ng-class="{active: $ctrl.$state.includes('project.experiment.datasets')}"-->
+        <!--ui-sref="project.experiment.datasets.list">-->
+        <!--<i class="fa fa-fw fa-database fa-2x"></i>-->
+        <!--<span>Datasets</span>-->
+        <!--</div>-->
 
         <!--<div layout="column" layout-align="center center" class="experiment-tool"-->
         <!--ui-sref-active="active" ui-sref="project.experiment.forecast">-->
@@ -38,16 +101,16 @@
         <!--<span>Forecast</span>-->
         <!--</div>-->
 
-        <div layout="column" layout-align="center center" class="experiment-tool"
-             ui-sref-active="active" ui-sref="project.experiment.samples">
-            <i class="fa fa-fw fa-cubes fa-2x"></i>
-            <span>Samples</span>
-        </div>
+        <!--<div layout="column" layout-align="center center" class="experiment-tool"-->
+        <!--ui-sref-active="active" ui-sref="project.experiment.samples">-->
+        <!--<i class="fa fa-fw fa-cubes fa-2x"></i>-->
+        <!--<span>Samples</span>-->
+        <!--</div>-->
 
-        <div layout="column" layout-align="center center" class="experiment-tool experiment-tool-no-bottom-border"
-             ui-sref-active="active" ui-sref="project.experiment.files">
-            <i class="fa fa-fw fa-files-o fa-2x"></i>
-            <span>Files</span>
-        </div>
+        <!--<div layout="column" layout-align="center center" class="experiment-tool experiment-tool-no-bottom-border"-->
+        <!--ui-sref-active="active" ui-sref="project.experiment.files">-->
+        <!--<i class="fa fa-fw fa-files-o fa-2x"></i>-->
+        <!--<span>Files</span>-->
+        <!--</div>-->
     </md-content>
 </md-sidenav>

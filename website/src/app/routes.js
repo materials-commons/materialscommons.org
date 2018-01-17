@@ -111,6 +111,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/search/:query',
             template: '<mc-project-search></mc-project-search>'
         })
+        .state('project.notes', {
+            url: '/notes',
+            template: '<mc-project-notes></mc-project-notes>'
+        })
         .state('project.create', {
             url: '/create',
             abstract: true,
