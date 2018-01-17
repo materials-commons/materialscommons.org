@@ -19,6 +19,7 @@ function* getProcess(dbr, processID) {
 }
 
 function mergeTemplateIntoProcess(template, process) {
+    console.log(mergeTemplateIntoProcess, process.id, process.setup.length, template.setup.length);
     process.setup[0].properties.forEach(function(property) {
         let i = _.findIndex(template.setup[0].properties, (tprop) => tprop.attribute === property.attribute);
         if (i > -1) {
@@ -45,6 +46,7 @@ function mergeTemplateIntoProcess(template, process) {
             }
         }
     });
+    let tsetup = template.setup
     process.setup = template.setup;
     if (!process.measurements.length && template.measurements.length) {
         process.measurements = template.measurements;

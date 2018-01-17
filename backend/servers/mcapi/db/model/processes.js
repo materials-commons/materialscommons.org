@@ -2,6 +2,8 @@ const r = require('../r');
 const dbExec = require('./run');
 const commonQueries = require('../../../lib/common-queries');
 const processCommon = require('./process-common');
+const model = require('./model');
+
 
 function* getProcess(processID) {
     return yield processCommon.getProcess(r, processID);
@@ -137,6 +139,23 @@ function* isLeafNode(processId) {
         .filter({direction: 'in'});
     // If length is zero then process is a leaf node
     return usingAsInputs.length === 0;
+}
+
+function* addAdditionalParemeters(processId, args){
+    //get new setup
+    let rv = yield r.table('setups').insert(new model.Setups('Process','process'));
+    let setupId = rv.generated_keys[0];
+    let properties = args.map(prop => {
+        if (!prop.description) prop.description = '';
+        if (!prop.unit) prop.unit = '';
+        return new model.SetupProperty(
+            setupId, prop.name, prop.description,
+            prop.attribute, prop.otype, prop.value, prop.unit);
+    });
+    yield r.table('setupproperties').insert(properties);
+    yield r.table('process2setup').insert(new model.Process2Setup(processId,setupId));
+    console.log("addAdditionalParemeters", processId, setupId);
+    return {val: yield getProcess(processId)};
 }
 
 function* deleteProcessFull(projectId, processId, options) {
@@ -286,6 +305,7 @@ module.exports = {
     getProcess,
     getProjectProcesses,
     getProcessTemplates,
+    addAdditionalParemeters,
     createProcessFromTemplate,
     updateProcess,
     deleteProcessFull,

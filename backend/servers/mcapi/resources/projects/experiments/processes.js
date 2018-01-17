@@ -144,6 +144,19 @@ function convertPropertyDateValues(updateArgs) {
     return updateArgs;
 }
 
+function* addAdditionalParemeters(next) {
+    let parameterArgs = yield parse(this);
+    let properties = parameterArgs.properties;
+    let rv = yield processes.addAdditionalParemeters(this.params.process_id, properties);
+    if (rv.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
+}
+
 function* cloneProcess(next) {
     let cloneArgs = yield parse(this);
     cloneArgs = setDefaultCloneArgValues(cloneArgs);
@@ -248,6 +261,7 @@ function createResource() {
 
     router.put('/:process_id', updateExperimentProcess);
     router.get('/:process_id', getProcess);
+    router.post('/:process_id/addparameters', addAdditionalParemeters);
     router.post('/:process_id/clone', cloneProcess);
     router.get('/:process_id/files', getProcessFiles);
     router.delete('/:process_id', deleteProcessFromExperiment);
