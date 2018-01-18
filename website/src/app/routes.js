@@ -123,7 +123,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment', {
             url: '/experiment/:experiment_id',
-            template: `<mc-experiment></mc-experiment>`,
+            template: `<mc-experiment class="height-100"></mc-experiment>`,
             resolve: {
                 experiment: ["mcprojstore", "$stateParams", "_projstore",
                     (mcprojstore, $stateParams) => mcprojstore.getExperiment($stateParams.experiment_id)
