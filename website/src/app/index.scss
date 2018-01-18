@@ -316,7 +316,8 @@ md-checkbox.md-checked.mc-done .md-icon {
   margin-left: 0px;
   background-color: $mc-md-primary-color;
   //background-color: $mc-bar-dark-color;
-  height: 800px;
+  //height: 800px;
+  height: 100%;
   overflow: auto;
 }
 
@@ -664,4 +665,8 @@ table.md-table tr.md-row:last-child {
 .preview img, .preview audio, .preview video {
     max-width: 200px;
     max-height: 100px;
+}
+
+.height-100 {
+  height: 100% !important;
 }

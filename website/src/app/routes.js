@@ -24,7 +24,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('projects', {
             url: '/projects',
             abstract: true,
-            template: '<div ui-view></div>',
+            template: '<div flex layout="column" ui-view></div>',
             resolve: {
                 _projstore: ["mcprojstore", function (mcprojstore) {
                     return mcprojstore.ready();
@@ -46,7 +46,8 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('projects.list', {
             url: '/list',
-            template: '<mc-projects></mc-projects>'
+            // template: '<mc-long-list flex layout="column"></mc-long-list>'
+            template: '<mc-projects flex layout="column"></mc-projects>'
         })
         .state('account', {
             url: '/account',
@@ -105,7 +106,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.home', {
             url: '/home',
-            template: '<mc-project-home></mc-project-home>'
+            template: '<mc-project-home class="height-100"></mc-project-home>'
         })
         .state('project.search', {
             url: '/search/:query',
