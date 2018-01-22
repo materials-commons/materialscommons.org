@@ -22,6 +22,7 @@ class TemplateUnitsService {
         this.unitTypes.push(unit('Composition', 'at%', 'wt%', 'atoms'));
         this.unitTypes.push(unit('Load', 'ibf', 'N'));
         this.unitTypes.push(unit('Cooling Rate', 'C/s', 'K/s'));
+        this.unitTypes.push(unit('Speed', 'mm/min'));
         this.unitTypes.push(unit('Custom'));
     }
 
