@@ -104,6 +104,10 @@ function* quickDeleteProcess(projectId, processId) {
     if (process.process_type === 'create') {
         let projectSamples = process2sampleout.map(p2s => [projectId, p2s.sample_id]);
         yield r.table('project2sample').getAll(r.args(projectSamples), {index: 'project_sample'}).delete();
+
+        // Delete samples from experiments
+        let sampleIds = process2sampleout.map(p2s => p2s.sample_id);
+        yield r.table('experiment2sample').getAll(r.args(sampleIds), {index: 'sample_id'}).delete();
     }
 
     if (process2sampleout.length) {
