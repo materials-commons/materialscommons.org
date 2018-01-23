@@ -9,7 +9,6 @@ class MCProcessesWorkflowSidebarComponentController {
         this.selectedProcess = null;
         this.mcprojstore = mcprojstore;
         this.$timeout = $timeout;
-        //this.myName = 'MCProcessesWorkflowSidebar';
     }
 
     $onInit() {
@@ -18,11 +17,14 @@ class MCProcessesWorkflowSidebarComponentController {
             process => {
                 this.$timeout(() => this.selectedProcess = process);
             });
+        this.unsubscribeDelete = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVREMOVE,
+            () => this.$timeout(() => this.selectedProcess = null));
     }
 
     $onDestroy() {
         //this.workflowState.leaveSelectedProcess(this.myName);
         this.unsubscribe();
+        this.unsubscribeDelete();
     }
 
     addToGraph(template) {
