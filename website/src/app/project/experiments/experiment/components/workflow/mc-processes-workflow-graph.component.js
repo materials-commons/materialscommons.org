@@ -329,6 +329,7 @@ class MCProcessesWorkflowGraphComponentController {
         let target = event.cyTarget;
         if (target.isNode()) {
             let process = this.getProcessFromEvent(event);
+            this.mcprojstore.currentProcess = process;
             this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, process.id).then(
                 p => this.mcshow.processDetailsDialog(p, false).then(
                     updatedProcess => target.data('name', updatedProcess.name)
