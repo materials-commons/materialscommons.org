@@ -68,7 +68,7 @@ module.exports.getOne = function* (next) {
                 },
                 comment_count: r.db('materialscommons').table('comments')
                     .getAll(ds('id'), {index: 'item_id'}).count(),
-                interested_users: r.table('useful2item')
+                interested_users: r.table('useful2item').getAll(ds('id'),{index: 'item_id'})
                     .eqJoin('user_id', r.db('materialscommons')
                         .table('users'))
                     .zip().pluck('fullname', 'email')
