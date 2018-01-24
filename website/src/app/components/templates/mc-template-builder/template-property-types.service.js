@@ -29,6 +29,9 @@ class TemplatePropertyTypesService {
         this.allPropertyTypes.push(createProperty('Float', 'float'));
         this.allPropertyTypes.push(createProperty('Selection', 'selection'));
 
+        u = this.templateUnits.findUnitType('Speed', this.unitTypes);
+        this.allPropertyTypes.push(createProperty('Speed', 'integer', {units: u}));
+
         u = this.templateUnits.findUnitType('Voltage', this.unitTypes);
         this.allPropertyTypes.push(createProperty('Voltage', 'float', {units: u}));
 

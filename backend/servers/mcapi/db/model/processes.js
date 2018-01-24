@@ -2,6 +2,8 @@ const r = require('../r');
 const dbExec = require('./run');
 const commonQueries = require('../../../lib/common-queries');
 const processCommon = require('./process-common');
+const model = require('./model');
+
 
 function* getProcess(processID) {
     return yield processCommon.getProcess(r, processID);
@@ -97,9 +99,15 @@ function* quickDeleteProcess(projectId, processId) {
     if (process.does_transform) {
         let samplePropertySets = process2sampleout.map(p2s => [p2s.sample_id, p2s.property_set_id]);
         yield r.table('sample2propertyset').getAll(r.args(samplePropertySets), {index: 'sample_property_set'}).delete();
-    } else if (process.process_type === 'create') {
+    }
+
+    if (process.process_type === 'create') {
         let projectSamples = process2sampleout.map(p2s => [projectId, p2s.sample_id]);
         yield r.table('project2sample').getAll(r.args(projectSamples), {index: 'project_sample'}).delete();
+
+        // Delete samples from experiments
+        let sampleIds = process2sampleout.map(p2s => p2s.sample_id);
+        yield r.table('experiment2sample').getAll(r.args(sampleIds), {index: 'sample_id'}).delete();
     }
 
     if (process2sampleout.length) {
@@ -137,6 +145,22 @@ function* isLeafNode(processId) {
         .filter({direction: 'in'});
     // If length is zero then process is a leaf node
     return usingAsInputs.length === 0;
+}
+
+function* addAdditionalParemeters(processId, args){
+    //get new setup
+    let rv = yield r.table('setups').insert(new model.Setups('Process','process'));
+    let setupId = rv.generated_keys[0];
+    let properties = args.map(prop => {
+        if (!prop.description) prop.description = '';
+        if (!prop.unit) prop.unit = '';
+        return new model.SetupProperty(
+            setupId, prop.name, prop.description,
+            prop.attribute, prop.otype, prop.value, prop.unit);
+    });
+    yield r.table('setupproperties').insert(properties);
+    yield r.table('process2setup').insert(new model.Process2Setup(processId,setupId));
+    return {val: yield getProcess(processId)};
 }
 
 function* deleteProcessFull(projectId, processId, options) {
@@ -286,6 +310,7 @@ module.exports = {
     getProcess,
     getProjectProcesses,
     getProcessTemplates,
+    addAdditionalParemeters,
     createProcessFromTemplate,
     updateProcess,
     deleteProcessFull,

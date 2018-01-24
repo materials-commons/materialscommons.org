@@ -23,7 +23,7 @@ function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
     if (ctrl.selectedProcess !== null) {
         ctrl.processFilter = ctrl.selectedProcess.id;
     } else {
-        ctrl.processFilter = null;
+        ctrl.processFilter = '';
     }
 
     ctrl.selected = [];
@@ -35,7 +35,7 @@ function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
 
     if (ctrl.options.showAllSamples) {
         ctrl.showAllProcesses = true;
-        ctrl.processFilter = null;
+        ctrl.processFilter = '';
     }
 
     ctrl.itemSelected = false;

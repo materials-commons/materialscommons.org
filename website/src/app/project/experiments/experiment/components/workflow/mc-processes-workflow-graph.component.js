@@ -81,7 +81,7 @@ class MCProcessesWorkflowGraphComponentController {
             });
         });
 
-        this.mcbus.subscribe('EDGE$ADD', this.myName, (source, target) => console.log('EDGE$ADD', source, target));
+        this.mcbus.subscribe('EDGE$ADD', this.myName, ({samples, process}) => this.addEdge(samples, process));
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
         this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, processes => {
             this._addToHidden(this.cyGraph.hideOtherNodesMultiple(this.cy, processes))
@@ -106,7 +106,11 @@ class MCProcessesWorkflowGraphComponentController {
             }
         });
 
-        this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => this.allProcessesGraph());
+        this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => {
+            const currentExperiment = this.mcprojstore.currentExperiment;
+            this.processes = _.values(currentExperiment.processes);
+            this.allProcessesGraph()
+        });
         this.mcbus.subscribe('WORKFLOW$NAVIGATOR', this.myName, () => {
             if (this.navigator === null) {
                 this.navigator = this.cy.navigator();
@@ -227,6 +231,34 @@ class MCProcessesWorkflowGraphComponentController {
         }
     }
 
+    addEdge(samples, targetProcess) {
+        samples.forEach(sample => {
+            const sourceProcess = this.findSourceProcess(sample);
+            const id = `${targetProcess.id}_${sourceProcess.id}`;
+            const existingEdge = this.cy.getElementById(id);
+            if (existingEdge.length) {
+                this.processGraph.addSampleToEdge(existingEdge, sample);
+            } else {
+                let newEdge = this.processGraph.createEdge(sourceProcess.id, targetProcess.id, sample);
+                this.cy.add([{group: 'edges', data: newEdge}]);
+            }
+        });
+    }
+
+    findSourceProcess(sample) {
+        for (let process of this.processes) {
+            if (process.output_samples) {
+                for (let s of process.output_samples) {
+                    if (s.id === sample.id && s.property_set_id === sample.property_set_id) {
+                        return process;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     replaceProcess(process) {
         let i = _.findIndex(this.processes, p => p.id === process.id);
         if (i !== -1) {
@@ -297,6 +329,7 @@ class MCProcessesWorkflowGraphComponentController {
         let target = event.cyTarget;
         if (target.isNode()) {
             let process = this.getProcessFromEvent(event);
+            this.mcprojstore.currentProcess = process;
             this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, process.id).then(
                 p => this.mcshow.processDetailsDialog(p, false).then(
                     updatedProcess => target.data('name', updatedProcess.name)

@@ -52,6 +52,10 @@ class MCProcessTemplateCreateSamplesComponentController {
                         .then(
                             () => {
                                 this.process.output_samples.push(samples.samples[0]);
+                                this.mcprojstore.updateCurrentProcess(currentProcess => {
+                                    currentProcess.output_samples = this.process.output_samples;
+                                    return currentProcess;
+                                });
                                 this.focus(samples.samples[0].id);
                             },
                             () => this.toast.error('Failed to add sample to experiment')

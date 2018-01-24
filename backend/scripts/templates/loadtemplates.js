@@ -737,6 +737,7 @@ class EpmaDataCollectionTemplate extends TemplateBase {
             .number("Step Size", "microns")
             .string("Grid Dimensions")
             .string("Location")
+            .number("Number of points")
             .done();
     }
 }

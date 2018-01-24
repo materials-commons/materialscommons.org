@@ -30,18 +30,6 @@ class WorkflowStateService {
                 currentProcess.hasChildren = hasChildren;
                 return currentProcess;
             });
-            // this.experimentsAPI.getProcessForExperiment(projectId, experimentId, process.id)
-            //     .then(
-            //         (process) => {
-            //             process.hasChildren = hasChildren;
-            //             this.mcstate.set(this.mcstate.SELECTED$PROCESS, process);
-            //         },
-            //         () => {
-            //             this.toast.error('Unable to retrieve process details');
-            //             this.selectedProcess = null;
-            //             this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);
-            //         }
-            //     );
         } else {
             this.selectedProcess = null;
             this.mcstate.set(this.mcstate.SELECTED$PROCESS, null);

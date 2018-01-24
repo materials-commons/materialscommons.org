@@ -19,6 +19,13 @@
             </md-button>
         </div>
         <b>{{$ctrl.uploadMessage}}</b>
+        <div ng-if="$ctrl.uploadFailures.length">
+            <ul class="no-bullets">
+                <li ng-repeat="f in $ctrl.uploadFailures" class="mc-error-color">
+                    Failed to upload {{f.file}}: {{f.reason}}
+                </li>
+            </ul>
+        </div>
         <ul class="no-bullets">
             <li ng-repeat="file in $ctrl.files" class="margin-top-10" ng-if="$ctrl.uploadFiles.length === 0">
                 <a ng-click="$ctrl.remove($index)" class="mc-error-color">
