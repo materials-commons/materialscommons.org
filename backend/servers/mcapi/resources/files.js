@@ -38,7 +38,7 @@ function* downloadFile(next) {
     if (!found) {
         this.status = httpStatus.NOT_FOUND;
         let message = "File is currently unavailable. ";
-        message += "In the case of file display, a conversion file is needed, try later ";
+        message += "In the case of file content display, a conversion file is needed, try later ";
         message += `- name: '${file.name}', id: ${file.id}`;
         this.body = {error: message};
     }
