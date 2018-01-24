@@ -1,4 +1,8 @@
 # Release Notes
+## January 2018
+- :star: ** New Feature:** We are doing a bunch of work behind the scenes to enable command line upload of data and workflow.
+- :star: ** Improvements:** A lot of work went into testing and squashing bugs.
+
 ## November 2017
 - :star: **New Feature:** Add comments section to public datasets.
 - :star: **New Feature:** Add download and view statistics to public datasets.
