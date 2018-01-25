@@ -9,11 +9,6 @@ module.exports = class APIKeyInitializer extends Initializer {
     }
 
     initialize() {
-        // *************************************************************************************************
-        //     require('../lib/apikey-cache') in initialize so that rethinkdb initializer has run before the require
-        //     statement, otherwise rethinkdb in r is not defined.
-        // *************************************************************************************************
-
         const middleware = {
             name: this.name,
             global: true,
@@ -27,13 +22,13 @@ module.exports = class APIKeyInitializer extends Initializer {
                 }
 
                 let user = await apikeyCache.find(data.params.apikey);
-                if (! user) {
+                if (!user) {
                     throw new Error('Not authorized');
                 }
 
                 data.user = user;
             }
         };
-         api.actions.addMiddleware(middleware)
+        api.actions.addMiddleware(middleware)
     }
 };
