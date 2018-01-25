@@ -1,4 +1,4 @@
-const r = require('../lib/r');
+const r = require('../r');
 
 function Project(name, description, owner) {
     this.name = name;
@@ -346,7 +346,7 @@ function Dataset(title, owner) {
     let now = r.now();
     this.owner = owner;
     this.title = title;
-    this.otype='dataset';
+    this.otype = 'dataset';
     this.institution = "";
     this.authors = [];
     this.birthtime = now;
@@ -407,14 +407,27 @@ function DataFile(name, owner) {
     this.uploaded = 0;
 }
 
-function Project2DataFile(projectId,datafileId) {
+function Project2DataFile(projectId, datafileId) {
     this.project_id = projectId;
     this.datafile_id = datafileId;
 }
 
-function DataDir2DataFile(dirId,datafileId) {
+function DataDir2DataFile(dirId, datafileId) {
     this.datadir_id = dirId;
     this.datafile_id = datafileId;
+}
+
+function Comment(item_id, item_type, owner, text) {
+    this.otype = "comment";
+    let now = r.now();
+    this.birthtime = now;
+    this.mtime = now;
+    this.atime = now;
+
+    this.owner = owner;
+    this.text = text;
+    this.item_id = item_id;
+    this.item_type = item_type;
 }
 
 module.exports = {
@@ -466,6 +479,7 @@ module.exports = {
     Dataset2Datafile,
     DataFile,
     Project2DataFile,
-    DataDir2DataFile
+    DataDir2DataFile,
+    Comment
 };
 
