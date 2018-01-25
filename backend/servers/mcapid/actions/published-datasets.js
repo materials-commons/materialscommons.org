@@ -1,4 +1,5 @@
 const {Action} = require('actionhero');
+const datasets = require('../lib/dal/published-datasets');
 
 module.exports.AllPublishedDatasetsAction = class AllPublishedDatasetsAction extends Action {
     constructor() {
@@ -9,6 +10,7 @@ module.exports.AllPublishedDatasetsAction = class AllPublishedDatasetsAction ext
     }
 
     async run({response}) {
+        response.data = await datasets.getAll();
     }
 };
 
