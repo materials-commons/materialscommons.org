@@ -41,8 +41,7 @@ async function getProject(projectId) {
         });
     rql = transformDates(rql);
     rql = addComputed(rql, true);
-    let project = await run(rql);
-    return {val: project};
+    return await run(rql);
 }
 
 
