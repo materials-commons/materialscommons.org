@@ -1,5 +1,6 @@
 const {Initializer, api} = require('actionhero');
 const apikeyCache = require('../lib/apikey-cache');
+const r = require('../lib/r');
 
 module.exports = class APIKeyInitializer extends Initializer {
     constructor() {
@@ -29,6 +30,9 @@ module.exports = class APIKeyInitializer extends Initializer {
                 data.user = user;
             }
         };
-        api.actions.addMiddleware(middleware)
+
+        r.table('users').changes().toStream().on('data', () => apikeyCache.clear());
+
+        api.actions.addMiddleware(middleware);
     }
 };
