@@ -77,8 +77,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project', {
             url: '/project/:project_id',
-            abstract: true,
-            template: '<ui-view flex="100" layout="column"></ui-view>',
+            // abstract: true,
+            // template: '<ui-view flex="100" layout="column"></ui-view>',
+            template: '<mc-project class="height-100" flex="100" layout="column"></mc-project>',
             resolve: {
                 _projstore: ["mcprojstore", function (mcprojstore) {
                     return mcprojstore.ready();
