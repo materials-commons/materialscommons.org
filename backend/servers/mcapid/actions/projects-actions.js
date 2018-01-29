@@ -1,4 +1,6 @@
-const {Action} = require('actionhero');
+const {Action, api} = require('actionhero');
+const projects = require('../lib/dal/projects');
+const dal = require('../lib/dal');
 
 module.exports.ListProjectsAction = class ListProjectsAction extends Action {
     constructor() {
@@ -29,10 +31,19 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
         super();
         this.name = 'getProject';
         this.description = 'Get details for a given project';
+        this.inputs = {
+            project_id: {
+                required: true
+            }
+        }
     }
 
     async run({response, params}) {
-
+        const project = await dal.tryCatch(async () => await projects.getProject(params.project_id));
+        if (!project) {
+            throw new Error(`No such project_id ${params.project_id}`);
+        }
+        response.data = project;
     }
 };
 
