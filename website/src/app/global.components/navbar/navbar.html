@@ -1,25 +1,18 @@
 <md-toolbar style="background-color: #2c3e50">
     <div class="md-toolbar-tools">
         <div layout="column">
-            <h1 class="mc-name-color">MaterialsCommons</h1>
+            <h1 class="mc-md-light-primary-color">MaterialsCommons</h1>
             <md-divider style="border-top-color:#e7e8ea"></md-divider>
             <div layout="row" layout-align="space-between">
                 <span class="md-subhead"
-                      ng-class="{'site-active-color': $ctrl.projectSiteActive(), pointer: $ctrl.isAuthenticated}"
+                      ng-class="{'navbar-site-active': $ctrl.projectSiteActive(), pointer: $ctrl.isAuthenticated}"
                       ui-sref="projects.list">Projects</span>
                 <span class="md-subhead pointer"
-                      ng-class="{'site-active-color': $ctrl.dataSiteActive()}"
+                      ng-class="{'navbar-site-active': $ctrl.dataSiteActive()}"
                       ui-sref="data.home.top">Published Data</span>
             </div>
         </div>
-        <h1 ng-if="false">
-            <a class="mc-link-no-change" ng-click="$ctrl.switchSites()">
-                <i class="fa fa-fw fa-bars mc-link-no-change"></i>
-            </a>
-            <span class="mc-link-no-change" ui-srefx="projects.list">
-                MaterialsCommons <!--<sup style="font-size: 60%; color:yellow">Data</sup>-->
-            </span>
-        </h1>
+
         <md-divider class="md-vertical-divider margin-left-15"
                     style="border-right-color: #4d4d4d"></md-divider>
         <div layout="row" hide-md hide-sm layout-align="space-around" flex-gt-md="15" flex="10" ng-if="false">

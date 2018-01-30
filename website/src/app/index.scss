@@ -1,672 +1,254 @@
 $fa-font-path: "../../bower_components/font-awesome/fonts";
 @import "../../bower_components/font-awesome/scss/font-awesome";
-@import "./accordion";
+/*@import "./accordion";*/
 
-$mc-color-flagged: #ff9800;
-$mc-color-error: #ff5824;
-$mc-color-important: #3f51b5;
-$mc-color-done: #4caf50;
-$mc-task-detail-color: #e7e8ea;
-$mc-light-grey: #f4f5f7;
-$mc-dark-grey: #cecfd1;
-$mc-color-error-dark: #d32f2f;
-$mc-md-primary-color: #1565c0;
-//$mc-sidebar-color: #009688;
-$mc-light-blue: #bbdefb;
-$mc-sidebar-color: $mc-light-blue;
-$mc-md-light-primary-color: #2196F3;
-$mc-bar-dark-color: #2c3e50;
-$mc-md-accent-color: #ff5252;
-$mc-transform-color: #fbc02d;
-$mc-destructive-color: #d32f2f;
-//$mc-measurement-color: #616161;
-$mc-measurement-color: #cfd8dc;
-$mc-analysis-color: #d1c4e9;
-$mc-create-samples-color: #ffecb3;
-$mc-import-samples-color: #b2bfdb;
+//$mc-md-primary-color: #1565c0;
+@import "colors";
 
-.mc-name-color {
-  color: $mc-md-light-primary-color;
+html {
+    height: 100%;
+    font-size: 14px;
 }
 
-.mc-white-color {
-  color: white;
-}
-
-.site-active-color {
-  color: #ffcb0b;
-}
-
-.mc-transform-color {
-  color: $mc-transform-color;
-}
-
-.bold {
-  font-weight: bold;
-}
-
-.mc-destructive-color {
-  color: $mc-destructive-color;
-}
-
-.mc-measurement-color {
-  color: $mc-measurement-color;
-}
-
-.mc-light-blue-color {
-  color: $mc-light-blue;
-}
-
-.mc-analysis-color {
-  color: $mc-analysis-color;
-}
-
-.mc-create-samples-color {
-  color: $mc-create-samples-color;
-}
-
-.mc-import-samples-color {
-  color: $mc-import-samples-color;
-}
-
-.mc-sidebar {
-  background-color: $mc-sidebar-color;
-  color: black;
-}
-
-.mc-sidebar a {
-  color: #1976d2;
-}
-
-.project-card-header {
-  background-color: $mc-md-light-primary-color;
-  color: white;
-}
-
-.has-children {
-  cursor: pointer;
-  color: $mc-md-primary-color;
-}
-
-.project-card {
-  background-color: $mc-light-grey;
-}
-
-.project-card:hover {
-  /*background-color: #2196f3;*/
-  box-shadow: 5px 5px 5px 0 #a3a3a3;
-}
-
-/* Customize md toast */
-md-toast.md-error-theme .md-toast-content {
-  background-color: $mc-color-error-dark;
-}
-
-.mc-md-primary-color {
-  color: $mc-md-primary-color;
-}
-
-.mc-md-primary-bg {
-  background-color: $mc-md-primary-color;
-}
-
-.mc-light-grey-bg {
-  background-color: $mc-light-grey;
-}
-
-.mc-light-grey-color {
-  color: $mc-light-grey;
-}
-
-.mc-dark-grey-color {
-  color: $mc-dark-grey;
-}
-
-.mc-flag-not-set {
-  color: $mc-dark-grey;
-}
-
-.align-task-element {
-  margin-bottom: 14px;
-}
-
-.mc-experiment-outline-task {
-  margin-top: 2px;
-  padding-top: 14px;
-  margin-bottom: 2px;
-  padding-left: 10px;
-  background-color: $mc-light-grey;
-  border-radius: 6px;
-  border-left: 7px solid $mc-light-grey;
-  border-right: 7px solid $mc-light-grey;
-}
-
-.task-selected {
-  border-left-color: $mc-md-primary-color;
-  border-right-color: $mc-md-primary-color;
-}
-
-.mc-flag {
-  color: white;
-  font-size: 0.8em;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.task-toolbar-bg {
-  background-color: $mc-task-detail-color;
-}
-
-.task-details-border {
-  border-left: 2px solid $mc-task-detail-color;
-  border-right: 2px solid $mc-task-detail-color;
-  border-bottom: 2px solid $mc-task-detail-color;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.dialog-form {
-  margin-top: 10px;
-}
-
-.mark-text-done {
-  position: relative;
-}
-
-.mark-text-done::after {
-  border-bottom: 0.25em solid $mc-color-done; //rgba(255, 0, 0, 0.5);
-  content: "";
-  left: 0;
-  line-height: 2em;
-  margin-top: calc(0.125em / 2 * -1);
-  position: absolute;
-  right: 0;
-  top: 50%;
-}
-
-.md-vertical-divider {
-  border-top-width: 0;
-  border-right-width: 1px;
-  border-right-style: solid;
-  height: 100%;
-  padding-top: 2px;
-}
-
-.mc-input-as-line {
-  background-color: transparent;
-  border: 0 solid #ffffff;
-  border-bottom: 1px solid #eaebed;
-  outline: none;
-}
-
-.mc-text-area {
-  outline: none;
-  border: 2px solid #eaebed;
-}
-
-.mc-input-no-border {
-  background-color: transparent;
-  border: 0 none $mc-light-grey;
-  padding: 0;
-}
-
-.no-outline {
-  outline: none;
+body {
+    font-family: roboto, serif;
+    font-style: normal;
+    color: #424242;
+    background-color: #ffffff;
+    height: 100%;
+    overflow-x: hidden;
 }
 
 textarea {
-  resize: none;
-}
-
-.text-white {
-  color: white;
-}
-
-.text-black {
-  color: black;
-}
-
-.mc-error-bg {
-  background-color: $mc-color-error;
-}
-
-.mc-error-color {
-  color: $mc-color-error;
-}
-
-md-checkbox.md-checked.mc-error .md-icon {
-  background-color: $mc-color-error;
-}
-
-.mc-flagged-bg {
-  background-color: $mc-color-flagged;
-}
-
-.mc-flagged-color {
-  color: $mc-color-flagged;
-}
-
-md-checkbox.md-checked.mc-flagged .md-icon {
-  background-color: $mc-color-flagged;
-}
-
-.mc-important-bg {
-  background-color: $mc-color-important;
-}
-
-.mc-important-color {
-  color: $mc-color-important;
-}
-
-md-checkbox.md-checked.mc-important .md-icon {
-  background-color: $mc-color-important;
-}
-
-.mc-done-bg {
-  background-color: $mc-color-done;
-}
-
-.mc-done-color {
-  color: $mc-color-done;
-}
-
-md-checkbox.md-checked.mc-done .md-icon {
-  background-color: $mc-color-done;
-}
-
-// Attempt to set the radio-button color (not working)
-//.mc-radio-done md-radio-button, md-radio-button.md-checked ._md-off {
-//  border-color: $mc-color-done;
-//}
-//
-//.mc-radio-done md-radio-button, md-radio-button.md-checked ._md-on {
-//  background-color: $mc-color-done;
-//}
-
-.no-bullets {
-  list-style: none;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.experiment-tools-sidenav {
-  min-width: 100px;
-  max-width: 100px;
-  margin-left: 8px;
-  //background-color: #e9e9e9;
-  background-color: $mc-bar-dark-color;
-  height: 490px;
-  overflow: auto;
-}
-
-.experiment-tools-sidenav md-content {
-  //background-color: #e9e9e9;
-  background-color: $mc-bar-dark-color;
-}
-
-.project-sidenav {
-  min-width: 270px;
-  max-width: 270px;
-  margin-left: 0px;
-  background-color: $mc-md-primary-color;
-  //background-color: $mc-bar-dark-color;
-  //height: 800px;
-  height: 100%;
-  overflow: auto;
-}
-
-.project-sidenav md-content {
-  background-color: $mc-md-primary-color;
-  //background-color: $mc-bar-dark-color;
-}
-
-.template-builder-sidenav {
-  min-width: 100px;
-  max-width: 100px;
-  margin-left: 8px;
-  height: 300px;
-  overflow: auto;
-}
-
-.experiment-tool {
-  padding-top: 10px;
-  height: 70px;
-  padding-bottom: 8px;
-  color: $mc-md-light-primary-color;
-  cursor: pointer;
-  border-bottom: 2px solid #767676;
-}
-
-.experiment-tool-no-bottom-border {
-  border-bottom: 2px solid #e9e9e9;
-}
-
-.experiment-tool-border-top {
-  border-top: 2px;
-}
-
-.experiment-tool.active {
-  color: white;
-  background-color: $mc-md-primary-color;
-}
-
-.experiment-card {
-  border-left: 4px solid $mc-md-primary-color;
-  background-color: $mc-light-grey;
-  cursor: pointer;
-}
-
-.divider-extra {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.task-filter i {
-  margin-left: 10px;
-}
-
-.margin-top-10 {
-  margin-top: 10px;
-}
-
-.margin-top-20 {
-  margin-top: 20px;
-}
-
-.margin-top-30 {
-  margin-top: 30px;
-}
-
-.margin-top-40 {
-  margin-top: 40px;
-}
-
-.margin-left-45 {
-  margin-left: 45px;
-}
-
-.margin-left-30 {
-  margin-left: 30px;
-}
-
-.margin-left-15 {
-  margin-left: 15px;
-}
-
-.timeline-badge {
-  padding-top: 10px;
-}
-
-.arrow_box {
-  position: relative;
-  background: $mc-md-primary-color;
-  border: 4px solid $mc-md-light-primary-color;
-  border-radius: 4px;
-}
-
-.mc-box {
-  position: relative;
-  background: $mc-md-primary-color;
-  border: 4px solid $mc-md-light-primary-color;
-  border-radius: 4px;
-}
-
-.arrow_box:after, .arrow_box:before {
-  left: 100%;
-  top: 50%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-}
-
-.arrow_box:after {
-  border-color: rgba(136, 183, 213, 0);
-  border-left-color: $mc-md-primary-color;
-  border-width: 10px;
-  margin-top: -10px;
-}
-
-.arrow_box:before {
-  border-color: rgba(194, 225, 245, 0);
-  border-left-color: $mc-md-light-primary-color;
-  border-width: 16px;
-  margin-top: -16px;
-}
-
-.mc-link-no-change:visited {
-  color: white;
-}
-
-.mc-link-no-change:focus {
-  color: white;
-}
-
-a {
-  text-decoration: none !important;
-}
-
-#processesGraph {
-  width: 60%;
-  height: 85%;
-  position: absolute;
-}
-
-#datasetGraph {
-  width: 60%;
-  height: 75%;
-  position: absolute;
-}
-
-.outline-node-selected {
-  background-color: $mc-dark-grey;
-}
-
-.outline-node-highlight {
-  background-color: $mc-light-blue;
-}
-
-.view-selected {
-  color: black;
-  border-bottom: solid $mc-dark-grey 2px;
-}
-
-md-checkbox.md-checkbox-small {
-  .md-icon {
-    transform: scale(.7);
-  }
-  margin-bottom: 0;
-  margin-top: 0;
-}
-
-.no-inner-padding .md-subheader-inner {
-  padding-left: 0;
+    resize: none;
 }
 
 /*
-** Do not group these rules.
-**
-** Newest release of angular-material broke the default color for placeholder for inputs. Angular team marked as
-** won't fix. So this is a work around.
-*/
-input.mc-navbar-search-input::-webkit-input-placeholder {
-  color: white;
+** Utility classes
+ */
+.height-100 {
+    height: 100% !important;
 }
 
-input.mc-navbar-search-input:-moz-placeholder {
-  /* FF 4-18 */
-  color: white;
+.pointer {
+    cursor: pointer;
 }
 
-input.mc-navbar-search-input::-moz-placeholder {
-  /* FF 19+ */
-  color: white;
+.mc-link-no-change:visited {
+    color: white;
 }
 
-input.mc-navbar-search-input:-ms-input-placeholder {
-  /* IE 10+ */
-  color: white;
+.mc-link-no-change:focus {
+    color: white;
 }
 
-md-toast.md-success-toast-theme .md-toast-content {
-  background-color: $mc-md-primary-color;
+.margin-top-10 {
+    margin-top: 10px;
 }
 
-.cy-panzoom {
-  z-index: 5;
+.margin-top-20 {
+    margin-top: 20px;
 }
 
-.cytoscape-navigator {
-  z-index: 5;
-  height: 200px;
-  width: 600px;
+.margin-top-30 {
+    margin-top: 30px;
 }
 
-.cy-context-menus-cxt-menuitem {
-  font-size: 16px;
+.margin-top-40 {
+    margin-top: 40px;
+}
+
+.margin-left-30 {
+    margin-left: 30px;
+}
+
+.margin-left-15 {
+    margin-left: 15px;
+}
+
+.md-vertical-divider {
+    border-top-width: 0;
+    border-right-width: 1px;
+    border-right-style: solid;
+    height: 100%;
+    padding-top: 2px;
+}
+
+/*
+** Font Awesome
+ */
+.fa {
+    margin-right: 3px;
+}
+
+/*
+** Style the sidenav bar
+ */
+
+.project-sidenav {
+    min-width: 270px;
+    max-width: 270px;
+    margin-left: 0px;
+    background-color: $mc-md-primary-color;
+    height: 100%;
+    overflow: auto;
+}
+
+.project-sidenav md-content {
+    background-color: $mc-md-primary-color;
+}
+
+/*
+** Navbar
+ */
+.navbar-site-active {
+    color: $yellow-color;
+}
+
+/*
+** Not organized but used
+ */
+.align-task-element {
+    margin-bottom: 14px;
 }
 
 a.always-white, a.always-white:link, a.always-white:visited, a.always-white:hover, a.always-white:focus, a.always-white:active {
-  color: #ffffff;
-  text-transform: uppercase;
+    color: #ffffff;
+    text-transform: uppercase;
 }
 
-.cell-left-8px {
-  border-left-width: 8px;
+.bold {
+    font-weight: bold;
 }
 
-.cell-left-odd {
-  border-left: 4px solid #1565c0;
+.btn-process {
+    background-color: #3A9EE3;
 }
 
-.cell-left-even {
-  border-left: 4px solid #4caf50;
+.btn-process:hover {
+    background-color: #3575b4;
+    color: #ffffff;
+    border-color: #3A9EE3;
 }
 
-.cell-right-8px {
-  border-right-width: 8px;
-}
-
-.cell-right-odd {
-  border-right: 4px solid #1565c0;
-}
-
-.cell-right-even {
-  border-right: 4px solid #4caf50;
-}
-
-table.md-table tr.md-row:last-child {
-  border-bottom: 2px solid #b9b9b9;
-}
-
-/* ************************** */
-/**
- * The dnd-list should always have a min-height,
- * otherwise you can't drop to it once it's empty
- */
-.mc-template ul[dnd-list] {
-  min-height: 42px;
-  padding-left: 0;
-}
-
-/**
- * The dndDraggingSource class will be applied to
- * the source element of a drag operation. It makes
- * sense to hide it to give the user the feeling
- * that he's actually moving it.
- */
-.mc-template ul[dnd-list] .dndDraggingSource {
-  display: none;
-}
-
-/**
- * An element with .dndPlaceholder class will be
- * added to the dnd-list while the user is dragging
- * over it.
- */
-.mc-template ul[dnd-list] .dndPlaceholder {
-  background-color: #ddd;
-  display: block;
-  min-height: 42px;
-}
-
-.mc-template ul[dnd-list] li {
-  margin-top: 10px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  //border-top-right-radius: 4px;
-  //border-top-left-radius: 4px;
-  border-radius: 4px;
-  display: block;
-  padding: 10px 15px;
-  margin-bottom: -1px;
-}
-
-/**
- * Show selected elements in green
- */
-.mc-template ul[dnd-list] li.selected {
-  background-color: #dff0d8;
-  color: #3c763d;
-}
-
-.dnd-list-empty {
-  background-color: #ddd;
-}
-
-/* ******************************* */
-.radio-description {
-  font-size: 0.9em;
-  color: grey;
+.close {
+    color: black;
 }
 
 .cursor-grab {
-  cursor: grab;
+    cursor: grab;
 }
 
-.merge-experiment {
-  background-color: lightblue;
+.cursor-pointer {
+    cursor: pointer;
 }
 
-.mc-md-small {
-  font-size: 0.9em;
+.dialog-form {
+    margin-top: 10px;
 }
 
 .drop-box {
-  background: #F8F8F8;
-  border: 5px dashed #DDD;
-  width: 270px;
-  text-align: center;
-  padding: 100px 10px;
-  margin-left: 10px;
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    width: 270px;
+    text-align: center;
+    padding: 100px 10px;
+    margin-left: 10px;
 }
 
 .move-drop-box {
-  background: #F8F8F8;
-  border: 5px dashed #DDD;
-  width: 400px;
-  text-align: center;
-  padding: 25px 10px;
-  margin-left: 10px;
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    width: 400px;
+    text-align: center;
+    padding: 25px 10px;
+    margin-left: 10px;
 }
 
-.preview {
-    clear: both;
+.dropdown.divider {
+    border-left: 1px solid lightgray;
 }
 
-.preview img, .preview audio, .preview video {
-    max-width: 200px;
-    max-height: 100px;
+.dropdown-menu > li a:hover,
+.dropdown-menu > li a:focus {
+    background-color: #2c3e50;
+    color: #ffffff;
 }
 
-.height-100 {
-  height: 100% !important;
+.errors {
+    color: red;
+}
+
+.experiment-tool {
+    padding-top: 10px;
+    height: 70px;
+    padding-bottom: 8px;
+    color: $mc-md-light-primary-color;
+    cursor: pointer;
+    border-bottom: 2px solid #767676;
+}
+
+.experiment-tool-no-bottom-border {
+    border-bottom: 2px solid #e9e9e9;
+}
+
+.experiment-tool-border-top {
+    border-top: 2px;
+}
+
+.experiment-tool.active {
+    color: white;
+    background-color: $mc-md-primary-color;
+}
+
+.join-success-splash {
+    margin-right: auto;
+    margin-left: auto;
+    padding: 50px;
+    width: 600px;
+    background-color: white;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.join-splash {
+    padding-top: 25px;
+}
+
+.login-splash {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    padding: 50px;
+    width: 400px;
+    background-color: white;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.mc-active-tree-node.angular-ui-tree-handle:hover {
+    background-color: #e7e9ea;
+}
+
+.mc-active-tree-node.angular-ui-tree-handle-active {
+    background-color: #e7e9ea;
+}
+
+.angular-ui-tree-placeholder {
+    background: #f0f9ff;
+    border: 2px dashed #bed2db;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.mc-danger {
+    color: #800000;
+}
+
+md-checkbox.md-checked.mc-done .md-icon {
+    background-color: $mc-color-done;
+}
+
+.mc-file-tree-control {
+    font-size: 0.8rem;
+    color: #b1d4f1;
 }

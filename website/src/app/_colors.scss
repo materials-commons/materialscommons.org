@@ -1,0 +1,30 @@
+$mc-md-primary-color: #1565c0;
+$mc-md-light-primary-color: #2196F3;
+$yellow-color: #ffcb0b;
+$white-color: #ffffff;
+$mc-color-done: #4caf50;
+$mc-color-error: #ff5824;
+
+.mc-md-primary-bg {
+    color: $mc-md-primary-color;
+}
+
+.mc-md-light-primary-color {
+    color: $mc-md-light-primary-color;
+}
+
+.white-color {
+    color: $white-color;
+}
+
+.white {
+    color: $white-color;
+}
+
+.mc-done-color {
+    color: $mc-color-done;
+}
+
+.mc-error-color {
+    color: $mc-color-error;
+}

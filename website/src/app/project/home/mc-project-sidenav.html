@@ -23,9 +23,44 @@
         </div>
 
         <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white" ui-sref="project.notes">
+            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white" ng-click="$ctrl.experimentActive = !$ctrl.experimentActive">
                 <i class="fa fa-fw fa-flask"></i>Experiments(1)
             </a>
+        </div>
+
+        <div ng-if="$ctrl.experimentActive">
+
+            <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
+
+            <div style="padding: 3px; background-colorx: #00499b">
+            <span style="margin-left: 40px" class="md-subhead white"><i class="fa fa-fw fa-flask"></i>
+                Recrystalized Ti64 Orientation Image Microscopy
+            </span>
+            </div>
+
+            <div style="background-colorx:#00499b">
+                <div style="padding: 3px;">
+                    <a style="margin-left: 55px" class="md-subhead white"><i class="fa fa-fw fa-file-text"></i>Experiment Description</a>
+                </div>
+
+                <div style="padding: 3px; background-color: #1a82d4;">
+                    <a style="margin-left: 55px" class="md-subhead white"><i class="fa fa-fw fa-sitemap"></i>Workflow</a>
+                </div>
+
+                <div style="padding: 3px;">
+                    <a style="margin-left: 55px" class="md-subhead white"><i class="fa fa-fw fa-cubes"></i>Samples(1)</a>
+                </div>
+
+                <div style="padding: 3px;">
+                    <a style="margin-left: 55px" class="md-subhead white"><i class="fa fa-fw fa-folder"></i>Experiment Files</a>
+                </div>
+
+                <div style="padding: 3px;">
+                    <a style="margin-left: 55px" class="md-subhead white"><i class="fa fa-fw fa-pencil-square"></i>Template Builder</a>
+                </div>
+            </div>
+
+            <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
         </div>
 
         <div style="padding: 3px;">
