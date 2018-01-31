@@ -1,6 +1,6 @@
 class MCFileUploaderComponentController {
     /*@ngInject*/
-    constructor(Upload, User, $timeout) {
+    constructor(Upload, User, $timeout, mcFileOpsDialogs) {
         this.Upload = Upload;
         this.User = User;
         this.files = [];
@@ -10,6 +10,7 @@ class MCFileUploaderComponentController {
         this.uploadMessage = '';
         this.uploaded = [];
         this.uploadFailures = [];
+        this.mcFileOpsDialogs = mcFileOpsDialogs;
     }
 
     remove(index) {
@@ -57,6 +58,13 @@ class MCFileUploaderComponentController {
                 });
             }
         )
+    }
+
+    useGlobusForUpload() {
+        console.log("useGlobusForUpload", this.path, this.directoryId);
+        this.mcFileOpsDialogs.uploadUsingGlobus(this.path).then(globusNameOrID => {
+            console.log("Would upload using Globus", globusNameOrID, this.path, this.directoryId);
+        });
     }
 }
 
