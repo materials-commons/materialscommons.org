@@ -7,6 +7,12 @@
             </a>
         </h3>
     </div>
+    <div layout="row" ng-if="$ctrl.globusUploadPending()">
+        <span>Globus upload <b><i>in progress</i></b>: from <b>MyGlobusEndpoint (/data/for/mc)</b> to <b>'Demo Project/MyExtraData'</b></span>
+    </div>
+    <div layout="row" ng-if="$ctrl.globusUploadComplete()">
+        <span>Globus upload <b><i>is completed</i></b>: from <b>MyGlobusEndpoint (/data/for/mc)</b> to <b>'Demo Project/MyExtraData'</b> (<a>ok</a>)</span>
+    </div>
     <div layout="row" class="margin-left-30">
         <mc-dir-toolbar></mc-dir-toolbar>
     </div>
