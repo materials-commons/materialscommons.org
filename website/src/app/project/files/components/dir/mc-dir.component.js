@@ -43,10 +43,9 @@ class MCDirComponentController {
 
     useGlobusForDownload(){
         console.log("useGlobusForDownload");
-//        console.log("useGlobusForDownload", this.dir.data.path, this.dir.data.id);
-//        this.mcFileOpsDialogs.downloadUsingGlobus(this.dir.data.path).then(globusNameOrID => {
-//            console.log("Would download using Globus", globusNameOrID, this.dir.data.path, this.dir.data.id);
-//        });
+        this.mcFileOpsDialogs.downloadUsingGlobus("XXX").then(() => {
+            console.log("Would download using Globus");
+        });
     }
 
     uploadFiles() {

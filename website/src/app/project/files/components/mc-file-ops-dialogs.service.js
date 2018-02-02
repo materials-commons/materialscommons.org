@@ -62,7 +62,7 @@ class MCFileOpsDialogsService {
     }
 
     downloadUsingGlobus(path){
-        console.log("downloadUsingGlobus", path);
+        console.log("file ops: downloadUsingGlobus", path);
         return this.$mdDialog.show({
             templateUrl: 'app/project/files/components/dialogs/use-globus-download-dialog.html',
             controller: DownloadUsingGlobusDialogController,
@@ -137,7 +137,7 @@ class DownloadUsingGlobusDialogController {
     }
 
     done() {
-        this.$mdDialog.hide();
+        this.$mdDialog.hide(this.globusUser);
     }
 
     cancel() {
