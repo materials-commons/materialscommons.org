@@ -61,6 +61,20 @@ class MCFileOpsDialogsService {
         })
     }
 
+    downloadUsingGlobus(path){
+        console.log("downloadUsingGlobus", path);
+        return this.$mdDialog.show({
+            templateUrl: 'app/project/files/components/dialogs/use-globus-download-dialog.html',
+            controller: DownloadUsingGlobusDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                path: path,
+            }
+        })
+
+    }
+
 }
 
 angular.module('materialscommons').service('mcFileOpsDialogs', MCFileOpsDialogsService);
@@ -107,6 +121,23 @@ class UploadUsingGlobusDialogController {
 
     done() {
         this.$mdDialog.hide(this.globusEndpointNameOrId);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class DownloadUsingGlobusDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.newDirName = "";
+        console.log('DownloadUsingGlobusDialogController', this.path)
+    }
+
+    done() {
+        this.$mdDialog.hide();
     }
 
     cancel() {

@@ -1,0 +1,12 @@
+<md-dialog flex="60">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>To download '{{$ctrl.path}}' using Globus
+            <md-button class="md-warn" ng-click="$ctrl.helpDialog()">Help</md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()">Create Temporary Materials Commons Shared Endpoint</md-button>
+    </md-dialog-actions>
+</md-dialog>
