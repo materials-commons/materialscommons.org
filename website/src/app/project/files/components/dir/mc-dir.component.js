@@ -41,10 +41,14 @@ class MCDirComponentController {
         return ret;
     }
 
+    globusDownloadEndpoint() {
+        console.log("Globus endpoint enabled"); return true;
+    }
+
     useGlobusForDownload(){
-        console.log("useGlobusForDownload");
-        this.mcFileOpsDialogs.downloadUsingGlobus("XXX").then(() => {
-            console.log("Would download using Globus");
+        console.log("useGlobusForDownload - fake path 'Demo Project/EPMA_Analysis'");
+        this.mcFileOpsDialogs.downloadUsingGlobus("Demo Project/EPMA_Analysis").then((g_user) => {
+            console.log("Would download using Globus", g_user, "Demo Project/EPMA_Analysis");
         });
     }
 
