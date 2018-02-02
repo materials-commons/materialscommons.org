@@ -13,6 +13,9 @@
     <div layout="row" ng-if="$ctrl.globusUploadComplete()">
         <span>Globus upload <b><i>is completed</i></b>: from <b>MyGlobusEndpoint (/data/for/mc)</b> to <b>'Demo Project/MyExtraData'</b> (<a>ok</a>)</span>
     </div>
+    <div layout="row" ng-if="true">
+        <span>For large files, large file sets, or directory trees, <a ng-click="$ctrl.useGlobusForDownload()">use Globus</a> for download.</span>
+    </div>
     <div layout="row" class="margin-left-30">
         <mc-dir-toolbar></mc-dir-toolbar>
     </div>
