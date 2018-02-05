@@ -48,73 +48,65 @@ body {
     color: $mc-md-light-primary-color;
 }
 
-.mc-white-color {
-    color: white;
-}
-
-.site-active-color {
-    color: #ffcb0b;
-}
-
-.mc-transform-color {
-    color: $mc-transform-color;
-}
+//.mc-transform-color {
+//    color: $mc-transform-color;
+//}
 
 .bold {
     font-weight: bold;
 }
 
-.mc-destructive-color {
-    color: $mc-destructive-color;
-}
+//.mc-destructive-color {
+//    color: $mc-destructive-color;
+//}
 
-.mc-measurement-color {
-    color: $mc-measurement-color;
-}
+//.mc-measurement-color {
+//    color: $mc-measurement-color;
+//}
 
-.mc-light-blue-color {
-    color: $mc-light-blue;
-}
+//.mc-light-blue-color {
+//    color: $mc-light-blue;
+//}
 
-.mc-analysis-color {
-    color: $mc-analysis-color;
-}
+//.mc-analysis-color {
+//    color: $mc-analysis-color;
+//}
 
-.mc-create-samples-color {
-    color: $mc-create-samples-color;
-}
+//.mc-create-samples-color {
+//    color: $mc-create-samples-color;
+//}
+//
+//.mc-import-samples-color {
+//    color: $mc-import-samples-color;
+//}
 
-.mc-import-samples-color {
-    color: $mc-import-samples-color;
-}
+//.mc-sidebar {
+//    background-color: $mc-sidebar-color;
+//    color: black;
+//}
 
-.mc-sidebar {
-    background-color: $mc-sidebar-color;
-    color: black;
-}
+//.mc-sidebar a {
+//    color: #1976d2;
+//}
 
-.mc-sidebar a {
-    color: #1976d2;
-}
+//.project-card-header {
+//    background-color: $mc-md-light-primary-color;
+//    color: white;
+//}
 
-.project-card-header {
-    background-color: $mc-md-light-primary-color;
-    color: white;
-}
+//.has-children {
+//    cursor: pointer;
+//    color: $mc-md-primary-color;
+//}
 
-.has-children {
-    cursor: pointer;
-    color: $mc-md-primary-color;
-}
-
-.project-card {
-    background-color: $mc-light-grey;
-}
-
-.project-card:hover {
-    /*background-color: #2196f3;*/
-    box-shadow: 5px 5px 5px 0 #a3a3a3;
-}
+//.project-card {
+//    background-color: $mc-light-grey;
+//}
+//
+//.project-card:hover {
+//    /*background-color: #2196f3;*/
+//    box-shadow: 5px 5px 5px 0 #a3a3a3;
+//}
 
 /* Customize md toast */
 md-toast.md-error-theme .md-toast-content {
@@ -149,16 +141,16 @@ md-toast.md-error-theme .md-toast-content {
     margin-bottom: 14px;
 }
 
-.mc-experiment-outline-task {
-    margin-top: 2px;
-    padding-top: 14px;
-    margin-bottom: 2px;
-    padding-left: 10px;
-    background-color: $mc-light-grey;
-    border-radius: 6px;
-    border-left: 7px solid $mc-light-grey;
-    border-right: 7px solid $mc-light-grey;
-}
+//.mc-experiment-outline-task {
+//    margin-top: 2px;
+//    padding-top: 14px;
+//    margin-bottom: 2px;
+//    padding-left: 10px;
+//    background-color: $mc-light-grey;
+//    border-radius: 6px;
+//    border-left: 7px solid $mc-light-grey;
+//    border-right: 7px solid $mc-light-grey;
+//}
 
 .task-selected {
     border-left-color: $mc-md-primary-color;
@@ -422,43 +414,11 @@ md-checkbox.md-checked.mc-done .md-icon {
     padding-top: 10px;
 }
 
-.arrow_box {
-    position: relative;
-    background: $mc-md-primary-color;
-    border: 4px solid $mc-md-light-primary-color;
-    border-radius: 4px;
-}
-
 .mc-box {
     position: relative;
     background: $mc-md-primary-color;
     border: 4px solid $mc-md-light-primary-color;
     border-radius: 4px;
-}
-
-.arrow_box:after, .arrow_box:before {
-    left: 100%;
-    top: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-}
-
-.arrow_box:after {
-    border-color: rgba(136, 183, 213, 0);
-    border-left-color: $mc-md-primary-color;
-    border-width: 10px;
-    margin-top: -10px;
-}
-
-.arrow_box:before {
-    border-color: rgba(194, 225, 245, 0);
-    border-left-color: $mc-md-light-primary-color;
-    border-width: 16px;
-    margin-top: -16px;
 }
 
 .mc-link-no-change:visited {
@@ -2078,17 +2038,6 @@ li.dashboard-item div p {
 
 .child-div-selector > div {
     height: 100%;
-}
-
-.take-parent-height {
-    height: 100%;
-}
-
-.snippet {
-    max-height: 100px;
-    overflow: hidden;
-    height: auto;
-    width: 200px;
 }
 
 .navbar-site-active {
