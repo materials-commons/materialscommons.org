@@ -4,6 +4,9 @@ $yellow-color: #ffcb0b;
 $white-color: #ffffff;
 $mc-color-done: #4caf50;
 $mc-color-error: #ff5824;
+$mc-light-grey: #f4f5f7;
+$mc-dark-grey: #cecfd1;
+$mc-color-error-dark: #d32f2f;
 
 .mc-md-primary-bg {
     color: $mc-md-primary-color;
@@ -27,4 +30,28 @@ $mc-color-error: #ff5824;
 
 .mc-error-color {
     color: $mc-color-error;
+}
+
+.mc-light-grey-bg {
+    background-color: $mc-light-grey;
+}
+
+.mc-light-grey-color {
+    color: $mc-light-grey;
+}
+
+.mc-md-primary-bg {
+    background-color: $mc-md-primary-color;
+}
+
+.mc-md-primary-color {
+    color: $mc-md-primary-color;
+}
+
+.mc-success {
+    color: #128F76;
+}
+
+.md-mc-primary-color-hue-2-bg {
+    background-color: #1565c0;
 }
