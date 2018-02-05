@@ -32,9 +32,9 @@ function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $aria
     });
 }
 
-appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText', "templates"];
+appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText', "templates", "mcprojstore"];
 
-function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText, templates) {
+function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText, templates, mcprojstore) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     // appRun will run when the application starts up and before any controllers have run.
@@ -52,6 +52,13 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
 
     const unregister = $rootScope.$on('$stateChangeStart', function (event, toState) {
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
+
+        if (toState.name.startsWith('project') && !toState.name.startsWith('projects')) {
+            if (!toState.name.startsWith('project.experiment')) {
+                mcprojstore.setCurrentExperiment(null);
+            }
+        }
+
         if (!User.isAuthenticated() && isStateRequiringALogin(toState.name)) {
             event.preventDefault();
             // $state.go('login');
