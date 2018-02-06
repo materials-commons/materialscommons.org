@@ -338,6 +338,10 @@ md-checkbox.md-checked.mc-done .md-icon {
     color: $white-color;
 }
 
+.pst-active {
+    background-color: #1a82d4;
+}
+
 a.project-sidenav-title:hover {
     color: white;
     opacity: 0.8;
@@ -350,6 +354,10 @@ a.project-sidenav-title:visited {
 a.project-sidenav-tool:hover {
     color: white;
     opacity: 0.8;
+}
+
+.project-sidenav-tool-active {
+    background-color: green;
 }
 
 a.project-sidenav-tool:visited {

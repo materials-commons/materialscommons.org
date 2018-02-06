@@ -8,7 +8,7 @@
             </div>
         </div>
 
-        <md-divider stylex="margin-top:8px"></md-divider>
+        <md-divider style="margin-bottom:8px"></md-divider>
 
         <div class="padding-3">
             <a class="project-sidenav-tool margin-left-30">
@@ -22,7 +22,7 @@
             </a>
         </div>
 
-        <div class="padding-3">
+        <div class="padding-3" ui-sref-active="pst-active">
             <a class="project-sidenav-tool margin-left-30" ui-sref="project.notes">
                 <i class="fa fa-fw fa-check-square-o"></i>Notes/To-dos
             </a>
@@ -75,8 +75,8 @@
             <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
         </div>
 
-        <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30">
+        <div class="padding-3" ui-sref-active="pst-active">
+            <a class="project-sidenav-tool margin-left-30" ui-sref="project.samples">
                 <i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.project.samples | toSize}})
             </a>
         </div>
@@ -87,8 +87,8 @@
             </a>
         </div>
 
-        <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30">
+        <div class="padding-3" ui-sref-active="pst-active">
+            <a class="project-sidenav-tool margin-left-30" ui-sref="project.files">
                 <i class="fa fa-fw fa-folder"></i>All Files
             </a>
         </div>
@@ -101,8 +101,8 @@
         <!--<a style="margin-left: 30px" class="md-subhead white"><i class="fa fa-fw fa-rss"></i>Activity Feed</a>-->
         <!--</div>-->
 
-        <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30">
+        <div class="padding-3" ui-sref-active="pst-active">
+            <a class="project-sidenav-tool margin-left-30" ui-sref="project.settings">
                 <i class="fa fa-fw fa-gears"></i>Settings
             </a>
         </div>
