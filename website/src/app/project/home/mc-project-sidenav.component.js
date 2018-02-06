@@ -15,8 +15,6 @@ class MCProjectSidenavComponentController {
                     return;
                 }
 
-                console.log('experiment', e);
-
                 if (!this.experiment) {
                     this.experiment = angular.copy(e);
                 } else if (this.experiment.id !== e.id) {
@@ -26,7 +24,6 @@ class MCProjectSidenavComponentController {
         });
 
         this.project = this.mcprojstore.currentProject;
-        console.log('this.project', this.project);
     }
 
     $onDestroy() {

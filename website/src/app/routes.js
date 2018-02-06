@@ -115,7 +115,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.notes', {
             url: '/notes',
-            template: '<mc-project-notes></mc-project-notes>'
+            template: '<mc-project-notes class="height-100"></mc-project-notes>'
         })
         .state('project.create', {
             url: '/create',
