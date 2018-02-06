@@ -237,7 +237,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.samples', {
             url: '/samples',
-            template: '<mc-project-samples samples="$resolve.samples"></mc-project-samples>',
+            template: '<mc-project-samples samples="$resolve.samples" class="height-100"></mc-project-samples>',
             resolve: {
                 samples: ['samplesAPI', '$stateParams',
                     (samplesAPI, $stateParams) =>
