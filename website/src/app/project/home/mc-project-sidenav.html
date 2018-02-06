@@ -1,81 +1,96 @@
 <md-content class="height-100">
     <md-sidenav md-is-locked-open="true" layout="column" class="project-sidenav">
-        <div style="margin-top: 15px; background-color: #1a82d4; padding: 3px;">
-            <a style="margin-left: 10px;" class="md-subhead white" ui-sref="project.home">
-                <i class="fa fa-fw fa-home"></i>Ti 64: Prior Beta Grain Size Reconstruction
+        <div style="padding: 0 0 8px 0; background-color: #0656b1">
+            <div style="margin-top: 15px; background-colorx: #1a82d4; padding: 3px;">
+                <a class="md-subhead white margin-left-10 project-sidenav-title" ui-sref="project.home">
+                    <i class="fa fa-fw fa-home"></i>{{$ctrl.project.name}}
+                </a>
+            </div>
+        </div>
+
+        <md-divider stylex="margin-top:8px"></md-divider>
+
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
+                <i class="fa fa-fw fa-file-text"></i>Project Description
             </a>
         </div>
 
-        <md-divider style="margin-top:8px"></md-divider>
-
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-file-text"></i>Project Description</a>
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
+                <i class="fa fa-fw fa-user-circle"></i>Collaborators({{($ctrl.project.users | toSize) - 1}})
+            </a>
         </div>
 
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-user-circle"></i>Collaborators(6)</a>
-        </div>
-
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white" ui-sref="project.notes">
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30" ui-sref="project.notes">
                 <i class="fa fa-fw fa-check-square-o"></i>Notes/To-dos
             </a>
         </div>
 
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white">
-                <i class="fa fa-fw fa-flask"></i>Experiments(1)
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
+                <i class="fa fa-fw fa-clipboard"></i>Experiments({{$ctrl.project.experiments | toSize}})
             </a>
         </div>
 
-        <div ng-show="$ctrl.experiment">
+        <div ng-if="$ctrl.experiment" style="padding:0">
 
             <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
 
-            <div style="padding: 3px; background-colorx: #00499b">
-            <span style="margin-left: 40px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-flask"></i>
-                {{$ctrl.experiment.name}}
-            </span>
+            <div class="padding-8" style="background-color: #0656b1">
+                <span class="project-sidenav-tool margin-left-40"><i class="fa fa-fw fa-flask"></i>{{$ctrl.experiment.name}}</span>
             </div>
 
-            <div style="background-colorx:#00499b">
-                <div style="padding: 3px;">
-                    <a style="margin-left: 55px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-file-text"></i>Experiment
-                        Description</a>
+            <div>
+                <div class="padding-3">
+                    <a class="project-sidenav-tool margin-left-55">
+                        <i class="fa fa-fw fa-file-text"></i>Experiment Description
+                    </a>
                 </div>
 
-                <div style="padding: 3px; background-color: #1a82d4;">
-                    <a style="margin-left: 55px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-sitemap"></i>Workflow</a>
+                <div class="padding-3">
+                    <a class="project-sidenav-tool margin-left-55"><i class="fa fa-fw fa-sitemap"></i>Workflow</a>
                 </div>
 
-                <div style="padding: 3px;">
-                    <a style="margin-left: 55px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-cubes"></i>Samples(1)</a>
+                <div class="padding-3">
+                    <a class="project-sidenav-tool margin-left-55">
+                        <i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.experiment.samples | toSize}})
+                    </a>
                 </div>
 
-                <div style="padding: 3px;">
-                    <a style="margin-left: 55px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-folder"></i>Experiment
-                        Files</a>
+                <div class="padding-3">
+                    <a class="project-sidenav-tool margin-left-55">
+                        <i class="fa fa-fw fa-folder"></i>Experiment Files
+                    </a>
                 </div>
 
-                <div style="padding: 3px;">
-                    <a style="margin-left: 55px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-pencil-square"></i>Template
-                        Builder</a>
+                <div class="padding-3">
+                    <a class="project-sidenav-tool margin-left-55">
+                        <i class="fa fa-fw fa-pencil-square"></i>Template Builder
+                    </a>
                 </div>
             </div>
 
             <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
         </div>
 
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-cubes"></i>Samples(3)</a>
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
+                <i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.project.samples | toSize}})
+            </a>
         </div>
 
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-database"></i>Datasets(0)</a>
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
+                <i class="fa fa-fw fa-database"></i>Datasets(0)
+            </a>
         </div>
 
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-folder"></i>All Files</a>
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
+                <i class="fa fa-fw fa-folder"></i>All Files
+            </a>
         </div>
 
         <!--<div style="padding: 3px;">-->
@@ -86,36 +101,40 @@
         <!--<a style="margin-left: 30px" class="md-subhead white"><i class="fa fa-fw fa-rss"></i>Activity Feed</a>-->
         <!--</div>-->
 
-        <div style="padding: 3px">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-gears"></i>Settings</a>
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
+                <i class="fa fa-fw fa-gears"></i>Settings
+            </a>
         </div>
 
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white"><i class="fa fa-fw fa-refresh"></i>Refresh</a>
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
+                <i class="fa fa-fw fa-refresh"></i>Refresh
+            </a>
         </div>
 
         <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
 
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white">
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
                 <i class="fa fa-fw fa-folder"></i> Literature
             </a>
         </div>
 
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white">
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
                 <i class="fa fa-fw fa-folder"></i> Presentations
             </a>
         </div>
 
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white">
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
                 <i class="fa fa-fw fa-folder"></i> Working Documents
             </a>
         </div>
 
-        <div style="padding: 3px;">
-            <a style="margin-left: 30px; font-size:14px; font-weight:500" class="md-subhead white">
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30">
                 <i class="fa fa-fw fa-folder"></i> Papers
             </a>
         </div>

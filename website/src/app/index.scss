@@ -332,6 +332,30 @@ md-checkbox.md-checked.mc-done .md-icon {
     overflow: auto;
 }
 
+.project-sidenav-tool {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: $white-color;
+}
+
+a.project-sidenav-title:hover {
+    color: white;
+    opacity: 0.8;
+}
+
+a.project-sidenav-title:visited {
+    color: white;
+}
+
+a.project-sidenav-tool:hover {
+    color: white;
+    opacity: 0.8;
+}
+
+a.project-sidenav-tool:visited {
+    color: white;
+}
+
 .project-sidenav md-content {
     background-color: $mc-md-primary-color;
     //background-color: $mc-bar-dark-color;
@@ -396,6 +420,30 @@ md-checkbox.md-checked.mc-done .md-icon {
 
 .margin-top-40 {
     margin-top: 40px;
+}
+
+.padding-3 {
+    padding: 3px;
+}
+
+.padding-8 {
+    padding: 8px;
+}
+
+.margin-left-55 {
+    margin-left: 55px;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
+}
+
+.margin-left-40 {
+    margin-left: 40px;
+}
+
+.margin-left-55 {
+    margin-left: 55px;
 }
 
 .margin-left-45 {
@@ -937,16 +985,16 @@ textarea {
 /*border-color: #E57373;*/
 /*}*/
 
-.btn-danger:hover,
-.btn-danger:focus,
-.btn-danger.focus,
-.btn-danger:active,
-.btn-danger.active,
-.open > .dropdown-toggle.btn-danger {
-    color: #ffffff;
-    background-color: #c9302c;
-    border-color: #ac2925;
-}
+//.btn-danger:hover,
+//.btn-danger:focus,
+//.btn-danger.focus,
+//.btn-danger:active,
+//.btn-danger.active,
+//.open > .dropdown-toggle.btn-danger {
+//    color: #ffffff;
+//    background-color: #c9302c;
+//    border-color: #ac2925;
+//}
 
 .text-danger {
     color: #E57373;
