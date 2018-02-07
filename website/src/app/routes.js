@@ -160,7 +160,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             template: '<mc-experiment-forecast experiment="$resolve.experiment"></mc-experiment-forecast>'
         })
         .state('project.experiment.workflow', {
-            url: '/processes',
+            url: '/workflow',
             template: '<mc-processes-workflow processes="$resolve.processes"></mc-processes-workflow>',
             resolve: {
                 processes: ["experiment", (experiment) => _.values(experiment.processes)]

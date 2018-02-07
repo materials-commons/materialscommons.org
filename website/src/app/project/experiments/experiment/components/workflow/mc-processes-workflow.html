@@ -1,19 +1,18 @@
 <div layout="row" style="margin-right:15px; padding-top: 10px" flex="100" layout-fill>
 
-    <div flex="100" style="min-height:75vh">
+    <div flex="100" layout="column" layout-fill>
         <mc-workflow-toolbar></mc-workflow-toolbar>
-        <mc-processes-workflow-graph ng-show="$ctrl.showGraphView"
-                                     processes="$ctrl.processes"
+        <mc-processes-workflow-graph processes="$ctrl.processes"
                                      highlight-processes="$ctrl.highlightProcesses">
         </mc-processes-workflow-graph>
-        <mc-processes-workflow-outline ng-if="!$ctrl.showGraphView"
-                                       highlight-processes="$ctrl.highlightProcesses"
-                                       dataset="$ctrl.dataset"
-                                       processes="$ctrl.processes">
-        </mc-processes-workflow-outline>
+        <!--<mc-processes-workflow-outline ng-if="!$ctrl.showGraphView"-->
+        <!--highlight-processes="$ctrl.highlightProcesses"-->
+        <!--dataset="$ctrl.dataset"-->
+        <!--processes="$ctrl.processes">-->
+        <!--</mc-processes-workflow-outline>-->
     </div>
     <span flex style="border-left: solid 2px grey; margin-left: 8px" ng-if="$ctrl.showSidebar"></span>
-    <div flex="30" ng-if="$ctrl.showSidebar" style="z-index:5">
-        <mc-processes-workflow-sidebar></mc-processes-workflow-sidebar>
+    <div flex="30" ng-if="$ctrl.showSidebar" style="z-index:5" layout="column" layout-fill>
+        <mc-processes-workflow-sidebar layout="column" flex></mc-processes-workflow-sidebar>
     </div>
 </div>
