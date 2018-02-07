@@ -27,14 +27,7 @@
     </md-toolbar>
     <div layout="row" layout-align="center stretch">
         <md-content flex layout="column">
-            <div ng-if="$ctrl.showTableView">
-                <mc-project-samples-table samples="$ctrl.samples"
-                                          filter-by="$ctrl.query">
-                </mc-project-samples-table>
-            </div>
-            <div ng-if="!$ctrl.showTableView">
-                Show card view
-            </div>
+            <mc-project-samples-table samples="$ctrl.samples" filter-by="$ctrl.query"></mc-project-samples-table>
         </md-content>
     </div>
 </div>
