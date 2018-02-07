@@ -1,10 +1,11 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, mcprojstore, $timeout) {
+    constructor($state, mcprojstore, $timeout, ProjectModel) {
         this.$state = $state;
         this.mcprojstore = mcprojstore;
         this.experiment = null;
         this.$timeout = $timeout;
+        this.ProjectModel = ProjectModel;
     }
 
     $onInit() {
@@ -28,6 +29,19 @@ class MCProjectSidenavComponentController {
 
     $onDestroy() {
         this.unsubscribe();
+    }
+
+    refreshProject() {
+        this.ProjectModel.getProjectForCurrentUser(this.project.id).then((p) => this.updateProjectExperiments(p));
+    }
+
+    updateProjectExperiments(project) {
+        this.mcprojstore.updateCurrentProject((currentProject, transformers) => {
+            let transformedExperiments = project.experiments.map(e => transformers.transformExperiment(e));
+            project.experiments = _.indexBy(transformedExperiments, 'id');
+            project.experimentsFullyLoaded = true;
+            return project;
+        });
     }
 }
 

@@ -299,6 +299,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/settings',
             template: '<mc-project-settings></mc-project-settings>'
         })
+        .state('project.collaborators', {
+            url: '/collaborators',
+            template: '<mc-project-collaborators class="height-100"></mc-project-collaborators>'
+        })
         .state('data', {
             url: '/data',
             abstract: true,

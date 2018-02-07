@@ -1,6 +1,6 @@
 <md-content class="height-100">
     <md-sidenav md-is-locked-open="true" layout="column" class="project-sidenav">
-        <div style="padding: 0 0 8px 0; background-color: #0656b1">
+        <div style="padding: 0 0 8px 0; background-colorx: #0656b1;background-color: #4393ee">
             <div style="margin-top: 15px; background-colorx: #1a82d4; padding: 3px;">
                 <a class="md-subhead white margin-left-10 project-sidenav-title" ui-sref="project.home">
                     <i class="fa fa-fw fa-home"></i>{{$ctrl.project.name}}
@@ -16,8 +16,8 @@
             </a>
         </div>
 
-        <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30">
+        <div class="padding-3" ui-sref-active="pst-active">
+            <a class="project-sidenav-tool margin-left-30" ui-sref="project.collaborators">
                 <i class="fa fa-fw fa-user-circle"></i>Collaborators({{($ctrl.project.users | toSize) - 1}})
             </a>
         </div>
@@ -93,14 +93,6 @@
             </a>
         </div>
 
-        <!--<div style="padding: 3px;">-->
-        <!--<a style="margin-left: 30px" class="md-subhead white"><i class="fa fa-fw fa-line-chart"></i>Project Stats</a>-->
-        <!--</div>-->
-
-        <!--<div style="padding: 3px;">-->
-        <!--<a style="margin-left: 30px" class="md-subhead white"><i class="fa fa-fw fa-rss"></i>Activity Feed</a>-->
-        <!--</div>-->
-
         <div class="padding-3" ui-sref-active="pst-active">
             <a class="project-sidenav-tool margin-left-30" ui-sref="project.settings">
                 <i class="fa fa-fw fa-gears"></i>Settings
@@ -108,7 +100,7 @@
         </div>
 
         <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30">
+            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.refreshProject()">
                 <i class="fa fa-fw fa-refresh"></i>Refresh
             </a>
         </div>
