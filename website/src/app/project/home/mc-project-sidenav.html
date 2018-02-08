@@ -43,30 +43,32 @@
             </div>
 
             <div>
-                <div class="padding-3">
-                    <a class="project-sidenav-tool margin-left-55">
+                <div class="padding-3" ui-sref-active="pst-active">
+                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.details">
                         <i class="fa fa-fw fa-file-text"></i>Experiment Description
                     </a>
                 </div>
 
-                <div class="padding-3">
-                    <a class="project-sidenav-tool margin-left-55"><i class="fa fa-fw fa-sitemap"></i>Workflow</a>
+                <div class="padding-3" ui-sref-active="pst-active">
+                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.workflow">
+                        <i class="fa fa-fw fa-sitemap"></i>Workflow
+                    </a>
                 </div>
 
-                <div class="padding-3">
-                    <a class="project-sidenav-tool margin-left-55">
+                <div class="padding-3" ui-sref-active="pst-active">
+                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.samples">
                         <i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.experiment.samples | toSize}})
                     </a>
                 </div>
 
-                <div class="padding-3">
-                    <a class="project-sidenav-tool margin-left-55">
+                <div class="padding-3" ui-sref-active="pst-active">
+                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.files">
                         <i class="fa fa-fw fa-folder"></i>Experiment Files
                     </a>
                 </div>
 
                 <div class="padding-3">
-                    <a class="project-sidenav-tool margin-left-55">
+                    <a class="project-sidenav-tool margin-left-55" ui-sref="templates.builder">
                         <i class="fa fa-fw fa-pencil-square"></i>Template Builder
                     </a>
                 </div>
