@@ -4,6 +4,7 @@ const comments = require('./comments');
 const users = require('./users');
 const templates = require('./templates');
 const files = require('./files');
+const etl = require('./experiment-etl-metadata');
 
 function createResources() {
     let projectsResource = projects.createResource();
@@ -17,6 +18,9 @@ function createResources() {
 
     let filesResource = files.createResource();
     router.use('/files', filesResource.routes(), filesResource.allowedMethods());
+
+    let etlResources = etl.createResource();
+    router.use('/etl', etlResources.routes(), etlResources.allowedMethods());
 
     users.createResource(router);
 

@@ -168,20 +168,20 @@ let test_update_metadata = {
 describe('ETL experiment metadata: ', function() {
     it('can create, get by id', function* () {
         let fake_exp_id = random_fake_id();
-        let error_or_val = yield etl_metadata.create(userId, fake_exp_id, test_metadata);
-        assert.isOk(error_or_val);
-        let results = error_or_val.val;
-        assert.isOk(results, error_or_val);
+        let error_or_data = yield etl_metadata.create(userId, fake_exp_id, test_metadata);
+        assert.isOk(error_or_data);
+        let results = error_or_data.data;
+        assert.isOk(results, error_or_data);
         assert.equal(fake_exp_id, results.experiment_id);
         assert.equal(userId, results.owner);
         assert.deepEqual(results.json, test_metadata);
         assert.isOk(results.id);
 
         let metadata_id = results.id;
-        error_or_val = yield etl_metadata.get(metadata_id);
-        assert.isOk(error_or_val);
-        results = error_or_val.val;
-        assert.isOk(results, error_or_val);
+        error_or_data = yield etl_metadata.get(metadata_id);
+        assert.isOk(error_or_data);
+        results = error_or_data.data;
+        assert.isOk(results, error_or_data);
         assert.equal(fake_exp_id, results.experiment_id);
         assert.equal(userId, results.owner);
         assert.deepEqual(results.json, test_metadata);
@@ -191,20 +191,20 @@ describe('ETL experiment metadata: ', function() {
     });
     it('can create, get by experiment id,', function* () {
         let fake_exp_id = random_fake_id();
-        let error_or_val = yield etl_metadata.create(userId, fake_exp_id, test_metadata);
-        assert.isOk(error_or_val);
-        let results = error_or_val.val;
-        assert.isOk(results, error_or_val);
+        let error_or_data = yield etl_metadata.create(userId, fake_exp_id, test_metadata);
+        assert.isOk(error_or_data);
+        let results = error_or_data.data;
+        assert.isOk(results, error_or_data);
         assert.equal(fake_exp_id, results.experiment_id);
         assert.equal(userId, results.owner);
         assert.deepEqual(results.json, test_metadata);
         assert.isOk(results.id);
         let metadata_id = results.id;
 
-        error_or_val = yield etl_metadata.getByExperimentId(fake_exp_id);
-        assert.isOk(error_or_val);
-        results = error_or_val.val;
-        assert.isOk(results, error_or_val);
+        error_or_data = yield etl_metadata.getByExperimentId(fake_exp_id);
+        assert.isOk(error_or_data);
+        results = error_or_data.data;
+        assert.isOk(results, error_or_data);
         assert.equal(fake_exp_id, results.experiment_id);
         assert.equal(userId, results.owner);
         assert.deepEqual(results.json, test_metadata);
@@ -213,20 +213,20 @@ describe('ETL experiment metadata: ', function() {
     });
     it('can create, update', function* () {
         let fake_exp_id = random_fake_id();
-        let error_or_val = yield etl_metadata.create(userId, fake_exp_id, test_metadata);
-        assert.isOk(error_or_val);
-        let results = error_or_val.val;
-        assert.isOk(results, error_or_val);
+        let error_or_data = yield etl_metadata.create(userId, fake_exp_id, test_metadata);
+        assert.isOk(error_or_data);
+        let results = error_or_data.data;
+        assert.isOk(results, error_or_data);
         assert.equal(fake_exp_id, results.experiment_id);
         assert.equal(userId, results.owner);
         assert.deepEqual(results.json, test_metadata);
         assert.isOk(results.id);
         let metadata_id = results.id;
 
-        error_or_val = yield etl_metadata.update(metadata_id, test_update_metadata);
-        assert.isOk(error_or_val);
-        results = error_or_val.val;
-        assert.isOk(results, error_or_val);
+        error_or_data = yield etl_metadata.update(metadata_id, test_update_metadata);
+        assert.isOk(error_or_data);
+        results = error_or_data.data;
+        assert.isOk(results, error_or_data);
         assert.equal(fake_exp_id, results.experiment_id);
         assert.equal(userId, results.owner);
         assert.notDeepEqual(results.json, test_metadata);
@@ -236,10 +236,10 @@ describe('ETL experiment metadata: ', function() {
     });
     it('can create, delete', function* () {
         let fake_exp_id = random_fake_id();
-        let error_or_val = yield etl_metadata.create(userId, fake_exp_id, test_metadata);
-        assert.isOk(error_or_val);
-        let results = error_or_val.val;
-        assert.isOk(results, error_or_val);
+        let error_or_data = yield etl_metadata.create(userId, fake_exp_id, test_metadata);
+        assert.isOk(error_or_data);
+        let results = error_or_data.data;
+        assert.isOk(results, error_or_data);
         assert.equal(fake_exp_id, results.experiment_id);
         assert.equal(userId, results.owner);
         assert.deepEqual(results.json, test_metadata);
@@ -249,9 +249,9 @@ describe('ETL experiment metadata: ', function() {
         let deleted_flag = yield etl_metadata.remove(metadata_id);
         assert.isOk(deleted_flag);
 
-        error_or_val = yield etl_metadata.get(metadata_id);
-        assert.isOk(error_or_val);
-        assert.isOk(error_or_val.error);
+        error_or_data = yield etl_metadata.get(metadata_id);
+        assert.isOk(error_or_data);
+        assert.isOk(error_or_data.error);
 
     });
 });
