@@ -1,70 +1,72 @@
-<div layout="row">
-    <md-content flex layout="column" layout-align="start stretch"
-                style="maxx-height:80vh; minx-height: 80vh; padding-top:8px; margin-right:10px">
-        <div layout="row" layout-align="space-between center" style="margin-bottom: 10px">
-            <div>
-                <md-radio-group layout="row" class="text-uppercase" ng-change="$ctrl.updateStatus()"
-                                ng-model="$ctrl.experiment.status">
-                    <md-radio-button value="active" class="md-primary">Active</md-radio-button>
-                    <md-radio-button value="done" class="md-primary">Completed</md-radio-button>
-                    <md-radio-button value="on-hold" class="md-warn">On Hold</md-radio-button>
-                </md-radio-group>
+<div layout="column" layout-fill flex>
+    <div layout="row" layout-fill layout-margin>
+        <md-content flex layout="column" layout-align="start stretch"
+                    style="padding-top:8px; margin-right:10px">
+            <div layout="row" layout-align="space-between center" style="margin-bottom: 10px">
+                <div>
+                    <md-radio-group layout="row" class="text-uppercase" ng-change="$ctrl.updateStatus()"
+                                    ng-model="$ctrl.experiment.status">
+                        <md-radio-button value="active" class="md-primary">Active</md-radio-button>
+                        <md-radio-button value="done" class="md-primary">Completed</md-radio-button>
+                        <md-radio-button value="on-hold" class="md-warn">On Hold</md-radio-button>
+                    </md-radio-group>
+                </div>
             </div>
-        </div>
 
-        <div layout="row">
-            <md-input-container flex="90">
-                <label>Name</label>
-                <input type="text"
-                       ng-model="$ctrl.experiment.name"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                       ng-change="$ctrl.updateName()">
-            </md-input-container>
-        </div>
+            <div layout="row">
+                <md-input-container flex="90">
+                    <label>Name</label>
+                    <input type="text"
+                           ng-model="$ctrl.experiment.name"
+                           ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                           ng-change="$ctrl.updateName()">
+                </md-input-container>
+            </div>
 
-        <div layout="row">
-            <md-input-container flex="90">
-                <label>Description</label>
-                <textarea ng-model="$ctrl.experiment.description"
-                          ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                          ng-change="$ctrl.updateDescription()"></textarea>
-            </md-input-container>
-        </div>
-        <br><br><br>
+            <div layout="row">
+                <md-input-container flex="90">
+                    <label>Description</label>
+                    <textarea ng-model="$ctrl.experiment.description"
+                              ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                              ng-change="$ctrl.updateDescription()"></textarea>
+                </md-input-container>
+            </div>
+            <br><br><br>
 
-        <mc-experiment-details-field experiment="$ctrl.experiment" heading="Goals" label="Goal"
-                                     field="goals"></mc-experiment-details-field>
+            <mc-experiment-details-field experiment="$ctrl.experiment" heading="Goals" label="Goal"
+                                         field="goals"></mc-experiment-details-field>
 
-        <mc-experiment-details-field experiment="$ctrl.experiment" heading="Collaborators" label="Collaborator"
-                                     field="collaborators"></mc-experiment-details-field>
-        <mc-experiment-details-field experiment="$ctrl.experiment" heading="Funding" label="funder"
-                                     field="funding"></mc-experiment-details-field>
+            <mc-experiment-details-field experiment="$ctrl.experiment" heading="Collaborators" label="Collaborator"
+                                         field="collaborators"></mc-experiment-details-field>
+            <mc-experiment-details-field experiment="$ctrl.experiment" heading="Funding" label="funder"
+                                         field="funding"></mc-experiment-details-field>
 
-        <mc-experiment-details-field experiment="$ctrl.experiment" heading="Current Working Papers" label="paper"
-                                     field="papers"></mc-experiment-details-field>
+            <mc-experiment-details-field experiment="$ctrl.experiment" heading="Current Working Papers" label="paper"
+                                         field="papers"></mc-experiment-details-field>
 
-        <mc-experiment-details-field experiment="$ctrl.experiment" heading="Publications From Experiment"
-                                     label="publication"
-                                     field="publications"></mc-experiment-details-field>
+            <mc-experiment-details-field experiment="$ctrl.experiment" heading="Publications From Experiment"
+                                         label="publication"
+                                         field="publications"></mc-experiment-details-field>
 
-        <mc-experiment-details-field experiment="$ctrl.experiment" heading="Citations" label="citation"
-                                     field="citations"></mc-experiment-details-field>
+            <mc-experiment-details-field experiment="$ctrl.experiment" heading="Citations" label="citation"
+                                         field="citations"></mc-experiment-details-field>
 
 
-        <div ng-if="false" layout="row" flex layout-align="start center">
-            <label flex="30">Citings</label>
-            <md-button class="md-primary">
-                <i class="fa fa-fw fa-refresh"></i>
-                Refresh
-            </md-button>
-        </div>
+            <div ng-if="false" layout="row" flex layout-align="start center">
+                <label flex="30">Citings</label>
+                <md-button class="md-primary">
+                    <i class="fa fa-fw fa-refresh"></i>
+                    Refresh
+                </md-button>
+            </div>
 
-    </md-content>
-    <div flex="45" ng-show="$ctrl.showNote">
-        <textarea ckeditor="editorOptions"
-                  ng-model="$ctrl.experiment.note"
-                  ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                  ng-change="$ctrl.updateNote()">
-        </textarea>
+        </md-content>
+        <md-content flex="50" ng-show="$ctrl.showNote">
+            <textarea ckeditor="editorOptions"
+                      ng-model="$ctrl.experiment.note"
+                      ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                      ng-change="$ctrl.updateNote()">
+            </textarea>
+        </md-content>
     </div>
 </div>
