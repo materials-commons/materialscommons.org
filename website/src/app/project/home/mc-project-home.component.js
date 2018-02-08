@@ -14,6 +14,7 @@ class MCProjectHomeComponentController {
         this.mergingExperiments = false;
         this.deletingExperiments = false;
         this.selectingExperiments = false;
+        this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
         this.projectsAPI = projectsAPI;
         $scope.editorOptions = editorOpts({height: 65, width: 50});
@@ -185,6 +186,10 @@ class MCProjectHomeComponentController {
                 this.project.name = newName;
             }
         );
+    }
+
+    showExperimentOverview(experiment) {
+        console.log('showExperimentOverview', experiment);
     }
 }
 

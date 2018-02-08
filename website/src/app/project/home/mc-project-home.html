@@ -46,15 +46,14 @@
                         <thead md-head md-order="$ctrl.sortOrder">
                         <tr md-row>
                             <!--<th md-column md-order-by="status">Status</th>-->
-                            <th md-column md-order-by="name">Name</th>
+                            <th md-column md-order-by="name">Experiment</th>
                             <th md-column></th>
-                            <th md-column>Description</th>
                             <th md-column md-order-by="mtime">Modified</th>
                             <th md-column>
                                 <i class="fa fa-fw fa-files-o"></i> F
                             </th>
                             <th md-column>
-                                <i class="fa fa-fw fa-users"></i> P
+                                <i class="fa fa-fw fa-database"></i> DS
                             </th>
                             <th md-column><i class="fa fa-fw fa-cubes"></i>S</th>
                         </tr>
@@ -63,35 +62,33 @@
                         <tr md-row class="md-row-hover pointer"
                             ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
                             style='border-left-width: 8px;'
-                            ng-repeat="experiment in $ctrl.experiments">
+                            ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.experimentType} | orderBy:$ctrl.sortOrder">
                             <td md-cell>
                                 <div layout="column">
-                                    <a ng-click="$ctrl.gotoWorkflow(experiment)">
-                                        {{experiment.name}}
-                                    </a>
+                                    <div layout="row">
+                                        <md-checkbox ng-model="experiment.selected" ng-if="$ctrl.selectingExperiments"
+                                                     style="margin-right: 10px"></md-checkbox>
+                                        <a ng-click="$ctrl.gotoWorkflow(experiment)">
+                                            {{experiment.name}}
+                                        </a>
+                                    </div>
 
                                     <span>{{experiment.description}}</span>
                                 </div>
                             </td>
                             <td md-cell>
-                                <a ng-click="$ctrl.showProjectOverview(project)">
+                                <a ng-click="$ctrl.showExperimentOverview(experiment)">
                                     <i class="fa fa-fw fa-info-circle"></i>
                                 </a>
                             </td>
                             <td md-cell>
-                                {{project.owner_details.fullname}}
+                                {{experiment.mtime | toDateString}}
                             </td>
-                            <td md-cell>
-                                {{project.mtime | date:'shortDate'}}
-                            </td>
-                            <td md-cell><span tooltip="Files">{{project.files_count | number}}</span></td>
-                            <td md-cell><span tooltip="Users">{{project.users.length | number}}</span></td>
-                            <td md-cell
-                                style="border-right-width: 8px"
+                            <td md-cell><span tooltip="Files">{{experiment.files_count | number}}</span></td>
+                            <td md-cell><span tooltip="Datasets">{{experiment.datasets.length | number}}</span></td>
+                            <td md-cell style="border-right-width: 8px"
                                 ng-class="{'cell-right-odd': $index%2 !== 0, 'cell-right-even': $index%2 ==0}">
-                                <ul>
-                                    <li ng-repeat="reminder in project.reminders" class="mc-md-primary-color">{{reminder.note}}</li>
-                                </ul>
+                                <span tooltip="Samples">{{experiment.samples | toSize | number}}</span>
                             </td>
                         </tr>
                         </tbody>
