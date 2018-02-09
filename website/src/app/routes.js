@@ -109,6 +109,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/home',
             template: '<mc-project-home class="height-100"></mc-project-home>'
         })
+        .state('project.details', {
+            url: '/details',
+            template: '<div>project.details</div>'
+        })
         .state('project.search', {
             url: '/search/:query',
             template: '<mc-project-search></mc-project-search>'
