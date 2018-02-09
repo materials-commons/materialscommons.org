@@ -54,7 +54,8 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
 
         if (toState.name.startsWith('project') && !toState.name.startsWith('projects')) {
-            if (!toState.name.startsWith('project.experiment')) {
+            if (toState.name.startsWith('project.home')) {
+                console.log('setting experiment to null');
                 mcprojstore.setCurrentExperiment(null);
             }
         }

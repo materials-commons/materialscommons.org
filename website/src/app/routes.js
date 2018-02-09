@@ -174,9 +174,12 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/samples',
             template: '<mc-project-samples samples="$resolve.samples"></mc-project-samples>',
             resolve: {
-                samples: ['experimentsAPI', '$stateParams',
-                    (experimentsAPI, $stateParams) =>
-                        experimentsAPI.getSamplesForExperiment($stateParams.project_id, $stateParams.experiment_id)
+                samples: ['experimentsAPI', 'mcprojstore',
+                    (experimentsAPI, mcprojstore) => {
+                        const e = mcprojstore.currentExperiment;
+                        const p = mcprojstore.currentProject;
+                        return experimentsAPI.getSamplesForExperiment(p.id, e.id);
+                    }
                 ]
             }
         })

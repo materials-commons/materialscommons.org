@@ -20,31 +20,31 @@
 
             <div>
                 <div class="padding-3" ui-sref-active="pst-active">
-                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.details">
+                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.details({experiment_id: $ctrl.experiment.id})">
                         <i class="fa fa-fw fa-file-text"></i>Experiment Description
                     </a>
                 </div>
 
                 <div class="padding-3" ui-sref-active="pst-active">
-                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.workflow">
+                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">
                         <i class="fa fa-fw fa-sitemap"></i>Workflow
                     </a>
                 </div>
 
                 <div class="padding-3" ui-sref-active="pst-active">
-                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.samples">
+                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.samples({experiment_id: $ctrl.experiment.id})">
                         <i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.experiment.samples | toSize}})
                     </a>
                 </div>
 
                 <div class="padding-3" ui-sref-active="pst-active">
-                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.datasets.list">
+                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.datasets.list({experiment_id: $ctrl.experiment.id})">
                         <i class="fa fa-fw fa-database"></i>Datasets({{$ctrl.experiment.datasets | toSize}})
                     </a>
                 </div>
 
                 <div class="padding-3" ui-sref-active="pst-active">
-                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.files">
+                    <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.files({experiment_id: $ctrl.experiment.id})">
                         <i class="fa fa-fw fa-folder"></i>Experiment Files
                     </a>
                 </div>
