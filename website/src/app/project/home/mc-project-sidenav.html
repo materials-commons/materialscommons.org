@@ -59,53 +59,55 @@
             <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
         </div>
 
-        <div class="padding-3" ui-sref-active="pst-active">
-            <a class="project-sidenav-tool margin-left-30" ui-sref="project.details">
-                <i class="fa fa-fw fa-file-text"></i>Project Description ND
-            </a>
-        </div>
+        <div ng-if="!$ctrl.experiment">
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.details">
+                    <i class="fa fa-fw fa-file-text"></i>Project Description ND
+                </a>
+            </div>
 
-        <div class="padding-3" ui-sref-active="pst-active">
-            <a class="project-sidenav-tool margin-left-30" ui-sref="project.collaborators">
-                <i class="fa fa-fw fa-user-circle"></i>Collaborators({{($ctrl.project.users | toSize) - 1}})
-            </a>
-        </div>
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.collaborators">
+                    <i class="fa fa-fw fa-user-circle"></i>Collaborators({{($ctrl.project.users | toSize) - 1}})
+                </a>
+            </div>
 
-        <div class="padding-3" ui-sref-active="pst-active">
-            <a class="project-sidenav-tool margin-left-30" ui-sref="project.notes">
-                <i class="fa fa-fw fa-check-square-o"></i>Notes/To-dos ND
-            </a>
-        </div>
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.notes">
+                    <i class="fa fa-fw fa-check-square-o"></i>Notes/To-dos ND
+                </a>
+            </div>
 
-        <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30">
-                <i class="fa fa-fw fa-clipboard"></i>Experiments({{$ctrl.project.experiments | toSize}}) ND
-            </a>
-        </div>
+            <div class="padding-3">
+                <a class="project-sidenav-tool margin-left-30">
+                    <i class="fa fa-fw fa-clipboard"></i>Experiments({{$ctrl.project.experiments | toSize}}) ND
+                </a>
+            </div>
 
 
-        <div class="padding-3" ui-sref-active="pst-active">
-            <a class="project-sidenav-tool margin-left-30" ui-sref="project.samples">
-                <i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.project.samples | toSize}})
-            </a>
-        </div>
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.samples">
+                    <i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.project.samples | toSize}})
+                </a>
+            </div>
 
-        <!--<div class="padding-3">-->
-        <!--<a class="project-sidenav-tool margin-left-30">-->
-        <!--<i class="fa fa-fw fa-database"></i>Datasets(0) ND-->
-        <!--</a>-->
-        <!--</div>-->
+            <!--<div class="padding-3">-->
+            <!--<a class="project-sidenav-tool margin-left-30">-->
+            <!--<i class="fa fa-fw fa-database"></i>Datasets(0) ND-->
+            <!--</a>-->
+            <!--</div>-->
 
-        <div class="padding-3" ui-sref-active="pst-active">
-            <a class="project-sidenav-tool margin-left-30" ui-sref="project.files">
-                <i class="fa fa-fw fa-folder"></i>All Files
-            </a>
-        </div>
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.files">
+                    <i class="fa fa-fw fa-folder"></i>All Files
+                </a>
+            </div>
 
-        <div class="padding-3" ui-sref-active="pst-active">
-            <a class="project-sidenav-tool margin-left-30" ui-sref="project.settings">
-                <i class="fa fa-fw fa-gears"></i>Settings
-            </a>
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.settings">
+                    <i class="fa fa-fw fa-gears"></i>Settings
+                </a>
+            </div>
         </div>
 
         <div class="padding-3">
