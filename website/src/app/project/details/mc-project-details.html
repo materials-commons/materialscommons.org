@@ -1,0 +1,16 @@
+<div layout="column" flex layout-margin>
+    <form layout="column">
+        <md-input-container class="md-block">
+            <label>Project Name</label>
+            <input ng-model="$ctrl.projectName">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Description</label>
+            <textarea ng-model="$ctrl.projectDescription"></textarea>
+        </md-input-container>
+        <div layout="row">
+            <md-button class="md-primary md-raised" ng-click="$ctrl.update()">Update</md-button>
+            <md-button class="md-warn md-raised" ng-click="$ctrl.cancel()">Cancel</md-button>
+        </div>
+    </form>
+</div>

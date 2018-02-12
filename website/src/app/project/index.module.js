@@ -12,4 +12,5 @@ import './collaborators/index.module';
 import './mc-project-quickbar.component';
 import './quickbar-samples.service';
 import './settings/index.module';
+import './details/index.module';
 
