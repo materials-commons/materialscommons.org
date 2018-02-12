@@ -1,4 +1,4 @@
-module.exports = function(rql) {
+module.exports = function (rql) {
     let runopts = {
         timeFormat: 'raw'
     };

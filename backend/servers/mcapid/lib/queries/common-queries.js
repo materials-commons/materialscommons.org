@@ -1,5 +1,5 @@
 function sampleDetailsRql(rql, r) {
-    return rql.merge(function(sample) {
+    return rql.merge(function (sample) {
         return {
             versions: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
                 .filter({direction: 'out'})
@@ -12,7 +12,7 @@ function sampleDetailsRql(rql, r) {
                 .getAll(sample('property_set_id'), {index: 'property_set_id'})
                 .eqJoin('property_id', r.table('properties')).zip()
                 .orderBy('name')
-                .merge(function(property) {
+                .merge(function (property) {
                     return {
                         best_measure: r.table('best_measure_history')
                             .getAll(property('best_measure_id'))
@@ -43,17 +43,18 @@ function datasetDetailsRql(rql, r) {
     return rql.merge(ds => {
         return {
             processes: processDetailsRql(r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
-                .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array')
+                .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array'),
+            comments: r.table('comments').getAll(ds('id'), {index: 'item_id'}).coerceTo('array')
         };
     });
 }
 
 function processDetailsSimpleRql(rql, r) {
-    return rql.merge(function(process) {
+    return rql.merge(function (process) {
         return {
             setup: r.table('process2setup').getAll(process('id'), {index: 'process_id'})
                 .eqJoin('setup_id', r.table('setups')).zip()
-                .merge(function(setup) {
+                .merge(function (setup) {
                     return {
                         properties: r.table('setupproperties')
                             .getAll(setup('setup_id'), {index: 'setup_id'})
@@ -63,13 +64,13 @@ function processDetailsSimpleRql(rql, r) {
             input_samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
                 .filter({'direction': 'in'})
                 .eqJoin('sample_id', r.table('samples')).zip()
-                .merge(function(sample) {
+                .merge(function (sample) {
                     return {
                         properties: r.table('propertyset2property')
                             .getAll(sample('property_set_id'), {index: 'property_set_id'})
                             .eqJoin('property_id', r.table('properties')).zip()
                             .orderBy('name')
-                            .merge(function(property) {
+                            .merge(function (property) {
                                 return {
                                     best_measure: r.table('best_measure_history')
                                         .getAll(property('best_measure_id'))
@@ -83,13 +84,13 @@ function processDetailsSimpleRql(rql, r) {
             output_samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
                 .filter({'direction': 'out'})
                 .eqJoin('sample_id', r.table('samples')).zip()
-                .merge(function(sample) {
+                .merge(function (sample) {
                     return {
                         properties: r.table('propertyset2property')
                             .getAll(sample('property_set_id'), {index: 'property_set_id'})
                             .eqJoin('property_id', r.table('properties')).zip()
                             .orderBy('name')
-                            .merge(function(property) {
+                            .merge(function (property) {
                                 return {
                                     best_measure: r.table('best_measure_history')
                                         .getAll(property('best_measure_id'))
@@ -107,11 +108,11 @@ function processDetailsSimpleRql(rql, r) {
 }
 
 function processDetailsRql(rql, r) {
-    return rql.merge(function(process) {
+    return rql.merge(function (process) {
         return {
             setup: r.table('process2setup').getAll(process('id'), {index: 'process_id'})
                 .eqJoin('setup_id', r.table('setups')).zip()
-                .merge(function(setup) {
+                .merge(function (setup) {
                     return {
                         properties: r.table('setupproperties')
                             .getAll(setup('setup_id'), {index: 'setup_id'})
@@ -122,13 +123,13 @@ function processDetailsRql(rql, r) {
             input_samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
                 .filter({'direction': 'in'})
                 .eqJoin('sample_id', r.table('samples')).zip()
-                .merge(function(sample) {
+                .merge(function (sample) {
                     return {
                         properties: r.table('propertyset2property')
                             .getAll(sample('property_set_id'), {index: 'property_set_id'})
                             .eqJoin('property_id', r.table('properties')).zip()
                             .orderBy('name')
-                            .merge(function(property) {
+                            .merge(function (property) {
                                 return {
                                     best_measure: r.table('best_measure_history')
                                         .getAll(property('best_measure_id'))
@@ -147,13 +148,13 @@ function processDetailsRql(rql, r) {
             output_samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
                 .filter({'direction': 'out'})
                 .eqJoin('sample_id', r.table('samples')).zip()
-                .merge(function(sample) {
+                .merge(function (sample) {
                     return {
                         properties: r.table('propertyset2property')
                             .getAll(sample('property_set_id'), {index: 'property_set_id'})
                             .eqJoin('property_id', r.table('properties')).zip()
                             .orderBy('name')
-                            .merge(function(property) {
+                            .merge(function (property) {
                                 return {
                                     best_measure: r.table('best_measure_history')
                                         .getAll(property('best_measure_id'))
@@ -170,12 +171,13 @@ function processDetailsRql(rql, r) {
                     }
                 }).coerceTo('array'),
             measurements: r.table('process2measurement').getAll(process('id'), {index: 'process_id'})
-                .eqJoin('measurement_id', r.table('measurements')).zip().filter({otype: 'composition'})
-                .eqJoin('measurement_id', r.db('materialscommons').table('best_measure_history'), {index: 'measurement_id'})
-                .map(function(doc) {
-                    return doc.merge({right: {best_measure_id: doc('right')('id')}})
+                .eqJoin('measurement_id', r.table('measurements')).zip()
+                .merge(p2m => {
+                    return {
+                        is_best_measure: r.db('materialscommons').table('best_measure_history')
+                            .getAll(p2m('measurement_id'), {index: 'measurement_id'}).count()
+                    }
                 })
-                .without({right: {'id': true, 'otype': true}}).zip()
                 .coerceTo('array'),
             files_count: r.table('process2file').getAll(process('id'), {index: 'process_id'}).count(),
             files: [],

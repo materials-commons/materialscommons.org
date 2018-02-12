@@ -1,4 +1,4 @@
-const r = require('../lib/r');
+const r = require('../r');
 const processCommon = require('./process-common');
 
 async function allSamplesInDataset(datasetId, sampleIds) {
@@ -45,6 +45,16 @@ async function noteInExperiment(experimentID, experimentNoteID) {
 async function taskIsUsingProcess(taskID) {
     let task = await r.table('experimenttasks').get(taskID);
     return task.process_id !== '';
+}
+
+async function commentExists(commentId) {
+    let matches = await r.table('comments').getAll(commentId);
+    return matches.length !== 0;
+}
+
+async function commentIsOwnedBy(commentId, userId) {
+    let commentOwner = await r.table('comments').get(commentId).getField('owner');
+    return commentOwner === userId;
 }
 
 async function templateExists(templateId) {
@@ -195,6 +205,8 @@ module.exports = {
     taskInExperiment,
     noteInExperiment,
     taskIsUsingProcess,
+    commentExists,
+    commentIsOwnedBy,
     templateExists,
     templateIsOwnedBy,
     isTemplateAdmin,

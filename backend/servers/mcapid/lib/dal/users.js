@@ -1,4 +1,4 @@
-const r = require('../lib/r');
+const r = require('../r');
 const _ = require('lodash');
 const getSingle = require('./get-single');
 const model = require('./model');
@@ -11,6 +11,11 @@ async function getUsers() {
 // getAllUsersExternal returns all the users in the database; cleaned for external only
 async function getAllUsersExternal() {
     return await r.table('users').without('admin', 'isTemplateAdmin', 'apikey', 'password');
+}
+
+// getAllUsersExternal returns the user; cleaned for external only
+async function getUserExternal(id) {
+    return await r.table('users').get(id).without('admin', 'isTemplateAdmin', 'apikey', 'password');
 }
 
 // getUser gets the user by index. If no index is given then it
@@ -44,7 +49,7 @@ async function updateProjectFavorites(userID, projectID, attrs) {
         let toDelete = attrs.favorites.processes.filter(p => p.command === 'delete').map(p => p.name);
         let projProcesses = user.favorites[projectID].processes;
         // remove deleted process favorites
-        projProcesses = projProcesses.filter(p => _.findIndex(toDelete, name => name === p, null) === -1);
+        projProcesses = projProcesses.filter(p => _.findIndex(toDelete, name => name == p, null) === -1);
         let toAddFavs = _.difference(toAdd, projProcesses);
         user.favorites[projectID].processes = projProcesses.concat(toAddFavs);
         await r.table('users').get(userID).update({favorites: user.favorites});
@@ -111,8 +116,9 @@ async function getUserRegistrationFromUuid(uuid) {
 module.exports = {
     getUsers: getUsers,
     getAllUsersExternal,
+    getUserExternal,
     getUser: getUser,
-    get: function(id, index) {
+    get: function (id, index) {
         return getSingle(r, 'users', id, index);
     },
     updateProjectFavorites,
