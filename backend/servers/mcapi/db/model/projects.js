@@ -204,7 +204,7 @@ function* update(projectID, attrs) {
         pattrs.todos = attrs.todos;
     }
 
-    if (pattrs.name || pattrs.description || pattrs.overview || pattrs.reminders || pattrs.status) {
+    if (pattrs.name || pattrs.description || pattrs.overview || pattrs.reminders || pattrs.status || pattrs.todos) {
         yield r.table('projects').get(projectID).update(pattrs);
     }
 
@@ -303,16 +303,16 @@ function* updateUserAccessForProject(projectId, attrs) {
 
 
 module.exports = {
-    all: all,
+    all,
     createProject,
-    forUser: forUser,
+    forUser,
     forUserSimple,
     get: function (id, index) {
         return getSingle(r, 'projects', id, index);
     },
     addFileToProject,
-    getProject: getProject,
-    update: update,
+    getProject,
+    update,
     getUserAccessForProject,
     updateUserAccessForProject
 };

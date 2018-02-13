@@ -3,15 +3,15 @@ const model = require('./model');
 const db = require('./db');
 
 function* createNote(note, itemType, itemId) {
-    let note = yield db.insert('notes', note);
-    let n2i = new model.Note2Item(itemId, itemId, note.id);
+    let n = yield db.insert('notes', note);
+    let n2i = new model.Note2Item(itemId, itemId, n.id);
     yield db.insert('note2item', n2i);
-    return note;
+    return n;
 }
 
-function* updateNote(note, noteId) {
+function* updateNote(note) {
     note.mtime = r.now();
-    yield r.table('notes').get(noteId).update(note);
+    yield db.update('notes', note.id, note);
 }
 
 function* updateNotes(notes) {
@@ -19,7 +19,7 @@ function* updateNotes(notes) {
         note.mtime = r.now();
     }
 
-    yield r.table('notes').insert(notes, {conflict: 'update'});
+    yield db.updateAll('notes', notes);
 }
 
 function* deleteNote(noteId) {
