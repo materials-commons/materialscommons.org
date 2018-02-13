@@ -27,6 +27,17 @@ function* validateProjectAccess(next) {
     yield next;
 }
 
+function* checkProjectAccess(projectId, user) {
+    let projects = yield projectAccessCache.find(projectId);
+    if (!projects) {
+        this.throw(httpStatus.BAD_REQUEST, "Unknown project");
+    }
+
+    if (!projectAccessCache.validateAccess(projectId, user)) {
+        this.throw(httpStatus.UNAUTHORIZED, `No access to project ${projectID}`);
+    }
+}
+
 function* validateProjectOwner(next) {
     let projectId = this.params.project_id;
     if (projectId) {
@@ -283,5 +294,6 @@ module.exports = {
     validateCommentAccess,
     validateCommentExists,
     validateNoteInExperiment,
-    validateFileAccess
+    validateFileAccess,
+    checkProjectAccess,
 };
