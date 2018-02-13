@@ -6,9 +6,9 @@ const ra = require('./resource-access');
 const comments = require("../db/model/comments");
 
 function* all(next) {
-    let rv = null
+    let rv = null;
     if (this.query.target) {
-        rv = yield comments.getAllForItem(this.query.target)
+        rv = yield comments.getAllForItem(this.query.target);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
             this.body = rv;
@@ -78,7 +78,7 @@ function* deleteComment(next) {
 function createResource() {
     const router = new Router();
 
-    router.get('/', all)
+    router.get('/', all);
     router.post('/', addComment);
     router.get('/:comment_id',
         ra.validateCommentExists, ra.validateCommentAccess, getComment);
