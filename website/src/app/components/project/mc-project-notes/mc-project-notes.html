@@ -35,7 +35,6 @@
         </div>
         <div flex="50" layout="column" layout-fill layout-margin style="heightx: 100%; border-left: 2px solid black;">
             <div layout-margin class="height-100x" layout-fill>
-                {{$ctrl.note}}
                 <md-content layout="column" layout-fill ng-show="$ctrl.note">
                     <md-button class="md-primary" ng-click="$ctrl.toggleEditNote($ctrl.note)">{{$ctrl.note.edit?"Done":"Edit"}}</md-button>
                     <h3 class="margin-left-5" ng-show="!$ctrl.note.edit">{{$ctrl.note.title}}</h3>

@@ -11,7 +11,7 @@ function* createNote(note, itemType, itemId) {
 
 function* updateNote(note) {
     note.mtime = r.now();
-    yield db.update('notes', note.id, note);
+    return yield db.update('notes', note.id, note);
 }
 
 function* updateNotes(notes) {
@@ -19,7 +19,7 @@ function* updateNotes(notes) {
         note.mtime = r.now();
     }
 
-    yield db.updateAll('notes', notes);
+    return yield db.updateAll('notes', notes);
 }
 
 function* deleteNote(noteId) {
