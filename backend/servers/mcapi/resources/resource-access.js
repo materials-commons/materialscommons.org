@@ -53,6 +53,11 @@ function* validateExperimentOwner(next) {
     yield next;
 }
 
+function* validateExperimentId(next) {
+    let experimentId = this.params.experiment_id;
+    check.experimentExists
+}
+
 function* validateExperimentInProject(next) {
     if (this.params.experiment_id !== 'merge' && this.params.experiment_id !== 'delete') {
         let projectId = this.params.project_id;

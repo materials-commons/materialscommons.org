@@ -162,6 +162,8 @@ def create_mc_tables():
 
     create_mc_table("deletedprocesses", "process_id", "sample_id", "project_id", "property_set_id")
 
+    create_mc_table("experiment_etl_metadata", "experiment_id")
+
     run(r.db('materialscommons').wait())
 
 
