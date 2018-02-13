@@ -198,6 +198,10 @@ function* update(projectID, attrs) {
         pattrs.status = attrs.status;
     }
 
+    if (attrs.todos) {
+        pattrs.todos = attrs.todos;
+    }
+
     if (pattrs.name || pattrs.description || pattrs.overview || pattrs.reminders || pattrs.status) {
         yield r.table('projects').get(projectID).update(pattrs);
     }

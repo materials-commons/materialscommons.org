@@ -178,11 +178,10 @@ function Sample2Datafile(sampleID, datafileID) {
     this.sample_id = sampleID;
 }
 
-function Note(title, note, projectID, owner) {
+function Note(title, note, owner) {
     let now = r.now();
     this.title = title;
     this.note = note;
-    this.project_id = projectID;
     this.owner = owner;
     this.mtime = now;
     this.birthtime = now;
