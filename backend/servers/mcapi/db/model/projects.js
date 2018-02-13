@@ -5,6 +5,7 @@ const getSingle = require('./get-single');
 const renameTopDirHelper = require('./directory-rename');
 const _ = require('lodash');
 const experiments = require('./experiments');
+const notes = require('./notes');
 
 function* createProject(user, attrs) {
     let name = attrs.name;
@@ -156,6 +157,7 @@ function addComputed(rql, fullExperiment) {
             events: r.table('events')
                 .getAll(project('id'), {index: 'project_id'})
                 .coerceTo('array'),
+            notes: notes.getAllNotesForItemRQL(project('id')).coerceTo('array'),
             experiments: fullExperiment ? experiments.addExperimentComputed(r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('experiment_id', r.table('experiments')).zip()).coerceTo('array') :
                 r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
