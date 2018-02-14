@@ -1,8 +1,17 @@
-<div layout="column" flex layout-fill>
-    <md-button class="md-warn md-raised">delete project</md-button>
-    <div layout="row" flex="60">
-        <input type="text" placeholder="Project name..."
-               class="mc-input-as-line">
-        <md-button class="md-primary md-raised">update name</md-button>
-    </div>
+<div layout="column" flex layout-margin>
+    <form layout="column">
+        <md-input-container class="md-block">
+            <label>Project Name</label>
+            <input ng-model="$ctrl.projectName">
+        </md-input-container>
+        <div layout="row">
+            <md-button class="md-primary md-raised" ng-click="$ctrl.update()">Change Name</md-button>
+            <md-button class="md-warn md-raised" ng-click="$ctrl.cancel()">Cancel</md-button>
+        </div>
+        <div class="margin-top-40">
+            <md-button class="md-warn md-raised" ng-click="$ctrl.deleteProject()">
+                <i class="fa fa-fw fa-trash"></i>Delete Project
+            </md-button>
+        </div>
+    </form>
 </div>

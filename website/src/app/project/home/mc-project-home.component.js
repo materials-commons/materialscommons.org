@@ -3,7 +3,7 @@ import {Experiment} from '../experiments/experiment/components/tasks/experiment.
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, projectsAPI, mcprojstore) {
+    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, mcprojstore) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
@@ -16,7 +16,6 @@ class MCProjectHomeComponentController {
         this.selectingExperiments = false;
         this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
-        this.projectsAPI = projectsAPI;
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
 
@@ -38,28 +37,6 @@ class MCProjectHomeComponentController {
         });
     }
 
-    updateProjectOverview() {
-        if (this.projectOverview === this.project.overview) {
-            return;
-        }
-
-        if (this.project.overview === null) {
-            return;
-        }
-
-        this.projectsAPI.updateProject(this.$stateParams.project_id, {overview: this.project.overview})
-            .then(
-                () => {
-                    this.projectOverview = this.project.overview;
-                    this.mcprojstore.updateCurrentProject(currentProj => {
-                        currentProj.overview = this.project.overview;
-                        return currentProj;
-                    });
-                },
-                () => this.toast.error('Unable to update project overview')
-            );
-    }
-
     _reloadComponentState() {
         this.project = this.mcprojstore.getProject(this.$stateParams.project_id);
         this.projectOverview = this.project.overview;
@@ -68,18 +45,6 @@ class MCProjectHomeComponentController {
         this.onholdExperimentsCount = experimentsList.filter(e => e.status === 'on-hold').length;
         this.doneExperimentsCount = experimentsList.filter(e => e.status === 'done').length;
         this.getProjectExperiments();
-    }
-
-    updateProjectDescription() {
-        this.projectsAPI.updateProject(this.$stateParams.project_id, {description: this.project.description}).then(
-            () => {
-                this.mcprojstore.updateCurrentProject(currentProj => {
-                    currentProj.description = this.project.description;
-                    return currentProj;
-                });
-            },
-            () => this.toast.error('Unable to update project description')
-        );
     }
 
     startNewExperiment() {
@@ -171,26 +136,6 @@ class MCProjectHomeComponentController {
             this.$state.go("project.experiment.workflow", {experiment_id: e.id});
         }
     }
-
-    renameProject() {
-        this.$mdDialog.show({
-            templateUrl: 'app/project/home/rename-project-dialog.html',
-            controller: RenameProjectDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {
-                project: this.project
-            }
-        }).then(
-            (newName) => {
-                this.project.name = newName;
-            }
-        );
-    }
-
-    showExperimentOverview(experiment) {
-        console.log('showExperimentOverview', experiment);
-    }
 }
 
 class CreateNewExperimentDialogController {
@@ -224,37 +169,6 @@ class CreateNewExperimentDialogController {
                 },
                 () => this.toast.error('create experiment failed')
             );
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
-
-class RenameProjectDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, projectsAPI, toast, mcprojstore) {
-        this.$mdDialog = $mdDialog;
-        this.projectsAPI = projectsAPI;
-        this.toast = toast;
-        this.mcprojstore = mcprojstore;
-        this.newProjectName = '';
-    }
-
-    done() {
-        this.projectsAPI.updateProject(this.project.id, {name: this.newProjectName}).then(
-            () => {
-                this.mcprojstore.updateCurrentProject((currentProject) => {
-                    currentProject.name = this.newProjectName;
-                    return currentProject;
-                });
-                this.$mdDialog.hide(this.newProjectName);
-            },
-            () => {
-                this.toast.error('Failed to rename project');
-                this.$mdDialog.cancel();
-            }
-        );
     }
 
     cancel() {

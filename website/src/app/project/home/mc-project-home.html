@@ -42,20 +42,21 @@
             </div>
             <md-content layout="column" flex>
                 <md-table-container flex>
-                    <table md-table>
+                    <table md-table class="margin-top-10">
                         <thead md-head md-order="$ctrl.sortOrder">
                         <tr md-row>
                             <!--<th md-column md-order-by="status">Status</th>-->
                             <th md-column md-order-by="name">Experiment</th>
-                            <th md-column></th>
                             <th md-column md-order-by="mtime">Modified</th>
                             <th md-column>
-                                <i class="fa fa-fw fa-files-o"></i> F
+                                <span tooltip="Files"><i class="fa fa-fw fa-files-o"></i> F</span>
                             </th>
                             <th md-column>
-                                <i class="fa fa-fw fa-database"></i> DS
+                                <span tooltip="Datasets"><i class="fa fa-fw fa-database"></i> DS</span>
                             </th>
-                            <th md-column><i class="fa fa-fw fa-cubes"></i>S</th>
+                            <th md-column>
+                                <span tooltip="Samples"><i class="fa fa-fw fa-cubes"></i>S</span>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -79,18 +80,13 @@
                                 </div>
                             </td>
                             <td md-cell>
-                                <a ng-click="$ctrl.showExperimentOverview(experiment)">
-                                    <i class="fa fa-fw fa-info-circle"></i>
-                                </a>
-                            </td>
-                            <td md-cell>
                                 {{experiment.mtime | toDateString}}
                             </td>
-                            <td md-cell><span tooltip="Files">{{experiment.files_count | number}}</span></td>
-                            <td md-cell><span tooltip="Datasets">{{experiment.datasets.length | number}}</span></td>
+                            <td md-cell><span>{{experiment.files_count | number}}</span></td>
+                            <td md-cell><span>{{experiment.datasets.length | number}}</span></td>
                             <td md-cell style="border-right-width: 8px"
                                 ng-class="{'cell-right-odd': $index%2 !== 0, 'cell-right-even': $index%2 ==0}">
-                                <span tooltip="Samples">{{experiment.samples | toSize | number}}</span>
+                                <span>{{experiment.samples | toSize | number}}</span>
                             </td>
                         </tr>
                         </tbody>
