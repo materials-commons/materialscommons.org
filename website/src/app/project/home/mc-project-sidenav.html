@@ -32,29 +32,16 @@
             <div class="padding-3">
                 <md-menu class="margin-left-30">
                     <a aria-label="Experiments" style="color:white; text-transform: none" ng-click="$mdMenu.open()">
-                        <i class="fa fa-fw fa-clipboard"></i>Experiments({{$ctrl.project.experiments | toSize}}) IP
+                        <i class="fa fa-fw fa-clipboard"></i>Experiments({{$ctrl.project.experiments | toSize}})
                     </a>
                     <md-menu-content width="10">
-                        <md-menu-item>
-                            <md-button>
-                                <i class="fa fa-fw flask"></i>Experiment 1
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button>
-                                <i class="fa fa-fw flask"></i>Experiment 2 that is a long name that is super duper long, so long that you know it is really long
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button>
-                                <i class="fa fa-fw flask"></i>Experiment 3 short name
+                        <md-menu-item ng-repeat="experiment in $ctrl.project.experiments | toList | orderBy:'name'">
+                            <md-button ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
+                                <i class="fa fa-fw flask"></i>{{experiment.name}}
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <a class="project-sidenav-tool margin-left-30" ng-if="false">
-                    <i class="fa fa-fw fa-clipboard"></i>Experiments({{$ctrl.project.experiments | toSize}}) ND
-                </a>
             </div>
 
             <div ng-if="$ctrl.experiment" style="padding:0">
