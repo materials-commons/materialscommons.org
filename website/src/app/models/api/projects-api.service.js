@@ -1,7 +1,6 @@
 /*@ngInject*/
-function projectsAPIService(Restangular) {
+function projectsAPIService(Restangular, notesAPI) {
     const projectsAPIRoute = _.partial(Restangular.one('v2').one, 'projects');
-    const notesAPIRoute = _.partial(Restangular.one('v2').one, 'notes');
 
     return {
 
@@ -80,29 +79,15 @@ function projectsAPIService(Restangular) {
         },
 
         addProjectNote: function (projectId, note) {
-            return notesAPIRoute().customPOST({
-                item_type: 'project',
-                item_id: projectId,
-                title: note.title,
-                note: note.note
-            }).then(n => n.plain());
+            return notesAPI.addNote(note, 'project', projectId);
         },
 
         updateProjectNote: function (projectId, note) {
-            console.log('updateProjectNote', note);
-            return notesAPIRoute(note.id).customPUT({
-                item_type: 'project',
-                item_id: projectId,
-                title: note.title,
-                note: note.note
-            }).then(n => n.plain());
+            return notesAPI.updateNote(note, 'project', projectId);
         },
 
         deleteProjectNote: function (projectId, note) {
-            return notesAPIRoute(note.id).one('delete').customPOST({
-                item_type: 'project',
-                item_id: projectId,
-            });
+            return notesAPI.deleteNote(note, 'project', projectId);
         }
     }
 }

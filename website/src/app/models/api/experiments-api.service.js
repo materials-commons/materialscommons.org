@@ -111,6 +111,16 @@ class ExperimentsAPIService {
             .customPOST(cloneArgs).then(p => p.plain());
     }
 
+    createNote(projectID, experimentID, note) {
+        return this.projectsAPIRoute(projectID).one('experiments', experimentID).one('notes')
+            .customPOST(note).then(n => n.plain());
+    }
+
+    updateNote(projectID, experimentID, noteID, noteArgs) {
+        return this.projectsAPIRoute(projectID).one('experiments', experimentID).one('notes', noteID)
+            .customPUT(noteArgs).then(n => n.plain());
+    }
+
     convertDatePropertyAttributes(process) {
         if (process.setup) {
             let setup = process.setup;
