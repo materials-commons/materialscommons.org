@@ -19,9 +19,9 @@ angular.module('materialscommons')
     .controller('MCAppController', MCAppController);
 
 appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$ariaProvider', '$compileProvider',
-    'hljsServiceProvider'];
+    'hljsServiceProvider', 'markdownItConverterProvider'];
 
-function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider, $compileProvider, hljsServiceProvider) {
+function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider, $compileProvider, hljsServiceProvider, mdProvider) {
     setupMaterialsTheme($mdThemingProvider);
     setupRoutes($stateProvider, $urlRouterProvider);
     $ariaProvider.config({ariaChecked: false, ariaInvalid: false});
@@ -29,6 +29,12 @@ function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $aria
     hljsServiceProvider.setOptions({
         // replace tab with 4 spaces
         tabReplace: '    '
+    });
+
+    mdProvider.config({
+        breaks: true,
+        html: true,
+        linkify: true
     });
 }
 
