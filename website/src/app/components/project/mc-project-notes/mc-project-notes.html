@@ -25,9 +25,9 @@
                 <h3 class="md-title">Notes</h3>
                 <md-button class="md-primary" ng-click="$ctrl.addNote()">add note</md-button>
                 <md-list>
-                    <md-list-item ng-repeat="note in $ctrl.project.notes" ng-click="$ctrl.selectNote(note)">
+                    <md-list-item ng-repeat="note in $ctrl.project.notes" ng-click="$ctrl.selectNote(note)" ng-class="{'note-active': note.selected}">
                         <p>{{note.title}}</p>
-                        <a class="mc-error-color" ng-click="$ctrl.deleteNote($index)"><i class="fa fa-fw fa-remove"></i></a>
+                        <md-button class="mc-error-color" ng-click="$ctrl.deleteNote($index)"><i class="fa fa-fw fa-remove"></i></md-button>
                         <md-divider></md-divider>
                     </md-list-item>
                 </md-list>
@@ -37,10 +37,15 @@
             <div layout-margin class="height-100x" layout-fill>
                 <md-content layout="column" layout-fill ng-show="$ctrl.note">
                     <md-button class="md-primary" ng-click="$ctrl.toggleEditNote($ctrl.note)">{{$ctrl.note.edit?"Done":"Edit"}}</md-button>
-                    <h3 class="margin-left-5" ng-show="!$ctrl.note.edit">{{$ctrl.note.title}}</h3>
-                    <input ng-show="$ctrl.note.edit" ng-model="$ctrl.note.title">
+                    <h3 class="margin-left-5" ng-show="!$ctrl.note.edit">Title: {{$ctrl.note.title}}</h3>
+                    <md-divider></md-divider>
+                    <input ng-show="$ctrl.note.edit" ng-model="$ctrl.note.title" placeholder="Note Title...">
                     <div markdown-it="$ctrl.note.note" ng-show="!$ctrl.note.edit" class="margin-left-5"></div>
-                    <textarea ng-model="$ctrl.note.note" ng-show="$ctrl.note.edit" class="height-100"></textarea>
+                    <a href="https://guides.github.com/features/mastering-markdown/" ng-show="$ctrl.note.edit" target="_blank"
+                       style="margin-top:5px;margin-bottom: 5px">
+                        Styling with markdown is supported
+                    </a>
+                    <textarea ng-model="$ctrl.note.note" ng-show="$ctrl.note.edit" class="height-100" placeholder="Note content..."></textarea>
                 </md-content>
             </div>
         </div>

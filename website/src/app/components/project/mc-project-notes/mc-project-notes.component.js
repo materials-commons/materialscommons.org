@@ -8,7 +8,11 @@ class MCProjectNotesComponentController {
 
     $onInit() {
         this.project = this.mcprojstore.currentProject;
+        this.project.notes.forEach(n => n.selected = false);
         this.note = this.project.notes.length ? this.project.notes[0] : null;
+        if (this.note !== null) {
+            this.note.selected = true;
+        }
         this.noteTitle = 'This is a note title';
     }
 
@@ -56,15 +60,17 @@ class MCProjectNotesComponentController {
         let note = {
             title: '',
             note: '',
-            edit: false,
+            edit: true,
         };
         this.projectsAPI.addProjectNote(this.project.id, note).then(
             (n) => {
                 this.mcprojstore.updateCurrentProject(currentProj => {
                     this.project.notes.push(n);
+                    this.project.notes.forEach(n => n.selected = false);
                     currentProj.notes = this.project.notes;
-                    console.log('this.project.notes', this.project.notes);
                     this.note = this.project.notes[this.project.notes.length - 1];
+                    this.note.selected = true;
+                    this.note.edit = true;
                     return currentProj;
                 });
             },
@@ -105,6 +111,8 @@ class MCProjectNotesComponentController {
     }
 
     selectNote(note) {
+        this.project.notes.forEach(n => n.selected = false);
+        note.selected = true;
         this.note = note;
     }
 }

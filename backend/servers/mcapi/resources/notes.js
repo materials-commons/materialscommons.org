@@ -56,7 +56,6 @@ function* updateNote(next) {
     } else {
         let n = new model.Note(note.title, note.note, this.reqctx.user.id);
         n.id = this.params.note_id;
-        console.log('calling updateNote with', n);
         let updatedNote = yield notes.updateNote(n);
         this.body = updatedNote;
     }
@@ -67,27 +66,28 @@ function* updateNote(next) {
 function* deleteNote(next) {
     let n = yield parse(this);
     let errors = validateDelete(n);
-    if (error != null) {
+    if (errors != null) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
     } else {
         ra.checkProjectAccess(n.item_id, this.reqctx.user);
-        yield notes.deleteNote(this.param.note_id);
+        yield notes.deleteNote(this.params.note_id);
+        this.status = status.OK;
     }
 
     yield next;
 }
 
 function validateDelete(n) {
-    if (!note.item_type) {
+    if (!n.item_type) {
         return {error: `Note must be associated with an object in the system`};
     }
 
-    if (note.item_type !== 'project') {
+    if (n.item_type !== 'project') {
         return {error: `Notes may only be associated with projects`};
     }
 
-    if (!note.item_id) {
+    if (!n.item_id) {
         return {error: `Note must be associated with an object in the system`};
     }
 
@@ -99,7 +99,7 @@ function createResource() {
 
     router.post('/', createNote);
     router.put('/:note_id', updateNote);
-    router.delete('/:note_id', deleteNote);
+    router.post('/:note_id/delete', deleteNote);
 
     return router;
 }

@@ -99,7 +99,7 @@ function projectsAPIService(Restangular) {
         },
 
         deleteProjectNote: function (projectId, note) {
-            return notesAPIRoute(note.id).customDELETE({
+            return notesAPIRoute(note.id).one('delete').customPOST({
                 item_type: 'project',
                 item_id: projectId,
             });
