@@ -49,8 +49,7 @@ class MCProjectSettingsComponentController {
                 )
             }
         );
-    };
-
+    }
 
     cancel() {
         this.$state.go('project.home');
