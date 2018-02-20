@@ -1,6 +1,5 @@
-
 /*@ngInject*/
-function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI, mcprojstore) {
+function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI, mcprojstore, gridFiles) {
     const ctrl = this,
         proj = mcprojstore.currentProject;
     ctrl.projectID = proj.id;
@@ -11,7 +10,24 @@ function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI,
         ctrl.files[0].data.childrenLoaded = true;
         ctrl.files[0].expand = true;
 
-        if (!$stateParams.file_id) {
+        if ($stateParams.dir_id && !$stateParams.file_id) {
+            const entry = gridFiles.findEntry(ctrl.files[0], $stateParams.dir_id);
+            if (!entry) {
+                // Only directories that are 1 level child of root will work.
+                // If we didn't find an entry, that means its a request for a directory
+                // deeper in the tree. So, for now ignore it and instead go to the root.
+                $state.go('project.files.dir', {dir_id: ctrl.files[0].data.id});
+                return;
+            }
+            const file = entry.model;
+            projectFileTreeAPI.getDirectory(ctrl.projectID, $stateParams.dir_id).then(function (files) {
+                file.children = files;
+                file.active = true;
+                file.data.childrenLoaded = true;
+                file.expand = !file.expand;
+                $state.go('project.files.dir', {dir_id: file.data.id});
+            });
+        } else if (!$stateParams.file_id) {
             $state.go('project.files.dir', {dir_id: ctrl.files[0].data.id});
         }
     });
