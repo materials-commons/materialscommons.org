@@ -24,6 +24,9 @@ class MCDirContainerComponentController {
     _loadDir() {
         this.project = this.mcprojstore.currentProject;
         const entry = this.gridFiles.findEntry(this.project.files[0], this.$stateParams.dir_id);
+        if (!entry) {
+            console.log(`MCDirContainer: Couldn't find entry ${this.$stateParams.dir_id}`)
+        }
         this.dir = entry.model;
     }
 
