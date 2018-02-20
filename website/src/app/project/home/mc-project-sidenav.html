@@ -101,7 +101,7 @@
             </div>
 
             <div class="padding-3" ui-sref-active="pst-active">
-                <a class="project-sidenav-tool margin-left-30" ui-sref="project.files">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.files" ui-sref-opts="{reload: true}">
                     <i class="fa fa-fw fa-folder"></i>All Files
                 </a>
             </div>
@@ -121,22 +121,28 @@
 
         <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
 
-        <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30">
-                <i class="fa fa-fw fa-folder"></i> Literature ND
+        <div class="padding-3" ng-repeat="shortcut in $ctrl.shortcuts">
+            <a class="project-sidenav-tool margin-left-30" ui-sref="project.files.dir({dir_id: shortcut.id})" ui-sref-opts="{reload: true}">
+                <i class="fa fa-fw fa-folder"></i> {{shortcut.name}}
             </a>
         </div>
 
-        <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30">
-                <i class="fa fa-fw fa-folder"></i> Presentations ND
-            </a>
-        </div>
+        <!--<div class="padding-3">-->
+        <!--<a class="project-sidenav-tool margin-left-30">-->
+        <!--<i class="fa fa-fw fa-folder"></i> Literature ND-->
+        <!--</a>-->
+        <!--</div>-->
 
-        <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30">
-                <i class="fa fa-fw fa-folder"></i> Project Documents ND
-            </a>
-        </div>
+        <!--<div class="padding-3">-->
+        <!--<a class="project-sidenav-tool margin-left-30">-->
+        <!--<i class="fa fa-fw fa-folder"></i> Presentations ND-->
+        <!--</a>-->
+        <!--</div>-->
+
+        <!--<div class="padding-3">-->
+        <!--<a class="project-sidenav-tool margin-left-30">-->
+        <!--<i class="fa fa-fw fa-folder"></i> Project Documents ND-->
+        <!--</a>-->
+        <!--</div>-->
     </md-sidenav>
 </md-content>
