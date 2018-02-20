@@ -61,14 +61,12 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
 
         if (toState.name.startsWith('project') && !toState.name.startsWith('projects')) {
             if (toState.name.startsWith('project.home')) {
-                console.log('setting experiment to null');
                 mcprojstore.setCurrentExperiment(null);
             }
         }
 
         if (!User.isAuthenticated() && isStateRequiringALogin(toState.name)) {
             event.preventDefault();
-            // $state.go('login');
             $state.go('data.home.top');
         }
 

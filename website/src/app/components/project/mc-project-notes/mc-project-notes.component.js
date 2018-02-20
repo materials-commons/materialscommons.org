@@ -17,7 +17,6 @@ class MCProjectNotesComponentController {
     }
 
     updateTodos() {
-        console.log('updateTodos', this.project.todos);
         let update = {
             todos: this.project.todos
         };
