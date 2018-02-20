@@ -51,6 +51,7 @@ def create_mc_tables():
         .index_create("mime", r.row["mediatype"]["mime"]))
 
     create_mc_table("datadirs", "name", "project_id", "parent")
+    create_compound_index("datadirs", "datadir_project_name", ['project', 'name'])
 
     create_mc_table("project2datadir", "datadir_id", "project_id")
     create_compound_index('project2datadir', 'project_datadir', ['project_id', 'datadir_id'])
