@@ -12,10 +12,10 @@ const processes = require('./processes');
 const shares = require('./shares');
 const experiments = require('./experiments');
 
-function* create(next){
+function* create(next) {
     let user = this.reqctx.user;
     let attrs = yield parse(this);
-    let rv = yield projects.createProject(user,attrs);
+    let rv = yield projects.createProject(user, attrs);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
         this.body = rv;
@@ -56,7 +56,7 @@ function* deleteProjectFull(next) {
     let options = {
         dryRun: false
     };
-    let rv = yield projectDelete.deleteProject(this.params.project_id,options);
+    let rv = yield projectDelete.deleteProject(this.params.project_id, options);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
         this.body = rv;
@@ -79,7 +79,7 @@ function* getUserAccessForProject(next) {
 
 function* updateUserAccessForProject(next) {
     let attrs = yield parse(this);
-    this.body = yield projects.updateUserAccessForProject(this.params.project_id,attrs);
+    this.body = yield projects.updateUserAccessForProject(this.params.project_id, attrs);
     yield next;
 }
 
@@ -87,7 +87,7 @@ function* updateUserAccessForProject(next) {
 function createResource() {
     const router = new Router();
     router.get('/', all);
-    router.post('/',create);
+    router.post('/', create);
     router.use('/:project_id', ra.validateProjectAccess);
     router.put('/:project_id', update);
     router.get('/:project_id', getProject);
