@@ -6,6 +6,7 @@ const renameTopDirHelper = require('./directory-rename');
 const _ = require('lodash');
 const experiments = require('./experiments');
 const notes = require('./notes');
+const db = require('./db');
 
 function* createProject(user, attrs) {
     let name = attrs.name;
@@ -27,10 +28,29 @@ function* createProject(user, attrs) {
     let proj2datadir_doc = new model.Project2DataDir(project_id, directory_id);
     yield r.table('project2datadir').insert(proj2datadir_doc);
 
+    yield buildDefaultShortcutDirs(name, project_id, owner, directory_id);
+
     let access_doc = new model.Access(name, project_id, owner);
     yield r.table('access').insert(access_doc);
 
     return yield getProject(project_id);
+}
+
+function* buildDefaultShortcutDirs(projectName, projectId, owner, parentDirId) {
+    let dir = new model.Directory(`${projectName}/Literature`, owner, projectId, parentDirId);
+    yield createShortcutDir(dir);
+
+    dir = new model.Directory(`${projectName}/Presentations`, owner, projectId, parentDirId);
+    yield createShortcutDir(dir);
+
+    dir = new model.Directory(`${projectName}/Project Documents`, owner, projectId, parentDirId);
+    yield createShortcutDir(dir);
+}
+
+function* createShortcutDir(dir) {
+    let created = yield db.insert('datadirs', dir);
+    let proj2dir = new model.Project2DataDir(dir.project, created.id);
+    yield db.insert('project2datadir', proj2dir);
 }
 
 function* getProject(projectId) {
