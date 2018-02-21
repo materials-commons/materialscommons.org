@@ -32,37 +32,13 @@ class MCProjectSidenavComponentController {
                     this.project.files = files;
                     currentProject.files = this.project.files;
                     return currentProject;
-                }).then(
-                    () => this.createShortcuts()
-                );
+                })
             });
-        } else {
-            this.createShortcuts();
         }
     }
 
     $onDestroy() {
         this.unsubscribe();
-    }
-
-    createShortcuts() {
-        this.projectDir = this.project.files[0].data;
-        this.shortcuts = this.project.files[0].children.filter(f => {
-            if (f.data.otype !== 'directory') {
-                // Only look at directories
-                return false;
-            }
-            switch (f.data.name) {
-                case 'Literature':
-                    return true;
-                case 'Presentations':
-                    return true;
-                case 'Project Documents':
-                    return true;
-                default:
-                    return false;
-            }
-        }).map(f => f.data);
     }
 
     refreshProject() {

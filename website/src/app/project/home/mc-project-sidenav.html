@@ -121,7 +121,7 @@
 
         <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
 
-        <div class="padding-3" ng-repeat="shortcut in $ctrl.shortcuts">
+        <div class="padding-3" ng-repeat="shortcut in $ctrl.project.shortcuts | orderBy:'name'">
             <a class="project-sidenav-tool margin-left-30" ui-sref="project.files.dir({dir_id: shortcut.id})" ui-sref-opts="{reload: true}">
                 <i class="fa fa-fw fa-folder"></i> {{shortcut.name}}
             </a>
