@@ -179,14 +179,18 @@ function addComputed(rql, fullExperiment) {
                 .coerceTo('array'),
             notes: notes.getAllNotesForItemRQL(project('id')).coerceTo('array'),
             experiments: fullExperiment ? experiments.addExperimentComputed(r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
-                .eqJoin('experiment_id', r.table('experiments')).zip()).coerceTo('array') :
+                    .eqJoin('experiment_id', r.table('experiments')).zip()).coerceTo('array') :
                 r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
-                .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array'),
+                    .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array'),
             processes: r.table('project2process').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
             samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
-            files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count()
+            files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count(),
+            root_dirs: r.table('datadirs')
+                .getAll([project('id'), project('name')], {index: 'datadir_project_name'})
+                .eqJoin('project', r.db('materialscommons').table('datadirs'), {index: 'project'}).zip()
+                .filter(dir => dir('name').ne(project('name'))).coerceTo('array')
         };
     });
 
