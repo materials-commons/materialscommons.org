@@ -434,7 +434,7 @@ describe('Feature - directories: ', function () {
             ret = yield directories.remove(project_id, directory_id);
             assert.isTrue(ret.val);
             dir_list = yield directories.getAll(project_id);
-            assert.equal(dir_list.length, 1);
+            assert.equal(dir_list.length, 4);
         });
         it("Rename interior directory", function* () {
             let user = yield dbModelUsers.getUser(userId);
@@ -495,7 +495,7 @@ describe('Feature - directories: ', function () {
             assert.equal(directory.path, path);
 
             dir_list = yield directories.getAll(project_id);
-            assert.equal(dir_list.length, 8);
+            assert.equal(dir_list.length, 11);
             assert.equal(dir_list[0].name, project_name);
             assert.equal(dir_list[1].name, project_name + '/A1');
             assert.equal(dir_list[2].name, project_name + '/A1/XX');
@@ -564,7 +564,7 @@ describe('Feature - directories: ', function () {
 
             dir_list = yield directories.getAll(project_id);
 
-            assert.equal(dir_list.length, 7);
+            assert.equal(dir_list.length, 10);
             assert.equal(dir_list[0].name, project_name);
             assert.equal(dir_list[1].name, project_name + '/A1');
             assert.equal(dir_list[2].name, project_name + '/A1/B1');
