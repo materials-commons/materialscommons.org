@@ -27,6 +27,7 @@ class APIKeyCache {
         users.forEach(function(user) {
             map[user.apikey] = {
                 id: user.id,
+                fullname: user.fullname,
                 apikey: user.apikey,
                 isAdmin: !!user.admin
             };
