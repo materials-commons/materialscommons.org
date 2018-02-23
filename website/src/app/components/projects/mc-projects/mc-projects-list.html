@@ -13,7 +13,6 @@
             <th md-column md-order-by="users.length">
                 <i class="fa fa-fw fa-users"></i> U
             </th>
-            <th md-column>Reminders</th>
         </tr>
         </thead>
         <tbody>
@@ -49,13 +48,10 @@
                 {{project.mtime | date:'shortDate'}}
             </td>
             <td md-cell><span tooltip="Files">{{project.files_count | number}}</span></td>
-            <td md-cell><span tooltip="Users">{{project.users.length | number}}</span></td>
             <td md-cell
                 style="border-right-width: 8px"
                 ng-class="{'cell-right-odd': $index%2 !== 0, 'cell-right-even': $index%2 ==0}">
-                <ul>
-                    <li ng-repeat="reminder in project.reminders" class="mc-md-primary-color">{{reminder.note}}</li>
-                </ul>
+                <span tooltip="Users">{{project.users.length | number}}</span>
             </td>
         </tr>
         </tbody>
