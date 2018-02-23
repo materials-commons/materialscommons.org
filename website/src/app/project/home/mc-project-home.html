@@ -1,7 +1,7 @@
 <div layout="row" layout-fill layout-align="start stretch">
     <!--<mc-project-sidenav></mc-project-sidenav>-->
     <div layout="row" layout-fill>
-        <div layout="column" flex="80" layout-margin>
+        <div layout="column" flex layout-margin>
             <div layout="row" layout-align="center center">
                 <md-radio-group layout="row" class="text-uppercase" ng-model="$ctrl.experimentType">
                     <md-radio-button value="active" class="md-primary">Active Experiments ({{$ctrl.activeExperimentsCount}})</md-radio-button>
@@ -94,7 +94,7 @@
                 </md-table-container>
             </md-content>
         </div>
-        <md-content layout="column" flex="20">
+        <md-content layout="column" flex="20" ng-if="false">
             <h1 class="md-title">Activity Feed</h1>
             <ul class="no-bullets">
                 <li layout="column">
