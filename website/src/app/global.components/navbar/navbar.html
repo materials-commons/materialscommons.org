@@ -38,20 +38,22 @@
                    on-enter="$ctrl.search()"
                    style="color:white; border-bottom-color:white">
         </md-input-container>
-        <span flex="50" ng-show="!$ctrl.$stateParams.project_id"></span>
-        <div ng-show="!$ctrl.$stateParams.project_id">
+        <span flex="20" ng-if="!$ctrl.$stateParams.project_id"></span>
+        <span flex="30"></span>
+        <div>
             <a class="always-white"
                href="https://github.com/materials-commons/materialscommons.org/wiki/Help"
                target="_blank">
                 <i class="fa fa-fw fa-question-circle"></i>
             </a>
         </div>
+        <span flex="5"></span>
+        <a class="always-white" href="mailto:help@materialscommons.org">Report Issue</a>
         <md-button ng-if="!$ctrl.isAuthenticated" ng-click="$ctrl.loginOrRegister()">
             Login/Register
         </md-button>
         <span flex ng-if="$ctrl.isAuthenticated"></span>
         <div layout="row" ng-if="$ctrl.isAuthenticated" flex layout-sm="column" layout-align="space-between">
-            <md-button ng-show="false">Help</md-button>
             <md-menu>
                 <md-button ng-click="$mdOpenMenu($event)">
                     <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>
