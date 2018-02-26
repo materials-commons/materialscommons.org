@@ -6,7 +6,7 @@ function* getActivityFeedForProject(projectId) {
             return {
                 birthtime: event('birthtime').toEpochTime()
             };
-        }).orderBy(r.desc('birthtime'));
+        }).orderBy(r.desc('birthtime')).limit(50);
 }
 
 module.exports = {
