@@ -94,23 +94,16 @@
                 </md-table-container>
             </md-content>
         </div>
-        <md-content layout="column" flex="20" ng-if="false">
-            <h1 class="md-title">Activity Feed</h1>
+        <md-content layout="column" style="width: 250px" class="padding-right-5">
+            <h1 class="md-title">
+                Activity Feed
+                <md-button class="md-primary" ng-click="$ctrl.getProjectActivities()">Refresh</md-button>
+            </h1>
             <ul class="no-bullets">
-                <li layout="column">
-                    <span><i class="fa fa-fw fa-user"></i>1 Change</span>
-                    <span style="margin-left: 20px">Modified process X....</span>
-                    <span class="mc-name-color">Jake Adams 12-27-2017</span>
-                </li>
-                <li layout="column" class="margin-top-10">
-                    <span><i class="fa fa-fw fa-user"></i>1 Addition</span>
-                    <span style="margin-left: 20px">Added process X....</span>
-                    <span class="mc-name-color">Jake Adams 12-27-2017</span>
-                </li>
-                <li layout="column" class="margin-top-10">
-                    <span><i class="fa fa-fw fa-user"></i>1 Addition</span>
-                    <span style="margin-left: 20px">Added user wey....</span>
-                    <span class="mc-name-color">Jake Adams 12-27-2017</span>
+                <li layout="column" ng-repeat="activity in $ctrl.activities" class="margin-top-20">
+                    <span class="text-uppercase"><i class="fa fa-fw {{activity.icon}}"></i>{{activity.event_type}}</span>
+                    <span style="margin-left: 20px">{{activity.message}}</span>
+                    <span class="mc-name-color">{{activity.user.name}} {{activity.birthtime | date:'yyyy-MM-dd'}}</span>
                 </li>
             </ul>
         </md-content>

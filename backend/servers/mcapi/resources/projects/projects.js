@@ -11,6 +11,7 @@ const directories = require('./directories');
 const processes = require('./processes');
 const shares = require('./shares');
 const experiments = require('./experiments');
+const activityFeed = require('../../db/model/activity-feed');
 
 function* create(next) {
     let user = this.reqctx.user;
@@ -83,6 +84,10 @@ function* updateUserAccessForProject(next) {
     yield next;
 }
 
+function* getProjectActivityFeed(next) {
+    this.body = yield activityFeed.getActivityFeedForProject(this.params.project_id);
+    yield next;
+}
 
 function createResource() {
     const router = new Router();
@@ -95,6 +100,8 @@ function createResource() {
 
     router.get('/:project_id/access', ra.validateProjectOwner, getUserAccessForProject);
     router.put('/:project_id/access', ra.validateProjectOwner, updateUserAccessForProject);
+
+    router.get('/:project_id/activity_feed', getProjectActivityFeed);
 
     let samplesResource = samples.createResource();
     router.use('/:project_id/samples', samplesResource.routes(), samplesResource.allowedMethods());

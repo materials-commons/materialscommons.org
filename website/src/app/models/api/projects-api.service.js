@@ -16,6 +16,17 @@ function projectsAPIService(Restangular, notesAPI) {
             return projectsAPIRoute(projectId).get().then(p => p.plain());
         },
 
+        getActivities: function (projectId) {
+            return projectsAPIRoute(projectId).one('activity_feed').get()
+                .then(activities => {
+                    let plainActivities = activities.plain();
+                    plainActivities.forEach(a => {
+                        a.birthtime = new Date(a.birthtime * 1000);
+                    });
+                    return plainActivities;
+                });
+        },
+
         createProject: function(projectName, projectDescription) {
             return Restangular.one('v2').one('projects').customPOST({
                 name: projectName,

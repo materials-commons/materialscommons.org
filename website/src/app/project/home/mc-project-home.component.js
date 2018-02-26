@@ -3,7 +3,7 @@ import {Experiment} from '../experiments/experiment/components/tasks/experiment.
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, mcprojstore) {
+    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, mcprojstore, projectsAPI) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
@@ -16,6 +16,7 @@ class MCProjectHomeComponentController {
         this.selectingExperiments = false;
         this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
+        this.projectsAPI = projectsAPI;
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
 
@@ -24,6 +25,35 @@ class MCProjectHomeComponentController {
             this._reloadComponentState();
         });
         this._reloadComponentState();
+        this.getProjectActivities();
+    }
+
+    getProjectActivities() {
+        this.projectsAPI.getActivities(this.project.id).then(
+            (activities) => {
+                activities.forEach(a => {
+                    switch (a.item_type) {
+                        case "project":
+                            a.icon = "fa-briefcase";
+                            break;
+                        case "experiment":
+                            a.icon = "fa-flask";
+                            break;
+                        case "file":
+                            a.icon = "fa-files-o";
+                            break;
+                        case "sample":
+                            a.icon = "fa-cubes";
+                            break;
+                        case "process":
+                            a.icon = "fa-code-fork";
+                            break;
+                    }
+                    a.message = `${a.event_type === 'create' ? 'Added' : 'Modified'} ${a.item_type} ${a.item_name}`;
+                });
+                this.activities = activities;
+            }
+        )
     }
 
     $onDestroy() {
