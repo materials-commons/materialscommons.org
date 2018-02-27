@@ -35,7 +35,8 @@ function gridFiles() {
                 otype: 'directory',
                 id: entry.id,
                 size: '',
-                childrenLoaded: false
+                childrenLoaded: false,
+                shortcut: entry.shortcut,
             },
             children: []
         };
@@ -51,7 +52,8 @@ function gridFiles() {
                 size: entry.size,
                 mediatype: entry.mediatype,
                 id: entry.id,
-                icon: 'fa-files-o'
+                icon: 'fa-files-o',
+                shortcut: false,
             },
             children: []
         };
@@ -93,7 +95,8 @@ function gridFiles() {
                         path: files.path,
                         otype: files.otype,
                         id: files.id,
-                        childrenLoaded: true
+                        childrenLoaded: true,
+                        shortcut: files.shortcut ? true : false,
                     },
                     children: []
                 }

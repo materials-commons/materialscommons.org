@@ -1,12 +1,13 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, mcprojstore, $timeout, ProjectModel, projectFileTreeAPI) {
+    constructor($state, mcprojstore, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog) {
         this.$state = $state;
         this.mcprojstore = mcprojstore;
         this.experiment = null;
         this.$timeout = $timeout;
         this.ProjectModel = ProjectModel;
         this.projectFileTreeAPI = projectFileTreeAPI;
+        this.$mdDialog = $mdDialog;
     }
 
     $onInit() {
@@ -52,6 +53,44 @@ class MCProjectSidenavComponentController {
             project.experimentsFullyLoaded = true;
             return project;
         });
+    }
+
+    modifyShortcuts() {
+        let dirs = [];
+        if (this.project.files[0]) {
+            dirs = this.project.files[0].children.filter(d => d.data.otype === 'directory').map(d => d.data);
+        }
+
+        this.$mdDialog.show({
+            templateUrl: 'app/project/home/modify-project-shortcuts-dialog.html',
+            controller: ModifyProjectShortcutsDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                project: this.project,
+                dirs: dirs
+            }
+        }).then(
+            shortcuts => {
+
+            }
+        );
+    }
+}
+
+class ModifyProjectShortcutsDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, projectShortcuts) {
+        this.$mdDialog = $mdDialog;
+        this.defaultShortcuts = projectShortcuts.defaultShortcutPaths(this.project.name);
+    }
+
+    done() {
+        this.$mdDialog.hide([]);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 

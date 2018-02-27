@@ -78,7 +78,8 @@ function toDir(results) {
         name: path.basename(results.name),
         path: results.name,
         checksum: "",
-        children: []
+        children: [],
+        shortcut: results.shortcut,
     };
 
     dir.children = results.files.map(f => {
@@ -89,7 +90,8 @@ function toDir(results) {
             path: path.join(dir.path, f.name),
             mediatype: f.mediatype,
             checksum: f.checksum,
-            id: f.id
+            id: f.id,
+            shortcut: false,
         };
     });
 
@@ -100,7 +102,8 @@ function toDir(results) {
             size: 0,
             name: path.basename(d.name),
             path: d.name,
-            checksum: ""
+            checksum: "",
+            shortcut: d.shortcut
         };
     });
 
