@@ -209,6 +209,7 @@ function Directory(name, owner, project, parent) {
     this.birthtime = now;
     this.mtime = now;
     this.atime = now;
+    this.shortcut = false;
 }
 
 function Project2DataDir(projectID, dirID) {

@@ -12,6 +12,7 @@ const processes = require('./processes');
 const shares = require('./shares');
 const experiments = require('./experiments');
 const activityFeed = require('../../db/model/activity-feed');
+const shortcuts = require('./shortcuts');
 
 function* create(next) {
     let user = this.reqctx.user;
@@ -120,6 +121,9 @@ function createResource() {
 
     let experimentsResource = experiments.createResource();
     router.use('/:project_id/experiments', experimentsResource.routes(), experimentsResource.allowedMethods());
+
+    let shortcutsResource = shortcuts.createResource();
+    router.use('/:project_id/shortcuts', shortcutsResource.routes(), shortcutsResource.allowedMethods());
 
     return router;
 }

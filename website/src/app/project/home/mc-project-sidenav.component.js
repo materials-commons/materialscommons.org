@@ -27,6 +27,7 @@ class MCProjectSidenavComponentController {
         });
 
         this.project = this.mcprojstore.currentProject;
+        //console.log(this.project);
         if (!this.project.files) {
             this.projectFileTreeAPI.getProjectRoot(this.project.id).then((files) => {
                 this.mcprojstore.updateCurrentProject(currentProject => {
@@ -72,7 +73,7 @@ class MCProjectSidenavComponentController {
             }
         }).then(
             shortcuts => {
-
+                console.log('shortcuts', shortcuts);
             }
         );
     }
@@ -80,12 +81,40 @@ class MCProjectSidenavComponentController {
 
 class ModifyProjectShortcutsDialogController {
     /*@ngInject*/
-    constructor($mdDialog, projectShortcuts) {
+    constructor($mdDialog, projectShortcuts, projectsAPI, projectFileTreeAPI) {
         this.$mdDialog = $mdDialog;
-        this.defaultShortcuts = projectShortcuts.defaultShortcutPaths(this.project.name);
+        this.projectsAPI = projectsAPI;
+        this.projectFileTreeAPI = projectFileTreeAPI;
+        this.defaultShortcuts = projectShortcuts.defaultShortcutPaths(this.project.name, this.dirs);
+        this.otherDirs = projectShortcuts.filterExistingDefaults(angular.copy(this.dirs));
+        this.dirsMap = _.indexBy(this.dirs, 'path');
     }
 
     done() {
+        this.defaultShortcuts.forEach(s => {
+            if (s.path in this.dirsMap) {
+                const d = this.dirsMap[s.path];
+                if (s.shortcut && !d.shortcut) {
+                    this.projectsAPI.createShortcut(this.project.id, d.id);
+                } else if (!s.shortcut && d.shortcut) {
+                    this.projectsAPI.deleteShortcut(this.project.id, d.id);
+                }
+            } else if (s.shortcut) {
+                this.projectFileTreeAPI.createProjectDir(this.project.id, this.project.files[0].data.id, s.name).then(
+                    (dir) => {
+                        this.projectsAPI.createShortcut(this.project.id, dir.id);
+                    }
+                );
+            }
+        });
+        this.otherDirs.forEach(dir => {
+            const d = this.dirsMap[dir.path];
+            if (dir.shortcut && !d.shortcut) {
+                this.projectsAPI.createShortcut(this.project.id, dir.id);
+            } else if (!dir.shortcut && d.shortcut) {
+                this.projectsAPI.deleteShortcut(this.project.id, dir.id);
+            }
+        });
         this.$mdDialog.hide([]);
     }
 

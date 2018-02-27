@@ -27,6 +27,14 @@ function projectsAPIService(Restangular, notesAPI) {
                 });
         },
 
+        createShortcut(projectId, directoryId) {
+            return projectsAPIRoute(projectId).one('shortcuts', directoryId).put().then(d => d.plain());
+        },
+
+        deleteShortcut(projectId, directoryId) {
+            return projectsAPIRoute(projectId).one('shortcuts', directoryId).customDELETE().then(d => d.plain());
+        },
+
         createProject: function(projectName, projectDescription) {
             return Restangular.one('v2').one('projects').customPOST({
                 name: projectName,

@@ -235,6 +235,11 @@ function* update(projectID, directoryID, updateArgs) {
     }
 }
 
+function* updateShortcut(directoryId, shortcut) {
+    yield r.table('datadirs').get(directoryId).update({shortcut: shortcut});
+    return yield directoryByID(directoryId);
+}
+
 function* isTopLevelDir(projectID, directoryID) {
     let projectNameData = yield r.table('projects').get(projectID).pluck('name');
     let directoryNameData = yield r.table('datadirs').get(directoryID).pluck('name');
@@ -410,5 +415,6 @@ module.exports = {
     addFileToDirectory,
     fileInDirectoryByName,
     isEmpty,
-    remove
+    remove,
+    updateShortcut,
 };

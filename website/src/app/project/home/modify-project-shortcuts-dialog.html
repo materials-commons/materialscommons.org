@@ -9,14 +9,14 @@
             <md-list>
                 <md-subheader>Default Shortcuts</md-subheader>
                 <md-list-item ng-repeat="shortcut in $ctrl.defaultShortcuts" ng-click="null">
-                    <md-checkbox ng-model="$ctrl.something"></md-checkbox>
-                    <p>{{shortcut}}</p>
+                    <md-checkbox ng-model="shortcut.shortcut"></md-checkbox>
+                    <p>{{shortcut.path}}</p>
                 </md-list-item>
 
                 <md-divider></md-divider>
 
                 <md-subheader>Top Level Directories</md-subheader>
-                <md-list-item ng-repeat="dir in $ctrl.dirs" ng-click="null">
+                <md-list-item ng-repeat="dir in $ctrl.otherDirs" ng-click="null">
                     <md-checkbox ng-model="dir.shortcut"></md-checkbox>
                     <p>{{dir.path}}</p>
                 </md-list-item>
