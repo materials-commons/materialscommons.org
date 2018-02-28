@@ -133,7 +133,6 @@ class ModifyProjectShortcutsDialogController {
             }
         });
         this.otherDirs.forEach(dir => {
-            const d = this.dirsMap[dir.path];
             if (dir.shortcut) {
                 this.projectsAPI.createShortcut(this.project.id, dir.id);
             } else if (!dir.shortcut) {
