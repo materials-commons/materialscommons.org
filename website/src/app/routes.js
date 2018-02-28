@@ -69,11 +69,11 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('templates', {
             url: '/templates',
             abstract: true,
-            template: '<div ui-view></div>'
+            template: '<div ui-view layout="column"></div>'
         })
         .state('templates.builder', {
             url: '/builder',
-            template: '<mc-template-builder></mc-template-builder>'
+            template: '<mc-template-builder layout="column" layout-fill class="height-100"></mc-template-builder>'
         })
         .state('project', {
             url: '/project/:project_id',
