@@ -1,6 +1,6 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, mcprojstore, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog) {
+    constructor($state, mcprojstore, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState) {
         this.$state = $state;
         this.mcprojstore = mcprojstore;
         this.experiment = null;
@@ -8,6 +8,7 @@ class MCProjectSidenavComponentController {
         this.ProjectModel = ProjectModel;
         this.projectFileTreeAPI = projectFileTreeAPI;
         this.$mdDialog = $mdDialog;
+        this.mcRouteState = mcRouteState;
     }
 
     $onInit() {
@@ -101,6 +102,10 @@ class MCProjectSidenavComponentController {
                 });
             }
         );
+    }
+
+    isDatasetsRoute() {
+        return this.mcRouteState.getRouteName().startsWith('project.experiment.datasets');
     }
 }
 
