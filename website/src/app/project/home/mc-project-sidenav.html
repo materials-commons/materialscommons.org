@@ -67,13 +67,15 @@
 
                     <div class="padding-3" ui-sref-active="pst-active">
                         <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.samples({experiment_id: $ctrl.experiment.id})">
-                            <i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.experiment.samples | toSize}})
+                            <!--<i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.experiment.samples | toSize}})-->
+                            <i class="fa fa-fw fa-cubes"></i>Samples
                         </a>
                     </div>
 
                     <div class="padding-3" ui-sref-activex="pst-active" ng-class="{'pst-active': $ctrl.isDatasetsRoute()}">
                         <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.datasets.list({experiment_id: $ctrl.experiment.id})">
-                            <i class="fa fa-fw fa-database"></i>Datasets({{$ctrl.experiment.datasets | toSize}})
+                            <!--<i class="fa fa-fw fa-database"></i>Datasets({{$ctrl.experiment.datasets | toSize}})-->
+                            <i class="fa fa-fw fa-database"></i>Datasets
                         </a>
                     </div>
 
@@ -83,8 +85,8 @@
                         </a>
                     </div>
 
-                    <div class="padding-3">
-                        <a class="project-sidenav-tool margin-left-55" ui-sref="templates.builder">
+                    <div class="padding-3" ui-sref-active="pst-active">
+                        <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.tbuilder">
                             <i class="fa fa-fw fa-pencil-square"></i>Template Builder
                         </a>
                     </div>
@@ -96,7 +98,8 @@
 
             <div class="padding-3" ui-sref-active="pst-active">
                 <a class="project-sidenav-tool margin-left-30" ui-sref="project.samples">
-                    <i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.project.samples | toSize}})
+                    <!--<i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.project.samples | toSize}})-->
+                    <i class="fa fa-fw fa-cubes"></i>Samples
                 </a>
             </div>
 
