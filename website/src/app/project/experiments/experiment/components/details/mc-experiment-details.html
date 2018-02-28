@@ -1,4 +1,4 @@
-<div layout="column" layout-fill flex>
+<div layout="column" layout-fill flex layout-margin>
     <div layout="row" layout-fill>
         <md-content flex layout="column" layout-align="start stretch"
                     style="padding-top:8px; margin-right:10px">
@@ -13,25 +13,20 @@
                 </div>
             </div>
 
-            <div layout="row">
-                <md-input-container flex="90">
-                    <label>Name</label>
-                    <input type="text"
-                           ng-model="$ctrl.experiment.name"
-                           ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                           ng-change="$ctrl.updateName()">
-                </md-input-container>
-            </div>
+            <md-input-container>
+                <label>Name</label>
+                <input type="text"
+                       ng-model="$ctrl.experiment.name"
+                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                       ng-change="$ctrl.updateName()">
+            </md-input-container>
 
-            <div layout="row">
-                <md-input-container flex="90">
-                    <label>Description</label>
-                    <textarea ng-model="$ctrl.experiment.description"
-                              ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                              ng-change="$ctrl.updateDescription()"></textarea>
-                </md-input-container>
-            </div>
-            <br><br><br>
+            <md-input-container>
+                <label>Description</label>
+                <textarea ng-model="$ctrl.experiment.description"
+                          ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                          ng-change="$ctrl.updateDescription()"></textarea>
+            </md-input-container>
 
             <mc-experiment-details-field experiment="$ctrl.experiment" heading="Goals" label="Goal"
                                          field="goals"></mc-experiment-details-field>
