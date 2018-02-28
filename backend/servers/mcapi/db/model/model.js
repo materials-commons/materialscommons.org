@@ -14,6 +14,7 @@ function Project(name, description, owner) {
     this.mediatypes = {};
     this.size = 0;
     this.otype = "project";
+    this.todos = [];
 }
 
 function Access(project_name, project_id, user_id) {
