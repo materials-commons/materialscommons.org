@@ -27,7 +27,6 @@ class MCProjectSidenavComponentController {
         });
 
         this.project = this.mcprojstore.currentProject;
-        //console.log(this.project);
         if (!this.project.files) {
             this.projectFileTreeAPI.getProjectRoot(this.project.id).then((files) => {
                 this.mcprojstore.updateCurrentProject(currentProject => {
@@ -44,16 +43,29 @@ class MCProjectSidenavComponentController {
     }
 
     refreshProject() {
-        this.ProjectModel.getProjectForCurrentUser(this.project.id).then((p) => this.updateProjectExperiments(p));
+        this.ProjectModel.getProjectForCurrentUser(this.project.id).then((p) => this._updateProject(p));
     }
 
-    updateProjectExperiments(project) {
+    _updateProject(project) {
         this.mcprojstore.updateCurrentProject((currentProject, transformers) => {
             let transformedExperiments = project.experiments.map(e => transformers.transformExperiment(e));
             project.experiments = _.indexBy(transformedExperiments, 'id');
             project.experimentsFullyLoaded = true;
+            this.project = project;
             return project;
-        });
+        }).then(
+            () => {
+                if (!this.project.files) {
+                    this.projectFileTreeAPI.getProjectRoot(this.project.id).then((files) => {
+                        this.mcprojstore.updateCurrentProject(currentProject => {
+                            this.project.files = files;
+                            currentProject.files = this.project.files;
+                            return currentProject;
+                        })
+                    });
+                }
+            }
+        );
     }
 
     modifyShortcuts() {
@@ -73,7 +85,20 @@ class MCProjectSidenavComponentController {
             }
         }).then(
             shortcuts => {
-                console.log('shortcuts', shortcuts);
+                let shortcutsMap = _.indexBy(shortcuts, 'id');
+                this.project.files[0].children.forEach(d => {
+                    if (d.data.id in shortcutsMap) {
+                        d.data.shortcut = true;
+                    } else {
+                        d.data.shortcut = false;
+                    }
+                });
+                this.project.shortcuts = shortcuts;
+                this.mcprojstore.updateCurrentProject(currentProject => {
+                    currentProject.files = this.project.files;
+                    currentProject.shortcuts = this.project.shortcuts;
+                    return currentProject;
+                });
             }
         );
     }
@@ -94,9 +119,9 @@ class ModifyProjectShortcutsDialogController {
         this.defaultShortcuts.forEach(s => {
             if (s.path in this.dirsMap) {
                 const d = this.dirsMap[s.path];
-                if (s.shortcut && !d.shortcut) {
+                if (s.shortcut) {
                     this.projectsAPI.createShortcut(this.project.id, d.id);
-                } else if (!s.shortcut && d.shortcut) {
+                } else if (!s.shortcut) {
                     this.projectsAPI.deleteShortcut(this.project.id, d.id);
                 }
             } else if (s.shortcut) {
@@ -109,13 +134,16 @@ class ModifyProjectShortcutsDialogController {
         });
         this.otherDirs.forEach(dir => {
             const d = this.dirsMap[dir.path];
-            if (dir.shortcut && !d.shortcut) {
+            if (dir.shortcut) {
                 this.projectsAPI.createShortcut(this.project.id, dir.id);
-            } else if (!dir.shortcut && d.shortcut) {
+            } else if (!dir.shortcut) {
                 this.projectsAPI.deleteShortcut(this.project.id, dir.id);
             }
         });
-        this.$mdDialog.hide([]);
+        let defaultShortcuts = this.defaultShortcuts.filter(s => s.shortcut);
+        let dirShortcuts = this.otherDirs.filter(d => d.shortcut);
+        let allShortcuts = defaultShortcuts.concat(dirShortcuts);
+        this.$mdDialog.hide(allShortcuts);
     }
 
     cancel() {

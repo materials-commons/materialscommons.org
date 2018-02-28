@@ -40,21 +40,10 @@ function ProjectModelService(projectsAPI) {
             p.reminders = data.reminders;
             p.status = data.status;
             p.todos = data.todos;
-            p.shortcuts = data.root_dirs.filter(d => {
-                if (d.name === `${p.name}/Literature`) {
-                    return true;
-                } else if (d.name === `${p.name}/Presentations`) {
-                    return true;
-                } else if (d.name === `${p.name}/Project Documents`) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }).map(d => {
-                return {
-                    name: d.name.replace(`${p.name}/`, ''),
-                    id: d.id
-                };
+            p.shortcuts = data.shortcuts.map(d => {
+                d.path = d.name;
+                d.name = d.name.replace(`${p.name}/`, '');
+                return d;
             });
             if (data.notes) {
                 p.notes = data.notes;

@@ -187,10 +187,9 @@ function addComputed(rql, fullExperiment) {
             samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
             files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count(),
-            root_dirs: r.table('datadirs')
-                .getAll([project('id'), project('name')], {index: 'datadir_project_name'})
-                .eqJoin('project', r.db('materialscommons').table('datadirs'), {index: 'project'}).zip()
-                .filter(dir => dir('name').ne(project('name'))).coerceTo('array')
+            shortcuts: r.table('datadirs')
+                .getAll([project('id'), true], {index: 'datadir_project_shortcut'})
+                .coerceTo('array'),
         };
     });
 
