@@ -38,12 +38,15 @@ function* createProject(user, attrs) {
 
 function* buildDefaultShortcutDirs(projectName, projectId, owner, parentDirId) {
     let dir = new model.Directory(`${projectName}/Literature`, owner, projectId, parentDirId);
+    dir.shortcut = true;
     yield createShortcutDir(dir);
 
     dir = new model.Directory(`${projectName}/Presentations`, owner, projectId, parentDirId);
+    dir.shortcut = true;
     yield createShortcutDir(dir);
 
     dir = new model.Directory(`${projectName}/Project Documents`, owner, projectId, parentDirId);
+    dir.shortcut = true;
     yield createShortcutDir(dir);
 }
 
