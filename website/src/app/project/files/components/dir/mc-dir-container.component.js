@@ -23,6 +23,7 @@ class MCDirContainerComponentController {
 
     _loadDir() {
         this.project = this.mcprojstore.currentProject;
+        console.log('_loadDir', this.project.files[0]);
         const entry = this.gridFiles.findEntry(this.project.files[0], this.$stateParams.dir_id);
         if (!entry) {
             console.log(`MCDirContainer: Couldn't find entry ${this.$stateParams.dir_id}`)
@@ -42,6 +43,8 @@ class MCDirContainerComponentController {
         this.projectFileTreeAPI.createProjectDir(this.$stateParams.project_id, this.$stateParams.dir_id, createDirName).then(
             (d) => {
                 let newDir = {
+                    expanded: false,
+                    children: [],
                     data: {
                         id: d.id,
                         name: createDirName,
