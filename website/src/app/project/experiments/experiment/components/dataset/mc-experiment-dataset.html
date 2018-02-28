@@ -18,7 +18,7 @@
             views you can add or remove a process by clicking on it and choosing add or remove button in the details tab.
         </p>
 
-        <mc-dataset-details dataset=$ctrl.dataset layout="column" flex></mc-dataset-details>
+        <mc-dataset-details dataset=$ctrl.dataset layout="column" flex ng-if="$ctrl.showDetailsSection"></mc-dataset-details>
 
         <div ng-if="!$ctrl.showDetailsSection">
             <md-button class="md-primary" ng-click="$ctrl.showNodes()">
