@@ -85,22 +85,23 @@ class MCProjectSidenavComponentController {
                 dirs: dirs
             }
         }).then(
-            shortcuts => {
-                let shortcutsMap = _.indexBy(shortcuts, 'id');
-                this.project.files[0].children.forEach(d => {
-                    if (d.data.id in shortcutsMap) {
-                        d.data.shortcut = true;
-                    } else {
-                        d.data.shortcut = false;
-                    }
-                });
-                this.project.shortcuts = shortcuts;
-                this.mcprojstore.updateCurrentProject(currentProject => {
-                    currentProject.files = this.project.files;
-                    currentProject.shortcuts = this.project.shortcuts;
-                    return currentProject;
-                });
-            }
+            () => this.refreshProject()
+            // shortcuts => {
+            //     let shortcutsMap = _.indexBy(shortcuts, 'id');
+            //     this.project.files[0].children.forEach(d => {
+            //         if (d.data.id in shortcutsMap) {
+            //             d.data.shortcut = true;
+            //         } else {
+            //             d.data.shortcut = false;
+            //         }
+            //     });
+            //     this.project.shortcuts = shortcuts;
+            //     this.mcprojstore.updateCurrentProject(currentProject => {
+            //         currentProject.files = this.project.files;
+            //         currentProject.shortcuts = this.project.shortcuts;
+            //         return currentProject;
+            //     });
+            // }
         );
     }
 
