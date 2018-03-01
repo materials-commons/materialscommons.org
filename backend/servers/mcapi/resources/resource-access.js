@@ -52,15 +52,17 @@ function* validateProjectOwner(next) {
 }
 
 function* validateExperimentOwner(next) {
-    let experimentId = this.params.experiment_id;
-    if (experimentId) {
-        let isOwner = yield check.isUserExperimentOwner(this.reqctx.user.id, experimentId);
+    let experimentId = this.params.experiment_id,
+        projectId = this.params.project_id;
+    if (experimentId && projectId) {
+        let isOwner = yield check.isUserExperimentOwner(this.reqctx.user.id, experimentId, projectId);
         if (!isOwner) {
             this.status = httpStatus.BAD_REQUEST;
             this.body = {error: 'Only the experiment owner can delete an experiment'};
             return this.status;
         }
     }
+
     yield next;
 }
 

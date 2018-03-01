@@ -142,7 +142,7 @@ class MCProjectHomeComponentController {
             bindToController: true,
             locals: {
                 experiments: selected,
-                projectId: this.project.id
+                project: this.project
             }
         }).then(
             () => {
@@ -238,24 +238,51 @@ class MergeExperimentsDialogController {
 
 class DeleteExperimentsDialogController {
     /*@ngInject*/
-    constructor($mdDialog, experimentsAPI, mcprojstore) {
+    constructor($mdDialog, experimentsAPI, mcprojstore, toast, User) {
         this.$mdDialog = $mdDialog;
         this.experimentsAPI = experimentsAPI;
         this.experimentName = '';
         this.experimentDescription = '';
         this.mcprojstore = mcprojstore;
+        this.toast = toast;
+        this.user = User.u();
     }
 
     done() {
-        let experimentIds = this.experiments.map(e => e.id);
-        this.experimentsAPI.deleteExperiments(this.projectId, experimentIds).then(
-            () => {
-                this.mcprojstore.removeExperiments(...this.experiments).then(
-                    () => this.$mdDialog.hide()
-                );
-            },
-            () => this.$mdDialog.cancel()
-        );
+        if (this.canDeleteExperiments()) {
+            let experimentIds = this.experiments.map(e => e.id);
+            this.experimentsAPI.deleteExperiments(this.project.id, experimentIds).then(
+                () => {
+                    this.mcprojstore.removeExperiments(...this.experiments).then(
+                        () => this.$mdDialog.hide()
+                    );
+                },
+                () => this.$mdDialog.cancel()
+            );
+        } else {
+            this.toast.error('You are attempting to delete experiments when you are not the experiment or project owner');
+        }
+    }
+
+    canDeleteExperiments() {
+        let canDelete = true;
+        this.experiments.forEach(e => {
+            if (!this.canDelete(e.owner, this.project.owner, this.user)) {
+                canDelete = false;
+            }
+        });
+
+        return canDelete;
+    }
+
+    canDelete(experimentOwner, projectOwner, user) {
+        if (experimentOwner === user) {
+            return true;
+        } else if (projectOwner === user) {
+            return true;
+        }
+
+        return false;
     }
 
     cancel() {
