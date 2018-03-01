@@ -75,8 +75,6 @@ class MCProjectSidenavComponentController {
             dirs = this.project.files[0].children.filter(d => d.data.otype === 'directory').map(d => d.data);
         }
 
-        console.log('modifyShortcuts', this.project.files[0]);
-
         this.$mdDialog.show({
             templateUrl: 'app/project/home/modify-project-shortcuts-dialog.html',
             controller: ModifyProjectShortcutsDialogController,

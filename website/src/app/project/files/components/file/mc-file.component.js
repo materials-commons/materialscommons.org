@@ -7,8 +7,9 @@ function MCFileComponentController(projectsAPI, $stateParams) {
     'ngInject';
 
     var ctrl = this;
-    projectsAPI.getProjectFile($stateParams.project_id, $stateParams.file_id)
-        .then(function(file) {
+    projectsAPI.getProjectFile($stateParams.project_id, $stateParams.file_id).then(
+        (file) => {
             ctrl.file = file;
-        });
+        }
+    );
 }

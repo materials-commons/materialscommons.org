@@ -12,7 +12,7 @@ function gridFiles() {
 
     function createGridChildren(filesChildren) {
         const children = [];
-        filesChildren.forEach(function(entry) {
+        filesChildren.forEach(function (entry) {
             let centry;
             if (entry.otype == 'directory') {
                 centry = createDirectoryEntry(entry);
@@ -74,19 +74,19 @@ function gridFiles() {
 
     function toIcon(otype) {
         switch (otype) {
-        case 'sample':
-            return 'fa-cubes';
-        case 'process':
-            return 'fa-code-fork';
-        case 'file':
-            return 'fa-files-o';
-        default:
-            return 'fa-files-o';
+            case 'sample':
+                return 'fa-cubes';
+            case 'process':
+                return 'fa-code-fork';
+            case 'file':
+                return 'fa-files-o';
+            default:
+                return 'fa-files-o';
         }
     }
 
     return {
-        toGrid: function(files) {
+        toGrid: function (files) {
             const gridData = [
                 {
                     expanded: true,
@@ -114,9 +114,16 @@ function gridFiles() {
         findEntry(files, id) {
             const treeModel = new TreeModel(),
                 root = treeModel.parse(files);
-            return root.first({strategy: 'pre'}, function(node) {
+            return root.first({strategy: 'pre'}, function (node) {
                 return node.model.data.id === id;
             });
+        },
+
+        findParent(files, node) {
+            const treeModel = new TreeModel(),
+                root = treeModel.parse(files),
+                nodeParentDir = node.data.path.substring(0, node.data.path.lastIndexOf('/'));
+            return root.first({strategy: 'pre'}, n => n.model.data.name === nodeParentDir);
         },
 
         createDirectoryEntry,

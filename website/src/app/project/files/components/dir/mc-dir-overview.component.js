@@ -20,7 +20,6 @@ class MCDirOverviewComponentController {
     }
 
     _allFiles() {
-        console.log('_allFiles', this.dir);
         return this.dir.children.filter(f => f.data.otype === 'file' && f.data.id).map(f => {
             f.data.selected = false;
             return f.data;
