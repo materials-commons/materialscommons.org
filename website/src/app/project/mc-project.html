@@ -1,7 +1,8 @@
 <div layout="column" flex="100">
-    <a ng-click="$ctrl.showQuickbar = true">Show Quickbar</a>
-    <mc-project-quickbar show-quickbar="$ctrl.showQuickbar"></mc-project-quickbar>
-    <div layout="column" flex>
-        <div ui-view flex></div>
+    <div layout="row" layout-fill layout-align="start stretch">
+        <mc-project-sidenav></mc-project-sidenav>
+        <div layout="column" flex="100">
+            <div ui-view flex="100" layout="column"></div>
+        </div>
     </div>
 </div>

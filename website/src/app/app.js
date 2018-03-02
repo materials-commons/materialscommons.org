@@ -19,9 +19,9 @@ angular.module('materialscommons')
     .controller('MCAppController', MCAppController);
 
 appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$ariaProvider', '$compileProvider',
-    'hljsServiceProvider'];
+    'hljsServiceProvider', 'markdownItConverterProvider'];
 
-function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider, $compileProvider, hljsServiceProvider) {
+function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $ariaProvider, $compileProvider, hljsServiceProvider, mdProvider) {
     setupMaterialsTheme($mdThemingProvider);
     setupRoutes($stateProvider, $urlRouterProvider);
     $ariaProvider.config({ariaChecked: false, ariaInvalid: false});
@@ -30,11 +30,18 @@ function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $aria
         // replace tab with 4 spaces
         tabReplace: '    '
     });
+
+    mdProvider.config({
+        breaks: true,
+        html: true,
+        linkify: true
+    });
 }
 
-appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals', 'searchQueryText', "templates"];
+appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals',
+    'searchQueryText', "templates", "mcprojstore", 'mcRouteState'];
 
-function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText, templates) {
+function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText, templates, mcprojstore, mcRouteState) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     // appRun will run when the application starts up and before any controllers have run.
@@ -51,10 +58,17 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
     }
 
     const unregister = $rootScope.$on('$stateChangeStart', function (event, toState) {
+        mcRouteState.setRouteName(toState.name);
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
+
+        if (toState.name.startsWith('project') && !toState.name.startsWith('projects')) {
+            if (toState.name.startsWith('project.home')) {
+                mcprojstore.setCurrentExperiment(null);
+            }
+        }
+
         if (!User.isAuthenticated() && isStateRequiringALogin(toState.name)) {
             event.preventDefault();
-            // $state.go('login');
             $state.go('data.home.top');
         }
 

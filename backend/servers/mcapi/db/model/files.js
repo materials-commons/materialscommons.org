@@ -182,9 +182,9 @@ function* update(fileID, projectID, user, file) {
         yield updateTags(fileID, file.tags);
     }
 
-    if (file.notes) {
-        yield updateNotes(fileID, projectID, user, file.notes);
-    }
+    // if (file.notes) {
+    //     yield updateNotes(fileID, projectID, user, file.notes);
+    // }
 
     if (file.processes) {
         yield updateProcesses(fileID, file.processes);
@@ -253,18 +253,18 @@ function* addTags(tagsAdded, fileID) {
 // updateNotes adds, modifies or deletes notes associated with a file. It
 // takes a list of notes and for each note determines if that note is being
 // updated, removed, or created.
-function* updateNotes(fileID, projectID, user, notes) {
-    for (let note of notes) {
-        if (note.id && note.delete) {
-            yield deleteNote(note);
-        } else if (note.id) {
-            yield updateNote(note);
-        } else {
-            yield addNote(note, fileID, user, projectID);
-        }
-    }
-    return true;
-}
+// function* updateNotes(fileID, projectID, user, notes) {
+//     for (let note of notes) {
+//         if (note.id && note.delete) {
+//             yield deleteNote(note);
+//         } else if (note.id) {
+//             yield updateNote(note);
+//         } else {
+//             yield addNote(note, fileID, user, projectID);
+//         }
+//     }
+//     return true;
+// }
 
 // deleteNote deletes a given note.
 function* deleteNote(note) {
@@ -273,25 +273,25 @@ function* deleteNote(note) {
 }
 
 // updateNote updates a given note. The only fields that can be changed are the title and/or the note field.
-function* updateNote(note) {
-    let n = {};
-    if (note.title) {
-        n.title = note.title;
-    }
-    if (note.note) {
-        n.note = note.note;
-    }
-    n.mtime = r.now();
-    return yield r.table('notes').get(note.id).update(n);
-}
+// function* updateNote(note) {
+//     let n = {};
+//     if (note.title) {
+//         n.title = note.title;
+//     }
+//     if (note.note) {
+//         n.note = note.note;
+//     }
+//     n.mtime = r.now();
+//     return yield r.table('notes').get(note.id).update(n);
+// }
 
 // addNote adds a new note and associates it with the given file.
-function* addNote(note, fileID, owner, projectID) {
-    let n = new model.Note(note.title, note.note, projectID, owner);
-    let newNote = yield db.insert('notes', n);
-    let note2item = new model.Note2Item(fileID, 'datafile', newNote.id);
-    return yield db.insert('note2item', note2item);
-}
+// function* addNote(note, fileID, owner, projectID) {
+//     let n = new model.Note(note.title, note.note, projectID, owner);
+//     let newNote = yield db.insert('notes', n);
+//     let note2item = new model.Note2Item(fileID, 'datafile', newNote.id);
+//     return yield db.insert('note2item', note2item);
+// }
 
 // updateProcesses will add or delete process associations for the file
 function* updateProcesses(fileID, processes) {

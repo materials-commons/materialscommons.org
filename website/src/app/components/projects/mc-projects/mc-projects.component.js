@@ -30,7 +30,7 @@ class MCProjectsComponentController {
             controllerAs: '$ctrl',
             bindToController: true
         }).then(
-            (p) => this.mcprojstore.addProject(p)
+            (p) => this.mcprojstore.addProject(this.ProjectModel.fromJSON(p))
         );
     }
 

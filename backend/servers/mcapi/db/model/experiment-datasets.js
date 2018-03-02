@@ -506,7 +506,7 @@ function* unpublishDatasetTags(datasetId) {
     for (var i = 0; i < tags.length; i++) {
         let count = yield r.db('mcpub').table('tag2dataset').getAll(tags[i], {index: 'tag'}).count();
         if (count == 0) {
-            yield  yield r.db('mcpub').table('tags').get(tags[i]).delete();
+            yield r.db('mcpub').table('tags').get(tags[i]).delete();
         }
     }
 }

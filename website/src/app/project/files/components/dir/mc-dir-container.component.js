@@ -24,6 +24,9 @@ class MCDirContainerComponentController {
     _loadDir() {
         this.project = this.mcprojstore.currentProject;
         const entry = this.gridFiles.findEntry(this.project.files[0], this.$stateParams.dir_id);
+        if (!entry) {
+            console.log(`MCDirContainer: Couldn't find entry ${this.$stateParams.dir_id}`)
+        }
         this.dir = entry.model;
     }
 
@@ -39,6 +42,8 @@ class MCDirContainerComponentController {
         this.projectFileTreeAPI.createProjectDir(this.$stateParams.project_id, this.$stateParams.dir_id, createDirName).then(
             (d) => {
                 let newDir = {
+                    expanded: false,
+                    children: [],
                     data: {
                         id: d.id,
                         name: createDirName,
@@ -68,15 +73,17 @@ class MCDirContainerComponentController {
             } else {
                 this.fileTreeDeleteService.deleteDir(this.$stateParams.project_id, file.id).then(
                     () => {
-                        const i = _.findIndex(this.dir.children, (f) => f.data.id === file.id);
+                        let parentDir = this.gridFiles.findParent(this.project.files[0], this.dir);
+                        parentDir = parentDir.model;
+                        const i = _.findIndex(parentDir.children, (f) => f.data.id === file.id);
                         if (i !== -1) {
                             this._updateCurrentProj(() => {
-                                this.dir.children.splice(i, 1);
+                                parentDir.children.splice(i, 1);
                                 this.updated = !this.updated;
                             });
                         }
                         const root = this.fileTreeMoveService.getTreeRoot();
-                        this.$state.go('project.files.dir', {dir_id: root.model.data.id}, {reload: true});
+                        this.$state.go('project.files.dir', {dir_id: root.model.data.id})//, {reload: true});
                     }
                 );
             }

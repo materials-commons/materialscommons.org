@@ -173,9 +173,15 @@ function* isUserProjectOwner(userId, projectId) {
     return userId === projectOwner;
 }
 
-function* isUserExperimentOwner(userId, projectId) {
-    let projectOwner = yield r.table('experiments').get(projectId).getField('owner');
-    return userId === projectOwner;
+function* isUserExperimentOwner(userId, experimentId, projectId) {
+    let projectOwner = yield r.table('projects').get(projectId).getField('owner');
+    let experimentOwner = yield r.table('experiments').get(experimentId).getField('owner');
+    if (projectOwner === userId) {
+        return true;
+    } else if (experimentOwner === userId) {
+        return true;
+    }
+    return false;
 }
 
 function* directoryInProject(projectId, directoryId) {

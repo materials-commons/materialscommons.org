@@ -11,11 +11,13 @@ const directories = require('./directories');
 const processes = require('./processes');
 const shares = require('./shares');
 const experiments = require('./experiments');
+const activityFeed = require('../../db/model/activity-feed');
+const shortcuts = require('./shortcuts');
 
-function* create(next){
+function* create(next) {
     let user = this.reqctx.user;
     let attrs = yield parse(this);
-    let rv = yield projects.createProject(user,attrs);
+    let rv = yield projects.createProject(user, attrs);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
         this.body = rv;
@@ -56,7 +58,7 @@ function* deleteProjectFull(next) {
     let options = {
         dryRun: false
     };
-    let rv = yield projectDelete.deleteProject(this.params.project_id,options);
+    let rv = yield projectDelete.deleteProject(this.params.project_id, options);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
         this.body = rv;
@@ -79,15 +81,19 @@ function* getUserAccessForProject(next) {
 
 function* updateUserAccessForProject(next) {
     let attrs = yield parse(this);
-    this.body = yield projects.updateUserAccessForProject(this.params.project_id,attrs);
+    this.body = yield projects.updateUserAccessForProject(this.params.project_id, attrs);
     yield next;
 }
 
+function* getProjectActivityFeed(next) {
+    this.body = yield activityFeed.getActivityFeedForProject(this.params.project_id);
+    yield next;
+}
 
 function createResource() {
     const router = new Router();
     router.get('/', all);
-    router.post('/',create);
+    router.post('/', create);
     router.use('/:project_id', ra.validateProjectAccess);
     router.put('/:project_id', update);
     router.get('/:project_id', getProject);
@@ -95,6 +101,8 @@ function createResource() {
 
     router.get('/:project_id/access', ra.validateProjectOwner, getUserAccessForProject);
     router.put('/:project_id/access', ra.validateProjectOwner, updateUserAccessForProject);
+
+    router.get('/:project_id/activity_feed', getProjectActivityFeed);
 
     let samplesResource = samples.createResource();
     router.use('/:project_id/samples', samplesResource.routes(), samplesResource.allowedMethods());
@@ -113,6 +121,9 @@ function createResource() {
 
     let experimentsResource = experiments.createResource();
     router.use('/:project_id/experiments', experimentsResource.routes(), experimentsResource.allowedMethods());
+
+    let shortcutsResource = shortcuts.createResource();
+    router.use('/:project_id/shortcuts', shortcutsResource.routes(), shortcutsResource.allowedMethods());
 
     return router;
 }

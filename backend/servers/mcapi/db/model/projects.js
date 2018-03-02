@@ -5,6 +5,8 @@ const getSingle = require('./get-single');
 const renameTopDirHelper = require('./directory-rename');
 const _ = require('lodash');
 const experiments = require('./experiments');
+const notes = require('./notes');
+const db = require('./db');
 
 function* createProject(user, attrs) {
     let name = attrs.name;
@@ -26,10 +28,32 @@ function* createProject(user, attrs) {
     let proj2datadir_doc = new model.Project2DataDir(project_id, directory_id);
     yield r.table('project2datadir').insert(proj2datadir_doc);
 
+    yield buildDefaultShortcutDirs(name, project_id, owner, directory_id);
+
     let access_doc = new model.Access(name, project_id, owner);
     yield r.table('access').insert(access_doc);
 
     return yield getProject(project_id);
+}
+
+function* buildDefaultShortcutDirs(projectName, projectId, owner, parentDirId) {
+    let dir = new model.Directory(`${projectName}/Literature`, owner, projectId, parentDirId);
+    dir.shortcut = true;
+    yield createShortcutDir(dir);
+
+    dir = new model.Directory(`${projectName}/Presentations`, owner, projectId, parentDirId);
+    dir.shortcut = true;
+    yield createShortcutDir(dir);
+
+    dir = new model.Directory(`${projectName}/Project Documents`, owner, projectId, parentDirId);
+    dir.shortcut = true;
+    yield createShortcutDir(dir);
+}
+
+function* createShortcutDir(dir) {
+    let created = yield db.insert('datadirs', dir);
+    let proj2dir = new model.Project2DataDir(dir.project, created.id);
+    yield db.insert('project2datadir', proj2dir);
 }
 
 function* getProject(projectId) {
@@ -156,15 +180,19 @@ function addComputed(rql, fullExperiment) {
             events: r.table('events')
                 .getAll(project('id'), {index: 'project_id'})
                 .coerceTo('array'),
+            notes: notes.getAllNotesForItemRQL(project('id')).coerceTo('array'),
             experiments: fullExperiment ? experiments.addExperimentComputed(r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
-                .eqJoin('experiment_id', r.table('experiments')).zip()).coerceTo('array') :
+                    .eqJoin('experiment_id', r.table('experiments')).zip()).coerceTo('array') :
                 r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
-                .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array'),
+                    .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array'),
             processes: r.table('project2process').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
             samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
-            files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count()
+            files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count(),
+            shortcuts: r.table('datadirs')
+                .getAll([project('id'), true], {index: 'datadir_project_shortcut'})
+                .coerceTo('array'),
         };
     });
 
@@ -198,7 +226,11 @@ function* update(projectID, attrs) {
         pattrs.status = attrs.status;
     }
 
-    if (pattrs.name || pattrs.description || pattrs.overview || pattrs.reminders || pattrs.status) {
+    if (attrs.todos) {
+        pattrs.todos = attrs.todos;
+    }
+
+    if (pattrs.name || pattrs.description || pattrs.overview || pattrs.reminders || pattrs.status || pattrs.todos) {
         yield r.table('projects').get(projectID).update(pattrs);
     }
 
@@ -297,16 +329,16 @@ function* updateUserAccessForProject(projectId, attrs) {
 
 
 module.exports = {
-    all: all,
+    all,
     createProject,
-    forUser: forUser,
+    forUser,
     forUserSimple,
     get: function (id, index) {
         return getSingle(r, 'projects', id, index);
     },
     addFileToProject,
-    getProject: getProject,
-    update: update,
+    getProject,
+    update,
     getUserAccessForProject,
     updateUserAccessForProject
 };

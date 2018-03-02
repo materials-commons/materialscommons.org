@@ -24,6 +24,18 @@ function* get(next) {
     yield next;
 }
 
+function* getByName(next) {
+    let nameArgs = yield parse(this);
+    if (!nameArgs.name) {
+        this.status = httpStatus.BAD_REQUEST;
+        this.body = {error: `You must specify a directory path`};
+    } else {
+        this.body = yield directories.getByName(this.params.project_id, namesArgs.name);
+    }
+
+    yield next;
+}
+
 function* create(next) {
     let dirArgs = yield parse(this);
     dirArgs = prepareDirArgs(this.params.project_id, dirArgs);
@@ -197,6 +209,8 @@ function createResource() {
 
     router.get('/', get);
     router.post('/', create);
+
+    router.post('/dir/byname', getByName);
 
     router.use('/:directory_id', ra.validateDirectoryInProject);
     router.get('/:directory_id', get);

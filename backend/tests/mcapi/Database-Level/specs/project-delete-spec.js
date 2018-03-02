@@ -34,7 +34,7 @@ let sampleIdList = [];
 let fileIdList = [];
 let datasetIdList = [];
 
-before(function*() {
+before(function* () {
 
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
@@ -43,7 +43,7 @@ before(function*() {
 
 describe('Feature - Projects: ', function () {
     describe('Delete Project: ', function () {
-        it('does not delete a project with any published datasets', function*() {
+        it('does not delete a project with any published datasets', function* () {
 
             this.timeout(8000); // test take up to 8 seconds
 
@@ -72,7 +72,7 @@ describe('Feature - Projects: ', function () {
             yield testDatasets({assertExists: true});
 
         });
-        it('does not delete a project if any dataset in any experiment has a DOI', function*() {
+        it('does not delete a project if any dataset in any experiment has a DOI', function* () {
             this.timeout(8000); // test take up to 8 seconds
 
             yield createRenamedDemoProject();
@@ -99,7 +99,7 @@ describe('Feature - Projects: ', function () {
 
             yield testDatasets({assertExists: true});
         });
-        it('supports a dry run mode', function*() {
+        it('supports a dry run mode', function* () {
             this.timeout(8000); // test take up to 8 seconds
 
             yield createRenamedDemoProject();
@@ -119,7 +119,7 @@ describe('Feature - Projects: ', function () {
             yield confirmDemoProjectCoverage(tally, {dryRun: dryRun})
 
         });
-        it('deletes the indicated project', function*() {
+        it('deletes the indicated project', function* () {
             this.timeout(12000); // test take up to 12 seconds
 
             yield createRenamedDemoProject();
@@ -159,21 +159,21 @@ function* createRenamedDemoProject() {
     processList.forEach((process) => {
         processIdList.push(process.id);
     });
-    assert.equal(processIdList.length,5);
+    assert.equal(processIdList.length, 5);
 
     let fileList = results.fileList;
     fileIdList = [];
     fileList.forEach((file) => {
         fileIdList.push(file.id);
     });
-    assert.equal(fileIdList.length,16);
+    assert.equal(fileIdList.length, 16);
 
     datasetIdList = [];
     let datasetList = yield testHelpers.createDatasetList(experiment, processList, userId);
     datasetList.forEach((dataset) => {
         datasetIdList.push(dataset.id);
     });
-    assert.equal(datasetIdList.length,2);
+    assert.equal(datasetIdList.length, 2);
 
     // Note: create fake sample that is not part of a process for testing
     results = yield r.table('samples').insert({'name': 'fake sample', 'otype': 'sample', 'owner': 'noone'});
@@ -186,7 +186,7 @@ function* createRenamedDemoProject() {
         .eqJoin('sample_id', r.table('samples')).zip()
         .getField('sample_id');
     assert.isOk(sampleIdList);
-    assert.equal(sampleIdList.length,8);
+    assert.equal(sampleIdList.length, 8);
 
 }
 
@@ -219,7 +219,7 @@ function* checkTally(tally, projectId) {
     let sampleCount = 8;
 
     assert.isOk(tally.project);
-    assert.equal(tally.project.id,projectId);
+    assert.equal(tally.project.id, projectId);
 
     assert.isOk(tally.experiments);
     assert.equal(tally.experiments.length, experimentCount);
@@ -253,28 +253,28 @@ function* confirmDemoProjectCoverage(tally, options) {
 
 }
 
-function* checkLinks(options){
+function* checkLinks(options) {
 
     let forDryRun = options && options.dryRun;
 
     let tables = [
-        'project2datadir' ,
-        'project2datafile' ,
-        'project2experiment' ,
-        'project2process' ,
+        'project2datadir',
+        'project2datafile',
+        'project2experiment',
+        'project2process',
         'project2sample',
         'access'
     ];
 
     if (forDryRun) {
-        let lengths = [1,16,1,5,8,1];
+        let lengths = [4, 16, 1, 5, 8, 1];
         for (let i = 0; i < tables.length; i++) {
             let table = tables[i];
             let list = yield r.table(table).getAll(project.id, {index: 'project_id'});
             let expectedLength = lengths[i];
             let l = list.length;
             let message = `missing links in ${table} for project id = ${project.id}`;
-            assert.equal(l,expectedLength,message);
+            assert.equal(l, expectedLength, message);
         }
 
     } else {
@@ -284,7 +284,7 @@ function* checkLinks(options){
             let l = list.length;
             let message = `expected no links in ${table}, `
                 + `but found ${l} links for project id = ${project.id}`;
-            assert.equal(l,0,message);
+            assert.equal(l, 0, message);
         }
     }
 }
@@ -311,11 +311,11 @@ function* testProcesses(options) {
 
     let probeList = yield yield r.table('processes').getAll(r.args(processIdList));
     assert.isOk(probeList);
-    assert.equal(probeList.length, processCount,"processes table");
+    assert.equal(probeList.length, processCount, "processes table");
 
 }
 
-function* testFiles(options){
+function* testFiles(options) {
     let count = 0;
 
     if (options && options.assertExists) {

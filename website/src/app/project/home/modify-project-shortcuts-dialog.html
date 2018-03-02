@@ -1,0 +1,30 @@
+<md-dialog>
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Add/Modify Project Shortcuts
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <md-content>
+            <md-list>
+                <md-subheader>Default Shortcuts</md-subheader>
+                <md-list-item ng-repeat="shortcut in $ctrl.defaultShortcuts" ng-click="null">
+                    <md-checkbox ng-model="shortcut.shortcut"></md-checkbox>
+                    <p>{{shortcut.name}}</p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-subheader>Top Level Directories</md-subheader>
+                <md-list-item ng-repeat="dir in $ctrl.otherDirs" ng-click="null">
+                    <md-checkbox ng-model="dir.shortcut"></md-checkbox>
+                    <p>{{dir.path}}</p>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.done()">done</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>

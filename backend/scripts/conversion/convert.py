@@ -17,79 +17,25 @@ def run_rql(rql, conn):
         pass
 
 
-def fix_mcpub_missing_process_types(conn):
-    print "Fixing missing process_type entries..."
-    processes = list(r.db('mcpub').table('processes').filter(~r.row.has_fields('process_type')).run(conn))
-    for process in processes:
-        template = r.table('templates').get(process['template_id']).run(conn)
-        r.db('mcpub').table('processes').get(process['id']).update({'process_type': template['process_type']}).run(conn)
+def add_todos_to_projects(conn):
+    print "Adding todos entry to projects..."
+    res = r.db('materialscommons').table('projects').update({"todos": []}).run(conn)
+    print res
     print "Done."
 
 
-def fix_bad_mcpub_process_types(conn):
-    print "Fixing bad process_type entries..."
-    processes = list(r.db('mcpub').table('processes').run(conn))
-    for process in processes:
-        if is_bad_process_type(process):
-            if 'template_id' in process:
-                template = r.table('templates').get(process['template_id']).run(conn)
-                r.db('mcpub').table('processes').get(process['id']).update({
-                    'process_type': template['process_type']
-                }).run(conn)
-            else:
-                template_id = 'global_' + process['process_name']
-                if process['process_name'] == 'As Received':
-                    template_id = 'global_Create Samples'
-                template = r.table('templates').get(template_id).run(conn)
-                r.db('mcpub').table('processes').get(process['id']).update({
-                    'process_type': template['process_type'],
-                    'template_id': template['id']
-                }).run(conn)
-
+def add_shortcut_to_dirs(conn):
+    print "Adding shortcut flag to directories..."
+    res = r.table('datadirs').update({"shortcut": False}).run(conn)
+    print res
     print "Done."
-
-
-def is_bad_process_type(p):
-    pt = p['process_type']
-    if pt == 'analysis':
-        return False
-    elif pt == 'create':
-        return False
-    elif pt == 'measurement':
-        return False
-    elif pt == 'transform':
-        return False
-    else:
-        return True
-
-
-def add_template_admin_flag_to_users(conn):
-    print "Adding template admin flag to all users..."
-    r.table('users').update({'is_template_admin': False}).run(conn)
-
-    add_template_admin('bpuchala@umich.edu', conn)
-    add_template_admin('stvdwtt@umich.edu', conn)
-    add_template_admin('tradiasa@umich.edu', conn)
-    print "Done."
-
-
-def add_template_admin(user, conn):
-    run_rql(r.table('users').get(user).update({'is_template_admin': True}), conn)
-
-
-def add_template_owner(conn):
-    print "Adding 'template-admin' as owner for all templates..."
-    r.table('templates').update({'owner': 'template-admin'}).run(conn)
-    print "Done."
-
-
-def fix_missing_category_for_create_samples(conn):
-    r.table('processes').filter({'template_id': 'global_Create Samples'}).update({'category': 'create_sample'}).run(
-        conn)
 
 
 def add_otype_to_dataset(conn):
-    r.table('datasets').update({'otype': 'dataset'}).run(conn)
+    print "Adding otype to dataset..."
+    res = r.table('datasets').update({'otype': 'dataset'}).run(conn)
+    print res
+    print "Done."
 
 
 def main():
@@ -98,11 +44,8 @@ def main():
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
 
-    #fix_mcpub_missing_process_types(conn)
-    #fix_bad_mcpub_process_types(conn)
-    #add_template_admin_flag_to_users(conn)
-    #add_template_owner(conn)
-    #fix_missing_category_for_create_samples(conn)
+    add_todos_to_projects(conn)
+    add_shortcut_to_dirs(conn)
     add_otype_to_dataset(conn)
 
 

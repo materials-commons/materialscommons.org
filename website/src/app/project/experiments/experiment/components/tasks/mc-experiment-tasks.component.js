@@ -99,7 +99,7 @@ function MCExperimentTasksComponentController($scope, moveTask, mcstate, blankTa
 class CreateExperimentQuickNoteDialogController {
 
     /*@ngInject*/
-    constructor($mdDialog, $scope, editorOpts, notesAPI, $stateParams, toast) {
+    constructor($mdDialog, $scope, editorOpts, experimentsAPI, $stateParams, toast) {
         this.$mdDialog = $mdDialog;
         $scope.editorOptions = editorOpts({height: 40, width: 55});
         this.note = {
@@ -108,7 +108,7 @@ class CreateExperimentQuickNoteDialogController {
         };
         this.noteCreated = false;
         this.noteId = "";
-        this.notesAPI = notesAPI;
+        this.experimentsAPI = experimentsAPI;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.toast = toast;
@@ -126,7 +126,7 @@ class CreateExperimentQuickNoteDialogController {
         };
 
         if (!this.noteCreated) {
-            this.notesAPI.createNote(this.projectId, this.experimentId, note)
+            this.experimentsAPI.createNote(this.projectId, this.experimentId, note)
                 .then(
                     (n) => {
                         this.noteId = n.id;
@@ -137,7 +137,7 @@ class CreateExperimentQuickNoteDialogController {
                     () => this.toast.error('Failed to create note')
                 );
         } else if (this.noteId !== "") {
-            this.notesAPI.updateNote(this.projectId, this.experimentId, this.noteId, note)
+            this.experimentsAPI.updateNote(this.projectId, this.experimentId, this.noteId, note)
                 .then(
                     () => null,
                     () => this.toast.error('Unable to update note')

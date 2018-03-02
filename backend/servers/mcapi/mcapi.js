@@ -13,25 +13,27 @@ var apikey = require('../lib/apikey')(users);
 var resources = require('./resources').createResources();
 var access = require('./db/model/access');
 var r = require('./db/r');
+const activityFeed = require('./activity-feed');
 
 app.use(apikey);
 //app.use(bodyParser());
 app.use(mount('/', resources.routes())).use(resources.allowedMethods());
+app.use(activityFeed.logEvent);
 
 // Look for changes on the access and projects tables. If a change is detected
 // then invalidate the project access cache so that it will be reloaded.
 const projectAccessCache = require('./resources/project-access-cache')(access);
-r.table('access').changes().toStream().on('data', function() {
+r.table('access').changes().toStream().on('data', function () {
     projectAccessCache.clear();
 });
-r.table('projects').changes().toStream().on('data', function() {
+r.table('projects').changes().toStream().on('data', function () {
     projectAccessCache.clear();
 });
 
 // Look for changes on the users table. If a change it detected then invalidate
 // the apikey cache so it will be reloaded.
 const apikeyCache = require('../lib/apikey-cache')(users);
-r.table('users').changes().toStream().on('data', function() {
+r.table('users').changes().toStream().on('data', function () {
     apikeyCache.clear()
 });
 
@@ -47,7 +49,7 @@ if (!module.parent) {
 
     var port = options.port || 3000;
     //io.set('origins', `http://localhost:${port}`);
-    io.on('connection', function(socket) {
+    io.on('connection', function (socket) {
         console.log('socket.io connection');
         socket.emit('event', {msg: 'you are connected'});
     });

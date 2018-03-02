@@ -1,0 +1,57 @@
+<!--<div layout="row" layout-fill layout-align="start stretch">-->
+<div layout="column" flex="100" class="height-100">
+    <div layout="row" layout-fill>
+        <div flex="50" layout="column" layout-fill layout-margin>
+            <div layout="column">
+                <h3 class="md-title">To-Dos</h3>
+                <md-button class="md-primary" ng-click="$ctrl.addTodo()">Add to-do</md-button>
+                <md-content style="height: 35vh">
+                    <md-list>
+                        <md-list-item ng-repeat="todo in $ctrl.project.todos" ng-click="null">
+                            <md-checkbox ng-model="todo.done" ng-change="$ctrl.removeTodo($index)"></md-checkbox>
+                            <p ng-if="!todo.edit">{{todo.title}}</p>
+                            <p ng-if="todo.edit">
+                                <md-input-container class="md-block">
+                                    <input ng-model="todo.title" flex on-enter="$ctrl.toggleTodoEdit(todo)">
+                                </md-input-container>
+                            </p>
+                            <md-button class="md-primary" ng-click="$ctrl.toggleTodoEdit(todo)">{{todo.edit? "Done":"Edit"}}</md-button>
+                            <md-button class="mc-error-color" ng-click="$ctrl.removeTodo($index)"><i class="fa fa-fw fa-remove"></i></md-button>
+                            <md-divider></md-divider>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </div>
+
+            <div layout="column" style="border-top: 2px solid black" class="margin-top-30">
+                <h3 class="md-title">Notes</h3>
+                <md-button class="md-primary" ng-click="$ctrl.addNote()">add note</md-button>
+                <md-content style="height: 35vh">
+                    <md-list>
+                        <md-list-item ng-repeat="note in $ctrl.project.notes" ng-click="$ctrl.selectNote(note)" ng-class="{'note-active': note.selected}">
+                            <p>{{note.title}}</p>
+                            <md-button class="mc-error-color" ng-click="$ctrl.deleteNote($index)"><i class="fa fa-fw fa-remove"></i></md-button>
+                            <md-divider></md-divider>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </div>
+        </div>
+        <div flex="50" layout="column" layout-fill layout-margin style="border-left: 2px solid black;">
+            <div layout-margin layout-fill>
+                <md-content layout="column" layout-fill ng-show="$ctrl.note">
+                    <md-button class="md-primary" ng-click="$ctrl.toggleEditNote($ctrl.note)">{{$ctrl.note.edit?"Done":"Edit"}}</md-button>
+                    <h3 class="margin-left-5" ng-show="!$ctrl.note.edit">Title: {{$ctrl.note.title}}</h3>
+                    <md-divider></md-divider>
+                    <input ng-show="$ctrl.note.edit" ng-model="$ctrl.note.title" placeholder="Note Title...">
+                    <div markdown-it="$ctrl.note.note" ng-show="!$ctrl.note.edit" class="margin-left-5"></div>
+                    <a href="https://guides.github.com/features/mastering-markdown/" ng-show="$ctrl.note.edit" target="_blank"
+                       style="margin-top:5px;margin-bottom: 5px">
+                        Styling with markdown is supported
+                    </a>
+                    <textarea ng-model="$ctrl.note.note" ng-show="$ctrl.note.edit" class="height-100" placeholder="Note content..."></textarea>
+                </md-content>
+            </div>
+        </div>
+    </div>
+</div>

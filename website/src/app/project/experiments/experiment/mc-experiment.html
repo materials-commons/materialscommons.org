@@ -1,9 +1,5 @@
-<div layout="column" layout-fill style="margin-top:10px">
-    <div layout="row" layout-align="center center">
-        <span class="md-subhead">Experiment: {{$ctrl.experiment.name}}</span>
-    </div>
-    <div layout="row">
-        <mc-experiment-sidenav></mc-experiment-sidenav>
-        <ui-view flex style="margin-left:10px;"></ui-view>
+<div layout="row" layout-fill layout-align="start stretch">
+    <div layout="row" flex>
+        <ui-view flex style="margin-left: 3px"></ui-view>
     </div>
 </div>

@@ -1,5 +1,5 @@
 const {Action} = require('actionhero');
-const datasets = require('../model/datasets');
+const datasets = require('../lib/dal/published-datasets');
 
 module.exports.AllPublishedDatasetsAction = class AllPublishedDatasetsAction extends Action {
     constructor() {
@@ -10,7 +10,7 @@ module.exports.AllPublishedDatasetsAction = class AllPublishedDatasetsAction ext
     }
 
     async run({response}) {
-        response.val = await datasets.getAll();
+        response.data = await datasets.getAll();
     }
 };
 
@@ -23,7 +23,6 @@ module.exports.TopViewedPublishedDatasetsAction = class TopViewedPublishedDatase
     }
 
     async run({response}) {
-        response.val = await datasets.getTopViews();
     }
 };
 
@@ -36,7 +35,6 @@ module.exports.RecentlyPublishedDatasetsAction = class RecentlyPublishedDatasets
     }
 
     async run({response}) {
-        response.val = await datasets.getRecent();
     }
 };
 
@@ -54,6 +52,5 @@ module.exports.GetPublishedDatasetAction = class GetPublishedDatasetAction exten
     }
 
     async run({response, params}) {
-        response.val = await datasets.getDataset(params.dataset_id);
     }
 };

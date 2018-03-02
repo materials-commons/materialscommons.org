@@ -1,8 +1,8 @@
 class MCExperimentNotesListComponentController {
     /*@ngInject*/
-    constructor(notesAPI, $stateParams, toast) {
+    constructor(experimentsAPI, $stateParams, toast) {
         this.treeOptions = {};
-        this.notesAPI = notesAPI;
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.projectID = $stateParams.project_id;
         this.experimentID = $stateParams.experiment_id;
@@ -18,7 +18,7 @@ class MCExperimentNotesListComponentController {
     }
 
     onNameChange(note) {
-        this.notesAPI.updateNote(this.projectID, this.experimentID, note.id, {name: note.name})
+        this.experimentsAPI.updateNote(this.projectID, this.experimentID, note.id, {name: note.name})
             .then(
                 () => null,
                 () => this.toast.error('Unable to update note name')
