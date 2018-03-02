@@ -1,7 +1,7 @@
-const r = require('../r');
+const r = require('../../../shared/r');
 const _ = require('lodash');
 const getSingle = require('./get-single');
-const model = require('./model');
+const model = require('../../../shared/model');
 
 // getUsers returns all the users in the database. Internal use only
 async function getUsers() {

@@ -1,4 +1,4 @@
-const r = require('../r');
+const r = require('../../../shared/r');
 
 async function renameDirectory(directoryID, newName) {
     let baseDirectory = await r.table('datadirs').get(directoryID);

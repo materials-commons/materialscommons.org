@@ -1,6 +1,6 @@
 const {Initializer, api} = require('actionhero');
 const apikeyCache = require('../lib/apikey-cache');
-const r = require('../lib/r');
+const r = require('../../shared/r');
 
 module.exports = class APIKeyInitializer extends Initializer {
     constructor() {

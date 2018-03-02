@@ -1,10 +1,10 @@
-const r = require('../r');
+const r = require('../../../shared/r');
 const run = require('./run');
-const model = require('./model');
+const model = require('../../../shared/model');
 const getSingle = require('./get-single');
 const renameTopDirHelper = require('./directory-rename');
 const _ = require('lodash');
-const experiments = require('./experiments');
+const experimentsCommon = require('./experiments-common');
 
 async function createProject(user, attrs) {
     let name = attrs.name;
@@ -155,7 +155,7 @@ function addComputed(rql, fullExperiment) {
             events: r.table('events')
                 .getAll(project('id'), {index: 'project_id'})
                 .coerceTo('array'),
-            experiments: fullExperiment ? experiments.addExperimentComputed(r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
+            experiments: fullExperiment ? experimentsCommon.addExperimentComputed(r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
                     .eqJoin('experiment_id', r.table('experiments')).zip()).coerceTo('array') :
                 r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
                     .eqJoin('experiment_id', r.table('experiments')).zip().coerceTo('array'),
