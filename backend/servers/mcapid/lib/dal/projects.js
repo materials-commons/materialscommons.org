@@ -64,8 +64,7 @@ async function getProject(projectId) {
         });
     rql = transformDates(rql);
     rql = addComputed(rql, true);
-    let project = await run(rql);
-    return {val: project};
+    return await run(rql);
 }
 
 
@@ -297,8 +296,7 @@ async function addFileToProject(projectID, fileID) {
 }
 
 async function getUserAccessForProject(projectId) {
-    let results = await r.table('access').getAll(projectId, {index: 'project_id'}).pluck('user_id');
-    return {val: results};
+    return await r.table('access').getAll(projectId, {index: 'project_id'}).pluck('user_id');
 }
 
 async function updateUserAccessForProject(projectId, attrs) {
@@ -316,7 +314,7 @@ async function updateUserAccessForProject(projectId, attrs) {
                 let access_doc = new model.Access(name_entry['name'], projectId, user_id);
                 await r.table('access').insert(access_doc);
             }
-            results = {val: user_id};
+            results = user_id;
         }
     }
     if (attrs.action === 'delete') {
@@ -326,7 +324,7 @@ async function updateUserAccessForProject(projectId, attrs) {
         if (hit.length !== 0) {
             await r.table("access").get(hit[0].id).delete();
         }
-        results = {val: user_id};
+        results = user_id;
     }
     return results;
 }

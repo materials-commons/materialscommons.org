@@ -1,4 +1,5 @@
 const r = require('../../../shared/r');
+const commonQueries = require('../../../lib/common-queries');
 
 function addExperimentComputed(rql) {
     rql = rql.merge((experiment) => {

@@ -33,12 +33,14 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
         this.description = 'Get details for a given project';
         this.inputs = {
             project_id: {
-                required: true
-            }
+                required: true,
+                //validator: async () => false,
+            },
         }
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        api.log('user', 'info', user);
         const project = await dal.tryCatch(async () => await projects.getProject(params.project_id));
         if (!project) {
             throw new Error(`No such project_id ${params.project_id}`);
