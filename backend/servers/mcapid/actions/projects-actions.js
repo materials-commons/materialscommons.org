@@ -40,7 +40,8 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
     }
 
     async run({response, params, user}) {
-        api.log('user', 'info', user);
+        //api.log('user', 'info', user);
+        //console.log('api', api.redis);
         const project = await dal.tryCatch(async () => await projects.getProject(params.project_id));
         if (!project) {
             throw new Error(`No such project_id ${params.project_id}`);
