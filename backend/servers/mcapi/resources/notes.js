@@ -2,7 +2,7 @@ const status = require('http-status');
 const Router = require('koa-router');
 const parse = require('co-body');
 const ra = require('./resource-access');
-const model = require('../db/model/model');
+const model = require('../../shared/model');
 const _ = require('lodash');
 
 const notes = require('../db/model/notes');

@@ -1,7 +1,7 @@
 const r = require('../r');
 const dbExec = require('./run');
 const db = require('./db');
-const model = require('./model');
+const model = require('../../../shared/model');
 
 function* get(id) {
     let comment = yield dbExec(r.table("comments").get(id));

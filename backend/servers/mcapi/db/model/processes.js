@@ -2,7 +2,7 @@ const r = require('../r');
 const dbExec = require('./run');
 const commonQueries = require('../../../lib/common-queries');
 const processCommon = require('./process-common');
-const model = require('./model');
+const model = require('../../../shared/model');
 
 
 function* getProcess(processID) {
