@@ -5,6 +5,7 @@ const getSingle = require('./get-single');
 const renameTopDirHelper = require('./directory-rename');
 const _ = require('lodash');
 const experimentsCommon = require('./experiments-common');
+const db = require('./db');
 
 async function createProject(user, attrs) {
     let name = attrs.name;
@@ -26,10 +27,32 @@ async function createProject(user, attrs) {
     let proj2datadir_doc = new model.Project2DataDir(project_id, directory_id);
     await r.table('project2datadir').insert(proj2datadir_doc);
 
+    await buildDefaultShortcutDirs(name, project_id, owner, directory_id);
+
     let access_doc = new model.Access(name, project_id, owner);
     await r.table('access').insert(access_doc);
 
     return await getProject(project_id);
+}
+
+async function buildDefaultShortcutDirs(projectName, projectId, owner, parentDirId) {
+    let dir = new model.Directory(`${projectName}/Literature`, owner, projectId, parentDirId);
+    dir.shortcut = true;
+    await createShortcutDir(dir);
+
+    dir = new model.Directory(`${projectName}/Presentations`, owner, projectId, parentDirId);
+    dir.shortcut = true;
+    await createShortcutDir(dir);
+
+    dir = new model.Directory(`${projectName}/Project Documents`, owner, projectId, parentDirId);
+    dir.shortcut = true;
+    await createShortcutDir(dir);
+}
+
+async function createShortcutDir(dir) {
+    let created = await db.insert('datadirs', dir);
+    let proj2dir = new model.Project2DataDir(dir.project, created.id);
+    await db.insert('project2datadir', proj2dir);
 }
 
 async function getProject(projectId) {
@@ -41,7 +64,8 @@ async function getProject(projectId) {
         });
     rql = transformDates(rql);
     rql = addComputed(rql, true);
-    return await run(rql);
+    let project = await run(rql);
+    return {val: project};
 }
 
 
@@ -155,6 +179,7 @@ function addComputed(rql, fullExperiment) {
             events: r.table('events')
                 .getAll(project('id'), {index: 'project_id'})
                 .coerceTo('array'),
+            notes: getAllNotesForItemRQL(project('id')).coerceTo('array'),
             experiments: fullExperiment ? experimentsCommon.addExperimentComputed(r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
                     .eqJoin('experiment_id', r.table('experiments')).zip()).coerceTo('array') :
                 r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
@@ -163,13 +188,21 @@ function addComputed(rql, fullExperiment) {
                 .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
             samples: r.table('project2sample').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
-            files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count()
+            files: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count(),
+            shortcuts: r.table('datadirs')
+                .getAll([project('id'), true], {index: 'datadir_project_shortcut'})
+                .coerceTo('array'),
         };
     });
 
     return rql;
 }
 
+function getAllNotesForItemRQL(itemId) {
+    return r.table('note2item')
+        .getAll(itemId, {index: 'item_id'}).without('item_id', 'item_type')
+        .eqJoin('note_id', r.table('notes')).without({left: {note_id: true}}).zip();
+}
 
 async function update(projectID, attrs) {
     const pattrs = {};
@@ -197,7 +230,11 @@ async function update(projectID, attrs) {
         pattrs.status = attrs.status;
     }
 
-    if (pattrs.name || pattrs.description || pattrs.overview || pattrs.reminders || pattrs.status) {
+    if (attrs.todos) {
+        pattrs.todos = attrs.todos;
+    }
+
+    if (pattrs.name || pattrs.description || pattrs.overview || pattrs.reminders || pattrs.status || pattrs.todos) {
         await r.table('projects').get(projectID).update(pattrs);
     }
 
@@ -296,16 +333,16 @@ async function updateUserAccessForProject(projectId, attrs) {
 
 
 module.exports = {
-    all: all,
+    all,
     createProject,
-    forUser: forUser,
+    forUser,
     forUserSimple,
     get: function (id, index) {
         return getSingle(r, 'projects', id, index);
     },
     addFileToProject,
-    getProject: getProject,
-    update: update,
+    getProject,
+    update,
     getUserAccessForProject,
     updateUserAccessForProject
 };
