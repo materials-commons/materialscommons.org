@@ -18,7 +18,7 @@ function* logEvent(next) {
                 break;
         }
     } catch (error) {
-        console.log('Error logging event', error);
+        console.log('Error logging event', this.params, error);
     }
 
     yield next;
