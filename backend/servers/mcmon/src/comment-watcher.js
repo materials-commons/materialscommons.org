@@ -14,12 +14,12 @@ class CommentWatcher extends GenericWatcher{
 
     action(delta) {
         let verboseFlag = this.verbose();
-        let supressSendingFlag = verboseFlag;
+        let suppressSendingFlag = verboseFlag;
         let comment = delta.new_val;
         // notify all owners of previous comments on this item of the new comment
         // note: this is asynchronous, the call will return *before* the
         //   the notifications, if any, are sent.
-        commentNotifier.notifyOtherUsers(comment, verboseFlag, supressSendingFlag);
+        commentNotifier.notifyOtherUsers(comment, verboseFlag, suppressSendingFlag);
     }
 }
 
