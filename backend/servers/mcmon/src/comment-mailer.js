@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
 const mailTransport = mailTransportConfig();
-supressSending = true;
 
 let oldTracer = "";
 let tracer = "";
@@ -9,7 +9,7 @@ let tracer = "";
 // Note: cross-ref - backend/servers/mcapi/resources/users.js emailResetLinkToUser and emailValidationLinkToUser
 
 function mailCommentNotification(userToNotify, comment, objectName, author, otherAuthors,
-    verbose=false, supressSending = true) {
+                                 verbose = false, suppressSending = true) {
     if (verbose) {
         tracer = comment.id.substring(0,5);
         if (tracer !== oldTracer) {
@@ -35,7 +35,7 @@ function mailCommentNotification(userToNotify, comment, objectName, author, othe
         html: makeHtml(textListBody)
     };
 
-    if (!supressSending) {
+    if (!suppressSending) {
         if (verbose) {
             console.log(tracer, "Author: ", makeNameForUser(author));
             console.log(tracer, "Sending mail to: ", makeNameForUser(userToNotify));
