@@ -31,6 +31,7 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
         super();
         this.name = 'getProject';
         this.description = 'Get details for a given project';
+        //this.do_not_authenticate = true;
         this.inputs = {
             project_id: {
                 required: true,
@@ -42,9 +43,17 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
     async run({response, params, user}) {
         //api.log('user', 'info', user);
         //console.log('api', api.redis);
-        const project = await dal.tryCatch(async () => await projects.getProject(params.project_id));
-        if (!project) {
-            throw new Error(`No such project_id ${params.project_id}`);
+        //console.log(api.redis.clients.client.getBuiltinCommands());
+        let project = await api.redis.clients.client.get(params.project_id);
+        if (project === null) {
+            project = await dal.tryCatch(async () => await projects.getProject(params.project_id));
+            if (!project) {
+                throw new Error(`No such project_id ${params.project_id}`);
+            }
+
+            api.redis.clients.client.set(params.project_id, JSON.stringify(project));
+        } else {
+            project = JSON.parse(project);
         }
         response.data = project;
     }
