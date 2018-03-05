@@ -26,6 +26,7 @@ const projectAccessCache = require('./resources/project-access-cache')(access);
 r.table('access').changes().toStream().on('data', function () {
     projectAccessCache.clear();
 });
+
 r.table('projects').changes().toStream().on('data', function () {
     projectAccessCache.clear();
 });
