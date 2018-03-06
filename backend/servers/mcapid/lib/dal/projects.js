@@ -10,8 +10,7 @@ const db = require('./db');
 async function createProject(user, attrs) {
     let name = attrs.name;
     let owner = user.id;
-    let matches = await r.table('projects')
-        .filter({name: name, owner: owner});
+    let matches = await r.table('projects').filter({name: name, owner: owner});
     if (0 < matches.length) {
         return await getProject(matches[0].id);
     }

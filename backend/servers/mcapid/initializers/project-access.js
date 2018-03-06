@@ -6,7 +6,7 @@ const projectAccessCache = require('../lib/project-access-cache')(access);
 module.exports = class APIKeyInitializer extends Initializer {
     constructor() {
         super();
-        this.name = 'process-acess';
+        this.name = 'project-access';
         this.startPriority = 1010;
     }
 
