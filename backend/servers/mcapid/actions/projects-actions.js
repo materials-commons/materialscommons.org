@@ -1,6 +1,7 @@
 const {Action, api} = require('actionhero');
 const projects = require('../lib/dal/projects');
 const dal = require('../lib/dal');
+const _ = require('lodash');
 
 module.exports.ListProjectsAction = class ListProjectsAction extends Action {
     constructor() {
@@ -10,7 +11,6 @@ module.exports.ListProjectsAction = class ListProjectsAction extends Action {
     }
 
     async run({response, params}) {
-
     }
 };
 
@@ -19,10 +19,37 @@ module.exports.CreateProjectAction = class CreateProjectAction extends Action {
         super();
         this.name = 'createProject';
         this.description = 'Create a new project owned by user';
+        this.inputs = {
+            name: {
+                required: true,
+                validator: (param) => {
+                    if (!_.isString(param)) {
+                        throw new Error(`name must be a string: ${param}`);
+                    }
+
+                    if (_.size(param) < 1) {
+                        throw new Error(`name cannot be an empty string: ${param}`);
+                    }
+                }
+            },
+            description: {
+                default: "",
+                validator: (param) => {
+                    if (!_.isString(param)) {
+                        throw new Error(`description must be a string: ${param}`);
+                    }
+                },
+            }
+        }
     }
 
-    async run({response, params}) {
-
+    async run({response, params, user}) {
+        const project = await dal.tryCatch(async() => await projects.createProject(user, params));
+        if (!project) {
+            throw new Error(`Unable to create project`);
+        }
+        api.redis.clients.client.set(project.id, JSON.stringify(project));
+        response.data = project;
     }
 };
 
