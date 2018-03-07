@@ -1,7 +1,7 @@
 /*@ngInject*/
 function projectsAPIService(Restangular, notesAPI) {
     const projectsAPIRoute = _.partial(Restangular.one('v2').one, 'projects');
-    const projectsV3APIRoute = _.partial(Restangular.one('v3'));
+    //const projectsV3APIRoute = _.partial(Restangular.one('v3'));
 
     return {
 
