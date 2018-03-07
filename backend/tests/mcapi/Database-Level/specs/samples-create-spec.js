@@ -28,7 +28,8 @@ let userId = 'test@test.mc';
 let createSampleProcess = null;
 let project = null;
 
-before(function*() {
+before(function* () {
+    console.log('before samples-create-spec.js');
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user);
 
@@ -63,12 +64,12 @@ before(function*() {
     assert.equal(createSampleProcess.name, processName);
     assert.equal(createSampleProcess.template_id, processTemplateId);
     assert.equal(createSampleProcess.owner, userId);
-
+    console.log('done before samples-create-spec.js');
 });
 
 describe('Feature - Samples: ', function () {
     describe('Create Sample', function () {
-        it('create a sample set', function*() {
+        it('create a sample set', function* () {
             let sampleName1 = "Sample1 For Test";
             let sampleName2 = "Sample2 For Test";
             let sampleNameList = [sampleName1, sampleName2];

@@ -18,19 +18,20 @@ const base_user_id = 'thisIsAUserForTestingONLY!';
 const fullname = "Test User";
 const base_project_name = "Test project - test 1: ";
 
-let random_name = function(){
-    let number = Math.floor(Math.random()*10000);
+let random_name = function () {
+    let number = Math.floor(Math.random() * 10000);
     return base_project_name + number;
 };
 
-let random_user = function(){
-    let number = Math.floor(Math.random()*10000);
+let random_user = function () {
+    let number = Math.floor(Math.random() * 10000);
     return base_user_id + number + "@mc.org";
 };
 
 let user1Id = random_user();
 
-before(function*() {
+before(function* () {
+    console.log('before templates-spec.js');
     let user = yield dbModelUsers.getUser(user1Id);
     if (!user) {
         let results = yield r.table('users').insert({
@@ -50,23 +51,24 @@ before(function*() {
         });
         assert.equal(results.inserted, 1, "The User was correctly inserted");
     } else {
-        assert.equal(user.id,user1Id, "Wrong test user, id = " + user.id);
+        assert.equal(user.id, user1Id, "Wrong test user, id = " + user.id);
     }
+    console.log('done before templates-spec.js');
 });
 
-describe('Feature - Templates: ', function() {
+describe('Feature - Templates: ', function () {
     describe('Function level', function () {
         it('individual test level');
     });
 });
 
-after(function*() {
+after(function* () {
     let user = yield dbModelUsers.getUser(user1Id);
     if (user) {
         let results = yield r.table('users').get(user1Id).delete();
-        assert.equal(results.deleted,1, "The User was correctly deleted");
+        assert.equal(results.deleted, 1, "The User was correctly deleted");
     } else {
-        assert.isNull(user,"The user still exists at end");
+        assert.isNull(user, "The user still exists at end");
     }
 });
 

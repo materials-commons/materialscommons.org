@@ -35,17 +35,18 @@ let fileIdList = [];
 let datasetIdList = [];
 
 before(function* () {
-
+    console.log('before project-delete-spec.js');
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
+    console.log('done before project-delete-spec.js');
 });
 
 describe('Feature - Projects: ', function () {
     describe('Delete Project: ', function () {
         it('does not delete a project with any published datasets', function* () {
 
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield createRenamedDemoProject();
 
@@ -73,7 +74,7 @@ describe('Feature - Projects: ', function () {
 
         });
         it('does not delete a project if any dataset in any experiment has a DOI', function* () {
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield createRenamedDemoProject();
 
@@ -100,7 +101,7 @@ describe('Feature - Projects: ', function () {
             yield testDatasets({assertExists: true});
         });
         it('supports a dry run mode', function* () {
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield createRenamedDemoProject();
 
@@ -120,7 +121,7 @@ describe('Feature - Projects: ', function () {
 
         });
         it('deletes the indicated project', function* () {
-            this.timeout(12000); // test take up to 12 seconds
+            this.timeout(120000); // test take up to 12 seconds
 
             yield createRenamedDemoProject();
 

@@ -28,8 +28,8 @@ const buildDemoProject = require(build_project_base + '/build-demo-project');
 
 const base_project_name = "Test directory";
 
-let random_name = function(){
-    let number = Math.floor(Math.random()*10000);
+let random_name = function () {
+    let number = Math.floor(Math.random() * 10000);
     return base_project_name + number;
 };
 
@@ -41,16 +41,16 @@ let process_list = null;
 let sample_list = null;
 let file_list = null;
 
-before(function*() {
-
-    this.timeout(8000); // this test suite can take up to 8 seconds
+before(function* () {
+    console.log("before experiments-delete-datasets-spec.js");
+    this.timeout(80000); // this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
-    assert.equal(userId,user.id);
+    assert.equal(userId, user.id);
 
 //    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd()+'/');
+    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd() + '/');
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;
@@ -73,7 +73,7 @@ before(function*() {
     assert.equal(updated_project.owner, userId);
     assert.equal(updated_project.name, name);
     assert.equal(updated_project.description, description);
-    assert.equal(updated_project.id,project_id);
+    assert.equal(updated_project.id, project_id);
     project = updated_project;
 
     let processesToAdd = [
@@ -83,8 +83,8 @@ before(function*() {
     let processesToDelete = [];
 
     let datasetArgs = {
-        title:"Test Dataset1",
-        description:"Dataset for testing"
+        title: "Test Dataset1",
+        description: "Dataset for testing"
     };
 
     let result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
@@ -94,8 +94,8 @@ before(function*() {
     yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete);
 
     datasetArgs = {
-        title:"Test Dataset2",
-        description:"Dataset for testing"
+        title: "Test Dataset2",
+        description: "Dataset for testing"
     };
 
     result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
@@ -107,13 +107,13 @@ before(function*() {
     results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
     let dataset_list = results.val;
     assert.isOk(dataset_list);
-    assert.equal(dataset_list.length,2);
-
+    assert.equal(dataset_list.length, 2);
+    console.log("done before experiments-delete-datasets-spec.js");
 });
 
-describe('Feature - Experiments: ', function() {
+describe('Feature - Experiments: ', function () {
     describe('Delete Experiment - in parts: ', function () {
-        it('deletes all datasets', function* (){
+        it('deletes all datasets', function* () {
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -122,7 +122,7 @@ describe('Feature - Experiments: ', function() {
             let results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
             let dataset_list = results.val;
             assert.isOk(dataset_list);
-            assert.equal(dataset_list.length,2);
+            assert.equal(dataset_list.length, 2);
 
             let hasPublishedDatasets = false;
             for (let i = 0; i < dataset_list.length; i++) {
@@ -141,7 +141,7 @@ describe('Feature - Experiments: ', function() {
             results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
             dataset_list = results.val;
             assert.isOk(dataset_list);
-            assert.equal(dataset_list.length,0);
+            assert.equal(dataset_list.length, 0);
 
         });
     });

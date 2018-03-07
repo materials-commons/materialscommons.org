@@ -33,7 +33,7 @@ let project = null;
 
 before(function*() {
 
-    this.timeout(8000); // setup can take up to 8 seconds
+    this.timeout(80000); // setup can take up to 8 seconds
 
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);

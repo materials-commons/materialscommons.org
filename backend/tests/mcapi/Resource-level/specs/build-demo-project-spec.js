@@ -44,7 +44,7 @@ let random_name = function () {
 
 before(function*() {
 
-    this.timeout(8000); // some tests in this test suite can take up to 8 seconds
+    this.timeout(80000); // some tests in this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(demoProjectTestUserId);
     assert.isOk(user, "Missing test user, id = " + demoProjectTestUserId);
@@ -896,7 +896,7 @@ describe('Feature - User - Build Demo Project Support: ', function () {
     describe('Complete demo project', function () {
         it('buid',function*(){
 
-            this.timeout(5000); // this test can take up to 5 seconds
+            this.timeout(50000); // this test can take up to 5 seconds
 
             let user = yield dbModelUsers.getUser(demoProjectTestUserId);
             assert.equal(user.id, demoProjectTestUserId);

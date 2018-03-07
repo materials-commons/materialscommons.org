@@ -33,17 +33,17 @@ let random_name = function () {
 let userId = "test@test.mc";
 let user = null;
 
-before(function*() {
-
+before(function* () {
+    console.log('before files-delete-spec.js');
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
-
+    console.log('done before files-delete-spec.js');
 });
 
 describe.skip('Feature - Files: ', function () {
     describe('Delete', function () {
-        it('Will delete a file that has the uses id set', function*() {
+        it('Will delete a file that has the uses id set', function* () {
 
             let project = yield setupProject();
 
@@ -81,7 +81,7 @@ describe.skip('Feature - Files: ', function () {
             let message = `Physical file for id ${fileWithUsesId.id} unexpectedly missing.`;
             assert(fileUtils.datafilePathExists(fileWithUsesId.id), message)
         });
-        it('Will delete a file but keep physical file when needed', function*() {
+        it('Will delete a file but keep physical file when needed', function* () {
 
             let project = yield setupProject();
 

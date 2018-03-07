@@ -30,7 +30,8 @@ let random_project_name = function () {
     return "Project For Process Testing - " + number;
 };
 
-before(function*() {
+before(function* () {
+    console.log('before processes-spec.js');
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
@@ -39,11 +40,12 @@ before(function*() {
     assert.isOk(ret.val);
     project = ret.val;
     assert.equal(project.owner, user.id);
+    console.log('done before processes-spec.js');
 });
 
 describe('Feature - Processes: ', function () {
     describe('Function level', function () {
-        it('creates a process', function*() {
+        it('creates a process', function* () {
             let ret = yield testHelpers.createExperiment(project, "Create Process Experiment");
             assert.isOk(ret);
             assert.isOk(ret.val);
@@ -58,7 +60,7 @@ describe('Feature - Processes: ', function () {
             assert.isOk(process);
             assert.equal(process.owner, user.id);
         });
-        it('creates two processes linked by sample ', function*() {
+        it('creates two processes linked by sample ', function* () {
             let ret = yield testHelpers.createExperiment(project, "Two Processes Experiment");
             assert.isOk(ret);
             assert.isOk(ret.val);
@@ -95,7 +97,7 @@ describe('Feature - Processes: ', function () {
             assert.equal(ret.val.owner, user.id);
             assert.equal(ret.val.id, measurement_process.id);
         });
-        it('deletes two processes leaf first', function*() {
+        it('deletes two processes leaf first', function* () {
             let ret = yield testHelpers.createExperiment(project, "Two Processes Delete Experiment");
             assert.isOk(ret);
             assert.isOk(ret.val);
@@ -138,7 +140,7 @@ describe('Feature - Processes: ', function () {
             assert.isOk(ret);
             assert.isOk(ret.val);
         });
-        it('does not allow deleting non-leaf nodes', function*() {
+        it('does not allow deleting non-leaf nodes', function* () {
             let ret = yield testHelpers.createExperiment(project, "Two Processes Delete Experiment");
             assert.isOk(ret);
             assert.isOk(ret.val);

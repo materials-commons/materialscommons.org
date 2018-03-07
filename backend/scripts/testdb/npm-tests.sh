@@ -19,7 +19,7 @@ do_all() {
     # normally use 'unit'; use 'dev' to run tests in dev environment
     # export SERVERTYPE=dev
     export SERVERTYPE=unit
-    ./setup-and-start-test-db.sh -c all
+    ./setup-and-start-test-db.sh -c $1
     # use this TEST_PATTHEN for running short tests of this script
     # export TEST_PATTERN="tests/mcapi/Database-Level/specs/projects-spec.js"
     # Note - temporarily restricting test to only /tests/mcapi/Database-level
@@ -31,5 +31,10 @@ do_all() {
 }
 
 # NOTE: using default for MCDB_PORT =
+CMD=$1
+
+if [ "$1" = "" ]; then
+    CMD="all"
+fi
 set_locations
-do_all
+do_all "$CMD"

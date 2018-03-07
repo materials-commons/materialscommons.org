@@ -30,8 +30,10 @@ let random_name = function () {
 let userId = "test@test.mc";
 
 before(function* () {
+    console.log('before directories-spec');
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
+    console.log('done before directories-spec');
 });
 
 describe('Feature - directories: ', function () {

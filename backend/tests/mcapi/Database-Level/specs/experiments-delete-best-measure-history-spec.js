@@ -30,8 +30,8 @@ const testHelpers = require('./test-helpers');
 
 const base_project_name = "Test directory";
 
-let random_name = function(){
-    let number = Math.floor(Math.random()*10000);
+let random_name = function () {
+    let number = Math.floor(Math.random() * 10000);
     return base_project_name + number;
 };
 
@@ -43,15 +43,15 @@ let process_list = null;
 let sample_list = null;
 let file_list = null;
 
-before(function*() {
-
-    this.timeout(8000); // this test suite can take up to 8 seconds
+before(function* () {
+    console.log('before experiments-delete-best-measure-history-spec.js');
+    this.timeout(80000); // this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
-    assert.equal(userId,user.id);
+    assert.equal(userId, user.id);
 
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user,demoProjectConf.datapathPrefix);
+    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;
@@ -74,13 +74,14 @@ before(function*() {
     assert.equal(updated_project.owner, userId);
     assert.equal(updated_project.name, name);
     assert.equal(updated_project.description, description);
-    assert.equal(updated_project.id,project_id);
+    assert.equal(updated_project.id, project_id);
     project = updated_project;
+    console.log('done before experiments-delete-best-measure-history-spec.js');
 });
 
-describe('Feature - Experiments: ', function() {
+describe('Feature - Experiments: ', function () {
     describe('Delete Experiment - in parts: ', function () {
-        it('deletes best_measure_history', function* (){
+        it('deletes best_measure_history', function* () {
             let experiment_id = experiment.id;
             assert.isOk(experiment_id);
 
@@ -92,16 +93,16 @@ describe('Feature - Experiments: ', function() {
             // to get best_measure_history items by property_id
 
             let idList = yield r.table('experiment2sample')
-                .getAll(experiment_id,{index:'experiment_id'})
-                .eqJoin('sample_id',r.table('samples')).zip()
-                .eqJoin('sample_id',r.table('sample2propertyset'),{index: 'sample_id'}).zip()
-                .eqJoin('property_set_id',r.table('propertysets')).zip()
-                .eqJoin('property_set_id',r.table('propertyset2property'),{index: 'property_set_id'}).zip()
-                .eqJoin('property_id',r.table('properties')).zip()
-                .eqJoin('property_id',r.table('best_measure_history'),{index: 'property_id'}).zip()
+                .getAll(experiment_id, {index: 'experiment_id'})
+                .eqJoin('sample_id', r.table('samples')).zip()
+                .eqJoin('sample_id', r.table('sample2propertyset'), {index: 'sample_id'}).zip()
+                .eqJoin('property_set_id', r.table('propertysets')).zip()
+                .eqJoin('property_set_id', r.table('propertyset2property'), {index: 'property_set_id'}).zip()
+                .eqJoin('property_id', r.table('properties')).zip()
+                .eqJoin('property_id', r.table('best_measure_history'), {index: 'property_id'}).zip()
                 .getField('property_id');
             let delete_msg = yield r.table('best_measure_history')
-                .getAll(r.args([...idList]),{index: 'property_id'}).delete();
+                .getAll(r.args([...idList]), {index: 'property_id'}).delete();
             assert.equal(delete_msg.deleted, 1);
         });
     });

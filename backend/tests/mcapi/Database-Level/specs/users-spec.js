@@ -24,9 +24,11 @@ let random_name = function(prefix){
 };
 
 before(function*() {
+    console.log('before users-spec.js');
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
+    console.log('done before users-spec.js');
 });
 
 describe('Feature - Users: ', function() {

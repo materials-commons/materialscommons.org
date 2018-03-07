@@ -29,16 +29,17 @@ let fileIdList = [];
 let datasetIdList = [];
 
 before(function*() {
-
+    console.log("before datasets-spec");
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
+    console.log("done before datasets-spec");
 });
 
 describe('Feature - dataset: ', function () {
     describe('Delete Dataset: ', function () {
         it('deletes a dataset', function* (){
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield createRenamedDemoProject();
 
@@ -65,7 +66,7 @@ describe('Feature - dataset: ', function () {
         });
         it('does not delete a published dataset', function*() {
 
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield createRenamedDemoProject();
 
@@ -106,7 +107,7 @@ describe('Feature - dataset: ', function () {
 
         });
         it('does not delete a dataset with an assigned DOI', function*() {
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield createRenamedDemoProject();
 

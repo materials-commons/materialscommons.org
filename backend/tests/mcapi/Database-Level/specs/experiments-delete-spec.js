@@ -48,18 +48,19 @@ let experimentTask = null;
 let reviews_count = 0;
 let notes_count = 0;
 
-before(function*() {
-
+before(function* () {
+    console.log('before experiments-delete-spec.js');
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
     assert.equal(userId, user.id);
+    console.log('done before experiments-delete-spec.js');
 });
 
 describe('Feature - Experiments: ', function () {
     describe('Delete Experiment: ', function () {
-        it('does not delete an experiment with a published dataset', function*() {
+        it('does not delete an experiment with a published dataset', function* () {
 
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield setup();
 
@@ -91,9 +92,9 @@ describe('Feature - Experiments: ', function () {
             yield testDatasets({assertExists: true});
 
         });
-        it('does not delete an experiment with a dataset that has an assigned DOI', function*() {
+        it('does not delete an experiment with a dataset that has an assigned DOI', function* () {
 
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield setup();
 
@@ -125,9 +126,9 @@ describe('Feature - Experiments: ', function () {
             yield testDatasets({assertExists: true});
 
         });
-        it('deletes experiment and all its parts', function*() {
+        it('deletes experiment and all its parts', function* () {
 
-            this.timeout(9000); // test take up to 9 seconds
+            this.timeout(90000); // test take up to 9 seconds
 
             yield setup();
 
@@ -173,9 +174,9 @@ describe('Feature - Experiments: ', function () {
             yield testNotesAndReviews({assertExists: false});
 
         });
-        it('with deleteProcess false - deletes experiment, but not process, samples, etc.', function*() {
+        it('with deleteProcess false - deletes experiment, but not process, samples, etc.', function* () {
 
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield setup();
 
@@ -221,9 +222,9 @@ describe('Feature - Experiments: ', function () {
             yield testNotesAndReviews({assertExists: false});
 
         });
-        it('with dry run true, delete process true - shows all will be deleted', function*() {
+        it('with dry run true, delete process true - shows all will be deleted', function* () {
 
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield setup();
 
@@ -269,9 +270,9 @@ describe('Feature - Experiments: ', function () {
             yield testNotesAndReviews({assertExists: true});
 
         });
-        it('with dry run true, delete process false - shows some will be deleted', function*() {
+        it('with dry run true, delete process false - shows some will be deleted', function* () {
 
-            this.timeout(8000); // test take up to 8 seconds
+            this.timeout(80000); // test take up to 8 seconds
 
             yield setup();
 
@@ -370,10 +371,10 @@ function checkResults(results) {
     assert.equal(results.val.notes.length, 1);
     assert.isOk(results.val.experiments);
     assert.equal(results.val.experiments.length, 1);
-    assert.equal(results.val.experiments[0],experiment.id);
+    assert.equal(results.val.experiments[0], experiment.id);
 }
 
-function checkResultsForNotDeleteProcess(results){
+function checkResultsForNotDeleteProcess(results) {
     assert.isOk(results);
     assert.isOk(results.val);
     assert.isOk(results.val.datasets);
@@ -396,10 +397,10 @@ function checkResultsForNotDeleteProcess(results){
     assert.equal(results.val.notes.length, 1);
     assert.isOk(results.val.experiments);
     assert.equal(results.val.experiments.length, 1);
-    assert.equal(results.val.experiments[0],experiment.id);
+    assert.equal(results.val.experiments[0], experiment.id);
 }
 
-function* checkLinks(experiment_id, options){
+function* checkLinks(experiment_id, options) {
 
     let forDryRun = options && options.forDryRun;
 
@@ -414,23 +415,23 @@ function* checkLinks(experiment_id, options){
     ];
 
     if (forDryRun) {
-        let lengths = [16,2,1,1,5,8,1];
+        let lengths = [16, 2, 1, 1, 5, 8, 1];
         for (let i = 0; i < tables.length; i++) {
             let table = tables[i];
             let list = yield r.table(table).getAll(experiment_id, {index: 'experiment_id'});
             let expectedLength = lengths[i];
             let l = list.length;
             let message = `missing links in ${table} for experment id = ${experiment_id}`
-            assert.equal(l,expectedLength,message);
+            assert.equal(l, expectedLength, message);
         }
 
     } else {
         for (let i = 0; i < tables.length; i++) {
             let table = tables[i];
-            let list = yield r.table(table).getAll(experiment_id,{index: 'experiment_id'});
+            let list = yield r.table(table).getAll(experiment_id, {index: 'experiment_id'});
             let l = list.length;
             let message = `expected no links in ${table}, but found ${l} for experment id = ${experiment_id}`
-            assert.equal(l,0,message);
+            assert.equal(l, 0, message);
         }
     }
 }
@@ -564,7 +565,7 @@ function* testExperimentTasks(options) {
 
 }
 
-function* testFileLinks(options){
+function* testFileLinks(options) {
     let count = 0;
     if (options && options.assertExists) {
         count = 16;
@@ -575,14 +576,14 @@ function* testFileLinks(options){
         idList.push(fileList[i].id);
     }
 
-    let linkList = yield r.table('experiment2datafile').getAll(r.args(idList),{index: 'datafile_id'});
+    let linkList = yield r.table('experiment2datafile').getAll(r.args(idList), {index: 'datafile_id'});
 
     assert.isOk(linkList);
     assert.equal(linkList.length, count);
 
 }
 
-function* testNotesAndReviews(options){
+function* testNotesAndReviews(options) {
 
     let counts = [0, 0, 0, 0];
     if (options && options.assertExists) {
@@ -608,23 +609,23 @@ function* testNotesAndReviews(options){
         id_list.push(fileList[i].id);
     }
 
-    let entities = yield r.table('note2item').getAll(r.args(id_list),{index: 'item_id'});
+    let entities = yield r.table('note2item').getAll(r.args(id_list), {index: 'item_id'});
 
     assert.equal(entities.length, countOfNoteItems);
 
     let noteIdSet = new Set();
-    for (let i = 0; i < entities.length; i++){
+    for (let i = 0; i < entities.length; i++) {
         noteIdSet = noteIdSet.add(entities[i].note_id);
     }
 
     assert.equal(noteIdSet.size, countOfNotes);
 
-    entities = yield r.table('review2item').getAll(r.args(id_list),{index: 'item_id'});
+    entities = yield r.table('review2item').getAll(r.args(id_list), {index: 'item_id'});
 
     assert.equal(entities.length, countOfReviewItems);
 
     let reviewIdSet = new Set();
-    for (let i = 0; i < entities.length; i++){
+    for (let i = 0; i < entities.length; i++) {
         reviewIdSet = reviewIdSet.add(entities[i].review_id);
     }
 
@@ -685,7 +686,7 @@ function* setUpFakeNotesAndReviews() {
 
     insert_msg = yield r.table('note2item').insert(entities);
 
-    assert.equal(insert_msg.generated_keys.length,entities.length);
+    assert.equal(insert_msg.generated_keys.length, entities.length);
 
     notes_count = entities.length;
 
@@ -719,7 +720,7 @@ function* setUpFakeNotesAndReviews() {
 
     insert_msg = yield r.table('review2item').insert(entities);
 
-    assert.equal(insert_msg.generated_keys.length,entities.length);
+    assert.equal(insert_msg.generated_keys.length, entities.length);
 
     reviews_count = entities.length;
 
