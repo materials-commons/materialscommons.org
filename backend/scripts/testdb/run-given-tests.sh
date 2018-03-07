@@ -37,9 +37,11 @@ set_locations() {
 
 
 set_env() {
-    if [ -z "$SERVERTYPE" ]; then
-        export SERVERTYPE=dev
-    fi
+#    if [ -z "$SERVERTYPE" ]; then
+#        export SERVERTYPE=unit
+#    fi
+
+    SERVERTYPE=unit
 
     source ${BACKEND}/env/${SERVERTYPE}.sh
 
