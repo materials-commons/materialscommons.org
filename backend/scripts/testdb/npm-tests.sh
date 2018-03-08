@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 
 # no-output on pushd and popd
 pushd () {
@@ -31,12 +32,14 @@ do_all() {
     popd
 }
 
+echo "Running npm-tests.sh with SERVERTYPE = ${SERVERTYPE}"
+
 # NOTE: This command gets passed, eventually, to setup-and-start-test-db.sh as the -c option
 #     see the function 'print_clear_option', therein, regarding '-c all' and '-c lite'
 CMD=$1
 
 if [ "$1" = "" ]; then
-    CMD="lite"
+    CMD="all"
 fi
 set_locations
 do_all "$CMD"

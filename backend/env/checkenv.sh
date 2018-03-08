@@ -72,3 +72,6 @@ set_echo_env
 
 export SERVERTYPE=unit
 set_echo_env
+
+export SERVERTYPE=travisrun
+set_echo_env
