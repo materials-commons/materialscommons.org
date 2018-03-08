@@ -120,7 +120,7 @@ describe('Feature - Projects: ', function () {
 
         });
         it('deletes the indicated project', function* () {
-            this.timeout(12000); // test take up to 12 seconds
+            this.timeout(120000); // test take up to 12 seconds
 
             yield createRenamedDemoProject();
 
