@@ -31,23 +31,23 @@ let user = null;
 
 let project = null;
 
-before(function* () {
-    console.log('before files-version-special-spec.js');
-    this.timeout(80000); // setup can take up to 8 seconds
+// before(function* () {
+//     console.log('before files-version-special-spec.js');
+//     this.timeout(80000); // setup can take up to 8 seconds
+//
+//     user = yield dbModelUsers.getUser(userId);
+//     assert.isOk(user, "No test user available = " + userId);
+//     assert.equal(userId, user.id);
+//
+//     let results = yield testHelpers.createProject(random_name(), user);
+//     assert.isOk(results);
+//     assert.isOk(results.val);
+//     project = results.val;
+//     assert.equal(project.owner, userId);
+//     console.log('done before files-version-special-spec.js');
+// });
 
-    user = yield dbModelUsers.getUser(userId);
-    assert.isOk(user, "No test user available = " + userId);
-    assert.equal(userId, user.id);
-
-    let results = yield testHelpers.createProject(random_name(), user);
-    assert.isOk(results);
-    assert.isOk(results.val);
-    project = results.val;
-    assert.equal(project.owner, userId);
-    console.log('done before files-version-special-spec.js');
-});
-
-describe('Feature - Files: ', function () {
+describe.skip('Feature - Files: ', function () {
     describe('Versioning', function () {
         it('supports different versions of the file - different directories', function* () {
             let file1 = yield testHelpers.createFileFromDemoFileSet(project, 1, user);
