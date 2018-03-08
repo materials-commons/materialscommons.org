@@ -25,7 +25,7 @@ class MCProjectHomeComponentController {
             this._reloadComponentState();
         });
         this._reloadComponentState();
-        this.getProjectActivities();
+        //this.getProjectActivities();
     }
 
     getProjectActivities() {
