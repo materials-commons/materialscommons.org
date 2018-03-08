@@ -6,4 +6,7 @@ bower_components
 dist.tar.gz
 mcapp
 mcapp.tar.gz
+mcapp.data
+mcpub.tar.gz
+mcpub
 node_modules
