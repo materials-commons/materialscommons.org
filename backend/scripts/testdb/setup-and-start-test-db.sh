@@ -1,14 +1,14 @@
 #!/bin/bash -e
 
 # default args
-CLEAR="all" # other options are "none", "lite"
+CLEAR="lite" # other options are "none", "all"
 
 print_clear_option() {
     echo "Use option -c to control clearing of the database"
     echo "  none => database started if not running; but not cleared"
     echo "  lite => database started if not running; tables (except users and templates) are cleared"
     echo "  all => database is stopped; deleted; started; rebuilt (including templates and test users)"
-    echo "  default = all"
+    echo "  default = lite"
     echo "current setting:"
     echo "  -c ${CLEAR}"
 }
@@ -28,6 +28,9 @@ elif [ "$CMD" = "-c" ]; then
         CLEAR=$option
     fi
     if [ "$option" = "lite" ]; then
+        CLEAR=$option
+    fi
+    if [ "$option" = "all" ]; then
         CLEAR=$option
     fi
 fi
@@ -147,7 +150,7 @@ rebuild_test_database() {
 }
 
 if [ -z "$SERVERTYPE" ]; then
-    export SERVERTYPE=dev
+    export SERVERTYPE=unit
 fi
 
 set_locations
