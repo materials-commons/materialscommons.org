@@ -20,7 +20,7 @@
 
         <mc-dataset-details dataset=$ctrl.dataset layout="column" flex ng-if="$ctrl.showDetailsSection"></mc-dataset-details>
 
-        <div ng-if="!$ctrl.showDetailsSection">
+        <div ng-if="!$ctrl.showDetailsSection" layout="column" flex>
             <md-button class="md-primary" ng-click="$ctrl.showNodes()">
                 {{$ctrl.showAll ? "show only dataset" : "show all"}}
             </md-button>
