@@ -1,39 +1,35 @@
-<div layout="column" ng-if="$ctrl.dataset">
-    <div layout="row" layout-align="start center">
-        <h3 class="md-title" style="padding-right: 30px">Dataset: {{$ctrl.dataset.title}}</h3>
-        <md-button class="md-primary"
-                   ng-click="$ctrl.showDetailsSection = !$ctrl.showDetailsSection">
-            {{$ctrl.showDetailsSection ? "add/show processes" : "show details"}}
-        </md-button>
-    </div>
-    <p ng-show="$ctrl.showDetailsSection">
-        <strong class="mc-error-color">Note:</strong> To add processes to the dataset click on show processes. You can
-        then use the graph or
-        outline view to add processes. In the outline view you can add processes by selecting
-        their checkbox.
-    </p>
-    <p ng-show="!$ctrl.showDetailsSection">
-        In outline view (<i class="fa fa-fw fa-th-list"></i>) select/unselect processes using the checkbox. In both
-        views you can add or remove a process by clicking on it and choosing add or remove button in the details tab.
-    </p>
+<div layout="column" ng-if="$ctrl.dataset" layout-fill flex>
+    <md-content layout="column" flex layout-fill>
+        <div layout="row" layout-align="start center">
+            <h3 class="md-title" style="padding-right: 30px">Dataset: {{$ctrl.dataset.title}}</h3>
+            <md-button class="md-primary"
+                       ng-click="$ctrl.showDetailsSection = !$ctrl.showDetailsSection">
+                {{$ctrl.showDetailsSection ? "add/show processes" : "show details"}}
+            </md-button>
+        </div>
+        <p ng-show="$ctrl.showDetailsSection">
+            <strong class="mc-error-color">Note:</strong> To add processes to the dataset click on show processes. You can
+            then use the graph or
+            outline view to add processes. In the outline view you can add processes by selecting
+            their checkbox.
+        </p>
+        <p ng-show="!$ctrl.showDetailsSection">
+            In outline view (<i class="fa fa-fw fa-th-list"></i>) select/unselect processes using the checkbox. In both
+            views you can add or remove a process by clicking on it and choosing add or remove button in the details tab.
+        </p>
 
-    <div layout="row" flex style="maxx-height: 70vh" ng-if="$ctrl.showDetailsSection">
-        <md-content layout="row" layout-wrap layout-align="start stretch" flex>
-            <div layout="column" flex>
-                <mc-dataset-details dataset=$ctrl.dataset></mc-dataset-details>
-            </div>
-        </md-content>
-    </div>
+        <mc-dataset-details dataset=$ctrl.dataset layout="column" flex ng-if="$ctrl.showDetailsSection"></mc-dataset-details>
 
-    <div ng-if="!$ctrl.showDetailsSection">
-        <md-button class="md-primary" ng-click="$ctrl.showNodes()">
-            {{$ctrl.showAll ? "show only dataset" : "show all"}}
-        </md-button>
-        <label>{{$ctrl.showAll ? "Showing entire workflow" : "Showing only workflow for dataset"}}</label>
-        <mc-processes-workflow processes="$ctrl.processes"
-                               dataset="$ctrl.dataset"
-                               highlight-processes="$ctrl.dataset.processes">
-        </mc-processes-workflow>
-    </div>
+        <div ng-if="!$ctrl.showDetailsSection">
+            <md-button class="md-primary" ng-click="$ctrl.showNodes()">
+                {{$ctrl.showAll ? "show only dataset" : "show all"}}
+            </md-button>
+            <label>{{$ctrl.showAll ? "Showing entire workflow" : "Showing only workflow for dataset"}}</label>
+            <mc-processes-workflow processes="$ctrl.processes"
+                                   dataset="$ctrl.dataset"
+                                   highlight-processes="$ctrl.dataset.processes">
+            </mc-processes-workflow>
+        </div>
+    </md-content>
 </div>
 

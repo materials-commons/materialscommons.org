@@ -27,6 +27,17 @@ function* validateProjectAccess(next) {
     yield next;
 }
 
+function* checkProjectAccess(projectId, user) {
+    let projects = yield projectAccessCache.find(projectId);
+    if (!projects) {
+        this.throw(httpStatus.BAD_REQUEST, "Unknown project");
+    }
+
+    if (!projectAccessCache.validateAccess(projectId, user)) {
+        this.throw(httpStatus.UNAUTHORIZED, `No access to project ${projectID}`);
+    }
+}
+
 function* validateProjectOwner(next) {
     let projectId = this.params.project_id;
     if (projectId) {
@@ -41,16 +52,23 @@ function* validateProjectOwner(next) {
 }
 
 function* validateExperimentOwner(next) {
-    let experimentId = this.params.experiment_id;
-    if (experimentId) {
-        let isOwner = yield check.isUserExperimentOwner(this.reqctx.user.id, experimentId);
+    let experimentId = this.params.experiment_id,
+        projectId = this.params.project_id;
+    if (experimentId && projectId) {
+        let isOwner = yield check.isUserExperimentOwner(this.reqctx.user.id, experimentId, projectId);
         if (!isOwner) {
             this.status = httpStatus.BAD_REQUEST;
             this.body = {error: 'Only the experiment owner can delete an experiment'};
             return this.status;
         }
     }
+
     yield next;
+}
+
+function* validateExperimentId(next) {
+    let experimentId = this.params.experiment_id;
+    check.experimentExists
 }
 
 function* validateExperimentInProject(next) {
@@ -278,5 +296,6 @@ module.exports = {
     validateCommentAccess,
     validateCommentExists,
     validateNoteInExperiment,
-    validateFileAccess
+    validateFileAccess,
+    checkProjectAccess,
 };

@@ -3,7 +3,7 @@ import {Experiment} from '../experiments/experiment/components/tasks/experiment.
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, projectsAPI, mcprojstore) {
+    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, mcprojstore, projectsAPI) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
@@ -14,6 +14,7 @@ class MCProjectHomeComponentController {
         this.mergingExperiments = false;
         this.deletingExperiments = false;
         this.selectingExperiments = false;
+        this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
         this.projectsAPI = projectsAPI;
         $scope.editorOptions = editorOpts({height: 65, width: 50});
@@ -24,6 +25,35 @@ class MCProjectHomeComponentController {
             this._reloadComponentState();
         });
         this._reloadComponentState();
+        this.getProjectActivities();
+    }
+
+    getProjectActivities() {
+        this.projectsAPI.getActivities(this.project.id).then(
+            (activities) => {
+                activities.forEach(a => {
+                    switch (a.item_type) {
+                        case "project":
+                            a.icon = "fa-briefcase";
+                            break;
+                        case "experiment":
+                            a.icon = "fa-flask";
+                            break;
+                        case "file":
+                            a.icon = "fa-files-o";
+                            break;
+                        case "sample":
+                            a.icon = "fa-cubes";
+                            break;
+                        case "process":
+                            a.icon = "fa-code-fork";
+                            break;
+                    }
+                    a.message = `${a.event_type === 'create' ? 'Added' : 'Modified'} ${a.item_type} ${a.item_name}`;
+                });
+                this.activities = activities;
+            }
+        )
     }
 
     $onDestroy() {
@@ -37,28 +67,6 @@ class MCProjectHomeComponentController {
         });
     }
 
-    updateProjectOverview() {
-        if (this.projectOverview === this.project.overview) {
-            return;
-        }
-
-        if (this.project.overview === null) {
-            return;
-        }
-
-        this.projectsAPI.updateProject(this.$stateParams.project_id, {overview: this.project.overview})
-            .then(
-                () => {
-                    this.projectOverview = this.project.overview;
-                    this.mcprojstore.updateCurrentProject(currentProj => {
-                        currentProj.overview = this.project.overview;
-                        return currentProj;
-                    });
-                },
-                () => this.toast.error('Unable to update project overview')
-            );
-    }
-
     _reloadComponentState() {
         this.project = this.mcprojstore.getProject(this.$stateParams.project_id);
         this.projectOverview = this.project.overview;
@@ -67,18 +75,6 @@ class MCProjectHomeComponentController {
         this.onholdExperimentsCount = experimentsList.filter(e => e.status === 'on-hold').length;
         this.doneExperimentsCount = experimentsList.filter(e => e.status === 'done').length;
         this.getProjectExperiments();
-    }
-
-    updateProjectDescription() {
-        this.projectsAPI.updateProject(this.$stateParams.project_id, {description: this.project.description}).then(
-            () => {
-                this.mcprojstore.updateCurrentProject(currentProj => {
-                    currentProj.description = this.project.description;
-                    return currentProj;
-                });
-            },
-            () => this.toast.error('Unable to update project description')
-        );
     }
 
     startNewExperiment() {
@@ -146,7 +142,7 @@ class MCProjectHomeComponentController {
             bindToController: true,
             locals: {
                 experiments: selected,
-                projectId: this.project.id
+                project: this.project
             }
         }).then(
             () => {
@@ -169,22 +165,6 @@ class MCProjectHomeComponentController {
         if (!this.selectingExperiments) {
             this.$state.go("project.experiment.workflow", {experiment_id: e.id});
         }
-    }
-
-    renameProject() {
-        this.$mdDialog.show({
-            templateUrl: 'app/project/home/rename-project-dialog.html',
-            controller: RenameProjectDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {
-                project: this.project
-            }
-        }).then(
-            (newName) => {
-                this.project.name = newName;
-            }
-        );
     }
 }
 
@@ -226,37 +206,6 @@ class CreateNewExperimentDialogController {
     }
 }
 
-class RenameProjectDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, projectsAPI, toast, mcprojstore) {
-        this.$mdDialog = $mdDialog;
-        this.projectsAPI = projectsAPI;
-        this.toast = toast;
-        this.mcprojstore = mcprojstore;
-        this.newProjectName = '';
-    }
-
-    done() {
-        this.projectsAPI.updateProject(this.project.id, {name: this.newProjectName}).then(
-            () => {
-                this.mcprojstore.updateCurrentProject((currentProject) => {
-                    currentProject.name = this.newProjectName;
-                    return currentProject;
-                });
-                this.$mdDialog.hide(this.newProjectName);
-            },
-            () => {
-                this.toast.error('Failed to rename project');
-                this.$mdDialog.cancel();
-            }
-        );
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
-
 class MergeExperimentsDialogController {
     /*@ngInject*/
     constructor($mdDialog, experimentsAPI, mcprojstore) {
@@ -289,24 +238,51 @@ class MergeExperimentsDialogController {
 
 class DeleteExperimentsDialogController {
     /*@ngInject*/
-    constructor($mdDialog, experimentsAPI, mcprojstore) {
+    constructor($mdDialog, experimentsAPI, mcprojstore, toast, User) {
         this.$mdDialog = $mdDialog;
         this.experimentsAPI = experimentsAPI;
         this.experimentName = '';
         this.experimentDescription = '';
         this.mcprojstore = mcprojstore;
+        this.toast = toast;
+        this.user = User.u();
     }
 
     done() {
-        let experimentIds = this.experiments.map(e => e.id);
-        this.experimentsAPI.deleteExperiments(this.projectId, experimentIds).then(
-            () => {
-                this.mcprojstore.removeExperiments(...this.experiments).then(
-                    () => this.$mdDialog.hide()
-                );
-            },
-            () => this.$mdDialog.cancel()
-        );
+        if (this.canDeleteExperiments()) {
+            let experimentIds = this.experiments.map(e => e.id);
+            this.experimentsAPI.deleteExperiments(this.project.id, experimentIds).then(
+                () => {
+                    this.mcprojstore.removeExperiments(...this.experiments).then(
+                        () => this.$mdDialog.hide()
+                    );
+                },
+                () => this.$mdDialog.cancel()
+            );
+        } else {
+            this.toast.error('You are attempting to delete experiments when you are not the experiment or project owner');
+        }
+    }
+
+    canDeleteExperiments() {
+        let canDelete = true;
+        this.experiments.forEach(e => {
+            if (!this.canDelete(e.owner, this.project.owner, this.user)) {
+                canDelete = false;
+            }
+        });
+
+        return canDelete;
+    }
+
+    canDelete(experimentOwner, projectOwner, user) {
+        if (experimentOwner === user) {
+            return true;
+        } else if (projectOwner === user) {
+            return true;
+        }
+
+        return false;
     }
 
     cancel() {

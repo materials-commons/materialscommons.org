@@ -2,7 +2,7 @@
     <div layout="row">
         <h3 class="md-title">
             <i class="fa fa-fw fa-folder-open"></i> {{$ctrl.dir.data.path}}
-            <a class="text-uppercase md-warn margin-left-15" ng-click="$ctrl.deleteDir()">
+            <a class="text-uppercase md-warn margin-left-15" ng-click="$ctrl.deleteDir()" ng-show="$ctrl.isNotRoot">
                 <i class="fa fa-fw fa-trash"></i> delete directory
             </a>
         </h3>

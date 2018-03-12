@@ -1,5 +1,7 @@
 <div layout="row" layout-fill layout-margin layout-align="start start">
-    <div layout="column" flex="100" md-whiteframe layout-align="start stretch">
+    <p ng-if="!$ctrl.files.length" class="md-headline">There are no files in the experiment. To add files to the experiment choose processes in the workflow
+        and add files to them.</p>
+    <div layout="column" flex="100" md-whiteframe layout-align="start stretch" ng-if="$ctrl.files.length">
         <md-toolbar style="background-color:white" flex="100">
             <div layout="row" layout-align="start center"
                  style="background-color:#e9e9e9; padding-left:8px; padding-right:8px">

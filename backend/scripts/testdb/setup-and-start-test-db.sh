@@ -1,14 +1,15 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 
 # default args
-CLEAR="all" # other options are "none", "lite"
+CLEAR="lite" # other options are "none", "all"
 
 print_clear_option() {
     echo "Use option -c to control clearing of the database"
     echo "  none => database started if not running; but not cleared"
     echo "  lite => database started if not running; tables (except users and templates) are cleared"
     echo "  all => database is stopped; deleted; started; rebuilt (including templates and test users)"
-    echo "  default = all"
+    echo "  default = lite"
     echo "current setting:"
     echo "  -c ${CLEAR}"
 }
@@ -28,6 +29,9 @@ elif [ "$CMD" = "-c" ]; then
         CLEAR=$option
     fi
     if [ "$option" = "lite" ]; then
+        CLEAR=$option
+    fi
+    if [ "$option" = "all" ]; then
         CLEAR=$option
     fi
 fi
@@ -55,6 +59,9 @@ set_locations() {
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     pushd $DIR
     BASE=`pwd`
+    pushd helpers
+    HELPERS=`pwd`
+    popd
     pushd '..'
     SCRIPTS=`pwd`
     pushd '..'
@@ -72,11 +79,13 @@ set_env() {
 
 print_env_and_locations() {
     echo "----------- Test DB rebuild ENV settings --------------"
-    echo "  BASE    - the location of this script and other helper scripts"
+    echo "  BASE    - (see below) the location of this script and other helper scripts"
+    echo "  HELPERS - the location of the helpers folder for base scripts"
     echo "  SCRIPTS - the location of the materialscommons.org/backend/scripts folder"
     echo "  BACKEND - the location of the materialscommons.org/backend folder"
     echo "  ENV     - the location of the environment scripts"
     echo "  BASE      ${BASE} "
+    echo "  HELPERS   ${HELPERS} "
     echo "  SCRIPTS   ${SCRIPTS} "
     echo "  ENV       ${ENV} "
     echo "  BACKEND   ${BACKEND} "
@@ -90,6 +99,7 @@ print_env_and_locations() {
 
 check_rethinkdb() {
     echo "Looking for rethinkdb..."
+    echo "    -- SERVERTYPE = ${SERVERTYPE} "
     RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
     if [ "$RPID" = "" ]; then
         echo "   Database not running on port $MCDB_PORT (MCDB_PORT)"
@@ -103,6 +113,7 @@ check_rethinkdb() {
 start_rethinkdb(){
     pushd $BACKEND
     echo "Starting rethinkdb (${MCDB_PORT})..."
+    echo "    -- SERVERTYPE = ${SERVERTYPE} "
     (cd ${MCDB_DIR}; rethinkdb --driver-port ${MCDB_PORT} --cluster-port ${RETHINKDB_CLUSTER_PORT} --http-port ${RETHINKDB_HTTP_PORT} --daemon)
     # db_running.py blocks until DB is up; or exits with error after 100 retries
     scripts/db_running.py --port ${MCDB_PORT}
@@ -113,6 +124,7 @@ start_rethinkdb(){
 stop_rethinkbd() {
     pushd $BACKEND
     echo "Stopping rethinkdb on port MCDB_PORT ($MCDB_PORT)..."
+    echo "    -- SERVERTYPE = ${SERVERTYPE} "
     RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
     if [ "$RPID" != "" ]; then
         kill ${RPID}
@@ -123,23 +135,25 @@ stop_rethinkbd() {
 }
 
 clear_all_db_tables(){
-    pushd $BACKEND
+    pushd $HELPERS
     echo "Clearing all tables in database in rethinkdb"
-    scripts/testdb/clear-database-tables.py --port $MCDB_PORT
+    echo "    -- SERVERTYPE = ${SERVERTYPE} ; MCDB_PORT = ${MCDB_PORT}"
+    ./clear-database-tables.py --port $MCDB_PORT
     echo "Cleared test db"
     popd
 }
 
 clear_rethinkdb() {
-    pushd $BACKEND
+    pushd $HELPERS
     echo "Clearing all databases in rethinkdb"
-    scripts/testdb/delete-databases.py --port $MCDB_PORT
+    echo "    -- SERVERTYPE = ${SERVERTYPE} ; MCDB_PORT = ${MCDB_PORT}"
+    ./delete-databases.py --port $MCDB_PORT
     echo "Emptied test db"
     popd
 }
 
 rebuild_test_database() {
-    pushd $BASE
+    pushd $HELPERS
     echo "Building minimal test DB in rethinkdb..."
     MC_USERPW=test ./build-test-db.sh
     echo "Built test DB."
@@ -147,7 +161,7 @@ rebuild_test_database() {
 }
 
 if [ -z "$SERVERTYPE" ]; then
-    export SERVERTYPE=dev
+    export SERVERTYPE=unit
 fi
 
 set_locations
@@ -165,6 +179,7 @@ if [ "${CLEAR}" = "all" ]; then
 elif [ "${CLEAR}" = "lite" ]; then
     echo "Starting test DB (if not running); clearing data tables"
     if ! check_rethinkdb; then
+        echo "Restart rethinkDB ..."
         start_rethinkdb
     fi
     clear_all_db_tables
@@ -174,4 +189,6 @@ else
         start_rethinkdb
     fi
 fi
+echo "Database started, rebuilt... "
+echo "    -- SERVERTYPE = ${SERVERTYPE} ; MCDB_PORT = ${MCDB_PORT} ; rebuild type = ${CLEAR} "
 echo "Done with setup and starting rethinkdb."

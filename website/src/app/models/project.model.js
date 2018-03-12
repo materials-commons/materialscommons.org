@@ -20,6 +20,9 @@ function ProjectModelService(projectsAPI) {
             this.users = [];
             this.owner_details = {fullname: ''};
             this.status = 'none';
+            this.todos = [];
+            this.notes = [];
+            this.shortcuts = [];
         }
 
         static fromJSON(data) {
@@ -36,6 +39,15 @@ function ProjectModelService(projectsAPI) {
             p.owner_details = data.owner_details;
             p.reminders = data.reminders;
             p.status = data.status;
+            p.todos = data.todos;
+            p.shortcuts = data.shortcuts.map(d => {
+                d.path = d.name;
+                d.name = d.name.replace(`${p.name}/`, '');
+                return d;
+            });
+            if (data.notes) {
+                p.notes = data.notes;
+            }
             return p;
         }
 

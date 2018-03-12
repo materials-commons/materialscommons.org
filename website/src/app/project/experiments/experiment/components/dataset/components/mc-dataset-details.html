@@ -78,70 +78,71 @@
                     DOI: &nbsp; <a ng-href="{{$ctrl.dataset.doi_url}}" target="_blank">{{$ctrl.dataset.doi}}</a>
                 </div>
             </div>
-        </div>
-        <div layout="row" layout-align="start center" class="margin-top-30">
-            <label class="md-subhead" flex="15">Papers</label>
-            <md-button ng-click="$ctrl.addPaper()"
-                       class="md-primary">
-                add paper
-            </md-button>
-        </div>
-        <div layout-margin ng-repeat="paper in $ctrl.dataset.papers" class="mc-light-grey-bg padding-top-20">
-            <md-input-container class="md-block">
-                <label>Title</label>
-                <input ng-model="paper.title"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                       ng-change="$ctrl.updateDataset()">
-            </md-input-container>
-            <md-input-container class="md-block">
-                <label>Abstract</label>
-                <textarea ng-model="paper.abstract"
-                          ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                          ng-change="$ctrl.updateDataset()"></textarea>
-            </md-input-container>
-            <md-input-container class="md-block">
-                <label>Link To Paper</label>
-                <input ng-model="paper.link"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                       ng-change="$ctrl.updateDataset()">
-            </md-input-container>
-            <md-input-container class="md-block">
-                <label>DOI</label>
-                <input ng-model="paper.doi"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                       ng-change="$ctrl.updateDataset()">
-            </md-input-container>
-            <md-button class="md-warn" ng-click="$ctrl.removePaper($index)">delete paper</md-button>
-        </div>
-        <div layout="row" layout-align="start center" class="margin-top-20">
-            <label class="md-subhead" flex="15">Authors</label>
-            <md-button ng-click="$ctrl.addAuthor()"
-                       class="md-primary">
-                add author
-            </md-button>
-        </div>
-        <div layout="row" layout-margin ng-repeat="author in $ctrl.dataset.authors">
-            <md-input-container class="md-block" flex-gt-sm>
-                <label>Last Name</label>
-                <input ng-model="author.lastname"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                       ng-change="$ctrl.updateDataset()">
-            </md-input-container>
-            <md-input-container class="md-block" flex-gt-sm>
-                <label>First Name</label>
-                <input ng-model="author.firstname"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                       ng-change="$ctrl.updateDataset()">
-            </md-input-container>
-            <md-input-container class="md-block" flex-gt-sm>
-                <label>Affiliation</label>
-                <input ng-model="author.affiliation"
-                       ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-                       ng-change="$ctrl.updateDataset()">
-            </md-input-container>
-            <a class="mc-error-color" ng-click="$ctrl.removeAuthor($index)">
-                <i class="fa fa-fw fa-remove"></i>
-            </a>
+
+            <div layout="row" layout-align="start center" class="margin-top-30">
+                <label class="md-subhead" flex="15">Papers</label>
+                <md-button ng-click="$ctrl.addPaper()"
+                           class="md-primary">
+                    add paper
+                </md-button>
+            </div>
+            <div layout-margin ng-repeat="paper in $ctrl.dataset.papers" class="mc-light-grey-bg padding-top-20">
+                <md-input-container class="md-block">
+                    <label>Title</label>
+                    <input ng-model="paper.title"
+                           ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                           ng-change="$ctrl.updateDataset()">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Abstract</label>
+                    <textarea ng-model="paper.abstract"
+                              ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                              ng-change="$ctrl.updateDataset()"></textarea>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Link To Paper</label>
+                    <input ng-model="paper.link"
+                           ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                           ng-change="$ctrl.updateDataset()">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>DOI</label>
+                    <input ng-model="paper.doi"
+                           ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                           ng-change="$ctrl.updateDataset()">
+                </md-input-container>
+                <md-button class="md-warn" ng-click="$ctrl.removePaper($index)">delete paper</md-button>
+            </div>
+            <div layout="row" layout-align="start center" class="margin-top-20">
+                <label class="md-subhead" flex="15">Authors</label>
+                <md-button ng-click="$ctrl.addAuthor()"
+                           class="md-primary">
+                    add author
+                </md-button>
+            </div>
+            <div layout="row" layout-margin ng-repeat="author in $ctrl.dataset.authors">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Last Name</label>
+                    <input ng-model="author.lastname"
+                           ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                           ng-change="$ctrl.updateDataset()">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>First Name</label>
+                    <input ng-model="author.firstname"
+                           ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                           ng-change="$ctrl.updateDataset()">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Affiliation</label>
+                    <input ng-model="author.affiliation"
+                           ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                           ng-change="$ctrl.updateDataset()">
+                </md-input-container>
+                <a class="mc-error-color" ng-click="$ctrl.removeAuthor($index)">
+                    <i class="fa fa-fw fa-remove"></i>
+                </a>
+            </div>
         </div>
     </form>
 </div>

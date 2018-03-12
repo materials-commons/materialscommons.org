@@ -23,18 +23,13 @@
     <!-- inject:css -->
     <!-- css files will be automatically insert here -->
     <!-- endinject -->
-    <link href="app/style-3.css" rel="stylesheet">
+    <!--<link href="app/style-3.css" rel="stylesheet">-->
     <!-- endbuild -->
 </head>
-<body layout="row" ng-controller="MCAppController as ctrl" ng-cloak>
+<body layout="column" ng-controller="MCAppController as ctrl" ng-cloak>
 
-<div layout="column" flex="100">
-    <navbar ng-ifx="ctrl.isAuthenticated()" search="{{ctrl.searchText}}"></navbar>
-    <mc-project-navbar ng-if="ctrl.inProject()"></mc-project-navbar>
-    <md-content flex layout="column">
-        <ui-view flex layout="column"></ui-view>
-    </md-content>
-</div>
+<navbar search="{{ctrl.searchText}}"></navbar>
+<ui-view flex layout="column"></ui-view>
 
 <!-- build:js(src) scripts/vendor.js -->
 <script src="app/external/js/highlight.pack.js"></script>

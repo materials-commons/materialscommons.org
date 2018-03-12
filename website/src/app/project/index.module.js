@@ -8,7 +8,9 @@ import './processes/index.module';
 import './samples/index.module';
 import './search/index.module';
 import './services/index.module';
-import './settings/index.module';
+import './collaborators/index.module';
 import './mc-project-quickbar.component';
 import './quickbar-samples.service';
+import './settings/index.module';
+import './details/index.module';
 

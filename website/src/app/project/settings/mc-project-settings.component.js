@@ -1,95 +1,68 @@
-angular.module('materialscommons').component('mcProjectSettings', {
-    templateUrl: 'app/project/settings/mc-project-settings.html',
-    controller: MCProjectSettingsComponentController
-});
+class MCProjectSettingsComponentController {
+    /*@ngInject*/
 
-/*@ngInject*/
-function MCProjectSettingsComponentController(mcapi, User, toast, mcprojstore) {
-    const ctrl = this;
-    ctrl.isOwner = isOwner;
-    ctrl.deleteUser = deleteUser;
-    ctrl.addUser = addUser;
-    let allUsers = [];
-    ctrl.usersAvailable = [];
+    /*@ngInject*/
+    constructor(projectsAPI, mcprojstore, toast, $mdDialog, $state, User) {
+        this.projectsAPI = projectsAPI;
+        this.mcprojstore = mcprojstore;
+        this.toast = toast;
+        this.$mdDialog = $mdDialog;
+        this.$state = $state;
+        this.projectName = "";
+        this.user = User.u();
 
-    ctrl.filterUsersBy = '';
+    }
 
-    ctrl.project = mcprojstore.currentProject;
+    $onInit() {
+        this.project = this.mcprojstore.currentProject;
+        this.projectName = this.project.name;
+    }
 
-    ctrl.signedInUser = User.u();
+    update() {
+        let update = {
+            name: this.projectName
+        };
+        this.projectsAPI.updateProject(this.project.id, update).then(
+            () => {
+                this.mcprojstore.updateCurrentProject(currentProj => {
+                    currentProj.name = this.projectName;
+                    return currentProj;
+                }).then(
+                    () => this.$state.go('project.home')
+                );
+            },
+            () => this.toast.error('Unable to update project')
+        );
+    }
 
-    let projectUsers = _.indexBy(ctrl.project.users, 'user_id');
+    deleteProject() {
+        if (this.user !== this.project.owner) {
+            this.toast.error('Only the owner of a project can delete the project.')
+        } else {
+            let deleteDialog = this.$mdDialog.confirm()
+                .title(`Delete project: ${this.project.name}`)
+                .textContent('Deleting a project is a permanent operation - all information with the project will be removed.')
+                .ariaLabel('Delete Project')
+                .ok('Delect Project')
+                .cancel('cancel');
 
-    mcapi('/users').success(function (users) {
-        allUsers = users;
-        ctrl.usersAvailable = usersNotInProject();
-    }).jsonp();
-
-    ///////////////////////////////////////
-
-    function deleteUser(id) {
-        mcapi('/access/%/remove', id)
-            .success(function () {
-                const i = _.indexOf(ctrl.project.users, function (item) {
-                    return (item.id === id);
-                });
-                if (i !== -1) {
-                    mcprojstore.updateCurrentProject((currentProject => {
-                        currentProject.users.splice(i, 1);
-                        return currentProject;
-                    })).then(
-                        () => {
-                            ctrl.project = mcprojstore.currentProject;
-                            projectUsers = _.indexBy(ctrl.project.users, 'user_id');
-                            ctrl.usersAvailable = usersNotInProject();
-                        }
-                    );
+            this.$mdDialog.show(deleteDialog).then(
+                () => {
+                    this.projectsAPI.deleteProject(this.project.id).then(
+                        () => this.mcprojstore.removeCurrentProject().then(() => this.$state.go('projects.list')),
+                        () => this.toast.error('Failed to delete project')
+                    )
                 }
-            }).delete();
-    }
-
-    function usersNotInProject() {
-        return allUsers.filter(u => (!(u.id in projectUsers)));
-    }
-
-    function addUser(userToAdd) {
-        const i = _.indexOf(ctrl.project.users, function (projectUser) {
-            return (userToAdd.id === projectUser.user_id);
-        });
-        if (i === -1) {
-            let accessArgs = {
-                user_id: userToAdd.email,
-                project_id: ctrl.project.id,
-                project_name: ctrl.project.name
-            };
-            mcapi('/access/new')
-                .success(function (data) {
-                    mcprojstore.updateCurrentProject(currentProject => {
-                        currentProject.users.push({
-                            'id': data.id,
-                            'user_id': userToAdd.email,
-                            'fullname': userToAdd.fullname,
-                            'project_id': ctrl.project.id,
-                            'project_name': ctrl.project.name
-                        });
-                        return currentProject;
-                    }).then(() => {
-                        ctrl.project = mcprojstore.currentProject;
-                        userToAdd.selected = false;
-                        projectUsers = _.indexBy(ctrl.project.users, 'user_id');
-                        ctrl.usersAvailable = usersNotInProject();
-                    });
-                })
-                .error((e) => toast.error(e.error)).post(accessArgs);
+            );
         }
     }
 
-    function isOwner(username) {
-        if (username === ctrl.project.owner && username === ctrl.signedInUser) {
-            return true;
-        } else if (User.attr().admin) {
-            return true;
-        }
-        return false;
+    cancel() {
+        this.$state.go('project.home');
     }
 }
+
+angular.module('materialscommons').component('mcProjectSettings', {
+    template: require('./mc-project-settings.html'),
+    controller: MCProjectSettingsComponentController
+});

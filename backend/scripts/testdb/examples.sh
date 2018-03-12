@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 
 ## NOTE all of these examples assume that you are starting in the directory
 ## materialscommons.org/backend; all these examples presume
@@ -36,9 +37,17 @@
 ## monitor run of one test in a particular file while watching related source files
 ## starting with a completely clean database on the default port
 ## setup is 'none' = no changes to database (only start, if stopped)
-scripts/testdb/setup-and-start-test-db.sh -c none
-export TEST_CONTINUOUS="servers/mcapi/db/model/projects.js"
-export TEST_CONTINUOUS=${TEST_CONTINUOUS}:"servers/mcapi/resources/projects/projects.js"
-export TEST_PATTERN="tests/mcapi/Database-Level/specs/projects-spec.js"
-export GREP_PATTERN="find project in all projects"
+# scripts/testdb/setup-and-start-test-db.sh -c none
+# export TEST_CONTINUOUS="servers/mcapi/db/model/projects.js"
+# export TEST_CONTINUOUS=${TEST_CONTINUOUS}:"servers/mcapi/resources/projects/projects.js"
+# export TEST_PATTERN="tests/mcapi/Database-Level/specs/projects-spec.js"
+# export GREP_PATTERN="find project in all projects"
+# scripts/testdb/run-given-tests.sh
+
+## Scrap - what every you want
+export TEST_PATTERN="tests/mcapi/Database-Level/specs/experiments-etl-metadata-spec.js"
+export TEST_TARGET="servers/mcapi/db/model/experiments-etl-metadata.js"
+export TEST_CONTINUOUS=${TEST_TARGET}:${TEST_PATTERN}
+export GREP_PATTERN="get by id"
 scripts/testdb/run-given-tests.sh
+

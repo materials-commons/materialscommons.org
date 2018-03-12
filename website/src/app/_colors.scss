@@ -1,0 +1,74 @@
+$mc-md-primary-color: #1565c0;
+$mc-md-light-primary-color: #2196F3;
+$yellow-color: #ffcb0b;
+$white-color: #ffffff;
+$mc-color-done: #4caf50;
+$mc-color-error: #ff5824;
+$mc-light-grey: #f4f5f7;
+$mc-dark-grey: #cecfd1;
+$mc-color-error-dark: #d32f2f;
+$mc-color-flagged: #ff9800;
+$mc-color-important: #3f51b5;
+$mc-task-detail-color: #e7e8ea;
+$mc-light-blue: #bbdefb;
+$mc-sidebar-color: $mc-light-blue;
+$mc-bar-dark-color: #2c3e50;
+$mc-md-accent-color: #ff5252;
+$mc-transform-color: #fbc02d;
+$mc-destructive-color: #d32f2f;
+$mc-measurement-color: #cfd8dc;
+$mc-analysis-color: #d1c4e9;
+$mc-create-samples-color: #ffecb3;
+$mc-import-samples-color: #b2bfdb;
+
+.mc-md-primary-bg {
+    color: $mc-md-primary-color;
+}
+
+.mc-md-light-primary-color {
+    color: $mc-md-light-primary-color;
+}
+
+.white-color {
+    color: $white-color;
+}
+
+.white {
+    color: $white-color;
+}
+
+.white-bg {
+    background-color: $white-color;
+}
+
+.mc-done-color {
+    color: $mc-color-done;
+}
+
+.mc-error-color {
+    color: $mc-color-error;
+}
+
+.mc-light-grey-bg {
+    background-color: $mc-light-grey;
+}
+
+.mc-light-grey-color {
+    color: $mc-light-grey;
+}
+
+.mc-md-primary-bg {
+    background-color: $mc-md-primary-color;
+}
+
+.mc-md-primary-color {
+    color: $mc-md-primary-color;
+}
+
+.mc-success {
+    color: #128F76;
+}
+
+.md-mc-primary-color-hue-2-bg {
+    background-color: #1565c0;
+}

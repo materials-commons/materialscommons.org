@@ -44,13 +44,15 @@ def create_mc_tables():
     create_compound_index("access", "user_project", ["user_id", "project_id"])
 
     create_mc_table("elements")
-    create_mc_table("events", "project_id")
+    create_mc_table("events", "project_id", "birthtime")
 
     create_mc_table("datafiles", "name", "owner", "checksum", "usesid", "mediatype")
     run(r.db("materialscommons").table("datafiles")
         .index_create("mime", r.row["mediatype"]["mime"]))
 
-    create_mc_table("datadirs", "name", "project_id", "parent")
+    create_mc_table("datadirs", "name", "project", "parent")
+    create_compound_index("datadirs", "datadir_project_name", ['project', 'name'])
+    create_compound_index("datadirs", "datadir_project_shortcut", ['project', 'shortcut'])
 
     create_mc_table("project2datadir", "datadir_id", "project_id")
     create_compound_index('project2datadir', 'project_datadir', ['project_id', 'datadir_id'])
@@ -161,6 +163,8 @@ def create_mc_tables():
     create_compound_index("dataset2experimentnote", "dataset_experiment_note", ["dataset_id", "experiment_note_id"])
 
     create_mc_table("deletedprocesses", "process_id", "sample_id", "project_id", "property_set_id")
+
+    create_mc_table("experiment_etl_metadata", "experiment_id")
 
     run(r.db('materialscommons').wait())
 

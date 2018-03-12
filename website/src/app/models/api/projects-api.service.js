@@ -1,5 +1,5 @@
 /*@ngInject*/
-function projectsAPIService(Restangular) {
+function projectsAPIService(Restangular, notesAPI) {
     const projectsAPIRoute = _.partial(Restangular.one('v2').one, 'projects');
 
     return {
@@ -14,6 +14,25 @@ function projectsAPIService(Restangular) {
 
         getProject: function(projectId) {
             return projectsAPIRoute(projectId).get().then(p => p.plain());
+        },
+
+        getActivities: function (projectId) {
+            return projectsAPIRoute(projectId).one('activity_feed').get()
+                .then(activities => {
+                    let plainActivities = activities.plain();
+                    plainActivities.forEach(a => {
+                        a.birthtime = new Date(a.birthtime * 1000);
+                    });
+                    return plainActivities;
+                });
+        },
+
+        createShortcut(projectId, directoryId) {
+            return projectsAPIRoute(projectId).one('shortcuts', directoryId).put().then(d => d.plain());
+        },
+
+        deleteShortcut(projectId, directoryId) {
+            return projectsAPIRoute(projectId).one('shortcuts', directoryId).customDELETE().then(d => d.plain());
         },
 
         createProject: function(projectName, projectDescription) {
@@ -76,6 +95,18 @@ function projectsAPIService(Restangular) {
 
         getProjectFile: function(projectID, fileID) {
             return projectsAPIRoute(projectID).one('files', fileID).get().then(f => f.plain());
+        },
+
+        addProjectNote: function (projectId, note) {
+            return notesAPI.addNote(note, 'project', projectId);
+        },
+
+        updateProjectNote: function (projectId, note) {
+            return notesAPI.updateNote(note, 'project', projectId);
+        },
+
+        deleteProjectNote: function (projectId, note) {
+            return notesAPI.deleteNote(note, 'project', projectId);
         }
     }
 }

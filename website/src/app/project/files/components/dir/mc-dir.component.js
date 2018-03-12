@@ -10,6 +10,10 @@ class MCDirComponentController {
 //        this.globusUpload = "complete";
     }
 
+    $onInit() {
+        this.isNotRoot = this.dir.data.path.indexOf('/') !== -1;
+    }
+
     onSelected(selected) {
         this.selected = selected.length !== 0;
         this.selectedFiles = selected;

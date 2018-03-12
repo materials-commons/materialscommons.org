@@ -16,6 +16,21 @@ function* get(projectID, directoryID) {
     }
 }
 
+function getByName(projectID, name) {
+    let indexKeys = [projectID, name];
+    let rql = r.table('datadirs').getAll(indexKeys, {index: 'datadir_project_name'})
+        .merge(function (ddir) {
+            return {
+                files: r.table('datadir2datafile').getAll(ddir('id'), {index: 'datadir_id'})
+                    .eqJoin('datafile_id', r.table('datafiles')).zip()
+                    .filter({current: true})
+                    .coerceTo('array'),
+                directories: r.table('datadirs').getAll(ddir('id'), {index: 'parent'}).coerceTo('array')
+            }
+        });
+    return dbExec(rql).then(results => toDir(results[0]));
+}
+
 function* getAll(projectId) {
     return yield r.table('project2datadir')
         .getAll(projectId, {index: 'project_id'})
@@ -58,12 +73,13 @@ function directoryByID(directoryID) {
 function toDir(results) {
     let dir = {
         otype: 'directory',
-        id: results.datadir_id,
+        id: results.datadir_id ? results.datadir_id : results.id,
         size: 0,
         name: path.basename(results.name),
         path: results.name,
         checksum: "",
-        children: []
+        children: [],
+        shortcut: results.shortcut,
     };
 
     dir.children = results.files.map(f => {
@@ -74,7 +90,8 @@ function toDir(results) {
             path: path.join(dir.path, f.name),
             mediatype: f.mediatype,
             checksum: f.checksum,
-            id: f.id
+            id: f.id,
+            shortcut: false,
         };
     });
 
@@ -85,7 +102,8 @@ function toDir(results) {
             size: 0,
             name: path.basename(d.name),
             path: d.name,
-            checksum: ""
+            checksum: "",
+            shortcut: d.shortcut
         };
     });
 
@@ -215,6 +233,11 @@ function* update(projectID, directoryID, updateArgs) {
     } else {
         return yield renameDirectory(directoryID, updateArgs.rename);
     }
+}
+
+function* updateShortcut(directoryId, shortcut) {
+    yield r.table('datadirs').get(directoryId).update({shortcut: shortcut});
+    return yield directoryByID(directoryId);
 }
 
 function* isTopLevelDir(projectID, directoryID) {
@@ -380,16 +403,18 @@ function* remove(projectID, dirID) {
 }
 
 module.exports = {
-    get: get,
+    get,
     getAll,
-    create: create,
-    update: update,
-    findInProject: findInProject,
-    subdirExists: subdirExists,
-    peerDirectories: peerDirectories,
+    getByName,
+    create,
+    update,
+    findInProject,
+    subdirExists,
+    peerDirectories,
     ingestSingleLocalFile,
     addFileToDirectory,
     fileInDirectoryByName,
     isEmpty,
-    remove
+    remove,
+    updateShortcut,
 };
