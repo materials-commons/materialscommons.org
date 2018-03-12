@@ -373,6 +373,17 @@ function* publishDataset(next) {
     yield next;
 }
 
+function* checkDataset(next) {
+    let rv = yield experimentDatasets.canPublishDataset(this.params.dataset_id);
+    if (rv.error) {
+        this.status = status.UNAUTHORIZED;
+    } else {
+        this.body = rv.val;
+    }
+
+    yield next;
+}
+
 function* unpublishDataset(next) {
     let rv = yield experimentDatasets.unpublishDataset(this.params.dataset_id);
     if (rv.error) {
@@ -495,6 +506,7 @@ function createResource() {
     router.get('/:dataset_id', getDatasetForExperiment);
     router.put('/:dataset_id', updateDatasetForExperiment);
     router.put('/:dataset_id/publish', publishDataset);
+    router.get('/:dataset_id/publish/check', checkDataset);
     router.put('/:dataset_id/unpublish', unpublishDataset);
     router.put('/:dataset_id/samples/:sample_id', ra.validateSampleInExperiment, addSampleToDataset);
     router.put('/:dataset_id/samples', updateSamplesInDataset);
