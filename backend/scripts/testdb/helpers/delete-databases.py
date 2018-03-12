@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-import rethinkdb as r
 from optparse import OptionParser
+
+import rethinkdb as r
 
 if __name__ == "__main__":
     parser = OptionParser()

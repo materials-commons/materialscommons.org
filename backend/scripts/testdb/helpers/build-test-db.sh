@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
 set -e
 
 # no-output on pushd and popd
@@ -15,13 +15,13 @@ set_locations() {
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     pushd $DIR
     BASE=`pwd`
-    pushd '..'
+    pushd '../..'
     SCRIPTS=`pwd`
     popd
     popd
 }
 
-# abort if TEST_ACCOUNT_PW not set and non-empty
+# abort if $MC_USERPW not set and non-empty
 if [ -z "$MC_USERPW" ]; then
     echo "MC_USERPW must be set to a non-empty string"
     exit 1
@@ -33,7 +33,7 @@ if [ -z "$MCDB_PORT" ]; then
     exit 1
 fi
 
-echo "Rethinkdb rebuild - using MCDB_PORT = $MCDB_PORT"
+echo "Rethinkdb rebuild - using MCDB_PORT = $MCDB_PORT (SERVERTYPE = ${SERVERTYPE})"
 
 # NOTE: Assumptions = empty database, running on $MCDB_PORT
 
@@ -50,7 +50,7 @@ pushd ${SCRIPTS}/templates
 popd
 
 # add test users
-./make-users-for-tests.py --port $MCDB_PORT --password $MC_USERPW
+${BASE}/make-users-for-tests.py --port $MCDB_PORT --password $MC_USERPW
 
 
 echo "Done with Rethinkdb rebuild."

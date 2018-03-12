@@ -1,31 +1,34 @@
 #!/usr/bin/env python
-import rethinkdb as r
 from os import environ
 
-def clear_mc_tables():
+import rethinkdb as r
 
+
+def clear_mc_tables():
     table_list = run(r.db('materialscommons').table_list())
 
     for table in table_list:
         if (not table == 'templates') and (not table == 'users'):
-            clear_table("materialscommons",table)
+            clear_table("materialscommons", table)
 
     run(r.db('materialscommons').wait())
 
+
 def clear_mcpub_tables():
-    
     table_list = run(r.db('mcpub').table_list())
 
     for table in table_list:
         if not table == 'users':
-            clear_table("mcpub",table)
+            clear_table("mcpub", table)
 
     run(r.db('mcpub').wait())
 
-def clear_table(db,table):
+
+def clear_table(db, table):
     # table names are returned in unicode - but need string for call
     table = table.encode('utf-8')
     run(r.db(db).table(table).delete())
+
 
 def run(rql):
     try:
@@ -33,6 +36,7 @@ def run(rql):
         return ret
     except r.RqlRuntimeError:
         pass
+
 
 if __name__ == "__main__":
 

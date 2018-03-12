@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
-import rethinkdb as r
-from optparse import OptionParser
-from pbkdf2 import crypt
-import uuid
 import sys
+import uuid
+from optparse import OptionParser
+
+import rethinkdb as r
+from pbkdf2 import crypt
 
 
 class User(object):
@@ -37,17 +38,17 @@ def make_password_hash(password):
     return crypt(password, salt, iterations=4000)
 
 
-def make_user(r, part_name, full_name, pw, key, admin, tadmin):
+def make_user(_r, part_name, full_name, pw, key, admin, tadmin):
     pwhash = make_password_hash(pw)
     email = part_name + "@test.mc"
     apikey = key
-    if (not apikey):
+    if not apikey:
         apikey = uuid.uuid1().hex
     u = User(email, full_name, email, pwhash, apikey, admin, tadmin)
-    r.table('users').insert(u.__dict__).run(conn)
+    _r.table('users').insert(u.__dict__).run(conn)
 
     print("Addred user: " + email + " with password: " + pw + ", apikey: " + apikey
-        + ", admin: " + str(admin) + ", tadmin: " + str(tadmin))
+          + ", admin: " + str(admin) + ", tadmin: " + str(tadmin))
 
 
 if __name__ == "__main__":
@@ -69,4 +70,3 @@ if __name__ == "__main__":
     make_user(r, "test", "Test User One", options.password, "totally-bogus", False, False)
     make_user(r, "another", "Test User Two", options.password, "another-bogus-account", False, False)
     make_user(r, "tadmin", "Test Template Admin", options.password, None, False, True)
-

@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 
 # no-output on pushd and popd
 pushd () {
@@ -38,7 +39,7 @@ set_locations() {
 
 set_env() {
     if [ -z "$SERVERTYPE" ]; then
-        export SERVERTYPE=dev
+        export SERVERTYPE=unit
     fi
 
     source ${BACKEND}/env/${SERVERTYPE}.sh
@@ -76,7 +77,7 @@ set_env() {
 }
 
 print_env() {
-    echo " = = = = Test env = = = ="
+    echo " = = = = Test env: ${SERVERTYPE} = = = ="
     echo " MC_DOI_SERVICE_URL: $MC_DOI_SERVICE_URL"
     echo " MC_DOI_PUBLISHER  : $MC_DOI_PUBLISHER"
     echo " MC_DOI_NAMESPACE  : $MC_DOI_NAMESPACE"
@@ -98,12 +99,13 @@ print_env() {
 
 check_rethinkdb() {
     echo "Looking for rethinkdb..."
+    echo "   SERVERTYPE = ${SERVERTYPE}"
     RPID=$(ps -eo "pid,command" | grep rethinkdb | grep "driver-port $MCDB_PORT" | grep -v grep | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
     if [ "$RPID" = "" ]; then
         echo "   Database not running on port $MCDB_PORT (MCDB_PORT); please start it!"
         return -1
     fi
-    echo "  Database found on port $MCDB_PORT (MCDB_PORT)"
+    echo "   Database found on port $MCDB_PORT (MCDB_PORT)"
     return 0
 }
 
