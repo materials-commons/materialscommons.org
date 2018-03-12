@@ -5,13 +5,17 @@
                    ng-click="$ctrl.publishDataset()">
             <i class="fa fa-fw fa-cloud-upload"></i>Publish Dataset
         </md-button>
-        <div style="min-height: 70px" ng-if="!$ctrl.dataset.published && !$ctrl.dataset.status.can_be_published">
+        <div style="min-height: 70px" ng-if="!$ctrl.dataset.published && !$ctrl.dataset.status.can_be_published" class="margin-left-30">
             <p>Dataset cannot be published because: </p>
             <ul>
                 <li ng-show="!$ctrl.dataset.status.processes_count">It contains no processes.</li>
                 <li ng-show="!$ctrl.dataset.status.samples_count">It contains no samples.</li>
                 <li ng-show="!$ctrl.dataset.status.files_count">It contains no files.</li>
             </ul>
+        </div>
+        <div class="margin-top-20 margin-left-30">
+            <p>Dataset contains {{$ctrl.dataset.status.processes_count | number}} processes, {{$ctrl.dataset.status.samples_count | number}} samples, and
+                {{$ctrl.dataset.status.files_count}} files.</p>
         </div>
         <div ng-show="$ctrl.dataset.published">
             <md-button class="md-warn md-raised" ng-disabled="true">
