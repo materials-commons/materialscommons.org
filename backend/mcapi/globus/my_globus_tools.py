@@ -148,3 +148,33 @@ def create_shared_ep(transfer, base_ep_name, path, shared_ep_name):
     if not create_result:
         return None
     return create_result["id"]
+
+
+def acl_add_rule(transfer, user_to_add, endpoint_id, endpoint_path, permissions):
+    rule_data = {
+            "DATA_TYPE": "access",
+            "principal_type": "identity",
+            "principal": user_to_add,
+            "path": endpoint_path,
+            "permissions": permissions
+    }
+    result = transfer.add_endpoint_acl_rule(endpoint_id, rule_data)
+    rule_id = result["access_id"]
+    return rule_id
+
+
+def acl_rule_exists(transfer, user_to_add, endpoint_id, endpoint_path):
+    acl_list = transfer.endpoint_acl_list(endpoint_id)["DATA"]
+    found = None
+    for rule in acl_list:
+        if not rule['role_id'] and rule['principal'] == user_to_add \
+                and rule['path'] == endpoint_path:
+            found = rule
+    return found
+
+def acl_change_rule_permissions(transfer, endpoint_id, rule_id, permissions):
+    rule_data = {
+            "DATA_TYPE": "access",
+            "permissions": permissions
+    }
+    transfer.update_endpoint_acl_rule(endpoint_id, rule_id, rule_data)
