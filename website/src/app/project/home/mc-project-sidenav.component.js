@@ -1,6 +1,6 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, mcprojstore, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q) {
+    constructor($state, mcprojstore, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q, datasetsAPI) {
         this.$state = $state;
         this.mcprojstore = mcprojstore;
         this.experiment = null;
@@ -10,11 +10,13 @@ class MCProjectSidenavComponentController {
         this.$mdDialog = $mdDialog;
         this.mcRouteState = mcRouteState;
         this.$q = $q;
+        this.datasetsAPI = datasetsAPI;
     }
 
     $onInit() {
         this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTEXPERIMENT, this.mcprojstore.EVSET, (e) => {
             this.$timeout(() => {
+                console.log('experiment changed');
                 if (!e) {
                     this.experiment = null;
                     return;
@@ -25,6 +27,14 @@ class MCProjectSidenavComponentController {
                 } else if (this.experiment.id !== e.id) {
                     this.experiment = angular.copy(e);
                 }
+
+                this.datasetsAPI.getDatasetsForExperiment(this.project.id, this.experiment.id).then(
+                    (datasets) => {
+                        this.datasets = datasets;
+                        let matchingDS = datasets.filter((ds) => ds.title === this.experiment.name);
+                        this.experimentIsPublished = matchingDS.length && matchingDS[0].published;
+                    }
+                )
             });
         });
 
@@ -100,6 +110,10 @@ class MCProjectSidenavComponentController {
 
     isDatasetsRoute() {
         return this.mcRouteState.getRouteName().startsWith('project.experiment.datasets');
+    }
+
+    publishExperiment() {
+
     }
 }
 

@@ -59,8 +59,8 @@
                         </a>
                     </div>
 
-                    <div class="padding-3">
-                        <a class="project-sidenav-tool margin-left-55">
+                    <div class="padding-3" ng-if="!$ctrl.experimentIsPublished">
+                        <a class="project-sidenav-tool margin-left-55" ng-click="$ctrl.publishExperiment()">
                             <i class="fa fa-fw fa-share"></i> Publish Experiment
                         </a>
                     </div>
