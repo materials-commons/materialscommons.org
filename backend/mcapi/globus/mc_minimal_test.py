@@ -166,6 +166,6 @@ class MaterialsCommonsGlobusInterface:
 
 # standalone test
 if __name__ == "__main__":
-    interface = MaterialsCommonsGlobusInterface('tew@test.mc','materialscommonstest@globusid.org')
+    interface = MaterialsCommonsGlobusInterface('test@test.mc','materialscommonstest@globusid.org')
     url_or_error = interface.get_upload_url()
     print("return value = ", url_or_error)
