@@ -50,7 +50,8 @@ class MaterialsCommonsGlobusInterface:
         print("    - id is ", shared_endpoint_id)
         print("    - listing entries in endpoint path: " + self.share_endpoint_path)
 
-        user_to_add = "ec5d8b49-726c-44d7-a0cd-1d11e607a2f0"
+        user_to_add = 'dfacf93e-0479-49d3-b9ec-2bd4c86e5770'
+        #user_to_add = "ec5d8b49-726c-44d7-a0cd-1d11e607a2f0"
         rule = self.acl_rule_exists(transfer, user_to_add, shared_endpoint_id, self.share_endpoint_path)
         print("rule exists: ", rule)
         if rule:
