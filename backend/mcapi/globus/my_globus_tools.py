@@ -1,6 +1,4 @@
 import json
-import time
-import sys
 import webbrowser
 
 import configparser
