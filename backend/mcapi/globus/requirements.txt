@@ -1,2 +1,0 @@
-globus_sdk
-configparser
