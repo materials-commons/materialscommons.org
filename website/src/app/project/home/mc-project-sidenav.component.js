@@ -1,6 +1,6 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, mcprojstore, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState) {
+    constructor($state, mcprojstore, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q) {
         this.$state = $state;
         this.mcprojstore = mcprojstore;
         this.experiment = null;
@@ -9,6 +9,7 @@ class MCProjectSidenavComponentController {
         this.projectFileTreeAPI = projectFileTreeAPI;
         this.$mdDialog = $mdDialog;
         this.mcRouteState = mcRouteState;
+        this.$q = $q;
     }
 
     $onInit() {
@@ -28,14 +29,19 @@ class MCProjectSidenavComponentController {
         });
 
         this.project = this.mcprojstore.currentProject;
+    }
+
+    loadProjectFiles() {
         if (!this.project.files) {
-            this.projectFileTreeAPI.getProjectRoot(this.project.id).then((files) => {
-                this.mcprojstore.updateCurrentProject(currentProject => {
+            return this.projectFileTreeAPI.getProjectRoot(this.project.id).then((files) => {
+                return this.mcprojstore.updateCurrentProject(currentProject => {
                     this.project.files = files;
                     currentProject.files = this.project.files;
                     return currentProject;
                 })
             });
+        } else {
+            return this.$q.resolve(null);
         }
     }
 
@@ -70,39 +76,26 @@ class MCProjectSidenavComponentController {
     }
 
     modifyShortcuts() {
-        let dirs = [];
-        if (this.project.files[0]) {
-            dirs = this.project.files[0].children.filter(d => d.data.otype === 'directory').map(d => d.data);
-        }
+        this.loadProjectFiles().then(
+            () => {
+                let dirs = [];
+                if (this.project.files[0]) {
+                    dirs = this.project.files[0].children.filter(d => d.data.otype === 'directory').map(d => d.data);
+                }
 
-        this.$mdDialog.show({
-            templateUrl: 'app/project/home/modify-project-shortcuts-dialog.html',
-            controller: ModifyProjectShortcutsDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {
-                project: this.project,
-                dirs: dirs
-            }
-        }).then(
-            () => this.refreshProject()
-            // shortcuts => {
-            //     let shortcutsMap = _.indexBy(shortcuts, 'id');
-            //     this.project.files[0].children.forEach(d => {
-            //         if (d.data.id in shortcutsMap) {
-            //             d.data.shortcut = true;
-            //         } else {
-            //             d.data.shortcut = false;
-            //         }
-            //     });
-            //     this.project.shortcuts = shortcuts;
-            //     this.mcprojstore.updateCurrentProject(currentProject => {
-            //         currentProject.files = this.project.files;
-            //         currentProject.shortcuts = this.project.shortcuts;
-            //         return currentProject;
-            //     });
-            // }
-        );
+                this.$mdDialog.show({
+                    templateUrl: 'app/project/home/modify-project-shortcuts-dialog.html',
+                    controller: ModifyProjectShortcutsDialogController,
+                    controllerAs: '$ctrl',
+                    bindToController: true,
+                    locals: {
+                        project: this.project,
+                        dirs: dirs
+                    }
+                }).then(
+                    () => this.refreshProject()
+                );
+            });
     }
 
     isDatasetsRoute() {
