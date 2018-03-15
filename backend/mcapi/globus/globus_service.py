@@ -78,11 +78,9 @@ class MaterialsCommonsGlobusInterface:
         # initiate transfer
         transfer_label = "Transfer from " + inbound_endpoint['display_name'] + \
             "Materials Commons"
-        transfer_data = TransferData(transfer,
-            inbound_endpoint_id, target_endpoint_id,
-            label=transfer_label, sync_level="checksum"
-        )
-        transfer_data.add_item("/", "/", recursive = True)
+        transfer_data = TransferData(
+            transfer, inbound_endpoint_id, target_endpoint_id, label=transfer_label, sync_level="checksum")
+        transfer_data.add_item("/", "/", recursive=True)
         transfer_result = transfer.submit_transfer(transfer_data)
 
         self.log(transfer_label)
