@@ -4,10 +4,10 @@ import os.path as os_path
 import configparser
 from globus_sdk import NativeAppAuthClient, TransferClient, RefreshTokenAuthorizer, TransferData
 
+from .. import access
 from .. import args
 from .. import dmutil
 from ..mcapp import app
-from .. import access
 
 
 @app.route('/mcglobus/upload/staging/<endpoint_uuid>', methods=['GET'])
@@ -39,7 +39,7 @@ class MaterialsCommonsGlobusInterface:
         self.log("Starting upload staging: get upload url")
         self.log("Materials Commons user = " + self.mc_user_id)
         self.log("Globus transfer endpoint uuid = " + inbound_endpoint_id)
-        
+
         # get transfer client
         auth_client = self.get_auth_client()
         if not auth_client:
@@ -51,7 +51,7 @@ class MaterialsCommonsGlobusInterface:
             error = "No transfer interface"
             self.log("Error: " + error)
             return {"error": error}
-        
+
         # create target endpoint
         target_endpoint_name = "Staging Endpoint for " + self.mc_user_id
         target_endpoint_id = self.get_ep_id(transfer, target_endpoint_name)
@@ -77,7 +77,7 @@ class MaterialsCommonsGlobusInterface:
 
         # initiate transfer
         transfer_label = "Transfer from " + inbound_endpoint['display_name'] + \
-            "Materials Commons"
+                         "Materials Commons"
         transfer_data = TransferData(
             transfer, inbound_endpoint_id, target_endpoint_id, label=transfer_label, sync_level="checksum")
         transfer_data.add_item("/", "/", recursive=True)
