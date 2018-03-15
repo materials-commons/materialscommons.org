@@ -16,7 +16,6 @@ class MCProjectSidenavComponentController {
     $onInit() {
         this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTEXPERIMENT, this.mcprojstore.EVSET, (e) => {
             this.$timeout(() => {
-                console.log('experiment changed');
                 if (!e) {
                     this.experiment = null;
                     return;
