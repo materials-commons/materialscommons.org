@@ -49,12 +49,13 @@
         </div>
         <span flex="5"></span>
         <a class="always-white" href="mailto:help@materialscommons.org">Report Issue</a>
-        <md-button ng-if="!$ctrl.isAuthenticated" ng-click="$ctrl.loginOrRegister()">
-            Login/Register
-        </md-button>
-        <span flex ng-if="$ctrl.isAuthenticated"></span>
-        <div layout="row" ng-if="$ctrl.isAuthenticated" flex layout-sm="column" layout-align="space-between">
-            <md-menu>
+        <div layout="row" flex layout-sm="column" layout-align="space-between">
+            <md-menu ng-if="!$ctrl.isAuthenticated">
+                <md-button ng-click="$ctrl.loginOrRegister()">
+                    Login/Register
+                </md-button>
+            </md-menu>
+            <md-menu ng-if="$ctrl.isAuthenticated">
                 <md-button ng-click="$mdOpenMenu($event)">
                     <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>
                     {{$ctrl.user}}
