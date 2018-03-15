@@ -2,9 +2,9 @@ import json
 import time
 import sys
 import webbrowser
+import os.path as os_path
 
 import configparser
-from pathlib import Path
 
 from globus.utils import enable_requests_logging, is_remote_session
 
@@ -13,8 +13,8 @@ from globus_sdk import (NativeAppAuthClient, TransferClient,
 from globus_sdk.exc import GlobusAPIError
 
 # Config file set up
-home = str(Path.home())
-config_path = Path(Path.home(), '.globus', 'config_testing.ini')
+home = os_path.expanduser("~")
+config_path = os_path.join(home, '.globus', 'config_testing.ini')
 config = configparser.ConfigParser()
 config.read(str(config_path))
 
@@ -22,17 +22,15 @@ config.read(str(config_path))
 # Current client_id is in Project: MaterialsCommonsProject, App: MaterialsCommonsTest
 CLIENT_ID = config['sdk']['id']
 
-TOKEN_FILE_PATH = Path(Path.home(), '.globus', 'refresh-testing-tokens.json')
+TOKEN_FILE_PATH = os_path.join(home, '.globus', 'refresh-testing-tokens.json')
 REDIRECT_URI = 'https://auth.globus.org/v2/web/auth-code'
 SCOPES = ('openid email profile '
           'urn:globus:auth:scope:transfer.api.globus.org:all')
 
-SOURCE_ENDPOINT_NAME = 'Weymouth Mac Desktop'
-SOURCE_PATH = '/Volumes/Data2/GlobusEndpoint/mc-base/Project - Demo_Project - e4fd5c88'
+SOURCE_ENDPOINT_NAME = "Materials Commons Test"
+SOURCE_PATH = '/Volumes/Data2/GlobusEndpoint/mc-base'
 
-# SOURCE_ENDPOINT_NAME = 'MC on Weymouth Laptop'
-# SOURCE_PATH = '/transfer'
-
+TEST_GLOBUS_LOGIN = "weymouth@umich.edu"
 
 # uncomment the next line to enable debug logging for network requests
 # enable_requests_logging()

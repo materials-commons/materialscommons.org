@@ -4,13 +4,12 @@ from pathlib import Path
 import globus_sdk
 
 home = str(Path.home())
-config_path = Path(Path.home(), '.globus', 'config_tutorial.ini')
+config_path = Path(Path.home(), '.globus', 'config_testing.ini')
 
 config = configparser.ConfigParser()
 config.read(str(config_path))
 
 CLIENT_ID = config['sdk']['id']
-AUTH_CODE = config['sdk']['auth']
 
 source = 'Weymouth Mac Desktop'
 source_dir = '/Volumes/Data2/GlobusEndpoint/transfer'
@@ -100,7 +99,7 @@ transfer_result = tc.submit_transfer(tdata)
 print("task_id =", transfer_result["task_id"])
 
 while not tc.task_wait(transfer_result["task_id"], timeout=1):
-    print(".", end="")
+    print(".",)
 print("\n{0} completed!".format(transfer_result["task_id"]))
 
 print("at source...")

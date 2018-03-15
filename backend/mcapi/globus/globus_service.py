@@ -2,28 +2,29 @@ import json
 import os.path as os_path
 
 import configparser
-from globus_sdk import NativeAppAuthClient, TransferClient, RefreshTokenAuthorizer
+from globus_sdk import NativeAppAuthClient, TransferClient, RefreshTokenAuthorizer, TransferData
 
 from .. import args
 from .. import dmutil
 from ..mcapp import app
+from .. import access
 
 
-@app.route('/mcglobus/test', methods=['GET'])
-def mc_globus_test():
-    web_service = MaterialsCommonsGlobusInterface()
-    results = web_service.get_upload_url()
+@app.route('/mcglobus/upload/staging/<endpoint_uuid>', methods=['GET'])
+def mc_globus_test(endpoint_uuid):
+    user = access.get_user()
+    web_service = MaterialsCommonsGlobusInterface(user)
+    results = web_service.stage_upload_files(endpoint_uuid)
+    args.format = True
     return args.json_as_format_arg(results)
 
 
 class MaterialsCommonsGlobusInterface:
-    def __init__(self):
+    def __init__(self, mc_user_id):
+        self.mc_user_id = mc_user_id
         self.base_endpoint = "Materials Commons Test"
         self.share_path_on_base = "/Volumes/Data2/GlobusEndpoint/mc-base"
-        self.share_endpoint = "Weymouth Desktop Code Generated Share"
-        self.share_endpoint_path = "/"
         home = os_path.expanduser("~")
-        print (home)
         self.config_path = os_path.join(home, '.globus', 'config_testing.ini')
 
         config = configparser.ConfigParser()
@@ -31,58 +32,82 @@ class MaterialsCommonsGlobusInterface:
 
         self.client_id = config['sdk']['id']
         self.token_file_path = os_path.join(home, '.globus', 'refresh-testing-tokens.json')
+        self.auth_client = None
+        self.transfer_client = None
 
-    def get_upload_url(self):
-        transfer = self.get_transfer_interface()
+    def stage_upload_files(self, inbound_endpoint_id):
+        self.log("Starting upload staging: get upload url")
+        self.log("Materials Commons user = " + self.mc_user_id)
+        self.log("Globus transfer endpoint uuid = " + inbound_endpoint_id)
+        
+        # get transfer client
+        auth_client = self.get_auth_client()
+        if not auth_client:
+            error = "No Authentication Client"
+            self.log("Error: " + error)
+            return {"error": error}
+        transfer = self.get_transfer_interface(auth_client)
         if not transfer:
             error = "No transfer interface"
             self.log("Error: " + error)
             return {"error": error}
-        shared_endpoint_id = self.get_ep_id(transfer, self.share_endpoint)
-        if not shared_endpoint_id:
-            print ("Shared endpoint not found. Creating ", self.share_endpoint)
-            shared_endpoint_id = self.create_shared_ep(
-                transfer, self.base_endpoint, self.share_path_on_base, self.share_endpoint)
-        if not shared_endpoint_id:
-            print("No shared endpoint client")
-            exit(-1)
-        print("Client ID Found for share endpoint: " + self.share_endpoint)
-        print("    - id is ", shared_endpoint_id)
-        print("    - listing entries in endpoint path: " + self.share_endpoint_path)
+        
+        # create target endpoint
+        target_endpoint_name = "Staging Endpoint for " + self.mc_user_id
+        target_endpoint_id = self.get_ep_id(transfer, target_endpoint_name)
+        if not target_endpoint_id:
+            self.log("Target endpoint not found. Creating " + target_endpoint_name)
+            target_endpoint_id = self.create_shared_ep(
+                transfer, self.base_endpoint, self.share_path_on_base, target_endpoint_name)
+        if not target_endpoint_id:
+            error = "No shared endpoint client"
+            self.log("Error: " + error)
+            return {"error": error}
 
-        user_to_add = 'dfacf93e-0479-49d3-b9ec-2bd4c86e5770'
-        #user_to_add = "ec5d8b49-726c-44d7-a0cd-1d11e607a2f0"
-        rule = self.acl_rule_exists(transfer, user_to_add, shared_endpoint_id, self.share_endpoint_path)
-        print("rule exists: ", rule)
-        if rule:
-            permissions = rule['permissions']
-            if not permissions == "rw":
-                print("not this: ", permissions)
-                self.acl_change_rule_permissions(transfer, shared_endpoint_id, rule['id'], "rw")
-            else:
-                print("Permissions ok.")
-        else:
-            print("Creating rule...")
-            self.acl_add_rule(transfer, user_to_add, shared_endpoint_id, self.share_endpoint_path, "rw")
-            print("Created rule")
+        # confirm inbound_endpoint
+        inbound_endpoint = transfer.get_endpoint(inbound_endpoint_id)
 
-        url = "https://www.globus.org/app/transfer?" + \
-              "&origin_id=" + shared_endpoint_id + \
-              "&origin_path=" + self.share_endpoint_path + \
-              "&add_identity=" + user_to_add
+        self.log("Client ID Found for target endpoint: " + target_endpoint_name)
+        self.log("    - target endpoint id " + target_endpoint_id)
+        self.log("    - inbound endpoint: " + inbound_endpoint['display_name']
+                 + " from " + inbound_endpoint["owner_string"])
+        self.log('Directory listing from inbound_endpoint:')
+        for entry in transfer.operation_ls(inbound_endpoint_id, path="/"):
+            self.log(entry['name'] + ('/' if entry['type'] == 'dir' else ''))
 
-        return {
-            'url': url
-        }
+        # initiate transfer
+        transfer_label = "Transfer from " + inbound_endpoint['display_name'] + \
+            "Materials Commons"
+        transfer_data = TransferData(transfer,
+            inbound_endpoint_id, target_endpoint_id,
+            label=transfer_label, sync_level="checksum"
+        )
+        transfer_data.add_item("/", "/", recursive = True)
+        transfer_result = transfer.submit_transfer(transfer_data)
 
-    def get_transfer_interface(self):
+        self.log(transfer_label)
+        self.log(transfer_result["message"])
+
+        return transfer_result
+
+    def get_auth_client(self):
+        if self.auth_client:
+            return self.auth_client
+        auth_client = NativeAppAuthClient(client_id=self.client_id)
+        self.auth_client = auth_client
+        return auth_client
+
+    def get_transfer_interface(self, auth_client):
+        if self.transfer_client:
+            return self.transfer_client
+
         tokens = None
         try:
             # if we already have tokens, load and use them
             tokens = self.load_tokens_from_file(self.token_file_path)
         except Exception as problem:
-            print(problem)
-            pass
+            self.log("Can not get transfer token from configuration file")
+            self.log(problem)
 
         if not tokens:
             return None
@@ -90,8 +115,6 @@ class MaterialsCommonsGlobusInterface:
         self.log("Transfer Interface Found")
 
         transfer_tokens = tokens['transfer.api.globus.org']
-
-        auth_client = NativeAppAuthClient(client_id=self.client_id)
 
         authorizer = RefreshTokenAuthorizer(
             transfer_tokens['refresh_token'],
@@ -179,7 +202,7 @@ class MaterialsCommonsGlobusInterface:
     def get_ep_id(transfer, endpoint_name):
         print("My Endpoints:")
         found = None
-        for ep in transfer.endpoint_search(filter_scope="my-endpoints"):
+        for ep in transfer.endpoint_search(endpoint_name, filter_scope="my-endpoints"):
             print(ep["display_name"])
             if ep["display_name"] == endpoint_name:
                 found = ep
@@ -190,6 +213,8 @@ class MaterialsCommonsGlobusInterface:
 
 # standalone test
 if __name__ == "__main__":
-    interface = MaterialsCommonsGlobusInterface()
-    url_or_error = interface.get_upload_url()
+    mc_user = "test@test.mc"
+    target_uuid = "b626e88c-2873-11e8-b7c4-0ac6873fc732"
+    interface = MaterialsCommonsGlobusInterface(mc_user)
+    url_or_error = interface.stage_upload_files(target_uuid)
     print("return value = ", url_or_error)
