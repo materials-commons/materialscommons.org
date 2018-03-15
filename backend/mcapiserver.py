@@ -4,6 +4,7 @@ from mcapi.mcapp import app, mcdb_connect
 from mcapi import utils, access
 from mcapi import objects, cache
 from mcapi.user import account, usergroups, projects
+from mcapi.globus import mc_minimal_test
 from os import environ
 import optparse
 import signal
@@ -15,6 +16,7 @@ _HOST = environ.get('MC_SERVICE_HOST') or 'localhost'
 def reload_users(signum, frame):
     apikeydb.reset()
     access.reset()
+
 
 if __name__ == '__main__':
     parser = optparse.OptionParser()
