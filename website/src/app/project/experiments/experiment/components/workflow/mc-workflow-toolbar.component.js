@@ -55,7 +55,6 @@ class MCWorkflowToolbarComponentController {
                 intro: "Your workflow graph will appear here. You can right-click on nodes in the graph to bring up a menu of actions."
             },
         ]).start();
-        //introJs().start();
     }
 
     addProcess() {
