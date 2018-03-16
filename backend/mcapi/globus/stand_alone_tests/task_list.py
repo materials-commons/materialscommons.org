@@ -27,8 +27,6 @@ def main():
         task_status = task['status']
         task_other_status = task['nice_status']
         print("Task({}): {} - {}".format(task_id, task_status, task_other_status))
-        if task_other_status and task_other_status == 'PERMISSION_DENIED':
-            transfer_client.cancel_task(task_id)
 
 
 if __name__ == "__main__":
