@@ -57,9 +57,6 @@
                             <th md-column>
                                 <span tooltip="Samples"><i class="fa fa-fw fa-cubes"></i>S</span>
                             </th>
-                            <th md-column>
-                                <span tooltip="Published?"><i class="fa fa-fw fa-share"></i>P</span>
-                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -87,12 +84,9 @@
                             </td>
                             <td md-cell><span>{{experiment.files_count | number}}</span></td>
                             <td md-cell><span>{{experiment.datasets.length | number}}</span></td>
-                            <td md-cell>
-                                <span>{{experiment.samples | toSize | number}}</span>
-                            </td>
                             <td md-cell style="border-right-width: 8px"
                                 ng-class="{'cell-right-odd': $index%2 !== 0, 'cell-right-even': $index%2 ==0}">
-                                <md-button class="md-primary">publish</md-button>
+                                <span>{{experiment.samples | toSize | number}}</span>
                             </td>
                         </tr>
                         </tbody>
