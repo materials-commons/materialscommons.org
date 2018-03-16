@@ -1,4 +1,4 @@
-import globus.my_globus_tools as support
+import globus.stand_alone_tests.my_globus_tools as support
 
 BASE_ENDPOINT = "Weymouth Mac Desktop"
 SHARE_PATH_ON_BASE = "/Volumes/Data2/GlobusEndpoint/mc-base/Project - Demo_Project - e4fd5c88"
