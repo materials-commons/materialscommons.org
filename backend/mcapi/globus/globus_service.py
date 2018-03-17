@@ -14,12 +14,13 @@ from .. import dmutil
 from ..mcapp import app
 
 
-# model for globus task record (also project2task - see create_task_record method, below)
+# model for globus task record
 class Globus(object):
-    def __init__(self, name, owner, task_id=None, transfer_dir=None, description=''):
+    def __init__(self, name, owner, project_id, task_id=None, transfer_dir=None, description=''):
         self.name = name
         self.description = description
         self.owner = owner
+        self.project_id = project_id
         self.task_id = task_id
         self.transfer_dir = transfer_dir
         self.birthtime = r.now()
@@ -27,17 +28,30 @@ class Globus(object):
         self.otype = "globus"
 
 
+@app.route('/mcglobus/version')
+@apikey
+def return_version_information():
+    user = access.get_user()
+    web_service = MaterialsCommonsGlobusInterface(user)
+    results = {
+        "version": web_service.version
+    }
+    return args.json_as_format_arg(results)
+
+
 @app.route('/mcglobus/upload/project/<project_id>/globus_endpoint/<endpoint_uuid>', methods=['GET'])
 @apikey
 def mc_globus_stage_upload(project_id, endpoint_uuid):
     user = access.get_user()
     web_service = MaterialsCommonsGlobusInterface(user)
+
     results = web_service.set_transfer_client()
     if results['status'] == 'error':
         return args.json_as_format_arg(results['error'])
     results = web_service.stage_upload_files(project_id, endpoint_uuid)
     args.format = True
     return args.json_as_format_arg(results)
+
 
 @app.route('/mcglobus/upload/status/<task_id>', methods=['GET'])
 @apikey
@@ -53,6 +67,7 @@ def mc_globus_get_upload_task_status(task_id):
 
 class MaterialsCommonsGlobusInterface:
     def __init__(self, mc_user_id):
+        self.version = "0.1"
         self.mc_user_id = mc_user_id
         home = os_path.expanduser("~")
         self.config_path = os_path.join(home, '.globus', 'mc_client_config.ini')
@@ -120,16 +135,10 @@ class MaterialsCommonsGlobusInterface:
 
         # database entries and one-time-directory on target
         name = "transfer-" + self.mc_user_id + ":" + project_id
-        globus_record = Globus(name, self.mc_user_id)
+        globus_record = Globus(name, self.mc_user_id, project_id)
         globus_record_id = dmutil.insert_entry_id('globus', globus_record.__dict__)
         if not globus_record_id:
             error = "Failed to create globus (transfer) table entry"
-            self.log("Error: " + error)
-            return {"error": error}
-        cross_table_entry = {"project_id": project_id, "globus_id": globus_record_id}
-        cross_table_id = dmutil.insert_entry_id('project2globus', cross_table_entry)
-        if not cross_table_id:
-            error = "Failed to create join table entry"
             self.log("Error: " + error)
             return {"error": error}
         dir_name = "transfer-" + globus_record_id
@@ -210,17 +219,3 @@ class MaterialsCommonsGlobusInterface:
     @staticmethod
     def log(message):
         dmutil.msg(message)
-
-    @staticmethod
-    def create_task_record(user_id, name, project_id, task_id, task_status):
-        pass
-
-
-# standalone test
-if __name__ == "__main__":
-    mc_user = "test@test.mc"
-    projectid = "f626fda8-2cd0-45e1-9b02-a47c721a9789"
-    target_uuid = "b626e88c-2873-11e8-b7c4-0ac6873fc732"
-    interface = MaterialsCommonsGlobusInterface(mc_user)
-
-    # ...
