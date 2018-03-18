@@ -2,9 +2,10 @@ import os.path as os_path
 
 import configparser
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
-from globus_sdk import TransferClient, TransferData
+from globus_sdk import TransferClient, TransferData, TransferAPIError
 
-from flask import g
+
+from flask import g, request
 import rethinkdb as r
 
 from .. import access
@@ -16,11 +17,12 @@ from ..mcapp import app
 
 # model for globus task record
 class Globus(object):
-    def __init__(self, name, owner, project_id, task_id=None, transfer_dir=None, description=''):
+    def __init__(self, name, owner, project_id, project_path, task_id=None, transfer_dir=None, description=''):
         self.name = name
         self.description = description
         self.owner = owner
         self.project_id = project_id
+        self.project_path = project_path
         self.task_id = task_id
         self.transfer_dir = transfer_dir
         self.birthtime = r.now()
@@ -39,17 +41,37 @@ def return_version_information():
     return args.json_as_format_arg(results)
 
 
-@app.route('/mcglobus/upload/project/<project_id>/globus_endpoint/<endpoint_uuid>', methods=['GET'])
+@app.route('/mcglobus/upload', methods=['POST'])
 @apikey
-def mc_globus_stage_upload(project_id, endpoint_uuid):
+def mc_globus_stage_upload():
     user = access.get_user()
-    web_service = MaterialsCommonsGlobusInterface(user)
+    post_data = request.get_json()
 
+    dmutil.msg("mc_globus_stage_upload: user = " + user)
+    # required args
+    project_id = dmutil.get_required('project_id', post_data)
+    endpoint_uuid = dmutil.get_required('user_endpoint_id', post_data)
+
+    # optional args
+    project_path = dmutil.get_optional('project_directory_path', post_data, novalue="/")
+    endpoint_path = dmutil.get_optional('user_endpoint_path', post_data, novalue="/")
+
+    dmutil.msg("mc_globus_stage_upload: project_id = " + project_id)
+    dmutil.msg("mc_globus_stage_upload: endpoint_uuid = " + endpoint_uuid)
+    dmutil.msg("mc_globus_stage_upload: project_path = " + project_path)
+    dmutil.msg("mc_globus_stage_upload: endpoint_path = " + endpoint_path)
+
+    dmutil.msg("init service")
+    web_service = MaterialsCommonsGlobusInterface(user)
+    dmutil.msg("set_transfer_client")
     results = web_service.set_transfer_client()
     if results['status'] == 'error':
         return args.json_as_format_arg(results['error'])
-    results = web_service.stage_upload_files(project_id, endpoint_uuid)
-    args.format = True
+
+    # dmutil.msg("stage_upload_files")
+    # results = web_service.stage_upload_files(project_id, endpoint_uuid, project_path, endpoint_path)
+    # args.format = True
+    results = {"error": "not working"}
     return args.json_as_format_arg(results)
 
 
@@ -67,6 +89,7 @@ def mc_globus_get_upload_task_status(task_id):
 
 class MaterialsCommonsGlobusInterface:
     def __init__(self, mc_user_id):
+        self.log("MaterialsCommonsGlobusInterface init - started")
         self.version = "0.1"
         self.mc_user_id = mc_user_id
         home = os_path.expanduser("~")
@@ -80,22 +103,27 @@ class MaterialsCommonsGlobusInterface:
         self.mc_target_ep_id = config['mc_client']['ep_id']
 
         self.transfer_client = None
+        self.log("MaterialsCommonsGlobusInterface init - done")
 
     def set_transfer_client(self):
+        self.log("MaterialsCommonsGlobusInterface set_transfer_client - started")
         auth_client = self.get_auth_client()
         if not auth_client:
             error = "No Authentication Client"
             self.log("Error: " + error)
             return {"status": "error", "error": error}
+        self.log("MaterialsCommonsGlobusInterface set_transfer_client - auth_client")
+        self.log(auth_client)
         transfer = self.get_transfer_interface(auth_client)
         if not transfer:
             error = "No transfer interface"
             self.log("Error: " + error)
             return {"status": "error", "error": error}
         self.transfer_client = transfer
-        return {"status" : "ok"}
+        self.log("MaterialsCommonsGlobusInterface set_transfer_client - done")
+        return {"status": "ok"}
 
-    def stage_upload_files(self, project_id, inbound_endpoint_id):
+    def stage_upload_files(self, project_id, inbound_endpoint_id, project_path, inbound_endpoint_path):
         if not self.transfer_client:
             error = "Missing authenticated transfer client"
             self.log("Error: " + error)
@@ -133,9 +161,16 @@ class MaterialsCommonsGlobusInterface:
 
         target_endpoint_id = target_endpoint['id']
 
+        # confirm inbound path
+        try:
+            transfer.operation_ls(inbound_endpoint, path=inbound_endpoint_path)
+        except TransferAPIError as error:
+            self.log("Error: " + str(error))
+            return {"error": str(error)}
+
         # database entries and one-time-directory on target
         name = "transfer-" + self.mc_user_id + ":" + project_id
-        globus_record = Globus(name, self.mc_user_id, project_id)
+        globus_record = Globus(name, self.mc_user_id, project_id, project_path)
         globus_record_id = dmutil.insert_entry_id('globus', globus_record.__dict__)
         if not globus_record_id:
             error = "Failed to create globus (transfer) table entry"
@@ -160,7 +195,7 @@ class MaterialsCommonsGlobusInterface:
                          "Materials Commons"
         transfer_data = TransferData(
             transfer, inbound_endpoint_id, target_endpoint_id, label=transfer_label, sync_level="checksum")
-        transfer_data.add_item("/", "/" + dir_name, recursive=True)
+        transfer_data.add_item(inbound_endpoint_path, "/" + dir_name, recursive=True)
         transfer_result = transfer.submit_transfer(transfer_data)
         self.log("Finished upload staging: successfully completed")
         return_result = {}
@@ -169,7 +204,7 @@ class MaterialsCommonsGlobusInterface:
             return_result[key] = transfer_result[key]
 
         # update record in database: task_id and dir_name
-        update_values = {"task_id": return_result["task_id"], "transfer_dir": dir_name }
+        update_values = {"task_id": return_result["task_id"], "transfer_dir": dir_name}
         r.table('globus').get(globus_record_id).update(update_values).run(g.conn)
 
         return return_result
@@ -208,12 +243,20 @@ class MaterialsCommonsGlobusInterface:
         return auth_client
 
     def get_transfer_interface(self, auth_client):
+        self.log("get_transfer_interface")
         if self.transfer_client:
+            self.log("found transfer_client")
             return self.transfer_client
 
+        self.log("did not found transfer_client")
+        self.log("auth_client")
+        self.log(auth_client)
         scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
         cc_authorizer = ClientCredentialsAuthorizer(auth_client, scopes)
+        self.log("cc_authorizer")
+        self.log(cc_authorizer)
         transfer_client = TransferClient(authorizer=cc_authorizer)
+        self.log("return transfer_client")
         return transfer_client
 
     @staticmethod

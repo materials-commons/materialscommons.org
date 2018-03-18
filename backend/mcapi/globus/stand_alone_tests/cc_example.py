@@ -24,5 +24,5 @@ transfer_client = globus_sdk.TransferClient(authorizer=cc_authorizer)
 # usage is still the same
 print("Endpoints Belonging to {}@clients.auth.globus.org:"
       .format(transfer_client))
-for ep in transfer_client.endpoint_search('cc-base'):
+for ep in transfer_client.endpoint_search({'filter-scope': 'my-endpoints'}):
     print("[{}] {}".format(ep["id"], ep["display_name"]))
