@@ -287,7 +287,7 @@ class CC(object):
         pass
 
     def doit(self):
-        print("Starting CC test")
+        dmutil.msg("Starting CC test")
         home = os_path.expanduser("~")
         config_path = os_path.join(home, '.globus', 'mc_client_config.ini')
 

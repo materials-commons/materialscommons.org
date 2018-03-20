@@ -185,9 +185,10 @@ class TestGlobusInterfaceUpload(unittest.TestCase):
         remote = Remote()
         partial_url = 'mcglobus/cc'
         test_url = remote.make_url(partial_url)
+        test_url = "http://localhost:5002/mcglobus/cc"
         print(test_url)
-        results = connection.get(test_url)
-        print (results)
+        # results = connection.get(test_url)
+        # print (results)
         self.assertIsNotNone(None, "Vas you dare, Charlie?")
 
     @pytest.mark.skip
