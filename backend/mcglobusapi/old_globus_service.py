@@ -5,30 +5,33 @@ import configparser
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
 from globus_sdk import TransferClient, TransferData, TransferAPIError
 
+import app
+import json
 
-from flask import g, request
-import rethinkdb as r
+#
+# from flask import g, request
+# import rethinkdb as r
 
-from .. import access
-from .. import args
-from ..decorators import apikey
-from .. import dmutil
-from ..mcapp import app
+# from .. import access
+# from .. import args
+# from ..decorators import apikey
+# from .. import dmutil
+# from ..mcapp import app
 
 
-# model for globus task record
-class Globus(object):
-    def __init__(self, name, owner, project_id, project_path, task_id=None, transfer_dir=None, description=''):
-        self.name = name
-        self.description = description
-        self.owner = owner
-        self.project_id = project_id
-        self.project_path = project_path
-        self.task_id = task_id
-        self.transfer_dir = transfer_dir
-        self.birthtime = r.now()
-        self.mtime = self.birthtime
-        self.otype = "globus"
+# model for mcglobusapi task record
+# class Globus(object):
+#     def __init__(self, name, owner, project_id, project_path, task_id=None, transfer_dir=None, description=''):
+#         self.name = name
+#         self.description = description
+#         self.owner = owner
+#         self.project_id = project_id
+#         self.project_path = project_path
+#         self.task_id = task_id
+#         self.transfer_dir = transfer_dir
+#         self.birthtime = r.now()
+#         self.mtime = self.birthtime
+#         self.otype = "mcglobusapi"
 
 @app.route('/mcglobus/cc', methods=['GET'])
 def check_create_cc():
@@ -100,7 +103,7 @@ class MaterialsCommonsGlobusInterface:
         self.version = "0.1"
         self.mc_user_id = mc_user_id
         home = os_path.expanduser("~")
-        self.config_path = os_path.join(home, '.globus', 'mc_client_config.ini')
+        self.config_path = os_path.join(home, '.mcglobusapi', 'mc_client_config.ini')
 
         config = configparser.ConfigParser()
         config.read(str(self.config_path))
@@ -178,9 +181,9 @@ class MaterialsCommonsGlobusInterface:
         # database entries and one-time-directory on target
         name = "transfer-" + self.mc_user_id + ":" + project_id
         globus_record = Globus(name, self.mc_user_id, project_id, project_path)
-        globus_record_id = dmutil.insert_entry_id('globus', globus_record.__dict__)
+        globus_record_id = dmutil.insert_entry_id('mcglobusapi', globus_record.__dict__)
         if not globus_record_id:
-            error = "Failed to create globus (transfer) table entry"
+            error = "Failed to create mcglobusapi (transfer) table entry"
             self.log("Error: " + error)
             return {"error": error}
         dir_name = "transfer-" + globus_record_id
@@ -195,7 +198,7 @@ class MaterialsCommonsGlobusInterface:
         self.log("Found inbound endpoint: " + inbound_endpoint['display_name']
                  + " from " + inbound_endpoint["owner_string"])
         self.log("Initiating transfer to target directory: " + dir_name)
-        self.log("Recorded as entry in globus table: " + globus_record_id)
+        self.log("Recorded as entry in mcglobusapi table: " + globus_record_id)
 
         # initiate transfer
         transfer_label = "Transfer from " + inbound_endpoint['display_name'] + \
@@ -212,7 +215,7 @@ class MaterialsCommonsGlobusInterface:
 
         # update record in database: task_id and dir_name
         update_values = {"task_id": return_result["task_id"], "transfer_dir": dir_name}
-        r.table('globus').get(globus_record_id).update(update_values).run(g.conn)
+        r.table('mcglobusapi').get(globus_record_id).update(update_values).run(g.conn)
 
         return return_result
 
@@ -259,7 +262,7 @@ class MaterialsCommonsGlobusInterface:
         self.log("auth_client")
         self.log(auth_client)
 
-        scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
+        scopes = "urn:mcglobusapi:auth:scope:transfer.api.mcglobusapi.org:all"
 
         logging.basicConfig(level=logging.DEBUG)
         root = logging.getLogger()
@@ -289,7 +292,7 @@ class CC(object):
     def doit(self):
         dmutil.msg("Starting CC test")
         home = os_path.expanduser("~")
-        config_path = os_path.join(home, '.globus', 'mc_client_config.ini')
+        config_path = os_path.join(home, '.mcglobusapi', 'mc_client_config.ini')
 
         config = configparser.ConfigParser()
         config.read(config_path)
@@ -299,7 +302,7 @@ class CC(object):
 
         confidential_client = ConfidentialAppAuthClient(
             client_id=client_user, client_secret=client_token)
-        scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
+        scopes = "urn:mcglobusapi:auth:scope:transfer.api.mcglobusapi.org:all"
 
         logging.basicConfig(level=logging.DEBUG)
         root = logging.getLogger()

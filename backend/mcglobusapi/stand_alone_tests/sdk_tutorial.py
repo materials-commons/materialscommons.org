@@ -4,7 +4,7 @@ from pathlib import Path
 import globus_sdk
 
 home = str(Path.home())
-config_path = Path(Path.home(), '.globus', 'config_testing.ini')
+config_path = Path(Path.home(), '.mcglobusapi', 'config_testing.ini')
 
 config = configparser.ConfigParser()
 config.read(str(config_path))
@@ -29,8 +29,8 @@ token_response = client.oauth2_exchange_code_for_tokens(auth_code)
 
 print(str(token_response.by_resource_server))
 
-globus_auth_data = token_response.by_resource_server['auth.globus.org']
-globus_transfer_data = token_response.by_resource_server['transfer.api.globus.org']
+globus_auth_data = token_response.by_resource_server['auth.mcglobusapi.org']
+globus_transfer_data = token_response.by_resource_server['transfer.api.mcglobusapi.org']
 
 # most specifically, you want these tokens as strings
 AUTH_TOKEN = globus_auth_data['access_token']

@@ -42,7 +42,7 @@ try:
         support.acl_add_rule(transfer, user_to_add, shared_endpoint_id, ENDPOINT_PATH, "rw")
         print("Created rule")
 
-    url = "https://www.globus.org/app/transfer?" + \
+    url = "https://www.mcglobusapi.org/app/transfer?" + \
           "&origin_id=" + shared_endpoint_id + \
           "&origin_path=" + ENDPOINT_PATH + \
           "&add_identity=" + user_to_add

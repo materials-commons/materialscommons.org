@@ -1,33 +1,36 @@
 import json
+import time
+import sys
 import webbrowser
+import os.path as os_path
 
 import configparser
-from pathlib import Path
 
 from globus.stand_alone_tests.utils import is_remote_session
 
-# uncomment for logging of network requests
-# from globus.utils import enable_requests_logging
-
 from globus_sdk import (NativeAppAuthClient, TransferClient,
                         RefreshTokenAuthorizer)
+from globus_sdk.exc import GlobusAPIError
 
-home = str(Path.home())
-config_path = Path(Path.home(), '.globus', 'config_testing.ini')
-
+# Config file set up
+home = os_path.expanduser("~")
+config_path = os_path.join(home, '.mcglobusapi', 'config_testing.ini')
 config = configparser.ConfigParser()
 config.read(str(config_path))
 
+# To set up a client_id, see https://auth.globus.org/v2/web/developers
+# Current client_id is in Project: MaterialsCommonsProject, App: MaterialsCommonsTest
 CLIENT_ID = config['sdk']['id']
-# AUTH_CODE = config['sdk']['auth']
 
-TOKEN_FILE_PATH = Path(Path.home(), '.globus', 'refresh-testing-tokens.json')
-REDIRECT_URI = 'https://auth.globus.org/v2/web/auth-code'
+TOKEN_FILE_PATH = os_path.join(home, '.mcglobusapi', 'refresh-testing-tokens.json')
+REDIRECT_URI = 'https://auth.mcglobusapi.org/v2/web/auth-code'
 SCOPES = ('openid email profile '
-          'urn:globus:auth:scope:transfer.api.globus.org:all')
+          'urn:mcglobusapi:auth:scope:transfer.api.mcglobusapi.org:all')
 
-SOURCE_NAME = 'Weymouth Mac Desktop'
-SHARING_ENDPOINT_NAME = "Sharing on Weymouth Mac Desktop"
+SOURCE_ENDPOINT_NAME = "Materials Commons Test"
+SOURCE_PATH = '/Volumes/Data2/GlobusEndpoint/mc-base'
+
+TEST_GLOBUS_LOGIN = "weymouth@umich.edu"
 
 # uncomment the next line to enable debug logging for network requests
 # enable_requests_logging()
@@ -93,8 +96,9 @@ def get_ep_id(transfer, endpoint_name):
         return found['id']
     return None
 
+def main():
 
-def get_transfer_interface():
+    # ------------------------ Authenticate Block ---------------------------
     tokens = None
     try:
         # if we already have tokens, load and use them
@@ -111,10 +115,7 @@ def get_transfer_interface():
         except:
             pass
 
-    if not tokens:
-        return None
-
-    transfer_tokens = tokens['transfer.api.globus.org']
+    transfer_tokens = tokens['transfer.api.mcglobusapi.org']
 
     auth_client = NativeAppAuthClient(client_id=CLIENT_ID)
 
@@ -125,53 +126,51 @@ def get_transfer_interface():
         expires_at=transfer_tokens['expires_at_seconds'],
         on_refresh=update_tokens_file_on_refresh)
 
+    # -- end Authenticate Block
+    # ----------------------------- Access block  --------------------------
+
     transfer = TransferClient(authorizer=authorizer)
 
-    return transfer
+    source_id = get_ep_id(transfer, SOURCE_ENDPOINT_NAME)
+
+    if not source_id:
+        print("Source endpoint '{}' not found".format(SOURCE_ENDPOINT_NAME))
+        exit(-1)
+
+    # print out a directory listing from an endpoint
+    try:
+        transfer.endpoint_autoactivate(source_id)
+    except GlobusAPIError as ex:
+        print(ex)
+        if ex.http_status == 401:
+            sys.exit('Refresh token has expired. '
+                     'Please delete refresh-tokens.json and try again.')
+        else:
+            raise ex
+
+    for entry in transfer.operation_ls(source_id, path=SOURCE_PATH):
+        print(entry['name'] + ('/' if entry['type'] == 'dir' else ''))
+
+    # -- end Access block
+
+    # ---------------------------- Re anthentication test ---------------------
+
+    # revoke the access token that was just used to make requests against
+    # the Transfer API to demonstrate that the RefreshTokenAuthorizer will
+    # automatically get a new one
+    auth_client.oauth2_revoke_token(authorizer.access_token)
+    # Allow a little bit of time for the token revocation to settle
+    time.sleep(1)
+    # Verify that the access token is no longer valid
+    token_status = auth_client.oauth2_validate_token(
+        transfer_tokens['access_token'])
+    assert token_status['active'] is False, 'Token was expected to be invalid.'
+
+    print('\nDoing a second directory listing with a new access token:')
+    for entry in transfer.operation_ls(source_id, path=SOURCE_PATH):
+        print(entry['name'] + ('/' if entry['type'] == 'dir' else ''))
 
 
-def create_shared_ep(transfer, base_ep_name, path, shared_ep_name):
-    id = get_ep_id(transfer, base_ep_name)
-    if not id:
-        print("Can not find base ep to create sharing: " + base_ep_name)
-        return None
-    shared_ep_data = {
-        "DATA_TYPE": "shared_endpoint",
-        "display_name": shared_ep_name,
-        "host_endpoint": id,
-        "host_path": path,
-    }
-    create_result = transfer.create_shared_endpoint(shared_ep_data)
-    if not create_result:
-        return None
-    return create_result["id"]
+if __name__ == '__main__':
+    main()
 
-
-def acl_add_rule(transfer, user_to_add, endpoint_id, endpoint_path, permissions):
-    rule_data = {
-            "DATA_TYPE": "access",
-            "principal_type": "identity",
-            "principal": user_to_add,
-            "path": endpoint_path,
-            "permissions": permissions
-    }
-    result = transfer.add_endpoint_acl_rule(endpoint_id, rule_data)
-    rule_id = result["access_id"]
-    return rule_id
-
-
-def acl_rule_exists(transfer, user_to_add, endpoint_id, endpoint_path):
-    acl_list = transfer.endpoint_acl_list(endpoint_id)["DATA"]
-    found = None
-    for rule in acl_list:
-        if not rule['role_id'] and rule['principal'] == user_to_add \
-                and rule['path'] == endpoint_path:
-            found = rule
-    return found
-
-def acl_change_rule_permissions(transfer, endpoint_id, rule_id, permissions):
-    rule_data = {
-            "DATA_TYPE": "access",
-            "permissions": permissions
-    }
-    transfer.update_endpoint_acl_rule(endpoint_id, rule_id, rule_data)

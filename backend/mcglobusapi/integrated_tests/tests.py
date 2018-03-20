@@ -10,7 +10,7 @@ from globus_sdk import TransferAPIError
 from materials_commons.api import create_project, Project, Directory
 
 from .base_class_lib import ApiConnection, Remote
-from ..globus_service import MaterialsCommonsGlobusInterface as GlobusInterface
+from ..old_globus_service import MaterialsCommonsGlobusInterface as GlobusInterface
 
 # SETUP Constants
 dir_in_project = "/upload_test"

@@ -7,7 +7,7 @@ from globus_sdk import TransferClient
 
 def main():
     home = os_path.expanduser("~")
-    config_path = os_path.join(home, '.globus', 'mc_client_config.ini')
+    config_path = os_path.join(home, '.mcglobusapi', 'mc_client_config.ini')
 
     config = configparser.ConfigParser()
     config.read(str(config_path))
@@ -18,7 +18,7 @@ def main():
     auth_client = ConfidentialAppAuthClient(
         client_id=client_user, client_secret=client_token)
 
-    scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
+    scopes = "urn:mcglobusapi:auth:scope:transfer.api.mcglobusapi.org:all"
     cc_authorizer = ClientCredentialsAuthorizer(auth_client, scopes)
     transfer_client = TransferClient(authorizer=cc_authorizer)
 
