@@ -4,7 +4,6 @@ from mcapi.mcapp import app, mcdb_connect
 from mcapi import utils, access
 from mcapi import objects, cache
 from mcapi.user import account, usergroups, projects
-from mcapi.globus import globus_service
 from os import environ
 import optparse
 import signal
