@@ -1,4 +1,5 @@
 import os.path as os_path
+import logging
 
 import configparser
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
@@ -29,8 +30,14 @@ class Globus(object):
         self.mtime = self.birthtime
         self.otype = "globus"
 
+@app.route('/mcglobus/cc', methods=['GET'])
+def check_create_cc():
+    print("TESTING CC")
+    cc = CC()
+    cc.doit()
+    return args.json_as_format_arg({'ok':'ok'})
 
-@app.route('/mcglobus/version')
+@app.route('/mcglobus/version', methods=['GET'])
 @apikey
 def return_version_information():
     user = access.get_user()
@@ -251,7 +258,19 @@ class MaterialsCommonsGlobusInterface:
         self.log("did not found transfer_client")
         self.log("auth_client")
         self.log(auth_client)
+
         scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
+
+        logging.basicConfig(level=logging.DEBUG)
+        root = logging.getLogger()
+        root.setLevel(logging.DEBUG)
+
+        # ch = logging.StreamHandler(sys.stdout)
+        # ch.setLevel(logging.INFO)
+        # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        # ch.setFormatter(formatter)
+        # root.addHandler(ch)
+
         cc_authorizer = ClientCredentialsAuthorizer(auth_client, scopes)
         self.log("cc_authorizer")
         self.log(cc_authorizer)
@@ -262,3 +281,35 @@ class MaterialsCommonsGlobusInterface:
     @staticmethod
     def log(message):
         dmutil.msg(message)
+
+class CC(object):
+    def __init__(self):
+        pass
+
+    def doit(self):
+        print("Starting CC test")
+        home = os_path.expanduser("~")
+        config_path = os_path.join(home, '.globus', 'mc_client_config.ini')
+
+        config = configparser.ConfigParser()
+        config.read(config_path)
+
+        client_user = config['mc_client']['user']
+        client_token = config['mc_client']['token']
+
+        confidential_client = ConfidentialAppAuthClient(
+            client_id=client_user, client_secret=client_token)
+        scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
+
+        logging.basicConfig(level=logging.DEBUG)
+        root = logging.getLogger()
+        root.setLevel(logging.DEBUG)
+
+        print("Just before call")
+        cc_authorizer = ClientCredentialsAuthorizer(
+            confidential_client, scopes)
+
+        print(cc_authorizer)
+
+if __name__ == '__main__':
+    check_create_cc()
