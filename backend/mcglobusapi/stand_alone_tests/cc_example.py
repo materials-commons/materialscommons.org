@@ -1,4 +1,3 @@
-import sys
 import globus_sdk
 import logging
 
@@ -7,7 +6,7 @@ import os.path as os_path
 import configparser
 
 home = os_path.expanduser("~")
-config_path = os_path.join(home, '.mcglobusapi', 'mc_client_config.ini')
+config_path = os_path.join(home, '.globus', 'mc_client_config.ini')
 
 config = configparser.ConfigParser()
 config.read(config_path)
@@ -17,7 +16,7 @@ client_token = config['mc_client']['token']
 
 confidential_client = globus_sdk.ConfidentialAppAuthClient(
     client_id=client_user, client_secret=client_token)
-scopes = "urn:mcglobusapi:auth:scope:transfer.api.mcglobusapi.org:all"
+scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
 
 logging.basicConfig(level=logging.DEBUG)
 root = logging.getLogger()
