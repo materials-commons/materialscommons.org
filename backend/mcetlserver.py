@@ -17,7 +17,7 @@ def reload_users(signum, frame):
 if __name__ == '__main__':
     parser = optparse.OptionParser()
     parser.add_option("-p", "--port", dest="port",
-                      help="Port to run on", default=5042)
+                      help="Port to run on", default=5062)
     (options, args) = parser.parse_args()
     signal.signal(signal.SIGHUP, reload_users)
     app.run(debug=True, host=_HOST, port=int(options.port), processes=1)
