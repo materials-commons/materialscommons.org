@@ -4,7 +4,7 @@ import hashlib
 import os
 import sys
 import math
-from . import Path
+from backend.etlserver import Path
 
 from dateutil import parser as date_parser
 
