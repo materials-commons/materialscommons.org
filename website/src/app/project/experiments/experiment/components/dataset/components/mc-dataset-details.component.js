@@ -45,6 +45,16 @@ class MCDatasetDetailsComponentController {
         }
     }
 
+    $onInit() {
+        if (!this.dataset.published) {
+            this.datasetsAPI.checkDataset(this.projectId, this.experimentId, this.datasetId).then(
+                (status) => {
+                    this.dataset.status = status;
+                }
+            );
+        }
+    }
+
     addAuthor() {
         this.dataset.authors.push({
             lastname: '',

@@ -101,6 +101,10 @@ class MCProjectSidenavComponentController {
     isDatasetsRoute() {
         return this.mcRouteState.getRouteName().startsWith('project.experiment.datasets');
     }
+
+    publishExperiment() {
+
+    }
 }
 
 class ModifyProjectShortcutsDialogController {

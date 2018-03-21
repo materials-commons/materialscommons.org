@@ -26,7 +26,8 @@
     "differenceById": true,
     "localforage": true,
     "P": true,
-    "require": true
+    "require": true,
+    "introJs": true,
   },
   "rules": {
     "angular/log": 0,
