@@ -1,6 +1,6 @@
-from flask import g
-import rethinkdb as r
 import threading
+
+from DB import DbConnection
 
 _lock = threading.Lock()
 _apikeys = {}
@@ -13,10 +13,12 @@ def valid_apikey(apikey):
 
 
 def _load_apikeys():
+    conn = DbConnection().connection()
+    r = DbConnection().interface()
     _lock.acquire()
     try:
         _apikeys.clear()
-        users = list(r.table('users').run(g.conn))
+        users = list(r.table('users').run(conn))
         for user in users:
             _apikeys[user['id']] = user['apikey']
             _apikeys[user['apikey']] = user['id']

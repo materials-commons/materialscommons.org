@@ -1,18 +1,16 @@
 import os.path as os_path
-import logging
 import configparser
-
-import rethinkdb as r
 
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
 from globus_sdk import TransferClient, TransferData, TransferAPIError
 
-from flask import g
+from mcexceptions import DatabaseError
+from DB import DbConnection
 
-import dmutil
+import util
 
 
-# model for mcglobusapi task record
+# model for globus task record
 class Globus(object):
     def __init__(self, name, owner, project_id, project_path, task_id=None, transfer_dir=None, description=''):
         self.name = name
@@ -22,7 +20,7 @@ class Globus(object):
         self.project_path = project_path
         self.task_id = task_id
         self.transfer_dir = transfer_dir
-        self.birthtime = r.now()
+        self.birthtime = DbConnection().interface().now()
         self.mtime = self.birthtime
         self.otype = "globus"
 
@@ -33,7 +31,7 @@ class MaterialsCommonsGlobusInterface:
         self.version = "0.1"
         self.mc_user_id = mc_user_id
         home = os_path.expanduser("~")
-        self.config_path = os_path.join(home, '.mcglobusapi', 'mc_client_config.ini')
+        self.config_path = os_path.join(home, '.globus', 'mc_client_config.ini')
 
         config = configparser.ConfigParser()
         config.read(str(self.config_path))
@@ -69,7 +67,9 @@ class MaterialsCommonsGlobusInterface:
             self.log("Error: " + error)
             return {"error": error}
 
-        proj = r.table('projects').get(project_id).run(g.conn)
+        conn = DbConnection().connection()
+        r = DbConnection().interface()
+        proj = r.table('projects').get(project_id).run(conn)
         if not proj:
             error = "Unable to find project, " + project_id
             self.log("Error: " + error)
@@ -101,19 +101,21 @@ class MaterialsCommonsGlobusInterface:
 
         target_endpoint_id = target_endpoint['id']
 
+        self.log("About to confirm inbound path: " + inbound_endpoint_path)
         # confirm inbound path
         try:
-            transfer.operation_ls(inbound_endpoint, path=inbound_endpoint_path)
+            transfer.operation_ls(inbound_endpoint_id, path=inbound_endpoint_path)
         except TransferAPIError as error:
             self.log("Error: " + str(error))
             return {"error": str(error)}
 
+        self.log("Finished confirm of inbound path: " + inbound_endpoint_path)
         # database entries and one-time-directory on target
         name = "transfer-" + self.mc_user_id + ":" + project_id
         globus_record = Globus(name, self.mc_user_id, project_id, project_path)
-        globus_record_id = dmutil.insert_entry_id('mcglobusapi', globus_record.__dict__)
+        globus_record_id = self.insert_entry_id('globus', globus_record.__dict__)
         if not globus_record_id:
-            error = "Failed to create mcglobusapi (transfer) table entry"
+            error = "Failed to create globus (transfer) table entry"
             self.log("Error: " + error)
             return {"error": error}
         dir_name = "transfer-" + globus_record_id
@@ -128,7 +130,7 @@ class MaterialsCommonsGlobusInterface:
         self.log("Found inbound endpoint: " + inbound_endpoint['display_name']
                  + " from " + inbound_endpoint["owner_string"])
         self.log("Initiating transfer to target directory: " + dir_name)
-        self.log("Recorded as entry in mcglobusapi table: " + globus_record_id)
+        self.log("Recorded as entry in globus table: " + globus_record_id)
 
         # initiate transfer
         transfer_label = "Transfer from " + inbound_endpoint['display_name'] + \
@@ -145,7 +147,7 @@ class MaterialsCommonsGlobusInterface:
 
         # update record in database: task_id and dir_name
         update_values = {"task_id": return_result["task_id"], "transfer_dir": dir_name}
-        r.table('mcglobusapi').get(globus_record_id).update(update_values).run(g.conn)
+        r.table('globus').get(globus_record_id).update(update_values).run(conn)
 
         return return_result
 
@@ -192,19 +194,26 @@ class MaterialsCommonsGlobusInterface:
         self.log("auth_client")
         self.log(auth_client)
 
-        scopes = "urn:mcglobusapi:auth:scope:transfer.api.mcglobusapi.org:all"
-
-        logging.basicConfig(level=logging.DEBUG)
-        root = logging.getLogger()
-        root.setLevel(logging.DEBUG)
-
+        scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
         cc_authorizer = ClientCredentialsAuthorizer(auth_client, scopes)
-        self.log("cc_authorizer")
-        self.log(cc_authorizer)
         transfer_client = TransferClient(authorizer=cc_authorizer)
-        self.log("return transfer_client")
+        self.log("get_transfer_interface - transfer_client")
+        self.log(transfer_client)
         return transfer_client
 
     @staticmethod
     def log(message):
-        dmutil.msg(message)
+        util.msg(message)
+
+    @staticmethod
+    def insert_entry_id(table_name, entry):
+        conn = DbConnection().connection()
+        r = DbConnection().interface()
+        rr = r.table(table_name).insert(entry, return_changes=True)
+        rv = rr.run(conn)
+        if rv['inserted'] == 1:
+            if 'generated_keys' in rv:
+                return rv['generated_keys'][0]
+            else:
+                return rv['new_val']['id']
+        raise DatabaseError()

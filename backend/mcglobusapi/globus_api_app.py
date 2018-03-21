@@ -1,25 +1,14 @@
-import pkg_resources
-from os import environ
 import json
 
-import rethinkdb as r
-from rethinkdb.errors import RqlDriverError, ReqlError
-from flask import Flask, g, abort, request
+from flask import Flask, request
 from globus_service import MaterialsCommonsGlobusInterface
 
-from decorators import apikey
+from DB import DbConnection
+from api_key import apikey
 import access
-import dmutil
-
-_MCDB = "materialscommons"
-_MCDB_HOST = environ.get('MCDB_HOST') or 'localhost'
-_MCDB_PORT = environ.get('MCDB_PORT') or 28015
+import util
 
 app = Flask(__name__.split('.')[0])
-
-
-def mcdb_connect():
-    return r.connect(host=_MCDB_HOST, port=_MCDB_PORT, db=_MCDB)
 
 
 def format_as_json_return(what):
@@ -31,24 +20,22 @@ def format_as_json_return(what):
 
 @app.before_request
 def before_request():
-    if 'rethinkdb_version' not in g:
-        version = pkg_resources.get_distribution("rethinkdb").version[0:4]
-        g.rethinkdb_version = int(version.replace('.', ''))
-    try:
-        g.conn = mcdb_connect()
-    except RqlDriverError:
-        abort(503, "Database connection could not be established")
+    DbConnection().set_connection()
 
 
 @app.teardown_request
-def teardown_request():
-    try:
-        g.conn.close()
-    except ReqlError:
-        pass
+def teardown_request(exception):
+    DbConnection().close_connection()
+    if exception:
+        raise exception
 
 
-@app.route('/mcglobus/version', methods=['GET'])
+@app.route('/')
+def hello_world():
+    return format_as_json_return({"hello": "world"})
+
+
+@app.route('/version', methods=['GET'])
 @apikey
 def return_version_information():
     user = access.get_user()
@@ -59,41 +46,39 @@ def return_version_information():
     return format_as_json_return(results)
 
 
-@app.route('/mcglobus/upload', methods=['POST'])
+@app.route('/upload', methods=['POST'])
 @apikey
 def mc_globus_stage_upload():
     user = access.get_user()
     post_data = request.get_json()
 
-    dmutil.msg("mc_globus_stage_upload: user = " + user)
+    util.msg("mc_globus_stage_upload: user = " + user)
     # required args
-    project_id = dmutil.get_required('project_id', post_data)
-    endpoint_uuid = dmutil.get_required('user_endpoint_id', post_data)
+    project_id = util.get_required('project_id', post_data)
+    endpoint_uuid = util.get_required('user_endpoint_id', post_data)
 
     # optional args
-    project_path = dmutil.get_optional('project_directory_path', post_data, novalue="/")
-    endpoint_path = dmutil.get_optional('user_endpoint_path', post_data, novalue="/")
+    project_path = util.get_optional('project_directory_path', post_data, novalue="/")
+    endpoint_path = util.get_optional('user_endpoint_path', post_data, novalue="/")
 
-    dmutil.msg("mc_globus_stage_upload: project_id = " + project_id)
-    dmutil.msg("mc_globus_stage_upload: endpoint_uuid = " + endpoint_uuid)
-    dmutil.msg("mc_globus_stage_upload: project_path = " + project_path)
-    dmutil.msg("mc_globus_stage_upload: endpoint_path = " + endpoint_path)
+    util.msg("mc_globus_stage_upload: project_id = " + project_id)
+    util.msg("mc_globus_stage_upload: endpoint_uuid = " + endpoint_uuid)
+    util.msg("mc_globus_stage_upload: project_path = " + project_path)
+    util.msg("mc_globus_stage_upload: endpoint_path = " + endpoint_path)
 
-    dmutil.msg("init service")
+    util.msg("init service")
     web_service = MaterialsCommonsGlobusInterface(user)
-    dmutil.msg("set_transfer_client")
+    util.msg("set_transfer_client")
     results = web_service.set_transfer_client()
     if results['status'] == 'error':
         return format_as_json_return(results['error'])
 
-    # dmutil.msg("stage_upload_files")
-    # results = web_service.stage_upload_files(project_id, endpoint_uuid, project_path, endpoint_path)
-    # args.format = True
-    results = {"error": "not working"}
+    util.msg("stage_upload_files")
+    results = web_service.stage_upload_files(project_id, endpoint_uuid, project_path, endpoint_path)
     return format_as_json_return(results)
 
 
-@app.route('/mcglobus/upload/status/<task_id>', methods=['GET'])
+@app.route('/upload/status/<task_id>', methods=['GET'])
 @apikey
 def mc_globus_get_upload_task_status(task_id):
     user = access.get_user()

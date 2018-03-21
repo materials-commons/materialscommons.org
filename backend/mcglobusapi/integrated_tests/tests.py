@@ -10,7 +10,7 @@ from globus_sdk import TransferAPIError
 from materials_commons.api import create_project, Project, Directory
 
 from .base_class_lib import ApiConnection, Remote
-from ..old_globus_service import MaterialsCommonsGlobusInterface as GlobusInterface
+from ..globus_service import MaterialsCommonsGlobusInterface as GlobusInterface
 
 # SETUP Constants
 dir_in_project = "/upload_test"
@@ -23,7 +23,7 @@ def fake_name(prefix):
     return prefix + number
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 class TestGlobusInterfaceSupport(unittest.TestCase):
 
     def test_db_connection(self):
@@ -128,7 +128,7 @@ class TestGlobusInterfaceSupport(unittest.TestCase):
         self.assertEqual(directory.name, project.name + dir_in_project)
 
 
-# @pytest.mark.skip(reason="This test class requires that a Globus test endpoint be set up and available")
+@pytest.mark.skip(reason="This test class requires that a Globus test endpoint be set up and available")
 class TestGlobusInterfaceUpload(unittest.TestCase):
     # ---------------------------------------------------------------
     # See test setup notes on setting up test endpoint: Readme.md !!!
@@ -170,26 +170,15 @@ class TestGlobusInterfaceUpload(unittest.TestCase):
 
     @pytest.mark.skip
     def test_version(self):
+        mc_user_id = "test@test.mc"
         connection = ApiConnection()
         remote = Remote()
-        partial_url = 'mcglobus/version'
+        partial_url = 'globus/version'
         test_url = remote.make_url(partial_url)
-        print(test_url)
         results = connection.get(test_url)
-        print (results)
-        self.assertIsNotNone(None, "Vas you dare, Charlie?")
-
-    # @pytest.mark.skip
-    def test_cc(self):
-        connection = ApiConnection()
-        remote = Remote()
-        partial_url = 'mcglobus/cc'
-        test_url = remote.make_url(partial_url)
-        test_url = "http://localhost:5002/mcglobus/cc"
-        print(test_url)
-        # results = connection.get(test_url)
-        # print (results)
-        self.assertIsNotNone(None, "Vas you dare, Charlie?")
+        self.assertIsNotNone(results)
+        self.assertIsNotNone(results["version"])
+        self.assertEqual(results["version"], GlobusInterface(mc_user_id).version)
 
     @pytest.mark.skip
     def test_transfer_setup_via_web_service(self):
@@ -213,20 +202,26 @@ class TestGlobusInterfaceUpload(unittest.TestCase):
             "user_endpoint_id" : config['id'],
             "user_endpoint_path" : config['dir']
         }
-        partial_url = 'mcglobus/upload'
+        partial_url = 'globus/upload'
 
         connection = ApiConnection()
         remote = Remote()
         test_url = remote.make_url(partial_url)
-        print(test_url)
-        print(data)
         results = connection.post(test_url, data)
-        print (results)
+        self.assertIsNotNone(results)
+        print(results)
+        # prop_list = ['project_directory_path',
+        #              'project_id',
+        #              'user_endpoint_path',
+        #              'user_endpoint_id']
+        # for prop in prop_list:
+        #     self.assertIsNotNone(results[prop], "Retruned results are missing '" + prop +"'")
+        #     self.assertEqual(results[prop], data[prop])
+
         self.assertIsNotNone(None, "Vas you dare, Charlie?")
 
     # def test_new_test(self)
     #     self.assertIsNotNone(None, "Vas you dare, Charlie?")
-
 
     def _get_user_globus_endpoint_config(self):
         config = configparser.ConfigParser()
