@@ -317,7 +317,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('data', {
             url: '/data',
             abstract: true,
-            template: '<div ui-view flex></div>'
+            template: '<md-content ui-view flex></md-content>'
         })
         .state('data.dataset', {
             url: '/dataset/:dataset_id',
