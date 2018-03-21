@@ -1,4 +1,4 @@
-import globus.stand_alone_tests.my_globus_tools as support
+import my_globus_tools as support
 
 BASE_ENDPOINT = "Weymouth Mac Desktop"
 SHARE_PATH_ON_BASE = "/Volumes/Data2/GlobusEndpoint/mc-base/Project - Demo_Project - e4fd5c88"
@@ -23,14 +23,14 @@ try:
     print("Client ID Found for share endpoint: " + SHARE_ENDPOINT)
     print("    - id is ", shared_endpoint_id)
     print("    - listing entries in endpoint path: " + ENDPOINT_PATH)
-    #for entry in transfer.operation_ls(shared_endpoint_id, path=ENDPOINT_PATH):
+    # for entry in transfer.operation_ls(shared_endpoint_id, path=ENDPOINT_PATH):
     #    print(entry['name'] + ('/' if entry['type'] == 'dir' else ''))
     # obtain user uuid for materialscommonstest@globusid.org
     # add user access permission to shared endpoint and path (read, write)
     user_to_add = "ec5d8b49-726c-44d7-a0cd-1d11e607a2f0"
     rule = support.acl_rule_exists(transfer, user_to_add, shared_endpoint_id, ENDPOINT_PATH)
     print("rule exists: ", rule)
-    if (rule):
+    if rule:
         permissions = rule['permissions']
         if not permissions == "rw":
             print("not this: ", permissions)
@@ -42,7 +42,7 @@ try:
         support.acl_add_rule(transfer, user_to_add, shared_endpoint_id, ENDPOINT_PATH, "rw")
         print("Created rule")
 
-    url = "https://www.mcglobusapi.org/app/transfer?" + \
+    url = "https://www.globus.org/app/transfer?" + \
           "&origin_id=" + shared_endpoint_id + \
           "&origin_path=" + ENDPOINT_PATH + \
           "&add_identity=" + user_to_add

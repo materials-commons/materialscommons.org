@@ -30,7 +30,7 @@ class CC(object):
     def doit(self):
         my_msg("Starting CC test")
         home = os_path.expanduser("~")
-        config_path = os_path.join(home, '.mcglobusapi', 'mc_client_config.ini')
+        config_path = os_path.join(home, '.globus', 'mc_client_config.ini')
 
         config = configparser.ConfigParser()
         config.read(config_path)
@@ -40,7 +40,7 @@ class CC(object):
 
         confidential_client = ConfidentialAppAuthClient(
             client_id=client_user, client_secret=client_token)
-        scopes = "urn:mcglobusapi:auth:scope:transfer.api.mcglobusapi.org:all"
+        scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
 
         logging.basicConfig(level=logging.DEBUG)
         root = logging.getLogger()

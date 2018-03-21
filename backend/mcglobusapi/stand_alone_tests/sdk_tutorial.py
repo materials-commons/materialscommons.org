@@ -1,11 +1,10 @@
 import configparser
-from pathlib import Path
+import os.path as os_path
 
 import globus_sdk
 
-home = str(Path.home())
-config_path = Path(Path.home(), '.mcglobusapi', 'config_testing.ini')
-
+home = os_path.expanduser("~")
+config_path = os_path.join(home, '.globus', 'config_testing.ini')
 config = configparser.ConfigParser()
 config.read(str(config_path))
 
@@ -13,7 +12,7 @@ CLIENT_ID = config['sdk']['id']
 
 source = 'Weymouth Mac Desktop'
 source_dir = '/Volumes/Data2/GlobusEndpoint/transfer'
-file = "test1.txt"
+test_file = "test1.txt"
 dest = "Weymouth Mac Laptop"
 dest_dir = '/Users/weymouth/GlobusEndpoint/transfer'
 
@@ -29,8 +28,8 @@ token_response = client.oauth2_exchange_code_for_tokens(auth_code)
 
 print(str(token_response.by_resource_server))
 
-globus_auth_data = token_response.by_resource_server['auth.mcglobusapi.org']
-globus_transfer_data = token_response.by_resource_server['transfer.api.mcglobusapi.org']
+globus_auth_data = token_response.by_resource_server['auth.globus.org']
+globus_transfer_data = token_response.by_resource_server['transfer.api.globus.org']
 
 # most specifically, you want these tokens as strings
 AUTH_TOKEN = globus_auth_data['access_token']
@@ -68,14 +67,14 @@ if not source_ep or not dest_ep:
     exit(-1)
 
 print("at source...")
-source_dir = None
+# source_dir = None
 for entry in tc.operation_ls(source_ep['id'], path=source_dir):
     if entry['name'] == "transfer":
         source_dir = entry
     print("source entry: name = {}, type = {}".format(entry["name"], entry["type"]))
 
 print("at dest...")
-dest_dir = None
+# dest_dir = None
 for entry in tc.operation_ls(dest_ep['id'], path=dest_dir):
     if entry['name'] == "transfer":
         dest_dir = entry

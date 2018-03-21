@@ -27,7 +27,7 @@ def before_request():
 def teardown_request(exception):
     DbConnection().close_connection()
     if exception:
-        raise exception
+        pass
 
 
 @app.route('/')
@@ -36,7 +36,6 @@ def hello_world():
 
 
 @app.route('/version', methods=['GET'])
-@apikey
 def return_version_information():
     user = access.get_user()
     web_service = MaterialsCommonsGlobusInterface(user)

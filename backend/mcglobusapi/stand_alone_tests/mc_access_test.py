@@ -6,7 +6,7 @@ import os.path as os_path
 
 import configparser
 
-from globus.stand_alone_tests.utils import is_remote_session
+from utils import is_remote_session
 
 from globus_sdk import (NativeAppAuthClient, TransferClient,
                         RefreshTokenAuthorizer)
@@ -14,7 +14,7 @@ from globus_sdk.exc import GlobusAPIError
 
 # Config file set up
 home = os_path.expanduser("~")
-config_path = os_path.join(home, '.mcglobusapi', 'config_testing.ini')
+config_path = os_path.join(home, '.globus', 'config_testing.ini')
 config = configparser.ConfigParser()
 config.read(str(config_path))
 
@@ -22,10 +22,10 @@ config.read(str(config_path))
 # Current client_id is in Project: MaterialsCommonsProject, App: MaterialsCommonsTest
 CLIENT_ID = config['sdk']['id']
 
-TOKEN_FILE_PATH = os_path.join(home, '.mcglobusapi', 'refresh-testing-tokens.json')
-REDIRECT_URI = 'https://auth.mcglobusapi.org/v2/web/auth-code'
+TOKEN_FILE_PATH = os_path.join(home, '.globus', 'refresh-testing-tokens.json')
+REDIRECT_URI = 'https://auth.globus.org/v2/web/auth-code'
 SCOPES = ('openid email profile '
-          'urn:mcglobusapi:auth:scope:transfer.api.mcglobusapi.org:all')
+          'urn:globus:auth:scope:transfer.api.globus.org:all')
 
 SOURCE_ENDPOINT_NAME = "Materials Commons Test"
 SOURCE_PATH = '/Volumes/Data2/GlobusEndpoint/mc-base'
@@ -115,7 +115,7 @@ def main():
         except:
             pass
 
-    transfer_tokens = tokens['transfer.api.mcglobusapi.org']
+    transfer_tokens = tokens['transfer.api.globus.org']
 
     auth_client = NativeAppAuthClient(client_id=CLIENT_ID)
 

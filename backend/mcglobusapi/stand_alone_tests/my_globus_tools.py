@@ -1,30 +1,29 @@
 import json
 import webbrowser
+import os.path as os_path
 
 import configparser
-from pathlib import Path
 
-from globus.stand_alone_tests.utils import is_remote_session
+from utils import is_remote_session
 
 # uncomment for logging of network requests
-# from mcglobusapi.utils import enable_requests_logging
+# from globus.utils import enable_requests_logging
 
 from globus_sdk import (NativeAppAuthClient, TransferClient,
                         RefreshTokenAuthorizer)
 
-home = str(Path.home())
-config_path = Path(Path.home(), '.mcglobusapi', 'config_testing.ini')
-
+home = os_path.expanduser("~")
+config_path = os_path.join(home, '.globus', 'config_testing.ini')
 config = configparser.ConfigParser()
 config.read(str(config_path))
 
 CLIENT_ID = config['sdk']['id']
 # AUTH_CODE = config['sdk']['auth']
 
-TOKEN_FILE_PATH = Path(Path.home(), '.mcglobusapi', 'refresh-testing-tokens.json')
-REDIRECT_URI = 'https://auth.mcglobusapi.org/v2/web/auth-code'
+TOKEN_FILE_PATH = os_path.join(home, '.globus', 'refresh-testing-tokens.json')
+REDIRECT_URI = 'https://auth.globus.org/v2/web/auth-code'
 SCOPES = ('openid email profile '
-          'urn:mcglobusapi:auth:scope:transfer.api.mcglobusapi.org:all')
+          'urn:globus:auth:scope:transfer.api.globus.org:all')
 
 SOURCE_NAME = 'Weymouth Mac Desktop'
 SHARING_ENDPOINT_NAME = "Sharing on Weymouth Mac Desktop"
@@ -99,7 +98,7 @@ def get_transfer_interface():
     try:
         # if we already have tokens, load and use them
         tokens = load_tokens_from_file(TOKEN_FILE_PATH)
-    except:
+    except IOError:
         pass
 
     if not tokens:
@@ -108,13 +107,13 @@ def get_transfer_interface():
 
         try:
             save_tokens_to_file(TOKEN_FILE_PATH, tokens)
-        except:
+        except IOError:
             pass
 
     if not tokens:
         return None
 
-    transfer_tokens = tokens['transfer.api.mcglobusapi.org']
+    transfer_tokens = tokens['transfer.api.globus.org']
 
     auth_client = NativeAppAuthClient(client_id=CLIENT_ID)
 
@@ -131,14 +130,14 @@ def get_transfer_interface():
 
 
 def create_shared_ep(transfer, base_ep_name, path, shared_ep_name):
-    id = get_ep_id(transfer, base_ep_name)
-    if not id:
+    endpoint_id = get_ep_id(transfer, base_ep_name)
+    if not endpoint_id:
         print("Can not find base ep to create sharing: " + base_ep_name)
         return None
     shared_ep_data = {
         "DATA_TYPE": "shared_endpoint",
         "display_name": shared_ep_name,
-        "host_endpoint": id,
+        "host_endpoint": endpoint_id,
         "host_path": path,
     }
     create_result = transfer.create_shared_endpoint(shared_ep_data)
@@ -168,6 +167,7 @@ def acl_rule_exists(transfer, user_to_add, endpoint_id, endpoint_path):
                 and rule['path'] == endpoint_path:
             found = rule
     return found
+
 
 def acl_change_rule_permissions(transfer, endpoint_id, rule_id, permissions):
     rule_data = {
