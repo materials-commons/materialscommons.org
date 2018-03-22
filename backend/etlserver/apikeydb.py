@@ -1,6 +1,6 @@
 import threading
 
-from DB import DbConnection
+from .DB import DbConnection
 
 _lock = threading.Lock()
 _apikeys = {}

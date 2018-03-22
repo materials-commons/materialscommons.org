@@ -1,6 +1,6 @@
 import sys
 
-from mcexceptions import RequiredAttributeException
+from .mcexceptions import RequiredAttributeException
 
 
 def msg(message):

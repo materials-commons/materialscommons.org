@@ -2,13 +2,13 @@ import argparse
 import datetime
 import os
 import sys
-from backend.etlserver import Path
+from .. import Path
 
 from materials_commons.api import create_project, get_all_templates
 from materials_commons.api import File as FileRecord
-from backend.etlserver.common.util import _normalise_property_name
-from backend.etlserver.common.worksheet_data import ExcelIO
-from backend.etlserver.common.metadata import Metadata
+from ..common.util import _normalise_property_name
+from ..common.worksheet_data import ExcelIO
+from ..common.metadata import Metadata
 
 
 class BuildProjectExperiment:

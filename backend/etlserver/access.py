@@ -1,7 +1,7 @@
 from flask import request
-import mcexceptions
-import apikeydb
-from DB import DbConnection
+from .mcexceptions import AccessNotAllowedException
+from . import apikeydb
+from .DB import DbConnection
 
 _user_access_matrix = {}
 _admins = []
@@ -9,7 +9,7 @@ _admins = []
 
 def check(user, owner, project_id="Unknown"):
     if not allowed(user, owner, project_id):
-        raise mcexceptions.AccessNotAllowedException(project_id)
+        raise AccessNotAllowedException(project_id)
 
 
 def reset():

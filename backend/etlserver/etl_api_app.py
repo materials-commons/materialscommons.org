@@ -1,12 +1,23 @@
 import json
 
-from flask import Flask, request, g
+from flask import Flask, flash, request, redirect, url_for
 
-from DB import DbConnection
-from api_key import apikey
+from .DB import DbConnection
+from .api_key import apikey
+from .util import msg as util_msg
+
+from .elt.input_spreadsheet import BuildProjectExperiment
 
 app = Flask(__name__.split('.')[0])
 
+import os
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = '/tmp/test-uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = set(['xlsx'])
+
+from materials_commons.api import _use_remote as use_remote
 
 def format_as_json_return(what):
     if 'format' in request.args:
@@ -35,20 +46,61 @@ def hello_world():
 @app.route('/test')
 @apikey
 def setup_test():
-    return {
-        "url": g.python_api_remote.config.mcurl,
-        "apikey": g.python_api_remote.config.mcapikey
-    }
-
-
-from materials_commons.api import _Config as Config
-from materials_commons.api import _Remote as Remote
-
-
-def set_global_python_api_remote(apikey):
-    config = Config(override_config={
-        "apikey": apikey,
-        "mcurl": "http://mcdev.localhost/api"
+    remote = use_remote()
+    return format_as_json_return({
+        "url": remote.config.mcurl,
+        "apikey": remote.config.mcapikey
     })
-    remote = Remote(config=config)
-    g.python_api_remote = remote
+
+@app.route('/fixed')
+@apikey
+def upload_fixed_spreadsheet():
+    builder = BuildProjectExperiment()
+    builder.set_rename_is_ok(True)
+    builder.build("/Users/weymouth/Desktop/input.xlsx", None)
+    util_msg("Done.")
+    return format_as_json_return({"project_id": builder.project.id})
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/uploadtest', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            builder = BuildProjectExperiment()
+            builder.set_rename_is_ok(True)
+            builder.build(file_path, None)
+            util_msg("Done.")
+            return format_as_json_return({"project_id": builder.project.id})
+
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    '''
+
+
+from flask import send_from_directory
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)

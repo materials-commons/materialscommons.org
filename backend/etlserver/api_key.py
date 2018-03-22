@@ -1,11 +1,12 @@
 from flask import request, g
 from functools import wraps, partial
-import apikeydb
-import error
-import access
-import mcexceptions
+from . import apikeydb
+from . import error
+from . import access
+from . import mcexceptions
 from materials_commons.api import _Config as Config
 from materials_commons.api import _Remote as Remote
+from materials_commons.api import _set_remote as set_remote
 
 
 def apikey(method=None, shared=False):
@@ -24,7 +25,7 @@ def apikey(method=None, shared=False):
             access.check(apiuser, user)
         elif apiuser != user:
             raise mcexceptions.AccessNotAllowedException()
-        # set_global_python_api_remote(apikey)
+        set_global_python_api_remote(apikey)
         return method(*args, **kwargs)
 
     return wrapper
@@ -36,4 +37,4 @@ def set_global_python_api_remote(apikey):
         "mcurl": "http://mcdev.localhost/api"
     })
     remote = Remote(config=config)
-    g.python_api_remote = remote
+    set_remote(remote)
