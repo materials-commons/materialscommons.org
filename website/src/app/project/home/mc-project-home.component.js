@@ -310,19 +310,38 @@ class DeleteExperimentsDialogController {
 
 class EtlUploadDialogController {
     /*@ngInject*/
-    constructor($mdDialog, toast, User) {
+    constructor($mdDialog, Upload, toast, User) {
         this.$mdDialog = $mdDialog;
+        this.Upload = Upload;
         this.toast = toast;
-        this.user = User.u();
+        this.User = User;
+        this.user_id = User.u();
     }
 
     done() {
-        console.log("EtlUploadDialogController - Done")
+        console.log("EtlUploadDialogController - Done");
         this.$mdDialog.cancel();
+        return this.Upload.upload({
+                url: `api/etl/uploadtest/?apikey=${this.User.apikey()}`,
+                data: {file: f.file}
+            }).then(
+                (uploaded) => {
+                    console.log("upload completed", uploaded.data);
+                    uploaded.data;
+                },
+                (e) => {
+                    console.log("upload failed", e);
+                    e;
+                },
+                (evt) => {
+                    console.log("upload progress", evt)
+                    f.progress = 100.0 * evt.loaded / evt.total;
+                }
+            )
     }
 
     cancel() {
-        console.log("EtlUploadDialogController - Cancel")
+        console.log("EtlUploadDialogController - Cancel");
         this.$mdDialog.cancel();
     }
 }
