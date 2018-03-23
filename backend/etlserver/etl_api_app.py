@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, request, redirect
 
 from .DB import DbConnection
 from .api_key import apikey
@@ -15,7 +15,8 @@ from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = '/tmp/test-uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-ALLOWED_EXTENSIONS = set(['xlsx'])
+ALLOWED_EXTENSIONS = {'xlsx'}
+
 
 from materials_commons.api import _use_remote as use_remote
 
@@ -68,6 +69,8 @@ def allowed_file(filename):
 
 @app.route('/uploadtest', methods=['GET', 'POST'])
 def upload_file():
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        return {"status": "error", "Message": "No upload folder: system misconfigured"}
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -79,28 +82,23 @@ def upload_file():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
             builder = BuildProjectExperiment()
             builder.set_rename_is_ok(True)
             builder.build(file_path, None)
             util_msg("Done.")
             return format_as_json_return({"project_id": builder.project.id})
 
+    apikey_value =
     return '''
     <!doctype html>
     <title>Upload new File</title>
     <h1>Upload new File</h1>
     <form method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
+        <input type=hidden name=apikey value='$'
+         <input type=file name=file>
          <input type=submit value=Upload>
     </form>
     '''
 
-
-from flask import send_from_directory
-
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
