@@ -62,6 +62,19 @@ class MCProjectDatasetComponentController {
             }
         });
     }
+
+    editProcess(process, sample) {
+        this.$mdDialog.show({
+            templateUrl: 'app/components/project/mc-project-dataset/edit-sample-process-dialog.html',
+            controller: EditSampleProcessDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                sample: sample,
+                process: process
+            }
+        });
+    }
 }
 
 class EditSampleDialogController {
@@ -110,6 +123,21 @@ class EditSampleDialogController {
                 samples: 'S1XKG, S1XKG_400'
             },
         ];
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class EditSampleProcessDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
     }
 
     done() {
