@@ -51,8 +51,9 @@ class MCProjectDatasetsComponentController {
 
 class CreateNewDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, $state) {
         this.$mdDialog = $mdDialog;
+        this.$state = $state;
         this.experiments = [
             {
                 selected: false,
@@ -113,6 +114,7 @@ class CreateNewDatasetDialogController {
 
     done() {
         this.$mdDialog.hide();
+        this.$state.go('project.datasets.dataset2');
     }
 
     cancel() {
