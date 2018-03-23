@@ -41,7 +41,7 @@
                         <md-checkbox aria-label="included" ng-model="sample.selected"></md-checkbox>
                     </td>
                     <td md-cell>{{sample.name}}</td>
-                    <td md-cell><a ng-click="null">EDIT</a></td>
+                    <td md-cell><a ng-click="$ctrl.editSample(sample)">EDIT</a></td>
                     <td md-cell ng-repeat="process in sample.processes track by $index">
                         <a style="background-color:green; color: green; height:10px;" ng-show="process">hello</a>
                     </td>

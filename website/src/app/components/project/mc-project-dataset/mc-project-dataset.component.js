@@ -1,6 +1,8 @@
 class MCProjectDatasetComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+
         this.headers = [
             "Heat Treatment",
             "Heat Treatment",
@@ -47,6 +49,75 @@ class MCProjectDatasetComponentController {
             }
         }
         return processes;
+    }
+
+    editSample(sample) {
+        this.$mdDialog.show({
+            templateUrl: 'app/components/project/mc-project-dataset/edit-sample-dialog.html',
+            controller: EditSampleDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                sample: sample
+            }
+        });
+    }
+}
+
+class EditSampleDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.headers = [
+            "Heat Treatment",
+            "SEM",
+            "Low Cycle Fatigue",
+            "EBSD",
+            "TEM",
+            "Cogging",
+            "TEM",
+        ];
+
+        this.files = [
+            {
+                selected: false,
+                name: 'hardeningdata.xls',
+                path: 'project1/hardening tests',
+                samples: 'E1XKG'
+            },
+            {
+                selected: false,
+                name: 'crack.tiff',
+                path: 'project1/hardening tests',
+                samples: 'S1XKG'
+            },
+            {
+                selected: false,
+                name: 'sem.odg',
+                path: 'project1/sem runs/hardening',
+                samples: 'S1XKG_400'
+            },
+            {
+                selected: false,
+                name: 'sem graphs.xls',
+                path: 'project1/sem runs/hardening',
+                samples: 'S1XKG_400'
+            },
+            {
+                selected: false,
+                name: 'final_results.xls',
+                path: 'project1/hardening tests/results',
+                samples: 'S1XKG, S1XKG_400'
+            },
+        ];
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 
