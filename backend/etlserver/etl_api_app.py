@@ -67,38 +67,34 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/uploadtest', methods=['GET', 'POST'])
+@app.route('/uploadtest', methods=['POST'])
 def upload_file():
+    util_msg("uploadtest - starting")
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        util_msg("uploadtest - no upload folder")
         return {"status": "error", "Message": "No upload folder: system misconfigured"}
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit a empty part without filename
-        if file.filename == '':
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-            builder = BuildProjectExperiment()
-            builder.set_rename_is_ok(True)
-            builder.build(file_path, None)
-            util_msg("Done.")
-            return format_as_json_return({"project_id": builder.project.id})
-
-    apikey_value =
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-        <input type=hidden name=apikey value='$'
-         <input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
+    # check if the post request has the file part
+    if 'file' not in request.files:
+        util_msg("uploadtest - no file")
+        return {"argh": "no file"}
+    file = request.files['file']
+    # if user does not select file, browser also
+    # submit a empty part without filename
+    if file.filename == '':
+        util_msg("uploadtest - empty file")
+        return {"argh": "empty file"}
+    if file and allowed_file(file.filename):
+        util_msg("uploadtest - file accepted")
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        util_msg("uploadtest - file saved to " + file_path)
+        builder = BuildProjectExperiment()
+        builder.set_rename_is_ok(True)
+        util_msg("uploadtest - build starting...")
+        builder.build(file_path, None)
+        util_msg("uploadtest - done")
+        return format_as_json_return({"project_id": builder.project.id})
+    util_msg("uploadtest - file type not accepted")
+    return {"argh": "file type not accepted"}
 
