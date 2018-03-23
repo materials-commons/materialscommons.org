@@ -166,6 +166,24 @@ class MCProjectHomeComponentController {
             this.$state.go("project.experiment.workflow", {experiment_id: e.id});
         }
     }
+
+    etlStart(){
+        console.log("MCProjectHomeComponentController - etlStart()");
+        this.$mdDialog.show({
+            templateUrl: 'app/project/home/mc-etl-upload-dialog.html',
+            controller: EtlUploadDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true
+        }).then(
+            () => {
+                console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
+            },
+            () => {
+                console.log("MCProjectHomeComponentController - etlStart() - dialog canceled");
+            }
+        );
+
+    }
 }
 
 class CreateNewExperimentDialogController {
@@ -286,6 +304,25 @@ class DeleteExperimentsDialogController {
     }
 
     cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class EtlUploadDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, toast, User) {
+        this.$mdDialog = $mdDialog;
+        this.toast = toast;
+        this.user = User.u();
+    }
+
+    done() {
+        console.log("EtlUploadDialogController - Done")
+        this.$mdDialog.cancel();
+    }
+
+    cancel() {
+        console.log("EtlUploadDialogController - Cancel")
         this.$mdDialog.cancel();
     }
 }
