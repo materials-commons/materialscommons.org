@@ -173,10 +173,15 @@ class MCProjectHomeComponentController {
             templateUrl: 'app/project/home/mc-etl-upload-dialog.html',
             controller: EtlUploadDialogController,
             controllerAs: '$ctrl',
-            bindToController: true
+            bindToController: true,
+            locals: {
+                project: this.project
+            }
         }).then(
             () => {
                 console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
+                // TODO: here!!
+                // $state.go('project.experiments.experiment', {experiment_id: 'abc123'})
             },
             () => {
                 console.log("MCProjectHomeComponentController - etlStart() - dialog canceled");
@@ -316,37 +321,57 @@ class EtlUploadDialogController {
         this.toast = toast;
         this.User = User;
         this.user_id = User.u();
+        this.name = "";
+        this.description = ""
         this.files = [];
     }
 
     done() {
         console.log("EtlUploadDialogController - Done");
-        console.log("Files", this.files);
+        let data = {};
         let f = this.files[0];
-        console.log("File", f);
+        data.file = f;
+        data.project_id = this.project.id;
+        data.name = this.name;
+        data.description = this.description;
+        console.log("data to send = ", data);
+        this.isUploading = true;
         return this.Upload.upload({
                 url: `api/etl/uploadtest?apikey=${this.User.apikey()}`,
-                data: {file: f}
+                data: data
             }).then(
                 (uploaded) => {
                     console.log("upload completed", uploaded.data);
                     this.$mdDialog.hide(uploaded.data);
+                    this.isUploading=false;
                 },
                 (e) => {
                     console.log("upload failed", e);
+                    if (e.status === 502) {
+                        console.log("Service unavailable: 502");
+                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.")
+                    } else if (e.status > 200) {
+                        console.log("Service unavailable: " + e.status);
+                        this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.")
+                    }
                     this.$mdDialog.cancel(e);
+                    this.isUploading=false;
                 },
                 (evt) => {
-                    console.log("upload progress", evt);
                     f.progress = 100.0 * evt.loaded / evt.total;
+                    console.log("upload progress", f.progress);
                 }
             )
-
-
     }
 
     cancel() {
-        console.log("EtlUploadDialogController - Cancel");
+        let data = {};
+        let f = this.files[0];
+        data.file = f;
+        data.project_id = this.project.id;
+        data.name = this.experiment_name;
+        data.description = this.description;
+        console.log("data: ", data);
         this.$mdDialog.cancel();
     }
 }
