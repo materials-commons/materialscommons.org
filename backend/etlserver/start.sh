@@ -19,6 +19,8 @@ set_locations() {
 }
 
 set_locations
+echo "Setting upload folder: /tmp/test-uploads"
+mkdir -p /tmp/test-uploads
 echo "DIR = ${DIR}"
 echo "BACKEND = ${BACKEND}"
 source ${BACKEND}/env/dev.sh
