@@ -310,14 +310,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/dataset',
             template: '<mc-project-dataset></mc-project-dataset>'
         })
-        .state('project.datasets.dataset2grouped', {
-            url: '/grouped',
-            template: '<mc-p-project-dataset-grouped></mc-p-project-dataset-grouped>'
-        })
-        .state('project.datasets.dataset2files', {
-            url: '/files',
-            template: '<mc-p-project-dataset-files></mc-p-project-dataset-files>'
-        })
         .state('project.settings', {
             url: '/settings',
             template: '<mc-project-settings></mc-project-settings>'
