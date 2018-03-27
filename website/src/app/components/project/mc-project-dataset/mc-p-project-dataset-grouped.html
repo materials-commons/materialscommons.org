@@ -21,7 +21,7 @@
                 <td md-cell>{{sample.name}}</td>
                 <td md-cell><a ng-click="null">EDIT</a></td>
                 <td md-cell ng-repeat="process in sample.processes track by $index">
-                    <a style="background-color:green; color: green; height:10px;" ng-show="process">hello</a>
+                    <a style="background-color:green; color: green; height:10px;" ng-show="process" ng-click="$ctrl.editGroupedProcess($ctrl.headers[$index])">hello</a>
                 </td>
             </tr>
             </tbody>

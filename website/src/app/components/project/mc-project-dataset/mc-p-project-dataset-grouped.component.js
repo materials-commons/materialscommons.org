@@ -1,6 +1,8 @@
 class MCPProjectDatasetGroupedComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+
         this.headers = [
             "Heat Treatment",
             "Heat Treatment",
@@ -58,6 +60,66 @@ class MCPProjectDatasetGroupedComponentController {
             }
         }
         return processes;
+    }
+
+    editGroupedProcess(process) {
+        this.$mdDialog.show({
+            templateUrl: 'app/components/project/mc-project-dataset/edit-grouped-sample-process-dialog.html',
+            controller: EditGroupedSampleProcessDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                process: process
+            }
+        });
+    }
+}
+
+class EditGroupedSampleProcessDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+
+        this.files = [
+            {
+                selected: false,
+                name: 'hardeningdata.xls',
+                path: 'project1/hardening tests',
+                samples: 'Sample_1'
+            },
+            {
+                selected: false,
+                name: 'crack.tiff',
+                path: 'project1/hardening tests',
+                samples: 'Sample_1'
+            },
+            {
+                selected: false,
+                name: 'sem.odg',
+                path: 'project1/sem runs/hardening',
+                samples: 'Sample_2'
+            },
+            {
+                selected: false,
+                name: 'sem graphs.xls',
+                path: 'project1/sem runs/hardening',
+                samples: 'Sample_2'
+            },
+            {
+                selected: false,
+                name: 'final_results.xls',
+                path: 'project1/hardening tests/results',
+                samples: 'Sample_3'
+            },
+        ];
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 
