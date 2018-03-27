@@ -2,7 +2,7 @@
     <div layout="row" layout-fill>
         <md-content flex layout="column" layout-align="start stretch"
                     style="padding-top:8px; margin-right:10px">
-            <div layout="row" layout-align="space-between center" style="margin-bottom: 10px">
+            <div layout="row" layout-align="space-between center" style="margin-bottom: 20px; margin-top: 15px">
                 <div>
                     <md-radio-group layout="row" class="text-uppercase" ng-change="$ctrl.updateStatus()"
                                     ng-model="$ctrl.experiment.status">
@@ -21,12 +21,14 @@
                        ng-change="$ctrl.updateName()">
             </md-input-container>
 
-            <md-input-container>
+            <md-input-container style="margin-bottom:0">
                 <label>Description</label>
                 <textarea ng-model="$ctrl.experiment.description"
                           ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
                           ng-change="$ctrl.updateDescription()"></textarea>
             </md-input-container>
+
+            <h3 class="md-subhead" style="margin-top:0">Owner: {{$ctrl.experiment.owner_details.fullname}}</h3>
 
             <mc-experiment-details-field experiment="$ctrl.experiment" heading="Goals" label="Goal"
                                          field="goals"></mc-experiment-details-field>
