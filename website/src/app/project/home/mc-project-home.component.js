@@ -337,7 +337,7 @@ class EtlUploadDialogController {
         console.log("data to send = ", data);
         this.isUploading = true;
         return this.Upload.upload({
-                url: `api/etl/uploadtest?apikey=${this.User.apikey()}`,
+                url: `api/etl/upload?apikey=${this.User.apikey()}`,
                 data: data
             }).then(
                 (uploaded) => {

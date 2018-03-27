@@ -2,9 +2,12 @@
 from os import environ
 import optparse
 import signal
+import pkg_resources
 
 from etlserver import access, apikeydb
 from etlserver.etl_api_app import app
+
+from materials_commons import version
 
 _HOST = environ.get('MC_SERVICE_HOST') or 'localhost'
 
@@ -20,4 +23,7 @@ if __name__ == '__main__':
                       help="Port to run on", default=5032)
     (options, args) = parser.parse_args()
     signal.signal(signal.SIGHUP, reload_users)
+    print("--- materials_commons version check ---")
+    print(pkg_resources.get_distribution("materials_commons").version)
+    print("--- materials_commons version check ---")
     app.run(debug=True, host=_HOST, port=int(options.port), processes=1)
