@@ -19,6 +19,7 @@ function* getAllForProject(projectID) {
 function addExperimentComputed(rql) {
     rql = rql.merge((experiment) => {
         return {
+            owner_details: r.table('users').get(experiment('owner')).pluck('fullname'),
                 tasks: r.table('experiment2experimenttask')
                     .getAll(experiment('id'), {index: 'experiment_id'})
                     .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
