@@ -47,6 +47,7 @@
                         <tr md-row>
                             <!--<th md-column md-order-by="status">Status</th>-->
                             <th md-column md-order-by="name">Experiment</th>
+                            <th md-column md-order-by="">Owner</th>
                             <th md-column md-order-by="mtime">Modified</th>
                             <th md-column>
                                 <span tooltip="Files"><i class="fa fa-fw fa-files-o"></i> F</span>
@@ -78,6 +79,9 @@
 
                                     <span>{{experiment.description}}</span>
                                 </div>
+                            </td>
+                            <td md-cell>
+                                {{experiment.owner_details.fullname}}
                             </td>
                             <td md-cell>
                                 {{experiment.mtime | toDateString}}
