@@ -24,6 +24,7 @@ mkdir -p /tmp/test-uploads
 echo "DIR = ${DIR}"
 echo "BACKEND = ${BACKEND}"
 source ${BACKEND}/env/dev.sh
+source ~/PythonEnvs/python3dev/bin/activate
 
 cd ${BACKEND}
 ${BACKEND}/mcetlserver.py
