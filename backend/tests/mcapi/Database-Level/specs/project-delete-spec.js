@@ -192,23 +192,27 @@ function* createRenamedDemoProject() {
 
 function* testDatasets(options) {
 
-    let count = 0;
+    let datasetCount = 0;
+    let processCount = 0;
+    let experimentCount = 0;
     if (options && options.assertExists) {
-        count = 2;
+        datasetCount = 2;
+        processCount = 10;
+        experimentCount = 2;
     }
 
     let check = yield experimentDatasets.getDatasetsForExperiment(experiment.id);
     let dataset_list = check.val;
     assert.isOk(dataset_list);
-    assert.equal(dataset_list.length, count);
+    assert.equal(dataset_list.length, datasetCount);
 
     check = yield r.table('dataset2process').getAll(r.args(datasetIdList), {index: 'dataset_id'});
     assert.isOk(check);
-    assert.equal(check.length, count);
+    assert.equal(check.length, processCount);
 
     check = yield r.table('experiment2dataset').getAll(r.args(datasetIdList), {index: 'dataset_id'});
     assert.isOk(check);
-    assert.equal(check.length, count);
+    assert.equal(check.length, experimentCount);
 }
 
 function* checkTally(tally, projectId) {
