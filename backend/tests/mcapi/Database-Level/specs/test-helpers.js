@@ -204,7 +204,7 @@ let createDatasetList = function* (experiment, processList, userId) {
     results = yield experimentDatasets.createDatasetForExperiment(experiment.id, userId, datasetArgs);
     dataset = results.val;
 
-    yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete)
+    yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete);
 
     results = yield experimentDatasets.getDatasetsForExperiment(experiment.id);
     let dataset_list = results.val;
