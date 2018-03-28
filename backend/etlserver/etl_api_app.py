@@ -1,7 +1,7 @@
 import json
 import pkg_resources
 from flask import Flask, request
-from flask.ext.api import status
+from flask_api import status
 
 from .DB import DbConnection
 from .api_key import apikey
