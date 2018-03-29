@@ -24,7 +24,7 @@
                 <tbody md-body>
                 <tr md-row class="md-row-hover" ng-repeat="file in $ctrl.files track by $index">
                     <td md-cell>
-                        <md-checkbox ng-model="file.selected"></md-checkbox>
+                        <md-checkbox ng-model="file.selected" aria-label="select file"></md-checkbox>
                     </td>
                     <td md-cell>{{file.name}}</td>
                     <td md-cell>{{file.path}}</td>
