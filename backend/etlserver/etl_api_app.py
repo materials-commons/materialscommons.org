@@ -1,3 +1,5 @@
+from os import environ
+from os import path
 import json
 import pkg_resources
 from flask import Flask, request
@@ -14,12 +16,15 @@ app = Flask(__name__.split('.')[0])
 import os
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/tmp/test-uploads'
+_MCDIR_PATH = environ.get('MCDIR') or '/tmp'
+
+UPLOAD_FOLDER = path.join(_MCDIR_PATH, "etlStaging")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'xlsx'}
 
 
 from materials_commons.api import _use_remote as use_remote
+
 
 def format_as_json_return(what):
     if 'format' in request.args:
@@ -51,6 +56,7 @@ def get_version():
         "version": pkg_resources.get_distribution("materials_commons").version
     })
 
+
 @app.route('/test')
 @apikey
 def setup_test():
@@ -59,6 +65,7 @@ def setup_test():
         "url": remote.config.mcurl,
         "apikey": remote.config.mcapikey
     })
+
 
 @app.route('/fixed')
 @apikey
@@ -69,59 +76,86 @@ def upload_fixed_spreadsheet():
     util_msg("Done.")
     return format_as_json_return({"project_id": builder.project.id})
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+@app.route('/parts/stage', methods=['POST'])
+def stage_excel_file():
+    util_msg("/parts/stage - starting")
+    uploader = UploadUtility()
+    (message_or_ret, status) = uploader.get_file()
+    if status:
+        return message_or_ret, status
+    excel_file_path = message_or_ret
+    util_msg(excel_file_path)
+    util_msg("/parts/stage - done")
+    return format_as_json_return({'status': 'file_uploaded'})
+
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     util_msg("etl file upload - starting")
-    if not os.path.exists(app.config['UPLOAD_FOLDER']):
-        message = "etl file upload - no upload folder"
-        util_msg(message)
-        return message, status.HTTP_503_SERVICE_UNAVAILABLE
-    # check if the post request has the file part
-    if 'file' not in request.files:
-        message = "etl file upload - no file"
-        util_msg(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    file = request.files['file']
-    # if user does not select file, browser also
-    # submits a empty part without filename
-    if file.filename == '':
-        message = "etl file upload - empty file"
-        util_msg(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    name = request.form.get('name')
-    project_id = request.form.get("project_id")
-    description = request.form.get("description")
-    util_msg("etl file upload - request data")
-    util_msg(name)
-    util_msg(project_id)
-    util_msg(description)
-    if not name:
-        message = "etl file upload - experiment name missing, required"
-        util_msg(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    if not project_id:
-        message = "etl file upload - project_id missing, required"
-        util_msg(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    if file and allowed_file(file.filename) and name and project_id:
+    uploader = UploadUtility()
+    (message_or_ret, status) = uploader.get_file()
+    if status:
+        return message_or_ret, status
+    file_path = message_or_ret
+    util_msg(file_path)
+    util_msg("etl file upload - file saved to " + file_path)
+    builder = BuildProjectExperiment()
+    builder.set_rename_is_ok(True)
+    builder.preset_project_id(project_id)
+    builder.preset_experiment_name_description(name, description)
+    util_msg("etl file upload - build starting...")
+    builder.build(file_path, None)
+    util_msg("etl file upload - done")
+    return format_as_json_return({"project_id": builder.project.id})
+
+class UploadUtility:
+    def __init__(self):
+        pass
+
+    def get_file(self):
+        if not os.path.exists(app.config['UPLOAD_FOLDER']):
+            message = "etl file upload - no upload folder"
+            util_msg(message)
+            return message, status.HTTP_503_SERVICE_UNAVAILABLE
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            message = "etl file upload - no file"
+            util_msg(message)
+            return message, status.HTTP_400_BAD_REQUEST
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submits a empty part without filename
+        if file.filename == '':
+            message = "etl file upload - empty file"
+            util_msg(message)
+            return message, status.HTTP_400_BAD_REQUEST
+        name = request.form.get('name')
+        project_id = request.form.get("project_id")
+        description = request.form.get("description")
+        util_msg("etl file upload - request data")
+        util_msg(name)
+        util_msg(project_id)
+        util_msg(description)
+        if not name:
+            message = "etl file upload - experiment name missing, required"
+            util_msg(message)
+            return message, status.HTTP_400_BAD_REQUEST
+        if not project_id:
+            message = "etl file upload - project_id missing, required"
+            util_msg(message)
+            return message, status.HTTP_400_BAD_REQUEST
+        if not allowed_file(file.filename):
+            message = "etl file upload - wrong file extension, must be '*.xlsx'"
+            message += ": " + file.filename
         util_msg("etl file upload - file accepted")
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        util_msg("etl file upload - file saved to " + file_path)
-        builder = BuildProjectExperiment()
-        builder.set_rename_is_ok(True)
-        builder.preset_project_id(project_id)
-        builder.preset_experiment_name_description(name, description)
-        util_msg("etl file upload - build starting...")
-        builder.build(file_path, None)
         util_msg("etl file upload - done")
-        return format_as_json_return({"project_id": builder.project.id})
-    util_msg("etl file upload - file type not accepted")
-    return {"argh": "file type not accepted"}
-
+        return file_path, None
