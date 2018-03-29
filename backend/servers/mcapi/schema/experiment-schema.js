@@ -271,7 +271,7 @@ module.exports = function (schema) {
 
             unit: {
                 type: 'string',
-                nullable: false
+                nullable: true
             },
 
             value: {
@@ -279,7 +279,9 @@ module.exports = function (schema) {
             }
         });
 
-        templatePropertySchema.setDefaults({});
+        templatePropertySchema.setDefaults({
+            unit: ''
+        });
         templatePropertySchema.validateAsync = promise.promisify(templatePropertySchema.validate);
         return templatePropertySchema;
     }
