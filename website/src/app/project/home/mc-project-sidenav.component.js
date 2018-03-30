@@ -102,8 +102,8 @@ class MCProjectSidenavComponentController {
         return this.mcRouteState.getRouteName().startsWith('project.experiment.datasets');
     }
 
-    publishExperiment() {
-
+    isProjectDatasetsRoute() {
+        return this.mcRouteState.getRouteName().startsWith('project.datasets');
     }
 }
 

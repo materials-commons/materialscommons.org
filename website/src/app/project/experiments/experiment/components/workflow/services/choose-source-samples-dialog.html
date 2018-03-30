@@ -10,7 +10,7 @@
             <md-button ng-click="$ctrl.selectAll()">Select All</md-button>
         </div>
         <div flex="100" ng-repeat="sample in $ctrl.samples">
-            <md-checkbox ng-model="sample.selected">{{sample.name}}</md-checkbox>
+            <md-checkbox ng-model="sample.selected" aria-label="select sample">{{sample.name}}</md-checkbox>
         </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">

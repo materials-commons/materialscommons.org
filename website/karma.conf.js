@@ -28,7 +28,7 @@ function listFiles() {
         };
     });
 
-    files.push('node_modules/angular-mocks/angular-mocks.js');  // to load modules for tests
+    //files.push('node_modules/angular-mocks/angular-mocks.js');  // to load modules for tests
 
     // external modules
     files.push({
@@ -102,6 +102,8 @@ function listFiles() {
         include: true,
         watched: true
     });
+
+    files.push({pattern: '.tmp/serve/app/index.module.js'});
 
     return files;
 }
