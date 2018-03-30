@@ -1,0 +1,35 @@
+<md-dialog flex="30">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            ETL - Create new experiment
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <form layout="column" class="dialog-form">
+            For the current project ('{{$ctrl.project.name}}') ...
+            <br />
+            <md-input-container md-no-float>
+                <label>Experiment Name</label>
+                <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
+            </md-input-container>
+            <md-input-container md-no-float>
+                <label>Experiment Description</label>
+                <input ng-required="false" ng-model="$ctrl.description" type="text" on-enter="ctrl.submit()">
+            </md-input-container>
+            <div ng-if="($ctrl.files.length > 0)">
+                Using the Excel Spreadsheet: <b><em>{{$ctrl.files[0].name}}</em></b>.
+            </div>
+            <div ng-if="($ctrl.files.length === 0)">
+                Drag an Excel Spreadsheet file into box, or...
+                <div ngf-select ngf-multiple="false" ngf-drop ngf-keep="'distinct'"
+                     ng-model="$ctrl.files" class="drop-box pointer text-uppercase">
+                    click to select Excel file for upload
+                </div>
+            </div>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-disabled="!(($ctrl.files.length > 0) && $ctrl.name)" ng-click="$ctrl.done()">Upload</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>
