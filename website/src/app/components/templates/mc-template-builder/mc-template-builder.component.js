@@ -35,6 +35,7 @@ class MCTemplateBuilderComponentController {
     static emptyTemplate() {
         return {
             name: '',
+            process_name: '',
             process_type: 'create',
             template_description: '',
             does_transform: false,
@@ -129,6 +130,7 @@ class MCTemplateBuilderComponentController {
         }
 
         if (!this.existingTemplate) {
+            this.template.process_name = this.template.name;
             this.templatesAPI.createTemplate(this.template).then(
                 () => {
                     this.templateLoaded = false;

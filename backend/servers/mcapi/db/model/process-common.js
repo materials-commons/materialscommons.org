@@ -142,6 +142,7 @@ function* updateProperties(properties) {
         } else {
             existingProperty.value = property.value;
             existingProperty.unit = property.unit;
+            existingProperty.units = property.units;
             existingProperty.description = property.description;
             yield r.table('setupproperties').get(property.id).update(existingProperty);
         }
