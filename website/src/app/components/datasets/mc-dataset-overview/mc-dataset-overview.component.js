@@ -29,7 +29,7 @@ class MCDatasetOverviewComponentController {
     showOthersUsefulDialog() {
         let dataset = this.dataset;
         return this.$mdDialog.show({
-            templateUrl: 'app/components/datasets/mc-dataset-overview/dialog-show-useful-others.html',
+            templateUrl: 'app/modals/dialog-show-useful-others.html',
             controller: ShowUsefulOtherDialogController,
             controllerAs: '$ctrl',
             bindToController: true,

@@ -41,7 +41,7 @@ class MCProjectDatasetsComponentController {
 
     createNewDataset() {
         this.$mdDialog.show({
-            templateUrl: 'app/components/project/mc-project-datasets/create-new-dataset-dialog.html',
+            templateUrl: 'app/modals/create-new-dataset-dialog.html',
             controller: CreateNewDatasetDialogController,
             controllerAs: '$ctrl',
             bindToController: true

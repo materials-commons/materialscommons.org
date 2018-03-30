@@ -53,7 +53,7 @@ class MCWorkflowAsTableUngroupedComponentController {
 
     editSample(sample) {
         this.$mdDialog.show({
-            templateUrl: 'app/components/project/mc-project-dataset/edit-sample-dialog.html',
+            templateUrl: 'app/modals/edit-sample-dialog.html',
             controller: EditSampleDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -65,7 +65,7 @@ class MCWorkflowAsTableUngroupedComponentController {
 
     editProcess(process, sample) {
         this.$mdDialog.show({
-            templateUrl: 'app/components/project/mc-project-dataset/edit-sample-process-dialog.html',
+            templateUrl: 'app/modals/edit-sample-process-dialog.html',
             controller: EditSampleProcessDialogController,
             controllerAs: '$ctrl',
             bindToController: true,

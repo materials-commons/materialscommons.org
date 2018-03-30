@@ -16,7 +16,7 @@ class MCFilesTableComponentController {
 
     showFile(file) {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
+            templateUrl: 'app/modals/show-file-dialog.html',
             controllerAs: '$ctrl',
             controller: ShowFileDialogController,
             multiple: true,

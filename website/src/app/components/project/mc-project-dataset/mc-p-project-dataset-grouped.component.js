@@ -64,7 +64,7 @@ class MCPProjectDatasetGroupedComponentController {
 
     editGroupedProcess(process) {
         this.$mdDialog.show({
-            templateUrl: 'app/components/project/mc-project-dataset/edit-grouped-sample-process-dialog.html',
+            templateUrl: 'app/modals/edit-grouped-sample-process-dialog.html',
             controller: EditGroupedSampleProcessDialogController,
             controllerAs: '$ctrl',
             bindToController: true,

@@ -101,7 +101,7 @@ class NavbarComponentController {
 
     loginOrRegister() {
         this.$mdDialog.show({
-            templateUrl: 'app/global.components/navbar/login-dialog.html',
+            templateUrl: 'app/modals/login-dialog.html',
             controller: MCLoginDialogController,
             controllerAs: '$ctrl',
             bindToController: true

@@ -51,7 +51,7 @@ class MCCommentsListComponentController {
 
     showAddDialog() {
         return this.$mdDialog.show({
-            templateUrl: 'app/components/comments/dialog-add-comment.html',
+            templateUrl: 'app/modals/dialog-add-comment.html',
             controller: AddEditDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -60,7 +60,7 @@ class MCCommentsListComponentController {
 
     showEditDialog(previousText) {
         return this.$mdDialog.show({
-            templateUrl: 'app/components/comments/dialog-edit-comment.html',
+            templateUrl: 'app/modals/dialog-edit-comment.html',
             controller: AddEditDialogController,
             controllerAs: '$ctrl',
             bindToController: true,

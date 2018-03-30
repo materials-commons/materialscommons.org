@@ -25,7 +25,7 @@ class MCProjectsComponentController {
 
     createNewProject() {
         this.$mdDialog.show({
-            templateUrl: 'app/components/projects/mc-projects/create-project-dialog.html',
+            templateUrl: 'app/modals/create-project-dialog.html',
             controller: CreateNewProjectDialogController,
             controllerAs: '$ctrl',
             bindToController: true

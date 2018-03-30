@@ -18,7 +18,7 @@ class MCShowSampleComponentController {
 
     showProcess(process) {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-process-dialog.html',
+            templateUrl: 'app/modals/show-process-dialog.html',
             controllerAs: '$ctrl',
             controller: ShowProcessDialogController,
             bindToController: true,

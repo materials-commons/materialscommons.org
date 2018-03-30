@@ -126,7 +126,7 @@ class MCProcessTemplateSectioningComponentController {
 
     addMultipleSamples() {
         this.$mdDialog.show({
-            templateUrl: 'app/global.components/process/add-multiple-sections-dialog.html',
+            templateUrl: 'app/modals/add-multiple-sections-dialog.html',
             controller: AddMultipleSectionsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
