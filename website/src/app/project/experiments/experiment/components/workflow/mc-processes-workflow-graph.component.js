@@ -402,7 +402,7 @@ class SelectProcessTemplateDialogController {
 }
 
 angular.module('materialscommons').component('mcProcessesWorkflowGraph', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-processes-workflow-graph.html',
+    template: require('./mc-processes-workflow-graph.html'),
     controller: MCProcessesWorkflowGraphComponentController,
     bindings: {
         processes: '<',

@@ -49,7 +49,7 @@ class MCCloneProcessSelectSamplesComponentController {
 
 
 angular.module('materialscommons').component('mcCloneProcessSelectSamples', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/services/mc-clone-process-select-samples.html',
+    template: require('./mc-clone-process-select-samples.html'),
     controller: MCCloneProcessSelectSamplesComponentController,
     bindings: {
         title: '@',

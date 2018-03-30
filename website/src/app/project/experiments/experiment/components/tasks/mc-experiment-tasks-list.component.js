@@ -6,7 +6,7 @@
  */
 
 angular.module('materialscommons').component('mcExperimentTasksList', {
-    templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks-list.html',
+    template: require('./mc-experiment-tasks-list.html'),
     controller: MCExperimentTasksListComponentController,
     bindings: {
         currentNode: '='
@@ -72,7 +72,7 @@ function MCExperimentTasksListDirDirective(RecursionHelper) {
         controller: MCExperimentTasksListDirDirectiveController,
         controllerAs: '$ctrl',
         bindToController: true,
-        templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks-list-dir.html',
+        template: require('./mc-experiment-tasks-list-dir.html'),
         compile: function(element) {
             return RecursionHelper.compile(element, function() {
             });

@@ -11,7 +11,7 @@ class MCProcessDetailsRoComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessDetailsRo', {
-    templateUrl: 'app/components/process/mc-process-details-ro/mc-process-details-ro.html',
+    template: require('./mc-process-details-ro.html'),
     controller: MCProcessDetailsRoComponentController,
     bindings: {
         process: '<'

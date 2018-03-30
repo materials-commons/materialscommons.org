@@ -1,6 +1,6 @@
 angular.module('materialscommons')
     .component('mcLogin', {
-        templateUrl: 'app/login/mc-login.html',
+        template: require('./mc-login.html'),
         controller: MCLoginController
     });
 

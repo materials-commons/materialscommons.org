@@ -16,7 +16,7 @@ class MCShowFileComponentController {
 }
 
 angular.module('materialscommons').component('mcShowFile', {
-    templateUrl: 'app/global.components/mc-show-file.html',
+    template: require('./mc-show-file.html'),
     controller: MCShowFileComponentController,
     bindings: {
         fileId: '<'

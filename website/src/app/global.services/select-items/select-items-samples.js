@@ -9,7 +9,7 @@ function selectItemsSamplesDirective() {
         controller: SelectItemsSamplesDirectiveController,
         controllerAs: 'ctrl',
         bindToController: true,
-        templateUrl: 'app/global.services/select-items/select-items-samples.html'
+        template: require('./select-items-samples.html')
     }
 }
 

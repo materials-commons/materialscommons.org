@@ -58,6 +58,6 @@ class MCDatasetWorkflowToolbarComponentController {
 }
 
 angular.module('materialscommons').component('mcDatasetWorkflowToolbar', {
-    templateUrl: 'app/components/workflow/mc-dataset-workflow/mc-dataset-workflow-toolbar.html',
+    template: require('./mc-dataset-workflow-toolbar.html'),
     controller: MCDatasetWorkflowToolbarComponentController
 });

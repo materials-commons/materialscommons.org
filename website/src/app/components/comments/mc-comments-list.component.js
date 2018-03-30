@@ -96,7 +96,7 @@ class MCCommentsListComponentController {
 }
 
 angular.module('materialscommons').component('mcCommentsList', {
-    templateUrl: 'app/components/comments/mc-comments-list.html',
+    template: require('./mc-comments-list.html'),
     controller: MCCommentsListComponentController,
     bindings: {
         target: "<",

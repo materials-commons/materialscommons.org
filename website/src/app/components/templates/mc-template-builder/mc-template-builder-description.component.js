@@ -6,7 +6,7 @@ class MCTemplateBuilderDescriptionComponentController {
 }
 
 angular.module('materialscommons').component('mcTemplateBuilderDescription', {
-    templateUrl: 'app/components/templates/mc-template-builder/mc-template-builder-description.html',
+    template: require('./mc-template-builder-description.html'),
     controller: MCTemplateBuilderDescriptionComponentController,
     bindings: {
         template: '<'

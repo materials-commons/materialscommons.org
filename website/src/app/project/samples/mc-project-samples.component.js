@@ -54,7 +54,7 @@ class NewSamplesDialogController {
 }
 
 angular.module('materialscommons').component('mcProjectSamples', {
-    templateUrl: 'app/project/samples/mc-project-samples.html',
+    template: require('./mc-project-samples.html'),
     controller: MCProjectSamplesComponentController,
     bindings: {
         samples: '='

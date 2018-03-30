@@ -140,7 +140,7 @@ class MCDatasetWorkflowGraphComponentController {
 }
 
 angular.module('materialscommons').component('mcDatasetWorkflowGraph', {
-    templateUrl: 'app/components/workflow/mc-dataset-workflow/mc-dataset-workflow-graph.html',
+    template: require('./mc-dataset-workflow-graph.html'),
     controller: MCDatasetWorkflowGraphComponentController,
     bindings: {
         dataset: '<'

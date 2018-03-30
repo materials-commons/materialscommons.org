@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcSample', {
-    templateUrl: 'app/project/samples/sample/mc-sample.html',
+    template: require('./mc-sample.html'),
     controller: MCSampleComponentController,
     bindings: {
         sampleId: '<',

@@ -16,7 +16,7 @@ class MCDatasetListComponentController {
 }
 
 angular.module('materialscommons').component('mcDatasetList', {
-    templateUrl: 'app/components/datasets/mc-dataset-list/mc-dataset-list.html',
+    template: require('./mc-dataset-list.html'),
     controller: MCDatasetListComponentController,
     bindings: {
         datasets: '<',

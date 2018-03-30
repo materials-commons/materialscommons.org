@@ -56,7 +56,7 @@ class ShowProcessDialogController {
 }
 
 angular.module('materialscommons').component('mcShowSample', {
-    templateUrl: 'app/global.components/mc-show-sample.html',
+    template: require('./mc-show-sample.html'),
     controller: MCShowSampleComponentController,
     bindings: {
         sampleId: '<'

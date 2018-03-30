@@ -6,7 +6,7 @@ class MCDirToolbarComponentController {
 }
 
 angular.module('materialscommons').component('mcDirToolbar', {
-    templateUrl: 'app/project/files/components/dir/mc-dir-toolbar.html',
+    template: require('./mc-dir-toolbar.html'),
     controller: MCDirToolbarComponentController,
     require: {
         mcDir: '^mcDir'

@@ -204,6 +204,6 @@ class MCLoginDialogController {
 }
 
 angular.module('materialscommons').component('navbar', {
-    templateUrl: 'app/global.components/navbar/navbar.html',
+    template: require('./navbar.html'),
     controller: NavbarComponentController
 });

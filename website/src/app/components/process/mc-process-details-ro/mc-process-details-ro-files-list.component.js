@@ -8,7 +8,7 @@ class MCProcessDetailsROFilesListComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessDetailsRoFilesList', {
-    templateUrl: 'app/components/process/mc-process-details-ro/mc-process-details-ro-files-list.html',
+    template: require('./mc-process-details-ro-files-list.html'),
     controller: MCProcessDetailsROFilesListComponentController,
     bindings: {
         files: '<'

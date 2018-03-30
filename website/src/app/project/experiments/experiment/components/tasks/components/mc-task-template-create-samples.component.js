@@ -94,7 +94,7 @@ class MCTaskTemplateCreateSamplesComponentController {
 }
 
 angular.module('materialscommons').component('mcTaskTemplateCreateSamples', {
-    templateUrl: 'app/project/experiments/experiment/components/tasks/components/mc-task-template-create-samples.html',
+    template: require('./mc-task-template-create-samples.html'),
     controller: MCTaskTemplateCreateSamplesComponentController,
     bindings: {
         task: '='

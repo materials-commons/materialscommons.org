@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcProcessCreateAsReceived', {
-    templateUrl: 'app/project/processes/process/create/create-as-received.html',
+    template: require('./create-as-received.html'),
     controller: MCProcessCreateAsReceivedComponentController,
     bindings: {
         template: '='

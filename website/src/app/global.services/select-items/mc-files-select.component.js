@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcFilesSelect', {
-    templateUrl: 'app/global.services/select-items/mc-files-select.html',
+    template: require('./mc-files-select.html'),
     controller: MCFilesSelectComponentController,
     bindings: {
         project: '='

@@ -255,7 +255,7 @@ class SetDatasetDoiDialogController {
 }
 
 angular.module('materialscommons').component('mcDatasetDetails', {
-    templateUrl: 'app/project/experiments/experiment/components/dataset/components/mc-dataset-details.html',
+    template: require('./mc-dataset-details.html'),
     controller: MCDatasetDetailsComponentController,
     bindings: {
         dataset: '<'

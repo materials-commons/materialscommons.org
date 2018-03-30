@@ -146,6 +146,6 @@ class MCDirContainerComponentController {
 }
 
 angular.module('materialscommons').component('mcDirContainer', {
-    templateUrl: 'app/project/files/components/dir/mc-dir-container.html',
+    template: require('./mc-dir-container.html'),
     controller: MCDirContainerComponentController
 });

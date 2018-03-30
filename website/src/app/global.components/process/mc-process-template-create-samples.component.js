@@ -103,7 +103,7 @@ class MCProcessTemplateCreateSamplesComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessTemplateCreateSamples', {
-    templateUrl: 'app/global.components/process/mc-process-template-create-samples.html',
+    template: require('./mc-process-template-create-samples.html'),
     controller: MCProcessTemplateCreateSamplesComponentController,
     bindings: {
         process: '=',

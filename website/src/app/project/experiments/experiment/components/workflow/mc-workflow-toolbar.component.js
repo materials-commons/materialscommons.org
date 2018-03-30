@@ -143,6 +143,6 @@ class SelectProcessTemplateDialogController {
 }
 
 angular.module('materialscommons').component('mcWorkflowToolbar', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-workflow-toolbar.html',
+    template: require('./mc-workflow-toolbar.html'),
     controller: MCWorkflowToolbarComponentController
 });

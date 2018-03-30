@@ -377,6 +377,6 @@ class EtlUploadDialogController {
 }
 
 angular.module('materialscommons').component('mcProjectHome', {
-    templateUrl: 'app/project/home/mc-project-home.html',
+    template: require('./mc-project-home.html'),
     controller: MCProjectHomeComponentController
 });

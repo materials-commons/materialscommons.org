@@ -25,7 +25,7 @@ class MCWorkflowProcessTemplatesComponentController {
 }
 
 angular.module('materialscommons').component('mcWorkflowProcessTemplates', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-workflow-process-templates.html',
+    template: require('./mc-workflow-process-templates.html'),
     controller: MCWorkflowProcessTemplatesComponentController,
     bindings: {
         onSelected: '&'

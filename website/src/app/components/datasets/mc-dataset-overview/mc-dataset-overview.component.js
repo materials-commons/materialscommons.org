@@ -43,7 +43,7 @@ class MCDatasetOverviewComponentController {
 }
 
 angular.module('materialscommons').component('mcDatasetOverview', {
-    templateUrl: 'app/components/datasets/mc-dataset-overview/mc-dataset-overview.html',
+    template: require('./mc-dataset-overview.html'),
     controller: MCDatasetOverviewComponentController,
     bindings: {
         dataset: '<',

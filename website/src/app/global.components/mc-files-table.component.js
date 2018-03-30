@@ -40,7 +40,7 @@ class ShowFileDialogController {
 }
 
 angular.module('materialscommons').component('mcFilesTable', {
-    templateUrl: 'app/global.components/mc-files-table.html',
+    template: require('./mc-files-table.html'),
     controller: MCFilesTableComponentController,
     bindings: {
         files: '<'

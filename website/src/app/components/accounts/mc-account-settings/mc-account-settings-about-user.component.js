@@ -33,6 +33,6 @@ class MCAccountSettingsAboutUserComponentController {
 }
 
 angular.module('materialscommons').component('mcAccountSettingsAboutUser', {
-    templateUrl: 'app/components/accounts/mc-account-settings/mc-account-settings-about-user.html',
+    template: require('./mc-account-settings-about-user.html'),
     controller: MCAccountSettingsAboutUserComponentController
 });

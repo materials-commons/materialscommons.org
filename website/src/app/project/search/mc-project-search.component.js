@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcProjectSearch', {
-    templateUrl: 'app/project/search/mc-project-search.html',
+    template: require('./mc-project-search.html'),
     controller: MCProjectSearchComponentController
 });
 

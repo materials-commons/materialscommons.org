@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcProcessCreate', {
-    templateUrl: 'app/project/processes/process/create/mc-process-create.html',
+    template: require('./mc-process-create.html'),
     controller: MCProcessCreateComponentController,
     bindings: {
         template: '='

@@ -167,7 +167,7 @@ class NewExperimentQuickTasksDialogController {
 }
 
 angular.module('materialscommons').component('mcExperimentNotes', {
-    templateUrl: 'app/project/experiments/experiment/components/notes/mc-experiment-notes.html',
+    template: require('./mc-experiment-notes.html'),
     controller: MCExperimentNotesComponentController,
     bindings: {
         experiment: '='

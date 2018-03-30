@@ -34,7 +34,7 @@ class MCProjectHomeRemindersComponentController {
 }
 
 angular.module('materialscommons').component('mcProjectHomeReminders', {
-    templateUrl: 'app/project/home/mc-project-home-reminders.html',
+    template: require('./mc-project-home-reminders.html'),
     controller: MCProjectHomeRemindersComponentController,
     bindings: {
         project: '<'

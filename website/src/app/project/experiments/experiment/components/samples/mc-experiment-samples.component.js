@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentSamples', {
-    templateUrl: 'app/project/experiments/experiment/components/samples/mc-experiment-samples.html',
+    template: require('./mc-experiment-samples.html'),
     bindings: {
         experiment: '='
     }

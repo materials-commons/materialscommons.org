@@ -11,7 +11,7 @@ class MCProjectQuickbarComponentController {
 }
 
 angular.module('materialscommons').component('mcProjectQuickbar', {
-    templateUrl: 'app/project/mc-project-quickbar.html',
+    template: require('./mc-project-quickbar.html'),
     controller: MCProjectQuickbarComponentController,
     bindings: {
         showQuickbar: '=',

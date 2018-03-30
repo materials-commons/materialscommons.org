@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcProjectSamplesTable', {
-    templateUrl: 'app/project/samples/mc-project-samples-table.html',
+    template: require('./mc-project-samples-table.html'),
     controller: MCProjectSamplesTableComponentController,
     bindings: {
         samples: '<',

@@ -91,7 +91,7 @@ class MCProcessTemplateOtherComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessTemplateOther', {
-    templateUrl: 'app/global.components/process/mc-process-template-other.html',
+    template: require('./mc-process-template-other.html'),
     controller: MCProcessTemplateOtherComponentController,
     bindings: {
         process: '<',

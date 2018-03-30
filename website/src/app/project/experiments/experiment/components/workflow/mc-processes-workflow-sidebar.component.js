@@ -33,6 +33,6 @@ class MCProcessesWorkflowSidebarComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessesWorkflowSidebar', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-processes-workflow-sidebar.html',
+    template: require('./mc-processes-workflow-sidebar.html'),
     controller: MCProcessesWorkflowSidebarComponentController
 });

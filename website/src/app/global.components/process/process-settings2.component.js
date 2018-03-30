@@ -5,5 +5,5 @@ angular.module('materialscommons').component('processSettings2', {
         attribute: '<',
         processId: '<'
     },
-    templateUrl: 'app/global.components/process/process-settings2.html'
+    template: require('./process-settings2.html')
 });
