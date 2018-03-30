@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Dummy Specification', function() {
+xdescribe('Dummy Specification', function () {
 
     it('should be true', function () {
         expect(true).toBe(true);
