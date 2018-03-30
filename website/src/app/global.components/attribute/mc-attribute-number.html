@@ -11,7 +11,7 @@
     <span ng-if="$ctrl.setting.units.length === 0" class="unit-align">
         {{::$ctrl.setting.unit}}
     </span>
-    <span ng-if="$ctrl.setting.units.length !== 0">
+    <span ng-if="$ctrl.setting.units && $ctrl.setting.units.length !== 0">
         <md-select ng-model="$ctrl.setting.unit"
                    ng-change="$ctrl.updateSettingProperty($ctrl.setting)"
                    aria-label="units"
