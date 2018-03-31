@@ -35,7 +35,7 @@ class MCExperimentDatasetsComponentController {
 
     createNewDataset() {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/datasets/new-dataset-dialog.html',
+            templateUrl: 'app/modals/new-dataset-dialog.html',
             controller: NewExperimentDatasetDialogController,
             controllerAs: '$ctrl',
             bindingToController: true

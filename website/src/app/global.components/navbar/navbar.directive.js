@@ -125,7 +125,7 @@ class NavbarComponentController {
 
     switchToUser() {
         this.$mdDialog.show({
-            templateUrl: 'app/global.components/navbar/switch-user-dialog.html',
+            templateUrl: 'app/modals/switch-user-dialog.html',
             controller: MCSwitchUserDialogController,
             controllerAs: '$ctrl',
             bindToController: true

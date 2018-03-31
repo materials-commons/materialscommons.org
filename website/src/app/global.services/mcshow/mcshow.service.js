@@ -6,7 +6,7 @@ class MCShowService {
 
     sampleDialog(sample, multiple = true) {
         return this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-sample-dialog.html',
+            templateUrl: 'app/modals/show-sample-dialog.html',
             controllerAs: '$ctrl',
             controller: CommonDoneDismissDialogController,
             bindToController: true,
@@ -19,7 +19,7 @@ class MCShowService {
 
     processDetailsDialog(process, multiple = true) {
         return this.$mdDialog.show({
-                templateUrl: 'app/project/experiments/experiment/components/workflow/mc-process-details-dialog.html',
+                templateUrl: 'app/modals/mc-process-details-dialog.html',
                 controller: MCProcessDetailsDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
@@ -32,7 +32,7 @@ class MCShowService {
 
     processDetailsDialogRO(process, multiple = true) {
         this.$mdDialog.show({
-            templateUrl: 'app/global.services/mcshow/process-details-dialog-ro.html',
+            templateUrl: 'app/modals/process-details-dialog-ro.html',
             controller: CommonDoneDismissDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -45,7 +45,7 @@ class MCShowService {
 
     projectOverviewDialog(project, multiple = true) {
         this.$mdDialog.show({
-            templateUrl: 'app/global.services/mcshow/partials/project-overview-dialog.html',
+            templateUrl: 'app/modals/project-overview-dialog.html',
             controller: CommonDoneDismissDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -58,7 +58,7 @@ class MCShowService {
 
     showFile(file, multiple = true) {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
+            templateUrl: 'app/modals/show-file-dialog.html',
             controllerAs: '$ctrl',
             controller: CommonDoneDismissDialogController,
             bindToController: true,

@@ -10,7 +10,7 @@ class WorkflowFiltersService {
         this.experimentsAPI.getSamplesForExperiment(projectId, experimentId).then(
             (samples) => {
                 this.$mdDialog.show({
-                    templateUrl: 'app/project/experiments/experiment/components/workflow/services/filter-by-samples-dialog.html',
+                    templateUrl: 'app/modals/filter-by-samples-dialog.html',
                     controller: FitlerBySamplesDialogController,
                     controllerAs: '$ctrl',
                     bindToController: true,

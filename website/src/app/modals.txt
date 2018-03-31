@@ -14,32 +14,32 @@ x components/comments/mc-comments-list.component.js
 x components/project/mc-project-datasets/mc-project-datasets.component.js
 x components/project/mc-project-dataset/mc-p-project-dataset-grouped.component.js
 x components/project/mc-project-dataset/mc-p-project-dataset-ungrouped.component.js
-global.services/show-sample-service.service.js
-global.services/mcshow/mcshow.service.js
-global.services/show-file-service.service.js
-global.services/select-items/select-items-samples.js
-global.services/select-items/select-items.service.js
-project/settings/mc-project-settings.component.js
-project/search/mc-project-search.component.js
-project/mc-project-navbar.component.js
-project/processes/process/services/sample-linker.service.js
-project/experiments/experiment/components/notes/mc-experiment-notes.component.js
-project/experiments/experiment/components/dataset/components/mc-dataset-details.component.js
-project/experiments/experiment/components/workflow/services/workflow-filters-service.service.js
-project/experiments/experiment/components/workflow/services/cy-graph.service.js
-project/experiments/experiment/components/workflow/services/workflow-service.service.js
-project/experiments/experiment/components/workflow/mc-experiment-processes-table.component.js
-project/experiments/experiment/components/workflow/mc-processes-workflow-graph.component.js
-project/experiments/experiment/components/workflow/mc-workflow-toolbar.component.js
-project/experiments/experiment/components/datasets/mc-experiment-datasets.component.js
-project/experiments/experiment/components/files/mc-experiment-files-table.component.js
-project/experiments/experiment/components/mc-processes-autocomplete.component.js
-project/experiments/experiment/components/tasks/mc-experiment-tasks.component.js
-project/experiments/experiment/components/tasks/components/mc-task-template-create-samples.component.js
-project/experiments/experiment/mc-experiment-sidenav.component.js
-project/experiments/mc-project-experiments.component.js
-project/files/components/mc-file-ops-dialogs.service.js
-project/home/mc-project-home.component.js
-project/home/mc-project-sidenav.component.js
-project/samples/mc-project-samples.component.js
-project/samples/mc-project-samples-table.component.js
+x global.services/show-sample-service.service.js
+x global.services/mcshow/mcshow.service.js
+x global.services/show-file-service.service.js
+x global.services/select-items/select-items-samples.js
+x global.services/select-items/select-items.service.js
+x project/settings/mc-project-settings.component.js
+x project/search/mc-project-search.component.js
+x project/mc-project-navbar.component.js
+x project/processes/process/services/sample-linker.service.js
+x project/experiments/experiment/components/notes/mc-experiment-notes.component.js
+x project/experiments/experiment/components/dataset/components/mc-dataset-details.component.js
+x project/experiments/experiment/components/workflow/services/workflow-filters-service.service.js
+x project/experiments/experiment/components/workflow/services/cy-graph.service.js
+x project/experiments/experiment/components/workflow/services/workflow-service.service.js
+x project/experiments/experiment/components/workflow/mc-experiment-processes-table.component.js
+x project/experiments/experiment/components/workflow/mc-processes-workflow-graph.component.js
+x project/experiments/experiment/components/workflow/mc-workflow-toolbar.component.js
+x project/experiments/experiment/components/datasets/mc-experiment-datasets.component.js
+x project/experiments/experiment/components/files/mc-experiment-files-table.component.js
+x project/experiments/experiment/components/mc-processes-autocomplete.component.js
+x project/experiments/experiment/components/tasks/mc-experiment-tasks.component.js
+x project/experiments/experiment/components/tasks/components/mc-task-template-create-samples.component.js
+x project/experiments/experiment/mc-experiment-sidenav.component.js
+x project/experiments/mc-project-experiments.component.js
+x project/files/components/mc-file-ops-dialogs.service.js
+x project/home/mc-project-home.component.js
+x project/home/mc-project-sidenav.component.js
+x project/samples/mc-project-samples.component.js
+x Nproject/samples/mc-project-samples-table.component.js

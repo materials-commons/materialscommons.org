@@ -30,7 +30,7 @@ function MCExperimentTasksComponentController($scope, moveTask, mcstate, blankTa
 
     ctrl.addQuickNote = () => {
         $mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/tasks/quick-note-dialog.html',
+            templateUrl: 'app/modals/quick-note-dialog.html',
             controller: CreateExperimentQuickNoteDialogController,
             controllerAs: '$ctrl',
             bindToController: true,

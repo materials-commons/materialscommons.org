@@ -6,7 +6,7 @@ class ShowFileService {
 
     showFile(file, multiple = true) {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
+            templateUrl: 'app/modals/show-file-dialog.html',
             controllerAs: '$ctrl',
             controller: ShowFileDialogController,
             bindToController: true,

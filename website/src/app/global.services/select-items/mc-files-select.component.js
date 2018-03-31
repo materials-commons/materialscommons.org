@@ -30,7 +30,7 @@ function MCFilesSelectDirDirective(RecursionHelper) {
         replace: true,
         controllerAs: 'ctrl',
         bindToController: true,
-        templateUrl: 'app/global.services/select-items/mc-files-select-dir.html',
+        template: require('./mc-files-select-dir.html'),
         compile: function (element) {
             return RecursionHelper.compile(element, function () {
             });

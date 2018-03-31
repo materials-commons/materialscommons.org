@@ -69,7 +69,7 @@ function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state,
 
     function showSample(sample) {
         $mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-sample-dialog.html',
+            templateUrl: 'app/modals/show-sample-dialog.html',
             controllerAs: '$ctrl',
             controller: ShowSampleDialogController,
             bindToController: true,

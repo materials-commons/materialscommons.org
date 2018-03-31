@@ -14,7 +14,7 @@ function MCProjectExperimentsComponentController($mdDialog, $state) {
     ctrl.showTableView = true;
     ctrl.startNewExperiment = () => {
         $mdDialog.show({
-            templateUrl: 'app/project/experiments/create-experiment-dialog.html',
+            templateUrl: 'app/modals/create-experiment-dialog.html',
             controller: CreateNewExperimentDialogController,
             controllerAs: 'ctrl',
             bindToController: true

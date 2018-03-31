@@ -359,7 +359,7 @@ class MCProcessesWorkflowGraphComponentController {
     _addChild(event) {
         let process = this.getProcessFromEvent(event);
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/workflow/mc-process-templates-dialog.html',
+            templateUrl: 'app/modals/mc-process-templates-dialog.html',
             controller: SelectProcessTemplateDialogController,
             controllerAs: '$ctrl',
             bindToController: true,

@@ -17,7 +17,7 @@ class MCProjectSamplesComponentController {
                 (process) => {
                     let p = this.templates.loadTemplateFromProcess(process.template_name, process);
                     this.$mdDialog.show({
-                        templateUrl: 'app/project/samples/new-samples-dialog.html',
+                        templateUrl: 'app/modals/new-samples-dialog.html',
                         controllerAs: '$ctrl',
                         controller: NewSamplesDialogController,
                         bindToController: true,
