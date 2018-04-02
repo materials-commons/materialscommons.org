@@ -6,18 +6,19 @@ class MCWorkflowAsTableComponentController {
         this.project = mcprojstore.currentProject;
         //console.log('this.project', this.project);
         this.grouped = false;
+        this.editTable = false;
     }
 
     $onInit() {
-        this.projectsAPI.getProjectSamples(this.project.id).then(
-            (samples) => {
-                this.samples = samples;
-                this.samples.forEach(s => this.addProcessListTimeLine(s));
-                let uniqueProcesses = this.computeUniqueProcesses();
-                this.createHeaders(uniqueProcesses);
-                //console.log('this.samples', samples);
-            }
-        );
+        // this.projectsAPI.getProjectSamples(this.project.id).then(
+        //     (samples) => {
+        //         this.samples = samples;
+        //         this.samples.forEach(s => this.addProcessListTimeLine(s));
+        //         let uniqueProcesses = this.computeUniqueProcesses();
+        //         this.createHeaders(uniqueProcesses);
+        //         //console.log('this.samples', samples);
+        //     }
+        // );
 
         this.headers = [
             "Heat Treatment",
@@ -59,9 +60,9 @@ class MCWorkflowAsTableComponentController {
         for (let i = 0; i < count; i++) {
             let rval = Math.floor(Math.random() * 2);
             if (rval) {
-                processes.push(true);
+                processes.push({active: true, selected: true});
             } else {
-                processes.push(false);
+                processes.push({active: false, selected: false});
             }
         }
         return processes;
@@ -75,6 +76,16 @@ class MCWorkflowAsTableComponentController {
     handleDeleteProcess(index) {
         this.headers.splice(index, 1);
         this.headers = angular.copy(this.headers);
+    }
+
+    handleUpdateStateOfProcessInSample(sampleIndex, processIndex, state) {
+        this.samples2[sampleIndex].processes[processIndex].selected = state;
+        this.samples2[sampleIndex].processes[processIndex].active = state;
+    }
+
+    finishEditingTable() {
+        this.editTable = false;
+        this.samples2 = angular.copy(this.samples2);
     }
 
     addProcessListTimeLine(sample) {

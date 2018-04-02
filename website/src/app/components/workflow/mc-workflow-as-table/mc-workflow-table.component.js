@@ -4,7 +4,8 @@ class MCWorkflowTableComponentController {
         this.$mdDialog = $mdDialog;
         this.state = {
             samples: [],
-            headers: []
+            headers: [],
+            editTable: false,
         }
     }
 
@@ -21,13 +22,17 @@ class MCWorkflowTableComponentController {
     }
 
     $onChanges(changes) {
-        console.log('changes = ', changes);
+        // console.log('changes = ', changes);
         if (changes.samples) {
             this.state.samples = angular.copy(changes.samples.currentValue);
         }
 
         if (changes.headers) {
             this.state.headers = angular.copy(changes.headers.currentValue);
+        }
+
+        if (changes.editTable) {
+            this.state.editTable = changes.editTable.currentValue;
         }
     }
 
@@ -46,6 +51,10 @@ class MCWorkflowTableComponentController {
 
     handleDeleteColumnClick(index) {
         this.onDeleteProcess({index: index});
+    }
+
+    handleSampleProcessChange(sampleIndex, processIndex, selected) {
+        this.onSampleProcessChange({sampleIndex: sampleIndex, processIndex: processIndex, state: selected});
     }
 }
 
@@ -127,6 +136,8 @@ angular.module('materialscommons').component('mcWorkflowTable', {
     bindings: {
         samples: '<',
         headers: '<',
-        onDeleteProcess: '&'
+        editTable: '<',
+        onDeleteProcess: '&',
+        onSampleProcessChange: '&',
     }
 });

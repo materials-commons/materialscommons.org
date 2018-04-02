@@ -7,36 +7,45 @@
             <md-tab-body>
                 <h3>Dataset: DS5</h3>
                 <div layout="row">
-                    <md-button class="md-primary">
+                    <md-button class="md-primary" ng-disabled="$ctrl.editTable">
                         <i class="fa fa-fw fa-plus"></i>Add Existing Samples
                     </md-button>
-                    <md-button class="md-primary">
+                    <md-button class="md-primary" ng-disabled="$ctrl.editTable">
                         <i class="fa fa-fw fa-plus"></i>Create New Samples
                     </md-button>
-                    <md-button class="md-warn" ng-click="$ctrl.handleDeleteSampleClick(0)">
+                    <md-button class="md-warn" ng-click="$ctrl.handleDeleteSampleClick(0)" ng-disabled="$ctrl.editTable">
                         <i class="fa fa-fw fa-trash"></i>Remove Selected Samples
                     </md-button>
                     <span flex="5"></span>
-                    <md-button class="md-primary">
+                    <md-button class="md-primary" ng-click="$ctrl.editTable = true" ng-show="!$ctrl.editTable">
+                        <i class="fa fa-fw fa-table"></i>Edit Table
+                    </md-button>
+                    <md-button class="md-primary" ng-click="$ctrl.finishEditingTable()" ng-show="$ctrl.editTable">
+                        <i class="fa fa-fw fa-table"></i>Done Editing Table
+                    </md-button>
+                    <span flex="5"></span>
+                    <md-button class="md-primary" ng-disabled="$ctrl.editTable">
                         <i class="fa fa-fw fa-site-map"></i>View As Workflow
                     </md-button>
                 </div>
-                <div layout="row" ng-showx="!$ctrl.grouped" ng-if="false">
-                    <md-button class="md-primary" ng-click="$ctrl.grouped = true">
-                        <i class="fa fa-fw fa-compress"></i>Group by same processes
-                    </md-button>
-                    <md-button class="md-primary" ng-click="$ctrl.grouped = true">
-                        <i class="fa fa-fw fa-compress"></i>Group by same processes and parameters
-                    </md-button>
-                </div>
-                <div layout="row" ng-show="$ctrl.grouped" ng-if="false">
-                    <md-button class="md-primary" ng-click="$ctrl.grouped = false">
-                        <i class="fa fa-fw fa-expand"></i>Ungroup
-                    </md-button>
-                </div>
+                <!--<div layout="row" ng-showx="!$ctrl.grouped" ng-if="false">-->
+                <!--<md-button class="md-primary" ng-click="$ctrl.grouped = true">-->
+                <!--<i class="fa fa-fw fa-compress"></i>Group by same processes-->
+                <!--</md-button>-->
+                <!--<md-button class="md-primary" ng-click="$ctrl.grouped = true">-->
+                <!--<i class="fa fa-fw fa-compress"></i>Group by same processes and parameters-->
+                <!--</md-button>-->
+                <!--</div>-->
+                <!--<div layout="row" ng-show="$ctrl.grouped" ng-if="false">-->
+                <!--<md-button class="md-primary" ng-click="$ctrl.grouped = false">-->
+                <!--<i class="fa fa-fw fa-expand"></i>Ungroup-->
+                <!--</md-button>-->
+                <!--</div>-->
                 <mc-workflow-table ng-if="!$ctrl.grouped"
                                    headers="$ctrl.headers"
                                    samples="$ctrl.samples2"
+                                   edit-table="$ctrl.editTable"
+                                   on-sample-process-change="$ctrl.handleUpdateStateOfProcessInSample(sampleIndex, processIndex, state)"
                                    on-delete-process="$ctrl.handleDeleteProcess(index)">
                 </mc-workflow-table>
                 <mc-workflow-as-table-grouped ng-if="$ctrl.grouped"></mc-workflow-as-table-grouped>
