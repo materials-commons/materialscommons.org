@@ -1,54 +1,11 @@
-class MCWorkflowAsTableUngroupedComponentController {
+class MCWorkflowTableComponentController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
-
-        this.headers = [
-            "Heat Treatment",
-            "Heat Treatment",
-            "SEM",
-            "SEM",
-            "Low Cycle Fatigue",
-            "EBSD",
-            "EBSD",
-            "Tension",
-            "EBSD",
-            "TEM",
-            "TEM",
-            "TEM",
-            "Cogging",
-            "Cogging",
-            "Cogging",
-            "Tension",
-            "EBSD",
-            "TEM",
-            "Cogging",
-            "Tension",
-            "EBSD",
-            "TEM",
-        ];
-
-        this.samples = [];
-        for (let i = 0; i < 10; i++) {
-            this.samples.push({
-                selected: false,
-                name: "Sample_" + i,
-                processes: this.fillRandomProcesses(this.headers.length)
-            })
+        this.state = {
+            samples: [],
+            headers: []
         }
-    }
-
-    fillRandomProcesses(count) {
-        let processes = [];
-        for (let i = 0; i < count; i++) {
-            let rval = Math.floor(Math.random() * 2);
-            if (rval) {
-                processes.push(true);
-            } else {
-                processes.push(false);
-            }
-        }
-        return processes;
     }
 
     editSample(sample) {
@@ -63,6 +20,17 @@ class MCWorkflowAsTableUngroupedComponentController {
         });
     }
 
+    $onChanges(changes) {
+        console.log('changes = ', changes);
+        if (changes.samples) {
+            this.state.samples = angular.copy(changes.samples.currentValue);
+        }
+
+        if (changes.headers) {
+            this.state.headers = angular.copy(changes.headers.currentValue);
+        }
+    }
+
     editProcess(process, sample) {
         this.$mdDialog.show({
             templateUrl: 'app/modals/edit-sample-process-dialog.html',
@@ -74,6 +42,10 @@ class MCWorkflowAsTableUngroupedComponentController {
                 process: process
             }
         });
+    }
+
+    handleDeleteColumnClick(index) {
+        this.onDeleteProcess({index: index});
     }
 }
 
@@ -149,7 +121,12 @@ class EditSampleProcessDialogController {
     }
 }
 
-angular.module('materialscommons').component('mcWorkflowAsTableUngrouped', {
-    template: require('./mc-workflow-as-table-ungrouped.html'),
-    controller: MCWorkflowAsTableUngroupedComponentController
+angular.module('materialscommons').component('mcWorkflowTable', {
+    template: require('./mc-workflow-table.html'),
+    controller: MCWorkflowTableComponentController,
+    bindings: {
+        samples: '<',
+        headers: '<',
+        onDeleteProcess: '&'
+    }
 });

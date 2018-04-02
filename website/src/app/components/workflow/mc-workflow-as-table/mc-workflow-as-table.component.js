@@ -4,7 +4,7 @@ class MCWorkflowAsTableComponentController {
         this.mcprojstore = mcprojstore;
         this.projectsAPI = projectsAPI;
         this.project = mcprojstore.currentProject;
-        console.log('this.project', this.project);
+        //console.log('this.project', this.project);
         this.grouped = false;
     }
 
@@ -15,9 +15,66 @@ class MCWorkflowAsTableComponentController {
                 this.samples.forEach(s => this.addProcessListTimeLine(s));
                 let uniqueProcesses = this.computeUniqueProcesses();
                 this.createHeaders(uniqueProcesses);
-                console.log('this.samples', samples);
+                //console.log('this.samples', samples);
             }
-        )
+        );
+
+        this.headers = [
+            "Heat Treatment",
+            "Heat Treatment",
+            "SEM",
+            "SEM",
+            "Low Cycle Fatigue",
+            "EBSD",
+            "EBSD",
+            "Tension",
+            "EBSD",
+            "TEM",
+            "TEM",
+            "TEM",
+            "Cogging",
+            "Cogging",
+            "Cogging",
+            "Tension",
+            "EBSD",
+            "TEM",
+            "Cogging",
+            "Tension",
+            "EBSD",
+            "TEM",
+        ];
+
+        this.samples2 = [];
+        for (let i = 0; i < 10; i++) {
+            this.samples2.push({
+                selected: false,
+                name: "Sample_" + i,
+                processes: this.fillRandomProcesses(this.headers.length)
+            })
+        }
+    }
+
+    fillRandomProcesses(count) {
+        let processes = [];
+        for (let i = 0; i < count; i++) {
+            let rval = Math.floor(Math.random() * 2);
+            if (rval) {
+                processes.push(true);
+            } else {
+                processes.push(false);
+            }
+        }
+        return processes;
+    }
+
+    handleDeleteSampleClick(index) {
+        this.samples2.splice(index, 1);
+        this.samples2 = angular.copy(this.samples2);
+    }
+
+    handleDeleteProcess(index) {
+        this.headers.splice(index, 1);
+        this.headers = angular.copy(this.headers);
     }
 
     addProcessListTimeLine(sample) {
@@ -49,7 +106,7 @@ class MCWorkflowAsTableComponentController {
 
     createHeaders(uniqueProcesses) {
         uniqueProcesses.combinedProcessTimeline.forEach(p => {
-            console.log(p.name);
+            //console.log(p.name);
         })
         // let headers = [];
         // let first = this.samples.processesInTimeline[0];

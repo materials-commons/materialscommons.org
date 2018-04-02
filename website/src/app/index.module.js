@@ -20,5 +20,6 @@ angular.module('materialscommons', [
     'angular-c3-simple',
     'dndLists',
     'ngFileUpload',
-    'mdMarkdownIt'
+    'mdMarkdownIt',
+    'ngQtip2'
 ]);

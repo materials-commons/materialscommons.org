@@ -308,7 +308,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.datasets.dataset2', {
             url: '/dataset',
-            template: '<mc-project-dataset></mc-project-dataset>'
+            template: '<mc-workflow-as-table></mc-workflow-as-table>'
         })
         .state('project.settings', {
             url: '/settings',

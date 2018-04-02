@@ -6,4 +6,4 @@ import './mc-dataset-workflow/mc-dataset-workflow-sidebar.component';
 import './mc-dataset-workflow/mc-dataset-workflow-filters.component';
 import './mc-workflow-as-table/mc-workflow-as-table.component';
 import './mc-workflow-as-table/mc-workflow-as-table-grouped.component';
-import './mc-workflow-as-table/mc-workflow-as-table-ungrouped.component';
+import './mc-workflow-as-table/mc-workflow-table.component';

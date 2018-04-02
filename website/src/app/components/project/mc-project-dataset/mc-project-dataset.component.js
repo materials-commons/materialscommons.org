@@ -15,7 +15,7 @@ class MCProjectDatasetComponentController {
                 this.samples.forEach(s => this.addProcessListTimeLine(s));
                 let uniqueProcesses = this.computeUniqueProcesses();
                 this.createHeaders(uniqueProcesses);
-                console.log('this.samples', samples);
+                //console.log('this.samples', samples);
             }
         )
     }
@@ -49,7 +49,7 @@ class MCProjectDatasetComponentController {
 
     createHeaders(uniqueProcesses) {
         uniqueProcesses.combinedProcessTimeline.forEach(p => {
-            console.log(p.name);
+            //console.log(p.name);
         })
         // let headers = [];
         // let first = this.samples.processesInTimeline[0];
