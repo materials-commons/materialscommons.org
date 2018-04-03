@@ -138,6 +138,7 @@ angular.module('materialscommons').component('mcWorkflowTable', {
         headers: '<',
         editTable: '<',
         onDeleteProcess: '&',
+        onSampleSelected: '&',
         onSampleProcessChange: '&',
     }
 });

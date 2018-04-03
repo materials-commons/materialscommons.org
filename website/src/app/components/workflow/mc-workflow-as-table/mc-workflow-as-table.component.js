@@ -88,6 +88,10 @@ class MCWorkflowAsTableComponentController {
         this.samples2 = angular.copy(this.samples2);
     }
 
+    handleSelectSample(sampleIndex, selectState) {
+        this.samples2[sampleIndex].selected = selectState;
+    }
+
     addProcessListTimeLine(sample) {
         let processes = _.indexBy(sample.processes, 'process_id');
         sample.processesInTimeline = sample.processes.filter(
