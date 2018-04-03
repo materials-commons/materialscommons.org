@@ -2,8 +2,11 @@ class MCProjectDatasetsComponentController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
+        this.state = {
+            datasets: []
+        };
 
-        this.datasets = [
+        this.state.datasets = [
             {
                 name: 'DS1',
                 owner: 'John Allison',
@@ -44,7 +47,7 @@ class MCProjectDatasetsComponentController {
             templateUrl: 'app/modals/create-new-dataset-dialog.html',
             controller: CreateNewDatasetDialogController,
             controllerAs: '$ctrl',
-            bindToController: true
+            bindToController: true,
         });
     }
 }
