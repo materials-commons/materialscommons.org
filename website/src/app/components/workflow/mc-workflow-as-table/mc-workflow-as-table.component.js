@@ -120,14 +120,15 @@ class MCWorkflowAsTableComponentController {
     }
 
     createHeaders(uniqueProcesses) {
-        uniqueProcesses.combinedProcessTimeline.forEach(p => {
-            //console.log(p.name);
-        })
+        // uniqueProcesses.combinedProcessTimeline.forEach(p => {
+        //     //console.log(p.name);
+        // })
         // let headers = [];
         // let first = this.samples.processesInTimeline[0];
         // for (let i = 1; i < this.samples.length; i++) {
         //
         // }
+         uniqueProcesses.combinedProcessTimeline.forEach(() => null);
     }
 }
 
