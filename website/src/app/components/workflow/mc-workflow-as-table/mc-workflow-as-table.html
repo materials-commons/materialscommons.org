@@ -10,9 +10,6 @@
                     <md-button class="md-primary" ng-disabled="$ctrl.editTable" ng-click="$ctrl.chooseExistingSamples()">
                         <i class="fa fa-fw fa-plus"></i>Add Existing Samples
                     </md-button>
-                    <!--<md-button class="md-primary" ng-disabled="$ctrl.editTable">-->
-                    <!--<i class="fa fa-fw fa-plus"></i>Create New Samples-->
-                    <!--</md-button>-->
                     <md-button class="md-warn" ng-click="$ctrl.handleRemoveSelectedSamples()" ng-disabled="$ctrl.editTable">
                         <i class="fa fa-fw fa-trash"></i>Remove Selected Samples
                     </md-button>
@@ -28,22 +25,9 @@
                         <i class="fa fa-fw fa-site-map"></i>View As Workflow
                     </md-button>
                 </div>
-                <!--<div layout="row" ng-showx="!$ctrl.grouped" ng-if="false">-->
-                <!--<md-button class="md-primary" ng-click="$ctrl.grouped = true">-->
-                <!--<i class="fa fa-fw fa-compress"></i>Group by same processes-->
-                <!--</md-button>-->
-                <!--<md-button class="md-primary" ng-click="$ctrl.grouped = true">-->
-                <!--<i class="fa fa-fw fa-compress"></i>Group by same processes and parameters-->
-                <!--</md-button>-->
-                <!--</div>-->
-                <!--<div layout="row" ng-show="$ctrl.grouped" ng-if="false">-->
-                <!--<md-button class="md-primary" ng-click="$ctrl.grouped = false">-->
-                <!--<i class="fa fa-fw fa-expand"></i>Ungroup-->
-                <!--</md-button>-->
-                <!--</div>-->
                 <mc-workflow-table ng-if="!$ctrl.grouped"
                                    headers="$ctrl.headers"
-                                   samples="$ctrl.samples2"
+                                   samples="$ctrl.samples"
                                    edit-table="$ctrl.editTable"
                                    on-sample-process-change="$ctrl.handleUpdateStateOfProcessInSample(sampleIndex, processIndex, state)"
                                    on-sample-selected="$ctrl.handleSelectSample(sampleIndex, selectState)"
