@@ -1,0 +1,51 @@
+<div layout="column" layout-fill layout-align="start stretch" layout-margin>
+    <md-tabs md-stretch-tabs md-border-bottom md-dynamic-height>
+        <md-tab>
+            <md-tab-label>Details</md-tab-label>
+            <md-tab-body>
+                <mc-p-project-dataset-details layout="column" flex layout-fill></mc-p-project-dataset-details>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                Samples
+            </md-tab-label>
+            <md-tab-body>
+                <h3>Dataset: DS5</h3>
+                <div layout="row">
+                    <md-button class="md-primary">
+                        <i class="fa fa-fw fa-plus"></i>Add Samples
+                    </md-button>
+                    <md-button class="md-primary">
+                        <i class="fa fa-fw fa-trash"></i>Remove Samples
+                    </md-button>
+                    <span flex="5"></span>
+                    <md-button class="md-primary">
+                        <i class="fa fa-fw fa-site-map"></i>View As Workflow
+                    </md-button>
+                </div>
+                <div layout="row" ng-show="!$ctrl.grouped">
+                    <md-button class="md-primary" ng-click="$ctrl.grouped = true">
+                        <i class="fa fa-fw fa-compress"></i>Group by same processes
+                    </md-button>
+                    <md-button class="md-primary" ng-click="$ctrl.grouped = true">
+                        <i class="fa fa-fw fa-compress"></i>Group by same processes and parameters
+                    </md-button>
+                </div>
+                <div layout="row" ng-show="$ctrl.grouped">
+                    <md-button class="md-primary" ng-click="$ctrl.grouped = false">
+                        <i class="fa fa-fw fa-expand"></i>Ungroup
+                    </md-button>
+                </div>
+                <mc-p-project-dataset-ungrouped ng-if="!$ctrl.grouped"></mc-p-project-dataset-ungrouped>
+                <mc-p-project-dataset-grouped ng-if="$ctrl.grouped"></mc-p-project-dataset-grouped>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>Files</md-tab-label>
+            <md-tab-body>
+                <mc-p-project-dataset-files></mc-p-project-dataset-files>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
+</div>

@@ -79,7 +79,7 @@ class MCProjectHomeComponentController {
 
     startNewExperiment() {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/create-experiment-dialog.html',
+            templateUrl: 'app/modals/create-experiment-dialog.html',
             controller: CreateNewExperimentDialogController,
             controllerAs: 'ctrl',
             bindToController: true
@@ -101,7 +101,7 @@ class MCProjectHomeComponentController {
             return;
         }
         this.$mdDialog.show({
-            templateUrl: 'app/project/home/merge-experiments-dialog.html',
+            templateUrl: 'app/modals/merge-experiments-dialog.html',
             controller: MergeExperimentsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -136,7 +136,7 @@ class MCProjectHomeComponentController {
         }
 
         this.$mdDialog.show({
-            templateUrl: 'app/project/home/delete-experiments-dialog.html',
+            templateUrl: 'app/modals/delete-experiments-dialog.html',
             controller: DeleteExperimentsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -165,6 +165,29 @@ class MCProjectHomeComponentController {
         if (!this.selectingExperiments) {
             this.$state.go("project.experiment.workflow", {experiment_id: e.id});
         }
+    }
+
+    etlStart(){
+        console.log("MCProjectHomeComponentController - etlStart()");
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/mc-etl-upload-dialog.html',
+            controller: EtlUploadDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                project: this.project
+            }
+        }).then(
+            () => {
+                console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
+                // TODO: here!!
+                // $state.go('project.experiments.experiment', {experiment_id: 'abc123'})
+            },
+            () => {
+                console.log("MCProjectHomeComponentController - etlStart() - dialog canceled");
+            }
+        );
+
     }
 }
 
@@ -290,7 +313,70 @@ class DeleteExperimentsDialogController {
     }
 }
 
+class EtlUploadDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, Upload, toast, User) {
+        this.$mdDialog = $mdDialog;
+        this.Upload = Upload;
+        this.toast = toast;
+        this.User = User;
+        this.user_id = User.u();
+        this.name = "";
+        this.description = ""
+        this.files = [];
+    }
+
+    done() {
+        console.log("EtlUploadDialogController - Done");
+        let data = {};
+        let f = this.files[0];
+        data.file = f;
+        data.project_id = this.project.id;
+        data.name = this.name;
+        data.description = this.description;
+        console.log("data to send = ", data);
+        this.isUploading = true;
+        return this.Upload.upload({
+                url: `api/etl/upload?apikey=${this.User.apikey()}`,
+                data: data
+            }).then(
+                (uploaded) => {
+                    console.log("upload completed", uploaded.data);
+                    this.$mdDialog.hide(uploaded.data);
+                    this.isUploading=false;
+                },
+                (e) => {
+                    console.log("upload failed", e);
+                    if (e.status === 502) {
+                        console.log("Service unavailable: 502");
+                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.")
+                    } else if (e.status > 200) {
+                        console.log("Service unavailable: " + e.status);
+                        this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.")
+                    }
+                    this.$mdDialog.cancel(e);
+                    this.isUploading=false;
+                },
+                (evt) => {
+                    f.progress = 100.0 * evt.loaded / evt.total;
+                    console.log("upload progress", f.progress);
+                }
+            )
+    }
+
+    cancel() {
+        let data = {};
+        let f = this.files[0];
+        data.file = f;
+        data.project_id = this.project.id;
+        data.name = this.experiment_name;
+        data.description = this.description;
+        console.log("data: ", data);
+        this.$mdDialog.cancel();
+    }
+}
+
 angular.module('materialscommons').component('mcProjectHome', {
-    templateUrl: 'app/project/home/mc-project-home.html',
+    template: require('./mc-project-home.html'),
     controller: MCProjectHomeComponentController
 });

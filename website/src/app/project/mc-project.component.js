@@ -6,6 +6,6 @@ class MCProjectComponentController {
 }
 
 angular.module('materialscommons').component('mcProject', {
-    templateUrl: 'app/project/mc-project.html',
+    template: require('./mc-project.html'),
     controller: MCProjectComponentController
 });

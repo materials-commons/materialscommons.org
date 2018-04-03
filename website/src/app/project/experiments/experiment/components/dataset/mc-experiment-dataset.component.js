@@ -43,6 +43,6 @@ class MCExperimentDatasetComponentController {
 }
 
 angular.module('materialscommons').component('mcExperimentDataset', {
-    templateUrl: 'app/project/experiments/experiment/components/dataset/mc-experiment-dataset.html',
+    template: require('./mc-experiment-dataset.html'),
     controller: MCExperimentDatasetComponentController
 });

@@ -65,7 +65,7 @@ class MCDirOverviewComponentController {
 }
 
 angular.module('materialscommons').component('mcDirOverview', {
-    templateUrl: 'app/project/files/components/dir/mc-dir-overview.html',
+    template: require('./mc-dir-overview.html'),
     controller: MCDirOverviewComponentController,
     bindings: {
         dir: '<',

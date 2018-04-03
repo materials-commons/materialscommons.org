@@ -101,7 +101,7 @@ class NavbarComponentController {
 
     loginOrRegister() {
         this.$mdDialog.show({
-            templateUrl: 'app/global.components/navbar/login-dialog.html',
+            templateUrl: 'app/modals/login-dialog.html',
             controller: MCLoginDialogController,
             controllerAs: '$ctrl',
             bindToController: true
@@ -125,7 +125,7 @@ class NavbarComponentController {
 
     switchToUser() {
         this.$mdDialog.show({
-            templateUrl: 'app/global.components/navbar/switch-user-dialog.html',
+            templateUrl: 'app/modals/switch-user-dialog.html',
             controller: MCSwitchUserDialogController,
             controllerAs: '$ctrl',
             bindToController: true
@@ -204,6 +204,6 @@ class MCLoginDialogController {
 }
 
 angular.module('materialscommons').component('navbar', {
-    templateUrl: 'app/global.components/navbar/navbar.html',
+    template: require('./navbar.html'),
     controller: NavbarComponentController
 });

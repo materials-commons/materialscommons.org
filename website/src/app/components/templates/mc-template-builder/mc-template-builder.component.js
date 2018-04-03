@@ -69,7 +69,7 @@ class MCTemplateBuilderComponentController {
 
     viewTemplate(template) {
         this.$mdDialog.show({
-            templateUrl: 'app/components/templates/mc-template-builder/view-template-dialog.html',
+            templateUrl: 'app/modals/view-template-dialog.html',
             controller: ViewTemplateDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -96,7 +96,7 @@ class MCTemplateBuilderComponentController {
     editExisting() {
         this.templatesAPI.getAllTemplates().then(
             templates => this.$mdDialog.show({
-                templateUrl: 'app/components/templates/mc-template-builder/choose-existing-template-dialog.html',
+                templateUrl: 'app/modals/choose-existing-template-dialog.html',
                 controller: ChooseExistingTemplateDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
@@ -190,6 +190,6 @@ class ChooseExistingTemplateDialogController {
 }
 
 angular.module('materialscommons').component('mcTemplateBuilder', {
-    templateUrl: 'app/components/templates/mc-template-builder/mc-template-builder.html',
+    template: require('./mc-template-builder.html'),
     controller: MCTemplateBuilderComponentController
 });

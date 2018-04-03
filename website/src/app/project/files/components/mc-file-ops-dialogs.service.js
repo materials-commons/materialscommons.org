@@ -6,7 +6,7 @@ class MCFileOpsDialogsService {
 
     renameDirectory(dirName) {
         return this.$mdDialog.show({
-            templateUrl: 'app/project/files/components/dialogs/rename-dir-dialog.html',
+            templateUrl: 'app/modals/rename-dir-dialog.html',
             controller: RenameDirDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -18,7 +18,7 @@ class MCFileOpsDialogsService {
 
     createDirectory(parentDirName) {
         return this.$mdDialog.show({
-            templateUrl: 'app/project/files/components/dialogs/create-dir-dialog.html',
+            templateUrl: 'app/modals/create-dir-dialog.html',
             controller: CreateDirDialogController,
             controllerAs: '$ctrl',
             bindToController: true,

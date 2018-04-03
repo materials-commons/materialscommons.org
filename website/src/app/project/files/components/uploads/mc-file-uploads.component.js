@@ -36,7 +36,7 @@ class MCFileUploadsComponentController {
 }
 
 angular.module('materialscommons').component('mcFileUploads', {
-    templateUrl: 'app/project/files/components/uploads/mc-file-uploads.html',
+    template: require('./mc-file-uploads.html'),
     controller: MCFileUploadsComponentController,
     bindings: {
         resetFiles: '<'

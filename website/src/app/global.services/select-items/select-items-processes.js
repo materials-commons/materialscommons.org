@@ -5,7 +5,7 @@ function selectItemsProcessesDirective() {
         scope: {
             processes: '='
         },
-        templateUrl: 'app/global.services/select-items/select-items-processes.html'
+        template: require('./select-items-processes.html')
     }
 }
 

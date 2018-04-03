@@ -32,7 +32,7 @@ class MCExperimentCollaboratorsComponentController {
 }
 
 angular.module('materialscommons').component('mcExperimentCollaborators', {
-    templateUrl: 'app/project/experiments/experiment/components/details/mc-experiment-collaborators.html',
+    template: require('./mc-experiment-collaborators.html'),
     controller: MCExperimentCollaboratorsComponentController,
     bindings: {
         experiment: '=',

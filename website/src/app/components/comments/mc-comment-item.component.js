@@ -18,7 +18,7 @@ class MCCommentItemController {
 }
 
 angular.module('materialscommons').component('mcCommentItem', {
-    templateUrl: 'app/components/comments/mc-comment-item.html',
+    template: require('./mc-comment-item.html'),
     controller: MCCommentItemController,
     bindings: {
         comment: "<",

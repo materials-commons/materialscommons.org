@@ -65,6 +65,6 @@ class MCResetValidateComponentController {
 }
 
 angular.module('materialscommons').component('mcResetValidate', {
-    templateUrl: 'app/join/mc-reset-validate.html',
+    template: require('./mc-reset-validate.html'),
     controller: MCResetValidateComponentController
 });

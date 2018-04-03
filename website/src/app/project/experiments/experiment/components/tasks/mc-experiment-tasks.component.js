@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentTasks', {
-    templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-tasks.html',
+    template: require('./mc-experiment-tasks.html'),
     controller: MCExperimentTasksComponentController
 });
 
@@ -30,7 +30,7 @@ function MCExperimentTasksComponentController($scope, moveTask, mcstate, blankTa
 
     ctrl.addQuickNote = () => {
         $mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/tasks/quick-note-dialog.html',
+            templateUrl: 'app/modals/quick-note-dialog.html',
             controller: CreateExperimentQuickNoteDialogController,
             controllerAs: '$ctrl',
             bindToController: true,

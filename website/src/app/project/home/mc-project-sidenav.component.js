@@ -84,7 +84,7 @@ class MCProjectSidenavComponentController {
                 }
 
                 this.$mdDialog.show({
-                    templateUrl: 'app/project/home/modify-project-shortcuts-dialog.html',
+                    templateUrl: 'app/modals/modify-project-shortcuts-dialog.html',
                     controller: ModifyProjectShortcutsDialogController,
                     controllerAs: '$ctrl',
                     bindToController: true,
@@ -102,8 +102,8 @@ class MCProjectSidenavComponentController {
         return this.mcRouteState.getRouteName().startsWith('project.experiment.datasets');
     }
 
-    publishExperiment() {
-
+    isProjectDatasetsRoute() {
+        return this.mcRouteState.getRouteName().startsWith('project.datasets');
     }
 }
 

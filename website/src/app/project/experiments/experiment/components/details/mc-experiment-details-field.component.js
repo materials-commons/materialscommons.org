@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentDetailsField', {
-    templateUrl: 'app/project/experiments/experiment/components/details/mc-experiment-details-field.html',
+    template: require('./mc-experiment-details-field.html'),
     controller: MCExperimentDetailsFieldComponentController,
     bindings: {
         experiment: '=',

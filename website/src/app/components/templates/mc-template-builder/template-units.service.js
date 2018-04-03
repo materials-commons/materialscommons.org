@@ -41,7 +41,7 @@ class TemplateUnitsService {
 
     showChoices() {
         return this.$mdDialog.show({
-            templateUrl: 'app/components/templates/mc-template-builder/unit-choices-dialog.html',
+            templateUrl: 'app/modals/unit-choices-dialog.html',
             controller: ShowUnitChoicesDialogController,
             controllerAs: '$ctrl',
             bindToController: true,

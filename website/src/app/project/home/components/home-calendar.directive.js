@@ -7,7 +7,7 @@ function homeCalendarDirective() {
         scope: {
             project: '=project'
         },
-        templateUrl: 'app/project/home/components/home-calendar.html'
+        template: require('./home-calendar.html')
     };
 }
 

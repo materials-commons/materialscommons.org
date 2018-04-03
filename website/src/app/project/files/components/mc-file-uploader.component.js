@@ -69,7 +69,7 @@ class MCFileUploaderComponentController {
 }
 
 angular.module('materialscommons').component('mcFileUploader', {
-    templateUrl: 'app/project/files/components/mc-file-uploader.html',
+    template: require('./mc-file-uploader.html'),
     controller: MCFileUploaderComponentController,
     bindings: {
         onUploadComplete: '&',

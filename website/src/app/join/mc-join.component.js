@@ -38,6 +38,6 @@ class MCJoinComponentController {
 }
 
 angular.module('materialscommons').component('mcJoin', {
-    templateUrl: 'app/join/mc-join.html',
+    template: require('./mc-join.html'),
     controller: MCJoinComponentController
 });

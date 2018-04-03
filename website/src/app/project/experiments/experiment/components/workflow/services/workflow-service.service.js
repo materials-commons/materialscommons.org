@@ -12,7 +12,7 @@ class WorkflowService {
 
     chooseSamplesFromSource(source) {
         return this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/workflow/services/choose-source-samples-dialog.html',
+            templateUrl: 'app/modals/choose-source-samples-dialog.html',
             controllerAs: '$ctrl',
             controller: ChooseSamplesFromSourceDialogController,
             bindToController: true,
@@ -43,7 +43,7 @@ class WorkflowService {
                 (process) => {
                     let p = this.templates.loadTemplateFromProcess(process.template_name, process);
                     this.$mdDialog.show({
-                        templateUrl: 'app/project/experiments/experiment/components/workflow/new-process-dialog.html',
+                        templateUrl: 'app/modals/new-process-dialog.html',
                         controllerAs: '$ctrl',
                         controller: NewProcessDialogController,
                         bindToController: true,
@@ -98,7 +98,7 @@ class WorkflowService {
                         (pUpdated) => {
                             p.input_samples = pUpdated.input_samples;
                             this.$mdDialog.show({
-                                templateUrl: 'app/project/experiments/experiment/components/workflow/new-process-dialog.html',
+                                templateUrl: 'app/modals/new-process-dialog.html',
                                 controllerAs: '$ctrl',
                                 controller: NewProcessDialogController,
                                 bindToController: true,
@@ -123,7 +123,7 @@ class WorkflowService {
         p.output_samples.forEach(s => s.selected = true);
         p.files.forEach(f => f.selected = true);
         return this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/workflow/services/clone-process-dialog.html',
+            templateUrl: 'app/modals/clone-process-dialog.html',
             controllerAs: '$ctrl',
             controller: CloneProcessDialogController,
             bindToController: true,

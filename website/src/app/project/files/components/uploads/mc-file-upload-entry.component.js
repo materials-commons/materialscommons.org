@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcFileUploadEntry', {
-    templateUrl: 'app/project/files/components/uploads/mc-file-upload-entry.html',
+    template: require('./mc-file-upload-entry.html'),
     controller: MCFileUploadEntryComponentController,
     bindings: {
         file: '='

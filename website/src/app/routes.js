@@ -306,6 +306,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 ]
             }
         })
+        .state('project.datasets.dataset2', {
+            url: '/dataset',
+            template: '<mc-project-dataset></mc-project-dataset>'
+        })
         .state('project.settings', {
             url: '/settings',
             template: '<mc-project-settings></mc-project-settings>'

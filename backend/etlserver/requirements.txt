@@ -1,0 +1,3 @@
+configparser
+materials_commons
+flask-api

@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentTaskDetails', {
-    templateUrl: 'app/project/experiments/experiment/components/tasks/mc-experiment-task-details.html',
+    template: require('./mc-experiment-task-details.html'),
     controller: MCExperimentTaskDetailsComponentController,
     bindings: {
         task: '<'

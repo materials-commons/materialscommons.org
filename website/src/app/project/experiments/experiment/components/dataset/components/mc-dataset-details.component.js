@@ -87,7 +87,7 @@ class MCDatasetDetailsComponentController {
 
     addDoi() {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/set-doi-dialog.html',
+            templateUrl: 'app/modals/set-doi-dialog.html',
             controllerAs: '$ctrl',
             controller: SetDatasetDoiDialogController,
             bindToController: true,
@@ -115,7 +115,7 @@ class MCDatasetDetailsComponentController {
 
     publishDataset() {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/publish-dataset-dialog.html',
+            templateUrl: 'app/modals/publish-dataset-dialog.html',
             controllerAs: '$ctrl',
             controller: PublishDatasetDialogController,
             bindToController: true,
@@ -132,7 +132,7 @@ class MCDatasetDetailsComponentController {
 
     unpublishDataset() {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/unpublish-dataset-dialog.html',
+            templateUrl: 'app/modals/unpublish-dataset-dialog.html',
             controllerAs: '$ctrl',
             controller: UnpublishDatasetDialogController,
             bindToController: true,
@@ -255,7 +255,7 @@ class SetDatasetDoiDialogController {
 }
 
 angular.module('materialscommons').component('mcDatasetDetails', {
-    templateUrl: 'app/project/experiments/experiment/components/dataset/components/mc-dataset-details.html',
+    template: require('./mc-dataset-details.html'),
     controller: MCDatasetDetailsComponentController,
     bindings: {
         dataset: '<'

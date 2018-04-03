@@ -11,7 +11,7 @@ function mcmodalService($modal) {
         chooseUsers: function(users) {
             const modal = $modal.open({
                 size: 'lg',
-                templateUrl: 'app/global.services/mcmodal/partials/choose-users.html',
+                templateUrl: 'app/modals/choose-users-dialog.html',
                 controller: ChooseUsersController,
                 controllerAs: 'ctrl',
                 resolve: {
@@ -26,7 +26,7 @@ function mcmodalService($modal) {
         chooseExistingProcess: function(processes) {
             const modal = $modal.open({
                 size: 'lg',
-                templateUrl: 'app/global.services/mcmodal/partials/existing-process.html',
+                templateUrl: 'app/modals/existing-process-dialog.html',
                 controller: existingProcessController,
                 controllerAs: 'ctrl',
                 resolve: {
@@ -41,7 +41,7 @@ function mcmodalService($modal) {
         viewSetup: function(template) {
             const modal = $modal.open({
                 size: 'lg',
-                templateUrl: 'app/global.services/mcmodal/partials/view_setup.html',
+                templateUrl: 'app/modals/view-setup-dialog.html',
                 controller: setupViewController,
                 controllerAs: 'ctrl',
                 resolve: {
@@ -56,7 +56,7 @@ function mcmodalService($modal) {
         preFill: function(template, existingTemplateNames) {
             const modal = $modal.open({
                 size: 'lg',
-                templateUrl: 'app/global.services/mcmodal/partials/prefill.html',
+                templateUrl: 'app/modals/prefill-dialog.html',
                 controller: PreFillProcessController,
                 controllerAs: 'ctrl',
                 resolve: {
@@ -74,7 +74,7 @@ function mcmodalService($modal) {
         viewImage: function(file) {
             const modal = $modal.open({
                 size: 'lg',
-                templateUrl: 'app/global.services/mcmodal/partials/image.html',
+                templateUrl: 'app/modals/view-image-dialog.html',
                 controller: ImageController,
                 controllerAs: 'ctrl',
                 resolve: {

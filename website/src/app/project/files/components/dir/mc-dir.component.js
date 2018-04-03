@@ -82,7 +82,7 @@ class MCDirComponentController {
 }
 
 angular.module('materialscommons').component('mcDir', {
-    templateUrl: 'app/project/files/components/dir/mc-dir.html',
+    template: require('./mc-dir.html'),
     controller: MCDirComponentController,
     bindings: {
         dir: '<',

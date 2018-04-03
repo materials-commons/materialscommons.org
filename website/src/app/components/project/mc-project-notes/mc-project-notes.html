@@ -8,7 +8,7 @@
                 <md-content style="height: 35vh">
                     <md-list>
                         <md-list-item ng-repeat="todo in $ctrl.project.todos" ng-click="null">
-                            <md-checkbox ng-model="todo.done" ng-change="$ctrl.removeTodo($index)"></md-checkbox>
+                            <md-checkbox ng-model="todo.done" ng-change="$ctrl.removeTodo($index)" aria-label="to do"></md-checkbox>
                             <p ng-if="!todo.edit">{{todo.title}}</p>
                             <p ng-if="todo.edit">
                                 <md-input-container class="md-block">

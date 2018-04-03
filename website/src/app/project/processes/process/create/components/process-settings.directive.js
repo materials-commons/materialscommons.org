@@ -11,7 +11,7 @@ function processSettingsDirective() {
         controller: ProcessSettingsDirectiveController,
         controllerAs: 'ctrl',
         bindToController: true,
-        templateUrl: 'app/project/processes/process/create/components/process-settings.html'
+        template: require('./process-settings.html')
     }
 }
 

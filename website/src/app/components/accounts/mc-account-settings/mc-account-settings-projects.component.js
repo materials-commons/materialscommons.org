@@ -36,6 +36,6 @@ class MCAccountSettingsProjectsComponentController {
 }
 
 angular.module('materialscommons').component('mcAccountSettingsProjects', {
-    templateUrl: 'app/components/accounts/mc-account-settings/mc-account-settings-projects.html',
+    template: require('./mc-account-settings-projects.html'),
     controller: MCAccountSettingsProjectsComponentController
 });
