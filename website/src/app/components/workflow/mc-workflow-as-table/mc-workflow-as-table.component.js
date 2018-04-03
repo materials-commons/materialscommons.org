@@ -1,8 +1,9 @@
 class MCWorkflowAsTableComponentController {
     /*@ngInject*/
-    constructor(mcprojstore, projectsAPI) {
+    constructor(mcprojstore, projectsAPI, $mdDialog) {
         this.mcprojstore = mcprojstore;
         this.projectsAPI = projectsAPI;
+        this.$mdDialog = $mdDialog;
         this.project = mcprojstore.currentProject;
         //console.log('this.project', this.project);
         this.grouped = false;
@@ -89,7 +90,12 @@ class MCWorkflowAsTableComponentController {
     }
 
     handleSelectSample(sampleIndex, selectState) {
+        console.log('handleSelectSample', sampleIndex, selectState);
         this.samples2[sampleIndex].selected = selectState;
+    }
+
+    handleRemoveSelectedSamples() {
+        this.samples2 = this.samples2.filter(s => !s.selected);
     }
 
     addProcessListTimeLine(sample) {
@@ -130,9 +136,58 @@ class MCWorkflowAsTableComponentController {
         // }
          uniqueProcesses.combinedProcessTimeline.forEach(() => null);
     }
+
+    chooseExistingSamples() {
+        let existingSamples = [];
+        for (let i = 0; i < 10; i++) {
+            existingSamples.push({
+                selected: false,
+                name: "ExistingSample_" + i,
+                processes: this.fillRandomProcesses(this.headers.length)
+            });
+        }
+
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/choose-existing-samples-dialog.html',
+            controller: ChooseExistingSamplesDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                samples: existingSamples
+            }
+        }).then(
+            samplesChosen => {
+                this.samples2 = this.samples2.concat(samplesChosen);
+            }
+        );
+    }
 }
 
 angular.module('materialscommons').component('mcWorkflowAsTable', {
     template: require('./mc-workflow-as-table.html'),
     controller: MCWorkflowAsTableComponentController
 });
+
+class ChooseExistingSamplesDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.state = {
+            samples: angular.copy(this.samples)
+        }
+    }
+
+    done() {
+        let chosenSamples = this.state.samples.filter(s => s.selected).map(s => {
+            // Reset selected flag so we return the samples in the same
+            // state we received them.
+            s.selected = false;
+            return s;
+        });
+        this.$mdDialog.hide(chosenSamples);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}

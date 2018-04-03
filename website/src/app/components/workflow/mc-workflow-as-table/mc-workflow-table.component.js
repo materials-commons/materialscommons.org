@@ -56,7 +56,24 @@ class MCWorkflowTableComponentController {
     handleSampleProcessChange(sampleIndex, processIndex, selected) {
         this.onSampleProcessChange({sampleIndex: sampleIndex, processIndex: processIndex, state: selected});
     }
+
+    handleSampleSelection(index, selectState) {
+        this.onSampleSelected({sampleIndex: index, selectState: selectState});
+    }
 }
+
+angular.module('materialscommons').component('mcWorkflowTable', {
+    template: require('./mc-workflow-table.html'),
+    controller: MCWorkflowTableComponentController,
+    bindings: {
+        samples: '<',
+        headers: '<',
+        editTable: '<',
+        onDeleteProcess: '&',
+        onSampleSelected: '&',
+        onSampleProcessChange: '&',
+    }
+});
 
 class EditSampleDialogController {
     /*@ngInject*/
@@ -129,16 +146,3 @@ class EditSampleProcessDialogController {
         this.$mdDialog.cancel();
     }
 }
-
-angular.module('materialscommons').component('mcWorkflowTable', {
-    template: require('./mc-workflow-table.html'),
-    controller: MCWorkflowTableComponentController,
-    bindings: {
-        samples: '<',
-        headers: '<',
-        editTable: '<',
-        onDeleteProcess: '&',
-        onSampleSelected: '&',
-        onSampleProcessChange: '&',
-    }
-});
