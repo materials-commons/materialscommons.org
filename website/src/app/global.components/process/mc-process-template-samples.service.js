@@ -48,7 +48,7 @@ class MCProcessTemplateSamplesService {
 
     addMultipleSamples() {
         this.$mdDialog.show({
-            templateUrl: 'app/global.components/process/add-multiple-samples-dialog.html',
+            templateUrl: 'app/modals/add-multiple-samples-dialog.html',
             controller: AddMultipleSamplesDialogController,
             controllerAs: '$ctrl',
             bindToController: true,

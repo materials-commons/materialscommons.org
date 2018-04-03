@@ -16,7 +16,7 @@ class MCFilesTableComponentController {
 
     showFile(file) {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
+            templateUrl: 'app/modals/show-file-dialog.html',
             controllerAs: '$ctrl',
             controller: ShowFileDialogController,
             multiple: true,
@@ -40,7 +40,7 @@ class ShowFileDialogController {
 }
 
 angular.module('materialscommons').component('mcFilesTable', {
-    templateUrl: 'app/global.components/mc-files-table.html',
+    template: require('./mc-files-table.html'),
     controller: MCFilesTableComponentController,
     bindings: {
         files: '<'

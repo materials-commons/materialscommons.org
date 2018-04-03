@@ -26,7 +26,7 @@ class MCProcessFileUploadComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessFileUpload', {
-    templateUrl: 'app/global.components/mc-process-file-upload.html',
+    template: require('./mc-process-file-upload.html'),
     controller: MCProcessFileUploadComponentController,
     bindings: {
         onUploadComplete: '&'

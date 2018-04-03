@@ -27,7 +27,7 @@ class MCDataHomeComponentController {
 }
 
 angular.module('materialscommons').component('mcDataHome', {
-    templateUrl: 'app/data/components/home/mc-data-home.html',
+    template: require('./mc-data-home.html'),
     controller: MCDataHomeComponentController,
     bindings: {
         tags: '<'

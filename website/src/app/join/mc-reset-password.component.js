@@ -20,7 +20,7 @@ class MCResetPasswordComponentController {
 }
 
 angular.module('materialscommons').component('mcResetPassword', {
-    templateUrl: 'app/join/mc-reset-password.html',
+    template: require('./mc-reset-password.html'),
     controller: MCResetPasswordComponentController
 });
 

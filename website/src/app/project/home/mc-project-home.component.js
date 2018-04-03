@@ -79,7 +79,7 @@ class MCProjectHomeComponentController {
 
     startNewExperiment() {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/create-experiment-dialog.html',
+            templateUrl: 'app/modals/create-experiment-dialog.html',
             controller: CreateNewExperimentDialogController,
             controllerAs: 'ctrl',
             bindToController: true
@@ -101,7 +101,7 @@ class MCProjectHomeComponentController {
             return;
         }
         this.$mdDialog.show({
-            templateUrl: 'app/project/home/merge-experiments-dialog.html',
+            templateUrl: 'app/modals/merge-experiments-dialog.html',
             controller: MergeExperimentsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -136,7 +136,7 @@ class MCProjectHomeComponentController {
         }
 
         this.$mdDialog.show({
-            templateUrl: 'app/project/home/delete-experiments-dialog.html',
+            templateUrl: 'app/modals/delete-experiments-dialog.html',
             controller: DeleteExperimentsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -170,7 +170,7 @@ class MCProjectHomeComponentController {
     etlStart(){
         console.log("MCProjectHomeComponentController - etlStart()");
         this.$mdDialog.show({
-            templateUrl: 'app/project/home/mc-etl-upload-dialog.html',
+            templateUrl: 'app/modals/mc-etl-upload-dialog.html',
             controller: EtlUploadDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -377,6 +377,6 @@ class EtlUploadDialogController {
 }
 
 angular.module('materialscommons').component('mcProjectHome', {
-    templateUrl: 'app/project/home/mc-project-home.html',
+    template: require('./mc-project-home.html'),
     controller: MCProjectHomeComponentController
 });

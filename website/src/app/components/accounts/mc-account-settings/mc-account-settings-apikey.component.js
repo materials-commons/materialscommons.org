@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcAccountSettingsApikey', {
-    templateUrl: 'app/components/accounts/mc-account-settings/mc-account-settings-apikey.html',
+    template: require('./mc-account-settings-apikey.html'),
     controller: MCAccountSettingsApikeyComponentController
 });
 

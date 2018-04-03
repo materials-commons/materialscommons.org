@@ -37,7 +37,7 @@ class MCTemplateBuilderPropertiesComponentController {
 }
 
 angular.module('materialscommons').component('mcTemplateBuilderProperties', {
-    templateUrl: 'app/components/templates/mc-template-builder/mc-template-builder-properties.html',
+    template: require('./mc-template-builder-properties.html'),
     controller: MCTemplateBuilderPropertiesComponentController,
     bindings: {
         properties: '=',

@@ -78,7 +78,7 @@ class MCTaskTemplateCreateSamplesComponentController {
 
     addMultipleSamples() {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/tasks/components/add-multiple-samples-dialog.html',
+            templateUrl: 'app/modals/add-multiple-samples-dialog.html',
             controller: AddMultipleSamplesDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -94,7 +94,7 @@ class MCTaskTemplateCreateSamplesComponentController {
 }
 
 angular.module('materialscommons').component('mcTaskTemplateCreateSamples', {
-    templateUrl: 'app/project/experiments/experiment/components/tasks/components/mc-task-template-create-samples.html',
+    template: require('./mc-task-template-create-samples.html'),
     controller: MCTaskTemplateCreateSamplesComponentController,
     bindings: {
         task: '='

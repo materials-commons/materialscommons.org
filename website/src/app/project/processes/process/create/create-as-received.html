@@ -15,7 +15,7 @@
     </div>
     <span flex></span>
     <div layout="column" flex="45">
-        <md-checkbox ng-model="$ctrl.sampleGroup">Treat as sample group</md-checkbox>
+        <md-checkbox ng-model="$ctrl.sampleGroup" aria-label="sample group">Treat as sample group</md-checkbox>
         <div ng-if="$ctrl.sampleGroup && $ctrl.sampleGroupSizing === 'set-size'">
             <md-input-container>
                 <label>Sample group size</label>

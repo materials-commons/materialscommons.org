@@ -30,7 +30,7 @@ class MCExperimentNotesComponentController {
                     this.toUITask(task);
                     this.experiment.tasks.push(task);
                     this.$mdDialog.show({
-                        templateUrl: 'app/project/experiments/experiment/components/notes/quick-tasks.html',
+                        templateUrl: 'app/modals/quick-tasks-dialog.html',
                         controller: NewExperimentQuickTasksDialogController,
                         controllerAs: '$ctrl',
                         bindToController: true,
@@ -46,7 +46,7 @@ class MCExperimentNotesComponentController {
 
     addNote() {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/notes/new-note-dialog.html',
+            templateUrl: 'app/modals/new-note-dialog.html',
             controller: NewExperimentNoteDialogController,
             controllerAs: 'ctrl',
             bindToController: true
@@ -167,7 +167,7 @@ class NewExperimentQuickTasksDialogController {
 }
 
 angular.module('materialscommons').component('mcExperimentNotes', {
-    templateUrl: 'app/project/experiments/experiment/components/notes/mc-experiment-notes.html',
+    template: require('./mc-experiment-notes.html'),
     controller: MCExperimentNotesComponentController,
     bindings: {
         experiment: '='

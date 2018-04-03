@@ -23,7 +23,7 @@ class MCDirFilterByTypeComponentController {
 }
 
 angular.module('materialscommons').component('mcDirFilterByType', {
-    templateUrl: 'app/project/files/components/dir/mc-dir-filter-by-type.html',
+    template: require('./mc-dir-filter-by-type.html'),
     controller: MCDirFilterByTypeComponentController,
     bindings: {
         dir: '=',

@@ -32,7 +32,7 @@ class MCAttributeStringComponentController {
 }
 
 angular.module('materialscommons').component('mcAttributeString', {
-    templateUrl: 'app/global.components/attribute/mc-attribute-string.html',
+    template: require('./mc-attribute-string.html'),
     controller: MCAttributeStringComponentController,
     bindings: {
         setting: '<',

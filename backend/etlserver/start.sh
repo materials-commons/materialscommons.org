@@ -19,11 +19,22 @@ set_locations() {
 }
 
 set_locations
-echo "Setting upload folder: /tmp/test-uploads"
-mkdir -p /tmp/test-uploads
 echo "DIR = ${DIR}"
 echo "BACKEND = ${BACKEND}"
 source ${BACKEND}/env/dev.sh
+UPLOAD_FOLDER=${MCDIR}/etlStaging/
+mkdir -p ${UPLOAD_FOLDER}
+echo "--------- WARNING --------------------------------"
+echo "  Assumes that test environment is set            "
+echo "    (currently: ${env} )"
+echo "--------- WARNING --------------------------------"
+echo "  Setting for MCDIR = ${MCDIR}"
+echo "  Setting upload folder: ${UPLOAD_FOLDER}"
+echo "--------- WARNING --------------------------------"
+echo "  Depends on ~/PythonEnvs/python3dev/bin/activate "
+echo "    must be defined in local environment          "
+echo "--------- WARNING --------------------------------"
+source ~/PythonEnvs/python3dev/bin/activate
 
 cd ${BACKEND}
 ${BACKEND}/mcetlserver.py

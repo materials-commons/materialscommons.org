@@ -16,7 +16,7 @@ class MCShowProcessComponentController {
 }
 
 angular.module('materialscommons').component('mcShowProcess', {
-    templateUrl: 'app/global.components/mc-show-process.html',
+    template: require('./mc-show-process.html'),
     controller: MCShowProcessComponentController,
     bindings: {
         processId: '<',

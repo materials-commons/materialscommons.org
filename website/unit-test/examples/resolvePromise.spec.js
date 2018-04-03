@@ -4,7 +4,7 @@
 
 // tests
 
-describe('reolving a promise', function() {
+xdescribe('reolving a promise', function () {
     it('should simulate promise', inject(function($q, $rootScope) {
         var deferred = $q.defer();
         var promise = deferred.promise;

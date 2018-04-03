@@ -18,7 +18,7 @@ class MCDatasetWorkflowSidebarComponentController {
 }
 
 angular.module('materialscommons').component('mcDatasetWorkflowSidebar', {
-    templateUrl: 'app/components/workflow/mc-dataset-workflow/mc-dataset-workflow-sidebar.html',
+    template: require('./mc-dataset-workflow-sidebar.html'),
     controller: MCDatasetWorkflowSidebarComponentController,
     bindings: {
         dataset: '<'

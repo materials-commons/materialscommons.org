@@ -8,7 +8,7 @@ angular.module('materialscommons').directive('periodicTable',
             scope: {
                 composition: '=composition'
             },
-            templateUrl: 'app/project/processes/process/create/components/periodic-table.html'
+            template: require('./periodic-table.html')
         };
     });
 

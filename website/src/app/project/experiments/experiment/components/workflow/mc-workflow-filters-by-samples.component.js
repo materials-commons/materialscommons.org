@@ -45,7 +45,7 @@ class MCWorkflowFiltersBySamplesComponentController {
 }
 
 angular.module('materialscommons').component('mcWorkflowFiltersBySamples', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-workflow-filters-by-samples.html',
+    template: require('./mc-workflow-filters-by-samples.html'),
     controller: MCWorkflowFiltersBySamplesComponentController,
     bindings: {
         samples: '<'

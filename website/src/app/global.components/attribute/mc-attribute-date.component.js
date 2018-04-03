@@ -42,7 +42,7 @@ class MCAttributeDateComponentController {
 }
 
 angular.module('materialscommons').component('mcAttributeDate', {
-    templateUrl: 'app/global.components/attribute/mc-attribute-date.html',
+    template: require('./mc-attribute-date.html'),
     controller: MCAttributeDateComponentController,
     bindings: {
         setting: '<',

@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcFileEditControls', {
-    templateUrl: 'app/project/files/components/file/mc-file-edit-controls.html',
+    template: require('./mc-file-edit-controls.html'),
     controller: MCFileEditControlsComponentController,
     bindings: {
         file: '='

@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcAccountSettingsPassword', {
-    templateUrl: 'app/components/accounts/mc-account-settings/mc-account-settings-password.html',
+    template: require('./mc-account-settings-password.html'),
     controller: MCAccountSettingsPasswordComponentController
 });
 

@@ -56,7 +56,7 @@ class MCProcessTemplateSamplesListComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessTemplateSamplesList', {
-    templateUrl: 'app/global.components/process/mc-process-template-samples-list.html',
+    template: require('./mc-process-template-samples-list.html'),
     controller: MCProcessTemplateSamplesListComponentController,
     bindings: {
         process: '='

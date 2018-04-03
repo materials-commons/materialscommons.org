@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentProcesses', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-experiment-processes.html',
+    template: require('./mc-experiment-processes.html'),
     controller: MCExperimentProcessesComponentController,
     bindings: {
         processes: '<'

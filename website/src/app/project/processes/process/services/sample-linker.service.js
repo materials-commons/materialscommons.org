@@ -12,7 +12,7 @@ class SampleLinkerService {
             return f;
         });
         return this.$mdDialog.show({
-            templateUrl: 'app/project/processes/process/services/link-files-to-sample.html',
+            templateUrl: 'app/modals/link-files-to-sample-dialog.html',
             controller: LinkFilesToSampleController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -26,7 +26,7 @@ class SampleLinkerService {
 
     linkSamplesToFile(file, samples) {
         return this.$mdDialog.show({
-            templateUrl: 'app/project/processes/process/services/link-samples-to-file.html',
+            templateUrl: 'app/modals/link-samples-to-file-dialog.html',
             controller: LinkSamplesToFileController,
             controllerAs: '$ctrl',
             bindToController: true,

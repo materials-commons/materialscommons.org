@@ -82,7 +82,7 @@ function MCDatasetWorkflowOutlineDirDirective(RecursionHelper) {
         replace: true,
         controllerAs: '$ctrl',
         bindToController: true,
-        templateUrl: 'app/components/workflow/mc-dataset-workflow/mc-dataset-workflow-outline/mc-dataset-workflow-outline-dir.html',
+        template: require('./mc-dataset-workflow-outline-dir.html'),
         compile: function(element) {
             return RecursionHelper.compile(element, function() {
             });
@@ -91,7 +91,7 @@ function MCDatasetWorkflowOutlineDirDirective(RecursionHelper) {
 }
 
 angular.module('materialscommons').component('mcDatasetWorkflowOutline', {
-    templateUrl: 'app/components/workflow/mc-dataset-workflow/mc-dataset-workflow-outline/mc-dataset-workflow-outline.html',
+    template: require('./mc-dataset-workflow-outline.html'),
     controller: MCDatasetWorkflowOutlineComponentController,
     bindings: {
         dataset: '<'
@@ -99,5 +99,3 @@ angular.module('materialscommons').component('mcDatasetWorkflowOutline', {
 });
 
 angular.module('materialscommons').directive('mcDatasetWorkflowOutlineDir', MCDatasetWorkflowOutlineDirDirective);
-
-

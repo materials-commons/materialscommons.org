@@ -18,7 +18,7 @@ class MCTemplateBuilderElementsComponentController {
 }
 
 angular.module('materialscommons').component('mcTemplateBuilderElements', {
-    templateUrl: 'app/components/templates/mc-template-builder/mc-template-builder-elements.html',
+    template: require('./mc-template-builder-elements.html'),
     controller: MCTemplateBuilderElementsComponentController,
     bindings: {
         elements: '<'

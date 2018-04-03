@@ -49,7 +49,7 @@ class MCProcessesWorkflowComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessesWorkflow', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-processes-workflow.html',
+    template: require('./mc-processes-workflow.html'),
     controller: MCProcessesWorkflowComponentController,
     bindings: {
         processes: '<',

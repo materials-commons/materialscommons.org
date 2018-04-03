@@ -27,7 +27,7 @@ function MyController($scope, $http) {
 }
 
 // testing controller
-describe('http call mock example', function() {
+xdescribe('http call mock example', function () {
     var $httpBackend, $rootScope, createController, authRequestHandler;
 
     // Set up the module

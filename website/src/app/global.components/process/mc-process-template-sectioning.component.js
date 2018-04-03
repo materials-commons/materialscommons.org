@@ -126,7 +126,7 @@ class MCProcessTemplateSectioningComponentController {
 
     addMultipleSamples() {
         this.$mdDialog.show({
-            templateUrl: 'app/global.components/process/add-multiple-sections-dialog.html',
+            templateUrl: 'app/modals/add-multiple-sections-dialog.html',
             controller: AddMultipleSectionsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -147,7 +147,7 @@ class MCProcessTemplateSectioningComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessTemplateSectioning', {
-    templateUrl: 'app/global.components/process/mc-process-template-sectioning.html',
+    template: require('./mc-process-template-sectioning.html'),
     controller: MCProcessTemplateSectioningComponentController,
     bindings: {
         process: '=',

@@ -32,7 +32,7 @@ class MCAttributeSelectionComponentController {
 }
 
 angular.module('materialscommons').component('mcAttributeSelection', {
-    templateUrl: 'app/global.components/attribute/mc-attribute-selection.html',
+    template: require('./mc-attribute-selection.html'),
     controller: MCAttributeSelectionComponentController,
     bindings: {
         setting: '<',
