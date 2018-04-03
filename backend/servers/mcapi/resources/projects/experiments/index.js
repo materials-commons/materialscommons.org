@@ -85,7 +85,7 @@ function* mergeExperiments(next) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
     } else {
-        let rv = yield experiments.merge(this.params.project_id, mergeArgs);
+        let rv = yield experiments.merge(this.params.project_id, mergeArgs, this.reqctx.user.id);
         if (rv.error) {
             this.status = status.BAD_REQUEST;
             this.body = rv;
