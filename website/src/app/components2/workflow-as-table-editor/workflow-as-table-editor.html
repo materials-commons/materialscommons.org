@@ -19,12 +19,12 @@
             <i class="fa fa-fw fa-site-map"></i>View As Graph
         </md-button>
     </div>
-    <mc-workflow-as-table-editor ng-if="!$ctrl.grouped"
-                                 headers="$ctrl.headers"
-                                 samples="$ctrl.samples"
-                                 edit-table="$ctrl.editTable"
-                                 on-sample-process-change="$ctrl.handleUpdateStateOfProcessInSample(sampleIndex, processIndex, state)"
-                                 on-sample-selected="$ctrl.handleSelectSample(sampleIndex, selectState)"
-                                 on-delete-process="$ctrl.handleDeleteProcess(index)">
-    </mc-workflow-as-table-editor>
+    <mc-workflow-as-table ng-if="!$ctrl.grouped"
+                          headers="$ctrl.headers"
+                          samples="$ctrl.samples"
+                          edit-table="$ctrl.editTable"
+                          on-sample-process-change="$ctrl.handleUpdateStateOfProcessInSample(sampleIndex, processIndex, state)"
+                          on-sample-selected="$ctrl.handleSelectSample(sampleIndex, selectState)"
+                          on-delete-process="$ctrl.handleDeleteProcess(index)">
+    </mc-workflow-as-table>
 </div>

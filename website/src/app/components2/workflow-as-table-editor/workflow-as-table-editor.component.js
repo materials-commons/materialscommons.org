@@ -1,4 +1,4 @@
-class MCWorkflowAsTableComponentController {
+class MCWorkflowAsTableEditorComponentController {
     /*@ngInject*/
     constructor(mcshow) {
         this.mcshow = mcshow;
@@ -88,9 +88,9 @@ class MCWorkflowAsTableComponentController {
     }
 }
 
-angular.module('materialscommons').component('mcWorkflowAsTable', {
-    template: require('./workflow-as-table.html'),
-    controller: MCWorkflowAsTableComponentController
+angular.module('materialscommons').component('mcWorkflowAsTableEditor', {
+    template: require('./workflow-as-table-editor.html'),
+    controller: MCWorkflowAsTableEditorComponentController
 });
 
 // this.projectsAPI.getProjectSamples(this.project.id).then(
