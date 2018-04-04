@@ -89,7 +89,7 @@ class MCWorkflowAsTableComponentController {
 }
 
 angular.module('materialscommons').component('mcWorkflowAsTable', {
-    template: require('./mc-workflow-as-table.html'),
+    template: require('./workflow-as-table.html'),
     controller: MCWorkflowAsTableComponentController
 });
 
