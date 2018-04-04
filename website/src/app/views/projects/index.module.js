@@ -1,0 +1,1 @@
+import './project.home/mc-project-home.component';
