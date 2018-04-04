@@ -1,4 +1,4 @@
-class MCWorkflowTableComponentController {
+class MCWorkflowAsTableEditorComponentController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
@@ -62,9 +62,9 @@ class MCWorkflowTableComponentController {
     }
 }
 
-angular.module('materialscommons').component('mcWorkflowTable', {
-    template: require('./mc-workflow-table.html'),
-    controller: MCWorkflowTableComponentController,
+angular.module('materialscommons').component('mcWorkflowAsTableEditor', {
+    template: require('./workflow-as-table-editor.html'),
+    controller: MCWorkflowAsTableEditorComponentController,
     bindings: {
         samples: '<',
         headers: '<',

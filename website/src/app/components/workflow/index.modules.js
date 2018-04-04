@@ -5,5 +5,4 @@ import './mc-dataset-workflow/mc-dataset-workflow-outline/mc-dataset-workflow-ou
 import './mc-dataset-workflow/mc-dataset-workflow-sidebar.component';
 import './mc-dataset-workflow/mc-dataset-workflow-filters.component';
 import './mc-workflow-as-table/mc-workflow-as-table-grouped.component';
-import './mc-workflow-as-table/mc-workflow-table.component';
 import './mc-workflow-as-table/mc-workflow-as-table-container.component';

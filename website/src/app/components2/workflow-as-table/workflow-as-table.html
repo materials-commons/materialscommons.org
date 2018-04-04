@@ -16,15 +16,15 @@
         </md-button>
         <span flex="5"></span>
         <md-button class="md-primary" ng-disabled="$ctrl.editTable">
-            <i class="fa fa-fw fa-site-map"></i>View As Workflow
+            <i class="fa fa-fw fa-site-map"></i>View As Graph
         </md-button>
     </div>
-    <mc-workflow-table ng-if="!$ctrl.grouped"
-                       headers="$ctrl.headers"
-                       samples="$ctrl.samples"
-                       edit-table="$ctrl.editTable"
-                       on-sample-process-change="$ctrl.handleUpdateStateOfProcessInSample(sampleIndex, processIndex, state)"
-                       on-sample-selected="$ctrl.handleSelectSample(sampleIndex, selectState)"
-                       on-delete-process="$ctrl.handleDeleteProcess(index)">
-    </mc-workflow-table>
+    <mc-workflow-as-table-editor ng-if="!$ctrl.grouped"
+                                 headers="$ctrl.headers"
+                                 samples="$ctrl.samples"
+                                 edit-table="$ctrl.editTable"
+                                 on-sample-process-change="$ctrl.handleUpdateStateOfProcessInSample(sampleIndex, processIndex, state)"
+                                 on-sample-selected="$ctrl.handleSelectSample(sampleIndex, selectState)"
+                                 on-delete-process="$ctrl.handleDeleteProcess(index)">
+    </mc-workflow-as-table-editor>
 </div>
