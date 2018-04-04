@@ -1,8 +1,6 @@
 class MCProjectDatasetsViewContainerComponentController {
     /*@ngInject*/
-    constructor($state) {
-        this.$state = $state;
-
+    constructor() {
         this.state = {
             datasets: []
         };
@@ -45,7 +43,6 @@ class MCProjectDatasetsViewContainerComponentController {
 
     handleNewDataset(dataset) {
         this.state.datasets = this.state.datasets.concat([dataset]);
-        this.$state.go('project.datasets.dataset');
     }
 }
 
