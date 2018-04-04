@@ -1,7 +1,7 @@
 class MCWorkflowAsTableComponentController {
     /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
+    constructor(mcshow) {
+        this.mcshow = mcshow;
         this.grouped = false;
         this.editTable = false;
     }
@@ -77,24 +77,7 @@ class MCWorkflowAsTableComponentController {
     }
 
     chooseExistingSamples() {
-        let existingSamples = [];
-        for (let i = 0; i < 10; i++) {
-            existingSamples.push({
-                selected: false,
-                name: "ExistingSample_" + i,
-                processes: this.fillRandomProcesses(this.headers.length)
-            });
-        }
-
-        this.$mdDialog.show({
-            templateUrl: 'app/modals/choose-existing-samples-dialog.html',
-            controller: ChooseExistingSamplesDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {
-                samples: existingSamples
-            }
-        }).then(
+        this.mcshow.chooseSamplesFromProject().then(
             samplesChosen => {
                 // TODO: Update headers using header determination algorithm with added samples
                 // Once the algorithm for creating the headers is written then we need to
@@ -109,30 +92,6 @@ angular.module('materialscommons').component('mcWorkflowAsTable', {
     template: require('./mc-workflow-as-table.html'),
     controller: MCWorkflowAsTableComponentController
 });
-
-class ChooseExistingSamplesDialogController {
-    /*@ngInject*/
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-        this.state = {
-            samples: angular.copy(this.samples)
-        }
-    }
-
-    done() {
-        let chosenSamples = this.state.samples.filter(s => s.selected).map(s => {
-            // Reset selected flag so we return the samples in the same
-            // state we received them.
-            s.selected = false;
-            return s;
-        });
-        this.$mdDialog.hide(chosenSamples);
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
 
 // this.projectsAPI.getProjectSamples(this.project.id).then(
 //     (samples) => {

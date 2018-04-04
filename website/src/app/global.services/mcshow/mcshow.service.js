@@ -19,15 +19,15 @@ class MCShowService {
 
     processDetailsDialog(process, multiple = true) {
         return this.$mdDialog.show({
-                templateUrl: 'app/modals/mc-process-details-dialog.html',
-                controller: MCProcessDetailsDialogController,
-                controllerAs: '$ctrl',
-                bindToController: true,
-                multiple: multiple,
-                locals: {
-                    process: process
-                }
-            });
+            templateUrl: 'app/modals/mc-process-details-dialog.html',
+            controller: MCProcessDetailsDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            multiple: multiple,
+            locals: {
+                process: process
+            }
+        });
     }
 
     processDetailsDialogRO(process, multiple = true) {
@@ -68,6 +68,40 @@ class MCShowService {
             }
         });
     }
+
+    chooseSamplesFromProject() {
+        let fillRandomProcesses = (count) => {
+            let processes = [];
+            for (let i = 0; i < count; i++) {
+                let rval = Math.floor(Math.random() * 2);
+                if (rval) {
+                    processes.push({active: true, selected: true});
+                } else {
+                    processes.push({active: false, selected: false});
+                }
+            }
+            return processes;
+        };
+
+        let existingSamples = [];
+        for (let i = 0; i < 10; i++) {
+            existingSamples.push({
+                selected: false,
+                name: "ExistingSample_" + i,
+                processes: fillRandomProcesses(11)
+            });
+        }
+
+        return this.$mdDialog.show({
+            templateUrl: 'app/modals/choose-existing-samples-dialog.html',
+            controller: ChooseExistingSamplesDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                samples: existingSamples
+            }
+        })
+    }
 }
 
 class CommonDoneDismissDialogController {
@@ -96,6 +130,30 @@ class MCProcessDetailsDialogController {
 
     deleteProcess() {
         this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.process.id)
+    }
+}
+
+class ChooseExistingSamplesDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.state = {
+            samples: angular.copy(this.samples)
+        }
+    }
+
+    done() {
+        let chosenSamples = this.state.samples.filter(s => s.selected).map(s => {
+            // Reset selected flag so we return the samples in the same
+            // state we received them.
+            s.selected = false;
+            return s;
+        });
+        this.$mdDialog.hide(chosenSamples);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 
