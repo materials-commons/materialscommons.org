@@ -295,19 +295,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.datasets.list', {
             url: '/list',
-            template: '<mc-project-datasets></mc-project-datasets>'
+            template: '<mc-project-datasets-view-container></mc-project-datasets-view-container>'
         })
         .state('project.datasets.dataset', {
-            url: '/dataset/:dataset_id',
-            template: '<mc-dataset-overview dataset="$resolve.dataset"></mc-dataset-overview>',
-            resolve: {
-                dataset: ['$stateParams', 'datasetsAPI',
-                    ($stateParams, datasetsAPI) => datasetsAPI.getDataset('e634ee47-b217-4547-a345-5007cd146dbd', '511930bd-96a5-4678-9626-ef79aceb75b5', '57490e70-df32-4592-8a6f-8a6cfbd36174')
-                ]
-            }
-        })
-        .state('project.datasets.dataset2', {
-            url: '/dataset2',
+            url: '/dataset',
             template: '<mc-workflow-as-table-container></mc-workflow-as-table-container>'
         })
         .state('project.settings', {

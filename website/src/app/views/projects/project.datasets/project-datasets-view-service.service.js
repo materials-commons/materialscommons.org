@@ -1,49 +1,11 @@
-class MCProjectDatasetsComponentController {
+class ProjectDatasetsViewService {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
-        this.state = {
-            datasets: []
-        };
-
-        this.state.datasets = [
-            {
-                name: 'DS1',
-                owner: 'John Allison',
-                experiments: ['E1', 'Stress testing of dilution factors'],
-                samples_count: 5,
-                files_count: 100,
-                published: false
-            },
-            {
-                name: 'DS2',
-                owner: 'John Allison',
-                experiments: ['long name 1', 'experiment test 2'],
-                samples_count: 20,
-                files_count: 1001,
-                published: true
-            },
-            {
-                name: 'DS3',
-                owner: 'Brian Puchala',
-                experiments: ['computational and DFT processes combined with casm', 'Hardness testing with Professor Allison'],
-                samples_count: 15,
-                files_count: 657,
-                published: false
-            },
-            {
-                name: 'DS4',
-                owner: 'Tracy Berman',
-                experiments: ['LIFT Anodized metals', 'My Postdoc research'],
-                samples_count: 50,
-                files_count: 150,
-                published: true
-            },
-        ]
     }
 
     createNewDataset() {
-        this.$mdDialog.show({
+        return this.$mdDialog.show({
             templateUrl: 'app/modals/create-new-dataset-dialog.html',
             controller: CreateNewDatasetDialogController,
             controllerAs: '$ctrl',
@@ -52,11 +14,12 @@ class MCProjectDatasetsComponentController {
     }
 }
 
+angular.module('materialscommons').service('projectDatasetsViewService', ProjectDatasetsViewService);
+
 class CreateNewDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog, $state) {
+    constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
-        this.$state = $state;
         this.experiments = [
             {
                 selected: false,
@@ -116,16 +79,17 @@ class CreateNewDatasetDialogController {
     }
 
     done() {
-        this.$mdDialog.hide();
-        this.$state.go('project.datasets.dataset2');
+        return this.$mdDialog.hide({
+            name: 'DS Created',
+            owner: 'Glenn Tarcea',
+            experiments: ['My Experiment'],
+            samples_count: 2,
+            files_count: 0,
+            published: false,
+        });
     }
 
     cancel() {
         this.$mdDialog.cancel();
     }
 }
-
-angular.module('materialscommons').component('mcProjectDatasets', {
-    template: require('./mc-project-datasets.html'),
-    controller: MCProjectDatasetsComponentController
-});

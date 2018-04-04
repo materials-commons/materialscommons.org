@@ -11,6 +11,7 @@ import './project/index.module';
 import './components/index.module';
 import './data/index.module';
 import './util/util';
+import './components2/index.module';
 import './layout/index.module';
 import './views/index.module';
 

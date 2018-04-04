@@ -14,7 +14,7 @@ class MCDatasetsTableComponentController {
 }
 
 angular.module('materialscommons').component('mcDatasetsTable', {
-    template: require('./mc-datasets-table.html'),
+    template: require('./datasets-table.html'),
     controller: MCDatasetsTableComponentController,
     bindings: {
         datasets: '<',
