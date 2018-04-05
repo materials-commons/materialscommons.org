@@ -1,0 +1,53 @@
+<div layout="row">
+    <div>
+        <md-table-container>
+            <table md-table class="margin-top-10">
+                <thead md-head>
+                <tr md-row>
+                    <th md-column>Select</th>
+                    <th md-column>Sample</th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row class="md-row-hover" ng-repeat="sample in $ctrl.state.samples">
+                    <td md-cell>
+                        <md-checkbox aria-label="select" ng-model="sample.selected"
+                                     ng-change="$ctrl.handleSampleSelection($index, sample.selected)"></md-checkbox>
+                    </td>
+                    <td md-cell><a ng-click="$ctrl.editSample(sample)">{{sample.name}}</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </div>
+    <md-content style="overflow-x:auto; overflow-y: auto; margin-right: 15px">
+        <md-table-container>
+            <table md-table class="margin-top-10">
+                <thead md-head>
+                <tr md-row>
+                    <th md-column ng-repeat="header in $ctrl.state.headers track by $index">
+                        {{header}} <a ng-click="$ctrl.handleDeleteColumnClick($index)">
+                        <i class="fa fa-fw fa-remove mc-error-color"></i>
+                    </a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row class="md-row-hover" ng-repeat="sample in $ctrl.state.samples" ng-init="sampleIndex = $index">
+                    <td md-cell ng-repeat="process in sample.processes track by $index" ng-if="!$ctrl.state.editTable" style="text-align:center">
+                        <a qtip="<span><b>{{$ctrl.state.headers[$index]}}</b> from qtip with html</span>"
+                           style="background-color:green; color: green; height:10px;"
+                           ng-show="process.active"
+                           ng-click="$ctrl.editProcess($ctrl.state.headers[$index], sample)">hello</a>
+                    </td>
+                    <td md-cell ng-repeat="process in sample.processes track by $index" ng-if="$ctrl.state.editTable" style="text-align:center">
+                        <md-checkbox ng-model="process.selected" ng-show="process.active" class="md-primary" aria-label="select process"
+                                     ng-change="$ctrl.handleSampleProcessChange(sampleIndex, $index, process.selected)">
+                        </md-checkbox>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+</div>

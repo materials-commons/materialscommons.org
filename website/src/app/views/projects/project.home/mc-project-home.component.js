@@ -1,4 +1,4 @@
-import {Experiment} from '../experiments/experiment/components/tasks/experiment.model';
+import {Experiment} from '../../../project/experiments/experiment/components/tasks/experiment.model';
 
 class MCProjectHomeComponentController {
     /*@ngInject*/

@@ -1,54 +1,12 @@
-class MCWorkflowAsTableUngroupedComponentController {
+class MCWorkflowAsTableComponentController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
-
-        this.headers = [
-            "Heat Treatment",
-            "Heat Treatment",
-            "SEM",
-            "SEM",
-            "Low Cycle Fatigue",
-            "EBSD",
-            "EBSD",
-            "Tension",
-            "EBSD",
-            "TEM",
-            "TEM",
-            "TEM",
-            "Cogging",
-            "Cogging",
-            "Cogging",
-            "Tension",
-            "EBSD",
-            "TEM",
-            "Cogging",
-            "Tension",
-            "EBSD",
-            "TEM",
-        ];
-
-        this.samples = [];
-        for (let i = 0; i < 10; i++) {
-            this.samples.push({
-                selected: false,
-                name: "Sample_" + i,
-                processes: this.fillRandomProcesses(this.headers.length)
-            })
+        this.state = {
+            samples: [],
+            headers: [],
+            editTable: false,
         }
-    }
-
-    fillRandomProcesses(count) {
-        let processes = [];
-        for (let i = 0; i < count; i++) {
-            let rval = Math.floor(Math.random() * 2);
-            if (rval) {
-                processes.push(true);
-            } else {
-                processes.push(false);
-            }
-        }
-        return processes;
     }
 
     editSample(sample) {
@@ -63,6 +21,21 @@ class MCWorkflowAsTableUngroupedComponentController {
         });
     }
 
+    $onChanges(changes) {
+        // console.log('changes = ', changes);
+        if (changes.samples) {
+            this.state.samples = angular.copy(changes.samples.currentValue);
+        }
+
+        if (changes.headers) {
+            this.state.headers = angular.copy(changes.headers.currentValue);
+        }
+
+        if (changes.editTable) {
+            this.state.editTable = changes.editTable.currentValue;
+        }
+    }
+
     editProcess(process, sample) {
         this.$mdDialog.show({
             templateUrl: 'app/modals/edit-sample-process-dialog.html',
@@ -75,7 +48,32 @@ class MCWorkflowAsTableUngroupedComponentController {
             }
         });
     }
+
+    handleDeleteColumnClick(index) {
+        this.onDeleteProcess({index: index});
+    }
+
+    handleSampleProcessChange(sampleIndex, processIndex, selected) {
+        this.onSampleProcessChange({sampleIndex: sampleIndex, processIndex: processIndex, state: selected});
+    }
+
+    handleSampleSelection(index, selectState) {
+        this.onSampleSelected({sampleIndex: index, selectState: selectState});
+    }
 }
+
+angular.module('materialscommons').component('mcWorkflowAsTable', {
+    template: require('./workflow-as-table.html'),
+    controller: MCWorkflowAsTableComponentController,
+    bindings: {
+        samples: '<',
+        headers: '<',
+        editTable: '<',
+        onDeleteProcess: '&',
+        onSampleSelected: '&',
+        onSampleProcessChange: '&',
+    }
+});
 
 class EditSampleDialogController {
     /*@ngInject*/
@@ -148,8 +146,3 @@ class EditSampleProcessDialogController {
         this.$mdDialog.cancel();
     }
 }
-
-angular.module('materialscommons').component('mcWorkflowAsTableUngrouped', {
-    template: require('./mc-workflow-as-table-ungrouped.html'),
-    controller: MCWorkflowAsTableUngroupedComponentController
-});
