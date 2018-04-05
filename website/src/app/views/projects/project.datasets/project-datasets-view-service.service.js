@@ -37,9 +37,17 @@ class CreateNewDatasetDialogController {
     }
 
     done() {
+        const samples = this.state.samples.filter(s => s.selected);
+        let experiments = {};
+        samples.forEach(s => {
+            s.experiments.forEach(e => {
+                experiments[e.id] = {id: e.id, name: e.name};
+            });
+        });
         this.$mdDialog.hide({
             name: this.state.datasetName,
             samples: this.state.samples.filter(s => s.selected),
+            experiments: _.values(experiments),
         });
     }
 

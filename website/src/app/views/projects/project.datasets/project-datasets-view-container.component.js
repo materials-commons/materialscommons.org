@@ -1,48 +1,21 @@
 class MCProjectDatasetsViewContainerComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(mcdsstore) {
+        this.mcdsstore = mcdsstore;
         this.state = {
             datasets: []
         };
+    }
 
-        this.state.datasets = [
-            {
-                name: 'DS1',
-                owner: 'John Allison',
-                experiments: ['E1', 'Stress testing of dilution factors'],
-                samples_count: 5,
-                files_count: 100,
-                published: false
-            },
-            {
-                name: 'DS2',
-                owner: 'John Allison',
-                experiments: ['long name 1', 'experiment test 2'],
-                samples_count: 20,
-                files_count: 1001,
-                published: true
-            },
-            {
-                name: 'DS3',
-                owner: 'Brian Puchala',
-                experiments: ['computational and DFT processes combined with casm', 'Hardness testing with Professor Allison'],
-                samples_count: 15,
-                files_count: 657,
-                published: false
-            },
-            {
-                name: 'DS4',
-                owner: 'Tracy Berman',
-                experiments: ['LIFT Anodized metals', 'My Postdoc research'],
-                samples_count: 50,
-                files_count: 150,
-                published: true
-            },
-        ];
+    $onInit() {
+        this.mcdsstore.loadDemoData();
+        this.state.datasets = this.mcdsstore.getDatasets();
     }
 
     handleNewDataset(dataset) {
-        this.state.datasets = this.state.datasets.concat([dataset]);
+        let ds = this.mcdsstore.createDataset(dataset.name, dataset.samples, dataset.experiments);
+        this.mcdsstore.addDataset(ds);
+        this.state.datasets = this.mcdsstore.getDatasets();
     }
 }
 
