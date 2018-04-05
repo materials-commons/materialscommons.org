@@ -7,7 +7,7 @@
     <md-dialog-content layout-margin>
         <md-input-container class="md-block" style="margin-top:40px">
             <label>Name</label>
-            <input ng-model="$ctrl.newProjectName" on-enter="$ctrl.done()">
+            <input ng-model="$ctrl.state.datasetName" on-enter="$ctrl.done()">
         </md-input-container>
         <p>
             Select experiments and/or samples to include in the dataset. When selecting
@@ -23,7 +23,7 @@
                         <table md-table class="margin-top-10">
                             <thead md-head>
                             <tr md-row>
-                                <th md-column>Select</th>
+                                <th md-column>Included</th>
                                 <th md-column>Experiment</th>
                                 <th md-column>Owner</th>
                                 <th md-column># Files</th>
@@ -31,14 +31,15 @@
                             </tr>
                             </thead>
                             <tbody md-body>
-                            <tr md-row class="md-row-hover pointer" ng-repeat="experiment in $ctrl.experiments">
+                            <tr md-row class="md-row-hover pointer" ng-repeat="experiment in $ctrl.state.experiments">
                                 <td md-cell>
-                                    <md-checkbox aria-label="select" ng-model="experiment.selected"></md-checkbox>
+                                    <md-checkbox aria-label="select" ng-model="experiment.selected"
+                                                 ng-change="$ctrl.experimentSelected(experiment)"></md-checkbox>
                                 </td>
                                 <td md-cell>{{experiment.name}}</td>
                                 <td md-cell>{{experiment.owner}}</td>
                                 <td md-cell>{{experiment.files_count | number}}</td>
-                                <td md-cell>{{experiment.samples_count}}</td>
+                                <td md-cell>{{experiment.samples | toSize}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -54,21 +55,18 @@
                         <table md-table class="margin-top-10">
                             <thead md-head>
                             <tr md-row>
-                                <th md-column>Select</th>
+                                <th md-column>Included</th>
                                 <th md-column>Sample</th>
-                                <th md-column># Files</th>
-                                <th md-column># Processes</th>
+                                <th md-column>Experiments</th>
                             </tr>
                             </thead>
                             <tbody md-body>
-                            <tr md-row class="md-row-hover pointer" ng-repeat="sample in $ctrl.samples">
+                            <tr md-row class="md-row-hover pointer" ng-repeat="sample in $ctrl.state.samples">
                                 <td md-cell>
                                     <md-checkbox aria-label="select" ng-model="sample.selected"></md-checkbox>
                                 </td>
                                 <td md-cell>{{sample.name}}</td>
-                                <td md-cell>{{sample.owner}}</td>
-                                <td md-cell>{{sample.files_count}}</td>
-                                <td md-cell>{{sample.process_count}}</td>
+                                <td md-cell>{{sample.experimentNames}}</td>
                             </tr>
                             </tbody>
                         </table>

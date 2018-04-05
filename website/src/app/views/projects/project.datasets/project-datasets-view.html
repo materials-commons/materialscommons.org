@@ -1,0 +1,8 @@
+<div layout="column" layout-fill layout-align="start stretch" layout-margin>
+    <div layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.createNewDataset()">
+            <i class="fa fa-fw fa-plus"></i>Add Dataset
+        </md-button>
+    </div>
+    <mc-datasets-table datasets="$ctrl.state.datasets"></mc-datasets-table>
+</div>
