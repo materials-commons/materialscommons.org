@@ -18,74 +18,28 @@ angular.module('materialscommons').service('projectDatasetsViewService', Project
 
 class CreateNewDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, mcprojstore, createDatasetDialogState) {
         this.$mdDialog = $mdDialog;
-        this.experiments = [
-            {
-                selected: false,
-                name: 'Experiment 1',
-                owner: 'John Allison',
-                files_count: 100,
-                samples_count: 30
-            },
-            {
-                selected: false,
-                name: 'Experiment 2',
-                owner: 'Tracy Berman',
-                files_count: 500,
-                samples_count: 22
-            },
-            {
-                selected: false,
-                name: 'Experiment 3',
-                owner: 'Brian Puchala',
-                files_count: 100000,
-                samples_count: 300
-            },
-        ];
+        this.mcprojstore = mcprojstore;
+        this.createDatasetDialogState = createDatasetDialogState;
+        this.state = {
+            project: mcprojstore.currentProject,
+            datasetName: "",
+        };
+        this.state.experiments = _.values(this.state.project.experiments);
+        this.state.samples = _.values(this.state.project.samples);
+        this.createDatasetDialogState.computeExperimentsForSamples(this.state.project, this.state.samples);
+    }
 
-        this.samples = [
-            {
-                selected: false,
-                name: 'S1',
-                files_count: 1,
-                process_count: 10,
-            },
-            {
-                selected: false,
-                name: 'S2',
-                files_count: 5,
-                process_count: 15,
-            },
-            {
-                selected: false,
-                name: 'S3',
-                files_count: 0,
-                process_count: 5,
-            },
-            {
-                selected: false,
-                name: 'S4',
-                files_count: 12,
-                process_count: 8,
-            },
-            {
-                selected: false,
-                name: 'S5',
-                files_count: 1,
-                process_count: 1,
-            },
-        ]
+    experimentSelected() {
+        let selectedSamples = this.createDatasetDialogState.determineSelectedSamplesForExperiments(this.state.experiments);
+        this.createDatasetDialogState.resetSampleState(selectedSamples, this.state.samples);
     }
 
     done() {
-        return this.$mdDialog.hide({
-            name: 'DS Created',
-            owner: 'Glenn Tarcea',
-            experiments: ['My Experiment'],
-            samples_count: 2,
-            files_count: 0,
-            published: false,
+        this.$mdDialog.hide({
+            name: this.state.datasetName,
+            samples: this.state.samples.filter(s => s.selected),
         });
     }
 
@@ -93,3 +47,41 @@ class CreateNewDatasetDialogController {
         this.$mdDialog.cancel();
     }
 }
+
+class CreateDatasetDialogStateService {
+    /*@ngInject*/
+    constructor() {
+    }
+
+    determineSelectedSamplesForExperiments(experiments) {
+        let selectedSamples = {};
+        experiments.filter(e => e.selected).forEach(e => {
+            _.values(e.samples).forEach(s => selectedSamples[s.id] = true);
+        });
+        return selectedSamples;
+    }
+
+    resetSampleState(selectedSamples, samples) {
+        samples.forEach(s => {
+            if (s.id in selectedSamples) {
+                s.selected = true;
+            } else {
+                s.selected = false;
+            }
+        });
+    }
+
+    computeExperimentsForSamples(project, samples) {
+        samples.forEach(s => {
+            s.experiments = [];
+            _.values(project.experiments).forEach(e => {
+                if (s.id in project.experiments[e.id].samples) {
+                    s.experiments.push({experiment_id: e.id, name: e.name});
+                }
+            });
+            s.experimentNames = s.experiments.map(e => e.name).join(", ")
+        });
+    }
+}
+
+angular.module('materialscommons').service('createDatasetDialogState', CreateDatasetDialogStateService);
