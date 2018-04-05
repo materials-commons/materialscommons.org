@@ -29,6 +29,14 @@ class MCDSStoreService {
         return true;
     }
 
+    getDataset(id) {
+        if (id in this.dsstore) {
+            return this.dsstore[id];
+        }
+
+        return null;
+    }
+
     getDatasets() {
         return _.values(this.dsstore);
     }

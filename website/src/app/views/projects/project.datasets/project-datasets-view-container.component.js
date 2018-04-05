@@ -8,7 +8,6 @@ class MCProjectDatasetsViewContainerComponentController {
     }
 
     $onInit() {
-        this.mcdsstore.loadDemoData();
         this.state.datasets = this.mcdsstore.getDatasets();
     }
 

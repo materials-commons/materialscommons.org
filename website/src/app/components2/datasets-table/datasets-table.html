@@ -12,7 +12,7 @@
         </thead>
         <tbody md-body>
         <tr md-row class="md-row-hover pointer" ng-repeat="dataset in $ctrl.state.datasets">
-            <td md-cell><a ui-sref="project.datasets.dataset">{{dataset.name}}</a></td>
+            <td md-cell><a ui-sref="project.datasets.dataset({dataset_id: dataset.id})">{{dataset.name}}</a></td>
             <td md-cell>{{dataset.owner}}</td>
             <td md-cell>{{dataset.experiments.join(',')}}</td>
             <td md-cell>{{dataset.files_count}}</td>

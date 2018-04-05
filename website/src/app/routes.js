@@ -134,22 +134,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     (mcprojstore, $stateParams) => mcprojstore.getExperiment($stateParams.experiment_id)
                 ]
             }
-            //,
-            // resolve: {
-            //     experiment: ['experimentsAPI', 'toast', 'toUITask', '$stateParams', 'mcstate',
-            //         function (experimentsAPI, toast, toUITask, $stateParams, mcstate) {
-            //             return experimentsAPI.getForProject($stateParams.project_id, $stateParams.experiment_id)
-            //                 .then(
-            //                     (e) => {
-            //                         e.tasks.forEach((task) => toUITask(task));
-            //                         mcstate.set(mcstate.CURRENT$EXPERIMENT, e);
-            //                         return e;
-            //                     },
-            //                     () => toast.error('Failed to retrieve experiment')
-            //                 );
-            //         }
-            //     ]
-            // }
         })
         .state('project.experiment.details', {
             url: '/details',
@@ -291,15 +275,21 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.datasets', {
             url: '/datasets',
             abstract: true,
-            template: '<div ui-view></div>'
+            template: '<div ui-view></div>',
+            resolve: {
+                _ignore: ['mcdsstore', (mcdsstore) => {
+                    mcdsstore.loadDemoData();
+                    return true;
+                }]
+            }
         })
         .state('project.datasets.list', {
             url: '/list',
             template: '<mc-project-datasets-view-container></mc-project-datasets-view-container>'
         })
         .state('project.datasets.dataset', {
-            url: '/dataset',
-            template: '<mc-project-dataset-view></mc-project-dataset-view>'
+            url: '/dataset/:dataset_id',
+            template: '<mc-project-dataset-view-container></mc-project-dataset-view-container>'
         })
         .state('project.settings', {
             url: '/settings',

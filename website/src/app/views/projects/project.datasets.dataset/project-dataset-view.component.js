@@ -7,5 +7,8 @@ class MCProjectDatasetViewComponentController {
 
 angular.module('materialscommons').component('mcProjectDatasetView', {
     template: require('./project-dataset-view.html'),
-    controller: MCProjectDatasetViewComponentController
+    controller: MCProjectDatasetViewComponentController,
+    bindings: {
+        dataset: '<'
+    }
 });

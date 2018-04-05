@@ -1,9 +1,16 @@
 class MCProjectDatasetViewContainerComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor($stateParams, mcdsstore) {
+        this.$stateParams = $stateParams;
+        this.mcdsstore = mcdsstore;
         this.state = {
             dataset: null
         };
+    }
+
+    $onInit() {
+        this.state.dataset = angular.copy(this.mcdsstore.getDataset(this.$stateParams.dataset_id));
+        console.log('this.state.dataset', this.state.dataset);
     }
 }
 
