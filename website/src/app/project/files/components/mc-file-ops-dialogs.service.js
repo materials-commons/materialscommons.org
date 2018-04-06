@@ -47,6 +47,34 @@ class MCFileOpsDialogsService {
             .cancel('Cancel');
         return this.$mdDialog.show(confirm);
     }
+
+    uploadUsingGlobus(path){
+        console.log("uploadUsingGlobus", path);
+        return this.$mdDialog.show({
+            templateUrl: 'app/project/files/components/dialogs/use-globus-upload-dialog.html',
+            controller: UploadUsingGlobusDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                path: path,
+            }
+        })
+    }
+
+    downloadUsingGlobus(path){
+        console.log("file ops: downloadUsingGlobus", path);
+        return this.$mdDialog.show({
+            templateUrl: 'app/project/files/components/dialogs/use-globus-download-dialog.html',
+            controller: DownloadUsingGlobusDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                path: path,
+            }
+        })
+
+    }
+
 }
 
 angular.module('materialscommons').service('mcFileOpsDialogs', MCFileOpsDialogsService);
@@ -76,6 +104,40 @@ class CreateDirDialogController {
 
     done() {
         this.$mdDialog.hide(this.newDirName);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class UploadUsingGlobusDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.newDirName = "";
+        console.log('UploadUsingGlobusDialogController', this.path)
+    }
+
+    done() {
+        this.$mdDialog.hide(this.globusEndpointNameOrId);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class DownloadUsingGlobusDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.newDirName = "";
+        console.log('DownloadUsingGlobusDialogController', this.path)
+    }
+
+    done() {
+        this.$mdDialog.hide(this.globusUser);
     }
 
     cancel() {

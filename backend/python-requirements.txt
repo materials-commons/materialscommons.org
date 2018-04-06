@@ -1,6 +1,8 @@
 flask
 rethinkdb
 pbkdf2
+globus_sdk
+configparser
 
 # If you are running into trouble with missing dependencies;
 # the following may help
