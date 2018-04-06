@@ -1,7 +1,6 @@
 /*@ngInject*/
 function projectsAPIService(Restangular, notesAPI) {
     const projectsAPIRoute = _.partial(Restangular.one('v2').one, 'projects');
-    //const projectsV3APIRoute = _.partial(Restangular.one('v3'));
 
     return {
 
@@ -15,6 +14,10 @@ function projectsAPIService(Restangular, notesAPI) {
 
         getProject: function(projectId) {
             return projectsAPIRoute(projectId).get().then(p => p.plain());
+        },
+
+        getProjectV3: function (projectId) {
+            return Restangular.one('v3').one('getProject').customPOST({project_id: projectId}).then(p => p.plain().data);
         },
 
         getActivities: function (projectId) {

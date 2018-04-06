@@ -44,12 +44,12 @@ module.exports.CreateProjectAction = class CreateProjectAction extends Action {
     }
 
     async run({response, params, user}) {
-        const project = await dal.tryCatch(async () => await projects.createProject(user, params));
-        if (!project) {
-            throw new Error(`Unable to create project`);
-        }
-        //api.redis.clients.client.set(project.id, JSON.stringify(project));
-        response.data = project;
+        // const project = await dal.tryCatch(async () => await projects.createProject(user, params));
+        // if (!project) {
+        //     throw new Error(`Unable to create project`);
+        // }
+        // //api.redis.clients.client.set(project.id, JSON.stringify(project));
+        // response.data = project;
     }
 };
 
@@ -58,7 +58,7 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
         super();
         this.name = 'getProject';
         this.description = 'Get details for a given project';
-        //this.do_not_authenticate = true;
+        // this.do_not_authenticate = true;
         this.inputs = {
             project_id: {
                 required: true,
