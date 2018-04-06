@@ -10,7 +10,7 @@ class MCProjectDatasetViewContainerComponentController {
 
     $onInit() {
         this.state.dataset = angular.copy(this.mcdsstore.getDataset(this.$stateParams.dataset_id));
-        console.log('this.state.dataset', this.state.dataset);
+        // console.log('this.state.dataset', this.state.dataset);
     }
 }
 

@@ -3,6 +3,10 @@ class MCProjectDatasetViewComponentController {
     constructor() {
 
     }
+
+    $onInit() {
+        console.log('this.dataset', this.dataset);
+    }
 }
 
 angular.module('materialscommons').component('mcProjectDatasetView', {
