@@ -6,7 +6,7 @@ class MCShowService {
 
     sampleDialog(sample, multiple = true) {
         return this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-sample-dialog.html',
+            templateUrl: 'app/modals/show-sample-dialog.html',
             controllerAs: '$ctrl',
             controller: CommonDoneDismissDialogController,
             bindToController: true,
@@ -19,20 +19,20 @@ class MCShowService {
 
     processDetailsDialog(process, multiple = true) {
         return this.$mdDialog.show({
-                templateUrl: 'app/project/experiments/experiment/components/workflow/mc-process-details-dialog.html',
-                controller: MCProcessDetailsDialogController,
-                controllerAs: '$ctrl',
-                bindToController: true,
-                multiple: multiple,
-                locals: {
-                    process: process
-                }
-            });
+            templateUrl: 'app/modals/mc-process-details-dialog.html',
+            controller: MCProcessDetailsDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            multiple: multiple,
+            locals: {
+                process: process
+            }
+        });
     }
 
     processDetailsDialogRO(process, multiple = true) {
         this.$mdDialog.show({
-            templateUrl: 'app/global.services/mcshow/process-details-dialog-ro.html',
+            templateUrl: 'app/modals/process-details-dialog-ro.html',
             controller: CommonDoneDismissDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -45,7 +45,7 @@ class MCShowService {
 
     projectOverviewDialog(project, multiple = true) {
         this.$mdDialog.show({
-            templateUrl: 'app/global.services/mcshow/partials/project-overview-dialog.html',
+            templateUrl: 'app/modals/project-overview-dialog.html',
             controller: CommonDoneDismissDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -58,7 +58,7 @@ class MCShowService {
 
     showFile(file, multiple = true) {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-file-dialog.html',
+            templateUrl: 'app/modals/show-file-dialog.html',
             controllerAs: '$ctrl',
             controller: CommonDoneDismissDialogController,
             bindToController: true,
@@ -67,6 +67,40 @@ class MCShowService {
                 file: file
             }
         });
+    }
+
+    chooseSamplesFromProject() {
+        let fillRandomProcesses = (count) => {
+            let processes = [];
+            for (let i = 0; i < count; i++) {
+                let rval = Math.floor(Math.random() * 2);
+                if (rval) {
+                    processes.push({active: true, selected: true});
+                } else {
+                    processes.push({active: false, selected: false});
+                }
+            }
+            return processes;
+        };
+
+        let existingSamples = [];
+        for (let i = 0; i < 10; i++) {
+            existingSamples.push({
+                selected: false,
+                name: "ExistingSample_" + i,
+                processes: fillRandomProcesses(11)
+            });
+        }
+
+        return this.$mdDialog.show({
+            templateUrl: 'app/modals/choose-existing-samples-dialog.html',
+            controller: ChooseExistingSamplesDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                samples: existingSamples
+            }
+        })
     }
 }
 
@@ -96,6 +130,30 @@ class MCProcessDetailsDialogController {
 
     deleteProcess() {
         this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.process.id)
+    }
+}
+
+class ChooseExistingSamplesDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.state = {
+            samples: angular.copy(this.samples)
+        }
+    }
+
+    done() {
+        let chosenSamples = this.state.samples.filter(s => s.selected).map(s => {
+            // Reset selected flag so we return the samples in the same
+            // state we received them.
+            s.selected = false;
+            return s;
+        });
+        this.$mdDialog.hide(chosenSamples);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 

@@ -1,5 +1,10 @@
 # Release Notes
 
+## March 2018
+- :star: **New Feature:** Lots of behind the scenes work to prepare for automated spreadsheet upload and publishing improvements.
+- :star: **Improvement:** Small changes to publishing to help guide a user when they can publish.
+- :boom: **Fixed:** Bug fixes and layout changes.
+
 ## February 2018
 - :star: **New Feature:** New navigation sidebar in the UI makes navigation much easier.
 - :star: **New Feature:** Project notes and todos. The notes accept markdown syntax.

@@ -38,6 +38,6 @@ class MCWorkflowFiltersComponentController {
 }
 
 angular.module('materialscommons').component('mcWorkflowFilters', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-workflow-filters.html',
+    template: require('./mc-workflow-filters.html'),
     controller: MCWorkflowFiltersComponentController
 });

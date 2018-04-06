@@ -36,7 +36,7 @@ class ProcessMeasurementsComponentController2 {
 }
 
 angular.module('materialscommons').component('processMeasurements', {
-    templateUrl: 'app/global.components/process-measurements.html',
+    template: require('./process-measurements.html'),
     controller: ProcessMeasurementsComponentController2,
     bindings: {
         measurements: '<',

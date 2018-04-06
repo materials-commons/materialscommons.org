@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcProcessesList', {
-    templateUrl: 'app/project/components/processes-list/mc-processes-list.html',
+    template: require('./mc-processes-list.html'),
     controller: MCProcessesListComponentController,
     bindings: {
         processes: '='

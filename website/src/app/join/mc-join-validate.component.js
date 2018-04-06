@@ -76,6 +76,6 @@ class MCJoinValidateComponentController {
 }
 
 angular.module('materialscommons').component('mcJoinValidate', {
-    templateUrl: 'app/join/mc-join-validate.html',
+    template: require('./mc-join-validate.html'),
     controller: MCJoinValidateComponentController
 });

@@ -9,7 +9,7 @@ function selectItemsSamplesDirective() {
         controller: SelectItemsSamplesDirectiveController,
         controllerAs: 'ctrl',
         bindToController: true,
-        templateUrl: 'app/global.services/select-items/select-items-samples.html'
+        template: require('./select-items-samples.html')
     }
 }
 
@@ -69,7 +69,7 @@ function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
 
     function showProcess(process) {
         $mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/dataset/components/show-process-dialog.html',
+            templateUrl: 'app/modals/show-process-dialog.html',
             controllerAs: '$ctrl',
             controller: ShowProcessDialogController,
             bindToController: true,

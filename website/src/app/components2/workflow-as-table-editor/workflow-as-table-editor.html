@@ -1,0 +1,30 @@
+<div>
+    <h3>Dataset: DS5</h3>
+    <div layout="row">
+        <md-button class="md-primary" ng-disabled="$ctrl.editTable" ng-click="$ctrl.chooseExistingSamples()">
+            <i class="fa fa-fw fa-plus"></i>Add Existing Samples
+        </md-button>
+        <md-button class="md-warn" ng-click="$ctrl.handleRemoveSelectedSamples()" ng-disabled="$ctrl.editTable">
+            <i class="fa fa-fw fa-trash"></i>Remove Selected Samples
+        </md-button>
+        <span flex="5"></span>
+        <md-button class="md-primary" ng-click="$ctrl.state.editTable = true" ng-show="!$ctrl.state.editTable">
+            <i class="fa fa-fw fa-table"></i>Edit Table
+        </md-button>
+        <md-button class="md-primary" ng-click="$ctrl.finishEditingTable()" ng-show="$ctrl.state.editTable">
+            <i class="fa fa-fw fa-table"></i>Done Editing Table
+        </md-button>
+        <span flex="5"></span>
+        <md-button class="md-primary" ng-disabled="$ctrl.state.editTable">
+            <i class="fa fa-fw fa-site-map"></i>View As Graph
+        </md-button>
+    </div>
+    <mc-workflow-as-table ng-if="!$ctrl.state.grouped"
+                          headers="$ctrl.state.headers"
+                          samples="$ctrl.state.samples"
+                          edit-table="$ctrl.state.editTable"
+                          on-sample-process-change="$ctrl.handleUpdateStateOfProcessInSample(sampleIndex, processIndex, state)"
+                          on-sample-selected="$ctrl.handleSelectSample(sampleIndex, selectState)"
+                          on-delete-process="$ctrl.handleDeleteProcess(index)">
+    </mc-workflow-as-table>
+</div>

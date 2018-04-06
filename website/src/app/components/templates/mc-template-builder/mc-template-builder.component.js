@@ -35,6 +35,7 @@ class MCTemplateBuilderComponentController {
     static emptyTemplate() {
         return {
             name: '',
+            process_name: '',
             process_type: 'create',
             template_description: '',
             does_transform: false,
@@ -68,7 +69,7 @@ class MCTemplateBuilderComponentController {
 
     viewTemplate(template) {
         this.$mdDialog.show({
-            templateUrl: 'app/components/templates/mc-template-builder/view-template-dialog.html',
+            templateUrl: 'app/modals/view-template-dialog.html',
             controller: ViewTemplateDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -95,7 +96,7 @@ class MCTemplateBuilderComponentController {
     editExisting() {
         this.templatesAPI.getAllTemplates().then(
             templates => this.$mdDialog.show({
-                templateUrl: 'app/components/templates/mc-template-builder/choose-existing-template-dialog.html',
+                templateUrl: 'app/modals/choose-existing-template-dialog.html',
                 controller: ChooseExistingTemplateDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
@@ -129,6 +130,7 @@ class MCTemplateBuilderComponentController {
         }
 
         if (!this.existingTemplate) {
+            this.template.process_name = this.template.name;
             this.templatesAPI.createTemplate(this.template).then(
                 () => {
                     this.templateLoaded = false;
@@ -188,6 +190,6 @@ class ChooseExistingTemplateDialogController {
 }
 
 angular.module('materialscommons').component('mcTemplateBuilder', {
-    templateUrl: 'app/components/templates/mc-template-builder/mc-template-builder.html',
+    template: require('./mc-template-builder.html'),
     controller: MCTemplateBuilderComponentController
 });

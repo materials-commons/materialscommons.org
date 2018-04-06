@@ -68,7 +68,7 @@ class MCTaskTemplateOtherComponentController {
 }
 
 angular.module('materialscommons').component('mcTaskTemplateOther', {
-    templateUrl: 'app/project/experiments/experiment/components/tasks/components/mc-task-template-other.html',
+    template: require('./mc-task-template-other.html'),
     controller: MCTaskTemplateOtherComponentController,
     bindings: {
         task: '<'

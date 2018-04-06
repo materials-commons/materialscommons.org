@@ -155,7 +155,7 @@ function mcProcessesWorkflowOutlineDirDirective(RecursionHelper) {
         controller: MCProcessesWorkflowOutlineDirDirectiveController,
         controllerAs: '$ctrl',
         bindToController: true,
-        templateUrl: 'app/project/experiments/experiment/components/workflow/mc-processes-workflow-outline-dir.html',
+        template: require('./mc-processes-workflow-outline-dir.html'),
         compile: function (element) {
             return RecursionHelper.compile(element, function () {
             });
@@ -166,7 +166,7 @@ function mcProcessesWorkflowOutlineDirDirective(RecursionHelper) {
 angular.module('materialscommons').directive('mcProcessesWorkflowOutlineDir', mcProcessesWorkflowOutlineDirDirective);
 
 angular.module('materialscommons').component('mcProcessesWorkflowOutline', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-processes-workflow-outline.html',
+    template: require('./mc-processes-workflow-outline.html'),
     controller: MCProcessesWorkflowOutlineComponentController,
     bindings: {
         processes: '<',

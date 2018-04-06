@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcProcessesAutocomplete', {
-    templateUrl: 'app/project/experiments/experiment/components/mc-processes-autocomplete.html',
+    template: require('./mc-processes-autocomplete.html'),
     controller: MCProcessesAutocompleteComponentController,
     bindings: {}
 });

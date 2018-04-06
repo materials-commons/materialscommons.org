@@ -8,7 +8,7 @@ function displayFileContentsDirective() {
         scope: {
             file: '=file'
         },
-        templateUrl: 'app/project/components/display-file-contents.html'
+        template: require('./display-file-contents.html')
     };
 }
 

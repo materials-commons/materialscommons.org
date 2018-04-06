@@ -50,7 +50,7 @@ function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI,
 }
 
 angular.module('materialscommons').component('mcFileTree', {
-    templateUrl: 'app/project/files/mc-file-tree.html',
+    template: require('./mc-file-tree.html'),
     controller: MCFileTreeComponentController
 });
 
@@ -65,7 +65,7 @@ function mcFileTreeDirDirective(RecursionHelper) {
         replace: true,
         controllerAs: '$ctrl',
         bindToController: true,
-        templateUrl: 'app/project/files/mc-file-tree-dir.html',
+        template: require('./mc-file-tree-dir.html'),
         compile: function (element) {
             return RecursionHelper.compile(element, function () {
             });
@@ -118,7 +118,7 @@ function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcprojstore, $stat
 }
 
 angular.module('materialscommons').component('mcFileTreeDirControls', {
-    templateUrl: 'app/project/files/mc-file-tree-dir-controls.html',
+    template: require('./mc-file-tree-dir-controls.html'),
     controller: MCFileTreeDirControlsComponentController,
     bindings: {
         file: '=',
@@ -176,7 +176,7 @@ function MCFileTreeDirControlsComponentController(projectFileTreeAPI, fileTreeDe
 }
 
 angular.module('materialscommons').component('mcFileTreeFileControls', {
-    templateUrl: 'app/project/files/mc-file-tree-file-controls.html',
+    template: require('./mc-file-tree-file-controls.html'),
     controller: MCFileTreeFileControlsComponentController,
     bindings: {
         file: '=',

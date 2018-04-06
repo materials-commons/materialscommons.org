@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcFileDescription', {
-    templateUrl: 'app/project/files/components/file/mc-file-description.html',
+    template: require('./mc-file-description.html'),
     controller: MCFileDescriptionComponentController,
     bindings: {
         file: '='

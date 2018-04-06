@@ -49,7 +49,7 @@ class MCAttributeNumberComponentController {
 }
 
 angular.module('materialscommons').component('mcAttributeNumber', {
-    templateUrl: 'app/global.components/attribute/mc-attribute-number.html',
+    template: require('./mc-attribute-number.html'),
     controller: MCAttributeNumberComponentController,
     bindings: {
         setting: '<',

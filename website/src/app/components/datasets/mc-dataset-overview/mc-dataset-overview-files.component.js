@@ -9,7 +9,7 @@ class MCDatasetOverviewFilesComponentController {
 }
 
 angular.module('materialscommons').component('mcDatasetOverviewFiles', {
-    templateUrl: 'app/components/datasets/mc-dataset-overview/mc-dataset-overview-files.html',
+    template: require('./mc-dataset-overview-files.html'),
     controller: MCDatasetOverviewFilesComponentController,
     bindings: {
         dataset: '<'

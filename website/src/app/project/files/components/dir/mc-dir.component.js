@@ -5,6 +5,9 @@ class MCDirComponentController {
         this.selected = false;
         this.selectedFiles = [];
         this.moveFiles = false;
+        this.globusUpload = "none";
+//        this.globusUpload = "pending";
+//        this.globusUpload = "complete";
     }
 
     $onInit() {
@@ -28,6 +31,29 @@ class MCDirComponentController {
         this.mcFileOpsDialogs.deleteDir(this.dir.data).then(
             () => this.onDelete({items: [this.dir.data]})
         );
+    }
+
+    globusUploadPending(){
+        let ret = this.globusUpload === "pending";
+//        console.log('globusUploadPending',ret);
+        return ret;
+    }
+
+    globusUploadComplete(){
+        let ret = this.globusUpload === "complete";
+//        console.log('globusUploadComplete',ret);
+        return ret;
+    }
+
+    globusDownloadEndpoint() {
+        console.log("Globus endpoint enabled"); return true;
+    }
+
+    useGlobusForDownload(){
+        console.log("useGlobusForDownload - fake path 'Demo Project/EPMA_Analysis'");
+        this.mcFileOpsDialogs.downloadUsingGlobus("Demo Project/EPMA_Analysis").then((g_user) => {
+            console.log("Would download using Globus", g_user, "Demo Project/EPMA_Analysis");
+        });
     }
 
     uploadFiles() {
@@ -56,7 +82,7 @@ class MCDirComponentController {
 }
 
 angular.module('materialscommons').component('mcDir', {
-    templateUrl: 'app/project/files/components/dir/mc-dir.html',
+    template: require('./mc-dir.html'),
     controller: MCDirComponentController,
     bindings: {
         dir: '<',

@@ -29,7 +29,7 @@ class MCDatasetOverviewComponentController {
     showOthersUsefulDialog() {
         let dataset = this.dataset;
         return this.$mdDialog.show({
-            templateUrl: 'app/components/datasets/mc-dataset-overview/dialog-show-useful-others.html',
+            templateUrl: 'app/modals/dialog-show-useful-others.html',
             controller: ShowUsefulOtherDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -43,7 +43,7 @@ class MCDatasetOverviewComponentController {
 }
 
 angular.module('materialscommons').component('mcDatasetOverview', {
-    templateUrl: 'app/components/datasets/mc-dataset-overview/mc-dataset-overview.html',
+    template: require('./mc-dataset-overview.html'),
     controller: MCDatasetOverviewComponentController,
     bindings: {
         dataset: '<',

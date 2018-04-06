@@ -26,7 +26,7 @@ class MCFileTreeUploaderComponentController {
 }
 
 angular.module('materialscommons').component('mcFileTreeUploaderContainer', {
-    templateUrl: 'app/project/files/components/mc-file-tree-uploader-container.html',
+    template: require('./mc-file-tree-uploader-container.html'),
     controller: MCFileTreeUploaderComponentController,
     bindings: {
         directoryId: '='

@@ -1,0 +1,82 @@
+<md-dialog flex="60">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Create New Dataset
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <md-input-container class="md-block" style="margin-top:40px">
+            <label>Name</label>
+            <input ng-model="$ctrl.state.datasetName" on-enter="$ctrl.done()">
+        </md-input-container>
+        <p>
+            Select experiments and/or samples to include in the dataset. When selecting
+            an experiment, all the samples for that experiment will be included.
+        </p>
+        <md-tabs md-stretch-tabs md-border-bottom>
+            <md-tab>
+                <md-tab-label>
+                    Experiments
+                </md-tab-label>
+                <md-tab-body>
+                    <md-table-container flex>
+                        <table md-table class="margin-top-10">
+                            <thead md-head>
+                            <tr md-row>
+                                <th md-column>Included</th>
+                                <th md-column>Experiment</th>
+                                <th md-column>Owner</th>
+                                <th md-column># Files</th>
+                                <th md-column># Samples</th>
+                            </tr>
+                            </thead>
+                            <tbody md-body>
+                            <tr md-row class="md-row-hover pointer" ng-repeat="experiment in $ctrl.state.experiments">
+                                <td md-cell>
+                                    <md-checkbox aria-label="select" ng-model="experiment.selected"
+                                                 ng-change="$ctrl.experimentSelected(experiment)"></md-checkbox>
+                                </td>
+                                <td md-cell>{{experiment.name}}</td>
+                                <td md-cell>{{experiment.owner}}</td>
+                                <td md-cell>{{experiment.files_count | number}}</td>
+                                <td md-cell>{{experiment.samples | toSize}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-tab-body>
+            </md-tab>
+            <md-tab>
+                <md-tab-label>
+                    Samples
+                </md-tab-label>
+                <md-tab-body>
+                    <md-table-container flex>
+                        <table md-table class="margin-top-10">
+                            <thead md-head>
+                            <tr md-row>
+                                <th md-column>Included</th>
+                                <th md-column>Sample</th>
+                                <th md-column>Experiments</th>
+                            </tr>
+                            </thead>
+                            <tbody md-body>
+                            <tr md-row class="md-row-hover pointer" ng-repeat="sample in $ctrl.state.samples">
+                                <td md-cell>
+                                    <md-checkbox aria-label="select" ng-model="sample.selected"></md-checkbox>
+                                </td>
+                                <td md-cell>{{sample.name}}</td>
+                                <td md-cell>{{sample.experimentNames}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+    </md-dialog-actions>
+</md-dialog>

@@ -34,7 +34,7 @@ class MCCloneProcessSelectFilesComponentController {
 }
 
 angular.module('materialscommons').component('mcCloneProcessSelectFiles', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/services/mc-clone-process-select-files.html',
+    template: require('./mc-clone-process-select-files.html'),
     controller: MCCloneProcessSelectFilesComponentController,
     bindings: {
         projectId: '<',

@@ -28,7 +28,7 @@ class MCDatasetWorkflowComponentController {
 }
 
 angular.module('materialscommons').component('mcDatasetWorkflow', {
-    templateUrl: 'app/components/workflow/mc-dataset-workflow/mc-dataset-workflow.html',
+    template: require('./mc-dataset-workflow.html'),
     controller: MCDatasetWorkflowComponentController,
     bindings: {
         dataset: '<'

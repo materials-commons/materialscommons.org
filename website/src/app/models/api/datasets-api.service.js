@@ -69,6 +69,11 @@ class DatasetsAPIService {
             .one('publish').customPUT({}).then(d => d.plain());
     }
 
+    checkDataset(projectId, experimentId, datasetId) {
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId)
+            .one('publish').one('check').customGET().then(d => d.plain());
+    }
+
     unpublishDataset(projectId, experimentId, datasetId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId)
             .one('unpublish').customPUT({}).then(d => d.plain());

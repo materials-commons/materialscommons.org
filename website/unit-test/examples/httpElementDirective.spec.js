@@ -14,7 +14,7 @@ app.directive('aGreatEye', function () {
 
 // tests
 
-describe('Unit testing great quotes', function() {
+xdescribe('Unit testing great quotes', function () {
     var $compile,
         $rootScope;
 

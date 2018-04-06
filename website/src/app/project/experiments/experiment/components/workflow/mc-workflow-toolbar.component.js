@@ -35,9 +35,31 @@ class MCWorkflowToolbarComponentController {
         //this.mcstate.leave(this.mcstate.SELECTED$PROCESS, this.myName);
     }
 
+    startIntro() {
+        console.log('element', document.getElementById("wf-step-1"));
+        introJs().addSteps([
+            {
+                element: document.getElementById("wf-step-1"),
+                intro: "The build tab is where you will choose process templates to build out your workflow.",
+            },
+            {
+                element: document.getElementById("wf-step-2"),
+                intro: "The details tab allows you to add and view information about a process node. You can also add samples if your node is a create samples node."
+            },
+            {
+                element: document.getElementById("wf-step-3"),
+                intro: "You can apply filters to your graph to temporarily remove nodes.",
+            },
+            {
+                element: document.getElementById("processesGraph"),
+                intro: "Your workflow graph will appear here. You can right-click on nodes in the graph to bring up a menu of actions."
+            },
+        ]).start();
+    }
+
     addProcess() {
         this.$mdDialog.show({
-            templateUrl: 'app/project/experiments/experiment/components/workflow/mc-process-templates-dialog.html',
+            templateUrl: 'app/modals/mc-process-templates-dialog.html',
             controller: SelectProcessTemplateDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -121,6 +143,6 @@ class SelectProcessTemplateDialogController {
 }
 
 angular.module('materialscommons').component('mcWorkflowToolbar', {
-    templateUrl: 'app/project/experiments/experiment/components/workflow/mc-workflow-toolbar.html',
+    template: require('./mc-workflow-toolbar.html'),
     controller: MCWorkflowToolbarComponentController
 });

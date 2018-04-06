@@ -1,8 +1,22 @@
 <div layout="column" flex="70" class="margin-top-10">
     <form layout="column">
-        <md-button ng-show="!$ctrl.dataset.published" class="md-primary md-raised" ng-click="$ctrl.publishDataset()">
+        <md-button ng-show="!$ctrl.dataset.published" class="md-primary md-raised"
+                   ng-disabled="!$ctrl.dataset.status.can_be_published"
+                   ng-click="$ctrl.publishDataset()">
             <i class="fa fa-fw fa-cloud-upload"></i>Publish Dataset
         </md-button>
+        <div style="min-height: 70px" ng-if="!$ctrl.dataset.published && !$ctrl.dataset.status.can_be_published" class="margin-left-30">
+            <p>Dataset cannot be published because: </p>
+            <ul>
+                <li ng-show="!$ctrl.dataset.status.processes_count">It contains no processes.</li>
+                <li ng-show="!$ctrl.dataset.status.samples_count">It contains no samples.</li>
+                <li ng-show="!$ctrl.dataset.status.files_count">It contains no files.</li>
+            </ul>
+        </div>
+        <div class="margin-top-20 margin-left-30">
+            <p>Dataset contains {{$ctrl.dataset.status.processes_count | number}} processes, {{$ctrl.dataset.status.samples_count | number}} samples, and
+                {{$ctrl.dataset.status.files_count}} files.</p>
+        </div>
         <div ng-show="$ctrl.dataset.published">
             <md-button class="md-warn md-raised" ng-disabled="true">
                 <span class="mc-done-color"><i class="fa fa-fw fa-check-circle-o"></i>Dataset published</span>
@@ -10,8 +24,8 @@
             <md-button class="md-warn" ng-click="$ctrl.unpublishDataset()">Unpublish Dataset</md-button>
             <a ng-href="{{::$ctrl.publishedLink}}" target="_blank">View published dataset</a>
         </div>
-        <label class="md-subhead">Dataset</label>
-        <div layout-margin layout="column">
+        <h3 class="md-subhead">Dataset</h3>
+        <div layout-margin layout="column" flex>
             <md-input-container class="md-block">
                 <label>Name</label>
                 <input ng-model="$ctrl.dataset.title"

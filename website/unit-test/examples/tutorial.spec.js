@@ -18,7 +18,7 @@ function myServiceFn() {
 
 angular.module('myComponentModule').factory('myServiceSimple', myServiceFn);
 
-describe('Tutorial - Component: ', function () {
+xdescribe('Tutorial - Component: ', function () {
     beforeEach(module('myComponentModule'));
 
     var element;
@@ -38,7 +38,7 @@ describe('Tutorial - Component: ', function () {
 
 });
 
-describe('Tutorial - Service (no external dep): ', function(){
+xdescribe('Tutorial - Service (no external dep): ', function () {
     beforeEach(module('myComponentModule'));
 
     var service;
@@ -56,7 +56,7 @@ describe('Tutorial - Service (no external dep): ', function(){
     });
 });
 
-describe("Tutorial - Component Controller 01: ", function(){
+xdescribe("Tutorial - Component Controller 01: ", function () {
     beforeEach(module('myComponentModule'));
 
     var controller;

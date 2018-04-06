@@ -10,7 +10,7 @@ class SelectItemsService {
 
     dialog(locals, controller) {
         return this.$mdDialog.show({
-            templateUrl: 'app/global.services/select-items/select-items.html',
+            templateUrl: 'app/modals/select-items-dialog.html',
             controller: controller,
             controllerAs: '$ctrl',
             bindToController: true,

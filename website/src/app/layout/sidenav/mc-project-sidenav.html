@@ -1,0 +1,154 @@
+<md-content class="height-100">
+    <md-sidenav md-is-locked-open="true" layout="column" class="project-sidenav">
+        <div style="padding: 0 0 8px 0; background-colorx: #0656b1;background-color: #4393ee">
+            <div style="margin-top: 15px; background-colorx: #1a82d4; padding: 3px;">
+                <a class="md-subhead white margin-left-10 project-sidenav-title" ui-sref="project.home">
+                    <i class="fa fa-fw fa-home"></i>{{$ctrl.project.name}}
+                </a>
+            </div>
+        </div>
+
+        <md-divider style="margin-bottom:8px"></md-divider>
+
+        <div>
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.details">
+                    <i class="fa fa-fw fa-file-text"></i>Project Description
+                </a>
+            </div>
+
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.collaborators">
+                    <i class="fa fa-fw fa-user-circle"></i>Collaborators({{($ctrl.project.users | toSize) - 1}})
+                </a>
+            </div>
+
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.notes">
+                    <i class="fa fa-fw fa-check-square-o"></i>Notes/To-dos
+                </a>
+            </div>
+
+            <div class="padding-3" ng-class="{'pst-active': $ctrl.isProjectDatasetsRoute()}">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.datasets.list">
+                    <!--<i class="fa fa-fw fa-database"></i>Datasets({{$ctrl.experiment.datasets | toSize}})-->
+                    <i class="fa fa-fw fa-database"></i>Datasets
+                </a>
+            </div>
+
+            <div class="padding-3">
+                <md-menu class="margin-left-30">
+                    <a aria-label="Experiments" style="color:white; text-transform: none" ng-click="$mdMenu.open()">
+                        <i class="fa fa-fw fa-clipboard"></i>Experiments({{$ctrl.project.experiments | toSize}})
+                    </a>
+                    <md-menu-content width="10">
+                        <md-menu-item ng-repeat="experiment in $ctrl.project.experiments | toList | orderBy:'name'">
+                            <md-button ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
+                                <i class="fa fa-fw flask"></i>{{experiment.name}}
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+
+            <div ng-if="$ctrl.experiment" style="padding:0">
+
+                <md-divider style="margin-top:8px; margin-bottomx: 8px"></md-divider>
+
+                <div class="padding-8" style="background-color: #4393ee; margin-bottom: 8px">
+                    <span class="project-sidenav-tool margin-left-40"><i class="fa fa-fw fa-flask"></i>{{$ctrl.experiment.name}}</span>
+                </div>
+
+                <div>
+                    <div class="padding-3" ui-sref-active="pst-active">
+                        <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.details({experiment_id: $ctrl.experiment.id})">
+                            <i class="fa fa-fw fa-file-text"></i>Experiment Description
+                        </a>
+                    </div>
+
+                    <div class="padding-3" ui-sref-active="pst-active">
+                        <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.workflow({experiment_id: $ctrl.experiment.id})">
+                            <i class="fa fa-fw fa-sitemap"></i>Workflow
+                        </a>
+                    </div>
+
+                    <div class="padding-3" ng-if="false">
+                        <a href="https://docs.google.com/presentation/d/1Q4fQd7OxJriWb0A2x3g7QQo1zfgy_ro2PoERj_2m2S8/edit?usp=sharing"
+                           target="_blank"
+                           class="project-sidenav-tool margin-left-65">
+                            <i class="fa fa-fw fa-question-circle"></i>Tutorial
+                        </a>
+                    </div>
+
+                    <div class="padding-3" ui-sref-active="pst-active">
+                        <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.samples({experiment_id: $ctrl.experiment.id})">
+                            <!--<i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.experiment.samples | toSize}})-->
+                            <i class="fa fa-fw fa-cubes"></i>Samples
+                        </a>
+                    </div>
+
+                    <div class="padding-3" ui-sref-activex="pst-active" ng-class="{'pst-active': $ctrl.isDatasetsRoute()}">
+                        <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.datasets.list({experiment_id: $ctrl.experiment.id})">
+                            <!--<i class="fa fa-fw fa-database"></i>Datasets({{$ctrl.experiment.datasets | toSize}})-->
+                            <i class="fa fa-fw fa-database"></i>Datasets
+                        </a>
+                    </div>
+
+                    <div class="padding-3" ui-sref-active="pst-active">
+                        <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.files({experiment_id: $ctrl.experiment.id})">
+                            <i class="fa fa-fw fa-folder"></i>Experiment Files
+                        </a>
+                    </div>
+
+                    <div class="padding-3" ui-sref-active="pst-active">
+                        <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.tbuilder">
+                            <i class="fa fa-fw fa-pencil-square"></i>Template Builder
+                        </a>
+                    </div>
+                </div>
+
+                <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
+            </div>
+
+
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.samples">
+                    <!--<i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.project.samples | toSize}})-->
+                    <i class="fa fa-fw fa-cubes"></i>Samples
+                </a>
+            </div>
+
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.files" ui-sref-opts="{reload: true}">
+                    <i class="fa fa-fw fa-folder"></i>All Files
+                </a>
+            </div>
+
+            <div class="padding-3" ui-sref-active="pst-active">
+                <a class="project-sidenav-tool margin-left-30" ui-sref="project.settings">
+                    <i class="fa fa-fw fa-gears"></i>Settings
+                </a>
+            </div>
+        </div>
+
+        <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.refreshProject()">
+                <i class="fa fa-fw fa-refresh"></i>Sync
+            </a>
+        </div>
+
+        <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
+
+        <div class="padding-3 margin-bottom-10">
+            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.modifyShortcuts()">
+                <i class="fa fa-fw fa-plus"></i>Add/Modify Shortcuts
+            </a>
+        </div>
+
+        <div class="padding-3" ng-repeat="shortcut in $ctrl.project.shortcuts | orderBy:'name'">
+            <a class="project-sidenav-tool margin-left-30" ui-sref="project.files.dir({dir_id: shortcut.id})" ui-sref-opts="{reload: true}">
+                <i class="fa fa-fw fa-folder"></i> {{shortcut.name}}
+            </a>
+        </div>
+    </md-sidenav>
+</md-content>

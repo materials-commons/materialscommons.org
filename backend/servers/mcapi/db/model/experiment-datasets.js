@@ -40,6 +40,13 @@ function* createDatasetForExperiment(experimentId, userId, datasetArgs) {
     let created = yield db.insert('datasets', dataset);
     let e2d = new model.Experiment2Dataset(experimentId, created.id);
     yield r.table('experiment2dataset').insert(e2d);
+
+    // Add all experiment processes to dataset
+    let experimentProcesses = yield r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'});
+    if (experimentProcesses.length) {
+        let d2ps = experimentProcesses.map(entry => new model.Dataset2Process(created.id, entry.process_id));
+        yield r.table('dataset2process').insert(d2ps);
+    }
     return yield getDataset(created.id);
 }
 
@@ -511,6 +518,55 @@ function* unpublishDatasetTags(datasetId) {
     }
 }
 
+function* canPublishDataset(datasetId) {
+    let dsState = {
+        files_count: 0,
+        samples_count: 0,
+        processes_count: 0,
+        can_be_published: false
+    };
+
+    dsState.files_count = yield getFilesCountForDataset(datasetId);
+    dsState.samples_count = yield getSamplesCountForDataset(datasetId);
+    dsState.processes_count = yield getProcessesCountForDataset(datasetId);
+    if (dsState.files_count && dsState.samples_count && dsState.processes_count) {
+        dsState.can_be_published = true;
+    }
+
+    return {val: dsState};
+}
+
+function* getFilesCountForDataset(datasetId) {
+    let datasetProcessIds = yield r.table('dataset2process')
+        .getAll(datasetId, {index: 'dataset_id'}).pluck('process_id');
+    let processIds = datasetProcessIds.map(d => d.process_id);
+
+    let sampleProcessIds = yield r.table('dataset2sample')
+        .getAll(datasetId, {index: 'dataset_id'}).pluck('sample_id');
+    let sampleIds = sampleProcessIds.map(d => d.sample_id);
+    return yield getFileCountsForProcessesAndSamples(datasetId, processIds, sampleIds);
+}
+
+function* getFileCountsForProcessesAndSamples(datsetId, processIds, sampleIds) {
+    let processFiles = yield r.table('process2file').getAll(r.args(processIds), {index: 'process_id'});
+    let sampleFiles = yield r.table('sample2datafile').getAll(r.args(sampleIds), {index: 'sample_id'});
+    let uniqFileIds = _.keys(_.keyBy(processFiles.concat(sampleFiles), 'datafile_id')).map(id => ({id: id}));
+    return uniqFileIds.length;
+}
+
+function* getSamplesCountForDataset(datasetId) {
+    let sampleIds = yield r.table('dataset2process')
+        .getAll(datasetId, {index: 'dataset_id'})
+        .eqJoin('process_id', r.table('process2sample'), {index: 'process_id'})
+        .zip().pluck('sample_id').distinct();
+    return sampleIds.length;
+}
+
+function* getProcessesCountForDataset(datasetId) {
+    let d2pEntries = yield r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'});
+    return d2pEntries.length;
+}
+
 module.exports = {
     getDatasetsForExperiment,
     getDataset,
@@ -523,5 +579,6 @@ module.exports = {
     updateProcessesInDataset,
     updateDataset,
     publishDataset,
-    unpublishDataset
+    unpublishDataset,
+    canPublishDataset,
 };

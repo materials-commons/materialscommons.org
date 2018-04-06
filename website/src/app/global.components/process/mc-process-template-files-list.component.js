@@ -65,7 +65,7 @@ class MCProcessTemplateFilesListComponentController {
 }
 
 angular.module('materialscommons').component('mcProcessTemplateFilesList', {
-    templateUrl: 'app/global.components/process/mc-process-template-files-list.html',
+    template: require('./mc-process-template-files-list.html'),
     controller: MCProcessTemplateFilesListComponentController,
     bindings: {
         process: '='

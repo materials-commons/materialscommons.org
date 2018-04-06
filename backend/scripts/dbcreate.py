@@ -70,6 +70,8 @@ def create_mc_tables():
 
     create_mc_table("uploads", "uploads", "project_id")
 
+    create_mc_table("globus", "globus_task_id")
+
     # Create samples model
     create_mc_table("processes", "template_id", "birthtime")
     create_mc_table("project2process", "project_id", "process_id")

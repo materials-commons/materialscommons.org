@@ -27,7 +27,7 @@ class MCExperimentNotesListComponentController {
 }
 
 angular.module('materialscommons').component('mcExperimentNotesList', {
-    templateUrl: 'app/project/experiments/experiment/components/notes/mc-experiment-notes-list.html',
+    template: require('./mc-experiment-notes-list.html'),
     controller: MCExperimentNotesListComponentController,
     require: {
         experimentNotes: '^mcExperimentNotes'

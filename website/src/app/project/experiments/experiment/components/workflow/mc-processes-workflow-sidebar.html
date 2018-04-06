@@ -2,7 +2,7 @@
     <md-tabs md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
         <md-tab>
             <md-tab-label>
-                <span><i class="fa fa-fw fa-filter"></i>filters</span>
+                <span id="wf-step-3"><i class="fa fa-fw fa-filter"></i>filters</span>
             </md-tab-label>
             <md-tab-body>
                 <mc-workflow-filters></mc-workflow-filters>
@@ -10,12 +10,12 @@
         </md-tab>
         <md-tab>
             <md-tab-label>
-                <span><i class="fa fa-fw fa-pencil-square"></i>build</span>
+                <span id="wf-step-1"><i class="fa fa-fw fa-pencil-square"></i>build</span>
             </md-tab-label>
             <md-tab-body>
                 <div class="margin-top-30">
                     <input ng-model="$ctrl.query" ng-model-options="{debounce:200}"
-                           flex="30"
+                           style="width: 90%"
                            placeholder="Search templates..." type="text"
                            class="mc-input-as-line margin-left-15 md-subhead">
                 </div>
@@ -45,7 +45,7 @@
         </md-tab>
         <md-tab>
             <md-tab-label>
-                <span><i class="fa fa-fw fa-gears"></i>details</span>
+                <span id="wf-step-2"><i class="fa fa-fw fa-gears"></i>details</span>
             </md-tab-label>
             <md-tab-body ng-if="$ctrl.currentTab === 2">
                 <div ng-show="!$ctrl.selectedProcess">

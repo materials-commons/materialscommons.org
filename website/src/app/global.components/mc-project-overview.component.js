@@ -6,7 +6,7 @@ class MCProjectOverviewComponentController {
 }
 
 angular.module('materialscommons').component('mcProjectOverview', {
-    templateUrl: 'app/global.components/mc-project-overview.html',
+    template: require('./mc-project-overview.html'),
     controller: MCProjectOverviewComponentController,
     bindings: {
         project: '<'

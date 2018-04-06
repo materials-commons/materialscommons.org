@@ -20,11 +20,13 @@
 
         <mc-dataset-details dataset=$ctrl.dataset layout="column" flex ng-if="$ctrl.showDetailsSection"></mc-dataset-details>
 
-        <div ng-if="!$ctrl.showDetailsSection">
-            <md-button class="md-primary" ng-click="$ctrl.showNodes()">
-                {{$ctrl.showAll ? "show only dataset" : "show all"}}
-            </md-button>
-            <label>{{$ctrl.showAll ? "Showing entire workflow" : "Showing only workflow for dataset"}}</label>
+        <div ng-if="!$ctrl.showDetailsSection" layout="column" flex>
+            <div>
+                <md-button class="md-primary" ng-click="$ctrl.showNodes()">
+                    {{$ctrl.showAll ? "show only dataset" : "show all"}}
+                </md-button>
+                <label>{{$ctrl.showAll ? "Showing entire workflow" : "Showing only workflow for dataset"}}</label>
+            </div>
             <mc-processes-workflow processes="$ctrl.processes"
                                    dataset="$ctrl.dataset"
                                    highlight-processes="$ctrl.dataset.processes">

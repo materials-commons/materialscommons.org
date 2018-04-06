@@ -1,5 +1,5 @@
 angular.module('materialscommons').component('mcExperimentFilesTable', {
-    templateUrl: 'app/project/experiments/experiment/components/files/mc-experiment-files-table.html',
+    template: require('./mc-experiment-files-table.html'),
     controller: MCExperimentFilesTableComponentController,
     bindings: {
         files: '<',
