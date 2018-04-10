@@ -1,24 +1,26 @@
-<div layout="column" layout-fill layout-align="start stretch" layout-margin style="padding-right: 15px">
-    <md-tabs md-stretch-tabs md-border-bottom md-dynamic-height>
-        <md-tab>
-            <md-tab-label>
-                Samples
-            </md-tab-label>
-            <md-tab-body>
-                <mc-workflow-as-table-editor></mc-workflow-as-table-editor>
-            </md-tab-body>
-        </md-tab>
-        <md-tab>
-            <md-tab-label>Files</md-tab-label>
-            <md-tab-body>
-                <mc-p-project-dataset-files></mc-p-project-dataset-files>
-            </md-tab-body>
-        </md-tab>
-        <md-tab>
-            <md-tab-label>Details</md-tab-label>
-            <md-tab-body>
-                <mc-p-project-dataset-details layout="column" flex layout-fill ng-if="false"></mc-p-project-dataset-details>
-            </md-tab-body>
-        </md-tab>
-    </md-tabs>
-</div>
+<md-content layout="column" flex style="width:80vw">
+    <div layout="column" layout-fill layout-align="start stretch" layout-margin style="padding-right: 15px">
+        <md-tabs md-stretch-tabs md-border-bottom md-dynamic-height>
+            <md-tab>
+                <md-tab-label>
+                    Samples
+                </md-tab-label>
+                <md-tab-body>
+                    <mc-workflow-as-table-editor layout-fill></mc-workflow-as-table-editor>
+                </md-tab-body>
+            </md-tab>
+            <md-tab>
+                <md-tab-label>Files</md-tab-label>
+                <md-tab-body>
+                    <mc-p-project-dataset-files></mc-p-project-dataset-files>
+                </md-tab-body>
+            </md-tab>
+            <md-tab>
+                <md-tab-label>Details</md-tab-label>
+                <md-tab-body>
+                    <mc-p-project-dataset-details ng-if="false"></mc-p-project-dataset-details>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </div>
+</md-content>

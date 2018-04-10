@@ -33,6 +33,12 @@ class MCWorkflowAsTableEditorComponentController {
             "Tension",
             "EBSD",
             "TEM",
+            "TEM0",
+            "TEM1",
+            "TEM2",
+            "TEM3",
+            "TEM4",
+            "TEM5",
         ];
 
         this.state.samples = [];

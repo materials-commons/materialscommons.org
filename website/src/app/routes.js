@@ -275,7 +275,8 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.datasets', {
             url: '/datasets',
             abstract: true,
-            template: '<div ui-view></div>',
+            template: '<md-content><div ui-view layout="column" layout-fill></div></md-content>',
+            // template: '<div ui-view></div>',
             resolve: {
                 _ignore: ['mcdsstore', (mcdsstore) => {
                     mcdsstore.loadDemoData();
@@ -285,10 +286,11 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.datasets.list', {
             url: '/list',
-            template: '<mc-project-datasets-view-container></mc-project-datasets-view-container>'
+            template: '<mc-project-datasets-view-container layout-fill flex></mc-project-datasets-view-container>'
         })
         .state('project.datasets.dataset', {
             url: '/dataset/:dataset_id',
+            // template: '<md-content layout-fill flex layout="column" style="background-color:brown"><mc-project-dataset-view-container></mc-project-dataset-view-container></md-content>'
             template: '<mc-project-dataset-view-container></mc-project-dataset-view-container>'
         })
         .state('project.settings', {
