@@ -1,7 +1,5 @@
-import argparse
-import datetime
 import os
-import sys
+import logging
 from . import Path
 
 from materials_commons.api import create_project, get_all_templates, get_project_by_id
@@ -13,6 +11,7 @@ from .common.metadata import Metadata
 
 class BuildProjectExperiment:
     def __init__(self):
+        self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.description = "Project from excel spreadsheet"
         self.override_project_id = None
         self.override_experiment_name = None
@@ -46,8 +45,8 @@ class BuildProjectExperiment:
     def set_rename_is_ok(self, flag):
         self.rename_duplicates = flag
 
-    def preset_project_id(self, id):
-        self.override_project_id = id
+    def preset_project_id(self, project_id):
+        self.override_project_id = project_id
 
     def preset_experiment_name_description(self, name, description):
         self.override_experiment_name = name
@@ -63,8 +62,9 @@ class BuildProjectExperiment:
         sheet_name_list = excel_io_controller.sheet_name_list()
         excel_io_controller.set_current_worksheet_by_index(0)
         sheet_name = sheet_name_list[0]
-        # print("In Excel file, using sheet '" + sheet_name +
-        #       "' from sheets: [" + ", ".join(sheet_name_list) + "]")
+        self.log.info("In Excel file, using sheet '" +
+                      sheet_name +
+                      "' from sheets: [" + ", ".join(sheet_name_list) + "]")
         self.set_data(excel_io_controller.read_entire_data_from_current_sheet())
         excel_io_controller.close()
 
@@ -113,17 +113,17 @@ class BuildProjectExperiment:
 
         self.write_metadata()
 
-        print("Context project: " + self.project.name + " (" + self.project.id + ")")
-        print("With Experiment: " + self.experiment.name + " (" + self.experiment.id + ")")
+        self.log.info("Context project: " + self.project.name + " (" + self.project.id + ")")
+        self.log.info("With Experiment: " + self.experiment.name + " (" + self.experiment.id + ")")
 
     def write_metadata(self):
-        print("Writing metadata for experiment '" + self.experiment.name + "'")
+        self.log.info("Writing metadata for experiment '" + self.experiment.name + "'")
         self.metadata.write(self.experiment.id)
 
     def sweep(self):
         process_list = self._scan_for_process_descriptions()
         if len(process_list) == 0:
-            print("No complete processes found in project")
+            self.log.info("No complete processes found in project")
         self.parent_process_list = []
         for index in range(self.data_start_row, len(self.source)):
             self.parent_process_list.append(None)
@@ -137,7 +137,7 @@ class BuildProjectExperiment:
         end_col_index = proc_data['end_col']
         template_id = proc_data['template']
         process_name = proc_data['name']
-        print("Sweep for process: " + process_name + " (" + template_id + ")")
+        self.log.info("Sweep for process: " + process_name + " (" + template_id + ")")
         start_attribute_row_index = self._determine_start_attribute_row(start_col_index)
         self._record_header_rows()
         process_record = None
@@ -201,16 +201,16 @@ class BuildProjectExperiment:
 
     def sweep_for_process_value(self, data_row, process, start_col, end_col, start_attr_row):
         self.clear_params_and_measurement()
-        # print(process.name, start_col, end_col)
+        # self.log.info(process.name, start_col, end_col)
         for col in range(start_col, end_col):
             process_value_type = self.source[start_attr_row][col]
             signature = self.source[start_attr_row + 1][col]
-            # print(process.name, col, process_value_type, signature)
+            # self.log.info(process.name, col, process_value_type, signature)
             if process_value_type == 'PARAM' or process_value_type == 'MEAS':
                 value = self.source[data_row][col]
                 self.collect_params_and_measurement(process_value_type, value, signature)
         self.set_params_and_measurement(process)
-        # print(process.name, self.process_values)
+        # self.log.info(process.name, self.process_values)
 
     def sweep_for_process_files(self, data_row, process, start_col, end_col, start_attr_row):
         # NOTE: only one FILES entry, per process, first one will dominate
@@ -220,7 +220,7 @@ class BuildProjectExperiment:
                 files = self.source[data_row][col]
                 self.metadata.update_process_files_list(files)
                 if self.suppress_data_upload:
-                    print("data file upload supressed: ", process.name, " - ", files)
+                    self.log.info("data file upload supressed: ", process.name, " - ", files)
                     break
                 self.add_files(process, files)
                 break
@@ -281,7 +281,7 @@ class BuildProjectExperiment:
             process_value_type = self.source[start_attr_row][col]
             if process_value_type == 'SAMPLES':
                 sample_name = self.source[row_index][col]
-                # print("Sample name", sample_name)
+                # self.log.info("Sample name", sample_name)
         return sample_name
 
     def set_params_and_measurement(self, process):
@@ -291,18 +291,18 @@ class BuildProjectExperiment:
         for key in self.process_values["PARAM"]:
             entry = self.process_values["PARAM"][key]
             if process.is_known_setup_property(key):
-                # print("PARMA", process.name, key, entry, process.is_known_setup_property(key))
+                # self.log.info("PARMA", process.name, key, entry, process.is_known_setup_property(key))
                 if entry['value'] is not None:
                     process.set_value_of_setup_property(key, entry['value'])
                     if entry['unit']:
                         # table =
                         process.get_setup_properties_as_dictionary()
-                        # print("unit check", entry['unit'], table[key].name, table[key].unit)
+                        # self.log.info("unit check", entry['unit'], table[key].name, table[key].unit)
                         process.set_unit_of_setup_property(key, entry['unit'])
                     known_param_keys.append(key)
             else:
                 entry['attribute'] = key
-                # print("Additional setup parameter:", entry)
+                # self.log.info("Additional setup parameter:", entry)
                 unknown_param_entries.append(entry)
         if known_param_keys:
             process.update_setup_properties(known_param_keys)
@@ -312,10 +312,10 @@ class BuildProjectExperiment:
         #     attribute = elem.input_data['attribute']
         #     for prop in elem.properties:
         #         if prop.value:
-        #             print("Setup Results: ", attribute, prop.name, prop.value, prop.unit)
+        #             self.log.info("Setup Results: ", attribute, prop.name, prop.value, prop.unit)
         # measurements
         for key in self.process_values["MEAS"]:
-            # print("MEAS", process.name, key)
+            # self.log.info("MEAS", process.name, key)
             entry = self.process_values["MEAS"][key]
             if entry['value'] is not None:
                 measurement_data = {
@@ -330,7 +330,21 @@ class BuildProjectExperiment:
                 else:
                     measurement_data['unit'] = ""
                 measurement = process.create_measurement(data=measurement_data)
-                # print(" ++ measurement", measurement.id, measurement.attribute, measurement.value, measurement.unit)
+                if measurement and measurement.id:
+                    message = "measurement: id = " + measurement.id
+                    if measurement.attribute:
+                        message += ", attribute = " + measurement.attribute
+                    else:
+                        message += ", attribute = None"
+                    if measurement.value:
+                        message += ", value = " + str(measurement.value)
+                    else:
+                        message += ", value = None"
+                    if measurement.unit:
+                        message += ", unit = " + str(measurement.unit)
+                    else:
+                        message += ", unit = None"
+                    self.log.info(message)
                 measurement_property = {
                     "name": _name_for_attribute(key),
                     "attribute": key
@@ -351,7 +365,7 @@ class BuildProjectExperiment:
             elif path.is_file():
                 file_list.append(str(path.absolute()))
             else:
-                print("  Requested path for data not in user data directory, ignoring:", path)
+                self.log.info("  Requested path for data not in user data directory, ignoring: " + str(path))
         for entry in file_list:
             process_files.append(self.project.add_file_by_local_path(entry))
         for entry in dir_list:
@@ -370,15 +384,15 @@ class BuildProjectExperiment:
     def _set_project_and_experiment(self):
         self._set_names()
         if self.project_name:
-            print("Project name: " + self.project_name)
+            self.log.info("Project name: " + self.project_name)
         else:
-            print("No project name found; check format. Quiting.")
+            self.log.info("No project name found; check format. Quiting.")
             return False
 
         if self.experiment_name:
-            print("Experiment name: " + self.experiment_name)
+            self.log.info("Experiment name: " + self.experiment_name)
         else:
-            print("No experiment name found; check format. Quiting.")
+            self.log.info("No experiment name found; check format. Quiting.")
             return False
 
         if not self.override_project_id:
@@ -392,15 +406,15 @@ class BuildProjectExperiment:
         if existing_experiment:
             if self.rename_duplicates:
                 name = _unique_shadow_name(self.experiment_name, experiment_list)
-                print("Existing experiment with duplicate name. Renamed: " +
-                      existing_experiment.name + " --> " + name)
+                self.log.info("Existing experiment with duplicate name. Renamed: " +
+                              existing_experiment.name + " --> " + name)
                 existing_experiment.rename(name)
             else:
-                print("An experiment already exists with this name, " + self.experiment_name)
-                print("And the --rename flag was not specified.")
-                print("You can delete or rename the existing experiment.")
-                print("Or specify the --rename flag in the command line arguments.")
-                print("Quiting.")
+                self.log.info("An experiment already exists with this name, " + self.experiment_name)
+                self.log.info("And the --rename flag was not specified.")
+                self.log.info("You can delete or rename the existing experiment.")
+                self.log.info("Or specify the --rename flag in the command line arguments.")
+                self.log.info("Quiting.")
                 return False
         description = ""
         if self.override_experiment_description:
@@ -426,7 +440,7 @@ class BuildProjectExperiment:
         return ret_list
 
     def _scan_for_process_descriptions(self):
-        # print("_scan_for_process_descriptions", self.start_sweep_col, self.end_sweep_col)
+        # self.log.info("_scan_for_process_descriptions", self.start_sweep_col, self.end_sweep_col)
         name_row = None
         row_index = 0
         while row_index < len(self.source) and not self.source[row_index][0] == "BEING_DATA":
@@ -456,7 +470,7 @@ class BuildProjectExperiment:
                         'template': template_id
                     }
                 else:
-                    print("process entry has no corresponding template:", process_entry)
+                    self.log.info("process entry has no corresponding template:", process_entry)
             col_index += 1
         if previous_process:
             previous_process['end_col'] = col_index
@@ -471,10 +485,10 @@ class BuildProjectExperiment:
                 continue
             if entry.startswith('DUPLICATES_ARE_IDENTICAL'):
                 pass
-            #     print("Encountered 'DUPLICATES_ARE_IDENTICAL' - ignored as this is the default behaivor")
+            #     self.log.info("Encountered 'DUPLICATES_ARE_IDENTICAL' - ignored as this is the default behaivor")
             if entry.startswith('ATTR_'):
                 pass
-            #     print("Encountered '" + entry + "' - ignored, not implemented")
+            #     self.log.info("Encountered '" + entry + "' - ignored, not implemented")
             if entry.startswith("NOTE") \
                     or entry.startswith("NO_UPLOAD") \
                     or entry.startswith("MEAS") \
@@ -554,8 +568,8 @@ class BuildProjectExperiment:
         missing_end = True
         for col in first_row:
             if str(col).startswith("END"):
-                print("Found END marker at column " + str(index)
-                      + ", updating data end to this location")
+                self.log.info("Found END marker at column " + str(index) +
+                              ", updating data end to this location")
                 self.end_sweep_col = index
                 missing_end = False
                 break
@@ -618,7 +632,7 @@ def _name_for_attribute(attribute):
         return "Composition"
     if attribute == "thickness":
         return "Thickness"
-    # print("XXXXX __name_for_attribute", attribute, "defaults to", attribute)
+    # self.log.info("XXXXX __name_for_attribute", attribute, "defaults to", attribute)
     return attribute
 
 
@@ -629,7 +643,7 @@ def _otype_for_attribute(attribute):
         return "number"
     if attribute == "Condition Name":
         return "string"
-    # print("XXXXX __otype_for_attribute", attribute, "defaluts to string")
+    # self.log.info("XXXXX __otype_for_attribute", attribute, "defaluts to string")
     return "string"
 
 
@@ -643,43 +657,3 @@ def _verify_input_path(input_path):
     path = Path(input_path)
     ok = path.exists() and path.is_file()
     return ok
-
-
-def main(spread_sheet_path, data_dir, rename_flag):
-    if data_dir and (not _verify_data_dir(data_dir)):
-        print("The Path to data file directory does not point to a user directory; exiting.")
-        exit(-1)
-    if not _verify_input_path(spread_sheet_path):
-        print("The Path to the input Excel spreadsheet does not point to a file; exiting.")
-        exit(-1)
-    builder = BuildProjectExperiment()
-    if rename_flag:
-        builder.set_rename_is_ok(rename_flag)
-    builder.build(spread_sheet_path, data_dir)
-
-
-if __name__ == '__main__':
-    time_stamp = '%s' % datetime.datetime.now()
-
-    argv = sys.argv
-    parser = argparse.ArgumentParser(
-        description='Build a workflow from given (well formatted) Excel spreadsheet')
-    parser.add_argument('input', type=str,
-                        help='Path to input EXCEL file')
-    parser.add_argument('--upload', type=str,
-                        help='Path to directory of data files to upload - optional')
-    parser.add_argument('--rename', action='store_true',
-                        help='A flag that indicates that the experiment should be renamed when a name collision occurs')
-    args = parser.parse_args(argv[1:])
-
-    args.input = os.path.abspath(args.input)
-
-    print("Path to input EXCEL file: " + args.input)
-    if args.upload:
-        args.upload = os.path.abspath(args.upload)
-        print("Path to directory as sources of file upload: " + args.upload)
-    else:
-        print("Path to directory as sources of file upload, not specified. File upload suppressed")
-    print("Flag indicating if there is a previous experiment with same name, it should be renamed: " + str(args.rename))
-
-    main(args.input, args.upload, args.rename)

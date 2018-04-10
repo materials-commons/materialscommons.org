@@ -1,7 +1,7 @@
 import os
 import logging
 import configparser
-from materials_commons.etl.input_spreadsheet import BuildProjectExperiment
+from .input_spreadsheet import BuildProjectExperiment
 from .DatabaseInterface import DatabaseInterface
 from .BackgroundProcess import BackgroundProcess
 from .globus_service import MaterialsCommonsGlobusInterface

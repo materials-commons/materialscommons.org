@@ -2,7 +2,7 @@ import os
 import logging
 import sys
 import configparser
-from etl.etlworker import ETLWorker
+from backend.etlserver.etlworker import ETLWorker
 
 user_endpoint_config_file_path = os.path.join('.globus_test', 'endpoint.ini')
 config_file_locaton_for_user_endpoint = os.path.join(os.path.expanduser("~"), user_endpoint_config_file_path)
