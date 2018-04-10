@@ -1,0 +1,30 @@
+Globus endpoints that are involved in this test are:
+
+'TransferTest' - this is the source of the test data
+  Owner - materialscommonstest@globusid.org
+  Host Endpoint: Laptop - Materials Commons Test
+  Host Path: /Users/weymouth/GlobusEndpoint/transfer/
+  UUID - b626e88c-2873-11e8-b7c4-0ac6873fc732
+  shared with (both read only)
+    Terry Weymouth (weymouth@umich.edu)
+    MaterialsCommonsTest-ConfClient (d8eba3ad-fdd9-468d-95a1-d5c4ff91de3f@clients.auth.globus.org)
+
+'Laptop - Materials Commons Test' - base endpoint on my laptop
+  Owner - materialscommonstest@globusid.org
+  Base dir - /
+  Default dir - /Users/weymouth/GlobusEndpoint/
+  UUID - b6275c82-26fb-11e8-b7b3-0ac6873fc732
+
+'Materials Commons Test' - base enpoint on my desktop
+  Owner - weymouth@umich.edu
+  Base dir - /
+  UUID - 2aa22b8c-2855-11e8-b7c4-0ac6873fc732
+
+'ShareForMCClient' - used by Materials Commons globus-confidential-client
+  Owner - weymouth@umich.edu
+  Host Endpoint: Materials Commons Test
+  Host Path: /Volumes/Data2/GlobusEndpoint/mc-base/
+  UUID - fe6e0796-2888-11e8-b7c4-0ac6873fc732
+  shared with (both read/write)
+    Terry Weymouth (weymouth@umich.edu)
+    MaterialsCommonsTest-ConfClient (d8eba3ad-fdd9-468d-95a1-d5c4ff91de3f@clients.auth.globus.org)
