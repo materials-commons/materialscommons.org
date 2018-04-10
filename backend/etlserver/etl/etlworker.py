@@ -140,7 +140,7 @@ class ETLWorker:
                          excel_file_path, data_file_path):
         try:
             builder = BuildProjectExperiment()
-            # builder.set_rename_is_ok(True)
+            builder.set_rename_is_ok(True)
             builder.preset_project_id(project_id)
             builder.preset_experiment_name_description(experiment_name, experiment_description)
             builder.build(excel_file_path, data_file_path)

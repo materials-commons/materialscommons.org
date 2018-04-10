@@ -1,42 +1,49 @@
 from os import environ
-from flask import g, abort
+import logging
 import rethinkdb as r
 from rethinkdb.errors import RqlDriverError, ReqlError
 
 _MCDB = "materialscommons"
 _MCDB_HOST = environ.get('MCDB_HOST') or 'localhost'
-_MCDB_PORT = environ.get('MCDB_PORT') or 28015
+probe = environ.get('MCDB_PORT')
+if not probe:
+    print("Unable to run without a setting for MCDB_PORT")
+    exit(-1)
+_MCDB_PORT = int(environ.get('MCDB_PORT'))
 
 
 class DbConnection:
     def __init__(self):
-        pass
+        self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
+        self.conn = None
 
-    @staticmethod
-    def set_connection():
+    def set_connection(self):
         try:
-            if 'conn' not in g or not g.conn:
-                g.conn = r.connect(host=_MCDB_HOST, port=_MCDB_PORT, db=_MCDB)
-        except RqlDriverError:
-            abort(503, "Database connection could not be established")
+            if not self.conn:
+                self.conn = r.connect(host=_MCDB_HOST, port=_MCDB_PORT, db=_MCDB)
+        except RqlDriverError as excp:
+            self.conn = None
+            message = "Database connection could not be established: host, port, db = " + \
+                      _MCDB_HOST + ", " + str(_MCDB_PORT) + ", " + _MCDB
+            self.log.error(message)
+            raise excp
 
     def connection(self):
-        if 'conn' not in g or not g.conn:
+        if not self.conn:
             self.set_connection()
         ret_value = None
-        if 'conn' in g and g.conn:
-            ret_value = g.conn
+        if self.conn:
+            ret_value = self.conn
         return ret_value
 
     @staticmethod
     def interface():
         return r
 
-    @staticmethod
-    def close_connection():
+    def close_connection(self):
         try:
-            if 'conn' in g and g.conn:
-                g.conn.close()
+            if self.conn:
+                self.conn.close()
         except ReqlError:
             pass
-        g.conn = None
+        self.conn = None

@@ -1,21 +1,25 @@
-class RequiredAttributeException(Exception):
+class MaterialsCommonsException(Exception):
+    pass
+
+
+class RequiredAttributeException(MaterialsCommonsException):
     def __init__(self, attr):
         self.attr = str(attr)
 
 
-class NoSuchItem(Exception):
+class NoSuchItem(MaterialsCommonsException):
     def __init__(self, id="Unknown"):
         self.id = str(id)
 
 
-class AuthenticationException(Exception):
+class AuthenticationException(MaterialsCommonsException):
     pass
 
 
-class AccessNotAllowedException(Exception):
+class AccessNotAllowedException(MaterialsCommonsException):
     def __init__(self, id="Unknown"):
         self.id = str(id)
 
 
-class DatabaseError(Exception):
+class DatabaseError(MaterialsCommonsException):
     pass
