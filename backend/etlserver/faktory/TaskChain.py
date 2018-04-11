@@ -1,12 +1,11 @@
 import logging
-import time
-import random
 import faktory
 from .task_library import elt_globus_upload, etl_excel_processing
 
 ETL_GLOBUS_UPLOAD_NAME = "ETL Globus Upload"
 ETL_EXCEL_PROCESS_NAME = "ETL Excel Process"
-
+GLOBUS_QUEUE = 'etl-globus-transfer'
+PROCESS_QUEUE = 'etl-build-experiment'
 
 class TaskChain:
     def __init__(self):
@@ -28,12 +27,12 @@ class TaskChain:
     def queue_globus_upload(self, task_status_id):
         self.log.debug("Queueing ELT/Globus upload Task " + str(task_status_id))
         with faktory.connection() as client:
-            client.queue(ETL_GLOBUS_UPLOAD_NAME, args=[task_status_id], queue='default')
+            client.queue(ETL_GLOBUS_UPLOAD_NAME, args=[task_status_id], queue=GLOBUS_QUEUE)
 
     def queue_excel_processing(self, task_status_id):
         self.log.debug("Queueing Excel processing Task " + str(task_status_id))
         with faktory.connection() as client:
-            client.queue(ETL_EXCEL_PROCESS_NAME, args=[task_status_id], queue='default')
+            client.queue(ETL_EXCEL_PROCESS_NAME, args=[task_status_id], queue=PROCESS_QUEUE)
 
     def _setup_chain(self):
         task_status_id = str(self.count)

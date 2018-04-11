@@ -10,7 +10,7 @@ def main():
     for x in range(0,n):
         log.debug("Simulating the starting of {} upload tasks: {}".format(n, x))
         task_chain.start_chain()
-        time.sleep(60)
+        time.sleep(10)
 
 
 if __name__ == "__main__":

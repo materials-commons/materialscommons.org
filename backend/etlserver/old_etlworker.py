@@ -8,7 +8,7 @@ from .globus_service import MaterialsCommonsGlobusInterface
 from .VerifySetup import VerifySetup
 from .mcexceptions import MaterialsCommonsException
 
-GLOBUS_QUEUE = 'elt:globus-transfer'
+GLOBUS_QUEUE = 'etl:globus-transfer'
 PROCESS_QUEUE = 'etl:build-experiment'
 
 
@@ -30,13 +30,14 @@ class ETLWorker:
             create_status_record(self.user_id, project_id, "ETL Process")
         status_record_id = status_record['id']
         base_path = self.worker_base_path
+        # use os.path
         transfer_base_path = "{}/transfer-{}".format(base_path, status_record_id)
         excel_file_path = "{}/{}".format(transfer_base_path, excel_file_relative_path)
         data_file_path = "{}/{}".format(transfer_base_path, data_dir_relative_path)
         self.log.info("excel_file_path = " + excel_file_path)
         self.log.info("data_file_path = " + data_file_path)
         extras = {
-            "experiment_naae": experiment_name,
+            "experiment_name": experiment_name,
             "experiment_description": experiment_description,
             "globus_endpoint": globus_endpoint,
             "endpoint_path": endpoint_path,
@@ -84,7 +85,7 @@ class ETLWorker:
         # =================== build_experiment: stage 2 =====================
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         results = self.build_experiment(project_id, experiment_name, experiment_description,
-                              excel_file_path, data_file_path)
+                                        excel_file_path, data_file_path)
         if not results['status'] == 'SUCCEEDED':
             DatabaseInterface().update_queue(status_record_id, None)
             DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
