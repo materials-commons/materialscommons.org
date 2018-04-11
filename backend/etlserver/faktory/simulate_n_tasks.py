@@ -1,14 +1,16 @@
 import sys
 import logging
 from backend.etlserver.faktory.TaskChain import TaskChain
-
+import time
 
 def main():
     log = logging.getLogger("top_level_run_worker")
     task_chain = TaskChain()
-    for x in range(0,100):
-        log.debug("Simulating the starting of 100 upload tasks: " + str(x))
+    n = 5
+    for x in range(0,n):
+        log.debug("Simulating the starting of {} upload tasks: {}".format(n, x))
         task_chain.start_chain()
+        time.sleep(60)
 
 
 if __name__ == "__main__":
