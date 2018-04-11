@@ -4,10 +4,8 @@ import optparse
 import signal
 import pkg_resources
 
-from etlserver import access, apikeydb
-from etlserver.etl_api_app import app
-
-from materials_commons import version
+from backend.etlserver import access, apikeydb
+from backend.etlserver.etl_api_app import app
 
 _HOST = environ.get('MC_SERVICE_HOST') or 'localhost'
 
