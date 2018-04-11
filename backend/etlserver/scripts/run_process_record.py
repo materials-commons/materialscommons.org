@@ -1,4 +1,4 @@
-from etl.DatabaseInterface import DatabaseInterface
+from ..DatabaseInterface import DatabaseInterface
 
 
 def print_status_record(status_record):

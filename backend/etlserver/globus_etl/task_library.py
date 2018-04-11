@@ -1,13 +1,38 @@
 import logging
+import os
 from ..DatabaseInterface import DatabaseInterface
-from ..faktory.TaskChain import PROCESS_QUEUE
-from .BackgroundProcess import BackgroundProcess
+from ..BackgroundProcess import BackgroundProcess
 from .MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from .BuildProjectExperiment import BuildProjectExperiment
 from ..mcexceptions import MaterialsCommonsException
+from .ETLSetup import ETLSetup
+
+
+def startup_and_verify(user_id, project_id, experiment_name, experiment_description,
+                                  globus_endpoint, endpoint_path,
+                                  excel_file_relative_path, data_dir_relative_path):
+    setup = ETLSetup(user_id)
+    status_record_id = \
+        setup.setup_status_record(project_id, experiment_name, experiment_description,
+                                  globus_endpoint, endpoint_path,
+                                  excel_file_relative_path, data_dir_relative_path)
+
+    check = setup.verify_setup(status_record_id)
+    if not check['status'] == "SUCCESS":
+        DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
+        return None
+
+    from ..faktory.TaskChain import GLOBUS_QUEUE
+    DatabaseInterface().update_queue(status_record_id, GLOBUS_QUEUE)
+    DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
+    from ..faktory.TaskChain import TaskChain
+    task_chain = TaskChain()
+    task_chain.start_chain(status_record_id)
+    return status_record_id
 
 
 def elt_globus_upload(status_record_id):
+    from ..faktory.TaskChain import PROCESS_QUEUE
     log = logging.getLogger(__name__ + ".elt_globus_upload")
     log.info("Starting elt_globus_upload with status_record_id{}".format(status_record_id))
     DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
@@ -16,14 +41,14 @@ def elt_globus_upload(status_record_id):
     if not results['status'] == 'SUCCEEDED':
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         log.error(results)
-        return
+        return None
     log.info(results)
     DatabaseInterface().update_queue(status_record_id, PROCESS_QUEUE)
     DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
     from ..faktory.TaskChain import TaskChain
     task_chain = TaskChain()
     task_chain.queue_excel_processing(status_record_id)
-
+    return status_record_id
 
 def etl_excel_processing(status_record_id):
     log = logging.getLogger(__name__ + ".etl_excel_processing")
@@ -32,11 +57,15 @@ def etl_excel_processing(status_record_id):
     project_id = status_record['project_id']
     experiment_name = status_record['extras']['experiment_name']
     experiment_description = status_record['extras']['experiment_description']
-    excel_file_path = status_record['extras']['excel_file_path']
-    data_file_path = status_record['extras']['data_file_path']
+    base_path = status_record['extras']['transfer_base_path']
+    excel_file_relative_path = status_record['extras']['excel_file_relative_path']
+    data_dir_relative_path = status_record['extras']['data_dir_relative_path']
+
+    excel_file_path = os.path.join(base_path, excel_file_relative_path)
+    data_dir_path = os.path.join(base_path, data_dir_relative_path)
 
     results = build_experiment(project_id, experiment_name, experiment_description,
-                                    excel_file_path, data_file_path)
+                                    excel_file_path, data_dir_path)
     if not results['status'] == 'SUCCEEDED':
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         log.error(results)
@@ -47,7 +76,7 @@ def etl_excel_processing(status_record_id):
 
 def globus_transfer(status_record_id):
     log = logging.getLogger(__name__ + ".elt_globus_upload.globus_transfer")
-    status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.VERIFYING_SETUP)
+    status_record = DatabaseInterface().get_status_record(status_record_id)
     transfer_id = status_record_id
     user_id = status_record['owner']
     project_id = status_record['project_id']
@@ -75,14 +104,14 @@ def build_experiment(project_id, experiment_name, experiment_description,
                      excel_file_path, data_file_path):
     log = logging.getLogger(__name__ + ".etl_excel_processing.build_experiment")
     try:
-        log("Starting Experiment Build: {}, {}".format(project_id, experiment_name))
+        log.info("Starting Experiment Build: {}, {}".format(project_id, experiment_name))
         builder = BuildProjectExperiment()
         builder.set_rename_is_ok(True)
         builder.preset_project_id(project_id)
         builder.preset_experiment_name_description(experiment_name, experiment_description)
         builder.build(excel_file_path, data_file_path)
-        log("Starting Experiment Build Sucess: {}, {}".format(project_id, experiment_name))
+        log.info("Starting Experiment Build Sucess: {}, {}".format(project_id, experiment_name))
         return {"status": "SUCCEEDED", "results": builder.__dict__}
     except MaterialsCommonsException as e:
-        log("Starting Experiment Build Fail: {}, {}".format(project_id, experiment_name))
+        log.info("Starting Experiment Build Fail: {}, {}".format(project_id, experiment_name))
         return {"status": "FAILED", "error": e}

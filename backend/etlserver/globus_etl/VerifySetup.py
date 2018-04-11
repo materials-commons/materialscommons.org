@@ -1,5 +1,5 @@
 import os
-from .DB import DbConnection
+from ..DB import DbConnection
 from globus_sdk.exc import GlobusAPIError
 
 
@@ -24,9 +24,9 @@ class VerifySetup:
         self.check_users_source_paths()
 
         if self.error_status:
-            self.error_status['status'] = "ERRORED"
+            self.error_status['status'] = "ERROR"
             return self.error_status
-        return {'status': 'SUCCEEDED'}
+        return {'status': 'SUCCESS'}
 
     def check_project_exists(self):
         conn = DbConnection().connection()

@@ -1,6 +1,6 @@
 import sys
 import logging
-from backend.etlserver.faktory.EtlFaktoryWorker import EtlFaktoryWorker as Worker
+from ..faktory.EtlFaktoryWorker import EtlFaktoryWorker as Worker
 
 
 def main():
@@ -9,7 +9,7 @@ def main():
     log.debug("Setup ETL worker")
     worker.setup()
     # Note: runs "forever"
-    log.debug("Run ETL worker")
+    log.info("Run ETL worker")
     worker.run()
 
 
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     root.setLevel(logging.DEBUG)
 
     ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.DEBUG)
+    ch.setLevel(logging.ERROR)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
     ch.setFormatter(formatter)
     root.addHandler(ch)

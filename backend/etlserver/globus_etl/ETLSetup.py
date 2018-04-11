@@ -1,14 +1,11 @@
 import os
 import logging
 import configparser
-from .BuildProjectExperiment import BuildProjectExperiment
 from ..DatabaseInterface import DatabaseInterface
-from .BackgroundProcess import BackgroundProcess
+from ..BackgroundProcess import BackgroundProcess
 from .MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from .VerifySetup import VerifySetup
-from ..mcexceptions import MaterialsCommonsException
 
-from ..faktory.TaskChain import GLOBUS_QUEUE, PROCESS_QUEUE
 
 class ETLSetup:
     def __init__(self, user_id):
@@ -20,15 +17,18 @@ class ETLSetup:
         config.read(str(config_file_locaton_for_user_endpoint))
         self.worker_base_path = config['worker']['base_path']
 
-    def run_with(self, project_id, experiment_name, experiment_description,
+    def setup_status_record(self, project_id, experiment_name, experiment_description,
                  globus_endpoint, endpoint_path,
                  excel_file_relative_path, data_dir_relative_path):
 
         status_record = DatabaseInterface().\
             create_status_record(self.user_id, project_id, "ETL Process")
+
         status_record_id = status_record['id']
+        DatabaseInterface().update_status(status_record_id, BackgroundProcess.INITIALIZATION)
+
         base_path = self.worker_base_path
-        # use os.path
+        # TODO: use os.path
         transfer_base_path = "{}/transfer-{}".format(base_path, status_record_id)
         excel_file_path = "{}/{}".format(transfer_base_path, excel_file_relative_path)
         data_file_path = "{}/{}".format(transfer_base_path, data_dir_relative_path)
@@ -46,22 +46,18 @@ class ETLSetup:
         status_record = DatabaseInterface().add_extras_data_to_status_record(status_record_id, extras)
         status_record_id = status_record['id']
         self.log.info("status record id = " + status_record_id)
-        # =================== End of setup ===========================
+        return status_record_id
 
-        # ===========  verify_preconditions: could be run in task queue,
-        #                           but want feedback on error to get to user, immediately
+    def verify_setup(self, status_record_id):
         results = self.verify_preconditions(status_record_id)
-        if not results['status'] == 'SUCCEEDED':
+        if not results['status'] == 'SUCCESS':
             # here we return error messaage to user!
             self.log.error("Preconditions for transfer failed...")
             for key in results:
                 self.log.error(" Failure: " + key + " :: " + results[key])
-            return
+            return results
         self.log.info(results)
-        DatabaseInterface().update_queue(status_record_id, GLOBUS_QUEUE)
-        DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
-        # queue on GLOBUS_QUEUE with status_record_id
-        # =================== End of verify_preconditions =====================
+        return results
 
     def verify_preconditions(self, status_record_id):
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.VERIFYING_SETUP)
