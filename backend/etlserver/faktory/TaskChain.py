@@ -18,7 +18,7 @@ class TaskChain:
         task1 = elt_globus_upload
         worker.register(ETL_GLOBUS_UPLOAD_NAME, task1)
         self.log.debug("Setting up task for ETL/Excel processing")
-        task2 = elt_globus_upload
+        task2 = etl_excel_processing
         worker.register(ETL_EXCEL_PROCESS_NAME, task2)
 
     def start_chain(self):
