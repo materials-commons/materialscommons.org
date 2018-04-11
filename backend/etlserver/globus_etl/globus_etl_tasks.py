@@ -2,17 +2,15 @@ import os
 import logging
 import configparser
 from .BuildProjectExperiment import BuildProjectExperiment
-from .DatabaseInterface import DatabaseInterface
+from ..DatabaseInterface import DatabaseInterface
 from .BackgroundProcess import BackgroundProcess
-from .globus_service import MaterialsCommonsGlobusInterface
+from .MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from .VerifySetup import VerifySetup
-from .mcexceptions import MaterialsCommonsException
+from ..mcexceptions import MaterialsCommonsException
 
-GLOBUS_QUEUE = 'etl:globus-transfer'
-PROCESS_QUEUE = 'etl:build-experiment'
+from ..faktory.TaskChain import GLOBUS_QUEUE, PROCESS_QUEUE
 
-
-class ETLWorker:
+class ETLSetup:
     def __init__(self, user_id):
         self.user_id = user_id
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
@@ -42,7 +40,7 @@ class ETLWorker:
             "globus_endpoint": globus_endpoint,
             "endpoint_path": endpoint_path,
             "transfer_base_path": transfer_base_path,
-            "excel_file_relative_path": excel_file_relative_path, 
+            "excel_file_relative_path": excel_file_relative_path,
             "data_dir_relative_path": data_dir_relative_path
         }
         status_record = DatabaseInterface().add_extras_data_to_status_record(status_record_id, extras)
@@ -65,39 +63,6 @@ class ETLWorker:
         # queue on GLOBUS_QUEUE with status_record_id
         # =================== End of verify_preconditions =====================
 
-        # =================== globus_transfer: stage 1 =====================
-        #           To be run in task queue
-        DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
-        results = self.globus_transfer(status_record_id)
-        self.log.info(results)
-        if not results['status'] == 'SUCCEEDED':
-            DatabaseInterface().update_queue(status_record_id, None)
-            DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
-            # queue on GLOBUS_QUEUE with status_record_id
-            self.log.error(results)
-            return
-        self.log.info(results)
-        DatabaseInterface().update_queue(status_record_id, PROCESS_QUEUE)
-        DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
-        # queue on PROCESS_QUEUE with status_record_id
-        # =================== end of globus_transfer =======================
-
-        # =================== build_experiment: stage 2 =====================
-        DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
-        results = self.build_experiment(project_id, experiment_name, experiment_description,
-                                        excel_file_path, data_file_path)
-        if not results['status'] == 'SUCCEEDED':
-            DatabaseInterface().update_queue(status_record_id, None)
-            DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
-            # queue on GLOBUS_QUEUE with status_record_id
-            self.log.error(results)
-            return
-        DatabaseInterface().update_queue(status_record_id, None)
-        DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUCCESS)
-        print(results)
-
-        # =================== end of build_experiment =======================
-
     def verify_preconditions(self, status_record_id):
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.VERIFYING_SETUP)
         project_id = status_record['project_id']
@@ -112,39 +77,3 @@ class ETLWorker:
                               globus_endpoint, endpoint_path, transfer_base_path,
                               excel_file_relative_path, data_dir_relative_path)
         return checker.status()
-
-    def globus_transfer(self, status_record_id):
-        status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.VERIFYING_SETUP)
-        transfer_id = status_record_id
-        project_id = status_record['project_id']
-        globus_endpoint = status_record['extras']['globus_endpoint']
-        endpoint_path = status_record['extras']['endpoint_path']
-        web_service = MaterialsCommonsGlobusInterface(self.user_id)
-        self.log.info("set_transfer_client")
-        results = web_service.set_transfer_client()
-        if results['status'] == 'error':
-            return results
-
-        self.log.info("stage_upload_files")
-        results = web_service.stage_upload_files(project_id, transfer_id, globus_endpoint, endpoint_path)
-        self.log.info("results of staging: ", results)
-        task_id = results['task_id']
-        poll = True
-        while poll:
-            results = web_service.get_task_status(task_id)
-            poll = (results['status'] == 'ACTIVE')
-        self.log.info(results)
-        return results
-
-    @staticmethod
-    def build_experiment(project_id, experiment_name, experiment_description,
-                         excel_file_path, data_file_path):
-        try:
-            builder = BuildProjectExperiment()
-            builder.set_rename_is_ok(True)
-            builder.preset_project_id(project_id)
-            builder.preset_experiment_name_description(experiment_name, experiment_description)
-            builder.build(excel_file_path, data_file_path)
-            return {"status": "SUCCEEDED", "results": builder.__dict__}
-        except MaterialsCommonsException as e:
-            return {"status": "FAILED", "error": e}

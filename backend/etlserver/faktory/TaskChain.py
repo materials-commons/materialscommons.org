@@ -1,6 +1,6 @@
 import logging
 import faktory
-from .task_library import elt_globus_upload, etl_excel_processing
+from ..glabus_etl.task_library import elt_globus_upload, etl_excel_processing
 
 ETL_GLOBUS_UPLOAD_NAME = "ETL Globus Upload"
 ETL_EXCEL_PROCESS_NAME = "ETL Excel Process"

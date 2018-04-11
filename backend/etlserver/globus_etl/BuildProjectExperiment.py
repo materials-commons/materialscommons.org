@@ -1,12 +1,12 @@
 import os
 import logging
-from . import Path
+from .. import Path
 
 from materials_commons.api import create_project, get_all_templates, get_project_by_id
 from materials_commons.api import File as FileRecord
-from .common.util import _normalise_property_name
-from .common.worksheet_data import ExcelIO
-from .common.metadata import Metadata
+from ..common.util import _normalise_property_name
+from ..common.worksheet_data import ExcelIO
+from ..common.metadata import Metadata
 
 
 class BuildProjectExperiment:

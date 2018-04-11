@@ -6,11 +6,11 @@ import time
 def main():
     log = logging.getLogger("top_level_run_worker")
     task_chain = TaskChain()
-    n = 5
+    n = 10
     for x in range(0,n):
         log.debug("Simulating the starting of {} upload tasks: {}".format(n, x))
         task_chain.start_chain()
-        time.sleep(10)
+        time.sleep(5)
 
 
 if __name__ == "__main__":
