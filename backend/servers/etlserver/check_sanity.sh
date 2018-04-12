@@ -26,6 +26,14 @@ check_python() {
     $(python -c 'import sys; exit(1) if sys.version_info.major < 3 or (sys.version_info.major == 3 and sys.version_info.minor < 6) else exit(0)')
     if [ "$?" = "1" ]; then
         echo "Python version, ${PVERSION}, is less then 3.6 <-----"
+        PYTHON_ENV="${ETLSERVER}/.python_env/bin/activate"
+        if [ -f $PYTHON_ENV ]; then
+            echo "be sure to source $PYTHON_ENV"
+        else
+            echo "WARNING: the python environment is not defined: $PYTHON_ENV"
+            echo "  set it up, using python3, and install requirement.txt therein"
+            echo "  and source that activate script"
+        fi
         ALL_OK=-1
     else
         echo "Python version, ${PVERSION}, is ok"
@@ -133,6 +141,23 @@ set_locations
 
 ALL_OK=0
 
+# has env script been run
+if [ "${SERVERTYPE}" = "" ]; then
+        echo "SERVERTYPE is not defined; or is empty <-----"
+        echo "  run appropriate script in backend/env"
+        ALL_OK=-1
+    else
+        echo "SERVERTYPE = ${SERVERTYPE}"
+    fi
+
+EXTRAS="/etc/materialscommons/config.${SERVERTYPE}"
+if [ -f $EXTRAS ]; then
+    source $EXTRAS
+else
+    echo "WARNING: the config file for overrides is not defined: $EXTRAS"
+    echo "  you may need to define and run it"
+fi
+
 # is Python env set up
 check_python
 # are expected env variables set
@@ -144,4 +169,7 @@ check_worker
 # is MaterialsCommons confidential client endpoint available
 check_mc_endpoint
 
-exit $ALL_OK
+if [ ! "$ALL_OK" = "0" ]; then
+    echo "Some part of the enviornment is not set up correctly"
+    echo "  take indicated action(s) and retry"
+fi
