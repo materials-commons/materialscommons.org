@@ -44,13 +44,15 @@ def main():
     for name in logger_list:
         logging.getLogger(name).setLevel(logging.ERROR)
 
-    tracking_id = startup_and_verify(user_id, project_id, experiment_name, experiment_description,
-                                     globus_endpoint, endpoint_path,
-                                     excel_file_relative_path, data_dir_relative_path)
+    results = startup_and_verify(user_id, project_id, experiment_name, experiment_description,
+                                 globus_endpoint, endpoint_path,
+                                 excel_file_relative_path, data_dir_relative_path)
 
-    if not tracking_id:
+    if not results['status'] == "SUCCESS":
         log.error("Setup failed.")
+        return
 
+    tracking_id = results['status_record_id']
     status = BackgroundProcess.INITIALIZATION
     while (not status == BackgroundProcess.SUCCESS) and (not status == BackgroundProcess.FAIL):
         status_record = DatabaseInterface().get_status_record(tracking_id)
@@ -58,6 +60,7 @@ def main():
         queue = status_record['queue']
         log.info("Status = {}; Queue = {}".format(status, queue))
         time.sleep(2)
+
 
 if __name__ == "__main__":
     root = logging.getLogger()

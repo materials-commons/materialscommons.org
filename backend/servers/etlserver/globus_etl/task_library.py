@@ -20,7 +20,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
     check = setup.verify_setup(status_record_id)
     if not check['status'] == "SUCCESS":
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
-        return None
+        return check
 
     from ..faktory.TaskChain import GLOBUS_QUEUE
     DatabaseInterface().update_queue(status_record_id, GLOBUS_QUEUE)
@@ -28,7 +28,8 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
     from ..faktory.TaskChain import TaskChain
     task_chain = TaskChain()
     task_chain.start_chain(status_record_id)
-    return status_record_id
+    check['status_record_id'] = status_record_id
+    return check
 
 
 def elt_globus_upload(status_record_id):
