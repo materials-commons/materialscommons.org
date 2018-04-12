@@ -23,24 +23,25 @@ function allEmpty(lists) {
 function merger(lists) {
     let accumulator = [];
 
+    let currentIndex = 0;
     for (; ;) {
         console.log('lists', lists);
         console.log('accumulator', accumulator);
         if (allEmpty(lists)) {
             break;
         }
-        let currentIndex = 0;
         let foundSecond = false;
         let current = "";
         for (let iteration = 0; iteration < 2; iteration++) {
             for (let i = 0; i < lists.length; i++) {
-                if (currentIndex === lists.length - 1) {
+                if (currentIndex === lists.length) {
                     currentIndex = 0;
                 }
 
                 if (lists[currentIndex].length) {
                     if (current === "") {
                         current = lists[currentIndex][0];
+                        console.log('setting current to:', current);
                         accumulator.push(current);
                         lists[currentIndex].splice(0, 1);
                     } else if (lists[currentIndex][0] === current && iteration === 0) {
@@ -49,11 +50,12 @@ function merger(lists) {
                         accumulator.push(current);
                         lists[currentIndex].splice(0, 1);
                         foundSecond = true;
+                        currentIndex++;
                         break;
                     }
                 }
+                currentIndex++;
             }
-            currentIndex++;
             if (foundSecond) {
                 break;
             }
