@@ -14,11 +14,19 @@ export class ProjectStore {
 
         this.store[project.id] = angular.copy(project);
         this.wireRelationships(project.id);
-        console.log('this.store', this.store);
-        console.log('this.experimentStore', this.experimentStore);
-        console.log('this.sampleStore', this.sampleStore);
-        console.log('this.processStore', this.processStore);
-        console.log('this.relationshipStore', this.relationshipStore);
+        // console.log('this.store', this.store);
+        // console.log('this.experimentStore', this.experimentStore);
+        // console.log('this.sampleStore', this.sampleStore);
+        // console.log('this.processStore', this.processStore);
+        // console.log('this.relationshipStore', this.relationshipStore);
+    }
+
+    getProject(projectId) {
+        if (projectId in this.store) {
+            return this.store[projectId];
+        }
+
+        return null;
     }
 
     wireRelationships(projectId) {

@@ -9,16 +9,25 @@ class MCWorkflowAsTableEditorComponentController {
             headers: [],
             grouped: false,
             editTable: false,
-        }
-    }
-
-    $onInit() {
+        };
         this.createDemoData();
     }
 
-    // $onChanges(changes) {
-    //     if (changes) {}
-    // }
+    $onInit() {
+
+    }
+
+    $onChanges(changes) {
+        console.log('changes', changes);
+        if (changes.samples) {
+            this.state.samples = angular.copy(changes.samples.currentValue);
+            this.state.samples.forEach(s => {
+                s.selected = false;
+                s.processes = this.fillRandomProcesses(this.state.headers.length);
+            });
+            console.log('this.state.samples', this.state.samples);
+        }
+    }
 
     createDemoData() {
         this.state.headers = [
@@ -41,14 +50,14 @@ class MCWorkflowAsTableEditorComponentController {
             "TEM5",
         ];
 
-        this.state.samples = [];
-        for (let i = 0; i < 10; i++) {
-            this.state.samples.push({
-                selected: false,
-                name: "Sample_" + i,
-                processes: this.fillRandomProcesses(this.state.headers.length)
-            })
-        }
+        // this.state.samples = [];
+        // for (let i = 0; i < 10; i++) {
+        //     this.state.samples.push({
+        //         selected: false,
+        //         name: "Sample " + i,
+        //         processes: this.fillRandomProcesses(this.state.headers.length)
+        //     })
+        // }
     }
 
     fillRandomProcesses(count) {
