@@ -1,6 +1,5 @@
 import os
 import logging
-import configparser
 from ..DatabaseInterface import DatabaseInterface
 from ..BackgroundProcess import BackgroundProcess
 from .MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
@@ -11,11 +10,7 @@ class ETLSetup:
     def __init__(self, user_id):
         self.user_id = user_id
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
-        user_endoint_config_file_path = os.path.join('.globus_test', 'endpoint.ini')
-        config_file_locaton_for_user_endpoint = os.path.join(os.path.expanduser("~"), user_endoint_config_file_path)
-        config = configparser.ConfigParser()
-        config.read(str(config_file_locaton_for_user_endpoint))
-        self.worker_base_path = config['worker']['base_path']
+        self.worker_base_path = os.environ.get('MC_ETL_BASE_DIR')
 
     def setup_status_record(self, project_id, experiment_name, experiment_description,
                  globus_endpoint, endpoint_path,

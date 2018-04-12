@@ -1,15 +1,11 @@
 import os
 import logging
-import configparser
 
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
 from globus_sdk import TransferClient, TransferData, TransferAPIError
 
 from ..mcexceptions import DatabaseError, AuthenticationException, NoSuchItem, AccessNotAllowedException
 from ..DB import DbConnection
-
-user_endoint_config_file_path = os.path.join('.globus_test', 'endpoint.ini')
-config_file_locaton_for_user_endpoint = os.path.join(os.path.expanduser("~"), user_endoint_config_file_path)
 
 
 class MaterialsCommonsGlobusInterface:
@@ -18,15 +14,21 @@ class MaterialsCommonsGlobusInterface:
         self.log.debug("MaterialsCommonsGlobusInterface init - started")
         self.version = "0.1"
         self.mc_user_id = mc_user_id
-        home = os.path.expanduser("~")
-        self.config_path = os.path.join(home, '.globus', 'mc_client_config.ini')
 
-        config = configparser.ConfigParser()
-        config.read(str(self.config_path))
+        self.client_user = os.environ.get('MC_CONFIDENTIAL_CLIENT_USER')
+        self.client_token = os.environ.get('MC_CONFIDENTIAL_CLIENT_PW')
+        self.mc_target_ep_id = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
 
-        self.client_user = config['mc_client']['user']
-        self.client_token = config['mc_client']['token']
-        self.mc_target_ep_id = config['mc_client']['ep_id']
+        if (not self.client_user) or (not self.client_token) or (not self.mc_target_ep_id):
+            missing = []
+            if not self.client_user:
+                missing.append('MC_CONFIDENTIAL_CLIENT_USER')
+            if not self.client_token:
+                missing.append('MC_CONFIDENTIAL_CLIENT_PW')
+            if not self.mc_target_ep_id:
+                missing.append("MC_CONFIDENTIAL_CLIENT_ENDPOINT")
+            message = "Missing environment values: {}".format(", ".join(missing))
+            raise EnvironmentError(message)
 
         self.transfer_client = None
         self.log.debug("MaterialsCommonsGlobusInterface init - done")
@@ -190,14 +192,3 @@ class MaterialsCommonsGlobusInterface:
             else:
                 return rv['new_val']['id']
         raise DatabaseError()
-
-    @staticmethod
-    def _get_user_globus_endpoint_config():
-        config = configparser.ConfigParser()
-        config.read(str(config_file_locaton_for_user_endpoint))
-        file_list = config["test"]["files"].split(":")
-        return {
-            "id": config['test']['endpoint'],
-            "dir": config['test']['directory'],
-            "files": file_list
-        }

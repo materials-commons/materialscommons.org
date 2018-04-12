@@ -1,28 +1,21 @@
 import sys
-import os
 import time
 import logging
-import configparser
 
 from ..BackgroundProcess import BackgroundProcess
 from ..DatabaseInterface import DatabaseInterface
-
-user_endpoint_config_file_path = os.path.join('.globus_test', 'endpoint.ini')
-config_file_locaton_for_user_endpoint = os.path.join(os.path.expanduser("~"), user_endpoint_config_file_path)
 
 
 def main():
     from ..globus_etl.task_library import startup_and_verify
     log = logging.getLogger("top_level_run_ELT_example")
-    config = configparser.ConfigParser()
-    config.read(str(config_file_locaton_for_user_endpoint))
 
     user_id = "test@test.mc"
     project_id = "c4cf1777-af3b-437f-82af-2d4c1810b8a3"
     experiment_name = "Test from excel"
     experiment_description = "An experiment built via etl from test data"
-    globus_endpoint = config['test']['endpoint']
-    endpoint_path = config['test']['directory']
+    globus_endpoint = "067ce67a-3bf1-11e8-b9b5-0ac6873fc732"
+    endpoint_path = "/dataForTest"
     request_uuid = project_id
     excel_file_relative_path = "input.xlsx"
     data_dir_relative_path = "data"
