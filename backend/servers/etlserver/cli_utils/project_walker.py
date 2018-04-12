@@ -1,7 +1,8 @@
-import sys
-import os
 import argparse
+import sys
+
 from materials_commons.api import get_all_projects
+
 
 class Walker:
 
@@ -90,8 +91,8 @@ class Walker:
         for i in range(0, indent):
             padding += "  "
         print(padding, proc.name, proc.id)
-        print(padding, self.processSamplesText(proc))
-        print(padding, self.filenameListText(proc))
+        print(padding, self.process_samples_text(proc))
+        print(padding, self.filename_list_text(proc))
         measurements = proc.measurements
         for m in measurements:
             header = "|- MEAS" + str("(*)" if m.is_best_measure else "")
@@ -119,7 +120,7 @@ class Walker:
         return children
 
     @staticmethod
-    def processSamplesText(process):
+    def process_samples_text(process):
         text = "Samples: "
         samples = process.input_samples
         if samples:
@@ -141,7 +142,7 @@ class Walker:
         return text
 
     @staticmethod
-    def filenameListText(process):
+    def filename_list_text(process):
         text = "Files: "
         files = process.get_all_files()
         if not files:
@@ -161,13 +162,13 @@ class Walker:
         return False
 
     @staticmethod
-    def push_on(list, obj):
-        list.append(obj)
+    def push_on(stack_list, obj):
+        stack_list.append(obj)
 
     @staticmethod
-    def pop_from(list):
-        obj = list[len(list) - 1]
-        list.remove(obj)
+    def pop_from(stack_list):
+        obj = stack_list[len(stack_list) - 1]
+        stack_list.remove(obj)
         return obj
 
     @staticmethod
@@ -179,7 +180,6 @@ class Walker:
 
 
 def main(project_name, experiment_name):
-
     walker = Walker()
     ok = walker.set_up_project_experiment(project_name, experiment_name)
     if not ok:
@@ -195,11 +195,10 @@ def main(project_name, experiment_name):
 
 
 if __name__ == '__main__':
-
     argv = sys.argv
     parser = argparse.ArgumentParser(
         description='Print out process-workflow, with data, for a named Project/Experiment')
     parser.add_argument('proj', type=str, help="Project Name")
     parser.add_argument('exp', type=str, help="Experiment Name")
     args = parser.parse_args(argv[1:])
-    main(args.proj,args.exp)
+    main(args.proj, args.exp)

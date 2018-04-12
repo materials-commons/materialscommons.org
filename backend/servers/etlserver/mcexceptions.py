@@ -8,6 +8,7 @@ class RequiredAttributeException(MaterialsCommonsException):
 
 
 class NoSuchItem(MaterialsCommonsException):
+    # noinspection PyShadowingBuiltins
     def __init__(self, id="Unknown"):
         self.id = str(id)
 
@@ -17,6 +18,7 @@ class AuthenticationException(MaterialsCommonsException):
 
 
 class AccessNotAllowedException(MaterialsCommonsException):
+    # noinspection PyShadowingBuiltins
     def __init__(self, id="Unknown"):
         self.id = str(id)
 

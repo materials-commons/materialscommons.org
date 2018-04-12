@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from ..api import get_all_templates
+from materials_commons.api import get_all_templates
 import openpyxl as pyxl
 
 if __name__ == '__main__':

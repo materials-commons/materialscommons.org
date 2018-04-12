@@ -8,6 +8,7 @@ from flask_api import status
 from werkzeug.utils import secure_filename
 
 from materials_commons.etl.input_spreadsheet import BuildProjectExperiment
+# noinspection PyProtectedMember
 from materials_commons.api import _use_remote as use_remote
 
 from .DB import DbConnection
@@ -130,6 +131,7 @@ class UploadUtility:
                filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
     def get_file(self):
+        # noinspection PyUnusedLocal
         upload_folder = app.config['UPLOAD_FOLDER']
         if not os.path.exists(app.config['UPLOAD_FOLDER']):
             message = "etl file upload - no upload folder: " + app.config['UPLOAD_FOLDER']

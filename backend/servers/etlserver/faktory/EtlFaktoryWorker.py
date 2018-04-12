@@ -2,6 +2,7 @@ import logging
 from faktory import Worker
 from .TaskChain import TaskChain, GLOBUS_QUEUE, PROCESS_QUEUE
 
+
 class EtlFaktoryWorker:
     def __init__(self):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)

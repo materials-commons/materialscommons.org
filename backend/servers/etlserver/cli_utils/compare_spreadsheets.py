@@ -5,7 +5,7 @@ import os
 import sys
 try:
     from math import isclose
-except (ImportError, AttributeError): # not in Python 2.7
+except (ImportError, AttributeError):  # not in Python 2.7
     def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
         return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 from . import Path
@@ -40,8 +40,8 @@ class Compare:
 
     def compare(self, project_name, experiment_name, input_file_path, output_file_path):
 
-        ok = self.set_up_project_experiment_metadata(project_name, experiment_name)
-        if not ok:
+        check_ok = self.set_up_project_experiment_metadata(project_name, experiment_name)
+        if not check_ok:
             return
 
         print('Input --', input_file_path)
@@ -97,8 +97,8 @@ class Compare:
             print("Quiting.")
             return False
         self.experiment = found[0]
-        ok = self.metadata.read(self.experiment.id)
-        if not ok:
+        check_ok = self.metadata.read(self.experiment.id)
+        if not check_ok:
             print("There was no ETL metadata for the experiment '" + str(experiment_name) + "';")
             print("This experiment does not appear to have been created using ETL input.")
             print("Quiting.")
@@ -443,9 +443,9 @@ class Compare:
             download = record['download']
             if not (upload.exists() and download.exists()):
                 if not upload.exists():
-                    print("File in spredsheet not found in upload directory, ignoring: " + path)
+                    print("File in spreadsheet not found in upload directory, ignoring: " + path)
                 if not download.exists():
-                    print("File in spredsheet not found in download directory, ignoring: " + path)
+                    print("File in spreadsheet not found in download directory, ignoring: " + path)
             else:
                 update_compare_list.append(record)
         return update_compare_list
@@ -477,8 +477,8 @@ class Compare:
 
 def _verify_data_dir(dir_path):
     path = Path(dir_path)
-    ok = path.exists() and path.is_dir()
-    return ok
+    check_ok = path.exists() and path.is_dir()
+    return check_ok
 
 
 if __name__ == '__main__':
@@ -542,8 +542,8 @@ if __name__ == '__main__':
             if args.checksum:
                 print("In addition, file checksums will be computed and compared")
 
-    do_files = (args.upload is not None) and (args.download is not None)
+    ok_to_upload = (args.upload is not None) and (args.download is not None)
 
     c = Compare()
-    c.set_options(do_files=do_files, upload=args.upload, download=args.download, checksum=args.checksum)
+    c.set_options(do_files=ok_to_upload, upload=args.upload, download=args.download, checksum=args.checksum)
     c.compare(args.proj, args.exp, args.input, args.output)

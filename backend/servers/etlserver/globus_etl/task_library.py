@@ -9,8 +9,8 @@ from .ETLSetup import ETLSetup
 
 
 def startup_and_verify(user_id, project_id, experiment_name, experiment_description,
-                                  globus_endpoint, endpoint_path,
-                                  excel_file_relative_path, data_dir_relative_path):
+                       globus_endpoint, endpoint_path,
+                       excel_file_relative_path, data_dir_relative_path):
     setup = ETLSetup(user_id)
     status_record_id = \
         setup.setup_status_record(project_id, experiment_name, experiment_description,
@@ -50,6 +50,7 @@ def elt_globus_upload(status_record_id):
     task_chain.queue_excel_processing(status_record_id)
     return status_record_id
 
+
 def etl_excel_processing(status_record_id):
     log = logging.getLogger(__name__ + ".etl_excel_processing")
     log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
@@ -65,14 +66,15 @@ def etl_excel_processing(status_record_id):
     data_dir_path = os.path.join(base_path, data_dir_relative_path)
 
     results = build_experiment(project_id, experiment_name, experiment_description,
-                                    excel_file_path, data_dir_path)
+                               excel_file_path, data_dir_path)
     if not results['status'] == 'SUCCEEDED':
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         log.error(results)
         return
     DatabaseInterface().update_queue(status_record_id, None)
     DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUCCESS)
-    log.info("Build Experiment Sucess{}".format(results))
+    log.info("Build Experiment Success{}".format(results))
+
 
 def globus_transfer(status_record_id):
     log = logging.getLogger(__name__ + ".elt_globus_upload.globus_transfer")
@@ -110,7 +112,7 @@ def build_experiment(project_id, experiment_name, experiment_description,
         builder.preset_project_id(project_id)
         builder.preset_experiment_name_description(experiment_name, experiment_description)
         builder.build(excel_file_path, data_file_path)
-        log.info("Starting Experiment Build Sucess: {}, {}".format(project_id, experiment_name))
+        log.info("Starting Experiment Build Success: {}, {}".format(project_id, experiment_name))
         return {"status": "SUCCEEDED", "results": builder.__dict__}
     except MaterialsCommonsException as e:
         log.info("Starting Experiment Build Fail: {}, {}".format(project_id, experiment_name))

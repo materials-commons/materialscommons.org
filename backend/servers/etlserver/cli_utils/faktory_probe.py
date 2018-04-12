@@ -15,6 +15,7 @@ _FAKTORY_PORT = int(environ.get('FAKTORY_PORT'))
 
 pp = pprint.PrettyPrinter(indent=4)
 
+
 class FaktoryProbe:
     def __init__(self):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
@@ -83,7 +84,8 @@ class FaktoryProbe:
 
         worker.executor.shutdown(wait=False)
 
-    def total_enqueued(self, worker):
+    @staticmethod
+    def total_enqueued(worker):
         worker.faktory.reply("INFO")
         blob = next(worker.faktory.get_message())
         data = json.loads(blob)

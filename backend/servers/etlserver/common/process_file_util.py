@@ -33,6 +33,7 @@ def walk_dir_for_path_table(path_table, path, file_or_dir):
 
 def test(project_name):
     project_list = get_all_projects()
+    project = None
     for proj in project_list:
         if proj.name == project_name:
             project = proj
@@ -55,6 +56,6 @@ if __name__ == '__main__':
     parser.add_argument('exp', type=str, help="Experiment Name")
     args = parser.parse_args(argv[1:])
 
-    print("args: " +  args.proj + " ," + args.exp)
+    print("args: " + args.proj + " ," + args.exp)
 
     test(args.proj)

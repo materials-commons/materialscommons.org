@@ -21,7 +21,7 @@ def write_template_ws(template, wb, fill_color):
     headers = []
     max_column_lens = []
     min_width = 8
-    for index, p in enumerate(setup_params):
+    for i, p in enumerate(setup_params):
         headers.append('PARAM')
         param_name = compute_name(p)
         param_width = len(param_name) + 5
@@ -47,11 +47,11 @@ def write_template_ws(template, wb, fill_color):
     ws.write_row(3, 0, params)
     setup_validations(ws, setup_params, measurements)
     ws.set_column(0, len(max_column_lens), None, fill_color)
-    for index, ignore in enumerate(max_column_lens):
-        if index == 0:
-            ws.set_column(index, index, len(template.name) + 9)
+    for i, ignore in enumerate(max_column_lens):
+        if i == 0:  
+            ws.set_column(i, i, len(template.name) + 9)
         else:
-            ws.set_column(index, index, max_column_lens[index])
+            ws.set_column(i, i, max_column_lens[i])
     if not max_column_lens:
         ws.set_column(0, 0, len(template.name) + 9)
 
@@ -73,9 +73,9 @@ def setup_validations(ws, setup_params, measurements):
         all_items.append(p)
     for m in measurements:
         all_items.append(m)
-    for index, item in enumerate(all_items):
+    for m_index, item in enumerate(all_items):
         if item['units']:
-            cell = xl_rowcol_to_cell(3, index)
+            cell = xl_rowcol_to_cell(3, m_index)
             choices = build_choices(item)
             ws.data_validation(cell, {'validate': 'list', 'source': choices})
 
@@ -85,10 +85,10 @@ def build_choices(item):
     return choices
 
 
-def write_to_toc_ws(ws, row, index, template):
+def write_to_toc_ws(ws, row, template_index, template):
     transforms = yes_no(template.input_data['does_transform'])
     destructive = yes_no(template.input_data['destructive'])
-    ws.write_row(row, 0, [index, template.name, template.input_data['process_type'],
+    ws.write_row(row, 0, [template_index, template.name, template.input_data['process_type'],
                           template.description, transforms, destructive])
     return [len(template.name), len(template.input_data['process_type']), len(template.description)]
 
@@ -115,16 +115,16 @@ if __name__ == "__main__":
     workbook = xlsxwriter.Workbook('/tmp/mc/T.xlsx')
     setup_colors(workbook)
     templates = sorted(get_all_templates(), key=lambda template: template.name)
-    ws = workbook.add_worksheet('Templates')
-    ws.write_row(0, 0, ['Index', 'Template Name', 'Type', 'Description', 'Transforms Sample', 'Destructive'])
+    worksheet = workbook.add_worksheet('Templates')
+    worksheet.write_row(0, 0, ['Index', 'Template Name', 'Type', 'Description', 'Transforms Sample', 'Destructive'])
 
     ws_row = 1
     max_toc_lens = [0, 0, 0]
     fill_color_index = 0
-    for index, template in enumerate(templates):
+    for index, template_in in enumerate(templates):
         if fill_color_index == len(colors):
             fill_color_index = 0
-        toc_lens = write_to_toc_ws(ws, ws_row, index, template)
+        toc_lens = write_to_toc_ws(worksheet, ws_row, index, template_in)
         if toc_lens[0] > max_toc_lens[0]:
             max_toc_lens[0] = toc_lens[0]
         if toc_lens[1] > max_toc_lens[1]:
@@ -132,12 +132,12 @@ if __name__ == "__main__":
         if toc_lens[2] > max_toc_lens[2]:
             max_toc_lens[2] = toc_lens[2]
         ws_row += 1
-        write_template_ws(template, workbook, colors[fill_color_index])
+        write_template_ws(template_in, workbook, colors[fill_color_index])
         fill_color_index += 1
-    ws.set_column(0, 0, 7)
-    ws.set_column(1, 1, max_toc_lens[0] + 3)
-    ws.set_column(2, 2, max_toc_lens[1] + 3)
-    ws.set_column(3, 3, max_toc_lens[2] + 3)
-    ws.set_column(4, 4, len('Transforms Sample') + 3)
-    ws.set_column(5, 5, len('Destructive') + 3)
+    worksheet.set_column(0, 0, 7)
+    worksheet.set_column(1, 1, max_toc_lens[0] + 3)
+    worksheet.set_column(2, 2, max_toc_lens[1] + 3)
+    worksheet.set_column(3, 3, max_toc_lens[2] + 3)
+    worksheet.set_column(4, 4, len('Transforms Sample') + 3)
+    worksheet.set_column(5, 5, len('Destructive') + 3)
     workbook.close()

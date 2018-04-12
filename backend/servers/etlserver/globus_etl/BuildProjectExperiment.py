@@ -4,7 +4,7 @@ from .. import Path
 
 from materials_commons.api import create_project, get_all_templates, get_project_by_id
 from materials_commons.api import File as FileRecord
-from ..common.util import _normalise_property_name
+from ..common.util import normalise_property_name
 from ..common.worksheet_data import ExcelIO
 from ..common.metadata import Metadata
 
@@ -220,7 +220,7 @@ class BuildProjectExperiment:
                 files = self.source[data_row][col]
                 self.metadata.update_process_files_list(files)
                 if self.suppress_data_upload:
-                    self.log.info("data file upload supressed: ", process.name, " - ", files)
+                    self.log.info("data file upload suppressed: ", process.name, " - ", files)
                     break
                 self.add_files(process, files)
                 break
@@ -243,7 +243,7 @@ class BuildProjectExperiment:
         parts = signature.split('.')
         entry = self.process_values[values_type]
         attribute = parts[0]
-        attribute = _normalise_property_name(attribute)
+        attribute = normalise_property_name(attribute)
         if attribute not in entry:
             entry[attribute] = {"value": None, "unit": unit}
         if attribute == "composition":

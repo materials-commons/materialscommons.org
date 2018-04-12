@@ -2,16 +2,17 @@ import argparse
 import datetime
 import os
 import sys
-from . import Path
-from six import string_types
 
-from materials_commons.api import get_all_projects
 from materials_commons.api import File as MC_File
-from materials_commons.etl.common.util import _normalise_property_name
+from materials_commons.api import get_all_projects
+from materials_commons.etl.common.meta_data_verify import MetadataVerification
 from materials_commons.etl.common.metadata import Metadata
 from materials_commons.etl.common.process_file_util import make_project_file_id_path_table
 from materials_commons.etl.common.worksheet_data import ExcelIO
-from materials_commons.etl.common.meta_data_verify import MetadataVerification
+from six import string_types
+
+from . import Path
+from ..common.util import normalise_property_name
 
 
 class ExtractExperimentSpreadsheet:
@@ -81,6 +82,7 @@ class ExtractExperimentSpreadsheet:
         self.data_row_list[metadata.data_row_start][0] = "BEGIN_DATA"
         print("    ... setting data...")
         process_record_list = metadata.process_metadata
+        # noinspection PyUnresolvedReferences
         table = metadata.process_table  # Note: added by metadata verify
         type_list = metadata.sheet_headers[metadata.start_attribute_row]
         attribute_list = metadata.sheet_headers[metadata.start_attribute_row + 1]
@@ -136,7 +138,8 @@ class ExtractExperimentSpreadsheet:
             value = self.get_measurement_value_for_attribute(attribute, measurement)
         return value
 
-    def find_measurement_for_attribute(self, attribute, measurements):
+    @staticmethod
+    def find_measurement_for_attribute(attribute, measurements):
         found_measurement = None
         base = attribute
         if not isinstance(attribute, str):
@@ -182,7 +185,7 @@ class ExtractExperimentSpreadsheet:
         for key in file_id_path_table:
             item = file_id_path_table[key]
             path = item['path']
-            path_table[item['path']] = item
+            path_table[path] = item
         project.local_path = download_dir_path
         process_record_list = metadata.process_metadata
         type_list = metadata.sheet_headers[metadata.start_attribute_row]
@@ -202,33 +205,34 @@ class ExtractExperimentSpreadsheet:
                     local_path = str(path)
                     remote_path = "/" + str(Path(top_directory_name) / entry)
                     print("  : " + remote_path + " --> " + local_path)
-                    if not remote_path in path_table:
+                    if remote_path not in path_table:
                         print("  :     file from spreadsheet not in project, skipping" + entry)
                         continue
                     record = path_table[str(remote_path)]
                     if record['is_file']:
-                        self.downloadLocalFileContent(record['file'], path)
+                        self.download_local_file_content(record['file'], path)
                     else:
-                        self.downloadLocalDirContent(record['dir'], path)
+                        self.download_local_dir_content(record['dir'], path)
 
-    def downloadLocalFileContent(self, file, path):
+    @staticmethod
+    def download_local_file_content(file_in, path):
         if path.exists():
-            print("  :     skipping dublicate: " + str(path))
+            print("  :     skipping duplicate: " + str(path))
         else:
-            dir = Path(*list(path.parts)[:-1])
-            dir.mkdir(exist_ok=True)
-            file.download_file_content(str(path))
+            dir_new = Path(*list(path.parts)[:-1])
+            dir_new.mkdir(exist_ok=True)
+            file_in.download_file_content(str(path))
 
-    def downloadLocalDirContent(self, dir, path):
-#        print("download dir", dir.name, path)
+    def download_local_dir_content(self, dir_in, path):
+        #        print("download dir", dir.name, path)
         path.mkdir(exist_ok=True)
-        for child in dir.get_children():
+        for child in dir_in.get_children():
             child_path = Path(path, child.name)
-#            print("child_path", str(child_path))
-            if (type(child) == MC_File):
-                self.downloadLocalFileContent(child, child_path)
+            #            print("child_path", str(child_path))
+            if type(child) == MC_File:
+                self.download_local_file_content(child, child_path)
             else:
-                self.downloadLocalDirContent(child, child_path)
+                self.download_local_dir_content(child, child_path)
 
     @staticmethod
     def key_for_category(name, name_list):
@@ -285,13 +289,13 @@ class ExtractExperimentSpreadsheet:
         for attr in attributes:
             if attr:
                 if isinstance(attr, string_types):
-                    attr = _normalise_property_name(attr)
+                    attr = normalise_property_name(attr)
                 else:
                     parts = []
                     for part in attr:
                         if not parts:
                             # only normalize the leading term
-                            part = _normalise_property_name(part)
+                            part = normalise_property_name(part)
                         parts.append(part)
                     attr = parts
             update.append(attr)
@@ -303,8 +307,8 @@ class ExtractExperimentSpreadsheet:
         if not files:
             return ""
         names = []
-        for file in files:
-            names.append(file.name)
+        for f in files:
+            names.append(f.name)
         return ", ".join(names)
 
 

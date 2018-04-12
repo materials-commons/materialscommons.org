@@ -26,6 +26,7 @@ def _load_apikeys():
         _lock.release()
 
 
+# noinspection PyUnusedLocal
 def remove_apikey(apikey):
     _apikeys.clear()
 
