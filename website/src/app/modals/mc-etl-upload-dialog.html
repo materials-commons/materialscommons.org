@@ -1,13 +1,18 @@
 <md-dialog flex="30">
     <md-toolbar layout="row">
         <div layout-margin>
-            ETL - Create new experiment
+            ETL - Create new experiment in project ('{{$ctrl.project.name}}')
         </div>
     </md-toolbar>
-    <md-dialog-content layout-margin>
+    <md-dialog-content ng-if="!$ctrl.use_globus"layout-margin>
         <form layout="column" class="dialog-form">
-            For the current project ('{{$ctrl.project.name}}') ...
+            <p>To create an experiment <b>without uploading files</b>,
+            fill out the form and drag/drop (or open)
+            the Excel spreadsheet, below.
+            </p>
             <br />
+            <p>To create an experiment with the data files uploaded,
+            select the alternative dialog, ETL with Globus</p>
             <md-input-container md-no-float>
                 <label>Experiment Name</label>
                 <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
