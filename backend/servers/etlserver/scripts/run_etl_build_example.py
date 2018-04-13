@@ -1,17 +1,17 @@
 import sys
 import time
 import logging
+import argparse
 
 from ..BackgroundProcess import BackgroundProcess
 from ..DatabaseInterface import DatabaseInterface
 
 
-def main():
+def main(project_id):
     from ..globus_etl.task_library import startup_and_verify
     log = logging.getLogger("top_level_run_ELT_example")
 
     user_id = "test@test.mc"
-    project_id = "c4cf1777-af3b-437f-82af-2d4c1810b8a3"
     experiment_name = "Test from excel"
     experiment_description = "An experiment built via etl from test data"
     globus_endpoint = "067ce67a-3bf1-11e8-b9b5-0ac6873fc732"
@@ -65,4 +65,11 @@ if __name__ == "__main__":
     ch.setFormatter(formatter)
     root.addHandler(ch)
 
-    main()
+    argv = sys.argv
+    parser = argparse.ArgumentParser(
+        description='Run the Globus/ETL process with test data - in a predefined test endpoint')
+    parser.add_argument('project_id', type=str, help="Project ID")
+    args = parser.parse_args(argv[1:])
+    project_id_in = args.project_id
+
+    main(project_id_in)

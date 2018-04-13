@@ -1,3 +1,4 @@
+import os
 import openpyxl
 
 
@@ -64,6 +65,8 @@ class ExcelIO:
         self.workbook.save(filename=path)
 
     def read_workbook(self, path):
+        if not os.path.isfile(path):
+            raise FileNotFoundError(path)
         self.workbook = openpyxl.load_workbook(filename=path)
 
     def sheet_name_list(self):

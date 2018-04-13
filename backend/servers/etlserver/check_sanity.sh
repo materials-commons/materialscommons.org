@@ -143,16 +143,16 @@ ALL_OK=0
 
 # has env script been run
 if [ "${SERVERTYPE}" = "" ]; then
-        echo "SERVERTYPE is not defined; or is empty <-----"
-        echo "  run appropriate script in backend/env"
-        ALL_OK=-1
-    else
-        echo "SERVERTYPE = ${SERVERTYPE}"
-    fi
+    echo "SERVERTYPE is not defined; or is empty <-----"
+    echo "  source the appropriate script in backend/env"
+    ALL_OK=-1
+else
+    echo "SERVERTYPE = ${SERVERTYPE}"
+fi
 
 EXTRAS="/etc/materialscommons/config.${SERVERTYPE}"
 if [ -f $EXTRAS ]; then
-    source $EXTRAS
+    echo "You may need to source this EXTRAS file: $EXTRAS"
 else
     echo "WARNING: the config file for overrides is not defined: $EXTRAS"
     echo "  you may need to define and run it"
@@ -171,5 +171,6 @@ check_mc_endpoint
 
 if [ ! "$ALL_OK" = "0" ]; then
     echo "Some part of the enviornment is not set up correctly"
-    echo "  take indicated action(s) and retry"
+    echo "  take indicated actions and retry"
 fi
+echo "Done."
