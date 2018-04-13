@@ -176,7 +176,6 @@ class MCProjectHomeComponentController {
             bindToController: true,
             locals: {
                 project: this.project,
-                use_globus: true
             }
         }).then(
             () => {
@@ -316,35 +315,39 @@ class DeleteExperimentsDialogController {
 
 class EtlUploadDialogController {
     /*@ngInject*/
-    constructor($mdDialog, Upload, toast, User) {
+    constructor($mdDialog, Upload, GlobusBorker, toast, User) {
         this.$mdDialog = $mdDialog;
         this.Upload = Upload;
+        this.GlobusBroker = GlobusBorker;
         this.toast = toast;
         this.User = User;
         this.user_id = User.u();
         this.name = "";
         this.description = ""
         this.files = [];
+        this.use_globus = true;
+    }
+
+    onSwithDisplay() {
+        this.use_globus = ! this.use_globus;
+        console.log("EtlUploadDialogController - switch display: ", this.use_globus);
     }
 
     done() {
         console.log("EtlUploadDialogController - Done");
         let data = {};
-        let f = this.files[0];
-        data.file = f;
         data.project_id = this.project.id;
         data.name = this.name;
         data.description = this.description;
-        console.log("data to send = ", data);
-        this.isUploading = true;
-        return this.Upload.upload({
-                url: `api/etl/upload?apikey=${this.User.apikey()}`,
-                data: data
-            }).then(
-                (uploaded) => {
-                    console.log("upload completed", uploaded.data);
-                    this.$mdDialog.hide(uploaded.data);
-                    this.isUploading=false;
+        if (this.use_globus) {
+            data.globus_uuid = this.ep_uuid;
+            data.globus_excel_file = this.ep_spreadsheet;
+            data.globus_data_dir = this.ep_data;
+            console.log("data to send = ", data);
+            return this.GlobusBroker.setup(data).then (
+                (reply) => {
+                    console.log("Globus setup completed", uploaded.data);
+                    this.$mdDialog.hide(reply);
                 },
                 (e) => {
                     console.log("upload failed", e);
@@ -353,16 +356,44 @@ class EtlUploadDialogController {
                         this.toast.error("Excel file uplaod; Service not available. Contact Admin.")
                     } else if (e.status > 200) {
                         console.log("Service unavailable: " + e.status);
-                        this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.")
+                        this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
                     }
                     this.$mdDialog.cancel(e);
-                    this.isUploading=false;
+                }
+            );
+        }
+        else {
+            let f = this.files[0];
+            data.file = f;
+            console.log("data to send = ", data);
+            this.isUploading = true;
+            return this.Upload.upload({
+                url: `api/etl/upload?apikey=${this.User.apikey()}`,
+                data: data
+            }).then(
+                (uploaded) => {
+                    console.log("upload completed", uploaded.data);
+                    this.$mdDialog.hide(uploaded.data);
+                    this.isUploading = false;
+                },
+                (e) => {
+                    console.log("upload failed", e);
+                    if (e.status === 502) {
+                        console.log("Service unavailable: 502");
+                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.")
+                    } else if (e.status > 200) {
+                        console.log("Service unavailable: " + e.status);
+                        this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
+                    }
+                    this.$mdDialog.cancel(e);
+                    this.isUploading = false;
                 },
                 (evt) => {
                     f.progress = 100.0 * evt.loaded / evt.total;
                     console.log("upload progress", f.progress);
                 }
-            )
+            );
+        }
     }
 
     cancel() {

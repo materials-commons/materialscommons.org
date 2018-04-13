@@ -1,18 +1,56 @@
 <md-dialog flex="50">
     <md-toolbar layout="row">
-        <div layout-margin>
-            ETL - Create Experiment
+        <div ng-if="$ctrl.use_globus" layout-margin>
+            ETL - Create Experiment using Globus
+        </div>
+        <div ng-if="!$ctrl.use_globus" layout-margin>
+            ETL - Create Experiment using direct upload
         </div>
     </md-toolbar>
-    <md-dialog-content ng-if="!$ctrl.use_globus"layout-margin>
+    <md-dialog-content ng-if="$ctrl.use_globus" layout-margin>
+        <form layout="column" class="dialog-form">
+            <p> Create an experiment, using Globus to upload an
+            Excel spreadsheet and its data files. If you do not wish
+            to use Globus at this time, you can switch to an
+            <a ng-click="$ctrl.onSwithDisplay()">alternate dialog</a>.
+            </p>
+            <p> To use this form, you will first need to create a shared Globus endpoint and give
+            read permission to the Materials Client broker:
+            <em>MaterialsCommonsTest-ConfClient</em>.
+            </p>
+            <br />
+            <md-input-container md-no-float>
+                <label>Experiment Name</label>
+                <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
+            </md-input-container>
+            <md-input-container md-no-float>
+                <label>Experiment Description</label>
+                <input ng-required="false" ng-model="$ctrl.description" type="text" on-enter="ctrl.submit()">
+            </md-input-container>
+            <md-input-container md-no-float>
+                <label>Globus Shared endpoint UUID</label>
+                <input ng-required="true" ng-model="$ctrl.ep_uuid" type="text" on-enter="ctrl.submit()">
+            </md-input-container>
+            <md-input-container md-no-float>
+                <label>Path within the endpoint of the excel file: defaults to 'input.xlsx'</label>
+                <input ng-required="false" ng-model="$ctrl.ep_spreadsheet" type="text" on-enter="ctrl.submit()">
+            </md-input-container>
+            <md-input-container md-no-float>
+                <label>Path within the endpoint of the data directory, defaults to 'data'</label>
+                <input ng-required="false" ng-model="$ctrl.ep_data" type="text" on-enter="ctrl.submit()">
+            </md-input-container>
+        </form>
+    </md-dialog-content>
+    <md-dialog-content ng-if="!$ctrl.use_globus" layout-margin>
         <form layout="column" class="dialog-form">
             <p>To create an experiment <b>without uploading files</b>,
             fill out the form and drag/drop (or open)
             the Excel spreadsheet, below.
             </p>
-            <p>To create an experiment with the data files uploaded,
-            switch to the alternative dialog, ETL with Globus</p>
-            <p>Create new experiment in project <b>{{$ctrl.project.name}}</b></p>
+            <p>To create an experiment with the data files uploaded, using Globus,
+            switch to the <a ng-click="$ctrl.onSwithDisplay()">alternate dialog</a>.</p>
+            <br />
+            <p>To create new experiment in the project <b>{{$ctrl.project.name}}</b></p>
             <md-input-container md-no-float>
                 <label>Experiment Name</label>
                 <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
@@ -33,8 +71,12 @@
             </div>
         </form>
     </md-dialog-content>
-    <md-dialog-actions layout="row">
+    <md-dialog-actions  ng-if="!$ctrl.use_globus" layout="row">
         <md-button class="md-primary" ng-disabled="!(($ctrl.files.length > 0) && $ctrl.name)" ng-click="$ctrl.done()">Upload</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+    <md-dialog-actions  ng-if="$ctrl.use_globus" layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.done()">Start Upload</md-button>
         <md-button class="md-primary" ng-click="$ctrl.cancel()">Cancel</md-button>
     </md-dialog-actions>
 </md-dialog>
