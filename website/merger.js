@@ -1,14 +1,5 @@
 #!/usr/bin/env node
 
-let testData = [
-    ['a', 'a', 'b', 'c'],
-    ['a', 'c', 'a', 'a'],
-    ['c', 'a', 'a', 'b'],
-    ['a', 'c', 'c', 'g']
-];
-
-let expected = ['a', 'a', 'c',];
-
 function allEmpty(lists) {
     let isEmpty = true;
     lists.forEach(l => {
@@ -19,73 +10,6 @@ function allEmpty(lists) {
 
     return isEmpty;
 }
-
-// function merger(lists) {
-//     let accumulator = [];
-//
-//     let currentIndex = 0;
-//     for (; ;) {
-//         console.log(lists);
-//         console.log('accumulator', accumulator);
-//         if (allEmpty(lists)) {
-//             break;
-//         }
-//         let foundSecond = false;
-//         let current = "";
-//         let matchFound = false;
-//         console.log('starting currentIndex', currentIndex);
-//         console.log("");
-//         console.log("");
-//         for (let iteration = 0; iteration < 2; iteration++) {
-//             for (let i = 0; i < lists.length; i++) {
-//                 if (currentIndex === lists.length) {
-//                     currentIndex = 0;
-//                 }
-//
-//                 console.log('=============================');
-//                 console.log('currentIndex:', currentIndex);
-//                 console.log('=============================');
-//                 if (lists[currentIndex].length) {
-//                     if (current === "") {
-//                         current = lists[currentIndex][0];
-//                         console.log('current is blank, setting to', current);
-//                         accumulator.push(current);
-//                         lists[currentIndex].splice(0, 1);
-//                         console.log('  lists:');
-//                         console.log(lists);
-//                         console.log('  accumulator', accumulator);
-//                         matchFound = true;
-//                     } else if (lists[currentIndex][0] === current && iteration === 0) {
-//                         console.log(`${lists[currentIndex][0]} == ${current} and iteration === 0`);
-//                         lists[currentIndex].splice(0, 1);
-//                         console.log('  lists:');
-//                         console.log(lists);
-//                         matchFound = true;
-//                     } else if (lists[currentIndex][0] === current && iteration === 1) {
-//                         console.log(`${lists[currentIndex][0]} == ${current} and iteration === 1`);
-//                         accumulator.push(current);
-//                         lists[currentIndex].splice(0, 1);
-//                         console.log('  lists:');
-//                         console.log(lists);
-//                         console.log('  accumulator', accumulator);
-//                         foundSecond = true;
-//                         currentIndex++;
-//                         break;
-//                     }
-//                 }
-//                 currentIndex++;
-//                 if (!matchFound) {
-//                     break;
-//                 }
-//             }
-//             if (foundSecond || !matchFound) {
-//                 break;
-//             }
-//         }
-//     }
-//
-//     return accumulator;
-// }
 
 function merge2Debug(lists) {
     let accumulator = [];
@@ -191,6 +115,66 @@ function merge2(lists) {
     return accumulator
 }
 
-console.log('Running merger');
-let results = merge2(testData);
+let testData1 = [
+    ['a', 'a', 'b', 'c'],
+    ['a', 'c', 'a', 'a'],
+    ['c', 'a', 'a', 'b'],
+    ['a', 'c', 'c', 'g']
+];
+
+console.log('Running merger against:');
+console.log(testData1);
+let results = merge2(testData1);
 console.log('results', results);
+
+let testData2 = [
+    ['a', 'b'],
+    ['c', 'a'],
+];
+console.log('Running merger against:');
+console.log(testData2);
+results = merge2(testData2);
+console.log('results', results);
+
+let testData2Reverse = [
+    ['c', 'a'],
+    ['a', 'b'],
+];
+console.log('Running merger against:');
+console.log(testData2Reverse);
+results = merge2(testData2Reverse);
+console.log('results', results);
+
+let testData3 = [
+    ['a', 'a', 'a'],
+    ['b', 'a', 'b']
+];
+console.log('Running merger against:');
+console.log(testData3);
+results = merge2(testData3);
+console.log('results', results);
+
+let testData4 = [
+    ['a', 'c', 'a', 'a'],
+    ['a', 'a', 'b', 'c'],
+    ['c', 'a', 'a', 'b'],
+    ['a', 'c', 'c', 'g'],
+];
+
+console.log('Running merger against:');
+console.log(testData4);
+results = merge2(testData4);
+console.log('results', results);
+
+let testData5 = [
+    ['a', 'c', 'a', 'a'],
+    ['a', 'a', 'b', 'c'],
+    ['c', 'a', 'a', 'b', 'b'],
+    ['b', 'c', 'c', 'g'],
+];
+
+console.log('Running merger against:');
+console.log(testData5);
+results = merge2(testData5);
+console.log('results', results);
+
