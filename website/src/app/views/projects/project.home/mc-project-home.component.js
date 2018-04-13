@@ -175,7 +175,8 @@ class MCProjectHomeComponentController {
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
-                project: this.project
+                project: this.project,
+                use_globus: true
             }
         }).then(
             () => {

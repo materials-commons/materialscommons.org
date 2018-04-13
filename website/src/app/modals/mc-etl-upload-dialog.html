@@ -1,7 +1,7 @@
-<md-dialog flex="30">
+<md-dialog flex="50">
     <md-toolbar layout="row">
         <div layout-margin>
-            ETL - Create new experiment in project ('{{$ctrl.project.name}}')
+            ETL - Create Experiment
         </div>
     </md-toolbar>
     <md-dialog-content ng-if="!$ctrl.use_globus"layout-margin>
@@ -10,9 +10,9 @@
             fill out the form and drag/drop (or open)
             the Excel spreadsheet, below.
             </p>
-            <br />
             <p>To create an experiment with the data files uploaded,
-            select the alternative dialog, ETL with Globus</p>
+            switch to the alternative dialog, ETL with Globus</p>
+            <p>Create new experiment in project <b>{{$ctrl.project.name}}</b></p>
             <md-input-container md-no-float>
                 <label>Experiment Name</label>
                 <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
