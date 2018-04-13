@@ -96,6 +96,7 @@ function merge2(lists) {
                     accumulator.push(current);
                     startNew = false;
                     lists[currentIndex].splice(0, 1);
+                    matchFound = true;
                 } else if (lists[currentIndex][0] === current) {
                     lists[currentIndex].splice(0, 1);
                     matchFound = true;
@@ -178,3 +179,14 @@ console.log(testData5);
 results = merge2(testData5);
 console.log('results', results);
 
+let testDataFromSlides = [
+    ['a', 'a', 'b', 'c', 'a', 'g', 'c', 'f'],
+    ['a', 'c', 'a', 'a', 'c', 'a', 'f', 'a'],
+    ['c', 'a', 'a', 'b', 'b', 'g', 'f', 'g'],
+    ['a', 'c', 'c', 'g', 'g', 'a', 'a', 'f']
+];
+
+console.log('Running merger against:');
+console.log(testDataFromSlides);
+results = merge2(testDataFromSlides);
+console.log('results', results);
