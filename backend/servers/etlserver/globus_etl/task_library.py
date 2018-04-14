@@ -9,8 +9,7 @@ from .ETLSetup import ETLSetup
 
 
 def startup_and_verify(user_id, project_id, experiment_name, experiment_description,
-                       globus_endpoint, endpoint_path,
-                       excel_file_relative_path, data_dir_relative_path):
+                       globus_endpoint, excel_file_path, data_dir_path):
     log = logging.getLogger(__name__ + ".startup_and_verify")
     log.info("Starting startup_and_verify")
 
@@ -19,8 +18,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
         setup = ETLSetup(user_id)
         status_record_id = \
             setup.setup_status_record(project_id, experiment_name, experiment_description,
-                                      globus_endpoint, endpoint_path,
-                                      excel_file_relative_path, data_dir_relative_path)
+                                      globus_endpoint, excel_file_path, data_dir_path)
         if not status_record_id:
             log.error("Unable to create status_record_id")
             return {"status": "FAIL"}
@@ -81,12 +79,8 @@ def etl_excel_processing(status_record_id):
         project_id = status_record['project_id']
         experiment_name = status_record['extras']['experiment_name']
         experiment_description = status_record['extras']['experiment_description']
-        base_path = status_record['extras']['transfer_base_path']
-        excel_file_relative_path = status_record['extras']['excel_file_relative_path']
-        data_dir_relative_path = status_record['extras']['data_dir_relative_path']
-
-        excel_file_path = os.path.join(base_path, excel_file_relative_path)
-        data_dir_path = os.path.join(base_path, data_dir_relative_path)
+        excel_file_path = status_record['extras']['excel_file_path']
+        data_dir_path = status_record['extras']['data_dir_path']
 
         results = build_experiment(project_id, experiment_name, experiment_description,
                                    excel_file_path, data_dir_path)

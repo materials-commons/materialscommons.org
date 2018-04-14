@@ -39,8 +39,13 @@
                            ng-if="$ctrl.deletingExperiments">
                     Cancel Delete
                 </md-button>
-                <md-button class="md-raised md-primary" ng-click="$ctrl.etlStart()">
-                    New Experiment From Spreadsheet
+                <md-button class="md-raised md-primary" ng-click="$ctrl.etlStart()"
+                           ng-if="!$ctrl.etlInProgress">
+                    New Experiment From Excel File ETL
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.etlMonitor()"
+                           ng-if="$ctrl.etlInProgress">
+                    Check Etl Status of Excel File ETL
                 </md-button>
             </div>
             <md-content layout="column" flex>

@@ -74,11 +74,17 @@ def upload_fixed_spreadsheet():
 
 @app.route('/globus/stage', methods=['POST'])
 def stage_background_excel_upload():
-    log.debug("/globus/stage - starting")
-    log.debug("/globus/monitor - stub")
-    log.debug(request.form)
-    log.debug("/globus/stage - done")
-    return format_as_json_return({'status': 'unknown'})
+    log.info("/globus/stage - starting")
+    log.info("/globus/stage - stub")
+    j = request.get_json(force=True)
+    name = j["name"]
+    description = j["description"]
+    project_id = j["project_id"]
+    globus_uuid = j["globus_uuid"]
+    globus_excel_file = j["globus_excel_file"]
+    globus_data_dir = j["globus_data_dir"]
+    log.info("/globus/stage - done")
+    return format_as_json_return({'status': 'PROCESSING'})
 
 
 @app.route('/globus/monitor', methods=['POST'])
@@ -86,7 +92,7 @@ def monitor_background_excel_upload():
     log.debug("/globus/monitor - starting")
     log.debug("/globus/monitor - stub")
     log.debug("/parts/monitor - done")
-    return format_as_json_return({'status': 'unknown'})
+    return format_as_json_return({'status': 'PROCESSING'})
 
 
 @app.route('/upload', methods=['POST'])

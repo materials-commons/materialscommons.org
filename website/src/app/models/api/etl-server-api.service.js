@@ -5,9 +5,19 @@ class EtlServerAPIService {
         console.log('EtlServerAPIService - constructor', this.etlAPIRoute);
     }
     startBackgroundEtlUpload(data) {
-        route = this.etlAPIRoute('globus').one('stage');
+        let route = this.etlAPIRoute('globus').one('stage');
         console.log('EtlServerAPIService - startUpload', route);
-        route.customPOST(data).then(n => n.plain());
+        console.log('EtlServerAPIService - startUpload', data);
+        return route.customPOST(data).then(
+            n => {
+                let results = n.plain();
+                console.log(results);
+                return results;
+            },
+            e => {
+                console.log("error", e);
+                return null;
+            });
     }
 }
 

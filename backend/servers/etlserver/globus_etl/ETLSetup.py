@@ -13,8 +13,7 @@ class ETLSetup:
         self.worker_base_path = os.environ.get('MC_ETL_BASE_DIR')
 
     def setup_status_record(self, project_id, experiment_name, experiment_description,
-                 globus_endpoint, endpoint_path,
-                 excel_file_relative_path, data_dir_relative_path):
+                 globus_endpoint, excel_file_path, data_dir_path):
 
         status_record = DatabaseInterface().\
             create_status_record(self.user_id, project_id, "ETL Process")
@@ -23,20 +22,16 @@ class ETLSetup:
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.INITIALIZATION)
 
         base_path = self.worker_base_path
-        # TODO: use os.path
-        transfer_base_path = "{}/transfer-{}".format(base_path, status_record_id)
-        excel_file_path = "{}/{}".format(transfer_base_path, excel_file_relative_path)
-        data_file_path = "{}/{}".format(transfer_base_path, data_dir_relative_path)
+        transfer_dir = self.make_transfer_dir(status_record_id)
+        transfer_base_path = os.path.join(base_path, transfer_dir)
         self.log.info("excel_file_path = " + excel_file_path)
-        self.log.info("data_file_path = " + data_file_path)
+        self.log.info("data_file_path = " + data_dir_path)
         extras = {
             "experiment_name": experiment_name,
             "experiment_description": experiment_description,
             "globus_endpoint": globus_endpoint,
-            "endpoint_path": endpoint_path,
-            "transfer_base_path": transfer_base_path,
-            "excel_file_relative_path": excel_file_relative_path,
-            "data_dir_relative_path": data_dir_relative_path
+            "excel_file_path": excel_file_path,
+            "data_dir_path": data_dir_path
         }
         status_record = DatabaseInterface().add_extras_data_to_status_record(status_record_id, extras)
         status_record_id = status_record['id']
@@ -68,3 +63,6 @@ class ETLSetup:
                               globus_endpoint, endpoint_path, transfer_base_path,
                               excel_file_relative_path, data_dir_relative_path)
         return checker.status()
+
+    def make_transfer_dir(self, status_record_id):
+        return "transfer-{}".format(status_record_id)

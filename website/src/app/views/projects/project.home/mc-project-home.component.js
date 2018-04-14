@@ -17,6 +17,7 @@ class MCProjectHomeComponentController {
         this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
         this.projectsAPI = projectsAPI;
+        this.etlInProgress = false;
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
 
@@ -178,12 +179,17 @@ class MCProjectHomeComponentController {
                 project: this.project,
             }
         }).then(
-            () => {
+            (results) => {
+                this.etlInProgress = true;
+                console.log("MCProjectHomeComponentController - etlStart() - results", results);
                 console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
-                // TODO: here!!
+                // TODO: eventually
                 // $state.go('project.experiments.experiment', {experiment_id: 'abc123'})
+                this._reloadComponentState();
+
             },
-            () => {
+            (error) => {
+                console.log("MCProjectHomeComponentController - etlStart() - error", error);
                 console.log("MCProjectHomeComponentController - etlStart() - dialog canceled");
             }
         );
@@ -326,6 +332,12 @@ class EtlUploadDialogController {
         this.description = "";
         this.files = [];
         this.use_globus = true;
+        // test data
+        this.name = "Test Experiment";
+        this.description = "Description";
+        this.ep_uuid = '067ce67a-3bf1-11e8-b9b5-0ac6873fc732';
+        this.ep_spreadsheet = '/dataForTest/input.xlsx';
+        this.ep_data = '/dataForTest/data';
     }
 
     onSwithDisplay() {
@@ -346,7 +358,7 @@ class EtlUploadDialogController {
             console.log("data to send = ", data);
             return this.etlServerAPI.startBackgroundEtlUpload(data).then (
                 (reply) => {
-                    console.log("Globus setup completed", reply);
+                    console.log("EtlUploadDialogController setup completed", reply);
                     this.$mdDialog.hide(reply);
                 },
                 (e) => {

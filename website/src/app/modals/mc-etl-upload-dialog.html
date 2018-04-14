@@ -33,11 +33,11 @@
             </md-input-container>
             <md-input-container md-no-float>
                 <label>Path within the endpoint of the excel file: defaults to 'input.xlsx'</label>
-                <input ng-required="false" ng-model="$ctrl.ep_spreadsheet" type="text" on-enter="ctrl.submit()">
+                <input ng-required="true" ng-model="$ctrl.ep_spreadsheet" type="text" on-enter="ctrl.submit()">
             </md-input-container>
             <md-input-container md-no-float>
                 <label>Path within the endpoint of the data directory, defaults to 'data'</label>
-                <input ng-required="false" ng-model="$ctrl.ep_data" type="text" on-enter="ctrl.submit()">
+                <input ng-required="true" ng-model="$ctrl.ep_data" type="text" on-enter="ctrl.submit()">
             </md-input-container>
         </form>
     </md-dialog-content>
