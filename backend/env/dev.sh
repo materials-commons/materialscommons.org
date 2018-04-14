@@ -41,5 +41,4 @@ export MCAPID_PORT=5028
 export REDIS_PORT=5031
 
 export MC_FACTORY_PORT=7419
-export MC_ETL_BASE_DIR=~/mcdir/mcfs/data/test/etl
 # see also the override file config.dev

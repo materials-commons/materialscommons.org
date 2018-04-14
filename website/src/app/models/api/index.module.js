@@ -9,6 +9,8 @@ import './accounts-api.service';
 import './project-file-tree-api.service';
 import './notes-api.service';
 import './datasets-api.service';
+import './etl-server-api.service';
+import './etl-api-route.service';
 import './templates-api.service';
 import './comments-api.service';
 import './public-comments-api.service';

@@ -53,7 +53,7 @@ class MCProjectHomeComponentController {
                 });
                 this.activities = activities;
             }
-        )
+        );
     }
 
     $onDestroy() {
@@ -315,15 +315,15 @@ class DeleteExperimentsDialogController {
 
 class EtlUploadDialogController {
     /*@ngInject*/
-    constructor($mdDialog, Upload, GlobusBorker, toast, User) {
+    constructor($mdDialog, Upload, etlServerAPI, toast, User) {
         this.$mdDialog = $mdDialog;
         this.Upload = Upload;
-        this.GlobusBroker = GlobusBorker;
+        this.etlServerAPI = etlServerAPI;
         this.toast = toast;
         this.User = User;
         this.user_id = User.u();
         this.name = "";
-        this.description = ""
+        this.description = "";
         this.files = [];
         this.use_globus = true;
     }
@@ -344,9 +344,9 @@ class EtlUploadDialogController {
             data.globus_excel_file = this.ep_spreadsheet;
             data.globus_data_dir = this.ep_data;
             console.log("data to send = ", data);
-            return this.GlobusBroker.setup(data).then (
+            return this.etlServerAPI.startBackgroundEtlUpload(data).then (
                 (reply) => {
-                    console.log("Globus setup completed", uploaded.data);
+                    console.log("Globus setup completed", reply);
                     this.$mdDialog.hide(reply);
                 },
                 (e) => {
