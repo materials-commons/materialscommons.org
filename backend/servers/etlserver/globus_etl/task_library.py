@@ -79,8 +79,25 @@ def etl_excel_processing(status_record_id):
         project_id = status_record['project_id']
         experiment_name = status_record['extras']['experiment_name']
         experiment_description = status_record['extras']['experiment_description']
+        transfer_base_path = status_record['extras']['transfer_base_path']
         excel_file_path = status_record['extras']['excel_file_path']
         data_dir_path = status_record['extras']['data_dir_path']
+
+        log.info("before join")
+        log.info("excel_file_path = {}".format(excel_file_path))
+        log.info("data_dir_path = {}".format(data_dir_path))
+        log.info("transfer_base_path = {}".format(transfer_base_path))
+
+        if excel_file_path.startswith('/'):
+            excel_file_path = excel_file_path[1:]
+        if data_dir_path.startswith('/'):
+            data_dir_path = excel_file_path[1:]
+
+        excel_file_path = os.path.join(transfer_base_path,excel_file_path)
+        data_dir_path = os.path.join(transfer_base_path, data_dir_path)
+
+        log.info("excel_file_path = {}".format(excel_file_path))
+        log.info("data_dir_path = {}".format(data_dir_path))
 
         results = build_experiment(project_id, experiment_name, experiment_description,
                                    excel_file_path, data_dir_path)
@@ -104,7 +121,7 @@ def globus_transfer(status_record_id):
     user_id = status_record['owner']
     project_id = status_record['project_id']
     globus_endpoint = status_record['extras']['globus_endpoint']
-    endpoint_path = status_record['extras']['endpoint_path']
+    endpoint_path = '/'
     web_service = MaterialsCommonsGlobusInterface(user_id)
     log.info("set_transfer_client")
     results = web_service.set_transfer_client()

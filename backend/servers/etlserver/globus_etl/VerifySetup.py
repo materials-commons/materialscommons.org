@@ -4,15 +4,14 @@ from globus_sdk.exc import GlobusAPIError
 
 
 class VerifySetup:
-    def __init__(self, web_service, project_id, globus_endpoint, endpoint_path, base_path,
-                 excel_file_relative_path, data_dir_relitive_path):
+    def __init__(self, web_service, project_id, globus_endpoint, base_path,
+                 excel_file_path, data_dir_path):
         self.web_service = web_service
         self.project_id = project_id
         self.globus_endpoint = globus_endpoint
-        self.endpoint_path = endpoint_path
         self.base_path = base_path
-        self.excel_file_relative_path = excel_file_relative_path
-        self.data_dir_relitive_path = data_dir_relitive_path
+        self.excel_file_path = excel_file_path
+        self.data_dir_path = data_dir_path
         self.error_status = {}
 
     def status(self):
@@ -94,19 +93,18 @@ class VerifySetup:
         return
 
     def check_users_source_paths(self):
-        if not self.find_user_relitive_path(self.data_dir_relitive_path):
-            message = "Users endpoint directory not found, " + self.data_dir_relitive_path
+        if not self.find_user_path(self.data_dir_path):
+            message = "Users endpoint directory not found, " + self.data_dir_path
             self.error_status["Missing data directory"] = message
 
-        if not self.find_user_relitive_path(self.excel_file_relative_path):
-            message = "Users endpoint file not found, " + self.excel_file_relative_path
+        if not self.find_user_path(self.excel_file_path):
+            message = "Users endpoint file not found, " + self.excel_file_path
             self.error_status["Missing Excel file"] = message
 
-    def find_user_relitive_path(self, path):
+    def find_user_path(self, path):
         try:
             self.web_service.set_transfer_client()
             transfer = self.web_service.transfer_client
-            path = os.path.join(self.endpoint_path, path)
             entry = os.path.split(path)[-1]
             path = os.path.normpath(os.path.join(path, os.path.pardir))
             content = transfer.operation_ls(self.globus_endpoint, path=path)

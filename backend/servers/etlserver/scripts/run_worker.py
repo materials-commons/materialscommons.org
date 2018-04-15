@@ -18,9 +18,17 @@ if __name__ == "__main__":
     root.setLevel(logging.DEBUG)
 
     ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.ERROR)
+    ch.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
     ch.setFormatter(formatter)
     root.addHandler(ch)
+
+    # suppress info logging for globus_sdk loggers that are invoked, while leaving my info logging in place
+    logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
+                   'globus_sdk.authorizers.renewing', 'globus_sdk.transfer.client.TransferClient',
+                   'globus_sdk.transfer.paging',
+                   'globus_sdk.auth.client_types.confidential_client.ConfidentialAppAuthClient']
+    for name in logger_list:
+        logging.getLogger(name).setLevel(logging.ERROR)
 
     main()

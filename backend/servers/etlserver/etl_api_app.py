@@ -10,6 +10,9 @@ from materials_commons.etl.input_spreadsheet import BuildProjectExperiment
 # noinspection PyProtectedMember
 from materials_commons.api import _use_remote as use_remote
 
+from .globus_etl.task_library import startup_and_verify
+from . import access
+
 from .DB import DbConnection
 from .api_key import apikey
 
@@ -73,18 +76,28 @@ def upload_fixed_spreadsheet():
 
 
 @app.route('/globus/stage', methods=['POST'])
+@apikey
 def stage_background_excel_upload():
     log.info("/globus/stage - starting")
-    log.info("/globus/stage - stub")
+    user_id = access.get_user()
     j = request.get_json(force=True)
-    name = j["name"]
-    description = j["description"]
+    experiment_name = j["name"]
+    experiment_description = j["description"]
     project_id = j["project_id"]
-    globus_uuid = j["globus_uuid"]
-    globus_excel_file = j["globus_excel_file"]
-    globus_data_dir = j["globus_data_dir"]
+    globus_endpoint = j["globus_uuid"]
+    excel_file_path = j["globus_excel_file"]
+    data_dir_path = j["globus_data_dir"]
+    log.info("/globus/stage - args - user_id = {}".format(user_id))
+    log.info("/globus/stage - args - project_id = {}".format(project_id))
+    log.info("/globus/stage - args - experiment_name = {}".format(experiment_name))
+    log.info("/globus/stage - args - experiment_description = {}".format(experiment_description))
+    log.info("/globus/stage - args - globus_endpoint = {}".format(globus_endpoint))
+    log.info("/globus/stage - args - excel_file_path = {}".format(excel_file_path))
+    log.info("/globus/stage - args - data_dir_path = {}".format(data_dir_path))
+    results = startup_and_verify(user_id, project_id, experiment_name, experiment_description,
+                                 globus_endpoint, excel_file_path, data_dir_path)
     log.info("/globus/stage - done")
-    return format_as_json_return({'status': 'PROCESSING'})
+    return format_as_json_return(results)
 
 
 @app.route('/globus/monitor', methods=['POST'])
