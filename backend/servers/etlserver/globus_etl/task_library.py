@@ -14,6 +14,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
     log.info("Starting startup_and_verify")
 
     status_record_id = None
+    # noinspection PyBroadException
     try:
         setup = ETLSetup(user_id)
         status_record_id = \
@@ -35,7 +36,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
         task_chain = TaskChain()
         task_chain.start_chain(status_record_id)
         check['status_record_id'] = status_record_id
-    except BaseException as e:
+    except BaseException:
         message = "Unexpected failure; status_record_id = None"
         if status_record_id:
             DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
@@ -46,6 +47,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
 
 
 def elt_globus_upload(status_record_id):
+    # noinspection PyBroadException
     try:
         from ..faktory.TaskChain import PROCESS_QUEUE
         log = logging.getLogger(__name__ + ".elt_globus_upload")
@@ -64,7 +66,7 @@ def elt_globus_upload(status_record_id):
         task_chain = TaskChain()
         task_chain.queue_excel_processing(status_record_id)
         return status_record_id
-    except BaseException as e:
+    except BaseException:
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
         logging.exception(message)
@@ -72,6 +74,7 @@ def elt_globus_upload(status_record_id):
 
 
 def etl_excel_processing(status_record_id):
+    # noinspection PyBroadException
     try:
         log = logging.getLogger(__name__ + ".etl_excel_processing")
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
@@ -90,10 +93,11 @@ def etl_excel_processing(status_record_id):
 
         if excel_file_path.startswith('/'):
             excel_file_path = excel_file_path[1:]
+
         if data_dir_path.startswith('/'):
             data_dir_path = excel_file_path[1:]
 
-        excel_file_path = os.path.join(transfer_base_path,excel_file_path)
+        excel_file_path = os.path.join(transfer_base_path, excel_file_path)
         data_dir_path = os.path.join(transfer_base_path, data_dir_path)
 
         log.info("excel_file_path = {}".format(excel_file_path))
@@ -108,7 +112,7 @@ def etl_excel_processing(status_record_id):
         DatabaseInterface().update_queue(status_record_id, None)
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUCCESS)
         log.info("Build Experiment Success{}".format(results))
-    except BaseException as e:
+    except BaseException:
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
         logging.exception(message)
