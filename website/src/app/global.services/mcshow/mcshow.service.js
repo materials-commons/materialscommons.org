@@ -70,7 +70,7 @@ class MCShowService {
         });
     }
 
-    chooseSamplesFromProject() {
+    chooseSamplesFromProject(samples) {
         const proj = this.mcprojecstore.getCurrentProject();
         // console.log('proj', proj);
         let fillRandomProcesses = (count) => {
@@ -86,7 +86,10 @@ class MCShowService {
             return processes;
         };
 
-        let existingSamples = angular.copy(proj.samples);
+        const samplesAlreadyInUse = _.indexBy(samples, 'id');
+        let existingSamples = _.sortBy(proj.samples.filter(s => {
+            return !(s.id in samplesAlreadyInUse);
+        }), 'name');
         existingSamples.forEach(s => {
             s.selected = false;
             s.processes = fillRandomProcesses(11);
