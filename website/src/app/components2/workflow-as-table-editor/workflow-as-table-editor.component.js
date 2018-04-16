@@ -102,7 +102,7 @@ class MCWorkflowAsTableEditorComponentController {
     }
 
     chooseExistingSamples() {
-        this.mcshow.chooseSamplesFromProject().then(
+        this.mcshow.chooseSamplesFromProject(this.state.samples).then(
             samplesChosen => {
                 // TODO: Update headers using header determination algorithm with added samples
                 // Once the algorithm for creating the headers is written then we need to
