@@ -84,8 +84,12 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 _projstore: ["mcprojstore", function (mcprojstore) {
                     return mcprojstore.ready();
                 }],
+                _projignore: ["mcprojectstore2", "$stateParams", "_projstore", function (mcprojectstore2, $stateParams) {
+                    console.log('calling loadProject');
+                    return mcprojectstore2.loadProject($stateParams.project_id).then(() => true);
+                }],
                 /* inject _projstore to force next resolve to wait for store to ready ready*/
-                _project: ["mcprojstore", "$stateParams", "experimentsAPI", "_projstore", function (mcprojstore, $stateParams, experimentsAPI) {
+                _project: ["mcprojstore", "$stateParams", "experimentsAPI", "_projstore", "_projignore", function (mcprojstore, $stateParams, experimentsAPI) {
                     let p = mcprojstore.getProject($stateParams.project_id);
                     if (p.experimentsFullyLoaded) {
                         return p;

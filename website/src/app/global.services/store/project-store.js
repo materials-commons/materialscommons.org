@@ -8,12 +8,12 @@ export class ProjectStore {
     }
 
     addProject(project) {
-        if (project.id in this.store) {
-            return;
-        }
+        // if (project.id in this.store) {
+        //     return;
+        // }
 
         this.store[project.id] = angular.copy(project);
-        this.wireRelationships(project.id);
+        this._wireRelationships(project);
         // console.log('this.store', this.store);
         // console.log('this.experimentStore', this.experimentStore);
         // console.log('this.sampleStore', this.sampleStore);
@@ -29,15 +29,16 @@ export class ProjectStore {
         return null;
     }
 
-    wireRelationships(projectId) {
-        let project = this.store[projectId];
-        console.log('project = ', project);
+    _wireRelationships(project) {
         project.experiments.forEach(e => {
             this.experimentStore.addExperiment(e);
-            this.relationshipStore.addExperimentToProject(projectId, e);
+            this.relationshipStore.addExperimentToProject(project.id, e);
         });
 
-        project.samples.forEach(s => this.sampleStore.addSample(s));
+        project.samples.forEach(s => {
+            this.sampleStore.addSample(s);
+            this.relationshipStore.addSampleToProject(project.id, s);
+        });
         project.processes.forEach(p => this.processStore.addProcess(p));
         project.relationships.experiment2sample.forEach(e2s => {
             const e = this.experimentStore.getExperiment(e2s.experiment_id);
@@ -121,6 +122,7 @@ class RelationshipsStore {
         this.sampleProcesses = {};
         this.processSamples = {};
         this.experimentSamples = {};
+        this.projectSamples = {};
     }
 
     addExperimentToProject(projectId, experiment) {
@@ -153,6 +155,14 @@ class RelationshipsStore {
         }
 
         this.sampleProcesses[sampleId][process.id] = process;
+    }
+
+    addSampleToProject(projectId, sample) {
+        if (!(projectId in this.projectSamples)) {
+            this.projectSamples[projectId] = {};
+        }
+
+        this.projectSamples[projectId][sample.id] = sample;
     }
 
     wireSampleAndProcess(sample, process) {

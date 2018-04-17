@@ -9,7 +9,7 @@ class MCProjectStoreService {
     }
 
     loadProject(projectId) {
-        this.projectsAPI.getProjectV3(projectId).then(p => {
+        return this.projectsAPI.getProjectV3(projectId).then(p => {
             this.projectStore.addProject(p);
             this.currentProjectId = p.id;
         });
@@ -17,6 +17,10 @@ class MCProjectStoreService {
 
     getCurrentProject() {
         return this.projectStore.getProject(this.currentProjectId);
+    }
+
+    getProjectSamples(projectId) {
+
     }
 }
 

@@ -18,10 +18,12 @@ angular.module('materialscommons').service('projectDatasetsViewService', Project
 
 class CreateNewDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog, mcprojstore, createDatasetDialogState) {
+    constructor($mdDialog, mcprojstore, createDatasetDialogState, mcprojectstore2) {
         this.$mdDialog = $mdDialog;
         this.mcprojstore = mcprojstore;
         this.createDatasetDialogState = createDatasetDialogState;
+        this.mcprojectstore = mcprojectstore2;
+        console.log('getCurrentProject:', this.mcprojectstore.getCurrentProject());
         this.state = {
             project: mcprojstore.currentProject,
             datasetName: "",

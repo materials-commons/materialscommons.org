@@ -118,7 +118,6 @@ angular.module('materialscommons').component('mcWorkflowAsTableEditor', {
     controller: MCWorkflowAsTableEditorComponentController,
     bindings: {
         samples: '<',
-        headers: '<',
     }
 });
 
