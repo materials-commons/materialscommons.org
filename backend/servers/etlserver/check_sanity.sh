@@ -170,7 +170,7 @@ check_worker
 check_mc_endpoint
 
 if [ ! "$ALL_OK" = "0" ]; then
-    echo "Some part of the enviornment is not set up correctly"
+    echo "Some part of the environment is not set up correctly"
     echo "  take indicated actions and retry"
 fi
 echo "Done."
