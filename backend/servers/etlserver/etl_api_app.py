@@ -103,6 +103,8 @@ def stage_background_excel_upload():
 @app.route('/globus/monitor', methods=['POST'])
 def monitor_background_excel_upload():
     log.debug("/globus/monitor - starting")
+    j = request.get_json(force=True)
+    log.info(j)
     log.debug("/globus/monitor - stub")
     log.debug("/parts/monitor - done")
     return format_as_json_return({'status': 'PROCESSING'})

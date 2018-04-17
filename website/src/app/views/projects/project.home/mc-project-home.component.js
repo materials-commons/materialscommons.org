@@ -3,7 +3,9 @@ import {Experiment} from '../../../project/experiments/experiment/components/tas
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, mcprojstore, projectsAPI) {
+    constructor($scope, experimentsAPI, toast, $state,
+                $stateParams, editorOpts, $mdDialog,
+                mcprojstore, projectsAPI, etlServerAPI) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
@@ -17,8 +19,14 @@ class MCProjectHomeComponentController {
         this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
         this.projectsAPI = projectsAPI;
+        this.etlServerAPI = etlServerAPI;
         this.etlInProgress = false;
+        this.etlStatusRecordId = null;
         $scope.editorOptions = editorOpts({height: 65, width: 50});
+
+        // test data
+        this.etlInProgress = true;
+        this.etlStatusRecordId = "d816d8b3-ef18-4ef0-9a6b-1d99a2f3d81b";
     }
 
     $onInit() {
@@ -182,7 +190,10 @@ class MCProjectHomeComponentController {
             (results) => {
                 this.etlInProgress = true;
                 console.log("MCProjectHomeComponentController - etlStart() - results", results);
-                console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
+                if (results.status == "SUCCESS") {
+                    console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
+                    this.etlStatusRecordId = results.status_record_id;
+                }
                 // TODO: eventually
                 // $state.go('project.experiments.experiment', {experiment_id: 'abc123'})
                 this._reloadComponentState();
@@ -193,7 +204,37 @@ class MCProjectHomeComponentController {
                 console.log("MCProjectHomeComponentController - etlStart() - dialog canceled");
             }
         );
+    }
 
+    etlMonitor(){
+        console.log("MCProjectHomeComponentController - etlMonitor() - query");
+        this.etlServerAPI.getEtlStatus(this.etlStatusRecordId).then(
+            status => {
+                console.log("MCProjectHomeComponentController - etlMonitor() - results");
+                console.log(status)
+                console.log("MCProjectHomeComponentController - etlMonitor() - dialog");
+                this.$mdDialog.show({
+                    templateUrl: 'app/modals/mc-etl-status-dialog.html',
+                    controller: EtlStatusDialogController,
+                    controllerAs: '$ctrl',
+                    bindToController: true,
+                    locals: {
+                        etlStatusRecordId: this.etlStatusRecordId
+                    }
+                }).then(
+                    (results) => {
+                        this.etlInProgress = true;
+                        console.log("MCProjectHomeComponentController - etlMonitor() - results", results);
+                        this._reloadComponentState();
+                    },
+                    (error) => {
+                        console.log("MCProjectHomeComponentController - etlMonitor() - error", error);
+                        this._reloadComponentState();
+                    }
+                );
+
+            }
+        );
     }
 }
 
@@ -410,12 +451,30 @@ class EtlUploadDialogController {
 
     cancel() {
         let data = {};
-        let f = this.files[0];
-        data.file = f;
+        data.file = this.files[0];
         data.project_id = this.project.id;
         data.name = this.experiment_name;
         data.description = this.description;
         console.log("data: ", data);
+        this.$mdDialog.cancel();
+    }
+}
+
+class EtlStatusDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, etlServerAPI, toast, User) {
+        this.$mdDialog = $mdDialog;
+        this.etlServerAPI = etlServerAPI;
+        this.toast = toast;
+        this.User = User;
+        this.user_id = User.u();
+    }
+
+    done() {
+        this.$mdDialog.cancel();
+    }
+
+    cancel() {
         this.$mdDialog.cancel();
     }
 }
