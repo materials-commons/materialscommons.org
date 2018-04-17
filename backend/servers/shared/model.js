@@ -1,4 +1,4 @@
-const r = require('../r');
+const r = require('./r');
 
 function Project(name, description, owner) {
     this.name = name;
@@ -343,7 +343,7 @@ function Experiment2Sample(experimentId, sampleId) {
     this.sample_id = sampleId;
 }
 
-function ExperimentEtlMetadata(experimentId, json, owner){
+function ExperimentEtlMetadata(experimentId, json, owner) {
     let now = r.now();
     this.otype = 'experiment_etl_metadata';
     this.birthtime = now;

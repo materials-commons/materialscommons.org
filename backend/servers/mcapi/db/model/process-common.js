@@ -1,5 +1,5 @@
 const r = require('../r');
-const model = require('./model');
+const model = require('../../../shared/model');
 const _ = require('lodash');
 const db = require('./db');
 const commonQueries = require('../../../lib/common-queries');

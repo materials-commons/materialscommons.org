@@ -16,6 +16,10 @@ function projectsAPIService(Restangular, notesAPI) {
             return projectsAPIRoute(projectId).get().then(p => p.plain());
         },
 
+        getProjectV3: function (projectId) {
+            return Restangular.one('v3').one('getProject').customPOST({project_id: projectId}).then(p => p.plain().data);
+        },
+
         getActivities: function (projectId) {
             return projectsAPIRoute(projectId).one('activity_feed').get()
                 .then(activities => {

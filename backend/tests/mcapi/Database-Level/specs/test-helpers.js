@@ -124,6 +124,9 @@ function* createSamples(project, experiment, process, sampleNameList) {
 }
 
 function* createFileFromDemoFileSet(project,demoFileIndex,user) {
+    if (true) {
+        return null;
+    }
     let tempDir = os.tmpdir();
     let top_directory = yield directories.get(project.id, 'top');
     let checksumFilenameAndMimetype = demoProjectHelper.filesDescriptions()[demoFileIndex];

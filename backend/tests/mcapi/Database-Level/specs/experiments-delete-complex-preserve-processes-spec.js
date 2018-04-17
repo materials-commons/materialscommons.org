@@ -28,8 +28,8 @@ const buildDemoProject = require(build_project_base + '/build-demo-project');
 
 const base_project_name = "Test directory";
 
-let random_name = function(){
-    let number = Math.floor(Math.random()*10000);
+let random_name = function () {
+    let number = Math.floor(Math.random() * 10000);
     return base_project_name + number;
 };
 
@@ -42,16 +42,16 @@ let sample_list = null;
 let file_list = null;
 let dataset_list = null;
 
-before(function*() {
-
-    this.timeout(8000); // this test suite can take up to 8 seconds
+before(function* () {
+    console.log('before experiments-delete-complex-preserve-processes-spec.js');
+    this.timeout(80000); // this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
-    assert.equal(userId,user.id);
+    assert.equal(userId, user.id);
 
 //    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd()+'/');
+    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd() + '/');
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;
@@ -74,7 +74,7 @@ before(function*() {
     assert.equal(updated_project.owner, userId);
     assert.equal(updated_project.name, name);
     assert.equal(updated_project.description, description);
-    assert.equal(updated_project.id,project_id);
+    assert.equal(updated_project.id, project_id);
     project = updated_project;
 
     let processesToAdd = [
@@ -84,8 +84,8 @@ before(function*() {
     let processesToDelete = [];
 
     let datasetArgs = {
-        title:"Test Dataset1",
-        description:"Dataset for testing"
+        title: "Test Dataset1",
+        description: "Dataset for testing"
     };
 
     let result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
@@ -95,8 +95,8 @@ before(function*() {
     yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete);
 
     datasetArgs = {
-        title:"Test Dataset2",
-        description:"Dataset for testing"
+        title: "Test Dataset2",
+        description: "Dataset for testing"
     };
 
     result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
@@ -108,34 +108,34 @@ before(function*() {
     results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
     dataset_list = results.val;
     assert.isOk(dataset_list);
-    assert.equal(dataset_list.length,2);
+    assert.equal(dataset_list.length, 2);
 
     // Note: create fake sample that is not part of a process for testing
-    result = yield r.table('samples').insert({'name':'fake sample', 'otype':'sample', 'owner':'noone'})
+    result = yield r.table('samples').insert({'name': 'fake sample', 'otype': 'sample', 'owner': 'noone'})
     let key = result.generated_keys[0];
     yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment_id});
 
     // create new experiment
-    results = yield createAdditionalExperiment(project,"Experment For Test");
+    results = yield createAdditionalExperiment(project, "Experment For Test");
     assert.isOk(results.val);
     let extraExperiment = results.val;
-    assert.equal(extraExperiment.otype,'experiment');
+    assert.equal(extraExperiment.otype, 'experiment');
 
     // add a process to it
-    results = yield createProcess(project,extraExperiment,"Etching - test process","global_Etching");
+    results = yield createProcess(project, extraExperiment, "Etching - test process", "global_Etching");
     assert.isOk(results.val);
     let extraProcess = results.val;
-    assert.equal(extraProcess.otype,'process');
+    assert.equal(extraProcess.otype, 'process');
 
     // reuse an existing sample for that process
     let sampleToUse = sample_list[1];
-    results = yield addSamplesToProcess(project,extraExperiment,extraProcess,[sampleToUse]);
-
+    results = yield addSamplesToProcess(project, extraExperiment, extraProcess, [sampleToUse]);
+    console.log('done before experiments-delete-complex-preserve-processes-spec.js');
 });
 
-describe('Feature - Experiments: ', function() {
+describe('Feature - Experiments: ', function () {
     describe('Delete Experiment - complex case: ', function () {
-        it('deletes all datasets, tasks, and links to files - preserve processes, samples', function* (){
+        it('deletes all datasets, tasks, and links to files - preserve processes, samples', function* () {
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;
@@ -151,7 +151,7 @@ describe('Feature - Experiments: ', function() {
     });
 });
 
-function* createAdditionalExperiment(project,experimentName) {
+function* createAdditionalExperiment(project, experimentName) {
     let experimentDescription = "Test experiment";
     let args = {
         project_id: project.id,

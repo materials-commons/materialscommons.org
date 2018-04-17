@@ -41,8 +41,9 @@ let process_list = null;
 let sample_list = null;
 let file_list = null;
 
-before(function*() {
-    this.timeout(8000); // this test suite can take up to 8 seconds
+before(function* () {
+    console.log('before experiments-delete-processes-spec.js');
+    this.timeout(80000); // this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
@@ -50,7 +51,7 @@ before(function*() {
 
 
 //    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd()+'/');
+    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd() + '/');
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;
@@ -108,12 +109,12 @@ before(function*() {
     let dataset_list = results.val;
     assert.isOk(dataset_list);
     assert.equal(dataset_list.length, 2);
-
+    console.log('done before experiments-delete-processes-spec.js');
 });
 
 describe('Feature - Experiments: ', function () {
     describe('Delete Experiment - in parts: ', function () {
-        it('deletes all datasets and deletes all processes and samples', function*() {
+        it('deletes all datasets and deletes all processes and samples', function* () {
             let project_id = project.id;
             assert.isOk(project_id);
             let experiment_id = experiment.id;

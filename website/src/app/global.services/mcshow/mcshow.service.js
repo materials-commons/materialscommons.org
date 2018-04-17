@@ -1,7 +1,8 @@
 class MCShowService {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, mcprojectstore2) {
         this.$mdDialog = $mdDialog;
+        this.mcprojecstore = mcprojectstore2;
     }
 
     sampleDialog(sample, multiple = true) {
@@ -69,7 +70,9 @@ class MCShowService {
         });
     }
 
-    chooseSamplesFromProject() {
+    chooseSamplesFromProject(samples) {
+        const proj = this.mcprojecstore.getCurrentProject();
+        // console.log('proj', proj);
         let fillRandomProcesses = (count) => {
             let processes = [];
             for (let i = 0; i < count; i++) {
@@ -83,14 +86,14 @@ class MCShowService {
             return processes;
         };
 
-        let existingSamples = [];
-        for (let i = 0; i < 10; i++) {
-            existingSamples.push({
-                selected: false,
-                name: "ExistingSample_" + i,
-                processes: fillRandomProcesses(11)
-            });
-        }
+        const samplesAlreadyInUse = _.indexBy(samples, 'id');
+        let existingSamples = _.sortBy(proj.samples.filter(s => {
+            return !(s.id in samplesAlreadyInUse);
+        }), 'name');
+        existingSamples.forEach(s => {
+            s.selected = false;
+            s.processes = fillRandomProcesses(11);
+        });
 
         return this.$mdDialog.show({
             templateUrl: 'app/modals/choose-existing-samples-dialog.html',
@@ -100,7 +103,7 @@ class MCShowService {
             locals: {
                 samples: existingSamples
             }
-        })
+        });
     }
 }
 

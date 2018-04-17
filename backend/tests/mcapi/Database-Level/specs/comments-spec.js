@@ -5,6 +5,9 @@ require('co-mocha');
 const chai = require('chai');
 const assert = require('chai').assert;
 
+console.log('MCDB', process.env.MCDB);
+console.log('MCDB_PORT', process.env.MCDB_PORT);
+
 const r = require('rethinkdbdash')({
     db: process.env.MCDB || 'materialscommons',
     port: process.env.MCDB_PORT || 30815
@@ -27,15 +30,18 @@ let dataset = null;
 let user = null;
 
 before(function*() {
-    this.timeout(8000); // setup may take up to 8 seconds
+    console.log("before comments-spec");
+    this.timeout(80000); // setup may take up to 8 seconds
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user,"No test user available = " + userId);
     let another = yield dbModelUsers.getUser(anotherUserId);
     assert.isOk(another,"No test user available = " + anotherUserId);
     yield createRenamedDemoProjectWithPublishedDataset();
+    console.log("done before comments-spec");
 });
 
 describe('Feature - comments: ', function() {
+    console.log('Feature - comments');
     describe('Create comment', function() {
         it ('add a new comment by the test user', function*(){
             let owner = userId;

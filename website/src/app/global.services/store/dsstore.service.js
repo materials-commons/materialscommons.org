@@ -29,6 +29,14 @@ class MCDSStoreService {
         return true;
     }
 
+    getDataset(id) {
+        if (id in this.dsstore) {
+            return this.dsstore[id];
+        }
+
+        return null;
+    }
+
     getDatasets() {
         return _.values(this.dsstore);
     }
@@ -51,6 +59,7 @@ class MCDSStoreService {
                 owner: 'John Allison',
                 experiments: ['E1', 'Stress testing of dilution factors'],
                 samples_count: 5,
+                samples: [],
                 files_count: 100,
                 published: false
             },
@@ -60,6 +69,7 @@ class MCDSStoreService {
                 owner: 'John Allison',
                 experiments: ['long name 1', 'experiment test 2'],
                 samples_count: 20,
+                samples: [],
                 files_count: 1001,
                 published: true
             },
@@ -69,6 +79,7 @@ class MCDSStoreService {
                 owner: 'Brian Puchala',
                 experiments: ['computational and DFT processes combined with casm', 'Hardness testing with Professor Allison'],
                 samples_count: 15,
+                samples: [],
                 files_count: 657,
                 published: false
             },
@@ -78,6 +89,7 @@ class MCDSStoreService {
                 owner: 'Tracy Berman',
                 experiments: ['LIFT Anodized metals', 'My Postdoc research'],
                 samples_count: 50,
+                samples: [],
                 files_count: 150,
                 published: true
             },

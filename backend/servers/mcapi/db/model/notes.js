@@ -1,5 +1,5 @@
 const r = require('../r');
-const model = require('./model');
+const model = require('../../../shared/model');
 const db = require('./db');
 
 function* createNote(note, itemType, itemId) {

@@ -7,10 +7,10 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "actionhero": "18.0.1",
+    "actionhero": "18.1.2",
     "fakeredis": "latest",
     "ioredis": "latest",
-    "joi": "^13.0.1",
+    "joi": "^13.1.2",
     "ws": "latest"
   },
   "devDependencies": {

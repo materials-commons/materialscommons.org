@@ -31,6 +31,7 @@ let random_user = function(){
 let user1Id = random_user();
 
 before(function*() {
+    console.log('before properties-spec.js');
     let user = yield dbModelUsers.getUser(user1Id);
     if (!user) {
         let results = yield r.table('users').insert({
@@ -52,6 +53,7 @@ before(function*() {
     } else {
         assert.equal(user.id,user1Id, "Wrong test user, id = " + user.id);
     }
+    console.log('done before properties-spec.js');
 });
 
 describe('Feature - Properties: ', function() {

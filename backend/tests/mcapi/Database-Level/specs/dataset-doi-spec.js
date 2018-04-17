@@ -44,8 +44,8 @@ let random_name = function(){
 };
 
 before(function*() {
-
-    this.timeout(8000); // test setup can take up to 8 seconds
+    console.log("before dataset-doi-spec");
+    this.timeout(80000); // test setup can take up to 8 seconds
 
     // check for all env variables
     assert.isOk(doiPublisher, "Missing process.env.MC_DOI_PUBLISHER");
@@ -80,7 +80,7 @@ before(function*() {
     assert.equal(datasetList.length, 2);
     dataset1 = datasetList[0];
     dataset2 = datasetList[1];
-
+    console.log('done before datset-doi-spec')
 });
 
 describe.skip('Feature - Dataset: ', function () {
@@ -107,7 +107,7 @@ describe.skip('Feature - Dataset: ', function () {
         });
         it('creates a test DOI - raw', function*() {
 
-            this.timeout(6000); // test can take up to 6 seconds
+            this.timeout(60000); // test can take up to 6 seconds
 
             assert.isOk(doiNamespace);
             assert.isOk(doiUser);
@@ -167,7 +167,7 @@ describe.skip('Feature - Dataset: ', function () {
         });
         it("mints a new DOI and puts into dataset record", function*() {
 
-            this.timeout(6000); // test can take up to 6 seconds
+            this.timeout(60000); // test can take up to 6 seconds
 
             let creator = "Test Author";
             let title = "Test Title - " + project.name;

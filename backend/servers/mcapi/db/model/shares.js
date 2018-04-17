@@ -1,6 +1,6 @@
 const r = require('../r');
 const dbExec = require('./run');
-const model = require('./model');
+const model = require('../../../shared/model');
 const db = require('./db');
 
 

@@ -4,14 +4,33 @@ class MCWorkflowAsTableEditorComponentController {
         this.mcshow = mcshow;
         this.grouped = false;
         this.editTable = false;
-    }
-
-    $onInit() {
+        this.state = {
+            samples: [],
+            headers: [],
+            grouped: false,
+            editTable: false,
+        };
         this.createDemoData();
     }
 
+    $onInit() {
+
+    }
+
+    $onChanges(changes) {
+        console.log('changes', changes);
+        if (changes.samples) {
+            this.state.samples = angular.copy(changes.samples.currentValue);
+            this.state.samples.forEach(s => {
+                s.selected = false;
+                s.processes = this.fillRandomProcesses(this.state.headers.length);
+            });
+            console.log('this.state.samples', this.state.samples);
+        }
+    }
+
     createDemoData() {
-        this.headers = [
+        this.state.headers = [
             "Heat Treatment",
             "SEM",
             "Low Cycle Fatigue",
@@ -23,16 +42,22 @@ class MCWorkflowAsTableEditorComponentController {
             "Tension",
             "EBSD",
             "TEM",
+            "TEM0",
+            "TEM1",
+            "TEM2",
+            "TEM3",
+            "TEM4",
+            "TEM5",
         ];
 
-        this.samples = [];
-        for (let i = 0; i < 10; i++) {
-            this.samples.push({
-                selected: false,
-                name: "Sample_" + i,
-                processes: this.fillRandomProcesses(this.headers.length)
-            })
-        }
+        // this.state.samples = [];
+        // for (let i = 0; i < 10; i++) {
+        //     this.state.samples.push({
+        //         selected: false,
+        //         name: "Sample " + i,
+        //         processes: this.fillRandomProcesses(this.state.headers.length)
+        //     })
+        // }
     }
 
     fillRandomProcesses(count) {
@@ -49,40 +74,40 @@ class MCWorkflowAsTableEditorComponentController {
     }
 
     handleDeleteSampleClick(index) {
-        this.samples.splice(index, 1);
-        this.samples = angular.copy(this.samples);
+        this.state.samples.splice(index, 1);
+        this.state.samples = angular.copy(this.state.samples);
     }
 
     handleDeleteProcess(index) {
-        this.headers.splice(index, 1);
-        this.headers = angular.copy(this.headers);
+        this.state.headers.splice(index, 1);
+        this.state.headers = angular.copy(this.state.headers);
     }
 
     handleUpdateStateOfProcessInSample(sampleIndex, processIndex, state) {
-        this.samples[sampleIndex].processes[processIndex].selected = state;
-        this.samples[sampleIndex].processes[processIndex].active = state;
+        this.state.samples[sampleIndex].processes[processIndex].selected = state;
+        this.state.samples[sampleIndex].processes[processIndex].active = state;
     }
 
     finishEditingTable() {
-        this.editTable = false;
-        this.samples = angular.copy(this.samples);
+        this.state.editTable = false;
+        this.state.samples = angular.copy(this.state.samples);
     }
 
     handleSelectSample(sampleIndex, selectState) {
-        this.samples[sampleIndex].selected = selectState;
+        this.state.samples[sampleIndex].selected = selectState;
     }
 
     handleRemoveSelectedSamples() {
-        this.samples = this.samples.filter(s => !s.selected);
+        this.state.samples = this.state.samples.filter(s => !s.selected);
     }
 
     chooseExistingSamples() {
-        this.mcshow.chooseSamplesFromProject().then(
+        this.mcshow.chooseSamplesFromProject(this.state.samples).then(
             samplesChosen => {
                 // TODO: Update headers using header determination algorithm with added samples
                 // Once the algorithm for creating the headers is written then we need to
                 // use that algorithm here to account for new samples
-                this.samples = this.samples.concat(samplesChosen);
+                this.state.samples = this.state.samples.concat(samplesChosen);
             }
         );
     }
@@ -90,7 +115,11 @@ class MCWorkflowAsTableEditorComponentController {
 
 angular.module('materialscommons').component('mcWorkflowAsTableEditor', {
     template: require('./workflow-as-table-editor.html'),
-    controller: MCWorkflowAsTableEditorComponentController
+    controller: MCWorkflowAsTableEditorComponentController,
+    bindings: {
+        samples: '<',
+        headers: '<',
+    }
 });
 
 // this.projectsAPI.getProjectSamples(this.project.id).then(

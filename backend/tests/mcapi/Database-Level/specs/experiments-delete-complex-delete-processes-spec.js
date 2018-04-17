@@ -43,8 +43,8 @@ let file_list = null;
 let dataset_list = null;
 
 before(function*() {
-
-    this.timeout(8000); // this test suite can take up to 8 seconds
+    console.log('before experiments-delete-complex-delete-processes-spec.js');
+    this.timeout(80000); // this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
@@ -130,7 +130,7 @@ before(function*() {
     // reuse an existing sample for that process
     let sampleToUse = sample_list[1];
     results = yield addSamplesToProcess(project,extraExperiment,extraProcess,[sampleToUse]);
-
+    console.log('done before experiments-delete-complex-delete-processes-spec.js');
 });
 
 describe('Feature - Experiments: ', function() {

@@ -6,7 +6,7 @@ const archiver = require('archiver');
 
 const dbExec = require('./run');
 const db = require('./db');
-const model = require('./model');
+const model = require('../../../shared/model');
 const commonQueries = require('../../../lib/common-queries');
 const _ = require('lodash');
 const util = require('./util');

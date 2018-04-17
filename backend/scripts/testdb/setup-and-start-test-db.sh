@@ -74,7 +74,7 @@ set_locations() {
 }
 
 set_env() {
-    source ${ENV}/${SERVERTYPE}.sh
+    source ${ENV}/unit.sh
 }
 
 print_env_and_locations() {

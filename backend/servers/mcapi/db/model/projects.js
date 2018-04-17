@@ -1,6 +1,6 @@
 const r = require('../r');
 const run = require('./run');
-const model = require('./model');
+const model = require('../../../shared/model');
 const getSingle = require('./get-single');
 const renameTopDirHelper = require('./directory-rename');
 const _ = require('lodash');

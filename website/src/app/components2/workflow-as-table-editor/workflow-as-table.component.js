@@ -1,12 +1,23 @@
 class MCWorkflowAsTableComponentController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, $interval) {
         this.$mdDialog = $mdDialog;
+        this.$interval = $interval;
         this.state = {
             samples: [],
             headers: [],
             editTable: false,
         }
+    }
+
+    $onInit() {
+        // this.$interval(() => {
+        //     var e = document.getElementById("x1");
+        //     var scrollWidth = e.scrollWidth;
+        //     var clientWidth = e.clientWidth;
+        //     console.log('scrollWidth', scrollWidth);
+        //     console.log('clientWidth', clientWidth);
+        // }, 5000)
     }
 
     editSample(sample) {

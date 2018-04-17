@@ -1,4 +1,4 @@
-const r = require('../r');
+const r = require('../../../shared/r');
 
 function allByProject() {
     return r.table('access').run().then(function (allAccess) {

@@ -1,4 +1,4 @@
-const r = require('../r');
+const r = require('../../../shared/r');
 const _ = require('lodash');
 
 async function update(table, id, json) {

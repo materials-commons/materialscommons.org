@@ -28,8 +28,8 @@ const buildDemoProject = require(build_project_base + '/build-demo-project');
 
 const base_project_name = "Test directory";
 
-let random_name = function(){
-    let number = Math.floor(Math.random()*10000);
+let random_name = function () {
+    let number = Math.floor(Math.random() * 10000);
     return base_project_name + number;
 };
 
@@ -43,16 +43,16 @@ let file_list = null;
 let notes_count = 0;
 let reviews_count = 0;
 
-before(function*() {
-
-    this.timeout(8000); // this test suite can take up to 8 seconds
+before(function* () {
+    console.log('before experiments-delete-notes-and-reviews-spec.js');
+    this.timeout(80000); // this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
-    assert.equal(userId,user.id);
+    assert.equal(userId, user.id);
 
 //    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, demoProjectConf.datapathPrefix);
-    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd()+'/');
+    let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd() + '/');
     assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
     let results = valOrError.val;
     project = results.project;
@@ -75,7 +75,7 @@ before(function*() {
     assert.equal(updated_project.owner, userId);
     assert.equal(updated_project.name, name);
     assert.equal(updated_project.description, description);
-    assert.equal(updated_project.id,project_id);
+    assert.equal(updated_project.id, project_id);
     project = updated_project;
 
     // set up fake note data
@@ -130,7 +130,7 @@ before(function*() {
 
     insert_msg = yield r.table('note2item').insert(entities);
 
-    assert.equal(insert_msg.generated_keys.length,entities.length);
+    assert.equal(insert_msg.generated_keys.length, entities.length);
 
     notes_count = entities.length;
 
@@ -164,15 +164,15 @@ before(function*() {
 
     insert_msg = yield r.table('review2item').insert(entities);
 
-    assert.equal(insert_msg.generated_keys.length,entities.length);
+    assert.equal(insert_msg.generated_keys.length, entities.length);
 
     reviews_count = entities.length;
-
+    console.log('done before experiments-delete-notes-and-reviews-spec.js');
 });
 
-describe('Feature - Experiments: ', function() {
+describe('Feature - Experiments: ', function () {
     describe('Delete Experiment - in parts: ', function () {
-        it('deletes items in notes', function* (){
+        it('deletes items in notes', function* () {
             let id_list = [];
 
             for (let i = 0; i < process_list.length; i++) {
@@ -187,25 +187,25 @@ describe('Feature - Experiments: ', function() {
                 id_list.push(file_list[i].id);
             }
 
-            let entities = yield r.table('note2item').getAll(r.args(id_list),{index: 'item_id'});
+            let entities = yield r.table('note2item').getAll(r.args(id_list), {index: 'item_id'});
 
             assert.equal(entities.length, notes_count);
 
             let noteIdSet = new Set();
-            for (let i = 0; i < entities.length; i++){
+            for (let i = 0; i < entities.length; i++) {
                 noteIdSet = noteIdSet.add(entities[i].note_id);
             }
 
             assert.equal(noteIdSet.size, 1);
 
-            let delete_msg = yield r.table('note2item').getAll(r.args(id_list),{index: 'item_id'}).delete();
+            let delete_msg = yield r.table('note2item').getAll(r.args(id_list), {index: 'item_id'}).delete();
             assert.equal(delete_msg.deleted, notes_count);
 
             delete_msg = yield r.table('notes').getAll(r.args([...noteIdSet])).delete();
             assert.equal(delete_msg.deleted, 1);
 
         });
-        it('deletes items in reviews', function* (){
+        it('deletes items in reviews', function* () {
             let id_list = [];
 
             for (let i = 0; i < process_list.length; i++) {
@@ -220,18 +220,18 @@ describe('Feature - Experiments: ', function() {
                 id_list.push(file_list[i].id);
             }
 
-            let entities = yield r.table('review2item').getAll(r.args(id_list),{index: 'item_id'});
+            let entities = yield r.table('review2item').getAll(r.args(id_list), {index: 'item_id'});
 
             assert.equal(entities.length, reviews_count);
 
             let reviewIdSet = new Set();
-            for (let i = 0; i < entities.length; i++){
+            for (let i = 0; i < entities.length; i++) {
                 reviewIdSet = reviewIdSet.add(entities[i].review_id);
             }
 
             assert.equal(reviewIdSet.size, 1);
 
-            let delete_msg = yield r.table('review2item').getAll(r.args(id_list),{index: 'item_id'}).delete();
+            let delete_msg = yield r.table('review2item').getAll(r.args(id_list), {index: 'item_id'}).delete();
             assert.equal(delete_msg.deleted, reviews_count);
 
             delete_msg = yield r.table('reviews').getAll(r.args([...reviewIdSet])).delete();

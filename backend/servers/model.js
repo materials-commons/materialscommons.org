@@ -14,6 +14,7 @@ function Project(name, description, owner) {
     this.mediatypes = {};
     this.size = 0;
     this.otype = "project";
+    this.todos = [];
 }
 
 function Access(project_name, project_id, user_id) {
@@ -178,11 +179,10 @@ function Sample2Datafile(sampleID, datafileID) {
     this.sample_id = sampleID;
 }
 
-function Note(title, note, projectID, owner) {
+function Note(title, note, owner) {
     let now = r.now();
     this.title = title;
     this.note = note;
-    this.project_id = projectID;
     this.owner = owner;
     this.mtime = now;
     this.birthtime = now;
@@ -210,6 +210,7 @@ function Directory(name, owner, project, parent) {
     this.birthtime = now;
     this.mtime = now;
     this.atime = now;
+    this.shortcut = false;
 }
 
 function Project2DataDir(projectID, dirID) {
@@ -342,6 +343,16 @@ function Experiment2Sample(experimentId, sampleId) {
     this.sample_id = sampleId;
 }
 
+function ExperimentEtlMetadata(experimentId, json, owner) {
+    let now = r.now();
+    this.otype = 'experiment_etl_metadata';
+    this.birthtime = now;
+    this.mtime = now;
+    this.experiment_id = experimentId;
+    this.json = json;
+    this.owner = owner;
+}
+
 function Dataset(title, owner) {
     let now = r.now();
     this.owner = owner;
@@ -470,6 +481,7 @@ module.exports = {
     Experiment2Process,
     Experiment2DataFile,
     Experiment2Sample,
+    ExperimentEtlMetadata,
     User,
     Dataset,
     Experiment2Dataset,

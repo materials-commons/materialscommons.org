@@ -2,7 +2,7 @@ const r = require('../r');
 const runQuery = require('./run');
 const db = require('./db');
 const _ = require('lodash');
-const model = require('./model');
+const model = require('../../../shared/model');
 const path = require('path');
 const fileUtils = require('../../../lib/create-file-utils');
 
