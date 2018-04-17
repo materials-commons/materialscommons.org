@@ -25,8 +25,8 @@ class MCProjectHomeComponentController {
         $scope.editorOptions = editorOpts({height: 65, width: 50});
 
         // test data
-        this.etlInProgress = true;
-        this.etlStatusRecordId = "d816d8b3-ef18-4ef0-9a6b-1d99a2f3d81b";
+        // this.etlInProgress = true;
+        // this.etlStatusRecordId = "d816d8b3-ef18-4ef0-9a6b-1d99a2f3d81b";
     }
 
     $onInit() {

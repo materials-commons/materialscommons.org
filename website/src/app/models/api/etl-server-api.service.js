@@ -24,17 +24,17 @@ class EtlServerAPIService {
         let route = this.etlAPIRoute('globus').one('monitor');
         console.log('EtlServerAPIService - etlStatus', route);
         console.log('EtlServerAPIService - etlStatus', statusRecordId);
-        data = {
+        let data = {
             status_record_id: statusRecordId
         };
         return route.customPOST(data).then(
             r => {
                 let results = r.plain();
-                console.log("etlStatue", results);
+                console.log("EtlServerAPIService - etlStatue", results);
                 return results;
             },
             e => {
-                console.log("error", e);
+                console.log("EtlServerAPIService - error", e);
                 return null;
             }
         );
