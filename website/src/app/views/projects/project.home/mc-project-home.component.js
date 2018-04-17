@@ -374,14 +374,14 @@ class EtlUploadDialogController {
         this.files = [];
         this.use_globus = true;
         // test data
-        this.name = "Test Experiment";
-        this.description = "Description";
-        this.ep_uuid = '067ce67a-3bf1-11e8-b9b5-0ac6873fc732';
-        this.ep_spreadsheet = '/dataForTest/input.xlsx';
-        this.ep_data = '/dataForTest/data';
+        // this.name = "Test Experiment";
+        // this.description = "Description";
+        // this.ep_uuid = '067ce67a-3bf1-11e8-b9b5-0ac6873fc732';
+        // this.ep_spreadsheet = '/dataForTest/input.xlsx';
+        // this.ep_data = '/dataForTest/data';
     }
 
-    onSwithDisplay() {
+    onSwitchDisplay() {
         this.use_globus = ! this.use_globus;
         console.log("EtlUploadDialogController - switch display: ", this.use_globus);
     }
