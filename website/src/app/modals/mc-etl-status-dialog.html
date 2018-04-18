@@ -2,11 +2,20 @@
     <md-toolbar layout="row">
         ETL - Status of upload and create Experiment using Globus
     </md-toolbar>
-    <md-dialog-content layout-margin>
-        <p> Status of upload and ETL background task.
-        </p>
+    <md-dialog-content ng-if="$ctrl.status" layout-margin>
+        <p>Status of upload and ETL background task.</p>
+        <p>Building experiment: {{$ctrl.status.extras.experiment_name}}.</p>
+        <p>Globus transfer from endpoint: {{$ctrl.status.extras.globus_endpoint}}</p>
+        <p ng_if="$ctrl.status.queue">Current process queue: {{$ctrl.status.queue}}</p>
+        <p>Current status: {{$ctrl.status.status}}</p>
+    </md-dialog-content>
+    <md-dialog-content ng-if="!$ctrl.status" layout-margin>
+        <p>Status of upload and ETL background task is unavailable.</p>
+        <p>Please inform Site Administrator. Thanks.</p>
     </md-dialog-content>
     <md-dialog-actions layout="row">
-        <md-button class="md-primary" ng-click="$ctrl.cancel()">Dismiss</md-button>
+        <md-button ng-if="$ctrl.didFail()" class="md-primary" ng-click="$ctrl.dismiss()">Retry</md-button>
+        <md-button ng-if="$ctrl.didSucceed()" class="md-primary" ng-click="$ctrl.done()">View Experiment</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.dismiss()">Dismiss</md-button>
     </md-dialog-actions>
 </md-dialog>

@@ -120,6 +120,16 @@ check_worker() {
     fi
 }
 
+check_etlserver() {
+    R=$(ps -eo "pid,command" | grep -v grep | grep python | grep start_etlserver)
+    if [ "$R" = "" ]; then
+        echo "Backend server, etlserver, does not appear to be running <-----"
+        ALL_OK=-1
+    else
+        echo "Backend server, etlserver, appears to be running"
+    fi
+}
+
 check_mc_endpoint() {
     echo "Checking conditions for running Globus clients"
     pushd ${SERVERS}
@@ -166,11 +176,13 @@ check_env_variables
 check_faktory
 # is ELT/Globus worker running
 check_worker
+# is the backend server running
+check_etlserver
 # is MaterialsCommons confidential client endpoint available
 check_mc_endpoint
 
 if [ ! "$ALL_OK" = "0" ]; then
-    echo "Some part of the enviornment is not set up correctly"
+    echo "Some part of the environment is not set up correctly"
     echo "  take indicated actions and retry"
 fi
 echo "Done."
