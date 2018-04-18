@@ -3,7 +3,6 @@ class MCProjectDatasetViewContainerComponentController {
     constructor($stateParams, mcdsstore) {
         this.$stateParams = $stateParams;
         this.mcdsstore = mcdsstore;
-        this.mcprojectstore2 = mcprojectstore2;
         this.state = {
             dataset: null
         };
