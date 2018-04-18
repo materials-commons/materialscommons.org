@@ -130,7 +130,7 @@ class RelationshipsStore {
             this.projectExperiments[projectId] = {};
         }
 
-        this.projectExperiments[projectId][experiment.id] = experiment;
+        this.projectExperiments[projectId][experiment.id] = true;
     }
 
     addSampleToExperiment(experimentId, sample) {
@@ -138,7 +138,7 @@ class RelationshipsStore {
             this.experimentSamples[experimentId] = {};
         }
 
-        this.experimentSamples[experimentId][sample.id] = sample;
+        this.experimentSamples[experimentId][sample.id] = true;
     }
 
     addSampleToProcess(processId, sample) {
@@ -146,7 +146,7 @@ class RelationshipsStore {
             this.processSamples[processId] = {};
         }
 
-        this.processSamples[processId][sample.id] = sample;
+        this.processSamples[processId][sample.id] = true;
     }
 
     addProcessToSample(sampleId, process) {
@@ -154,7 +154,7 @@ class RelationshipsStore {
             this.sampleProcesses[sampleId] = {};
         }
 
-        this.sampleProcesses[sampleId][process.id] = process;
+        this.sampleProcesses[sampleId][process.id] = true;
     }
 
     addSampleToProject(projectId, sample) {
@@ -162,7 +162,7 @@ class RelationshipsStore {
             this.projectSamples[projectId] = {};
         }
 
-        this.projectSamples[projectId][sample.id] = sample;
+        this.projectSamples[projectId][sample.id] = true;
     }
 
     wireSampleAndProcess(sample, process) {
