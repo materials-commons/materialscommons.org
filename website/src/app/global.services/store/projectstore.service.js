@@ -18,10 +18,6 @@ class MCProjectStoreService {
     getCurrentProject() {
         return this.projectStore.getProject(this.currentProjectId);
     }
-
-    getProjectSamples(projectId) {
-
-    }
 }
 
 angular.module('materialscommons').service('mcprojectstore2', MCProjectStoreService);
