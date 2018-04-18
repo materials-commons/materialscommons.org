@@ -218,7 +218,7 @@ class MCProjectHomeComponentController {
                     this.etlStatusRecordId = null;
                     let experiment_id = status.extras.experiment_id;
                     console.log("experiment_id = ",experiment_id);
-                    // TODO: eventually
+                    // TODO: verify usage
                     this.$state.go('project.experiments.experiment', {experiment_id: experiment_id});
                 }
                 console.log("MCProjectHomeComponentController - etlMonitor() - dialog");

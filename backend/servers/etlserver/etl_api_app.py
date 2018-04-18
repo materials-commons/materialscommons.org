@@ -105,6 +105,7 @@ def stage_background_excel_upload():
 def monitor_background_excel_upload():
     log.info("/globus/monitor - starting")
     j = request.get_json(force=True)
+    log.info("Results as json = {}".format(j))
     status_record_id = j['status_record_id']
     log.info("status_record_id = {}".format(status_record_id))
     status_record = DatabaseInterface().get_status_record(status_record_id)

@@ -68,7 +68,7 @@ class MCProjectSidenavComponentController {
                             this.project.files = files;
                             currentProject.files = this.project.files;
                             return currentProject;
-                        })
+                        });
                     });
                 }
             }
