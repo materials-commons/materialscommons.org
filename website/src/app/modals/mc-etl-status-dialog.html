@@ -14,6 +14,8 @@
         <p>Please inform Site Administrator. Thanks.</p>
     </md-dialog-content>
     <md-dialog-actions layout="row">
-        <md-button class="md-primary" ng-click="$ctrl.cancel()">Dismiss</md-button>
+        <md-button ng-if="$ctrl.didFail()" class="md-primary" ng-click="$ctrl.dismiss()">Retry</md-button>
+        <md-button ng-if="$ctrl.didSucceed()" class="md-primary" ng-click="$ctrl.done()">View Experiment</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.dismiss()">Dismiss</md-button>
     </md-dialog-actions>
 </md-dialog>

@@ -211,16 +211,7 @@ class MCProjectHomeComponentController {
                 console.log("MCProjectHomeComponentController - etlMonitor() - results");
                 console.log("this.etlInProgress", this.etlInProgress);
                 console.log("this.etlStatusRecordId", this.etlStatusRecordId);
-                console.log(status);
-                if (status.status == "Success" || status.status == "Fail"){
-                    console.log("MCProjectHomeComponentController - etlMonitor() - process done");
-                    this.etlInProgress = false;
-                    this.etlStatusRecordId = null;
-                    let experiment_id = status.extras.experiment_id;
-                    console.log("experiment_id = ",experiment_id);
-                    // TODO: verify usage
-                    this.$state.go('project.experiments.experiment', {experiment_id: experiment_id});
-                }
+                console.log("status", status);
                 console.log("MCProjectHomeComponentController - etlMonitor() - dialog");
                 this.$mdDialog.show({
                     templateUrl: 'app/modals/mc-etl-status-dialog.html',
@@ -231,13 +222,25 @@ class MCProjectHomeComponentController {
                         status: status
                     }
                 }).then(
-                    (results) => {
-                        this.etlInProgress = true;
-                        console.log("MCProjectHomeComponentController - etlMonitor() - results", results);
+                    (status) => {
+                        console.log("MCProjectHomeComponentController - etlMonitor() - process done", status);
+                        this.etlInProgress = false;
+                        this.etlStatusRecordId = null;
+                        let experiment_id = status.extras.experiment_id;
+                        console.log("this.etlInProgress", this.etlInProgress);
+                        console.log("this.etlStatusRecordId", this.etlStatusRecordId);
+                        console.log("experiment_id = ",experiment_id);
+                        // TODO: verify usage
+                        // this.$state.go("project.experiment.workflow", {experiment_id: experiment_id});
+                        // this.$state.go('project.experiments.experiment', {experiment_id: experiment_id});
                         this._reloadComponentState();
                     },
-                    (error) => {
-                        console.log("MCProjectHomeComponentController - etlMonitor() - error", error);
+                    (status) => {
+                        console.log("MCProjectHomeComponentController - etlMonitor() - dismiss", status);
+                        this.etlInProgress = true;
+                        this.etlStatusRecordId = status.id;
+                        console.log("this.etlInProgress", this.etlInProgress);
+                        console.log("this.etlStatusRecordId", this.etlStatusRecordId);
                         this._reloadComponentState();
                     }
                 );
@@ -480,12 +483,25 @@ class EtlStatusDialogController {
     }
 
     done() {
-        this.$mdDialog.cancel();
+        this.$mdDialog.hide(this.status);
     }
 
-    cancel() {
-        this.$mdDialog.cancel();
+    dismiss() {
+        this.$mdDialog.cancel(this.status);
     }
+
+    isDone() {
+        return (this.didFail() || this.didSucceed());
+    }
+
+    didFail() {
+        return (this.status.status == "Fail");
+    }
+
+    didSucceed() {
+        return (this.status.status == "Success");
+    }
+
 }
 
 angular.module('materialscommons').component('mcProjectHome', {
