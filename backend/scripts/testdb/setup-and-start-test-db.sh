@@ -74,7 +74,8 @@ set_locations() {
 }
 
 set_env() {
-    source ${ENV}/unit.sh
+    echo "Using SERVERTYPE = ${SERVERTYPE}"
+    source ${ENV}/${SERVERTYPE}.sh
 }
 
 print_env_and_locations() {
