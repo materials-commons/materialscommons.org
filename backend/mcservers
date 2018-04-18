@@ -233,6 +233,15 @@ function check_nginx() {
     fi
 }
 
+function check_faktory() {
+    R=$(ps -eo "pid,command" | grep faktory | grep -v grep)
+    if [ "$R" = "" ]; then
+        echo "----------------- WARNING -----------------"
+        echo "|  faktory does not appear to be running  |"
+        echo "----------------- WARNING -----------------"
+    fi
+}
+
 function start_servers() {
     echo Starting ${SERVERTYPE} servers...
     mkdir -p ${MC_LOG_DIR} 2> /dev/null
@@ -883,3 +892,4 @@ esac
 
 check_nginx
 
+check_faktory

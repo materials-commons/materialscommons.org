@@ -1,0 +1,10 @@
+configparser
+materials_commons
+flask-api
+faktory
+rethinkdb
+argparse
+six
+xlsxwriter
+openpyxl
+globus_sdk

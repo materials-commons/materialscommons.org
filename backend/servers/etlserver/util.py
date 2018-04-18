@@ -2,12 +2,6 @@ import sys
 
 from .mcexceptions import RequiredAttributeException
 
-
-def msg(message):
-    print(message)
-    sys.stdout.flush()
-
-
 def get_required(what, d):
     if what not in d:
         msg("get_required not found: %s in %s" % (what, d))

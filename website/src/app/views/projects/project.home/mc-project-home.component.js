@@ -3,7 +3,9 @@ import {Experiment} from '../../../project/experiments/experiment/components/tas
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, experimentsAPI, toast, $state, $stateParams, editorOpts, $mdDialog, mcprojstore, projectsAPI) {
+    constructor($scope, experimentsAPI, toast, $state,
+                $stateParams, editorOpts, $mdDialog,
+                mcprojstore, projectsAPI, etlServerAPI) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
@@ -17,7 +19,14 @@ class MCProjectHomeComponentController {
         this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
         this.projectsAPI = projectsAPI;
+        this.etlServerAPI = etlServerAPI;
+        this.etlInProgress = false;
+        this.etlStatusRecordId = null;
         $scope.editorOptions = editorOpts({height: 65, width: 50});
+
+        // test data
+        // this.etlInProgress = true;
+        // this.etlStatusRecordId = "d816d8b3-ef18-4ef0-9a6b-1d99a2f3d81b";
     }
 
     $onInit() {
@@ -53,7 +62,7 @@ class MCProjectHomeComponentController {
                 });
                 this.activities = activities;
             }
-        )
+        );
     }
 
     $onDestroy() {
@@ -175,19 +184,69 @@ class MCProjectHomeComponentController {
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
-                project: this.project
+                project: this.project,
             }
         }).then(
-            () => {
-                console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
-                // TODO: here!!
-                // $state.go('project.experiments.experiment', {experiment_id: 'abc123'})
+            (results) => {
+                this.etlInProgress = true;
+                console.log("MCProjectHomeComponentController - etlStart() - results", results);
+                if (results.status == "SUCCESS") {
+                    console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
+                    this.etlStatusRecordId = results.status_record_id;
+                }
+                this._reloadComponentState();
+
             },
-            () => {
+            (error) => {
+                console.log("MCProjectHomeComponentController - etlStart() - error", error);
                 console.log("MCProjectHomeComponentController - etlStart() - dialog canceled");
             }
         );
+    }
 
+    etlMonitor(){
+        console.log("MCProjectHomeComponentController - etlMonitor() - query");
+        this.etlServerAPI.getEtlStatus(this.etlStatusRecordId).then(
+            status => {
+                console.log("MCProjectHomeComponentController - etlMonitor() - results");
+                console.log("this.etlInProgress", this.etlInProgress);
+                console.log("this.etlStatusRecordId", this.etlStatusRecordId);
+                console.log("status", status);
+                console.log("MCProjectHomeComponentController - etlMonitor() - dialog");
+                this.$mdDialog.show({
+                    templateUrl: 'app/modals/mc-etl-status-dialog.html',
+                    controller: EtlStatusDialogController,
+                    controllerAs: '$ctrl',
+                    bindToController: true,
+                    locals: {
+                        status: status
+                    }
+                }).then(
+                    (status) => {
+                        console.log("MCProjectHomeComponentController - etlMonitor() - process done", status);
+                        this.etlInProgress = false;
+                        this.etlStatusRecordId = null;
+                        let experiment_id = status.extras.experiment_id;
+                        console.log("this.etlInProgress", this.etlInProgress);
+                        console.log("this.etlStatusRecordId", this.etlStatusRecordId);
+                        console.log("experiment_id = ",experiment_id);
+                        // TODO: verify usage
+                        // this.$state.go("project.experiment.workflow", {experiment_id: experiment_id});
+                        // this.$state.go('project.experiments.experiment', {experiment_id: experiment_id});
+                        this._reloadComponentState();
+                    },
+                    (status) => {
+                        console.log("MCProjectHomeComponentController - etlMonitor() - dismiss", status);
+                        this.etlInProgress = true;
+                        this.etlStatusRecordId = status.id;
+                        console.log("this.etlInProgress", this.etlInProgress);
+                        console.log("this.etlStatusRecordId", this.etlStatusRecordId);
+                        this._reloadComponentState();
+                    }
+                );
+
+            }
+        );
     }
 }
 
@@ -315,65 +374,134 @@ class DeleteExperimentsDialogController {
 
 class EtlUploadDialogController {
     /*@ngInject*/
-    constructor($mdDialog, Upload, toast, User) {
+    constructor($mdDialog, Upload, etlServerAPI, toast, User) {
         this.$mdDialog = $mdDialog;
         this.Upload = Upload;
+        this.etlServerAPI = etlServerAPI;
         this.toast = toast;
         this.User = User;
         this.user_id = User.u();
         this.name = "";
-        this.description = ""
+        this.description = "";
         this.files = [];
+        this.use_globus = true;
+        // test data
+        // this.name = "Test Experiment";
+        // this.description = "Description";
+        // this.ep_uuid = '067ce67a-3bf1-11e8-b9b5-0ac6873fc732';
+        // this.ep_spreadsheet = '/dataForTest/input.xlsx';
+        // this.ep_data = '/dataForTest/data';
+    }
+
+    onSwitchDisplay() {
+        this.use_globus = ! this.use_globus;
+        console.log("EtlUploadDialogController - switch display: ", this.use_globus);
     }
 
     done() {
         console.log("EtlUploadDialogController - Done");
         let data = {};
-        let f = this.files[0];
-        data.file = f;
         data.project_id = this.project.id;
         data.name = this.name;
         data.description = this.description;
-        console.log("data to send = ", data);
-        this.isUploading = true;
-        return this.Upload.upload({
+        if (this.use_globus) {
+            data.globus_uuid = this.ep_uuid;
+            data.globus_excel_file = this.ep_spreadsheet;
+            data.globus_data_dir = this.ep_data;
+            console.log("data to send = ", data);
+            return this.etlServerAPI.startBackgroundEtlUpload(data).then (
+                (reply) => {
+                    console.log("EtlUploadDialogController setup completed", reply);
+                    this.$mdDialog.hide(reply);
+                },
+                (e) => {
+                    console.log("upload failed", e);
+                    if (e.status === 502) {
+                        console.log("Service unavailable: 502");
+                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
+                    } else if (e.status > 200) {
+                        console.log("Service unavailable: " + e.status);
+                        this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
+                    }
+                    this.$mdDialog.cancel(e);
+                }
+            );
+        }
+        else {
+            let f = this.files[0];
+            data.file = f;
+            console.log("data to send = ", data);
+            this.isUploading = true;
+            return this.Upload.upload({
                 url: `api/etl/upload?apikey=${this.User.apikey()}`,
                 data: data
             }).then(
                 (uploaded) => {
                     console.log("upload completed", uploaded.data);
                     this.$mdDialog.hide(uploaded.data);
-                    this.isUploading=false;
+                    this.isUploading = false;
                 },
                 (e) => {
                     console.log("upload failed", e);
                     if (e.status === 502) {
                         console.log("Service unavailable: 502");
-                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.")
+                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
                     } else if (e.status > 200) {
                         console.log("Service unavailable: " + e.status);
-                        this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.")
+                        this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
                     }
                     this.$mdDialog.cancel(e);
-                    this.isUploading=false;
+                    this.isUploading = false;
                 },
                 (evt) => {
                     f.progress = 100.0 * evt.loaded / evt.total;
                     console.log("upload progress", f.progress);
                 }
-            )
+            );
+        }
     }
 
     cancel() {
         let data = {};
-        let f = this.files[0];
-        data.file = f;
+        data.file = this.files[0];
         data.project_id = this.project.id;
         data.name = this.experiment_name;
         data.description = this.description;
         console.log("data: ", data);
         this.$mdDialog.cancel();
     }
+}
+
+class EtlStatusDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, etlServerAPI, toast, User) {
+        this.$mdDialog = $mdDialog;
+        this.etlServerAPI = etlServerAPI;
+        this.toast = toast;
+        this.User = User;
+        this.user_id = User.u();
+    }
+
+    done() {
+        this.$mdDialog.hide(this.status);
+    }
+
+    dismiss() {
+        this.$mdDialog.cancel(this.status);
+    }
+
+    isDone() {
+        return (this.didFail() || this.didSucceed());
+    }
+
+    didFail() {
+        return (this.status.status == "Fail");
+    }
+
+    didSucceed() {
+        return (this.status.status == "Success");
+    }
+
 }
 
 angular.module('materialscommons').component('mcProjectHome', {
