@@ -10,6 +10,7 @@ from materials_commons.etl.input_spreadsheet import BuildProjectExperiment
 # noinspection PyProtectedMember
 from materials_commons.api import _use_remote as use_remote
 
+from .DatabaseInterface import DatabaseInterface
 from .globus_etl.task_library import startup_and_verify
 from . import access
 
@@ -102,12 +103,15 @@ def stage_background_excel_upload():
 
 @app.route('/globus/monitor', methods=['POST'])
 def monitor_background_excel_upload():
-    log.debug("/globus/monitor - starting")
+    log.info("/globus/monitor - starting")
     j = request.get_json(force=True)
-    log.info(j)
-    log.debug("/globus/monitor - stub")
-    log.debug("/parts/monitor - done")
-    return format_as_json_return({'status': 'PROCESSING'})
+    status_record_id = j['status_record_id']
+    log.info("status_record_id = {}".format(status_record_id))
+    status_record = DatabaseInterface().get_status_record(status_record_id)
+    del status_record['birthtime']
+    del status_record['mtime']
+    log.info("/globus/monitor - done")
+    return format_as_json_return(status_record)
 
 
 @app.route('/upload', methods=['POST'])

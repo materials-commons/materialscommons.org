@@ -194,8 +194,6 @@ class MCProjectHomeComponentController {
                     console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
                     this.etlStatusRecordId = results.status_record_id;
                 }
-                // TODO: eventually
-                // $state.go('project.experiments.experiment', {experiment_id: 'abc123'})
                 this._reloadComponentState();
 
             },
@@ -211,7 +209,18 @@ class MCProjectHomeComponentController {
         this.etlServerAPI.getEtlStatus(this.etlStatusRecordId).then(
             status => {
                 console.log("MCProjectHomeComponentController - etlMonitor() - results");
-                console.log(status)
+                console.log("this.etlInProgress", this.etlInProgress);
+                console.log("this.etlStatusRecordId", this.etlStatusRecordId);
+                console.log(status);
+                if (status.status == "Success" || status.status == "Fail"){
+                    console.log("MCProjectHomeComponentController - etlMonitor() - process done");
+                    this.etlInProgress = false;
+                    this.etlStatusRecordId = null;
+                    let experiment_id = status.extras.experiment_id;
+                    console.log("experiment_id = ",experiment_id);
+                    // TODO: eventually
+                    this.$state.go('project.experiments.experiment', {experiment_id: experiment_id});
+                }
                 console.log("MCProjectHomeComponentController - etlMonitor() - dialog");
                 this.$mdDialog.show({
                     templateUrl: 'app/modals/mc-etl-status-dialog.html',
@@ -219,7 +228,7 @@ class MCProjectHomeComponentController {
                     controllerAs: '$ctrl',
                     bindToController: true,
                     locals: {
-                        etlStatusRecordId: this.etlStatusRecordId
+                        status: status
                     }
                 }).then(
                     (results) => {
@@ -406,7 +415,7 @@ class EtlUploadDialogController {
                     console.log("upload failed", e);
                     if (e.status === 502) {
                         console.log("Service unavailable: 502");
-                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.")
+                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
                     } else if (e.status > 200) {
                         console.log("Service unavailable: " + e.status);
                         this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
@@ -433,7 +442,7 @@ class EtlUploadDialogController {
                     console.log("upload failed", e);
                     if (e.status === 502) {
                         console.log("Service unavailable: 502");
-                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.")
+                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
                     } else if (e.status > 200) {
                         console.log("Service unavailable: " + e.status);
                         this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");

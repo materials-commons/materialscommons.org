@@ -109,7 +109,15 @@ def etl_excel_processing(status_record_id):
             DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
             log.error(results)
             return
+        builder_out = results['results']
+        log.info("-------------------->{}".format(builder_out.experiment.id))
         DatabaseInterface().update_queue(status_record_id, None)
+        DatabaseInterface().update_extras_data_on_status_record(
+            status_record_id,
+            {
+                'experiment_id': builder_out.experiment.id
+            }
+        )
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUCCESS)
         log.info("Build Experiment Success{}".format(results))
     except BaseException:
@@ -155,7 +163,7 @@ def build_experiment(project_id, experiment_name, experiment_description,
         builder.preset_experiment_name_description(experiment_name, experiment_description)
         builder.build(excel_file_path, data_file_path)
         log.info("Starting Experiment Build Success: {}, {}".format(project_id, experiment_name))
-        return {"status": "SUCCEEDED", "results": builder.__dict__}
+        return {"status": "SUCCEEDED", "results": builder}
     except MaterialsCommonsException as e:
         log.info("Starting Experiment Build Fail: {}, {}".format(project_id, experiment_name))
         return {"status": "FAILED", "error": e}
