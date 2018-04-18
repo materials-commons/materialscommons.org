@@ -23,7 +23,18 @@ export class ProjectStore {
 
     getProject(projectId) {
         if (projectId in this.store) {
-            return this.store[projectId];
+            let project = _.clone(this.store[projectId]);
+            project.samples = [];
+            this.relationshipStore.getProjectSampleIds(projectId).forEach(sid => {
+                let sample = this.sampleStore.getSample(sid);
+                sample.processes = [];
+                this.relationshipStore.getSampleProcessIds(sid).forEach(pid => {
+                    sample.processes.push(this.processStore.getProcess(pid));
+                });
+                project.samples.push(sample);
+            });
+
+            return project;
         }
 
         return null;
@@ -69,7 +80,7 @@ class SampleStore {
 
     getSample(id) {
         if (id in this.store) {
-            return this.store[id];
+            return _.clone(this.store[id]);
         }
 
         return null;
@@ -91,7 +102,7 @@ class ProcessStore {
 
     getProcess(id) {
         if (id in this.store) {
-            return this.store[id];
+            return _.clone(this.store[id]);
         }
 
         return null;
@@ -157,12 +168,28 @@ class RelationshipsStore {
         this.sampleProcesses[sampleId][process.id] = true;
     }
 
+    getSampleProcessIds(sampleId) {
+        if (!(sampleId in this.sampleProcesses)) {
+            return [];
+        }
+
+        return _.keys(this.sampleProcesses[sampleId]);
+    }
+
     addSampleToProject(projectId, sample) {
         if (!(projectId in this.projectSamples)) {
             this.projectSamples[projectId] = {};
         }
 
         this.projectSamples[projectId][sample.id] = true;
+    }
+
+    getProjectSampleIds(projectId) {
+        if (!(projectId in this.projectSamples)) {
+            return [];
+        }
+
+        return _.keys(this.projectSamples[projectId]);
     }
 
     wireSampleAndProcess(sample, process) {
