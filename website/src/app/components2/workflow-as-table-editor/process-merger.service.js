@@ -7,10 +7,21 @@ class ProcessMergerService {
     mergeProcessesForSamples(samples) {
         let processes = [];
         samples.forEach(s => {
-            processes.push(s.processes.map(p => p.template_name));
+            processes.push(s.processes.filter(p => p.process_type !== 'create').map(p => p.template_name));
         });
 
         return this._merger(processes);
+    }
+
+    _allEmpty(lists) {
+        let isEmpty = true;
+        lists.forEach(l => {
+            if (l.length) {
+                isEmpty = false;
+            }
+        });
+
+        return isEmpty;
     }
 
     _merger(lists) {
@@ -20,7 +31,7 @@ class ProcessMergerService {
         let current = "";
         let startNew = false;
         for (; ;) {
-            if (allEmpty(lists)) {
+            if (this._allEmpty(lists)) {
                 break;
             }
             let matchFound = false;

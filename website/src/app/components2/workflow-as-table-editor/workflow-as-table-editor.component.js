@@ -1,7 +1,8 @@
 class MCWorkflowAsTableEditorComponentController {
     /*@ngInject*/
-    constructor(mcshow) {
+    constructor(mcshow, processMerger) {
         this.mcshow = mcshow;
+        this.processMerger = processMerger;
         this.grouped = false;
         this.editTable = false;
         this.state = {
@@ -10,7 +11,7 @@ class MCWorkflowAsTableEditorComponentController {
             grouped: false,
             editTable: false,
         };
-        this.createDemoData();
+        //this.createDemoData();
     }
 
     $onInit() {
@@ -23,9 +24,16 @@ class MCWorkflowAsTableEditorComponentController {
             this.state.samples = angular.copy(changes.samples.currentValue);
             this.state.samples.forEach(s => {
                 s.selected = false;
-                s.processes = this.fillRandomProcesses(this.state.headers.length);
+                s.processes.filter(p => p.process_type !== 'create').map(p => {
+                    p.active = true;
+                    p.selected = true;
+                    return p;
+                });
+                //s.processes = this.fillRandomProcesses(this.state.headers.length);
             });
             console.log('this.state.samples', this.state.samples);
+            this.state.headers = this.processMerger.mergeProcessesForSamples(this.state.samples);
+            console.log('merged headers', this.state.headers);
         }
     }
 
