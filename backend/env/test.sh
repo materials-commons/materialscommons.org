@@ -43,3 +43,6 @@ fi
 export MCAPID_COMMAND="npx actionhero start cluster --workerTitlePrefix=mcapid-${SERVERTYPE}"
 export MCAPID_PORT=6028
 export REDIS_PORT=7379
+
+export MC_FACTORY_PORT=7419
+# see also the override file /etc/materiaslcommons/config.test
