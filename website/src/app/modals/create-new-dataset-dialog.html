@@ -77,6 +77,6 @@
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
-        <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()" ng-disabled="$ctrl.isInvalidDataset()">Done</md-button>
     </md-dialog-actions>
 </md-dialog>

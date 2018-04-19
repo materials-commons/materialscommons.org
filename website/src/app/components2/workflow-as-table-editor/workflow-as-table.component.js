@@ -7,6 +7,7 @@ class MCWorkflowAsTableComponentController {
             samples: [],
             headers: [],
             editTable: false,
+            samplesMarked: false,
         }
     }
 
@@ -34,6 +35,7 @@ class MCWorkflowAsTableComponentController {
 
     $onChanges(changes) {
         // console.log('changes = ', changes);
+        this.state.samplesMarked = false;
         if (changes.samples) {
             this.state.samples = angular.copy(changes.samples.currentValue);
         }
@@ -45,6 +47,41 @@ class MCWorkflowAsTableComponentController {
         if (changes.editTable) {
             this.state.editTable = changes.editTable.currentValue;
         }
+
+        this.markSampleHeaders();
+        this.state.samplesMarked = true;
+        console.log('headers', this.state.headers);
+        console.log('samples', this.state.samples);
+    }
+
+    markSampleHeaders() {
+        const process2header = {};
+        this.state.headers.forEach(h => {
+            h.sampleMap = {};
+            //console.log('h', h);
+            h.processes.forEach(p => {
+                //console.log('adding to process2header', p);
+                process2header[p] = h;
+            });
+        });
+
+        this.state.samples.forEach(s => {
+            s.processes.forEach(p => {
+                //console.log('looking up', p);
+                const header = process2header[p.id];
+                if (header) {
+                    //console.log('  found header');
+                    header.sampleMap[s.id] = true;
+                }
+            });
+        });
+
+        console.log('this.state.headers', this.state.headers);
+    }
+
+    sampleHasProcessInHeader(sample, header) {
+        //console.log('sampleHashProcessInHeader', sample, header);
+        return (sample.id in header.sampleMap);
     }
 
     editProcess(process, sample) {

@@ -8,6 +8,7 @@ class MCWorkflowAsTableEditorComponentController {
         this.state = {
             samples: [],
             headers: [],
+            processes: [],
             grouped: false,
             editTable: false,
         };
@@ -32,8 +33,12 @@ class MCWorkflowAsTableEditorComponentController {
                 //s.processes = this.fillRandomProcesses(this.state.headers.length);
             });
             console.log('this.state.samples', this.state.samples);
-            this.state.headers = this.processMerger.mergeProcessesForSamples(this.state.samples);
+            //this.state.headers = this.processMerger.mergeProcessesForSamples(this.state.samples);
             console.log('merged headers', this.state.headers);
+            this.state.processes = this.processMerger.mergeProcessesForSamples2(this.state.samples);
+            this.state.headers = this.state.processes.map(p => p.name);
+            console.log('this.state.processes', this.state.processes);
+            console.log('this.state.headers', this.state.headers);
         }
     }
 
@@ -87,6 +92,12 @@ class MCWorkflowAsTableEditorComponentController {
     }
 
     handleDeleteProcess(index) {
+        let processesToToggle = {};
+        this.state.processes[index].processes.forEach(id => processesToToggle[id] = true);
+        this.state.samples.forEach(s => {
+            s.processes = s.processes.filter(p => !(p.id in processesToToggle));
+        });
+        this.state.samples = angular.copy(this.state.samples);
         this.state.headers.splice(index, 1);
         this.state.headers = angular.copy(this.state.headers);
     }

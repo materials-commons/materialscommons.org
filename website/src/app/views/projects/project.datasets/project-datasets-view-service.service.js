@@ -34,6 +34,14 @@ class CreateNewDatasetDialogController {
         this.createDatasetDialogState.resetSampleState(selectedSamples, this.state.project.samples);
     }
 
+    isInvalidDataset() {
+        if (this.state.datasetName === '') {
+            return true;
+        }
+
+        return false;
+    }
+
     done() {
         const samples = this.state.project.samples.filter(s => s.selected);
         let experiments = {};
