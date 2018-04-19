@@ -19,6 +19,7 @@ export MCDB_DIR=/var/db/materialscommons/proddb
 export MC_ES_URL="http://localhost:9200"
 export MC_ES_NAME="mc-es"
 export MC_LOG_DIR=/var/log/materialscommons/production
+export MC_FAKTORY_DIR=/var/lib/materialscommons/faktory/production
 export MCDIR=/mcfs/data/materialscommons
 export MCFS_HTTP_PORT=5010
 

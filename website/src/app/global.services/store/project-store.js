@@ -8,12 +8,12 @@ export class ProjectStore {
     }
 
     addProject(project) {
-        if (project.id in this.store) {
-            return;
-        }
+        // if (project.id in this.store) {
+        //     return;
+        // }
 
         this.store[project.id] = angular.copy(project);
-        this.wireRelationships(project.id);
+        this._wireRelationships(project);
         // console.log('this.store', this.store);
         // console.log('this.experimentStore', this.experimentStore);
         // console.log('this.sampleStore', this.sampleStore);
@@ -23,21 +23,33 @@ export class ProjectStore {
 
     getProject(projectId) {
         if (projectId in this.store) {
-            return this.store[projectId];
+            let project = _.clone(this.store[projectId]);
+            project.samples = [];
+            this.relationshipStore.getProjectSampleIds(projectId).forEach(sid => {
+                let sample = this.sampleStore.getSample(sid);
+                sample.processes = [];
+                this.relationshipStore.getSampleProcessIds(sid).forEach(pid => {
+                    sample.processes.push(this.processStore.getProcess(pid));
+                });
+                project.samples.push(sample);
+            });
+
+            return project;
         }
 
         return null;
     }
 
-    wireRelationships(projectId) {
-        let project = this.store[projectId];
-        console.log('project = ', project);
+    _wireRelationships(project) {
         project.experiments.forEach(e => {
             this.experimentStore.addExperiment(e);
-            this.relationshipStore.addExperimentToProject(projectId, e);
+            this.relationshipStore.addExperimentToProject(project.id, e);
         });
 
-        project.samples.forEach(s => this.sampleStore.addSample(s));
+        project.samples.forEach(s => {
+            this.sampleStore.addSample(s);
+            this.relationshipStore.addSampleToProject(project.id, s);
+        });
         project.processes.forEach(p => this.processStore.addProcess(p));
         project.relationships.experiment2sample.forEach(e2s => {
             const e = this.experimentStore.getExperiment(e2s.experiment_id);
@@ -68,7 +80,7 @@ class SampleStore {
 
     getSample(id) {
         if (id in this.store) {
-            return this.store[id];
+            return _.clone(this.store[id]);
         }
 
         return null;
@@ -90,7 +102,7 @@ class ProcessStore {
 
     getProcess(id) {
         if (id in this.store) {
-            return this.store[id];
+            return _.clone(this.store[id]);
         }
 
         return null;
@@ -121,6 +133,7 @@ class RelationshipsStore {
         this.sampleProcesses = {};
         this.processSamples = {};
         this.experimentSamples = {};
+        this.projectSamples = {};
     }
 
     addExperimentToProject(projectId, experiment) {
@@ -128,7 +141,7 @@ class RelationshipsStore {
             this.projectExperiments[projectId] = {};
         }
 
-        this.projectExperiments[projectId][experiment.id] = experiment;
+        this.projectExperiments[projectId][experiment.id] = true;
     }
 
     addSampleToExperiment(experimentId, sample) {
@@ -136,7 +149,7 @@ class RelationshipsStore {
             this.experimentSamples[experimentId] = {};
         }
 
-        this.experimentSamples[experimentId][sample.id] = sample;
+        this.experimentSamples[experimentId][sample.id] = true;
     }
 
     addSampleToProcess(processId, sample) {
@@ -144,7 +157,7 @@ class RelationshipsStore {
             this.processSamples[processId] = {};
         }
 
-        this.processSamples[processId][sample.id] = sample;
+        this.processSamples[processId][sample.id] = true;
     }
 
     addProcessToSample(sampleId, process) {
@@ -152,7 +165,31 @@ class RelationshipsStore {
             this.sampleProcesses[sampleId] = {};
         }
 
-        this.sampleProcesses[sampleId][process.id] = process;
+        this.sampleProcesses[sampleId][process.id] = true;
+    }
+
+    getSampleProcessIds(sampleId) {
+        if (!(sampleId in this.sampleProcesses)) {
+            return [];
+        }
+
+        return _.keys(this.sampleProcesses[sampleId]);
+    }
+
+    addSampleToProject(projectId, sample) {
+        if (!(projectId in this.projectSamples)) {
+            this.projectSamples[projectId] = {};
+        }
+
+        this.projectSamples[projectId][sample.id] = true;
+    }
+
+    getProjectSampleIds(projectId) {
+        if (!(projectId in this.projectSamples)) {
+            return [];
+        }
+
+        return _.keys(this.projectSamples[projectId]);
     }
 
     wireSampleAndProcess(sample, process) {

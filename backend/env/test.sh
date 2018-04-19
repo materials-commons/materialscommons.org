@@ -19,6 +19,7 @@ export MCSTOREDBIN=${MC_DEPLOY_DIR}/bin/mcstored
 export MC_ES_URL="http://localhost:9800"
 export MC_ES_NAME="mc-es-test"
 export MC_LOG_DIR=/var/log/materialscommons/test
+export MC_FAKTORY_DIR=/var/lib/materialscommons/faktory/test
 
 if [ "$MCDB_FILE" = "" ]; then
     export MCDB_FILE=~/test_data/rethinkdb_dump_test_data.tar.gz
