@@ -64,7 +64,7 @@ function addComputed(rql) {
             relationships: {
                 process2sample: r.table('project2process').getAll(project('id'), {index: 'project_id'})
                     .eqJoin('process_id', r.table('process2sample'), {index: 'process_id'}).zip()
-                    .pluck('sample_id', 'process_id').coerceTo('array'),
+                    .pluck('sample_id', 'property_set_id', 'process_id').coerceTo('array'),
                 experiment2sample: r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
                     .eqJoin('experiment_id', r.table('experiment2sample'), {index: 'experiment_id'}).zip()
                     .pluck('experiment_id', 'sample_id').coerceTo('array')
