@@ -93,7 +93,8 @@ function stop_etl_faktory_worker() {
 }
 
 function start_etl_server() {
-    R=$(is_running "mc_etlserver.py" "${SERVERTYPE}")
+    R=$(is_running "mc_etlserver.py")
+    echo $R
     if [ "$R" = "" ]; then
         echo "Starting mcetlserver (${SERVERTYPE})..."
         ./servers/etlserver/run_server.sh ${SERVERTYPE} > ${MC_LOG_DIR}/mcetlserver.out.${SERVERTYPE} 2>&1&
