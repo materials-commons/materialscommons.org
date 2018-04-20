@@ -18,6 +18,7 @@ export RETHINKDB_CLUSTER_PORT=51815
 export MCSTOREDBIN=${MC_DEPLOY_DIR}/bin/mcstored
 export MC_ES_URL="http://localhost:9800"
 export MC_ES_NAME="mc-es-test"
+export MC_FAKTORY_NAME="mc-faktory-test"
 export MC_LOG_DIR=/var/log/materialscommons/test
 export MC_FAKTORY_DIR=/var/lib/materialscommons/faktory/test
 

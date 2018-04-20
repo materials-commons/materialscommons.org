@@ -17,6 +17,7 @@ export RETHINKDB_CLUSTER_PORT=31815
 export MCSTOREDBIN=testbin/mcstored
 export MC_ES_URL="http://localhost:9500"
 export MC_ES_NAME="mc-es-test"
+export MC_FAKTORY_NAME="mc-faktory-test"
 export MC_LOG_DIR=/tmp
 if [ "$MCDB_FILE" = "" ]; then
     export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz

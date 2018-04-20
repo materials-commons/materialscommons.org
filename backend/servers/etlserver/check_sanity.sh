@@ -121,7 +121,7 @@ check_worker() {
 }
 
 check_etlserver() {
-    R=$(ps -eo "pid,command" | grep -v grep | grep python | grep start_etlserver)
+    R=$(ps -eo "pid,command" | grep -v grep | grep python | grep mc_etlserver)
     if [ "$R" = "" ]; then
         echo "Backend server, etlserver, does not appear to be running <-----"
         ALL_OK=-1
