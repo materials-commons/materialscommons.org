@@ -19,9 +19,11 @@ export class ProjectStore {
             this.relationshipStore.getProjectSampleIds(projectId).forEach(sid => {
                 let sample = this.sampleStore.getSample(sid);
                 sample.processes = [];
+                let unorderedProcesses = [];
                 this.relationshipStore.getSampleProcessIds(sid).forEach(pid => {
-                    sample.processes.push(this.processStore.getProcess(pid));
+                    unorderedProcesses.push(this.processStore.getProcess(pid));
                 });
+                sample.processes = this._orderProcesses(unorderedProcesses);
                 project.samples.push(sample);
             });
 
@@ -41,27 +43,48 @@ export class ProjectStore {
         return null;
     }
 
+    _orderProcesses(unorderedProcesses) {
+        console.log('---_orderProcesses---');
+        let createProcess = null,
+            //orderedProcesses = [],
+            processMap = {};
+        unorderedProcesses.forEach(p => {
+            if (p.process_type === 'create') {
+                console.log('  setting createProcess to', p);
+                createProcess = p;
+            }
+            processMap[`${p.sample_id}/${p.property_set_id}`] = p;
+        });
+
+        console.log('  processMap', processMap);
+
+        return unorderedProcesses;
+    }
+
+    /*
+     let processes = _.indexBy(this.sample.processes, 'process_id');
+        this.sample.processesInTimeline = this.sample.processes.filter(
+            (p) => processes[p.process_id].property_set_id === p.property_set_id
+        );
+     */
+
     _wireRelationships(project) {
         project.experiments.forEach(e => {
             this.experimentStore.addExperiment(e);
-            this.relationshipStore.addExperimentToProject(project.id, e);
+            this.relationshipStore.addExperimentToProject(project.id, e.id);
         });
 
         project.samples.forEach(s => {
             this.sampleStore.addSample(s);
-            this.relationshipStore.addSampleToProject(project.id, s);
+            this.relationshipStore.addSampleToProject(project.id, s.id);
         });
         project.processes.forEach(p => this.processStore.addProcess(p));
         project.relationships.experiment2sample.forEach(e2s => {
-            const e = this.experimentStore.getExperiment(e2s.experiment_id);
-            const s = this.sampleStore.getSample(e2s.sample_id);
-            this.relationshipStore.addSampleToExperiment(e.id, s);
+            this.relationshipStore.addSampleToExperiment(e2s.experiment_id, e2s.sample_id);
         });
 
         project.relationships.process2sample.forEach(p2s => {
-            const p = this.processStore.getProcess(p2s.process_id);
-            const s = this.sampleStore.getSample(p2s.sample_id);
-            this.relationshipStore.wireSampleAndProcess(s, p);
+            this.relationshipStore.wireSampleAndProcess(p2s.sample_id, p2s.process_id);
         });
     }
 }
@@ -137,12 +160,12 @@ class RelationshipsStore {
         this.projectSamples = {};
     }
 
-    addExperimentToProject(projectId, experiment) {
+    addExperimentToProject(projectId, experimentId) {
         if (!(projectId in this.projectExperiments)) {
             this.projectExperiments[projectId] = {};
         }
 
-        this.projectExperiments[projectId][experiment.id] = true;
+        this.projectExperiments[projectId][experimentId] = true;
     }
 
     getProjectExperimentIds(projectId) {
@@ -153,12 +176,12 @@ class RelationshipsStore {
         return _.keys(this.projectExperiments[projectId]);
     }
 
-    addSampleToExperiment(experimentId, sample) {
+    addSampleToExperiment(experimentId, sampleId) {
         if (!(experimentId in this.experimentSamples)) {
             this.experimentSamples[experimentId] = {};
         }
 
-        this.experimentSamples[experimentId][sample.id] = true;
+        this.experimentSamples[experimentId][sampleId] = true;
     }
 
     getExperimentSampleIds(experimentId) {
@@ -169,20 +192,20 @@ class RelationshipsStore {
         return _.keys(this.experimentSamples[experimentId]);
     }
 
-    addSampleToProcess(processId, sample) {
+    addSampleToProcess(processId, sampleId) {
         if (!(processId in this.processSamples)) {
             this.processSamples[processId] = {};
         }
 
-        this.processSamples[processId][sample.id] = true;
+        this.processSamples[processId][sampleId] = true;
     }
 
-    addProcessToSample(sampleId, process) {
+    addProcessToSample(sampleId, processId) {
         if (!(sampleId in this.sampleProcesses)) {
             this.sampleProcesses[sampleId] = {};
         }
 
-        this.sampleProcesses[sampleId][process.id] = true;
+        this.sampleProcesses[sampleId][processId] = true;
     }
 
     getSampleProcessIds(sampleId) {
@@ -193,12 +216,12 @@ class RelationshipsStore {
         return _.keys(this.sampleProcesses[sampleId]);
     }
 
-    addSampleToProject(projectId, sample) {
+    addSampleToProject(projectId, sampleId) {
         if (!(projectId in this.projectSamples)) {
             this.projectSamples[projectId] = {};
         }
 
-        this.projectSamples[projectId][sample.id] = true;
+        this.projectSamples[projectId][sampleId] = true;
     }
 
     getProjectSampleIds(projectId) {
@@ -209,8 +232,8 @@ class RelationshipsStore {
         return _.keys(this.projectSamples[projectId]);
     }
 
-    wireSampleAndProcess(sample, process) {
-        this.addSampleToProcess(process.id, sample);
-        this.addProcessToSample(sample.id, process);
+    wireSampleAndProcess(sampleId, processId) {
+        this.addSampleToProcess(processId, sampleId);
+        this.addProcessToSample(sampleId, processId);
     }
 }
