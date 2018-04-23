@@ -41,7 +41,7 @@
                        qtip="<span><b>{{process.template_name}}</b> from qtip with html</span>"
                        style="background-color:green; color: green; height:10px;"
                        ng-click="$ctrl.editProcess($ctrl.state.headers[$index], sample)">hello</a>
-                    <span ng-if="!$ctrl.sampleHasProcessInHeader(sample, processHeader)">not in</span>
+                    <span ng-if="!$ctrl.sampleHasProcessInHeader(sample, processHeader)"></span>
                 </td>
             </tr>
             <!--<tr md-row class="md-row-hover" ng-repeat="sample in $ctrl.state.samples" ng-init="sampleIndex = $index">-->
