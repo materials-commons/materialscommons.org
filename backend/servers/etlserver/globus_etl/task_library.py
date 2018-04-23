@@ -109,7 +109,10 @@ def etl_excel_processing(status_record_id):
             excel_file_path = excel_file_path[1:]
 
         if data_dir_path.startswith('/'):
-            data_dir_path = excel_file_path[1:]
+            data_dir_path = data_dir_path[1:]
+
+        log.info("partial excel_file path = {}".format(excel_file_path))
+        log.info("partial data_dir path = {}".format(data_dir_path))
 
         excel_file_path = os.path.join(transfer_base_path, excel_file_path)
         data_dir_path = os.path.join(transfer_base_path, data_dir_path)
