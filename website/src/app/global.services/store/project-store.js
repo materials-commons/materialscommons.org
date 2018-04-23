@@ -20,8 +20,11 @@ export class ProjectStore {
                 let sample = this.sampleStore.getSample(sid);
                 sample.processes = [];
                 let unorderedProcesses = [];
-                this.relationshipStore.getSampleProcessIds(sid).forEach(pid => {
-                    unorderedProcesses.push(this.processStore.getProcess(pid));
+                this.relationshipStore.getSampleProcessIds(sid).forEach(p => {
+                    let process = this.processStore.getProcess(p.process_id);
+                    process.sample_id = sid;
+                    process.property_set_id = p.property_set_id;
+                    unorderedProcesses.push(process);
                 });
                 sample.processes = this._orderProcesses(unorderedProcesses);
                 project.samples.push(sample);
@@ -45,19 +48,32 @@ export class ProjectStore {
 
     _orderProcesses(unorderedProcesses) {
         console.log('---_orderProcesses---');
+        console.log('  unorderedProcesses', unorderedProcesses);
         let createProcess = null,
-            //orderedProcesses = [],
+            orderedProcesses = [],
             processMap = {};
         unorderedProcesses.forEach(p => {
             if (p.process_type === 'create') {
                 console.log('  setting createProcess to', p);
                 createProcess = p;
             }
-            processMap[`${p.sample_id}/${p.property_set_id}`] = p;
+            const id = `${p.sample_id}/${p.property_set_id}`;
+            if (!(id in processMap)) {
+                processMap[id] = [];
+            }
+            processMap[id].push(p);
         });
 
         console.log('  processMap', processMap);
 
+        orderedProcesses.push(createProcess);
+        // let currentId = `${createProcess.sample_id}/${createProcess.property_set_id}`;
+        // let allProcesses = unorderedProcesses.filter(p => p.id !== createProcess.id);
+        // for(;;) {
+        //     let processesMatchingId = processMap[currentId];
+        //     orderedProcesses = orderedProcesses.concat(processesMatchingId);
+        //     //allProcesses = allProcesses.filter(p => p.sample_id !==)
+        // }
         return unorderedProcesses;
     }
 
@@ -84,7 +100,7 @@ export class ProjectStore {
         });
 
         project.relationships.process2sample.forEach(p2s => {
-            this.relationshipStore.wireSampleAndProcess(p2s.sample_id, p2s.process_id);
+            this.relationshipStore.wireSampleAndProcess(p2s.sample_id, p2s.property_set_id, p2s.process_id);
         });
     }
 }
@@ -192,20 +208,20 @@ class RelationshipsStore {
         return _.keys(this.experimentSamples[experimentId]);
     }
 
-    addSampleToProcess(processId, sampleId) {
+    addSampleToProcess(processId, sampleId, property_set_id) {
         if (!(processId in this.processSamples)) {
             this.processSamples[processId] = {};
         }
 
-        this.processSamples[processId][sampleId] = true;
+        this.processSamples[processId][sampleId] = property_set_id;
     }
 
-    addProcessToSample(sampleId, processId) {
+    addProcessToSample(sampleId, property_set_id, processId) {
         if (!(sampleId in this.sampleProcesses)) {
             this.sampleProcesses[sampleId] = {};
         }
 
-        this.sampleProcesses[sampleId][processId] = true;
+        this.sampleProcesses[sampleId][processId] = property_set_id;
     }
 
     getSampleProcessIds(sampleId) {
@@ -213,7 +229,13 @@ class RelationshipsStore {
             return [];
         }
 
-        return _.keys(this.sampleProcesses[sampleId]);
+        let processIds = [];
+        _.forIn(this.sampleProcesses[sampleId], (value, key) => processIds.push({
+            process_id: key,
+            property_set_id: value
+        }));
+        return processIds;
+        //return _.keys(this.sampleProcesses[sampleId]);
     }
 
     addSampleToProject(projectId, sampleId) {
@@ -232,8 +254,8 @@ class RelationshipsStore {
         return _.keys(this.projectSamples[projectId]);
     }
 
-    wireSampleAndProcess(sampleId, processId) {
-        this.addSampleToProcess(processId, sampleId);
-        this.addProcessToSample(sampleId, processId);
+    wireSampleAndProcess(sampleId, property_set_id, processId) {
+        this.addSampleToProcess(processId, sampleId, property_set_id);
+        this.addProcessToSample(sampleId, property_set_id, processId);
     }
 }
