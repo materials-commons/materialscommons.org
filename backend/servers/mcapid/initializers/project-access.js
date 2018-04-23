@@ -31,6 +31,8 @@ module.exports = class APIKeyInitializer extends Initializer {
                 if (!projectAccessCache.validateAccess(data.params.project_id, data.user)) {
                     throw new Error(`No access to project ${data.params.project_id}`);
                 }
+
+                data.projectAccess = project;
             }
         };
 
