@@ -54,7 +54,7 @@ function start_faktory() {
         R=$(docker_instance_running ${MC_FAKTORY_NAME})
         if [ "$R" = "" ]; then
             echo "Starting Faktory instance ${MC_FAKTORY_NAME}..."
-            docker start ${MC_ES_NAME}
+            docker start ${MC_FAKTORY_NAME}
             sleep 1
         fi
     fi
@@ -63,10 +63,11 @@ function start_faktory() {
 function stop_faktory() {
     echo "Stopping Faktory ($SERVERTYPE)..."
     if [ "$(uname)" = "Darwin" ]; then
-        RPID=$(ps -eo "pid,command" | grep faktory | grep -v tail | grep -v grep| head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
+        RPID=$(ps -eo "pid,command" | grep faktory | grep -v tail | grep -v grep | grep -v bash | head -1 | sed 's/^[ ]*//' | cut -f1 -d' ')
         if [ "$RPID" != "" ]; then
-            echo "  Stopped Faktory from command line..."
+            echo $(ps -eo "pid,command" | grep faktory | grep -v tail | grep -v grep)
             kill -INT ${RPID}
+            echo "  Stopped Faktory from command line (${RPID})..."
         fi
     else
         docker stop ${MC_FAKTORY_NAME}
@@ -160,10 +161,6 @@ function stop_rethinkdb() {
 function start_mcapiserver() {
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
     if [ "$R" = "" ]; then
-        echo "------------ check python -------------"
-        which python
-        python --version
-        echo "------------ check python -------------"
         echo "Starting mcapiserver ($SERVERTYPE)..."
         ./mcapiserver.py -p ${MC_SERVICE_PORT} > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
         sleep 1
