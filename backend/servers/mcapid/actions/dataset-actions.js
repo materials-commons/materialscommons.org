@@ -354,7 +354,7 @@ module.exports.PublishDatasetAction = class PublishDatasetAction extends Action 
     }
 };
 
-module.export.UnpublishDatasetAction = class UnpublishDatasetAction extends Action {
+module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Action {
     constructor() {
         super();
         this.name = 'unpublishDataset';
@@ -362,6 +362,5 @@ module.export.UnpublishDatasetAction = class UnpublishDatasetAction extends Acti
     }
 
     async run({response, params}) {
-
     }
 };
