@@ -8,11 +8,20 @@ from .TaskChain import TaskChain, GLOBUS_QUEUE, PROCESS_QUEUE
 class EtlFaktoryWorker:
     def __init__(self):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
-        self.worker = Worker(faktory="tcp://localhost:7419", queues=[GLOBUS_QUEUE, PROCESS_QUEUE], concurrency=1)
         self.tasks = TaskChain()
+        self.possible_errors = (
+            json.decoder.JSONDecodeError,
+            ConnectionRefusedError,
+            ConnectionResetError,
+            BrokenPipeError)
 
-    def setup(self):
-        self.tasks.setup_in_worker(self.worker)
+    def setup(self, worker):
+        self.tasks.setup_in_worker(worker)
+
+    def new_worker(self):
+        worker = Worker(faktory="tcp://localhost:7419", queues=[GLOBUS_QUEUE, PROCESS_QUEUE], concurrency=1)
+        self.setup(worker)
+        return worker
 
     def run(self):
         retry_count = 0
@@ -20,10 +29,9 @@ class EtlFaktoryWorker:
             try:
                 if retry_count:
                     self.log.info("Retrying start of worker; count = {}".format(retry_count))
-                self.worker.run()
-            except (json.decoder.JSONDecodeError, ConnectionRefusedError) as error:
-                # time_to_sleep = 5 + retry_count * 2
-                time_to_sleep = 5
+                self.new_worker().run()
+            except self.possible_errors as error:
+                time_to_sleep = 5 + retry_count * 2
                 self.log.error(error)
                 self.log.error("It appears that Faktory may not be running " + \
                                "- sleeping {} seconds, then retry". format(time_to_sleep))
