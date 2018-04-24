@@ -160,6 +160,10 @@ function stop_rethinkdb() {
 function start_mcapiserver() {
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
     if [ "$R" = "" ]; then
+        echo "------------ check python -------------"
+        which python
+        python --version
+        echo "------------ check python -------------"
         echo "Starting mcapiserver ($SERVERTYPE)..."
         ./mcapiserver.py -p ${MC_SERVICE_PORT} > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
         sleep 1
