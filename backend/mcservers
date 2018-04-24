@@ -54,7 +54,7 @@ function start_faktory() {
         R=$(docker_instance_running ${MC_FAKTORY_NAME})
         if [ "$R" = "" ]; then
             echo "Starting Faktory instance ${MC_FAKTORY_NAME}..."
-            docker start ${MC_ES_NAME}
+            docker start ${MC_FAKTORY_NAME}
             sleep 1
         fi
     fi
