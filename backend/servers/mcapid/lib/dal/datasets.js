@@ -45,9 +45,39 @@ async function getDataset(datasetId) {
     return await dbExec(rql);
 }
 
-async function datasetInProject(datasetId, projectId) {
-    let d = await r.table('project2dataset').getAll([projectId, datasetId], {index: 'project_dataset'});
-    return d.length !== 0;
+async function updateDataset(datasetId, ds) {
+    await r.table('datasets').get(datasetId).update(ds);
+    return await getDataset(datasetId);
+}
+
+async function addFilesToDataset(datasetId, files) {
+    const filesToAdd = files.map(fid => ({dataset_id: datasetId, datafile_id: fid}));
+    await r.table('dataset2datafiles').insert(filesToAdd, {conflict: 'update'});
+    return await getDataset(datasetId);
+}
+
+async function deleteFilesFromDataset(datasetId, files) {
+    const filesToDelete = files.map(fid => [datasetId, fid]);
+    await r.table('dataset2datafiles').getAll(r.args(filesToDelete), {index: 'dataset_datafile'}).delete();
+    return await getDataset(datasetId);
+}
+
+async function addSamplesToDataset(datasetId, samples) {
+    const samplesToAdd = samples.map(sid => ({dataset_id: datasetId, sample_id: sid}));
+    await r.table('dataset2sample').insert(samplesToAdd, {conflict: 'update'});
+    return await getDataset(datasetId);
+}
+
+async function deleteSamplesFromDataset(datasetId, samples) {
+    const samplesToDelete = samples.map(sid => [datasetId, sid]);
+    await r.table('dataset2sample').getAll(r.args(samplesToDelete), {index: 'dataset_sample'}).delete();
+    return await getDataset(datasetId);
+}
+
+async function deleteProcessesFromDataset(datasetId, processes) {
+    const processesToDelete = processes.map(pid => [datasetId, pid]);
+    await r.table('dataset2sample').getAll(r.args(processesToDelete), {index: 'dataset_process'}).delete();
+    return await getDataset(datasetId);
 }
 
 module.exports = {
@@ -55,5 +85,10 @@ module.exports = {
     deleteDataset,
     getDatasetsForProject,
     getDataset,
-    datasetInProject,
+    updateDataset,
+    addFilesToDataset,
+    deleteFilesFromDataset,
+    addSamplesToDataset,
+    deleteSamplesFromDataset,
+    deleteProcessesFromDataset,
 };
