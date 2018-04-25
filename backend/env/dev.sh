@@ -40,7 +40,7 @@ export MCAPID_COMMAND="start.sh mcapid-${SERVERTYPE}"
 export MCAPID_PORT=5028
 export REDIS_PORT=5031
 
-export MC_FAKTORY_NAME="mc-faktory-test"
+export MC_FAKTORY_NAME="mc-faktory-dev"
 export MC_FACTORY_PORT=7419
 
 # see also the override file /etc/materialscommons/config.dev

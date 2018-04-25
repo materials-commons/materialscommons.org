@@ -41,6 +41,6 @@ export MCAPID_PORT=5628
 export REDIS_PORT=5679
 
 export MC_FACTORY_PORT=7419
-export MC_FAKTORY_NAME="mc-faktory-test"
+export MC_FAKTORY_NAME="mc-faktory-unit"
 
 # see also the override file /etc/materialscommons/config.unit
