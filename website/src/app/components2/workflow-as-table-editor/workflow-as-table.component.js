@@ -55,33 +55,26 @@ class MCWorkflowAsTableComponentController {
     }
 
     markSampleHeaders() {
-        const process2header = {};
-        this.state.headers.forEach(h => {
-            h.sampleMap = {};
-            //console.log('h', h);
-            h.processes.forEach(p => {
-                //console.log('adding to process2header', p);
-                process2header[p] = h;
+        this.state.samples.filter(s => s.process_type !== 'create').forEach(s => {
+            let headers = angular.copy(this.state.headers);
+            s.headers = headers.map(h => {
+                h.use = false;
+                return h;
             });
-        });
-
-        this.state.samples.forEach(s => {
             s.processes.forEach(p => {
-                //console.log('looking up', p);
-                const header = process2header[p.id];
-                if (header) {
-                    //console.log('  found header');
-                    header.sampleMap[s.id] = true;
+                for (let i = 0; i < s.headers.length; i++) {
+                    let headerToCheck = s.headers[i];
+                    console.log('headerToCheck', headerToCheck);
+                    console.log(`p.id ${p.id}/p.template_name ${p.template_name}`);
+                    let index = _.findIndex(headerToCheck.processes, pid => pid == p.id);
+                    if (index !== -1) {
+                        console.log('    found header to mark');
+                        headerToCheck.use = true;
+                        break;
+                    }
                 }
             });
         });
-
-        console.log('this.state.headers', this.state.headers);
-    }
-
-    sampleHasProcessInHeader(sample, header) {
-        //console.log('sampleHashProcessInHeader', sample, header);
-        return (sample.id in header.sampleMap);
     }
 
     editProcess(process, sample) {
