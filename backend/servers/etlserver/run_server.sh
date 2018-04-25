@@ -35,6 +35,12 @@ guard_check(){
         echo "The MC_LOG_DIR variable is not set - can not run the etl REST server without it"
         OK="not"
     fi
+    if [ ! -f ${ETLSERVER}/.python_env/bin/activate ]; then
+        echo "The python environment for etl REST is missing..."
+        echo "  set it up at ${ETLSERVER} "
+        echo "  with the command python command 'virtualenv .python_env -p python3' "
+        OK="not"
+    fi
 }
 
 export SERVERTYPE=${1-$SERVERTYPE}
@@ -42,7 +48,7 @@ set_locations
 guard_check
 
 if [ "${OK}" == "ok" ]; then
-    # I realize that this is redundant, but ...
+    # I realize that this my be redundant, but ...
     source ${BACKEND}/env/${SERVERTYPE}.sh
     source /etc/materialscommons/config.${SERVERTYPE}
     source ${ETLSERVER}/.python_env/bin/activate

@@ -23,10 +23,6 @@ class MCProjectHomeComponentController {
         this.etlInProgress = false;
         this.etlStatusRecordId = null;
         $scope.editorOptions = editorOpts({height: 65, width: 50});
-
-        // test data
-        // this.etlInProgress = true;
-        // this.etlStatusRecordId = "d816d8b3-ef18-4ef0-9a6b-1d99a2f3d81b";
     }
 
     $onInit() {
@@ -197,8 +193,7 @@ class MCProjectHomeComponentController {
                 this._reloadComponentState();
 
             },
-            (error) => {
-                console.log("MCProjectHomeComponentController - etlStart() - error", error);
+            () => {
                 console.log("MCProjectHomeComponentController - etlStart() - dialog canceled");
             }
         );
@@ -384,90 +379,82 @@ class EtlUploadDialogController {
         this.name = "";
         this.description = "";
         this.files = [];
-        this.use_globus = true;
         // test data
-        this.name = "Test Experiment";
-        this.description = "Description";
+        // this.name = "Test Experiment";
+        this.description = "This is a demo of Excel Spreadsheet uploading and processing";
         this.ep_uuid = '067ce67a-3bf1-11e8-b9b5-0ac6873fc732';
         this.ep_spreadsheet = '/dataForTest/input.xlsx';
         this.ep_data = '/dataForTest/data';
     }
 
-    onSwitchDisplay() {
-        this.use_globus = ! this.use_globus;
-        console.log("EtlUploadDialogController - switch display: ", this.use_globus);
-    }
-
-    done() {
-        console.log("EtlUploadDialogController - Done");
+    uploadWithGlobus() {
+        console.log("EtlUploadDialogController - Start upload with globus");
         let data = {};
         data.project_id = this.project.id;
         data.name = this.name;
         data.description = this.description;
-        if (this.use_globus) {
-            data.globus_uuid = this.ep_uuid;
-            data.globus_excel_file = this.ep_spreadsheet;
-            data.globus_data_dir = this.ep_data;
-            console.log("data to send = ", data);
-            return this.etlServerAPI.startBackgroundEtlUpload(data).then (
-                (reply) => {
-                    console.log("EtlUploadDialogController setup completed", reply);
-                    this.$mdDialog.hide(reply);
-                },
-                (e) => {
-                    console.log("upload failed", e);
-                    if (e.status === 502) {
-                        console.log("Service unavailable: 502");
-                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
-                    } else if (e.status > 200) {
-                        console.log("Service unavailable: " + e.status);
-                        this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
-                    }
-                    this.$mdDialog.cancel(e);
+        data.globus_uuid = this.ep_uuid;
+        data.globus_excel_file = this.ep_spreadsheet;
+        data.globus_data_dir = this.ep_data;
+        console.log("data to send = ", data);
+        return this.etlServerAPI.startBackgroundEtlUpload(data).then (
+            (reply) => {
+                console.log("EtlUploadDialogController setup completed", reply);
+                this.$mdDialog.hide(reply);
+            },
+            (e) => {
+                console.log("upload failed", e);
+                if (e.status === 502) {
+                    console.log("Service unavailable: 502");
+                    this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
+                } else if (e.status > 200) {
+                    console.log("Service unavailable: " + e.status);
+                    this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
                 }
-            );
-        }
-        else {
-            let f = this.files[0];
-            data.file = f;
-            console.log("data to send = ", data);
-            this.isUploading = true;
-            return this.Upload.upload({
-                url: `api/etl/upload?apikey=${this.User.apikey()}`,
-                data: data
-            }).then(
-                (uploaded) => {
-                    console.log("upload completed", uploaded.data);
-                    this.$mdDialog.hide(uploaded.data);
-                    this.isUploading = false;
-                },
-                (e) => {
-                    console.log("upload failed", e);
-                    if (e.status === 502) {
-                        console.log("Service unavailable: 502");
-                        this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
-                    } else if (e.status > 200) {
-                        console.log("Service unavailable: " + e.status);
-                        this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
-                    }
-                    this.$mdDialog.cancel(e);
-                    this.isUploading = false;
-                },
-                (evt) => {
-                    f.progress = 100.0 * evt.loaded / evt.total;
-                    console.log("upload progress", f.progress);
+                this.$mdDialog.cancel(e);
+            }
+        );
+    }
+
+    uploadDirect() {
+        console.log("EtlUploadDialogController - Start upload direct");
+        let data = {};
+        data.project_id = this.project.id;
+        data.name = this.name;
+        data.description = this.description;
+        let f = this.files[0];
+        data.file = f;
+        console.log("data to send = ", data);
+        this.isUploading = true;
+        return this.Upload.upload({
+            url: `api/etl/upload?apikey=${this.User.apikey()}`,
+            data: data
+        }).then(
+            (uploaded) => {
+                console.log("upload completed", uploaded.data);
+                this.$mdDialog.hide(uploaded.data);
+                this.isUploading = false;
+            },
+            (e) => {
+                console.log("upload failed", e);
+                if (e.status === 502) {
+                    console.log("Service unavailable: 502");
+                    this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
+                } else if (e.status > 200) {
+                    console.log("Service unavailable: " + e.status);
+                    this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
                 }
-            );
-        }
+                this.$mdDialog.cancel(e);
+                this.isUploading = false;
+            },
+            (evt) => {
+                f.progress = 100.0 * evt.loaded / evt.total;
+                console.log("upload progress", f.progress);
+            }
+        );
     }
 
     cancel() {
-        let data = {};
-        data.file = this.files[0];
-        data.project_id = this.project.id;
-        data.name = this.experiment_name;
-        data.description = this.description;
-        console.log("data: ", data);
         this.$mdDialog.cancel();
     }
 }
