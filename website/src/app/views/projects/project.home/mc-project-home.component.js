@@ -189,11 +189,14 @@ class MCProjectHomeComponentController {
                 this.etlStatusRecordId = results.status_record_id;
                 if (results.status == "ERROR") {
                     this.etlReportComplexError(results);
+                } else if (results.status == "DONE") {
+                    this.etlInProgress = false;
+                    console.log("MCProjectHomeComponentController - etlStart() - done");
+                    this.etlReportImmediateComplete(results);
                 } else {
                     console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
                 }
                 this._reloadComponentState();
-
             },
             () => {
                 console.log("MCProjectHomeComponentController - etlStart() - dialog canceled");
@@ -201,8 +204,27 @@ class MCProjectHomeComponentController {
         );
     }
 
+    etlReportImmediateComplete(status){
+        console.log("MCProjectHomeComponentController - etlReportImmediateComplete() - status", status);
+
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/mc-etl-message-dialog.html',
+            controller: EtlMessageDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                status: status,
+                message_text: "",
+                should_sync_flag: true
+            }
+        }).then(() => {
+            // Todo: should sync here or eariler in control chain
+            this._reloadComponentState();
+        });
+    }
+
     etlReportComplexError(status){
-        console.log("MCProjectHomeComponentController - etlReportComplexError() - results", status);
+        console.log("MCProjectHomeComponentController - etlReportComplexError() - status", status);
         this.etlStatusRecordId = status.status_record_id;
         console.log("this.etlInProgress", this.etlInProgress);
         console.log("this.etlStatusRecordId", this.etlStatusRecordId);
@@ -473,7 +495,11 @@ class EtlUploadDialogController {
         }).then(
             (uploaded) => {
                 console.log("upload completed", uploaded.data);
-                this.$mdDialog.hide(uploaded.data);
+                let results = {
+                    status: "DONE",
+                    data: uploaded.data
+                };
+                this.$mdDialog.hide(results);
                 this.isUploading = false;
             },
             (e) => {
@@ -519,9 +545,7 @@ class EtlStatusDialogController {
     }
 
     isError() {
-        let rt = (this.didFail() || (this.status.status === "ERROR"));
-        console.log("isError()", rt);
-        return rt;
+        return (this.didFail() || (this.status.status === "ERROR"));
     }
 
     didFail() {
@@ -532,6 +556,21 @@ class EtlStatusDialogController {
         return (this.status.status == "Success");
     }
 
+}
+
+class EtlMessageDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    shouldSync(){
+        return this.should_sync_flag;
+    }
+
+    dismiss() {
+        this.$mdDialog.hide();
+    }
 }
 
 angular.module('materialscommons').component('mcProjectHome', {

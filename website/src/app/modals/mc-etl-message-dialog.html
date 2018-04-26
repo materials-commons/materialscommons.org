@@ -1,0 +1,16 @@
+<md-dialog flex="50">
+    <md-toolbar layout="row">
+        ETL - Message
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <p>{{$ctrl.message_text}}</p>
+        <p ng-if="$ctrl.shouldSync()">
+            To view results you will need to click the 'sync' button
+            (<b class="fa fa-fw fa-refresh"></b>)
+            in the left-side menu bar.
+        </p>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button class="md-primary" ng-click="$ctrl.dismiss()">Dismiss</md-button>
+    </md-dialog-actions>
+</md-dialog>
