@@ -18,7 +18,6 @@ export RETHINKDB_CLUSTER_PORT=51815
 export MCSTOREDBIN=${MC_DEPLOY_DIR}/bin/mcstored
 export MC_ES_URL="http://localhost:9800"
 export MC_ES_NAME="mc-es-test"
-export MC_FAKTORY_NAME="mc-faktory-test"
 export MC_LOG_DIR=/var/log/materialscommons/test
 export MC_FAKTORY_DIR=/var/lib/materialscommons/faktory/test
 
@@ -46,4 +45,6 @@ export MCAPID_PORT=6028
 export REDIS_PORT=7379
 
 export MC_FACTORY_PORT=7419
-# see also the override file /etc/materiaslcommons/config.test
+export MC_FAKTORY_NAME="mc-faktory-test"
+
+# see also the override file /etc/materialscommons/config.test

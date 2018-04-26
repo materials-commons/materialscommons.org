@@ -46,14 +46,14 @@ function start_faktory() {
     if [ "$(uname)" = "Darwin" ]; then
         R=$(ps -eo "pid,command" | grep faktory | grep -v tail | grep -v grep | grep -v bash)
         if [ "$R" = "" ]; then
-            echo "Starting Faktory with command line..."
+            echo "Starting Faktory from command line..."
             faktory > ${MC_LOG_DIR}/faktory.out.${SERVERTYPE} 2>&1&
             sleep 1
         fi
     else
         R=$(docker_instance_running ${MC_FAKTORY_NAME})
         if [ "$R" = "" ]; then
-            echo "Starting Faktory instance ${MC_FAKTORY_NAME}..."
+            echo "Starting Faktory docker instance ${MC_FAKTORY_NAME}..."
             docker start ${MC_FAKTORY_NAME}
             sleep 1
         fi
@@ -71,7 +71,7 @@ function stop_faktory() {
     else
         echo "Stopping Faktory instance (${MC_FAKTORY_NAME}) in docker..."
         docker stop ${MC_FAKTORY_NAME}
-        echo "  Stopped Elasticsearch docker instance ${MC_FAKTORY_NAME}"
+        echo "  Stopped Faktory docker instance ${MC_FAKTORY_NAME}"
     fi
 }
 
@@ -95,7 +95,6 @@ function stop_etl_faktory_worker() {
 
 function start_etl_server() {
     R=$(is_running "mc_etlserver.py")
-    echo $R
     if [ "$R" = "" ]; then
         echo "Starting mcetlserver (${SERVERTYPE})..."
         ./servers/etlserver/run_server.sh ${SERVERTYPE} > ${MC_LOG_DIR}/mcetlserver.out.${SERVERTYPE} 2>&1&
@@ -501,7 +500,7 @@ function ps_server_env() {
     fi
 
     echo
-    echo "Faktory"
+    echo "Faktory (${SERVERTYPE}):"
     if [ "$(uname)" = "Darwin" ]; then
         ps -ef | grep faktory | grep -v tail | grep -v grep
     else
