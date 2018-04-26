@@ -12,49 +12,62 @@ export class ProjectStore {
         this._wireRelationships(project);
     }
 
+    clearProjectStore() {
+        this.store = {};
+        this.experimentStore = new ExperimentStore();
+        this.sampleStore = new SampleStore();
+        this.processStore = new ProcessStore();
+        this.relationshipStore = new RelationshipsStore();
+    }
+
+    reloadProject(project) {
+        this.clearProjectStore();
+        this.addProject(project);
+    }
+
     getProject(projectId) {
-        if (projectId in this.store) {
-            let project = _.clone(this.store[projectId]);
-            project.samples = [];
-            this.relationshipStore.getProjectSampleIds(projectId).forEach(sid => {
-                let sample = this.sampleStore.getSample(sid);
-                sample.processes = [];
-                let unorderedProcesses = [];
-                this.relationshipStore.getSampleProcessIds(sid).forEach(p => {
-                    let process = this.processStore.getProcess(p.process_id);
-                    process.sample_id = sid;
-                    process.property_set_id = p.property_set_id;
-                    unorderedProcesses.push(process);
-                });
-                sample.processes = this._orderProcesses(unorderedProcesses);
-                project.samples.push(sample);
-            });
-
-            project.experiments = [];
-            this.relationshipStore.getProjectExperimentIds(projectId).forEach(eid => {
-                let experiment = this.experimentStore.getExperiment(eid);
-                experiment.samples = [];
-                this.relationshipStore.getExperimentSampleIds(eid).forEach(sid => {
-                    experiment.samples.push(this.sampleStore.getSample(sid));
-                });
-                project.experiments.push(experiment);
-            });
-
-            return project;
+        if (!(projectId in this.store)) {
+            return null;
         }
 
-        return null;
+        let project = _.clone(this.store[projectId]);
+        project.samples = [];
+        this.relationshipStore.getProjectSampleIds(projectId).forEach(sid => {
+            let sample = this.sampleStore.getSample(sid);
+            sample.processes = [];
+            let unorderedProcesses = [];
+            this.relationshipStore.getSampleProcessIds(sid).forEach(p => {
+                let process = this.processStore.getProcess(p.process_id);
+                process.sample_id = sid;
+                process.property_set_id = p.property_set_id;
+                unorderedProcesses.push(process);
+            });
+            sample.processes = this._orderProcesses(unorderedProcesses);
+            project.samples.push(sample);
+        });
+
+        project.experiments = [];
+        this.relationshipStore.getProjectExperimentIds(projectId).forEach(eid => {
+            let experiment = this.experimentStore.getExperiment(eid);
+            experiment.samples = [];
+            this.relationshipStore.getExperimentSampleIds(eid).forEach(sid => {
+                experiment.samples.push(this.sampleStore.getSample(sid));
+            });
+            project.experiments.push(experiment);
+        });
+
+        return project;
     }
 
     _orderProcesses(unorderedProcesses) {
-        console.log('---_orderProcesses---');
-        console.log('  unorderedProcesses', unorderedProcesses);
+        // console.log('---_orderProcesses---');
+        // console.log('  unorderedProcesses', unorderedProcesses);
         let createProcess = null,
             orderedProcesses = [],
             processMap = {};
         unorderedProcesses.forEach(p => {
             if (p.process_type === 'create') {
-                console.log('  setting createProcess to', p);
+                // console.log('  setting createProcess to', p);
                 createProcess = p;
             }
             const id = `${p.sample_id}/${p.property_set_id}`;
@@ -64,7 +77,7 @@ export class ProjectStore {
             processMap[id].push(p);
         });
 
-        console.log('  processMap', processMap);
+        // console.log('  processMap', processMap);
 
         orderedProcesses.push(createProcess);
         // let currentId = `${createProcess.sample_id}/${createProcess.property_set_id}`;

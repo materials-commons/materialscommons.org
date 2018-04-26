@@ -5,7 +5,7 @@ class MCProjectHomeComponentController {
 
     constructor($scope, experimentsAPI, toast, $state,
                 $stateParams, editorOpts, $mdDialog,
-                mcprojstore, projectsAPI, etlServerAPI) {
+                mcprojstore, mcprojectstore2, projectsAPI, etlServerAPI) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
@@ -18,6 +18,7 @@ class MCProjectHomeComponentController {
         this.selectingExperiments = false;
         this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
+        this.mcprojectstore2 = mcprojectstore2;
         this.projectsAPI = projectsAPI;
         this.etlServerAPI = etlServerAPI;
         this.etlInProgress = false;
@@ -84,6 +85,7 @@ class MCProjectHomeComponentController {
         this.onholdExperimentsCount = experimentsList.filter(e => e.status === 'on-hold').length;
         this.doneExperimentsCount = experimentsList.filter(e => e.status === 'done').length;
         this.getProjectExperiments();
+        this.mcprojectstore2.reloadProject(this.$stateParams.project_id);
     }
 
     startNewExperiment() {

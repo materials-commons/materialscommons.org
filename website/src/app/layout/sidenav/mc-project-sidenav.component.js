@@ -1,8 +1,9 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, mcprojstore, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q) {
+    constructor($state, mcprojstore, mcprojectstore2, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q) {
         this.$state = $state;
         this.mcprojstore = mcprojstore;
+        this.mcprojectstore2 = mcprojectstore2;
         this.experiment = null;
         this.$timeout = $timeout;
         this.ProjectModel = ProjectModel;
@@ -50,6 +51,7 @@ class MCProjectSidenavComponentController {
     }
 
     refreshProject() {
+        this.mcprojectstore2.reloadProject(this.project.id);
         this.ProjectModel.getProjectForCurrentUser(this.project.id).then((p) => this._updateProject(p));
     }
 
