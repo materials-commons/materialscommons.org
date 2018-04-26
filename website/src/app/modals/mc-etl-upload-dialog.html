@@ -1,82 +1,108 @@
 <md-dialog flex="50">
     <md-toolbar layout="row">
-        <div ng-if="$ctrl.use_globus" layout-margin>
+        <div ng-if="!$ctrl.currentTab" layout-margin>
             ETL - Create Experiment using Globus
         </div>
-        <div ng-if="!$ctrl.use_globus" layout-margin>
+        <div ng-if="$ctrl.currentTab" layout-margin>
             ETL - Create Experiment using direct upload
         </div>
     </md-toolbar>
-    <md-dialog-content ng-if="$ctrl.use_globus" layout-margin>
-        <form layout="column" class="dialog-form">
-            <p> Create an experiment, using Globus to upload an
-            Excel spreadsheet and its data files. If you do not wish
-            to use Globus at this time, you can switch to an
-            <a ng-click="$ctrl.onSwitchDisplay()">alternate dialog</a>.
-            </p>
-            <p> To use this form, you will first need to create a shared Globus endpoint and give
-            read permission to the Materials Client broker:
-            <em>MaterialsCommonsTest-ConfClient</em>.
-            </p>
-            <br />
-            <md-input-container md-no-float>
-                <label>Experiment Name</label>
-                <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
-            </md-input-container>
-            <md-input-container md-no-float>
-                <label>Experiment Description</label>
-                <input ng-required="false" ng-model="$ctrl.description" type="text" on-enter="ctrl.submit()">
-            </md-input-container>
-            <md-input-container md-no-float>
-                <label>Globus Shared endpoint UUID</label>
-                <input ng-required="true" ng-model="$ctrl.ep_uuid" type="text" on-enter="ctrl.submit()">
-            </md-input-container>
-            <md-input-container md-no-float>
-                <label>Path within the endpoint of the excel file: defaults to 'input.xlsx'</label>
-                <input ng-required="true" ng-model="$ctrl.ep_spreadsheet" type="text" on-enter="ctrl.submit()">
-            </md-input-container>
-            <md-input-container md-no-float>
-                <label>Path within the endpoint of the data directory, defaults to 'data'</label>
-                <input ng-required="true" ng-model="$ctrl.ep_data" type="text" on-enter="ctrl.submit()">
-            </md-input-container>
-        </form>
+    <md-dialog-content layout-margin>
+        <md-tabs md-selected="$ctrl.currentTab" md-stretch-tabs md-dynamic-height flex="100" layout-margin>
+            <md-tab>
+                <md-tab-label>Using Globus</md-tab-label>
+                <md-tab-body>
+                    <form layout="column" class="dialog-form">
+                        <p> Create an experiment, using Globus to upload an
+                            Excel spreadsheet and its data files. If you do not wish
+                            to use Globus at this time, you can switch to the 'DRAG AND DROP'
+                            tab (above).
+                        </p>
+                        <br />
+                        <p> To use this form, you will first need to create a shared Globus endpoint and give
+                            read permission to the Materials Client broker:
+                            <b>MaterialsCommons Confidential Client</b>.
+                            Help is
+                            <a href="https://github.com/materials-commons/materialscommons.org/wiki/ETL-Using-Globus"
+                               target="_blank" >available</a>.
+                        </p>
+                        <br />
+                        <p>To create new experiment in the project <b>{{$ctrl.project.name}}</b>.
+                            (Note: * indicates required fields)
+                        </p>
+                        <br />
+                        <md-input-container md-no-float>
+                            <label>Experiment Name</label>
+                            <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
+                        </md-input-container>
+                        <md-input-container md-no-float>
+                            <label>Experiment Description</label>
+                            <input ng-required="false" ng-model="$ctrl.description" type="text" on-enter="ctrl.submit()">
+                        </md-input-container>
+                        <md-input-container md-no-float>
+                            <label>Globus Shared endpoint UUID</label>
+                            <input ng-required="true" ng-model="$ctrl.ep_uuid" type="text" on-enter="ctrl.submit()">
+                        </md-input-container>
+                        <md-input-container md-no-float>
+                            <label>Path within the endpoint of the excel file: defaults to 'input.xlsx'</label>
+                            <input ng-required="true" ng-model="$ctrl.ep_spreadsheet" type="text" on-enter="ctrl.submit()">
+                        </md-input-container>
+                        <md-input-container md-no-float>
+                            <label>Path within the endpoint of the data directory, defaults to 'data'</label>
+                            <input ng-required="true" ng-model="$ctrl.ep_data" type="text" on-enter="ctrl.submit()">
+                        </md-input-container>
+                    </form>
+                </md-tab-body>
+            </md-tab>
+            <md-tab>
+                <md-tab-label>Drag and Drop</md-tab-label>
+                <md-tab-body>
+                    <form layout="column" class="dialog-form">
+                        <p> To create an experiment <b>without uploading files</b>,
+                            fill out the form and drag/drop (or open)
+                            the Excel spreadsheet, below.
+                        </p>
+                        <p> To create an experiment with the data files uploaded, using Globus,
+                            switch to the alternate dialog using the 'USING GLOBUS' tab (above).
+                        </p>
+                        <br />
+                        <p> To create new experiment in the project <b>{{$ctrl.project.name}}</b>.
+                            The experiment name and the excel file are required (*).
+                        </p>
+                        <br />
+                        <md-input-container md-no-float>
+                            <label>Experiment Name</label>
+                            <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
+                        </md-input-container>
+                        <md-input-container md-no-float>
+                            <label>Experiment Description</label>
+                            <input ng-required="false" ng-model="$ctrl.description" type="text" on-enter="ctrl.submit()">
+                        </md-input-container>
+                        <div ng-if="($ctrl.files.length > 0)">
+                            Using the Excel Spreadsheet: <b><em>{{$ctrl.files[0].name}}</em></b>.
+                        </div>
+                        <div ng-if="($ctrl.files.length === 0)">
+                            Drag an Excel Spreadsheet file into box (*), or...
+                            <div ngf-select ngf-multiple="false" ngf-drop ngf-keep="'distinct'"
+                                 ng-model="$ctrl.files" class="drop-box pointer text-uppercase">
+                                click to select Excel file for upload (*)
+                            </div>
+                        </div>
+                    </form>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
     </md-dialog-content>
-    <md-dialog-content ng-if="!$ctrl.use_globus" layout-margin>
-        <form layout="column" class="dialog-form">
-            <p>To create an experiment <b>without uploading files</b>,
-            fill out the form and drag/drop (or open)
-            the Excel spreadsheet, below.
-            </p>
-            <p>To create an experiment with the data files uploaded, using Globus,
-            switch to the <a ng-click="$ctrl.onSwitchDisplay()">alternate dialog</a>.</p>
-            <br />
-            <p>To create new experiment in the project <b>{{$ctrl.project.name}}</b></p>
-            <md-input-container md-no-float>
-                <label>Experiment Name</label>
-                <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
-            </md-input-container>
-            <md-input-container md-no-float>
-                <label>Experiment Description</label>
-                <input ng-required="false" ng-model="$ctrl.description" type="text" on-enter="ctrl.submit()">
-            </md-input-container>
-            <div ng-if="($ctrl.files.length > 0)">
-                Using the Excel Spreadsheet: <b><em>{{$ctrl.files[0].name}}</em></b>.
-            </div>
-            <div ng-if="($ctrl.files.length === 0)">
-                Drag an Excel Spreadsheet file into box, or...
-                <div ngf-select ngf-multiple="false" ngf-drop ngf-keep="'distinct'"
-                     ng-model="$ctrl.files" class="drop-box pointer text-uppercase">
-                    click to select Excel file for upload
-                </div>
-            </div>
-        </form>
-    </md-dialog-content>
-    <md-dialog-actions  ng-if="!$ctrl.use_globus" layout="row">
-        <md-button class="md-primary" ng-disabled="!(($ctrl.files.length > 0) && $ctrl.name)" ng-click="$ctrl.done()">Upload</md-button>
+    <md-dialog-actions  ng-if="$ctrl.currentTab" layout="row">
+        <md-button class="md-primary"
+                   ng-disabled="!(($ctrl.files.length > 0) && $ctrl.name)"
+                   ng-click="$ctrl.uploadDirect()">Upload</md-button>
         <md-button class="md-primary" ng-click="$ctrl.cancel()">Cancel</md-button>
     </md-dialog-actions>
-    <md-dialog-actions  ng-if="$ctrl.use_globus" layout="row">
-        <md-button class="md-primary" ng-click="$ctrl.done()">Start Upload</md-button>
+    <md-dialog-actions  ng-if="!$ctrl.currentTab" layout="row">
+        <md-button class="md-primary"
+                   ng-disabled="!($ctrl.name && $ctrl.ep_uuid && $ctrl.ep_spreadsheet && $ctrl.ep_data)"
+                   ng-click="$ctrl.uploadWithGlobus()">Start Upload</md-button>
         <md-button class="md-primary" ng-click="$ctrl.cancel()">Cancel</md-button>
     </md-dialog-actions>
 </md-dialog>

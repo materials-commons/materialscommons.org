@@ -1,13 +1,26 @@
 <md-dialog flex="50">
-    <md-toolbar layout="row">
+    <md-toolbar ng-if="$ctrl.isError()" class="md-warn" layout="row">
+        ETL - Status of upload and create Experiment using Globus
+    </md-toolbar>
+    <md-toolbar ng-if="!$ctrl.isError()" layout="row">
         ETL - Status of upload and create Experiment using Globus
     </md-toolbar>
     <md-dialog-content ng-if="$ctrl.status" layout-margin>
         <p>Status of upload and ETL background task.</p>
-        <p>Building experiment: {{$ctrl.status.extras.experiment_name}}.</p>
-        <p>Globus transfer from endpoint: {{$ctrl.status.extras.globus_endpoint}}</p>
+        <p ng_if="$ctrl.status.messages"> Multiple errors have occurred;
+            if anything seems strange - please contact a site administrator.
+        </p>
+        <p ng_if="$ctrl.status.extras.experiment_name"> Building experiment: {{$ctrl.status.extras.experiment_name}}.</p>
+        <p ng_if="$ctrl.status.extras.globus_endpoint">Globus transfer from endpoint: {{$ctrl.status.extras.globus_endpoint}}</p>
         <p ng_if="$ctrl.status.queue">Current process queue: {{$ctrl.status.queue}}</p>
         <p>Current status: {{$ctrl.status.status}}</p>
+        <p> Upon sucess, note: to view results you will have to click the 'sync' button
+            (<b class="fa fa-fw fa-refresh"></b>)
+            in the left-side menu bar. (It's a known bug).
+        </p>
+        <ul ng_if="$ctrl.status.messages" ng-repeat="(key, value) in $ctrl.status.messages">
+            <li>{{value}}</li>
+        </ul>
     </md-dialog-content>
     <md-dialog-content ng-if="!$ctrl.status" layout-margin>
         <p>Status of upload and ETL background task is unavailable.</p>

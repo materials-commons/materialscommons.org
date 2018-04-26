@@ -36,6 +36,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
             log.error("Unable to create status_record_id")
             return {"status": "FAIL"}
         check = setup.verify_setup(status_record_id)
+        check['status_record_id'] = status_record_id
         if not check['status'] == "SUCCESS":
             log.error("Failed to verify setup; status_record_id = {}".format(status_record_id))
             DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
@@ -82,7 +83,7 @@ def elt_globus_upload(status_record_id):
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
         logging.exception(message)
-        return None
+        return status_record_id
 
 
 def etl_excel_processing(status_record_id):
