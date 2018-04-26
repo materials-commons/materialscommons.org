@@ -45,8 +45,8 @@ class ETLSetup:
         if not results['status'] == 'SUCCESS':
             # here we return error messaage to user!
             self.log.error("Preconditions for transfer failed...")
-            for key in results:
-                self.log.error(" Failure: " + key + " :: " + results[key])
+            for key in results['messages']:
+                self.log.error(" Failure: " + key + " :: " + results['messages'][key])
             return results
         self.log.info(results)
         return results

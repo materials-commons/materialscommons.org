@@ -23,8 +23,10 @@ class VerifySetup:
         self.check_users_source_paths()
 
         if self.error_status:
-            self.error_status['status'] = "ERROR"
-            return self.error_status
+            return {
+                'messages': self.error_status,
+                'status': 'ERROR'
+            }
         return {'status': 'SUCCESS'}
 
     def check_project_exists(self):
@@ -85,7 +87,7 @@ class VerifySetup:
             both = False
             message = "User's endpoint, " + self.globus_endpoint
             message += ", code = " + e.code
-            self.error_status["Cannot reach users endpoint"] = message
+            self.error_status["Cannot reach user's endpoint"] = message
 
         if not both:
             return
@@ -94,11 +96,11 @@ class VerifySetup:
 
     def check_users_source_paths(self):
         if not self.find_user_path(self.data_dir_path):
-            message = "Users endpoint directory not found, " + self.data_dir_path
+            message = "User's endpoint directory not found, " + self.data_dir_path
             self.error_status["Missing data directory"] = message
 
         if not self.find_user_path(self.excel_file_path):
-            message = "Users endpoint file not found, " + self.excel_file_path
+            message = "User's endpoint file not found, " + self.excel_file_path
             self.error_status["Missing Excel file"] = message
 
     def find_user_path(self, path):
