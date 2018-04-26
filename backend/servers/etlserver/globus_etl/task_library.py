@@ -1,11 +1,23 @@
 import logging
 import os
+
+from materials_commons.api import _use_remote as get_remote
+# noinspection PyProtectedMember
+from materials_commons.api import _Config as Config
+# noinspection PyProtectedMember
+from materials_commons.api import _Remote as Remote
+# noinspection PyProtectedMember
+from materials_commons.api import _set_remote as set_remote
+
 from ..DatabaseInterface import DatabaseInterface
 from ..BackgroundProcess import BackgroundProcess
 from .MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from .BuildProjectExperiment import BuildProjectExperiment
 from ..mcexceptions import MaterialsCommonsException
 from .ETLSetup import ETLSetup
+from ..apikeydb import user_apikey
+# noinspection PyProtectedMembe
+from ..apikeydb import _load_apikeys as init_api_keys
 
 
 def startup_and_verify(user_id, project_id, experiment_name, experiment_description,
@@ -24,6 +36,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
             log.error("Unable to create status_record_id")
             return {"status": "FAIL"}
         check = setup.verify_setup(status_record_id)
+        check['status_record_id'] = status_record_id
         if not check['status'] == "SUCCESS":
             log.error("Failed to verify setup; status_record_id = {}".format(status_record_id))
             DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
@@ -70,7 +83,7 @@ def elt_globus_upload(status_record_id):
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
         logging.exception(message)
-        return None
+        return status_record_id
 
 
 def etl_excel_processing(status_record_id):
@@ -79,6 +92,9 @@ def etl_excel_processing(status_record_id):
         log = logging.getLogger(__name__ + ".etl_excel_processing")
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
+        user_id = status_record['owner']
+        _set_global_python_api_remote_for_user(user_id)
+        log.info("apikey = '{}'".format(get_remote().config.mcapikey))
         project_id = status_record['project_id']
         experiment_name = status_record['extras']['experiment_name']
         experiment_description = status_record['extras']['experiment_description']
@@ -86,7 +102,6 @@ def etl_excel_processing(status_record_id):
         excel_file_path = status_record['extras']['excel_file_path']
         data_dir_path = status_record['extras']['data_dir_path']
 
-        log.info("before join")
         log.info("excel_file_path = {}".format(excel_file_path))
         log.info("data_dir_path = {}".format(data_dir_path))
         log.info("transfer_base_path = {}".format(transfer_base_path))
@@ -95,13 +110,16 @@ def etl_excel_processing(status_record_id):
             excel_file_path = excel_file_path[1:]
 
         if data_dir_path.startswith('/'):
-            data_dir_path = excel_file_path[1:]
+            data_dir_path = data_dir_path[1:]
+
+        log.info("partial excel_file path = {}".format(excel_file_path))
+        log.info("partial data_dir path = {}".format(data_dir_path))
 
         excel_file_path = os.path.join(transfer_base_path, excel_file_path)
         data_dir_path = os.path.join(transfer_base_path, data_dir_path)
 
-        log.info("excel_file_path = {}".format(excel_file_path))
-        log.info("data_dir_path = {}".format(data_dir_path))
+        log.info("full excel_file_path = {}".format(excel_file_path))
+        log.info("full data_dir_path = {}".format(data_dir_path))
 
         results = build_experiment(project_id, experiment_name, experiment_description,
                                    excel_file_path, data_dir_path)
@@ -167,3 +185,16 @@ def build_experiment(project_id, experiment_name, experiment_description,
     except MaterialsCommonsException as e:
         log.info("Starting Experiment Build Fail: {}, {}".format(project_id, experiment_name))
         return {"status": "FAILED", "error": e}
+
+
+def _set_global_python_api_remote_for_user(user_id):
+    init_api_keys()
+    api_key = user_apikey(user_id)
+    if not api_key:
+        raise MaterialsCommonsException("No apikey for user: " + user_id)
+    config = Config(override_config={
+        "apikey": api_key,
+    })
+    remote = Remote(config=config)
+    set_remote(remote)
+

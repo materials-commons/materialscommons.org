@@ -97,7 +97,7 @@ def stage_background_excel_upload():
     log.info("/globus/stage - args - data_dir_path = {}".format(data_dir_path))
     results = startup_and_verify(user_id, project_id, experiment_name, experiment_description,
                                  globus_endpoint, excel_file_path, data_dir_path)
-    log.info("/globus/stage - done")
+    log.info("/globus/stage - done {}".format(results))
     return format_as_json_return(results)
 
 
@@ -106,13 +106,34 @@ def monitor_background_excel_upload():
     log.info("/globus/monitor - starting")
     j = request.get_json(force=True)
     log.info("Results as json = {}".format(j))
-    status_record_id = j['status_record_id']
-    log.info("status_record_id = {}".format(status_record_id))
-    status_record = DatabaseInterface().get_status_record(status_record_id)
-    del status_record['birthtime']
-    del status_record['mtime']
+    status_record_id = None
+    status_record = {
+        "status": "Fail",
+        "reason": "Status record unavailable",
+        "status_record_id": None
+    }
+    try:
+        status_record_id = j['status_record_id']
+        log.info("status_record_id = {}".format(status_record_id))
+        status_record = {
+            "status": "Fail",
+            "reason": "Status record unavailable",
+            "status_record_id": status_record_id
+        }
+        if status_record_id:
+            status_record = DatabaseInterface().get_status_record(status_record_id)
+            del status_record['birthtime']
+            del status_record['mtime']
+    except KeyError as ke:
+        status_record = {
+            "status": "Fail",
+            "reason": "Failed to get status_record_id from request",
+            "status_record_id": None
+        }
+    status_recored_json = format_as_json_return(status_record)
+    log.info("return as json = {}".format(status_recored_json))
     log.info("/globus/monitor - done")
-    return format_as_json_return(status_record)
+    return status_recored_json
 
 
 @app.route('/upload', methods=['POST'])

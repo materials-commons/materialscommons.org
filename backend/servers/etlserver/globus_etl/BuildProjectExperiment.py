@@ -373,6 +373,7 @@ class BuildProjectExperiment:
             directory = self.project.get_by_local_path(entry)
             file_list = self._get_all_files_in_directory(directory)
             process_files += file_list
+        self.log.info("for process {}({})adding files {}".format(process.name, process.id, process_files))
         process.add_files(process_files)
 
     def set_project_description(self, description):

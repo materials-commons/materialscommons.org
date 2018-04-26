@@ -74,7 +74,8 @@ set_locations() {
 }
 
 set_env() {
-    source ${ENV}/unit.sh
+    echo "Using SERVERTYPE = ${SERVERTYPE}"
+    source ${ENV}/${SERVERTYPE}.sh
 }
 
 print_env_and_locations() {
@@ -161,6 +162,7 @@ rebuild_test_database() {
 }
 
 if [ -z "$SERVERTYPE" ]; then
+    echo "Setting SERVERTYPE = ${SERVERTYPE} to unit"
     export SERVERTYPE=unit
 fi
 

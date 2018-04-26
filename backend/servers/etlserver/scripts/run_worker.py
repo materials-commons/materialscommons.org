@@ -6,8 +6,6 @@ from ..faktory.EtlFaktoryWorker import EtlFaktoryWorker as Worker
 def main():
     log = logging.getLogger("top_level_run_worker")
     worker = Worker()
-    log.debug("Setup ETL worker")
-    worker.setup()
     # Note: runs "forever"
     log.info("Run ETL worker")
     worker.run()

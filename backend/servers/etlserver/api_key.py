@@ -37,7 +37,6 @@ def apikey(method=None, shared=False):
 def set_global_python_api_remote(api_key):
     config = Config(override_config={
         "apikey": api_key,
-        "mcurl": "http://mcdev.localhost/api"
     })
     remote = Remote(config=config)
     set_remote(remote)
