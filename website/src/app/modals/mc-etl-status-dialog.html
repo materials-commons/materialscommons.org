@@ -7,16 +7,16 @@
     </md-toolbar>
     <md-dialog-content ng-if="$ctrl.status" layout-margin>
         <p>Status of upload and ETL background task.</p>
-        <p ng_if="$ctrl.status.messages"> Multiple errors have occurred;
+        <p ng_if="$ctrl.isError() && $ctrl.status.messages"> Unexpected errors have occurred;
             if anything seems strange - please contact a site administrator.
         </p>
         <p ng_if="$ctrl.status.extras.experiment_name"> Building experiment: {{$ctrl.status.extras.experiment_name}}.</p>
         <p ng_if="$ctrl.status.extras.globus_endpoint">Globus transfer from endpoint: {{$ctrl.status.extras.globus_endpoint}}</p>
         <p ng_if="$ctrl.status.queue">Current process queue: {{$ctrl.status.queue}}</p>
         <p>Current status: {{$ctrl.status.status}}</p>
-        <p> Upon sucess, note: to view results you will have to click the 'sync' button
+        <p ng-if="$ctrl.didSucceed()"> Upon sucess: to view results you will need to click the 'sync' button
             (<b class="fa fa-fw fa-refresh"></b>)
-            in the left-side menu bar. (It's a known bug).
+            in the left-side menu bar.
         </p>
         <ul ng_if="$ctrl.status.messages" ng-repeat="(key, value) in $ctrl.status.messages">
             <li>{{value}}</li>
@@ -27,8 +27,8 @@
         <p>Please inform Site Administrator. Thanks.</p>
     </md-dialog-content>
     <md-dialog-actions layout="row">
-        <md-button ng-if="$ctrl.didFail()" class="md-primary" ng-click="$ctrl.dismiss()">Retry</md-button>
+        <md-button ng-if="$ctrl.didFail()" class="md-primary" ng-click="$ctrl.done()">Exit/Retry</md-button>
         <md-button ng-if="$ctrl.didSucceed()" class="md-primary" ng-click="$ctrl.done()">View Experiment</md-button>
-        <md-button class="md-primary" ng-click="$ctrl.dismiss()">Dismiss</md-button>
+        <md-button ng-if="!$ctrl.isDone()" class="md-primary" ng-click="$ctrl.dismiss()">Dismiss</md-button>
     </md-dialog-actions>
 </md-dialog>
