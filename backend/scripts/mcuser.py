@@ -48,6 +48,9 @@ if __name__ == "__main__":
     parser.add_option("-a", "--admin", dest="admin",
                       default=False, action="store_true",
                       help="Add as admin")
+    parser.add_option("-b", "--beta", dest="beta",
+                      default=False, action='store_true',
+                      help="Add isBetaUser flag to use")
     parser.add_option("-u", "--update", dest="update",
                       default=False, action='store_true',
                       help="Reset users password")
@@ -83,6 +86,10 @@ if __name__ == "__main__":
         if options.admin:
             r.table("users").get(options.email).update({
                 "admin": True
+            }).run(conn)
+        if options.beta:
+            r.table("users").get(options.email).update({
+                "beta_user": True
             }).run(conn)
         print "Add user: " + options.email + " with password: " + options.password
         apiport = 5002
