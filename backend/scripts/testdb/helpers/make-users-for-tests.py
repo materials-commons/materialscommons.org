@@ -9,7 +9,7 @@ from pbkdf2 import crypt
 
 
 class User(object):
-    def __init__(self, name, fullname, email, password, apikey, admin, tadmin):
+    def __init__(self, name, fullname, email, password, apikey, admin, tadmin, beta_user):
         self.name = name
         self.email = email
         self.fullname = fullname
@@ -27,6 +27,7 @@ class User(object):
         self.notes = []
         self.admin = admin
         self.tadmin = tadmin
+        self.beta_user = beta_user
         self.preferences = {
             "tags": [],
             "templates": []
@@ -38,17 +39,17 @@ def make_password_hash(password):
     return crypt(password, salt, iterations=4000)
 
 
-def make_user(_r, part_name, full_name, pw, key, admin, tadmin):
+def make_user(_r, part_name, full_name, pw, key, admin, tadmin, beta):
     pwhash = make_password_hash(pw)
     email = part_name + "@test.mc"
     apikey = key
     if not apikey:
         apikey = uuid.uuid1().hex
-    u = User(email, full_name, email, pwhash, apikey, admin, tadmin)
+    u = User(email, full_name, email, pwhash, apikey, admin, tadmin, beta)
     _r.table('users').insert(u.__dict__).run(conn)
 
-    print("Addred user: " + email + " with password: " + pw + ", apikey: " + apikey
-          + ", admin: " + str(admin) + ", tadmin: " + str(tadmin))
+    print("Added user: " + email + " with password: " + pw + ", apikey: " + apikey
+          + ", admin: " + str(admin) + ", tadmin: " + str(tadmin) + ", beta_user: " + str(beta))
 
 
 if __name__ == "__main__":
@@ -66,7 +67,7 @@ if __name__ == "__main__":
 
     conn = r.connect('localhost', options.port, db='materialscommons')
 
-    make_user(r, "admin", "Test Admin", options.password, None, True, False)
-    make_user(r, "test", "Test User One", options.password, "totally-bogus", False, False)
-    make_user(r, "another", "Test User Two", options.password, "another-bogus-account", False, False)
-    make_user(r, "tadmin", "Test Template Admin", options.password, None, False, True)
+    make_user(r, "admin", "Test Admin", options.password, None, True, False, True)
+    make_user(r, "test", "Test User One", options.password, "totally-bogus", False, False, True)
+    make_user(r, "another", "Test User Two", options.password, "another-bogus-account", False, False, False)
+    make_user(r, "tadmin", "Test Template Admin", options.password, None, False, True, False)

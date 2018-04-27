@@ -3,7 +3,7 @@ import {Experiment} from '../../../project/experiments/experiment/components/tas
 class MCProjectHomeComponentController {
     /*@ngInject*/
 
-    constructor($scope, experimentsAPI, toast, $state,
+    constructor(User, $scope, experimentsAPI, toast, $state,
                 $stateParams, editorOpts, $mdDialog,
                 mcprojstore, projectsAPI, etlServerAPI) {
         this.experimentsAPI = experimentsAPI;
@@ -22,6 +22,11 @@ class MCProjectHomeComponentController {
         this.etlServerAPI = etlServerAPI;
         this.etlInProgress = false;
         this.etlStatusRecordId = null;
+        if (User.isAuthenticated()) {
+            this.user = User.attr().fullname;
+            this.isAdmin = User.attr().admin;
+            this.isBetaUser = User.attr().beta_user;
+        }
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
 
