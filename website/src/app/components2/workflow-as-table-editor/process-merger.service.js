@@ -81,6 +81,7 @@ class ProcessMergerService {
     }
 
     _merger2(lists) {
+        console.log('_merger2', angular.copy(lists));
         let accumulator = [];
 
         let currentIndex = 0;
@@ -98,12 +99,14 @@ class ProcessMergerService {
 
                 if (lists[currentIndex].length) {
                     if (current === null) {
-                        current = lists[currentIndex][0];
+                        current = angular.copy(lists[currentIndex][0]);
                         accumulator.push(current);
+                        console.log('pushing current==null', current);
                         lists[currentIndex].splice(0, 1);
                         matchFound = true;
                     } else if (lists[currentIndex][0].name === current.name && startNew) {
-                        accumulator.push(current);
+                        console.log('lists[currentIndex][0].name === current.name && startNew', current);
+                        accumulator.push(angular.copy(current));
                         startNew = false;
                         lists[currentIndex].splice(0, 1);
                         matchFound = true;

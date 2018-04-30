@@ -64,11 +64,11 @@ class MCWorkflowAsTableComponentController {
             s.processes.forEach(p => {
                 for (let i = 0; i < s.headers.length; i++) {
                     let headerToCheck = s.headers[i];
-                    console.log('headerToCheck', headerToCheck);
-                    console.log(`p.id ${p.id}/p.template_name ${p.template_name}`);
+                    // console.log('headerToCheck', headerToCheck);
+                    // console.log(`p.id ${p.id}/p.template_name ${p.template_name}`);
                     let index = _.findIndex(headerToCheck.processes, pid => pid == p.id);
                     if (index !== -1) {
-                        console.log('    found header to mark');
+                        // console.log('    found header to mark');
                         headerToCheck.use = true;
                         break;
                     }
