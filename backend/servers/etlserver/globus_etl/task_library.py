@@ -1,6 +1,7 @@
 import logging
 import os
 
+# noinspection PyProtectedMember
 from materials_commons.api import _use_remote as get_remote
 # noinspection PyProtectedMember
 from materials_commons.api import _Config as Config
@@ -9,15 +10,15 @@ from materials_commons.api import _Remote as Remote
 # noinspection PyProtectedMember
 from materials_commons.api import _set_remote as set_remote
 
-from ..DatabaseInterface import DatabaseInterface
-from ..BackgroundProcess import BackgroundProcess
+from ..database.DatabaseInterface import DatabaseInterface
+from ..database.BackgroundProcess import BackgroundProcess
 from .MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from .BuildProjectExperiment import BuildProjectExperiment
-from ..mcexceptions import MaterialsCommonsException
+from ..utils.mcexceptions import MaterialsCommonsException
 from .ETLSetup import ETLSetup
-from ..apikeydb import user_apikey
-# noinspection PyProtectedMembe
-from ..apikeydb import _load_apikeys as init_api_keys
+from ..user.apikeydb import user_apikey
+# noinspection PyProtectedMember
+from ..user.apikeydb import _load_apikeys as init_api_keys
 
 
 def startup_and_verify(user_id, project_id, experiment_name, experiment_description,
@@ -197,4 +198,3 @@ def _set_global_python_api_remote_for_user(user_id):
     })
     remote = Remote(config=config)
     set_remote(remote)
-

@@ -1,7 +1,7 @@
 import os
 import logging
-from ..DatabaseInterface import DatabaseInterface
-from ..BackgroundProcess import BackgroundProcess
+from ..database.DatabaseInterface import DatabaseInterface
+from ..database.BackgroundProcess import BackgroundProcess
 from .MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from .VerifySetup import VerifySetup
 

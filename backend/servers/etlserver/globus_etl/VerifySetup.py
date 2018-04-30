@@ -1,5 +1,5 @@
 import os
-from ..DB import DbConnection
+from ..database.DB import DbConnection
 from globus_sdk.exc import GlobusAPIError
 
 

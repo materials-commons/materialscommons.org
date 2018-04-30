@@ -8,7 +8,7 @@ print(os.path.abspath('..'))
 sys.path.append(os.path.abspath('..'))
 if __name__ == "__main__" and __package__ is None:
     __package__ = "etlserver.scripts"
-from .. import access, apikeydb
+from ..user import access, apikeydb
 from ..etl_api_app import app
 
 _HOST = environ.get('MC_SERVICE_HOST') or 'localhost'

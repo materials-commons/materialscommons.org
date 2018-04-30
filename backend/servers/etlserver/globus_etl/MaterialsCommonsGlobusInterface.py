@@ -4,8 +4,8 @@ import logging
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
 from globus_sdk import TransferClient, TransferData, TransferAPIError
 
-from ..mcexceptions import DatabaseError, AuthenticationException, NoSuchItem, AccessNotAllowedException
-from ..DB import DbConnection
+from ..utils.mcexceptions import DatabaseError, AuthenticationException, NoSuchItem, AccessNotAllowedException
+from ..database.DB import DbConnection
 
 
 class MaterialsCommonsGlobusInterface:
