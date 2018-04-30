@@ -1,3 +1,10 @@
+NOTE:
+In general, once your environment is set up, you will only need to use the standard startup:
+cd backend
+mcservers start (-d/-t/-p)
+
+To set up your environment...
+
 Backdrop dependencies
 a) install and start faktory (either directly, on OsX or using docker container), see
 https://github.com/contribsys/faktory/wiki/Installation
@@ -16,7 +23,7 @@ source .python_env/bin/activate
 2) install python dependencies (after the above step)
 pip install -r requirements.txt
 
-3) check /etc/materialscommons/config.[type] file
+3) check /etc/materialscommons/config.dev file
 ## Globus
 export MC_CONFIDENTIAL_CLIENT_USER='...'
 export MC_CONFIDENTIAL_CLIENT_PW='...'
@@ -24,12 +31,14 @@ export MC_CONFIDENTIAL_CLIENT_ENDPOINT='...'
 
 4) For running from terminal, every time you start up
 cd backend
-cd servers/etlserver
-source .python_env/bin/activate
-source /etc/materialscommons/config.[type]
-source ../../env/[type].sh
+mcservers start
 
 5) To make sure that everything is correctly set up (after step 4)
+cd backend
+cd servers/etlserver
+source .python_env/bin/activate
+source /etc/materialscommons/config.dev
+source ../../env/dev.sh
 cd backend
 servers/etlserver/check_sanity.sh
 
