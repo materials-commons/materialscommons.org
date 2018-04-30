@@ -158,6 +158,12 @@ function stop_rethinkdb() {
 }
 
 function start_mcapiserver() {
+    $(python -c 'import sys; exit(1) if (sys.version_info.major == 2 and sys.version_info.minor == 7) else exit(0)')
+    PVCHECK=$?
+    if [ ! "${PVCHECK}" == "1" ]; then
+        echo "WARNING: mcapiserver must run under python 2.7"
+        echo "WARNING: current version of python is $(python --version 2>&1)"
+    fi
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcapiserver ($SERVERTYPE)..."
