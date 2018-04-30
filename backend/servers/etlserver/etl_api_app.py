@@ -4,14 +4,13 @@ import pkg_resources
 from flask import Flask, request
 from flask_api import status
 
-from .UploadUtility import UploadUtility
-from .DatabaseInterface import DatabaseInterface
 from .globus_etl.task_library import startup_and_verify
 from .globus_etl.BuildProjectExperiment import BuildProjectExperiment
-from . import access
-
-from .DB import DbConnection
-from .api_key import apikey
+from .database.DatabaseInterface import DatabaseInterface
+from .database.DB import DbConnection
+from .user import access
+from .user.api_key import apikey
+from .utils.UploadUtility import UploadUtility
 
 log = logging.getLogger(__name__)
 
