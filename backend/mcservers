@@ -162,6 +162,7 @@ function start_mcapiserver() {
     PVCHECK=$?
     if [ ! "${PVCHECK}" == "1" ]; then
         echo "WARNING: mcapiserver must run under python 2.7"
+        echo "WARNING: current version of python is $(python --version 2>&1)"
     fi
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
     if [ "$R" = "" ]; then
