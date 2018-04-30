@@ -72,7 +72,6 @@ class MCShowService {
 
     chooseSamplesFromProject(samples) {
         const proj = this.mcprojecstore.getCurrentProject();
-        // console.log('proj', proj);
         let fillRandomProcesses = (count) => {
             let processes = [];
             for (let i = 0; i < count; i++) {

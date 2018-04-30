@@ -122,7 +122,6 @@ class CyGraphService {
 
     disableQTips(cy) {
         cy.elements().forEach((ele) => {
-            console.log('disable', ele.data('name'));
             let qtipAPI = ele.qtip('api');
             qtipAPI.disable(true);
         });

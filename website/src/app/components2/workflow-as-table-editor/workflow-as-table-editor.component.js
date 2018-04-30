@@ -20,7 +20,6 @@ class MCWorkflowAsTableEditorComponentController {
     }
 
     $onChanges(changes) {
-        console.log('changes', changes);
         if (changes.samples) {
             this.state.samples = angular.copy(changes.samples.currentValue);
             this.state.samples.forEach(s => {
@@ -32,13 +31,8 @@ class MCWorkflowAsTableEditorComponentController {
                 });
                 //s.processes = this.fillRandomProcesses(this.state.headers.length);
             });
-            console.log('this.state.samples', this.state.samples);
-            //this.state.headers = this.processMerger.mergeProcessesForSamples(this.state.samples);
-            console.log('merged headers', this.state.headers);
             this.state.processes = this.processMerger.mergeProcessesForSamples2(this.state.samples);
             this.state.headers = this.state.processes.map(p => p.name);
-            console.log('this.state.processes', this.state.processes);
-            console.log('this.state.headers', this.state.headers);
         }
     }
 

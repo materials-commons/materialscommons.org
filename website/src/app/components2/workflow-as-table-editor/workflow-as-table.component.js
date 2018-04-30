@@ -1,8 +1,7 @@
 class MCWorkflowAsTableComponentController {
     /*@ngInject*/
-    constructor($mdDialog, $interval) {
+    constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
-        this.$interval = $interval;
         this.state = {
             samples: [],
             headers: [],
@@ -12,13 +11,7 @@ class MCWorkflowAsTableComponentController {
     }
 
     $onInit() {
-        // this.$interval(() => {
-        //     var e = document.getElementById("x1");
-        //     var scrollWidth = e.scrollWidth;
-        //     var clientWidth = e.clientWidth;
-        //     console.log('scrollWidth', scrollWidth);
-        //     console.log('clientWidth', clientWidth);
-        // }, 5000)
+
     }
 
     editSample(sample) {
@@ -34,7 +27,6 @@ class MCWorkflowAsTableComponentController {
     }
 
     $onChanges(changes) {
-        // console.log('changes = ', changes);
         this.state.samplesMarked = false;
         if (changes.samples) {
             this.state.samples = angular.copy(changes.samples.currentValue);
@@ -50,8 +42,6 @@ class MCWorkflowAsTableComponentController {
 
         this.markSampleHeaders();
         this.state.samplesMarked = true;
-        console.log('headers', this.state.headers);
-        console.log('samples', this.state.samples);
     }
 
     markSampleHeaders() {
@@ -64,11 +54,8 @@ class MCWorkflowAsTableComponentController {
             s.processes.forEach(p => {
                 for (let i = 0; i < s.headers.length; i++) {
                     let headerToCheck = s.headers[i];
-                    // console.log('headerToCheck', headerToCheck);
-                    // console.log(`p.id ${p.id}/p.template_name ${p.template_name}`);
                     let index = _.findIndex(headerToCheck.processes, pid => pid == p.id);
                     if (index !== -1) {
-                        // console.log('    found header to mark');
                         headerToCheck.use = true;
                         break;
                     }
