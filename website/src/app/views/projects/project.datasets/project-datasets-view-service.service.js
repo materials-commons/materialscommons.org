@@ -1,16 +1,40 @@
 class ProjectDatasetsViewService {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, datasetsAPI, toast) {
         this.$mdDialog = $mdDialog;
+        this.datasetsAPI = datasetsAPI;
+        this.toast = toast;
     }
 
-    createNewDataset() {
+    createNewDataset(projectId) {
         return this.$mdDialog.show({
             templateUrl: 'app/modals/create-new-dataset-dialog.html',
             controller: CreateNewDatasetDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+        }).then(ds => {
+            let samples = ds.samples.map(s => s.id);
+            return this.datasetsAPI.createDatasetForProject(projectId, ds.title, samples).then(
+                dataset => {
+                    ds.id = dataset.id;
+                    return ds;
+                },
+                () => {
+                    this.toast.error('Unable to create dataset')
+                }
+            );
         });
+    }
+
+    transformDataset(dataset, project) {
+        let projectSamplesLookup = _.indexBy(project.samples, 'id');
+        let transformedSamples = [],
+            transformedDS = angular.copy(dataset);
+        transformedDS.samples.forEach(s => {
+            transformedSamples.push(projectSamplesLookup[s.id]);
+        });
+        transformedDS.samples = angular.copy(transformedSamples);
+        return transformedDS;
     }
 }
 
@@ -24,7 +48,7 @@ class CreateNewDatasetDialogController {
         this.mcprojectstore = mcprojectstore2;
         this.state = {
             project: this.mcprojectstore.getCurrentProject(),
-            datasetName: "",
+            datasetTitle: "",
         };
         this.createDatasetDialogState.computeExperimentsForSamples(this.state.project);
     }
@@ -35,7 +59,7 @@ class CreateNewDatasetDialogController {
     }
 
     isInvalidDataset() {
-        if (this.state.datasetName === '') {
+        if (this.state.datasetTitle === '') {
             return true;
         }
 
@@ -51,7 +75,7 @@ class CreateNewDatasetDialogController {
             });
         });
         this.$mdDialog.hide({
-            name: this.state.datasetName,
+            title: this.state.datasetTitle,
             samples: samples,
             experiments: _.values(experiments),
         });

@@ -5,10 +5,10 @@ class MCDSStoreService {
         this.dsstore = {};
     }
 
-    createDataset(name, samples, experiments) {
+    createDataset(title, samples, experiments) {
         let ds = {
             id: name,
-            name: name,
+            title: title,
             samples: samples,
             owner: this.User.attr().fullname,
             samples_count: samples.length,
@@ -49,6 +49,11 @@ class MCDSStoreService {
 
     loadDemoData() {
         return true;
+    }
+
+    reloadDatasets(datasets) {
+        this.dsstore = {};
+        datasets.forEach(ds => this.addDataset(ds));
     }
 }
 

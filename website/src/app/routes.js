@@ -280,13 +280,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/datasets',
             abstract: true,
             template: '<md-content><div ui-view layout="column" layout-fill></div></md-content>',
-            // template: '<div ui-view></div>',
-            resolve: {
-                _ignore: ['mcdsstore', (mcdsstore) => {
-                    mcdsstore.loadDemoData();
-                    return true;
-                }]
-            }
         })
         .state('project.datasets.list', {
             url: '/list',

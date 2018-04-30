@@ -18,12 +18,12 @@ module.exports.ListDatasetsAction = class ListDatasetsAction extends Action {
     }
 
     async run({response, params}) {
-        const datasets = await dal.tryCatch(async () => await datasets.getDatasetsForProject(params.project_id));
-        if (!datasets) {
+        const dsets = await dal.tryCatch(async () => await datasets.getDatasetsForProject(params.project_id));
+        if (!dsets) {
             throw new Error(`Unable to get datasets for project ${params.project_id}`);
         }
 
-        response.data = datasets;
+        response.data = dsets;
     }
 };
 
@@ -84,6 +84,15 @@ module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
                         throw new Error('description must be a string');
                     }
                 }
+            },
+
+            samples: {
+                default: [],
+                validator: (param) => {
+                    if (!_.isArray(param)) {
+                        throw new Error('samples must be an array');
+                    }
+                }
             }
         }
     }
@@ -91,8 +100,16 @@ module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
     async run({response, params, user}) {
         const dsParams = {
             title: params.title,
-            description: params.description
+            description: params.description,
+            samples: params.samples,
         };
+
+        if (params.samples.length) {
+            const allInProject = await dal.tryCatch(async () => check.allSamplesInProject(params.project_id, params.samples));
+            if (!allInProject) {
+                throw new Error(`Invalid samples ${param.samples} for project ${param.project_id}`);
+            }
+        }
 
         const ds = await dal.tryCatch(async () => await datasets.createDataset(dsParams, user.id, params.project_id));
         if (!ds) {

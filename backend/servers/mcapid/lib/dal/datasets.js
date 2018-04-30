@@ -13,6 +13,9 @@ async function createDataset(ds, owner, projectId) {
         dataset_id: createdDS.id
     };
     await r.table('project2dataset').insert(e2p);
+    if (ds.samples.length) {
+        await addSamplesToDataset(createdDS.id, ds.samples);
+    }
     return createdDS;
 }
 
@@ -27,14 +30,16 @@ async function deleteDataset(datasetId) {
 }
 
 async function getDatasetsForProject(projectId) {
-    let rql = r.table('project2dataset').getAll(projectId, {index: 'experiment_id'})
+    let rql = r.table('project2dataset').getAll(projectId, {index: 'project_id'})
         .eqJoin('dataset_id', r.table('datasets')).zip()
         .merge((ds) => {
             return {
-                samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'}).count(),
-                processes: r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'}).count(),
-                files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
-                comments: r.table('comments').getAll(ds('id'), {index: 'item_id'}).count()
+                samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'})
+                    .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
+                processes: r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
+                    .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
+                files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
+                    .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
             }
         });
     return await dbExec(rql);
