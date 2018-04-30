@@ -43,6 +43,11 @@
                        ng-click="$ctrl.editProcess($ctrl.state.headers[$index], sample)">hello</a>
                     <span ng-if="!processHeader.use"></span>
                 </td>
+                <td md-cell ng-repeat="process in sample.headers track by $index" ng-if="$ctrl.state.editTable" style="text-align:center">
+                    <md-checkbox ng-model="process.use" ng-show="process.use" class="md-primary" aria-label="select process"
+                                 ng-change="$ctrl.handleSampleProcessChange(sampleIndex, $index, process.selected)">
+                    </md-checkbox>
+                </td>
             </tr>
             <!--<tr md-row class="md-row-hover" ng-repeat="sample in $ctrl.state.samples" ng-init="sampleIndex = $index">-->
             <!--<td md-cell ng-repeat="process in sample.processes track by $index" ng-if="!$ctrl.state.editTable" style="text-align:center">-->
