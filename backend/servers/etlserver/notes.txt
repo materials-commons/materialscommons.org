@@ -1,1 +1,35 @@
-Setup of environment for running test:
+Backdrop dependencies
+a) install and start faktory (either directly, on OsX or using docker container), see
+https://github.com/contribsys/faktory/wiki/Installation
+
+b) set up a globus personal endpoint and the Confidential Client for materials commons, see
+operations.materialscommons.org/notes/InstallGlobusNotes.txt
+
+Setup of environment for running the server:
+
+1) set up a python3 environment in the etlserver folder (this folder)
+cd backend
+cd servers/etlserver
+virtualenv .python_env -p python3
+source .python_env/bin/activate
+
+2) install python dependencies (after the above step)
+pip install -r requirements.txt
+
+3) check /etc/materialscommons/config.[type] file
+## Globus
+export MC_CONFIDENTIAL_CLIENT_USER='...'
+export MC_CONFIDENTIAL_CLIENT_PW='...'
+export MC_CONFIDENTIAL_CLIENT_ENDPOINT='...'
+
+4) For running from terminal, every time you start up
+cd backend
+cd servers/etlserver
+source .python_env/bin/activate
+source /etc/materialscommons/config.[type]
+source ../../env/[type].sh
+
+5) To make sure that everything is correctly set up (after step 4)
+cd backend
+servers/etlserver/check_sanity.sh
+
