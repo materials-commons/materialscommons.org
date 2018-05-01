@@ -318,9 +318,9 @@ function start_servers() {
 
     start_es
     start_faktory
+    start_rethinkdb
     start_etl_faktory_worker
     start_etl_server
-    start_rethinkdb
     start_mcapiserver
     start_mcstored
     start_mcapi
