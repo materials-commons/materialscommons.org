@@ -572,10 +572,10 @@ function config_file() {
 
     case "$SERVERTYPE" in
         production)
-            echo ${BASE}.prod
+            echo Config file ${BASE}.prod
             ;;
         *)
-            echo ${BASE}.${SERVERTYPE}
+            echo Config file ${BASE}.${SERVERTYPE}
             ;;
     esac
 }
@@ -793,8 +793,6 @@ function show_help() {
 
 export MCDB_NAME="materialscommons"
 export MCDB_TYPE="rethinkdb"
-
-echo "OSTYPE = $(uname)"
 
 if [ -f /etc/materialscommons/config.global ]; then
     . /etc/materialscommons/config.global
