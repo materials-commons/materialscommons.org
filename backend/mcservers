@@ -840,6 +840,16 @@ export MCSTORE_SRC=$HOME/workspace/src/github.com/materials-commons/mcstore
 # Set defaults
 TESTSERVER="d"
 SERVERTYPE="dev"
+
+if [ -f "/etc/materialscommons/config.prod" ]; then
+    echo "setting SERVERTYPE to production"
+    TESTSERVER="p"
+    SERVERTYPE="production"
+elif [ -f "/etc/materialscommons/config.test" ]; then
+    TESTSERVER="t"
+    SERVERTYPE="test"
+fi
+
 REINIT=f
 RUN_CONVERT=f
 MC_RESTORE_BRANCH=""
@@ -1039,8 +1049,6 @@ case "$CMD" in
         ;;
 
     "")
-        TESTSERVER=d
-        SERVERTYPE="dev"
         PS_ALL_SERVERS=f
         ps_servers
         ;;
