@@ -36,6 +36,23 @@ class MCProjectHomeComponentController {
             this._reloadComponentState();
         });
         this._reloadComponentState();
+        this.etlServerAPI.getEtlStatusForProject(this.project.id).then(
+            status => {
+                console.log("status for project", status);
+                if (status && status.status) {
+                    status = status.status
+                    console.log("status record id", status.id);
+                    console.log("status value", status.status);
+                    if (status.status === "Success" || status.status === "Failure"){
+                        console.log("No further status information");
+                    } else {
+                        this.etlInProgress = true;
+                        this.etlStatusRecordId = status.id;
+                    }
+                }
+                this.etlStatusAvailable = true;
+            }
+        );
         //this.getProjectActivities();
     }
 

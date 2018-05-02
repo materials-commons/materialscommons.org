@@ -125,11 +125,11 @@ def get_background_status_for_project():
         status_record = None
         if status_list:
             status_record = {
-                'stats' : status_list[0]['status'],
+                'status' : status_list[0]['status'],
                 'id' : status_list[0]['id']
             }
         ret_value = {'status': status_record}
-        # ret = format_as_json_return(ret_value)
+        ret = format_as_json_return(ret_value)
         log.info("get_background_status_for_project: ret = {}".format(ret))
     except Exception as e:
         log.info("Unexpected exception...", exc_info=True)
