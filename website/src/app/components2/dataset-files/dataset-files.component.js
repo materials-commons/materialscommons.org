@@ -14,7 +14,9 @@ class MCDatasetFilesComponentController {
     }
 
     addFiles() {
-        this.datasetFiles.addFiles();
+        this.datasetFiles.addFiles().then(
+            files => this.onAddFiles({filesToAdd: files})
+        );
     }
 
     removeSelectedFiles() {
@@ -29,5 +31,6 @@ angular.module('materialscommons').component('mcDatasetFiles', {
     bindings: {
         files: '<',
         onRemoveFiles: '&',
+        onAddFiles: '&'
     }
 });

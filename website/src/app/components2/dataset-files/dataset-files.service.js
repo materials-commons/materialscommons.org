@@ -6,7 +6,7 @@ class DatasetFilesService {
 
     addFiles() {
         return this.$mdDialog.show({
-            templateUrl: 'app/modals/create-new-dataset-dialog.html',
+            templateUrl: 'app/modals/select-files-dialog.html',
             controller: AddFilesDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -23,7 +23,23 @@ class AddFilesDialogController {
     }
 
     done() {
-        this.$mdDialog.hide();
+        let files = [
+            {
+                selected: false,
+                id: 11,
+                name: 'new -- hardeningdata.xls',
+                path: 'project1/hardening tests',
+                samples: 'E1XKG'
+            },
+            {
+                selected: false,
+                id: 12,
+                name: 'new -- crack.tiff',
+                path: 'project1/hardening tests',
+                samples: 'S1XKG'
+            },
+        ];
+        this.$mdDialog.hide(files);
     }
 
     cancel() {

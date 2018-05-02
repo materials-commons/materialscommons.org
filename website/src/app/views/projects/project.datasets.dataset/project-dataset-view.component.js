@@ -20,6 +20,10 @@ class MCProjectDatasetViewComponentController {
         let filesMap = _.indexBy(filesToDelete, 'id');
         this.state.dataset.files = this.state.dataset.files.filter(f => (!(f.id in filesMap)));
     }
+
+    handleAddFiles(filesToAdd) {
+        this.state.dataset.files = this.state.dataset.files.concat(filesToAdd);
+    }
 }
 
 angular.module('materialscommons').component('mcProjectDatasetView', {
