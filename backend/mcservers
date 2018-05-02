@@ -842,7 +842,6 @@ TESTSERVER="d"
 SERVERTYPE="dev"
 
 if [ -f "/etc/materialscommons/config.prod" ]; then
-    echo "setting SERVERTYPE to production"
     TESTSERVER="p"
     SERVERTYPE="production"
 elif [ -f "/etc/materialscommons/config.test" ]; then
