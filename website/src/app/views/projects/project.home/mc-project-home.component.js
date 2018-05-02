@@ -449,12 +449,12 @@ class EtlUploadDialogController {
         this.name = "";
         this.description = "";
         this.files = [];
-        // test data
-        this.name = "Test Experiment";
-        this.description = "This is a demo of Excel Spreadsheet uploading and processing";
-        this.ep_uuid = '067ce67a-3bf1-11e8-b9b5-0ac6873fc732';
-        this.ep_spreadsheet = '/dataForTest/input.xlsx';
-        this.ep_data = '/dataForTest/data';
+        // test data - uncomment the following to pre-populate the from with a working example
+        // this.name = "Test Experiment";
+        // this.description = "This is a demo of Excel Spreadsheet uploading and processing";
+        // this.ep_uuid = '067ce67a-3bf1-11e8-b9b5-0ac6873fc732';
+        // this.ep_spreadsheet = '/dataForTest/input.xlsx';
+        // this.ep_data = '/dataForTest/data';
     }
 
     uploadWithGlobus() {
