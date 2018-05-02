@@ -299,6 +299,25 @@ function stop_mcapid() {
     done
 }
 
+function start_globus() {
+    if [ "$(uname)" != "Darwin" ]; then
+        R=$(is_running "globusonline" " ")
+        if [ "$R" = "" ]; then
+            echo "Starting globus (${SERVERTYPE})..."
+            (cd ~/bin/globus; ./globusconnectpersonal -start > ${MC_LOG_DIR}/globus.out.${SERVERTYPE} 2>&1&)
+            sleep 1
+        fi
+    fi
+}
+
+function stop_globus() {
+    if [ "$(uname)" != "Darwin" ]; then
+        echo "Stopping globus (${SERVERTYPE})"
+        (cd ~/bin/globus; ./globusconnectpersonal -stop)
+        echo "  Stopped globus"
+    fi
+}
+
 function check_nginx() {
     R=$(ps -eo "pid,command" | grep nginx | grep "worker process")
     if [ "$R" = "" ]; then
@@ -318,6 +337,7 @@ function start_servers() {
 
     start_es
     start_faktory
+    start_globus
     start_rethinkdb
     start_etl_faktory_worker
     start_etl_server
@@ -350,6 +370,7 @@ function stop_servers() {
 
     stop_es
     stop_faktory
+    stop_globus
     stop_etl_faktory_worker
     stop_etl_server
     stop_mcapiserver
@@ -414,6 +435,10 @@ function stop_named_server() {
             stop_mcapid
             ;;
 
+        globus)
+            stop_globus
+            ;;
+
         *)
             echo "Unknown server: $1"
             exit 1
@@ -470,6 +495,10 @@ function restart_named_server() {
 
         mcapid)
             start_mcapid
+            ;;
+
+        globus)
+            start_globus
             ;;
 
         *)
@@ -547,6 +576,10 @@ function ps_server_env() {
     echo
     echo "MCAPID Server (${SERVERTYPE}):"
     ps -ef | grep "mcapid-${SERVERTYPE}" | grep -v grep
+
+    echo
+    echo "Globus Personal Connect (${SERVERTYPE})"
+    ps -ef | grep "globus" | grep -v grep
 }
 
 function ps_servers() {
@@ -807,6 +840,15 @@ export MCSTORE_SRC=$HOME/workspace/src/github.com/materials-commons/mcstore
 # Set defaults
 TESTSERVER="d"
 SERVERTYPE="dev"
+
+if [ -f "/etc/materialscommons/config.prod" ]; then
+    TESTSERVER="p"
+    SERVERTYPE="production"
+elif [ -f "/etc/materialscommons/config.test" ]; then
+    TESTSERVER="t"
+    SERVERTYPE="test"
+fi
+
 REINIT=f
 RUN_CONVERT=f
 MC_RESTORE_BRANCH=""
@@ -1006,8 +1048,6 @@ case "$CMD" in
         ;;
 
     "")
-        TESTSERVER=d
-        SERVERTYPE="dev"
         PS_ALL_SERVERS=f
         ps_servers
         ;;
