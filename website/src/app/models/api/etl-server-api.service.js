@@ -39,6 +39,26 @@ class EtlServerAPIService {
             }
         );
     }
+
+    getEtlStatusForProject(projectId) {
+        let route = this.etlAPIRoute('project').one('status');
+        console.log('EtlServerAPIService - status for project', route);
+        console.log('EtlServerAPIService - status for project', projectId);
+        let data = {
+            project_id: projectId
+        };
+        return route.customPOST(data).then(
+            r => {
+                let results = r.plain();
+                console.log("EtlServerAPIService - status for project", results);
+                return results;
+            },
+            e => {
+                console.log("EtlServerAPIService - status for project - error", e);
+                return null;
+            }
+        );
+    }
 }
 
 angular.module('materialscommons').service('etlServerAPI', EtlServerAPIService);
