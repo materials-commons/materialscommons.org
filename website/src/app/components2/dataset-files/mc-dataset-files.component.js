@@ -1,4 +1,4 @@
-class MCPProjectDatasetFilesComponentController {
+class MCDatasetFilesComponentController {
     /*@ngInject*/
     constructor() {
         this.files = [
@@ -36,7 +36,7 @@ class MCPProjectDatasetFilesComponentController {
     }
 }
 
-angular.module('materialscommons').component('mcPProjectDatasetFiles', {
-    template: require('./mc-p-project-dataset-files.html'),
-    controller: MCPProjectDatasetFilesComponentController
+angular.module('materialscommons').component('mcDatasetFiles', {
+    template: require('./mc-dataset-files.html'),
+    controller: MCDatasetFilesComponentController
 });
