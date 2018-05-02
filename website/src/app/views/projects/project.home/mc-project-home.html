@@ -40,11 +40,11 @@
                     Cancel Delete
                 </md-button>
                 <md-button class="md-raised md-primary" ng-click="$ctrl.etlStart()"
-                           ng-if="$ctrl.isBetaUser && !$ctrl.etlInProgress">
+                           ng-if="$ctrl.isBetaUser && $crtl.etlStatusAvailable && !$ctrl.etlInProgress">
                     New Experiment From Excel File ETL
                 </md-button>
                 <md-button class="md-raised md-primary" ng-click="$ctrl.etlMonitor()"
-                           ng-if="$ctrl.isBetaUser && $ctrl.etlInProgress">
+                           ng-if="$ctrl.isBetaUser && $crtl.etlStatusAvailable && $ctrl.etlInProgress">
                     Check Status of Excel File ETL
                 </md-button>
             </div>

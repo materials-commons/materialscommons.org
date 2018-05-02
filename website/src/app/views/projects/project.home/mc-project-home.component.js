@@ -20,6 +20,7 @@ class MCProjectHomeComponentController {
         this.mcprojstore = mcprojstore;
         this.projectsAPI = projectsAPI;
         this.etlServerAPI = etlServerAPI;
+        this.etlStatusAvailable = false;
         this.etlInProgress = false;
         this.etlStatusRecordId = null;
         if (User.isAuthenticated()) {
