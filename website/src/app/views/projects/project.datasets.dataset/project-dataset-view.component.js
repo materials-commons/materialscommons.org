@@ -15,6 +15,11 @@ class MCProjectDatasetViewComponentController {
             this.state.dataset = angular.copy(changes.dataset.currentValue);
         }
     }
+
+    handleDeleteFiles(filesToDelete) {
+        let filesMap = _.indexBy(filesToDelete, 'id');
+        this.state.dataset.files = this.state.dataset.files.filter(f => (!(f.id in filesMap)));
+    }
 }
 
 angular.module('materialscommons').component('mcProjectDatasetView', {
