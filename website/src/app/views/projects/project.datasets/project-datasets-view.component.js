@@ -1,7 +1,8 @@
 class MCProjectDatasetsViewComponentController {
     /*@ngInject*/
-    constructor(projectDatasetsViewService) {
+    constructor(projectDatasetsViewService, $stateParams) {
         this.projectDatasetsViewService = projectDatasetsViewService;
+        this.$stateParams = $stateParams;
         this.state = {
             datasets: []
         };
@@ -14,7 +15,7 @@ class MCProjectDatasetsViewComponentController {
     }
 
     createNewDataset() {
-        this.projectDatasetsViewService.createNewDataset().then(
+        this.projectDatasetsViewService.createNewDataset(this.$stateParams.project_id).then(
             (dataset) => {
                 this.onNewDataset({dataset: dataset});
             }

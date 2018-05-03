@@ -1,12 +1,17 @@
 class DatasetsAPIService {
     /*@ngInject*/
-    constructor(projectsAPIRoute) {
+    constructor(projectsAPIRoute, Restangular) {
         this.projectsAPIRoute = projectsAPIRoute;
+        this.Restangular = Restangular;
     }
 
     getDatasetsForExperiment(projectId, experimentId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets')
             .getList().then(datasets => datasets.plain());
+    }
+
+    getDatasetsForProject(projectId) {
+        return this.Restangular.one('v3').one('listDatasets').customPOST({project_id: projectId}).then(datasets => datasets.plain().data);
     }
 
     getDataset(projectId, experimentId, datasetId) {
@@ -19,6 +24,14 @@ class DatasetsAPIService {
             title: title,
             description: description
         }).then(d => d.plain());
+    }
+
+    createDatasetForProject(projectId, title, samples) {
+        return this.Restangular.one('v3').one('createDataset').customPOST({
+            project_id: projectId,
+            title: title,
+            samples: samples,
+        }).then(d => d.plain().data);
     }
 
     deleteDatasetFromExperiment(projectId, experimentId, datasetId) {

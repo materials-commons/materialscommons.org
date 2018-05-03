@@ -4,7 +4,6 @@ class MCProjectDatasetComponentController {
         this.mcprojstore = mcprojstore;
         this.projectsAPI = projectsAPI;
         this.project = mcprojstore.currentProject;
-        console.log('this.project', this.project);
         this.grouped = false;
     }
 
@@ -15,7 +14,6 @@ class MCProjectDatasetComponentController {
                 this.samples.forEach(s => this.addProcessListTimeLine(s));
                 let uniqueProcesses = this.computeUniqueProcesses();
                 this.createHeaders(uniqueProcesses);
-                //console.log('this.samples', samples);
             }
         )
     }

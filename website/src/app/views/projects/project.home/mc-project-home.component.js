@@ -5,7 +5,7 @@ class MCProjectHomeComponentController {
 
     constructor(User, $scope, experimentsAPI, toast, $state,
                 $stateParams, editorOpts, $mdDialog,
-                mcprojstore, projectsAPI, etlServerAPI) {
+                mcprojstore, mcprojectstore2, projectsAPI, etlServerAPI) {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.$stateParams = $stateParams;
@@ -18,6 +18,7 @@ class MCProjectHomeComponentController {
         this.selectingExperiments = false;
         this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
+        this.mcprojectstore2 = mcprojectstore2;
         this.projectsAPI = projectsAPI;
         this.etlServerAPI = etlServerAPI;
         this.etlStatusAvailable = false;
@@ -103,6 +104,7 @@ class MCProjectHomeComponentController {
         this.onholdExperimentsCount = experimentsList.filter(e => e.status === 'on-hold').length;
         this.doneExperimentsCount = experimentsList.filter(e => e.status === 'done').length;
         this.getProjectExperiments();
+        this.mcprojectstore2.reloadProject(this.$stateParams.project_id);
     }
 
     startNewExperiment() {
@@ -465,12 +467,12 @@ class EtlUploadDialogController {
         this.name = "";
         this.description = "";
         this.files = [];
-        // test data
-        this.name = "Test Experiment";
-        this.description = "This is a demo of Excel Spreadsheet uploading and processing";
-        this.ep_uuid = '067ce67a-3bf1-11e8-b9b5-0ac6873fc732';
-        this.ep_spreadsheet = '/dataForTest/input.xlsx';
-        this.ep_data = '/dataForTest/data';
+        // test data - uncomment the following to pre-populate the from with a working example
+        // this.name = "Test Experiment";
+        // this.description = "This is a demo of Excel Spreadsheet uploading and processing";
+        // this.ep_uuid = '067ce67a-3bf1-11e8-b9b5-0ac6873fc732';
+        // this.ep_spreadsheet = '/dataForTest/input.xlsx';
+        // this.ep_data = '/dataForTest/data';
     }
 
     uploadWithGlobus() {

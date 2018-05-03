@@ -15,6 +15,13 @@ class MCProjectStoreService {
         });
     }
 
+    reloadProject(projectId) {
+        return this.projectsAPI.getProjectV3(projectId).then(p => {
+            this.projectStore.reloadProject(p);
+            this.currentProjectId = p.id;
+        });
+    }
+
     getCurrentProject() {
         return this.projectStore.getProject(this.currentProjectId);
     }

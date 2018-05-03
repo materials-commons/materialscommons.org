@@ -7,7 +7,7 @@ class MCProjectDatasetViewComponentController {
     }
 
     $onInit() {
-        console.log('this.dataset', this.dataset);
+        //console.log('this.dataset', this.dataset);
     }
 
     $onChanges(changes) {

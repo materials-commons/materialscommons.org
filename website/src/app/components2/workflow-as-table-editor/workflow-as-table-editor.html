@@ -25,7 +25,7 @@
         </md-button>
     </div>
     <mc-workflow-as-table ng-if="!$ctrl.state.grouped"
-                          headers="$ctrl.state.headers"
+                          headers="$ctrl.state.processes"
                           samples="$ctrl.state.samples"
                           edit-table="$ctrl.state.editTable"
                           on-sample-process-change="$ctrl.handleUpdateStateOfProcessInSample(sampleIndex, processIndex, state)"

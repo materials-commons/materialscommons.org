@@ -1,16 +1,18 @@
 class MCWorkflowAsTableEditorComponentController {
     /*@ngInject*/
-    constructor(mcshow) {
+    constructor(mcshow, processMerger) {
         this.mcshow = mcshow;
+        this.processMerger = processMerger;
         this.grouped = false;
         this.editTable = false;
         this.state = {
             samples: [],
             headers: [],
+            processes: [],
             grouped: false,
             editTable: false,
         };
-        this.createDemoData();
+        //this.createDemoData();
     }
 
     $onInit() {
@@ -18,14 +20,19 @@ class MCWorkflowAsTableEditorComponentController {
     }
 
     $onChanges(changes) {
-        console.log('changes', changes);
         if (changes.samples) {
             this.state.samples = angular.copy(changes.samples.currentValue);
             this.state.samples.forEach(s => {
                 s.selected = false;
-                s.processes = this.fillRandomProcesses(this.state.headers.length);
+                s.processes.filter(p => p.process_type !== 'create').map(p => {
+                    p.active = true;
+                    p.selected = true;
+                    return p;
+                });
+                //s.processes = this.fillRandomProcesses(this.state.headers.length);
             });
-            console.log('this.state.samples', this.state.samples);
+            this.state.processes = this.processMerger.mergeProcessesForSamples2(this.state.samples);
+            this.state.headers = this.state.processes.map(p => p.name);
         }
     }
 
@@ -79,6 +86,12 @@ class MCWorkflowAsTableEditorComponentController {
     }
 
     handleDeleteProcess(index) {
+        let processesToToggle = {};
+        this.state.processes[index].processes.forEach(id => processesToToggle[id] = true);
+        this.state.samples.forEach(s => {
+            s.processes = s.processes.filter(p => !(p.id in processesToToggle));
+        });
+        this.state.samples = angular.copy(this.state.samples);
         this.state.headers.splice(index, 1);
         this.state.headers = angular.copy(this.state.headers);
     }

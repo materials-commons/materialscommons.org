@@ -152,6 +152,9 @@ def create_mc_tables():
     create_mc_table("experiment2dataset", "experiment_id", "dataset_id")
     create_compound_index("experiment2dataset", "experiment_dataset", ["experiment_id", "dataset_id"])
 
+    create_mc_table("project2dataset", "project_id", "dataset_id")
+    create_compound_index("project2dataset", "project_dataset", ["project_id", "dataset_id"])
+
     create_mc_table("dataset2sample", "dataset_id", "sample_id")
     create_compound_index("dataset2sample", "dataset_sample", ["dataset_id", "sample_id"])
 

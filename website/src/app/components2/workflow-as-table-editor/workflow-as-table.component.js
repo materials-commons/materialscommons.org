@@ -1,23 +1,17 @@
 class MCWorkflowAsTableComponentController {
     /*@ngInject*/
-    constructor($mdDialog, $interval) {
+    constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
-        this.$interval = $interval;
         this.state = {
             samples: [],
             headers: [],
             editTable: false,
+            samplesMarked: false,
         }
     }
 
     $onInit() {
-        // this.$interval(() => {
-        //     var e = document.getElementById("x1");
-        //     var scrollWidth = e.scrollWidth;
-        //     var clientWidth = e.clientWidth;
-        //     console.log('scrollWidth', scrollWidth);
-        //     console.log('clientWidth', clientWidth);
-        // }, 5000)
+
     }
 
     editSample(sample) {
@@ -33,7 +27,7 @@ class MCWorkflowAsTableComponentController {
     }
 
     $onChanges(changes) {
-        // console.log('changes = ', changes);
+        this.state.samplesMarked = false;
         if (changes.samples) {
             this.state.samples = angular.copy(changes.samples.currentValue);
         }
@@ -45,6 +39,29 @@ class MCWorkflowAsTableComponentController {
         if (changes.editTable) {
             this.state.editTable = changes.editTable.currentValue;
         }
+
+        this.markSampleHeaders();
+        this.state.samplesMarked = true;
+    }
+
+    markSampleHeaders() {
+        this.state.samples.filter(s => s.process_type !== 'create').forEach(s => {
+            let headers = angular.copy(this.state.headers);
+            s.headers = headers.map(h => {
+                h.use = false;
+                return h;
+            });
+            s.processes.forEach(p => {
+                for (let i = 0; i < s.headers.length; i++) {
+                    let headerToCheck = s.headers[i];
+                    let index = _.findIndex(headerToCheck.processes, pid => pid == p.id);
+                    if (index !== -1) {
+                        headerToCheck.use = true;
+                        break;
+                    }
+                }
+            });
+        });
     }
 
     editProcess(process, sample) {
