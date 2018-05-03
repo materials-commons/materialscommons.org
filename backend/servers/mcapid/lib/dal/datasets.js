@@ -3,6 +3,7 @@ const model = require('../../../shared/model');
 const db = require('./db');
 const dbExec = require('./run');
 const commonQueries = require('../../../lib/common-queries');
+const _ = require('lodash')
 
 async function createDataset(ds, owner, projectId) {
     let dataset = new model.Dataset(ds.title, owner);
@@ -39,7 +40,13 @@ async function getDatasetsForProject(projectId) {
                 processes: r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
                     .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
                 files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
-                    .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+                    .eqJoin('datafile_id', r.table('datafiles')).zip()
+                    .merge(df => {
+                        return {
+                            path: r.table('datadir2datafile').getAll(df('datafile_id'), {index: 'datafile_id'})
+                                .eqJoin('datadir_id', r.table('datadirs')).zip().pluck('name').nth(0).getField('name'),
+                        }
+                    }).coerceTo('array'),
             }
         });
     return await dbExec(rql);
@@ -56,14 +63,23 @@ async function updateDataset(datasetId, ds) {
 }
 
 async function addFilesToDataset(datasetId, files) {
-    const filesToAdd = files.map(fid => ({dataset_id: datasetId, datafile_id: fid}));
-    await r.table('dataset2datafiles').insert(filesToAdd, {conflict: 'update'});
+    const filesToAdd = await createFilesToAdd(datasetId, files)
+    if (filesToAdd.length) {
+        await r.table('dataset2datafile').insert(filesToAdd, {conflict: 'update'})
+    }
     return await getDataset(datasetId);
+}
+
+async function createFilesToAdd (datasetId, files) {
+    const filesToCheck = files.map(fid => [datasetId, fid])
+    let existingFiles = await r.table('dataset2datafile').getAll(r.args(filesToCheck), {index: 'dataset_datafile'})
+    let existingFilesMap = _.keyBy(existingFiles, 'datafile_id')
+    return files.filter(fid => (!(fid in existingFilesMap))).map(fid => ({dataset_id: datasetId, datafile_id: fid}))
 }
 
 async function deleteFilesFromDataset(datasetId, files) {
     const filesToDelete = files.map(fid => [datasetId, fid]);
-    await r.table('dataset2datafiles').getAll(r.args(filesToDelete), {index: 'dataset_datafile'}).delete();
+    await r.table('dataset2datafile').getAll(r.args(filesToDelete), {index: 'dataset_datafile'}).delete()
     return await getDataset(datasetId);
 }
 
