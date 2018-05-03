@@ -22,7 +22,9 @@ class MCProjectDatasetViewComponentController {
     }
 
     handleAddFiles(filesToAdd) {
-        this.state.dataset.files = this.state.dataset.files.concat(filesToAdd);
+        let existingFiles = _.indexBy(this.state.dataset.files, 'id'),
+            newFiles = filesToAdd.filter(f => (!(f.id in existingFiles)));
+        this.state.dataset.files = this.state.dataset.files.concat(newFiles);
     }
 }
 

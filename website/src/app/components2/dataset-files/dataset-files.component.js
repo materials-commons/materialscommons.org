@@ -20,7 +20,7 @@ class MCDatasetFilesComponentController {
     }
 
     selectFiles() {
-        this.datasetFiles.selectProjectFiles(true).then(files => console.log(files));
+        this.datasetFiles.selectProjectFiles(true).then(files => this.onAddFiles({filesToAdd: files}));
     }
 
     removeSelectedFiles() {
