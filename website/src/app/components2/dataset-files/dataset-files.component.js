@@ -19,6 +19,10 @@ class MCDatasetFilesComponentController {
         );
     }
 
+    selectFiles() {
+        this.datasetFiles.selectProjectFiles(true).then(files => console.log(files));
+    }
+
     removeSelectedFiles() {
         let filesToDelete = this.state.files.filter(f => f.selected);
         this.onRemoveFiles({filesToDelete: filesToDelete});

@@ -1,7 +1,8 @@
 class DatasetFilesService {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor($mdDialog, selectItems) {
         this.$mdDialog = $mdDialog;
+        this.selectItems = selectItems;
     }
 
     addFiles() {
@@ -12,6 +13,35 @@ class DatasetFilesService {
             bindToController: true,
         });
     }
+
+    selectProjectFiles() {
+        this.selectItems.fileTree(true).then(
+            (selected) => selected.files
+        );
+    }
+
+    // selectProjectFiles() {
+    //     this.selectItems.fileTree(true).then(
+    //         (selected) => {
+    //             selected.files.forEach(f => {
+    //                 if (!f.name) {
+    //                     // If f.name doesn't exist then retrieve the file so the name can be shown
+    //                     // in the UI list of files.
+    //                     this.projectsAPI.getProjectFile(this.projectId, f.id).then(
+    //                         (file) => {
+    //                             file.selected = true;
+    //                             this.files.push(file);
+    //                         }
+    //                     );
+    //                 } else {
+    //                     f.selected = true;
+    //                     this.files.push(f);
+    //                 }
+    //             });
+    //         }
+    //     );
+    // }
+
 }
 
 angular.module('materialscommons').service('datasetFiles', DatasetFilesService);
