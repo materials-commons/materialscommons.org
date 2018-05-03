@@ -3,7 +3,7 @@
         <div style="margin-left: 12px; margin-bottom: 8px;">
             Upload files to directory <b>{{$ctrl.path}}</b>
         </div>
-        <div style="margin-left: 12px; margin-bottom: 8px;">
+        <div ng-if="false" style="margin-left: 12px; margin-bottom: 8px;">
             For large files, large file sets, or directory trees, <a ng-click="$ctrl.useGlobusForUpload()">use Globus</a> for uploading.
         </div>
         <div ngf-select ngf-multiple="true" ngf-drop ngf-keep="'distinct'" ng-show="!$ctrl.uploadInProgress"
