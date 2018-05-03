@@ -29,7 +29,7 @@
                 </a>
             </div>
 
-            <div class="padding-3" ng-class="{'pst-active': $ctrl.isProjectDatasetsRoute()}">
+            <div class="padding-3" ng-class="{'pst-active': $ctrl.isProjectDatasetsRoute()}" ng-if="$ctrl.isBetaUser">
                 <a class="project-sidenav-tool margin-left-30" ui-sref="project.datasets.list">
                     <!--<i class="fa fa-fw fa-database"></i>Datasets({{$ctrl.experiment.datasets | toSize}})-->
                     <i class="fa fa-fw fa-database"></i>Datasets

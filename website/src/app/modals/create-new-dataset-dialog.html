@@ -7,7 +7,7 @@
     <md-dialog-content layout-margin>
         <md-input-container class="md-block" style="margin-top:40px">
             <label>Name</label>
-            <input ng-model="$ctrl.state.datasetName" on-enter="$ctrl.done()">
+            <input ng-model="$ctrl.state.datasetTitle" on-enter="$ctrl.done()">
         </md-input-container>
         <p>
             Select experiments and/or samples to include in the dataset. When selecting
@@ -31,7 +31,7 @@
                             </tr>
                             </thead>
                             <tbody md-body>
-                            <tr md-row class="md-row-hover pointer" ng-repeat="experiment in $ctrl.state.experiments">
+                            <tr md-row class="md-row-hover pointer" ng-repeat="experiment in $ctrl.state.project.experiments">
                                 <td md-cell>
                                     <md-checkbox aria-label="select" ng-model="experiment.selected"
                                                  ng-change="$ctrl.experimentSelected(experiment)"></md-checkbox>
@@ -61,7 +61,7 @@
                             </tr>
                             </thead>
                             <tbody md-body>
-                            <tr md-row class="md-row-hover pointer" ng-repeat="sample in $ctrl.state.samples">
+                            <tr md-row class="md-row-hover pointer" ng-repeat="sample in $ctrl.state.project.samples">
                                 <td md-cell>
                                     <md-checkbox aria-label="select" ng-model="sample.selected"></md-checkbox>
                                 </td>
@@ -77,6 +77,6 @@
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
-        <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()" ng-disabled="$ctrl.isInvalidDataset()">Done</md-button>
     </md-dialog-actions>
 </md-dialog>

@@ -1,14 +1,16 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, mcprojstore, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q) {
+    constructor($state, mcprojstore, mcprojectstore2, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q, User) {
         this.$state = $state;
         this.mcprojstore = mcprojstore;
+        this.mcprojectstore2 = mcprojectstore2;
         this.experiment = null;
         this.$timeout = $timeout;
         this.ProjectModel = ProjectModel;
         this.projectFileTreeAPI = projectFileTreeAPI;
         this.$mdDialog = $mdDialog;
         this.mcRouteState = mcRouteState;
+        this.User = User;
         this.$q = $q;
     }
 
@@ -29,6 +31,7 @@ class MCProjectSidenavComponentController {
         });
 
         this.project = this.mcprojstore.currentProject;
+        this.isBetaUser = this.User.isBetaUser();
     }
 
     loadProjectFiles() {
@@ -50,6 +53,7 @@ class MCProjectSidenavComponentController {
     }
 
     refreshProject() {
+        this.mcprojectstore2.reloadProject(this.project.id);
         this.ProjectModel.getProjectForCurrentUser(this.project.id).then((p) => this._updateProject(p));
     }
 

@@ -36,7 +36,9 @@ guard_check
 if [ "${OK}" == "ok" ]; then
     # I realize that this is redundant, but ...
     source ${BACKEND}/env/${SERVERTYPE}.sh
-    source /etc/materialscommons/config.${SERVERTYPE}
+    if [ -f /etc/materialscommons/config.global ]; then
+    . /etc/materialscommons/config.${SERVERTYPE}
+    fi
     source ${ETLSERVER}/.python_env/bin/activate
     pushd ${SERVERS}
     python -m etlserver.scripts.run_worker ${SERVERTYPE}

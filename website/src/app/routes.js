@@ -85,7 +85,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     return mcprojstore.ready();
                 }],
                 _projignore: ["mcprojectstore2", "$stateParams", "_projstore", function (mcprojectstore2, $stateParams) {
-                    console.log('calling loadProject');
                     return mcprojectstore2.loadProject($stateParams.project_id).then(() => true);
                 }],
                 /* inject _projstore to force next resolve to wait for store to ready ready*/
@@ -280,13 +279,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/datasets',
             abstract: true,
             template: '<md-content><div ui-view layout="column" layout-fill></div></md-content>',
-            // template: '<div ui-view></div>',
-            resolve: {
-                _ignore: ['mcdsstore', (mcdsstore) => {
-                    mcdsstore.loadDemoData();
-                    return true;
-                }]
-            }
         })
         .state('project.datasets.list', {
             url: '/list',
