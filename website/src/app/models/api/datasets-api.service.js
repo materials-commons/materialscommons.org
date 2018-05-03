@@ -14,6 +14,22 @@ class DatasetsAPIService {
         return this.Restangular.one('v3').one('listDatasets').customPOST({project_id: projectId}).then(datasets => datasets.plain().data);
     }
 
+    addFilesToProjectDataset (projectId, datasetId, fileIds) {
+        return this.Restangular.one('v3').one('addDatasetFiles').customPOST({
+            project_id: projectId,
+            dataset_id: datasetId,
+            files: fileIds
+        }).then(dataset => dataset.plain().data)
+    }
+
+    deleteFilesFromProjectDataset (projectId, datasetId, fileIds) {
+        return this.Restangular.one('v3').one('deleteDatasetFiles').customPOST({
+            project_id: projectId,
+            dataset_id: datasetId,
+            files: fileIds
+        }).then(dataset => dataset.plain().data)
+    }
+
     getDataset(projectId, experimentId, datasetId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId)
             .get().then(d => d.plain());
