@@ -14,9 +14,7 @@ class MCDatasetFilesComponentController {
     }
 
     addFiles() {
-        this.datasetFiles.addFiles().then(
-            files => this.onAddFiles({filesToAdd: files})
-        );
+        this.datasetFiles.addFiles().then(files => this.onAddFiles({filesToAdd: files}))
     }
 
     selectFiles() {
