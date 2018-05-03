@@ -6,4 +6,5 @@ nodemon --watch actions \
         --watch tasks \
         --watch initializers \
         --watch ../shared \
+        --watch ../lib \
         --exec "run_mcapid.sh mcapid-${SERVERTYPE}"
