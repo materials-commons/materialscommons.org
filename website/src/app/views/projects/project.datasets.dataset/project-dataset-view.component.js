@@ -14,11 +14,11 @@ class MCProjectDatasetViewComponentController {
     }
 
     handleDeleteFiles(filesToDelete) {
-        this.onDeleteFiles({filesToDelete: filesToDelete})
+        this.onDeleteFiles({filesToDelete: filesToDelete});
     }
 
     handleAddFiles(filesToAdd) {
-        this.onAddFiles({filesToAdd: filesToAdd})
+        this.onAddFiles({filesToAdd: filesToAdd});
     }
 }
 
