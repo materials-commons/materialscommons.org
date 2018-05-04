@@ -75,6 +75,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/builder',
             template: '<mc-template-builder layout="column" layout-fill class="height-100"></mc-template-builder>'
         })
+        .state('templates.summary', {
+            url: '/summary',
+            template: '<mc-template-summary layout="column" layout-fill class="height-100"></mc-template-summary>'
+        })
         .state('project', {
             url: '/project/:project_id',
             // abstract: true,
