@@ -13,6 +13,10 @@ class MCProjectDatasetViewComponentController {
         }
     }
 
+    publishDataset () {
+        this.onPublishDataset()
+    }
+
     handleDeleteFiles(filesToDelete) {
         this.onDeleteFiles({filesToDelete: filesToDelete});
     }
@@ -28,6 +32,7 @@ angular.module('materialscommons').component('mcProjectDatasetView', {
     bindings: {
         dataset: '<',
         onDeleteFiles: '&',
-        onAddFiles: '&'
+        onAddFiles: '&',
+        onPublishDataset: '&',
     }
 });
