@@ -1,28 +1,23 @@
-class MCTemplateSummaryComponentController {
+class MCPublicTemplatesComponentController {
     /*@ngInject*/
     constructor(templatesAPI) {
+        console.log("MCPublicTemplatesComponentController - constructor");
         this.templatesAPI = templatesAPI;
     }
 
     $onInit() {
-        console.log("MCTemplateSummaryComponentController - init");
+        console.log("MCPublicTemplatesComponentController - init");
         this.templatesAPI.getAllTemplates().then(
             (templates) => {
-                for (let i = 0; i < templates.length; i++) {
-                    let t = templates[i];
-                    t.can_edit = this.user.isTemplateAdmin() || (this.user.attr().id === t.owner);
-                }
+                console.log("MCPublicTemplatesComponentController - templates", templates);
                 this.templates = templates;
-                if (reloadCache) {
-                    this.templatesService.set(templates);
-                }
             }
         );
     }
 
 }
 
-angular.module('materialscommons').component('mcTemplateSummary', {
-    template: require('./mc-template-summary.html'),
-    controller: MCTemplateSummaryComponentController
+angular.module('materialscommons').component('mcPublicTemplates', {
+    template: require('./mc-public-templates.html'),
+    controller: MCPublicTemplatesComponentController
 });

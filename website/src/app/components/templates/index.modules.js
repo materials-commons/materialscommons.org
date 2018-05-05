@@ -7,3 +7,4 @@ import './mc-template-builder/mc-template-builder-review.component';
 import './mc-template-builder/mc-template-builder-setup.component';
 import './mc-template-builder/mc-template-builder-elements.component';
 import './mc-template-builder/mc-template-builder.component';
+import './mc-public-templates.component';
