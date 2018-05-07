@@ -9,7 +9,7 @@ const db = require('./db');
 const model = require('../../../shared/model');
 const commonQueries = require('../../../lib/common-queries');
 const _ = require('lodash');
-const util = require('./util');
+const util = require('../../../lib/util')
 const zipFileUtils = require('../../../lib/zipFileUtils');
 const path = require('path');
 
