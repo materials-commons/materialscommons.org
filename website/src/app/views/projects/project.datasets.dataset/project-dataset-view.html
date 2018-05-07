@@ -22,7 +22,12 @@
             <md-tab>
                 <md-tab-label>Details</md-tab-label>
                 <md-tab-body>
-                    <mc-p-project-dataset-details ng-if="false"></mc-p-project-dataset-details>
+                    <mc-dataset-details2 dataset="$ctrl.state.dataset"
+                                         on-update-dataset="$ctrl.handleUpdateDataset(dataset)"
+                                         on-publish-dataset="$ctrl.handlePublishDataset(dataset)"
+                                         on-unpublish-dataset="$ctrl.handleUnpublishDataset(dataset)"
+                                         on-add-doi="$ctrl.handleAddDOI(dataset, doiDetails)">
+                    </mc-dataset-details2>
                 </md-tab-body>
             </md-tab>
         </md-tabs>

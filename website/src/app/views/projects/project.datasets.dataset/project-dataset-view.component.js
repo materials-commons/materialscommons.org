@@ -24,6 +24,22 @@ class MCProjectDatasetViewComponentController {
     handleAddFiles(filesToAdd) {
         this.onAddFiles({filesToAdd: filesToAdd});
     }
+
+    handleUpdateDataset (dataset) {
+        this.onUpdateDataset({dataset: dataset});
+    }
+
+    handlePublishDataset (dataset) {
+        this.onPublishDataset({dataset: dataset});
+    }
+
+    handleUnpublishDataset (dataset) {
+        this.onUnpublishDataset({dataset: dataset});
+    }
+
+    handleAddDOI (dataset, doiDetails) {
+        this.onAddDoi({dataset: dataset, doiDetails: doiDetails});
+    }
 }
 
 angular.module('materialscommons').component('mcProjectDatasetView', {
@@ -34,5 +50,9 @@ angular.module('materialscommons').component('mcProjectDatasetView', {
         onDeleteFiles: '&',
         onAddFiles: '&',
         onPublishDataset: '&',
+        onUpdateDataset: '&',
+        onPublishDataset: '&',
+        onUnpublishDataset: '&',
+        onAddDoi: '&',
     }
 });

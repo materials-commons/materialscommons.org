@@ -38,8 +38,20 @@ class MCProjectDatasetViewContainerComponentController {
             )
     }
 
-    handlePublishDataset () {
-        console.log('publish dataset')
+    handleUpdateDataset (dataset) {
+        console.log('handleUpdateDataset', dataset);
+    }
+
+    handlePublishDataset (dataset) {
+        console.log('handlePublishDataset', dataset);
+    }
+
+    handleUnpublishDataset (dataset) {
+        console.log('handleUnpublishDataset', dataset);
+    }
+
+    handleAddDOI (dataset, doiDetails) {
+        console.log('handlAddDOI', dataset, doiDetails);
     }
 }
 
