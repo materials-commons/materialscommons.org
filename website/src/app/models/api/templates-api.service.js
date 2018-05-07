@@ -11,6 +11,10 @@ class TemplatesAPIService {
         return this.Restangular.one('v2').one('templates').get().then(templates => templates.plain());
     }
 
+    getAllPublicTemplates() {
+        return this.Restangular.one('v3').one('allTemplatesPublic').customPOST().then(result => result.plain().data);
+    }
+
     updateTemplate(template) {
         return this.Restangular.one('v2').one('templates', template.id).customPUT(template).then(t => t.plain());
     }

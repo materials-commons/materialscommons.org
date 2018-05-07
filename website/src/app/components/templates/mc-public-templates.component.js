@@ -10,7 +10,7 @@ class MCPublicTemplatesComponentController {
 
     $onInit() {
         console.log("MCPublicTemplatesComponentController - init");
-        this.templatesAPI.getAllTemplates().then(
+        this.templatesAPI.getAllPublicTemplates().then(
             (templates) => {
                 console.log("MCPublicTemplatesComponentController - templates", templates.length);
                 let index = 0;
