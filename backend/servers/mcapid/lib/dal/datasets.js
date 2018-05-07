@@ -356,9 +356,9 @@ async function unpublishDatasetTags (datasetId) {
     tags = tags.map(tag => tag.tag);
     // not the best way? I'm convinced that this can be done with a single query, parhave in comibination
     // with the above, but I could not figure it out, and this works. Terry Weymouth - 6 Oct 2016
-    for (var i = 0; i < tags.length; i++) {
+    for (let i = 0; i < tags.length; i++) {
         let count = await r.db('mcpub').table('tag2dataset').getAll(tags[i], {index: 'tag'}).count();
-        if (count == 0) {
+        if (count === 0) {
             await r.db('mcpub').table('tags').get(tags[i]).delete();
         }
     }
