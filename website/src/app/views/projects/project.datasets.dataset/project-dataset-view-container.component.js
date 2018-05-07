@@ -59,7 +59,10 @@ angular.module('materialscommons').component('mcProjectDatasetViewContainer', {
     template: `<mc-project-dataset-view dataset="$ctrl.state.dataset" 
                                     on-delete-files="$ctrl.handleDeleteFiles(filesToDelete)"
                                     on-add-files="$ctrl.handleAddFiles(filesToAdd)"
-                                    on-publish-dataset="$ctrl.handlePublishDataset()"
+                                    on-update-dataset="$ctrl.handleUpdateDataset(dataset)"
+                                    on-publish-dataset="$ctrl.handlePublishDataset(dataset)"
+                                    on-unpublish-dataset="$ctrl.handleUnpublishDataset(dataset)"
+                                    on-add-doi="$ctrl.handleAddDOI(dataset, doiDetails)"
                                     layout-fill ng-if="$ctrl.state.dataset"></mc-project-dataset-view>`,
     controller: MCProjectDatasetViewContainerComponentController
 })
