@@ -1,0 +1,60 @@
+<md-dialog flex="40" style="height: 70vh">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            {{$ctrl.template.name}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <md-content style="max-height:80vh; min-height: 40vh">
+            <h3 ng-if="$ctrl.template.setup[0].properties.length === 0" class="md-subhead">
+                No Template Setup Parameters
+            </h3>
+            <div ng-if="$ctrl.template.setup[0].properties.length > 0">
+                <h3 class="md-subhead">Setup Parameters</h3>
+                <ul>
+                    <li ng-repeat="p in $ctrl.template.setup[0].properties">
+                        <b>{{p.name}}</b> (<i>{{p.otype}}</i>)
+                        <br ng-if="p.choices.length > 0" />
+                        <span ng-if="p.choices.length > 0">
+                            &nbsp;&nbsp;
+                            <b>Selection Choices:</b>
+                            <span ng-repeat="c in p.choices"><b><i>{{c.value}}</i></b>
+                                <span ng-if="!$last">&nbsp;|&nbsp;</span>
+                            </span>
+                        </span>
+                        <br ng-if="p.units.length > 0" />
+                        <span ng-if="p.units.length > 0">
+                            &nbsp;&nbsp;
+                            <b>Parameter Units:</b>
+                            <span ng-repeat="u in p.units"><b><i>{{u}}</i></b>
+                                <span ng-if="!$last">&nbsp;|&nbsp;</span>
+                            </span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <h3 ng-if="$ctrl.template.measurements.length === 0" class="md-subhead">
+                No Template Measurements
+            </h3>
+            <div ng-if="$ctrl.template.measurements.length > 0">
+                <h3 class="md-subhead">Measurements</h3>
+                <ul>
+                    <li ng-repeat="p in $ctrl.template.measurements">
+                        <b>{{p.name}}</b> (<i>{{p.otype}}</i>)
+                        <span ng-if="p.choices.length > 0">
+                            <br />
+                            <b>Selection Choices:</b> <span ng-repeat="c in p.choices">{{c.value}} </span>
+                        </span>
+                        <span ng-if="p.units.length > 0">
+                            <br />
+                            <b>Measurement Units:</b> <span ng-repeat="u in p.units">{{u}} </span>
+                        </span>
+                     </li>
+                </ul>
+            </div>
+        </md-content>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button ng-click="$ctrl.dismiss()">Dismiss</md-button>
+    </md-dialog-actions>
+</md-dialog>
