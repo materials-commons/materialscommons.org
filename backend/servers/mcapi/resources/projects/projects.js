@@ -16,6 +16,8 @@ const shortcuts = require('./shortcuts');
 
 const schema = require('../../schema');
 const experimentDatasets = require('../../db/model/experiment-datasets');
+const experimentDatasetsDoi = require('../../db/model/experiment-datasets-doi');
+
 
 function* create(next) {
     let user = this.reqctx.user;
@@ -187,6 +189,55 @@ function * validateUpdateDataset (datasetArgs) {
     return null;
 }
 
+function * createAndAddNewDoi (next) {
+    let processArgs = yield parse(this);
+    let ok = yield experimentDatasetsDoi.doiServerStatusIsOK();
+    if (!ok) {
+        this.status = status.SERVICE_UNAVAILABLE;
+        this.body = 'DOI Service is Unavaiable';
+    } else {
+        let error = validateDoiMintingArgs(processArgs);
+        if (error) {
+            this.status = status.UNAUTHORIZED;
+            this.body = error;
+        }
+        else {
+            let otherArgs = {};
+            if (processArgs.description) {
+                otherArgs.description = processArgs.description;
+            }
+            this.body = yield experimentDatasetsDoi.doiMint(this.params.dataset_id,
+                processArgs.title, processArgs.author, processArgs.publication_year, otherArgs).val;
+        }
+    }
+
+    yield next;
+}
+
+function validateDoiMintingArgs (processArgs) {
+    if (!processArgs.title) {
+        return {error: 'Bad arguments - title is a required field'};
+    }
+    if (!processArgs.author) {
+        return {error: 'Bad arguments - author is a required field'};
+    }
+    if (!processArgs.publication_year) {
+        return {error: 'Bad arguments - publication_year is a required field'};
+    }
+    return null;
+}
+
+function * checkDataset (next) {
+    let rv = yield experimentDatasets.canPublishDataset(this.params.dataset_id);
+    if (rv.error) {
+        this.status = status.UNAUTHORIZED;
+    } else {
+        this.body = rv.val;
+    }
+
+    yield next;
+}
+
 function createResource() {
     const router = new Router();
     router.get('/', all);
@@ -197,6 +248,8 @@ function createResource() {
     router.delete('/:project_id', ra.validateProjectOwner, deleteProject);
 
     router.put('/:project_id/datasets/:dataset_id', ra.validateDatasetInProject, updateDatasetForProject);
+    router.post('/:project_id/datasets/:dataset_id/doi', ra.validateDatasetInProject, createAndAddNewDoi);
+    router.get('/:project_id/datasets/:dataset_id/check', ra.validateDatasetInProject, checkDataset);
 
     router.get('/:project_id/access', ra.validateProjectOwner, getUserAccessForProject);
     router.put('/:project_id/access', ra.validateProjectOwner, updateUserAccessForProject);

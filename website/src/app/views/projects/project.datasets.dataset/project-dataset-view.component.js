@@ -13,10 +13,6 @@ class MCProjectDatasetViewComponentController {
         }
     }
 
-    publishDataset () {
-        this.onPublishDataset()
-    }
-
     handleDeleteFiles(filesToDelete) {
         this.onDeleteFiles({filesToDelete: filesToDelete});
     }
@@ -29,16 +25,16 @@ class MCProjectDatasetViewComponentController {
         this.onUpdateDataset({dataset: dataset});
     }
 
-    handlePublishDataset (dataset) {
-        this.onPublishDataset({dataset: dataset});
+    handlePublishDataset () {
+        this.onPublishDataset();
     }
 
-    handleUnpublishDataset (dataset) {
-        this.onUnpublishDataset({dataset: dataset});
+    handleUnpublishDataset () {
+        this.onUnpublishDataset();
     }
 
-    handleAddDOI (dataset, doiDetails) {
-        this.onAddDoi({dataset: dataset, doiDetails: doiDetails});
+    handleAddDOI (doiDetails) {
+        this.onAddDoi({doiDetails: doiDetails});
     }
 }
 
@@ -49,7 +45,6 @@ angular.module('materialscommons').component('mcProjectDatasetView', {
         dataset: '<',
         onDeleteFiles: '&',
         onAddFiles: '&',
-        onPublishDataset: '&',
         onUpdateDataset: '&',
         onPublishDataset: '&',
         onUnpublishDataset: '&',

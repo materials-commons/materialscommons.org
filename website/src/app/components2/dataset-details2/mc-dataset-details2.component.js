@@ -77,7 +77,7 @@ class MCDatasetDetails2ComponentController {
             locals: {
                 dataset: this.state.dataset
             }
-        }).then((doiDetails) => this.onAddDoi({dataset: this.state.dataset, doiDetails: doiDetails}));
+        }).then((doiDetails) => this.onAddDoi({doiDetails: doiDetails}));
     }
 
     updateDataset () {
@@ -93,7 +93,7 @@ class MCDatasetDetails2ComponentController {
             locals: {
                 dataset: this.state.dataset
             }
-        }).then(() => this.onPublishDataset({dataset: this.state.dataset}));
+        }).then(() => this.onPublishDataset());
     }
 
     unpublishDataset () {
@@ -106,7 +106,7 @@ class MCDatasetDetails2ComponentController {
                 dataset: this.state.dataset
             }
         }).then(
-            () => this.onUnpublishDataset({dataset: this.state.dataset}));
+            () => this.onUnpublishDataset());
     }
 }
 

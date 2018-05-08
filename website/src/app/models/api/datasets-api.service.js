@@ -93,9 +93,20 @@ class DatasetsAPIService {
             .customPUT(details).then(d => d.plain());
     }
 
+    updateProjectDatasetDetails (projectId, datasetId, details) {
+        return this.projectsAPIRoute(projectId).one('datasets', datasetId).customPUT(details).then(d => d.plain());
+    }
+
     publishDataset(projectId, experimentId, datasetId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId)
             .one('publish').customPUT({}).then(d => d.plain());
+    }
+
+    publishProjectDataset (projectId, datasetId) {
+        return this.Restangular.one('v3').one('publishDataset').customPOST({
+            project_id: projectId,
+            dataset_id: datasetId
+        }).then(d => d.plain().data);
     }
 
     checkDataset(projectId, experimentId, datasetId) {
@@ -108,10 +119,21 @@ class DatasetsAPIService {
             .one('unpublish').customPUT({}).then(d => d.plain());
     }
 
+    unpublishProjectDataset (projectId, datasetId) {
+        return this.Restangular.one('v3').one('unpublishDataset').customPOST({
+            project_id: projectId,
+            dataset_id: datasetId
+        }).then(d => d.plain().data);
+    }
+
     createNewDoi(projectId, experimentId, datasetId, details){
         // Details: 'title', 'author', 'publication_year', 'description' (optional)
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId)
             .one('doi').customPOST(details).then(d => d.plain());
+    }
+
+    createDOI (projectId, datasetId, details) {
+        return this.projectsAPIRoute(projectId).one('datasets', datasetId).one('doi').customPOST(details).then(d => d.plain());
     }
 
     getDoiMetadata(projectId, experimentId, datasetId){

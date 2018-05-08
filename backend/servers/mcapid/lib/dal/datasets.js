@@ -6,6 +6,8 @@ const commonQueries = require('../../../lib/common-queries');
 const _ = require('lodash');
 const util = require('../../../lib/util');
 
+const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
+
 async function createDataset (ds, owner, projectId) {
     let dataset = new model.Dataset(ds.title, owner);
     dataset.description = ds.description;
@@ -55,7 +57,59 @@ async function getDatasetsForProject (projectId) {
 
 async function getDataset (datasetId) {
     let rql = commonQueries.datasetDetailsRql(r.table('datasets').get(datasetId), r);
-    return await dbExec(rql);
+    let dataset = await dbExec(rql);
+    if (dataset.doi !== '') {
+        dataset.doi_url = `${doiUrl}id/${doi}`;
+    }
+    if (!dataset.published) {
+        let publishedState = await canPublishDataset(datasetId);
+        dataset.state = publishedState;
+    }
+}
+
+async function canPublishDataset (datasetId) {
+    let dsState = {
+        files_count: 0,
+        samples_count: 0,
+        processes_count: 0,
+        can_be_published: false
+    };
+
+    dsState.files_count = await getFilesCountForDataset(datasetId);
+    dsState.samples_count = await getSamplesCountForDataset(datasetId);
+    dsState.processes_count = await getProcessesCountForDataset(datasetId);
+    if (dsState.files_count && dsState.samples_count && dsState.processes_count) {
+        dsState.can_be_published = true;
+    }
+
+    return dsState;
+}
+
+async function getFilesCountForDataset (datasetId) {
+    let datasetProcessIds = await r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'}).pluck('process_id');
+    let processIds = datasetProcessIds.map(d => d.process_id);
+
+    let sampleProcessIds = await r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).pluck('sample_id');
+    let sampleIds = sampleProcessIds.map(d => d.sample_id);
+    return await getFileCountsForProcessesAndSamples(datasetId, processIds, sampleIds);
+}
+
+async function getFileCountsForProcessesAndSamples (datsetId, processIds, sampleIds) {
+    let processFiles = await r.table('process2file').getAll(r.args(processIds), {index: 'process_id'});
+    let sampleFiles = await r.table('sample2datafile').getAll(r.args(sampleIds), {index: 'sample_id'});
+    let uniqFileIds = _.keys(_.keyBy(processFiles.concat(sampleFiles), 'datafile_id')).map(id => ({id: id}));
+    return uniqFileIds.length;
+}
+
+async function getSamplesCountForDataset (datasetId) {
+    let sampleIds = await r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'})
+        .eqJoin('process_id', r.table('process2sample'), {index: 'process_id'}).zip().pluck('sample_id').distinct();
+    return sampleIds.length;
+}
+
+async function getProcessesCountForDataset (datasetId) {
+    let d2pEntries = await r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'});
+    return d2pEntries.length;
 }
 
 async function updateDataset (datasetId, ds) {

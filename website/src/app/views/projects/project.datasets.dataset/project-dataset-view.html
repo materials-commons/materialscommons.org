@@ -1,7 +1,17 @@
 <md-content layout="column" flex style="width:80vw">
-    <md-button class="md-primary" ng-click="$ctrl.publishDataset()">Publish</md-button>
     <div layout="column" layout-fill layout-align="start stretch" layout-margin style="padding-right: 15px">
         <md-tabs md-stretch-tabs md-border-bottom md-dynamic-height>
+            <md-tab>
+                <md-tab-label>Details</md-tab-label>
+                <md-tab-body>
+                    <mc-dataset-details2 dataset="$ctrl.state.dataset"
+                                         on-update-dataset="$ctrl.handleUpdateDataset(dataset)"
+                                         on-publish-dataset="$ctrl.handlePublishDataset()"
+                                         on-unpublish-dataset="$ctrl.handleUnpublishDataset()"
+                                         on-add-doi="$ctrl.handleAddDOI(doiDetails)">
+                    </mc-dataset-details2>
+                </md-tab-body>
+            </md-tab>
             <md-tab>
                 <md-tab-label>
                     Samples
@@ -17,17 +27,6 @@
                                       on-remove-files="$ctrl.handleDeleteFiles(filesToDelete)"
                                       on-add-files="$ctrl.handleAddFiles(filesToAdd)">
                     </mc-dataset-files>
-                </md-tab-body>
-            </md-tab>
-            <md-tab>
-                <md-tab-label>Details</md-tab-label>
-                <md-tab-body>
-                    <mc-dataset-details2 dataset="$ctrl.state.dataset"
-                                         on-update-dataset="$ctrl.handleUpdateDataset(dataset)"
-                                         on-publish-dataset="$ctrl.handlePublishDataset(dataset)"
-                                         on-unpublish-dataset="$ctrl.handleUnpublishDataset(dataset)"
-                                         on-add-doi="$ctrl.handleAddDOI(dataset, doiDetails)">
-                    </mc-dataset-details2>
                 </md-tab-body>
             </md-tab>
         </md-tabs>
