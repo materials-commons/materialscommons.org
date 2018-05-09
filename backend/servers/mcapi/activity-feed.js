@@ -42,6 +42,8 @@ function* addActivityEvent(activity, params) {
         yield addFileEvent(activity, params.file_id);
     } else if (params.sample_id) {
         yield addSampleEvent(activity, params.sample_id);
+    } else if (params.template_id) {
+        yield addProcessTemplateEvent(activity,params.template_id);
     } else if (params.process_id) {
         yield addProcessEvent(activity, params.process_id);
     } else if (params.experiment_id) {
@@ -69,6 +71,10 @@ function* addExperimentEvent(activity, experimentId) {
 
 function* addProjectEvent(activity, projectId) {
     yield addEvent('projects', projectId, 'project', activity);
+}
+
+function* addProcessTemplateEvent(activity, templateId) {
+    yield addEvent('templates', templateId, 'process-create', activity);
 }
 
 function* addEvent(table, id, itemType, activity) {
