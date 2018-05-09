@@ -19,8 +19,28 @@ async function createDataset (ds, owner, projectId) {
     await r.table('project2dataset').insert(e2p);
     if (ds.samples.length) {
         await addSamplesToDataset(createdDS.id, ds.samples);
+        await addProcessesToCreatedDataset(createdDS.id);
+        await addFilesToCreatedDataset(createdDS.id);
     }
     return createdDS;
+}
+
+async function addProcessesToCreatedDataset (datasetId) {
+    let d2s = await r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'});
+    let sampleIds = d2s.map(e => e.sample_id);
+    let processes = await r.table('process2sample').getAll(r.args(sampleIds), {index: 'sample_id'});
+    let distinctProcesses = _.keys(_.keyBy(processes, 'process_id'));
+    let processesToAdd = distinctProcesses.map(pid => ({process_id: pid, dataset_id: datasetId}));
+    await r.table('dataset2process').insert(processesToAdd);
+}
+
+async function addFilesToCreatedDataset (datasetId) {
+    let d2s = await r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'});
+    let sampleIds = d2s.map(e => e.sample_id);
+    let files = await r.table('process2file').getAll(r.args(sampleIds), {index: 'sample_id'});
+    let distinctFiles = _.keys(_.keyBy(files, 'datafile_id'));
+    let filesToAdd = distinctFiles.map(fid => ({datafile_id: fid, dataset_id: datasetId}));
+    await r.table('dataset2datafile').insert(filesToAdd);
 }
 
 async function deleteDataset (datasetId) {
@@ -65,6 +85,7 @@ async function getDataset (datasetId) {
         let publishedState = await canPublishDataset(datasetId);
         dataset.state = publishedState;
     }
+    return dataset;
 }
 
 async function canPublishDataset (datasetId) {
