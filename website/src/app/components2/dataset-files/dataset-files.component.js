@@ -13,7 +13,7 @@ class MCDatasetFilesComponentController {
         }
     }
 
-    selectFilesToAdd () {
+    selectFilesToAdd() {
         this.datasetFiles.selectProjectFiles(true).then(files => this.onAddFiles({filesToAdd: files}));
     }
 

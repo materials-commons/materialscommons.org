@@ -1,10 +1,10 @@
 class MCProjectDatasetViewComponentController {
     /*@ngInject*/
-    constructor (datasetsAPI) {
-        this.datasetsAPI = datasetsAPI
+    constructor(datasetsAPI) {
+        this.datasetsAPI = datasetsAPI;
         this.state = {
             dataset: null,
-        }
+        };
     }
 
     $onChanges(changes) {
@@ -21,19 +21,19 @@ class MCProjectDatasetViewComponentController {
         this.onAddFiles({filesToAdd: filesToAdd});
     }
 
-    handleUpdateDataset (dataset) {
+    handleUpdateDataset(dataset) {
         this.onUpdateDataset({dataset: dataset});
     }
 
-    handlePublishDataset () {
+    handlePublishDataset() {
         this.onPublishDataset();
     }
 
-    handleUnpublishDataset () {
+    handleUnpublishDataset() {
         this.onUnpublishDataset();
     }
 
-    handleAddDOI (doiDetails) {
+    handleAddDOI(doiDetails) {
         this.onAddDoi({doiDetails: doiDetails});
     }
 }
