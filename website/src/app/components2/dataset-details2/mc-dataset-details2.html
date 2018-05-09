@@ -14,9 +14,10 @@
             </ul>
         </div>
         <div class="margin-top-20 margin-left-30">
-            <p>Dataset contains {{$ctrl.state.dataset.status.processes_count | number}} processes, {{$ctrl.state.dataset.status.samples_count | number}}
-                samples, and
-                {{$ctrl.state.dataset.status.files_count}} files.</p>
+            <p>
+                Dataset contains {{$ctrl.state.dataset.status.processes_count | number}} processes, {{$ctrl.state.dataset.status.samples_count | number}}
+                samples, and {{$ctrl.state.dataset.status.files_count}} files.
+            </p>
         </div>
         <div ng-show="$ctrl.state.dataset.published">
             <md-button class="md-warn md-raised" ng-disabled="true">

@@ -38,7 +38,7 @@ function * getDataset (datasetId) {
     }
     if (!dataset.published) {
         let publishedState = yield canPublishDataset(datasetId);
-        dataset.state = publishedState.val;
+        dataset.status = publishedState.val;
     }
     return {val: dataset};
 }

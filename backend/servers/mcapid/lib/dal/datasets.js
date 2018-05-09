@@ -37,8 +37,10 @@ async function addProcessesToCreatedDataset (datasetId) {
 async function addFilesToCreatedDataset (datasetId) {
     let d2s = await r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'});
     let sampleIds = d2s.map(e => e.sample_id);
-    let files = await r.table('process2file').getAll(r.args(sampleIds), {index: 'sample_id'});
-    let distinctFiles = _.keys(_.keyBy(files, 'datafile_id'));
+    let processes = await r.table('process2sample').getAll(r.args(sampleIds), {index: 'sample_id'});
+    let distinctProcesses = _.keys(_.keyBy(processes, 'process_id'));
+    let p2f = await r.table('process2file').getAll(r.args(distinctProcesses), {index: 'process_id'});
+    let distinctFiles = _.keys(_.keyBy(p2f, 'datafile_id'));
     let filesToAdd = distinctFiles.map(fid => ({datafile_id: fid, dataset_id: datasetId}));
     await r.table('dataset2datafile').insert(filesToAdd);
 }
@@ -83,27 +85,27 @@ async function getDataset (datasetId) {
     }
     if (!dataset.published) {
         let publishedState = await canPublishDataset(datasetId);
-        dataset.state = publishedState;
+        dataset.status = publishedState;
     }
     return dataset;
 }
 
 async function canPublishDataset (datasetId) {
-    let dsState = {
+    let dsStatus = {
         files_count: 0,
         samples_count: 0,
         processes_count: 0,
         can_be_published: false
     };
 
-    dsState.files_count = await getFilesCountForDataset(datasetId);
-    dsState.samples_count = await getSamplesCountForDataset(datasetId);
-    dsState.processes_count = await getProcessesCountForDataset(datasetId);
-    if (dsState.files_count && dsState.samples_count && dsState.processes_count) {
-        dsState.can_be_published = true;
+    dsStatus.files_count = await getFilesCountForDataset(datasetId);
+    dsStatus.samples_count = await getSamplesCountForDataset(datasetId);
+    dsStatus.processes_count = await getProcessesCountForDataset(datasetId);
+    if (dsStatus.files_count && dsStatus.samples_count && dsStatus.processes_count) {
+        dsStatus.can_be_published = true;
     }
 
-    return dsState;
+    return dsStatus;
 }
 
 async function getFilesCountForDataset (datasetId) {
