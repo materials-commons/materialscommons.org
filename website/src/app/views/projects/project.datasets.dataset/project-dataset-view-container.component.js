@@ -11,7 +11,10 @@ class MCProjectDatasetViewContainerComponentController {
     }
 
     $onInit () {
-        this.state.dataset = angular.copy(this.mcdsstore.getDataset(this.$stateParams.dataset_id));
+        this.datasetsAPI.getDatasetForProject(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
+            (dataset) => this.state.dataset = angular.copy(dataset)
+        );
+        //this.state.dataset = angular.copy(this.mcdsstore.getDataset(this.$stateParams.dataset_id));
     }
 
     handleDeleteFiles (filesToDelete) {

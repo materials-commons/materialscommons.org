@@ -35,6 +35,13 @@ class DatasetsAPIService {
             .get().then(d => d.plain());
     }
 
+    getDatasetForProject (projectId, datasetId) {
+        return this.Restangular.one('v3').one('getDataset').customPOST({
+            project_id: projectId,
+            dataset_id: datasetId
+        }).then(d => d.plain().data);
+    }
+
     createDatasetForExperiment(projectId, experimentId, title, description) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets').customPOST({
             title: title,
