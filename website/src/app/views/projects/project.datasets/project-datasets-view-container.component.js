@@ -17,7 +17,7 @@ class MCProjectDatasetsViewContainerComponentController {
                 let p = this.mcprojectstore.getCurrentProject();
                 let transformed = [];
                 datasets.forEach(ds => {
-                    transformed.push(this.projectDatasetsViewService.transformDataset(ds, p));
+                    transformed.push(this.mcdsstore.transformDataset(ds, p));
                 });
                 this.mcdsstore.reloadDatasets(transformed);
                 this.state.datasets = this.mcdsstore.getDatasets();

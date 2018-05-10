@@ -1,9 +1,10 @@
 class MCProjectDatasetViewContainerComponentController {
     /*@ngInject*/
-    constructor ($stateParams, mcdsstore, datasetsAPI, toast) {
+    constructor($stateParams, mcdsstore, datasetsAPI, mcprojectstore2, toast) {
         this.$stateParams = $stateParams;
         this.mcdsstore = mcdsstore;
         this.datasetsAPI = datasetsAPI;
+        this.mcprojectstore = mcprojectstore2;
         this.toast = toast;
         this.state = {
             dataset: null
@@ -12,9 +13,13 @@ class MCProjectDatasetViewContainerComponentController {
 
     $onInit () {
         this.datasetsAPI.getDatasetForProject(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
-            (dataset) => this.state.dataset = angular.copy(dataset)
+            (dataset) => {
+                let project = this.mcprojectstore.getCurrentProject();
+                let transformedDS = this.mcdsstore.transformDataset(dataset, project);
+                this.mcdsstore.updateDataset(transformedDS);
+                this.state.dataset = angular.copy(this.mcdsstore.getDataset(this.$stateParams.dataset_id));
+            }
         );
-        //this.state.dataset = angular.copy(this.mcdsstore.getDataset(this.$stateParams.dataset_id));
     }
 
     handleDeleteFiles (filesToDelete) {
