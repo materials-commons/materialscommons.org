@@ -8,7 +8,7 @@ print(os.path.abspath('..'))
 sys.path.append(os.path.abspath('..'))
 if __name__ == "__main__" and __package__ is None:
     __package__ = "etlserver.scripts"
-from .. import access, apikeydb
+from ..user import access, apikeydb
 from ..etl_api_app import app
 
 _HOST = environ.get('MC_SERVICE_HOST') or 'localhost'
@@ -23,10 +23,10 @@ def reload_users(signum, frame):
 
 if __name__ == '__main__':
     root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
+    root.setLevel(logging.WARNING)
 
     ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.INFO)
+    ch.setLevel(logging.WARNING)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
     ch.setFormatter(formatter)
     root.addHandler(ch)

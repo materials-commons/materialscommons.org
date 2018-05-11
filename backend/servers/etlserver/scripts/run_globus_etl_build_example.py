@@ -3,8 +3,8 @@ import time
 import logging
 import argparse
 
-from ..database.BackgroundProcess import BackgroundProcess
-from ..database.DatabaseInterface import DatabaseInterface
+from ..BackgroundProcess import BackgroundProcess
+from ..DatabaseInterface import DatabaseInterface
 
 
 def main(project_id):

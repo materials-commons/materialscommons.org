@@ -7,16 +7,16 @@
             </a>
         </h3>
     </div>
-    <div layout="row" ng-if="$ctrl.globusUploadPending()">
+    <div layout="row" ng-if="false">
         <span>Globus upload <b><i>in progress</i></b>: from <b>MyGlobusEndpoint (/data/for/mc)</b> to <b>'Demo Project/MyExtraData'</b></span>
     </div>
-    <div layout="row" ng-if="$ctrl.globusUploadComplete()">
+    <div layout="row" ng-if="false">
         <span>Globus upload <b><i>is completed</i></b>: from <b>MyGlobusEndpoint (/data/for/mc)</b> to <b>'Demo Project/MyExtraData'</b> (<a>ok</a>)</span>
     </div>
-    <div layout="row" ng-if="!$ctrl.globusDownloadEndpoint()">
+    <div layout="row" ng-if="false">
         <span>For large files, large file sets, or directory trees, <a ng-click="$ctrl.useGlobusForDownload()">use Globus</a> for download.</span>
     </div>
-    <div layout="row" ng-if="$ctrl.globusDownloadEndpoint()">
+    <div layout="row" ng-if="false">
         <span>Globus download endpoint ('b7ad9502-083e-11e8-a721-0a448319c2f8') available for download of 'Demo Project/EPMA_Analysis' (<a>discard</a> when done).</span>
     </div>
     <div layout="row" class="margin-left-30">

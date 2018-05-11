@@ -4,14 +4,13 @@ import pkg_resources
 from flask import Flask, request
 from flask_api import status
 
-from .UploadUtility import UploadUtility
-from .DatabaseInterface import DatabaseInterface
 from .globus_etl.task_library import startup_and_verify
 from .globus_etl.BuildProjectExperiment import BuildProjectExperiment
-from . import access
-
-from .DB import DbConnection
-from .api_key import apikey
+from .database.DatabaseInterface import DatabaseInterface
+from .database.DB import DbConnection
+from .user import access
+from .user.api_key import apikey
+from .utils.UploadUtility import UploadUtility
 
 log = logging.getLogger(__name__)
 
@@ -109,6 +108,32 @@ def monitor_background_excel_upload():
     log.debug("return as json = {}".format(status_recored_json))
     log.debug("/globus/monitor - done")
     return status_recored_json
+
+
+@app.route('/project/status', methods=['POST'])
+@apikey
+def get_background_status_for_project():
+    ret = "{}"
+    try:
+        log.info("get_background_status_for_project")
+        j = request.get_json(force=True)
+        log.info("get_background_status_for_project: data in = {}".format(j))
+        project_id = j['project_id']
+        log.info("get_background_status_for_project: project_id = {}".format(project_id))
+        status_list = DatabaseInterface().get_status_by_project_id(project_id)
+        log.info("get_background_status_for_project: status_list = {}".format(status_list))
+        status_record = None
+        if status_list:
+            status_record = {
+                'status' : status_list[0]['status'],
+                'id' : status_list[0]['id']
+            }
+        ret_value = {'status': status_record}
+        ret = format_as_json_return(ret_value)
+        log.info("get_background_status_for_project: ret = {}".format(ret))
+    except Exception as e:
+        log.info("Unexpected exception...", exc_info=True)
+    return ret
 
 
 @app.route('/upload', methods=['POST'])

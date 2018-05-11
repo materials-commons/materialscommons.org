@@ -4,8 +4,8 @@ import logging
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
 from globus_sdk import TransferClient, TransferData, TransferAPIError
 
-from ..mcexceptions import DatabaseError, AuthenticationException, NoSuchItem, AccessNotAllowedException
-from ..DB import DbConnection
+from ..utils.mcexceptions import DatabaseError, AuthenticationException, NoSuchItem, AccessNotAllowedException
+from ..database.DB import DbConnection
 
 
 class MaterialsCommonsGlobusInterface:
@@ -109,8 +109,8 @@ class MaterialsCommonsGlobusInterface:
             raise TransferAPIError(error)
 
         self.log.info("Found for target endpoint: " + target_endpoint['display_name'])
-        self.log.info("    - target endpoint id " + target_endpoint_id)
-        self.log.info("Found inbound endpoint: " +
+        self.log.debug("    - target endpoint id " + target_endpoint_id)
+        self.log.debug("Found inbound endpoint: " +
                       inbound_endpoint['display_name'] +
                       " from " + inbound_endpoint["owner_string"])
         self.log.info("Initiating transfer to target directory: " + dir_name)

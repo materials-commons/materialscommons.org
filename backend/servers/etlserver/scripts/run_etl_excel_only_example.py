@@ -3,11 +3,11 @@ import time
 import logging
 import argparse
 
-from ..database.BackgroundProcess import BackgroundProcess
-from ..database.DatabaseInterface import DatabaseInterface
+from ..BackgroundProcess import BackgroundProcess
+from ..DatabaseInterface import DatabaseInterface
 
 
-def main(project_id):
+def main(project_id, excel_file_path):
     from ..globus_etl.task_library import startup_and_verify
     log = logging.getLogger("top_level_run_ELT_example")
 
@@ -66,7 +66,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Run the Globus/ETL process with test data - in a predefined test endpoint')
     parser.add_argument('project_id', type=str, help="Project ID")
+    parser.add_argument('file_path', type=str, help="Excel File Path")
     args = parser.parse_args(argv[1:])
     project_id_in = args.project_id
+    excel_file_path_in = args.file_path
 
-    main(project_id_in)
+    main(project_id_in, excel_file_path_in)

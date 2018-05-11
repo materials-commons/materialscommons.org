@@ -1,5 +1,4 @@
 import os
-import configparser
 from ..globus_etl.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from globus_sdk.exc import GlobusAPIError
 

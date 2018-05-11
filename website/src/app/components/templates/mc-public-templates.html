@@ -1,0 +1,31 @@
+<div layout="column" layout-align="center center" flex>
+    <div><br /></div>
+    <div layout="row">
+        <span><b>Filter, by typing partial matches, to show only matching templates:</b> &ensp; </span>
+        <input class="mc-input-as-line" placeholder="For example: SEM..." ng-model="$ctrl.search" flex style="min-height: 20px">
+    </div>
+    <md-table-container class="margin-top-20">
+        <table md-table>
+            <thead md-head md-order="$ctrl.sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="name">Template (click for details)</th>
+                <th md-column>Description</th>
+                <th md-column md-order-by="n_setup"># Setup Parameters</th>
+                <th md-column md-order-by="n_measurement"># Measurements</th>
+                <th md-column md-order-by="process_type">Type</th>
+                <th md-column md-order-by="does_transform">Transforms?</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr md-row ng-repeat="template in $ctrl.templates | filter:$ctrl.search | orderBy:$ctrl.sortOrder">
+                <td md-cell><a ng-click="$ctrl.showTemplateDetails(template)">{{template.name}}</a></td>
+                <td md-cell>{{template.description}}</td>
+                <td md-cell>{{template.n_setup}}</td>
+                <td md-cell>{{template.n_measurement}}</td>
+                <td md-cell>{{template.process_type}}</td>
+                <td md-cell>{{template.does_transform ? 'Yes' : 'No'}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>

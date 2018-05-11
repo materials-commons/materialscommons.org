@@ -21,7 +21,7 @@ class UploadUtility:
         # noinspection PyUnusedLocal
         try:
             self.log.info("Starting get_file")
-            upload_folder = self.getTmpUploadDir()
+            upload_folder = self.get_tmp_upload_dir()
             self.log.info("upload_folder = {}".format(upload_folder))
             if not os.path.exists(upload_folder):
                 message = "etl file upload - no upload folder: " + upload_folder
@@ -68,32 +68,8 @@ class UploadUtility:
             message = str(e)
             return message, status.HTTP_500_INTERNAL_SERVER_ERROR
 
-    def getTmpUploadDir(self):
+    def get_tmp_upload_dir(self):
         base = os.environ['MCDIR']
-        dir = base.split(':')[0]
-        self.log.info("MCDIR = {}".format(dir))
-        return dir
-
-
-
-
-
-
-
-
-
-
-# function getFileStoreDirs() {
-#     let base = process.env.MCDIR;
-#     return base.split(':');
-# }
-#
-# // NOTE: dir for temp uploads should be in same file system
-# // as dir for file store; a rename is used to position the final
-# // version of the upload file - this is called at build time;
-# // ref: line 12 in directories.js
-# function getTmpUploadDir() {
-#     let path = getFileStoreDir() + "uploadTmp/";
-#     mkdirpSync(path);
-#     return path;
-# }
+        upload_dir = base.split(':')[0]
+        self.log.info("MCDIR = {}".format(upload_dir))
+        return upload_dir

@@ -1,9 +1,9 @@
 from flask import Flask, g, abort
 from os import environ
+import traceback
 import rethinkdb as r
 from rethinkdb.errors import RqlDriverError
 import mcexceptions
-import traceback
 import error
 import pkg_resources
 

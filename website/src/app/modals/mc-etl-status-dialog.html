@@ -28,7 +28,7 @@
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <md-button ng-if="$ctrl.didFail()" class="md-primary" ng-click="$ctrl.done()">Exit/Retry</md-button>
-        <md-button ng-if="$ctrl.didSucceed()" class="md-primary" ng-click="$ctrl.done()">View Experiment</md-button>
+        <md-button ng-if="$ctrl.didSucceed()" class="md-warn" ng-click="$ctrl.done()">Processing done: Click on Sync!</md-button>
         <md-button ng-if="!$ctrl.isDone()" class="md-primary" ng-click="$ctrl.dismiss()">Dismiss</md-button>
     </md-dialog-actions>
 </md-dialog>

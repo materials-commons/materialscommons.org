@@ -89,6 +89,9 @@ function isStateRequiringALogin(stateName) {
     if (stateName.startsWith('data.')) {
         return false;
     }
+    if (stateName.startsWith('public.')) {
+        return false;
+    }
     switch (stateName) {
         case 'login':
         case 'join':

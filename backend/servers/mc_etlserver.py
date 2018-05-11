@@ -3,8 +3,8 @@ import signal
 import logging
 import sys
 from os import environ
-from etlserver.access import reset as access_reset
-from etlserver.apikeydb import reset as apikeydb_reset
+from etlserver.user.access import reset as access_reset
+from etlserver.user.apikeydb import reset as apikeydb_reset
 from etlserver.etl_api_app import app
 
 _HOST = environ.get('MC_SERVICE_HOST') or 'localhost'

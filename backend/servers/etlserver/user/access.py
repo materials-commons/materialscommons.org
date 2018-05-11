@@ -1,7 +1,7 @@
 from flask import request
-from .mcexceptions import AccessNotAllowedException
+from ..utils.mcexceptions import AccessNotAllowedException
 from . import apikeydb
-from .DB import DbConnection
+from ..database.DB import DbConnection
 
 _user_access_matrix = {}
 _admins = []

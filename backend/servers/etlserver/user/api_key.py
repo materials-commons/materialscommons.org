@@ -1,9 +1,9 @@
 from flask import request
 from functools import wraps, partial
 from . import apikeydb
-from . import error
 from . import access
-from . import mcexceptions
+from ..utils import error
+from ..utils import mcexceptions
 # noinspection PyProtectedMember
 from materials_commons.api import _Config as Config
 # noinspection PyProtectedMember

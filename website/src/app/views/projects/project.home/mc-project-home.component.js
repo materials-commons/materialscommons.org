@@ -21,6 +21,7 @@ class MCProjectHomeComponentController {
         this.mcprojectstore2 = mcprojectstore2;
         this.projectsAPI = projectsAPI;
         this.etlServerAPI = etlServerAPI;
+        this.etlStatusAvailable = false;
         this.etlInProgress = false;
         this.etlStatusRecordId = null;
         if (User.isAuthenticated()) {
@@ -36,7 +37,18 @@ class MCProjectHomeComponentController {
             this._reloadComponentState();
         });
         this._reloadComponentState();
-        //this.getProjectActivities();
+        this.etlServerAPI.getEtlStatusForProject(this.project.id).then(
+            status => {
+                if (status && status.status) {
+                    status = status.status;
+                    if (! (status.status === "Success" || status.status === "Failure") ){
+                        this.etlInProgress = true;
+                        this.etlStatusRecordId = status.id;
+                    }
+                }
+                this.etlStatusAvailable = true;
+            }
+        );
     }
 
     getProjectActivities() {
@@ -180,7 +192,6 @@ class MCProjectHomeComponentController {
     }
 
     etlStart(){
-        console.log("MCProjectHomeComponentController - etlStart()");
         this.$mdDialog.show({
             templateUrl: 'app/modals/mc-etl-upload-dialog.html',
             controller: EtlUploadDialogController,
@@ -192,28 +203,20 @@ class MCProjectHomeComponentController {
         }).then(
             (results) => {
                 this.etlInProgress = true;
-                console.log("MCProjectHomeComponentController - etlStart() - results", results);
                 this.etlStatusRecordId = results.status_record_id;
                 if (results.status == "ERROR") {
                     this.etlReportComplexError(results);
                 } else if (results.status == "DONE") {
                     this.etlInProgress = false;
-                    console.log("MCProjectHomeComponentController - etlStart() - done");
                     this.etlReportImmediateComplete(results);
-                } else {
-                    console.log("MCProjectHomeComponentController - etlStart() - dialog ok");
                 }
                 this._reloadComponentState();
             },
-            () => {
-                console.log("MCProjectHomeComponentController - etlStart() - dialog canceled");
-            }
+            () => {}
         );
     }
 
     etlReportImmediateComplete(status){
-        console.log("MCProjectHomeComponentController - etlReportImmediateComplete() - status", status);
-
         this.$mdDialog.show({
             templateUrl: 'app/modals/mc-etl-message-dialog.html',
             controller: EtlMessageDialogController,
@@ -225,18 +228,13 @@ class MCProjectHomeComponentController {
                 should_sync_flag: true
             }
         }).then(() => {
-            // Todo: should sync here or eariler in control chain
+            // Todo: should sync here or earlier in control chain
             this._reloadComponentState();
         });
     }
 
     etlReportComplexError(status){
-        console.log("MCProjectHomeComponentController - etlReportComplexError() - status", status);
         this.etlStatusRecordId = status.status_record_id;
-        console.log("this.etlInProgress", this.etlInProgress);
-        console.log("this.etlStatusRecordId", this.etlStatusRecordId);
-        console.log("status", status);
-        console.log("MCProjectHomeComponentController - etlReportComplexError() - dialog");
         this.$mdDialog.show({
             templateUrl: 'app/modals/mc-etl-status-dialog.html',
             controller: EtlStatusDialogController,
@@ -246,38 +244,21 @@ class MCProjectHomeComponentController {
                 status: status
             }
         }).then(
-            (status) => {
-                console.log("MCProjectHomeComponentController - etlReportComplexError() - process done", status);
+            () => {
                 this.etlInProgress = false;
                 this.etlStatusRecordId = null;
-                let experiment_id = status.extras.experiment_id;
-                console.log("this.etlInProgress", this.etlInProgress);
-                console.log("this.etlStatusRecordId", this.etlStatusRecordId);
-                console.log("experiment_id = ",experiment_id);
-                // TODO: verify usage
-                // this.$state.go("project.experiment.workflow", {experiment_id: experiment_id});
-                // this.$state.go('project.experiments.experiment', {experiment_id: experiment_id});
                 this._reloadComponentState();
             },
             (status) => {
-                console.log("MCProjectHomeComponentController - etlReportComplexError() - dismiss", status);
                 this.etlInProgress = false;
                 this.etlStatusRecordId = status.id;
-                console.log("this.etlInProgress", this.etlInProgress);
-                console.log("this.etlStatusRecordId", this.etlStatusRecordId);
                 this._reloadComponentState();
             });
     }
 
     etlMonitor(){
-        console.log("MCProjectHomeComponentController - etlMonitor() - query");
         this.etlServerAPI.getEtlStatus(this.etlStatusRecordId).then(
             status => {
-                console.log("MCProjectHomeComponentController - etlMonitor() - results");
-                console.log("this.etlInProgress", this.etlInProgress);
-                console.log("this.etlStatusRecordId", this.etlStatusRecordId);
-                console.log("status", status);
-                console.log("MCProjectHomeComponentController - etlMonitor() - dialog");
                 this.$mdDialog.show({
                     templateUrl: 'app/modals/mc-etl-status-dialog.html',
                     controller: EtlStatusDialogController,
@@ -287,25 +268,14 @@ class MCProjectHomeComponentController {
                         status: status
                     }
                 }).then(
-                    (status) => {
-                        console.log("MCProjectHomeComponentController - etlMonitor() - process done", status);
+                    () => {
                         this.etlInProgress = false;
                         this.etlStatusRecordId = null;
-                        let experiment_id = status.extras.experiment_id;
-                        console.log("this.etlInProgress", this.etlInProgress);
-                        console.log("this.etlStatusRecordId", this.etlStatusRecordId);
-                        console.log("experiment_id = ",experiment_id);
-                        // TODO: verify usage
-                        // this.$state.go("project.experiment.workflow", {experiment_id: experiment_id});
-                        // this.$state.go('project.experiments.experiment', {experiment_id: experiment_id});
                         this._reloadComponentState();
                     },
                     (status) => {
-                        console.log("MCProjectHomeComponentController - etlMonitor() - dismiss", status);
                         this.etlInProgress = true;
                         this.etlStatusRecordId = status.id;
-                        console.log("this.etlInProgress", this.etlInProgress);
-                        console.log("this.etlStatusRecordId", this.etlStatusRecordId);
                         this._reloadComponentState();
                     }
                 );
@@ -458,7 +428,6 @@ class EtlUploadDialogController {
     }
 
     uploadWithGlobus() {
-        console.log("EtlUploadDialogController - Start upload with globus");
         let data = {};
         data.project_id = this.project.id;
         data.name = this.name;
@@ -466,19 +435,14 @@ class EtlUploadDialogController {
         data.globus_uuid = this.ep_uuid;
         data.globus_excel_file = this.ep_spreadsheet;
         data.globus_data_dir = this.ep_data;
-        console.log("data to send = ", data);
         return this.etlServerAPI.startBackgroundEtlUpload(data).then (
             (reply) => {
-                console.log("EtlUploadDialogController setup completed", reply);
                 this.$mdDialog.hide(reply);
             },
             (e) => {
-                console.log("upload failed", e);
                 if (e.status === 502) {
-                    console.log("Service unavailable: 502");
                     this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
                 } else if (e.status > 200) {
-                    console.log("Service unavailable: " + e.status);
                     this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
                 }
                 this.$mdDialog.cancel(e);
@@ -487,21 +451,17 @@ class EtlUploadDialogController {
     }
 
     uploadDirect() {
-        console.log("EtlUploadDialogController - Start upload direct");
         let data = {};
         data.project_id = this.project.id;
         data.name = this.name;
         data.description = this.description;
-        let f = this.files[0];
-        data.file = f;
-        console.log("data to send = ", data);
+        data.file = this.files[0];
         this.isUploading = true;
         return this.Upload.upload({
             url: `api/etl/upload?apikey=${this.User.apikey()}`,
             data: data
         }).then(
             (uploaded) => {
-                console.log("upload completed", uploaded.data);
                 let results = {
                     status: "DONE",
                     data: uploaded.data
@@ -510,12 +470,9 @@ class EtlUploadDialogController {
                 this.isUploading = false;
             },
             (e) => {
-                console.log("upload failed", e);
                 if (e.status === 502) {
-                    console.log("Service unavailable: 502");
                     this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
                 } else if (e.status > 200) {
-                    console.log("Service unavailable: " + e.status);
                     this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
                 }
                 this.$mdDialog.cancel(e);
