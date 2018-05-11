@@ -62,7 +62,7 @@ class BuildProjectExperiment:
         sheet_name_list = excel_io_controller.sheet_name_list()
         excel_io_controller.set_current_worksheet_by_index(0)
         sheet_name = sheet_name_list[0]
-        self.log.info("In Excel file, using sheet '" +
+        self.log.debug("In Excel file, using sheet '" +
                       sheet_name +
                       "' from sheets: [" + ", ".join(sheet_name_list) + "]")
         self.set_data(excel_io_controller.read_entire_data_from_current_sheet())
@@ -98,6 +98,9 @@ class BuildProjectExperiment:
 
         self.set_project_description(description)
 
+        self.log.info("Building Project/Experiment from spreadsheet: {}{}".
+                      format(spread_sheet_path,data_path))
+
         self.set_input_information(spread_sheet_path, data_path)
 
         if not self._set_project_and_experiment():
@@ -117,13 +120,13 @@ class BuildProjectExperiment:
         self.log.info("With Experiment: " + self.experiment.name + " (" + self.experiment.id + ")")
 
     def write_metadata(self):
-        self.log.info("Writing metadata for experiment '" + self.experiment.name + "'")
+        self.log.debug("Writing metadata for experiment '" + self.experiment.name + "'")
         self.metadata.write(self.experiment.id)
 
     def sweep(self):
         process_list = self._scan_for_process_descriptions()
         if len(process_list) == 0:
-            self.log.info("No complete processes found in project")
+            self.log.debug("No complete processes found in project")
         self.parent_process_list = []
         for index in range(self.data_start_row, len(self.source)):
             self.parent_process_list.append(None)
@@ -137,7 +140,7 @@ class BuildProjectExperiment:
         end_col_index = proc_data['end_col']
         template_id = proc_data['template']
         process_name = proc_data['name']
-        self.log.info("Sweep for process: " + process_name + " (" + template_id + ")")
+        self.log.debug("Sweep for process: " + process_name + " (" + template_id + ")")
         start_attribute_row_index = self._determine_start_attribute_row(start_col_index)
         self._record_header_rows()
         process_record = None
@@ -201,16 +204,16 @@ class BuildProjectExperiment:
 
     def sweep_for_process_value(self, data_row, process, start_col, end_col, start_attr_row):
         self.clear_params_and_measurement()
-        # self.log.info(process.name, start_col, end_col)
+        # self.log.debug(process.name, start_col, end_col)
         for col in range(start_col, end_col):
             process_value_type = self.source[start_attr_row][col]
             signature = self.source[start_attr_row + 1][col]
-            # self.log.info(process.name, col, process_value_type, signature)
+            # self.log.debug(process.name, col, process_value_type, signature)
             if process_value_type == 'PARAM' or process_value_type == 'MEAS':
                 value = self.source[data_row][col]
                 self.collect_params_and_measurement(process_value_type, value, signature)
         self.set_params_and_measurement(process)
-        # self.log.info(process.name, self.process_values)
+        # self.log.debug(process.name, self.process_values)
 
     def sweep_for_process_files(self, data_row, process, start_col, end_col, start_attr_row):
         # NOTE: only one FILES entry, per process, first one will dominate
@@ -220,7 +223,7 @@ class BuildProjectExperiment:
                 files = self.source[data_row][col]
                 self.metadata.update_process_files_list(files)
                 if self.suppress_data_upload:
-                    self.log.info("data file upload suppressed: ", process.name, " - ", files)
+                    self.log.debug("data file upload suppressed: ", process.name, " - ", files)
                     break
                 self.add_files(process, files)
                 break
@@ -281,7 +284,7 @@ class BuildProjectExperiment:
             process_value_type = self.source[start_attr_row][col]
             if process_value_type == 'SAMPLES':
                 sample_name = self.source[row_index][col]
-                # self.log.info("Sample name", sample_name)
+                # self.log.debug("Sample name", sample_name)
         return sample_name
 
     def set_params_and_measurement(self, process):
@@ -291,18 +294,18 @@ class BuildProjectExperiment:
         for key in self.process_values["PARAM"]:
             entry = self.process_values["PARAM"][key]
             if process.is_known_setup_property(key):
-                # self.log.info("PARMA", process.name, key, entry, process.is_known_setup_property(key))
+                # self.log.debug("PARMA", process.name, key, entry, process.is_known_setup_property(key))
                 if entry['value'] is not None:
                     process.set_value_of_setup_property(key, entry['value'])
                     if entry['unit']:
                         # table =
                         process.get_setup_properties_as_dictionary()
-                        # self.log.info("unit check", entry['unit'], table[key].name, table[key].unit)
+                        # self.log.debug("unit check", entry['unit'], table[key].name, table[key].unit)
                         process.set_unit_of_setup_property(key, entry['unit'])
                     known_param_keys.append(key)
             else:
                 entry['attribute'] = key
-                # self.log.info("Additional setup parameter:", entry)
+                # self.log.debug("Additional setup parameter:", entry)
                 unknown_param_entries.append(entry)
         if known_param_keys:
             process.update_setup_properties(known_param_keys)
@@ -312,10 +315,10 @@ class BuildProjectExperiment:
         #     attribute = elem.input_data['attribute']
         #     for prop in elem.properties:
         #         if prop.value:
-        #             self.log.info("Setup Results: ", attribute, prop.name, prop.value, prop.unit)
+        #             self.log.debug("Setup Results: ", attribute, prop.name, prop.value, prop.unit)
         # measurements
         for key in self.process_values["MEAS"]:
-            # self.log.info("MEAS", process.name, key)
+            # self.log.debug("MEAS", process.name, key)
             entry = self.process_values["MEAS"][key]
             if entry['value'] is not None:
                 measurement_data = {
@@ -344,7 +347,7 @@ class BuildProjectExperiment:
                         message += ", unit = " + str(measurement.unit)
                     else:
                         message += ", unit = None"
-                    self.log.info(message)
+                    self.log.debug(message)
                 measurement_property = {
                     "name": _name_for_attribute(key),
                     "attribute": key
@@ -365,7 +368,7 @@ class BuildProjectExperiment:
             elif path.is_file():
                 file_list.append(str(path.absolute()))
             else:
-                self.log.info("  Requested path for data not in user data directory, ignoring: " + str(path))
+                self.log.debug("  Requested path for data not in user data directory, ignoring: " + str(path))
         for entry in file_list:
             process_files.append(self.project.add_file_by_local_path(entry))
         for entry in dir_list:
@@ -373,7 +376,7 @@ class BuildProjectExperiment:
             directory = self.project.get_by_local_path(entry)
             file_list = self._get_all_files_in_directory(directory)
             process_files += file_list
-        self.log.info("for process {}({})adding files {}".format(process.name, process.id, process_files))
+        self.log.debug("for process {}({})adding files {}".format(process.name, process.id, process_files))
         process.add_files(process_files)
 
     def set_project_description(self, description):
@@ -385,15 +388,15 @@ class BuildProjectExperiment:
     def _set_project_and_experiment(self):
         self._set_names()
         if self.project_name:
-            self.log.info("Project name: " + self.project_name)
+            self.log.debug("Project name: " + self.project_name)
         else:
-            self.log.info("No project name found; check format. Quiting.")
+            self.log.debug("No project name found; check format. Quiting.")
             return False
 
         if self.experiment_name:
-            self.log.info("Experiment name: " + self.experiment_name)
+            self.log.debug("Experiment name: " + self.experiment_name)
         else:
-            self.log.info("No experiment name found; check format. Quiting.")
+            self.log.debug("No experiment name found; check format. Quiting.")
             return False
 
         if not self.override_project_id:
@@ -407,15 +410,15 @@ class BuildProjectExperiment:
         if existing_experiment:
             if self.rename_duplicates:
                 name = _unique_shadow_name(self.experiment_name, experiment_list)
-                self.log.info("Existing experiment with duplicate name. Renamed: " +
+                self.log.debug("Existing experiment with duplicate name. Renamed: " +
                               existing_experiment.name + " --> " + name)
                 existing_experiment.rename(name)
             else:
                 self.log.info("An experiment already exists with this name, " + self.experiment_name)
-                self.log.info("And the --rename flag was not specified.")
-                self.log.info("You can delete or rename the existing experiment.")
-                self.log.info("Or specify the --rename flag in the command line arguments.")
-                self.log.info("Quiting.")
+                self.log.debug("And the --rename flag was not specified.")
+                self.log.debug("You can delete or rename the existing experiment.")
+                self.log.debug("Or specify the --rename flag in the command line arguments.")
+                self.log.debug("Quiting.")
                 return False
         description = ""
         if self.override_experiment_description:
@@ -441,7 +444,7 @@ class BuildProjectExperiment:
         return ret_list
 
     def _scan_for_process_descriptions(self):
-        # self.log.info("_scan_for_process_descriptions", self.start_sweep_col, self.end_sweep_col)
+        # self.log.debug("_scan_for_process_descriptions", self.start_sweep_col, self.end_sweep_col)
         name_row = None
         row_index = 0
         while row_index < len(self.source) and not self.source[row_index][0] == "BEING_DATA":
@@ -471,7 +474,7 @@ class BuildProjectExperiment:
                         'template': template_id
                     }
                 else:
-                    self.log.info("process entry has no corresponding template:", process_entry)
+                    self.log.debug("process entry has no corresponding template:", process_entry)
             col_index += 1
         if previous_process:
             previous_process['end_col'] = col_index
@@ -486,10 +489,10 @@ class BuildProjectExperiment:
                 continue
             if entry.startswith('DUPLICATES_ARE_IDENTICAL'):
                 pass
-            #     self.log.info("Encountered 'DUPLICATES_ARE_IDENTICAL' - ignored as this is the default behaivor")
+            #     self.log.debug("Encountered 'DUPLICATES_ARE_IDENTICAL' - ignored as this is the default behaivor")
             if entry.startswith('ATTR_'):
                 pass
-            #     self.log.info("Encountered '" + entry + "' - ignored, not implemented")
+            #     self.log.debug("Encountered '" + entry + "' - ignored, not implemented")
             if entry.startswith("NOTE") \
                     or entry.startswith("NO_UPLOAD") \
                     or entry.startswith("MEAS") \
@@ -569,7 +572,7 @@ class BuildProjectExperiment:
         missing_end = True
         for col in first_row:
             if str(col).startswith("END"):
-                self.log.info("Found END marker at column " + str(index) +
+                self.log.debug("Found END marker at column " + str(index) +
                               ", updating data end to this location")
                 self.end_sweep_col = index
                 missing_end = False
@@ -633,7 +636,7 @@ def _name_for_attribute(attribute):
         return "Composition"
     if attribute == "thickness":
         return "Thickness"
-    # self.log.info("XXXXX __name_for_attribute", attribute, "defaults to", attribute)
+    # self.log.debug("XXXXX __name_for_attribute", attribute, "defaults to", attribute)
     return attribute
 
 
@@ -644,7 +647,7 @@ def _otype_for_attribute(attribute):
         return "number"
     if attribute == "Condition Name":
         return "string"
-    # self.log.info("XXXXX __otype_for_attribute", attribute, "defaluts to string")
+    # self.log.debug("XXXXX __otype_for_attribute", attribute, "defaluts to string")
     return "string"
 
 

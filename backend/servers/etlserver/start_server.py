@@ -30,10 +30,10 @@ def main():
 
 if __name__ == '__main__':
     root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
+    root.setLevel(logging.WARNING)
 
     ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.INFO)
+    ch.setLevel(logging.WARNING)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
     ch.setFormatter(formatter)
     root.addHandler(ch)
