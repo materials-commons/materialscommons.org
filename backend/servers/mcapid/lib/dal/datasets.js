@@ -253,6 +253,7 @@ async function publishSetupForProcesses (processes) {
     setupProperties.forEach(prop => {
         let setupEntry = setupsByOriginalId[prop.setup_id];
         prop.setup_id = setupEntry.id;
+        delete prop['id'];
     });
     await r.db('mcpub').table('setupproperties').insert(setupProperties);
 
@@ -268,6 +269,7 @@ async function publishSetupForProcesses (processes) {
         } else {
             e.invalid = true;
         }
+        delete e['id'];
     });
     await r.db('mcpub').table('process2setup').insert(p2sEntries);
 }
@@ -289,8 +291,8 @@ async function publishSamples (datasetId) {
     let newSamples = insertedSamples.changes.map(s => s.new_val);
     let originalSampleIds = newSamples.map(s => s.original_id);
     let p2sEntries = await r.table('process2sample').getAll(r.args(originalSampleIds), {index: 'sample_id'});
-    let originalProcessIds = p2sEntries.map(e => e.process_id);
-    let mcPubProcesses = await r.db('mcpub').table('processes').getAll(r.args(originalProcessIds), {index: 'original_id'});
+    let mcPubProcesses = await r.db('mcpub').table('dataset2process').getAll(datasetId, {index: 'dataset_id'})
+        .eqJoin('process_id', r.db('mcpub').table('processes')).zip();
     let processesByOriginalId = _.keyBy(mcPubProcesses, 'original_id');
     let samplesByOriginalId = _.keyBy(newSamples, 'original_id');
     p2sEntries.forEach(e => {
@@ -302,6 +304,7 @@ async function publishSamples (datasetId) {
         } else {
             e.invalid = true;
         }
+        delete e['id'];
     });
     await r.db('mcpub').table('process2sample').insert(p2sEntries);
 }
@@ -351,6 +354,7 @@ async function publishFiles (datasetId) {
         } else {
             e.invalid = true;
         }
+        delete e['id'];
     });
     await r.db('mcpub').table('process2file').insert(p2fEntries);
 }
