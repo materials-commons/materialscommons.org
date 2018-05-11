@@ -264,11 +264,11 @@ class MCProjectHomeComponentController {
                 status: status
             }
         }).then(
-            (status) => {
+            () => {
                 // xconsolex.log("MCProjectHomeComponentController - etlReportComplexError() - process done", status);
                 this.etlInProgress = false;
                 this.etlStatusRecordId = null;
-                let experiment_id = status.extras.experiment_id;
+                //let experiment_id = status.extras.experiment_id;
                 // xconsolex.log("this.etlInProgress", this.etlInProgress);
                 // xconsolex.log("this.etlStatusRecordId", this.etlStatusRecordId);
                 // xconsolex.log("experiment_id = ",experiment_id);
@@ -305,11 +305,11 @@ class MCProjectHomeComponentController {
                         status: status
                     }
                 }).then(
-                    (status) => {
+                    () => {
                         // xconsolex.log("MCProjectHomeComponentController - etlMonitor() - process done", status);
                         this.etlInProgress = false;
                         this.etlStatusRecordId = null;
-                        let experiment_id = status.extras.experiment_id;
+                        //let experiment_id = status.extras.experiment_id;
                         // xconsolex.log("this.etlInProgress", this.etlInProgress);
                         // xconsolex.log("this.etlStatusRecordId", this.etlStatusRecordId);
                         // xconsolex.log("experiment_id = ",experiment_id);

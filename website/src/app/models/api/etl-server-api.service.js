@@ -14,7 +14,7 @@ class EtlServerAPIService {
                 // xconsolex.log(results);
                 return results;
             },
-            e => {
+            () => {
                 // xconsolex.log("error", e);
                 return null;
             });
@@ -33,7 +33,7 @@ class EtlServerAPIService {
                 // xconsolex.log("EtlServerAPIService - etlStatue", results);
                 return results;
             },
-            e => {
+            () => {
                 // xconsolex.log("EtlServerAPIService - error", e);
                 return null;
             }
@@ -53,7 +53,7 @@ class EtlServerAPIService {
                 // xconsolex.log("EtlServerAPIService - status for project", results);
                 return results;
             },
-            e => {
+            () => {
                 // xconsolex.log("EtlServerAPIService - status for project - error", e);
                 return null;
             }
