@@ -1,10 +1,10 @@
 <div layout="column" layout-fill layout-align="start stretch" layout-margin>
     <h3>Dataset: DS5</h3>
     <div layout="row">
-        <md-button class="md-primary">
+        <md-button class="md-primary" ng-click="$ctrl.selectFilesToAdd()">
             <i class="fa fa-fw fa-plus"></i>Add Files
         </md-button>
-        <md-button class="md-primary">
+        <md-button class="md-primary" ng-click="$ctrl.removeSelectedFiles()">
             <i class="fa fa-fw fa-trash"></i>Remove Selected Files
         </md-button>
         <span flex="5"></span>
@@ -22,7 +22,7 @@
                 </tr>
                 </thead>
                 <tbody md-body>
-                <tr md-row class="md-row-hover" ng-repeat="file in $ctrl.files track by $index">
+                <tr md-row class="md-row-hover" ng-repeat="file in $ctrl.state.files | orderBy:'name' track by $index">
                     <td md-cell>
                         <md-checkbox ng-model="file.selected" aria-label="select file"></md-checkbox>
                     </td>

@@ -2,6 +2,17 @@
     <div layout="column" layout-fill layout-align="start stretch" layout-margin style="padding-right: 15px">
         <md-tabs md-stretch-tabs md-border-bottom md-dynamic-height>
             <md-tab>
+                <md-tab-label>Details</md-tab-label>
+                <md-tab-body>
+                    <mc-dataset-details2 dataset="$ctrl.state.dataset"
+                                         on-update-dataset="$ctrl.handleUpdateDataset(dataset)"
+                                         on-publish-dataset="$ctrl.handlePublishDataset()"
+                                         on-unpublish-dataset="$ctrl.handleUnpublishDataset()"
+                                         on-add-doi="$ctrl.handleAddDOI(doiDetails)">
+                    </mc-dataset-details2>
+                </md-tab-body>
+            </md-tab>
+            <md-tab>
                 <md-tab-label>
                     Samples
                 </md-tab-label>
@@ -12,13 +23,10 @@
             <md-tab>
                 <md-tab-label>Files</md-tab-label>
                 <md-tab-body>
-                    <mc-p-project-dataset-files></mc-p-project-dataset-files>
-                </md-tab-body>
-            </md-tab>
-            <md-tab>
-                <md-tab-label>Details</md-tab-label>
-                <md-tab-body>
-                    <mc-p-project-dataset-details ng-if="false"></mc-p-project-dataset-details>
+                    <mc-dataset-files files="$ctrl.state.dataset.files"
+                                      on-remove-files="$ctrl.handleDeleteFiles(filesToDelete)"
+                                      on-add-files="$ctrl.handleAddFiles(filesToAdd)">
+                    </mc-dataset-files>
                 </md-tab-body>
             </md-tab>
         </md-tabs>

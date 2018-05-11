@@ -97,6 +97,18 @@ function* validateDatasetInExperiment(next) {
     yield next;
 }
 
+function * validateDatasetInProject (next) {
+    let projectId = this.params.project_id;
+    let datasetId = this.params.dataset_id;
+    let isInProject = yield check.projectHasDataset(projectId, datasetId);
+    if (!isInProject) {
+        this.status = httpStatus.BAD_REQUEST;
+        this.body = {error: `No such dataset ${datasetId}`};
+        return this.status;
+    }
+    yield next;
+}
+
 function* validateSampleInExperiment(next) {
     let isInExperiment = yield check.sampleInExperiment(this.params.experiment_id, this.params.sample_id);
     if (!isInExperiment) {
@@ -284,6 +296,7 @@ module.exports = {
     validateExperimentOwner,
     validateExperimentInProject,
     validateDatasetInExperiment,
+    validateDatasetInProject,
     validateSampleInExperiment,
     validateProcessInExperiment,
     validateSampleInProject,
