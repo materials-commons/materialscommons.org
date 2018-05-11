@@ -2,39 +2,39 @@ class EtlServerAPIService {
     /*@ngInject*/
     constructor(etlAPIRoute) {
         this.etlAPIRoute = etlAPIRoute;
-        console.log('EtlServerAPIService - constructor', this.etlAPIRoute);
+        // xconsolex.log('EtlServerAPIService - constructor', this.etlAPIRoute);
     }
     startBackgroundEtlUpload(data) {
         let route = this.etlAPIRoute('globus').one('stage');
-        console.log('EtlServerAPIService - startUpload', route);
-        console.log('EtlServerAPIService - startUpload', data);
+        // xconsolex.log('EtlServerAPIService - startUpload', route);
+        // xconsolex.log('EtlServerAPIService - startUpload', data);
         return route.customPOST(data).then(
             n => {
                 let results = n.plain();
-                console.log(results);
+                // xconsolex.log(results);
                 return results;
             },
             e => {
-                console.log("error", e);
+                // xconsolex.log("error", e);
                 return null;
             });
     }
 
     getEtlStatus(statusRecordId) {
         let route = this.etlAPIRoute('globus').one('monitor');
-        console.log('EtlServerAPIService - etlStatus', route);
-        console.log('EtlServerAPIService - etlStatus', statusRecordId);
+        // xconsolex.log('EtlServerAPIService - etlStatus', route);
+        // xconsolex.log('EtlServerAPIService - etlStatus', statusRecordId);
         let data = {
             status_record_id: statusRecordId
         };
         return route.customPOST(data).then(
             r => {
                 let results = r.plain();
-                console.log("EtlServerAPIService - etlStatue", results);
+                // xconsolex.log("EtlServerAPIService - etlStatue", results);
                 return results;
             },
             e => {
-                console.log("EtlServerAPIService - error", e);
+                // xconsolex.log("EtlServerAPIService - error", e);
                 return null;
             }
         );
@@ -42,19 +42,19 @@ class EtlServerAPIService {
 
     getEtlStatusForProject(projectId) {
         let route = this.etlAPIRoute('project').one('status');
-        console.log('EtlServerAPIService - status for project', route);
-        console.log('EtlServerAPIService - status for project', projectId);
+        // xconsolex.log('EtlServerAPIService - status for project', route);
+        // xconsolex.log('EtlServerAPIService - status for project', projectId);
         let data = {
             project_id: projectId
         };
         return route.customPOST(data).then(
             r => {
                 let results = r.plain();
-                console.log("EtlServerAPIService - status for project", results);
+                // xconsolex.log("EtlServerAPIService - status for project", results);
                 return results;
             },
             e => {
-                console.log("EtlServerAPIService - status for project - error", e);
+                // xconsolex.log("EtlServerAPIService - status for project - error", e);
                 return null;
             }
         );
