@@ -15,7 +15,7 @@ const path = require('path');
 
 const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
 
-function * getDatasetsForExperiment (experimentId) {
+function* getDatasetsForExperiment(experimentId) {
     let rql = r.table('experiment2dataset').getAll(experimentId, {index: 'experiment_id'})
         .eqJoin('dataset_id', r.table('datasets')).zip()
         .merge((ds) => {
@@ -30,7 +30,7 @@ function * getDatasetsForExperiment (experimentId) {
     return {val: datasets};
 }
 
-function * getDataset (datasetId) {
+function* getDataset(datasetId) {
     let rql = commonQueries.datasetDetailsRql(r.table('datasets').get(datasetId), r);
     let dataset = yield rql.run();
     if (dataset.doi !== '') {
@@ -43,7 +43,7 @@ function * getDataset (datasetId) {
     return {val: dataset};
 }
 
-function * createDatasetForExperiment (experimentId, userId, datasetArgs) {
+function* createDatasetForExperiment(experimentId, userId, datasetArgs) {
     let dataset = new model.Dataset(datasetArgs.title, userId);
     dataset.description = datasetArgs.description;
     let created = yield db.insert('datasets', dataset);
@@ -59,7 +59,7 @@ function * createDatasetForExperiment (experimentId, userId, datasetArgs) {
     return yield getDataset(created.id);
 }
 
-function * deleteDataset (datasetId) {
+function* deleteDataset(datasetId) {
     let results = yield getDataset(datasetId);
     let dataset = results.val;
     if (dataset.published || dataset.doi) {
@@ -74,14 +74,14 @@ function * deleteDataset (datasetId) {
     return {val: true};
 }
 
-function * addSampleToDataset (datasetId, sampleId) {
+function* addSampleToDataset(datasetId, sampleId) {
     let d2s = new model.Dataset2Sample(datasetId, sampleId);
     yield r.table('dataset2sample').insert(d2s);
     yield addProcessesForSampleToDataset(datasetId, sampleId);
     return yield getDataset(datasetId);
 }
 
-function * addProcessesForSampleToDataset (datasetId, sampleId) {
+function* addProcessesForSampleToDataset(datasetId, sampleId) {
     let processes = yield r.table('process2sample').getAll(sampleId, {index: 'sample_id'});
     let uniqProcesses = uniqByKey(processes, 'process_id');
     let processesToInsert = uniqProcesses.map(p => new model.Dataset2Process(datasetId, p.process_id));
@@ -91,7 +91,7 @@ function * addProcessesForSampleToDataset (datasetId, sampleId) {
     }
 }
 
-function * removeExistingProcessEntries (processesToAdd) {
+function* removeExistingProcessEntries(processesToAdd) {
     if (processesToAdd.length) {
         let indexEntries = processesToAdd.map(p => [p.dataset_id, p.process_id]);
         let matchingEntries = yield r.table('dataset2process').getAll(r.args(indexEntries), {index: 'dataset_process'});
@@ -101,7 +101,7 @@ function * removeExistingProcessEntries (processesToAdd) {
     return processesToAdd;
 }
 
-function * updateSamplesInDataset (datasetId, samplesToAdd, samplesToDelete) {
+function* updateSamplesInDataset(datasetId, samplesToAdd, samplesToDelete) {
     if (samplesToAdd.length) {
         let add = samplesToAdd.map(s => new model.Dataset2Sample(datasetId, s.id));
         add = yield removeExistingSampleEntriesInDataset(add);
@@ -122,18 +122,18 @@ function * updateSamplesInDataset (datasetId, samplesToAdd, samplesToDelete) {
     return yield getDataset(datasetId);
 }
 
-function * getSamplesForDataset (datasetId) {
+function* getSamplesForDataset(datasetId) {
     let samples = yield r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'})
         .eqJoin('sample_id', r.table('samples')).zip();
     return {val: samples};
 }
 
-function uniqByKey (items, key) {
+function uniqByKey(items, key) {
     let uniqItems = _.keyBy(items, key);
     return Object.keys(uniqItems).map(key => uniqItems[key]);
 }
 
-function * addProcessesForSamplesToDataset (datasetId, sampleIds) {
+function* addProcessesForSamplesToDataset(datasetId, sampleIds) {
     let processes = yield r.table('process2sample').getAll(r.args(sampleIds), {index: 'sample_id'});
     let uniqProcesses = uniqByKey(processes, 'process_id');
     let processesToInsert = uniqProcesses.map(p => new model.Dataset2Process(datasetId, p.process_id));
@@ -144,7 +144,7 @@ function * addProcessesForSamplesToDataset (datasetId, sampleIds) {
     return uniqProcesses;
 }
 
-function * addFilesForProcessesAndSamples (datasetId, processIds, sampleIds) {
+function* addFilesForProcessesAndSamples(datasetId, processIds, sampleIds) {
     let processFiles = yield r.table('process2file').getAll(r.args(processIds), {index: 'process_id'});
     let sampleFiles = yield r.table('sample2datafile').getAll(r.args(sampleIds), {index: 'sample_id'});
     let uniqFileIds = _.keys(_.keyBy(processFiles.concat(sampleFiles), 'datafile_id')).map(id => ({id: id}));
@@ -153,7 +153,7 @@ function * addFilesForProcessesAndSamples (datasetId, processIds, sampleIds) {
     }
 }
 
-function * removeExistingSampleEntriesInDataset (samplesToAdd) {
+function* removeExistingSampleEntriesInDataset(samplesToAdd) {
     if (samplesToAdd.length) {
         let indexEntries = samplesToAdd.map(s => [s.dataset_id, s.sample_id]);
         let matchingEntries = yield r.table('dataset2sample').getAll(r.args(indexEntries), {index: 'dataset_sample'});
@@ -164,7 +164,7 @@ function * removeExistingSampleEntriesInDataset (samplesToAdd) {
     return samplesToAdd;
 }
 
-function * updateFilesInDataset (datasetId, filesToAdd, filesToDelete) {
+function* updateFilesInDataset(datasetId, filesToAdd, filesToDelete) {
     if (filesToAdd.length) {
         let add = filesToAdd.map(f => new model.Dataset2Datafile(datasetId, f.id));
         let indexEntries = add.map(f => [f.dataset_id, f.datafile_id]);
@@ -183,7 +183,7 @@ function * updateFilesInDataset (datasetId, filesToAdd, filesToDelete) {
     return yield getDataset(datasetId);
 }
 
-function * updateProcessesInDataset (datasetId, processesToAdd, processesToDelete) {
+function* updateProcessesInDataset(datasetId, processesToAdd, processesToDelete) {
     if (processesToAdd.length) {
         let add = processesToAdd.map(p => new model.Dataset2Process(datasetId, p.id));
         let indexEntries = add.map(p => [p.dataset_id, p.process_id]);
@@ -202,12 +202,12 @@ function * updateProcessesInDataset (datasetId, processesToAdd, processesToDelet
     return yield getDataset(datasetId);
 }
 
-function * updateDataset (datasetId, datasetArgs) {
+function* updateDataset(datasetId, datasetArgs) {
     yield r.table('datasets').get(datasetId).update(datasetArgs);
     return yield getDataset(datasetId);
 }
 
-function * publishDataset (datasetId) {
+function* publishDataset(datasetId) {
     yield publishDatasetKeywords(datasetId);
     yield publishDatasetProcesses(datasetId);
     yield publishDatasetSamples(datasetId);
@@ -222,7 +222,7 @@ function * publishDataset (datasetId) {
  * and associated those keywords with the published document. Keywords that are already
  * present are unchanged, association links that already exist are not added.
  */
-function * publishDatasetKeywords (datasetId) {
+function* publishDatasetKeywords(datasetId) {
     let dataset = yield r.db('materialscommons').table('datasets').get(datasetId);
     let keywords = dataset['keywords'];
     let tags = keywords.map(id => {
@@ -245,7 +245,7 @@ function * publishDatasetKeywords (datasetId) {
     }
 }
 
-function * publishDatasetProcesses (datasetId) {
+function* publishDatasetProcesses(datasetId) {
     let d2pEntries = yield r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'});
     let processIds = d2pEntries.map(entry => entry.process_id);
     let processes = yield r.table('processes').getAll(r.args(processIds));
@@ -265,7 +265,7 @@ function * publishDatasetProcesses (datasetId) {
  * setup entries. It will create new setup entries from the old setup entries, and then update all the
  * id mappings in the join tables and foreign indexes for the related tables.
  */
-function * publishSetupForProcesses (processes) {
+function* publishSetupForProcesses(processes) {
     let originalProcessIds = processes.map(p => p.original_id);
     let p2sEntries = yield r.table('process2setup').getAll(r.args(originalProcessIds), {index: 'process_id'});
     let setupIds = p2sEntries.map(e => e.setup_id);
@@ -285,6 +285,7 @@ function * publishSetupForProcesses (processes) {
     setupProperties.forEach(prop => {
         let setupEntry = setupsByOriginalId[prop.setup_id];
         prop.setup_id = setupEntry.id;
+        delete prop['id'];
     });
     yield r.db('mcpub').table('setupproperties').insert(setupProperties);
 
@@ -300,11 +301,12 @@ function * publishSetupForProcesses (processes) {
         } else {
             e.invalid = true;
         }
+        delete e['id'];
     });
     yield r.db('mcpub').table('process2setup').insert(p2sEntries);
 }
 
-function * publishDatasetSamples (datasetId) {
+function* publishDatasetSamples(datasetId) {
     yield addSamplesToDataset(datasetId);
     let ds2sEntries = yield r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'});
     let sampleIds = ds2sEntries.map(entry => entry.sample_id);
@@ -321,8 +323,8 @@ function * publishDatasetSamples (datasetId) {
     let newSamples = insertedSamples.changes.map(s => s.new_val);
     let originalSampleIds = newSamples.map(s => s.original_id);
     let p2sEntries = yield r.table('process2sample').getAll(r.args(originalSampleIds), {index: 'sample_id'});
-    let originalProcessIds = p2sEntries.map(e => e.process_id);
-    let mcPubProcesses = yield r.db('mcpub').table('processes').getAll(r.args(originalProcessIds), {index: 'original_id'});
+    let mcPubProcesses = yield r.db('mcpub').table('dataset2process').getAll(datasetId, {index: 'dataset_id'})
+        .eqJoin('process_id', r.db('mcpub').table('processes')).zip();
     let processesByOriginalId = _.keyBy(mcPubProcesses, 'original_id');
     let samplesByOriginalId = _.keyBy(newSamples, 'original_id');
     p2sEntries.forEach(e => {
@@ -334,11 +336,12 @@ function * publishDatasetSamples (datasetId) {
         } else {
             e.invalid = true;
         }
+        delete e['id'];
     });
     yield r.db('mcpub').table('process2sample').insert(p2sEntries);
 }
 
-function * addSamplesToDataset (datasetId) {
+function* addSamplesToDataset(datasetId) {
     let sampleIds = yield r.table('dataset2process')
         .getAll(datasetId, {index: 'dataset_id'})
         .eqJoin('process_id', r.table('process2sample'), {index: 'process_id'})
@@ -351,7 +354,7 @@ function * addSamplesToDataset (datasetId) {
     yield r.table('dataset2sample').insert(samplesToAdd);
 }
 
-function * publishDatasetFiles (datasetId) {
+function* publishDatasetFiles(datasetId) {
     yield addFilesToDataset(datasetId);
     let ds2dfEntries = yield r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
     if (!ds2dfEntries.length) {
@@ -384,11 +387,12 @@ function * publishDatasetFiles (datasetId) {
         } else {
             e.invalid = true;
         }
+        delete e['id'];
     });
     yield r.db('mcpub').table('process2file').insert(p2fEntries);
 }
 
-function * addFilesToDataset (datasetId) {
+function* addFilesToDataset(datasetId) {
     let datasetProcessIds = yield r.table('dataset2process')
         .getAll(datasetId, {index: 'dataset_id'}).pluck('process_id');
     let processIds = datasetProcessIds.map(d => d.process_id);
@@ -399,7 +403,7 @@ function * addFilesToDataset (datasetId) {
     yield addFilesForProcessesAndSamples(datasetId, processIds, sampleIds);
 }
 
-function * publishDatasetZipFile (datasetId) {
+function* publishDatasetZipFile(datasetId) {
     let ds = yield r.table('datasets').get(datasetId);
     let zipDirPath = zipFileUtils.zipDirPath(ds);
     let zipFilename = zipFileUtils.zipFilename(ds);
@@ -414,11 +418,11 @@ function * publishDatasetZipFile (datasetId) {
     let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
     let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
 
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         var archive = archiver('zip');
         var output = fs.createWriteStream(fillPathAndFilename);
 
-        output.on('close', function () {
+        output.on('close', function() {
             var totalBytes = archive.pointer();
             var filename = zipFilename;
             r.table('datasets').get(datasetId).update({zipFilename: filename, zipSize: totalBytes})
@@ -447,7 +451,7 @@ function * publishDatasetZipFile (datasetId) {
     });
 }
 
-function resolveZipfileFilenameDuplicates (seenThisOne, name, checksum) {
+function resolveZipfileFilenameDuplicates(seenThisOne, name, checksum) {
     name = name.toLowerCase();
 
     if (name.startsWith('.')) {
@@ -471,12 +475,12 @@ function resolveZipfileFilenameDuplicates (seenThisOne, name, checksum) {
     return name;
 }
 
-function resolveZipfileFilenameUnique (name, count) {
+function resolveZipfileFilenameUnique(name, count) {
     let parts = path.parse(name);
     return parts.name + '_' + count + parts.ext;
 }
 
-function * unpublishDataset (datasetId) {
+function* unpublishDataset(datasetId) {
     yield r.table('datasets').get(datasetId).update({published: false});
     yield unpublishDatasetProcesses(datasetId);
     yield unpublishDatasetSamples(datasetId);
@@ -485,7 +489,7 @@ function * unpublishDataset (datasetId) {
     return yield getDataset(datasetId);
 }
 
-function * unpublishDatasetProcesses (datasetId) {
+function* unpublishDatasetProcesses(datasetId) {
     let processes = yield r.db('mcpub').table('dataset2process').getAll(datasetId, {index: 'dataset_id'});
     let processIds = processes.map(p => p.process_id);
     let process2setupEntries = yield r.db('mcpub').table('process2setup').getAll(r.args(processIds), {index: 'process_id'});
@@ -497,7 +501,7 @@ function * unpublishDatasetProcesses (datasetId) {
     yield r.db('mcpub').table('dataset2process').getAll(datasetId, {index: 'dataset_id'}).delete();
 }
 
-function * unpublishDatasetSamples (datasetId) {
+function* unpublishDatasetSamples(datasetId) {
     let samples = yield r.db('mcpub').table('dataset2sample').getAll(datasetId, {index: 'dataset_id'});
     let sampleIds = samples.map(s => s.sample_id);
     yield r.db('mcpub').table('samples').getAll(r.args(sampleIds)).delete();
@@ -505,7 +509,7 @@ function * unpublishDatasetSamples (datasetId) {
     yield r.db('mcpub').table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();
 }
 
-function * unpublishDatasetFiles (datasetId) {
+function* unpublishDatasetFiles(datasetId) {
     let datafiles = yield r.db('mcpub').table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
     let datafileIds = datafiles.map(d => d.datafile_id);
     yield r.db('mcpub').table('datafiles').getAll(r.args(datafileIds)).delete();
@@ -513,7 +517,7 @@ function * unpublishDatasetFiles (datasetId) {
     yield r.db('mcpub').table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'}).delete();
 }
 
-function * unpublishDatasetTags (datasetId) {
+function* unpublishDatasetTags(datasetId) {
     let tags = yield r.db('mcpub').table('tag2dataset').getAll(datasetId, {index: 'dataset_id'}).pluck(['tag']);
     yield r.db('mcpub').table('tag2dataset').getAll(datasetId, {index: 'dataset_id'}).delete();
     tags = tags.map(tag => tag.tag);
@@ -527,7 +531,7 @@ function * unpublishDatasetTags (datasetId) {
     }
 }
 
-function * canPublishDataset (datasetId) {
+function* canPublishDataset(datasetId) {
     let dsState = {
         files_count: 0,
         samples_count: 0,
@@ -545,7 +549,7 @@ function * canPublishDataset (datasetId) {
     return {val: dsState};
 }
 
-function * getFilesCountForDataset (datasetId) {
+function* getFilesCountForDataset(datasetId) {
     let datasetProcessIds = yield r.table('dataset2process')
         .getAll(datasetId, {index: 'dataset_id'}).pluck('process_id');
     let processIds = datasetProcessIds.map(d => d.process_id);
@@ -556,14 +560,14 @@ function * getFilesCountForDataset (datasetId) {
     return yield getFileCountsForProcessesAndSamples(datasetId, processIds, sampleIds);
 }
 
-function * getFileCountsForProcessesAndSamples (datsetId, processIds, sampleIds) {
+function* getFileCountsForProcessesAndSamples(datsetId, processIds, sampleIds) {
     let processFiles = yield r.table('process2file').getAll(r.args(processIds), {index: 'process_id'});
     let sampleFiles = yield r.table('sample2datafile').getAll(r.args(sampleIds), {index: 'sample_id'});
     let uniqFileIds = _.keys(_.keyBy(processFiles.concat(sampleFiles), 'datafile_id')).map(id => ({id: id}));
     return uniqFileIds.length;
 }
 
-function * getSamplesCountForDataset (datasetId) {
+function* getSamplesCountForDataset(datasetId) {
     let sampleIds = yield r.table('dataset2process')
         .getAll(datasetId, {index: 'dataset_id'})
         .eqJoin('process_id', r.table('process2sample'), {index: 'process_id'})
@@ -571,7 +575,7 @@ function * getSamplesCountForDataset (datasetId) {
     return sampleIds.length;
 }
 
-function * getProcessesCountForDataset (datasetId) {
+function* getProcessesCountForDataset(datasetId) {
     let d2pEntries = yield r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'});
     return d2pEntries.length;
 }
