@@ -34,7 +34,7 @@ function* getDataset(datasetId) {
     let rql = commonQueries.datasetDetailsRql(r.table('datasets').get(datasetId), r);
     let dataset = yield rql.run();
     if (dataset.doi !== '') {
-        dataset.doi_url = `${doiUrl}id/${doi}`;
+        dataset.doi_url = `${doiUrl}id/${dataset.doi}`;
     }
     if (!dataset.published) {
         let publishedState = yield canPublishDataset(datasetId);
