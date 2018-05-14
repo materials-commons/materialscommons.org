@@ -1,4 +1,5 @@
 import rethinkdb as r
+from optparse import OptionParser
 
 
 def run(rql):
@@ -8,8 +9,8 @@ def run(rql):
         return None
 
 
-def main():
-    conn = r.connect('localhost', 30815, db='materialscommons')
+def main(port):
+    conn = r.connect('localhost', port, db='materialscommons')
     cursor = r.table('project2datadir')\
         .eq_join('datadir_id',r.table('datadirs'))\
         .merge({
@@ -29,7 +30,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = OptionParser()
+    parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
+    (options, args) = parser.parse_args()
+    port = options.port
+    print("Using database port = {}".format(port))
+    main(port)
 
 
 
