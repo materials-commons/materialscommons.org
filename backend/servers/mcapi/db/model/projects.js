@@ -266,7 +266,7 @@ function* update(projectID, attrs) {
 function* renameTopDirectory(projectID, oldName, newName) {
     let dirsList = yield r.table('project2datadir').getAll(projectID, {index: 'project_id'})
         .eqJoin('datadir_id',r.table('datadirs')).zip()
-        .filter({'name':'Demo Project'}).coerceTo('array');
+        .filter({'name':oldName}).coerceTo('array');
     if (dirsList.length !== 1) {
         if (dirsList.length > 1) {
             throw new ReferenceError("Multiple top level directories for project, " + projectID);
