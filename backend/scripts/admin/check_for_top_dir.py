@@ -30,6 +30,7 @@ def main(port, include_deleted):
             if not project_name == dir_name:
                 print("Project '{}'({})".format(project_name, doc['project_id']))
                 print(" -> dir '{}'({})".format(dir_name, doc['datadir_id']))
+                print("    project owner = {}".format(owner))
 
 
 if __name__ == "__main__":
