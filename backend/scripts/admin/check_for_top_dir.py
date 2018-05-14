@@ -11,14 +11,14 @@ def run(rql):
 
 def main(port):
     conn = r.connect('localhost', port, db='materialscommons')
-    cursor = r.table('project2datadir')\
-        .eq_join('datadir_id',r.table('datadirs'))\
+    cursor = r.table('project2datadir') \
+        .eq_join('datadir_id', r.table('datadirs')) \
         .merge({
-            'right': {
-              'name2': r.row['right']['name']
-            }
-          }).zip()\
-        .eq_join('project_id',r.table('projects')).zip()\
+        'right': {
+            'name2': r.row['right']['name']
+        }
+    }).zip() \
+        .eq_join('project_id', r.table('projects')).zip() \
         .run(conn)
     for doc in cursor:
         project_name = doc['name']
@@ -36,6 +36,3 @@ if __name__ == "__main__":
     port = options.port
     print("Using database port = {}".format(port))
     main(port)
-
-
-
