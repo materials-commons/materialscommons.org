@@ -26,13 +26,6 @@ let random_name = function () {
 
 let userId = "test@test.mc";
 
-before(function* () {
-    console.log('before projects-spec.js');
-    let user = yield dbModelUsers.getUser(userId);
-    assert.isOk(user, "No test user available = " + userId);
-    console.log('done before projects-spec.js');
-});
-
 describe('Feature - projects: ', function () {
     describe('Create project', function () {
         it('create project and get project back', function* () {
