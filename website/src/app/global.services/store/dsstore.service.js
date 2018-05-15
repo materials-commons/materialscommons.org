@@ -20,6 +20,10 @@ class MCDSStoreService {
         return ds;
     }
 
+    updateDataset(ds) {
+        this.dsstore[ds.id] = ds;
+    }
+
     addDataset(ds) {
         if (ds.id in this.dsstore) {
             return false;
@@ -54,6 +58,17 @@ class MCDSStoreService {
     reloadDatasets(datasets) {
         this.dsstore = {};
         datasets.forEach(ds => this.addDataset(ds));
+    }
+
+    transformDataset(dataset, project) {
+        let projectSamplesLookup = _.indexBy(project.samples, 'id');
+        let transformedSamples = [],
+            transformedDS = angular.copy(dataset);
+        transformedDS.samples.forEach(s => {
+            transformedSamples.push(projectSamplesLookup[s.id]);
+        });
+        transformedDS.samples = angular.copy(transformedSamples);
+        return transformedDS;
     }
 }
 

@@ -61,7 +61,7 @@ function* getProject(projectId) {
         .merge(function (project) {
             return {
                 owner_details: r.table('users').get(project('owner')).pluck('fullname')
-            }
+            };
         });
     rql = transformDates(rql);
     rql = addComputed(rql, true);
@@ -106,7 +106,7 @@ function addCounts(rql) {
             processes_count: r.table('project2process').getAll(project('id'), {index: 'project_id'}).count(),
             samples_count: r.table('project2sample').getAll(project('id'), {index: 'project_id'}).count(),
             files_count: r.table('project2datafile').getAll(project('id'), {index: 'project_id'}).count()
-        }
+        };
     });
     return rql;
 }
@@ -118,7 +118,7 @@ function* forUser(user) {
         .merge(function (project) {
             return {
                 owner_details: r.table('users').get(project('owner')).pluck('fullname')
-            }
+            };
         });
     userProjectsRql = transformDates(userProjectsRql);
     userProjectsRql = addComputed(userProjectsRql, false);
@@ -257,14 +257,23 @@ function* update(projectID, attrs) {
     }
 
     if (attrs.name) {
-        yield renameTopDirectory(oldName, attrs.name);
+        yield renameTopDirectory(projectID, oldName, attrs.name);
     }
 
     return yield r.table('projects').get(projectID);
 }
 
-function* renameTopDirectory(oldName, newName) {
-    let dirsList = yield r.table('datadirs').getAll(oldName, {index: 'name'});
+function* renameTopDirectory(projectID, oldName, newName) {
+    let dirsList = yield r.table('project2datadir').getAll(projectID, {index: 'project_id'})
+        .eqJoin('datadir_id',r.table('datadirs')).zip()
+        .filter({'name':oldName}).coerceTo('array');
+    if (dirsList.length !== 1) {
+        if (dirsList.length > 1) {
+            throw new ReferenceError("Multiple top level directories for project, " + projectID);
+        } else {
+            throw new ReferenceError("Missing top level directory for project, " + projectID);
+        }
+    }
     let directoryID = dirsList[0].id;
     yield renameTopDirHelper.renameDirectory(directoryID, newName);
 }
@@ -303,7 +312,7 @@ function* updateUserAccessForProject(projectId, attrs) {
         let user_id = attrs.user_id;
         let exists = yield r.table('users').get(user_id);
         if (!exists) {
-            results = {error: "Bad request for add - updateUserAccessForProject - invalid: " + user_id}
+            results = {error: "Bad request for add - updateUserAccessForProject - invalid: " + user_id};
         } else {
             let duplicate = yield r.table("access").getAll(projectId, {index: 'project_id'})
                 .filter({user_id: user_id});

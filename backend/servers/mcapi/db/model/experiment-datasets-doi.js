@@ -140,5 +140,5 @@ module.exports = {
     doiServerStatusIsOK,
     doiMint,
     doiGetMetadata,
-    doiGetServerLink
+    doiGetServerLink,
 };

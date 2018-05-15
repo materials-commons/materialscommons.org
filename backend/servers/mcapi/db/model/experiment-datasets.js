@@ -1,6 +1,6 @@
 const r = require('../r');
-const fs = require("fs");
-const Promise = require("bluebird");
+const fs = require('fs');
+const Promise = require('bluebird');
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const archiver = require('archiver');
 
@@ -9,9 +9,11 @@ const db = require('./db');
 const model = require('../../../shared/model');
 const commonQueries = require('../../../lib/common-queries');
 const _ = require('lodash');
-const util = require('./util');
+const util = require('../../../lib/util');
 const zipFileUtils = require('../../../lib/zipFileUtils');
 const path = require('path');
+
+const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
 
 function* getDatasetsForExperiment(experimentId) {
     let rql = r.table('experiment2dataset').getAll(experimentId, {index: 'experiment_id'})
@@ -22,15 +24,22 @@ function* getDatasetsForExperiment(experimentId) {
                 processes: r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'}).count(),
                 files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
                 comments: r.table('comments').getAll(ds('id'), {index: 'item_id'}).count()
-            }
+            };
         });
-    let dataset = yield dbExec(rql);
-    return {val: dataset};
+    let datasets = yield dbExec(rql);
+    return {val: datasets};
 }
 
 function* getDataset(datasetId) {
     let rql = commonQueries.datasetDetailsRql(r.table('datasets').get(datasetId), r);
     let dataset = yield rql.run();
+    if (dataset.doi !== '') {
+        dataset.doi_url = `${doiUrl}id/${dataset.doi}`;
+    }
+    if (!dataset.published) {
+        let publishedState = yield canPublishDataset(datasetId);
+        dataset.status = publishedState.val;
+    }
     return {val: dataset};
 }
 
@@ -276,6 +285,7 @@ function* publishSetupForProcesses(processes) {
     setupProperties.forEach(prop => {
         let setupEntry = setupsByOriginalId[prop.setup_id];
         prop.setup_id = setupEntry.id;
+        delete prop['id'];
     });
     yield r.db('mcpub').table('setupproperties').insert(setupProperties);
 
@@ -291,6 +301,7 @@ function* publishSetupForProcesses(processes) {
         } else {
             e.invalid = true;
         }
+        delete e['id'];
     });
     yield r.db('mcpub').table('process2setup').insert(p2sEntries);
 }
@@ -312,8 +323,8 @@ function* publishDatasetSamples(datasetId) {
     let newSamples = insertedSamples.changes.map(s => s.new_val);
     let originalSampleIds = newSamples.map(s => s.original_id);
     let p2sEntries = yield r.table('process2sample').getAll(r.args(originalSampleIds), {index: 'sample_id'});
-    let originalProcessIds = p2sEntries.map(e => e.process_id);
-    let mcPubProcesses = yield r.db('mcpub').table('processes').getAll(r.args(originalProcessIds), {index: 'original_id'});
+    let mcPubProcesses = yield r.db('mcpub').table('dataset2process').getAll(datasetId, {index: 'dataset_id'})
+        .eqJoin('process_id', r.db('mcpub').table('processes')).zip();
     let processesByOriginalId = _.keyBy(mcPubProcesses, 'original_id');
     let samplesByOriginalId = _.keyBy(newSamples, 'original_id');
     p2sEntries.forEach(e => {
@@ -325,6 +336,7 @@ function* publishDatasetSamples(datasetId) {
         } else {
             e.invalid = true;
         }
+        delete e['id'];
     });
     yield r.db('mcpub').table('process2sample').insert(p2sEntries);
 }
@@ -375,6 +387,7 @@ function* publishDatasetFiles(datasetId) {
         } else {
             e.invalid = true;
         }
+        delete e['id'];
     });
     yield r.db('mcpub').table('process2file').insert(p2fEntries);
 }
@@ -405,11 +418,11 @@ function* publishDatasetZipFile(datasetId) {
     let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
     let datafiles = yield r.table('datafiles').getAll(r.args(datafileIds));
 
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         var archive = archiver('zip');
         var output = fs.createWriteStream(fillPathAndFilename);
 
-        output.on('close', function () {
+        output.on('close', function() {
             var totalBytes = archive.pointer();
             var filename = zipFilename;
             r.table('datasets').get(datasetId).update({zipFilename: filename, zipSize: totalBytes})
@@ -441,8 +454,8 @@ function* publishDatasetZipFile(datasetId) {
 function resolveZipfileFilenameDuplicates(seenThisOne, name, checksum) {
     name = name.toLowerCase();
 
-    if (name.startsWith(".")) {
-        name = "dot" + name;
+    if (name.startsWith('.')) {
+        name = 'dot' + name;
     }
 
     if (name in seenThisOne) {
@@ -464,7 +477,7 @@ function resolveZipfileFilenameDuplicates(seenThisOne, name, checksum) {
 
 function resolveZipfileFilenameUnique(name, count) {
     let parts = path.parse(name);
-    return parts.name + "_" + count + parts.ext;
+    return parts.name + '_' + count + parts.ext;
 }
 
 function* unpublishDataset(datasetId) {

@@ -25,17 +25,6 @@ class ProjectDatasetsViewService {
             );
         });
     }
-
-    transformDataset(dataset, project) {
-        let projectSamplesLookup = _.indexBy(project.samples, 'id');
-        let transformedSamples = [],
-            transformedDS = angular.copy(dataset);
-        transformedDS.samples.forEach(s => {
-            transformedSamples.push(projectSamplesLookup[s.id]);
-        });
-        transformedDS.samples = angular.copy(transformedSamples);
-        return transformedDS;
-    }
 }
 
 angular.module('materialscommons').service('projectDatasetsViewService', ProjectDatasetsViewService);

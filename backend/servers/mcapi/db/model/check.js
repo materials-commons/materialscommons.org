@@ -138,6 +138,11 @@ function* experimentHasDataset(experimentId, datasetId) {
     return datasets.length !== 0;
 }
 
+function * projectHasDataset (projectId, datasetId) {
+    let datasets = yield r.table('project2dataset').getAll([projectId, datasetId], {index: 'project_dataset'});
+    return datasets.length !== 0;
+}
+
 function* taskProcessIsUnused(taskId) {
     let task = yield r.table('experimenttasks').get(taskId);
     if (task.process_id === '') {
@@ -227,6 +232,7 @@ module.exports = {
     processInExperiment,
     fileInProject,
     experimentHasDataset,
+    projectHasDataset,
     taskProcessIsUnused,
     sampleInProject,
     sampleHasPropertySet,
