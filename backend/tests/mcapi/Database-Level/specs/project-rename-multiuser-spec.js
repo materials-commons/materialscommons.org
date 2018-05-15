@@ -85,12 +85,13 @@ describe('Feature - projects: ', function () {
                 name: new_project_name,
                 description: "This is a renamed test project."
             };
-            yield projects.update(selected_project.id,attrs);
+            yield projects.update(selected_project.id, attrs);
             let project_probe = yield projects.get(selected_project.id);
             assert.equal(project_probe.name, new_project_name);
-            // at one point in time, the below statement was failing with a TypeError
             try {
+                // at one point in time, the below statement was failing with a TypeError
                 let top_dir = yield directories.topLevelDir(selected_project.id);
+                assert.equal(top_dir.name, new_project_name);
             } catch (e){
                 assert.equal(e.name,"TypeError");
                 assert.fail(e.message);
