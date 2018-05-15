@@ -88,14 +88,8 @@ describe('Feature - projects: ', function () {
             yield projects.update(selected_project.id, attrs);
             let project_probe = yield projects.get(selected_project.id);
             assert.equal(project_probe.name, new_project_name);
-            try {
-                // at one point in time, the below statement was failing with a TypeError
-                let top_dir = yield directories.topLevelDir(selected_project.id);
-                assert.equal(top_dir.name, new_project_name);
-            } catch (e){
-                assert.equal(e.name,"TypeError");
-                assert.fail(e.message);
-            }
+            let top_dir = yield directories.get(selected_project.id,'top');
+            assert.equal(top_dir.name, new_project_name);
         });
     });
 });
