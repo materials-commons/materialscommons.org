@@ -113,7 +113,7 @@ def reset_password_validate(user,validation_id):
 def reset_apikey(user):
     new_apikey = uuid.uuid1().hex
     r.table('users').get(user).update({'apikey': new_apikey}).run(g.conn)
-    access.remove_user(user)
+    access.reset()
     return jsonify({'apikey': new_apikey})
 
 
