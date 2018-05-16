@@ -37,5 +37,5 @@ if __name__ == '__main__':
         exit(-1)
 
     signal.signal(signal.SIGHUP, reload_users)
-    log.info("Starting ELT SERVER with host = {} and port = {}".format(_HOST, _PORT))
-    app.run(debug=True, host=_HOST, port=int(_PORT), processes=5)
+    log.info("xxStarting ELT SERVER with host = {} and port = {}".format(_HOST, _PORT))
+    app.run(debug=True, host=_HOST, port=int(_PORT), processes=1, threaded=False)
