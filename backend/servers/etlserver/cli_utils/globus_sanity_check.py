@@ -2,6 +2,8 @@ import argparse
 import sys
 import os
 import logging
+import time
+from random import randint
 from globus_sdk.exc import GlobusAPIError
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
 from globus_sdk import TransferClient, TransferData, TransferAPIError
@@ -77,21 +79,10 @@ class ProbeGlobusInterface:
 
         target_endpoint_id = target_endpoint['id']
 
-        self.log.info("Globus user's transfer endpoint name = {}".format(inbound_endpoint.name))
-        self.log.info("Globus Confidential Client endpoint name = {}".format(target_endpoint.name))
-
-        self.log.debug("About to confirm inbound path for spreadsheet: " + path_spreadshet)
-        # confirm inbound path
-        try:
-            transfer.operation_ls(inbound_endpoint_id, path=path_spreadshet)
-        except TransferAPIError as error:
-            self.log.error("Error: " + str(error))
-            raise error
-
-        self.log.debug("Finished confirm of inbound path for spreadsheet: " + path_spreadshet)
+        self.log.info("Globus user's transfer endpoint name = {}".format(inbound_endpoint['display_name']))
+        self.log.info("Globus Confidential Client endpoint name = {}".format(target_endpoint['display_name']))
 
         self.log.debug("About to confirm inbound path for data dir: " + path_data_dir)
-        # confirm inbound path
         try:
             transfer.operation_ls(inbound_endpoint_id, path=path_data_dir)
         except TransferAPIError as error:
@@ -118,8 +109,8 @@ class ProbeGlobusInterface:
                          "Materials Commons"
         transfer_data = TransferData(
             transfer, inbound_endpoint_id, target_endpoint_id, label=transfer_label, sync_level="checksum")
-        transfer_data.add_item(path_data_dir, recursive=True)
-        transfer_data.add_item(path_spreadshet)
+        transfer_data.add_item(path_data_dir, path_data_dir, recursive=True)
+        transfer_data.add_item(path_spreadshet, path_spreadshet)
         transfer_result = transfer.submit_transfer(transfer_data)
         self.log.debug("Finished upload transfer request: successfully completed")
         return_result = {}
@@ -127,6 +118,7 @@ class ProbeGlobusInterface:
         for key in keys:
             return_result[key] = transfer_result[key]
 
+        self.log.debug("Ending upload staging.")
         return return_result
 
     def get_task_status(self, task_id):
@@ -179,138 +171,10 @@ class ProbeGlobusInterface:
         self.log.debug(transfer_client)
         return transfer_client
 
-
-class ProbeGlobusTaskCheck:
-    def __init__(self, globus_endpoint, globus_endpoint_path,
-                 excel_file_path, data_dir_path, transfer_base_path):
-        self.log = logging.getLogger(self.__class__.__name__)
-        self.globus_endpoint = globus_endpoint
-        self.plobus_endpoint_path = globus_endpoint_path
-        self.excel_file_path = excel_file_path
-        self.data_dir_path = data_dir_path
-        self.transfer_base_path = transfer_base_path
-        self.web_service = ProbeGlobusInterface()
-
-
-    def etl_excel_processing(self):
-        # noinspection PyBroadException
-        try:
-
-            self.log.debug("excel_file_path = {}".format(self.excel_file_path))
-            self.log.debug("data_dir_path = {}".format(self.data_dir_path))
-            self.log.debug("transfer_base_path = {}".format(self.transfer_base_path))
-
-            if self.excel_file_path.startswith('/'):
-                self.excel_file_path = self.excel_file_path[1:]
-
-            if self.data_dir_path.startswith('/'):
-                data_dir_path = self.data_dir_path[1:]
-
-            self.log.debug("partial excel_file path = {}".format(self.excel_file_path))
-            self.log.debug("partial data_dir path = {}".format(self.data_dir_path))
-
-            excel_file_path = os.path.join(self.transfer_base_path, self.excel_file_path)
-            data_dir_path = os.path.join(self.transfer_base_path, self.data_dir_path)
-
-            self.log.debug("full excel_file_path = {}".format(self.excel_file_path))
-            self.log.debug("full data_dir_path = {}".format(self.data_dir_path))
-
-        except BaseException as e:
-            self.log.exception(e)
-
-    def globus_transfer(self):
-        self.log.debug("set_transfer_client")
-        results = self.web_service.set_transfer_client()
-        if results['status'] == 'error':
-            return results
-
-        self.log.debug("check_endpoint_transfer")
-        results = self.web_service.check_endpoint_transfer(self.globus_endpoint, self.eglobus_ndpoint_path)
-        self.log.debug("results of staging: ", results)
-        task_id = results['task_id']
-        poll = True
-        while poll:
-            results = self.web_service.get_task_status(task_id)
-            poll = (results['status'] == 'ACTIVE')
-        self.log.debug(results)
-        return results
-
-    def check_globus_clients(self):
-        try:
-            self.web_service.set_transfer_client()
-        except GlobusAPIError as e:
-            http_status = e.http_status
-            code = e.code
-            details = e.message
-            message = "transfer service unavailable: "
-            message += " http_status = " + str(http_status)
-            message += ", code = " + code
-            message += ", message = " + details
-            self.log.error(message)
-            self.log.exception(e)
-            return
-
-        transfer = self.web_service.transfer_client
-
-        # confirm target and inbound endpoints
-        target_endpoint = transfer.get_endpoint(self.web_service.mc_target_ep_id)
-        inbound_endpoint = transfer.get_endpoint(self.globus_endpoint)
-
-        if not target_endpoint or not inbound_endpoint:
-            if not target_endpoint:
-                message = "Materials Commons staging endpoint: " + self.web_service.mc_target_ep_id
-                self.log.error(message)
-
-            if not inbound_endpoint:
-                message = "User's endpoint" + self.globus_endpoint
-                self.log.error(message)
-
-            return
-
-        both = True
-        try:
-            transfer.operation_ls(self.web_service.mc_target_ep_id)
-        except GlobusAPIError as e:
-            both = False
-            message = "Materials Commons staging endpoint, " + self.web_service.mc_target_ep_id
-            message += ", code = " + e.code
-            self.log.error(message)
-
-        try:
-            transfer.operation_ls(self.globus_endpoint)
-        except GlobusAPIError as e:
-            both = False
-            message = "User's endpoint, " + self.globus_endpoint
-            message += ", code = " + e.code
-            self.log.error(message)
-
-        if not both:
-            return
-        # what else needs to be checked?
-        return
-
-    def check_users_source_paths(self):
-        if not self.find_user_path(self.data_dir_path):
-            message = "User's endpoint directory not found, " + self.data_dir_path
-            self.log.error(message)
-
-        if not self.find_user_path(self.excel_file_path):
-            message = "User's endpoint file not found, " + self.excel_file_path
-            self.log.error(message)
-
-    def find_user_path(self, path):
-        try:
-            self.web_service.set_transfer_client()
-            transfer = self.web_service.transfer_client
-            entry = os.path.split(path)[-1]
-            path = os.path.normpath(os.path.join(path, os.path.pardir))
-            content = transfer.operation_ls(self.globus_endpoint, path=path)
-            for element in content:
-                if element['name'] == entry:
-                    return True
-            return False
-        except GlobusAPIError:
-            return False
+    @staticmethod
+    def make_random_name(prefix):
+        number = "%05d" % randint(0, 99999)
+        return prefix + number
 
 
 class ProbeException(Exception):
@@ -326,7 +190,14 @@ def main(user_endpoint, user_spreadsheet, user_data_dir):
     try:
         results = interface.set_transfer_client()
         if results:
-            interface.check_endpoint_transfer(user_endpoint, user_spreadsheet, user_data_dir)
+            results = interface.check_endpoint_transfer(user_endpoint, user_spreadsheet, user_data_dir)
+            task_id = results['task_id']
+            status = "ACTIVE"
+            while status == "ACTIVE":
+                results = interface.get_task_status(task_id)
+                log.debug("Results from get_task_status = {}".format(results))
+                status = results['status']
+            log.info("Done.")
         else:
             log.error("Failed to set transfer client")
     except GlobusAPIError as error:
@@ -340,7 +211,7 @@ def main(user_endpoint, user_spreadsheet, user_data_dir):
         log.error(message)
         return None
 
-    log.info("Set transfer client was successful")
+    log.info("main() was successful")
 
     return "ok"
 
@@ -360,7 +231,8 @@ if __name__ == "__main__":
     # suppress info logging for globus_sdk loggers that are invoked, while leaving my info logging in place
     logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
                    'globus_sdk.authorizers.renewing', 'globus_sdk.transfer.client.TransferClient',
-                   'globus_sdk.transfer.paging','globus_sdk.config', 'globus_sdk.exc',
+                   'globus_sdk.transfer.paging', 'globus_sdk.config', 'globus_sdk.exc',
+                   'globus_sdk.transfer.data',
                    'globus_sdk.auth.client_types.confidential_client.ConfidentialAppAuthClient',
                    'urllib3.connectionpool']
     for name in logger_list:
@@ -392,12 +264,12 @@ if __name__ == "__main__":
 
     try:
 
-        results = main(args.endpoint, args.spreadsheet, args.data)
+        results_main = main(args.endpoint, args.spreadsheet, args.data)
 
-        if not results:
+        if not results_main:
             local_log.error("Check failed")
         else:
-            local_log.info("Check sucessful")
+            local_log.info("Check was sucessful")
 
     except ProbeException as e:
         local_log.exception(e)
