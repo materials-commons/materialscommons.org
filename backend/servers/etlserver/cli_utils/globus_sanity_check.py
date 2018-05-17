@@ -43,7 +43,7 @@ class ProbeGlobusInterface:
             error = "No Authentication Client"
             self.log.error("Error: " + str(error))
             raise AuthenticationException(error)
-        self.log.info(" set_transfer_client - auth_client = {}".format(auth_client.client_id))
+        self.log.info("set_transfer_client - auth_client = {}".format(auth_client.client_id))
         transfer = self.get_transfer_interface(auth_client)
         if not transfer:
             error = "No transfer interface"
@@ -53,7 +53,7 @@ class ProbeGlobusInterface:
         self.log.debug(" set_transfer_client - done")
         return {"status": "ok"}
 
-    def check_endpoint_transfer(self, inbound_endpoint_id, path_spreadshet, path_data_dir):
+    def check_endpoint_transfer(self, inbound_endpoint_id, path_spreadsheet, path_data_dir):
         if not self.transfer_client:
             error = "Missing authenticated transfer client"
             self.log.error("Error: " + str(error))
@@ -91,26 +91,28 @@ class ProbeGlobusInterface:
 
         self.log.debug("Finished confirm of inbound path for data dir: " + path_data_dir)
 
-        dir_name = self.make_random_name("directory_probe-")
-        response = transfer.operation_mkdir(target_endpoint_id, dir_name)
+        transfer_base_path = self.make_random_name("directory_probe-")
+        response = transfer.operation_mkdir(target_endpoint_id, transfer_base_path)
         if not response["code"] == "DirectoryCreated":
-            error = "Unable to create directory on target endpoint " + dir_name
+            error = "Unable to create directory on target endpoint " + transfer_base_path
             self.log.error("Error: " + str(error))
             raise TransferAPIError(error)
 
-        self.log.info("Found for target endpoint: " + target_endpoint['display_name'])
-        self.log.debug("    - target endpoint id " + target_endpoint_id)
-        self.log.debug("Found inbound endpoint: {} from ()"
-                       .format(inbound_endpoint['display_name'], inbound_endpoint["owner_string"]))
-        self.log.info("Initiating transfer to target directory: " + dir_name)
+        target_path_spreadsheet = os.path.join(transfer_base_path, path_spreadsheet)
+        target_path_data_dir = os.path.join(transfer_base_path, path_data_dir)
 
-        # initiate transfer
+        self.log.info("Initiating transfer to target directory: " + transfer_base_path)
+        self.log.info("  endpoint '{}' --> endpoint '{}'".format(
+            inbound_endpoint['display_name'], target_endpoint['display_name']))
+        self.log.info("  from {} to {}, and ".format(path_spreadsheet, target_path_spreadsheet))
+        self.log.info("  from {} to {}, and ".format(path_data_dir, target_path_data_dir))
+
         transfer_label = "Transfer from " + inbound_endpoint['display_name'] + \
                          "Materials Commons"
         transfer_data = TransferData(
             transfer, inbound_endpoint_id, target_endpoint_id, label=transfer_label, sync_level="checksum")
-        transfer_data.add_item(path_data_dir, path_data_dir, recursive=True)
-        transfer_data.add_item(path_spreadshet, path_spreadshet)
+        transfer_data.add_item(path_spreadsheet, target_path_spreadsheet)
+        transfer_data.add_item(path_data_dir, target_path_data_dir, recursive=True)
         transfer_result = transfer.submit_transfer(transfer_data)
         self.log.debug("Finished upload transfer request: successfully completed")
         return_result = {}
@@ -184,6 +186,8 @@ class ProbeException(Exception):
 
 def main(user_endpoint, user_spreadsheet, user_data_dir):
 
+    wait_seconds = 5
+
     log = logging.getLogger("main-with-args")
 
     interface = ProbeGlobusInterface()
@@ -193,7 +197,11 @@ def main(user_endpoint, user_spreadsheet, user_data_dir):
             results = interface.check_endpoint_transfer(user_endpoint, user_spreadsheet, user_data_dir)
             task_id = results['task_id']
             status = "ACTIVE"
+            time_seconds = 0
             while status == "ACTIVE":
+                time.sleep(wait_seconds)
+                time_seconds += wait_seconds
+                log.info("Waiting for transfer: {} seconds".format(time_seconds))
                 results = interface.get_task_status(task_id)
                 log.debug("Results from get_task_status = {}".format(results))
                 status = results['status']
@@ -218,10 +226,10 @@ def main(user_endpoint, user_spreadsheet, user_data_dir):
 
 if __name__ == "__main__":
     root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
+    root.setLevel(logging.INFO)
 
     ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.DEBUG)
+    ch.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(lineno)s - %(message)s')
     ch.setFormatter(formatter)
     root.addHandler(ch)
