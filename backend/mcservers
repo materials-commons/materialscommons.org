@@ -107,7 +107,7 @@ function stop_etl_server() {
     ps -eo "pid,command" | grep "mc_etlserver.py" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
         kill ${line}
-        echo "  Stopped mcapiserver with pid ${line}"
+        echo "  Stopped mcetlserver with pid ${line}"
     done
 }
 
