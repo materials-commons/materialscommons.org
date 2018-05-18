@@ -105,7 +105,7 @@ class ProbeGlobusInterface:
         self.log.info("  endpoint '{}' --> endpoint '{}'".format(
             inbound_endpoint['display_name'], target_endpoint['display_name']))
         self.log.info("  from {} to {}, and ".format(path_spreadsheet, target_path_spreadsheet))
-        self.log.info("  from {} to {}, and ".format(path_data_dir, target_path_data_dir))
+        self.log.info("  from {} to {}".format(path_data_dir, target_path_data_dir))
 
         transfer_label = "Transfer from " + inbound_endpoint['display_name'] + \
                          "Materials Commons"
