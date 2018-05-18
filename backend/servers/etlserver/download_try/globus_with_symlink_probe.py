@@ -91,7 +91,7 @@ class ProbeGlobusTransferWithSymlink:
 
         self.log.debug("Finished confirm of inbound path for data dir: " + path_data_dir)
 
-        transfer_base_path = self.make_random_name("directory_probe-")
+        transfer_base_path = self.make_random_name("symlink_probe-")
         response = transfer.operation_mkdir(target_endpoint_id, transfer_base_path)
         if not response["code"] == "DirectoryCreated":
             error = "Unable to create directory on target endpoint " + transfer_base_path
@@ -171,6 +171,7 @@ class ProbeGlobusTransferWithSymlink:
         transfer_client = TransferClient(authorizer=cc_authorizer)
         self.log.debug("get_transfer_interface - transfer_client")
         self.log.debug(transfer_client)
+        self.transfer_client = transfer_client
         return transfer_client
 
     @staticmethod
