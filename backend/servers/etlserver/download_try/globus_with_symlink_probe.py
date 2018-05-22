@@ -1,15 +1,15 @@
-import os
+import argparse
 import sys
+import os
 import logging
 import time
-import argparse
 from random import randint
 from globus_sdk.exc import GlobusAPIError
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
 from globus_sdk import TransferClient, TransferData, TransferAPIError
 
 
-class ProbeGlobusTransferWithSymlink:
+class ProbeGlobusInterface:
     def __init__(self):
         self.log = logging.getLogger(self.__class__.__name__)
         self.log.debug(" init - started")
@@ -53,7 +53,7 @@ class ProbeGlobusTransferWithSymlink:
         self.log.debug(" set_transfer_client - done")
         return {"status": "ok"}
 
-    def check_endpoint_transfer(self, inbound_endpoint_id, path_spreadsheet, path_data_dir):
+    def check_endpoint_transfer(self, inbound_endpoint_id):
         if not self.transfer_client:
             error = "Missing authenticated transfer client"
             self.log.error("Error: " + str(error))
@@ -82,6 +82,7 @@ class ProbeGlobusTransferWithSymlink:
         self.log.info("Globus user's transfer endpoint name = {}".format(inbound_endpoint['display_name']))
         self.log.info("Globus Confidential Client endpoint name = {}".format(target_endpoint['display_name']))
 
+        path_data_dir = "data"
         self.log.debug("About to confirm inbound path for data dir: " + path_data_dir)
         try:
             transfer.operation_ls(inbound_endpoint_id, path=path_data_dir)
@@ -98,21 +99,22 @@ class ProbeGlobusTransferWithSymlink:
             self.log.error("Error: " + str(error))
             raise TransferAPIError(error)
 
-        target_path_spreadsheet = os.path.join(transfer_base_path, path_spreadsheet)
-        target_path_data_dir = os.path.join(transfer_base_path, path_data_dir)
+        file_or_dir_name =  "outside.txt"
+        source_path = os.path.join(path_data_dir, file_or_dir_name)
+
+        target_path = os.path.join(transfer_base_path, source_path)
 
         self.log.info("Initiating transfer to target directory: " + transfer_base_path)
         self.log.info("  endpoint '{}' --> endpoint '{}'".format(
             inbound_endpoint['display_name'], target_endpoint['display_name']))
-        self.log.info("  from {} to {}, and ".format(path_spreadsheet, target_path_spreadsheet))
-        self.log.info("  from {} to {}".format(path_data_dir, target_path_data_dir))
+        self.log.info("  from {} to {}".format(source_path, target_path))
 
         transfer_label = "Transfer from " + inbound_endpoint['display_name'] + \
                          "Materials Commons"
         transfer_data = TransferData(
-            transfer, inbound_endpoint_id, target_endpoint_id, label=transfer_label, sync_level="checksum")
-        transfer_data.add_item(path_spreadsheet, target_path_spreadsheet)
-        transfer_data.add_item(path_data_dir, target_path_data_dir, recursive=True)
+            transfer, inbound_endpoint_id, target_endpoint_id,
+            label=transfer_label, sync_level="checksum")
+        transfer_data.add_item(source_path, target_path)
         transfer_result = transfer.submit_transfer(transfer_data)
         self.log.debug("Finished upload transfer request: successfully completed")
         return_result = {}
@@ -171,7 +173,6 @@ class ProbeGlobusTransferWithSymlink:
         transfer_client = TransferClient(authorizer=cc_authorizer)
         self.log.debug("get_transfer_interface - transfer_client")
         self.log.debug(transfer_client)
-        self.transfer_client = transfer_client
         return transfer_client
 
     @staticmethod
@@ -185,16 +186,17 @@ class ProbeException(Exception):
         self.attr = str(attr)
 
 
-def main(user_endpoint, user_spreadsheet, user_data_dir):
+def main(user_endpoint):
+
     wait_seconds = 5
 
     log = logging.getLogger("main-with-args")
 
-    interface = ProbeGlobusTransferWithSymlink()
+    interface = ProbeGlobusInterface()
     try:
         results = interface.set_transfer_client()
         if results:
-            results = interface.check_endpoint_transfer(user_endpoint, user_spreadsheet, user_data_dir)
+            results = interface.check_endpoint_transfer(user_endpoint)
             task_id = results['task_id']
             status = "ACTIVE"
             time_seconds = 0
@@ -249,43 +251,28 @@ if __name__ == "__main__":
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Check that Globus/ETL setup is working')
     parser.add_argument('--endpoint', type=str, help="User's Globus Endpoint")
-    parser.add_argument('--spreadsheet', type=str, help="Relative path (in user endpoint) to spreadsheet")
-    parser.add_argument('--data', type=str, help="Relative path (in user endpoint) to data dir")
     args = parser.parse_args(argv[1:])
 
     # NOTE, defaults of input values are for Weymouth's personal connect desktop globus endpoint
-    # --endpoint 6a0b54a6-5302-11e8-9060-0a6d4e044368
-    # --spreadsheet workflow.xlsx
-    # --data data
+    # --endpoint 86db2528-3d10-11e8-b9dc-0ac6873fc732
 
     if not args.endpoint:
-        args.endpoint = '6a0b54a6-5302-11e8-9060-0a6d4e044368'
-    if not args.spreadsheet:
-        args.spreadsheet = 'workflow.xlsx'
-    if not args.data:
-        args.data = 'data'
+        args.endpoint = '86db2528-3d10-11e8-b9dc-0ac6873fc732'
 
     local_log.info("Command Line arguments:")
     local_log.info("    args.endpoint = {}".format(args.endpoint))
-    local_log.info("    args.spreadsheet = {}".format(args.spreadsheet))
-    local_log.info("    args.data = {}".format(args.data))
 
     try:
 
-        results_main = main(args.endpoint, args.spreadsheet, args.data)
+        results_main = main(args.endpoint)
 
         if not results_main:
             local_log.error("Check failed")
         else:
-            local_log.info("Check was sucessful")
+            local_log.info("Check was successful")
 
     except ProbeException as e:
         local_log.exception(e)
-
-
-class ProbeException(Exception):
-    def __init__(self, attr):
-        self.attr = str(attr)
 
 
 class RequiredAttributeException(ProbeException):
