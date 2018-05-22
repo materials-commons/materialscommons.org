@@ -99,7 +99,7 @@ class ProbeGlobusInterface:
             self.log.error("Error: " + str(error))
             raise TransferAPIError(error)
 
-        file_or_dir_name =  "outside.txt"
+        file_or_dir_name =  "hard_link.txt"
         source_path = os.path.join(path_data_dir, file_or_dir_name)
 
         target_path = os.path.join(transfer_base_path, source_path)
