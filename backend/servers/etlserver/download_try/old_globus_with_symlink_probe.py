@@ -31,6 +31,7 @@ class ProbeGlobusInterface:
 
         self.log.info("Env variables are ok")
         self.log.info("  -- MC_CONFIDENTIAL_CLIENT_USER = {}".format(self.client_user))
+        self.log.info("  -- MC_CONFIDENTIAL_CLIENT_PW = {}".format(self.client_token))
         self.log.info("  -- MC_CONFIDENTIAL_CLIENT_ENDPOINT = {}".format(self.mc_target_ep_id))
 
         self.transfer_client = None
@@ -159,20 +160,22 @@ class ProbeGlobusInterface:
         return auth_client
 
     def get_transfer_interface(self, auth_client):
-        self.log.debug("get_transfer_interface")
+        self.log.info("get_transfer_interface")
         if self.transfer_client:
-            self.log.debug("found transfer_client")
+            self.log.info("found transfer_client")
             return self.transfer_client
 
-        self.log.debug("transfer_client - not set - attempting")
-        self.log.debug("auth_client")
-        self.log.debug(auth_client)
+        self.log.info("transfer_client - not set - attempting")
+        self.log.info("auth_client")
+        self.log.info(auth_client)
 
         scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
         cc_authorizer = ClientCredentialsAuthorizer(auth_client, scopes)
+        self.log.info("cc_authorizer")
+        self.log.info(cc_authorizer)
         transfer_client = TransferClient(authorizer=cc_authorizer)
-        self.log.debug("get_transfer_interface - transfer_client")
-        self.log.debug(transfer_client)
+        self.log.info("get_transfer_interface - transfer_client")
+        self.log.info(transfer_client)
         return transfer_client
 
     @staticmethod
