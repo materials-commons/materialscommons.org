@@ -5,7 +5,7 @@ from random import randint
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer, TransferClient
 
 
-class GlobusDownload:
+class GlobusDownloadWithConfidentialClient:
     def __init__(self, file_list, user_name):
         self.log = logging.getLogger(self.__class__.__name__)
         self.log.info(" init - started")
