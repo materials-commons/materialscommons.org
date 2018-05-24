@@ -2,10 +2,9 @@ import sys
 import time
 
 from globus_sdk.exc import GlobusAPIError
-from globus_sdk import TransferClient
 
 from backend.servers.etlserver.download_try.GlobusAccess import GlobusAccess
-
+from backend.servers.etlserver.download_try.utils import enable_requests_logging
 
 SOURCE_ENDPOINT_NAME = 'PortalEndpoint'
 SOURCE_PATH = '/transfer test/'
@@ -13,12 +12,9 @@ SOURCE_PATH = '/transfer test/'
 
 def main():
 
-    # ------------------------ Authenticate Block ---------------------------
     globus_access = GlobusAccess()
-    # -- end Authenticate Block
-    # ----------------------------- Access block  --------------------------
 
-    transfer = TransferClient(authorizer=globus_access.authorizer)
+    transfer = globus_access.get_transfer_client()
 
     source_id = globus_access.get_ep_id(transfer, SOURCE_ENDPOINT_NAME)
 
@@ -41,6 +37,14 @@ def main():
         print(entry['name'] + ('/' if entry['type'] == 'dir' else ''))
 
     # -- end Access block
+
+    # extra probe
+    # uncomment the next line to enable debug logging for network requests
+    enable_requests_logging()
+
+    auth_client = globus_access.auth_client
+    print(auth_client)
+    ret = auth_client.get_identities(usernames='gtarcea@umich.edu', provision=True)
 
     # ---------------------------- Re anthentication test ---------------------
 

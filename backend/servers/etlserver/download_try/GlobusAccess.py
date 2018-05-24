@@ -50,6 +50,8 @@ class GlobusAccess:
 
         self.transfer_tokens = tokens['transfer.api.globus.org']
 
+        print(self.transfer_tokens)
+
         self.auth_client = NativeAppAuthClient(client_id=CLIENT_ID)
 
         def refresh_tokens(token_response):
@@ -62,6 +64,8 @@ class GlobusAccess:
             access_token=self.transfer_tokens['access_token'],
             expires_at=self.transfer_tokens['expires_at_seconds'],
             on_refresh=refresh_tokens)
+
+        self.transfer_client = None
 
     @staticmethod
     def load_tokens_from_file(filepath):
@@ -122,3 +126,8 @@ class GlobusAccess:
         if found:
             return found['id']
         return None
+
+    def get_transfer_client(self):
+        if not self.transfer_client:
+            self.transfer_client = TransferClient(authorizer=self.authorizer)
+        return self.transfer_client

@@ -4,6 +4,8 @@ from random import randint
 
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer, TransferClient
 
+from backend.servers.etlserver.download_try.GlobusAccess import GlobusAccess
+
 
 class GlobusDownload:
     def __init__(self, file_list, user_name):
@@ -18,14 +20,9 @@ class GlobusDownload:
         if self.transfer_client:
             return self.transfer_client
 
-        client_user = os.environ.get('MC_CONFIDENTIAL_CLIENT_USER')
-        client_token = os.environ.get('MC_CONFIDENTIAL_CLIENT_PW')
-        auth_client = ConfidentialAppAuthClient(
-            client_id=client_user, client_secret=client_token)
-        self.auth_client = auth_client
-        scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
-        cc_authorizer = ClientCredentialsAuthorizer(auth_client, scopes)
-        self.transfer_client = TransferClient(authorizer=cc_authorizer)
+        access = GlobusAccess()
+        self.auth_client = access.auth_client
+        self.transfer_client = access.get_transfer_client()
         return self.transfer_client
 
     def download(self):
@@ -54,6 +51,7 @@ class GlobusDownload:
     def expose(self):
         self.log.info("Expose - start")
         transfer_client = self.get_transfer_client()
+        self.log.info("got transfer client")
         ret = self.auth_client.get_identities(usernames=self.user_name)
         globus_user = None
         if ret and ret['identities'] and len(ret['identities']) > 0:
