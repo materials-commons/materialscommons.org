@@ -29,6 +29,7 @@ class GlobusDownload:
         client_token = os.environ.get('MC_CONFIDENTIAL_CLIENT_PW')
         auth_client = ConfidentialAppAuthClient(
             client_id=client_user, client_secret=client_token)
+        self.auth_client = auth_client
         scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
         cc_authorizer = ClientCredentialsAuthorizer(auth_client, scopes)
         self.transfer_client = TransferClient(authorizer=cc_authorizer)
@@ -60,15 +61,33 @@ class GlobusDownload:
     def expose(self):
         self.log.info("Expose - start")
         transfer_client = self.get_transfer_client()
-        # self.log.info("client = {}".format(transfer_client))
+        ret = self.auth_client.get_identities(usernames=self.user_name)
+        globus_user = None
+        if ret and ret['identities'] and len(ret['identities']) > 0:
+            globus_user = ret['identities'][0]
+        if not globus_user:
+            raise RequiredAttributeException("Missing Globus user identity")
+        self.log.info("Globus user = {}, id = {}".format(globus_user['name'], globus_user['id']))
         # materials_commons_ep_id = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
         download_ep_id = '84b62e46-5ebc-11e8-91d5-0a6d4e044368'
         confidential_client_endpoint = transfer_client.get_endpoint(download_ep_id)
         self.log.info("Expose - base ep = {}".format(confidential_client_endpoint['display_name']))
         for entry in transfer_client.operation_ls(download_ep_id,path=self.user_dir):
             self.log.info("  name = {}, type={}".format(entry['name'], entry['type']))
+        acl_rule = {
+            "DATA_TYPE": "access",
+            "principal_type": "identity",
+            "principal": globus_user['id'],
+            "path": "/" + self.user_dir + "/",
+            "permissions": "r"
+        }
+        results = transfer_client.add_endpoint_acl_rule(download_ep_id, acl_rule)
+        if not (results and results['access_id']):
+            raise AuthenticationException("Can not set access control rule for {} on {}".
+                                          format(globus_user['name'], "/" + self.user_dir + "/"))
+        self.log.info("Transfer enabled for {} ({})".format(globus_user['name'], globus_user['is']))
+        self.log.info("    from ep: {} with directory {}".format(download_ep_id, self.user_dir))
         self.log.info("Expose - end")
-    pass
 
     @staticmethod
     def make_random_name(prefix):
