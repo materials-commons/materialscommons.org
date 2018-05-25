@@ -26,6 +26,9 @@ class GlobusDownload:
         if not download_ep_id:
             self.log.error("Download endpoint is not set: MC_DOWNLOAD_ENDPOINT_ID is undefined")
             raise RequiredAttributeException("MC_DOWNLOAD_ENDPOINT_ID is undefined")
+        base_dirs = os.environ.get('MCDIR')
+        base_dir = base_dirs.split(':')[0].strip()
+        self.download_dir = os.path.join(base_dir, '__download_staging')
         self.download_ep_id = download_ep_id
 
     def download(self):
@@ -55,7 +58,7 @@ class GlobusDownload:
         mc_dirs = os.environ.get('MCDIR')
         mc_dir = mc_dirs.split(':')[0]
         self.log.info("Staging - mc dir = {}".format(mc_dir))
-        staging_dir = '/Users/weymouth/working/MaterialsCommons/mcdir/__download_staging'
+        staging_dir = self.download_dir
         self.user_dir = self.make_random_name('testing-')
         staging_dir = os.path.join(staging_dir, self.user_dir)
         self.log.info("Staging - staging dir = {}".format(staging_dir))
