@@ -4,6 +4,9 @@ from random import randint
 
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer, TransferClient
 
+from backend.servers.etlserver.download_try.download_exceptions \
+    import RequiredAttributeException, AuthenticationException
+
 
 class GlobusDownloadWithConfidentialClient:
     def __init__(self, file_list, user_name):
@@ -86,23 +89,3 @@ class GlobusDownloadWithConfidentialClient:
     def make_random_name(prefix):
         number = "%05d" % randint(0, 99999)
         return prefix + number
-
-
-class ProbeException(Exception):
-    def __init__(self, attr):
-        self.attr = str(attr)
-
-
-class RequiredAttributeException(ProbeException):
-    def __init__(self, attr):
-        self.attr = str(attr)
-
-
-class AuthenticationException(ProbeException):
-    def __init__(self, attr):
-        self.attr = str(attr)
-
-
-class NoSuchItem(ProbeException):
-    def __init__(self, attr):
-        self.attr = str(attr)

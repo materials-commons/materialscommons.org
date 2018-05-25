@@ -2,7 +2,7 @@ import logging
 import os
 from random import randint
 
-from backend.servers.etlserver.download_try.GlobusAccess import GlobusAccess
+from backend.servers.etlserver.download_try.GlobusAccessWithNativeAppAuth import GlobusAccess
 from backend.servers.etlserver.download_try.download_exceptions import RequiredAttributeException
 
 
