@@ -4,7 +4,7 @@ from random import randint
 
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer, TransferClient
 
-from backend.servers.etlserver.download.download_exceptions \
+from .download_exceptions \
     import RequiredAttributeException, AuthenticationException
 
 

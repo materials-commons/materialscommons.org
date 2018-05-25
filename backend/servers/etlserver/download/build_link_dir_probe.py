@@ -6,8 +6,8 @@ from globus_sdk.exc import GlobusAPIError
 
 from materials_commons.api import get_all_projects
 
-from backend.servers.etlserver.download.GlobusDownload import GlobusDownload
-from backend.servers.etlserver.download.download_exceptions \
+from .GlobusDownload import GlobusDownload
+from .download_exceptions \
     import RequiredAttributeException
 
 

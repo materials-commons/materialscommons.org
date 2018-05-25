@@ -4,8 +4,8 @@ import webbrowser
 import configparser
 from pathlib import Path
 
-from backend.servers.etlserver.download.utils import is_remote_session
-# from backend.servers.etlserver.download_try.utils import enable_requests_logging
+from .utils import is_remote_session
+# from .utils import enable_requests_logging
 
 from globus_sdk import NativeAppAuthClient, TransferClient, \
     RefreshTokenAuthorizer, AuthClient

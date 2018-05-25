@@ -180,9 +180,25 @@ def globus_download():
     j = request.get_json(force=True)
     project_id = j["project_id"]
     globus_user_id = j["globus_user"]
+    if not globus_user_id:
+        message = "etl download with Globus - globus_user_id is missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    if not project_id:
+        message = "etl file upload - project_id missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    log.debug("/globus/download' - args - project_id = {}".format(project_id))
+    log.debug("/globus/download' - args - globus_user_id = {}".format(globus_user_id))
     log.info("prepare download for project with project_id = {}".format(project_id))
-    download = GlobusDownload(project_id,globus_user_id)
-    url = download.download()
-    ret_value = {'url': url}
-    ret = format_as_json_return(ret_value)
-    return ret
+    try:
+        download = GlobusDownload(project_id,globus_user_id)
+        url = download.download()
+        ret_value = {'url': url}
+        ret = format_as_json_return(ret_value)
+        return ret
+    except Exception as e:
+        message = "etl download with Globus - unexpected exception"
+        log.exception(e)
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST

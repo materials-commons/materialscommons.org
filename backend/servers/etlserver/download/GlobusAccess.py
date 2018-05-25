@@ -1,7 +1,7 @@
-from backend.servers.etlserver.download.GlobusAccessWithNativeAppAuth \
+from .GlobusAccessWithNativeAppAuth \
     import GlobusAccessWithNativeAppAuth as NativeAppImpl
 
-from backend.servers.etlserver.download.GlobusAccessWithConfidentialAuth \
+from .GlobusAccessWithConfidentialAuth \
     import GlobusAccessWithConfidentialAuth as ConfidentialClientImpl
 
 NATIVE_APP_AUTH = "native"

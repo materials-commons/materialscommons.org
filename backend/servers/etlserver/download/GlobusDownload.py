@@ -4,8 +4,8 @@ from random import randint
 
 from materials_commons.api import get_project_by_id
 
-from backend.servers.etlserver.download.GlobusAccess import GlobusAccess
-from backend.servers.etlserver.download.download_exceptions import RequiredAttributeException
+from .GlobusAccess import GlobusAccess
+from .download_exceptions import RequiredAttributeException
 
 
 class GlobusDownload:
@@ -24,6 +24,7 @@ class GlobusDownload:
         #     download_endpoint_id = '84b62e46-5ebc-11e8-91d5-0a6d4e044368'
         self.log.info("Download endpoint id = {}".format(download_ep_id))
         if not download_ep_id:
+            self.log.error("Download endpoint is not set: MC_DOWNLOAD_ENDPOINT_ID is undefined")
             raise RequiredAttributeException("MC_DOWNLOAD_ENDPOINT_ID is undefined")
         self.download_ep_id = download_ep_id
 
