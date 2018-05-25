@@ -4,7 +4,7 @@ from random import randint
 
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer, TransferClient
 
-from backend.servers.etlserver.download_try.download_exceptions \
+from backend.servers.etlserver.download.download_exceptions \
     import RequiredAttributeException, AuthenticationException
 
 
@@ -14,6 +14,7 @@ class GlobusDownloadWithConfidentialClient:
         self.log.info(" init - started")
         self.file_list = file_list
         self.transfer_client = None
+        self.auth_client = None
         self.user_dir = None
         self.user_name = user_name
 
@@ -68,7 +69,7 @@ class GlobusDownloadWithConfidentialClient:
         download_ep_id = '84b62e46-5ebc-11e8-91d5-0a6d4e044368'
         confidential_client_endpoint = transfer_client.get_endpoint(download_ep_id)
         self.log.info("Expose - base ep = {}".format(confidential_client_endpoint['display_name']))
-        for entry in transfer_client.operation_ls(download_ep_id,path=self.user_dir):
+        for entry in transfer_client.operation_ls(download_ep_id, path=self.user_dir):
             self.log.info("  name = {}, type={}".format(entry['name'], entry['type']))
         acl_rule = {
             "DATA_TYPE": "access",

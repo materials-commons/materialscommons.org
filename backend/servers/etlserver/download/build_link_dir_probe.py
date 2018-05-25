@@ -6,27 +6,21 @@ from globus_sdk.exc import GlobusAPIError
 
 from materials_commons.api import get_all_projects
 
-from backend.servers.etlserver.download_try.GlobusDownload import GlobusDownload
+from backend.servers.etlserver.download.GlobusDownload import GlobusDownload
+from backend.servers.etlserver.download.download_exceptions \
+    import RequiredAttributeException
 
 
-def main(project, user):
+def main(project, globus_user):
     main_log = logging.getLogger("main")
     main_log.info("Starting all file Globus upload. Project = {} ({})".
                   format(project.name, project.id))
-    directory = project.get_top_directory()
-    file_or_dir_list = directory.get_children()
-    file_list = []
-    for file_or_dir in file_or_dir_list:
-        if file_or_dir.otype == 'file':
-            file_list.append(file_or_dir)
-    if not file_list:
-        print("no files found in top level dir of project")
-        exit(-1)
-    main_log.info("Found {} files.".format(len(file_list)))
     try:
         main_log.info("Starting GlobusDownload")
-        download = GlobusDownload(file_list, user)
-        download.download()
+        download = GlobusDownload(project.id, globus_user)
+        url = download.download()
+        main_log.info(url)
+        return url
     except GlobusAPIError as error:
         http_status = error.http_status
         code = error.code
@@ -36,6 +30,10 @@ def main(project, user):
         message += ", code = " + code
         message += ", message = " + details
         main_log.error(message)
+        return None
+    except RequiredAttributeException as missing_attr:
+        main_log.exception(missing_attr)
+        return None
 
 
 if __name__ == "__main__":
@@ -57,7 +55,7 @@ if __name__ == "__main__":
     logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
                    'globus_sdk.authorizers.renewing', 'globus_sdk.transfer.client.TransferClient',
                    'globus_sdk.transfer.paging', 'globus_sdk.config', 'globus_sdk.exc',
-                   'globus_sdk.transfer.data',
+                   'globus_sdk.transfer.data', 'globus_sdk.auth', 'globus_sdk.authorizers',
                    'globus_sdk.auth.client_types.confidential_client.ConfidentialAppAuthClient',
                    'urllib3.connectionpool']
     for name in logger_list:
@@ -100,4 +98,4 @@ if __name__ == "__main__":
     local_log.info("Found match with name-match = {}; project.name = {}; id = {}".
                    format(args.name, project_selected.name, project_selected.id))
 
-    main(project_selected, args.user)
+    print(main(project_selected, args.user))

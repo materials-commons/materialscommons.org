@@ -4,7 +4,7 @@ import webbrowser
 import configparser
 from pathlib import Path
 
-from backend.servers.etlserver.download_try.utils import is_remote_session
+from backend.servers.etlserver.download.utils import is_remote_session
 # from backend.servers.etlserver.download_try.utils import enable_requests_logging
 
 from globus_sdk import NativeAppAuthClient, TransferClient, \
@@ -29,7 +29,7 @@ SCOPES = ('openid email profile '
 # enable_requests_logging()
 
 
-class GlobusAccess:
+class GlobusAccessWithNativeAppAuth:
     def __init__(self):
         tokens = None
         try:
@@ -124,7 +124,7 @@ class GlobusAccess:
         # return a set of tokens, organized by resource server name
         return token_response.by_resource_server
 
-    def get_ep_id(self, endpoint_name):
+    def get_endpoint_id(self, endpoint_name):
         print("My Endpoints:")
         found = None
         for ep in self._transfer_client.endpoint_search(filter_scope="my-endpoints"):

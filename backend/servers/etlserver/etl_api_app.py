@@ -8,6 +8,7 @@ from .globus_etl.task_library import startup_and_verify
 from .globus_etl.BuildProjectExperiment import BuildProjectExperiment
 from .database.DatabaseInterface import DatabaseInterface
 from .database.DB import DbConnection
+from .download.GlobusDownload import GlobusDownload
 from .user import access
 from .user.api_key import apikey
 from .utils.UploadUtility import UploadUtility
@@ -49,6 +50,7 @@ def get_version():
         "version": pkg_resources.get_distribution("materials_commons").version
     })
 
+
 @app.route('/globus/stage', methods=['POST'])
 @apikey
 def stage_background_excel_upload():
@@ -80,12 +82,6 @@ def monitor_background_excel_upload():
     log.debug("/globus/monitor - starting")
     j = request.get_json(force=True)
     log.debug("Results as json = {}".format(j))
-    status_record_id = None
-    status_record = {
-        "status": "Fail",
-        "reason": "Status record unavailable",
-        "status_record_id": None
-    }
     try:
         status_record_id = j['status_record_id']
         log.debug("status_record_id = {}".format(status_record_id))
@@ -98,22 +94,23 @@ def monitor_background_excel_upload():
             status_record = DatabaseInterface().get_status_record(status_record_id)
             del status_record['birthtime']
             del status_record['mtime']
-    except KeyError as ke:
+    except KeyError:
         status_record = {
             "status": "Fail",
             "reason": "Failed to get status_record_id from request",
             "status_record_id": None
         }
-    status_recored_json = format_as_json_return(status_record)
-    log.debug("return as json = {}".format(status_recored_json))
+    status_record_json = format_as_json_return(status_record)
+    log.debug("return as json = {}".format(status_record_json))
     log.debug("/globus/monitor - done")
-    return status_recored_json
+    return status_record_json
 
 
 @app.route('/project/status', methods=['POST'])
 @apikey
 def get_background_status_for_project():
     ret = "{}"
+    # noinspection PyBroadException
     try:
         log.info("get_background_status_for_project")
         j = request.get_json(force=True)
@@ -125,13 +122,13 @@ def get_background_status_for_project():
         status_record = None
         if status_list:
             status_record = {
-                'status' : status_list[0]['status'],
-                'id' : status_list[0]['id']
+                'status': status_list[0]['status'],
+                'id': status_list[0]['id']
             }
         ret_value = {'status': status_record}
         ret = format_as_json_return(ret_value)
         log.info("get_background_status_for_project: ret = {}".format(ret))
-    except Exception as e:
+    except Exception:
         log.info("Unexpected exception...", exc_info=True)
     return ret
 
@@ -139,7 +136,7 @@ def get_background_status_for_project():
 @app.route('/upload', methods=['POST'])
 @apikey
 def upload_file():
-    log.info("etl file upload - starting - new test")
+    log.info("etl file upload - starting")
     name = request.form.get('name')
     project_id = request.form.get("project_id")
     description = request.form.get("description")
@@ -175,3 +172,17 @@ def upload_file():
         message = str(e)
         return message, status.HTTP_500_INTERNAL_SERVER_ERROR
 
+
+@app.route('/globus/download', methods=['POST'])
+@apikey
+def globus_download():
+    log.info("etl download with Globus - starting")
+    j = request.get_json(force=True)
+    project_id = j["project_id"]
+    globus_user_id = j["globus_user"]
+    log.info("prepare download for project with project_id = {}".format(project_id))
+    download = GlobusDownload(project_id,globus_user_id)
+    url = download.download()
+    ret_value = {'url': url}
+    ret = format_as_json_return(ret_value)
+    return ret
