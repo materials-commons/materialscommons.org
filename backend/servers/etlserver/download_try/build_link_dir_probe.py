@@ -66,7 +66,7 @@ if __name__ == "__main__":
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Test to transfer from dir of hard links')
     parser.add_argument('--name', type=str, help="Project Name")
-    parser.add_argument('--user', type=str, help="User's Globus ID")
+    parser.add_argument('--user', type=str, help="Globus user name")
     args = parser.parse_args(argv[1:])
     if not args.name:
         print("You must specify a unique project name, or name substring. Argument not found.")

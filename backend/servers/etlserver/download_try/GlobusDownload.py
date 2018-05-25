@@ -2,9 +2,8 @@ import logging
 import os
 from random import randint
 
-from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer, TransferClient
-
 from backend.servers.etlserver.download_try.GlobusAccess import GlobusAccess
+from backend.servers.etlserver.download_try.download_exceptions import RequiredAttributeException
 
 
 class GlobusDownload:
@@ -15,15 +14,7 @@ class GlobusDownload:
         self.transfer_client = None
         self.user_dir = None
         self.user_name = user_name
-
-    def get_transfer_client(self):
-        if self.transfer_client:
-            return self.transfer_client
-
-        access = GlobusAccess()
-        self.auth_client = access.auth_client
-        self.transfer_client = access.get_transfer_client()
-        return self.transfer_client
+        self.access = GlobusAccess()
 
     def download(self):
         self.stage()
@@ -50,57 +41,24 @@ class GlobusDownload:
 
     def expose(self):
         self.log.info("Expose - start")
-        transfer_client = self.get_transfer_client()
-        self.log.info("got transfer client")
-        ret = self.auth_client.get_identities(usernames=self.user_name)
-        globus_user = None
-        if ret and ret['identities'] and len(ret['identities']) > 0:
-            globus_user = ret['identities'][0]
+        self.log.info("Looking up globus identity of {}".format(self.user_name))
+        globus_user = self.access.get_globus_user(self.user_name)
         if not globus_user:
             raise RequiredAttributeException("Missing Globus user identity")
         self.log.info("Globus user = {}, id = {}".format(globus_user['name'], globus_user['id']))
-        # materials_commons_ep_id = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
         download_ep_id = '84b62e46-5ebc-11e8-91d5-0a6d4e044368'
-        confidential_client_endpoint = transfer_client.get_endpoint(download_ep_id)
+        confidential_client_endpoint = self.access.get_endpoint(download_ep_id)
         self.log.info("Expose - base ep = {}".format(confidential_client_endpoint['display_name']))
-        for entry in transfer_client.operation_ls(download_ep_id,path=self.user_dir):
-            self.log.info("  name = {}, type={}".format(entry['name'], entry['type']))
-        acl_rule = {
-            "DATA_TYPE": "access",
-            "principal_type": "identity",
-            "principal": globus_user['id'],
-            "path": "/" + self.user_dir + "/",
-            "permissions": "r"
-        }
-        results = transfer_client.add_endpoint_acl_rule(download_ep_id, acl_rule)
-        if not (results and results['access_id']):
-            raise AuthenticationException("Can not set access control rule for {} on {}".
-                                          format(globus_user['name'], "/" + self.user_dir + "/"))
-        self.log.info("Transfer enabled for {} ({})".format(globus_user['name'], globus_user['is']))
-        self.log.info("    from ep: {} with directory {}".format(download_ep_id, self.user_dir))
+        path = "/" + self.user_dir + "/"
+        rule = self.access.set_acl_rule(download_ep_id, path, globus_user['id'], "r")
+        if rule:
+            self.log.info("Transfer enabled for {} ({})".format(globus_user['name'], globus_user['id']))
+            self.log.info("    from ep: {} with directory {}".format(download_ep_id, self.user_dir))
+        else:
+            self.log.info("Transfer ACL failed")
         self.log.info("Expose - end")
 
     @staticmethod
     def make_random_name(prefix):
         number = "%05d" % randint(0, 99999)
         return prefix + number
-
-
-class ProbeException(Exception):
-    def __init__(self, attr):
-        self.attr = str(attr)
-
-
-class RequiredAttributeException(ProbeException):
-    def __init__(self, attr):
-        self.attr = str(attr)
-
-
-class AuthenticationException(ProbeException):
-    def __init__(self, attr):
-        self.attr = str(attr)
-
-
-class NoSuchItem(ProbeException):
-    def __init__(self, attr):
-        self.attr = str(attr)

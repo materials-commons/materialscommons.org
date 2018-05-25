@@ -1,15 +1,14 @@
 import json
-import time
-import sys
 import webbrowser
 
 import configparser
 from pathlib import Path
 
-from backend.servers.etlserver.download_try.utils import enable_requests_logging, is_remote_session
+from backend.servers.etlserver.download_try.utils import is_remote_session
+# from backend.servers.etlserver.download_try.utils import enable_requests_logging
 
-from globus_sdk import (NativeAppAuthClient, TransferClient,
-                        RefreshTokenAuthorizer)
+from globus_sdk import NativeAppAuthClient, TransferClient, \
+    RefreshTokenAuthorizer, AuthClient
 
 # Config file set up
 home = str(Path.home())
@@ -35,8 +34,8 @@ class GlobusAccess:
         tokens = None
         try:
             # if we already have tokens, load and use them
-            tokens = self.load_tokens_from_file(TOKEN_FILE_PATH)
-        except:
+            tokens = self._load_tokens_from_file(TOKEN_FILE_PATH)
+        except IOError:
             pass
 
         if not tokens:
@@ -44,31 +43,41 @@ class GlobusAccess:
             tokens = self.do_native_app_authentication(CLIENT_ID, REDIRECT_URI, SCOPES)
 
             try:
-                self.save_tokens_to_file(TOKEN_FILE_PATH, tokens)
-            except:
+                self._save_tokens_to_file(TOKEN_FILE_PATH, tokens)
+            except IOError:
                 pass
 
-        self.transfer_tokens = tokens['transfer.api.globus.org']
-
-        print(self.transfer_tokens)
-
-        self.auth_client = NativeAppAuthClient(client_id=CLIENT_ID)
+        auth_tokens = tokens['auth.globus.org']
+        transfer_tokens = tokens['transfer.api.globus.org']
 
         def refresh_tokens(token_response):
             context = self
-            context.update_tokens_file_on_refresh(token_response)
+            context._update_tokens_file_on_refresh(token_response)
 
-        self.authorizer = RefreshTokenAuthorizer(
-            self.transfer_tokens['refresh_token'],
-            self.auth_client,
-            access_token=self.transfer_tokens['access_token'],
-            expires_at=self.transfer_tokens['expires_at_seconds'],
+        auth_client = NativeAppAuthClient(client_id=CLIENT_ID)
+        authorizer = RefreshTokenAuthorizer(
+            auth_tokens['refresh_token'],
+            auth_client,
+            access_token=auth_tokens['access_token'],
+            expires_at=auth_tokens['expires_at_seconds'],
             on_refresh=refresh_tokens)
 
-        self.transfer_client = None
+        auth_client = AuthClient(client_id=CLIENT_ID, authorizer=authorizer)
+
+        authorizer = RefreshTokenAuthorizer(
+            transfer_tokens['refresh_token'],
+            auth_client,
+            access_token=transfer_tokens['access_token'],
+            expires_at=transfer_tokens['expires_at_seconds'],
+            on_refresh=refresh_tokens)
+
+        transfer_client = TransferClient(authorizer=authorizer)
+
+        self._auth_client = auth_client
+        self._transfer_client = transfer_client
 
     @staticmethod
-    def load_tokens_from_file(filepath):
+    def _load_tokens_from_file(filepath):
         """Load a set of saved tokens."""
         with open(filepath, 'r') as f:
             tokens = json.load(f)
@@ -76,17 +85,17 @@ class GlobusAccess:
         return tokens
 
     @staticmethod
-    def save_tokens_to_file(filepath, tokens):
+    def _save_tokens_to_file(filepath, tokens):
         """Save a set of tokens for later use."""
         with open(filepath, 'w') as f:
             json.dump(tokens, f)
 
-    def update_tokens_file_on_refresh(self, token_response):
+    def _update_tokens_file_on_refresh(self, token_response):
         """
         Callback function passed into the RefreshTokenAuthorizer.
         Will be invoked any time a new access token is fetched.
         """
-        self.save_tokens_to_file(TOKEN_FILE_PATH, token_response.by_resource_server)
+        self._save_tokens_to_file(TOKEN_FILE_PATH, token_response.by_resource_server)
 
     @staticmethod
     def do_native_app_authentication(client_id, redirect_uri,
@@ -115,11 +124,10 @@ class GlobusAccess:
         # return a set of tokens, organized by resource server name
         return token_response.by_resource_server
 
-    @staticmethod
-    def get_ep_id(transfer, endpoint_name):
+    def get_ep_id(self, endpoint_name):
         print("My Endpoints:")
         found = None
-        for ep in transfer.endpoint_search(filter_scope="my-endpoints"):
+        for ep in self._transfer_client.endpoint_search(filter_scope="my-endpoints"):
             print(ep["display_name"])
             if ep["display_name"] == endpoint_name:
                 found = ep
@@ -127,7 +135,33 @@ class GlobusAccess:
             return found['id']
         return None
 
-    def get_transfer_client(self):
-        if not self.transfer_client:
-            self.transfer_client = TransferClient(authorizer=self.authorizer)
-        return self.transfer_client
+    def get_globus_user(self, user_name):
+        ret = self._auth_client.get_identities(usernames=[user_name])
+        globus_user = None
+        if ret and ret['identities'] and len(ret['identities']) > 0:
+            globus_user = ret['identities'][0]
+        return globus_user
+
+    def get_endpoint(self, endpoint_id):
+        return self._transfer_client.get_endpoint(endpoint_id)
+
+    def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
+        results = self._transfer_client.endpoint_acl_list(ep_id)
+        for rule in results["DATA"]:
+            if rule['path'] == path and rule['principal'] == globus_user_id:
+                return rule
+        rule_data = {
+            "DATA_TYPE": "access",
+            "principal_type": "identity",
+            "principal": globus_user_id,
+            "path": path,
+            "permissions": permissions
+        }
+        results = self._transfer_client.add_endpoint_acl_rule(ep_id, rule_data)
+        if not results['code'] == "Created":
+            return None
+        results = self._transfer_client.endpoint_acl_list(ep_id)
+        for rule in results["DATA"]:
+            if rule['path'] == path and rule['principal'] == globus_user_id:
+                return rule
+        return None
