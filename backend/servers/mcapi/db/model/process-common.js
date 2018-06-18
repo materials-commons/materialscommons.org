@@ -22,7 +22,7 @@ function mergeTemplateIntoProcess(template, process) {
     for (pindex = 0; pindex < process.setup.length; pindex++) {
         setup = process.setup[pindex];
         if (setup.attribute === 'instrument') {
-            setup.properties.forEach(function (property) {
+            setup.properties.forEach(function(property) {
                 let i = _.findIndex(template.setup[0].properties, (tprop) => tprop.attribute === property.attribute);
                 if (i > -1) {
                     template.setup[0].properties[i].value = property.value;
@@ -48,7 +48,7 @@ function mergeTemplateIntoProcess(template, process) {
                     }
                 }
             });
-            process.setup[pindex] = template.setup[0]
+            process.setup[pindex] = template.setup[0];
         }
     }
     if (!process.measurements.length && template.measurements.length) {
@@ -96,7 +96,22 @@ function* processIsUnused(processId) {
 }
 
 function* updateProcessFiles(processId, files) {
-    let filesToAddToProcess = files.filter(f => f.command === 'add').map(f => new model.Process2File(processId, f.id, ''));
+    let filesToAddToProcess = files.filter(f => f.command === 'add').map(f => {
+        let direction = '';
+        if (f.direction) {
+            switch (f.direction) {
+                case 'in':
+                    direction = 'in';
+                    break;
+                case 'out':
+                    direction = 'out';
+                    break;
+                default:
+                    break;
+            }
+        }
+        return new model.Process2File(processId, f.id, direction);
+    });
     filesToAddToProcess = yield removeExistingProcessFileEntries(processId, filesToAddToProcess);
     if (filesToAddToProcess.length) {
         yield r.table('process2file').insert(filesToAddToProcess);
@@ -196,7 +211,6 @@ function* updateProcessSamples(process, samples) {
 
     return null;
 }
-
 
 function* removeExistingProcessSampleEntries(processId, samples) {
     if (samples.length) {

@@ -301,6 +301,11 @@ module.exports = function (schema) {
             command: {
                 type: 'string',
                 nullable: false
+            },
+
+            direction: {
+                type: 'string',
+                nullable: true,
             }
         });
 
