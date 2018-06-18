@@ -21,7 +21,7 @@ def get_api_key_for_user(user):
     dbpw = u['password']
     if dbpw == '':
         return error.not_authorized("Bad username")
-    _i1, _i2,  _i3,  salt, _pwhash = dbpw.split('$')
+    _i1, _i2, _i3, salt, _pwhash = dbpw.split('$')
     hash = make_salted_password_hash(password, salt)
     if hash == dbpw:
         del u['password']
@@ -33,7 +33,7 @@ def get_api_key_for_user(user):
 
 @app.route('/user/complete/<validation_id>', methods=['POST'])
 def complete_registration(validation_id):
-    cursor = r.table("account_requests").get_all(validation_id,index='validate_uuid').run(g.conn)
+    cursor = r.table("account_requests").get_all(validation_id, index='validate_uuid').run(g.conn)
     u = ''
     for document in cursor:
         u = document
@@ -45,19 +45,20 @@ def complete_registration(validation_id):
     j = request.get_json()
     password = dmutil.get_required('password', j)
     hash = make_password_hash(password)
-    rv = r.table('account_requests').get(user_id).update({'password':  hash}, return_changes=True).run(g.conn)
+    rv = r.table('account_requests').get(user_id).update({'password': hash}, return_changes=True).run(g.conn)
     user = rv['changes'][0]['new_val']
     del user['validate_uuid']
     r.table('account_requests').get(user_id).delete().run(g.conn)
     r.table('users').insert(user).run(g.conn)
-    ## Return something that doesn't contain the password hash
+
+    # Remove password from return
     del user['password']
     return json.dumps(j)
 
 
 @app.route('/user/rvalidate/<validation_id>/finish', methods=['POST'])
 def finish_reset_password(validation_id):
-    cursor = r.table("users").get_all(validation_id,index='validate_uuid').run(g.conn)
+    cursor = r.table("users").get_all(validation_id, index='validate_uuid').run(g.conn)
     u = ''
     for document in cursor:
         u = document
@@ -67,9 +68,9 @@ def finish_reset_password(validation_id):
     j = request.get_json()
     password = dmutil.get_required('password', j)
     hash = make_password_hash(password)
-    rv = r.table('users').get(user_id).update({'password':  hash}, return_changes=True).run(g.conn)
+    rv = r.table('users').get(user_id).update({'password': hash}, return_changes=True).run(g.conn)
     user = rv['changes'][0]['new_val']
-    r.table('users').get(user_id).replace(r.row.without('reset_password','validate_uuid')).run(g.conn)
+    r.table('users').get(user_id).replace(r.row.without('reset_password', 'validate_uuid')).run(g.conn)
     ## Return something that doesn't contain the password hash, uuid, and flag
     del user['password']
     del user['validate_uuid']
@@ -89,8 +90,8 @@ def change_password(user):
 
 
 @app.route('/user/<user>/validate/<validation_id>/password', methods=['POST'])
-def reset_password_validate(user,validation_id):
-    cursor = r.table("account_requests").get_all(validation_id,index='validate_uuid').run(g.conn)
+def reset_password_validate(user, validation_id):
+    cursor = r.table("account_requests").get_all(validation_id, index='validate_uuid').run(g.conn)
     u = ''
     for document in cursor:
         u = document
@@ -122,4 +123,3 @@ def reset_apikey(user):
 def list_users():
     selection = list(r.table('users').pluck('email', 'id', 'fullname').run(g.conn))
     return json.dumps(selection)
-
