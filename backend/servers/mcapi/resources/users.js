@@ -217,13 +217,14 @@ function* createAccount(next) {
             this.status = status.BAD_REQUEST;
             this.body = rv;
         } else {
-            let evl = emailValidationLinkToUser(rv.val, accountArgs.site);
-            if (evl.error) {
-                this.status = status.BAD_REQUEST;
-                this.body = evl;
-            } else {
-                this.body = evl.val;
-            }
+            this.body = rv.val;
+            // let evl = emailValidationLinkToUser(rv.val, accountArgs.site);
+            // if (evl.error) {
+            //     this.status = status.BAD_REQUEST;
+            //     this.body = evl;
+            // } else {
+            //     this.body = evl.val;
+            // }
         }
     }
     yield next;
