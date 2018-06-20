@@ -306,11 +306,18 @@ module.exports = function (schema) {
             direction: {
                 type: 'string',
                 nullable: true,
+            },
+
+            transform: {
+                type: 'boolean',
+                nullable: true,
             }
         });
 
         templateCommandSchema.setDefaults({
-            property_set_id: ''
+            property_set_id: '',
+            direction: '',
+            transform: true,
         });
         templateCommandSchema.validateAsync = promise.promisify(templateCommandSchema.validate);
         return templateCommandSchema;

@@ -182,15 +182,17 @@ function* updateProcessSamples(process, samples) {
     if (process.does_transform) {
         for (let i = 0; i < samplesToAddToProcess.length; i++) {
             let sampleEntry = samplesToAddToProcess[i];
-            let ps = new model.PropertySet(true, sampleEntry.property_set_id);
-            let added = yield db.insert('propertysets', ps);
-            yield r.table('sample2propertyset')
-                .getAll([sampleEntry.sample_id, sampleEntry.property_set_id], {index: 'sample_property_set'})
-                .update({current: false});
-            let s2ps = new model.Sample2PropertySet(sampleEntry.sample_id, added.id, true);
-            yield r.table('sample2propertyset').insert(s2ps);
-            let outp2s = new model.Process2Sample(processId, sampleEntry.sample_id, added.id, 'out');
-            yield r.table('process2sample').insert(outp2s);
+            if (sampleEntry.transform) {
+                let ps = new model.PropertySet(true, sampleEntry.property_set_id);
+                let added = yield db.insert('propertysets', ps);
+                yield r.table('sample2propertyset')
+                    .getAll([sampleEntry.sample_id, sampleEntry.property_set_id], {index: 'sample_property_set'})
+                    .update({current: false});
+                let s2ps = new model.Sample2PropertySet(sampleEntry.sample_id, added.id, true);
+                yield r.table('sample2propertyset').insert(s2ps);
+                let outp2s = new model.Process2Sample(processId, sampleEntry.sample_id, added.id, 'out');
+                yield r.table('process2sample').insert(outp2s);
+            }
         }
     }
 
