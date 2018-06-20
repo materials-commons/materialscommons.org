@@ -180,19 +180,24 @@ function* updateProcessSamples(process, samples) {
     }
 
     if (process.does_transform) {
+        // build list of samples that we want to transform
+        let transformSamplesHash = {};
+        samples.filter(s => s.command === 'add').forEach(s => {
+            transformSamplesHash[`${s.id}/${s.property_set_id}`] = s.transform;
+        });
         for (let i = 0; i < samplesToAddToProcess.length; i++) {
             let sampleEntry = samplesToAddToProcess[i];
-            //if (sampleEntry.transform) {
-            let ps = new model.PropertySet(true, sampleEntry.property_set_id);
-            let added = yield db.insert('propertysets', ps);
-            yield r.table('sample2propertyset')
-                .getAll([sampleEntry.sample_id, sampleEntry.property_set_id], {index: 'sample_property_set'})
-                .update({current: false});
-            let s2ps = new model.Sample2PropertySet(sampleEntry.sample_id, added.id, true);
-            yield r.table('sample2propertyset').insert(s2ps);
-            let outp2s = new model.Process2Sample(processId, sampleEntry.sample_id, added.id, 'out');
-            yield r.table('process2sample').insert(outp2s);
-            // }
+            if (transformSamplesHash[`${sampleEntry.sample_id}/${sampleEntry.property_set_id}`]) {
+                let ps = new model.PropertySet(true, sampleEntry.property_set_id);
+                let added = yield db.insert('propertysets', ps);
+                yield r.table('sample2propertyset')
+                    .getAll([sampleEntry.sample_id, sampleEntry.property_set_id], {index: 'sample_property_set'})
+                    .update({current: false});
+                let s2ps = new model.Sample2PropertySet(sampleEntry.sample_id, added.id, true);
+                yield r.table('sample2propertyset').insert(s2ps);
+                let outp2s = new model.Process2Sample(processId, sampleEntry.sample_id, added.id, 'out');
+                yield r.table('process2sample').insert(outp2s);
+            }
         }
     }
 
