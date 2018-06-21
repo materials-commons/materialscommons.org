@@ -176,6 +176,10 @@ function* updateProcessSamples(process, samples) {
         .map(s => new model.Process2Sample(processId, s.id, s.property_set_id, 'in'));
     samplesToAddToProcess = yield removeExistingProcessSampleEntries(processId, samplesToAddToProcess);
     if (samplesToAddToProcess.length) {
+        let alreadyHasSamples = yield processContainsSamples(process, samplesToAddToProcess);
+        if (alreadyHasSamples) {
+            return `Some samples already in process`;
+        }
         yield r.table('process2sample').insert(samplesToAddToProcess);
     }
 
@@ -217,6 +221,12 @@ function* updateProcessSamples(process, samples) {
     yield sampleCommon.removeUnusedSamples(sampleIds);
 
     return null;
+}
+
+function* processContainsSamples(process, samples) {
+    let processSids = samples.map(s => [process.id, s.sample_id]);
+    let matches = yield r.table('process2sample').getAll(r.args(processSids), {index: 'process_sample'});
+    return matches.length !== 0;
 }
 
 function* removeExistingProcessSampleEntries(processId, samples) {
