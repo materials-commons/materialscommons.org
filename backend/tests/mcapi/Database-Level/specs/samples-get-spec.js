@@ -92,6 +92,20 @@ before(function* () {
     assert.equal(sample2.otype, 'sample');
     assert.equal(sample2.name, sampleName2);
 
+    // add input samples to a create samples process
+    processName = 'Create Samples with Input';
+    processTemplateId = 'global_Create Samples';
+    results = yield testHelpers.createProcess(project, experiment, processName, processTemplateId);
+    assert.isOk(results.val);
+    console.log('Create Samples with Input before adding samples', results.val);
+    let createProcess1 = results.val;
+    assert.equal(createProcess1.otype, 'process');
+    assert.equal(createProcess1.name, processName);
+    assert.equal(createProcess1.template_id, processTemplateId);
+    assert.equal(createProcess1.owner, userId);
+    results = yield testHelpers.addSamplesToProcess(project, experiment, createProcess1, [sample1]);
+    assert.isOk(results.val);
+
     // add a transformation process
     processName = "Etching1 - test process";
     processTemplateId = "global_Etching";
