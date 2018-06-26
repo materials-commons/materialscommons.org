@@ -37,8 +37,6 @@ def main(project, globus_user):
 
 
 if __name__ == "__main__":
-    # client = get_transfer_client()
-    # print("client = {}".format(client))
 
     root = logging.getLogger()
     root.setLevel(logging.INFO)

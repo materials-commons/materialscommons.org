@@ -1,3 +1,4 @@
+import logging
 import json
 import webbrowser
 
@@ -31,6 +32,9 @@ SCOPES = ('openid email profile '
 
 class GlobusAccessWithNativeAppAuth:
     def __init__(self):
+        self.log = logging.getLogger(self.__class__.__name__)
+        self.log.info("init - started")
+
         tokens = None
         try:
             # if we already have tokens, load and use them
@@ -47,8 +51,12 @@ class GlobusAccessWithNativeAppAuth:
             except IOError:
                 pass
 
-        auth_tokens = tokens['auth.globus.org']
-        transfer_tokens = tokens['transfer.api.globus.org']
+        try:
+            auth_tokens = tokens['auth.globus.org']
+            transfer_tokens = tokens['transfer.api.globus.org']
+        except KeyError as er:
+            self.log.error("KeyError on NativeApp tokens: {}\n delete {} and restart"
+                           .format(er, TOKEN_FILE_PATH))
 
         def refresh_tokens(token_response):
             context = self
