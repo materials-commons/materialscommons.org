@@ -16,6 +16,7 @@ class GlobusDownload:
         self.globus_user_id = globus_user_id
         self.project_id = project_id
         self.file_list = None
+        self.path_list = None
         self.transfer_client = None
         self.user_dir = None
         self.access = GlobusAccess()
@@ -32,26 +33,44 @@ class GlobusDownload:
         self.download_ep_id = download_ep_id
 
     def download(self):
-        self.get_file_list()
+        self.setup()
         self.stage()
         self.expose()
         return self.exposed_ep_url()
 
-    def get_file_list(self):
+    def setup(self):
         project = get_project_by_id(self.project_id)
         self.log.info("Get file list for project = {} ({})".
                       format(project.name, project.id))
         directory = project.get_top_directory()
-        file_or_dir_list = directory.get_children()
-        file_list = []
-        for file_or_dir in file_or_dir_list:
-            if file_or_dir.otype == 'file':
-                file_list.append(file_or_dir)
-        if not file_list:
-            print("no files found in top level dir of project")
+        self.file_list = []
+        self.path_list = []
+        path = ""
+        self.recursively_add_directory(path, directory)
+        if not self.file_list:
+            print("no files found")
             exit(-1)
-        self.file_list = file_list
-        self.log.info("Found {} files.".format(len(file_list)))
+        self.log.info("Found {} files.".format(len(self.file_list)))
+        self.log.info("Found {} paths.".format(len(self.path_list)))
+        for file in self.file_list:
+            self.log.info("File: {} - {}".format(file.name, file.path))
+        for path in self.path_list:
+            self.log.info("Path {}".format(path))
+
+    def recursively_add_directory(self, path, directory):
+        if path:
+            self.path_list.append(path)
+        file_or_dir_list = directory.get_children()
+        for file_or_dir in file_or_dir_list:
+            instance_path = path + file_or_dir.name
+            self.log.info("File or dir otype = {}; name = {}; path = {}; {}"
+                          .format(file_or_dir.otype, file_or_dir.name,
+                                  file_or_dir.path, instance_path))
+            if file_or_dir.otype == 'file':
+                file_or_dir.path = instance_path
+                self.file_list.append(file_or_dir)
+            if file_or_dir.otype == "directory":
+                self.recursively_add_directory(instance_path + '/', file_or_dir)
 
     def stage(self):
         self.log.info("Staging - start")
@@ -63,12 +82,25 @@ class GlobusDownload:
         staging_dir = os.path.join(staging_dir, self.user_dir)
         self.log.info("Staging - staging dir = {}".format(staging_dir))
         self.log.info("Staging - user dir = {}".format(self.user_dir))
+        self.log.info("About to create dir {}".format(staging_dir))
         os.makedirs(staging_dir)
+        for path in self.path_list:
+            staging_path = os.path.join(staging_dir, path)
+            self.log.info("About to create dir {}".format(staging_path))
+            os.makedirs(staging_path)
         for file in self.file_list:
-            p1 = file.id[9:11]
-            p2 = file.id[11:13]
-            file_path = os.path.join(mc_dir, p1, p2, file.id)
-            link_path = os.path.join(staging_dir, file.name)
+            print(file.input_data)
+            self.log.info("file.id = {}; file.usesid {}"
+                          .format(file.id, file.input_data['usesid']))
+            id = file.id
+            usesid = file.input_data['usesid']
+            if usesid:
+                id = usesid
+            p1 = id[9:11]
+            p2 = id[11:13]
+            file_path = os.path.join(mc_dir, p1, p2, id)
+            self.log.info("file_path = {}".format(file_path))
+            link_path = os.path.join(staging_dir, file.path)
             os.link(file_path, link_path)
         self.log.info("Staging - end")
 
@@ -81,13 +113,13 @@ class GlobusDownload:
         self.log.info("Globus user = {}, id = {}".format(globus_user['name'], globus_user['id']))
         confidential_client_endpoint = self.access.get_endpoint(self.download_ep_id)
         self.log.info("Expose - base ep = {}".format(confidential_client_endpoint['display_name']))
-        path = "/" + self.user_dir + "/"
-        rule = self.access.set_acl_rule(self.download_ep_id, path, globus_user['id'], "r")
-        if rule:
-            self.log.info("Transfer enabled for {} ({})".format(globus_user['name'], globus_user['id']))
-            self.log.info("    from ep: {} with directory {}".format(self.download_ep_id, self.user_dir))
-        else:
-            self.log.info("Transfer ACL failed")
+        # path = "/" + self.user_dir + "/"
+        # rule = self.access.set_acl_rule(self.download_ep_id, path, globus_user['id'], "r")
+        # if rule:
+        #     self.log.info("Transfer enabled for {} ({})".format(globus_user['name'], globus_user['id']))
+        #     self.log.info("    from ep: {} with directory {}".format(self.download_ep_id, self.user_dir))
+        # else:
+        #     self.log.info("Transfer ACL failed")
         self.log.info("Expose - end")
 
     def exposed_ep_url(self):
