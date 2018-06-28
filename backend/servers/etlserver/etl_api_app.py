@@ -202,6 +202,7 @@ def globus_transfer():
     j = request.get_json(force=True)
     project_id = j["project_id"]
     globus_user_id = j["globus_user"]
+    log.info("Project id = {}; Globus user name = {}".format(project_id, globus_user_id))
     if not globus_user_id:
         message = "Project top-level directory transfer with Globus - globus_user_id is missing, required"
         log.error(message)
