@@ -173,9 +173,9 @@ def upload_file():
         return message, status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
-@app.route('/globus/download', methods=['POST'])
+@app.route('/globus/etl/download', methods=['POST'])
 @apikey
-def globus_download():
+def globus_etl_download():
     log.info("etl download with Globus - starting")
     j = request.get_json(force=True)
     project_id = j["project_id"]
@@ -188,17 +188,36 @@ def globus_download():
         message = "etl file upload - project_id missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
-    log.debug("/globus/download' - args - project_id = {}".format(project_id))
-    log.debug("/globus/download' - args - globus_user_id = {}".format(globus_user_id))
-    log.info("prepare download for project with project_id = {}".format(project_id))
+    log.debug("/globus/etl/download' - args - project_id = {}".format(project_id))
+    log.debug("/globus/etl/download' - args - globus_user_id = {}".format(globus_user_id))
+    log.info("prepare etl download for project with project_id = {}".format(project_id))
+    message = "Globus ETL download is not implemented; try Globus Download instead"
+    return message, status.HTTP_501_NOT_IMPLEMENTED
+
+
+@app.route('/globus/transfer', methods=['POST'])
+@apikey
+def globus_transfer():
+    log.info("Project top-level directory transfer with Globus - starting")
+    j = request.get_json(force=True)
+    project_id = j["project_id"]
+    globus_user_id = j["globus_user"]
+    if not globus_user_id:
+        message = "Project top-level directory transfer with Globus - globus_user_id is missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    if not project_id:
+        message = "Project top-level directory transfer with Globus - project_id missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
     try:
-        download = GlobusDownload(project_id,globus_user_id)
+        download = GlobusDownload(project_id, globus_user_id)
         url = download.download()
         ret_value = {'url': url}
         ret = format_as_json_return(ret_value)
         return ret
     except Exception as e:
-        message = "etl download with Globus - unexpected exception"
+        message = "Download transfer with Globus - unexpected exception"
         log.exception(e)
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
