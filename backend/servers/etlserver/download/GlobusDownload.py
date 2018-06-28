@@ -20,7 +20,7 @@ class GlobusDownload:
         self.transfer_client = None
         self.user_dir = None
         self.access = GlobusAccess()
-        self.log.info("Using GlobusAccess implementation: {}".format(self.access.get_impl_type()))
+        self.log.debug("Using GlobusAccess implementation: {}".format(self.access.get_impl_type()))
         download_ep_id = os.environ.get('MC_DOWNLOAD_ENDPOINT_ID')
         #     download_endpoint_id = '84b62e46-5ebc-11e8-91d5-0a6d4e044368'
         self.log.info("Download endpoint id = {}".format(download_ep_id))
@@ -51,11 +51,11 @@ class GlobusDownload:
             print("no files found")
             exit(-1)
         self.log.info("Found {} files.".format(len(self.file_list)))
-        self.log.info("Found {} paths.".format(len(self.path_list)))
+        self.log.info("Found {} directory paths.".format(len(self.path_list)))
         for file in self.file_list:
-            self.log.info("File: {} - {}".format(file.name, file.path))
+            self.log.debug("File: {} - {}".format(file.name, file.path))
         for path in self.path_list:
-            self.log.info("Path {}".format(path))
+            self.log.debug("Path {}".format(path))
 
     def recursively_add_directory(self, path, directory):
         if path:
@@ -63,7 +63,7 @@ class GlobusDownload:
         file_or_dir_list = directory.get_children()
         for file_or_dir in file_or_dir_list:
             instance_path = path + file_or_dir.name
-            self.log.info("File or dir otype = {}; name = {}; path = {}; {}"
+            self.log.debug("File or dir otype = {}; name = {}; path = {}; {}"
                           .format(file_or_dir.otype, file_or_dir.name,
                                   file_or_dir.path, instance_path))
             if file_or_dir.otype == 'file':
@@ -76,30 +76,25 @@ class GlobusDownload:
         self.log.info("Staging - start")
         mc_dirs = os.environ.get('MCDIR')
         mc_dir = mc_dirs.split(':')[0]
-        self.log.info("Staging - mc dir = {}".format(mc_dir))
+        self.log.debug("Staging - mc dir = {}".format(mc_dir))
         staging_dir = self.download_dir
         self.user_dir = self.make_random_name('testing-')
+        self.log.debug("Staging - user dir = {}".format(self.user_dir))
         staging_dir = os.path.join(staging_dir, self.user_dir)
         self.log.info("Staging - staging dir = {}".format(staging_dir))
-        self.log.info("Staging - user dir = {}".format(self.user_dir))
-        self.log.info("About to create dir {}".format(staging_dir))
         os.makedirs(staging_dir)
         for path in self.path_list:
             staging_path = os.path.join(staging_dir, path)
-            self.log.info("About to create dir {}".format(staging_path))
+            self.log.debug("About to create dir {}".format(staging_path))
             os.makedirs(staging_path)
         for file in self.file_list:
-            print(file.input_data)
-            self.log.info("file.id = {}; file.usesid {}"
-                          .format(file.id, file.input_data['usesid']))
             id = file.id
-            usesid = file.input_data['usesid']
+            usesid = file.usesid
             if usesid:
                 id = usesid
             p1 = id[9:11]
             p2 = id[11:13]
             file_path = os.path.join(mc_dir, p1, p2, id)
-            self.log.info("file_path = {}".format(file_path))
             link_path = os.path.join(staging_dir, file.path)
             os.link(file_path, link_path)
         self.log.info("Staging - end")
