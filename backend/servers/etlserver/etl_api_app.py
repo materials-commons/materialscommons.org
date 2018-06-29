@@ -198,7 +198,7 @@ def globus_etl_download():
 @app.route('/globus/transfer', methods=['POST'])
 @apikey
 def globus_transfer():
-    log.info("Project top-level directory transfer with Globus - starting")
+    log.info("Project top-level directory staged for transfer with Globus - starting")
     j = request.get_json(force=True)
     project_id = j["project_id"]
     globus_user_id = j["globus_user"]
@@ -222,3 +222,12 @@ def globus_transfer():
         log.exception(e)
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
+
+@app.route('/globus/upload', methods=['POST', 'GET'])
+@apikey
+def globus_upload():
+    log.info("Project upload with Globus - starting")
+    ret_value = {'ok': 'ok'}
+    ret = format_as_json_return(ret_value)
+    message = "Globus upload is not implemented; try Globus ETL-upload instead"
+    return message, status.HTTP_501_NOT_IMPLEMENTED

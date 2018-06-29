@@ -188,6 +188,23 @@ def build_experiment(project_id, experiment_name, experiment_description,
         return {"status": "FAILED", "error": e}
 
 
+def non_etl_globus_upload(status_record_id):
+    # noinspection PyBroadException
+    try:
+        log = logging.getLogger(__name__ + ".etl_excel_processing")
+        log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
+        status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
+        user_id = status_record['owner']
+        _set_global_python_api_remote_for_user(user_id)
+        log.info("apikey = '{}'".format(get_remote().config.mcapikey))
+        project_id = status_record['project_id']
+        log.info("Project id = {}".format(project_id))
+    except BaseException:
+        DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
+        message = "Unexpected failure; status_record_id = {}".format(status_record_id)
+        logging.exception(message)
+
+
 def _set_global_python_api_remote_for_user(user_id):
     init_api_keys()
     api_key = user_apikey(user_id)
