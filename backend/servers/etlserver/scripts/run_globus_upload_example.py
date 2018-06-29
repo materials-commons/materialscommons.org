@@ -1,5 +1,7 @@
 import argparse
 import sys
+import os
+import time
 import logging
 
 from globus_sdk.exc import GlobusAPIError
@@ -7,17 +9,26 @@ from globus_sdk.exc import GlobusAPIError
 from materials_commons.api import get_all_projects
 
 from ..globus_upload.GlobusNonEtlUpload import GlobusNonEtlUpload
+from ..common.access_exceptions import TransferFailed
 
-def main(project, globus_endpoint):
+
+def main(project, globus_endpoint, upload_base):
     main_log = logging.getLogger("main")
     main_log.info("Starting all file Globus upload. Project = {} ({})".
                   format(project.name, project.id))
     try:
         main_log.info("Starting GlobusNonEtlUpload")
-        upload = GlobusNonEtlUpload(project.owner, project.id, globus_endpoint)
-        upload.start("test-transfer")
-        while upload.is_running():
-            main_log.info("In-line monitoring of upload: {}".format(upload.get_last_status()))
+        globus_upload_transfer = GlobusNonEtlUpload(project, globus_endpoint, upload_base)
+        transfer_id = str(int(time.time() * 1000))
+        globus_upload_transfer.start_transfer(transfer_id)
+        while globus_upload_transfer.is_transfer_running():
+            time.sleep(5)
+            main_log.info("In-line monitoring of upload: {}".format(globus_upload_transfer.get_last_transfer_status()))
+        main_log.info("Final status = {}".format(globus_upload_transfer.get_last_transfer_status()))
+        if not globus_upload_transfer.get_last_transfer_status() == 'SUCCEEDED':
+            raise TransferFailed("End of transfer status = {}".format(globus_upload_transfer.get_last_transfer_status()))
+        main_log.info("Moving data to project: {}".format(project.name))
+        globus_upload_transfer.move_data_dir_to_project()
         main_log.info("Done.")
     except GlobusAPIError as error:
         http_status = error.http_status
@@ -68,6 +79,11 @@ if __name__ == "__main__":
         parser.print_help()
         exit(-1)
 
+    upload_base = os.environ.get('MC_NON_ETL_UPLOAD_BASE')
+    if not upload_base:
+        print("You must specify the environment variable MC_NON_ETL_UPLOAD_BASE - the base dir of the upload endpoint")
+        exit(-1)
+
     local_log.info("Searching for project with name-match = {}".format(args.name))
     project_list = get_all_projects()
 
@@ -90,4 +106,4 @@ if __name__ == "__main__":
     local_log.info("Found match with name-match = {}; project.name = {}; id = {}".
                    format(args.name, project_selected.name, project_selected.id))
 
-    main(project_selected, args.endpoint)
+    main(project_selected, args.endpoint, upload_base)
