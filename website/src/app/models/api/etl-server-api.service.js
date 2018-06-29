@@ -46,6 +46,23 @@ class EtlServerAPIService {
             }
         );
     }
+
+    setupGlobusDownloadTransfer(projectId, globusUsername) {
+        let route = this.etlAPIRoute('globus').one('transfer');
+        let data = {
+            project_id: projectId,
+            globus_user: globusUsername
+        };
+        return route.customPOST(data).then(
+            r => {
+                let results = r.plain();
+                return results;
+            },
+            () => {
+                return null;
+            }
+        );
+    }
 }
 
 angular.module('materialscommons').service('etlServerAPI', EtlServerAPIService);

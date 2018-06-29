@@ -79,6 +79,19 @@ class MCProjectSidenavComponentController {
         );
     }
 
+    setGlobusDownloadTransfer() {
+        console.log("Reached setGlobusDownloadTransfer");
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/globus-download-transfer-dialog.html',
+            controller: GlobusDownloadTrasferDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                project: this.project,
+            }}
+        ).then(((results) =>  console.log("done")));
+    }
+
     modifyShortcuts() {
         this.loadProjectFiles().then(
             () => {
@@ -108,6 +121,34 @@ class MCProjectSidenavComponentController {
 
     isProjectDatasetsRoute() {
         return this.mcRouteState.getRouteName().startsWith('project.datasets');
+    }
+}
+
+class GlobusDownloadTrasferDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, etlServerAPI) {
+        this.$mdDialog = $mdDialog;
+        this.etlServerAPI = etlServerAPI;
+        this.requestComplete = false;
+        this.globusUser = "username@globus.com";
+        this.url = "";
+    }
+
+    submitToServer() {
+        console.log("Submitting request to server: ", this.project.id, this.globusUser);
+        this.etlServerAPI.
+            setupGlobusDownloadTransfer(this.project.id, this.globusUser).
+            then(globusResults => {
+                console.log("Results returned from server: ", globusResults);
+                if (globusResults && globusResults.url) {
+                    this.url = globusResults.url;
+                    this.requestComplete = true;
+                }
+        });
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 
