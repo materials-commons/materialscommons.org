@@ -4,8 +4,8 @@ from random import randint
 
 from materials_commons.api import get_project_by_id
 
-from .GlobusAccess import GlobusAccess
-from .download_exceptions import RequiredAttributeException
+from ..common.GlobusAccess import GlobusAccess
+from ..common.access_exceptions import RequiredAttributeException
 
 
 class GlobusDownload:

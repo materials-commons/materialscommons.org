@@ -1,11 +1,10 @@
 import logging
 import os
 
-from .download_exceptions import AuthenticationException
+from .access_exceptions import AuthenticationException
 
-from globus_sdk.exc import GlobusAPIError
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
-from globus_sdk import TransferClient, TransferData, TransferAPIError
+from globus_sdk import TransferClient
 
 
 class GlobusAccessWithConfidentialAuth:

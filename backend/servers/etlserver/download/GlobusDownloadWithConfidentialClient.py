@@ -4,7 +4,7 @@ from random import randint
 
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer, TransferClient
 
-from .download_exceptions \
+from ..common.access_exceptions \
     import RequiredAttributeException, AuthenticationException
 
 
