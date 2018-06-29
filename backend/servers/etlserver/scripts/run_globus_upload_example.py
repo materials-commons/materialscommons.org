@@ -15,8 +15,7 @@ def main(project, globus_endpoint):
     try:
         main_log.info("Starting GlobusNonEtlUpload")
         upload = GlobusNonEtlUpload(project.owner, project.id, globus_endpoint)
-        upload.initialize()
-        upload.start()
+        upload.start("test-transfer")
         while upload.is_running():
             main_log.info("In-line monitoring of upload: {}".format(upload.get_last_status()))
         main_log.info("Done.")

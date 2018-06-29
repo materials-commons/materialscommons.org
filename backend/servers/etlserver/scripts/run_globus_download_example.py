@@ -7,7 +7,7 @@ from globus_sdk.exc import GlobusAPIError
 from materials_commons.api import get_all_projects
 
 from ..download.GlobusDownload import GlobusDownload
-from ..download.download_exceptions import RequiredAttributeException
+from ..common.access_exceptions import RequiredAttributeException
 
 
 def main(project, globus_user):
