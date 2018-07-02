@@ -89,7 +89,7 @@ class MCProjectSidenavComponentController {
             locals: {
                 project: this.project,
             }}
-        ).then(((results) =>  console.log("done")));
+        ).then(((results) =>  console.log("done", results)));
     }
 
     modifyShortcuts() {
