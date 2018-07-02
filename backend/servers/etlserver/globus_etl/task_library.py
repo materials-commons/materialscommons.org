@@ -24,7 +24,7 @@ from ..user.apikeydb import _load_apikeys as init_api_keys
 def startup_and_verify(user_id, project_id, experiment_name, experiment_description,
                        globus_endpoint, excel_file_path, data_dir_path):
     log = logging.getLogger(__name__ + ".startup_and_verify")
-    log.debug("Starting startup_and_verify")
+    log.info("Starting startup_and_verify")
 
     status_record_id = None
     # noinspection PyBroadException

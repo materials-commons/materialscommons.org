@@ -14,19 +14,22 @@ class ETLSetup:
 
     def setup_status_record(self, project_id, experiment_name, experiment_description,
                             globus_endpoint, excel_file_path, data_dir_path):
-
+        self.log.info("starting setup of status record; user_id = {}; project_id = {}"
+                      .format(self.user_id, project_id))
         status_record = DatabaseInterface().\
             create_status_record(self.user_id, project_id, "ETL Process")
 
         status_record_id = status_record['id']
+        self.log.info("status_record_id = {}".format(status_record_id))
+
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.INITIALIZATION)
 
         base_path = self.worker_base_path
         transfer_dir = self.make_transfer_dir(status_record_id)
         transfer_base_path = os.path.join(base_path, transfer_dir)
-        self.log.debug("excel_file_path = " + excel_file_path)
-        self.log.debug("data_file_path = " + data_dir_path)
-        self.log.debug("transfer_base_path = " + transfer_base_path)
+        self.log.info("excel_file_path = " + excel_file_path)
+        self.log.info("data_file_path = " + data_dir_path)
+        self.log.info("transfer_base_path = " + transfer_base_path)
         extras = {
             "experiment_name": experiment_name,
             "experiment_description": experiment_description,
@@ -37,7 +40,7 @@ class ETLSetup:
         }
         status_record = DatabaseInterface().add_extras_data_to_status_record(status_record_id, extras)
         status_record_id = status_record['id']
-        self.log.debug("status record id = " + status_record_id)
+        self.log.info("status record id = " + status_record_id)
         return status_record_id
 
     def verify_setup(self, status_record_id):

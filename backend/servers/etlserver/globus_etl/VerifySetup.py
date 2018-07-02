@@ -1,11 +1,13 @@
 import os
+import logging
+
 from ..database.DB import DbConnection
 from globus_sdk.exc import GlobusAPIError
-
 
 class VerifySetup:
     def __init__(self, web_service, project_id, globus_endpoint, base_path,
                  excel_file_path, data_dir_path):
+        self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.web_service = web_service
         self.project_id = project_id
         self.globus_endpoint = globus_endpoint
@@ -34,12 +36,18 @@ class VerifySetup:
         r = DbConnection().interface()
         proj = r.table('projects').get(self.project_id).run(conn)
         if not proj:
+            self.log.info("project not found: {}".format(self.project_id))
             self.error_status["project_id"] = "project not found: " + self.project_id
+        else:
+            self.log.info("found project '{}'".format(proj['name']))
 
     def check_target_directory(self):
         if os.path.isdir(self.base_path):
             message = "transfer server directory: already exists - " + self.base_path
+            self.log.info(message)
             self.error_status["target_directory"] = message
+        else:
+            self.log.info("transfer server directory ok: {}".format(self.base_path))
 
     def check_globus_clients(self):
         try:

@@ -16,6 +16,8 @@ def main(project, globus_endpoint, upload_base):
     main_log = logging.getLogger("main")
     main_log.info("Starting all file Globus upload. Project = {} ({})".
                   format(project.name, project.id))
+    main_log.info("... Globus endpoint id = {}".format(globus_endpoint))
+    main_log.info("... Unload base directory = {}".format(upload_base))
     try:
         main_log.info("Starting GlobusNonEtlUpload")
         globus_upload_transfer = GlobusNonEtlUpload(project, globus_endpoint, upload_base)
