@@ -2,8 +2,8 @@ import os
 import logging
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
-from .MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
-from .VerifySetup import VerifySetup
+from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
+from ..common.VerifySetup import VerifySetup
 
 
 class ETLSetup:

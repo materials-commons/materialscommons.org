@@ -12,7 +12,7 @@ from materials_commons.api import _set_remote as set_remote
 
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
-from .MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
+from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from .BuildProjectExperiment import BuildProjectExperiment
 from ..utils.mcexceptions import MaterialsCommonsException
 from .ETLSetup import ETLSetup

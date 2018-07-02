@@ -1,7 +1,7 @@
 import logging
 import os
 
-from ..globus_etl.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
+from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 
 class GlobusNonEtlUpload:
     def __init__(self, project, globus_endpoint, upload_base):
