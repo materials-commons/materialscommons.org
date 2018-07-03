@@ -6,7 +6,7 @@ from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInter
 from ..common.VerifySetup import VerifySetup
 
 
-class ETLSetup:
+class NonETLSetup:
     def __init__(self, user_id):
         self.user_id = user_id
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
