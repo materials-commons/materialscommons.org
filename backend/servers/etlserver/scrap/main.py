@@ -1,36 +1,34 @@
-import argparse
-import sys
-import os
-import time
 import logging
-
-from globus_sdk.exc import GlobusAPIError
+import sys
+import argparse
+import time
 
 from materials_commons.api import get_all_projects
+from globus_sdk.exc import GlobusAPIError
 
-from ..globus_upload.GlobusNonEtlUpload import GlobusNonEtlUpload
-from ..common.access_exceptions import TransferFailed
+from .Uplaod import Upload
+from ..common.access_exceptions import ProbeException, TransferFailed
 
-
-def main(project, globus_endpoint, upload_base):
+def main(project, endpoint):
     main_log = logging.getLogger("main")
     main_log.info("Starting all file Globus upload. Project = {} ({})".
                   format(project.name, project.id))
-    main_log.info("... Globus endpoint id = {}".format(globus_endpoint))
-    main_log.info("... Unload base directory = {}".format(upload_base))
+    main_log.info("... Globus endpoint id = {}".format(endpoint))
     try:
-        main_log.info("Starting GlobusNonEtlUpload")
-        globus_upload_transfer = GlobusNonEtlUpload(project, globus_endpoint, upload_base)
+        main_log.info("Starting upload")
+        upload = Upload(project.owner, project.id, endpoint)
+        upload.setup_and_verify()
         transfer_id = str(int(time.time() * 1000))
-        globus_upload_transfer.start_transfer(transfer_id)
-        while globus_upload_transfer.is_transfer_running():
+        upload.start_transfer(transfer_id)
+        while upload.is_transfer_running():
             time.sleep(5)
-            main_log.info("In-line monitoring of upload: {}".format(globus_upload_transfer.get_last_transfer_status()))
-        main_log.info("Final status = {}".format(globus_upload_transfer.get_last_transfer_status()))
-        if not globus_upload_transfer.get_last_transfer_status() == 'SUCCEEDED':
-            raise TransferFailed("End of transfer status = {}".format(globus_upload_transfer.get_last_transfer_status()))
+            main_log.info("In-line monitoring of upload: {}".format(upload.get_last_transfer_status()))
+        main_log.info("Final status = {}".format(upload.get_last_transfer_status()))
+        if not upload.get_last_transfer_status() == 'SUCCEEDED':
+            raise TransferFailed("End of transfer status = {}".format(upload.get_last_transfer_status()))
         main_log.info("Moving data to project: {}".format(project.name))
-        globus_upload_transfer.move_data_dir_to_project()
+        upload.move_data_dir_to_project()
+        main_log.info("Done.")
         main_log.info("Done.")
     except GlobusAPIError as error:
         http_status = error.http_status
@@ -41,6 +39,9 @@ def main(project, globus_endpoint, upload_base):
         message += ", code = " + code
         message += ", message = " + details
         main_log.error(message)
+        main_log.exception(error)
+    except ProbeException as upload_error:
+        main_log.exception(upload_error)
 
 
 if __name__ == "__main__":
@@ -54,7 +55,7 @@ if __name__ == "__main__":
     ch.setFormatter(formatter)
     root.addHandler(ch)
 
-    local_log = logging.getLogger("main-setup")
+    startup_log = logging.getLogger("main-setup")
 
     # suppress info logging for globus_sdk loggers that are invoked, while leaving my info logging in place
     logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
@@ -81,12 +82,9 @@ if __name__ == "__main__":
         parser.print_help()
         exit(-1)
 
-    upload_base = os.environ.get('MC_NON_ETL_UPLOAD_BASE')
-    if not upload_base:
-        print("You must specify the environment variable MC_NON_ETL_UPLOAD_BASE - the base dir of the upload endpoint")
-        exit(-1)
+    startup_log.info("args: name = {}, endpoint = {}".format(args.name, args.endpoint))
+    startup_log.info("Searching for project with name-match = {}".format(args.name))
 
-    local_log.info("Searching for project with name-match = {}".format(args.name))
     project_list = get_all_projects()
 
     project_selected = None
@@ -105,7 +103,7 @@ if __name__ == "__main__":
         parser.print_help()
         exit(-1)
 
-    local_log.info("Found match with name-match = {}; project.name = {}; id = {}".
+    startup_log.info("Found match with name-match = {}; project.name = {}; id = {}".
                    format(args.name, project_selected.name, project_selected.id))
 
-    main(project_selected, args.endpoint, upload_base)
+    main(project_selected, args.endpoint)
