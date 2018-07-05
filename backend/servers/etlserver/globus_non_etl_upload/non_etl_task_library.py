@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 # noinspection PyProtectedMember
 from materials_commons.api import _use_remote as get_remote
@@ -10,6 +11,8 @@ from materials_commons.api import _Remote as Remote
 # noinspection PyProtectedMember
 from materials_commons.api import _set_remote as set_remote
 
+from materials_commons.api import get_project_by_id
+
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
@@ -18,18 +21,45 @@ from ..user.apikeydb import user_apikey
 # noinspection PyProtectedMember
 from ..user.apikeydb import _load_apikeys as init_api_keys
 
+from .NonEtlSetup import NonEtlSetup
 
-def startup_and_verify(user_id, project_id, experiment_name, experiment_description,
-                       globus_endpoint, excel_file_path, data_dir_path):
+
+def startup_and_verify(user_id, project_id, globus_endpoint):
     log = logging.getLogger(__name__ + ".startup_and_verify")
     log.info("Starting startup_and_verify")
 
-    status_record_id = "Nothing yet"
+    status_record_id = None
     # noinspection PyBroadException
     try:
+        upload_base = os.environ.get('MC_ETL_BASE_DIR')
+        if not upload_base:
+            message = "The environment variable MC_ETL_BASE_DIR must be set and is not"
+            return {"status": "FAIL", message: message}
+        setup = NonEtlSetup(user_id)
+        status_record_id = \
+            setup.setup_status_record(project_id, globus_endpoint)
+        if not status_record_id:
+            log.error("Unable to create status_record_id")
+            return {"status": "FAIL"}
+        log.info("setup.setup_status_record passed")
+        check = setup.verify_setup(status_record_id)
+        check['status_record_id'] = status_record_id
+        if not check['status'] == "SUCCESS":
+            log.error("Failed to verify setup; status_record_id = {}".format(status_record_id))
+            DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
+            return check
+        log.info("setup.verify_setup passed")
+
+        from ..faktory.TaskChain import FILE_UPLOAD_QUEUE
+        DatabaseInterface().update_queue(status_record_id, FILE_UPLOAD_QUEUE)
+        DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
+        log.info("updated status record queue to {} and status to {}"
+                 .format(FILE_UPLOAD_QUEUE, BackgroundProcess.SUBMITTED_TO_QUEUE))
         from ..faktory.TaskChain import TaskChain
         task_chain = TaskChain()
         task_chain.start_non_etl_chain(status_record_id)
+        log.info("Called task_chain.start_non_etl_chain")
+        check['status_record_id'] = status_record_id
     except BaseException:
         message = "Unexpected failure; status_record_id = None"
         if status_record_id:
@@ -37,7 +67,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
             message = "Unexpected failure; status_record_id = {}".format(status_record_id)
         logging.exception(message)
         return {"status": "FAIL"}
-    return None
+    return check
 
 
 def non_elt_globus_upload(status_record_id):
@@ -48,12 +78,12 @@ def non_elt_globus_upload(status_record_id):
         log.info("Starting elt_globus_upload with status_record_id{}".format(status_record_id))
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         results = globus_transfer(status_record_id)
-        log.debug(results)
+        log.info(results)
         if not results['status'] == 'SUCCEEDED':
             DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
             log.error(results)
             return None
-        log.debug(results)
+        log.info(results)
         DatabaseInterface().update_queue(status_record_id, FILE_PROCESS_QUEUE)
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
         from ..faktory.TaskChain import TaskChain
@@ -72,53 +102,46 @@ def non_etl_file_processing(status_record_id):
     try:
         log = logging.getLogger(__name__ + ".etl_excel_processing")
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
+        upload_base = os.environ.get('MC_ETL_BASE_DIR')
+        if not upload_base:
+            message = "The environment variable MC_ETL_BASE_DIR must be set and is not"
+            return {"status": "FAIL", message: message}
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         user_id = status_record['owner']
         _set_global_python_api_remote_for_user(user_id)
         log.debug("apikey = '{}'".format(get_remote().config.mcapikey))
         project_id = status_record['project_id']
-        experiment_name = status_record['extras']['experiment_name']
-        experiment_description = status_record['extras']['experiment_description']
         transfer_base_path = status_record['extras']['transfer_base_path']
-        excel_file_path = status_record['extras']['excel_file_path']
-        data_dir_path = status_record['extras']['data_dir_path']
 
-        log.debug("excel_file_path = {}".format(excel_file_path))
-        log.debug("data_dir_path = {}".format(data_dir_path))
+        log.debug("project_id = {}".format(project_id))
         log.debug("transfer_base_path = {}".format(transfer_base_path))
 
-        if excel_file_path.startswith('/'):
-            excel_file_path = excel_file_path[1:]
+        project = get_project_by_id(project_id)
+        log.info("working with project '{}' ({})".format(project.name, project.id))
 
-        if data_dir_path.startswith('/'):
-            data_dir_path = data_dir_path[1:]
+        log.info("upload_base = {}; transfer_id = {}".format(upload_base, status_record_id))
+        combined_path = os.path.join(upload_base, "transfer-" + status_record_id)
+        log.info("loading files and directories from = {}".format(combined_path))
+        current_directory = os.getcwd()
+        os.chdir(combined_path)
+        directory = project.get_top_directory()
 
-        log.debug("partial excel_file path = {}".format(excel_file_path))
-        log.debug("partial data_dir path = {}".format(data_dir_path))
+        file_count = 0
+        dir_count = 0
+        for f_or_d in os.listdir('.'):
+            if os.path.isfile(f_or_d):
+                file_count += 1
+                directory.add_file(str(f_or_d), str(f_or_d))
+            if os.path.isdir(f_or_d):
+                dir_count += 1
+                directory.add_directory_tree(str(f_or_d), '.')
+        os.chdir(current_directory)
 
-        excel_file_path = os.path.join(transfer_base_path, excel_file_path)
-        data_dir_path = os.path.join(transfer_base_path, data_dir_path)
+        log.info("Uploaded {} file(s) and {} dirs(s) to top level directory of project '{}'"
+                      .format(file_count, dir_count, project.name))
 
-        log.debug("full excel_file_path = {}".format(excel_file_path))
-        log.debug("full data_dir_path = {}".format(data_dir_path))
-
-        results = build_experiment(project_id, experiment_name, experiment_description,
-                                   excel_file_path, data_dir_path)
-        if not results['status'] == 'SUCCEEDED':
-            DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
-            log.error(results)
-            return
-        builder_out = results['results']
-        log.debug("-------------------->{}".format(builder_out.experiment.id))
         DatabaseInterface().update_queue(status_record_id, None)
-        DatabaseInterface().update_extras_data_on_status_record(
-            status_record_id,
-            {
-                'experiment_id': builder_out.experiment.id
-            }
-        )
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUCCESS)
-        log.debug("Build Experiment Success{}".format(results))
     except BaseException:
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
@@ -149,23 +172,6 @@ def globus_transfer(status_record_id):
         poll = (results['status'] == 'ACTIVE')
     log.debug(results)
     return results
-
-
-def build_experiment(project_id, experiment_name, experiment_description,
-                     excel_file_path, data_file_path):
-    log = logging.getLogger(__name__ + ".etl_excel_processing.build_experiment")
-    try:
-        log.info("Starting Experiment Build: {}, {}".format(project_id, experiment_name))
-        builder = BuildProjectExperiment()
-        builder.set_rename_is_ok(True)
-        builder.preset_project_id(project_id)
-        builder.preset_experiment_name_description(experiment_name, experiment_description)
-        builder.build(excel_file_path, data_file_path)
-        log.debug("Experiment Build Success: {}, {}".format(project_id, experiment_name))
-        return {"status": "SUCCEEDED", "results": builder}
-    except MaterialsCommonsException as e:
-        log.debug("Starting Experiment Build Fail: {}, {}".format(project_id, experiment_name))
-        return {"status": "FAILED", "error": e}
 
 
 def non_etl_globus_upload(status_record_id):

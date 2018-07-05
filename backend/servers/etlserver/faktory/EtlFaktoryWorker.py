@@ -2,11 +2,11 @@ import logging
 import json
 from time import sleep
 from faktory import Worker
-from .TaskChain import TaskChain, GLOBUS_QUEUE, PROCESS_QUEUE
-
+from .TaskChain import TaskChain, GLOBUS_QUEUE, EXCEL_PROCESS_QUEUE, FILE_UPLOAD_QUEUE, FILE_PROCESS_QUEUE
 
 class EtlFaktoryWorker:
     def __init__(self):
+        logging.basicConfig(level=logging.INFO)
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.tasks = TaskChain()
         self.possible_errors = (
@@ -19,7 +19,9 @@ class EtlFaktoryWorker:
         self.tasks.setup_in_worker(worker)
 
     def new_worker(self):
-        worker = Worker(faktory="tcp://localhost:7419", queues=[GLOBUS_QUEUE, PROCESS_QUEUE], concurrency=1)
+        worker = Worker(faktory="tcp://localhost:7419",
+                        queues=[GLOBUS_QUEUE, EXCEL_PROCESS_QUEUE, FILE_UPLOAD_QUEUE, FILE_PROCESS_QUEUE],
+                        concurrency=1)
         self.setup(worker)
         return worker
 

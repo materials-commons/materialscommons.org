@@ -55,4 +55,4 @@ class TaskChain:
     def queue_non_etl_file_transformation(self, status_record_id):
         self.log.info("Queueing Non-ETL File Transformation Task " + str(status_record_id))
         with faktory.connection() as client:
-            client.queue(NON_ETL_GLOBUS_FILE_UPLOAD_NAME, args=[status_record_id], queue=FILE_PROCESS_QUEUE)
+            client.queue(NON_ETL_TRANSFORM_PROCESS_NAME, args=[status_record_id], queue=FILE_PROCESS_QUEUE)

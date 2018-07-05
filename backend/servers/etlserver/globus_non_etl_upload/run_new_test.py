@@ -5,10 +5,8 @@ import time
 from random import randint
 
 from materials_commons.api import create_project
-from globus_sdk.exc import GlobusAPIError
 
-from .Upload import Upload
-from ..common.access_exceptions import ProbeException, TransferFailed
+from .non_etl_task_library import startup_and_verify
 
 
 class TestProject:
@@ -31,34 +29,10 @@ def main(project, endpoint):
     main_log.info("Starting all file Globus upload. Project = {} ({})".
                   format(project.name, project.id))
     main_log.info("... Globus endpoint id = {}".format(endpoint))
-    try:
-        main_log.info("Starting upload")
-        upload = Upload(project.owner, project.id, endpoint)
-        upload.setup_and_verify()
-        transfer_id = str(int(time.time() * 1000))
-        upload.start_transfer(transfer_id)
-        while upload.is_transfer_running():
-            time.sleep(5)
-            main_log.info("In-line monitoring of upload: {}".format(upload.get_last_transfer_status()))
-        main_log.info("Final status = {}".format(upload.get_last_transfer_status()))
-        if not upload.get_last_transfer_status() == 'SUCCEEDED':
-            raise TransferFailed("End of transfer status = {}".format(upload.get_last_transfer_status()))
-        main_log.info("Moving data to project: {}".format(project.name))
-        upload.move_data_dir_to_project()
-        main_log.info("Done.")
-        main_log.info("Done.")
-    except GlobusAPIError as error:
-        http_status = error.http_status
-        code = error.code
-        details = error.message
-        message = "Unable to connect to the Globus Connection server (based on configuration information): "
-        message += " http_status = " + str(http_status)
-        message += ", code = " + code
-        message += ", message = " + details
-        main_log.error(message)
-        main_log.exception(error)
-    except ProbeException as upload_error:
-        main_log.exception(upload_error)
+
+    results = startup_and_verify(project.owner, project.id, endpoint)
+
+    main_log.info("Startup and verify results = {}".format(results))
 
 
 if __name__ == "__main__":
@@ -101,3 +75,34 @@ if __name__ == "__main__":
                      format(project.name, project.id))
 
     main(project, args.endpoint)
+
+    # --
+    # Code to run in-line upload
+    # try:
+    #     main_log.info("Starting upload")
+    #     upload = Upload(project.owner, project.id, endpoint)
+    #     upload.setup_and_verify()
+    #     transfer_id = str(int(time.time() * 1000))
+    #     upload.start_transfer(transfer_id)
+    #     while upload.is_transfer_running():
+    #         time.sleep(5)
+    #         main_log.info("In-line monitoring of upload: {}".format(upload.get_last_transfer_status()))
+    #     main_log.info("Final status = {}".format(upload.get_last_transfer_status()))
+    #     if not upload.get_last_transfer_status() == 'SUCCEEDED':
+    #         raise TransferFailed("End of transfer status = {}".format(upload.get_last_transfer_status()))
+    #     main_log.info("Moving data to project: {}".format(project.name))
+    #     upload.move_data_dir_to_project()
+    #     main_log.info("Done.")
+    #     main_log.info("Done.")
+    # except GlobusAPIError as error:
+    #     http_status = error.http_status
+    #     code = error.code
+    #     details = error.message
+    #     message = "Unable to connect to the Globus Connection server (based on configuration information): "
+    #     message += " http_status = " + str(http_status)
+    #     message += ", code = " + code
+    #     message += ", message = " + details
+    #     main_log.error(message)
+    #     main_log.exception(error)
+    # except ProbeException as upload_error:
+    #     main_log.exception(upload_error)
