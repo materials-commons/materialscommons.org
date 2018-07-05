@@ -2,12 +2,29 @@ import logging
 import sys
 import argparse
 import time
+from random import randint
 
-from materials_commons.api import get_all_projects
+from materials_commons.api import create_project
 from globus_sdk.exc import GlobusAPIError
 
 from .Uplaod import Upload
 from ..common.access_exceptions import ProbeException, TransferFailed
+
+
+class TestProject:
+    def __init__(self):
+        project_name = self.fake_name("TestProject-")
+        project_description = "Generated test project - " + project_name
+        self.project = create_project(project_name, project_description)
+
+    def get_project(self):
+        return self.project
+
+    @classmethod
+    def fake_name(cls, prefix):
+        number = "%05d" % randint(0, 99999)
+        return prefix + number
+
 
 def main(project, endpoint):
     main_log = logging.getLogger("main")
@@ -69,41 +86,18 @@ if __name__ == "__main__":
 
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Test of Globus non-ETL upload')
-    parser.add_argument('--name', type=str, help="Project Name")
     parser.add_argument('--endpoint', type=str, help="Globus shared endpoint id")
     args = parser.parse_args(argv[1:])
-    if not args.name:
-        print("You must specify a unique project name, or name substring. Argument not found.")
-        parser.print_help()
-        exit(-1)
 
     if not args.endpoint:
         print("You must specify a globus shared endpoint. Argument not found.")
         parser.print_help()
         exit(-1)
 
-    startup_log.info("args: name = {}, endpoint = {}".format(args.name, args.endpoint))
-    startup_log.info("Searching for project with name-match = {}".format(args.name))
+    project = TestProject().get_project()
 
-    project_list = get_all_projects()
+    startup_log.info("args: endpoint = {}".format(args.endpoint))
+    startup_log.info("generated test project - name = {}; id = {}".
+                     format(project.name, project.id))
 
-    project_selected = None
-    for probe in project_list:
-        if args.name in probe.name:
-            if project_selected:
-                print("Found multiple matches for {}".format(args.name))
-                print("You must specify a unique project name, or name substring.")
-                parser.print_help()
-                exit(-1)
-            project_selected = probe
-
-    if not project_selected:
-        print("Found no matches for {}".format(args.name))
-        print("You must specify a unique project name, or name substring.")
-        parser.print_help()
-        exit(-1)
-
-    startup_log.info("Found match with name-match = {}; project.name = {}; id = {}".
-                   format(args.name, project_selected.name, project_selected.id))
-
-    main(project_selected, args.endpoint)
+    main(project, args.endpoint)
