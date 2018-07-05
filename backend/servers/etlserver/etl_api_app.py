@@ -4,7 +4,7 @@ import pkg_resources
 from flask import Flask, request
 from flask_api import status
 
-from .globus_etl.task_library import startup_and_verify
+from .globus_etl.etl_task_library import startup_and_verify
 from .globus_etl.BuildProjectExperiment import BuildProjectExperiment
 from .database.DatabaseInterface import DatabaseInterface
 from .database.DB import DbConnection

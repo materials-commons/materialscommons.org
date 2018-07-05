@@ -48,7 +48,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
         from ..faktory.TaskChain import TaskChain
         task_chain = TaskChain()
-        task_chain.start_chain(status_record_id)
+        task_chain.start_elt_chain(status_record_id)
         check['status_record_id'] = status_record_id
     except BaseException:
         message = "Unexpected failure; status_record_id = None"
@@ -63,7 +63,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
 def elt_globus_upload(status_record_id):
     # noinspection PyBroadException
     try:
-        from ..faktory.TaskChain import PROCESS_QUEUE
+        from ..faktory.TaskChain import EXCEL_PROCESS_QUEUE
         log = logging.getLogger(__name__ + ".elt_globus_upload")
         log.info("Starting elt_globus_upload with status_record_id{}".format(status_record_id))
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
@@ -74,7 +74,7 @@ def elt_globus_upload(status_record_id):
             log.error(results)
             return None
         log.debug(results)
-        DatabaseInterface().update_queue(status_record_id, PROCESS_QUEUE)
+        DatabaseInterface().update_queue(status_record_id, EXCEL_PROCESS_QUEUE)
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
         from ..faktory.TaskChain import TaskChain
         task_chain = TaskChain()

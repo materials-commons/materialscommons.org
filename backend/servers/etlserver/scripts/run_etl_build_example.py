@@ -8,7 +8,7 @@ from ..database.DatabaseInterface import DatabaseInterface
 
 
 def main(project_id):
-    from ..globus_etl.task_library import startup_and_verify
+    from ..globus_etl.etl_task_library import startup_and_verify
     log = logging.getLogger("top_level_run_ELT_example")
 
     user_id = "test@test.mc"
