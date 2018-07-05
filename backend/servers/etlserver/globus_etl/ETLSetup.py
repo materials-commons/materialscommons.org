@@ -65,7 +65,7 @@ class ETLSetup:
         web_service = MaterialsCommonsGlobusInterface(self.user_id)
         checker = VerifySetup(web_service, project_id,
                               globus_endpoint, transfer_base_path,
-                              excel_file_path, data_dir_path)
+                              [excel_file_path, data_dir_path])
         return checker.status()
 
     @staticmethod
