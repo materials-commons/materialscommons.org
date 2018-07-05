@@ -7,7 +7,7 @@ from random import randint
 from materials_commons.api import create_project
 from globus_sdk.exc import GlobusAPIError
 
-from .Uplaod import Upload
+from .Upload import Upload
 from ..common.access_exceptions import ProbeException, TransferFailed
 
 

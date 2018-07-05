@@ -6,6 +6,7 @@ from materials_commons.api import get_all_projects
 from ..common.access_exceptions import NoSuchItem, AuthenticationException
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 
+
 class Upload:
 
     def __init__(self, mc_user_id, project_id, endpoint):
