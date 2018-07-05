@@ -155,7 +155,6 @@ function* createFileFromDemoFileSet(project,demoFileIndex,user) {
 }
 
 function* addSamplesToProcess(project, experiment, process, sampleList) {
-    let resultsingSamples = [];
     let ret = yield processes.getProcess(process.id);
     if (!ret.error) {
         process = ret.val;
@@ -164,7 +163,8 @@ function* addSamplesToProcess(project, experiment, process, sampleList) {
             samplesData.push({
                 command: 'add',
                 id: sample.id,
-                property_set_id: sample.property_set_id
+                property_set_id: sample.property_set_id,
+                transform: process.does_transform,
             })
         });
         let args = {
