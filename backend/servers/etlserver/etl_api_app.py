@@ -269,7 +269,17 @@ def globus_transfer_status():
         return message, status.HTTP_400_BAD_REQUEST
     try:
         status_list = DatabaseInterface().get_status_by_project_id(project_id, limit=10)
-        ret_value = {'status_list': status_list}
+        return_list = []
+        for record in status_list:
+            return_list.append(
+                {
+                    'timestamp': int(record['birthtime'].timestamp()),
+                    'name': record['name'],
+                    'queue': record['queue'],
+                    'status': record['status']
+                }
+            )
+        ret_value = {'status_list': return_list}
         ret = format_as_json_return(ret_value)
         log.info("get_background_status_for_project: ret = {}".format(ret))
     except Exception:

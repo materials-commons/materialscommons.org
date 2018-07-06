@@ -193,6 +193,7 @@ class GlobusUploadTransferDialogController {
             then(globusResults => {
                 console.log("Results returned from server: ", globusResults);
         });
+        this.$mdDialog.hide();
     }
 
     cancel() {
@@ -206,13 +207,17 @@ class GlobusReportStatusDialogController {
         this.$mdDialog = $mdDialog;
         this.etlServerAPI = etlServerAPI;
         this.statusReportList = [];
-    }
-
-    $onInit() {
         console.log("GlobusReportStatusDialogController - Fetching status");
-        this.etlServer.getRecentGlobusStatus(this.project_id).
+        this.etlServerAPI.getRecentGlobusStatus(this.project.id).
         then(results => {
-           console.log(results);
+            this.statusReportList = results.status_list;
+            for (var i = 0; i < this.statusReportList.length; i++) {
+                var d = new Date(0);
+                d.setUTCSeconds(this.statusReportList[i].timestamp);
+                var iso = d.toISOString().match(/(\d{4}\-\d{2}\-\d{2})T(\d{2}:\d{2}:\d{2})/);
+                this.statusReportList[i].timestamp = iso[1] + ' ' + iso[2];
+            }
+            console.log(this.statusReportList);
         });
     }
 
