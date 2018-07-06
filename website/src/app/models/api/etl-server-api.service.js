@@ -81,6 +81,19 @@ class EtlServerAPIService {
         );
     }
 
+    getRecentGlobusStatus(projectId){
+        let route = this.etlAPIRoute('globus').one('transfer').one('status');
+        let data = {
+            project_id: projectId
+        };
+        return route.customPOST(data).then(
+            r => {
+                let results = r.plain();
+                return results;
+            }
+        );
+    }
+
 }
 
 angular.module('materialscommons').service('etlServerAPI', EtlServerAPIService);

@@ -253,3 +253,25 @@ def globus_transfer_upload():
         log.exception(e)
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
+
+
+@app.route('/globus/transfer/status', methods=['POST'])
+@apikey
+def globus_transfer_status():
+    log.info("Globus background task list - starting")
+    j = request.get_json(force=True)
+    project_id = j["project_id"]
+    log.info("Project id = {}".format(project_id))
+    ret = {"error": "No status returned"}
+    if not project_id:
+        message = "Project upload with Globus - project_id missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    try:
+        status_list = DatabaseInterface().get_status_by_project_id(project_id, limit=10)
+        ret_value = {'status_list': status_list}
+        ret = format_as_json_return(ret_value)
+        log.info("get_background_status_for_project: ret = {}".format(ret))
+    except Exception:
+        log.info("Unexpected exception...", exc_info=True)
+    return ret

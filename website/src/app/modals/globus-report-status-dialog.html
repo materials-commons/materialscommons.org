@@ -1,0 +1,13 @@
+<md-dialog flex="60">
+    <md-toolbar ng-if="! $ctrl.requestComplete" layout="row">
+        <div layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>Upload Globus endpoint to top level directory of: <b>{{$ctrl.project.name}}</b>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        The list of status reports goes here!
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Dismiss</md-button>
+    </md-dialog-actions>
+</md-dialog>

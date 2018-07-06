@@ -105,6 +105,19 @@ class MCProjectSidenavComponentController {
         ).then(((results) =>  console.log("done", results)));
     }
 
+    reportGlobusTasks() {
+        console.log("Reached reportGlobusTasks");
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/globus-report-status-dialog.html',
+            controller: GlobusReportStatusDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                project: this.project,
+            }}
+        ).then(((results) =>  console.log("done", results)));
+    }
+
     modifyShortcuts() {
         this.loadProjectFiles().then(
             () => {
@@ -170,7 +183,7 @@ class GlobusUploadTransferDialogController {
     constructor($mdDialog, etlServerAPI) {
         this.$mdDialog = $mdDialog;
         this.etlServerAPI = etlServerAPI;
-        this.endpoint = '6a0b54a6-5302-11e8-9060-0a6d4e044368';
+        this.endpoint = '';
     }
 
     submitToServer() {
@@ -179,6 +192,27 @@ class GlobusUploadTransferDialogController {
             setupGlobusUploadTransfer(this.project.id, this.endpoint).
             then(globusResults => {
                 console.log("Results returned from server: ", globusResults);
+        });
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class GlobusReportStatusDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, etlServerAPI) {
+        this.$mdDialog = $mdDialog;
+        this.etlServerAPI = etlServerAPI;
+        this.statusReportList = [];
+    }
+
+    $onInit() {
+        console.log("GlobusReportStatusDialogController - Fetching status");
+        this.etlServer.getRecentGlobusStatus(this.project_id).
+        then(results => {
+           console.log(results);
         });
     }
 
