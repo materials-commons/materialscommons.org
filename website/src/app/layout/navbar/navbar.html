@@ -54,6 +54,7 @@
                 <md-button ng-click="$ctrl.loginOrRegister()">
                     Login/Register
                 </md-button>
+                <md-menu-content style="min-height: 350px" />  <!-- empty content suppresses error message in log-->
             </md-menu>
             <md-menu ng-if="$ctrl.isAuthenticated">
                 <md-button ng-click="$mdOpenMenu($event)">
