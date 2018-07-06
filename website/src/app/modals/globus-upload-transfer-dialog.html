@@ -1,0 +1,17 @@
+<md-dialog flex="60">
+    <md-toolbar ng-if="! $ctrl.requestComplete" layout="row">
+        <div layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>Upload Globus endpoint to top level directory of: <b>{{$ctrl.project.name}}</b>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <md-input-container class="md-block" style="margin-top:40px">
+            <label>Globus endpoint id</label>
+            <input ng-model="$ctrl.endpoint" on-enter="$ctrl.submitToServer()">
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.submitToServer()">Submit Request</md-button>
+    </md-dialog-actions>
+</md-dialog>

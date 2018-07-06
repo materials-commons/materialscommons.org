@@ -83,7 +83,20 @@ class MCProjectSidenavComponentController {
         console.log("Reached setGlobusDownloadTransfer");
         this.$mdDialog.show({
             templateUrl: 'app/modals/globus-download-transfer-dialog.html',
-            controller: GlobusDownloadTrasferDialogController,
+            controller: GlobusDownloadTransferDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {
+                project: this.project,
+            }}
+        ).then(((results) =>  console.log("done", results)));
+    }
+
+    setGlobusUploadTransfer() {
+        console.log("Reached setGlobusUploadTransfer");
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/globus-upload-transfer-dialog.html',
+            controller: GlobusUploadTransferDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
@@ -124,7 +137,7 @@ class MCProjectSidenavComponentController {
     }
 }
 
-class GlobusDownloadTrasferDialogController {
+class GlobusDownloadTransferDialogController {
     /*@ngInject*/
     constructor($mdDialog, etlServerAPI) {
         this.$mdDialog = $mdDialog;
@@ -144,6 +157,28 @@ class GlobusDownloadTrasferDialogController {
                     this.url = globusResults.url;
                     this.requestComplete = true;
                 }
+        });
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class GlobusUploadTransferDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, etlServerAPI) {
+        this.$mdDialog = $mdDialog;
+        this.etlServerAPI = etlServerAPI;
+        this.endpoint = '6a0b54a6-5302-11e8-9060-0a6d4e044368';
+    }
+
+    submitToServer() {
+        console.log("Submitting request to server: ", this.project.id, this.endpoint);
+        this.etlServerAPI.
+            setupGlobusUploadTransfer(this.project.id, this.endpoint).
+            then(globusResults => {
+                console.log("Results returned from server: ", globusResults);
         });
     }
 

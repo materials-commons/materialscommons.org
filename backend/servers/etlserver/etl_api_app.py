@@ -9,6 +9,7 @@ from .globus_etl.BuildProjectExperiment import BuildProjectExperiment
 from .database.DatabaseInterface import DatabaseInterface
 from .database.DB import DbConnection
 from .download.GlobusDownload import GlobusDownload
+from .globus_non_etl_upload.GlobusUpload import GlobusUpload
 from .user import access
 from .user.api_key import apikey
 from .utils.UploadUtility import UploadUtility
@@ -195,20 +196,20 @@ def globus_etl_download():
     return message, status.HTTP_501_NOT_IMPLEMENTED
 
 
-@app.route('/globus/transfer', methods=['POST'])
+@app.route('/globus/transfer/download', methods=['POST'])
 @apikey
-def globus_transfer():
+def globus_transfer_download():
     log.info("Project top-level directory staged for transfer with Globus - starting")
     j = request.get_json(force=True)
     project_id = j["project_id"]
     globus_user_id = j["globus_user"]
     log.info("Project id = {}; Globus user name = {}".format(project_id, globus_user_id))
     if not globus_user_id:
-        message = "Project top-level directory transfer with Globus - globus_user_id is missing, required"
+        message = "Project top-level directory download with Globus - globus_user_id is missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
     if not project_id:
-        message = "Project top-level directory transfer with Globus - project_id missing, required"
+        message = "Project top-level directory download with Globus - project_id missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
     try:
@@ -223,11 +224,32 @@ def globus_transfer():
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
 
-@app.route('/globus/upload', methods=['POST', 'GET'])
+
+@app.route('/globus/transfer/upload', methods=['POST'])
 @apikey
-def globus_upload():
-    log.info("Project upload with Globus - starting")
-    ret_value = {'ok': 'ok'}
-    ret = format_as_json_return(ret_value)
-    message = "Globus upload is not implemented; try Globus ETL-upload instead"
-    return message, status.HTTP_501_NOT_IMPLEMENTED
+def globus_transfer_upload():
+    log.info("Project upload shared endpoint to top-level directory with Globus - starting")
+    j = request.get_json(force=True)
+    project_id = j["project_id"]
+    globus_endpoint_id = j["endpoint"]
+    user_id = access.get_user()
+    log.info("Project id = {}; Globus user name = {}".format(project_id, globus_endpoint_id))
+    if not globus_endpoint_id:
+        message = "Project upload with Globus - globus_endpoint_id is missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    if not project_id:
+        message = "Project upload with Globus - project_id missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    try:
+        upload = GlobusUpload(user_id, project_id, globus_endpoint_id)
+        results = upload.setup_and_verify()
+        log.info("Project id = {}; Globus user name = {}".format(project_id, results))
+        ret = format_as_json_return(results)
+        return ret
+    except Exception as e:
+        message = "Download transfer with Globus - unexpected exception"
+        log.exception(e)
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
