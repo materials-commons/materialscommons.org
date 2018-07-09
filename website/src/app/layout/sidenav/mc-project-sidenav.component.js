@@ -211,10 +211,10 @@ class GlobusReportStatusDialogController {
         this.etlServerAPI.getRecentGlobusStatus(this.project.id).
         then(results => {
             this.statusReportList = results.status_list;
-            for (var i = 0; i < this.statusReportList.length; i++) {
-                var d = new Date(0);
+            for (let i = 0; i < this.statusReportList.length; i++) {
+                let d = new Date(0);
                 d.setUTCSeconds(this.statusReportList[i].timestamp);
-                var iso = d.toISOString().match(/(\d{4}\-\d{2}\-\d{2})T(\d{2}:\d{2}:\d{2})/);
+                let iso = d.toISOString().match(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})/);
                 this.statusReportList[i].timestamp = iso[1] + ' ' + iso[2];
             }
             console.log(this.statusReportList);
