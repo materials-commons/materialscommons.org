@@ -6,8 +6,9 @@ from random import randint
 
 from materials_commons.api import create_project
 
-from .non_etl_task_library import startup_and_verify
-
+from ..globus_non_etl_upload.non_etl_task_library import startup_and_verify
+from ..database.BackgroundProcess import BackgroundProcess
+from ..database.DatabaseInterface import DatabaseInterface
 
 class TestProject:
     def __init__(self):
@@ -33,6 +34,24 @@ def main(project, endpoint):
     results = startup_and_verify(project.owner, project.id, endpoint)
 
     main_log.info("Startup and verify results = {}".format(results))
+
+    if not results['status'] == "SUCCESS":
+        main_log.error("Setup failed.")
+        return
+
+    tracking_id = results['status_record_id']
+    status = BackgroundProcess.INITIALIZATION
+    while (not status == BackgroundProcess.SUCCESS) and (not status == BackgroundProcess.FAIL):
+        status_record = DatabaseInterface().get_status_record(tracking_id)
+        status = status_record['status']
+        queue = status_record['queue']
+        main_log.info("Status = {}; Queue = {}".format(status, queue))
+        time.sleep(2)
+
+    if status == "Success":
+        main_log.info("Completed transfer to project '{}'".format(project.name))
+    else:
+        main_log.info("Failed in transfer to project '{}'".format(project.name))
 
 
 if __name__ == "__main__":
@@ -75,34 +94,3 @@ if __name__ == "__main__":
                      format(project.name, project.id))
 
     main(project, args.endpoint)
-
-    # --
-    # Code to run in-line upload
-    # try:
-    #     main_log.info("Starting upload")
-    #     upload = Upload(project.owner, project.id, endpoint)
-    #     upload.setup_and_verify()
-    #     transfer_id = str(int(time.time() * 1000))
-    #     upload.start_transfer(transfer_id)
-    #     while upload.is_transfer_running():
-    #         time.sleep(5)
-    #         main_log.info("In-line monitoring of upload: {}".format(upload.get_last_transfer_status()))
-    #     main_log.info("Final status = {}".format(upload.get_last_transfer_status()))
-    #     if not upload.get_last_transfer_status() == 'SUCCEEDED':
-    #         raise TransferFailed("End of transfer status = {}".format(upload.get_last_transfer_status()))
-    #     main_log.info("Moving data to project: {}".format(project.name))
-    #     upload.move_data_dir_to_project()
-    #     main_log.info("Done.")
-    #     main_log.info("Done.")
-    # except GlobusAPIError as error:
-    #     http_status = error.http_status
-    #     code = error.code
-    #     details = error.message
-    #     message = "Unable to connect to the Globus Connection server (based on configuration information): "
-    #     message += " http_status = " + str(http_status)
-    #     message += ", code = " + code
-    #     message += ", message = " + details
-    #     main_log.error(message)
-    #     main_log.exception(error)
-    # except ProbeException as upload_error:
-    #     main_log.exception(upload_error)
