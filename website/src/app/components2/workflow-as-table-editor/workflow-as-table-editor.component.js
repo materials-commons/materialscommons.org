@@ -31,8 +31,17 @@ class MCWorkflowAsTableEditorComponentController {
                 });
                 //s.processes = this.fillRandomProcesses(this.state.headers.length);
             });
-            this.state.processes = this.processMerger.mergeProcessesForSamples2(this.state.samples);
+            // this.state.processes = this.processMerger.mergeProcessesForSamples3(this.state.samples);
+            // console.log('this.state.processes', this.state.processes);
+            // this.state.headers = this.state.processes.map(p => p.name);
+            // console.log('this.state.headers', this.state.headers);
+        }
+
+        if (changes.processes) {
+            this.state.processes = this.processMerger.mergeProcessesForSamples3(changes.processes.currentValue);
+            console.log('this.state.processes', this.state.processes);
             this.state.headers = this.state.processes.map(p => p.name);
+            console.log('this.state.headers', this.state.headers);
         }
     }
 
@@ -131,6 +140,7 @@ angular.module('materialscommons').component('mcWorkflowAsTableEditor', {
     controller: MCWorkflowAsTableEditorComponentController,
     bindings: {
         samples: '<',
+        processes: '<',
     }
 });
 

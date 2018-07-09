@@ -1,7 +1,7 @@
 class ProcessMergerService {
     /*@ngInject*/
-    constructor() {
-
+    constructor(processTree) {
+        this.processTree = processTree;
     }
 
     mergeProcessesForSamples(samples) {
@@ -28,7 +28,7 @@ class ProcessMergerService {
         let accumulator = [];
 
         let currentIndex = 0;
-        let current = "";
+        let current = '';
         let startNew = false;
         for (; ;) {
             if (this._allEmpty(lists)) {
@@ -41,7 +41,7 @@ class ProcessMergerService {
                 }
 
                 if (lists[currentIndex].length) {
-                    if (current === "") {
+                    if (current === '') {
                         current = lists[currentIndex][0];
                         accumulator.push(current);
                         lists[currentIndex].splice(0, 1);
@@ -60,7 +60,7 @@ class ProcessMergerService {
             }
 
             if (!matchFound) {
-                current = "";
+                current = '';
                 startNew = false;
             } else {
                 startNew = true;
@@ -129,6 +129,60 @@ class ProcessMergerService {
 
         return accumulator;
     }
+
+    mergeProcessesForSamples3(processes) {
+        // let processes = {};
+        // samples.forEach(s => {
+        //     s.processes.filter(p => p.process_type !== 'create').forEach(p => processes[p.id] = p);
+        // });
+        //
+        // let toMerge = _.keys(processes).map(key => processes[key]);
+        return this._merger3(processes);
+    }
+
+    _merger3(processesToMerge) {
+        console.log('_merge3 ', processesToMerge);
+        let t = this.processTree.build(processesToMerge, []);
+        let workflows = this.buildWorkflowTypes(t);
+        let processes = [];
+        _.forEach(workflows, tree => tree.walk(node => processes.push(node.model.model)));
+        return processes.filter(p => p.process_type !== 'create');
+    }
+
+    buildWorkflowTypes(t) {
+        let roots = [];
+        t.rootNode.children.forEach(child => {
+            let tm = new TreeModel();
+            let root = tm.parse(child);
+            roots.push(root);
+        });
+
+        let workflows = {};
+        roots.forEach(tree => {
+            //console.log('=======tree=============')
+            let s = '';
+            tree.walk(node => {
+                //console.log(node.model.model.template_id);
+                s += node.model.model.template_id;
+            });
+            const hash = this.hashCode(s);
+            //console.log('hash', hash);
+            workflows[hash] = tree;
+        });
+
+        //console.log('roots length', roots.length);
+        //console.log('workflows length', _.size(workflows));
+
+        return workflows;
+    }
+
+    hashCode(s) {
+        return s.split('').reduce(function(a, b) {
+            a = ((a << 5) - a) + b.charCodeAt(0);
+            return a & a;
+        }, 0);
+    }
+
 }
 
 angular.module('materialscommons').service('processMerger', ProcessMergerService);
