@@ -31,10 +31,6 @@ def startup_and_verify(user_id, project_id, globus_endpoint):
     status_record_id = None
     # noinspection PyBroadException
     try:
-        upload_base = os.environ.get('MC_ETL_BASE_DIR')
-        if not upload_base:
-            message = "The environment variable MC_ETL_BASE_DIR must be set and is not"
-            return {"status": "FAIL", message: message}
         setup = NonEtlSetup(user_id)
         status_record_id = \
             setup.setup_status_record(project_id, globus_endpoint)
@@ -102,10 +98,7 @@ def non_etl_file_processing(status_record_id):
     try:
         log = logging.getLogger(__name__ + ".etl_excel_processing")
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
-        upload_base = os.environ.get('MC_ETL_BASE_DIR')
-        if not upload_base:
-            message = "The environment variable MC_ETL_BASE_DIR must be set and is not"
-            return {"status": "FAIL", message: message}
+        upload_base = MaterialsCommonsGlobusInterface.get_base_path()
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         user_id = status_record['owner']
         _set_global_python_api_remote_for_user(user_id)

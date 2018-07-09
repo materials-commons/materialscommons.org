@@ -22,3 +22,7 @@ class TransferFailed(ProbeException):
     def __init__(self, attr):
         self.attr = str(attr)
 
+
+class GlobusSetupException(ProbeException):
+    def __init__(self, attr):
+        self.attr = str(attr)
