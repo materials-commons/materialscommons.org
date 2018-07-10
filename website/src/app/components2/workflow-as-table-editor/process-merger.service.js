@@ -188,7 +188,7 @@ class ProcessMergerService {
     }
 
     addMissingSamples(fromTree, toTree) {
-        console.log('addMissingSamples');
+        console.log('addMissingSamples', fromTree, toTree);
         fromTree.walk(node => {
             let id = node.model.model.node_id;
             let addTo = toTree.first(n => id === n.model.model.node_id);
@@ -222,35 +222,33 @@ class ProcessMergerService {
         }
     }
 
-// Check if n1 and n2 have the same id
-    idEq(n1) {
-        return function(n2) {
-            return n1.model.id === n2.model.id;
-        };
-    }
+
 
 // Check if n1 contains the given n2 child
     hasChild(n1) {
         return function(n2Child) {
-            return n1.children.some(idEq(n2Child));
+            return n1.children.some(this.idEq(n2Child));
         };
     }
 
     mergeNodes(n1, n2) {
         var n1HasN2Child, i, n2Child, n1Child;
+        let id = n1.model.model.node_id;
 
         // Update the sizes
-        this.updateSize(n1, n2);
+        this.addMissingSamples(n2, n1);
 
         // Check which n2 children are present in n1
-        n1HasN2Child = n2.children.map(this.hasChild(n1));
+        n1HasN2Child = n2.children.map(node => node.children.some(n => id === n.model.model.node_id));
+        //this.hasChild(n1));
 
         // Iterate over n2 children
         for (i = 0; i < n1HasN2Child.length; i++) {
             n2Child = n2.children[i];
             if (n1HasN2Child[i]) {
                 // n1 already has this n2 child, so lets merge them
-                n1Child = n1.first({strategy: 'breadth'}, this.idEq(n2Child));
+
+                n1Child = n1.first({strategy: 'breadth'}, n => id === n.model.model.node_id);
                 this.mergeNodes(n1Child, n2Child);
             } else {
                 // n1 does not have this n2 child, so add it
