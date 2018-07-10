@@ -10,6 +10,7 @@ CONFIDENTIAL_CLIENT_APP_AUTH = "cc"
 # USE_IMPLEMENTATION = NATIVE_APP_AUTH
 USE_IMPLEMENTATION = CONFIDENTIAL_CLIENT_APP_AUTH
 
+
 class GlobusAccess:
     def __init__(self):
         self.impl = None
@@ -18,12 +19,18 @@ class GlobusAccess:
         if USE_IMPLEMENTATION == CONFIDENTIAL_CLIENT_APP_AUTH:
             self.impl = ConfidentialClientImpl()
 
-    def get_impl_type(self):
+    @staticmethod
+    def get_impl_type():
         return USE_IMPLEMENTATION
 
     def get_globus_user(self, user_name):
         if self.impl:
             return self.impl.get_globus_user(user_name)
+        return None
+
+    def get_globus_user_by_id(self, user_id):
+        if self.impl:
+            return self.impl.get_globus_user_by_id(user_id)
         return None
 
     def get_endpoint(self, ep_id):

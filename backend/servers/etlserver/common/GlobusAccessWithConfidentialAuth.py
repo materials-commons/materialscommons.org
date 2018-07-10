@@ -59,6 +59,13 @@ class GlobusAccessWithConfidentialAuth:
             globus_user = ret['identities'][0]
         return globus_user
 
+    def get_globus_user_by_id(self, user_id):
+        ret = self._auth_client.get_identities(ids=[user_id])
+        globus_user = None
+        if ret and ret['identities'] and len(ret['identities']) > 0:
+            globus_user = ret['identities'][0]
+        return globus_user
+
     def get_endpoint(self, endpoint_id):
         return self._transfer_client.get_endpoint(endpoint_id)
 

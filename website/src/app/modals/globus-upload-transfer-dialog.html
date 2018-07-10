@@ -6,9 +6,20 @@
     </md-toolbar>
     <md-dialog-content layout-margin>
         <md-input-container class="md-block" style="margin-top:40px">
-            <label>Globus endpoint id</label>
+            <label>Globus Shared endpoint id</label>
             <input ng-model="$ctrl.endpoint" on-enter="$ctrl.submitToServer()">
         </md-input-container>
+        <p>
+        <em>Make sure that your shared endpoint contains all and only the files that you want upload,
+        with the directory structure that you desire. Also, make sure that the files are permitted, read only,
+            to the Materials Commons upload account:
+            <ul>
+                <li>common name = <b>{{$ctrl.uploadName}}</b></li>
+                <li>unique-name = <b>{{$ctrl.uploadUniquename}}</b></li>
+                <li>id = <b>{{$ctrl.uploadId}}</b></li>
+            </ul>
+        </em>
+        </p>
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>

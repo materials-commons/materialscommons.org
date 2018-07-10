@@ -13,6 +13,7 @@ from .globus_non_etl_upload.GlobusUpload import GlobusUpload
 from .user import access
 from .user.api_key import apikey
 from .utils.UploadUtility import UploadUtility
+from .common.GlobusInfo import GlobusInfo
 
 log = logging.getLogger(__name__)
 
@@ -159,6 +160,7 @@ def upload_file():
         return message_or_ret, http_status
     file_path = message_or_ret
     log.info("etl file upload - file saved to " + file_path)
+    # noinspection PyBroadException
     try:
         builder = BuildProjectExperiment()
         builder.set_rename_is_ok(True)
@@ -172,28 +174,6 @@ def upload_file():
         log.info("Unexpected exception...", exc_info=True)
         message = str(e)
         return message, status.HTTP_500_INTERNAL_SERVER_ERROR
-
-
-@app.route('/globus/etl/download', methods=['POST'])
-@apikey
-def globus_etl_download():
-    log.info("etl download with Globus - starting")
-    j = request.get_json(force=True)
-    project_id = j["project_id"]
-    globus_user_id = j["globus_user"]
-    if not globus_user_id:
-        message = "etl download with Globus - globus_user_id is missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    if not project_id:
-        message = "etl file upload - project_id missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    log.debug("/globus/etl/download' - args - project_id = {}".format(project_id))
-    log.debug("/globus/etl/download' - args - globus_user_id = {}".format(globus_user_id))
-    log.info("prepare etl download for project with project_id = {}".format(project_id))
-    message = "Globus ETL download is not implemented; try Globus Download instead"
-    return message, status.HTTP_501_NOT_IMPLEMENTED
 
 
 @app.route('/globus/transfer/download', methods=['POST'])
@@ -212,16 +192,16 @@ def globus_transfer_download():
         message = "Project top-level directory download with Globus - project_id missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
+    # noinspection PyBroadException
     try:
         download = GlobusDownload(project_id, globus_user_id)
         url = download.download()
         ret_value = {'url': url}
         ret = format_as_json_return(ret_value)
         return ret
-    except Exception as e:
+    except Exception:
         message = "Download transfer with Globus - unexpected exception"
-        log.exception(e)
-        log.error(message)
+        log.exception(message)
         return message, status.HTTP_400_BAD_REQUEST
 
 
@@ -242,16 +222,16 @@ def globus_transfer_upload():
         message = "Project upload with Globus - project_id missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
+    # noinspection PyBroadException
     try:
         upload = GlobusUpload(user_id, project_id, globus_endpoint_id)
         results = upload.setup_and_verify()
         log.info("Project id = {}; Globus user name = {}".format(project_id, results))
         ret = format_as_json_return(results)
         return ret
-    except Exception as e:
+    except Exception:
         message = "Download transfer with Globus - unexpected exception"
-        log.exception(e)
-        log.error(message)
+        log.exception(message)
         return message, status.HTTP_400_BAD_REQUEST
 
 
@@ -267,6 +247,7 @@ def globus_transfer_status():
         message = "Project upload with Globus - project_id missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
+    # noinspection PyBroadException
     try:
         status_list = DatabaseInterface().get_status_by_project_id(project_id, limit=10)
         return_list = []
@@ -282,6 +263,26 @@ def globus_transfer_status():
         ret_value = {'status_list': return_list}
         ret = format_as_json_return(ret_value)
         log.info("get_background_status_for_project: ret = {}".format(ret))
+        return ret
     except Exception:
-        log.info("Unexpected exception...", exc_info=True)
-    return ret
+        message = "Status of previous transfers with Globus - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST
+
+
+@app.route('/globus/transfer/info', methods=['GET'])
+@apikey
+def globus_transfer_info():
+    log.info("Globus background task list - starting")
+    # noinspection PyBroadException
+    try:
+        source = GlobusInfo()
+        returned_info = source.get_all()
+        for key in returned_info:
+            log.info("Details from info: {} = {}".format(key, returned_info[key]))
+        ret = format_as_json_return(returned_info)
+        return ret
+    except Exception:
+        message = "Info for transfers with Globus - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST

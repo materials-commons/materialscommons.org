@@ -184,6 +184,15 @@ class GlobusUploadTransferDialogController {
         this.$mdDialog = $mdDialog;
         this.etlServerAPI = etlServerAPI;
         this.endpoint = '';
+        this.uploadName = "undefined";
+        this.uploadUniquename = "undefined";
+        this.uploadId = "undefined";
+        this.etlServerAPI.getSystemGlobusInformation().then(infoResults => {
+            console.log("Info results returned from server: ", infoResults);
+            this.uploadName = infoResults.upload_user_name;
+            this.uploadUniquename = infoResults.upload_user_unique_name;
+            this.uploadId = infoResults.upload_user_id;
+        });
     }
 
     submitToServer() {
@@ -192,8 +201,8 @@ class GlobusUploadTransferDialogController {
             setupGlobusUploadTransfer(this.project.id, this.endpoint).
             then(globusResults => {
                 console.log("Results returned from server: ", globusResults);
+
         });
-        this.$mdDialog.hide();
     }
 
     cancel() {
