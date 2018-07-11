@@ -3,6 +3,7 @@ const schema = require('../../../schema');
 const propertyValidator = require('../../../schema/property-validator');
 
 function* validateSample(projectId, sample) {
+    schema.prepare(schema.templateCommand, sample);
     let errors = yield schema.validate(schema.templateCommand, sample);
     if (errors !== null) {
         return errors;
