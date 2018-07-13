@@ -48,3 +48,8 @@ class DatabaseInterface:
           .get_all(project_id, index='project_id')\
           .order_by(self.r.desc('birthtime'))\
           .limit(1).run(self.conn)
+
+    def get_users_apikey(self, user_id):
+        return self.r.table('users')\
+            .get(user_id)\
+            .pluck('apikey')
