@@ -187,6 +187,7 @@ class GlobusUploadTransferDialogController {
         this.uploadName = "undefined";
         this.uploadUniquename = "undefined";
         this.uploadId = "undefined";
+        this.status = '';
         this.etlServerAPI.getSystemGlobusInformation().then(infoResults => {
             console.log("Info results returned from server: ", infoResults);
             this.uploadName = infoResults.upload_user_name;
@@ -201,7 +202,7 @@ class GlobusUploadTransferDialogController {
             setupGlobusUploadTransfer(this.project.id, this.endpoint).
             then(globusResults => {
                 console.log("Results returned from server: ", globusResults);
-
+                this.status = 'xx';
         });
     }
 
