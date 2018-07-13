@@ -3,12 +3,12 @@ import time
 import logging
 import argparse
 
-from ..BackgroundProcess import BackgroundProcess
-from ..DatabaseInterface import DatabaseInterface
+from ..database.BackgroundProcess import BackgroundProcess
+from ..database.DatabaseInterface import DatabaseInterface
 
 
 def main(project_id, excel_file_path):
-    from ..globus_etl.task_library import startup_and_verify
+    from ..globus_etl.etl_task_library import startup_and_verify
     log = logging.getLogger("top_level_run_ELT_example")
 
     user_id = "test@test.mc"
