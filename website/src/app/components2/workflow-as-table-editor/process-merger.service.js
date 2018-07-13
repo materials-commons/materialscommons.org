@@ -188,9 +188,9 @@ class ProcessMergerService {
     }
 
     addMissingSamples(fromTree, toTree) {
-        console.log('addMissingSamples', fromTree, toTree);
+        // console.log('addMissingSamples', fromTree, toTree);
         fromTree.walk(node => {
-            console.log('addMissingSamples node', node);
+            // console.log('addMissingSamples node', node);
             let id = node.model.model.node_id;
             let addTo = toTree.first(n => id === n.model.model.node_id);
             if (addTo) {
@@ -209,7 +209,7 @@ class ProcessMergerService {
                     }
                 });
                 samplesToAdd.forEach(s => addTo.model.model.output_samples.push(s));
-                console.log('addTo', addTo);
+                // console.log('addTo', addTo);
             }
         });
     }
@@ -225,9 +225,16 @@ class ProcessMergerService {
             roots.push(root);
         });
         roots.forEach(tree => {
-            let s = '';
+
             tree.walk(node => {
-                s += node.model.model.template_id;
+                let nodePath = node.getPath();
+                console.log('node path:', nodePath);
+                let s = '';
+                nodePath.forEach(node => {
+                    // Need a count or something for duplicates so that they aren't ignored
+                    s += node.model.model.template_id;
+                });
+                console.log('s = ', s);
                 node.model.model.node_id = s.slice(0);
             });
         });
@@ -236,16 +243,17 @@ class ProcessMergerService {
             this.mergeNodes(firstTree, roots[i]);
         }
 
-        console.log('firstTree', firstTree);
+        //console.log('firstTree', firstTree);
 
         let orderedProcesses = [];
         firstTree.walk(node => orderedProcesses.push(node.model.model));
         let p = orderedProcesses.filter(p => p.process_type !== 'create');
-        console.log('p = ', p);
+        //console.log('p = ', p);
         return p;
     }
 
     mergeNodes(n1, n2) {
+        console.log('mergeNodes', n1, n2);
         let n1HasN2Child, i, n2Child, n1Child;
         let id = n1.model.model.node_id;
 
@@ -253,7 +261,11 @@ class ProcessMergerService {
         this.addMissingSamples(n2, n1);
 
         // Check which n2 children are present in n1
-        n1HasN2Child = n2.children.map(node => node.children.some(n => id === n.model.model.node_id));
+        n1HasN2Child = n2.children.map(node => {
+            return n1.children.some(n1node => n1node.model.model.node_id === node.model.model.node_id);
+            // console.log(`check if ${id} === ${node.model.model.node_id}`);
+            // return id === node.model.model.node_id;
+        });
         //this.hasChild(n1));
 
         // Iterate over n2 children
@@ -272,6 +284,14 @@ class ProcessMergerService {
         }
     }
 
+    // n1HasN2Child = n2.children.map(hasChild(n1));
+    /*
+    function hasChild(n1) {
+    return function (n2Child) {
+        return n1.children.some(idEq(n2Child));
+    };
+}
+     */
 }
 
 angular.module('materialscommons').service('processMerger', ProcessMergerService);

@@ -40,9 +40,9 @@ class MCWorkflowAsTableEditorComponentController {
         if (changes.processes) {
             // this.state.processes = this.processMerger.mergeProcessesForSamples3(changes.processes.currentValue);
             this.state.processes = this.processMerger.mergeProcesses(changes.processes.currentValue);
-            console.log('this.state.processes', this.state.processes);
+            //console.log('this.state.processes', this.state.processes);
             this.state.headers = this.state.processes.map(p => p.template_name);
-            console.log('this.state.headers', this.state.headers);
+            //console.log('this.state.headers', this.state.headers);
         }
     }
 
