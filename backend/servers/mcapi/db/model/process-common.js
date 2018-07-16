@@ -22,7 +22,7 @@ function mergeTemplateIntoProcess(template, process) {
     for (pindex = 0; pindex < process.setup.length; pindex++) {
         setup = process.setup[pindex];
         if (setup.attribute === 'instrument') {
-            setup.properties.forEach(function (property) {
+            setup.properties.forEach(function(property) {
                 let i = _.findIndex(template.setup[0].properties, (tprop) => tprop.attribute === property.attribute);
                 if (i > -1) {
                     template.setup[0].properties[i].value = property.value;
@@ -48,7 +48,7 @@ function mergeTemplateIntoProcess(template, process) {
                     }
                 }
             });
-            process.setup[pindex] = template.setup[0]
+            process.setup[pindex] = template.setup[0];
         }
     }
     if (!process.measurements.length && template.measurements.length) {
@@ -96,7 +96,22 @@ function* processIsUnused(processId) {
 }
 
 function* updateProcessFiles(processId, files) {
-    let filesToAddToProcess = files.filter(f => f.command === 'add').map(f => new model.Process2File(processId, f.id, ''));
+    let filesToAddToProcess = files.filter(f => f.command === 'add').map(f => {
+        let direction = '';
+        if (f.direction) {
+            switch (f.direction) {
+                case 'in':
+                    direction = 'in';
+                    break;
+                case 'out':
+                    direction = 'out';
+                    break;
+                default:
+                    break;
+            }
+        }
+        return new model.Process2File(processId, f.id, direction);
+    });
     filesToAddToProcess = yield removeExistingProcessFileEntries(processId, filesToAddToProcess);
     if (filesToAddToProcess.length) {
         yield r.table('process2file').insert(filesToAddToProcess);
@@ -161,21 +176,32 @@ function* updateProcessSamples(process, samples) {
         .map(s => new model.Process2Sample(processId, s.id, s.property_set_id, 'in'));
     samplesToAddToProcess = yield removeExistingProcessSampleEntries(processId, samplesToAddToProcess);
     if (samplesToAddToProcess.length) {
+        let alreadyHasSamples = yield processContainsSamples(process, samplesToAddToProcess);
+        if (alreadyHasSamples) {
+            return `Some samples already in process`;
+        }
         yield r.table('process2sample').insert(samplesToAddToProcess);
     }
 
     if (process.does_transform) {
+        // build list of samples that we want to transform
+        let transformSamplesHash = {};
+        samples.filter(s => s.command === 'add').forEach(s => {
+            transformSamplesHash[`${s.id}/${s.property_set_id}`] = s.transform;
+        });
         for (let i = 0; i < samplesToAddToProcess.length; i++) {
             let sampleEntry = samplesToAddToProcess[i];
-            let ps = new model.PropertySet(true, sampleEntry.property_set_id);
-            let added = yield db.insert('propertysets', ps);
-            yield r.table('sample2propertyset')
-                .getAll([sampleEntry.sample_id, sampleEntry.property_set_id], {index: 'sample_property_set'})
-                .update({current: false});
-            let s2ps = new model.Sample2PropertySet(sampleEntry.sample_id, added.id, true);
-            yield r.table('sample2propertyset').insert(s2ps);
-            let outp2s = new model.Process2Sample(processId, sampleEntry.sample_id, added.id, 'out');
-            yield r.table('process2sample').insert(outp2s);
+            if (transformSamplesHash[`${sampleEntry.sample_id}/${sampleEntry.property_set_id}`]) {
+                let ps = new model.PropertySet(true, sampleEntry.property_set_id);
+                let added = yield db.insert('propertysets', ps);
+                yield r.table('sample2propertyset')
+                    .getAll([sampleEntry.sample_id, sampleEntry.property_set_id], {index: 'sample_property_set'})
+                    .update({current: false});
+                let s2ps = new model.Sample2PropertySet(sampleEntry.sample_id, added.id, true);
+                yield r.table('sample2propertyset').insert(s2ps);
+                let outp2s = new model.Process2Sample(processId, sampleEntry.sample_id, added.id, 'out');
+                yield r.table('process2sample').insert(outp2s);
+            }
         }
     }
 
@@ -197,6 +223,11 @@ function* updateProcessSamples(process, samples) {
     return null;
 }
 
+function* processContainsSamples(process, samples) {
+    let processSids = samples.map(s => [process.id, s.sample_id]);
+    let matches = yield r.table('process2sample').getAll(r.args(processSids), {index: 'process_sample'});
+    return matches.length !== 0;
+}
 
 function* removeExistingProcessSampleEntries(processId, samples) {
     if (samples.length) {

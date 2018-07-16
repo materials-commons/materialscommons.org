@@ -11,12 +11,13 @@ class BackgroundProcess:
     SUCCESS = "Success"
 
     def __init__(self, owner, project_id, name, description=None):
+        if not description:
+            description = name + "; Status for project: " + project_id
         self.owner = owner
         self.otype = "background_process"
         self.project_id = project_id
-        if not description:
-            description = name + "; Status for project: " + project_id
         self.name = name
+        self.reported_to_user = False
         self.description = description
         self.birthtime = r.now()
         self.mtime = self.birthtime

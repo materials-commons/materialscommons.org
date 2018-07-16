@@ -4,13 +4,16 @@ import pkg_resources
 from flask import Flask, request
 from flask_api import status
 
-from .globus_etl.task_library import startup_and_verify
+from .globus_etl.etl_task_library import startup_and_verify
 from .globus_etl.BuildProjectExperiment import BuildProjectExperiment
 from .database.DatabaseInterface import DatabaseInterface
 from .database.DB import DbConnection
+from .download.GlobusDownload import GlobusDownload
+from .globus_non_etl_upload.GlobusUpload import GlobusUpload
 from .user import access
 from .user.api_key import apikey
 from .utils.UploadUtility import UploadUtility
+from .common.GlobusInfo import GlobusInfo
 
 log = logging.getLogger(__name__)
 
@@ -49,6 +52,7 @@ def get_version():
         "version": pkg_resources.get_distribution("materials_commons").version
     })
 
+
 @app.route('/globus/stage', methods=['POST'])
 @apikey
 def stage_background_excel_upload():
@@ -80,12 +84,6 @@ def monitor_background_excel_upload():
     log.debug("/globus/monitor - starting")
     j = request.get_json(force=True)
     log.debug("Results as json = {}".format(j))
-    status_record_id = None
-    status_record = {
-        "status": "Fail",
-        "reason": "Status record unavailable",
-        "status_record_id": None
-    }
     try:
         status_record_id = j['status_record_id']
         log.debug("status_record_id = {}".format(status_record_id))
@@ -98,22 +96,23 @@ def monitor_background_excel_upload():
             status_record = DatabaseInterface().get_status_record(status_record_id)
             del status_record['birthtime']
             del status_record['mtime']
-    except KeyError as ke:
+    except KeyError:
         status_record = {
             "status": "Fail",
             "reason": "Failed to get status_record_id from request",
             "status_record_id": None
         }
-    status_recored_json = format_as_json_return(status_record)
-    log.debug("return as json = {}".format(status_recored_json))
+    status_record_json = format_as_json_return(status_record)
+    log.debug("return as json = {}".format(status_record_json))
     log.debug("/globus/monitor - done")
-    return status_recored_json
+    return status_record_json
 
 
 @app.route('/project/status', methods=['POST'])
 @apikey
 def get_background_status_for_project():
     ret = "{}"
+    # noinspection PyBroadException
     try:
         log.info("get_background_status_for_project")
         j = request.get_json(force=True)
@@ -125,13 +124,13 @@ def get_background_status_for_project():
         status_record = None
         if status_list:
             status_record = {
-                'status' : status_list[0]['status'],
-                'id' : status_list[0]['id']
+                'status': status_list[0]['status'],
+                'id': status_list[0]['id']
             }
         ret_value = {'status': status_record}
         ret = format_as_json_return(ret_value)
         log.info("get_background_status_for_project: ret = {}".format(ret))
-    except Exception as e:
+    except Exception:
         log.info("Unexpected exception...", exc_info=True)
     return ret
 
@@ -139,7 +138,7 @@ def get_background_status_for_project():
 @app.route('/upload', methods=['POST'])
 @apikey
 def upload_file():
-    log.info("etl file upload - starting - new test")
+    log.info("etl file upload - starting")
     name = request.form.get('name')
     project_id = request.form.get("project_id")
     description = request.form.get("description")
@@ -161,6 +160,7 @@ def upload_file():
         return message_or_ret, http_status
     file_path = message_or_ret
     log.info("etl file upload - file saved to " + file_path)
+    # noinspection PyBroadException
     try:
         builder = BuildProjectExperiment()
         builder.set_rename_is_ok(True)
@@ -175,3 +175,114 @@ def upload_file():
         message = str(e)
         return message, status.HTTP_500_INTERNAL_SERVER_ERROR
 
+
+@app.route('/globus/transfer/download', methods=['POST'])
+@apikey
+def globus_transfer_download():
+    log.info("Project top-level directory staged for transfer with Globus - starting")
+    j = request.get_json(force=True)
+    project_id = j["project_id"]
+    globus_user_id = j["globus_user"]
+    log.info("Project id = {}; Globus user name = {}".format(project_id, globus_user_id))
+    if not globus_user_id:
+        message = "Project top-level directory download with Globus - globus_user_id is missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    if not project_id:
+        message = "Project top-level directory download with Globus - project_id missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    # noinspection PyBroadException
+    try:
+        download = GlobusDownload(project_id, globus_user_id)
+        url = download.download()
+        ret_value = {'url': url}
+        ret = format_as_json_return(ret_value)
+        return ret
+    except Exception:
+        message = "Download transfer with Globus - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST
+
+
+@app.route('/globus/transfer/upload', methods=['POST'])
+@apikey
+def globus_transfer_upload():
+    log.info("Project upload shared endpoint to top-level directory with Globus - starting")
+    j = request.get_json(force=True)
+    project_id = j["project_id"]
+    globus_endpoint_id = j["endpoint"]
+    user_id = access.get_user()
+    log.info("Project id = {}; Globus user name = {}".format(project_id, globus_endpoint_id))
+    if not globus_endpoint_id:
+        message = "Project upload with Globus - globus_endpoint_id is missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    if not project_id:
+        message = "Project upload with Globus - project_id missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    # noinspection PyBroadException
+    try:
+        upload = GlobusUpload(user_id, project_id, globus_endpoint_id)
+        results = upload.setup_and_verify()
+        log.info("Project id = {}; Globus user name = {}".format(project_id, results))
+        ret = format_as_json_return(results)
+        return ret
+    except Exception:
+        message = "Download transfer with Globus - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST
+
+
+@app.route('/globus/transfer/status', methods=['POST'])
+@apikey
+def globus_transfer_status():
+    log.info("Globus background task list - starting")
+    j = request.get_json(force=True)
+    project_id = j["project_id"]
+    log.info("Project id = {}".format(project_id))
+    ret = {"error": "No status returned"}
+    if not project_id:
+        message = "Project upload with Globus - project_id missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    # noinspection PyBroadException
+    try:
+        status_list = DatabaseInterface().get_status_by_project_id(project_id, limit=10)
+        return_list = []
+        for record in status_list:
+            return_list.append(
+                {
+                    'timestamp': int(record['birthtime'].timestamp()),
+                    'name': record['name'],
+                    'queue': record['queue'],
+                    'status': record['status']
+                }
+            )
+        ret_value = {'status_list': return_list}
+        ret = format_as_json_return(ret_value)
+        log.info("get_background_status_for_project: ret = {}".format(ret))
+        return ret
+    except Exception:
+        message = "Status of previous transfers with Globus - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST
+
+
+@app.route('/globus/transfer/info', methods=['GET'])
+@apikey
+def globus_transfer_info():
+    log.info("Globus background task list - starting")
+    # noinspection PyBroadException
+    try:
+        source = GlobusInfo()
+        returned_info = source.get_all()
+        for key in returned_info:
+            log.info("Details from info: {} = {}".format(key, returned_info[key]))
+        ret = format_as_json_return(returned_info)
+        return ret
+    except Exception:
+        message = "Info for transfers with Globus - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST

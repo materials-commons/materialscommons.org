@@ -96,7 +96,7 @@ function* createUnverifiedAccount(account) {
     }
     let rv = yield r.table('account_requests').insert(user, {returnChanges: true});
     if (rv.errors) {
-        return {error: "Validation was already sent: " + account.email};
+        return {error: 'User account already exists: ' + account.email};
     }
 
     return {val: rv.changes[0].new_val};

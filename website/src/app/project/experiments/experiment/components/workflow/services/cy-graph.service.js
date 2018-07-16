@@ -176,10 +176,10 @@ class CyGraphService {
                     // source process has not output samples
                     this._showAlert('No output samples to connect to process.');
                     return null;
-                } else if (targetProcess.template_name === 'Create Samples') {
-                    // Create samples cannot be a target
-                    this._showAlert('Create Samples process type cannot be a target.');
-                    return null;
+                    // } else if (targetProcess.template_name === 'Create Samples') {
+                    //     // Create samples cannot be a target
+                    //     this._showAlert('Create Samples process type cannot be a target.');
+                    //     return null;
                 } else if (CyGraphService._targetHasAllSourceSamples(targetProcess.input_samples, sourceProcess.output_samples)) {
                     // Target already has all the source samples
                     this._showAlert('Processes are already connected.');

@@ -12,7 +12,7 @@ from materials_commons.api import _set_remote as set_remote
 
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
-from .MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
+from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from .BuildProjectExperiment import BuildProjectExperiment
 from ..utils.mcexceptions import MaterialsCommonsException
 from .ETLSetup import ETLSetup
@@ -24,7 +24,7 @@ from ..user.apikeydb import _load_apikeys as init_api_keys
 def startup_and_verify(user_id, project_id, experiment_name, experiment_description,
                        globus_endpoint, excel_file_path, data_dir_path):
     log = logging.getLogger(__name__ + ".startup_and_verify")
-    log.debug("Starting startup_and_verify")
+    log.info("Starting startup_and_verify")
 
     status_record_id = None
     # noinspection PyBroadException
@@ -48,7 +48,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
         from ..faktory.TaskChain import TaskChain
         task_chain = TaskChain()
-        task_chain.start_chain(status_record_id)
+        task_chain.start_elt_chain(status_record_id)
         check['status_record_id'] = status_record_id
     except BaseException:
         message = "Unexpected failure; status_record_id = None"
@@ -63,7 +63,7 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
 def elt_globus_upload(status_record_id):
     # noinspection PyBroadException
     try:
-        from ..faktory.TaskChain import PROCESS_QUEUE
+        from ..faktory.TaskChain import EXCEL_PROCESS_QUEUE
         log = logging.getLogger(__name__ + ".elt_globus_upload")
         log.info("Starting elt_globus_upload with status_record_id{}".format(status_record_id))
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
@@ -74,7 +74,7 @@ def elt_globus_upload(status_record_id):
             log.error(results)
             return None
         log.debug(results)
-        DatabaseInterface().update_queue(status_record_id, PROCESS_QUEUE)
+        DatabaseInterface().update_queue(status_record_id, EXCEL_PROCESS_QUEUE)
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
         from ..faktory.TaskChain import TaskChain
         task_chain = TaskChain()
@@ -186,6 +186,23 @@ def build_experiment(project_id, experiment_name, experiment_description,
     except MaterialsCommonsException as e:
         log.debug("Starting Experiment Build Fail: {}, {}".format(project_id, experiment_name))
         return {"status": "FAILED", "error": e}
+
+
+def non_etl_globus_upload(status_record_id):
+    # noinspection PyBroadException
+    try:
+        log = logging.getLogger(__name__ + ".etl_excel_processing")
+        log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
+        status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
+        user_id = status_record['owner']
+        _set_global_python_api_remote_for_user(user_id)
+        log.info("apikey = '{}'".format(get_remote().config.mcapikey))
+        project_id = status_record['project_id']
+        log.info("Project id = {}".format(project_id))
+    except BaseException:
+        DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
+        message = "Unexpected failure; status_record_id = {}".format(status_record_id)
+        logging.exception(message)
 
 
 def _set_global_python_api_remote_for_user(user_id):

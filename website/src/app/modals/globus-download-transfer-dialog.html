@@ -1,0 +1,26 @@
+<md-dialog flex="60">
+    <md-toolbar ng-if="! $ctrl.requestComplete" layout="row">
+        <div layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>Set up Globus transfer of top level directory of: <b>{{$ctrl.project.name}}</b>
+        </div>
+    </md-toolbar>
+    <md-toolbar ng-if="$ctrl.requestComplete" layout="row">
+        <div layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>Click link to see Globus Transfer Window
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <md-input-container ng-if="! $ctrl.requestComplete" class="md-block" style="margin-top:40px">
+            <label>Globus user id</label>
+            <input ng-model="$ctrl.globusUser" on-enter="$ctrl.submitToServer()">
+        </md-input-container>
+        <a ng-if="$ctrl.requestComplete" href="{{$ctrl.url}}" target="_blank">{{$ctrl.url}}</a>
+    </md-dialog-content>
+    <md-dialog-actions ng-if="! $ctrl.requestComplete" layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.submitToServer()">Submit Request</md-button>
+    </md-dialog-actions>
+    <md-dialog-actions ng-if="$ctrl.requestComplete" layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.cancel()">Dismiss</md-button>
+    </md-dialog-actions>
+</md-dialog>

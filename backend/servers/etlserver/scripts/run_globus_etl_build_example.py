@@ -9,7 +9,7 @@ from ..database.DatabaseInterface import DatabaseInterface
 
 
 def main(project, globus_endpoint, excel_file_path, data_dir_path):
-    from ..globus_etl.task_library import startup_and_verify
+    from ..globus_etl.etl_task_library import startup_and_verify
     main_log = logging.getLogger("top_level_run_ELT_example")
 
     user_id = "test@test.mc"
