@@ -1,6 +1,8 @@
 import logging
 import sys
-from extras.test_scripts.mulltiuser_check.MultiuserStress import MultiuserStress
+import pkg_resources
+from tests.python_api_mulltiuser_check.MultiuserStress import MultiuserStress
+
 
 def main(number_of_users):
     main_log = logging.getLogger("top_level_run")
@@ -23,6 +25,8 @@ if __name__ == "__main__":
 
     startup_log = logging.getLogger("top_level_setup")
     startup_log.info("Starting...")
+    mc_version = pkg_resources.get_distribution("materials_commons").version
+    startup_log.info("Module version, materials_commons, is '{}'".format(mc_version))
     number_of_users = 100
     startup_log.info("setting number of users = {}".format(number_of_users))
     main(number_of_users)
