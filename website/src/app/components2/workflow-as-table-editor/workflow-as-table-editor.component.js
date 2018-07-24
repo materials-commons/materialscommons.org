@@ -12,7 +12,6 @@ class MCWorkflowAsTableEditorComponentController {
             grouped: false,
             editTable: false,
         };
-        //this.createDemoData();
     }
 
     $onInit() {
@@ -44,50 +43,6 @@ class MCWorkflowAsTableEditorComponentController {
             this.state.headers = this.state.processes.map(p => p.template_name);
             //console.log('this.state.headers', this.state.headers);
         }
-    }
-
-    createDemoData() {
-        this.state.headers = [
-            "Heat Treatment",
-            "SEM",
-            "Low Cycle Fatigue",
-            "EBSD",
-            "Tension",
-            "EBSD",
-            "TEM",
-            "Cogging",
-            "Tension",
-            "EBSD",
-            "TEM",
-            "TEM0",
-            "TEM1",
-            "TEM2",
-            "TEM3",
-            "TEM4",
-            "TEM5",
-        ];
-
-        // this.state.samples = [];
-        // for (let i = 0; i < 10; i++) {
-        //     this.state.samples.push({
-        //         selected: false,
-        //         name: "Sample " + i,
-        //         processes: this.fillRandomProcesses(this.state.headers.length)
-        //     })
-        // }
-    }
-
-    fillRandomProcesses(count) {
-        let processes = [];
-        for (let i = 0; i < count; i++) {
-            let rval = Math.floor(Math.random() * 2);
-            if (rval) {
-                processes.push({active: true, selected: true});
-            } else {
-                processes.push({active: false, selected: false});
-            }
-        }
-        return processes;
     }
 
     handleDeleteSampleClick(index) {
