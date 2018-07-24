@@ -15,6 +15,7 @@ class SimpleTest1:
         self.apikey2 = apikey2
 
     def run(self, with_error):
+        self.log.info("running: with_error flag = {}".format(with_error))
         # noinspection PyBroadException
         try:
             self.log.info("SimpleTest1")
@@ -31,7 +32,7 @@ class SimpleTest1:
             self.log.info("project, {}, owner = {}".format(project2.name, project2.owner))
             if with_error:
                 self._set_up_remote_for(self.apikey1)
-            experiment2 = self.make_experiment(project1)
+            experiment2 = self.make_experiment(project2)
             self.log.info("experiment, {}, owner = {}".format(experiment2.name, experiment2.owner))
 
         except BaseException:
@@ -71,4 +72,5 @@ if __name__ == "__main__":
     root.addHandler(ch)
 
     startup_log = logging.getLogger("top_level_setup")
-    test = SimpleTest1("test1-no-error","totally-bogus","another-bogus-")
+    test = SimpleTest1("test1-no-error","totally-bogus","another-bogus-account")
+    test.run(False)
