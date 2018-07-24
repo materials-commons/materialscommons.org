@@ -12,19 +12,19 @@ from globus_sdk import NativeAppAuthClient, TransferClient, \
     RefreshTokenAuthorizer, AuthClient
 
 # Config file set up
-home = str(Path.home())
-config_path = Path(Path.home(), '.globus', 'config_testing.ini')
-config = configparser.ConfigParser()
-config.read(str(config_path))
-
-# To set up a client_id, see https://auth.globus.org/v2/web/developers
-# Current client_id is in Project: MaterialsCommonsProject, App: MaterialsCommonsTest
-CLIENT_ID = config['sdk']['id']
-
-TOKEN_FILE_PATH = Path(Path.home(), '.globus', 'refresh-testing-tokens.json')
-REDIRECT_URI = 'https://auth.globus.org/v2/web/auth-code'
-SCOPES = ('openid email profile '
-          'urn:globus:auth:scope:transfer.api.globus.org:all')
+# home = str(Path.home())
+# config_path = Path(Path.home(), '.globus', 'config_testing.ini')
+# config = configparser.ConfigParser()
+# config.read(str(config_path))
+#
+# # To set up a client_id, see https://auth.globus.org/v2/web/developers
+# # Current client_id is in Project: MaterialsCommonsProject, App: MaterialsCommonsTest
+# CLIENT_ID = config['sdk']['id']
+#
+# TOKEN_FILE_PATH = Path(Path.home(), '.globus', 'refresh-testing-tokens.json')
+# REDIRECT_URI = 'https://auth.globus.org/v2/web/auth-code'
+# SCOPES = ('openid email profile '
+#           'urn:globus:auth:scope:transfer.api.globus.org:all')
 
 # uncomment the next line to enable debug logging for network requests
 # enable_requests_logging()

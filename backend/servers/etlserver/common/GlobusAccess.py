@@ -1,10 +1,10 @@
-from .GlobusAccessWithNativeAppAuth \
-    import GlobusAccessWithNativeAppAuth as NativeAppImpl
+# from .GlobusAccessWithNativeAppAuth \
+#     import GlobusAccessWithNativeAppAuth as NativeAppImpl
 
 from .GlobusAccessWithConfidentialAuth \
     import GlobusAccessWithConfidentialAuth as ConfidentialClientImpl
 
-NATIVE_APP_AUTH = "native"
+# NATIVE_APP_AUTH = "native"
 CONFIDENTIAL_CLIENT_APP_AUTH = "cc"
 
 # USE_IMPLEMENTATION = NATIVE_APP_AUTH
@@ -14,8 +14,8 @@ USE_IMPLEMENTATION = CONFIDENTIAL_CLIENT_APP_AUTH
 class GlobusAccess:
     def __init__(self):
         self.impl = None
-        if USE_IMPLEMENTATION == NATIVE_APP_AUTH:
-            self.impl = NativeAppImpl()
+        # if USE_IMPLEMENTATION == NATIVE_APP_AUTH:
+        #     self.impl = NativeAppImpl()
         if USE_IMPLEMENTATION == CONFIDENTIAL_CLIENT_APP_AUTH:
             self.impl = ConfidentialClientImpl()
 

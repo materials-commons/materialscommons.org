@@ -21,7 +21,7 @@ export MC_LOG_DIR=/tmp
 if [ "$MCDB_FILE" = "" ]; then
     export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
 fi
-export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
+export MCDIR=~/mcdir/mcfs/data/test
 export MCFS_HTTP_PORT=5012
 
 if [ -f /etc/materialscommons/config.dev ]; then
