@@ -72,5 +72,5 @@ if __name__ == "__main__":
     root.addHandler(ch)
 
     startup_log = logging.getLogger("top_level_setup")
-    test = SimpleTest1("test1-no-error","totally-bogus","another-bogus-account")
+    test = SimpleTest1("test-error","totally-bogus","another-bogus-account")
     test.run(True)
