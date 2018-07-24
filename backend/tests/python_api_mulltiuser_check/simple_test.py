@@ -21,14 +21,14 @@ class SimpleTest1:
             self.log.info("SimpleTest1")
             self._set_up_remote_for(self.apikey1)
             self.log.info("with apikey = {}".format(self.apikey1))
-            project1 = self.make_project()
+            project1 = self.make_project(apikey=self.apikey1)
             self.log.info("project, {}, owner = {}".format(project1.name, project1.owner))
             experiment1 = self.make_experiment(project1)
             self.log.info("experiment, {}, owner = {}".format(experiment1.name, experiment1.owner))
 
             self._set_up_remote_for(self.apikey2)
             self.log.info("with apikey = {}".format(self.apikey1))
-            project2 = self.make_project()
+            project2 = self.make_project(apikey=self.apikey2)
             self.log.info("project, {}, owner = {}".format(project2.name, project2.owner))
             if with_error:
                 self._set_up_remote_for(self.apikey1)
@@ -38,10 +38,10 @@ class SimpleTest1:
         except BaseException:
             self.log.exception("Exception in worker {}".format(self.name))
 
-    def make_project(self):
+    def make_project(self, apikey=None):
         name = self.fake_name("Project-")
         description = "Auto generated for test"
-        return create_project(name, description)
+        return create_project(name, description, apikey=apikey)
 
     def make_experiment(self, project):
         name = self.fake_name("Experiment-")
@@ -73,4 +73,4 @@ if __name__ == "__main__":
 
     startup_log = logging.getLogger("top_level_setup")
     test = SimpleTest1("test1-no-error","totally-bogus","another-bogus-account")
-    test.run(False)
+    test.run(True)
