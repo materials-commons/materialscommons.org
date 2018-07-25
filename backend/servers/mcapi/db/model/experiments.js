@@ -319,7 +319,6 @@ function* cloneProcess(projectId, experimentId, processId, owner, cloneArgs) {
 }
 
 function* updateProcess(experimentId, processId, properties, files, samples) {
-    console.log("experiment.updateProcess", samples);
     let errors = yield updateTemplateCommon(experimentId, processId, properties, files, samples);
 
     if (errors !== null) {

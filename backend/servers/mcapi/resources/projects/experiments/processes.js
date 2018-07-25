@@ -41,7 +41,6 @@ function* updateExperimentProcess(next) {
         this.status = status.BAD_REQUEST;
         this.body = errors;
     } else {
-        console.log('updateExperimentProcess - resource', updateArgs.samples);
         let rv = yield experiments.updateProcess(this.params.experiment_id, this.params.process_id,
             updateArgs.properties, updateArgs.files, updateArgs.samples);
         if (rv.error) {
