@@ -171,6 +171,7 @@ function* updateProperties(properties) {
 }
 
 function* updateProcessSamples(process, samples) {
+    console.log("processCommon updateProcessSamples", samples);
     let processId = process.id;
     let samplesToAddToProcess = samples.filter(s => s.command === 'add')
         .map(s => new model.Process2Sample(processId, s.id, s.property_set_id, 'in'));
