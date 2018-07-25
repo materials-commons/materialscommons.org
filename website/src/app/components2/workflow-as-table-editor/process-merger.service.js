@@ -39,8 +39,7 @@ class ProcessMergerService {
 
         let orderedProcesses = [];
         firstTree.walk(node => orderedProcesses.push(node.model.model));
-        let p = orderedProcesses.filter(p => p.process_type !== 'create');
-        return p;
+        return orderedProcesses.filter(p => p.process_type !== 'create');
     }
 
     mergeNodes(n1, n2) {
