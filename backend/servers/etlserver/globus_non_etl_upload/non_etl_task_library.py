@@ -1,25 +1,11 @@
 import logging
 import os
-import time
-
-# noinspection PyProtectedMember
-from materials_commons.api import _use_remote as get_remote
-# noinspection PyProtectedMember
-from materials_commons.api import _Config as Config
-# noinspection PyProtectedMember
-from materials_commons.api import _Remote as Remote
-# noinspection PyProtectedMember
-from materials_commons.api import _set_remote as set_remote
 
 from materials_commons.api import get_project_by_id
 
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
-from ..utils.mcexceptions import MaterialsCommonsException
-from ..user.apikeydb import user_apikey
-# noinspection PyProtectedMember
-from ..user.apikeydb import _load_apikeys as init_api_keys
 
 from .NonEtlSetup import NonEtlSetup
 
@@ -100,16 +86,15 @@ def non_etl_file_processing(status_record_id):
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
         upload_base = MaterialsCommonsGlobusInterface.get_base_path()
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
-        user_id = status_record['owner']
-        _set_global_python_api_remote_for_user(user_id)
-        log.debug("apikey = '{}'".format(get_remote().config.mcapikey))
         project_id = status_record['project_id']
+        owner = status_record['owner']
+
         transfer_base_path = status_record['extras']['transfer_base_path']
 
         log.debug("project_id = {}".format(project_id))
         log.debug("transfer_base_path = {}".format(transfer_base_path))
 
-        project = get_project_by_id(project_id)
+        project = get_project_by_id(project_id, apikey=apikey)
         log.info("working with project '{}' ({})".format(project.name, project.id))
 
         log.info("upload_base = {}; transfer_id = {}".format(upload_base, status_record_id))
@@ -173,9 +158,6 @@ def non_etl_globus_upload(status_record_id):
         log = logging.getLogger(__name__ + ".etl_excel_processing")
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
-        user_id = status_record['owner']
-        _set_global_python_api_remote_for_user(user_id)
-        log.info("apikey = '{}'".format(get_remote().config.mcapikey))
         project_id = status_record['project_id']
         log.info("Project id = {}".format(project_id))
     except BaseException:
@@ -183,14 +165,3 @@ def non_etl_globus_upload(status_record_id):
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
         logging.exception(message)
 
-
-def _set_global_python_api_remote_for_user(user_id):
-    init_api_keys()
-    api_key = user_apikey(user_id)
-    if not api_key:
-        raise MaterialsCommonsException("No apikey for user: " + user_id)
-    config = Config(override_config={
-        "apikey": api_key,
-    })
-    remote = Remote(config=config)
-    set_remote(remote)
