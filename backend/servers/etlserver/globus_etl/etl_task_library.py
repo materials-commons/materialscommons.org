@@ -1,15 +1,6 @@
 import logging
 import os
 
-# noinspection PyProtectedMember
-from materials_commons.api import _use_remote as get_remote
-# noinspection PyProtectedMember
-from materials_commons.api import _Config as Config
-# noinspection PyProtectedMember
-from materials_commons.api import _Remote as Remote
-# noinspection PyProtectedMember
-from materials_commons.api import _set_remote as set_remote
-
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
@@ -94,8 +85,8 @@ def etl_excel_processing(status_record_id):
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         user_id = status_record['owner']
-        _set_global_python_api_remote_for_user(user_id)
-        log.debug("apikey = '{}'".format(get_remote().config.mcapikey))
+        init_api_keys()
+        apikey = user_apikey(user_id)
         project_id = status_record['project_id']
         experiment_name = status_record['extras']['experiment_name']
         experiment_description = status_record['extras']['experiment_description']
@@ -123,7 +114,7 @@ def etl_excel_processing(status_record_id):
         log.debug("full data_dir_path = {}".format(data_dir_path))
 
         results = build_experiment(project_id, experiment_name, experiment_description,
-                                   excel_file_path, data_dir_path)
+                                   excel_file_path, data_dir_path, apikey)
         if not results['status'] == 'SUCCEEDED':
             DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
             log.error(results)
@@ -172,11 +163,11 @@ def globus_transfer(status_record_id):
 
 
 def build_experiment(project_id, experiment_name, experiment_description,
-                     excel_file_path, data_file_path):
+                     excel_file_path, data_file_path, apikey):
     log = logging.getLogger(__name__ + ".etl_excel_processing.build_experiment")
     try:
         log.info("Starting Experiment Build: {}, {}".format(project_id, experiment_name))
-        builder = BuildProjectExperiment()
+        builder = BuildProjectExperiment(apikey)
         builder.set_rename_is_ok(True)
         builder.preset_project_id(project_id)
         builder.preset_experiment_name_description(experiment_name, experiment_description)
@@ -195,7 +186,6 @@ def non_etl_globus_upload(status_record_id):
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         user_id = status_record['owner']
-        _set_global_python_api_remote_for_user(user_id)
         log.info("apikey = '{}'".format(get_remote().config.mcapikey))
         project_id = status_record['project_id']
         log.info("Project id = {}".format(project_id))
@@ -204,14 +194,3 @@ def non_etl_globus_upload(status_record_id):
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
         logging.exception(message)
 
-
-def _set_global_python_api_remote_for_user(user_id):
-    init_api_keys()
-    api_key = user_apikey(user_id)
-    if not api_key:
-        raise MaterialsCommonsException("No apikey for user: " + user_id)
-    config = Config(override_config={
-        "apikey": api_key,
-    })
-    remote = Remote(config=config)
-    set_remote(remote)

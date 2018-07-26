@@ -43,4 +43,5 @@ export REDIS_PORT=5031
 export MC_FAKTORY_NAME="mc-faktory-dev"
 export MC_FACTORY_PORT=7419
 
+export MC_API_URL="http://mcdev.localhost/api"
 # see also the override file /etc/materialscommons/config.dev

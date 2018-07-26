@@ -101,7 +101,6 @@ def non_etl_file_processing(status_record_id):
         upload_base = MaterialsCommonsGlobusInterface.get_base_path()
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         user_id = status_record['owner']
-        _set_global_python_api_remote_for_user(user_id)
         log.debug("apikey = '{}'".format(get_remote().config.mcapikey))
         project_id = status_record['project_id']
         transfer_base_path = status_record['extras']['transfer_base_path']
@@ -174,7 +173,6 @@ def non_etl_globus_upload(status_record_id):
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         user_id = status_record['owner']
-        _set_global_python_api_remote_for_user(user_id)
         log.info("apikey = '{}'".format(get_remote().config.mcapikey))
         project_id = status_record['project_id']
         log.info("Project id = {}".format(project_id))
@@ -183,14 +181,3 @@ def non_etl_globus_upload(status_record_id):
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
         logging.exception(message)
 
-
-def _set_global_python_api_remote_for_user(user_id):
-    init_api_keys()
-    api_key = user_apikey(user_id)
-    if not api_key:
-        raise MaterialsCommonsException("No apikey for user: " + user_id)
-    config = Config(override_config={
-        "apikey": api_key,
-    })
-    remote = Remote(config=config)
-    set_remote(remote)
