@@ -4,10 +4,10 @@ from materials_commons.api import create_project
 
 
 class TestProject:
-    def __init__(self):
+    def __init__(self, apikey):
         project_name = self.fake_name("TestProject-")
         project_description = "Generated test project - " + project_name
-        self.project = create_project(project_name, project_description)
+        self.project = create_project(project_name, project_description, apikey=apikey)
 
     def get_project(self):
         return self.project

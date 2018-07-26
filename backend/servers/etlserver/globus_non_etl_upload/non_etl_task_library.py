@@ -6,6 +6,8 @@ from materials_commons.api import get_project_by_id
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
+# noinspection PyProtectedMember
+from ..user.apikeydb import _load_apikeys as init_api_keys, user_apikey
 
 from .NonEtlSetup import NonEtlSetup
 
@@ -86,8 +88,10 @@ def non_etl_file_processing(status_record_id):
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
         upload_base = MaterialsCommonsGlobusInterface.get_base_path()
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
+        user_id = status_record['owner']
+        init_api_keys()
+        apikey = user_apikey(user_id)
         project_id = status_record['project_id']
-        owner = status_record['owner']
 
         transfer_base_path = status_record['extras']['transfer_base_path']
 
@@ -116,7 +120,7 @@ def non_etl_file_processing(status_record_id):
         os.chdir(current_directory)
 
         log.info("Uploaded {} file(s) and {} dirs(s) to top level directory of project '{}'"
-                      .format(file_count, dir_count, project.name))
+                 .format(file_count, dir_count, project.name))
 
         DatabaseInterface().update_queue(status_record_id, None)
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUCCESS)
@@ -158,10 +162,11 @@ def non_etl_globus_upload(status_record_id):
         log = logging.getLogger(__name__ + ".etl_excel_processing")
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
+        # noinspection PyUnusedLocal
+        user_id = status_record['owner']
         project_id = status_record['project_id']
         log.info("Project id = {}".format(project_id))
     except BaseException:
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
         logging.exception(message)
-
