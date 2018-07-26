@@ -5,7 +5,7 @@ from materials_commons.api import get_experiment_metadata_by_experiment_id
 
 
 class Metadata:
-    def __init__(self):
+    def __init__(self, apikey):
         self.time_stamp = time.ctime()
         self.excluded_keys = ["excluded_keys"]
         self.process_metadata = []
@@ -20,15 +20,16 @@ class Metadata:
         self.data_col_end = None
         self.start_attribute_row = None
         self.sheet_headers = None
+        self.apikey = apikey
 
     def write(self, experiment_id):
         metadata_dict = self.format()
         metadata = json.dumps(metadata_dict, indent=2)
-        metadata_record = create_experiment_metadata(experiment_id, metadata)
+        metadata_record = create_experiment_metadata(experiment_id, metadata, apikey=self.apikey)
         return metadata_record
 
     def read(self, experiment_id):
-        metadata_record = get_experiment_metadata_by_experiment_id(experiment_id)
+        metadata_record = get_experiment_metadata_by_experiment_id(experiment_id, apikey=self.apikey)
         if not metadata_record:
             return None
         metadata = json.loads(metadata_record.json)

@@ -6,13 +6,15 @@ import argparse
 from ..common.TestProject import TestProject
 from ..database.BackgroundProcess import BackgroundProcess
 from ..database.DatabaseInterface import DatabaseInterface
+from ..user import apikeydb
 
 
-def main(project, globus_endpoint, excel_file_path, data_dir_path):
+def main(project, globus_endpoint, excel_file_path, data_dir_path, apikey):
     from ..globus_etl.etl_task_library import startup_and_verify
     main_log = logging.getLogger("top_level_run_ELT_example")
 
-    user_id = "test@test.mc"
+    apikeydb._load_apikeys()
+    user_id = apikeydb.apikey_user(apikey)
     experiment_name = "Test from excel"
     experiment_description = "An experiment built via etl from test data"
 
@@ -74,6 +76,7 @@ if __name__ == "__main__":
     parser.add_argument('--endpoint', type=str, help="Globus Endpoint")
     parser.add_argument('--input', type=str, help="Input Spreadsheet File (path relative to endpoint)")
     parser.add_argument('--data', type=str, help="Data Directory (path relative to endpoint)")
+    parser.add_argument('--apikey', type=str, help="User apikey")
     args = parser.parse_args(argv[1:])
 
     if not args.endpoint:
@@ -91,11 +94,16 @@ if __name__ == "__main__":
         parser.print_help()
         exit(-1)
 
-    generated_project = TestProject().get_project()
+    if not args.apikey:
+        print("You must specify the user's apikey. Argument not found.")
+        parser.print_help()
+        exit(-1)
+
+    generated_project = TestProject(args.apikey).get_project()
 
     startup_log.info("args: endpoint = {}; input = {}; data={}"
                      .format(args.endpoint, args.input, args.data))
     startup_log.info("generated test project - name = {}; id = {}".
                      format(generated_project.name, generated_project.id))
 
-    main(generated_project, args.endpoint, args.input, args.data)
+    main(generated_project, args.endpoint, args.input, args.data, args.apikey)

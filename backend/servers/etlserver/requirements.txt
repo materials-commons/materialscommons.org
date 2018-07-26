@@ -1,5 +1,5 @@
 configparser
-materials_commons
+materials_commons==0.7.7b2
 flask-api
 faktory
 rethinkdb

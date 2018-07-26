@@ -139,9 +139,11 @@ def get_background_status_for_project():
 @apikey
 def upload_file():
     log.info("etl file upload - starting")
+    api_key = request.args.get('apikey', default="no_such_key")
     name = request.form.get('name')
     project_id = request.form.get("project_id")
     description = request.form.get("description")
+    log.info(api_key)
     log.info(name)
     log.info(project_id)
     log.info(description)
@@ -162,7 +164,7 @@ def upload_file():
     log.info("etl file upload - file saved to " + file_path)
     # noinspection PyBroadException
     try:
-        builder = BuildProjectExperiment()
+        builder = BuildProjectExperiment(api_key)
         builder.set_rename_is_ok(True)
         builder.preset_project_id(project_id)
         builder.preset_experiment_name_description(name, description)
