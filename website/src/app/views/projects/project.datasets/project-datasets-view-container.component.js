@@ -12,6 +12,10 @@ class MCProjectDatasetsViewContainerComponentController {
     }
 
     $onInit() {
+        this.loadDatasets();
+    }
+
+    loadDatasets() {
         this.datasetsAPI.getDatasetsForProject(this.$stateParams.project_id).then(
             (datasets) => {
                 let p = this.mcprojectstore.getCurrentProject();
@@ -25,10 +29,8 @@ class MCProjectDatasetsViewContainerComponentController {
         );
     }
 
-    handleNewDataset(dataset) {
-        let ds = this.mcdsstore.createDataset(dataset.title, dataset.samples, dataset.experiments);
-        this.mcdsstore.addDataset(ds);
-        this.state.datasets = this.mcdsstore.getDatasets();
+    handleNewDataset() {
+        this.loadDatasets();
     }
 }
 
