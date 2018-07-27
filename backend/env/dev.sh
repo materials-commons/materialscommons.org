@@ -21,7 +21,7 @@ export MC_LOG_DIR=/tmp
 if [ "$MCDB_FILE" = "" ]; then
     export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
 fi
-export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
+export MCDIR=~/mcdir/mcfs/data/test
 export MCFS_HTTP_PORT=5012
 
 if [ -f /etc/materialscommons/config.dev ]; then
@@ -43,4 +43,5 @@ export REDIS_PORT=5031
 export MC_FAKTORY_NAME="mc-faktory-dev"
 export MC_FACTORY_PORT=7419
 
+export MC_API_URL="http://mcdev.localhost/api"
 # see also the override file /etc/materialscommons/config.dev

@@ -71,3 +71,8 @@ if __name__ == "__main__":
     make_user(r, "test", "Test User One", options.password, "totally-bogus", False, False, True)
     make_user(r, "another", "Test User Two", options.password, "another-bogus-account", False, False, False)
     make_user(r, "tadmin", "Test Template Admin", options.password, None, False, True, False)
+    for i in range(0, 9):
+        name = "test{}".format(i)
+        fullname = "Test{} User".format(i)
+        apikey = "totally-bogus-{}".format(i)
+        make_user(r, name, fullname, options.password, apikey, False, False, True)

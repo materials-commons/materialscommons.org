@@ -4,13 +4,13 @@ from .. import Path
 
 from materials_commons.api import create_project, get_all_templates, get_project_by_id
 from materials_commons.api import File as FileRecord
-from ..common.util import normalise_property_name
+from ..common.utils import normalise_property_name
 from ..common.worksheet_data import ExcelIO
 from ..common.metadata import Metadata
 
 
 class BuildProjectExperiment:
-    def __init__(self):
+    def __init__(self, apikey):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.description = "Project from excel spreadsheet"
         self.override_project_id = None
@@ -26,13 +26,13 @@ class BuildProjectExperiment:
         self.parent_process_list = None
         self.previous_row_key = None
         self.previous_parent_process = None
-        self.metadata = Metadata()
+        self.metadata = Metadata(apikey)
         self.process_values = {}
         self.process_files = {}
         self.rename_duplicates = False
         self.data_path = None
         self.suppress_data_upload = False
-
+        self.apikey = apikey
         self._make_template_table()
 
     def set_data(self, data):
@@ -400,7 +400,7 @@ class BuildProjectExperiment:
             return False
 
         if not self.override_project_id:
-            self.project = create_project(self.project_name, self.description)
+            self.project = create_project(self.project_name, self.description, apikey=self.apikey)
 
         experiment_list = self.project.get_all_experiments()
         existing_experiment = None
@@ -533,7 +533,7 @@ class BuildProjectExperiment:
         if not self.override_project_id:
             self.project_name = self._prune_entry(self.source[0][0], "PROJ:")
         else:
-            project = get_project_by_id(self.override_project_id)
+            project = get_project_by_id(self.override_project_id, apikey=self.apikey)
             self.project = project
             self.project_name = project.name
             self.metadata.set_project_id(project.id)
@@ -605,7 +605,7 @@ class BuildProjectExperiment:
         return row_key
 
     def _make_template_table(self):
-        template_list = get_all_templates()
+        template_list = get_all_templates(apikey=self.apikey)
         table = {}
         for template in template_list:
             table[template.id] = template

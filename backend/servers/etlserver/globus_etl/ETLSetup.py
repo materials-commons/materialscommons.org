@@ -4,13 +4,14 @@ from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from ..common.VerifySetup import VerifySetup
+from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 
 
 class ETLSetup:
     def __init__(self, user_id):
         self.user_id = user_id
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
-        self.worker_base_path = os.environ.get('MC_ETL_BASE_DIR')
+        self.worker_base_path = MaterialsCommonsGlobusInterface.get_base_path()
 
     def setup_status_record(self, project_id, experiment_name, experiment_description,
                             globus_endpoint, excel_file_path, data_dir_path):
@@ -46,7 +47,7 @@ class ETLSetup:
     def verify_setup(self, status_record_id):
         results = self.verify_preconditions(status_record_id)
         if not results['status'] == 'SUCCESS':
-            # here we return error messaage to user!
+            # here we return error message to user!
             self.log.error("Preconditions for transfer failed...")
             for key in results['messages']:
                 self.log.error(" Failure: " + key + " :: " + results['messages'][key])

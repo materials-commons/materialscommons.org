@@ -10,7 +10,7 @@ class NonEtlSetup:
     def __init__(self, user_id):
         self.user_id = user_id
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
-        self.worker_base_path = os.environ.get('MC_ETL_BASE_DIR')
+        self.worker_base_path = MaterialsCommonsGlobusInterface.get_base_path()
 
     def setup_status_record(self, project_id, globus_endpoint):
         self.log.info("starting setup of status record; user_id = {}; project_id = {}"

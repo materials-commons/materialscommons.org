@@ -51,10 +51,16 @@ class GlobusAccessWithConfidentialAuth:
         self.log.debug(" init - done")
         self._auth_client = auth_client
         self._transfer_client = transfer_client
-        pass
 
     def get_globus_user(self, user_name):
         ret = self._auth_client.get_identities(usernames=[user_name])
+        globus_user = None
+        if ret and ret['identities'] and len(ret['identities']) > 0:
+            globus_user = ret['identities'][0]
+        return globus_user
+
+    def get_globus_user_by_id(self, user_id):
+        ret = self._auth_client.get_identities(ids=[user_id])
         globus_user = None
         if ret and ret['identities'] and len(ret['identities']) > 0:
             globus_user = ret['identities'][0]

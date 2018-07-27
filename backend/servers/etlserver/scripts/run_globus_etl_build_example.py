@@ -3,35 +3,34 @@ import time
 import logging
 import argparse
 
-from materials_commons.api import get_all_projects
-
+from ..common.TestProject import TestProject
 from ..database.BackgroundProcess import BackgroundProcess
 from ..database.DatabaseInterface import DatabaseInterface
+from ..user import apikeydb
 
 
-def main(project_id, globus_endpoint):
+def main(project, globus_endpoint, excel_file_path, data_dir_path, apikey):
     from ..globus_etl.etl_task_library import startup_and_verify
-    log = logging.getLogger("top_level_run_ELT_example")
+    main_log = logging.getLogger("top_level_run_ELT_example")
 
-    user_id = "test@test.mc"
+    apikeydb._load_apikeys()
+    user_id = apikeydb.apikey_user(apikey)
     experiment_name = "Test from excel"
     experiment_description = "An experiment built via etl from test data"
-    excel_file_path = "workflow.xlsx"
-    data_dir_path = "data"
 
-    log.info("user_id = " + user_id)
-    log.info("project_id = " + project_id)
-    log.info("experiment_name = " + experiment_name)
-    log.info("experiment_description = " + experiment_description)
-    log.info("globus_endpoint = " + globus_endpoint)
-    log.info("excel_file_path = " + excel_file_path)
-    log.info("data_dir_path = " + data_dir_path)
+    main_log.info("user_id = " + user_id)
+    main_log.info("project = '{}' ({})".format(project.name, project.id))
+    main_log.info("experiment_name = " + experiment_name)
+    main_log.info("experiment_description = " + experiment_description)
+    main_log.info("globus_endpoint = " + globus_endpoint)
+    main_log.info("excel_file_path = " + excel_file_path)
+    main_log.info("data_dir_path = " + data_dir_path)
 
-    results = startup_and_verify(user_id, project_id, experiment_name, experiment_description,
+    results = startup_and_verify(user_id, project.id, experiment_name, experiment_description,
                                  globus_endpoint, excel_file_path, data_dir_path)
 
     if not results['status'] == "SUCCESS":
-        log.error("Setup failed.")
+        main_log.error("Setup failed.")
         return
 
     tracking_id = results['status_record_id']
@@ -40,8 +39,13 @@ def main(project_id, globus_endpoint):
         status_record = DatabaseInterface().get_status_record(tracking_id)
         status = status_record['status']
         queue = status_record['queue']
-        log.info("Status = {}; Queue = {}".format(status, queue))
+        main_log.info("Status = {}; Queue = {}".format(status, queue))
         time.sleep(2)
+
+    if status == "Success":
+        main_log.info("Completed transfer to project '{}'".format(project.name))
+    else:
+        main_log.info("Failed in transfer to project '{}'".format(project.name))
 
 
 if __name__ == "__main__":
@@ -54,7 +58,7 @@ if __name__ == "__main__":
     ch.setFormatter(formatter)
     root.addHandler(ch)
 
-    local_log = logging.getLogger("main-setup")
+    startup_log = logging.getLogger("main-setup")
 
     # suppress info logging for globus_sdk loggers that are invoked, while leaving my info logging in place
     logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
@@ -69,42 +73,37 @@ if __name__ == "__main__":
     argv = sys.argv
     parser = argparse.ArgumentParser(
         description='Run the Globus/ETL process with test data - in a predefined test endpoint')
-    parser.add_argument('--name', type=str, help="Project Name")
     parser.add_argument('--endpoint', type=str, help="Globus Endpoint")
+    parser.add_argument('--input', type=str, help="Input Spreadsheet File (path relative to endpoint)")
+    parser.add_argument('--data', type=str, help="Data Directory (path relative to endpoint)")
+    parser.add_argument('--apikey', type=str, help="User apikey")
     args = parser.parse_args(argv[1:])
-
-    if not args.name:
-        print("You must specify a unique project name, or name substring. Argument not found.")
-        parser.print_help()
-        exit(-1)
 
     if not args.endpoint:
         print("You must specify a globus shared endpoint. Argument not found.")
         parser.print_help()
         exit(-1)
 
-    local_log.info("Project name = {}; Globus Endpoint = {}".format(args.name, args.endpoint))
-
-    local_log.info("Searching for project with name-match = {}".format(args.name))
-    project_list = get_all_projects()
-
-    project_selected = None
-    for probe in project_list:
-        if args.name in probe.name:
-            if project_selected:
-                print("Found multiple matches for {}".format(args.name))
-                print("You must specify a unique project name, or name substring.")
-                parser.print_help()
-                exit(-1)
-            project_selected = probe
-
-    if not project_selected:
-        print("Found no matches for {}".format(args.name))
-        print("You must specify a unique project name, or name substring.")
+    if not args.input:
+        print("You must specify the path for the spreadsheet file (relative to the endpoint). Argument not found.")
         parser.print_help()
         exit(-1)
 
-    local_log.info("Found match with name-match = {}; project.name = {}; id = {}".
-                   format(args.name, project_selected.name, project_selected.id))
+    if not args.endpoint:
+        print("You must specify the path for the data directory (relative to the endpoint). Argument not found.")
+        parser.print_help()
+        exit(-1)
 
-    main(project_selected.id, args.endpoint)
+    if not args.apikey:
+        print("You must specify the user's apikey. Argument not found.")
+        parser.print_help()
+        exit(-1)
+
+    generated_project = TestProject(args.apikey).get_project()
+
+    startup_log.info("args: endpoint = {}; input = {}; data={}"
+                     .format(args.endpoint, args.input, args.data))
+    startup_log.info("generated test project - name = {}; id = {}".
+                     format(generated_project.name, generated_project.id))
+
+    main(generated_project, args.endpoint, args.input, args.data, args.apikey)

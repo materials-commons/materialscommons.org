@@ -20,7 +20,7 @@ class GlobusDownload:
         self.transfer_client = None
         self.user_dir = None
         self.access = GlobusAccess()
-        self.log.debug("Using GlobusAccess implementation: {}".format(self.access.get_impl_type()))
+        self.log.info("Using GlobusAccess implementation: {}".format(self.access.get_impl_type()))
         download_ep_id = os.environ.get('MC_DOWNLOAD_ENDPOINT_ID')
         #     download_endpoint_id = '84b62e46-5ebc-11e8-91d5-0a6d4e044368'
         self.log.info("Download endpoint id = {}".format(download_ep_id))

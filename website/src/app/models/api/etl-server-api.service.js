@@ -7,6 +7,7 @@ class EtlServerAPIService {
         let route = this.etlAPIRoute('globus').one('stage');
         return route.customPOST(data).then(
             n => {
+                // noinspection UnnecessaryLocalVariableJS
                 let results = n.plain();
                 return results;
             },
@@ -22,6 +23,7 @@ class EtlServerAPIService {
         };
         return route.customPOST(data).then(
             r => {
+                // noinspection UnnecessaryLocalVariableJS
                 let results = r.plain();
                 return results;
             },
@@ -38,6 +40,7 @@ class EtlServerAPIService {
         };
         return route.customPOST(data).then(
             r => {
+                // noinspection UnnecessaryLocalVariableJS
                 let results = r.plain();
                 return results;
             },
@@ -55,6 +58,7 @@ class EtlServerAPIService {
         };
         return route.customPOST(data).then(
             r => {
+                // noinspection UnnecessaryLocalVariableJS
                 let results = r.plain();
                 return results;
             },
@@ -72,6 +76,7 @@ class EtlServerAPIService {
         };
         return route.customPOST(data).then(
             r => {
+                // noinspection UnnecessaryLocalVariableJS
                 let results = r.plain();
                 return results;
             },
@@ -81,6 +86,7 @@ class EtlServerAPIService {
         );
     }
 
+    // noinspection JSMethodCanBeStatic
     getRecentGlobusStatus(projectId){
         let route = this.etlAPIRoute('globus').one('transfer').one('status');
         let data = {
@@ -88,6 +94,19 @@ class EtlServerAPIService {
         };
         return route.customPOST(data).then(
             r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return results;
+            }
+        );
+    }
+
+    // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
+    getSystemGlobusInformation(){
+        let route = this.etlAPIRoute('globus').one('transfer').one('info');
+        return route.get().then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
                 let results = r.plain();
                 return results;
             }
