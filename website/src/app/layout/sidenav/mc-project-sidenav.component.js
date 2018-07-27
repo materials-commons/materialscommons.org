@@ -202,7 +202,13 @@ class GlobusUploadTransferDialogController {
             setupGlobusUploadTransfer(this.project.id, this.endpoint).
             then(globusResults => {
                 console.log("Results returned from server: ", globusResults);
-                this.status = 'xx';
+                if (globusResults) {
+                    this.status = globusResults.status;
+                    this.status_record_id = globusResults.status_record_id;
+                }
+                else {
+                    this.status = "FAIL";
+                }
         });
     }
 
