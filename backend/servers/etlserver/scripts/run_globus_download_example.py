@@ -10,13 +10,13 @@ from ..download.GlobusDownload import GlobusDownload
 from ..common.access_exceptions import RequiredAttributeException
 
 
-def main(project, globus_user):
+def main(project, globus_user, apikey):
     main_log = logging.getLogger("main")
     main_log.info("Starting all file Globus upload. Project = {} ({})".
                   format(project.name, project.id))
     try:
         main_log.info("Starting GlobusDownload")
-        download = GlobusDownload(project.id, globus_user)
+        download = GlobusDownload(project.id, globus_user, apikey)
         url = download.download()
         main_log.info(url)
         return url
@@ -62,19 +62,21 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Test to transfer from dir of hard links')
     parser.add_argument('--name', type=str, help="Project Name")
     parser.add_argument('--user', type=str, help="Globus user name")
+    parser.add_argument('--apikey', type=str, help="Materials Commons apikey")
     args = parser.parse_args(argv[1:])
-    if not args.name:
-        print("You must specify a unique project name, or name substring. Argument not found.")
-        parser.print_help()
-        exit(-1)
-
     if not args.user:
         print("You must specify a globus userid. Argument not found.")
         parser.print_help()
         exit(-1)
 
+    if not args.apikey:
+        print("You must specify a Materials Commons apikey. Argument not found.")
+        parser.print_help()
+        exit(-1)
+
+
     local_log.info("Searching for project with name-match = {}".format(args.name))
-    project_list = get_all_projects()
+    project_list = get_all_projects(apikey=args.apikey)
 
     project_selected = None
     for probe in project_list:
@@ -95,4 +97,4 @@ if __name__ == "__main__":
     local_log.info("Found match with name-match = {}; project.name = {}; id = {}".
                    format(args.name, project_selected.name, project_selected.id))
 
-    print(main(project_selected, args.user))
+    print(main(project_selected, args.user, args.apikey))
