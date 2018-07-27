@@ -1,5 +1,6 @@
 import os
 import logging
+import uuid
 from werkzeug.utils import secure_filename
 from flask import request
 from flask_api import status
@@ -23,6 +24,8 @@ class UploadUtility:
             self.log.info("Starting get_file")
             upload_folder = self.get_tmp_upload_dir()
             self.log.info("upload_folder = {}".format(upload_folder))
+            if not os.path.exists(upload_folder):
+                os.makedirs(upload_folder)
             if not os.path.exists(upload_folder):
                 message = "etl file upload - no upload folder: " + upload_folder
                 self.log.info(message)
@@ -70,6 +73,7 @@ class UploadUtility:
 
     def get_tmp_upload_dir(self):
         base = os.environ['MCDIR']
-        upload_dir = base.split(':')[0]
-        self.log.info("MCDIR = {}".format(upload_dir))
+        base_upload_dir = base.split(':')[0]
+        self.log.info("MCDIR = {}".format(base_upload_dir))
+        upload_dir = os.path.join(base_upload_dir, '__upload_staging', uuid.uuid4().hex)
         return upload_dir
