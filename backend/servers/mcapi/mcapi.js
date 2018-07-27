@@ -13,12 +13,12 @@ var apikey = require('../lib/apikey')(users);
 var resources = require('./resources').createResources();
 var access = require('./db/model/access');
 var r = require('./db/r');
-const activityFeed = require('./activity-feed');
+//const activityFeed = require('./activity-feed');
 
 app.use(apikey);
 //app.use(bodyParser());
 app.use(mount('/', resources.routes())).use(resources.allowedMethods());
-app.use(activityFeed.logEvent);
+//app.use(activityFeed.logEvent);
 
 // Look for changes on the access and projects tables. If a change is detected
 // then invalidate the project access cache so that it will be reloaded.

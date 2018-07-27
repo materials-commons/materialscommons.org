@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcAccountSettingsApikey', {
 });
 
 /*@ngInect*/
-function MCAccountSettingsApikeyComponentController(mcapi, User) {
+function MCAccountSettingsApikeyComponentController(mcapi, User, Restangular) {
     const ctrl = this;
 
     ctrl.showKey = false;
@@ -29,6 +29,8 @@ function MCAccountSettingsApikeyComponentController(mcapi, User) {
         mcapi('/user/%/apikey/reset', User.u())
             .success(function(data) {
                 User.reset_apikey(data.apikey);
+                ctrl.apikey = data.apikey;
+                Restangular.setDefaultRequestParams({apikey: User.apikey()});
             }).put();
     }
 }

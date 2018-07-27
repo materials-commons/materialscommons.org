@@ -1,5 +1,5 @@
 import os
-from ..globus_etl.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
+from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from globus_sdk.exc import GlobusAPIError
 
 

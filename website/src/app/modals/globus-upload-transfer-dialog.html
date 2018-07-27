@@ -1,0 +1,28 @@
+<md-dialog flex="60">
+    <md-toolbar ng-if="! $ctrl.requestComplete" layout="row">
+        <div layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>Upload Globus endpoint to top level directory of: <b>{{$ctrl.project.name}}</b>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <md-input-container class="md-block" style="margin-top:40px">
+            <label>Globus Shared endpoint id</label>
+            <input ng-model="$ctrl.endpoint" on-enter="$ctrl.submitToServer()">
+        </md-input-container>
+        <p>
+        <em>Make sure that your shared endpoint contains all and only the files that you want upload,
+        with the directory structure that you desire. Also, make sure that the files are permitted, read only,
+            to the Materials Commons upload account:
+            <ul>
+                <li>common name = <b>{{$ctrl.uploadName}}</b></li>
+                <li>unique-name = <b>{{$ctrl.uploadUniquename}}</b></li>
+                <li>id = <b>{{$ctrl.uploadId}}</b></li>
+            </ul>
+        </em>
+        </p>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.submitToServer()">Submit Request</md-button>
+    </md-dialog-actions>
+</md-dialog>

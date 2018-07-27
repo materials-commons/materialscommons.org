@@ -12,7 +12,7 @@ from materials_commons.etl.common.worksheet_data import ExcelIO
 from six import string_types
 
 from . import Path
-from ..common.util import normalise_property_name
+from ..common.utils import normalise_property_name
 
 
 class ExtractExperimentSpreadsheet:

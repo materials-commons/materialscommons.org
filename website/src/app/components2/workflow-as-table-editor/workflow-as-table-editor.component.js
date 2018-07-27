@@ -12,7 +12,6 @@ class MCWorkflowAsTableEditorComponentController {
             grouped: false,
             editTable: false,
         };
-        //this.createDemoData();
     }
 
     $onInit() {
@@ -31,53 +30,30 @@ class MCWorkflowAsTableEditorComponentController {
                 });
                 //s.processes = this.fillRandomProcesses(this.state.headers.length);
             });
-            this.state.processes = this.processMerger.mergeProcessesForSamples2(this.state.samples);
-            this.state.headers = this.state.processes.map(p => p.name);
+            // this.state.processes = this.processMerger.mergeProcessesForSamples3(this.state.samples);
+            // console.log('this.state.processes', this.state.processes);
+            // this.state.headers = this.state.processes.map(p => p.name);
+            // console.log('this.state.headers', this.state.headers);
         }
-    }
 
-    createDemoData() {
-        this.state.headers = [
-            "Heat Treatment",
-            "SEM",
-            "Low Cycle Fatigue",
-            "EBSD",
-            "Tension",
-            "EBSD",
-            "TEM",
-            "Cogging",
-            "Tension",
-            "EBSD",
-            "TEM",
-            "TEM0",
-            "TEM1",
-            "TEM2",
-            "TEM3",
-            "TEM4",
-            "TEM5",
-        ];
+        if (changes.processes) {
+            // this.state.processes = this.processMerger.mergeProcessesForSamples3(changes.processes.currentValue);
+            this.state.processes = this.processMerger.mergeProcesses(changes.processes.currentValue);
+            console.log('this.state.processes', this.state.processes);
+            this.state.headers = this.state.processes.map(p => p.template_name);
+            this.state.samples.forEach(s => {
+                s.headers = [];
+                this.state.processes.forEach(p => {
+                    let use = false;
+                    if (_.findIndex(p.input_samples, sample => sample.id === s.id) !== -1) {
+                        use = true;
+                    }
 
-        // this.state.samples = [];
-        // for (let i = 0; i < 10; i++) {
-        //     this.state.samples.push({
-        //         selected: false,
-        //         name: "Sample " + i,
-        //         processes: this.fillRandomProcesses(this.state.headers.length)
-        //     })
-        // }
-    }
-
-    fillRandomProcesses(count) {
-        let processes = [];
-        for (let i = 0; i < count; i++) {
-            let rval = Math.floor(Math.random() * 2);
-            if (rval) {
-                processes.push({active: true, selected: true});
-            } else {
-                processes.push({active: false, selected: false});
-            }
+                    s.headers.push({use: use});
+                });
+            });
+            //console.log('this.state.headers', this.state.headers);
         }
-        return processes;
     }
 
     handleDeleteSampleClick(index) {
@@ -131,53 +107,6 @@ angular.module('materialscommons').component('mcWorkflowAsTableEditor', {
     controller: MCWorkflowAsTableEditorComponentController,
     bindings: {
         samples: '<',
+        processes: '<',
     }
 });
-
-// this.projectsAPI.getProjectSamples(this.project.id).then(
-//     (samples) => {
-//         this.samples = samples;
-//         this.samples.forEach(s => this.addProcessListTimeLine(s));
-//         let uniqueProcesses = this.computeUniqueProcesses();
-//         this.createHeaders(uniqueProcesses);
-//         //console.log('this.samples', samples);
-//     }
-// );
-// addProcessListTimeLine(sample) {
-//     let processes = _.indexBy(sample.processes, 'process_id');
-//     sample.processesInTimeline = sample.processes.filter(
-//         (p) => processes[p.process_id].property_set_id === p.property_set_id
-//     ).filter(p => {
-//         if (p.template_name == 'Create Samples') {
-//             return false;
-//         } else if (p.template_name == 'Sectioning') {
-//             return false;
-//         }
-//
-//         return true;
-//     }).map(p => ({
-//         name: p.template_name,
-//         process_id: p.process_id,
-//         seen: false
-//     }));
-// }
-//
-// computeUniqueProcesses() {
-//     const allProcesses = [];
-//     this.samples.forEach(s => allProcesses.push(s.processesInTimeline));
-//     let combinedProcessTimeline = _.uniq([].concat.apply([], allProcesses), 'process_id');
-//     let combinedProcessTimelineMap = _.indexBy(combinedProcessTimeline, 'process_id');
-//     return {combinedProcessTimelineMap, combinedProcessTimeline};
-// }
-//
-// createHeaders(uniqueProcesses) {
-//     // uniqueProcesses.combinedProcessTimeline.forEach(p => {
-//     //     //console.log(p.name);
-//     // })
-//     // let headers = [];
-//     // let first = this.samples.processesInTimeline[0];
-//     // for (let i = 1; i < this.samples.length; i++) {
-//     //
-//     // }
-//      uniqueProcesses.combinedProcessTimeline.forEach(() => null);
-// }

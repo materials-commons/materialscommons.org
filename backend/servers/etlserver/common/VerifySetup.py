@@ -1,17 +1,18 @@
 import os
+import logging
+
 from ..database.DB import DbConnection
 from globus_sdk.exc import GlobusAPIError
 
 
 class VerifySetup:
-    def __init__(self, web_service, project_id, globus_endpoint, base_path,
-                 excel_file_path, data_dir_path):
+    def __init__(self, web_service, project_id, globus_endpoint, base_path, dir_file_list):
+        self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.web_service = web_service
         self.project_id = project_id
         self.globus_endpoint = globus_endpoint
         self.base_path = base_path
-        self.excel_file_path = excel_file_path
-        self.data_dir_path = data_dir_path
+        self.dir_file_list = dir_file_list
         self.error_status = {}
 
     def status(self):
@@ -34,12 +35,18 @@ class VerifySetup:
         r = DbConnection().interface()
         proj = r.table('projects').get(self.project_id).run(conn)
         if not proj:
+            self.log.info("project not found: {}".format(self.project_id))
             self.error_status["project_id"] = "project not found: " + self.project_id
+        else:
+            self.log.info("found project '{}'".format(proj['name']))
 
     def check_target_directory(self):
         if os.path.isdir(self.base_path):
             message = "transfer server directory: already exists - " + self.base_path
+            self.log.info(message)
             self.error_status["target_directory"] = message
+        else:
+            self.log.info("transfer server directory ok: {}".format(self.base_path))
 
     def check_globus_clients(self):
         try:
@@ -95,20 +102,17 @@ class VerifySetup:
         return
 
     def check_users_source_paths(self):
-        if not self.find_user_path(self.data_dir_path):
-            message = "User's endpoint directory not found, " + self.data_dir_path
-            self.error_status["Missing data directory"] = message
+        for path in self.dir_file_list:
+            if not self.find_user_path(path):
+                message = "User's endpoint data not found, {}".format(path)
+                self.error_status["Missing data"] = message
 
-        if not self.find_user_path(self.excel_file_path):
-            message = "User's endpoint file not found, " + self.excel_file_path
-            self.error_status["Missing Excel file"] = message
-
-    def find_user_path(self, path):
+    def find_user_path(self, end_path):
         try:
             self.web_service.set_transfer_client()
             transfer = self.web_service.transfer_client
-            entry = os.path.split(path)[-1]
-            path = os.path.normpath(os.path.join(path, os.path.pardir))
+            entry = os.path.split(end_path)[-1]
+            path = os.path.normpath(os.path.join(end_path, os.path.pardir))
             content = transfer.operation_ls(self.globus_endpoint, path=path)
             for element in content:
                 if element['name'] == entry:

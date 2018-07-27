@@ -30,6 +30,7 @@ class MCWorkflowAsTableComponentController {
         this.state.samplesMarked = false;
         if (changes.samples) {
             this.state.samples = angular.copy(changes.samples.currentValue);
+            console.log('this.state.samples', this.state.samples);
         }
 
         if (changes.headers) {
@@ -40,7 +41,7 @@ class MCWorkflowAsTableComponentController {
             this.state.editTable = changes.editTable.currentValue;
         }
 
-        this.markSampleHeaders();
+        //this.markSampleHeaders();
         this.state.samplesMarked = true;
     }
 

@@ -633,7 +633,11 @@ function show_env() {
     echo "   MCDB_FILE:              ${MCDB_FILE}"
     echo "   MCSTORE_SRC:            ${MCSTORE_SRC}"
     echo "   MC_LOG_DIR:             ${MC_LOG_DIR}"
-    echo
+    echo "   "
+    echo "   MC_CONFIDENTIAL_CLIENT_USER:     ${MC_CONFIDENTIAL_CLIENT_USER}"
+    echo "   MC_CONFIDENTIAL_CLIENT_ENDPOINT: ${MC_CONFIDENTIAL_CLIENT_ENDPOINT}"
+    echo "   MC_DOWNLOAD_ENDPOINT_ID:         ${MC_DOWNLOAD_ENDPOINT_ID}"
+    echo ""
     echo " Binary paths:"
     echo "   rethinkdb binary:       $(which rethinkdb)"
     echo "   mcapiserver.py binary:  ./mcapiserver.py"

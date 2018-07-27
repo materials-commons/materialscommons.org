@@ -91,6 +91,7 @@ function toDir(results) {
             mediatype: f.mediatype,
             checksum: f.checksum,
             id: f.id,
+            usesid: f.usesid,
             shortcut: false,
         };
     });

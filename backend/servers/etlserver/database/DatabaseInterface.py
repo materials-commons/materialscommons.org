@@ -43,8 +43,13 @@ class DatabaseInterface:
     def get_status_record(self, record_id):
         return self.r.table("background_process").get(record_id).run(self.conn)
 
-    def get_status_by_project_id(self, project_id):
+    def get_status_by_project_id(self, project_id, limit=1):
         return self.r.table('background_process')\
           .get_all(project_id, index='project_id')\
           .order_by(self.r.desc('birthtime'))\
-          .limit(1).run(self.conn)
+          .limit(limit).run(self.conn)
+
+    def get_users_apikey(self, user_id):
+        return self.r.table('users')\
+            .get(user_id)\
+            .pluck('apikey')
