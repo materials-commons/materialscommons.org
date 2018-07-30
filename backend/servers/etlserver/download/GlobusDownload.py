@@ -6,15 +6,17 @@ from materials_commons.api import get_project_by_id
 
 from ..common.GlobusAccess import GlobusAccess
 from ..common.access_exceptions import RequiredAttributeException
+from ..common.McdirHelper import McdirHelper
 
 
 class GlobusDownload:
-    def __init__(self, project_id, globus_user_id):
+    def __init__(self, project_id, globus_user_id, apikey):
         self.log = logging.getLogger(self.__class__.__name__)
         self.log.info("init - started - globus_user_id = {}, project_id = {}".
                       format(globus_user_id, project_id))
         self.globus_user_id = globus_user_id
         self.project_id = project_id
+        self.apikey = apikey
         self.file_list = None
         self.path_list = None
         self.transfer_client = None
@@ -27,9 +29,8 @@ class GlobusDownload:
         if not download_ep_id:
             self.log.error("Download endpoint is not set: MC_DOWNLOAD_ENDPOINT_ID is undefined")
             raise RequiredAttributeException("MC_DOWNLOAD_ENDPOINT_ID is undefined")
-        base_dirs = os.environ.get('MCDIR')
-        base_dir = base_dirs.split(':')[0].strip()
-        self.download_dir = os.path.join(base_dir, '__download_staging')
+        mcdir_helper = McdirHelper()
+        self.download_dir = mcdir_helper.get_download_dir()
         self.download_ep_id = download_ep_id
 
     def download(self):
@@ -39,7 +40,7 @@ class GlobusDownload:
         return self.exposed_ep_url()
 
     def setup(self):
-        project = get_project_by_id(self.project_id)
+        project = get_project_by_id(self.project_id, self.apikey)
         self.log.info("Get file list for project = {} ({})".
                       format(project.name, project.id))
         directory = project.get_top_directory()

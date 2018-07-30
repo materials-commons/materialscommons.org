@@ -4,7 +4,7 @@
             <i class="fa fa-fw fa-folder-open"></i>Upload Globus endpoint to top level directory of: <b>{{$ctrl.project.name}}</b>
         </div>
     </md-toolbar>
-    <md-dialog-content layout-margin>
+    <md-dialog-content ng-if="! $ctrl.status" layout-margin>
         <md-input-container class="md-block" style="margin-top:40px">
             <label>Globus Shared endpoint id</label>
             <input ng-model="$ctrl.endpoint" on-enter="$ctrl.submitToServer()">
@@ -21,8 +21,23 @@
         </em>
         </p>
     </md-dialog-content>
+    <md-dialog-content ng-if="$ctrl.status=='SUCCESS'" layout-margin>
+        <p>
+            Your request was successful. You can monitor the progress of this request
+            by clicking on the 'Globus tasks status' link in the left-hand (project)
+            toolbar. Once the task is completed successfully, you can view the files
+            by clicking on 'Sync' in the left-hand tool bar.
+        </p>
+    </md-dialog-content>
+    <md-dialog-content ng-if="$ctrl.status=='FAIL'" layout-margin>
+        <p>
+            Your request was unsuccessful. Please check the upload endpoint and retry.
+            If the request continues to be unsuccessful; please contact the site administrators.
+        </p>
+    </md-dialog-content>
     <md-dialog-actions layout="row">
-        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
-        <md-button class="md-primary" ng-click="$ctrl.submitToServer()">Submit Request</md-button>
+        <md-button class="md-warn" ng-if="! $ctrl.status" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-if="! $ctrl.status" ng-click="$ctrl.submitToServer()">Submit Request</md-button>
+        <md-button class="md-warn" ng-if="$ctrl.status" ng-click="$ctrl.cancel()">Dismiss</md-button>
     </md-dialog-actions>
 </md-dialog>

@@ -25,3 +25,4 @@ class AccessNotAllowedException(MaterialsCommonsException):
 
 class DatabaseError(MaterialsCommonsException):
     pass
+

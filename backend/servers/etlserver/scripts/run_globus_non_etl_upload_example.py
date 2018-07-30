@@ -63,6 +63,7 @@ if __name__ == "__main__":
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Test of Globus non-ETL upload')
     parser.add_argument('--endpoint', type=str, help="Globus shared endpoint id")
+    parser.add_argument('--apikey', type=str, help="A Materials Commons apikey")
     args = parser.parse_args(argv[1:])
 
     if not args.endpoint:
@@ -70,7 +71,12 @@ if __name__ == "__main__":
         parser.print_help()
         exit(-1)
 
-    project = TestProject().get_project()
+    if not args.apikey:
+        print("You must specify a Materials Commons apikey. Argument not found.")
+        parser.print_help()
+        exit(-1)
+
+    project = TestProject(args.apikey).get_project()
 
     startup_log.info("args: endpoint = {}".format(args.endpoint))
     startup_log.info("generated test project - name = {}; id = {}".

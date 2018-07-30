@@ -182,6 +182,7 @@ def upload_file():
 @apikey
 def globus_transfer_download():
     log.info("Project top-level directory staged for transfer with Globus - starting")
+    api_key = request.args.get('apikey', default="no_such_key")
     j = request.get_json(force=True)
     project_id = j["project_id"]
     globus_user_id = j["globus_user"]
@@ -196,7 +197,7 @@ def globus_transfer_download():
         return message, status.HTTP_400_BAD_REQUEST
     # noinspection PyBroadException
     try:
-        download = GlobusDownload(project_id, globus_user_id)
+        download = GlobusDownload(project_id, globus_user_id, api_key)
         url = download.download()
         ret_value = {'url': url}
         ret = format_as_json_return(ret_value)

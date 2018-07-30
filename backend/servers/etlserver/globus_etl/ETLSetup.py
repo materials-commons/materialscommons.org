@@ -2,7 +2,7 @@ import os
 import logging
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
-from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
+from ..common.McdirHelper import McdirHelper
 from ..common.VerifySetup import VerifySetup
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 
@@ -11,7 +11,7 @@ class ETLSetup:
     def __init__(self, user_id):
         self.user_id = user_id
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
-        self.worker_base_path = MaterialsCommonsGlobusInterface.get_base_path()
+        self.worker_base_path = McdirHelper().get_upload_dir()
 
     def setup_status_record(self, project_id, experiment_name, experiment_description,
                             globus_endpoint, excel_file_path, data_dir_path):

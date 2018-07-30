@@ -111,8 +111,8 @@ class MaterialsCommonsGlobusInterface:
         self.log.info("Found for target endpoint: " + target_endpoint['display_name'])
         self.log.debug("    - target endpoint id " + target_endpoint_id)
         self.log.debug("Found inbound endpoint: " +
-                      inbound_endpoint['display_name'] +
-                      " from " + inbound_endpoint["owner_string"])
+                       inbound_endpoint['display_name'] +
+                       " from " + inbound_endpoint["owner_string"])
         self.log.info("Initiating transfer to target directory: " + dir_name)
 
         # initiate transfer
@@ -192,17 +192,3 @@ class MaterialsCommonsGlobusInterface:
             else:
                 return rv['new_val']['id']
         raise DatabaseError()
-
-    @classmethod
-    def get_base_path(cls):
-        base_path = os.environ.get('MCDIR')
-        if not base_path:
-            raise GlobusSetupException("$MDDIR is None - must be defined")
-        try:
-            base_path = os.path.join(base_path, '__upload_staging')
-            if not os.path.isdir(base_path):
-                os.mkdir(base_path)
-        except BaseException:
-            raise GlobusSetupException("Landing path for upload, e.g. {}, is not an accessible dir"
-                                       .format(base_path))
-        return base_path

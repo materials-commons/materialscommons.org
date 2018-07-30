@@ -4,13 +4,14 @@ from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from ..common.VerifySetup import VerifySetup
+from ..common.McdirHelper import McdirHelper
 
 
 class NonEtlSetup:
     def __init__(self, user_id):
         self.user_id = user_id
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
-        self.worker_base_path = MaterialsCommonsGlobusInterface.get_base_path()
+        self.worker_base_path = McdirHelper().get_upload_dir()
 
     def setup_status_record(self, project_id, globus_endpoint):
         self.log.info("starting setup of status record; user_id = {}; project_id = {}"
