@@ -86,7 +86,6 @@ def non_etl_file_processing(status_record_id):
     try:
         log = logging.getLogger(__name__ + ".etl_excel_processing")
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
-        upload_base = MaterialsCommonsGlobusInterface.get_base_path()
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         user_id = status_record['owner']
         init_api_keys()
@@ -95,17 +94,12 @@ def non_etl_file_processing(status_record_id):
 
         transfer_base_path = status_record['extras']['transfer_base_path']
 
-        log.debug("project_id = {}".format(project_id))
-        log.debug("transfer_base_path = {}".format(transfer_base_path))
-
         project = get_project_by_id(project_id, apikey=apikey)
         log.info("working with project '{}' ({})".format(project.name, project.id))
 
-        log.info("upload_base = {}; transfer_id = {}".format(upload_base, status_record_id))
-        combined_path = os.path.join(upload_base, "transfer-" + status_record_id)
-        log.info("loading files and directories from = {}".format(combined_path))
+        log.info("loading files and directories from = {}".format(transfer_base_path))
         current_directory = os.getcwd()
-        os.chdir(combined_path)
+        os.chdir(transfer_base_path)
         directory = project.get_top_directory()
 
         file_count = 0
