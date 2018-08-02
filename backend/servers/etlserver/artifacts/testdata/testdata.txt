@@ -1,0 +1,2 @@
+This is a test file for basic Globus access tests.
+See scripts/check_mc_globus_status.py.
