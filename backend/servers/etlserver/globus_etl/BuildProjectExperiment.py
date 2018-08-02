@@ -200,6 +200,7 @@ class BuildProjectExperiment:
             self.previous_parent_process = None
             if parent_process_record:
                 self.previous_parent_process = parent_process_record['process']
+            print(process_record)
             self.parent_process_list[process_index] = process_record
 
     def sweep_for_process_value(self, data_row, process, start_col, end_col, start_attr_row):
