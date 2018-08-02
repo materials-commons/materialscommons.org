@@ -16,7 +16,7 @@ if __name__ == "__main__":
     root.setLevel(logging.WARNING)
 
     ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.WARNING)
+    ch.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
     ch.setFormatter(formatter)
     root.addHandler(ch)

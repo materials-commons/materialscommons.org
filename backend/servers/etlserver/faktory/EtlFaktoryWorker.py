@@ -1,8 +1,11 @@
-import logging
 import json
+import logging
 from time import sleep
+
 from faktory import Worker
+
 from .TaskChain import TaskChain, GLOBUS_QUEUE, EXCEL_PROCESS_QUEUE, FILE_UPLOAD_QUEUE, FILE_PROCESS_QUEUE
+
 
 class EtlFaktoryWorker:
     def __init__(self):
@@ -19,9 +22,11 @@ class EtlFaktoryWorker:
         self.tasks.setup_in_worker(worker)
 
     def new_worker(self):
+        worker_log = logging.getLogger("worker")
         worker = Worker(faktory="tcp://localhost:7419",
                         queues=[GLOBUS_QUEUE, EXCEL_PROCESS_QUEUE, FILE_UPLOAD_QUEUE, FILE_PROCESS_QUEUE],
-                        concurrency=1)
+                        concurrency=1,
+                        log=worker_log)
         self.setup(worker)
         return worker
 
@@ -35,8 +40,8 @@ class EtlFaktoryWorker:
             except self.possible_errors as error:
                 time_to_sleep = 5 + retry_count * 2
                 self.log.error(error)
-                self.log.error("It appears that Faktory may not be running " + \
-                               "- sleeping {} seconds, then retry". format(time_to_sleep))
+                self.log.error("It appears that Faktory may not be running " +
+                               "- sleeping {} seconds, then retry".format(time_to_sleep))
                 sleep(time_to_sleep)
                 retry_count += 1
         self.log.error("Failed to start ETL worker task after {} retrys".format(retry_count - 1))
