@@ -187,6 +187,26 @@ if __name__ == "__main__":
                         help="The path to a directory with a single small file for transfer testing")
     args = parser.parse_args(argv[1:])
 
+    args_probe_list = ['name', 'userid', 'endpoint', 'localdir', 'apikey', 'testdata']
+    args_probe_missing = []
+    for args_probe in args_probe_list:
+        if not getattr(args, args_probe):
+            args_probe_missing.append(args_probe)
+    if args_probe_missing:
+        plural = "s"
+        if len(args_probe_missing) == 1:
+            plural = ""
+        print("\nMissing the following input argument{}: {}\n".
+              format(plural,", ".join(args_probe_missing)))
+        parser.print_help()
+        exit(-1)
+
+    print("Check of input args: ok")
+    for args_probe in args_probe_list:
+        value = getattr(args, args_probe)
+        print("  --{} = {}".format(args_probe, value))
+
+    print("")
     print("Searching for project with name-match = {}".format(args.name))
     project_list = get_all_projects(apikey=args.apikey)
 
