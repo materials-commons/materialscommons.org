@@ -47,4 +47,6 @@ export REDIS_PORT=7379
 export MC_FACTORY_PORT=7419
 export MC_FAKTORY_NAME="mc-faktory-test"
 
+export MC_API_URL="http://test.materialscommons.org/api"
+
 # see also the override file /etc/materialscommons/config.test
