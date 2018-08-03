@@ -32,8 +32,10 @@ export MCAPID_PORT=5016
 export REDIS_PORT=6379
 
 export MC_FAKTORY_NAME="mc-faktory"
-export MC_FACTORY_PORT=7419
+export MC_FAKTORY_PORT=7419
 
 export MC_API_URL="http://materialscommons.org/api"
+
+export MC_ETL_WORKER_LOG_LEVEL=WARNING
 
 # see also the override file /etc/materialscommons/config.prod

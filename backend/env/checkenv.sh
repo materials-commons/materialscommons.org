@@ -17,22 +17,30 @@ show_env() {
     echo "======================== ${SERVERTYPE} ========================"
     echo
     echo " Environment and Setup Variables: "
-    echo "   MCUSER:                 ${MCUSER}"
-    echo "   MCDB_PORT:              ${MCDB_PORT}"
-    echo "   MC_SERVICE_PORT:        ${MC_SERVICE_PORT}"
-    echo "   MC_API_SERVICE_PORT:    ${MC_API_SERVICE_PORT}"
-    echo "   MC_PUB_SERVICE_PORT:    ${MC_PUB_SERVICE_PORT}"
-    echo "   RETHINKDB_HTTP_PORT:    ${RETHINKDB_HTTP_PORT}"
-    echo "   RETHINKDB_CLUSTER_PORT: ${RETHINKDB_CLUSTER_PORT}"
-    echo "   MCDB_DIR:               ${MCDB_DIR}"
-    echo "   MCDIR:                  ${MCDIR}"
-    echo "   MCFS_HTTP_PORT:         ${MCFS_HTTP_PORT}"
-    echo "   MCDB_CONNECTION:        ${MCDB_CONNECTION}"
-    echo "   MC_ES_URL:              ${MC_ES_URL}"
-    echo "   MC_ES_NAME              ${MC_ES_NAME}"
-    echo "   MCDB_FILE:              ${MCDB_FILE}"
-    echo "   MCSTORE_SRC:            ${MCSTORE_SRC}"
-    echo "   MC_LOG_DIR:             ${MC_LOG_DIR}"
+    echo "   MCUSER:                     ${MCUSER}"
+    echo "   MCDB_PORT:                  ${MCDB_PORT}"
+    echo "   MC_SERVICE_PORT:            ${MC_SERVICE_PORT}"
+    echo "   MCAPID_PORT:                ${MCAPID_PORT}"
+    echo "   REDIS_PORT:                 ${REDIS_PORT}"
+    echo "   MC_API_SERVICE_PORT:        ${MC_API_SERVICE_PORT}"
+    echo "   MC_PUB_SERVICE_PORT:        ${MC_PUB_SERVICE_PORT}"
+    echo "   MC_API_GLOBUS_SERVICE_PORT: ${MC_API_GLOBUS_SERVICE_PORT}"
+    echo "   MC_ETL_SERVICE_PORT:        ${MC_ETL_SERVICE_PORT}"
+    echo "   RETHINKDB_HTTP_PORT:        ${RETHINKDB_HTTP_PORT}"
+    echo "   RETHINKDB_CLUSTER_PORT:     ${RETHINKDB_CLUSTER_PORT}"
+    echo "   MCDB_DIR:                   ${MCDB_DIR}"
+    echo "   MCDIR:                      ${MCDIR}"
+    echo "   MCFS_HTTP_PORT:             ${MCFS_HTTP_PORT}"
+    echo "   MCDB_CONNECTION:            ${MCDB_CONNECTION}"
+    echo "   MC_ES_URL:                  ${MC_ES_URL}"
+    echo "   MC_ES_NAME:                 ${MC_ES_NAME}"
+    echo "   MC_FAKTORY_NAME:            ${MC_FAKTORY_NAME}"
+    echo "   MC_FAKTORY_PORT:            ${MC_FAKTORY_PORT}"
+    echo "   MCDB_FILE:                  ${MCDB_FILE}"
+    echo "   MCSTORE_SRC:                ${MCSTORE_SRC}"
+    echo "   MC_LOG_DIR:                 ${MC_LOG_DIR}"
+    echo "   MC_API_URL:                 ${MC_API_URL}"
+    echo "   MC_ETL_WORKER_LOG_LEVEL:    ${MC_ETL_WORKER_LOG_LEVEL}"
     echo
     echo " Binary paths:"
     echo "   rethinkdb binary:       $(which rethinkdb)"
@@ -48,6 +56,7 @@ show_env() {
     echo "   mcstored command:       ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:$MCDB_PORT --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&"
     echo "   mcapi.js command:       nodemon --watch servers/mcapi --watch servers/lib servers/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&"
     echo "   mcpub.js command:       nodemon --watch servers/mcpub --watch servers/lib servers/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > /tmp/mcpub.out.${SERVERTYPE} 2>&1&"
+    echo "   mcapid command:         start.sh mcapid-${SERVERTYPE}"
     echo
     echo " Environment Files:"
     echo "   Path: /etc/materialscommons/config.global"
@@ -55,6 +64,10 @@ show_env() {
     echo "   Path: ${configfile}"
     echo
 }
+
+export MC_API_URL="http://mcdev.localhost/api"
+
+export MC_ETL_WORKER_LOG_LEVEL=INFO
 
 set_echo_env() {
     source ${SERVERTYPE}.sh

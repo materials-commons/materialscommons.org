@@ -40,7 +40,11 @@ export MCAPID_COMMAND="start.sh mcapid-${SERVERTYPE}"
 export MCAPID_PORT=5628
 export REDIS_PORT=5679
 
-export MC_FACTORY_PORT=7419
+export MC_FAKTORY_PORT=7419
 export MC_FAKTORY_NAME="mc-faktory-unit"
+
+export MC_API_URL="http://mcunit.localhost/api"
+
+export MC_ETL_WORKER_LOG_LEVEL=INFO
 
 # see also the override file /etc/materialscommons/config.unit

@@ -44,9 +44,11 @@ export MCAPID_COMMAND="npx actionhero start cluster --workerTitlePrefix=mcapid-$
 export MCAPID_PORT=6028
 export REDIS_PORT=7379
 
-export MC_FACTORY_PORT=7419
+export MC_FAKTORY_PORT=7419
 export MC_FAKTORY_NAME="mc-faktory-test"
 
 export MC_API_URL="http://test.materialscommons.org/api"
+
+export MC_ETL_WORKER_LOG_LEVEL=INFO
 
 # see also the override file /etc/materialscommons/config.test
