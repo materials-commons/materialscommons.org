@@ -2,10 +2,10 @@ from os import environ
 from datetime import datetime, timedelta
 import json
 import pprint
-import sys
 import time
 import faktory
 import logging
+from ..utils.LoggingHelper import LoggingHelper
 
 faktory_port_probe = environ.get('FAKTORY_PORT')
 if not faktory_port_probe:
@@ -100,14 +100,7 @@ class FaktoryProbe:
 
 
 def main():
-    root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
-
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
-    ch.setFormatter(formatter)
-    root.addHandler(ch)
+    LoggingHelper().set_root(logging.DEBUG)
 
     probe = FaktoryProbe()
     probe.queue_tasks()

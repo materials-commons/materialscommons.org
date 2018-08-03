@@ -5,6 +5,7 @@ from time import sleep
 from faktory import Worker
 
 from .TaskChain import TaskChain, GLOBUS_QUEUE, EXCEL_PROCESS_QUEUE, FILE_UPLOAD_QUEUE, FILE_PROCESS_QUEUE
+from ..utils.LoggingHelper import LoggingHelper
 
 
 class EtlFaktoryWorker:
@@ -17,6 +18,7 @@ class EtlFaktoryWorker:
             ConnectionRefusedError,
             ConnectionResetError,
             BrokenPipeError)
+        self.loggingHelper = LoggingHelper()
 
     def setup(self, worker):
         self.tasks.setup_in_worker(worker)
@@ -38,7 +40,8 @@ class EtlFaktoryWorker:
                 if retry_count:
                     self.log.info("Retrying start of worker; count = {}".format(retry_count))
                 print("====")
-                print("== Starting ETLFaktoryWorker: log level = {}".format(self._get_printable_log_level()))
+                print("== Starting ETLFaktoryWorker: log level = {}".
+                      format(self.loggingHelper.get_printable_log_level()))
                 print("====")
                 self.new_worker().run()
             except self.possible_errors as error:
@@ -48,14 +51,4 @@ class EtlFaktoryWorker:
                                "- sleeping {} seconds, then retry".format(time_to_sleep))
                 sleep(time_to_sleep)
                 retry_count += 1
-        self.log.error("Failed to start ETL worker task after {} retrys".format(retry_count - 1))
-
-    def _get_printable_log_level(self):
-        level = self.log.getEffectiveLevel()
-        level_list = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
-        if level < 10:
-            return "level not set"
-        index = (level // 10) - 1
-        if index > 4:
-            index == 4
-        return level_list[index]
+        self.log.error("Failed to start ETL worker task after {} retries".format(retry_count - 1))

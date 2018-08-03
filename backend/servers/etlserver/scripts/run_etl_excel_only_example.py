@@ -5,9 +5,10 @@ import argparse
 
 from ..database.BackgroundProcess import BackgroundProcess
 from ..database.DatabaseInterface import DatabaseInterface
+from ..utils.LoggingHelper import LoggingHelper
 
 
-def main(project_id, excel_file_path):
+def main(project_id):
     from ..globus_etl.etl_task_library import startup_and_verify
     log = logging.getLogger("top_level_run_ELT_example")
 
@@ -28,13 +29,6 @@ def main(project_id, excel_file_path):
     log.info("excel_file_path = " + excel_file_path)
     log.info("data_dir_path = " + data_dir_path)
 
-    # suppress info logging for globus_sdk loggers that are invoked, while leaving my info logging in place
-    logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
-                   'globus_sdk.authorizers.renewing', 'globus_sdk.transfer.client.TransferClient',
-                   'globus_sdk.auth.client_types.confidential_client.ConfidentialAppAuthClient']
-    for name in logger_list:
-        logging.getLogger(name).setLevel(logging.ERROR)
-
     results = startup_and_verify(user_id, project_id, experiment_name, experiment_description,
                                  globus_endpoint, excel_file_path, data_dir_path)
 
@@ -53,22 +47,15 @@ def main(project_id, excel_file_path):
 
 
 if __name__ == "__main__":
-    root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
-
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
-    ch.setFormatter(formatter)
-    root.addHandler(ch)
+    LoggingHelper().set_root(logging.DEBUG)
 
     argv = sys.argv
     parser = argparse.ArgumentParser(
         description='Run the Globus/ETL process with test data - in a predefined test endpoint')
     parser.add_argument('project_id', type=str, help="Project ID")
-    parser.add_argument('file_path', type=str, help="Excel File Path")
+    # parser.add_argument('file_path', type=str, help="Excel File Path")
     args = parser.parse_args(argv[1:])
     project_id_in = args.project_id
-    excel_file_path_in = args.file_path
+    # excel_file_path_in = args.file_path
 
-    main(project_id_in, excel_file_path_in)
+    main(project_id_in)

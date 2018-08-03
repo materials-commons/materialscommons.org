@@ -7,6 +7,7 @@ from random import randint
 from globus_sdk.exc import GlobusAPIError
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
 from globus_sdk import TransferClient, TransferData, TransferAPIError
+from ..utils.LoggingHelper import LoggingHelper
 
 
 class ProbeGlobusInterface:
@@ -225,26 +226,8 @@ def main(user_endpoint, user_spreadsheet, user_data_dir):
 
 
 if __name__ == "__main__":
-    root = logging.getLogger()
-    root.setLevel(logging.INFO)
-
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(lineno)s - %(message)s')
-    ch.setFormatter(formatter)
-    root.addHandler(ch)
-
+    LoggingHelper().set_root()
     local_log = logging.getLogger("main-setup")
-
-    # suppress info logging for globus_sdk loggers that are invoked, while leaving my info logging in place
-    logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
-                   'globus_sdk.authorizers.renewing', 'globus_sdk.transfer.client.TransferClient',
-                   'globus_sdk.transfer.paging', 'globus_sdk.config', 'globus_sdk.exc',
-                   'globus_sdk.transfer.data',
-                   'globus_sdk.auth.client_types.confidential_client.ConfidentialAppAuthClient',
-                   'urllib3.connectionpool']
-    for name in logger_list:
-        logging.getLogger(name).setLevel(logging.ERROR)
 
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Check that Globus/ETL setup is working')
@@ -277,7 +260,7 @@ if __name__ == "__main__":
         if not results_main:
             local_log.error("Check failed")
         else:
-            local_log.info("Check was sucessful")
+            local_log.info("Check was successful")
 
     except ProbeException as e:
         local_log.exception(e)

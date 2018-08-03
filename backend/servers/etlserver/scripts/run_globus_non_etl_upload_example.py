@@ -7,6 +7,8 @@ from ..common.TestProject import TestProject
 from ..globus_non_etl_upload.non_etl_task_library import startup_and_verify
 from ..database.BackgroundProcess import BackgroundProcess
 from ..database.DatabaseInterface import DatabaseInterface
+from ..utils.LoggingHelper import LoggingHelper
+
 
 def main(project, endpoint):
     main_log = logging.getLogger("main")
@@ -38,27 +40,8 @@ def main(project, endpoint):
 
 
 if __name__ == "__main__":
-
-    root = logging.getLogger()
-    root.setLevel(logging.INFO)
-
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(lineno)s - %(message)s')
-    ch.setFormatter(formatter)
-    root.addHandler(ch)
-
+    LoggingHelper().set_root()
     startup_log = logging.getLogger("main-setup")
-
-    # suppress info logging for globus_sdk loggers that are invoked, while leaving my info logging in place
-    logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
-                   'globus_sdk.authorizers.renewing', 'globus_sdk.transfer.client.TransferClient',
-                   'globus_sdk.transfer.paging', 'globus_sdk.config', 'globus_sdk.exc',
-                   'globus_sdk.transfer.data', 'globus_sdk.auth', 'globus_sdk.authorizers',
-                   'globus_sdk.auth.client_types.confidential_client.ConfidentialAppAuthClient',
-                   'urllib3.connectionpool']
-    for name in logger_list:
-        logging.getLogger(name).setLevel(logging.ERROR)
 
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Test of Globus non-ETL upload')
@@ -76,10 +59,10 @@ if __name__ == "__main__":
         parser.print_help()
         exit(-1)
 
-    project = TestProject(args.apikey).get_project()
+    test_project = TestProject(args.apikey).get_project()
 
     startup_log.info("args: endpoint = {}".format(args.endpoint))
     startup_log.info("generated test project - name = {}; id = {}".
-                     format(project.name, project.id))
+                     format(test_project.name, test_project.id))
 
-    main(project, args.endpoint)
+    main(test_project, args.endpoint)

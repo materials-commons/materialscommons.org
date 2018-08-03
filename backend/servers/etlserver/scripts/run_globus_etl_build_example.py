@@ -7,12 +7,14 @@ from ..common.TestProject import TestProject
 from ..database.BackgroundProcess import BackgroundProcess
 from ..database.DatabaseInterface import DatabaseInterface
 from ..user import apikeydb
+from ..utils.LoggingHelper import LoggingHelper
 
 
 def main(project, globus_endpoint, excel_file_path, data_dir_path, apikey):
     from ..globus_etl.etl_task_library import startup_and_verify
     main_log = logging.getLogger("top_level_run_ELT_example")
 
+    # noinspection PyProtectedMember
     apikeydb._load_apikeys()
     user_id = apikeydb.apikey_user(apikey)
     experiment_name = "Test from excel"
@@ -49,26 +51,8 @@ def main(project, globus_endpoint, excel_file_path, data_dir_path, apikey):
 
 
 if __name__ == "__main__":
-    root = logging.getLogger()
-    root.setLevel(logging.INFO)
-
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(lineno)s - %(message)s')
-    ch.setFormatter(formatter)
-    root.addHandler(ch)
-
+    LoggingHelper().set_root()
     startup_log = logging.getLogger("main-setup")
-
-    # suppress info logging for globus_sdk loggers that are invoked, while leaving my info logging in place
-    logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
-                   'globus_sdk.authorizers.renewing', 'globus_sdk.transfer.client.TransferClient',
-                   'globus_sdk.transfer.paging', 'globus_sdk.config', 'globus_sdk.exc',
-                   'globus_sdk.transfer.data', 'globus_sdk.auth', 'globus_sdk.authorizers',
-                   'globus_sdk.auth.client_types.confidential_client.ConfidentialAppAuthClient',
-                   'urllib3.connectionpool']
-    for name in logger_list:
-        logging.getLogger(name).setLevel(logging.ERROR)
 
     argv = sys.argv
     parser = argparse.ArgumentParser(

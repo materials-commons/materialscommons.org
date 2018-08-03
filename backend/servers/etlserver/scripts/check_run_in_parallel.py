@@ -1,7 +1,7 @@
 import logging
-import sys
 import time
 from multiprocessing import Process
+from ..utils.LoggingHelper import LoggingHelper
 
 
 def run_in_parallel(fn_list, arg_list):
@@ -23,15 +23,7 @@ def try_it(n):
 
 
 if __name__ == "__main__":
-    root = logging.getLogger()
-    root.setLevel(logging.INFO)
-
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(lineno)s - %(message)s')
-    ch.setFormatter(formatter)
-    root.addHandler(ch)
-
+    LoggingHelper().set_root()
     startup_log = logging.getLogger("main-setup")
 
     target_list = []

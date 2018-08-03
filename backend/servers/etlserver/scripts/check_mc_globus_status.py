@@ -13,6 +13,7 @@ from ..globus_non_etl_upload.non_etl_task_library import startup_and_verify
 from ..database.BackgroundProcess import BackgroundProcess
 from ..database.DatabaseInterface import DatabaseInterface
 from ..download.GlobusDownload import GlobusDownload
+from ..utils.LoggingHelper import LoggingHelper
 
 
 def fake_name(prefix):
@@ -166,6 +167,7 @@ def main(project, mc_apikey, globus_user_id, globus_endpoint_id):
 
 
 if __name__ == "__main__":
+    LoggingHelper().set_root()
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Test of configuration of Materials Commons Globus interface')
     parser.add_argument('--name', type=str,
