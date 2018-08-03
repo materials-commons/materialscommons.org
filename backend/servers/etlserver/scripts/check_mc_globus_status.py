@@ -21,7 +21,7 @@ def fake_name(prefix):
     return prefix + number
 
 
-def main(project, mc_apikey, globus_user_id, globus_endpoint_id, local_endpoint_dir, test_file_path):
+def main(project, mc_apikey, globus_user_id, globus_endpoint_id):
     env_list = ['MCDIR', 'MCDB_PORT', 'MC_CONFIDENTIAL_CLIENT_USER', 'MC_CONFIDENTIAL_CLIENT_PW',
                 'MC_CONFIDENTIAL_CLIENT_ENDPOINT', 'MC_DOWNLOAD_ENDPOINT_ID', 'MC_API_URL']
 
@@ -29,9 +29,9 @@ def main(project, mc_apikey, globus_user_id, globus_endpoint_id, local_endpoint_
     env_values = {}
     missing = []
     for env_name in env_list:
-        value = os.environ.get(env_name)
-        env_values[env_name] = value
-        if not value:
+        env_value = os.environ.get(env_name)
+        env_values[env_name] = env_value
+        if not env_value:
             missing.append(env_name)
     if missing:
         message = "Missing environment values: {}".format(", ".join(missing))
@@ -103,11 +103,6 @@ def main(project, mc_apikey, globus_user_id, globus_endpoint_id, local_endpoint_
 
     print("")
     print("Testing upload...")
-    print("  Copy test file to local endpoint dir")
-    print("    from {} ".format(test_file_path))
-    print("    to {}".format(local_endpoint_dir))
-    copy(test_file_path, local_endpoint_dir)
-
     try:
 
         print("  Upload to Materials Commons...")
@@ -179,15 +174,11 @@ if __name__ == "__main__":
                         help="A Globus user id/name - for download testing")
     parser.add_argument('--endpoint', type=str,
                         help="A Globus source endpoint that is shared with transfer client - for upload testing")
-    parser.add_argument('--localdir', type=str,
-                        help="The path to the directory of --endpoint")
     parser.add_argument('--apikey', type=str,
                         help="Materials Commons apikey, the owner of the project")
-    parser.add_argument('--testdata', type=str,
-                        help="The path to a directory with a single small file for transfer testing")
     args = parser.parse_args(argv[1:])
 
-    args_probe_list = ['name', 'userid', 'endpoint', 'localdir', 'apikey', 'testdata']
+    args_probe_list = ['name', 'userid', 'endpoint', 'apikey']
     args_probe_missing = []
     for args_probe in args_probe_list:
         if not getattr(args, args_probe):
@@ -210,44 +201,6 @@ if __name__ == "__main__":
     print("Searching for project with name-match = {}".format(args.name))
     project_list = get_all_projects(apikey=args.apikey)
 
-    datadir = None
-    try:
-        datadir = os.path.abspath(args.testdata)
-        if not os.path.isdir(datadir):
-            print("The given path for --testdata is not a directory = {}".format(datadir))
-            datadir = None
-    except TypeError:
-        print("Could not convert into path; test data = {}".format(args.testdata))
-        datadir = None
-
-    if not datadir:
-        parser.print_help()
-        exit(-1)
-
-    local_endpoint_path = None
-    try:
-        local_endpoint_path = os.path.abspath(args.localdir)
-        if not os.path.isdir(local_endpoint_path):
-            print("The given path for --localdir is not a directory = {}".format(local_endpoint_path))
-            local_endpoint_path = None
-    except TypeError:
-        print("Could not convert into path; test data = {}".format(args.localdir))
-        local_endpoint_path = None
-
-    if not local_endpoint_path:
-        parser.print_help()
-        exit(-1)
-
-    datafile_path = None
-    content = os.listdir(datadir)
-    for entry in content:
-        if os.path.isfile(os.path.join(datadir, entry)):
-            datafile_path = os.path.join(datadir, entry)
-            break
-    if not datafile_path:
-        print("Could not find a file in the datadir: {}".format(datadir))
-        exit(-1)
-
     project_selected = None
     for probe in project_list:
         if args.name == probe.name:
@@ -266,7 +219,5 @@ if __name__ == "__main__":
     print("Additional test values: ")
     print("   globus user name   = {}".format(args.userid))
     print("   globus endpoint id = {}".format(args.endpoint))
-    print("   local path to globus endpoint = {}".format(args.localdir))
-    print("   path to test file = {}".format(datafile_path))
 
-    main(project_selected, args.apikey, args.userid, args.endpoint, local_endpoint_path, datafile_path)
+    main(project_selected, args.apikey, args.userid, args.endpoint)
