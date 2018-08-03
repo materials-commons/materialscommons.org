@@ -58,12 +58,12 @@ def elt_globus_upload(status_record_id):
         log.info("Starting elt_globus_upload with status_record_id{}".format(status_record_id))
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         results = globus_transfer(status_record_id)
-        log.debug(results)
+        log.info(results)
         if not results['status'] == 'SUCCEEDED':
             DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
             log.error(results)
             return None
-        log.debug(results)
+        log.info(results)
         DatabaseInterface().update_queue(status_record_id, EXCEL_PROCESS_QUEUE)
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
         from ..faktory.TaskChain import TaskChain
@@ -93,9 +93,9 @@ def etl_excel_processing(status_record_id):
         excel_file_path = status_record['extras']['excel_file_path']
         data_dir_path = status_record['extras']['data_dir_path']
 
-        log.debug("excel_file_path = {}".format(excel_file_path))
-        log.debug("data_dir_path = {}".format(data_dir_path))
-        log.debug("transfer_base_path = {}".format(transfer_base_path))
+        log.info("excel_file_path = {}".format(excel_file_path))
+        log.info("data_dir_path = {}".format(data_dir_path))
+        log.info("transfer_base_path = {}".format(transfer_base_path))
 
         if excel_file_path.startswith('/'):
             excel_file_path = excel_file_path[1:]
@@ -103,14 +103,14 @@ def etl_excel_processing(status_record_id):
         if data_dir_path.startswith('/'):
             data_dir_path = data_dir_path[1:]
 
-        log.debug("partial excel_file path = {}".format(excel_file_path))
-        log.debug("partial data_dir path = {}".format(data_dir_path))
+        log.info("partial excel_file path = {}".format(excel_file_path))
+        log.info("partial data_dir path = {}".format(data_dir_path))
 
         excel_file_path = os.path.join(transfer_base_path, excel_file_path)
         data_dir_path = os.path.join(transfer_base_path, data_dir_path)
 
-        log.debug("full excel_file_path = {}".format(excel_file_path))
-        log.debug("full data_dir_path = {}".format(data_dir_path))
+        log.info("full excel_file_path = {}".format(excel_file_path))
+        log.info("full data_dir_path = {}".format(data_dir_path))
 
         results = build_experiment(project_id, experiment_name, experiment_description,
                                    excel_file_path, data_dir_path, apikey)
@@ -119,7 +119,7 @@ def etl_excel_processing(status_record_id):
             log.error(results)
             return
         builder_out = results['results']
-        log.debug("-------------------->{}".format(builder_out.experiment.id))
+        log.info("-------------------->{}".format(builder_out.experiment.id))
         DatabaseInterface().update_queue(status_record_id, None)
         DatabaseInterface().update_extras_data_on_status_record(
             status_record_id,
@@ -128,7 +128,7 @@ def etl_excel_processing(status_record_id):
             }
         )
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUCCESS)
-        log.debug("Build Experiment Success{}".format(results))
+        log.info("Build Experiment Success{}".format(results))
     except BaseException:
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
@@ -144,20 +144,20 @@ def globus_transfer(status_record_id):
     globus_endpoint = status_record['extras']['globus_endpoint']
     endpoint_path = '/'
     web_service = MaterialsCommonsGlobusInterface(user_id)
-    log.debug("set_transfer_client")
+    log.info("set_transfer_client")
     results = web_service.set_transfer_client()
     if results['status'] == 'error':
         return results
 
-    log.debug("stage_upload_files")
+    log.info("stage_upload_files")
     results = web_service.stage_upload_files(project_id, transfer_id, globus_endpoint, endpoint_path)
-    log.debug("results of staging: ", results)
+    log.info("results of staging: ", results)
     task_id = results['task_id']
     poll = True
     while poll:
         results = web_service.get_task_status(task_id)
         poll = (results['status'] == 'ACTIVE')
-    log.debug(results)
+    log.info(results)
     return results
 
 
@@ -171,10 +171,10 @@ def build_experiment(project_id, experiment_name, experiment_description,
         builder.preset_project_id(project_id)
         builder.preset_experiment_name_description(experiment_name, experiment_description)
         builder.build(excel_file_path, data_file_path)
-        log.debug("Experiment Build Success: {}, {}".format(project_id, experiment_name))
+        log.info("Experiment Build Success: {}, {}".format(project_id, experiment_name))
         return {"status": "SUCCEEDED", "results": builder}
     except MaterialsCommonsException as e:
-        log.debug("Starting Experiment Build Fail: {}, {}".format(project_id, experiment_name))
+        log.info("Starting Experiment Build Fail: {}, {}".format(project_id, experiment_name))
         return {"status": "FAILED", "error": e}
 
 

@@ -9,8 +9,8 @@ from .TaskChain import TaskChain, GLOBUS_QUEUE, EXCEL_PROCESS_QUEUE, FILE_UPLOAD
 
 class EtlFaktoryWorker:
     def __init__(self):
-        logging.basicConfig(level=logging.INFO)
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
+        self.log.info("Starting EtlFaktoryWorker")
         self.tasks = TaskChain()
         self.possible_errors = (
             json.decoder.JSONDecodeError,
@@ -23,6 +23,7 @@ class EtlFaktoryWorker:
 
     def new_worker(self):
         worker_log = logging.getLogger("worker")
+        self.log.info("Starting worker")
         worker = Worker(faktory="tcp://localhost:7419",
                         queues=[GLOBUS_QUEUE, EXCEL_PROCESS_QUEUE, FILE_UPLOAD_QUEUE, FILE_PROCESS_QUEUE],
                         concurrency=1,
@@ -36,6 +37,9 @@ class EtlFaktoryWorker:
             try:
                 if retry_count:
                     self.log.info("Retrying start of worker; count = {}".format(retry_count))
+                print("====")
+                print("== Starting ETLFaktoryWorker: log level = {}".format(self._get_printable_log_level()))
+                print("====")
                 self.new_worker().run()
             except self.possible_errors as error:
                 time_to_sleep = 5 + retry_count * 2
@@ -45,3 +49,14 @@ class EtlFaktoryWorker:
                 sleep(time_to_sleep)
                 retry_count += 1
         self.log.error("Failed to start ETL worker task after {} retrys".format(retry_count - 1))
+
+    def _get_printable_log_level(self):
+        level = self.log.getEffectiveLevel()
+        level_list = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        if level < 10:
+            return "level not set"
+        index = (level // 10) - 1
+        print(level, index)
+        if index > 4:
+            index == 4
+        return level_list[index]

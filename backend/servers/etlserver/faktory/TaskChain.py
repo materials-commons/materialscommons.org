@@ -16,12 +16,13 @@ FILE_PROCESS_QUEUE = 'non-etl-file-transformation'
 class TaskChain:
     def __init__(self):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
+        self.log.info("Setting up TaskChain")
 
     def setup_in_worker(self, worker):
-        self.log.debug("Setting up task for ETL/Globus upload")
+        self.log.info("Setting up task for ETL/Globus upload")
         task1 = elt_globus_upload
         worker.register(ETL_GLOBUS_UPLOAD_NAME, task1)
-        self.log.debug("Setting up task for ETL/Excel processing")
+        self.log.info("Setting up task for ETL/Excel processing")
         task2 = etl_excel_processing
         worker.register(ETL_EXCEL_PROCESS_NAME, task2)
         self.log.info("Setting up task for Non-ETL/Globus file upload")

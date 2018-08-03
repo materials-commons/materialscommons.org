@@ -133,20 +133,20 @@ def globus_transfer(status_record_id):
     globus_endpoint = status_record['extras']['globus_endpoint']
     endpoint_path = '/'
     web_service = MaterialsCommonsGlobusInterface(user_id)
-    log.debug("set_transfer_client")
+    log.info("set_transfer_client")
     results = web_service.set_transfer_client()
     if results['status'] == 'error':
         return results
 
-    log.debug("stage_upload_files")
+    log.info("stage_upload_files")
     results = web_service.stage_upload_files(project_id, transfer_id, globus_endpoint, endpoint_path)
-    log.debug("results of staging: ", results)
+    log.info("results of staging: ", results)
     task_id = results['task_id']
     poll = True
     while poll:
         results = web_service.get_task_status(task_id)
         poll = (results['status'] == 'ACTIVE')
-    log.debug(results)
+    log.info(results)
     return results
 
 

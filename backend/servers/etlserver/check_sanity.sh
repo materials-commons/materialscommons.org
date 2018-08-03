@@ -64,11 +64,11 @@ check_env_variables() {
     else
         echo "MCDB_PORT = ${MCDB_PORT}"
     fi
-    if [ "${MC_FACTORY_PORT}" = "" ]; then
-        echo "MC_FACTORY_PORT is not defined; or is empty <-----"
+    if [ "${MC_FAKTORY_PORT}" = "" ]; then
+        echo "MC_FAKTORY_PORT is not defined; or is empty <-----"
         ALL_OK=-1
     else
-        echo "MC_FACTORY_PORT = ${MC_FACTORY_PORT}"
+        echo "MC_FAKTORY_PORT = ${MC_FAKTORY_PORT}"
     fi
     if [ "${MC_ETL_BASE_DIR}" = "" ]; then
         echo "MC_ETL_BASE_DIR is not defined; or is empty <-----"
