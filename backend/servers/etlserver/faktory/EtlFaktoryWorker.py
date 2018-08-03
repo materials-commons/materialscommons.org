@@ -56,7 +56,6 @@ class EtlFaktoryWorker:
         if level < 10:
             return "level not set"
         index = (level // 10) - 1
-        print(level, index)
         if index > 4:
             index == 4
         return level_list[index]
