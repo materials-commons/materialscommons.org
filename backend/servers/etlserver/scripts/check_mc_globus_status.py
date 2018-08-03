@@ -3,7 +3,6 @@ import sys
 import argparse
 import time
 from random import randint
-from shutil import copy
 from globus_sdk.exc import GlobusAPIError
 
 from materials_commons.api import get_all_projects
@@ -22,7 +21,8 @@ def fake_name(prefix):
 
 
 def main(project, mc_apikey, globus_user_id, globus_endpoint_id):
-    env_list = ['MCDIR', 'MCDB_PORT', 'MC_CONFIDENTIAL_CLIENT_USER', 'MC_CONFIDENTIAL_CLIENT_PW',
+    env_list = ['MCDIR', 'MCDB_PORT', 'MC_FAKTORY_PORT',
+                'MC_CONFIDENTIAL_CLIENT_USER', 'MC_CONFIDENTIAL_CLIENT_PW',
                 'MC_CONFIDENTIAL_CLIENT_ENDPOINT', 'MC_DOWNLOAD_ENDPOINT_ID', 'MC_API_URL']
 
     print("")
@@ -188,7 +188,7 @@ if __name__ == "__main__":
         if len(args_probe_missing) == 1:
             plural = ""
         print("\nMissing the following input argument{}: {}\n".
-              format(plural,", ".join(args_probe_missing)))
+              format(plural, ", ".join(args_probe_missing)))
         parser.print_help()
         exit(-1)
 
@@ -214,10 +214,44 @@ if __name__ == "__main__":
         exit(-1)
 
     print("Found matching project for query name = {}; project.name = {}; id = {}; owner = {}".
-                   format(args.name, project_selected.name, project_selected.id, project_selected.owner))
+          format(args.name, project_selected.name, project_selected.id, project_selected.owner))
 
     print("Additional test values: ")
     print("   globus user name   = {}".format(args.userid))
     print("   globus endpoint id = {}".format(args.endpoint))
 
     main(project_selected, args.apikey, args.userid, args.endpoint)
+
+# Function to add.... (from check_sanity.sh, which was removed - this commit)
+#
+#   Also, recover and check:  python -m etlserver.scripts.check_mc_upload_endpoint
+#
+# check_faktory() {
+#     R=$(ps -eo "pid,command" | grep faktory | grep -v grep)
+#     if [ "$R" = "" ]; then
+#         echo "faktory does not appear to be running <-----"
+#         ALL_OK=-1
+#     else
+#         echo "faktory appears to be running"
+#     fi
+# }
+#
+# check_worker() {
+#     R=$(ps -eo "pid,command" | grep python | grep -v grep | grep 'run_worker')
+#     if [ "$R" = "" ]; then
+#         echo "ETL/Globus worker does not appear to be running <-----"
+#         ALL_OK=-1
+#     else
+#         echo "ETL/Globus worker appears to be running"
+#     fi
+# }
+#
+# check_etlserver() {
+#     R=$(ps -eo "pid,command" | grep -v grep | grep python | grep mc_etlserver)
+#     if [ "$R" = "" ]; then
+#         echo "Backend server, etlserver, does not appear to be running <-----"
+#         ALL_OK=-1
+#     else
+#         echo "Backend server, etlserver, appears to be running"
+#     fi
+# }

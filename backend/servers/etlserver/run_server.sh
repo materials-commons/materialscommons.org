@@ -54,6 +54,6 @@ if [ "${OK}" == "ok" ]; then
     source ${ETLSERVER}/.python_env/bin/activate
     pushd ${SERVERS}
     echo "Starting ETL server"
-    python mc_etlserver.py ${SERVERRTYPE}
+    python -m etlserver.mc_etlserver ${SERVERRTYPE}
     popd
 fi
