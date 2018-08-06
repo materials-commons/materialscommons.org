@@ -497,7 +497,7 @@ if __name__ == '__main__':
     parser.add_argument('--download', type=str,
                         help="Path to dir for downloaded files; if none, files are not compared")
     parser.add_argument('--checksum', action='store_true',
-                        help="In comparing upload/download files, also compare checksun; optional")
+                        help="In comparing upload/download files, also compare checksum; optional")
 
     args = parser.parse_args(argv[1:])
 

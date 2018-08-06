@@ -13,6 +13,7 @@ class LoggingHelper:
             "CRITICAL": logging.CRITICAL
         }
         self.root = None
+        self.log = None
         self.logging_level = logging.INFO
 
     def set_root(self, default=None):
@@ -43,7 +44,7 @@ class LoggingHelper:
 
         if env_logging_level and not self.get_logging_level(env_logging_level):
             self.log.warning("MC_ETL_WORKER_LOG_LEVEL = {} is not a valid logging level".
-                        format(env_logging_level))
+                             format(env_logging_level))
 
         return self.root
 

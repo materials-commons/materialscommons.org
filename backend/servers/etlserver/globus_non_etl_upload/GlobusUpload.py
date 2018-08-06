@@ -2,6 +2,7 @@ import logging
 
 from .non_etl_task_library import startup_and_verify
 
+
 class GlobusUpload:
 
     def __init__(self, mc_user_id, project_id, endpoint):

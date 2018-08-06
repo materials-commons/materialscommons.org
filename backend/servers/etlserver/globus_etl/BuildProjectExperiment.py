@@ -63,8 +63,8 @@ class BuildProjectExperiment:
         excel_io_controller.set_current_worksheet_by_index(0)
         sheet_name = sheet_name_list[0]
         self.log.debug("In Excel file, using sheet '" +
-                      sheet_name +
-                      "' from sheets: [" + ", ".join(sheet_name_list) + "]")
+                       sheet_name +
+                       "' from sheets: [" + ", ".join(sheet_name_list) + "]")
         self.set_data(excel_io_controller.read_entire_data_from_current_sheet())
         excel_io_controller.close()
 
@@ -99,7 +99,7 @@ class BuildProjectExperiment:
         self.set_project_description(description)
 
         self.log.info("Building Project/Experiment from spreadsheet: {}{}".
-                      format(spread_sheet_path,data_path))
+                      format(spread_sheet_path, data_path))
 
         self.set_input_information(spread_sheet_path, data_path)
 
@@ -412,7 +412,7 @@ class BuildProjectExperiment:
             if self.rename_duplicates:
                 name = _unique_shadow_name(self.experiment_name, experiment_list)
                 self.log.debug("Existing experiment with duplicate name. Renamed: " +
-                              existing_experiment.name + " --> " + name)
+                               existing_experiment.name + " --> " + name)
                 existing_experiment.rename(name)
             else:
                 self.log.info("An experiment already exists with this name, " + self.experiment_name)
@@ -490,7 +490,7 @@ class BuildProjectExperiment:
                 continue
             if entry.startswith('DUPLICATES_ARE_IDENTICAL'):
                 pass
-            #     self.log.debug("Encountered 'DUPLICATES_ARE_IDENTICAL' - ignored as this is the default behaivor")
+            #     self.log.debug("Encountered 'DUPLICATES_ARE_IDENTICAL' - ignored as this is the default behavior")
             if entry.startswith('ATTR_'):
                 pass
             #     self.log.debug("Encountered '" + entry + "' - ignored, not implemented")
@@ -574,7 +574,7 @@ class BuildProjectExperiment:
         for col in first_row:
             if str(col).startswith("END"):
                 self.log.debug("Found END marker at column " + str(index) +
-                              ", updating data end to this location")
+                               ", updating data end to this location")
                 self.end_sweep_col = index
                 missing_end = False
                 break
@@ -648,7 +648,7 @@ def _otype_for_attribute(attribute):
         return "number"
     if attribute == "Condition Name":
         return "string"
-    # self.log.debug("XXXXX __otype_for_attribute", attribute, "defaluts to string")
+    # self.log.debug("XXXXX __otype_for_attribute", attribute, "defaults to string")
     return "string"
 
 

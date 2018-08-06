@@ -40,7 +40,7 @@ class NonEtlSetup:
     def verify_setup(self, status_record_id):
         results = self.verify_preconditions(status_record_id)
         if not results['status'] == 'SUCCESS':
-            # here we return error messaage to user!
+            # here we return error message to user!
             self.log.error("Preconditions for transfer failed...")
             for key in results['messages']:
                 self.log.error(" Failure: " + key + " :: " + results['messages'][key])

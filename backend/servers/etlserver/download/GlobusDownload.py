@@ -64,8 +64,8 @@ class GlobusDownload:
         file_or_dir_list = directory.get_children()
         for file_or_dir in file_or_dir_list:
             instance_path = path + file_or_dir.name
-            self.log.debug("File or dir otype = {}; name = {}; path = {}; {}"
-                          .format(file_or_dir.otype, file_or_dir.name,
+            self.log.debug("File or dir otype = {}; name = {}; path = {}; {}".
+                           format(file_or_dir.otype, file_or_dir.name,
                                   file_or_dir.path, instance_path))
             if file_or_dir.otype == 'file':
                 file_or_dir.path = instance_path
@@ -89,13 +89,13 @@ class GlobusDownload:
             self.log.debug("About to create dir {}".format(staging_path))
             os.makedirs(staging_path)
         for file in self.file_list:
-            id = file.id
+            file_id = file.id
             usesid = file.usesid
             if usesid:
-                id = usesid
-            p1 = id[9:11]
-            p2 = id[11:13]
-            file_path = os.path.join(mc_dir, p1, p2, id)
+                file_id = usesid
+            p1 = file_id[9:11]
+            p2 = file_id[11:13]
+            file_path = os.path.join(mc_dir, p1, p2, file_id)
             link_path = os.path.join(staging_dir, file.path)
             os.link(file_path, link_path)
         self.log.info("Staging - end")

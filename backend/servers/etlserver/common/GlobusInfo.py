@@ -4,6 +4,7 @@ import os
 from ..common.GlobusAccess import GlobusAccess
 from ..common.GlobusAccess import CONFIDENTIAL_CLIENT_APP_AUTH
 
+
 class GlobusInfo:
     def __init__(self):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)

@@ -245,7 +245,6 @@ def globus_transfer_status():
     j = request.get_json(force=True)
     project_id = j["project_id"]
     log.info("Project id = {}".format(project_id))
-    ret = {"error": "No status returned"}
     if not project_id:
         message = "Project upload with Globus - project_id missing, required"
         log.error(message)

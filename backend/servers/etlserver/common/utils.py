@@ -7,7 +7,7 @@ import re
 try:
     import http.client as http_client
 except ImportError:
-    import httplib as http_client
+    import httplib2 as http_client
 
 try:
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
@@ -15,9 +15,11 @@ except ImportError:
     from http.server import HTTPServer, BaseHTTPRequestHandler
 
 try:
-    import Queue
+    import queue as queue_module
 except ImportError:
-    import queue as Queue
+    # case for Python2
+    # noinspection PyPep8Naming
+    import Queue as queue_module
 
 try:
     from urlparse import urlparse, parse_qs
@@ -41,6 +43,7 @@ def is_remote_session():
 
 class RedirectHandler(BaseHTTPRequestHandler):
 
+        # noinspection PyPep8Naming
         def do_GET(self):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -50,7 +53,7 @@ class RedirectHandler(BaseHTTPRequestHandler):
             code = parse_qs(urlparse(self.path).query).get('code', [''])[0]
             self.server.return_code(code)
 
-        def log_message(self, format, *args):
+        def log_message(self, message_format, *args):
             return
 
 
@@ -59,7 +62,7 @@ class RedirectHTTPServer(HTTPServer, object):
     def __init__(self, listen, handler_class, https=False):
         super(RedirectHTTPServer, self).__init__(listen, handler_class)
 
-        self._auth_code_queue = Queue.Queue()
+        self._auth_code_queue = queue_module.Queue()
 
         if https:
             self.socket = ssl.wrap_socket(

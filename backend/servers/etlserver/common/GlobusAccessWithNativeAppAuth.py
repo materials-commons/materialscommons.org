@@ -2,8 +2,8 @@ import logging
 import json
 import webbrowser
 
-import configparser
-from pathlib import Path
+# import configparser
+# from pathlib import Path
 
 from .utils import is_remote_session
 # from .utils import enable_requests_logging
@@ -29,12 +29,20 @@ from globus_sdk import NativeAppAuthClient, TransferClient, \
 # uncomment the next line to enable debug logging for network requests
 # enable_requests_logging()
 
+# NOTE: These values must be set, as suggested above, and elsewhere, for this code to work
+TOKEN_FILE_PATH = None
+CLIENT_ID = None
+REDIRECT_URI = None
+SCOPES = None
+
 
 class GlobusAccessWithNativeAppAuth:
     def __init__(self):
         self.log = logging.getLogger(self.__class__.__name__)
         self.log.info("init - started")
 
+        auth_tokens = None
+        transfer_tokens = None
         tokens = None
         try:
             # if we already have tokens, load and use them
