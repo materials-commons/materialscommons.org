@@ -53,11 +53,11 @@ class LoggingHelper:
         return None
 
     def get_printable_log_level(self):
-        level = self.log.getEffectiveLevel()
-        level_list = self.logging_level_table.keys()
+        level = self.logging_level
+        level_list = list(self.logging_level_table.keys())
         if level < 10:
             return "level not set"
         index = (level // 10) - 1
         if index > 4:
-            index == 4
+            index = 4
         return level_list[index]
