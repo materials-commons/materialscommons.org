@@ -142,6 +142,12 @@ def globus_transfer(status_record_id):
     results = web_service.stage_upload_files(project_id, transfer_id, globus_endpoint, endpoint_path)
     log.info("results of staging: ", results)
     task_id = results['task_id']
+    DatabaseInterface().update_extras_data_on_status_record(
+        status_record_id,
+        {
+            'globus_task_id': task_id
+        }
+    )
     poll = True
     while poll:
         results = web_service.get_task_status(task_id)

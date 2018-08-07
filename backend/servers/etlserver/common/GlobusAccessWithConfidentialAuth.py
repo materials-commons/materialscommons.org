@@ -14,22 +14,18 @@ class GlobusAccessWithConfidentialAuth:
 
         self.client_user = os.environ.get('MC_CONFIDENTIAL_CLIENT_USER')
         self.client_token = os.environ.get('MC_CONFIDENTIAL_CLIENT_PW')
-        self.mc_target_ep_id = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
 
-        if (not self.client_user) or (not self.client_token) or (not self.mc_target_ep_id):
+        if (not self.client_user) or (not self.client_token):
             missing = []
             if not self.client_user:
                 missing.append('MC_CONFIDENTIAL_CLIENT_USER')
             if not self.client_token:
                 missing.append('MC_CONFIDENTIAL_CLIENT_PW')
-            if not self.mc_target_ep_id:
-                missing.append("MC_CONFIDENTIAL_CLIENT_ENDPOINT")
             message = "Missing environment values: {}".format(", ".join(missing))
             raise EnvironmentError(message)
 
         self.log.info("Env variables are ok")
         self.log.info("  -- MC_CONFIDENTIAL_CLIENT_USER = {}".format(self.client_user))
-        self.log.info("  -- MC_CONFIDENTIAL_CLIENT_ENDPOINT = {}".format(self.mc_target_ep_id))
 
         auth_client = ConfidentialAppAuthClient(
             client_id=self.client_user, client_secret=self.client_token)
@@ -79,6 +75,9 @@ class GlobusAccessWithConfidentialAuth:
         if found:
             return found['id']
         return None
+
+    def task_list(self, num_results=10):
+        return self._transfer_client.task_list(num_results=num_results)
 
     # def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
     #     results = self._transfer_client.endpoint_acl_list(ep_id)
