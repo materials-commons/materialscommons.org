@@ -60,6 +60,7 @@ class VerifySetup:
             message += ", code = " + code
             message += ", message = " + details
             self.error_status[code] = message
+            self.log.info(message)
             return
 
         transfer = self.web_service.transfer_client
@@ -72,10 +73,12 @@ class VerifySetup:
             if not target_endpoint:
                 message = "Materials Commons staging endpoint: " + self.web_service.mc_target_ep_id
                 self.error_status["Missing target endpoint"] = message
+                self.log.info(message)
 
             if not inbound_endpoint:
                 message = "User's endpoint" + self.globus_endpoint
                 self.error_status["Missing source endpoint"] = message
+                self.log.info(message)
 
             return
 
@@ -87,6 +90,7 @@ class VerifySetup:
             message = "Materials Commons staging endpoint, " + self.web_service.mc_target_ep_id
             message += ", code = " + e.code
             self.error_status["Cannot reach staging endpoint"] = message
+            self.log.info(message)
 
         try:
             transfer.operation_ls(self.globus_endpoint)
@@ -95,6 +99,7 @@ class VerifySetup:
             message = "User's endpoint, " + self.globus_endpoint
             message += ", code = " + e.code
             self.error_status["Cannot reach user's endpoint"] = message
+            self.log.info(message)
 
         if not both:
             return
@@ -106,6 +111,7 @@ class VerifySetup:
             if not self.find_user_path(path):
                 message = "User's endpoint data not found, {}".format(path)
                 self.error_status["Missing data"] = message
+                self.log.info(message)
 
     def find_user_path(self, end_path):
         try:
@@ -117,6 +123,8 @@ class VerifySetup:
             for element in content:
                 if element['name'] == entry:
                     return True
+            self.log.info("Missing entry in content, entry = {}, content={}".format(entry, content))
             return False
         except GlobusAPIError:
+            self.log.exception("unexpected exception")
             return False
