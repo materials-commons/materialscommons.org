@@ -53,6 +53,7 @@ if [ "${OK}" == "ok" ]; then
     source /etc/materialscommons/config.${SERVERTYPE}
     source ${ETLSERVER}/.python_env/bin/activate
     pushd ${BACKEND}
+    # Note: server starting process - runs from "base" level in backend
     python -m servers.etlserver.app.mc_etlserver ${SERVERRTYPE}
     popd
 fi

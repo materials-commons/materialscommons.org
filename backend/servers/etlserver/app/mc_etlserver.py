@@ -8,7 +8,7 @@ import logging
 #  that the below conditional addition to sys.path, solved the problem with werkzeug
 #  restarts in Flask - which, apparently, are for debugging only. Without these
 #  two lines, the restart (for werkzeug monitoring) generates an error:
-#  ModuleNotFoundError: No module named 'servers'
+#  ModuleNotFoundError: No module named 'servers' - Terry - Aug 10, 2018
 if not sys.path[0] == '':
     sys.path = [''] + sys.path
 
