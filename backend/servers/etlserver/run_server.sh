@@ -53,7 +53,6 @@ if [ "${OK}" == "ok" ]; then
     source /etc/materialscommons/config.${SERVERTYPE}
     source ${ETLSERVER}/.python_env/bin/activate
     pushd ${BACKEND}
-    echo "Starting ETL server"
-    APP_ROOT_PATH=${BACKEND} python -m servers.etlserver.app.mc_etlserver ${SERVERRTYPE}
+    python -m servers.etlserver.app.mc_etlserver ${SERVERRTYPE}
     popd
 fi
