@@ -168,6 +168,12 @@ class GlobusAccessWithNativeAppAuth:
     def get_endpoint(self, endpoint_id):
         return self._transfer_client.get_endpoint(endpoint_id)
 
+    def task_list(self, num_results=10):
+        return self._transfer_client.task_list(num_results=num_results)
+
+    def cancel_task(self, task_id):
+        return self._transfer_client.cancel_task(task_id)
+
     # def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
     #     results = self._transfer_client.endpoint_acl_list(ep_id)
     #     for rule in results["DATA"]:
