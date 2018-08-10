@@ -34,7 +34,8 @@ class MaterialsCommonsGlobusInterface:
         self.log.debug("MaterialsCommonsGlobusInterface init - done")
 
     def set_transfer_client(self):
-        self.log.debug("MaterialsCommonsGlobusInterface set_transfer_client - started")
+        self.log.info("MaterialsCommonsGlobusInterface set_transfer_client - started")
+        self.log.info("Client user is {}".format(self.client_user))
         auth_client = self.get_auth_client()
         if not auth_client:
             error = "No Authentication Client"

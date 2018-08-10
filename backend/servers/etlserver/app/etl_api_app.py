@@ -1,26 +1,26 @@
+import os
 import logging
 import json
 import pkg_resources
 from flask import Flask, request
 from flask_api import status
 
-from .globus_etl.etl_task_library import startup_and_verify
-from .globus_etl.BuildProjectExperiment import BuildProjectExperiment
-from .database.DatabaseInterface import DatabaseInterface
-from .database.DB import DbConnection
-from .download.GlobusDownload import GlobusDownload
-from .globus_non_etl_upload.GlobusUpload import GlobusUpload
-from .user import access
-from .user.api_key import apikey
-from .utils.UploadUtility import UploadUtility
-from .common.GlobusInfo import GlobusInfo
+from servers.etlserver.globus_etl.etl_task_library import startup_and_verify
+from servers.etlserver.globus_etl.BuildProjectExperiment import BuildProjectExperiment
+from servers.etlserver.database.DatabaseInterface import DatabaseInterface
+from servers.etlserver.database.DB import DbConnection
+from servers.etlserver.download.GlobusDownload import GlobusDownload
+from servers.etlserver.globus_non_etl_upload.GlobusUpload import GlobusUpload
+from servers.etlserver.user import access
+from servers.etlserver.user.api_key import apikey
+from servers.etlserver.utils.UploadUtility import UploadUtility
+from servers.etlserver.common.GlobusInfo import GlobusInfo
 
 log = logging.getLogger(__name__)
 
-log.debug("Starting Flask with {}".format(__name__.split('.')[0]))
+log.info("Starting Flask with {}".format(__name__.split('.')[0]))
 
 app = Flask(__name__.split('.')[0])
-
 
 def format_as_json_return(what):
     if 'format' in request.args:
@@ -56,7 +56,7 @@ def get_version():
 @app.route('/globus/stage', methods=['POST'])
 @apikey
 def stage_background_excel_upload():
-    log.debug("/globus/stage - starting")
+    log.info("/globus/stage - starting")
     user_id = access.get_user()
     j = request.get_json(force=True)
     experiment_name = j["name"]
@@ -65,28 +65,28 @@ def stage_background_excel_upload():
     globus_endpoint = j["globus_uuid"]
     excel_file_path = j["globus_excel_file"]
     data_dir_path = j["globus_data_dir"]
-    log.debug("/globus/stage - args - user_id = {}".format(user_id))
-    log.debug("/globus/stage - args - project_id = {}".format(project_id))
-    log.debug("/globus/stage - args - experiment_name = {}".format(experiment_name))
-    log.debug("/globus/stage - args - experiment_description = {}".format(experiment_description))
-    log.debug("/globus/stage - args - globus_endpoint = {}".format(globus_endpoint))
-    log.debug("/globus/stage - args - excel_file_path = {}".format(excel_file_path))
-    log.debug("/globus/stage - args - data_dir_path = {}".format(data_dir_path))
+    log.info("/globus/stage - args - user_id = {}".format(user_id))
+    log.info("/globus/stage - args - project_id = {}".format(project_id))
+    log.info("/globus/stage - args - experiment_name = {}".format(experiment_name))
+    log.info("/globus/stage - args - experiment_description = {}".format(experiment_description))
+    log.info("/globus/stage - args - globus_endpoint = {}".format(globus_endpoint))
+    log.info("/globus/stage - args - excel_file_path = {}".format(excel_file_path))
+    log.info("/globus/stage - args - data_dir_path = {}".format(data_dir_path))
     results = startup_and_verify(user_id, project_id, experiment_name, experiment_description,
                                  globus_endpoint, excel_file_path, data_dir_path)
-    log.debug("/globus/stage - done {}".format(results))
+    log.info("/globus/stage - done {}".format(results))
     return format_as_json_return(results)
 
 
 @app.route('/globus/monitor', methods=['POST'])
 @apikey
 def monitor_background_excel_upload():
-    log.debug("/globus/monitor - starting")
+    log.info("/globus/monitor - starting")
     j = request.get_json(force=True)
-    log.debug("Results as json = {}".format(j))
+    log.info("Results as json = {}".format(j))
     try:
         status_record_id = j['status_record_id']
-        log.debug("status_record_id = {}".format(status_record_id))
+        log.info("status_record_id = {}".format(status_record_id))
         status_record = {
             "status": "Fail",
             "reason": "Status record unavailable",
@@ -103,8 +103,8 @@ def monitor_background_excel_upload():
             "status_record_id": None
         }
     status_record_json = format_as_json_return(status_record)
-    log.debug("return as json = {}".format(status_record_json))
-    log.debug("/globus/monitor - done")
+    log.info("return as json = {}".format(status_record_json))
+    log.info("/globus/monitor - done")
     return status_record_json
 
 
@@ -168,7 +168,7 @@ def upload_file():
         builder.set_rename_is_ok(True)
         builder.preset_project_id(project_id)
         builder.preset_experiment_name_description(name, description)
-        log.debug("etl file upload - build starting...")
+        log.info("etl file upload - build starting...")
         builder.build(file_path, None)
         log.info("etl file upload - done")
         return format_as_json_return({"project_id": project_id})
