@@ -57,7 +57,7 @@
                 <md-menu-content style="min-height: 350px" />  <!-- empty content suppresses error message in log-->
             </md-menu>
             <md-menu ng-if="$ctrl.isAuthenticated">
-                <md-button ng-click="$mdOpenMenu($event)">
+                <md-button ng-click="$mdMenu.open($event)">
                     <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>
                     {{$ctrl.user}}
                 </md-button>
