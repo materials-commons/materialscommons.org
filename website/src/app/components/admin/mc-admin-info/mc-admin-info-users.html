@@ -4,7 +4,18 @@
         <md-content layout="column" flex>
             <md-list>
                 <md-list-item ng-repeat="user_record in $ctrl.allUsers" >
-                    <p>{{user_record.fullname}} - {{user_record.id}}</p>
+                    <div>
+                        <h3 class="md-subhead">{{user_record.fullname}} - {{user_record.id}}</h3>
+                        <ul>
+                            <li>Last login: {{user_record.last_login}}</li>
+                            <li>Demo Installed: {{user_record.demo_installed}}</li>
+                            <li>Template Admin: {{user_record.tadmin}}</li>
+                            <li>Beta User: {{user_record.beta_user}}</li>
+                            <li>Affiliation: {{user_record.affiliation}}</li>
+                            <li>Preferences - tags: {{user_record.preferences.tags}}</li>
+                            <li>Preferences - templates: {{user_record.preferences.templates}}</li>
+                        </ul>
+                    </div>
                 </md-list-item>
             </md-list>
         </md-content>

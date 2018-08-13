@@ -1,20 +1,22 @@
 class MCAdminInfoUsersComponentController {
     /*@ngInject*/
-    constructor(mcapi, toast) {
-        this.mcapi = mcapi;
+    constructor(usersAdminInfoAPI, toast) {
+        console.log("Constructor - MCAdminInfoUsersComponentController");
+        this.usersAdminInfoAPI = usersAdminInfoAPI;
         this.toast = toast;
         this.allUsers = [];
         this.filterUsersBy = "";
         this.userCount = 0;
+        console.log(this.usersAdminInfoAPI);
     }
 
     $onInit() {
         console.log("Init - MCAdminInfoUsersComponentController");
-        this.mcapi('/users').success(
-            (users) => {
-                this.allUsers = users;
+        this.usersAdminInfoAPI.getUsersAdminInfo().then(
+            (val_ret) => {
+                this.allUsers = val_ret.val;
                 console.log(this.allUsers);
-        }).jsonp();
+        });
     }
 
 }
