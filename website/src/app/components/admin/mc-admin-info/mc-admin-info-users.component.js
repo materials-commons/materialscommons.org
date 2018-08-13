@@ -10,9 +10,10 @@ class MCAdminInfoUsersComponentController {
 
     $onInit() {
         console.log("Init - MCAdminInfoUsersComponentController");
-        this.mcapi('/users').success(function (users) {
-            console.log(users);
-            this.allUsers = users;
+        this.mcapi('/users').success(
+            (users) => {
+                this.allUsers = users;
+                console.log(this.allUsers);
         }).jsonp();
     }
 

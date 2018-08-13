@@ -3,12 +3,8 @@
     <div layout="column" flex>
         <md-content layout="column" flex>
             <md-list>
-                <md-list-item class="md-2-line"
-                              ng-repeat="user in $ctrl.allUsers" >
-                    <div class="md-list-item-text">
-                        <h3 class="md-subhead">{{user.fullname}}</h3>
-                        <p>{{user.id}}</p>
-                    </div>
+                <md-list-item ng-repeat="user_record in $ctrl.allUsers" >
+                    <p>{{user_record.fullname}} - {{user_record.id}}</p>
                 </md-list-item>
             </md-list>
         </md-content>

@@ -78,11 +78,19 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('admin',{
             url: '/admin',
             abstract: true,
-            template: '<div ui-view layout="column"></div>'
+            template: '<div ui-view></div>'
         })
         .state('admin.info',{
             url: '/info',
-            template: '<mc-admin-info layout="column" layout-fill class="height-100"></mc-admin-info>'
+            template: '<mc-admin-info></mc-admin-info>'
+        })
+        .state('admin.info.users',{
+            url: '/users',
+            template: '<mc-admin-info-users></mc-admin-info-users>'
+        })
+        .state('admin.info.globus',{
+            url: '/globus',
+            template: '<mc-admin-info-globus></mc-admin-info-globus>'
         })
         .state('public', {
             url: '/public',

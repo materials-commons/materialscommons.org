@@ -1,6 +1,42 @@
 <div layout="column" flex="100" layout-margin>
     <h3 flex="100" class="md-title">Globus Info</h3>
-    <div flex="30">
-        Info here.
+    <div flex="40" layout-margin ng-if="!$ctrl.globusInfo">
+        <em>Waiting for Materials Commons Globus Client to load...</em>
+    </div>
+    <div flex="40" layout-margin ng-if="$ctrl.globusInfo">
+        <p>
+        Materials Commons upload account:
+            <ul>
+                <li>common name = <b>{{$ctrl.globusInfo.upload_user_name}}</b></li>
+                <li>unique name = <b>{{$ctrl.globusInfo.upload_user_unique_name}}</b></li>
+                <li>id = <b>{{$ctrl.globusInfo.upload_user_id}}</b></li>
+            </ul>
+        </p>
+    </div>
+    <div flex="40" layout-margin ng-if="!$ctrl.globusStatus">
+        <em>Waiting for Materials Commons Globus Status to load...</em>
+    </div>
+    <div flex="80" layout-margin ng-if="$ctrl.globusStatus">
+        <p>
+        Recent globus status records:
+        </p>
+        <md-content layout="column" flex>
+            <md-list>
+                <md-list-item ng-repeat="task in $ctrl.globusStatus">
+                    <div>
+                        <h3 class="md-subhead">{{task.description}}</h3>
+                        <ul>
+                            <li>Status: {{task.status}}</li>
+                            <li>Timestamp: {{task.birthtime}}</li>
+                            <li>Status record id: {{task.id}}</li>
+                            <li>Owner: {{task.owner}}</li>
+                            <li>Globus Endpoint: {{task.extras.globus_endpoint}}</li>
+                            <li>Faktory queue: {{task.queue}}</li>
+                            <li>Base path: {{task.extras.transfer_base_path}}</li>
+                        </ul>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
     </div>
 </div>
