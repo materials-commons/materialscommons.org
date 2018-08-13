@@ -288,7 +288,7 @@ def globus_transfer_status():
         return message, status.HTTP_400_BAD_REQUEST
 
 
-@app.route('/globus/transfer/admin/info', methods=['GET'])
+@app.route('/globus/transfer/admin/info', methods=['GET', 'POST'])
 @apikey
 def globus_transfer_admin_info():
     log.info("Globus background admin task list - starting")
@@ -312,7 +312,7 @@ def globus_transfer_admin_info():
         return message, status.HTTP_400_BAD_REQUEST
 
 
-@app.route('/globus/transfer/admin/status', methods=['GET'])
+@app.route('/globus/transfer/admin/status', methods=['GET', 'POST'])
 @apikey
 def globus_transfer_admin_status():
     log.info("Globus transfer admin status - starting")
