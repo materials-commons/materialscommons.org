@@ -77,4 +77,4 @@ class ConfClientHelper:
         return ret_list
 
     def cancel(self, task_id):
-        self.access.cancel(task_id)
+        self.access.cancel_task(task_id)

@@ -5,7 +5,6 @@ import logging
 from ..utils.LoggingHelper import LoggingHelper
 from ..utils.ConfClientHelper import ConfClientHelper
 from ..common.GlobusAccess import GlobusAccess
-from ..globus_monitor.GlobusMonitor import GlobusMonitor
 
 
 def main(command, loops, arg_id):

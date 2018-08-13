@@ -1,4 +1,3 @@
-import os
 import logging
 import json
 import pkg_resources
@@ -15,6 +14,7 @@ from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
 from servers.etlserver.utils.UploadUtility import UploadUtility
 from servers.etlserver.common.GlobusInfo import GlobusInfo
+from servers.etlserver.globus_monitor.GlobusMonitor import GlobusMonitor
 
 log = logging.getLogger(__name__)
 
@@ -22,11 +22,9 @@ log.info("Starting Flask with {}".format(__name__.split('.')[0]))
 
 app = Flask(__name__.split('.')[0])
 
+
 def format_as_json_return(what):
-    if 'format' in request.args:
-        return json.dumps(what, indent=4)
-    else:
-        return json.dumps(what)
+    return json.dumps(what, indent=4)
 
 
 @app.before_request
@@ -238,6 +236,24 @@ def globus_transfer_upload():
         return message, status.HTTP_400_BAD_REQUEST
 
 
+@app.route('/globus/transfer/info', methods=['GET'])
+@apikey
+def globus_transfer_info():
+    log.info("Globus background task list - starting")
+    # noinspection PyBroadException
+    try:
+        source = GlobusInfo()
+        returned_info = source.get_all()
+        for key in returned_info:
+            log.info("Details from info: {} = {}".format(key, returned_info[key]))
+        ret = format_as_json_return(returned_info)
+        return ret
+    except Exception:
+        message = "Info for transfers with Globus - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST
+
+
 @app.route('/globus/transfer/status', methods=['POST'])
 @apikey
 def globus_transfer_status():
@@ -272,10 +288,16 @@ def globus_transfer_status():
         return message, status.HTTP_400_BAD_REQUEST
 
 
-@app.route('/globus/transfer/info', methods=['GET'])
+@app.route('/globus/transfer/admin/info', methods=['GET'])
 @apikey
-def globus_transfer_info():
-    log.info("Globus background task list - starting")
+def globus_transfer_admin_info():
+    log.info("Globus background admin task list - starting")
+    user_id = access.get_user()
+    if not access.is_administrator(user_id):
+        message = "User is not admin"
+        log.exception(message)
+        return message, status.HTTP_401_UNAUTHORIZED
+
     # noinspection PyBroadException
     try:
         source = GlobusInfo()
@@ -285,6 +307,28 @@ def globus_transfer_info():
         ret = format_as_json_return(returned_info)
         return ret
     except Exception:
-        message = "Info for transfers with Globus - unexpected exception"
+        message = "Admin info for transfers with Globus - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST
+
+
+@app.route('/globus/transfer/admin/status', methods=['GET'])
+@apikey
+def globus_transfer_admin_status():
+    log.info("Globus transfer admin status - starting")
+    user_id = access.get_user()
+    if not access.is_administrator(user_id):
+        message = "User is not admin"
+        log.exception(message)
+        return message, status.HTTP_401_UNAUTHORIZED
+
+    # noinspection PyBroadException
+    try:
+        source = GlobusMonitor()
+        returned_info = source.get_background_process_status_list()
+        ret = format_as_json_return(returned_info)
+        return ret
+    except Exception:
+        message = "Admin status for transfers with Globus - unexpected exception"
         log.exception(message)
         return message, status.HTTP_400_BAD_REQUEST
