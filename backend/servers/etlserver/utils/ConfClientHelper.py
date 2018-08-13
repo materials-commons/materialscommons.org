@@ -16,7 +16,7 @@ class ConfClientHelper:
         self.task_list = []
         for task in task_list:
             if not task['DATA_TYPE'] == 'task' or not task['type'] == 'TRANSFER':
-                break
+                continue
             self.task_list.append(task)
         if full:
             self.monitor_list = self.task_list

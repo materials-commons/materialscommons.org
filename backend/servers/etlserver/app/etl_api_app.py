@@ -13,6 +13,7 @@ from servers.etlserver.globus_non_etl_upload.GlobusUpload import GlobusUpload
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
 from servers.etlserver.utils.UploadUtility import UploadUtility
+from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
 from servers.etlserver.common.GlobusInfo import GlobusInfo
 from servers.etlserver.globus_monitor.GlobusMonitor import GlobusMonitor
 
@@ -330,5 +331,29 @@ def globus_transfer_admin_status():
         return ret
     except Exception:
         message = "Admin status for transfers with Globus - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST
+
+@app.route('/globus/transfer/admin/cctasks', methods=['GET', 'POST'])
+@apikey
+def globus_transfer_admin_cctasks():
+    log.info("Globus transfer admin cc tasks - starting")
+    user_id = access.get_user()
+    if not access.is_administrator(user_id):
+        message = "User is not admin"
+        log.exception(message)
+        return message, status.HTTP_401_UNAUTHORIZED
+
+    # noinspection PyBroadException
+    try:
+        cchelper = ConfClientHelper()
+        cchelper.setup(full=True)
+        returned_info = []
+        for item in cchelper.monitor_list:
+            returned_info.append(item.data)
+        ret = format_as_json_return(returned_info)
+        return ret
+    except Exception:
+        message = "Globus transfer admin cc tasks - unexpected exception"
         log.exception(message)
         return message, status.HTTP_400_BAD_REQUEST
