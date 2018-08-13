@@ -4,7 +4,7 @@ class MCAdminInfoGlobusComponentController {
         this.etlServerAPI = etlServerAPI;
         this.toast = toast;
         this.globusInfo = {};
-        this.globusStatus = [];
+        this.mcProcessListStatus = [];
     }
 
     $onInit() {
@@ -17,8 +17,8 @@ class MCAdminInfoGlobusComponentController {
         );
         this.etlServerAPI.getGlobusTransferAdminStatus().then(
             (results) => {
-                this.globusStatus = results;
-                console.log(this.globusStatus);
+                this.mcProcessListStatus = results;
+                console.log(this.mcProcessListStatus);
             }
         );
     }

@@ -13,12 +13,38 @@
             </ul>
         </p>
     </div>
+    <div flex="40" layout-margin ng-if="!$ctrl.mcProcessListStatus">
+        <em>Waiting for Materials Commons background process records to load...</em>
+    </div>
+    <div flex="80" layout-margin ng-if="$ctrl.mcProcessListStatus">
+        <p>
+        Materials Commons background process records:
+        </p>
+        <md-content layout="column" flex>
+            <md-list>
+                <md-list-item ng-repeat="process_record in $ctrl.mcProcessListStatus">
+                    <div>
+                        <h3 class="md-subhead">{{process_record.description}}</h3>
+                        <ul>
+                            <li>Status: {{process_record.status}}</li>
+                            <li>Timestamp: {{process_record.birthtime}}</li>
+                            <li>Status record id: {{process_record.id}}</li>
+                            <li>Owner: {{process_record.owner}}</li>
+                            <li>Faktory queue: {{process_record.queue}}</li>
+                            <li>Globus Endpoint: {{process_record.extras.globus_endpoint}}</li>
+                            <li>Base path: {{process_record.extras.transfer_base_path}}</li>
+                        </ul>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
     <div flex="40" layout-margin ng-if="!$ctrl.globusStatus">
-        <em>Waiting for Materials Commons Globus Status to load...</em>
+        <em>Waiting for Materials Commons Globus task status list to load...</em>
     </div>
     <div flex="80" layout-margin ng-if="$ctrl.globusStatus">
         <p>
-        Recent globus status records:
+        Materials Commons Globus task status list:
         </p>
         <md-content layout="column" flex>
             <md-list>
