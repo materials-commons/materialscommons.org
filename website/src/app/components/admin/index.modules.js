@@ -1,1 +1,1 @@
-import 'src/app/components/admin/mc-admin-info.component.js';
+import './mc-admin-info.component';

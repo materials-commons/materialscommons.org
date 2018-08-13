@@ -82,7 +82,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('admin.info',{
             url: '/info',
-            templage: '<mc-admin-info layout="column" layout-fill class="height-100"></mc-admin-info>'
+            template: '<mc-admin-info layout="column" layout-fill class="height-100"></mc-admin-info>'
         })
         .state('public', {
             url: '/public',
