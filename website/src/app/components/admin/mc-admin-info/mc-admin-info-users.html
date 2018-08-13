@@ -1,0 +1,16 @@
+<div layout="column" flex="100" layout-margin>
+    <h3 flex="100" class="md-title">User Info ({{$ctrl.userCount}})</h3>
+    <div layout="column" flex>
+        <md-content layout="column" flex>
+            <md-list>
+                <md-list-item class="md-2-line"
+                              ng-repeat="user in $ctrl.allUsers" >
+                    <div class="md-list-item-text">
+                        <h3 class="md-subhead">{{user.fullname}}</h3>
+                        <p>{{user.id}}</p>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
+</div>
