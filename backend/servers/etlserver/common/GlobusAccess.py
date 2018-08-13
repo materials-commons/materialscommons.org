@@ -48,6 +48,12 @@ class GlobusAccess:
             return self.impl.task_list(num_results=num_results)
         return None
 
+    def cancel_task(self, task_id):
+        if self.impl:
+            return self.impl.cancel_task(task_id)
+        return None
+
+
     # def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
     #     if self.impl:
     #         return self.impl.set_acl_rule(ep_id, path, globus_user_id, permissions)

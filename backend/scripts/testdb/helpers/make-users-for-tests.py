@@ -67,10 +67,10 @@ if __name__ == "__main__":
 
     conn = r.connect('localhost', options.port, db='materialscommons')
 
-    make_user(r, "admin", "Test Admin", options.password, None, True, False, True)
+    make_user(r, "admin", "Test Admin", options.password, "totally-bogus-admin", True, False, True)
     make_user(r, "test", "Test User One", options.password, "totally-bogus", False, False, True)
     make_user(r, "another", "Test User Two", options.password, "another-bogus-account", False, False, False)
-    make_user(r, "tadmin", "Test Template Admin", options.password, None, False, True, False)
+    make_user(r, "tadmin", "Test Template Admin", options.password, "totally-bogus-tadmin", False, True, False)
     for i in range(0, 9):
         name = "test{}".format(i)
         fullname = "Test{} User".format(i)

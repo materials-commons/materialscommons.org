@@ -43,6 +43,11 @@ class DatabaseInterface:
     def get_status_record(self, record_id):
         return self.r.table("background_process").get(record_id).run(self.conn)
 
+    def get_status_records(self, limit=20):
+        return self.r.table('background_process')\
+          .order_by(self.r.desc('birthtime'))\
+          .limit(limit).run(self.conn)
+
     def get_status_by_project_id(self, project_id, limit=1):
         return self.r.table('background_process')\
           .get_all(project_id, index='project_id')\
