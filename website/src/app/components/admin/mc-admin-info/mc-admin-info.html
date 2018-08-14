@@ -1,4 +1,7 @@
-<div class="md-mc-primary-color-hue-2-bg">
+<div ng-if="!$ctrl.isAdmin" layout-margin>
+    Must be admin account to view admin info pages.
+</div>
+<div ng-if="$ctrl.isAdmin" class="md-mc-primary-color-hue-2-bg">
     <md-tabs md-selected="$ctrl.currentAdminTab" class="md-primary md-hue-2" md-stretch-tabs md-dynamic-height md-border-bottom>
         <md-tab ui-sref="admin.info.users">
             <md-tab-label>
@@ -17,4 +20,4 @@
         </md-tab>
     </md-tabs>
 </div>
-<div ui-view></div>
+<div ng-if="$ctrl.isAdmin" ui-view></div>
