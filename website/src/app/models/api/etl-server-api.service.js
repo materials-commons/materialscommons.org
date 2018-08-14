@@ -139,6 +139,19 @@ class EtlServerAPIService {
         );
     }
 
+    // -- /globus/transfer/admin/cctasks
+    // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
+    getGlobusConfidentialClientTaskList(){
+        let route = this.etlAPIRoute('globus').one('transfer').one('admin').one('cctasks');
+        let data = {};
+        return route.customPOST(data).then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return results;
+            }
+        );
+    }
 }
 
 angular.module('materialscommons').service('etlServerAPI', EtlServerAPIService);

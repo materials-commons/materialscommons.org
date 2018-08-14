@@ -4,7 +4,10 @@ class MCAdminInfoGlobusComponentController {
         this.etlServerAPI = etlServerAPI;
         this.toast = toast;
         this.globusInfo = {};
-        this.mcProcessListStatus = [];
+        this.mcProcessStatusListLoaded = false;
+        this.mcProcessStatusList = [];
+        this.ccTaskListLoaded = false;
+        this.ccTaskList = [];
     }
 
     $onInit() {
@@ -17,8 +20,18 @@ class MCAdminInfoGlobusComponentController {
         );
         this.etlServerAPI.getGlobusTransferAdminStatus().then(
             (results) => {
-                this.mcProcessListStatus = results;
-                console.log(this.mcProcessListStatus);
+                this.mcProcessStatusList = results;
+                this.mcProcessStatusListLoaded = true;
+                console.log(this.mcProcessStatusList);
+                console.log(this.mcProcessStatusList.length);
+            }
+        );
+        this.etlServerAPI.getGlobusConfidentialClientTaskList().then(
+            (results) => {
+                this.ccTaskList = results;
+                this.ccTaskListLoaded = true;
+                console.log(this.ccTaskList);
+                console.log(this.ccTaskList.length);
             }
         );
     }
