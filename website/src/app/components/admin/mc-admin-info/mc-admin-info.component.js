@@ -1,13 +1,10 @@
 class MCAdminInfoComponentController {
     /*@ngInject*/
-    constructor(User, toast) {
-        console.log("Constructor - MCAdminInfoComponentController");
+    constructor(User) {
         this.isAdmin = false;
         if (User.isAuthenticated()) {
             this.isAdmin = User.attr().admin;
         }
-        console.log(this.isAdmin);
-        this.toast = toast;
     }
 }
 

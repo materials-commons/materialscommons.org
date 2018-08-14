@@ -1,8 +1,8 @@
 class MCAdminInfoProjectsComponentController {
     /*@ngInject*/
-    constructor(usersAdminInfoAPI, toast) {
+    constructor(projectsAPI, toast) {
         console.log("Constructor - MCAdminInfoProjectsComponentController");
-        this.usersAdminInfoAPI = usersAdminInfoAPI;
+        this.projectsAPIService = projectsAPI;
         this.toast = toast;
         this.projectsCount = 0;
         this.allProjeccts = [];
@@ -10,10 +10,11 @@ class MCAdminInfoProjectsComponentController {
 
     $onInit() {
         console.log("Init - MCAdminInfoProjectsComponentController");
-        this.usersAdminInfoAPI.getUsersAdminInfo().then(
+        this.projectsAPIService.getAllProjects().then(
             (val_ret) => {
-                this.allUsers = val_ret.val;
-                console.log(this.allUsers);
+                console.log(val_ret);
+                this.allProjeccts = val_ret.val;
+                console.log(this.allProjeccts);
         });
     }
 
