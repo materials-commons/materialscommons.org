@@ -1,0 +1,18 @@
+<div layout="column" flex="100" layout-margin>
+    <h3 flex="100" class="md-title">Projects Info ({{$ctrl.projectsCount}})</h3>
+    <div layout="column" flex>
+        <md-content>
+            <md-list>
+                <md-list-item ng-repeat="project in $ctrl.allProjects" >
+                    <div>
+                        <h3 class="md-subhead">{{project.name}}</h3>
+                        <ul>
+                            <li>Owner: {{project.owner}}</li>
+                            <li>Project id: {{project.id}}</li>
+                        </ul>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
+</div>

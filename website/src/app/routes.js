@@ -88,6 +88,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/users',
             template: '<mc-admin-info-users></mc-admin-info-users>'
         })
+        .state('admin.info.projects',{
+            url: '/users',
+            template: '<mc-admin-info-projects></mc-admin-info-projects>'
+        })
         .state('admin.info.globus',{
             url: '/globus',
             template: '<mc-admin-info-globus></mc-admin-info-globus>'
