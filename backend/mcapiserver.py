@@ -25,4 +25,4 @@ if __name__ == '__main__':
     signal.signal(signal.SIGHUP, reload_users)
     conn = mcdb_connect()
     # cache.load_project_tree_cache(conn)
-    app.run(debug=True, host=_HOST, port=int(options.port), processes=5)
+    app.run(debug=True, host=_HOST, port=int(options.port), processes=5, threaded=False)
