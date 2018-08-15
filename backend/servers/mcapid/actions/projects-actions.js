@@ -1,3 +1,4 @@
+// noinspection JSUnusedLocalSymbols
 const {Action, api} = require('actionhero');
 const projects = require('../lib/dal/projects');
 const dal = require('../lib/dal');
@@ -11,6 +12,25 @@ module.exports.ListProjectsAction = class ListProjectsAction extends Action {
     }
 
     async run({response, params}) {
+        console.log("listProjects");
+    }
+};
+
+module.exports.ListProjectsForAdminAction = class ListProjectsForAdmin extends Action {
+    constructor() {
+        super();
+        this.name = "listProjectsForAdmin";
+        this.description = 'Retrieve a list of projects for Admin Info, without regard to use id';
+    }
+
+    async run({response, params, user}) {
+        if (! user.isAdmin) {
+            throw new Error(`not admin user: ${user.id}`);
+        }
+        console.log("At ListProjectsForAdmin", user);
+        const project_list = await dal.tryCatch(async () => await projects.getAll());
+        console.log(project_list.length);
+        response.data = project_list;
     }
 };
 

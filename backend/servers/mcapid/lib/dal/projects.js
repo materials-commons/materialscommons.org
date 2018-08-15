@@ -13,6 +13,11 @@ async function getProject(projectId) {
     return await run(rql);
 }
 
+async function getAll() {
+    let rql= r.table('projects');
+    rql = transformDates(rql);
+    return await run(rql);
+}
 
 // transformDates removes the rethinkdb specific date
 // fields
@@ -79,4 +84,5 @@ function addComputed(rql) {
 
 module.exports = {
     getProject,
+    getAll,
 };
