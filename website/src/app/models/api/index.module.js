@@ -1,6 +1,8 @@
+import './api-actionhero-route.service';
 import './projects-api-route.service';
 import './experiments-api.service';
 import './projects-api.service';
+import './projects-api-for-admin.service';
 import './processes-api.service';
 import './api-service.service';
 import './mcapi.service';
