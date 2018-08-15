@@ -113,6 +113,45 @@ class EtlServerAPIService {
         );
     }
 
+    // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
+    getGlobusTransferAdminInfo() {
+        let route = this.etlAPIRoute('globus').one('transfer').one('admin').one('info');
+        let data = {};
+        return route.customPOST(data).then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return results;
+            }
+        );
+    }
+
+    // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
+    getGlobusTransferAdminStatus(){
+        let route = this.etlAPIRoute('globus').one('transfer').one('admin').one('status');
+        let data = {};
+        return route.customPOST(data).then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return results;
+            }
+        );
+    }
+
+    // -- /globus/transfer/admin/cctasks
+    // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
+    getGlobusConfidentialClientTaskList(){
+        let route = this.etlAPIRoute('globus').one('transfer').one('admin').one('cctasks');
+        let data = {};
+        return route.customPOST(data).then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return results;
+            }
+        );
+    }
 }
 
 angular.module('materialscommons').service('etlServerAPI', EtlServerAPIService);

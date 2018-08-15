@@ -1,4 +1,5 @@
 import './accounts/index.module';
+import './admin/index.modules';
 import './datasets/index.modules';
 import './experiments/index.modules';
 import './files/index.modules';

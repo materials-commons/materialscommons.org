@@ -57,7 +57,7 @@
                 <md-menu-content style="min-height: 350px" />  <!-- empty content suppresses error message in log-->
             </md-menu>
             <md-menu ng-if="$ctrl.isAuthenticated">
-                <md-button ng-click="$mdOpenMenu($event)">
+                <md-button ng-click="$mdMenu.open($event)">
                     <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>
                     {{$ctrl.user}}
                 </md-button>
@@ -66,6 +66,12 @@
                         <md-button ng-click="$ctrl.switchToUser()">
                             <md-icon md-font-icon="fa-superpowers" class="fa fa-md-icon"></md-icon>
                             <span class="text-uppercase">Switch To User</span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="::$ctrl.isAdmin">
+                        <md-button ui-sref="admin.info">
+                            <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>
+                            <span class="text-uppercase">Admin Information</span>
                         </md-button>
                     </md-menu-item>
                     <md-menu-divider ng-if="::$ctrl.isAdmin"></md-menu-divider>
