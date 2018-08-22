@@ -11,7 +11,7 @@ class MCGlobusAuthTestingComponentController{
 
     $onInit() {
         console.log("MCGlobusAuthTestingComponentController - onInit()");
-        this.etlServiceAPI.getGlobusAuthStatus().then(
+        this.etlServerAPI.getGlobusAuthStatus().then(
             (retVal) => {
                 console.log(retVal);
             }

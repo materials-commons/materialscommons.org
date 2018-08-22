@@ -152,6 +152,18 @@ class EtlServerAPIService {
             }
         );
     }
+
+    getGlobusAuthStatus() {
+        let route = this.etlAPIRoute('globus').one('auth').one('status');
+        let data = {};
+        return route.customPOST(data).then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return results;
+            }
+        );
+    }
 }
 
 angular.module('materialscommons').service('etlServerAPI', EtlServerAPIService);
