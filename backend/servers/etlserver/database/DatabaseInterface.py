@@ -1,4 +1,5 @@
 from .BackgroundProcess import BackgroundProcess
+from .GlobusAuthInfo import GlobusAuthInfo
 from .DB import DbConnection
 
 
@@ -58,3 +59,19 @@ class DatabaseInterface:
         return self.r.table('users')\
             .get(user_id)\
             .pluck('apikey')
+
+    def create_globus_auth_info(self, user_id, globus_name, globus_id, tokens):
+        record_obj = GlobusAuthInfo(user_id, globus_name, globus_id, tokens)
+        data = record_obj.__dict__
+        rv = self.r.table("background_process").insert(data).run(self.conn)
+        record_id = rv['generated_keys'][0]
+        return self.get_globus_auth_info(record_id)
+
+    def get_globus_auth_info(self, record_id):
+        return self.r.table("globus_auth_info").get(record_id).run(self.conn)
+
+    def get_globus_auth_info_records_by_user_id(self, user_id):
+        return self.r.table("globus_auth_info").get_all(user_id, {'index': 'owner'})
+
+    def delete_globus_auth_info_record(self, record_id):
+        return self.r.table("globus_auth_info").get(record_id).delete().run(self.conn)

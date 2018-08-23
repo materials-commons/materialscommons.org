@@ -1,7 +1,7 @@
 import logging
 import json
 import pkg_resources
-from flask import Flask, request
+from flask import Flask, request, url_for
 from flask_api import status
 
 from servers.etlserver.globus_etl.etl_task_library import startup_and_verify
@@ -12,9 +12,12 @@ from servers.etlserver.download.GlobusDownload import GlobusDownload
 from servers.etlserver.globus_non_etl_upload.GlobusUpload import GlobusUpload
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
+from servers.etlserver.user.apikeydb import apikey_user as apikeydb_apikey_user
 from servers.etlserver.utils.UploadUtility import UploadUtility
 from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
+from servers.etlserver.utils.globus_decorators import globus_authenticated
 from servers.etlserver.common.GlobusInfo import GlobusInfo
+from servers.etlserver.common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from servers.etlserver.globus_monitor.GlobusMonitor import GlobusMonitor
 
 log = logging.getLogger(__name__)
@@ -22,6 +25,8 @@ log = logging.getLogger(__name__)
 log.info("Starting Flask with {}".format(__name__.split('.')[0]))
 
 app = Flask(__name__.split('.')[0])
+app.config['SECRET_KEY'] = "blah blah"
+app.config['GLOBUS_AUTH_LOGOUT_URI'] = 'https://auth.globus.org/v2/web/logout'
 
 
 def format_as_json_return(what):
@@ -334,6 +339,7 @@ def globus_transfer_admin_status():
         log.exception(message)
         return message, status.HTTP_400_BAD_REQUEST
 
+
 @app.route('/globus/transfer/admin/cctasks', methods=['GET', 'POST'])
 @apikey
 def globus_transfer_admin_cctasks():
@@ -357,3 +363,134 @@ def globus_transfer_admin_cctasks():
         message = "Globus transfer admin cc tasks - unexpected exception"
         log.exception(message)
         return message, status.HTTP_400_BAD_REQUEST
+
+
+@app.route('/globus/auth/status', methods=['GET', 'POST'])
+@apikey
+def globus_auth_status():
+    globus_is_authenticated = session.get('is_authenticated') or False
+    return format_as_json_return({'globus_is_authenticated': globus_is_authenticated})
+
+
+@app.route('/globus/auth/login', methods=['GET', 'POST'])
+@apikey
+def globus_auth_login_url():
+    apikey = request.args.get('apikey')
+    user_id = access.get_user()
+    # Set up our Globus Auth/OAuth2 state
+    # redirect_uri = url_for('globus_auth_callback', _external=True)
+    redirect_uri = 'https://localhost:5032/globus/auth/callback'
+    log.info("Redirect for return call = {}".format(redirect_uri))
+
+    client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
+    client.oauth2_start_flow(redirect_uri, state=apikey, refresh_tokens=True)
+    auth_uri = client.oauth2_get_authorize_url()
+    log.info("Auth UIR = {}".format(auth_uri))
+
+    return format_as_json_return({'url': auth_uri})
+
+
+@app.route('/globus/auth/callback', methods=['GET'])
+def globus_auth_callback():
+    # If there's no "code" query string parameter something is wrong
+    if 'code' not in request.args:
+        # If we're coming back from Globus Auth in an error state, the error
+        # will be in the "error" query string parameter.
+        if 'error' in request.args:
+            message = "Login request failed: {}".format(request.args['error'])
+            log.error(message)
+#            session['login_status'] = 'error'
+#            session['is_authenticated'] = 'false'
+#            session['error_message'] = message
+            return message, status.HTTP_401_UNAUTHORIZED
+        else:
+            message = "This service is for globus auth return only"
+            log.error(message)
+            return message, status.HTTP_401_UNAUTHORIZED
+
+    else:
+        # The only legitimate 'call' to this url is Globus Auth callback.
+
+        # If we do have a "code" param, we're coming back from Globus Auth
+        # and can start the process of exchanging an auth code for a token.
+
+        # Set up our Globus Auth/OAuth2 state
+        message = None
+        user_id = None
+        apikey = request.args.get('state')
+        if not apikey:
+            message = "The 'state' parameters was not set; expected an apikey"
+        else:
+            user_id = apikeydb_apikey_user(apikey)
+        if not user_id:
+            message = message or "The given apikey ({}) is not valid".format(apikey)
+            log.error(message)
+            #            session['login_status'] = 'error'
+            #            session['is_authenticated'] = 'false'
+            #            session['error_message'] = message
+            return message, status.HTTP_401_UNAUTHORIZED
+
+        redirect_uri = url_for('globus_auth_callback', _external=True)
+        log.info("Redirect for return call = {}".format(redirect_uri))
+
+        client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
+        client.oauth2_start_flow(redirect_uri, refresh_tokens=True)
+        code = request.args.get('code')
+        tokens = client.oauth2_exchange_code_for_tokens(code)
+
+        id_token = tokens.decode_id_token()
+        log.info("Returned as from globus auth:")
+        log.info("  name = {}".format(id_token.get('name', '')))
+        log.info("  email = {}".format(id_token.get('email', '')))
+        log.info("  institution = {}".format(id_token.get('institution', '')))
+        log.info("  primary_username = {}".format(id_token.get('preferred_username')))
+        log.info("  primary_identity = {}".format(id_token.get('sub')))
+        log.info("  tokens = {}".format(tokens.by_resource_server))
+        DatabaseInterface().create_globus_auth_info(
+            user_id,
+            id_token.get('preferred_username'),
+            id_token.get('sub'),
+            tokens)
+    return ''
+
+
+@app.route('/globus/auth/logout', methods=['GET'])
+@apikey
+def globus_auth_logout():
+    """
+    - Revoke the tokens with Globus Auth.
+    - Remove any auth records in database.
+    - Return Globus logout URL
+    """
+    user_id = access.get_user()
+    client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
+    auth_records = DatabaseInterface().get_globus_auth_info_records_by_user_id(user_id)
+    if auth_records:
+        for record in auth_records:
+            for token, token_type in (
+                    (token_info[ty], ty)
+                    # get all of the token info dicts
+                    for token_info in record['tokens'].values()
+                    # cross product with the set of token types
+                    for ty in ('access_token', 'refresh_token')
+                    # only where the relevant token is actually present
+                    if token_info[ty] is not None):
+                client.oauth2_revoke_token(
+                    token, additional_params={'token_type_hint': token_type})
+
+    # Destroy the session state - normally, only one
+    if auth_records:
+        for record in auth_records:
+            DatabaseInterface().delete_globus_auth_info_record(record['id'])
+
+    redirect_uri = url_for('home', _external=True)
+
+    # noinspection PyListCreation
+    ga_logout_url = []
+    ga_logout_url.append(app.config['GLOBUS_AUTH_LOGOUT_URI'])
+    ga_logout_url.append('?client={}'.format(client.client_id))
+    ga_logout_url.append('&redirect_uri={}'.format(redirect_uri))
+    ga_logout_url.append('&redirect_name=Globus Sample Data Portal')
+
+    # This link to the Globus Auth logout page
+    return format_as_json_return({'url': ''.join(ga_logout_url)})
