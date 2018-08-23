@@ -1,11 +1,11 @@
 import rethinkdb as r
 
 class GlobusAuthInfo:
-    def __init__(self, owner, globus_name, globus_id, tokens):
+    def __init__(self, owner, globus_name, globus_id, tokens_as_json):
         self.owner = owner
         self.otype = "globus_auth_info"
         self.globus_name = globus_name
         self.globus_id = globus_id
         self.birthtime = r.now()
         self.mtime = self.birthtime
-        self.tokens = tokens
+        self.tokens = tokens_as_json

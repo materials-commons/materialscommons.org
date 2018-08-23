@@ -15,7 +15,6 @@ from servers.etlserver.user.api_key import apikey
 from servers.etlserver.user.apikeydb import apikey_user as apikeydb_apikey_user
 from servers.etlserver.utils.UploadUtility import UploadUtility
 from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
-from servers.etlserver.utils.globus_decorators import globus_authenticated
 from servers.etlserver.common.GlobusInfo import GlobusInfo
 from servers.etlserver.common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from servers.etlserver.globus_monitor.GlobusMonitor import GlobusMonitor
@@ -25,7 +24,6 @@ log = logging.getLogger(__name__)
 log.info("Starting Flask with {}".format(__name__.split('.')[0]))
 
 app = Flask(__name__.split('.')[0])
-app.config['SECRET_KEY'] = "blah blah"
 app.config['GLOBUS_AUTH_LOGOUT_URI'] = 'https://auth.globus.org/v2/web/logout'
 
 
@@ -368,22 +366,72 @@ def globus_transfer_admin_cctasks():
 @app.route('/globus/auth/status', methods=['GET', 'POST'])
 @apikey
 def globus_auth_status():
-    globus_is_authenticated = session.get('is_authenticated') or False
-    return format_as_json_return({'globus_is_authenticated': globus_is_authenticated})
+    # get tokens - if they exist
+    # validate tokens
+    # return authentication-state, globus user, globus id
+
+    user_id = access.get_user()
+    client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
+
+    # tokens
+    log.info("Getting Globus Auth status for user = {}".format(user_id))
+    record_list = DatabaseInterface().get_globus_auth_info_records_by_user_id(user_id)
+    # use only the latest
+    record = (record_list[0] if len(record_list) > 0 else None)
+    log.info("Globus Auth record = {}".format(record))
+    tokens = None
+    globus_name = None
+    globus_id = None
+    if record:
+        tokens = record['tokens']
+        globus_name = record['globus_name']
+        globus_id = record['globus_id']
+
+    # validate
+    validated = {}
+    types = ['auth.globus.org', 'transfer.api.globus.org']
+    for token_type in types:
+        if token_type in tokens:
+            refresh_value = client.oauth2_validate_token(tokens[token_type]['refresh_token'])
+            access_value = client.oauth2_validate_token(tokens[token_type]['access_token'])
+            validated[token_type] = {
+                'refresh': refresh_value['active'],
+                'access': access_value['active']
+            }
+        else:
+            validated[token_type] = {
+                'refresh': False,
+                'access': False
+            }
+
+    globus_authentication = \
+        ('auth.globus.org' in validated) \
+        and validated['auth.globus.org']['access']
+
+    status = {
+        'globus_name': globus_name,
+        'globus_id': globus_id,
+        'authenticated': globus_authentication,
+        'validated': validated
+    }
+
+    return format_as_json_return({'status': status})
 
 
 @app.route('/globus/auth/login', methods=['GET', 'POST'])
 @apikey
 def globus_auth_login_url():
-    apikey = request.args.get('apikey')
     user_id = access.get_user()
     # Set up our Globus Auth/OAuth2 state
     # redirect_uri = url_for('globus_auth_callback', _external=True)
     redirect_uri = 'https://localhost:5032/globus/auth/callback'
+    log.info("--------------------------------------------------")
+    log.info("---------------        FIX THIS       ------------")
     log.info("Redirect for return call = {}".format(redirect_uri))
+    log.info("--------------------------------------------------")
 
     client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
-    client.oauth2_start_flow(redirect_uri, state=apikey, refresh_tokens=True)
+    client.oauth2_start_flow(redirect_uri, state=user_id, refresh_tokens=True)
     auth_uri = client.oauth2_get_authorize_url()
     log.info("Auth UIR = {}".format(auth_uri))
 
@@ -415,15 +463,9 @@ def globus_auth_callback():
         # and can start the process of exchanging an auth code for a token.
 
         # Set up our Globus Auth/OAuth2 state
-        message = None
-        user_id = None
-        apikey = request.args.get('state')
-        if not apikey:
-            message = "The 'state' parameters was not set; expected an apikey"
-        else:
-            user_id = apikeydb_apikey_user(apikey)
+        user_id = request.args.get('state')
         if not user_id:
-            message = message or "The given apikey ({}) is not valid".format(apikey)
+            message = "The 'state' parameters was not set; expected a user_id"
             log.error(message)
             #            session['login_status'] = 'error'
             #            session['is_authenticated'] = 'false'
@@ -446,11 +488,11 @@ def globus_auth_callback():
         log.info("  primary_username = {}".format(id_token.get('preferred_username')))
         log.info("  primary_identity = {}".format(id_token.get('sub')))
         log.info("  tokens = {}".format(tokens.by_resource_server))
-        DatabaseInterface().create_globus_auth_info(
+        log.info(DatabaseInterface().create_globus_auth_info(
             user_id,
             id_token.get('preferred_username'),
             id_token.get('sub'),
-            tokens)
+            tokens.by_resource_server))
     return ''
 
 
@@ -463,8 +505,10 @@ def globus_auth_logout():
     - Return Globus logout URL
     """
     user_id = access.get_user()
+    log.info("Globus Auth logout for user = {}".format(user_id))
     client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
     auth_records = DatabaseInterface().get_globus_auth_info_records_by_user_id(user_id)
+    log.info("Auth records{}".format(auth_records))
     if auth_records:
         for record in auth_records:
             for token, token_type in (
@@ -481,16 +525,13 @@ def globus_auth_logout():
     # Destroy the session state - normally, only one
     if auth_records:
         for record in auth_records:
+            log.info("Deleting Globus Auth record with id = {}".format(record['id']))
             DatabaseInterface().delete_globus_auth_info_record(record['id'])
-
-    redirect_uri = url_for('home', _external=True)
 
     # noinspection PyListCreation
     ga_logout_url = []
     ga_logout_url.append(app.config['GLOBUS_AUTH_LOGOUT_URI'])
     ga_logout_url.append('?client={}'.format(client.client_id))
-    ga_logout_url.append('&redirect_uri={}'.format(redirect_uri))
-    ga_logout_url.append('&redirect_name=Globus Sample Data Portal')
 
     # This link to the Globus Auth logout page
     return format_as_json_return({'url': ''.join(ga_logout_url)})
