@@ -392,16 +392,20 @@ def globus_auth_status():
     types = ['auth.globus.org', 'transfer.api.globus.org']
     for token_type in types:
         if tokens and token_type in tokens:
+            log.info(client.oauth2_validate_token(tokens[token_type]))
             refresh_value = client.oauth2_validate_token(tokens[token_type]['refresh_token'])
             access_value = client.oauth2_validate_token(tokens[token_type]['access_token'])
+            seconds = tokens[token_type]['expires_at_seconds']
             validated[token_type] = {
                 'refresh': refresh_value['active'],
-                'access': access_value['active']
+                'access': access_value['active'],
+                'expires': seconds
             }
         else:
             validated[token_type] = {
                 'refresh': False,
-                'access': False
+                'access': False,
+                'expires': 0
             }
 
     globus_authentication = \

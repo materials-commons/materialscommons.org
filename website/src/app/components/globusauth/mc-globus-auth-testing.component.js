@@ -20,13 +20,26 @@ class MCGlobusAuthTestingComponentController{
             (retVal) => {
                 this.details = [];
                 this.globusStatus = retVal.status;
-                let token_keys = ['auth.globus.org', 'transfer.api.globus.org'];
-                for (let i = 0; i < token_keys.length; i++){
-                    let key = token_keys[i];
-                    this.details.push(key + ', access: ' +  this.globusStatus.validated[key].access)
-                    this.details.push(key + ', refresh: ' +  this.globusStatus.validated[key].refresh)
-                }
                 this.loggedIn = this.globusStatus.authenticated;
+                if (this.loggedIn) {
+                    let token_keys = ['auth.globus.org', 'transfer.api.globus.org'];
+                    for (let i = 0; i < token_keys.length; i++){
+                        let key = token_keys[i];
+                        this.details.push(key + ', access: ' +  this.globusStatus.validated[key].access)
+                        this.details.push(key + ', refresh: ' +  this.globusStatus.validated[key].refresh)
+                        console.log(this.globusStatus.validated[key].expires);
+                        let s = this.globusStatus.validated[key].expires;
+                        if (s > 0) {
+                            let d = new Date();
+                            d.setTime(1000 * s);
+                            console.log(d.toString());
+                            this.details.push(key + ', expires: ' + d.toString());
+                        }
+                    }
+                }
+                else {
+                    this.details.push("Not Authenticated")
+                }
             }
         )
     }
