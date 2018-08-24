@@ -1,19 +1,64 @@
 class MCGlobusAuthTestingComponentController{
     /*@ngInject*/
     constructor(User, etlServerAPI) {
-        console.log("MCGlobusAuthTestingComponentController - constructor()");
         this.etlServerAPI = etlServerAPI;
-        this.userId = '';
-        if (User.isAuthenticated()) {
-            this.userId = User.attr().id;
-        }
+        this.userId = User.attr().id;
+        this.globusStatus = null;
+        this.loggedIn = false;
+        this.loginUrl = null;
+        this.logoutUrl = null;
+        this.details = []
     }
 
     $onInit() {
-        console.log("MCGlobusAuthTestingComponentController - onInit()");
+        this.refreshGlobusStatus();
+    }
+
+    refreshGlobusStatus() {
+        console.log('refreshGlobusStatus');
         this.etlServerAPI.getGlobusAuthStatus().then(
             (retVal) => {
-                console.log(retVal);
+                this.details = [];
+                this.globusStatus = retVal.status;
+                let token_keys = ['auth.globus.org', 'transfer.api.globus.org'];
+                for (let i = 0; i < token_keys.length; i++){
+                    let key = token_keys[i];
+                    this.details.push(key + ', access: ' +  this.globusStatus.validated[key].access)
+                    this.details.push(key + ', refresh: ' +  this.globusStatus.validated[key].refresh)
+                }
+                this.loggedIn = this.globusStatus.authenticated;
+            }
+        )
+    }
+
+    globusLogin(){
+        console.log('globusLogin');
+        this.etlServerAPI.globusLogin().then(
+            (retVal) => {
+                this.loginUrl = retVal.url;
+                this.loggedin = true;
+            }
+        )
+    }
+
+    resetFromLogin(){
+        this.loginUrl = null;
+        this.globusStatus = null;
+        this.loggedin = false;
+    }
+
+    resetFromLogout() {
+        this.logoutUrl = null;
+        this.globusStatus = null;
+        this.loggedin = true;
+    }
+
+    globusLogout(){
+        console.log('globusLogout');
+        this.etlServerAPI.globusLogout().then(
+            (retVal) => {
+                this.logoutUrl = retVal.url;
+                this.loggedin = false;
             }
         )
     }

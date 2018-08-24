@@ -391,7 +391,7 @@ def globus_auth_status():
     validated = {}
     types = ['auth.globus.org', 'transfer.api.globus.org']
     for token_type in types:
-        if token_type in tokens:
+        if tokens and token_type in tokens:
             refresh_value = client.oauth2_validate_token(tokens[token_type]['refresh_token'])
             access_value = client.oauth2_validate_token(tokens[token_type]['access_token'])
             validated[token_type] = {
@@ -496,7 +496,7 @@ def globus_auth_callback():
     return ''
 
 
-@app.route('/globus/auth/logout', methods=['GET'])
+@app.route('/globus/auth/logout', methods=['GET','POST'])
 @apikey
 def globus_auth_logout():
     """

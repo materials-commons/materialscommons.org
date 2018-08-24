@@ -164,6 +164,31 @@ class EtlServerAPIService {
             }
         );
     }
+
+    globusLogin() {
+        let route = this.etlAPIRoute('globus').one('auth').one('login');
+        let data = {};
+        return route.customPOST(data).then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return results;
+            }
+        );
+    }
+
+    globusLogout() {
+        let route = this.etlAPIRoute('globus').one('auth').one('logout');
+        let data = {};
+        return route.customPOST(data).then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return results;
+            }
+        );
+    }
+
 }
 
 angular.module('materialscommons').service('etlServerAPI', EtlServerAPIService);
