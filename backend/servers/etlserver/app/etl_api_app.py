@@ -493,7 +493,7 @@ def globus_auth_callback():
             id_token.get('preferred_username'),
             id_token.get('sub'),
             tokens.by_resource_server))
-    return ''
+    return 'You Should be logged in - return to Materials Commons page/tab and refresh.'
 
 
 @app.route('/globus/auth/logout', methods=['GET','POST'])
