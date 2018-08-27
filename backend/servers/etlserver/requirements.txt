@@ -1,6 +1,6 @@
 configparser
-httplib
-materials_commons==0.7.7b3
+httplib2
+materials_commons==0.7.7b2
 flask-api
 faktory
 rethinkdb
