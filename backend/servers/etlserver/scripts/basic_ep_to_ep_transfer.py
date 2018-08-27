@@ -12,8 +12,6 @@ from ..common.MaterialsCommonsGlobusInterfaceNew import MaterialsCommonsGlobusIn
 from ..database.DatabaseInterface import DatabaseInterface
 
 SOURCE_ENDPOINT = '85908598-a7cb-11e8-9700-0a6d4e044368'
-TARGET_ENDPOINT = 'e7ecb6b6-9002-11e8-9663-0a6d4e044368'
-
 
 class EpEpTransferHelper:
     def __init__(self, project_id, user_id):
@@ -67,7 +65,7 @@ class EpEpTransferHelper:
         # else
         transfer_data = TransferData(transfer_client=self.transfer_client,
                                      source_endpoint=SOURCE_ENDPOINT,
-                                     destination_endpoint=TARGET_ENDPOINT,
+                                     destination_endpoint=self.mc_target_ep_id,
                                      label='Test-transfer-for-{}'.format(transfer_dir))
         self.log.info("Object transfer_data = {}".format(transfer_data))
         transfer_data.add_item(source_path='/',
@@ -75,7 +73,7 @@ class EpEpTransferHelper:
                                recursive=True)
         self.log.info("Object transfer_data = {}".format(transfer_data))
         self.transfer_client.endpoint_autoactivate(SOURCE_ENDPOINT)
-        self.transfer_client.endpoint_autoactivate(TARGET_ENDPOINT)
+        self.transfer_client.endpoint_autoactivate(self.mc_target_ep_id)
         self.log.info("Before submit transfer")
         results = self.transfer_client.submit_transfer(transfer_data)
         self.log.info("After submit transfer: {}".format(results))
