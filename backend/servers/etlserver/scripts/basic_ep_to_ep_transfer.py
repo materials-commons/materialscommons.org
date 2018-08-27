@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 import logging
 import time
@@ -11,8 +12,8 @@ from ..common.McdirHelper import McdirHelper
 from ..common.MaterialsCommonsGlobusInterfaceNew import MaterialsCommonsGlobusInterfaceNew
 from ..database.DatabaseInterface import DatabaseInterface
 
-SOURCE_ENDPOINT = '85908598-a7cb-11e8-9700-0a6d4e044368'
-TARGET_ENDPOINT = 'e7ecb6b6-9002-11e8-9663-0a6d4e044368'
+SOURCE_ENDPOINT = 'e1a3e368-aa26-11e8-9704-0a6d4e044368'  # '85908598-a7cb-11e8-9700-0a6d4e044368'
+TARGET_ENDPOINT = '201a9d80-86d7-11e8-9571-0a6d4e044368'  # 'e7ecb6b6-9002-11e8-9663-0a6d4e044368'
 
 
 class EpEpTransferHelper:
@@ -124,7 +125,7 @@ class EpEpTransferHelper:
 def main(project):
     log = logging.getLogger("main")
     log.info("Starting: main()")
-    transfer_helper = EpEpTransferHelper(project.id, 'test@test.mc')
+    transfer_helper = EpEpTransferHelper(project.id, 'gtarcea@umich.edu')
     transfer_helper.do_transfer()
 
 
@@ -133,7 +134,8 @@ if __name__ == '__main__':
     startup_log = logging.getLogger("main-setup")
     startup_log.info("Starting main-setup")
 
-    test_project = TestProject('totally-bogus').get_project()
+    apikey = os.environ.get('APIKEY')
+    test_project = TestProject(apikey).get_project()
     startup_log.info("generated test project - name = {}; id = {}".
                      format(test_project.name, test_project.id))
 
