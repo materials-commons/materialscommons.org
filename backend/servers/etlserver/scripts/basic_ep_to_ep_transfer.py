@@ -12,8 +12,7 @@ from ..common.McdirHelper import McdirHelper
 from ..common.MaterialsCommonsGlobusInterfaceNew import MaterialsCommonsGlobusInterfaceNew
 from ..database.DatabaseInterface import DatabaseInterface
 
-SOURCE_ENDPOINT = 'e1a3e368-aa26-11e8-9704-0a6d4e044368'  # '85908598-a7cb-11e8-9700-0a6d4e044368'
-TARGET_ENDPOINT = '201a9d80-86d7-11e8-9571-0a6d4e044368'  # 'e7ecb6b6-9002-11e8-9663-0a6d4e044368'
+SOURCE_ENDPOINT = '2567c5aa-aaca-11e8-9704-0a6d4e044368'  # 'e1a3e368-aa26-11e8-9704-0a6d4e044368'  # '85908598-a7cb-11e8-9700-0a6d4e044368'
 
 class EpEpTransferHelper:
     def __init__(self, project_id, user_id):
