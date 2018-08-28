@@ -15,7 +15,8 @@ from ..database.DatabaseInterface import DatabaseInterface
 SOURCE_ENDPOINT = '2567c5aa-aaca-11e8-9704-0a6d4e044368'  # 'e1a3e368-aa26-11e8-9704-0a6d4e044368'  # '85908598-a7cb-11e8-9700-0a6d4e044368'
 
 class EpEpTransferHelper:
-    def __init__(self, project_id, user_id):
+    def __init__(self, source_endpoint, project_id, user_id):
+        self.source_endpoint = source_endpoint
         self.project_id = project_id
         self.user_id = user_id
         self.log = logging.getLogger(self.__class__.__name__)
@@ -27,6 +28,7 @@ class EpEpTransferHelper:
         self.transfer_client = None
 
     def do_transfer(self):
+        self.log.info('Transfer for user_id = {}'.format(self.user_id))
         if (not self.client_user) or (not self.client_token) or (not self.mc_target_ep_id):
             missing = []
             if not self.client_user:
@@ -38,14 +40,16 @@ class EpEpTransferHelper:
             message = "Missing environment values: {}".format(", ".join(missing))
             raise EnvironmentError(message)
 
+        self.log.info('Confidential Client, user_id = {}'.format(self.client_user))
+        self.log.info('Source endpoint = {}'.format(self.source_endpoint))
+        self.log.info('Target endpoint = {}'.format(self.mc_target_ep_id))
+
         base_path = self.worker_base_path
         random_key = "{0:04d}".format(randint(0, 10000))
         transfer_dir = self.make_transfer_dir(random_key)
         transfer_base_path = os.path.join(base_path, transfer_dir)
         os.mkdir(transfer_base_path)
         self.log.info("transfer_base_path = {}".format(transfer_base_path))
-        source_endpoint = SOURCE_ENDPOINT
-        self.log.info("source_endpoint = {}".format(source_endpoint))
 
         records = DatabaseInterface().get_globus_auth_info_records_by_user_id(self.user_id)
         # Only the latest
@@ -58,14 +62,14 @@ class EpEpTransferHelper:
         transfer_tokens = record['tokens']['transfer.api.globus.org']
         self.log.info("transfer.api.globus.org tokens = {}".format(transfer_tokens))
         self.transfer_client = \
-            self.get_transfer_client(transfer_tokens, source_endpoint)
+            self.get_transfer_client(transfer_tokens, self.source_endpoint)
         if not self.transfer_client:
             self.log.error("Transfer Client is not available; abort")
             return
 
         # else
         transfer_data = TransferData(transfer_client=self.transfer_client,
-                                     source_endpoint=SOURCE_ENDPOINT,
+                                     source_endpoint=self.source_endpoint,
                                      destination_endpoint=self.mc_target_ep_id,
                                      label='Test-transfer-for-{}'.format(transfer_dir))
         self.log.info("Object transfer_data = {}".format(transfer_data))
@@ -73,7 +77,7 @@ class EpEpTransferHelper:
                                destination_path="/{}".format(transfer_dir),
                                recursive=True)
         self.log.info("Object transfer_data = {}".format(transfer_data))
-        self.transfer_client.endpoint_autoactivate(SOURCE_ENDPOINT)
+        self.transfer_client.endpoint_autoactivate(self.source_endpoint)
         self.transfer_client.endpoint_autoactivate(self.mc_target_ep_id)
         self.log.info("Before submit transfer")
         results = self.transfer_client.submit_transfer(transfer_data)
@@ -123,7 +127,7 @@ class EpEpTransferHelper:
 def main(project):
     log = logging.getLogger("main")
     log.info("Starting: main()")
-    transfer_helper = EpEpTransferHelper(project.id, 'gtarcea@umich.edu')
+    transfer_helper = EpEpTransferHelper(SOURCE_ENDPOINT, project.id, project.owner)
     transfer_helper.do_transfer()
 
 
@@ -133,6 +137,7 @@ if __name__ == '__main__':
     startup_log.info("Starting main-setup")
 
     apikey = os.environ.get('APIKEY')
+    startup_log.info("APIKEY = {}".format(apikey))
     test_project = TestProject(apikey).get_project()
     startup_log.info("generated test project - name = {}; id = {}".
                      format(test_project.name, test_project.id))
