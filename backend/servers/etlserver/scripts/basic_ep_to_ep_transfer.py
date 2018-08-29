@@ -14,6 +14,7 @@ from ..database.DatabaseInterface import DatabaseInterface
 
 SOURCE_ENDPOINT = '2567c5aa-aaca-11e8-9704-0a6d4e044368'  # 'e1a3e368-aa26-11e8-9704-0a6d4e044368'  # '85908598-a7cb-11e8-9700-0a6d4e044368'
 
+
 class EpEpTransferHelper:
     def __init__(self, source_endpoint, project_id, user_id):
         self.source_endpoint = source_endpoint
