@@ -13,7 +13,6 @@ from ..common.McdirHelper import McdirHelper
 from ..common.MaterialsCommonsGlobusInterfaceNew import MaterialsCommonsGlobusInterfaceNew
 from ..database.DatabaseInterface import DatabaseInterface
 
-# 1960* is the endpoint on titan laptop
 # SOURCE_ENDPOINT = '1960ad4c-aaf2-11e8-970a-0a6d4e044368' # titan laptop
 # SOURCE_ENDPOINT = '2567c5aa-aaca-11e8-9704-0a6d4e044368'
 # SOURCE_ENDPOINT = 'e1a3e368-aa26-11e8-9704-0a6d4e044368'
@@ -103,9 +102,11 @@ class EpEpTransferHelper:
             # The /portal/processed directory has been set to to read/write
             # for all users so the subsequent operations will succeed.
             if error.code == 'PermissionDenied':
-                pass
+                self.log.info(error)
             elif error.code != 'Exists':
                 raise
+            else:
+                self.log.info(error)
 
         self.log.info("Before submit transfer")
         results = self.transfer_client.submit_transfer(transfer_data)
