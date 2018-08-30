@@ -33,6 +33,7 @@ class EpEpTransferHelper:
         self.client_token = os.environ.get('MC_CONFIDENTIAL_CLIENT_PW')
         self.mc_target_ep_id = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
         self.transfer_client = None
+        self.source_user_globus_id = None
 
     def do_transfer(self):
         self.log.info('Transfer for user_id = {}'.format(self.user_id))
@@ -68,6 +69,7 @@ class EpEpTransferHelper:
             return
 
         # else
+        self.source_user_globus_id = record['globus_id']
         transfer_tokens = record['tokens']['transfer.api.globus.org']
         self.log.info("transfer.api.globus.org tokens = {}".format(transfer_tokens))
         self.transfer_client = \
@@ -92,7 +94,7 @@ class EpEpTransferHelper:
         try:
             self.transfer_client.add_endpoint_acl_rule(
                 self.mc_target_ep_id,
-                dict(principal=self.user_id,
+                dict(principal=self.source_user_globus_id,
                      principal_type='identity', path=self.dest_path, permissions='rw'),
             )
         except TransferAPIError as error:
