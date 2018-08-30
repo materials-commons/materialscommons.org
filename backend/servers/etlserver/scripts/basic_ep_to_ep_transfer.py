@@ -1,30 +1,34 @@
 #!/usr/bin/env python
 import os
+import sys
 import logging
 import time
+import argparse
 from random import randint
 
 from globus_sdk import (RefreshTokenAuthorizer, TransferClient, TransferAPIError,
                         TransferData)
 from ..utils.LoggingHelper import LoggingHelper
-from ..common.TestProject import TestProject
 from ..common.McdirHelper import McdirHelper
 from ..common.MaterialsCommonsGlobusInterfaceNew import MaterialsCommonsGlobusInterfaceNew
 from ..database.DatabaseInterface import DatabaseInterface
 
 # 1960* is the endpoint on titan laptop
-SOURCE_ENDPOINT = '1960ad4c-aaf2-11e8-970a-0a6d4e044368'  # '2567c5aa-aaca-11e8-9704-0a6d4e044368'  # 'e1a3e368-aa26-11e8-9704-0a6d4e044368'  # '85908598-a7cb-11e8-9700-0a6d4e044368'
+# SOURCE_ENDPOINT = '1960ad4c-aaf2-11e8-970a-0a6d4e044368' # titan laptop
+# SOURCE_ENDPOINT = '2567c5aa-aaca-11e8-9704-0a6d4e044368'
+# SOURCE_ENDPOINT = 'e1a3e368-aa26-11e8-9704-0a6d4e044368'
+# SOURCE_ENDPOINT = '85908598-a7cb-11e8-9700-0a6d4e044368'
+# SOURCE_ENDPOINT = '52d6a200-ab99-11e8-9710-0a6d4e044368'
 
 
 class EpEpTransferHelper:
-    def __init__(self, source_endpoint, project_id, user_id):
-        self.source_endpoint = source_endpoint
-        self.project_id = project_id
-        self.user_id = user_id
-        self.dest_path = ""
+    def __init__(self, mc_user_id, globus_source_endpoint):
         self.log = logging.getLogger(self.__class__.__name__)
+        self.user_id = mc_user_id
+        self.source_endpoint = globus_source_endpoint
+
         self.worker_base_path = McdirHelper().get_upload_dir()
-        self.mc_interface = MaterialsCommonsGlobusInterfaceNew(user_id)
+        self.mc_interface = MaterialsCommonsGlobusInterfaceNew(mc_user_id)
         self.client_user = os.environ.get('MC_CONFIDENTIAL_CLIENT_USER')
         self.client_token = os.environ.get('MC_CONFIDENTIAL_CLIENT_PW')
         self.mc_target_ep_id = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
@@ -162,10 +166,10 @@ class EpEpTransferHelper:
         return "ep2ep-{}".format(status_record_id)
 
 
-def main(project):
+def main(mc_user_id, globus_source_endpoint):
     log = logging.getLogger("main")
     log.info("Starting: main()")
-    transfer_helper = EpEpTransferHelper(SOURCE_ENDPOINT, project.id, project.owner)
+    transfer_helper = EpEpTransferHelper(mc_user_id, globus_source_endpoint)
     transfer_helper.do_transfer()
 
 
@@ -174,10 +178,37 @@ if __name__ == '__main__':
     startup_log = logging.getLogger("main-setup")
     startup_log.info("Starting main-setup")
 
-    apikey = os.environ.get('APIKEY')
-    startup_log.info("APIKEY = {}".format(apikey))
-    test_project = TestProject(apikey).get_project()
-    startup_log.info("generated test project - name = {}; id = {}".
-                     format(test_project.name, test_project.id))
+    argv = sys.argv
+    parser = argparse.ArgumentParser(description='Test of Globus non-ETL upload')
+    parser.add_argument('--user_id', type=str,
+                        help="Materials Commons user id; fallback MC_USER_ID env variable; required")
+    parser.add_argument('--endpoint', type=str,
+                        help="source endpoint; fallback SOURCE_ENDPOINT env var; required")
+    args = parser.parse_args(argv[1:])
 
-    main(test_project)
+    # user_id
+    user_id = None
+    if args.user_id:
+        user_id = args.user_id
+    elif os.environ.get('MC_USER_ID'):
+        user_id = os.environ.get('MC_USER_ID')
+        startup_log.info("Getting user_id from MC_USER_ID env var = {}".format(user_id))
+    else:
+        print("You must specify a Materials Commons apikey. Argument not found.")
+        parser.print_help()
+        exit(-1)
+
+    # endpoint
+    source_endpoint=None
+    if args.endpoint:
+        source_endpoint = args.endpoint
+    elif os.environ.get('SOURCE_ENDPOINT'):
+        source_endpoint = os.environ.get('SOURCE_ENDPOINT')
+        startup_log.info("Getting source Globus endpoint from SOURCE_ENDPOINT env var = {}".format(source_endpoint))
+    else:
+        print("You must specify a source endpoint. Argument not found.")
+        parser.print_help()
+        exit(-1)
+
+    startup_log.info("user_id = {}, source_endpoint = {}".format(user_id,source_endpoint))
+    main(user_id, source_endpoint)
