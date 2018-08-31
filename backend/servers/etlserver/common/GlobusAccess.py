@@ -1,22 +1,20 @@
-from .GlobusAccessWithNativeAppAuth \
-     import GlobusAccessWithNativeAppAuth as NativeAppImpl
-
 from .GlobusAccessWithConfidentialAuth \
     import GlobusAccessWithConfidentialAuth as ConfidentialClientImpl
+from .GlobusAccessWithNativeAppAuth \
+    import GlobusAccessWithNativeAppAuth as NativeAppImpl
 
 NATIVE_APP_AUTH = "native"
 CONFIDENTIAL_CLIENT_APP_AUTH = "cc"
 
-# USE_IMPLEMENTATION = NATIVE_APP_AUTH
-USE_IMPLEMENTATION = CONFIDENTIAL_CLIENT_APP_AUTH
+DEFAULT_IMPLEMENTATION = CONFIDENTIAL_CLIENT_APP_AUTH
 
 
 class GlobusAccess:
-    def __init__(self, use_implementation=CONFIDENTIAL_CLIENT_APP_AUTH):
+    def __init__(self, use_implementation=DEFAULT_IMPLEMENTATION):
         self.impl = None
         self.use_implementation = use_implementation
         if not use_implementation:
-            use_implementation =  USE_IMPLEMENTATION
+            use_implementation = DEFAULT_IMPLEMENTATION
         if use_implementation == NATIVE_APP_AUTH:
             self.impl = NativeAppImpl()
         if use_implementation == CONFIDENTIAL_CLIENT_APP_AUTH:
@@ -42,43 +40,13 @@ class GlobusAccess:
         return globus_user
 
     def get_endpoint(self, endpoint_id):
-        return self._transfer_client.get_endpoint(endpoint_id)
-
-    def get_endpoint(self, ep_id):
-        if self.impl:
-            return self.impl.get_endpoint(ep_id)
-        return None
-
-    def get_endpoint_id(self, ep_name):
-        if self.impl:
-            return self.impl.get_endpoint_id(ep_name)
-        return None
-
-    def task_list(self, num_results=10):
-        if self.impl:
-            return self.impl.task_list(num_results=num_results)
-        return None
-
-    def cancel_task(self, task_id):
-        if self.impl:
-            return self.impl.cancel_task(task_id)
-        return None
-
-    def my_shared_endpoint_list(self, base_endpoint_id):
-        if self.impl:
-            return self.impl.my_shared_endpoint_list(base_endpoint_id)
-        return None
-
-    def create_shared_endpoint(self, data):
-        if self.impl:
-            return self.impl.create_shared_endpoint(data)
-        return None
+        transfer_client = self.impl.get_transfer_client()
+        return transfer_client.get_endpoint(endpoint_id)
 
     def get_endpoint_id(self, endpoint_name):
-        print("My Endpoints:")
+        transfer_client = self.impl.get_transfer_client()
         found = None
-        for ep in self._transfer_client.endpoint_search(filter_scope="my-endpoints"):
-            print(ep["display_name"])
+        for ep in transfer_client.endpoint_search(filter_scope="my-endpoints"):
             if ep["display_name"] == endpoint_name:
                 found = ep
         if found:
@@ -86,34 +54,39 @@ class GlobusAccess:
         return None
 
     def task_list(self, num_results=10):
-        return self._transfer_client.task_list(num_results=num_results)
+        transfer_client = self.impl.get_transfer_client()
+        return transfer_client.task_list(num_results=num_results)
 
     def cancel_task(self, task_id):
-        return self._transfer_client.cancel_task(task_id)
+        transfer_client = self.impl.get_transfer_client()
+        return transfer_client.cancel_task(task_id)
 
     def my_shared_endpoint_list(self, base_endpoint_id):
-        return self._transfer_client.my_shared_endpoint_list(base_endpoint_id)
+        transfer_client = self.impl.get_transfer_client()
+        return transfer_client.my_shared_endpoint_list(base_endpoint_id)
 
     def create_shared_endpoint(self, data):
-        return self._transfer_client.create_shared_endpoint(data)
+        transfer_client = self.impl.get_transfer_client()
+        return transfer_client.create_shared_endpoint(data)
 
-    # def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
-    #     results = self._transfer_client.endpoint_acl_list(ep_id)
-    #     for rule in results["DATA"]:
-    #         if rule['path'] == path and rule['principal'] == globus_user_id:
-    #             return rule
-    #     rule_data = {
-    #         "DATA_TYPE": "access",
-    #         "principal_type": "identity",
-    #         "principal": globus_user_id,
-    #         "path": path,
-    #         "permissions": permissions
-    #     }
-    #     results = self._transfer_client.add_endpoint_acl_rule(ep_id, rule_data)
-    #     if not results['code'] == "Created":
-    #         return None
-    #     results = self._transfer_client.endpoint_acl_list(ep_id)
-    #     for rule in results["DATA"]:
-    #         if rule['path'] == path and rule['principal'] == globus_user_id:
-    #             return rule
-    #     return None
+    def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
+        transfer_client = self.impl.get_transfer_client()
+        results = transfer_client.endpoint_acl_list(ep_id)
+        for rule in results["DATA"]:
+            if rule['path'] == path and rule['principal'] == globus_user_id:
+                return rule
+        rule_data = {
+            "DATA_TYPE": "access",
+            "principal_type": "identity",
+            "principal": globus_user_id,
+            "path": path,
+            "permissions": permissions
+        }
+        results = transfer_client.add_endpoint_acl_rule(ep_id, rule_data)
+        if not results['code'] == "Created":
+            return None
+        results = transfer_client.endpoint_acl_list(ep_id)
+        for rule in results["DATA"]:
+            if rule['path'] == path and rule['principal'] == globus_user_id:
+                return rule
+        return None
