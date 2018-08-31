@@ -65,7 +65,7 @@ class GlobusAccess:
             return self.impl.create_shared_endpoint(data)
         return None
 
-    # def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
-    #     if self.impl:
-    #         return self.impl.set_acl_rule(ep_id, path, globus_user_id, permissions)
-    #     return None
+    def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
+        if self.impl:
+            return self.impl.set_acl_rule(ep_id, path, globus_user_id, permissions)
+        return None

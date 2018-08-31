@@ -88,23 +88,23 @@ class GlobusAccessWithConfidentialAuth:
     def create_shared_endpoint(self, data):
         return self._transfer_client.create_shared_endpoint(data)
 
-    # def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
-    #     results = self._transfer_client.endpoint_acl_list(ep_id)
-    #     for rule in results["DATA"]:
-    #         if rule['path'] == path and rule['principal'] == globus_user_id:
-    #             return rule
-    #     rule_data = {
-    #         "DATA_TYPE": "access",
-    #         "principal_type": "identity",
-    #         "principal": globus_user_id,
-    #         "path": path,
-    #         "permissions": permissions
-    #     }
-    #     results = self._transfer_client.add_endpoint_acl_rule(ep_id, rule_data)
-    #     if not results['code'] == "Created":
-    #         return None
-    #     results = self._transfer_client.endpoint_acl_list(ep_id)
-    #     for rule in results["DATA"]:
-    #         if rule['path'] == path and rule['principal'] == globus_user_id:
-    #             return rule
-    #     return None
+    def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
+        results = self._transfer_client.endpoint_acl_list(ep_id)
+        for rule in results["DATA"]:
+            if rule['path'] == path and rule['principal'] == globus_user_id:
+                return rule
+        rule_data = {
+            "DATA_TYPE": "access",
+            "principal_type": "identity",
+            "principal": globus_user_id,
+            "path": path,
+            "permissions": permissions
+        }
+        results = self._transfer_client.add_endpoint_acl_rule(ep_id, rule_data)
+        if not results['code'] == "Created":
+            return None
+        results = self._transfer_client.endpoint_acl_list(ep_id)
+        for rule in results["DATA"]:
+            if rule['path'] == path and rule['principal'] == globus_user_id:
+                return rule
+        return None
