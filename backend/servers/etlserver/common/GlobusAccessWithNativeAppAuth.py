@@ -2,8 +2,8 @@ import logging
 import json
 import webbrowser
 
-# import configparser
-# from pathlib import Path
+import configparser
+from pathlib import Path
 
 from .utils import is_remote_session
 # from .utils import enable_requests_logging
@@ -11,35 +11,29 @@ from .utils import is_remote_session
 from globus_sdk import NativeAppAuthClient, TransferClient, \
     RefreshTokenAuthorizer, AuthClient
 
-# Config file set up
-# home = str(Path.home())
-# config_path = Path(Path.home(), '.globus', 'config_testing.ini')
-# config = configparser.ConfigParser()
-# config.read(str(config_path))
-#
-# # To set up a client_id, see https://auth.globus.org/v2/web/developers
-# # Current client_id is in Project: MaterialsCommonsProject, App: MaterialsCommonsTest
-# CLIENT_ID = config['sdk']['id']
-#
-# TOKEN_FILE_PATH = Path(Path.home(), '.globus', 'refresh-testing-tokens.json')
-# REDIRECT_URI = 'https://auth.globus.org/v2/web/auth-code'
-# SCOPES = ('openid email profile '
-#           'urn:globus:auth:scope:transfer.api.globus.org:all')
-
 # uncomment the next line to enable debug logging for network requests
 # enable_requests_logging()
 
 # NOTE: These values must be set, as suggested above, and elsewhere, for this code to work
-TOKEN_FILE_PATH = None
-CLIENT_ID = None
-REDIRECT_URI = None
-SCOPES = None
+TOKEN_FILE_PATH = Path(Path.home(), '.globus', 'refresh-testing-tokens.json')
+REDIRECT_URI = 'https://auth.globus.org/v2/web/auth-code'
+SCOPES = ('openid email profile ' +
+          'urn:globus:auth:scope:transfer.api.globus.org:all')
+
+CONFIG_PATH = Path(Path.home(), '.globus', 'config_testing.ini')
 
 
 class GlobusAccessWithNativeAppAuth:
     def __init__(self):
         self.log = logging.getLogger(self.__class__.__name__)
         self.log.info("init - started")
+
+        config = configparser.ConfigParser()
+        config.read(str(CONFIG_PATH))
+
+        # To set up a client_id, see https://auth.globus.org/v2/web/developers
+        # Current client_id is in Project: MaterialsCommonsProject, App: MaterialsCommonsTest
+        client_id = config['sdk']['id']
 
         auth_tokens = None
         transfer_tokens = None
@@ -52,7 +46,7 @@ class GlobusAccessWithNativeAppAuth:
 
         if not tokens:
             # if we need to get tokens, start the Native App authentication process
-            tokens = self.do_native_app_authentication(CLIENT_ID, REDIRECT_URI, SCOPES)
+            tokens = self.do_native_app_authentication(client_id, REDIRECT_URI, SCOPES)
 
             try:
                 self._save_tokens_to_file(TOKEN_FILE_PATH, tokens)
@@ -70,7 +64,7 @@ class GlobusAccessWithNativeAppAuth:
             context = self
             context._update_tokens_file_on_refresh(token_response)
 
-        auth_client = NativeAppAuthClient(client_id=CLIENT_ID)
+        auth_client = NativeAppAuthClient(client_id=client_id)
         authorizer = RefreshTokenAuthorizer(
             auth_tokens['refresh_token'],
             auth_client,
@@ -78,7 +72,7 @@ class GlobusAccessWithNativeAppAuth:
             expires_at=auth_tokens['expires_at_seconds'],
             on_refresh=refresh_tokens)
 
-        auth_client = AuthClient(client_id=CLIENT_ID, authorizer=authorizer)
+        auth_client = AuthClient(client_id=client_id, authorizer=authorizer)
 
         authorizer = RefreshTokenAuthorizer(
             transfer_tokens['refresh_token'],
@@ -173,6 +167,12 @@ class GlobusAccessWithNativeAppAuth:
 
     def cancel_task(self, task_id):
         return self._transfer_client.cancel_task(task_id)
+
+    def my_shared_endpoint_list(self, base_endpoint_id):
+        return self._transfer_client.my_shared_endpoint_list(base_endpoint_id)
+
+    def create_shared_endpoint(self, data):
+        return self._transfer_client.create_shared_endpoint(data)
 
     # def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
     #     results = self._transfer_client.endpoint_acl_list(ep_id)

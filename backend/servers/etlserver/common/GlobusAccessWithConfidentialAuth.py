@@ -82,6 +82,12 @@ class GlobusAccessWithConfidentialAuth:
     def cancel_task(self, task_id):
         return self._transfer_client.cancel_task(task_id)
 
+    def my_shared_endpoint_list(self, base_endpoint_id):
+        return self._transfer_client.my_shared_endpoint_list(base_endpoint_id)
+
+    def create_shared_endpoint(self, data):
+        return self._transfer_client.create_shared_endpoint(data)
+
     # def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
     #     results = self._transfer_client.endpoint_acl_list(ep_id)
     #     for rule in results["DATA"]:

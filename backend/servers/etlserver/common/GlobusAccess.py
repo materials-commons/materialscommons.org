@@ -1,10 +1,10 @@
-# from .GlobusAccessWithNativeAppAuth \
-#     import GlobusAccessWithNativeAppAuth as NativeAppImpl
+from .GlobusAccessWithNativeAppAuth \
+     import GlobusAccessWithNativeAppAuth as NativeAppImpl
 
 from .GlobusAccessWithConfidentialAuth \
     import GlobusAccessWithConfidentialAuth as ConfidentialClientImpl
 
-# NATIVE_APP_AUTH = "native"
+NATIVE_APP_AUTH = "native"
 CONFIDENTIAL_CLIENT_APP_AUTH = "cc"
 
 # USE_IMPLEMENTATION = NATIVE_APP_AUTH
@@ -12,16 +12,18 @@ USE_IMPLEMENTATION = CONFIDENTIAL_CLIENT_APP_AUTH
 
 
 class GlobusAccess:
-    def __init__(self):
+    def __init__(self, use_implementation=CONFIDENTIAL_CLIENT_APP_AUTH):
         self.impl = None
-        # if USE_IMPLEMENTATION == NATIVE_APP_AUTH:
-        #     self.impl = NativeAppImpl()
-        if USE_IMPLEMENTATION == CONFIDENTIAL_CLIENT_APP_AUTH:
+        self.use_implementation = use_implementation
+        if not use_implementation:
+            use_implementation =  USE_IMPLEMENTATION
+        if use_implementation == NATIVE_APP_AUTH:
+             self.impl = NativeAppImpl()
+        if use_implementation == CONFIDENTIAL_CLIENT_APP_AUTH:
             self.impl = ConfidentialClientImpl()
 
-    @staticmethod
-    def get_impl_type():
-        return USE_IMPLEMENTATION
+    def get_impl_type(self):
+        return self.use_implementation
 
     def get_globus_user(self, user_name):
         if self.impl:
@@ -53,6 +55,15 @@ class GlobusAccess:
             return self.impl.cancel_task(task_id)
         return None
 
+    def my_shared_endpoint_list(self, base_endpoint_id):
+        if self.impl:
+            return self.impl.my_shared_endpoint_list(base_endpoint_id)
+        return None
+
+    def create_shared_endpoint(self, data):
+        if self.impl:
+            return self.impl.create_shared_endpoint(data)
+        return None
 
     # def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
     #     if self.impl:
