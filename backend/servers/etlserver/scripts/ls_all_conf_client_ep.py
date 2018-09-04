@@ -9,6 +9,11 @@ from globus_sdk.exc import AuthAPIError
 
 class ConfidentialClientHelper:
     def __init__(self, configuration_file_path):
+        if not self.configuration_file_check(configuration_file_path):
+            print("====")
+            print("ERROR: the configuration file is missing, {}".format(configuration_file_path))
+            print("====")
+            exit(-1)
         configuration = configparser.ConfigParser()
         configuration.read(configuration_file_path)
         self.conf = configuration
@@ -53,6 +58,10 @@ class ConfidentialClientHelper:
         print('|{:^80}|'.format(name_id))
         print('|{:^80}|'.format(''))
         print('-'*82)
+
+    @staticmethod
+    def configuration_file_check(path):
+        return os.path.exists(path)
 
 
 def main(config_file_path):
