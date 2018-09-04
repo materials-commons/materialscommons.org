@@ -13,6 +13,7 @@ from ..common.McdirHelper import McdirHelper
 from ..common.MaterialsCommonsGlobusInterfaceNew import MaterialsCommonsGlobusInterfaceNew
 from ..database.DatabaseInterface import DatabaseInterface
 
+
 # SOURCE_ENDPOINT = '1960ad4c-aaf2-11e8-970a-0a6d4e044368' # titan laptop
 # SOURCE_ENDPOINT = '2567c5aa-aaca-11e8-9704-0a6d4e044368'
 # SOURCE_ENDPOINT = 'e1a3e368-aa26-11e8-9704-0a6d4e044368'
@@ -21,7 +22,7 @@ from ..database.DatabaseInterface import DatabaseInterface
 
 
 class EpEpTransferHelper:
-    def __init__(self, mc_user_id, globus_source_endpoint):
+    def __init__(self, mc_user_id, globus_source_endpoint, dest_endpoint):
         self.log = logging.getLogger(self.__class__.__name__)
         self.user_id = mc_user_id
         self.source_endpoint = globus_source_endpoint
@@ -30,7 +31,7 @@ class EpEpTransferHelper:
         self.mc_interface = MaterialsCommonsGlobusInterfaceNew(mc_user_id)
         self.client_user = os.environ.get('MC_CONFIDENTIAL_CLIENT_USER')
         self.client_token = os.environ.get('MC_CONFIDENTIAL_CLIENT_PW')
-        self.mc_target_ep_id = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
+        self.mc_target_ep_id = dest_endpoint
         self.transfer_client = None
         self.source_user_globus_id = None
 
@@ -169,10 +170,10 @@ class EpEpTransferHelper:
         return "ep2ep-{}".format(status_record_id)
 
 
-def main(mc_user_id, globus_source_endpoint):
+def main(mc_user_id, source_endpoint, dest_endpoint):
     log = logging.getLogger("main")
     log.info("Starting: main()")
-    transfer_helper = EpEpTransferHelper(mc_user_id, globus_source_endpoint)
+    transfer_helper = EpEpTransferHelper(mc_user_id, source_endpoint, dest_endpoint)
     transfer_helper.do_transfer()
 
 
@@ -183,10 +184,9 @@ if __name__ == '__main__':
 
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Test of Globus non-ETL upload')
-    parser.add_argument('--user_id', type=str,
-                        help="Materials Commons user id; fallback MC_USER_ID env variable; required")
-    parser.add_argument('--endpoint', type=str,
-                        help="source endpoint; fallback SOURCE_ENDPOINT env var; required")
+    parser.add_option('-u', '--user_id', type="string", dest="user_id", help="Materials Commons user id; fallback MC_USER_ID env variable; required")
+    parser.add_option('-s', '--source', type="string", dest="source", help="source endpoint; fallback SOURCE_ENDPOINT env var; required")
+    parser.add_option('-d', '--destination', type="string", dest="destination", help="destination endpoint; fallback DESTINATION_ENDPOINT env var; required")
     args = parser.parse_args(argv[1:])
 
     # user_id
@@ -202,9 +202,9 @@ if __name__ == '__main__':
         exit(-1)
 
     # endpoint
-    source_endpoint=None
-    if args.endpoint:
-        source_endpoint = args.endpoint
+    source_endpoint = None
+    if args.source:
+        source_endpoint = args.source
     elif os.environ.get('SOURCE_ENDPOINT'):
         source_endpoint = os.environ.get('SOURCE_ENDPOINT')
         startup_log.info("Getting source Globus endpoint from SOURCE_ENDPOINT env var = {}".format(source_endpoint))
@@ -213,5 +213,19 @@ if __name__ == '__main__':
         parser.print_help()
         exit(-1)
 
-    startup_log.info("user_id = {}, source_endpoint = {}".format(user_id,source_endpoint))
-    main(user_id, source_endpoint)
+    dest_endpoint = None
+    if args.destination:
+        dest_endpoint = args.destination
+    elif os.environ.get('DESTINATION_ENDPOINT'):
+        dest_endpoint = os.environ.get('DESTINATION_ENDPOINT')
+        startup_log.info("Getting destination Globus endpoint from DESTINATION_ENDPOINT env var = {}".format(dest_endpoint))
+    elif os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT'):
+        dest_endpoint = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
+        startup_log.info("Getting destination Globus endpoint from MC_CONFIDENTIAL_CLIENT_ENDPOINT env var = {}".format(dest_endpoint))
+    else:
+        print("You must specify a destination endpoint. Argument not found.")
+        parser.print_help()
+        exit(-1)
+
+    startup_log.info("user_id = {}, source_endpoint = {}".format(user_id, source_endpoint))
+    main(user_id, source_endpoint, dest_endpoint)
