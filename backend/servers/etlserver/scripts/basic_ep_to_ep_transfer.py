@@ -35,6 +35,7 @@ class EpEpTransferHelper:
         self.mc_target_ep_id = dest_endpoint
         self.transfer_client = None
         self.source_user_globus_id = None
+        self.dest_path = ""
 
     def do_transfer(self):
         self.log.info('Transfer for user_id = {}'.format(self.user_id))
@@ -185,9 +186,9 @@ if __name__ == '__main__':
 
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Test of Globus non-ETL upload')
-    parser.add_option('-u', '--user_id', type="string", dest="user_id", help="Materials Commons user id; fallback MC_USER_ID env variable; required")
-    parser.add_option('-s', '--source', type="string", dest="source", help="source endpoint; fallback SOURCE_ENDPOINT env var; required")
-    parser.add_option('-d', '--destination', type="string", dest="destination", help="destination endpoint; fallback DESTINATION_ENDPOINT env var; required")
+    parser.add_argument('-u', '--user_id', type=str, dest="user_id", help="Materials Commons user id; fallback MC_USER_ID env variable; required")
+    parser.add_argument('-s', '--source', type=str, dest="source", help="source endpoint; fallback SOURCE_ENDPOINT env var; required")
+    parser.add_argument('-d', '--destination', type=str, dest="destination", help="destination endpoint; fallback DESTINATION_ENDPOINT env var; required")
     args = parser.parse_args(argv[1:])
 
     # user_id
