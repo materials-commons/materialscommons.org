@@ -33,7 +33,7 @@ class ConfidentialClientHelper:
                 for ep in endpoint_list:
                     print("{} ({})".format(ep['display_name'],ep['id']))
             else:
-                print("No owned endpoints.")
+                print("(No owned endpoints.)")
             results = transfer_client.endpoint_search(filter_scope="shared-with-me")
             endpoint_list = list(results)
             if endpoint_list:
@@ -41,7 +41,7 @@ class ConfidentialClientHelper:
                 for ep in endpoint_list:
                     print("{} ({})".format(ep['display_name'], ep['id']))
             else:
-                print("No shared endpoints.")
+                print("(No shared endpoints.)")
         except AuthAPIError as e:
             print(e)
 
