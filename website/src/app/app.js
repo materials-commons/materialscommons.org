@@ -14,6 +14,7 @@ import './util/util';
 import './components2/index.module';
 import './layout/index.module';
 import './views/index.module';
+import './react/HelloWorld.jsx';
 
 angular.module('materialscommons')
     .constant('mcglobals', setupMCGlobals())
