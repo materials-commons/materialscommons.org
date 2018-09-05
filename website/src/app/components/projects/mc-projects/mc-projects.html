@@ -2,7 +2,7 @@
     <div layout="row" flex="100" layout-margin>
         <div layout="column" flex>
             <div layout="row" layout-align="end">
-                <hello-world></hello-world>
+                <hello-world name="$ctrl.mcuser.fullname"></hello-world>
                 <div layout="column" layout-align="stretch" flex="30" ng-show="!$ctrl.mcuser.demo_installed">
                     <md-button ng-click="$ctrl.buildDemoProject()"
                                class="md-warn md-raised">

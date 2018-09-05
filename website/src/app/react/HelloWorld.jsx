@@ -4,7 +4,7 @@ import { react2angular } from 'react2angular';
 class HelloWorld extends Component {
     render() {
         return (
-            <div>Hello world from react v2</div>
+            <div>Hello {this.props.name} from react</div>
         )
     }
 }
