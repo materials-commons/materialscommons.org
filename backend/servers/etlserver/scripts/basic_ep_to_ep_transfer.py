@@ -58,7 +58,8 @@ class EpEpTransferHelper:
         random_key = "{0:04d}".format(randint(0, 10000))
         transfer_dir = self.make_transfer_dir(random_key)
         transfer_base_path = os.path.join(base_path, transfer_dir)
-        self.dest_path = "/{}".format(transfer_dir)
+        # self.dest_path = "/{}/".format(transfer_dir)
+        self.dest_path = "/"
         self.log.info("dest_path is {}".format(self.dest_path))
         os.mkdir(transfer_base_path)
         self.log.info("transfer_base_path = {}".format(transfer_base_path))
@@ -92,6 +93,14 @@ class EpEpTransferHelper:
         self.log.info("Object transfer_data = {}".format(transfer_data))
         self.transfer_client.endpoint_autoactivate(self.source_endpoint)
         self.transfer_client.endpoint_autoactivate(self.mc_target_ep_id)
+
+        self.log.info("==== Just prior to add_endpoint_acl_rule ====")
+        self.log.info("|")
+        self.log.info("|  target endpoint = {}".format(self.mc_target_ep_id))
+        self.log.info("|  principal = {} ({})".format(self.source_user_globus_id))
+        self.log.info("|  path = {}".format(self.dest_path))
+        self.log.info("| ")
+        self.log.info("==== ")
 
         try:
             self.transfer_client.add_endpoint_acl_rule(
