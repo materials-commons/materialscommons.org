@@ -71,6 +71,7 @@ def create_mc_tables():
     create_mc_table("uploads", "uploads", "project_id")
 
     create_mc_table("background_process", "project_id", "queue", "status")
+    create_mc_table("globus_auth_info", "owner")
 
     # Create samples model
     create_mc_table("processes", "template_id", "birthtime")

@@ -14,7 +14,7 @@ if not sys.path[0] == '':
 
 _HOST = os.environ.get('MC_SERVICE_HOST') or 'localhost'
 _PORT = os.environ.get('MC_ETL_SERVICE_PORT')
-
+_SSL_DIR = os.environ.get('MC_ETL_SSL_DIR')
 
 # noinspection PyUnusedLocal
 def reload_users(signum, frame):
@@ -32,9 +32,15 @@ def main():
     if not _PORT:
         log.error("Environment missing MC_ETL_SERVICE_PORT; can not run server; quitting")
         exit(-1)
+    if not _SSL_DIR:
+        log.error("Environment missing MC_ETL_SSL_DIR; can not run server; quitting")
 
     log.info("Starting ELT SERVER with host = {} and port = {}".format(_HOST, _PORT))
-    app.run(debug=True, host=_HOST, port=int(_PORT), processes=1)
+    log.info("SSL dir - {}".format(_SSL_DIR))
+    app.run(debug=True, host=_HOST, port=int(_PORT),
+            ssl_context=(os.path.join(_SSL_DIR,'server.crt'),
+                         os.path.join(_SSL_DIR,'server.key')),
+            processes=1)
 
 
 if __name__ == '__main__':

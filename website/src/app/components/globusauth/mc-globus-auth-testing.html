@@ -1,0 +1,47 @@
+<div layout="column" layout-margin>
+    <div layout="row" flex="50" layout-margin layout-wrap class="md-inline-form">
+        <h3 flex="100" class="md-title">Globus Authentication Status</h3>
+        <div layout-margin ng-if="!$ctrl.globusStatus">
+            Status from Globus not yet available. Try Refresh.
+        </div>
+        <div flex="100" layout-margin ng-if="$ctrl.globusStatus">
+            <h4 flex="100" class="md-title">User status</h4>
+            <ul>
+                <li>Globus user name: {{$ctrl.globusStatus.globus_name}}</li>
+                <li>Globus user id: {{$ctrl.globusStatus.globus_id}}</li>
+                <li>Globus user is authenticated: {{$ctrl.globusStatus.authenticated}}</li>
+            </ul>
+            <h4 flex="100" class="md-title">Authentication Details</h4>
+            <ul>
+                <li ng-repeat="entry in $ctrl.details">
+                    {{entry}}
+                </li>
+            </ul>
+        </div>
+        <div layout-margin ng-if="$ctrl.loginUrl">
+            <a href="{{$ctrl.loginUrl}}" target="_blank" ng-click="$ctrl.resetFromLogin()">
+                Continue Login process.
+            </a>
+        </div>
+        <div layout-margin ng-if="$ctrl.logoutUrl">
+            <a href="{{$ctrl.logoutUrl}}" target="_blank" ng-click="$ctrl.resetFromLogout()">
+                Continue Logout process.
+            </a>
+        </div>
+        <div flex="100" ng-if="!($ctrl.loginUrl || $ctrl.logoutUrl)">
+            <form>
+                <md-input-container class="md-block">
+                    <md-button ng-click="$ctrl.refreshGlobusStatus()" class="md-primary">
+                        Refresh Status
+                    </md-button>
+                    <md-button ng-disabled="$ctrl.loggedIn" ng-click="$ctrl.globusLogin()" class="md-primary">
+                        Login
+                    </md-button>
+                    <md-button ng-disabled="!$ctrl.loggedIn" ng-click="$ctrl.globusLogout()" class="md-primary">
+                        Logout
+                    </md-button>
+                </md-input-container>
+            </form>
+        </div>
+    </div>
+</div>

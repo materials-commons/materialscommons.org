@@ -49,6 +49,20 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             // template: '<mc-long-list flex layout="column"></mc-long-list>'
             template: '<mc-projects flex layout="column"></mc-projects>'
         })
+        .state('globus', {
+            url: '/globus',
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state('globus.auth', {
+            url: '/auth',
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state('globus.auth.testing', {
+            url: '/testing',
+            template: '<mc-globus-auth-testing></mc-globus-auth-testing>'
+        })
         .state('account', {
             url: '/account',
             abstract: true,
