@@ -1,12 +1,10 @@
 import logging
 import os
-from pathlib import Path
+import sys
 
-from ..utils.LoggingHelper import LoggingHelper
 from globus_sdk import (ConfidentialAppAuthClient, ClientCredentialsAuthorizer, TransferClient)
 
-SCOPES = ('openid email profile '
-          'urn:globus:auth:scope:transfer.api.globus.org:all')
+SUPPRESS_GLOBUS_LOGGING = True
 
 
 class AuthenticationException(BaseException):
@@ -38,6 +36,7 @@ class GlobusHelper:
 
         self.log.info("Env variables are ok")
         self.log.info("  -- MC_CONFIDENTIAL_CLIENT_USER = {}".format(self.client_user))
+        # self.log.info("  -- MC_CONFIDENTIAL_CLIENT_PW = {}".format(self.client_token))
 
         auth_client = ConfidentialAppAuthClient(
             client_id=self.client_user, client_secret=self.client_token)
@@ -114,7 +113,24 @@ class BasicACLExample:
 
 
 if __name__ == '__main__':
-    LoggingHelper().set_root()
+    root = logging.getLogger()
+    root.setLevel(logging.INFO)
+
+    log_handler = logging.StreamHandler(sys.stdout)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s:%(lineno)d - %(message)s')
+    log_handler.setFormatter(formatter)
+    root.addHandler(log_handler)
+
+    if SUPPRESS_GLOBUS_LOGGING:
+        # suppress info logging for globus_sdk loggers that are invoked,
+        # while leaving my logging level in place
+        logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
+                       'globus_sdk.authorizers.renewing', 'globus_sdk.transfer.client.TransferClient',
+                       'globus_sdk.transfer.paging',
+                       'globus_sdk.auth.client_types.confidential_client.ConfidentialAppAuthClient']
+        for name in logger_list:
+            logging.getLogger(name).setLevel(logging.ERROR)
+
     startup_log = logging.getLogger("main-setup")
     startup_log.info("Starting main-setup")
 
