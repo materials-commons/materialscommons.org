@@ -64,7 +64,6 @@ class EpEpTransferHelper:
 
         cc_transfer_client.endpoint_autoactivate(self.target_endpoint)
         ep = cc_transfer_client.get_endpoint(self.target_endpoint)
-
         self.log.info(ep['acl_available'])
 
         self.log.info("Just before call to add_endpoint_acl_rule:")

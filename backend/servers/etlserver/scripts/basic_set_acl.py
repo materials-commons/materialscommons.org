@@ -5,7 +5,8 @@ import sys
 from globus_sdk import (ConfidentialAppAuthClient, ClientCredentialsAuthorizer, TransferClient)
 
 SUPPRESS_GLOBUS_LOGGING = True
-
+ONE_TIME_SHARE_NAME = "Materials Commons GCS One Time Share for testing"
+ONE_TIME_SHARE_PATH = "/mcdir/experimenting_with_share/"
 
 class AuthenticationException(BaseException):
     def __init__(self, attr):
@@ -66,8 +67,26 @@ class GlobusHelper:
             globus_user = ret['identities'][0]
         return globus_user
 
-    def get_endpoint(self, endpoint_id):
-        return self.transfer_client.get_endpoint(endpoint_id)
+    def get_endpoint(self, ep_id):
+        return self.transfer_client.get_endpoint(ep_id)
+
+    def my_shared_endpoint_list(self, endpoint_id):
+        return self.transfer_client.my_shared_endpoint_list(endpoint_id)
+
+    def endpoint_autoactivate(self, ep):
+        return self.transfer_client.endpoint_autoactivate(ep)
+
+    def endpoint_activate(self, ep):
+        return self.transfer_client.endpoint_activate(ep)
+
+    def create_shared_endpoint(self, base_ep, path, name):
+        data = {
+            "DATA_TYPE": "shared_endpoint",
+            "host_endpoint": base_ep,
+            "host_path": path,
+            "display_name": name
+        }
+        return self.transfer_client.create_shared_endpoint(data)
 
     def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
         transfer_client = self.transfer_client
@@ -92,6 +111,28 @@ class GlobusHelper:
         return None
 
 
+class OneTimeShare():
+    def __init__(self, globus_access):
+        self.log = logging.getLogger(self.__class__.__name__)
+        self.globus_access = globus_access
+
+    def make_it_so(self, base_endpoint):
+        self.log.info("Setting or Fetching one-time share")
+        ep_list = self.globus_access.my_shared_endpoint_list(base_endpoint)
+        found = None
+        for ep in ep_list:
+            self.log.info(ep['display_name'])
+            if ep['display_name'] == ONE_TIME_SHARE_NAME:
+                self.log.info("Found shared endpoint: {} ({})".format(ep['display_name'], ep['id']))
+                found = ep
+        if found:
+            return ep['id']
+        # else
+        shared_endpoint_doc = self.globus_access.create_shared_endpoint(
+            base_endpoint, ONE_TIME_SHARE_PATH, ONE_TIME_SHARE_NAME)
+        self.log.info("Created shared endpoint: {} ({})".format(ep['display_name'], ep['id']))
+        return shared_endpoint_doc['id']
+
 class BasicACLExample:
     def __init__(self):
         self.log = logging.getLogger(self.__class__.__name__)
@@ -99,16 +140,19 @@ class BasicACLExample:
         self.globus_access = GlobusHelper()
         self.globus_access.setup()
 
-    def do_it(self, globus_user_name, ep_id, path):
+    def do_it(self, globus_user_name, base_endpoint, path):
+        self.globus_access.endpoint_autoactivate(base_endpoint)
+        target_endpoint = OneTimeShare(self.globus_access).make_it_so(base_endpoint)
+        self.log.info("Transfer base endpint id = {}".format(target_endpoint))
         ret = self.globus_access.get_globus_user(globus_user_name)
         globus_user_id = ret['id']
         self.log.info("Globus user = {} ({})".format(globus_user_name, globus_user_id))
 
-        ep = self.globus_access.get_endpoint(ep_id)
+        ep = self.globus_access.get_endpoint(target_endpoint)
         self.log.info("Endpoint 'acl_available' flag = {}".format(ep['acl_available']))
 
         results = self.globus_access.set_acl_rule(
-            ep_id, path, globus_user_id, 'rw')
+            target_endpoint, path, globus_user_id, 'rw')
         self.log.info("Results from setting acl rule = {}".format(results))
 
 
