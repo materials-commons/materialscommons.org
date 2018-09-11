@@ -193,3 +193,5 @@ if __name__ == '__main__':
     permissions = "rw"
 
     BasicACLExample().do_it(globus_user, endpoint_id, endpoint_path)
+
+    startup_log.info("Completed Run.")
