@@ -143,8 +143,9 @@ class BasicACLExample:
         self.globus_access.setup()
 
     def do_it(self, globus_user_name, base_endpoint, path):
-        ret = self.globus_access.endpoint_autoactivate(base_endpoint)
-        self.log.info("Value returned from autoactivte = {}".format(ret))
+        # ret =
+        self.globus_access.endpoint_autoactivate(base_endpoint)
+        # self.log.info("Value returned from autoactivte = {}".format(ret))
         target_endpoint = OneTimeShare(self.globus_access).make_it_so(base_endpoint)
         self.log.info("Transfer base endpoint id = {}".format(target_endpoint))
         ret = self.globus_access.get_globus_user(globus_user_name)
@@ -183,7 +184,7 @@ if __name__ == '__main__':
 
     # ---- These should be command line params ----
     # endpoint_id is the endpoint on which to set acl (a shared endpoint)
-    endpoint_id = '3df15436-b2c2-11e8-8240-0a3b7ca8ce66'
+    endpoint_id = '014b867a-b5d1-11e8-8241-0a3b7ca8ce66'
     # endpoint_path
     endpoint_path = '/mcdir/landing_for_test/'
     # globus_user_id - the globus user that is in the ACL rule
