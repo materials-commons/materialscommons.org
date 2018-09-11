@@ -140,6 +140,12 @@ class EpEpTransferHelper:
         record = (records[0] if len(records) > 0 else None)
         if not record:
             self.log.info("Globus auth info record for MC user {} does not exist; logged out?".format(self.user_id))
+            self.log.info("In order for this test code to work, you must have logged into globus...")
+            self.log.info("    Start the local Materials Commons web app (e.g. http://mcdev.localhost)")
+            self.log.info("    Log into that web app as {}".format(self.user_id))
+            self.log.info("    User the 'Globus Auth Testing' menu item (user's menu - upper right)")
+            self.log.info("    Setting the correct Globus user may require logging out and back in")
+            self.log.info("    Click the refresh option after each change to see current Globus status")
             return None
 
         # else
