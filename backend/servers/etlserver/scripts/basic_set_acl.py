@@ -63,16 +63,16 @@ class GlobusHelper:
 
     def get_globus_user(self, user_name):
         ret = self.auth_client.get_identities(usernames=[user_name])
-        globus_user = None
+        user = None
         if ret and ret['identities'] and len(ret['identities']) > 0:
-            globus_user = ret['identities'][0]
-        return globus_user
+            user = ret['identities'][0]
+        return user
 
     def get_endpoint(self, ep_id):
         return self.transfer_client.get_endpoint(ep_id)
 
-    def my_shared_endpoint_list(self, endpoint_id):
-        return self.transfer_client.my_shared_endpoint_list(endpoint_id)
+    def my_shared_endpoint_list(self, ep_id):
+        return self.transfer_client.my_shared_endpoint_list(ep_id)
 
     def endpoint_autoactivate(self, ep):
         return self.transfer_client.endpoint_autoactivate(ep)
@@ -80,16 +80,16 @@ class GlobusHelper:
     def endpoint_activate(self, ep):
         return self.transfer_client.endpoint_activate(ep)
 
-    def create_shared_endpoint(self, base_ep, path, name):
+    def create_shared_endpoint(self, base_ep, path, display_name):
         data = {
             "DATA_TYPE": "shared_endpoint",
             "host_endpoint": base_ep,
             "host_path": path,
-            "display_name": name
+            "display_name": display_name
         }
         return self.transfer_client.create_shared_endpoint(data)
 
-    def set_acl_rule(self, ep_id, path, globus_user_id, permissions):
+    def set_acl_rule(self, ep_id, path, globus_user_id, permits):
         transfer_client = self.transfer_client
         results = transfer_client.endpoint_acl_list(ep_id)
         for rule in results["DATA"]:
@@ -100,7 +100,7 @@ class GlobusHelper:
             "principal_type": "identity",
             "principal": globus_user_id,
             "path": path,
-            "permissions": permissions
+            "permissions": permits
         }
         results = transfer_client.add_endpoint_acl_rule(ep_id, rule_data)
         if not results['code'] == "Created":
@@ -112,7 +112,7 @@ class GlobusHelper:
         return None
 
 
-class OneTimeShare():
+class OneTimeShare:
     def __init__(self, globus_access):
         self.log = logging.getLogger(self.__class__.__name__)
         self.globus_access = globus_access
@@ -127,12 +127,13 @@ class OneTimeShare():
                 self.log.info("Found shared endpoint: {} ({})".format(ep['display_name'], ep['id']))
                 found = ep
         if found:
-            return ep['id']
+            return found['id']
         # else
-        shared_endpoint_doc = self.globus_access.create_shared_endpoint(
+        ep = self.globus_access.create_shared_endpoint(
             base_endpoint, ONE_TIME_SHARE_PATH, ONE_TIME_SHARE_NAME)
         self.log.info("Created shared endpoint: {} ({})".format(ep['display_name'], ep['id']))
-        return shared_endpoint_doc['id']
+        return ep['id']
+
 
 class BasicACLExample:
     def __init__(self):
@@ -186,8 +187,8 @@ if __name__ == '__main__':
     # endpoint_path
     endpoint_path = '/mcdir/landing_for_test/'
     # globus_user_id - the globus user that is in the ACL rule
-    globus_user_name = "materialscommonstestuser1@globusid.org"
+    globus_user = "materialscommonstestuser1@globusid.org"
     # permissions for the ACL Rule ("r" "rw")
     permissions = "rw"
 
-    BasicACLExample().do_it(globus_user_name, endpoint_id, endpoint_path)
+    BasicACLExample().do_it(globus_user, endpoint_id, endpoint_path)
