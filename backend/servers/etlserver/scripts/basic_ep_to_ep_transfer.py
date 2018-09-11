@@ -6,8 +6,8 @@ import logging
 import argparse
 # from random import randint
 
-from globus_sdk import (RefreshTokenAuthorizer, TransferClient, TransferAPIError,
-                        TransferData)
+from globus_sdk import (RefreshTokenAuthorizer, TransferClient, TransferAPIError)
+# from globus_sdk import TransferData # ref: commented-out code block, below
 from ..utils.LoggingHelper import LoggingHelper
 from ..database.DatabaseInterface import DatabaseInterface
 from ..common.GlobusAccess import GlobusAccess, CONFIDENTIAL_CLIENT_APP_AUTH
@@ -57,7 +57,7 @@ class EpEpTransferHelper:
         self.log.info('Target path = {}'.format(destination_path))
 
         cc_transfer_client = self.globus_access.get_transfer_client()
-        user_transfer_client = self.get_user_transfer_client() # also sets self.source_user_globus_id
+        user_transfer_client = self.get_user_transfer_client()  # also sets self.source_user_globus_id
         if not user_transfer_client:
             self.log.error("Unable to create User's Globus Transfer Client")
             return
@@ -88,28 +88,10 @@ class EpEpTransferHelper:
             elif error.code != 'Exists':
                 pass
 
-    def get_user_transfer_client(self):
-        self.log.info("Getting MC User's globus infomation")
-        records = DatabaseInterface().get_globus_auth_info_records_by_user_id(self.user_id)
-        # Only the latest
-        record = (records[0] if len(records) > 0 else None)
-        if not record:
-            self.log.info("Globus auth info record for MC user {} does not exist; logged out?".format(self.user_id))
-            return None
-
-        # else
-        self.log.info("Got MC User's globus information; getting tokens")
-        self.source_user_globus_id = record['globus_id']
-        transfer_tokens = record['tokens']['transfer.api.globus.org']
-        self.log.info("Got transfer.api.globus.org tokens; keys = {}".format(transfer_tokens.keys()))
-        transfer_client = \
-            self.get_transfer_client(transfer_tokens, self.source_endpoint)
-        if not transfer_client:
-            self.log.error("Transfer Client is not available; abort")
-            return None
-        return transfer_client
-
-
+    # - this block of code is now out of place;
+    # - However, once the rest of the code works,
+    # - it needs to be reviewed - not sure what still applies
+    #
     #     self.user_transfer_client.endpoint_autoactivate(self.target_endpoint)
     #     transfer_data = TransferData(transfer_client=self.user_transfer_client,
     #                                  source_endpoint=self.source_endpoint,
@@ -151,6 +133,27 @@ class EpEpTransferHelper:
     #         self.user_transfer_client.delete_endpoint_acl_rule(self.target_endpoint, acl['id'])
     #
 
+    def get_user_transfer_client(self):
+        self.log.info("Getting MC User's globus infomation")
+        records = DatabaseInterface().get_globus_auth_info_records_by_user_id(self.user_id)
+        # Only the latest
+        record = (records[0] if len(records) > 0 else None)
+        if not record:
+            self.log.info("Globus auth info record for MC user {} does not exist; logged out?".format(self.user_id))
+            return None
+
+        # else
+        self.log.info("Got MC User's globus information; getting tokens")
+        self.source_user_globus_id = record['globus_id']
+        transfer_tokens = record['tokens']['transfer.api.globus.org']
+        self.log.info("Got transfer.api.globus.org tokens; keys = {}".format(transfer_tokens.keys()))
+        transfer_client = \
+            self.get_transfer_client(transfer_tokens, self.source_endpoint)
+        if not transfer_client:
+            self.log.error("Transfer Client is not available; abort")
+            return None
+        return transfer_client
+
     def get_transfer_client(self, transfer_tokens, endpoint_id, endpoint_path='/'):
         authorizer = RefreshTokenAuthorizer(
             transfer_tokens['refresh_token'],
@@ -180,6 +183,7 @@ class EpEpTransferHelper:
     def make_transfer_dir(status_record_id):
         return "ep2ep-{}".format(status_record_id)
 
+
 if __name__ == '__main__':
     LoggingHelper().set_root()
     startup_log = logging.getLogger("main-setup")
@@ -187,10 +191,14 @@ if __name__ == '__main__':
 
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Test of Globus non-ETL upload')
-    parser.add_argument('-u', '--user_id', type=str, dest="user_id", help="Materials Commons user id; fallback MC_USER_ID env variable; required")
-    parser.add_argument('-s', '--source', type=str, dest="source", help="source endpoint; fallback SOURCE_ENDPOINT env var; required")
-    parser.add_argument('-p', '--path', type=str, dest="path", help="source endpoint path; fallback SOURCE_ENDPOINT_PATH env var; required")
-    parser.add_argument('-d', '--destination', type=str, dest="destination", help="destination endpoint; fallback DESTINATION_ENDPOINT env var; required")
+    parser.add_argument('-u', '--user_id', type=str, dest="user_id",
+                        help="Materials Commons user id; fallback MC_USER_ID env variable; required")
+    parser.add_argument('-s', '--source', type=str, dest="source",
+                        help="source endpoint; fallback SOURCE_ENDPOINT env var; required")
+    parser.add_argument('-p', '--path', type=str, dest="path",
+                        help="source endpoint path; fallback SOURCE_ENDPOINT_PATH env var; required")
+    parser.add_argument('-d', '--destination', type=str, dest="destination",
+                        help="destination endpoint; fallback DESTINATION_ENDPOINT env var; required")
     args = parser.parse_args(argv[1:])
 
     # Materials Commons User id
@@ -223,7 +231,8 @@ if __name__ == '__main__':
         source_path = args.path
     elif os.environ.get('SOURCE_ENDPOINT_PATH'):
         source_path = os.environ.get('SOURCE_ENDPOINT_PATH')
-        startup_log.info("Getting source Globus endpoint from SOURCE_ENDPOINT_PATH env var = {}".format(source_endpoint))
+        startup_log.info("Getting source Globus endpoint from SOURCE_ENDPOINT_PATH env var = {}"
+                         .format(source_endpoint))
     else:
         print("You must specify a source endpoint path. Argument not found.")
         parser.print_help()
@@ -235,10 +244,14 @@ if __name__ == '__main__':
         destination_endpoint = args.destination
     elif os.environ.get('DESTINATION_ENDPOINT'):
         destination_endpoint = os.environ.get('DESTINATION_ENDPOINT')
-        startup_log.info("Getting destination Globus endpoint from DESTINATION_ENDPOINT env var = {}".format(destination_endpoint))
+        startup_log.info(
+            "Getting destination Globus endpoint from DESTINATION_ENDPOINT env var = {}"
+            .format(destination_endpoint))
     elif os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT'):
         destination_endpoint = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
-        startup_log.info("Getting destination Globus endpoint from MC_CONFIDENTIAL_CLIENT_ENDPOINT env var = {}".format(destination_endpoint))
+        startup_log.info(
+            "Getting destination Globus endpoint from MC_CONFIDENTIAL_CLIENT_ENDPOINT env var = {}"
+            .format(destination_endpoint))
     else:
         print("You must specify a destination endpoint. Argument not found.")
         parser.print_help()
@@ -252,4 +265,3 @@ if __name__ == '__main__':
 
     transfer_helper = EpEpTransferHelper(user_id, source_endpoint, source_path, destination_endpoint)
     transfer_helper.do_transfer()
-

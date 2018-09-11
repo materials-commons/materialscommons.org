@@ -146,7 +146,7 @@ class BasicACLExample:
         ret = self.globus_access.endpoint_autoactivate(base_endpoint)
         self.log.info("Value returned from autoactivte = {}".format(ret))
         target_endpoint = OneTimeShare(self.globus_access).make_it_so(base_endpoint)
-        self.log.info("Transfer base endpint id = {}".format(target_endpoint))
+        self.log.info("Transfer base endpoint id = {}".format(target_endpoint))
         ret = self.globus_access.get_globus_user(globus_user_name)
         globus_user_id = ret['id']
         self.log.info("Globus user = {} ({})".format(globus_user_name, globus_user_id))
