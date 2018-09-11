@@ -8,6 +8,7 @@ SUPPRESS_GLOBUS_LOGGING = True
 ONE_TIME_SHARE_NAME = "Materials Commons GCS One Time Share for testing"
 ONE_TIME_SHARE_PATH = "/mcdir/experimenting_with_share/"
 
+
 class AuthenticationException(BaseException):
     def __init__(self, attr):
         self.attr = str(attr)
@@ -141,7 +142,8 @@ class BasicACLExample:
         self.globus_access.setup()
 
     def do_it(self, globus_user_name, base_endpoint, path):
-        self.globus_access.endpoint_autoactivate(base_endpoint)
+        ret = self.globus_access.endpoint_autoactivate(base_endpoint)
+        self.log.info("Value returned from autoactivte = {}".format(ret))
         target_endpoint = OneTimeShare(self.globus_access).make_it_so(base_endpoint)
         self.log.info("Transfer base endpint id = {}".format(target_endpoint))
         ret = self.globus_access.get_globus_user(globus_user_name)
@@ -185,7 +187,7 @@ if __name__ == '__main__':
     endpoint_path = '/mcdir/landing_for_test/'
     # globus_user_id - the globus user that is in the ACL rule
     globus_user_name = "materialscommonstestuser1@globusid.org"
-    # permissions for the ACL Rule ("r" "rw" or 'delete' to delete that acl rule)
+    # permissions for the ACL Rule ("r" "rw")
     permissions = "rw"
 
     BasicACLExample().do_it(globus_user_name, endpoint_id, endpoint_path)
