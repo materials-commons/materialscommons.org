@@ -2,17 +2,17 @@
 import os
 import sys
 import logging
-# import time
+import time
 import argparse
 # from random import randint
 
 from globus_sdk import (RefreshTokenAuthorizer, TransferClient, TransferAPIError)
-# from globus_sdk import TransferData # ref: commented-out code block, below
+from globus_sdk import TransferData
 from ..utils.LoggingHelper import LoggingHelper
 from ..database.DatabaseInterface import DatabaseInterface
 from ..common.GlobusAccess import GlobusAccess, CONFIDENTIAL_CLIENT_APP_AUTH
 
-DESTINATION_BASE_PATH = '/mcdir/landing_for_test/'
+DESTINATION_BASE_PATH = '/'
 
 
 class EpEpTransferHelper:
@@ -88,50 +88,43 @@ class EpEpTransferHelper:
             elif error.code != 'Exists':
                 pass
 
-    # - this block of code is now out of place;
-    # - However, once the rest of the code works,
-    # - it needs to be reviewed - not sure what still applies
-    #
-    #     self.user_transfer_client.endpoint_autoactivate(self.target_endpoint)
-    #     transfer_data = TransferData(transfer_client=self.user_transfer_client,
-    #                                  source_endpoint=self.source_endpoint,
-    #                                  destination_endpoint=self.target_endpoint,
-    #                                  label='Test-transfer-for-{}'.format(transfer_dir))
-    #     self.log.info("Object transfer_data = {}".format(transfer_data))
-    #     transfer_data.add_item(source_path='/',
-    #                            destination_path=destination_path,
-    #                            recursive=True)
-    #     self.log.info("Object transfer_data = {}".format(transfer_data))
-    #
-    #
-    #
-    #     self.log.info("Before submit transfer")
-    #     results = self.user_transfer_client.submit_transfer(transfer_data)
-    #     self.log.info("After submit transfer: {}".format(results))
-    #     task_id = results['task_id']
-    #     status = "STARTED"
-    #     while not status == "SUCCEEDED" and not status == "FAILED":
-    #         task = self.user_transfer_client.get_task(task_id)
-    #         status = task['status']
-    #         self.log.info("Current task status = {}".format(status))
-    #         time.sleep(5)
-    #
-    #     try:
-    #         acl = next(acl for acl in self.user_transfer_client.endpoint_acl_list(self.target_endpoint)
-    #                    if self.destination_path == acl['path'])
-    #     except StopIteration:
-    #         pass
-    #     except TransferAPIError as ex:
-    #         # PermissionDenied can happen if a new Portal client is swapped
-    #         # in and it doesn't have endpoint manager on the dest_ep.
-    #         # The /portal/processed directory has been set to to writeable
-    #         # for all users so the delete task will succeed even if an ACL
-    #         # can't be set.
-    #         if ex.code == 'PermissionDenied':
-    #             pass
-    #     else:
-    #         self.user_transfer_client.delete_endpoint_acl_rule(self.target_endpoint, acl['id'])
-    #
+        check = user_transfer_client.endpoint_autoactivate(self.target_endpoint)
+        self.log.info("Results returned from endpoint_autoactivate: {}".format(check))
+
+        transfer_data = TransferData(transfer_client=user_transfer_client,
+                                     source_endpoint=self.source_endpoint,
+                                     destination_endpoint=self.target_endpoint,
+                                     label='Test-transfer-basic-root')
+        self.log.info("Object transfer_data = {}".format(transfer_data))
+        transfer_data.add_item(source_path=self.source_path,
+                               destination_path=destination_path,
+                               recursive=True)
+        self.log.info("Object transfer_data = {}".format(transfer_data))
+
+        self.log.info("Before submit transfer")
+        results = user_transfer_client.submit_transfer(transfer_data)
+        self.log.info("After submit transfer: {}".format(results))
+        task_id = results['task_id']
+        status = "STARTED"
+        while not status == "SUCCEEDED" and not status == "FAILED":
+            task = user_transfer_client.get_task(task_id)
+            status = task['status']
+            self.log.info("Current task status = {}".format(status))
+            time.sleep(5)
+
+        try:
+            acl_list = cc_transfer_client.endpoint_acl_list(self.target_endpoint)
+            self.log.info(acl_list)
+            acl = None
+            for probe in acl_list:
+                if destination_path == probe['path'] and self.source_user_globus_id == probe['principal']:
+                    acl = probe
+            self.log.info("ACL from search: {}".format(acl))
+            if acl:
+                cc_transfer_client.delete_endpoint_acl_rule(self.target_endpoint, acl['id'])
+        except StopIteration:
+            pass
+
 
     def get_user_transfer_client(self):
         self.log.info("Getting MC User's globus infomation")
@@ -142,7 +135,7 @@ class EpEpTransferHelper:
             self.log.info("Globus auth info record for MC user {} does not exist; logged out?".format(self.user_id))
             self.log.info("In order for this test code to work, you must have logged into globus...")
             self.log.info("    Start the local Materials Commons web app (e.g. http://mcdev.localhost)")
-            self.log.info("    Log into that web app as {}".format(self.user_id))
+            self.log.info("    Log into that web app as the given Materials Commons user: {}".format(self.user_id))
             self.log.info("    User the 'Globus Auth Testing' menu item (user's menu - upper right)")
             self.log.info("    Setting the correct Globus user may require logging out and back in")
             self.log.info("    Click the refresh option after each change to see current Globus status")
