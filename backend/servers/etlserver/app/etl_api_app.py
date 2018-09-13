@@ -1,23 +1,23 @@
-import logging
 import json
+import logging
+
 import pkg_resources
 from flask import Flask, request, url_for
 from flask_api import status
 
-from servers.etlserver.globus_etl.etl_task_library import startup_and_verify
-from servers.etlserver.globus_etl.BuildProjectExperiment import BuildProjectExperiment
-from servers.etlserver.database.DatabaseInterface import DatabaseInterface
+from servers.etlserver.common.GlobusInfo import GlobusInfo
+from servers.etlserver.common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from servers.etlserver.database.DB import DbConnection
+from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.download.GlobusDownload import GlobusDownload
+from servers.etlserver.globus_etl.BuildProjectExperiment import BuildProjectExperiment
+from servers.etlserver.globus_etl.etl_task_library import startup_and_verify
+from servers.etlserver.globus_monitor.GlobusMonitor import GlobusMonitor
 from servers.etlserver.globus_non_etl_upload.GlobusUpload import GlobusUpload
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
-from servers.etlserver.user.apikeydb import apikey_user as apikeydb_apikey_user
-from servers.etlserver.utils.UploadUtility import UploadUtility
 from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
-from servers.etlserver.common.GlobusInfo import GlobusInfo
-from servers.etlserver.common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
-from servers.etlserver.globus_monitor.GlobusMonitor import GlobusMonitor
+from servers.etlserver.utils.UploadUtility import UploadUtility
 
 log = logging.getLogger(__name__)
 
@@ -539,3 +539,40 @@ def globus_auth_logout():
 
     # This link to the Globus Auth logout page
     return format_as_json_return({'url': ''.join(ga_logout_url)})
+
+
+@app.route('/faktory/status', methods=['GET', 'POST'])
+def faktory_status():
+    log.info("Faktory status - starting")
+    # user_id = access.get_user()
+    # if not access.is_administrator(user_id):
+    #    message = "User is not admin"
+    #    log.exception(message)
+    #    return message, status.HTTP_401_UNAUTHORIZED
+
+    # noinspection PyBroadException
+    # status = statusHolder().get_status();
+    status = {
+        "faktory": {
+            "default_size": 0,
+            "tasks": {
+                "Busy": {"reaped": 0, "size": 0},
+                "Dead": {"cycles": 344, "enqueued": 0, "size": 0, "wall_time_sec": 0.003644927},
+                "Retries": {"cycles": 4116, "enqueued": 0, "size": 0, "wall_time_sec": 0.192080748},
+                "Scheduled": {"cycles": 4116, "enqueued": 0, "size": 0, "wall_time_sec": 0.24730945},
+                "Workers": {"reaped": 0, "size": 1},
+                "backup": {"count": 0}},
+            "total_enqueued": 0,
+            "total_failures": 3,
+            "total_processed": 262,
+            "total_queues": 5},
+        "server": {
+            "command_count": 11543,
+            "connections": 1,
+            "faktory_version": "0.7.0",
+            "uptime": 20568,
+            "used_memory_mb": "9 MB"},
+        "server_utc_time": "04:50:36 UTC"
+    }
+
+    return format_as_json_return(status)
