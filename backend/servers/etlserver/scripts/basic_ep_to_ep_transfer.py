@@ -4,7 +4,7 @@ import sys
 import logging
 import time
 import argparse
-# from random import randint
+from random import randint
 
 from globus_sdk import (RefreshTokenAuthorizer, TransferClient, TransferAPIError)
 from globus_sdk import TransferData
@@ -45,11 +45,10 @@ class EpEpTransferHelper:
         self.log.info('Confidential Client, user_id = {}'.format(self.client_user))
 
         base_path = DESTINATION_BASE_PATH
-        # random_key = "{0:04d}".format(randint(0, 10000))
-        # transfer_dir = self.make_transfer_dir(random_key)
-        # transfer_base_path = os.path.join(base_path, transfer_dir)
-        # destination_path = "{}/".format(transfer_base_path)
-        destination_path = base_path
+        random_key = "{0:04d}".format(randint(0, 10000))
+        transfer_dir = self.make_transfer_dir(random_key)
+        transfer_base_path = os.path.join(base_path, transfer_dir)
+        destination_path = "{}/".format(transfer_base_path)
 
         self.log.info('Source endpoint = {}'.format(self.source_endpoint))
         self.log.info('Source path = {}'.format(self.source_path))
@@ -114,7 +113,6 @@ class EpEpTransferHelper:
 
         try:
             acl_list = cc_transfer_client.endpoint_acl_list(self.target_endpoint)
-            self.log.info(acl_list)
             acl = None
             for probe in acl_list:
                 if destination_path == probe['path'] and self.source_user_globus_id == probe['principal']:
@@ -124,7 +122,6 @@ class EpEpTransferHelper:
                 cc_transfer_client.delete_endpoint_acl_rule(self.target_endpoint, acl['id'])
         except StopIteration:
             pass
-
 
     def get_user_transfer_client(self):
         self.log.info("Getting MC User's globus infomation")
