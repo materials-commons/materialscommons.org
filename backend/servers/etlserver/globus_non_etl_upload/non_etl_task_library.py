@@ -54,7 +54,7 @@ def startup_and_verify(user_id, project_id, globus_endpoint):
     return check
 
 
-def non_elt_globus_upload(status_record_id):
+def non_etl_globus_upload(status_record_id):
     # noinspection PyBroadException
     try:
         from ..faktory.TaskChain import FILE_PROCESS_QUEUE
@@ -156,7 +156,17 @@ def globus_transfer(status_record_id):
     return results
 
 
-def non_etl_globus_upload(status_record_id):
+def globus_transfer_as_user(status_record_id):
+    log = logging.getLogger(__name__ + ".elt_globus_upload.globus_transfer")
+    status_record = DatabaseInterface().get_status_record(status_record_id)
+    transfer_id = status_record_id
+    user_id = status_record['owner']
+    project_id = status_record['project_id']
+    globus_endpoint = status_record['extras']['globus_endpoint']
+    endpoint_path = '/'
+
+
+def non_etl_globus_upload_old(status_record_id):
     # noinspection PyBroadException
     try:
         log = logging.getLogger(__name__ + ".etl_excel_processing")
