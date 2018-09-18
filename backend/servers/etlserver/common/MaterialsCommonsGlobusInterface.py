@@ -41,21 +41,20 @@ class MaterialsCommonsGlobusInterface:
         self.transfer_client = None
         self.log.debug("MaterialsCommonsGlobusInterface init - done")
 
-    def setup_transfer_clients(self):
+    def setup_transfer_clients(self, source_endpoint_id):
         self.cc_transfer_client = self.globus_access.get_transfer_client()
-        self.user_transfer_client = self.get_user_transfer_client()
-        pass
+        self.user_transfer_client = self.get_user_transfer_client(source_endpoint_id)
 
-    def get_user_transfer_client(self):
+    def get_user_transfer_client(self, source_endpoint_id):
         self.log.info("Getting MC User's globus infomation")
-        records = DatabaseInterface().get_globus_auth_info_records_by_user_id(self.user_id)
+        records = DatabaseInterface().get_globus_auth_info_records_by_user_id(self.mc_user_id)
         # Only the latest
         record = (records[0] if len(records) > 0 else None)
         if not record:
-            self.log.info("Globus auth info record for MC user {} does not exist; logged out?".format(self.user_id))
+            self.log.info("Globus auth info record for MC user {} does not exist; logged out?".format(self.mc_user_id))
             self.log.info("In order for this test code to work, you must have logged into globus...")
             self.log.info("    Start the local Materials Commons web app (e.g. http://mcdev.localhost)")
-            self.log.info("    Log into that web app as the given Materials Commons user: {}".format(self.user_id))
+            self.log.info("    Log into that web app as the given Materials Commons user: {}".format(self.mc_user_id))
             self.log.info("    User the 'Globus Auth Testing' menu item (user's menu - upper right)")
             self.log.info("    Setting the correct Globus user may require logging out and back in")
             self.log.info("    Click the refresh option after each change to see current Globus status")
@@ -67,7 +66,7 @@ class MaterialsCommonsGlobusInterface:
         transfer_tokens = record['tokens']['transfer.api.globus.org']
         self.log.info("Got transfer.api.globus.org tokens; keys = {}".format(transfer_tokens.keys()))
         transfer_client = \
-            self._get_transfer_client(transfer_tokens, self.source_endpoint)
+            self._get_transfer_client(transfer_tokens, source_endpoint_id)
         if not transfer_client:
             self.log.error("Transfer Client is not available; abort")
             return None
@@ -118,6 +117,7 @@ class MaterialsCommonsGlobusInterface:
         return {"status": "ok"}
 
     def upload_files(self, project_id, transfer_id, inbound_endpoint_id, inbound_endpoint_path):
+        self.log.info("upload_files: " + inbound_endpoint_id + ", " + inbound_endpoint_path)
         conn = DbConnection().connection()
         r = DbConnection().interface()
         proj = r.table('projects').get(project_id).run(conn)
@@ -133,13 +133,12 @@ class MaterialsCommonsGlobusInterface:
 
         dir_name = "transfer-" + transfer_id
 
-        self.cc_transfer_client.endpoint_activate(self.mc_target_ep_id)
-        target_endpoint = self.cc_transfer_client.get_endpoint(self.mc_target_ep_id)
         try:
+            self.cc_transfer_client.endpoint_autoactivate(self.mc_target_ep_id)
             self.cc_transfer_client.add_endpoint_acl_rule(
                 self.mc_target_ep_id,
                 dict(principal=self.source_user_globus_id,
-                     principal_type='identity', path="/" + dir_name, permissions='rw')
+                     principal_type='identity', path="/upload/", permissions='rw')
             )
         except TransferAPIError as error:
             # PermissionDenied can happen if a new Portal client is swapped
@@ -152,14 +151,18 @@ class MaterialsCommonsGlobusInterface:
             elif error.code != 'Exists':
                 pass
 
+        self.log.info("ACL was set")
         inbound_endpoint = self.user_transfer_client.get_endpoint(inbound_endpoint_id)
-        transfer_label = "Transfer from " + inbound_endpoint['display_name'] + "Materials Commons"
+        transfer_label = "Transfer from " + " hello world " + "Materials Commons"
+        self.log.info("transfer_label =" + transfer_label)
         transfer_data = TransferData(transfer_client=self.user_transfer_client,
                                      source_endpoint=inbound_endpoint_id,
                                      destination_endpoint=self.mc_target_ep_id,
                                      label=transfer_label)
-        transfer_data.add_item(source_path="", destination_path="/" + dir_name, recursive=True)
+        self.log.info("inbound_endpoint_path" + inbound_endpoint_path)
+        transfer_data.add_item(source_path=inbound_endpoint_path, destination_path="/upload/", recursive=True)
         transfer_response = self.user_transfer_client.submit_transfer(transfer_data)
+        self.log.info("transfer_response: " + transfer_response)
         return transfer_response
 
     def stage_upload_files(self, project_id, transfer_id, inbound_endpoint_id, inbound_endpoint_path):

@@ -92,14 +92,14 @@ class VerifySetup:
             self.error_status["Cannot reach staging endpoint"] = message
             self.log.info(message)
 
-        try:
-            transfer.operation_ls(self.globus_endpoint)
-        except GlobusAPIError as e:
-            both = False
-            message = "User's endpoint, " + self.globus_endpoint
-            message += ", code = " + e.code
-            self.error_status["Cannot reach user's endpoint"] = message
-            self.log.info(message)
+        # try:
+        #     transfer.operation_ls(self.globus_endpoint)
+        # except GlobusAPIError as e:
+        #     both = False
+        #     message = "User's endpoint, " + self.globus_endpoint
+        #     message += ", code = " + e.code
+        #     self.error_status["Cannot reach user's endpoint"] = message
+        #     self.log.info(message)
 
         if not both:
             return

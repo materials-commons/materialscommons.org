@@ -133,15 +133,17 @@ def globus_transfer(status_record_id):
     globus_endpoint = status_record['extras']['globus_endpoint']
     endpoint_path = '/'
     web_service = MaterialsCommonsGlobusInterface(user_id)
-    log.info("set_transfer_client")
-    results = web_service.set_transfer_client()
-    if results['status'] == 'error':
-        return results
+    log.info("web_service.setup_transfer_client()")
+    web_service.setup_transfer_clients(globus_endpoint)
+    # results = web_service.set_transfer_client()
+    # if results['status'] == 'error':
+    #     return results
 
     log.info("stage_upload_files")
-    results = web_service.stage_upload_files(project_id, transfer_id, globus_endpoint, endpoint_path)
-    log.info("results of staging: ", results)
-    task_id = results['task_id']
+    transfer_request = web_service.upload_files(project_id, transfer_id, globus_endpoint, endpoint_path)
+    # results = web_service.stage_upload_files(project_id, transfer_id, globus_endpoint, endpoint_path)
+    # log.info("results of staging: ", results)
+    task_id = transfer_request['task_id']
     DatabaseInterface().update_extras_data_on_status_record(
         status_record_id,
         {
@@ -154,16 +156,6 @@ def globus_transfer(status_record_id):
         poll = (results['status'] == 'ACTIVE')
     log.info(results)
     return results
-
-
-def globus_transfer_as_user(status_record_id):
-    log = logging.getLogger(__name__ + ".elt_globus_upload.globus_transfer")
-    status_record = DatabaseInterface().get_status_record(status_record_id)
-    transfer_id = status_record_id
-    user_id = status_record['owner']
-    project_id = status_record['project_id']
-    globus_endpoint = status_record['extras']['globus_endpoint']
-    endpoint_path = '/'
 
 
 def non_etl_globus_upload_old(status_record_id):
