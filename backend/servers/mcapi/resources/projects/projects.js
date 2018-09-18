@@ -54,7 +54,7 @@ function* getProject(next) {
 }
 
 function* deleteProject(next) {
-    yield projectDelete.quickProjectDelete(this.params.project_id);
+    yield projectDelete.deleteProject(this.params.project_id);
     this.body = {project_id: this.params.project_id};
     yield next;
 }

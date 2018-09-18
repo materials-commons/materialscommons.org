@@ -25,6 +25,8 @@ function* quickDeleteExperiment(projectId, experimentId) {
 
 function* deleteExperimentFull(projectId, experimentId, options) {
 
+    console.log("In deleteExperimentFull: ", projectId, experimentId, options);
+
     let deleteProcesses = !!(options && options.deleteProcesses);
     let dryRun = !!(options && options.dryRun);
 
@@ -320,6 +322,6 @@ function* clearAllRemainingLinks(experimentId) {
 }
 
 module.exports = {
-    deleteExperiment: quickDeleteExperiment,
-    deleteExperimentFull
+    quickDeleteExperiment,
+    deleteExperiment: deleteExperimentFull
 };

@@ -45,9 +45,10 @@ set -e
 # scripts/testdb/run-given-tests.sh
 
 ## Scrap - what every you want
-export TEST_PATTERN="tests/mcapi/Database-Level/specs/experiments-etl-metadata-spec.js"
-export TEST_TARGET="servers/mcapi/db/model/experiments-etl-metadata.js"
-export TEST_CONTINUOUS=${TEST_TARGET}:${TEST_PATTERN}
-export GREP_PATTERN="get by id"
+export SERVERTYPE=dev
+export TEST_PATTERN="tests/mcapi/Database-Level/specs/experiments-delete-datasets-spec.js"
+# export TEST_TARGET="servers/mcapi/db/model/project-delete.js"
+# export TEST_CONTINUOUS=${TEST_TARGET}:${TEST_PATTERN}
+# export GREP_PATTERN="supports a dry run mode"
 scripts/testdb/run-given-tests.sh
 

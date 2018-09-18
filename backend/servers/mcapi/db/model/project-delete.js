@@ -5,7 +5,9 @@ const experimentDelete = require('./experiment-delete');
 const projects = require('./projects');
 const files = require('./files');
 
-function* deleteProject(projectId, options) {
+function* deleteProjectFull(projectId, options) {
+
+    console.log("In deleteProjectFull: ", projectId, options);
 
     let dryRun = !!(options && options.dryRun);
 
@@ -53,7 +55,7 @@ function* deleteProject(projectId, options) {
     for (let i = 0; i < experimentList.length; i++) {
         let experiment = experimentList[i];
         let results = yield experimentDelete
-            .deleteExperimentFull(projectId, experiment.id, {deleteProcesses: true, dryRun: dryRun});
+            .deleteExperiment(projectId, experiment.id, {deleteProcesses: true, dryRun: dryRun});
         if (results.val) {
             let tally = results.val;
             deletedExperiments.push(
@@ -168,6 +170,6 @@ function* quickProjectDelete(projectId) {
 }
 
 module.exports = {
-    deleteProject,
+    deleteProject: deleteProjectFull,
     quickProjectDelete
 };
