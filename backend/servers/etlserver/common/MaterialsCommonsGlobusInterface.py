@@ -162,7 +162,6 @@ class MaterialsCommonsGlobusInterface:
         self.log.info("inbound_endpoint_path" + inbound_endpoint_path)
         transfer_data.add_item(source_path=inbound_endpoint_path, destination_path="/upload/", recursive=True)
         transfer_response = self.user_transfer_client.submit_transfer(transfer_data)
-        self.log.info("transfer_response: " + transfer_response)
         return transfer_response
 
     def stage_upload_files(self, project_id, transfer_id, inbound_endpoint_id, inbound_endpoint_path):
