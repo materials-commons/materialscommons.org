@@ -54,16 +54,30 @@ function* getProject(next) {
 }
 
 function* deleteProject(next) {
-    yield projectDelete.deleteProject(this.params.project_id);
+    yield projectDelete.quickProjectDelete(this.params.project_id);
     this.body = {project_id: this.params.project_id};
     yield next;
 }
 
-function* deleteProjectFull(next) {
+function* deleteProjectFully(next) {
     let options = {
         dryRun: false
     };
-    let rv = yield projectDelete.deleteProject(this.params.project_id, options);
+    let rv = yield projectDelete.fullProjectDelete(this.params.project_id, options);
+    if (rv.error) {
+        this.status = status.BAD_REQUEST;
+        this.body = rv;
+    } else {
+        this.body = rv.val;
+    }
+    yield next;
+}
+
+function* deleteProjectDryRun(next) {
+    let options = {
+        dryRun: true
+    };
+    let rv = yield projectDelete.fullProjectDelete(this.params.project_id, options);
     if (rv.error) {
         this.status = status.BAD_REQUEST;
         this.body = rv;
@@ -246,6 +260,8 @@ function createResource() {
     router.put('/:project_id', update);
     router.get('/:project_id', getProject);
     router.delete('/:project_id', ra.validateProjectOwner, deleteProject);
+    router.delete('/:project_id/delete/fully',ra.validateProjectOwner, deleteProjectFully);
+    router.get('/:project_id/delete/dryrun', ,ra.validateProjectOwner, deleteProjectDryRun);
 
     router.put('/:project_id/datasets/:dataset_id', ra.validateDatasetInProject, updateDatasetForProject);
     router.post('/:project_id/datasets/:dataset_id/doi', ra.validateDatasetInProject, createAndAddNewDoi);

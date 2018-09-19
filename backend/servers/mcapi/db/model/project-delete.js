@@ -5,9 +5,9 @@ const experimentDelete = require('./experiment-delete');
 const projects = require('./projects');
 const files = require('./files');
 
-function* deleteProjectFull(projectId, options) {
+function* fullProjectDelete(projectId, options) {
 
-    console.log("In deleteProjectFull: ", projectId, options);
+    console.log("In fullProjectDelete: ", projectId, options);
 
     let dryRun = !!(options && options.dryRun);
 
@@ -170,6 +170,6 @@ function* quickProjectDelete(projectId) {
 }
 
 module.exports = {
-    deleteProject: deleteProjectFull,
+    fullProjectDelete,
     quickProjectDelete
 };

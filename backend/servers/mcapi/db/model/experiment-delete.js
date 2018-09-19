@@ -3,7 +3,7 @@ const experimentDatasets = require('./experiment-datasets');
 const experiments = require('./experiments');
 const processes = require('./processes');
 
-function* quickDeleteExperiment(projectId, experimentId) {
+function* quickExperimentDelete(projectId, experimentId) {
     let hasPublishedDatasets = yield testForPublishedDatasets(experimentId);
     if (hasPublishedDatasets) {
         return {error: "Can not delete an experiment with published datasets"}
@@ -23,7 +23,7 @@ function* quickDeleteExperiment(projectId, experimentId) {
     return {val: {experiment_id: experimentId}};
 }
 
-function* deleteExperimentFull(projectId, experimentId, options) {
+function* fullExperimentDelete(projectId, experimentId, options) {
 
     console.log("In deleteExperimentFull: ", projectId, experimentId, options);
 
@@ -322,6 +322,6 @@ function* clearAllRemainingLinks(experimentId) {
 }
 
 module.exports = {
-    quickDeleteExperiment,
-    deleteExperiment: deleteExperimentFull
+    quickExperimentDelete,
+    fullExperimentDelete
 };

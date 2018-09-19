@@ -150,7 +150,7 @@ function* deleteExperiment(next) {
         dryRun: false,
         deleteProcesses: false
     };
-    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id, options);
+    let rv = yield experimentDelete.quickExperimentDelete(project_id, experiment_id, options);
     if (rv.error) {
         this.status = status.NOT_ACCEPTABLE;
         this.body = rv;
@@ -167,7 +167,7 @@ function* deleteExperimentFully(next) {
         dryRun: false,
         deleteProcesses: true
     };
-    let rv = yield experimentDelete.deleteExperiment(project_id, experiment_id, options);
+    let rv = yield experimentDelete.fullExperimentDelete(project_id, experiment_id, options);
     if (rv.error) {
         this.status = status.NOT_ACCEPTABLE;
         this.body = rv;
