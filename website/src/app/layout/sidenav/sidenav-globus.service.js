@@ -44,6 +44,20 @@ class SidenavGlobusService {
             }
         );
     }
+
+    loginToGlobus() {
+        return this.$mdDialog.show({
+            templateUrl: 'app/modals/globus-login-dialog.html',
+            controller: GlobusLoginDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {}
+        });
+    }
+
+    isAuthenticated() {
+        return this.etlServerAPI.getGlobusAuthStatus().then(status => status.authenticated, () => false);
+    }
 }
 
 class GlobusDownloadTransferDialogController {
@@ -134,6 +148,14 @@ class GlobusReportStatusDialogController {
 
     cancel() {
         this.$mdDialog.cancel();
+    }
+}
+
+class GlobusLoginDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, etlServerAPI) {
+        this.$mdDialog = $mdDialog;
+        this.etlServerAPI = etlServerAPI;
     }
 }
 

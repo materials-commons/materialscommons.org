@@ -1,6 +1,6 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, mcprojstore, mcprojectstore2, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q, User) {
+    constructor($state, mcprojstore, mcprojectstore2, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q, User, sidenavGlobus) {
         this.$state = $state;
         this.mcprojstore = mcprojstore;
         this.mcprojectstore2 = mcprojectstore2;
@@ -12,6 +12,9 @@ class MCProjectSidenavComponentController {
         this.mcRouteState = mcRouteState;
         this.User = User;
         this.$q = $q;
+        this.sidenavGlobus = sidenavGlobus;
+
+        this.isAuthenticatedToGlobus = false;
     }
 
     $onInit() {
@@ -32,6 +35,7 @@ class MCProjectSidenavComponentController {
 
         this.project = this.mcprojstore.currentProject;
         this.isBetaUser = this.User.isBetaUser();
+        this.sidenavGlobus.isAuthenticated().then(authStatus => this.isAuthenticatedToGlobus = authStatus);
     }
 
     loadProjectFiles() {
@@ -55,6 +59,14 @@ class MCProjectSidenavComponentController {
     refreshProject() {
         this.mcprojectstore2.reloadProject(this.project.id);
         this.ProjectModel.getProjectForCurrentUser(this.project.id).then((p) => this._updateProject(p));
+    }
+
+    startGlobusTransfer() {
+        this.sidenavGlobus.globusUpload(this.project);
+    }
+
+    loginToGlobus() {
+        this.sidenavGlobus.loginToGlobus();
     }
 
     _updateProject(project) {
