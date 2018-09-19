@@ -37,14 +37,14 @@ if __name__ == "__main__":
 
     if (base_dir[-1:] != "/"): base_dir = base_dir + "/"
 
-    print "base is " + base_dir
+    print("base is " + base_dir)
 
     datasets = list(r.table('datasets').run(conn))
 
-    print "There are %d datasets" % len(datasets)
+    print("There are %d datasets" % len(datasets))
 
     if (len(datasets) is 0):
-        print "No datasets"
+        print("No datasets")
         sys.exit(1)
 
     for dataset in datasets:
