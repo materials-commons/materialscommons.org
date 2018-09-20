@@ -164,8 +164,8 @@
         </div>
 
         <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.reportGlobusTasks()">
-                <i class="fa fa-fw fa-info-circle"></i>Globus Upload Status
+            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.showGlobusTasks()" ng-class="{disabled: !$ctrl.isAuthenticatedToGlobus}">
+                <i class="fa fa-fw fa-info-circle"></i>Globus Upload Tasks
             </a>
         </div>
 
