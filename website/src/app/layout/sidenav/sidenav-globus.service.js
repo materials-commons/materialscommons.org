@@ -47,7 +47,7 @@ class SidenavGlobusService {
 
     loginToGlobus() {
         return this.$mdDialog.show({
-            templateUrl: 'app/modals/globus-login-dialog.html',
+            templateUrl: 'app/modals/globus-login-logout-dialog.html',
             controller: GlobusLoginLogoutDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
@@ -57,7 +57,7 @@ class SidenavGlobusService {
 
     logoutFromGlobus() {
         return this.$mdDialog.show({
-            templateUrl: 'app/modals/globus-login-dialog.html',
+            templateUrl: 'app/modals/globus-login-logout-dialog.html',
             controller: GlobusLoginLogoutDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
