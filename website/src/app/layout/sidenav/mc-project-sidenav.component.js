@@ -1,6 +1,7 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, mcprojstore, mcprojectstore2, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q, User, sidenavGlobus) {
+    constructor($state, mcprojstore, mcprojectstore2, $timeout, ProjectModel, projectFileTreeAPI,
+                $mdDialog, mcRouteState, $q, User, sidenavGlobus, $interval, blockUI) {
         this.$state = $state;
         this.mcprojstore = mcprojstore;
         this.mcprojectstore2 = mcprojectstore2;
@@ -13,6 +14,8 @@ class MCProjectSidenavComponentController {
         this.User = User;
         this.$q = $q;
         this.sidenavGlobus = sidenavGlobus;
+        this.$interval = $interval;
+        this.blockUI = blockUI;
 
         this.isAuthenticatedToGlobus = false;
     }
@@ -65,8 +68,31 @@ class MCProjectSidenavComponentController {
         this.sidenavGlobus.globusUpload(this.project);
     }
 
+    _checkAuthStatus() {
+        let promise = null;
+        this.blockUI.stop();
+        promise = this.$interval(() => {
+            this.blockUI.stop();
+            this.sidenavGlobus.isAuthenticated().then(authStatus => {
+                // check if we are logging out
+                if (this.isAuthenticatedToGlobus && !authStatus) {
+                    this.isAuthenticatedToGlobus = authStatus;
+                    this.$interval.cancel(promise);
+                } else if (!this.isAuthenticatedToGlobus && authStatus) {
+                    this.isAuthenticatedToGlobus = authStatus;
+                    this.$interval.cancel(promise);
+                }
+            });
+        }, 2000, 20);
+    }
+
     loginToGlobus() {
-        this.sidenavGlobus.loginToGlobus();
+        this.sidenavGlobus.loginToGlobus().then(() => this._checkAuthStatus());
+
+    }
+
+    logoutFromGlobus() {
+        this.sidenavGlobus.logoutFromGlobus().then(() => this._checkAuthStatus());
     }
 
     _updateProject(project) {

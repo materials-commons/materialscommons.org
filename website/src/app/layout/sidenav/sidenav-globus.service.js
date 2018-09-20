@@ -48,7 +48,17 @@ class SidenavGlobusService {
     loginToGlobus() {
         return this.$mdDialog.show({
             templateUrl: 'app/modals/globus-login-dialog.html',
-            controller: GlobusLoginDialogController,
+            controller: GlobusLoginLogoutDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {}
+        });
+    }
+
+    logoutFromGlobus() {
+        return this.$mdDialog.show({
+            templateUrl: 'app/modals/globus-login-dialog.html',
+            controller: GlobusLoginLogoutDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {}
@@ -56,7 +66,7 @@ class SidenavGlobusService {
     }
 
     isAuthenticated() {
-        return this.etlServerAPI.getGlobusAuthStatus().then(status => status.authenticated, () => false);
+        return this.etlServerAPI.getGlobusAuthStatus().then(authStatus => authStatus.status.authenticated, () => false);
     }
 }
 
@@ -151,12 +161,80 @@ class GlobusReportStatusDialogController {
     }
 }
 
-class GlobusLoginDialogController {
+class GlobusLoginLogoutDialogController {
     /*@ngInject*/
     constructor($mdDialog, etlServerAPI) {
         this.$mdDialog = $mdDialog;
         this.etlServerAPI = etlServerAPI;
+        this.refreshGlobusStatus();
     }
+
+    globusLogin() {
+        this.etlServerAPI.globusLogin().then(
+            (login) => {
+                this.loginUrl = login.url;
+                this.loggedin = true;
+            }
+        );
+    }
+
+    globusLogout() {
+        this.etlServerAPI.globusLogout().then(
+            (retVal) => {
+                this.logoutUrl = retVal.url;
+                this.loggedin = false;
+            }
+        );
+    }
+
+    resetFromLogin() {
+        this.loginUrl = null;
+        this.globusStatus = null;
+        this.loggedin = false;
+        this.$mdDialog.hide();
+    }
+
+    resetFromLogout() {
+        this.logoutUrl = null;
+        this.globusStatus = null;
+        this.loggedin = true;
+        this.$mdDialog.hide();
+    }
+
+    refreshGlobusStatus() {
+        console.log('refreshGlobusStatus');
+        this.etlServerAPI.getGlobusAuthStatus().then(
+            (retVal) => {
+                this.details = [];
+                this.globusStatus = retVal.status;
+                this.loggedIn = this.globusStatus.authenticated;
+                if (this.loggedIn) {
+                    let token_keys = ['auth.globus.org', 'transfer.api.globus.org'];
+                    for (let i = 0; i < token_keys.length; i++) {
+                        let key = token_keys[i];
+                        this.details.push(key + ', access: ' + this.globusStatus.validated[key].access);
+                        this.details.push(key + ', refresh: ' + this.globusStatus.validated[key].refresh);
+                        console.log(this.globusStatus.validated[key].expires);
+                        let s = this.globusStatus.validated[key].expires;
+                        if (s > 0) {
+                            let d = new Date();
+                            d.setTime(1000 * s);
+                            console.log(d.toString());
+                            this.details.push(key + ', expires: ' + d.toString());
+                        }
+                    }
+                }
+                else {
+                    this.details.push('Not Authenticated');
+                }
+            }
+        );
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+
 }
 
 angular.module('materialscommons').service('sidenavGlobus', SidenavGlobusService);
