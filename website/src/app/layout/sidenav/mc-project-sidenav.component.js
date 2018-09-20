@@ -64,11 +64,24 @@ class MCProjectSidenavComponentController {
         this.ProjectModel.getProjectForCurrentUser(this.project.id).then((p) => this._updateProject(p));
     }
 
+    showGlobusTasks() {
+        this.sidenavGlobus.showGlobusTasks(this.project);
+    }
+
     startGlobusTransfer() {
         this.sidenavGlobus.globusUpload(this.project);
     }
 
-    _checkAuthStatus() {
+    loginToGlobus() {
+        this.sidenavGlobus.loginToGlobus().then(() => this._checkGlobusAuthStatus());
+
+    }
+
+    logoutFromGlobus() {
+        this.sidenavGlobus.logoutFromGlobus().then(() => this._checkGlobusAuthStatus());
+    }
+
+    _checkGlobusAuthStatus() {
         let promise = null;
         this.blockUI.stop();
         promise = this.$interval(() => {
@@ -86,14 +99,7 @@ class MCProjectSidenavComponentController {
         }, 2000, 20);
     }
 
-    loginToGlobus() {
-        this.sidenavGlobus.loginToGlobus().then(() => this._checkAuthStatus());
 
-    }
-
-    logoutFromGlobus() {
-        this.sidenavGlobus.logoutFromGlobus().then(() => this._checkAuthStatus());
-    }
 
     _updateProject(project) {
         this.mcprojstore.updateCurrentProject((currentProject, transformers) => {
