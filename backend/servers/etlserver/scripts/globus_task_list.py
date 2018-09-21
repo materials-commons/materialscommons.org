@@ -19,7 +19,6 @@ if __name__ == '__main__':
     cc_transfer_client.endpoint_autoactivate(target_endpoint)
     auth_client = globus_access.get_auth_client()
     users = auth_client.get_identities(usernames="glenn.tarcea@gmail.com")
-    print(users)
     principal_id = users['identities'][0]['id']
     destination_path = "/glenn.tarcea@gmail.com/My Projects/"
     # globus id for glenn.tarcea@gmail.com = 32154544-c422-4593-9f94-db9a108eebe0
