@@ -6,6 +6,7 @@ from ..common.GlobusAccess import GlobusAccess, CONFIDENTIAL_CLIENT_APP_AUTH
 from globus_sdk import TransferAPIError
 import logging
 import time
+import datetime
 
 if __name__ == '__main__':
     LoggingHelper().set_root()
@@ -20,7 +21,7 @@ if __name__ == '__main__':
     users = auth_client.get_identities(usernames="glenn.tarcea@gmail.com")
     print(users)
     principal_id = users['identities'][0]['id']
-    destination_path = "/glenn.tarcea_upload/"
+    destination_path = "/glenn.tarcea@gmail.com/My Projects/"
     # globus id for glenn.tarcea@gmail.com = 32154544-c422-4593-9f94-db9a108eebe0
     acl_rule = dict(principal=principal_id, principal_type="identity",
                     path=destination_path, permissions='rw')
@@ -35,9 +36,20 @@ if __name__ == '__main__':
 
     loop = True
     while loop:
-        tasks = cc_transfer_client.endpoint_manager_task_list(num_results=None, filter_endpoint=target_endpoint)
+        yesterday = datetime.date.today() - datetime.timedelta(1)
+        tasks = cc_transfer_client.endpoint_manager_task_list(num_results=None,
+                                                              filter_endpoint=target_endpoint,
+                                                              filter_completion_time=yesterday.isoformat(),
+                                                              filter_status="SUCCEEDED")
+        print("===================== tasks ============================")
+        count = 1
         for task in tasks:
+            print("{}.-------------------".format(count))
+            print('Task ID: {}'.format(task['task_id']))
+            print('  Task Status: {}'.format(task['status']))
+            print('  Total Subtasks: {}'.format(task['subtasks_total']))
+            print('  Finished Subtasks: {}'.format(task['subtasks_succeeded']))
+            print('  Completion Time: {}'.format(task['completion_time']))
             print("-------------------")
-            print(task)
-            print("-------------------")
+            count = count + 1
         time.sleep(10)
