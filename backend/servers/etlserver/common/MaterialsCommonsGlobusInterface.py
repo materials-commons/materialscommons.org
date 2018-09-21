@@ -44,6 +44,7 @@ class MaterialsCommonsGlobusInterface:
     def setup_transfer_clients(self, source_endpoint_id):
         self.cc_transfer_client = self.globus_access.get_transfer_client()
         self.user_transfer_client = self.get_user_transfer_client(source_endpoint_id)
+        self.transfer_client = self.user_transfer_client
 
     def get_user_transfer_client(self, source_endpoint_id):
         self.log.info("Getting MC User's globus infomation")

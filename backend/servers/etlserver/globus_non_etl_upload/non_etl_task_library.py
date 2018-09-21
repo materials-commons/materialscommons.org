@@ -135,6 +135,7 @@ def globus_transfer(status_record_id):
     web_service = MaterialsCommonsGlobusInterface(user_id)
     log.info("web_service.setup_transfer_client()")
     web_service.setup_transfer_clients(globus_endpoint)
+    # web_service.set_transfer_client()
     # results = web_service.set_transfer_client()
     # if results['status'] == 'error':
     #     return results

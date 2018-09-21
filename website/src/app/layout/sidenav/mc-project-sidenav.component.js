@@ -87,6 +87,7 @@ class MCProjectSidenavComponentController {
         promise = this.$interval(() => {
             this.blockUI.stop();
             this.sidenavGlobus.isAuthenticated().then(authStatus => {
+                console.log(`${this.isAuthenticatedToGlobus}/${authStatus}`);
                 // check if we are logging out
                 if (this.isAuthenticatedToGlobus && !authStatus) {
                     this.isAuthenticatedToGlobus = authStatus;
@@ -96,7 +97,7 @@ class MCProjectSidenavComponentController {
                     this.$interval.cancel(promise);
                 }
             });
-        }, 2000, 20);
+        }, 2000, 2);
     }
 
 
