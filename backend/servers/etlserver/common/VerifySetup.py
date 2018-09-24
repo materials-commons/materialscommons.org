@@ -3,21 +3,25 @@ import logging
 
 from ..database.DB import DbConnection
 from globus_sdk.exc import GlobusAPIError
+from globus_sdk import TransferAPIError
 
 
 class VerifySetup:
-    def __init__(self, globus_service, project_id, globus_endpoint, globus_path, base_path, dir_file_list):
+    def __init__(self, mc_globus_service, project_id,
+                 globus_source_endpoint, globus_source_path,
+                 globus_destination_path, base_path, dir_file_list):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
-        self.globus_service = globus_service
+        self.mc_globus_service = mc_globus_service
         self.project_id = project_id
-        self.globus_endpoint = globus_endpoint
-        self.globus_path = globus_path
+        self.globus_source_endpoint = globus_source_endpoint
+        self.globus_source_path = globus_source_path
+        self.globus_destination_path = globus_destination_path
         self.base_path = base_path
         self.dir_file_list = dir_file_list
         self.log.info("VerifySetup init: ")
         self.log.info("  project_id = {}".format(project_id))
-        self.log.info("  globus_endpoint = {}".format(globus_endpoint))
-        self.log.info("  globus_path = {}".format(globus_path))
+        self.log.info("  globus_source_endpoint = {}".format(globus_source_endpoint))
+        self.log.info("  globus_source_path = {}".format(globus_source_path))
         self.log.info("  base_path = {}".format(base_path))
         self.log.info("  dir_file_list = {}".format(dir_file_list))
 
@@ -30,11 +34,16 @@ class VerifySetup:
     def status(self):
         self.error_status = {}
 
-        self.check_env_variables()
-        self.check_project_exists()
-        self.check_target_directory()
-        self.check_globus_clients()
-        self.check_users_source_paths()
+        try:
+            self.check_env_variables()
+            if not self.error_status:
+                self.check_project_exists()
+                self.check_target_directory()
+                self.check_globus_clients()
+                self.check_users_source_paths()
+                self.check_acl_rule()
+        except BaseException as e:
+            self.error_status["exception"] = e
 
         if self.error_status:
             return {
@@ -57,6 +66,8 @@ class VerifySetup:
             self.log.info(message)
             self.error_status["env"] = message
         else:
+            self.log.info("MC_CONFIDENTIAL_CLIENT_USER, self.client_user, is {}".format(self.client_user))
+            self.log.info("MC_CONFIDENTIAL_CLIENT_ENDPOINT, self.target_endpoint, is {}".format(self.target_endpoint))
             self.log.info("environment variables setup - ok")
 
     def check_project_exists(self):
@@ -79,7 +90,7 @@ class VerifySetup:
 
     def check_globus_clients(self):
         try:
-            self.globus_service.set_transfer_client()
+            self.mc_globus_service.setup_transfer_clients()
         except GlobusAPIError as e:
             http_status = e.http_status
             code = e.code
@@ -92,47 +103,39 @@ class VerifySetup:
             self.log.info(message)
             return
 
-        transfer = self.globus_service.transfer_client
+        user_transfer_client = self.mc_globus_service.user_transfer_client
+
+        try:
+            user_transfer_client.endpoint_autoactivate(self.globus_source_endpoint)
+            listing = user_transfer_client.operation_ls(self.globus_source_endpoint, path=self.globus_source_path)
+        except TransferAPIError as err:
+            self.log.error('Error [{}]: {}'.format(err.code, err.message))
+            return
+
+        file_list = [e for e in listing if e['type'] == 'file']
+        self.log.info("File list = {}".format(file_list))
+
+        ep = user_transfer_client.get_endpoint(self.globus_source_endpoint)
+        self.log.info("Endpoint - display_name = {}".format(ep['display_name']))
+        self.log.info("Endpoint - owner_string = {}".format(ep['owner_string']))
 
         # confirm target and inbound endpoints
-        target_endpoint = transfer.get_endpoint(self.globus_service.mc_target_ep_id)
-        inbound_endpoint = transfer.get_endpoint(self.globus_endpoint)
+        target_endpoint = user_transfer_client.get_endpoint(self.mc_globus_service.mc_target_ep_id)
+        inbound_endpoint = user_transfer_client.get_endpoint(self.globus_source_endpoint)
 
         if not target_endpoint or not inbound_endpoint:
             if not target_endpoint:
-                message = "Materials Commons staging endpoint: " + self.globus_service.mc_target_ep_id
+                message = "Materials Commons staging endpoint: " + self.mc_globus_service.mc_target_ep_id
                 self.error_status["Missing target endpoint"] = message
                 self.log.info(message)
 
             if not inbound_endpoint:
-                message = "User's endpoint" + self.globus_endpoint
+                message = "User's endpoint" + self.globus_source_endpoint
                 self.error_status["Missing source endpoint"] = message
                 self.log.info(message)
 
             return
 
-        both = True
-        try:
-            transfer.operation_ls(self.globus_service.mc_target_ep_id)
-        except GlobusAPIError as e:
-            both = False
-            message = "Materials Commons staging endpoint, " + self.globus_service.mc_target_ep_id
-            message += ", code = " + e.code
-            self.error_status["Cannot reach staging endpoint"] = message
-            self.log.info(message)
-
-        # try:
-        #     transfer.operation_ls(self.globus_endpoint)
-        # except GlobusAPIError as e:
-        #     both = False
-        #     message = "User's endpoint, " + self.globus_endpoint
-        #     message += ", code = " + e.code
-        #     self.error_status["Cannot reach user's endpoint"] = message
-        #     self.log.info(message)
-
-        if not both:
-            return
-        # what else needs to be checked?
         return
 
     def check_users_source_paths(self):
@@ -144,16 +147,25 @@ class VerifySetup:
 
     def find_user_path(self, end_path):
         try:
-            self.globus_service.set_transfer_client()
-            transfer = self.globus_service.transfer_client
+            self.mc_globus_service.set_transfer_client()
+            transfer = self.mc_globus_service.transfer_client
             entry = os.path.split(end_path)[-1]
             path = os.path.normpath(os.path.join(end_path, os.path.pardir))
-            content = transfer.operation_ls(self.globus_endpoint, path=path)
+            content = transfer.operation_ls(self.globus_source_endpoint, path=path)
             for element in content:
                 if element['name'] == entry:
                     return True
             self.log.info("Missing entry in content, entry = {}, content={}".format(entry, content))
-            return False
+            return
         except GlobusAPIError:
             self.log.exception("unexpected exception")
-            return False
+            return
+
+    def check_acl_rule(self):
+        acl = self.mc_globus_service.get_user_access_rule(self.globus_destination_path)
+        if not acl:
+            message = "Could find access Control Rule on materials commons endpoint for {}".\
+                format(self.globus_destination_path)
+            self.error_status["Missing acl"] = message
+        else:
+            self.log.info("Fouund ACL Rule for {}".format(self.globus_destination_path))
