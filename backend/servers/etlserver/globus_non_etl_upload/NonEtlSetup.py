@@ -13,7 +13,7 @@ class NonEtlSetup:
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.worker_base_path = McdirHelper().get_upload_dir()
 
-    def setup_status_record(self, project_id, globus_endpoint):
+    def setup_status_record(self, project_id, globus_endpoint, path):
         self.log.info("starting setup of status record; user_id = {}; project_id = {}"
                       .format(self.user_id, project_id))
         status_record = DatabaseInterface().\
@@ -30,7 +30,8 @@ class NonEtlSetup:
         self.log.info("transfer_base_path = " + transfer_base_path)
         extras = {
             "transfer_base_path": transfer_base_path,
-            "globus_endpoint": globus_endpoint
+            "globus_endpoint": globus_endpoint,
+            "globus_path": path
         }
         status_record = DatabaseInterface().add_extras_data_to_status_record(status_record_id, extras)
         status_record_id = status_record['id']

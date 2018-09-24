@@ -103,6 +103,7 @@ class GlobusUploadTransferDialogController {
         this.$mdDialog = $mdDialog;
         this.etlServerAPI = etlServerAPI;
         this.endpoint = '';
+        this.endpointPath = '/~/MyTransferDir/dataForUpload/';
         this.uploadName = 'undefined';
         this.uploadUniquename = 'undefined';
         this.uploadId = 'undefined';
@@ -117,8 +118,8 @@ class GlobusUploadTransferDialogController {
     }
 
     submitToServer() {
-        console.log('Submitting request to server: ', this.project.id, this.endpoint);
-        this.etlServerAPI.setupGlobusUploadTransfer(this.project.id, this.endpoint)
+        console.log('Submitting request to server: ', this.project.id, this.endpoint, this.endpointPath);
+        this.etlServerAPI.setupGlobusUploadTransfer(this.project.id, this.endpoint, this.endpointPath)
             .then(globusResults => {
                 console.log('Results returned from server: ', globusResults);
                 if (globusResults) {

@@ -217,10 +217,15 @@ def globus_transfer_upload():
     j = request.get_json(force=True)
     project_id = j["project_id"]
     globus_endpoint_id = j["endpoint"]
+    globus_endpoint_path = j["path"]
     user_id = access.get_user()
     log.info("Project id = {}; Globus user name = {}".format(project_id, globus_endpoint_id))
     if not globus_endpoint_id:
         message = "Project upload with Globus - globus_endpoint_id is missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    if not globus_endpoint_path:
+        message = "Project upload with Globus - globus_endpoint_path is missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
     if not project_id:
@@ -229,7 +234,7 @@ def globus_transfer_upload():
         return message, status.HTTP_400_BAD_REQUEST
     # noinspection PyBroadException
     try:
-        upload = GlobusUpload(user_id, project_id, globus_endpoint_id)
+        upload = GlobusUpload(user_id, project_id, globus_endpoint_id, globus_endpoint_path)
         results = upload.setup_and_verify()
         log.info("Project id = {}; Globus user name = {}".format(project_id, results))
         ret = format_as_json_return(results)

@@ -5,21 +5,19 @@
         </div>
     </md-toolbar>
     <md-dialog-content ng-if="! $ctrl.status" layout-margin>
+        <p>
+            <em>Make sure that your <b>Globus endpoint and path</b> contains all and only the files
+                that you want upload, with the directory structure that you desire.
+            </em>
+        </p>
         <md-input-container class="md-block" style="margin-top:40px">
-            <label>Globus Shared endpoint id</label>
+            <label>Globus endpoint id</label>
             <input ng-model="$ctrl.endpoint" on-enter="$ctrl.submitToServer()">
         </md-input-container>
-        <p>
-        <em>Make sure that your shared endpoint contains all and only the files that you want upload,
-        with the directory structure that you desire. Also, make sure that the files are permitted, read only,
-            to the Materials Commons upload account:
-            <ul>
-                <li>common name = <b>{{$ctrl.uploadName}}</b></li>
-                <li>unique-name = <b>{{$ctrl.uploadUniquename}}</b></li>
-                <li>id = <b>{{$ctrl.uploadId}}</b></li>
-            </ul>
-        </em>
-        </p>
+        <md-input-container class="md-block" style="margin-top:40px">
+            <label>Endpoint Path</label>
+            <input ng-model="$ctrl.endpointPath" on-enter="$ctrl.submitToServer()">
+        </md-input-container>
     </md-dialog-content>
     <md-dialog-content ng-if="$ctrl.status=='SUCCESS'" layout-margin>
         <p>
