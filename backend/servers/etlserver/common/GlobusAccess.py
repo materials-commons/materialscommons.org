@@ -26,7 +26,7 @@ class GlobusAccess:
     def get_auth_client(self):
         return self.impl.get_auth_client()
 
-    def get_transfer_client(self):
+    def get_cc_transfer_client(self):
         return self.impl.get_transfer_client()
 
     def get_globus_user(self, user_name):

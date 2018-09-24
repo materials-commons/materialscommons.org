@@ -12,7 +12,6 @@ from servers.etlserver.download.GlobusDownload import GlobusDownload
 from servers.etlserver.globus_non_etl_upload.GlobusUpload import GlobusUpload
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
-from servers.etlserver.user.apikeydb import apikey_user as apikeydb_apikey_user
 from servers.etlserver.utils.UploadUtility import UploadUtility
 from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
 from servers.etlserver.common.GlobusInfo import GlobusInfo
@@ -417,14 +416,14 @@ def globus_auth_status():
         ('auth.globus.org' in validated) \
         and validated['auth.globus.org']['access']
 
-    status = {
+    return_status = {
         'globus_name': globus_name,
         'globus_id': globus_id,
         'authenticated': globus_authentication,
         'validated': validated
     }
 
-    return format_as_json_return({'status': status})
+    return format_as_json_return({'status': return_status})
 
 
 @app.route('/globus/auth/login', methods=['GET', 'POST'])
@@ -505,7 +504,7 @@ def globus_auth_callback():
     return 'You Should be logged in - return to Materials Commons page/tab and refresh.'
 
 
-@app.route('/globus/auth/logout', methods=['GET','POST'])
+@app.route('/globus/auth/logout', methods=['GET', 'POST'])
 @apikey
 def globus_auth_logout():
     """

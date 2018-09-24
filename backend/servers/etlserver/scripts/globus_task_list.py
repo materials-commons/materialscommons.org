@@ -13,7 +13,7 @@ if __name__ == '__main__':
     globus_access = GlobusAccess(use_implementation=CONFIDENTIAL_CLIENT_APP_AUTH)
     cc_user = os.environ.get('MC_CONFIDENTIAL_CLIENT_USER')
     cc_token = os.environ.get('MC_CONFIDENTIAL_CLIENT_PW')
-    cc_transfer_client = globus_access.get_transfer_client()
+    cc_transfer_client = globus_access.get_cc_transfer_client()
     target_endpoint = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
     cc_transfer_client.endpoint_autoactivate(target_endpoint)
     auth_client = globus_access.get_auth_client()

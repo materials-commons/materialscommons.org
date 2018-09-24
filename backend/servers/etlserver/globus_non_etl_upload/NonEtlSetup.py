@@ -53,11 +53,13 @@ class NonEtlSetup:
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.VERIFYING_SETUP)
         project_id = status_record['project_id']
         globus_endpoint = status_record['extras']['globus_endpoint']
+        globus_path = status_record['extras']['globus_path']
         transfer_base_path = status_record['extras']['transfer_base_path']
 
         web_service = MaterialsCommonsGlobusInterface(self.user_id)
         checker = VerifySetup(web_service, project_id,
-                              globus_endpoint, transfer_base_path,
+                              globus_endpoint, globus_path,
+                              transfer_base_path,
                               [])
         return checker.status()
 

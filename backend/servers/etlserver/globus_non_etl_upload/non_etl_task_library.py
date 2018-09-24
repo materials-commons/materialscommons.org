@@ -12,7 +12,7 @@ from ..user.apikeydb import _load_apikeys as init_api_keys, user_apikey
 from .NonEtlSetup import NonEtlSetup
 
 
-def startup_and_verify(user_id, project_id, globus_endpoint, path):
+def startup_and_verify(user_id, project_id, user_globus_endpoint, user_globus_path):
     log = logging.getLogger(__name__ + ".startup_and_verify")
     log.info("Starting startup_and_verify")
 
@@ -21,7 +21,7 @@ def startup_and_verify(user_id, project_id, globus_endpoint, path):
     try:
         setup = NonEtlSetup(user_id)
         status_record_id = \
-            setup.setup_status_record(project_id, globus_endpoint, path)
+            setup.setup_status_record(project_id, user_globus_endpoint, user_globus_path)
         if not status_record_id:
             log.error("Unable to create status_record_id")
             return {"status": "FAIL"}

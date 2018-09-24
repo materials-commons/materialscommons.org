@@ -38,13 +38,11 @@ class MaterialsCommonsGlobusInterface:
             message = "Missing environment values: {}".format(", ".join(missing))
             raise EnvironmentError(message)
 
-        self.transfer_client = None
         self.log.debug("MaterialsCommonsGlobusInterface init - done")
 
     def setup_transfer_clients(self, source_endpoint_id):
-        self.cc_transfer_client = self.globus_access.get_transfer_client()
+        self.cc_transfer_client = self.globus_access.get_cc_transfer_client()
         self.user_transfer_client = self.get_user_transfer_client(source_endpoint_id)
-        self.transfer_client = self.user_transfer_client
 
     def get_user_transfer_client(self, source_endpoint_id):
         self.log.info("Getting MC User's globus infomation")
@@ -67,13 +65,13 @@ class MaterialsCommonsGlobusInterface:
         transfer_tokens = record['tokens']['transfer.api.globus.org']
         self.log.info("Got transfer.api.globus.org tokens; keys = {}".format(transfer_tokens.keys()))
         transfer_client = \
-            self._get_transfer_client(transfer_tokens, source_endpoint_id)
+            self._get_transfer_client_from_tokens(transfer_tokens, source_endpoint_id)
         if not transfer_client:
-            self.log.error("Transfer Client is not available; abort")
+            self.log.error("User's Transfer Client is not available")
             return None
         return transfer_client
 
-    def _get_transfer_client(self, transfer_tokens, endpoint_id, endpoint_path='/'):
+    def _get_transfer_client_from_tokens(self, transfer_tokens, endpoint_id, endpoint_path='/'):
         authorizer = RefreshTokenAuthorizer(
             transfer_tokens['refresh_token'],
             self.globus_access.get_auth_client(),
@@ -97,25 +95,6 @@ class MaterialsCommonsGlobusInterface:
         self.log.info("Endpoint - owner_string = {}".format(ep['owner_string']))
 
         return transfer
-
-    def set_transfer_client(self):
-        self.log.info("MaterialsCommonsGlobusInterface set_transfer_client - started")
-        self.log.info("Client user is {}".format(self.client_user))
-        auth_client = self.get_auth_client()
-        if not auth_client:
-            error = "No Authentication Client"
-            self.log.error("Error: " + str(error))
-            raise AuthenticationException(error)
-        self.log.debug("MaterialsCommonsGlobusInterface set_transfer_client - auth_client")
-        self.log.debug(auth_client)
-        transfer = self.get_transfer_interface(auth_client)
-        if not transfer:
-            error = "No transfer interface"
-            self.log.error("Error: " + str(error))
-            raise AuthenticationException(error)
-        self.transfer_client = transfer
-        self.log.debug("MaterialsCommonsGlobusInterface set_transfer_client - done")
-        return {"status": "ok"}
 
     def upload_files(self, project_id, transfer_id, inbound_endpoint_id, inbound_endpoint_path):
         self.log.info("upload_files: " + inbound_endpoint_id + ", " + inbound_endpoint_path)

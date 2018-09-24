@@ -55,7 +55,7 @@ class EpEpTransferHelper:
         self.log.info('Target endpoint = {}'.format(self.target_endpoint))
         self.log.info('Target path = {}'.format(destination_path))
 
-        cc_transfer_client = self.globus_access.get_transfer_client()
+        cc_transfer_client = self.globus_access.get_cc_transfer_client()
         user_transfer_client = self.get_user_transfer_client()  # also sets self.source_user_globus_id
         if not user_transfer_client:
             self.log.error("Unable to create User's Globus Transfer Client")
@@ -144,13 +144,13 @@ class EpEpTransferHelper:
         transfer_tokens = record['tokens']['transfer.api.globus.org']
         self.log.info("Got transfer.api.globus.org tokens; keys = {}".format(transfer_tokens.keys()))
         transfer_client = \
-            self.get_transfer_client(transfer_tokens, self.source_endpoint)
+            self.get_transfer_client_from_tokens(transfer_tokens, self.source_endpoint)
         if not transfer_client:
-            self.log.error("Transfer Client is not available; abort")
+            self.log.error("Users Transfer Client is not available")
             return None
         return transfer_client
 
-    def get_transfer_client(self, transfer_tokens, endpoint_id, endpoint_path='/'):
+    def get_transfer_client_from_tokens(self, transfer_tokens, endpoint_id, endpoint_path='/'):
         authorizer = RefreshTokenAuthorizer(
             transfer_tokens['refresh_token'],
             self.globus_access.get_auth_client(),

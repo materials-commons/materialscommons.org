@@ -6,18 +6,31 @@ from globus_sdk.exc import GlobusAPIError
 
 
 class VerifySetup:
-    def __init__(self, web_service, project_id, globus_endpoint, base_path, dir_file_list):
+    def __init__(self, globus_service, project_id, globus_endpoint, globus_path, base_path, dir_file_list):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
-        self.web_service = web_service
+        self.globus_service = globus_service
         self.project_id = project_id
         self.globus_endpoint = globus_endpoint
+        self.globus_path = globus_path
         self.base_path = base_path
         self.dir_file_list = dir_file_list
+        self.log.info("VerifySetup init: ")
+        self.log.info("  project_id = {}".format(project_id))
+        self.log.info("  globus_endpoint = {}".format(globus_endpoint))
+        self.log.info("  globus_path = {}".format(globus_path))
+        self.log.info("  base_path = {}".format(base_path))
+        self.log.info("  dir_file_list = {}".format(dir_file_list))
+
+        self.client_user = os.environ.get('MC_CONFIDENTIAL_CLIENT_USER')
+        self.client_token = os.environ.get('MC_CONFIDENTIAL_CLIENT_PW')
+        self.target_endpoint = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
+
         self.error_status = {}
 
     def status(self):
         self.error_status = {}
 
+        self.check_env_variables()
         self.check_project_exists()
         self.check_target_directory()
         self.check_globus_clients()
@@ -29,6 +42,22 @@ class VerifySetup:
                 'status': 'ERROR'
             }
         return {'status': 'SUCCESS'}
+
+    def check_env_variables(self):
+
+        if (not self.client_user) or (not self.client_token) or (not self.target_endpoint):
+            missing = []
+            if not self.client_user:
+                missing.append('MC_CONFIDENTIAL_CLIENT_USER')
+            if not self.client_token:
+                missing.append('MC_CONFIDENTIAL_CLIENT_PW')
+            if not self.target_endpoint:
+                missing.append("MC_CONFIDENTIAL_CLIENT_ENDPOINT")
+            message = "Missing environment values: {}".format(", ".join(missing))
+            self.log.info(message)
+            self.error_status["env"] = message
+        else:
+            self.log.info("environment variables setup - ok")
 
     def check_project_exists(self):
         conn = DbConnection().connection()
@@ -50,7 +79,7 @@ class VerifySetup:
 
     def check_globus_clients(self):
         try:
-            self.web_service.set_transfer_client()
+            self.globus_service.set_transfer_client()
         except GlobusAPIError as e:
             http_status = e.http_status
             code = e.code
@@ -63,15 +92,15 @@ class VerifySetup:
             self.log.info(message)
             return
 
-        transfer = self.web_service.transfer_client
+        transfer = self.globus_service.transfer_client
 
         # confirm target and inbound endpoints
-        target_endpoint = transfer.get_endpoint(self.web_service.mc_target_ep_id)
+        target_endpoint = transfer.get_endpoint(self.globus_service.mc_target_ep_id)
         inbound_endpoint = transfer.get_endpoint(self.globus_endpoint)
 
         if not target_endpoint or not inbound_endpoint:
             if not target_endpoint:
-                message = "Materials Commons staging endpoint: " + self.web_service.mc_target_ep_id
+                message = "Materials Commons staging endpoint: " + self.globus_service.mc_target_ep_id
                 self.error_status["Missing target endpoint"] = message
                 self.log.info(message)
 
@@ -84,10 +113,10 @@ class VerifySetup:
 
         both = True
         try:
-            transfer.operation_ls(self.web_service.mc_target_ep_id)
+            transfer.operation_ls(self.globus_service.mc_target_ep_id)
         except GlobusAPIError as e:
             both = False
-            message = "Materials Commons staging endpoint, " + self.web_service.mc_target_ep_id
+            message = "Materials Commons staging endpoint, " + self.globus_service.mc_target_ep_id
             message += ", code = " + e.code
             self.error_status["Cannot reach staging endpoint"] = message
             self.log.info(message)
@@ -115,8 +144,8 @@ class VerifySetup:
 
     def find_user_path(self, end_path):
         try:
-            self.web_service.set_transfer_client()
-            transfer = self.web_service.transfer_client
+            self.globus_service.set_transfer_client()
+            transfer = self.globus_service.transfer_client
             entry = os.path.split(end_path)[-1]
             path = os.path.normpath(os.path.join(end_path, os.path.pardir))
             content = transfer.operation_ls(self.globus_endpoint, path=path)
