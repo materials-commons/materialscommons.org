@@ -85,6 +85,7 @@ class GlobusNonETLUpload:
             status = task['status']
             self.log.info("Current task status = {}".format(status))
             time.sleep(5)
+        mc_globus_interface.clear_user_access_rule(destination_endpoint)
         results = {'status': 'status'}
         return results
 
@@ -110,4 +111,4 @@ class GlobusNonETLUpload:
 
     @staticmethod
     def make_globus_destination_path(transfer_dir_path):
-        return '/' + os.path.join("__upload", transfer_dir_path) + "/"
+        return '/{}/'.format(os.path.join("__upload_staging", transfer_dir_path))

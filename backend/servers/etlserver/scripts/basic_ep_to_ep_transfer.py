@@ -48,7 +48,7 @@ class EpEpTransferHelper:
         random_key = "{0:04d}".format(randint(0, 10000))
         transfer_dir = self.make_transfer_dir(random_key)
         transfer_base_path = os.path.join(base_path, transfer_dir)
-        destination_path = "{}/".format(transfer_base_path)
+        destination_path = "/__upload_staging{}/".format(transfer_base_path)
 
         self.log.info('Source endpoint = {}'.format(self.source_endpoint))
         self.log.info('Source path = {}'.format(self.source_path))
