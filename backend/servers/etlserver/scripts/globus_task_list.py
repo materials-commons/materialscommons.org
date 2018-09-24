@@ -25,26 +25,72 @@ def load_file(conn, filepath, project):
     print("  id = {}".format(id))
     file_path = pieces[3:]
     print("  file_path = {}".format(file_path))
-    datadir = get_datadir(conn, project, file_path[:-1])
-    print("  dir = {}".format(os.path.join(project['name'], *file_path[:-1])))
+    datadir = get_datadir(conn, user, project, file_path[:-1])
+    create_file(conn, datadir, project, user, file_path)
 
 
-def get_datadir(conn, project, paths):
+def get_datadir(conn, user, project, paths):
     created_dir = None
     if len(paths) == 0:
         entries = list(r.table("datadir").get_all([project['id'], project['name']]).run(conn))
         return entries[0]
     else:
+        last_dir = None
         for idx, entry in enumerate(paths):
             dir_name = os.path.join(project['name'], *paths[:idx + 1])
-            entries = list(r.table("datadir").get_all([project['id'], project['name']]).run(conn))
+            entries = list(r.table("datadir").get_all([project['id'], dir_name]).run(conn))
             if len(entries) == 0:
-                created_dir = create_dir()
+                created_dir = create_dir(conn, user, last_dir['id'], dir_name, project)
+                last_dir = created_dir
+            else:
+                last_dir = entries[0]
         return created_dir
 
 
-def create_dir():
-    return ""
+def create_dir(conn, user, parent, dirpath, project):
+    now = r.now()
+    ddir = {
+        "otype": "datadir",
+        "owner": user,
+        "project": project['id'],
+        "name": dirpath,
+        "parent": parent,
+        "birthtime": now,
+        "mtime": now,
+        "atime": now,
+        "shortcut": False
+    }
+    dbobj = r.table("datadirs").insert(ddir, return_changes=True).run(conn)
+    datadir = dbobj['changes'][0]['new_val']
+    r.table("project2datadir").insert({"project_id": project["id"], "datadir_id": datadir["id"]})
+    return datadir
+
+
+def create_file(conn, datadir, project, user, file_path):
+    now = r.now()
+    dfile = {
+        "otype": "datafile",
+        "current": True,
+        "description": "",
+        "parent": "",
+        "usesid": "",
+        "birthtime": now,
+        "atime": now,
+        "mtime": now,
+        "name": file_path[-1],
+        "owner": user,
+        "size": 0
+    }
+
+    # Get checksum
+    # Get size
+    # Get Mime
+
+    # Check if checksum exists, if so set uses id and don't move
+    # file into mcdir
+
+    # checksum doesn't exist, move file
+    pass
 
 
 def delete_processed_task_files(path):
