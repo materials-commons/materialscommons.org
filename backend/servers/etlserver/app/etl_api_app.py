@@ -4,8 +4,8 @@ import pkg_resources
 from flask import Flask, request, url_for
 from flask_api import status
 
-from servers.etlserver.globus_etl.etl_task_library import startup_and_verify
-from servers.etlserver.globus_etl.BuildProjectExperiment import BuildProjectExperiment
+from servers.etlserver.globus_etl_upload.etl_task_library import startup_and_verify
+from servers.etlserver.globus_etl_upload.BuildProjectExperiment import BuildProjectExperiment
 from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.database.DB import DbConnection
 from servers.etlserver.download.GlobusDownload import GlobusDownload
@@ -16,7 +16,7 @@ from servers.etlserver.utils.UploadUtility import UploadUtility
 from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
 from servers.etlserver.common.GlobusInfo import GlobusInfo
 from servers.etlserver.common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
-from servers.etlserver.globus_monitor.GlobusMonitor import GlobusMonitor
+from servers.etlserver.globus.GlobusMonitor import GlobusMonitor
 
 log = logging.getLogger(__name__)
 

@@ -11,7 +11,7 @@ from ..utils.LoggingHelper import LoggingHelper
 
 
 def main(project, globus_endpoint, excel_file_path, data_dir_path, apikey):
-    from ..globus_etl.etl_task_library import startup_and_verify
+    from ..globus_etl_upload.etl_task_library import startup_and_verify
     main_log = logging.getLogger("top_level_run_ELT_example")
 
     # noinspection PyProtectedMember

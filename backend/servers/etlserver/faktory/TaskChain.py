@@ -1,6 +1,6 @@
 import logging
 import faktory
-from ..globus_etl.etl_task_library import elt_globus_upload, etl_excel_processing
+from ..globus_etl_upload.etl_task_library import elt_globus_upload, etl_excel_processing
 from ..globus_non_etl_upload.non_etl_task_library import non_etl_globus_upload, non_etl_file_processing
 
 ETL_GLOBUS_UPLOAD_NAME = "ETL Globus Upload"

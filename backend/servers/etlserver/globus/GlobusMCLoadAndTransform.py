@@ -33,5 +33,4 @@ class GlobusMCLoadAndTransform:
         os.chdir(current_directory)
 
         self.log.info("Uploaded {} file(s) and {} dirs(s) to top level directory of project '{}'"
-                 .format(file_count, dir_count, project.name))
-
+                      .format(file_count, dir_count, project.name))

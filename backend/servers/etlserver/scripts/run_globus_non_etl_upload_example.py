@@ -4,8 +4,8 @@ import argparse
 
 from ..utils.LoggingHelper import LoggingHelper
 from ..database.DatabaseInterface import DatabaseInterface
-from ..globus_non_etl_upload.GlobusMCUploadPrepare import GlobusMCUploadPrepare
-from ..globus_non_etl_upload.GlobusMCTransfer import GlobusMCTransfer
+from ..globus.GlobusMCUploadPrepare import GlobusMCUploadPrepare
+from ..globus.GlobusMCTransfer import GlobusMCTransfer
 
 
 def main(user_id, project_id, globus_endpoint_id, globus_endpoint_path):

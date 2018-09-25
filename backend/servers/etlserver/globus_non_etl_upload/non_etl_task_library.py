@@ -3,9 +3,9 @@ import logging
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
 
-from .GlobusMCUploadPrepare import GlobusMCUploadPrepare
-from .GlobusMCTransfer import GlobusMCTransfer
-from .GlobusMCLoadAndTransform import GlobusMCLoadAndTransform
+from ..globus.GlobusMCUploadPrepare import GlobusMCUploadPrepare
+from ..globus.GlobusMCTransfer import GlobusMCTransfer
+from ..globus.GlobusMCLoadAndTransform import GlobusMCLoadAndTransform
 
 
 def non_etl_startup_and_verify(user_id, project_id, user_globus_endpoint, user_globus_path):
