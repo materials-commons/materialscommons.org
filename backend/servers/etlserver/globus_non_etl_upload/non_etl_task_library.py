@@ -1,11 +1,11 @@
 import logging
-import os
 
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
 
 from .GlobusMCUploadPrepare import GlobusMCUploadPrepare
 from .GlobusMCTransfer import GlobusMCTransfer
+from .GlobusMCLoadAndTransform import GlobusMCLoadAndTransform
 
 
 def non_etl_startup_and_verify(user_id, project_id, user_globus_endpoint, user_globus_path):
@@ -80,37 +80,19 @@ def non_etl_globus_upload(status_record_id):
 def non_etl_file_processing(status_record_id):
     # noinspection PyBroadException
     try:
-        log = logging.getLogger(__name__ + ".etl_excel_processing")
+        log = logging.getLogger(__name__ + ".non_etl_file_processing")
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
         project_id = status_record['project_id']
 
         transfer_base_path = status_record['extras']['transfer_base_path']
 
-        project = DatabaseInterface().get_project(project_id)
-        log.info("working with project '{}' ({})".format(project['name'], project_id))
-
-        log.info("loading files and directories from = {}".format(transfer_base_path))
-        current_directory = os.getcwd()
-        os.chdir(transfer_base_path)
-        directory = project.get_top_directory()
-
-        file_count = 0
-        dir_count = 0
-        for f_or_d in os.listdir('.'):
-            if os.path.isfile(f_or_d):
-                file_count += 1
-                directory.add_file(str(f_or_d), str(f_or_d))
-            if os.path.isdir(f_or_d):
-                dir_count += 1
-                directory.add_directory_tree(str(f_or_d), '.')
-        os.chdir(current_directory)
-
-        log.info("Uploaded {} file(s) and {} dirs(s) to top level directory of project '{}'"
-                 .format(file_count, dir_count, project.name))
+        helper = GlobusMCLoadAndTransform(project_id)
+        helper.load_source_directory_into_project(transfer_base_path)
 
         DatabaseInterface().update_queue(status_record_id, None)
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUCCESS)
+
     except BaseException:
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)
