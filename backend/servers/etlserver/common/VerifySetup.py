@@ -9,7 +9,7 @@ from globus_sdk import TransferAPIError
 class VerifySetup:
     def __init__(self, mc_globus_service, project_id,
                  globus_source_endpoint, globus_source_path,
-                 globus_destination_path, base_path, dir_file_list=None):
+                 globus_destination_path, base_path, dir_file_list=[]):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.mc_globus_service = mc_globus_service
         self.project_id = project_id
@@ -109,7 +109,7 @@ class VerifySetup:
             self.log.info(message)
             return
 
-        user_transfer_client = self.mc_globus_service.user_transfer_client
+        user_transfer_client = self.mc_globus_service.get_user_transfer_client()
 
         try:
             user_transfer_client.endpoint_autoactivate(self.globus_source_endpoint)
@@ -158,11 +158,10 @@ class VerifySetup:
 
     def find_user_path(self, end_path):
         try:
-            self.mc_globus_service.set_transfer_client()
-            transfer = self.mc_globus_service.transfer_client
+            user_transfer_client = self.mc_globus_service.get_user_transfer_client()
             entry = os.path.split(end_path)[-1]
             path = os.path.normpath(os.path.join(end_path, os.path.pardir))
-            content = transfer.operation_ls(self.globus_source_endpoint, path=path)
+            content = user_transfer_client.operation_ls(self.globus_source_endpoint, path=path)
             for element in content:
                 if element['name'] == entry:
                     return True

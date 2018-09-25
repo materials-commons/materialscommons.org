@@ -5,7 +5,7 @@ from flask import Flask, request, url_for
 from flask_api import status
 
 from servers.etlserver.globus_etl_upload.etl_task_library import startup_and_verify
-from servers.etlserver.globus_etl_upload.BuildProjectExperiment import BuildProjectExperiment
+from servers.etlserver.globus_etl_upload.BuildProjectExperimentWithETL import BuildProjectExperiment
 from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.database.DB import DbConnection
 from servers.etlserver.download.GlobusDownload import GlobusDownload

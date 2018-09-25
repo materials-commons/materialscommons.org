@@ -4,7 +4,7 @@ import os
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
-from .BuildProjectExperiment import BuildProjectExperiment
+from .BuildProjectExperimentWithETL import BuildProjectExperiment
 from ..utils.mcexceptions import MaterialsCommonsException
 from .ETLSetup import ETLSetup
 # noinspection PyProtectedMember

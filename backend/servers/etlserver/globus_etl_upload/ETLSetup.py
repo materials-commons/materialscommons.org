@@ -29,18 +29,16 @@ class ETLSetup:
         base_path = self.worker_base_path
         transfer_dir = self.make_transfer_dir(status_record_id)
         transfer_base_path = os.path.join(base_path, transfer_dir)
-        self.log.info("excel_file_path = " + excel_file_path)
-        self.log.info("data_file_path = " + data_dir_path)
-        self.log.info("transfer_base_path = " + transfer_base_path)
         extras = {
             "experiment_name": experiment_name,
             "experiment_description": experiment_description,
             "transfer_base_path": transfer_base_path,
             "globus_endpoint": globus_endpoint,
-            "globus_endpoint_base_path": globue_endpoint_base_path,
+            "globus_path": globue_endpoint_base_path,
             "excel_file_path": excel_file_path,
             "data_dir_path": data_dir_path
         }
+        self.log.info("status record: extras = {}".format(extras))
         status_record = DatabaseInterface().add_extras_data_to_status_record(status_record_id, extras)
         status_record_id = status_record['id']
         self.log.info("status record id = " + status_record_id)

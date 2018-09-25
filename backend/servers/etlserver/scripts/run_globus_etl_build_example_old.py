@@ -4,11 +4,12 @@ import logging
 import argparse
 
 from ..common.TestProject import TestProject
+from ..database.BackgroundProcess import BackgroundProcess
+from ..database.DatabaseInterface import DatabaseInterface
 from ..utils.LoggingHelper import LoggingHelper
-from ..globus.GlobusMCUploadPrepare import GlobusMCUploadPrepare
 
 
-def main(project, user_id, globus_endpoint, globus_base_path, excel_file_path, data_dir_path):
+def main(project, user_id, globus_endpoint, base_path, excel_file_path, data_dir_path):
     from ..globus_etl_upload.etl_task_library import startup_and_verify
     main_log = logging.getLogger("top_level_run_ELT_example")
 
@@ -20,19 +21,30 @@ def main(project, user_id, globus_endpoint, globus_base_path, excel_file_path, d
     main_log.info("experiment_name = {}".format(experiment_name))
     main_log.info("experiment_description = {}".format(experiment_description))
     main_log.info("globus_endpoint = {}".format(globus_endpoint))
-    main_log.info("base_path = {}".format(globus_base_path))
+    main_log.info("base_path = {}".format(base_path))
     main_log.info("excel_file_path = {}".format(excel_file_path))
     main_log.info("data_dir_path = {}".format(data_dir_path))
 
-    main_log = logging.getLogger("main")
-    handler = GlobusMCUploadPrepare(user_id)
-    main_log.info("Starting setup")
-    status_record_id = handler.setup_etl(project.id, experiment_name, experiment_description,
-                                         globus_endpoint, globus_base_path,
-                                         excel_file_path, data_dir_path)
-    main_log.info("Starting verify")
-    verify_status = handler.verify(status_record_id)
-    main_log.info("Verify status = {}".format(verify_status))
+    results = startup_and_verify(user_id, project.id, experiment_name, experiment_description,
+                                 globus_endpoint, base_path, excel_file_path, data_dir_path)
+
+    if not results['status'] == "SUCCESS":
+        main_log.error("Setup failed.")
+        return
+
+    tracking_id = results['status_record_id']
+    status = BackgroundProcess.INITIALIZATION
+    while (not status == BackgroundProcess.SUCCESS) and (not status == BackgroundProcess.FAIL):
+        status_record = DatabaseInterface().get_status_record(tracking_id)
+        status = status_record['status']
+        queue = status_record['queue']
+        main_log.info("Status = {}; Queue = {}".format(status, queue))
+        time.sleep(2)
+
+    if status == "Success":
+        main_log.info("Completed transfer to project '{}'".format(project.name))
+    else:
+        main_log.info("Failed in transfer to project '{}'".format(project.name))
 
 
 if __name__ == "__main__":
@@ -86,7 +98,7 @@ if __name__ == "__main__":
         print("Test project is not owned by {}. Please fix apikey ({}).").format(args.user, args.apikey)
         exit(-1)
 
-    startup_log.info("Materials Commons user id = {}".format(args.user))
+    startup_log.info("Materials Commons user id = {}", args.user)
     startup_log.info("args: endpoint = {}; base = {}; input = {}; data={}"
                      .format(args.endpoint, args.base, args.input, args.data))
     startup_log.info("generated test project - name = {}; id = {}".

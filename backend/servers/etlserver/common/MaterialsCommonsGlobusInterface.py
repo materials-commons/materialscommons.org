@@ -42,10 +42,17 @@ class MaterialsCommonsGlobusInterface:
         self.log.debug("MaterialsCommonsGlobusInterface init - done")
 
     def setup_transfer_clients(self):
-        self.cc_transfer_client = self.globus_access.get_cc_transfer_client()
+        self.cc_transfer_client = self.get_cc_transfer_client()
         self.user_transfer_client = self.get_user_transfer_client()
 
+    def get_cc_transfer_client(self):
+        if self.cc_transfer_client:
+            return self.cc_transfer_client
+        self.cc_transfer_client = self.globus_access.get_cc_transfer_client()
+
     def get_user_transfer_client(self):
+        if self.user_transfer_client:
+            return self.user_transfer_client
         self.log.info("Getting MC User's globus infomation")
         records = DatabaseInterface().get_globus_auth_info_records_by_user_id(self.mc_user_id)
         # Only the latest
