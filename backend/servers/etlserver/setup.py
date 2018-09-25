@@ -5,7 +5,7 @@ setup(
     version='0.1.0',
     packages=find_packages(),
     install_requires=[
-        'materials_commons==0.7.7b3',
+        'materials_commons',
         'configparser',
         'flask-api',
         'faktory',
