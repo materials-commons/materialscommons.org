@@ -36,7 +36,8 @@ class LoggingHelper:
         logger_list = ['globus_sdk.authorizers.basic', 'globus_sdk.authorizers.client_credentials',
                        'globus_sdk.authorizers.renewing', 'globus_sdk.transfer.client.TransferClient',
                        'globus_sdk.transfer.paging',
-                       'globus_sdk.auth.client_types.confidential_client.ConfidentialAppAuthClient']
+                       'globus_sdk.auth.client_types.confidential_client.ConfidentialAppAuthClient',
+                       'globus_sdk.authorizers.refresh_token','globus_sdk.transfer.data']
         for name in logger_list:
             logging.getLogger(name).setLevel(logging.ERROR)
 

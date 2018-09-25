@@ -102,16 +102,19 @@ class MaterialsCommonsGlobusInterface:
         if acl:
             self.cc_transfer_client.delete_endpoint_acl_rule(self.mc_cc_endpoint, acl['id'])
 
-    def transfer(self, source_endpoint, source_path, destination_endpoint, destination_path):
+    def transfer(self, source_endpoint, source_path, destination_endpoint, destination_path,
+                 label='to specified project'):
+        transfer_label = 'MaterialsCommons {}'.format(label)
         self.log.info("Setting up transfer for:")
         self.log.info("  source_endpoint = {}".format(source_endpoint))
         self.log.info("  source_path = {}".format(source_path))
         self.log.info("  destination_endpoint = {}".format(destination_endpoint))
         self.log.info("  destination_path = {}".format(destination_path))
+        self.log.info("  lable = {}".format(transfer_label))
         transfer_data = TransferData(transfer_client=self.user_transfer_client,
                                      source_endpoint=source_endpoint,
                                      destination_endpoint=destination_endpoint,
-                                     label='MaterialsCommons upload to specified project')
+                                     label=transfer_label)
         self.log.info("Object transfer_data = {}".format(transfer_data))
         transfer_data.add_item(source_path=source_path,
                                destination_path=destination_path,

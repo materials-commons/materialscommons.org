@@ -9,6 +9,12 @@ class DatabaseInterface:
         self.conn = db.connection()
         self.r = db.interface()
 
+    def get_project(self, project_id):
+        return self.r.table('projects').get(project_id).run(self.conn)
+
+    def get_all_projects_by_owner(self, mc_user_id):
+        return self.r.table('projects').get_all(mc_user_id, index='owner').run(self.conn)
+
     def create_status_record(self, user_id, project_id, name):
         record_obj = BackgroundProcess(user_id, project_id, name)
         data = record_obj.__dict__

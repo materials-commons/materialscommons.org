@@ -1,15 +1,11 @@
 import logging
 import os
 
-from materials_commons.api import get_project_by_id
-
 from ..database.DatabaseInterface import DatabaseInterface
 from ..database.BackgroundProcess import BackgroundProcess
-from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
-# noinspection PyProtectedMember
-from ..user.apikeydb import _load_apikeys as init_api_keys, user_apikey
 
-from .GlobusNonETLUpload import GlobusNonETLUpload
+from .GlobusMCUploadPrepare import GlobusMCUploadPrepare
+from .GlobusMCTransfer import GlobusMCTransfer
 
 
 def non_etl_startup_and_verify(user_id, project_id, user_globus_endpoint, user_globus_path):
@@ -19,7 +15,7 @@ def non_etl_startup_and_verify(user_id, project_id, user_globus_endpoint, user_g
     status_record_id = None
     # noinspection PyBroadException
     try:
-        handler = GlobusNonETLUpload(user_id)
+        handler = GlobusMCUploadPrepare(user_id)
         status_record_id = handler.setup(project_id, user_globus_endpoint, user_globus_path)
         verify_status = handler.verify(status_record_id)
     except BaseException:
@@ -59,7 +55,7 @@ def non_etl_globus_upload(status_record_id):
         log.info("Starting non_elt_globus_upload with status_record_id{}".format(status_record_id))
         record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
 
-        handler = GlobusNonETLUpload(record['owner'])
+        handler = GlobusMCTransfer(record['owner'])
         results = handler.transfer_and_await(status_record_id)
 
         log.info(results)
@@ -87,15 +83,12 @@ def non_etl_file_processing(status_record_id):
         log = logging.getLogger(__name__ + ".etl_excel_processing")
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
-        user_id = status_record['owner']
-        init_api_keys()
-        apikey = user_apikey(user_id)
         project_id = status_record['project_id']
 
         transfer_base_path = status_record['extras']['transfer_base_path']
 
-        project = get_project_by_id(project_id, apikey=apikey)
-        log.info("working with project '{}' ({})".format(project.name, project.id))
+        project = DatabaseInterface().get_project(project_id)
+        log.info("working with project '{}' ({})".format(project['name'], project_id))
 
         log.info("loading files and directories from = {}".format(transfer_base_path))
         current_directory = os.getcwd()
@@ -118,57 +111,6 @@ def non_etl_file_processing(status_record_id):
 
         DatabaseInterface().update_queue(status_record_id, None)
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUCCESS)
-    except BaseException:
-        DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
-        message = "Unexpected failure; status_record_id = {}".format(status_record_id)
-        logging.exception(message)
-
-
-def globus_transfer(status_record_id):
-    log = logging.getLogger(__name__ + ".elt_globus_upload.globus_transfer")
-    status_record = DatabaseInterface().get_status_record(status_record_id)
-    transfer_id = status_record_id
-    user_id = status_record['owner']
-    project_id = status_record['project_id']
-    globus_endpoint = status_record['extras']['globus_endpoint']
-    endpoint_path = '/'
-    web_service = MaterialsCommonsGlobusInterface(user_id)
-    log.info("web_service.setup_transfer_client()")
-    web_service.setup_transfer_clients(globus_endpoint)
-    # web_service.set_transfer_client()
-    # results = web_service.set_transfer_client()
-    # if results['status'] == 'error':
-    #     return results
-
-    log.info("stage_upload_files")
-    transfer_request = web_service.upload_files(project_id, transfer_id, globus_endpoint, endpoint_path)
-    # results = web_service.stage_upload_files(project_id, transfer_id, globus_endpoint, endpoint_path)
-    # log.info("results of staging: ", results)
-    task_id = transfer_request['task_id']
-    DatabaseInterface().update_extras_data_on_status_record(
-        status_record_id,
-        {
-            'globus_task_id': task_id
-        }
-    )
-    poll = True
-    while poll:
-        results = web_service.get_task_status(task_id)
-        poll = (results['status'] == 'ACTIVE')
-    log.info(results)
-    return results
-
-
-def non_etl_globus_upload_old(status_record_id):
-    # noinspection PyBroadException
-    try:
-        log = logging.getLogger(__name__ + ".etl_excel_processing")
-        log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
-        status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
-        # noinspection PyUnusedLocal
-        user_id = status_record['owner']
-        project_id = status_record['project_id']
-        log.info("Project id = {}".format(project_id))
     except BaseException:
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         message = "Unexpected failure; status_record_id = {}".format(status_record_id)

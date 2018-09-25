@@ -2,21 +2,28 @@ import logging
 import sys
 import argparse
 
-# from ..common.TestProject import TestProject
-from materials_commons.api import get_all_projects
 from ..utils.LoggingHelper import LoggingHelper
-from ..globus_non_etl_upload.GlobusNonETLUpload import GlobusNonETLUpload
+from ..database.DatabaseInterface import DatabaseInterface
+from ..globus_non_etl_upload.GlobusMCUploadPrepare import GlobusMCUploadPrepare
+from ..globus_non_etl_upload.GlobusMCTransfer import GlobusMCTransfer
 
 
 def main(user_id, project_id, globus_endpoint_id, globus_endpoint_path):
-    handler = GlobusNonETLUpload(user_id)
+    main_log = logging.getLogger("main")
+    handler = GlobusMCUploadPrepare(user_id)
+    main_log.info("Starting setup")
     status_record_id = handler.setup(project_id, globus_endpoint_id, globus_endpoint_path)
-
-    handler = GlobusNonETLUpload(user_id)
+    main_log.info("Starting verify")
     verify_status = handler.verify(status_record_id)
+    main_log.info("Verify status = {}".format(verify_status))
 
-    handler = GlobusNonETLUpload(user_id)
-    transfer_status = handler.transfer_and_await(status_record_id)
+    if verify_status['status'] == 'SUCCESS':
+        handler = GlobusMCTransfer(user_id)
+        main_log.info("Starting transfer")
+        transfer_status = handler.transfer_and_await(status_record_id)
+        main_log.info("Transfer status = {}".format(transfer_status))
+    else:
+        main_log.info("Transfer skipped because of verify failure(s) = {}".format(verify_status))
 
 
 if __name__ == "__main__":
@@ -49,9 +56,9 @@ if __name__ == "__main__":
 
     test_project = None
     test_project_name = "Test1"
-    project_list = get_all_projects()
+    project_list = DatabaseInterface().get_all_projects_by_owner(args.user)
     for probe in project_list:
-        if probe.name == test_project_name:
+        if probe['name'] == test_project_name:
             test_project = probe
 
     if not test_project:
@@ -59,9 +66,9 @@ if __name__ == "__main__":
               format(test_project_name, test_project_name, args.user))
         exit(-1)
     print("Found test project {}({}), owned by '{}'".
-        format(test_project.name, test_project.id, test_project.owner))
+        format(test_project['name'], test_project['id'], test_project['owner']))
 
-    if not test_project.owner == args.user:
+    if not test_project['owner'] == args.user:
         print("Test project is not owned by {}. Please fix.").format(args.user)
         exit(-1)
 
@@ -69,6 +76,6 @@ if __name__ == "__main__":
     startup_log.info("args: endpoint = {}".format(args.endpoint))
     startup_log.info("args: path = {}".format(args.path))
     startup_log.info("test project - name = {}; id = {}".
-                     format(test_project.name, test_project.id))
+                     format(test_project['name'], test_project['id']))
 
-    main(args.user, test_project.id, args.endpoint, args.path)
+    main(args.user, test_project['id'], args.endpoint, args.path)
