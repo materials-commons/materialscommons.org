@@ -46,10 +46,13 @@ class VerifySetup:
             self.error_status["exception"] = e
 
         if self.error_status:
+            self.log.info("Completed status: Error = {}".format(self.error_status))
             return {
                 'messages': self.error_status,
                 'status': 'ERROR'
             }
+
+        self.log.info("Completed status: Success")
         return {'status': 'SUCCESS'}
 
     def check_env_variables(self):
@@ -69,6 +72,7 @@ class VerifySetup:
             self.log.info("MC_CONFIDENTIAL_CLIENT_USER, self.client_user, is {}".format(self.client_user))
             self.log.info("MC_CONFIDENTIAL_CLIENT_ENDPOINT, self.target_endpoint, is {}".format(self.target_endpoint))
             self.log.info("environment variables setup - ok")
+        self.log.info("Completed check_env_variables")
 
     def check_project_exists(self):
         conn = DbConnection().connection()
@@ -79,6 +83,7 @@ class VerifySetup:
             self.error_status["project_id"] = "project not found: " + self.project_id
         else:
             self.log.info("found project '{}'".format(proj['name']))
+        self.log.info("Completed check_project_exists")
 
     def check_target_directory(self):
         if os.path.isdir(self.base_path):
@@ -87,6 +92,7 @@ class VerifySetup:
             self.error_status["target_directory"] = message
         else:
             self.log.info("transfer server directory ok: {}".format(self.base_path))
+        self.log.info("Completed check_target_directory")
 
     def check_globus_clients(self):
         try:
@@ -120,12 +126,15 @@ class VerifySetup:
         self.log.info("Endpoint - owner_string = {}".format(ep['owner_string']))
 
         # confirm target and inbound endpoints
-        target_endpoint = user_transfer_client.get_endpoint(self.mc_globus_service.mc_target_ep_id)
+        target_endpoint = user_transfer_client.get_endpoint(self.target_endpoint)
         inbound_endpoint = user_transfer_client.get_endpoint(self.globus_source_endpoint)
+
+        self.log.info("Confirm endpoints: target_endpoint = {}, inbound_endpoint {}".
+                      format(target_endpoint, inbound_endpoint))
 
         if not target_endpoint or not inbound_endpoint:
             if not target_endpoint:
-                message = "Materials Commons staging endpoint: " + self.mc_globus_service.mc_target_ep_id
+                message = "Materials Commons staging endpoint: " + self.target_endpoint
                 self.error_status["Missing target endpoint"] = message
                 self.log.info(message)
 
@@ -136,6 +145,7 @@ class VerifySetup:
 
             return
 
+        self.log.info("Completed check_globus_clients")
         return
 
     def check_users_source_paths(self):
@@ -144,6 +154,7 @@ class VerifySetup:
                 message = "User's endpoint data not found, {}".format(path)
                 self.error_status["Missing data"] = message
                 self.log.info(message)
+        self.log.info("Completed check_users_source_paths")
 
     def find_user_path(self, end_path):
         try:
@@ -169,3 +180,4 @@ class VerifySetup:
             self.error_status["Missing acl"] = message
         else:
             self.log.info("Fouund ACL Rule for {}".format(self.globus_destination_path))
+        self.log.info("Completed check_acl_rule")

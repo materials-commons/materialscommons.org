@@ -9,13 +9,13 @@ from ..globus_non_etl_upload.GlobusNonETLUpload import GlobusNonETLUpload
 
 
 def main(user_id, project_id, globus_endpoint_id, globus_endpoint_path):
-    handler = GlobusNonETLUpload(user_id, project_id, globus_endpoint_id, globus_endpoint_path)
-    status_record_id = handler.setup()
+    handler = GlobusNonETLUpload(user_id)
+    status_record_id = handler.setup(project_id, globus_endpoint_id, globus_endpoint_path)
 
-    handler = GlobusNonETLUpload(user_id, project_id, globus_endpoint_id, globus_endpoint_path)
+    handler = GlobusNonETLUpload(user_id)
     verify_status = handler.verify(status_record_id)
 
-    handler = GlobusNonETLUpload(user_id, project_id, globus_endpoint_id, globus_endpoint_path)
+    handler = GlobusNonETLUpload(user_id)
     transfer_status = handler.transfer_and_await(status_record_id)
 
 

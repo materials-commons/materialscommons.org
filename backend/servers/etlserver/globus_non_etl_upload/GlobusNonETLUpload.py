@@ -9,17 +9,20 @@ from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInter
 
 
 class GlobusNonETLUpload:
-    def __init__(self, mc_user_id, project_id, endpoint, path):
+    def __init__(self, mc_user_id):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.log.info("init - started")
         self.mc_user_id = mc_user_id
-        self.project_id = project_id
-        self.globus_endpoint = endpoint
-        self.endpoint_path = path
+        self.project_id = None
+        self.globus_endpoint = None
+        self.endpoint_path = None
         self.worker_base_path = McdirHelper().get_upload_dir()
         self.log.info("init - done")
 
-    def setup(self):
+    def setup(self, project_id, endpoint, path):
+        self.project_id = project_id
+        self.globus_endpoint = endpoint
+        self.endpoint_path = path
         self.log.info("starting setup of status record; user_id = {}; project_id = {}"
                       .format(self.mc_user_id, self.project_id))
         status_record = DatabaseInterface(). \
@@ -66,6 +69,7 @@ class GlobusNonETLUpload:
 
     # Note: transfer must not rely on previous settings - it is called from a separate thread
     def transfer_and_await(self, status_record_id):
+        self.log.info("Starting transfer_and_await")
         mc_globus_interface = MaterialsCommonsGlobusInterface(self.mc_user_id)
         mc_globus_interface.setup_transfer_clients()
         status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.VERIFYING_SETUP)
@@ -79,14 +83,15 @@ class GlobusNonETLUpload:
             destination_endpoint=destination_endpoint, destination_path=destination_path
         )
 
+        self.log.info("Starting await loop")
         status = "STARTED"
         while not status == "SUCCEEDED" and not status == "FAILED":
             task = mc_globus_interface.user_transfer_client.get_task(task_id)
             status = task['status']
             self.log.info("Current task status = {}".format(status))
             time.sleep(5)
-        mc_globus_interface.clear_user_access_rule(destination_endpoint)
-        results = {'status': 'status'}
+        mc_globus_interface.clear_user_access_rule(destination_path)
+        results = {'status': status}
         return results
 
     def _verify_preconditions(self, status_record_id):

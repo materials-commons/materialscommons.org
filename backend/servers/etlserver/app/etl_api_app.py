@@ -9,7 +9,7 @@ from servers.etlserver.globus_etl.BuildProjectExperiment import BuildProjectExpe
 from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.database.DB import DbConnection
 from servers.etlserver.download.GlobusDownload import GlobusDownload
-from servers.etlserver.globus_non_etl_upload.GlobusNonETLUpload import GlobusNonETLUpload
+from servers.etlserver.globus_non_etl_upload.non_etl_task_library import non_etl_startup_and_verify
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
 from servers.etlserver.utils.UploadUtility import UploadUtility
@@ -233,8 +233,7 @@ def globus_transfer_upload():
         return message, status.HTTP_400_BAD_REQUEST
     # noinspection PyBroadException
     try:
-        upload = GlobusNonETLUpload(user_id, project_id, globus_endpoint_id, globus_endpoint_path)
-        results = upload.setup_and_verify()
+        results = non_etl_startup_and_verify(user_id, project_id, globus_endpoint_id, globus_endpoint_path)
         log.info("Project id = {}; Globus user name = {}".format(project_id, results))
         ret = format_as_json_return(results)
         return ret

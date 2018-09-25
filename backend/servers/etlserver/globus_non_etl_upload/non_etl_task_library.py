@@ -9,59 +9,59 @@ from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInter
 # noinspection PyProtectedMember
 from ..user.apikeydb import _load_apikeys as init_api_keys, user_apikey
 
-from .NonEtlSetup import NonEtlSetup
+from .GlobusNonETLUpload import GlobusNonETLUpload
 
 
-def startup_and_verify(user_id, project_id, user_globus_endpoint, user_globus_path):
-    log = logging.getLogger(__name__ + ".startup_and_verify")
-    log.info("Starting startup_and_verify")
+def non_etl_startup_and_verify(user_id, project_id, user_globus_endpoint, user_globus_path):
+    log = logging.getLogger(__name__ + ".non_etl_startup_and_verify")
+    log.info("Starting non-etl startup_and_verify")
 
     status_record_id = None
     # noinspection PyBroadException
     try:
-        setup = NonEtlSetup(user_id)
-        status_record_id = \
-            setup.setup_status_record(project_id, user_globus_endpoint, user_globus_path)
-        if not status_record_id:
-            log.error("Unable to create status_record_id")
-            return {"status": "FAIL"}
-        log.info("setup.setup_status_record passed")
-        check = setup.verify_setup(status_record_id)
-        check['status_record_id'] = status_record_id
-        if not check['status'] == "SUCCESS":
-            log.error("Failed to verify setup; status_record_id = {}".format(status_record_id))
-            DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
-            return check
-        log.info("setup.verify_setup passed")
-
-        from ..faktory.TaskChain import FILE_UPLOAD_QUEUE
-        DatabaseInterface().update_queue(status_record_id, FILE_UPLOAD_QUEUE)
-        DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
-        log.info("updated status record queue to {} and status to {}"
-                 .format(FILE_UPLOAD_QUEUE, BackgroundProcess.SUBMITTED_TO_QUEUE))
-        from ..faktory.TaskChain import TaskChain
-        task_chain = TaskChain()
-        task_chain.start_non_etl_chain(status_record_id)
-        log.info("Called task_chain.start_non_etl_chain")
-        check['status_record_id'] = status_record_id
+        handler = GlobusNonETLUpload(user_id)
+        status_record_id = handler.setup(project_id, user_globus_endpoint, user_globus_path)
+        verify_status = handler.verify(status_record_id)
     except BaseException:
         message = "Unexpected failure; status_record_id = None"
         if status_record_id:
-            DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
             message = "Unexpected failure; status_record_id = {}".format(status_record_id)
+        DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
         logging.exception(message)
         return {"status": "FAIL"}
-    return check
+
+    if not verify_status['status'] == "SUCCESS":
+        log.error("Failed to verify setup; status_record_id = {}".format(status_record_id))
+        DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
+        return verify_status
+
+    log.info("setup and verify_setup passed - setting up factory task")
+
+    from ..faktory.TaskChain import FILE_UPLOAD_QUEUE
+    DatabaseInterface().update_queue(status_record_id, FILE_UPLOAD_QUEUE)
+    DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUBMITTED_TO_QUEUE)
+    log.info("updated status record queue to {} and status to {}"
+             .format(FILE_UPLOAD_QUEUE, BackgroundProcess.SUBMITTED_TO_QUEUE))
+    from ..faktory.TaskChain import TaskChain
+    task_chain = TaskChain()
+    task_chain.start_non_etl_chain(status_record_id)
+    log.info("Called task_chain.start_non_etl_chain")
+
+    verify_status['status_record_id'] = status_record_id
+    return verify_status
 
 
 def non_etl_globus_upload(status_record_id):
     # noinspection PyBroadException
     try:
         from ..faktory.TaskChain import FILE_PROCESS_QUEUE
-        log = logging.getLogger(__name__ + ".elt_globus_upload")
-        log.info("Starting elt_globus_upload with status_record_id{}".format(status_record_id))
-        DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
-        results = globus_transfer(status_record_id)
+        log = logging.getLogger(__name__ + ".non_elt_globus_upload")
+        log.info("Starting non_elt_globus_upload with status_record_id{}".format(status_record_id))
+        record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
+
+        handler = GlobusNonETLUpload(record['owner'])
+        results = handler.transfer_and_await(status_record_id)
+
         log.info(results)
         if not results['status'] == 'SUCCEEDED':
             DatabaseInterface().update_status(status_record_id, BackgroundProcess.FAIL)
