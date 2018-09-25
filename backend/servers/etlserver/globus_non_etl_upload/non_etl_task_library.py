@@ -16,7 +16,7 @@ def non_etl_startup_and_verify(user_id, project_id, user_globus_endpoint, user_g
     # noinspection PyBroadException
     try:
         handler = GlobusMCUploadPrepare(user_id)
-        status_record_id = handler.setup(project_id, user_globus_endpoint, user_globus_path)
+        status_record_id = handler.setup_non_etl(project_id, user_globus_endpoint, user_globus_path)
         verify_status = handler.verify(status_record_id)
     except BaseException:
         message = "Unexpected failure; status_record_id = None"

@@ -12,7 +12,7 @@ def main(user_id, project_id, globus_endpoint_id, globus_endpoint_path):
     main_log = logging.getLogger("main")
     handler = GlobusMCUploadPrepare(user_id)
     main_log.info("Starting setup")
-    status_record_id = handler.setup(project_id, globus_endpoint_id, globus_endpoint_path)
+    status_record_id = handler.setup_non_etl(project_id, globus_endpoint_id, globus_endpoint_path)
     main_log.info("Starting verify")
     verify_status = handler.verify(status_record_id)
     main_log.info("Verify status = {}".format(verify_status))

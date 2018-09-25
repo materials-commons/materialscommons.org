@@ -12,7 +12,7 @@ from ..user.apikeydb import _load_apikeys as init_api_keys, user_apikey
 
 
 def startup_and_verify(user_id, project_id, experiment_name, experiment_description,
-                       globus_endpoint, excel_file_path, data_dir_path):
+                       globus_endpoint, base_path, rel_excel_file_path, rel_data_dir_path):
     log = logging.getLogger(__name__ + ".startup_and_verify")
     log.info("Starting startup_and_verify")
 
@@ -21,8 +21,8 @@ def startup_and_verify(user_id, project_id, experiment_name, experiment_descript
     try:
         setup = ETLSetup(user_id)
         status_record_id = \
-            setup.setup_status_record(project_id, experiment_name, experiment_description,
-                                      globus_endpoint, excel_file_path, data_dir_path)
+            setup.setup_status_record(project_id, experiment_name, experiment_description, globus_endpoint,
+                                      base_path, rel_excel_file_path, rel_data_dir_path)
         if not status_record_id:
             log.error("Unable to create status_record_id")
             return {"status": "FAIL"}

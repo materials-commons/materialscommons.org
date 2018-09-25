@@ -18,7 +18,7 @@ class GlobusMCUploadPrepare:
         self.worker_base_path = McdirHelper().get_upload_dir()
         self.log.info("init - done")
 
-    def setup(self, project_id, endpoint, path):
+    def setup_non_etl(self, project_id, endpoint, path):
         self.project_id = project_id
         project = DatabaseInterface().get_project(project_id)
         project_name = (project['name'] if project else 'undefined')

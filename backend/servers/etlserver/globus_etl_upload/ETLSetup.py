@@ -14,7 +14,8 @@ class ETLSetup:
         self.worker_base_path = McdirHelper().get_upload_dir()
 
     def setup_status_record(self, project_id, experiment_name, experiment_description,
-                            globus_endpoint, excel_file_path, data_dir_path):
+                            globus_endpoint, globue_endpoint_base_path,
+                            excel_file_path, data_dir_path):
         self.log.info("starting setup of status record; user_id = {}; project_id = {}"
                       .format(self.user_id, project_id))
         status_record = DatabaseInterface().\
@@ -36,6 +37,7 @@ class ETLSetup:
             "experiment_description": experiment_description,
             "transfer_base_path": transfer_base_path,
             "globus_endpoint": globus_endpoint,
+            "globus_endpoint_base_path": globue_endpoint_base_path,
             "excel_file_path": excel_file_path,
             "data_dir_path": data_dir_path
         }
@@ -60,13 +62,19 @@ class ETLSetup:
         project_id = status_record['project_id']
         globus_endpoint = status_record['extras']['globus_endpoint']
         transfer_base_path = status_record['extras']['transfer_base_path']
+        globue_endpoint_base_path = status_record['extras']['globue_endpoint_base_path']
         excel_file_path = status_record['extras']['excel_file_path']
         data_dir_path = status_record['extras']['data_dir_path']
 
         web_service = MaterialsCommonsGlobusInterface(self.user_id)
+
+        globus_source_endpoint, globus_source_path,
+        globus_destination_path, base_path, dir_file_list = None
         checker = VerifySetup(web_service, project_id,
-                              globus_endpoint, transfer_base_path,
-                              [excel_file_path, data_dir_path])
+                              globus_endpoint, globue_endpoint_base_path,
+                              transfer_base_path,
+                              endpoint_base_path=globue_endpoint_base_path,
+                              file_dir_list=[excel_file_path, data_dir_path])
         return checker.status()
 
     @staticmethod
