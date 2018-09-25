@@ -3,7 +3,7 @@ import sys
 import argparse
 
 from ..utils.LoggingHelper import LoggingHelper
-from ..database.DatabaseInterface import DatabaseInterface
+from ..common.TestProject import TestProject
 from ..globus.GlobusMCUploadPrepare import GlobusMCUploadPrepare
 from ..globus.GlobusMCTransfer import GlobusMCTransfer
 
@@ -33,12 +33,18 @@ if __name__ == "__main__":
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Test of Globus non-ETL upload')
     parser.add_argument('--user', type=str, help="Materials Commons user id")
+    parser.add_argument('--apikey', type=str, help="MC user's API key (used to create test project)")
     parser.add_argument('--endpoint', type=str, help="Globus user's endpoint")
     parser.add_argument('--path', type=str, help="Globus users's endpoint path")
     args = parser.parse_args(argv[1:])
 
     if not args.user:
         print("You must specify a Materials Commons user id. Argument not found.")
+        parser.print_help()
+        exit(-1)
+
+    if not args.apikey:
+        print("You must specify a the Materials Commons user's APIKEY. Argument not found.")
         parser.print_help()
         exit(-1)
 
@@ -52,23 +58,9 @@ if __name__ == "__main__":
         parser.print_help()
         exit(-1)
 
-    # test_project = TestProject(args.apikey).get_project()
+    test_project = TestProject(args.apikey).get_project()
 
-    test_project = None
-    test_project_name = "Test1"
-    project_list = DatabaseInterface().get_all_projects_by_owner(args.user)
-    for probe in project_list:
-        if probe['name'] == test_project_name:
-            test_project = probe
-
-    if not test_project:
-        print("The expected test project ({}) was not found. Please create '{}' owned by {}.".
-              format(test_project_name, test_project_name, args.user))
-        exit(-1)
-    print("Found test project {}({}), owned by '{}'".
-        format(test_project['name'], test_project['id'], test_project['owner']))
-
-    if not test_project['owner'] == args.user:
+    if not test_project.owner == args.user:
         print("Test project is not owned by {}. Please fix.").format(args.user)
         exit(-1)
 
@@ -76,6 +68,6 @@ if __name__ == "__main__":
     startup_log.info("args: endpoint = {}".format(args.endpoint))
     startup_log.info("args: path = {}".format(args.path))
     startup_log.info("test project - name = {}; id = {}".
-                     format(test_project['name'], test_project['id']))
+                     format(test_project.name, test_project.id))
 
-    main(args.user, test_project['id'], args.endpoint, args.path)
+    main(args.user, test_project.id, args.endpoint, args.path)

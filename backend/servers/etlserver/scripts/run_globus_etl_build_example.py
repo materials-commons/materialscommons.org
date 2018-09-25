@@ -58,8 +58,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Run the Globus/ETL process with test data - in a predefined test endpoint')
     parser.add_argument('--endpoint', type=str, help="Globus Endpoint")
-    parser.add_argument('--input', type=str, help="Input Spreadsheet File (path relative to endpoint)")
-    parser.add_argument('--data', type=str, help="Data Directory (path relative to endpoint)")
+    parser.add_argument('--base', type=str, help="Path on Globus Endpoint where ETL spreadsheet and data reside")
+    parser.add_argument('--input', type=str, help="Input Spreadsheet File (path relative to base)")
+    parser.add_argument('--data', type=str, help="Data Directory (path relative to base)")
     parser.add_argument('--apikey', type=str, help="User apikey")
     args = parser.parse_args(argv[1:])
 
