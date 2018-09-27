@@ -25,7 +25,7 @@ def main():
 
     signal.signal(signal.SIGHUP, reload_users)
     log.info("Starting ELT SERVER with host = {} and port = {}".format(_HOST, _PORT))
-    app.run(debug=True, host=_HOST, port=int(_PORT), processes=5)
+    app.run(debug=True, host=_HOST, port=int(_PORT), processes=5, threaded=False)
 
 
 if __name__ == '__main__':
