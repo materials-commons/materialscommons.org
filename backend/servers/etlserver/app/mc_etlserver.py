@@ -34,7 +34,7 @@ def main():
         exit(-1)
 
     log.info("Starting ELT SERVER with host = {} and port = {}".format(_HOST, _PORT))
-    app.run(debug=True, host=_HOST, port=int(_PORT), processes=1)
+    app.run(debug=True, host=_HOST, port=int(_PORT), processes=5, threaded=False)
 
 
 if __name__ == '__main__':
