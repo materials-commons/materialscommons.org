@@ -5,7 +5,7 @@ from globus_sdk import ConfidentialAppAuthClient
 from globus_sdk import TransferClient, TransferData
 from globus_sdk import RefreshTokenAuthorizer
 
-from ..utils.mcexceptions import DatabaseError, AuthenticationException, NoSuchItem, AccessNotAllowedException
+from ..utils.mcexceptions import DatabaseError, AuthenticationException
 from ..database.DB import DbConnection
 from .GlobusAccess import GlobusAccess, CONFIDENTIAL_CLIENT_APP_AUTH
 from ..database.DatabaseInterface import DatabaseInterface
@@ -15,7 +15,7 @@ from .access_exceptions import AuthenticationException, RequiredAttributeExcepti
 class MaterialsCommonsGlobusInterface:
     def __init__(self, mc_user_id):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
-        self.log.debug("MaterialsCommonsGlobusInterface init - started")
+        self.log.info("init - started")
         self.version = "0.1"
         self.mc_user_id = mc_user_id
 
@@ -39,16 +39,24 @@ class MaterialsCommonsGlobusInterface:
             message = "Missing environment values: {}".format(", ".join(missing))
             raise RequiredAttributeException(message)
 
-        self.log.debug("MaterialsCommonsGlobusInterface init - done")
+        self.log.info("setup from environment variables:")
+        self.log.info("  MC_CONFIDENTIAL_CLIENT_USER (self.client_user) = {}".format(self.client_user))
+        self.log.info("  MC_CONFIDENTIAL_CLIENT_PW (self.client_token) = {}".format(self.client_token))
+        self.log.info("  MC_CONFIDENTIAL_CLIENT_ENDPOINT (self.mc_cc_endpoint) = {}".format(self.mc_cc_endpoint))
+
+        self.log.info("init - done")
 
     def setup_transfer_clients(self):
+        self.log.info("setup_transfer_clients")
         self.cc_transfer_client = self.get_cc_transfer_client()
         self.user_transfer_client = self.get_user_transfer_client()
+        self.log.info("  {}".format(self.cc_transfer_client))
+        self.log.info("  {}".format(self.user_transfer_client))
 
     def get_cc_transfer_client(self):
-        if self.cc_transfer_client:
-            return self.cc_transfer_client
-        self.cc_transfer_client = self.globus_access.get_cc_transfer_client()
+        if not self.cc_transfer_client:
+            self.cc_transfer_client = self.globus_access.get_cc_transfer_client()
+        return self.cc_transfer_client
 
     def get_user_transfer_client(self):
         if self.user_transfer_client:
