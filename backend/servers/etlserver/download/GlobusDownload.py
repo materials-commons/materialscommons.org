@@ -4,42 +4,41 @@ from random import randint
 
 from materials_commons.api import get_project_by_id
 
-from ..common.GlobusAccess import GlobusAccess
+from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from ..common.access_exceptions import RequiredAttributeException
 from ..common.McdirHelper import McdirHelper
 
 
 class GlobusDownload:
-    def __init__(self, project_id, globus_user_id, apikey):
+    def __init__(self, mc_user_id, apikey, project_id):
         self.log = logging.getLogger(self.__class__.__name__)
-        self.log.info("init - started - globus_user_id = {}, project_id = {}".
-                      format(globus_user_id, project_id))
-        self.globus_user_id = globus_user_id
-        self.project_id = project_id
+        self.mc_user_id = mc_user_id
         self.apikey = apikey
+        self.project_id = project_id
         self.file_list = None
         self.path_list = None
         self.transfer_client = None
         self.user_dir = None
-        self.access = GlobusAccess()
-        self.log.info("Using GlobusAccess implementation: {}".format(self.access.get_impl_type()))
-        download_ep_id = os.environ.get('MC_DOWNLOAD_ENDPOINT_ID')
-        #     download_endpoint_id = '84b62e46-5ebc-11e8-91d5-0a6d4e044368'
+        self.mc_globus_interface = MaterialsCommonsGlobusInterface(mc_user_id)
+        download_ep_id = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
         self.log.info("Download endpoint id = {}".format(download_ep_id))
         if not download_ep_id:
-            self.log.error("Download endpoint is not set: MC_DOWNLOAD_ENDPOINT_ID is undefined")
-            raise RequiredAttributeException("MC_DOWNLOAD_ENDPOINT_ID is undefined")
-        mcdir_helper = McdirHelper()
-        self.download_dir = mcdir_helper.get_download_dir()
+            self.log.error("Download endpoint is not set: MC_CONFIDENTIAL_CLIENT_ENDPOINT is undefined")
+            raise RequiredAttributeException("MC_CONFIDENTIAL_CLIENT_ENDPOINT is undefined")
         self.download_ep_id = download_ep_id
+        mcdir_helper = McdirHelper()
+        self.mc_base = mcdir_helper.base_dir()
+        self.download_dir = mcdir_helper.get_download_dir()
+        self.mc_endpoint_path = None
 
     def download(self):
-        self.setup()
-        self.stage()
-        self.expose()
+        if self.setup():
+            self.stage()
+            self.expose()
         return self.exposed_ep_url()
 
     def setup(self):
+        self.mc_globus_interface.setup_transfer_clients()
         project = get_project_by_id(self.project_id, self.apikey)
         self.log.info("Get file list for project = {} ({})".
                       format(project.name, project.id))
@@ -49,14 +48,16 @@ class GlobusDownload:
         path = ""
         self.recursively_add_directory(path, directory)
         if not self.file_list:
-            print("no files found")
-            exit(-1)
+            self.log.info("No files found.")
+            return False
+
         self.log.info("Found {} files.".format(len(self.file_list)))
         self.log.info("Found {} directory paths.".format(len(self.path_list)))
         for file in self.file_list:
             self.log.debug("File: {} - {}".format(file.name, file.path))
         for path in self.path_list:
             self.log.debug("Path {}".format(path))
+        return True
 
     def recursively_add_directory(self, path, directory):
         if path:
@@ -75,14 +76,14 @@ class GlobusDownload:
 
     def stage(self):
         self.log.info("Staging - start")
-        mc_dirs = os.environ.get('MCDIR')
-        mc_dir = mc_dirs.split(':')[0]
-        self.log.debug("Staging - mc dir = {}".format(mc_dir))
         staging_dir = self.download_dir
-        self.user_dir = self.make_random_name('testing-')
-        self.log.debug("Staging - user dir = {}".format(self.user_dir))
+        self.user_dir = self.make_random_name('etl-download-')
+        self.log.info("Staging - user_dir = {}".format(self.user_dir))
         staging_dir = os.path.join(staging_dir, self.user_dir)
-        self.log.info("Staging - staging dir = {}".format(staging_dir))
+        self.log.info("Staging - staging_dir = {}".format(staging_dir))
+        self.mc_endpoint_path = "/__download_staging/" +  self.user_dir + "/"
+        self.log.info("Staging - mc_endpoint_path = {}".format(self.mc_endpoint_path))
+
         os.makedirs(staging_dir)
         for path in self.path_list:
             staging_path = os.path.join(staging_dir, path)
@@ -95,32 +96,20 @@ class GlobusDownload:
                 file_id = usesid
             p1 = file_id[9:11]
             p2 = file_id[11:13]
-            file_path = os.path.join(mc_dir, p1, p2, file_id)
+            file_path = os.path.join(self.mc_base, p1, p2, file_id)
             link_path = os.path.join(staging_dir, file.path)
             os.link(file_path, link_path)
         self.log.info("Staging - end")
 
     def expose(self):
         self.log.info("Expose - start")
-        self.log.info("Looking up globus identity of {}".format(self.globus_user_id))
-        globus_user = self.access.get_globus_user(self.globus_user_id)
-        if not globus_user:
-            raise RequiredAttributeException("Missing Globus user identity")
-        self.log.info("Globus user = {}, id = {}".format(globus_user['name'], globus_user['id']))
-        confidential_client_endpoint = self.access.get_endpoint(self.download_ep_id)
-        self.log.info("Expose - base ep = {}".format(confidential_client_endpoint['display_name']))
-        # path = "/" + self.user_dir + "/"
-        # rule = self.access.set_acl_rule(self.download_ep_id, path, globus_user['id'], "r")
-        # if rule:
-        #     self.log.info("Transfer enabled for {} ({})".format(globus_user['name'], globus_user['id']))
-        #     self.log.info("    from ep: {} with directory {}".format(self.download_ep_id, self.user_dir))
-        # else:
-        #     self.log.info("Transfer ACL failed")
+        self.log.info("Setting ACL rule for path = {}".format(self.mc_endpoint_path))
+        self.mc_globus_interface.set_user_access_rule(self.mc_endpoint_path)
         self.log.info("Expose - end")
 
     def exposed_ep_url(self):
         origin_id = self.download_ep_id
-        path = '%2F{}%2F'.format(self.user_dir)
+        path = '%2F{}%2F'.format(self.mc_endpoint_path)
         url_base = "https://www.globus.org/app/transfer"
         url = '{}?origin_id={}&origin_path={}'.format(url_base, origin_id, path)
         return url
@@ -129,3 +118,4 @@ class GlobusDownload:
     def make_random_name(prefix):
         number = "%05d" % randint(0, 99999)
         return prefix + number
+

@@ -11,16 +11,15 @@ from ..common.access_exceptions import RequiredAttributeException
 from ..utils.LoggingHelper import LoggingHelper
 
 
-def main(project, globus_user, apikey):
+def main(project, mc_user, apikey):
     main_log = logging.getLogger("main")
     main_log.info("Starting all file Globus upload. Project = {} ({})".
                   format(project.name, project.id))
     try:
         main_log.info("Starting GlobusDownload")
-        download = GlobusDownload(project.id, globus_user, apikey)
+        download = GlobusDownload(mc_user, apikey, project.id)
         url = download.download()
         main_log.info(url)
-        return url
     except GlobusAPIError as error:
         http_status = error.http_status
         code = error.code
@@ -43,16 +42,22 @@ if __name__ == "__main__":
     argv = sys.argv
     parser = argparse.ArgumentParser(description='Test to transfer from dir of hard links')
     parser.add_argument('--name', type=str, help="Project Name")
-    parser.add_argument('--user', type=str, help="Globus user name")
     parser.add_argument('--apikey', type=str, help="Materials Commons apikey")
+    parser.add_argument('--user', type=str, help="Materials Commons user id")
     args = parser.parse_args(argv[1:])
-    if not args.user:
-        print("You must specify a globus userid. Argument not found.")
-        parser.print_help()
-        exit(-1)
 
     if not args.apikey:
         print("You must specify a Materials Commons apikey. Argument not found.")
+        parser.print_help()
+        exit(-1)
+
+    if not args.user:
+        print("You must specify a Materials Commons user id. Argument not found.")
+        parser.print_help()
+        exit(-1)
+
+    if not args.name:
+        print("You must specify a Project name. Argument not found.")
         parser.print_help()
         exit(-1)
 
@@ -78,4 +83,4 @@ if __name__ == "__main__":
     local_log.info("Found match with name-match = {}; project.name = {}; id = {}".
                    format(args.name, project_selected.name, project_selected.id))
 
-    print(main(project_selected, args.user, args.apikey))
+    main(project_selected, args.user, args.apikey)

@@ -187,21 +187,13 @@ def upload_file():
 def globus_transfer_download():
     log.info("Project top-level directory staged for transfer with Globus - starting")
     api_key = request.args.get('apikey', default="no_such_key")
+    user_id = access.get_user()
     j = request.get_json(force=True)
     project_id = j["project_id"]
-    globus_user_id = j["globus_user"]
-    log.info("Project id = {}; Globus user name = {}".format(project_id, globus_user_id))
-    if not globus_user_id:
-        message = "Project top-level directory download with Globus - globus_user_id is missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    if not project_id:
-        message = "Project top-level directory download with Globus - project_id missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
+    log.info("Download Project id = {}".format(project_id))
     # noinspection PyBroadException
     try:
-        download = GlobusDownload(project_id, globus_user_id, api_key)
+        download = GlobusDownload(user_id, api_key, project_id)
         url = download.download()
         ret_value = {'url': url}
         ret = format_as_json_return(ret_value)
