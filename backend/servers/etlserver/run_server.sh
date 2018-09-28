@@ -54,6 +54,16 @@ if [ "${OK}" == "ok" ]; then
     source ${ETLSERVER}/.python_env/bin/activate
     pushd ${BACKEND}
     # Note: server starting process - runs from "base" level in backend
+    echo "======================================================"
+    echo "======================================================"
+    echo "|                                                    |"
+    echo "|     POSSIBLE ERROR: Globus auth callback URL       |"
+    echo "|                                                    |"
+    echo "|  Note: this needs to be changed...                 |"
+    echo "|     https://localhost:5032/ (in etl_api_app.py)    |"
+    echo "|                                                    |"
+    echo "======================================================"
+    echo "======================================================"
     python -m servers.etlserver.app.mc_etlserver ${SERVERRTYPE}
     popd
 fi
