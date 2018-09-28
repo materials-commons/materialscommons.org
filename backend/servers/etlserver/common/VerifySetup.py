@@ -129,8 +129,11 @@ class VerifySetup:
         target_endpoint = user_transfer_client.get_endpoint(self.target_endpoint)
         inbound_endpoint = user_transfer_client.get_endpoint(self.globus_source_endpoint)
 
-        self.log.info("Confirm endpoints: target_endpoint = {}, inbound_endpoint {}".
-                      format(target_endpoint, inbound_endpoint))
+        self.log.info("Confirm endpoints: ")
+        self.log.info("  target_endpoint: display_name = {}, id = {}".
+                      format(target_endpoint['display_name'], target_endpoint['id']))
+        self.log.info("  inbound_endpoint: display_name = {}, id = {}".
+                      format(inbound_endpoint['display_name'], inbound_endpoint['id']))
 
         if not target_endpoint or not inbound_endpoint:
             if not target_endpoint:
@@ -157,19 +160,28 @@ class VerifySetup:
         self.log.info("Completed check_users_source_paths")
 
     def find_user_path(self, end_path):
+        user_transfer_client = self.mc_globus_service.get_user_transfer_client()
+        path = ""
+        entry = end_path
+        if '/' in entry:
+            path_parts = os.path.split(end_path)
+            entry = path_parts[-1]
+            path = ("/".join(path_parts[:-1]) + '/')
+        full_path = self.globus_source_path + path
+        self.log.info("Checking for user entry on path: ")
+        self.log.info("  entry = {}".format(entry))
+        self.log.info("  end_path = {}".format(end_path))
+        self.log.info("  base_path = {}".format(self.globus_source_path))
+        self.log.info("  path = {}".format(path))
+        self.log.info("  full_path = {}".format(full_path))
         try:
-            user_transfer_client = self.mc_globus_service.get_user_transfer_client()
-            entry = os.path.split(end_path)[-1]
-            path = os.path.normpath(os.path.join(end_path, os.path.pardir))
-            content = user_transfer_client.operation_ls(self.globus_source_endpoint, path=path)
+            content = user_transfer_client.operation_ls(self.globus_source_endpoint, path=full_path)
             for element in content:
                 if element['name'] == entry:
                     return True
-            self.log.info("Missing entry in content, entry = {}, content={}".format(entry, content))
-            return
-        except GlobusAPIError:
-            self.log.exception("unexpected exception")
-            return
+        except TransferAPIError:
+            self.log.info("Missing entry in content, entry = {}".format(entry))
+            return False
 
     def check_acl_rule(self):
         acl = self.mc_globus_service.get_user_access_rule(self.globus_destination_path)

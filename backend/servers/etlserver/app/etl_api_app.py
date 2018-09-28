@@ -5,7 +5,7 @@ from flask import Flask, request, url_for
 from flask_api import status
 
 from servers.etlserver.globus_etl_upload.etl_task_library import startup_and_verify
-from servers.etlserver.globus_etl_upload.BuildProjectExperimentWithETL import BuildProjectExperiment
+# from servers.etlserver.globus_etl_upload.BuildProjectExperimentWithETL import BuildProjectExperiment
 from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.database.DB import DbConnection
 from servers.etlserver.download.GlobusDownload import GlobusDownload
@@ -73,6 +73,7 @@ def stage_background_excel_upload():
     log.info("/globus/stage - args - globus_endpoint = {}".format(globus_endpoint))
     log.info("/globus/stage - args - excel_file_path = {}".format(excel_file_path))
     log.info("/globus/stage - args - data_dir_path = {}".format(data_dir_path))
+    raise Exception("Error here")
     results = startup_and_verify(user_id, project_id, experiment_name, experiment_description,
                                  globus_endpoint, excel_file_path, data_dir_path)
     log.info("/globus/stage - done {}".format(results))
@@ -165,13 +166,13 @@ def upload_file():
     log.info("etl file upload - file saved to " + file_path)
     # noinspection PyBroadException
     try:
-        builder = BuildProjectExperiment(api_key)
-        builder.set_rename_is_ok(True)
-        builder.preset_project_id(project_id)
-        builder.preset_experiment_name_description(name, description)
-        log.info("etl file upload - build starting...")
-        builder.build(file_path, None)
-        log.info("etl file upload - done")
+        # builder = BuildProjectExperiment(api_key)
+        # builder.set_rename_is_ok(True)
+        # builder.preset_project_id(project_id)
+        # builder.preset_experiment_name_description(name, description)
+        # log.info("etl file upload - build starting...")
+        # builder.build(file_path, None)
+        # log.info("etl file upload - done")
         return format_as_json_return({"project_id": project_id})
     except Exception as e:
         log.info("Unexpected exception...", exc_info=True)

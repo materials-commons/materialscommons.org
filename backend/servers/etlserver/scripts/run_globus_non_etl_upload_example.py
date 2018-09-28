@@ -17,13 +17,15 @@ def main(user_id, project_id, globus_endpoint_id, globus_endpoint_path):
     verify_status = handler.verify(status_record_id)
     main_log.info("Verify status = {}".format(verify_status))
 
-    if verify_status['status'] == 'SUCCESS':
-        handler = GlobusMCTransfer(user_id)
-        main_log.info("Starting transfer")
-        transfer_status = handler.transfer_and_await(status_record_id)
-        main_log.info("Transfer status = {}".format(transfer_status))
-    else:
-        main_log.info("Transfer skipped because of verify failure(s) = {}".format(verify_status))
+    if not verify_status['status'] == 'SUCCESS':
+        handler.cleanup_on_error()
+        main_log.info("Aborting Transfer test because of verify failure(s) = {}".format(verify_status))
+        exit(-1)
+
+    handler = GlobusMCTransfer(user_id)
+    main_log.info("Starting transfer")
+    transfer_status = handler.transfer_and_await(status_record_id)
+    main_log.info("Transfer status = {}".format(transfer_status))
 
 
 if __name__ == "__main__":

@@ -50,6 +50,7 @@ class MaterialsCommonsGlobusInterface:
         self.log.info("setup_transfer_clients")
         self.cc_transfer_client = self.get_cc_transfer_client()
         self.user_transfer_client = self.get_user_transfer_client()
+        self.log.info("setup_transfer_clients: ")
         self.log.info("  {}".format(self.cc_transfer_client))
         self.log.info("  {}".format(self.user_transfer_client))
 

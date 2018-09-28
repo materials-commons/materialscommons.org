@@ -1,10 +1,11 @@
-import os
 import logging
-from ..database.DatabaseInterface import DatabaseInterface
-from ..database.BackgroundProcess import BackgroundProcess
+import os
+
+from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from ..common.McdirHelper import McdirHelper
 from ..common.VerifySetup import VerifySetup
-from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
+from ..database.BackgroundProcess import BackgroundProcess
+from ..database.DatabaseInterface import DatabaseInterface
 
 
 class GlobusMCUploadPrepare:
@@ -15,6 +16,8 @@ class GlobusMCUploadPrepare:
         self.project_id = None
         self.globus_endpoint = None
         self.endpoint_path = None
+        self.globus_destination_path = None
+        self.mc_globus_interface = None
         self.worker_base_path = McdirHelper().get_upload_dir()
         self.log.info("init - done")
 
@@ -22,7 +25,12 @@ class GlobusMCUploadPrepare:
                   globue_endpoint_base_path, excel_file_path, data_dir_path):
         self.log.info("starting setup of status record; user_id = {}; project_id = {}"
                       .format(self.mc_user_id, project_id))
-        status_record = DatabaseInterface().\
+
+        self.project_id = project_id
+        project = DatabaseInterface().get_project(project_id)
+        project_name = (project['name'] if project else 'undefined')
+
+        status_record = DatabaseInterface(). \
             create_status_record(self.mc_user_id, project_id, "ETL Process")
 
         status_record_id = status_record['id']
@@ -31,7 +39,7 @@ class GlobusMCUploadPrepare:
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.INITIALIZATION)
 
         base_path = self.worker_base_path
-        transfer_dir = self.make_transfer_dir('etl_transfer',status_record_id)
+        transfer_dir = self.make_transfer_dir('etl-transfer', status_record_id)
         globus_destination_path = self.make_globus_destination_path(transfer_dir)
         transfer_base_path = os.path.join(base_path, transfer_dir)
         self.log.info("excel_file_path = " + excel_file_path)
@@ -47,7 +55,8 @@ class GlobusMCUploadPrepare:
             "globus_path": globue_endpoint_base_path,
             "globus_destination_path": globus_destination_path,
             "excel_file_path": excel_file_path,
-            "data_dir_path": data_dir_path
+            "data_dir_path": data_dir_path,
+            "label": "upload to project {}".format(project_name)
         }
         self.log.info("Status record extras:")
         for key in extras:
@@ -56,11 +65,15 @@ class GlobusMCUploadPrepare:
         status_record_id = status_record['id']
         self.log.info("status record id = " + status_record_id)
 
-        mc_globus_interface = MaterialsCommonsGlobusInterface(self.mc_user_id)
-        mc_globus_interface.setup_transfer_clients()
-        mc_globus_interface.set_user_access_rule(globus_destination_path)
+        self.globus_destination_path = globus_destination_path
+        self.mc_globus_interface = MaterialsCommonsGlobusInterface(self.mc_user_id)
+        self.mc_globus_interface.setup_transfer_clients()
+        self.mc_globus_interface.set_user_access_rule(self.globus_destination_path)
 
         return status_record_id
+
+    def cleanup_on_error(self):
+        self.mc_globus_interface.clear_user_access_rule(self.globus_destination_path)
 
     def setup_non_etl(self, project_id, endpoint, path):
         self.project_id = project_id
@@ -80,7 +93,7 @@ class GlobusMCUploadPrepare:
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.INITIALIZATION)
 
         base_path = self.worker_base_path
-        transfer_dir = self.make_transfer_dir('transfer',status_record_id)
+        transfer_dir = self.make_transfer_dir('transfer', status_record_id)
         globus_destination_path = self.make_globus_destination_path(transfer_dir)
         transfer_base_path = os.path.join(base_path, transfer_dir)
         self.log.info("transfer_dir = {}".format(transfer_dir))

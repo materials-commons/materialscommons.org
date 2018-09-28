@@ -32,6 +32,7 @@ class ETLSetup:
         extras = {
             "experiment_name": experiment_name,
             "experiment_description": experiment_description,
+            "transfer_dir": transfer_dir,
             "transfer_base_path": transfer_base_path,
             "globus_endpoint": globus_endpoint,
             "globus_path": globue_endpoint_base_path,

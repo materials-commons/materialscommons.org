@@ -1,16 +1,16 @@
 import sys
-import time
 import logging
 import argparse
 
 from ..common.TestProject import TestProject
 from ..utils.LoggingHelper import LoggingHelper
 from ..globus.GlobusMCUploadPrepare import GlobusMCUploadPrepare
+from ..globus.GlobusMCTransfer import GlobusMCTransfer
+from ..globus.GlobusMCBuiltProjectExperimentFromELT import GlobusMCBuiltProjectExperimentFromELT
 
 
 def main(project, user_id, globus_endpoint, globus_base_path, excel_file_path, data_dir_path):
-    from ..globus_etl_upload.etl_task_library import startup_and_verify
-    main_log = logging.getLogger("top_level_run_ELT_example")
+    main_log = logging.getLogger("main")
 
     experiment_name = "Test from excel"
     experiment_description = "An experiment built via etl from test data"
@@ -24,7 +24,6 @@ def main(project, user_id, globus_endpoint, globus_base_path, excel_file_path, d
     main_log.info("excel_file_path = {}".format(excel_file_path))
     main_log.info("data_dir_path = {}".format(data_dir_path))
 
-    main_log = logging.getLogger("main")
     handler = GlobusMCUploadPrepare(user_id)
     main_log.info("Starting setup")
     status_record_id = handler.setup_etl(project.id, experiment_name, experiment_description,
@@ -34,6 +33,25 @@ def main(project, user_id, globus_endpoint, globus_base_path, excel_file_path, d
     verify_status = handler.verify(status_record_id)
     main_log.info("Verify status = {}".format(verify_status))
 
+    if not verify_status['status'] == 'SUCCESS':
+        handler.cleanup_on_error()
+        main_log.info("Aborting Transfer and ELT because of verify failure(s) = {}".format(verify_status))
+        exit(-1)
+
+    handler = GlobusMCTransfer(user_id)
+    main_log.info("Starting transfer")
+    transfer_status = handler.transfer_and_await(status_record_id)
+    main_log.info("Transfer status = {}".format(transfer_status))
+
+    if not transfer_status['status'] == 'SUCCEEDED':
+        handler.cleanup_on_error()
+        main_log.info("Aborting ETL because of transfer failure(s) = {}".format(verify_status))
+        exit(-1)
+
+    handler = GlobusMCBuiltProjectExperimentFromELT()
+    main_log.info("Starting ETL")
+    etl_status = handler.build_experiment(status_record_id)
+    main_log.info("ETL status = {}".format(etl_status))
 
 if __name__ == "__main__":
     LoggingHelper().set_root()
