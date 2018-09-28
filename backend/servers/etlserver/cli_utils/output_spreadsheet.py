@@ -16,13 +16,14 @@ from ..common.utils import normalise_property_name
 
 
 class ExtractExperimentSpreadsheet:
-    def __init__(self, output_file_path):
+    def __init__(self, output_file_path, apikey):
         self.metadata = Metadata()
         self.output_path = output_file_path
         self.worksheet = None
         self.workbook = None
         self.project = None
         self.experiment = None
+        self.apikey = apikey
         self.data_row_list = []
 
     def get_project(self):
@@ -32,7 +33,7 @@ class ExtractExperimentSpreadsheet:
         return self.experiment
 
     def set_up_project_experiment_metadata(self, project_name, experiment_name):
-        project_list = get_all_projects()
+        project_list = get_all_projects(apikey=self.apikey)
         for proj in project_list:
             if proj.name == project_name:
                 self.project = proj
@@ -318,8 +319,8 @@ def _verify_data_dir(dir_path):
     return ok
 
 
-def main(project_name, experiment_name, output, download):
-    builder = ExtractExperimentSpreadsheet(output)
+def main(project_name, experiment_name, output, download, apikey):
+    builder = ExtractExperimentSpreadsheet(output, apikey=apikey)
     ok = builder.set_up_project_experiment_metadata(project_name, experiment_name)
     if not ok:
         print("Invalid configuration of metadata or experiment/metadata mismatch. Quiting")
@@ -340,6 +341,7 @@ if __name__ == '__main__':
     argv = sys.argv
     parser = argparse.ArgumentParser(
         description='Dump a project-experiment to a spreadsheet')
+    parser.add_argument('apikey', type=str, help="User's APIKEY")
     parser.add_argument('proj', type=str, help="Project Name")
     parser.add_argument('exp', type=str, help="Experiment Name")
     parser.add_argument('output', type=str,
@@ -363,4 +365,4 @@ if __name__ == '__main__':
     if args.download:
         print("  with downloaded data going to " + args.download)
 
-    main(args.proj, args.exp, args.output, args.download)
+    main(args.proj, args.exp, args.output, args.download, apkkey=args.apikey)

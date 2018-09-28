@@ -5,9 +5,9 @@ class MetadataVerification:
     def __init__(self):
         pass
 
-    def verify(self, metadata):
+    def verify(self, metadata, apikey):
         verified = True
-        project = get_project_by_id(metadata.project_id)
+        project = get_project_by_id(metadata.project_id, apikey=apikey)
         if not project:
             print("Could not find project: " + metadata.project_id)
             verified = False

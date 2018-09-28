@@ -38,9 +38,9 @@ class Compare:
         self.download = download
         self.checksum = checksum
 
-    def compare(self, project_name, experiment_name, input_file_path, output_file_path):
+    def compare(self, project_name, experiment_name, input_file_path, output_file_path, apikey):
 
-        check_ok = self.set_up_project_experiment_metadata(project_name, experiment_name)
+        check_ok = self.set_up_project_experiment_metadata(project_name, experiment_name, apikey=apikey)
         if not check_ok:
             return
 
@@ -75,8 +75,8 @@ class Compare:
             if self.do_files:
                 self.compare_files(metadata, data1, data2)
 
-    def set_up_project_experiment_metadata(self, project_name, experiment_name):
-        project_list = get_all_projects()
+    def set_up_project_experiment_metadata(self, project_name, experiment_name, apikey):
+        project_list = get_all_projects(apikey=apikey)
         for proj in project_list:
             if proj.name == project_name:
                 self.project = proj
@@ -492,6 +492,7 @@ if __name__ == '__main__':
                         help='Path to input EXCEL file')
     parser.add_argument('output', type=str,
                         help='Path to output EXCEL file')
+    parser.add_argument('--apikey', type=str, help="User's APIKEY")
     parser.add_argument('--upload', type=str,
                         help="Path to dir for uploading files; if none, files are not compared")
     parser.add_argument('--download', type=str,
@@ -546,4 +547,4 @@ if __name__ == '__main__':
 
     c = Compare()
     c.set_options(do_files=ok_to_upload, upload=args.upload, download=args.download, checksum=args.checksum)
-    c.compare(args.proj, args.exp, args.input, args.output)
+    c.compare(args.proj, args.exp, args.input, args.output, apikey=apikey)

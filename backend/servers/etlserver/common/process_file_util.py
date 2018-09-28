@@ -31,8 +31,8 @@ def walk_dir_for_path_table(path_table, path, file_or_dir):
     return path_table
 
 
-def test(project_name):
-    project_list = get_all_projects()
+def test(project_name, apikey):
+    project_list = get_all_projects(apikey=apikey)
     project = None
     for proj in project_list:
         if proj.name == project_name:
@@ -54,8 +54,9 @@ if __name__ == '__main__':
         description='Build a workflow from given (well formatted) Excel spreadsheet')
     parser.add_argument('proj', type=str, help="Project Name")
     parser.add_argument('exp', type=str, help="Experiment Name")
+    parser.add_argument('apikey', type=str, help="User's APIKEY")
     args = parser.parse_args(argv[1:])
 
-    print("args: " + args.proj + " ," + args.exp)
+    print("args: " + args.proj + " ," + args.exp + " ," + args.apikey)
 
-    test(args.proj)
+    test(args.proj,args.apikey)

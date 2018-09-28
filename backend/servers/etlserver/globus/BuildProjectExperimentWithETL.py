@@ -98,8 +98,9 @@ class BuildProjectExperiment:
 
         self.set_project_description(description)
 
-        self.log.info("Building Project/Experiment from spreadsheet: {}{}".
-                      format(spread_sheet_path, data_path))
+        self.log.info("Building Project/Experiment from spreadsheet: ")
+        self.log.info("  spreadsheet = {}".format(spread_sheet_path))
+        self.log.info("  data = {}".format(data_path))
 
         self.set_input_information(spread_sheet_path, data_path)
 

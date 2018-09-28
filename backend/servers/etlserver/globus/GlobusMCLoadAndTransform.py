@@ -5,14 +5,15 @@ from materials_commons.api import get_project_by_id
 
 
 class GlobusMCLoadAndTransform:
-    def __init__(self, project_id):
+    def __init__(self, project_id, apikey):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.log.info("init - started")
         self.project_id = project_id
+        self.apikey = apikey
         self.log.info("init - done")
 
     def load_source_directory_into_project(self, transfer_base_path):
-        project = get_project_by_id(self.project_id)
+        project = get_project_by_id(self.project_id, apikey=self.apikey)
 
         self.log.info("working with project '{}' ({})".format(project.name, project.id))
 
