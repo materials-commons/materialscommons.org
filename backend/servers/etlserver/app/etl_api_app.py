@@ -64,6 +64,7 @@ def stage_background_excel_upload():
     experiment_description = j["description"]
     project_id = j["project_id"]
     globus_endpoint = j["globus_uuid"]
+    globus_base_path = j["globus_base_path"]
     excel_file_path = j["globus_excel_file"]
     data_dir_path = j["globus_data_dir"]
     log.info("/globus/stage - args - user_id = {}".format(user_id))
@@ -71,11 +72,12 @@ def stage_background_excel_upload():
     log.info("/globus/stage - args - experiment_name = {}".format(experiment_name))
     log.info("/globus/stage - args - experiment_description = {}".format(experiment_description))
     log.info("/globus/stage - args - globus_endpoint = {}".format(globus_endpoint))
+    log.info("/globus/stage - args - globus_base_path = {}".format(globus_base_path))
     log.info("/globus/stage - args - excel_file_path = {}".format(excel_file_path))
     log.info("/globus/stage - args - data_dir_path = {}".format(data_dir_path))
-    raise Exception("Error here")
     results = startup_and_verify(user_id, project_id, experiment_name, experiment_description,
-                                 globus_endpoint, excel_file_path, data_dir_path)
+                                 globus_endpoint, globus_base_path,
+                                 excel_file_path, data_dir_path)
     log.info("/globus/stage - done {}".format(results))
     return format_as_json_return(results)
 
