@@ -409,22 +409,39 @@ class DeleteExperimentsDialogController {
 
 class EtlUploadDialogController {
     /*@ngInject*/
-    constructor($mdDialog, Upload, etlServerAPI, toast, User) {
+    constructor($mdDialog, Upload, etlServerAPI, sidenavGlobus, toast, User) {
         this.$mdDialog = $mdDialog;
         this.Upload = Upload;
         this.etlServerAPI = etlServerAPI;
+        this.sidenavGlobus = sidenavGlobus;
         this.toast = toast;
         this.User = User;
         this.user_id = User.u();
         this.name = "";
         this.description = "";
+        // for direct upload, without Globus
         this.files = [];
-        // test data - uncomment the following to pre-populate the from with a working example
-        // this.name = "Test Experiment";
-        // this.description = "This is a demo of Excel Spreadsheet uploading and processing";
-        // this.ep_uuid = '067ce67a-3bf1-11e8-b9b5-0ac6873fc732';
-        // this.ep_spreadsheet = '/dataForTest/input.xlsx';
-        // this.ep_data = '/dataForTest/data';
+        // for Globus upload
+        this.ep_uuid = "";
+        this.base_path = "/A/path/on/the/endpoint/to/base/directory";
+        this.spreadsheet_rel_path = "/my_project/input.xlsx";
+        this.data_dir_rel_path = "/my_project/data";
+        this.isAuthenticatedToGlobus = false;
+        this.sidenavGlobus.isAuthenticated()
+            .then(authStatus => this.isAuthenticatedToGlobus = authStatus);
+        // test data settings
+        this.name = "Exp Test-";
+        this.description = "Test experiment for testing";
+        this.ep_uuid = "40b2f76c-c265-11e8-8c2a-0a1d4c5c824a";
+        this.base_path = "/~/GlobusEndpoint/FromSharing/etlBuildSharing/";
+        this.spreadsheet_rel_path = "input.xlsx";
+        this.data_dir_rel_path = "data";
+    }
+
+    globus_upload_ok() {
+        return this.name && this.description && this.ep_uuid && this.base_path
+            && this.spreadsheet_rel_path && this.data_dir_rel_path
+            && this.isAuthenticatedToGlobus;
     }
 
     uploadWithGlobus() {
@@ -433,8 +450,9 @@ class EtlUploadDialogController {
         data.name = this.name;
         data.description = this.description;
         data.globus_uuid = this.ep_uuid;
-        data.globus_excel_file = this.ep_spreadsheet;
-        data.globus_data_dir = this.ep_data;
+        data.globus_base_path = this.base_path;
+        data.globus_excel_file = this.spreadsheet_rel_path;
+        data.globus_data_dir = this.data_dir_rel_path;
         return this.etlServerAPI.startBackgroundEtlUpload(data).then (
             (reply) => {
                 this.$mdDialog.hide(reply);
