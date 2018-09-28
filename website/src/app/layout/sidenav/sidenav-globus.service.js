@@ -7,16 +7,9 @@ class SidenavGlobusService {
     }
 
     globusDownload(project) {
-        return this.$mdDialog.show({
-                templateUrl: 'app/modals/globus-download-transfer-dialog.html',
-                controller: GlobusDownloadTransferDialogController,
-                controllerAs: '$ctrl',
-                bindToController: true,
-                locals: {
-                    project: project,
-                }
-            }
-        );
+        console.log("Globus download action");
+        return this.etlServerAPI.setupGlobusDownloadTransfer(project.id)
+            .then(results => results);
     }
 
     globusUpload(project) {
@@ -67,33 +60,6 @@ class SidenavGlobusService {
 
     isAuthenticated() {
         return this.etlServerAPI.getGlobusAuthStatus().then(authStatus => authStatus.status.authenticated, () => false);
-    }
-}
-
-class GlobusDownloadTransferDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, etlServerAPI) {
-        this.$mdDialog = $mdDialog;
-        this.etlServerAPI = etlServerAPI;
-        this.requestComplete = false;
-        this.globusUser = 'username@globus.com';
-        this.url = '';
-    }
-
-    submitToServer() {
-        console.log('Submitting request to server: ', this.project.id, this.globusUser);
-        this.etlServerAPI.setupGlobusDownloadTransfer(this.project.id, this.globusUser)
-            .then(globusResults => {
-                console.log('Results returned from server: ', globusResults);
-                if (globusResults && globusResults.url) {
-                    this.url = globusResults.url;
-                    this.requestComplete = true;
-                }
-            });
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
     }
 }
 

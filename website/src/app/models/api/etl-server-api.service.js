@@ -50,11 +50,10 @@ class EtlServerAPIService {
         );
     }
 
-    setupGlobusDownloadTransfer(projectId, globusUsername) {
+    setupGlobusDownloadTransfer(projectId) {
         let route = this.etlAPIRoute('globus').one('transfer').one('download');
         let data = {
             project_id: projectId,
-            globus_user: globusUsername
         };
         return route.customPOST(data).then(
             r => {
