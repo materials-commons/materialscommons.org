@@ -48,6 +48,7 @@ export MC_FAKTORY_PORT=7419
 export MC_FAKTORY_NAME="mc-faktory-test"
 
 export MC_API_URL="http://test.materialscommons.org/api"
+export MC_GLOBUS_AUTH_CALLBACK="$MC_API_URL/etl/globus/auth/callback"
 
 export MC_ETL_WORKER_LOG_LEVEL=INFO
 

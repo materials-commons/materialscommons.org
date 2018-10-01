@@ -1,5 +1,6 @@
 import logging
 import json
+import os
 import pkg_resources
 from flask import Flask, request, url_for
 from flask_api import status
@@ -425,12 +426,14 @@ def globus_auth_status():
 def globus_auth_login_url():
     user_id = access.get_user()
     # Set up our Globus Auth/OAuth2 state
-    # redirect_uri = url_for('globus_auth_callback', _external=True)
-    redirect_uri = 'https://localhost:5032/globus/auth/callback'
-    log.info("--------------------------------------------------")
-    log.info("---------------        FIX THIS       ------------")
+    redirect_uri = os.environ.get("MC_GLOBUS_AUTH_CALLBACK")
     log.info("Redirect for return call = {}".format(redirect_uri))
-    log.info("--------------------------------------------------")
+
+    if not redirect_uri:
+        message = "The environmental variable  MC_GLOBUS_AUTH_CALLBACK is not set; "
+        message += "Globus login will not work."
+        log.error(message)
+        return message, status.HTTP_401_UNAUTHORIZED
 
     client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
     client.oauth2_start_flow(redirect_uri, state=user_id, refresh_tokens=True)
