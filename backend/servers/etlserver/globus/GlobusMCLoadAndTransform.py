@@ -3,17 +3,28 @@ import logging
 
 from materials_commons.api import get_project_by_id
 
+from ..database.DatabaseInterface import DatabaseInterface
+from ..database.BackgroundProcess import BackgroundProcess
+# noinspection PyProtectedMember
+from ..user.apikeydb import _load_apikeys as init_api_keys, user_apikey
+
 
 class GlobusMCLoadAndTransform:
-    def __init__(self, project_id, apikey):
+    def __init__(self):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
-        self.log.info("init - started")
-        self.project_id = project_id
-        self.apikey = apikey
-        self.log.info("init - done")
 
-    def load_source_directory_into_project(self, transfer_base_path):
-        project = get_project_by_id(self.project_id, apikey=self.apikey)
+    def load_source_directory_into_project(self, status_record_id):
+        self.log.info("starting load_source_directory_into_project")
+
+        status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
+
+        transfer_base_path = status_record['extras']['transfer_base_path']
+        user_id = status_record['owner']
+        init_api_keys()
+        apikey = user_apikey(user_id)
+        project_id = status_record['project_id']
+
+        project = get_project_by_id(project_id, apikey=apikey)
 
         self.log.info("working with project '{}' ({})".format(project.name, project.id))
 

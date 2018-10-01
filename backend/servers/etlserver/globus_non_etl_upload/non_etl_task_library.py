@@ -82,13 +82,9 @@ def non_etl_file_processing(status_record_id):
     try:
         log = logging.getLogger(__name__ + ".non_etl_file_processing")
         log.info("Starting etl_excel_processing with status_record_id{}".format(status_record_id))
-        status_record = DatabaseInterface().update_status(status_record_id, BackgroundProcess.RUNNING)
-        project_id = status_record['project_id']
 
-        transfer_base_path = status_record['extras']['transfer_base_path']
-
-        helper = GlobusMCLoadAndTransform(project_id)
-        helper.load_source_directory_into_project(transfer_base_path)
+        helper = GlobusMCLoadAndTransform()
+        helper.load_source_directory_into_project(status_record_id)
 
         DatabaseInterface().update_queue(status_record_id, None)
         DatabaseInterface().update_status(status_record_id, BackgroundProcess.SUCCESS)
