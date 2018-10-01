@@ -445,6 +445,9 @@ def globus_auth_login_url():
 
 @app.route('/globus/auth/callback', methods=['GET'])
 def globus_auth_callback():
+    log.info("-------------------------------------------------")
+    log.info("Starting globus_auth_callback")
+    log.info("-------------------------------------------------")
     # If there's no "code" query string parameter something is wrong
     if 'code' not in request.args:
         # If we're coming back from Globus Auth in an error state, the error
@@ -477,7 +480,7 @@ def globus_auth_callback():
             #            session['error_message'] = message
             return message, status.HTTP_401_UNAUTHORIZED
 
-        redirect_uri = url_for('globus_auth_callback', _external=True)
+        redirect_uri = os.environ.get("MC_GLOBUS_AUTH_CALLBACK")
         log.info("Redirect for return call = {}".format(redirect_uri))
 
         client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
