@@ -483,7 +483,13 @@ def globus_auth_callback():
         client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
         client.oauth2_start_flow(redirect_uri, refresh_tokens=True)
         code = request.args.get('code')
+        log.info("-------------------------------------------------")
+        log.info("Before call to get tokens; code = {}".format(code))
+        log.info("-------------------------------------------------")
         tokens = client.oauth2_exchange_code_for_tokens(code)
+        log.info("-------------------------------------------------")
+        log.info("After call to get tokens; tokens = {}".format(tokens))
+        log.info("-------------------------------------------------")
 
         id_token = tokens.decode_id_token()
         log.info("Returned as from globus auth:")
