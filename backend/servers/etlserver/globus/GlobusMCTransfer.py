@@ -40,7 +40,7 @@ class GlobusMCTransfer:
             status = task['status']
             self.log.info("Current task status = {}".format(status))
             time.sleep(5)
-        self.mc_globus_interface.clear_user_access_rule(destination_path)
+        # self.mc_globus_interface.clear_user_access_rule(destination_path)
         results = {'status': status}
         return results
 
