@@ -101,7 +101,10 @@ class GlobusDownload:
             p2 = file_id[11:13]
             file_path = os.path.join(self.mc_base, p1, p2, file_id)
             link_path = os.path.join(staging_dir, file.path)
-            os.link(file_path, link_path)
+            try:
+                os.link(file_path, link_path)
+            except:
+                pass
         self.log.info("Staging - end")
 
     def expose(self):
