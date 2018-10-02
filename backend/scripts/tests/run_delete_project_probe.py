@@ -5,10 +5,7 @@ from os import environ
 from os import path as os_path
 from random import randint
 from optparse import OptionParser
-# from time import sleep
 
-# Because python was tyring to load __main__.demo_project
-# Google search found: use demo_project instead of .demo_project
 # noinspection PyUnresolvedReferences
 from demo_project import DemoProject
 
@@ -47,16 +44,7 @@ class DeleteProjectProbe:
         self.post_condition = {}
 
     def doit(self):
-        # tables = r.table_list().run(self.conn)
-        # print(tables)
         tables = TABLES
-        # for table in tables:
-        #     results = r.table(table).pluck('owner').run(self.conn)
-        #     if results:
-        #         results = list(results)
-        #         if len(results) > 0 and results[0]:
-        #             results = results[0]
-        #     print("{} --> {}".format(table, results))
         for table in tables:
             results = r.table(table).count().run(self.conn)
             self.pre_condition[table] = results
@@ -66,22 +54,28 @@ class DeleteProjectProbe:
         experiments = project.get_all_experiments()
         for exp in experiments:
             print("experiment id = {}".format(exp.id))
-        results = r.table('access').run(self.conn)
-        print(results)
-        # project.delete()
-        # for table in tables:
-        #     results = r.table(table).count().run(self.conn)
-        #     self.post_condition[table] = results
-        # for key in tables:
-        #     if not self.pre_condition[key] == self.post_condition[key]:
-        #         mark = "<--" if not self.pre_condition[key] == self.post_condition[key] else ""
-        #         print("{} - {} - {}  {}".format(key, self.pre_condition[key], self.post_condition[key], mark))
-        #         # print("{} -- {}".format(key, self.postcondition[key]))
+        project.delete()
+        for table in tables:
+            results = r.table(table).count().run(self.conn)
+            self.post_condition[table] = results
+        for key in tables:
+            mark = "-->" if not self.pre_condition[key] == self.post_condition[key] else "   "
+            print("{} {}: {} - {}".format(mark, key, self.pre_condition[key], self.post_condition[key]))
+
+    def determined_tables_used(self):
+        # Assuming empty database
+        tables = r.table_list().run(self.conn)
+        print(tables)
+        for table in tables:
+            results = r.table(table).pluck('owner').run(self.conn)
+            if results:
+                results = list(results)
+                if len(results) > 0 and results[0]:
+                    results = results[0]
+            print("{} --> {}".format(table, results))
 
     def _build_project(self):
-        project_name = self._fake_name("ProjectDeleteTest")
-        # print("")
-        # print("Project name: " + project_name)
+        project_name = self._fake_name("Project-Delete-Test-")
 
         self.test_project_name = project_name
 
