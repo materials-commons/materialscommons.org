@@ -7,7 +7,6 @@ class SidenavGlobusService {
     }
 
     globusDownload(project) {
-        console.log("Globus download action", project.name);
         return this.$mdDialog.show({
                 templateUrl: 'app/modals/globus-download-dialog.html',
                 controller: GlobusDownloadDialogController,
@@ -17,7 +16,6 @@ class SidenavGlobusService {
                     project: project,
                 }
             }
-
         );
     }
 
@@ -112,7 +110,7 @@ class GlobusUploadTransferDialogController {
     }
 }
 
-class GlobusDownloadDialogController{
+class GlobusDownloadDialogController {
     /*@ngInject*/
     constructor($mdDialog, etlServerAPI) {
         this.$mdDialog = $mdDialog;
@@ -120,14 +118,13 @@ class GlobusDownloadDialogController{
         this.url = null;
         this.error = null;
         this.etlServerAPI.setupGlobusDownloadTransfer(this.project.id).then(
-            results =>{
-                console.log("return from download", results);
+            results => {
                 if (results.url) {
                     this.url = results.url;
                 } else {
                     this.error = results.error;
-                    if (! this.error) {
-                        this.error = "Unexpected error: please contact site admin"
+                    if (!this.error) {
+                        this.error = 'Unexpected error: please contact site admin';
                     }
                 }
             });
