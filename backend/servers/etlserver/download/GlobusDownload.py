@@ -7,6 +7,7 @@ from materials_commons.api import get_project_by_id
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from ..common.access_exceptions import RequiredAttributeException
 from ..common.McdirHelper import McdirHelper
+from ..database.DatabaseInterface import DatabaseInterface
 
 DOWNLOAD_NO_FILES_FOUND = "GlobusDownload - No Files Found"
 
@@ -130,5 +131,5 @@ class GlobusDownload:
 
     @staticmethod
     def make_random_name(prefix):
-        number = "%05d" % randint(0, 99999)
-        return prefix + number
+        uuid = DatabaseInterface().get_uuid()
+        return prefix + uuid

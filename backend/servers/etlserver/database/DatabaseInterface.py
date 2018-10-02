@@ -84,3 +84,6 @@ class DatabaseInterface:
 
     def delete_globus_auth_info_record(self, record_id):
         return self.r.table("globus_auth_info").get(record_id).delete().run(self.conn)
+
+    def get_uuid(self):
+        return self.r.uuid().run(self.conn)
