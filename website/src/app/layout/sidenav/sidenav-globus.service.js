@@ -76,7 +76,7 @@ class GlobusUploadTransferDialogController {
         this.$mdDialog = $mdDialog;
         this.etlServerAPI = etlServerAPI;
         this.endpoint = '';
-        this.endpointPath = '/~/MyTransferDir/dataForUpload/';
+        this.endpointPath = '';
         this.uploadName = 'undefined';
         this.uploadUniquename = 'undefined';
         this.uploadId = 'undefined';

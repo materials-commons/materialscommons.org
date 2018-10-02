@@ -430,12 +430,12 @@ class EtlUploadDialogController {
         this.sidenavGlobus.isAuthenticated()
             .then(authStatus => this.isAuthenticatedToGlobus = authStatus);
         // test data settings
-        this.name = "Exp Test-";
-        this.description = "Test experiment for testing";
-        this.ep_uuid = "40b2f76c-c265-11e8-8c2a-0a1d4c5c824a";
-        this.base_path = "/~/GlobusEndpoint/FromSharing/etlBuildSharing/";
-        this.spreadsheet_rel_path = "input.xlsx";
-        this.data_dir_rel_path = "data";
+        // this.name = "Exp Test-";
+        // this.description = "Test experiment for testing";
+        // this.ep_uuid = "40b2f76c-c265-11e8-8c2a-0a1d4c5c824a";
+        // this.base_path = "/~/GlobusEndpoint/FromSharing/etlBuildSharing/";
+        // this.spreadsheet_rel_path = "input.xlsx";
+        // this.data_dir_rel_path = "data";
     }
 
     globus_upload_ok() {
