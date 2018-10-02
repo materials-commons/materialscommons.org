@@ -34,8 +34,8 @@ def run(rql):
     try:
         ret = rql.run()
         return ret
-    except r.RqlRuntimeError:
-        pass
+    except r.RqlRuntimeError as e:
+        raise e
 
 
 if __name__ == "__main__":
