@@ -65,11 +65,7 @@ class MCProjectSidenavComponentController {
     }
 
     startGlobusDownloadTransfer() {
-        this.sidenavGlobus.globusDownload(this.project).then(results =>{
-            console.log("return from download", results);
-            let url = results.url;
-            this.$window.open(url, 'newtab')
-        });
+        this.sidenavGlobus.globusDownload(this.project)
     }
 
     showGlobusTasks() {

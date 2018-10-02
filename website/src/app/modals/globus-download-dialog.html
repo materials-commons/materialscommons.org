@@ -1,0 +1,23 @@
+<md-dialog flex="60">
+    <md-toolbar layout="row">
+        <div ng-if="!$ctrl.url" layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>Preparing download for <b>{{$ctrl.project.name}}</b>
+        </div>
+        <div ng-if="$ctrl.url" layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>Link to download for <b>{{$ctrl.project.name}}</b>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <div ng-if="!$ctrl.url">
+            Loading.
+        </div>
+        <div ng-if="$ctrl.url">
+            <a href="{{$ctrl.url}}" target="_blank" ng-click="$ctrl.cancel()">
+                Globus download transfer panel
+            </a>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Dismiss</md-button>
+    </md-dialog-actions>
+</md-dialog>

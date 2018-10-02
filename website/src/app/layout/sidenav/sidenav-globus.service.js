@@ -7,9 +7,18 @@ class SidenavGlobusService {
     }
 
     globusDownload(project) {
-        console.log("Globus download action");
-        return this.etlServerAPI.setupGlobusDownloadTransfer(project.id)
-            .then(results => results);
+        console.log("Globus download action", project.name);
+        return this.$mdDialog.show({
+                templateUrl: 'app/modals/globus-download-dialog.html',
+                controller: GlobusDownloadDialogController,
+                controllerAs: '$ctrl',
+                bindToController: true,
+                locals: {
+                    project: project,
+                }
+            }
+
+        );
     }
 
     globusUpload(project) {
@@ -101,6 +110,25 @@ class GlobusUploadTransferDialogController {
     cancel() {
         this.$mdDialog.cancel();
     }
+}
+
+class GlobusDownloadDialogController{
+    /*@ngInject*/
+    constructor($mdDialog, etlServerAPI) {
+        this.$mdDialog = $mdDialog;
+        this.etlServerAPI = etlServerAPI;
+        this.url = null;
+        this.etlServerAPI.setupGlobusDownloadTransfer(this.project.id).then(
+            results =>{
+                console.log("return from download", results);
+                this.url = results.url;
+            });
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+
 }
 
 class GlobusReportStatusDialogController {

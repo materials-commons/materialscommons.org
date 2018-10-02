@@ -1,5 +1,6 @@
 import logging
 import os
+import html
 from random import randint
 
 from materials_commons.api import get_project_by_id
@@ -109,8 +110,13 @@ class GlobusDownload:
 
     def exposed_ep_url(self):
         origin_id = self.download_ep_id
-        path = '%2F{}%2F'.format(self.mc_endpoint_path)
+        path = self.mc_endpoint_path
+        if not path.startswith('/'):
+            path = "/" + path
+        if not path.endswith('/'):
+            path = path + "/"
         url_base = "https://www.globus.org/app/transfer"
+        path = path.replace('/','%2F')
         url = '{}?origin_id={}&origin_path={}'.format(url_base, origin_id, path)
         return url
 

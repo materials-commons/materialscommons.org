@@ -63,20 +63,22 @@ if __name__ == "__main__":
 
     local_log.info("Searching for project with name-match = {}".format(args.name))
     project_list = get_all_projects(apikey=args.apikey)
+    local_log.info("Found {} projects".format(len(project_list)))
 
     project_selected = None
     for probe in project_list:
+        local_log.info("Compareing with {}".format(probe.name))
         if args.name in probe.name:
             if project_selected:
-                print("Found multiple matches for {}".format(args.name))
-                print("You must specify a unique project name, or name substring.")
+                local_log.info("Found multiple matches for {}".format(args.name))
+                local_log.info("You must specify a unique project name, or name substring.")
                 parser.print_help()
                 exit(-1)
             project_selected = probe
 
     if not project_selected:
-        print("Found no matches for {}".format(args.name))
-        print("You must specify a unique project name, or name substring.")
+        local_log.info("Found no matches for {}".format(args.name))
+        local_log.info("You must specify a unique project name, or name substring.")
         parser.print_help()
         exit(-1)
 
