@@ -1,6 +1,5 @@
 import logging
 import os
-import html
 from random import randint
 
 from materials_commons.api import get_project_by_id
@@ -8,6 +7,8 @@ from materials_commons.api import get_project_by_id
 from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from ..common.access_exceptions import RequiredAttributeException
 from ..common.McdirHelper import McdirHelper
+
+DOWNLOAD_NO_FILES_FOUND = "GlobusDownload - No Files Found"
 
 
 class GlobusDownload:
@@ -33,9 +34,10 @@ class GlobusDownload:
         self.mc_endpoint_path = None
 
     def download(self):
-        if self.setup():
-            self.stage()
-            self.expose()
+        if not self.setup():
+            return DOWNLOAD_NO_FILES_FOUND
+        self.stage()
+        self.expose()
         return self.exposed_ep_url()
 
     def setup(self):
@@ -82,7 +84,7 @@ class GlobusDownload:
         self.log.info("Staging - user_dir = {}".format(self.user_dir))
         staging_dir = os.path.join(staging_dir, self.user_dir)
         self.log.info("Staging - staging_dir = {}".format(staging_dir))
-        self.mc_endpoint_path = "/__download_staging/" +  self.user_dir + "/"
+        self.mc_endpoint_path = "/__download_staging/" + self.user_dir + "/"
         self.log.info("Staging - mc_endpoint_path = {}".format(self.mc_endpoint_path))
 
         os.makedirs(staging_dir)
@@ -111,17 +113,19 @@ class GlobusDownload:
     def exposed_ep_url(self):
         origin_id = self.download_ep_id
         path = self.mc_endpoint_path
-        if not path.startswith('/'):
-            path = "/" + path
-        if not path.endswith('/'):
-            path = path + "/"
-        url_base = "https://www.globus.org/app/transfer"
-        path = path.replace('/','%2F')
-        url = '{}?origin_id={}&origin_path={}'.format(url_base, origin_id, path)
-        return url
+        if path:
+            if not path.startswith('/'):
+                path = "/" + path
+            if not path.endswith('/'):
+                path = path + "/"
+            url_base = "https://www.globus.org/app/transfer"
+            path = path.replace('/', '%2F')
+            url = '{}?origin_id={}&origin_path={}'.format(url_base, origin_id, path)
+            return url
+        else:
+            return None
 
     @staticmethod
     def make_random_name(prefix):
         number = "%05d" % randint(0, 99999)
         return prefix + number
-

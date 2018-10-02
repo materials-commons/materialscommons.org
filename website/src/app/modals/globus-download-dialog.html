@@ -8,8 +8,11 @@
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
-        <div ng-if="!$ctrl.url">
+        <div ng-if="!$ctrl.url && !$ctrl.error">
             Loading.
+        </div>
+        <div ng-if="$ctrl.error">
+            <b>{{$ctrl.error}}</b>
         </div>
         <div ng-if="$ctrl.url">
             <a href="{{$ctrl.url}}" target="_blank" ng-click="$ctrl.cancel()">

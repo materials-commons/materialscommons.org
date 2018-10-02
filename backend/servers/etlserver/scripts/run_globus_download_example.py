@@ -6,7 +6,7 @@ from globus_sdk.exc import GlobusAPIError
 
 from materials_commons.api import get_all_projects
 
-from ..download.GlobusDownload import GlobusDownload
+from ..download.GlobusDownload import GlobusDownload, DOWNLOAD_NO_FILES_FOUND
 from ..common.access_exceptions import RequiredAttributeException
 from ..utils.LoggingHelper import LoggingHelper
 
@@ -19,6 +19,9 @@ def main(project, mc_user, apikey):
         main_log.info("Starting GlobusDownload")
         download = GlobusDownload(mc_user, apikey, project.id)
         url = download.download()
+        if url == DOWNLOAD_NO_FILES_FOUND:
+            main_log.error("No files were found: unable to make download")
+            exit(-1)
         main_log.info(url)
     except GlobusAPIError as error:
         http_status = error.http_status

@@ -118,10 +118,18 @@ class GlobusDownloadDialogController{
         this.$mdDialog = $mdDialog;
         this.etlServerAPI = etlServerAPI;
         this.url = null;
+        this.error = null;
         this.etlServerAPI.setupGlobusDownloadTransfer(this.project.id).then(
             results =>{
                 console.log("return from download", results);
-                this.url = results.url;
+                if (results.url) {
+                    this.url = results.url;
+                } else {
+                    this.error = results.error;
+                    if (! this.error) {
+                        this.error = "Unexpected error: please contact site admin"
+                    }
+                }
             });
     }
 

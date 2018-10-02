@@ -2,14 +2,14 @@ import logging
 import json
 import os
 import pkg_resources
-from flask import Flask, request, url_for
+from flask import Flask, request
 from flask_api import status
 
 from servers.etlserver.globus_etl_upload.etl_task_library import startup_and_verify
 # from servers.etlserver.globus_etl_upload.BuildProjectExperimentWithETL import BuildProjectExperiment
 from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.database.DB import DbConnection
-from servers.etlserver.download.GlobusDownload import GlobusDownload
+from servers.etlserver.download.GlobusDownload import GlobusDownload, DOWNLOAD_NO_FILES_FOUND
 from servers.etlserver.globus_non_etl_upload.non_etl_task_library import non_etl_startup_and_verify
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
@@ -196,7 +196,10 @@ def globus_transfer_download():
     try:
         download = GlobusDownload(user_id, api_key, project_id)
         url = download.download()
-        ret_value = {'url': url}
+        if url == DOWNLOAD_NO_FILES_FOUND:
+            ret_value = {'error': 'No files were found; download aborted'}
+        else:
+            ret_value = {'url': url}
         ret = format_as_json_return(ret_value)
         return ret
     except Exception:
