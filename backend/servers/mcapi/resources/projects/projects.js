@@ -260,8 +260,8 @@ function createResource() {
     router.put('/:project_id', update);
     router.get('/:project_id', getProject);
     router.delete('/:project_id', ra.validateProjectOwner, deleteProject);
-    router.delete('/:project_id/delete/fully',ra.validateProjectOwner, deleteProjectFully);
-    router.get('/:project_id/delete/dryrun', ra.validateProjectOwner, deleteProjectDryRun);
+    router.delete('/:project_id/fully',ra.validateProjectOwner, deleteProjectFully);
+    router.get('/:project_id/dryrun', ra.validateProjectOwner, deleteProjectDryRun);
 
     router.put('/:project_id/datasets/:dataset_id', ra.validateDatasetInProject, updateDatasetForProject);
     router.post('/:project_id/datasets/:dataset_id/doi', ra.validateDatasetInProject, createAndAddNewDoi);
