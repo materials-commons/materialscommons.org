@@ -1,4 +1,5 @@
 from .BackgroundProcess import BackgroundProcess
+from .GlobusAuthInfo import GlobusAuthInfo
 from .DB import DbConnection
 
 
@@ -7,6 +8,12 @@ class DatabaseInterface:
         db = DbConnection()
         self.conn = db.connection()
         self.r = db.interface()
+
+    def get_project(self, project_id):
+        return self.r.table('projects').get(project_id).run(self.conn)
+
+    def get_all_projects_by_owner(self, mc_user_id):
+        return self.r.table('projects').get_all(mc_user_id, index='owner').run(self.conn)
 
     def create_status_record(self, user_id, project_id, name):
         record_obj = BackgroundProcess(user_id, project_id, name)
@@ -58,3 +65,25 @@ class DatabaseInterface:
         return self.r.table('users')\
             .get(user_id)\
             .pluck('apikey')
+
+    def create_globus_auth_info(self, user_id, globus_name, globus_id, tokens):
+        record_obj = GlobusAuthInfo(user_id, globus_name, globus_id, tokens)
+        data = record_obj.__dict__
+        rv = self.r.table("globus_auth_info").insert(data).run(self.conn)
+        record_id = rv['generated_keys'][0]
+        return self.get_globus_auth_info(record_id)
+
+    def get_globus_auth_info(self, record_id):
+        return self.r.table("globus_auth_info").get(record_id).run(self.conn)
+
+    def get_globus_auth_info_records_by_user_id(self, user_id):
+        return list(self.r.table("globus_auth_info")\
+                    .get_all(user_id, index='owner')\
+                    .order_by(self.r.desc('birthtime'))\
+                    .run(self.conn))
+
+    def delete_globus_auth_info_record(self, record_id):
+        return self.r.table("globus_auth_info").get(record_id).delete().run(self.conn)
+
+    def get_uuid(self):
+        return self.r.uuid().run(self.conn)

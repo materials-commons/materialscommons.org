@@ -24,7 +24,8 @@ def fake_name(prefix):
 def main(project, mc_apikey, globus_user_id, globus_endpoint_id):
     env_list = ['MCDIR', 'MCDB_PORT', 'MC_FAKTORY_PORT', 'MC_ETL_WORKER_LOG_LEVEL',
                 'MC_CONFIDENTIAL_CLIENT_USER', 'MC_CONFIDENTIAL_CLIENT_PW',
-                'MC_CONFIDENTIAL_CLIENT_ENDPOINT', 'MC_DOWNLOAD_ENDPOINT_ID', 'MC_API_URL']
+                'MC_CONFIDENTIAL_CLIENT_ENDPOINT', 'MC_DOWNLOAD_ENDPOINT_ID',
+                'MC_GLOBUS_AUTH_CALLBACK', 'MC_API_URL']
 
     print("")
     env_values = {}

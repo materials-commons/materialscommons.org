@@ -98,8 +98,9 @@ class BuildProjectExperiment:
 
         self.set_project_description(description)
 
-        self.log.info("Building Project/Experiment from spreadsheet: {}{}".
-                      format(spread_sheet_path, data_path))
+        self.log.info("Building Project/Experiment from spreadsheet: ")
+        self.log.info("  spreadsheet = {}".format(spread_sheet_path))
+        self.log.info("  data = {}".format(data_path))
 
         self.set_input_information(spread_sheet_path, data_path)
 
@@ -200,7 +201,6 @@ class BuildProjectExperiment:
             self.previous_parent_process = None
             if parent_process_record:
                 self.previous_parent_process = parent_process_record['process']
-            print(process_record)
             self.parent_process_list[process_index] = process_record
 
     def sweep_for_process_value(self, data_row, process, start_col, end_col, start_attr_row):

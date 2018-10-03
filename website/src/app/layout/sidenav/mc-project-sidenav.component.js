@@ -1,7 +1,9 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, mcprojstore, mcprojectstore2, $timeout, ProjectModel, projectFileTreeAPI, $mdDialog, mcRouteState, $q, User) {
+    constructor($state, $window, mcprojstore, mcprojectstore2, $timeout, ProjectModel, projectFileTreeAPI,
+                $mdDialog, mcRouteState, $q, User, sidenavGlobus, $interval, blockUI) {
         this.$state = $state;
+        this.$window = $window;
         this.mcprojstore = mcprojstore;
         this.mcprojectstore2 = mcprojectstore2;
         this.experiment = null;
@@ -12,6 +14,10 @@ class MCProjectSidenavComponentController {
         this.mcRouteState = mcRouteState;
         this.User = User;
         this.$q = $q;
+        this.sidenavGlobus = sidenavGlobus;
+        this.$interval = $interval;
+        this.blockUI = blockUI;
+        this.isAuthenticatedToGlobus = false;
     }
 
     $onInit() {
@@ -32,6 +38,7 @@ class MCProjectSidenavComponentController {
 
         this.project = this.mcprojstore.currentProject;
         this.isBetaUser = this.User.isBetaUser();
+        this.sidenavGlobus.isAuthenticated().then(authStatus => this.isAuthenticatedToGlobus = authStatus);
     }
 
     loadProjectFiles() {
@@ -57,6 +64,47 @@ class MCProjectSidenavComponentController {
         this.ProjectModel.getProjectForCurrentUser(this.project.id).then((p) => this._updateProject(p));
     }
 
+    startGlobusDownloadTransfer() {
+        this.sidenavGlobus.globusDownload(this.project)
+    }
+
+    showGlobusTasks() {
+        this.sidenavGlobus.showGlobusTasks(this.project);
+    }
+
+    startGlobusTransfer() {
+        this.sidenavGlobus.globusUpload(this.project);
+    }
+
+    loginToGlobus() {
+        this.sidenavGlobus.loginToGlobus().then(() => this._checkGlobusAuthStatus());
+    }
+
+    logoutFromGlobus() {
+        this.sidenavGlobus.logoutFromGlobus().then(() => this._checkGlobusAuthStatus());
+    }
+
+    _checkGlobusAuthStatus() {
+        let promise = null;
+        this.blockUI.stop();
+        promise = this.$interval(() => {
+            this.blockUI.stop();
+            this.sidenavGlobus.isAuthenticated().then(authStatus => {
+                console.log(`${this.isAuthenticatedToGlobus}/${authStatus}`);
+                // check if we are logging out
+                if (this.isAuthenticatedToGlobus && !authStatus) {
+                    this.isAuthenticatedToGlobus = authStatus;
+                    this.$interval.cancel(promise);
+                } else if (!this.isAuthenticatedToGlobus && authStatus) {
+                    this.isAuthenticatedToGlobus = authStatus;
+                    this.$interval.cancel(promise);
+                }
+            });
+        }, 2000, 2);
+    }
+
+
+
     _updateProject(project) {
         this.mcprojstore.updateCurrentProject((currentProject, transformers) => {
             let transformedExperiments = project.experiments.map(e => transformers.transformExperiment(e));
@@ -77,45 +125,6 @@ class MCProjectSidenavComponentController {
                 }
             }
         );
-    }
-
-    setGlobusDownloadTransfer() {
-        console.log("Reached setGlobusDownloadTransfer");
-        this.$mdDialog.show({
-            templateUrl: 'app/modals/globus-download-transfer-dialog.html',
-            controller: GlobusDownloadTransferDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {
-                project: this.project,
-            }}
-        ).then(((results) =>  console.log("done", results)));
-    }
-
-    setGlobusUploadTransfer() {
-        console.log("Reached setGlobusUploadTransfer");
-        this.$mdDialog.show({
-            templateUrl: 'app/modals/globus-upload-transfer-dialog.html',
-            controller: GlobusUploadTransferDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {
-                project: this.project,
-            }}
-        ).then(((results) =>  console.log("done", results)));
-    }
-
-    reportGlobusTasks() {
-        console.log("Reached reportGlobusTasks");
-        this.$mdDialog.show({
-            templateUrl: 'app/modals/globus-report-status-dialog.html',
-            controller: GlobusReportStatusDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {
-                project: this.project,
-            }}
-        ).then(((results) =>  console.log("done", results)));
     }
 
     modifyShortcuts() {
@@ -147,98 +156,6 @@ class MCProjectSidenavComponentController {
 
     isProjectDatasetsRoute() {
         return this.mcRouteState.getRouteName().startsWith('project.datasets');
-    }
-}
-
-class GlobusDownloadTransferDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, etlServerAPI) {
-        this.$mdDialog = $mdDialog;
-        this.etlServerAPI = etlServerAPI;
-        this.requestComplete = false;
-        this.globusUser = "username@globus.com";
-        this.url = "";
-    }
-
-    submitToServer() {
-        console.log("Submitting request to server: ", this.project.id, this.globusUser);
-        this.etlServerAPI.
-            setupGlobusDownloadTransfer(this.project.id, this.globusUser).
-            then(globusResults => {
-                console.log("Results returned from server: ", globusResults);
-                if (globusResults && globusResults.url) {
-                    this.url = globusResults.url;
-                    this.requestComplete = true;
-                }
-        });
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
-
-class GlobusUploadTransferDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, etlServerAPI) {
-        this.$mdDialog = $mdDialog;
-        this.etlServerAPI = etlServerAPI;
-        this.endpoint = '';
-        this.uploadName = "undefined";
-        this.uploadUniquename = "undefined";
-        this.uploadId = "undefined";
-        this.status = '';
-        this.etlServerAPI.getSystemGlobusInformation().then(infoResults => {
-            console.log("Info results returned from server: ", infoResults);
-            this.uploadName = infoResults.upload_user_name;
-            this.uploadUniquename = infoResults.upload_user_unique_name;
-            this.uploadId = infoResults.upload_user_id;
-        });
-    }
-
-    submitToServer() {
-        console.log("Submitting request to server: ", this.project.id, this.endpoint);
-        this.etlServerAPI.
-            setupGlobusUploadTransfer(this.project.id, this.endpoint).
-            then(globusResults => {
-                console.log("Results returned from server: ", globusResults);
-                if (globusResults) {
-                    this.status = globusResults.status;
-                    this.status_record_id = globusResults.status_record_id;
-                }
-                else {
-                    this.status = "FAIL";
-                }
-        });
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
-
-class GlobusReportStatusDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, etlServerAPI) {
-        this.$mdDialog = $mdDialog;
-        this.etlServerAPI = etlServerAPI;
-        this.statusReportList = [];
-        console.log("GlobusReportStatusDialogController - Fetching status");
-        this.etlServerAPI.getRecentGlobusStatus(this.project.id).
-        then(results => {
-            this.statusReportList = results.status_list;
-            for (let i = 0; i < this.statusReportList.length; i++) {
-                let d = new Date(0);
-                d.setUTCSeconds(this.statusReportList[i].timestamp);
-                let iso = d.toISOString().match(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})/);
-                this.statusReportList[i].timestamp = iso[1] + ' ' + iso[2];
-            }
-            console.log(this.statusReportList);
-        });
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
     }
 }
 

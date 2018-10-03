@@ -9,7 +9,7 @@ from ..utils.LoggingHelper import LoggingHelper
 
 
 def main(project_id):
-    from ..globus_etl.etl_task_library import startup_and_verify
+    from ..globus_etl_upload.etl_task_library import startup_and_verify
     log = logging.getLogger("top_level_run_ELT_example")
 
     user_id = "test@test.mc"

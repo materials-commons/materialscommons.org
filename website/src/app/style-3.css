@@ -20,6 +20,12 @@ body {
     position: fixed !important;
 }
 
+.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    color: grey;
+}
+
 /* ***************** Materials Design CSS ***************** */
 
 /* Change underline color of tabs when we assign class mc-tabs to md-tabs*/

@@ -6,7 +6,8 @@ class BackgroundProcess:
     INITIALIZATION = "Initialization"
     VERIFYING_SETUP = "Verifying Setup"
     SUBMITTED_TO_QUEUE = "Submitted to queue"
-    RUNNING = "Running"
+    RUNNING = "Transferring files"
+    RUNNING_ETL = "Processing ETL"
     FAIL = "Fail"
     SUCCESS = "Success"
 

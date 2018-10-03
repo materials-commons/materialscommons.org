@@ -1,5 +1,30 @@
 # Release Notes
 
+## October 2018
+- :star: **Beta:** Globus Upload/Download with user login.
+- :star: **Beta:** ETL improvements and integration with Globus.
+- :star: **Beta:** Publishing at the project level.
+
+## July 2018
+- :star: **Workshop:** Changes in preparation for the workshop (publishing, ETL, Globus, Python API).
+- :boom: **Fixed:** Bug fixes and layout changes.
+
+## June 2018
+- :star: **Beta:** Publishing at the Project Level.
+- :star: **Beta:** ETL Improvement
+- :boom: **Fixed:** Bug fixes and layout changes.
+
+## May 2018
+- :star: **Alpha:** Globus Integration.
+- :star: **Alpha:** ETL.
+- :star: **Alpha:** Publishing at the Project Level.
+- :boom: **Fixed:** Bug fixes and layout changes.
+
+## April 2018
+- :star: **Alpha:** Globus Integration.
+- :star: **Alpha:** Changes related to Python API.
+- :boom: **Fixed:** Bug fixes and layout changes.
+
 ## March 2018
 - :star: **New Feature:** Lots of behind the scenes work to prepare for automated spreadsheet upload and publishing improvements.
 - :star: **Improvement:** Small changes to publishing to help guide a user when they can publish.

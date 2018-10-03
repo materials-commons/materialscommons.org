@@ -1,7 +1,7 @@
 import logging
 import faktory
-from ..globus_etl.etl_task_library import elt_globus_upload, etl_excel_processing
-from ..globus_non_etl_upload.non_etl_task_library import non_elt_globus_upload, non_etl_file_processing
+from ..globus_etl_upload.etl_task_library import elt_globus_upload, etl_excel_processing
+from ..globus_non_etl_upload.non_etl_task_library import non_etl_globus_upload, non_etl_file_processing
 
 ETL_GLOBUS_UPLOAD_NAME = "ETL Globus Upload"
 ETL_EXCEL_PROCESS_NAME = "ETL Excel Process"
@@ -26,7 +26,7 @@ class TaskChain:
         task2 = etl_excel_processing
         worker.register(ETL_EXCEL_PROCESS_NAME, task2)
         self.log.info("Setting up task for Non-ETL/Globus file upload")
-        task3 = non_elt_globus_upload
+        task3 = non_etl_globus_upload
         worker.register(NON_ETL_GLOBUS_FILE_UPLOAD_NAME, task3)
         self.log.info("Setting up task for Non-ETL/Globus file upload")
         task4 = non_etl_file_processing

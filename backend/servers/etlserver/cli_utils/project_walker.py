@@ -10,8 +10,8 @@ class Walker:
         self.project = None
         self.experiment = None
 
-    def set_up_project_experiment(self, project_name, experiment_name):
-        project_list = get_all_projects()
+    def set_up_project_experiment(self, apikey, project_name, experiment_name):
+        project_list = get_all_projects(apikey=apikey)
         for proj in project_list:
             if proj.name == project_name:
                 self.project = proj
@@ -179,9 +179,9 @@ class Walker:
         return table
 
 
-def main(project_name, experiment_name):
+def main(apikey, project_name, experiment_name):
     walker = Walker()
-    ok = walker.set_up_project_experiment(project_name, experiment_name)
+    ok = walker.set_up_project_experiment(apikey, project_name, experiment_name)
     if not ok:
         return
     roots = walker.walk()
@@ -198,7 +198,8 @@ if __name__ == '__main__':
     argv = sys.argv
     parser = argparse.ArgumentParser(
         description='Print out process-workflow, with data, for a named Project/Experiment')
+    parser.add_argument('apikey', type=str, help="User's APIKEY")
     parser.add_argument('proj', type=str, help="Project Name")
     parser.add_argument('exp', type=str, help="Experiment Name")
     args = parser.parse_args(argv[1:])
-    main(args.proj, args.exp)
+    main(args.apikey, args.proj, args.exp)

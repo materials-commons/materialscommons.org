@@ -17,6 +17,7 @@ export RETHINKDB_CLUSTER_PORT=31815
 export MCSTOREDBIN=testbin/mcstored
 export MC_ES_URL="http://localhost:9500"
 export MC_ES_NAME="mc-es-test"
+export MC_ETL_SSL_DIR="$HOME/.ssh/globus-server-ssl"
 export MC_LOG_DIR=/tmp
 if [ "$MCDB_FILE" = "" ]; then
     export MCDB_FILE=../test_data/rethinkdb_dump_test_data.tar.gz
@@ -44,6 +45,10 @@ export MC_FAKTORY_NAME="mc-faktory-dev"
 export MC_FAKTORY_PORT=7419
 
 export MC_API_URL="http://mcdev.localhost/api"
+# does not word as local nginx in not ssh
+# export MC_GLOBUS_AUTH_CALLBACK="$MC_API_URL/etl/globus/auth/callback"
+export MC_GLOBUS_AUTH_CALLBACK="https://localhost:5032/globus/auth/callback"
+
 
 export MC_ETL_WORKER_LOG_LEVEL=INFO
 
