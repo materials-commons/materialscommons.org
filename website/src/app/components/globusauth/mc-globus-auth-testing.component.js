@@ -47,8 +47,8 @@ class MCGlobusAuthTestingComponentController{
     globusLogin(){
         console.log('globusLogin');
         this.etlServerAPI.globusLogin().then(
-            (retVal) => {
-                this.loginUrl = retVal.url;
+            (loginInfo) => {
+                this.loginUrl = loginInfo.url;
                 this.loggedin = true;
             }
         )

@@ -1,23 +1,23 @@
 import json
 import logging
 
+import os
 import pkg_resources
-from flask import Flask, request, url_for
+from flask import Flask, request
 from flask_api import status
 
-from servers.etlserver.common.GlobusInfo import GlobusInfo
-from servers.etlserver.common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
-from servers.etlserver.database.DB import DbConnection
 from servers.etlserver.database.DatabaseInterface import DatabaseInterface
-from servers.etlserver.download.GlobusDownload import GlobusDownload
-from servers.etlserver.globus_etl.BuildProjectExperiment import BuildProjectExperiment
-from servers.etlserver.globus_etl.etl_task_library import startup_and_verify
-from servers.etlserver.globus_monitor.GlobusMonitor import GlobusMonitor
-from servers.etlserver.globus_non_etl_upload.GlobusUpload import GlobusUpload
+from servers.etlserver.database.DB import DbConnection
+from servers.etlserver.download.GlobusDownload import GlobusDownload, DOWNLOAD_NO_FILES_FOUND
+from servers.etlserver.globus_non_etl_upload.non_etl_task_library import non_etl_startup_and_verify
+from servers.etlserver.globus_etl_upload.etl_task_library import startup_and_verify
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
-from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
 from servers.etlserver.utils.UploadUtility import UploadUtility
+from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
+from servers.etlserver.common.GlobusInfo import GlobusInfo
+from servers.etlserver.common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
+from servers.etlserver.globus.GlobusMonitor import GlobusMonitor
 
 log = logging.getLogger(__name__)
 
@@ -65,6 +65,7 @@ def stage_background_excel_upload():
     experiment_description = j["description"]
     project_id = j["project_id"]
     globus_endpoint = j["globus_uuid"]
+    globus_base_path = j["globus_base_path"]
     excel_file_path = j["globus_excel_file"]
     data_dir_path = j["globus_data_dir"]
     log.info("/globus/stage - args - user_id = {}".format(user_id))
@@ -72,10 +73,12 @@ def stage_background_excel_upload():
     log.info("/globus/stage - args - experiment_name = {}".format(experiment_name))
     log.info("/globus/stage - args - experiment_description = {}".format(experiment_description))
     log.info("/globus/stage - args - globus_endpoint = {}".format(globus_endpoint))
+    log.info("/globus/stage - args - globus_base_path = {}".format(globus_base_path))
     log.info("/globus/stage - args - excel_file_path = {}".format(excel_file_path))
     log.info("/globus/stage - args - data_dir_path = {}".format(data_dir_path))
     results = startup_and_verify(user_id, project_id, experiment_name, experiment_description,
-                                 globus_endpoint, excel_file_path, data_dir_path)
+                                 globus_endpoint, globus_base_path,
+                                 excel_file_path, data_dir_path)
     log.info("/globus/stage - done {}".format(results))
     return format_as_json_return(results)
 
@@ -166,13 +169,13 @@ def upload_file():
     log.info("etl file upload - file saved to " + file_path)
     # noinspection PyBroadException
     try:
-        builder = BuildProjectExperiment(api_key)
-        builder.set_rename_is_ok(True)
-        builder.preset_project_id(project_id)
-        builder.preset_experiment_name_description(name, description)
-        log.info("etl file upload - build starting...")
-        builder.build(file_path, None)
-        log.info("etl file upload - done")
+        # builder = BuildProjectExperiment(api_key)
+        # builder.set_rename_is_ok(True)
+        # builder.preset_project_id(project_id)
+        # builder.preset_experiment_name_description(name, description)
+        # log.info("etl file upload - build starting...")
+        # builder.build(file_path, None)
+        # log.info("etl file upload - done")
         return format_as_json_return({"project_id": project_id})
     except Exception as e:
         log.info("Unexpected exception...", exc_info=True)
@@ -185,23 +188,18 @@ def upload_file():
 def globus_transfer_download():
     log.info("Project top-level directory staged for transfer with Globus - starting")
     api_key = request.args.get('apikey', default="no_such_key")
+    user_id = access.get_user()
     j = request.get_json(force=True)
     project_id = j["project_id"]
-    globus_user_id = j["globus_user"]
-    log.info("Project id = {}; Globus user name = {}".format(project_id, globus_user_id))
-    if not globus_user_id:
-        message = "Project top-level directory download with Globus - globus_user_id is missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    if not project_id:
-        message = "Project top-level directory download with Globus - project_id missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
+    log.info("Download Project id = {}".format(project_id))
     # noinspection PyBroadException
     try:
-        download = GlobusDownload(project_id, globus_user_id, api_key)
+        download = GlobusDownload(user_id, api_key, project_id)
         url = download.download()
-        ret_value = {'url': url}
+        if url == DOWNLOAD_NO_FILES_FOUND:
+            ret_value = {'error': 'No files were found; download aborted'}
+        else:
+            ret_value = {'url': url}
         ret = format_as_json_return(ret_value)
         return ret
     except Exception:
@@ -217,10 +215,15 @@ def globus_transfer_upload():
     j = request.get_json(force=True)
     project_id = j["project_id"]
     globus_endpoint_id = j["endpoint"]
+    globus_endpoint_path = j["path"]
     user_id = access.get_user()
     log.info("Project id = {}; Globus user name = {}".format(project_id, globus_endpoint_id))
     if not globus_endpoint_id:
         message = "Project upload with Globus - globus_endpoint_id is missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    if not globus_endpoint_path:
+        message = "Project upload with Globus - globus_endpoint_path is missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
     if not project_id:
@@ -229,8 +232,7 @@ def globus_transfer_upload():
         return message, status.HTTP_400_BAD_REQUEST
     # noinspection PyBroadException
     try:
-        upload = GlobusUpload(user_id, project_id, globus_endpoint_id)
-        results = upload.setup_and_verify()
+        results = non_etl_startup_and_verify(user_id, project_id, globus_endpoint_id, globus_endpoint_path)
         log.info("Project id = {}; Globus user name = {}".format(project_id, results))
         ret = format_as_json_return(results)
         return ret
@@ -412,14 +414,14 @@ def globus_auth_status():
         ('auth.globus.org' in validated) \
         and validated['auth.globus.org']['access']
 
-    status = {
+    return_status = {
         'globus_name': globus_name,
         'globus_id': globus_id,
         'authenticated': globus_authentication,
         'validated': validated
     }
 
-    return format_as_json_return({'status': status})
+    return format_as_json_return({'status': return_status})
 
 
 @app.route('/globus/auth/login', methods=['GET', 'POST'])
@@ -427,12 +429,14 @@ def globus_auth_status():
 def globus_auth_login_url():
     user_id = access.get_user()
     # Set up our Globus Auth/OAuth2 state
-    # redirect_uri = url_for('globus_auth_callback', _external=True)
-    redirect_uri = 'https://localhost:5032/globus/auth/callback'
-    log.info("--------------------------------------------------")
-    log.info("---------------        FIX THIS       ------------")
+    redirect_uri = os.environ.get("MC_GLOBUS_AUTH_CALLBACK")
     log.info("Redirect for return call = {}".format(redirect_uri))
-    log.info("--------------------------------------------------")
+
+    if not redirect_uri:
+        message = "The environmental variable  MC_GLOBUS_AUTH_CALLBACK is not set; "
+        message += "Globus login will not work."
+        log.error(message)
+        return message, status.HTTP_401_UNAUTHORIZED
 
     client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
     client.oauth2_start_flow(redirect_uri, state=user_id, refresh_tokens=True)
@@ -444,6 +448,9 @@ def globus_auth_login_url():
 
 @app.route('/globus/auth/callback', methods=['GET'])
 def globus_auth_callback():
+    log.info("-------------------------------------------------")
+    log.info("Starting globus_auth_callback")
+    log.info("-------------------------------------------------")
     # If there's no "code" query string parameter something is wrong
     if 'code' not in request.args:
         # If we're coming back from Globus Auth in an error state, the error
@@ -476,13 +483,19 @@ def globus_auth_callback():
             #            session['error_message'] = message
             return message, status.HTTP_401_UNAUTHORIZED
 
-        redirect_uri = url_for('globus_auth_callback', _external=True)
+        redirect_uri = os.environ.get("MC_GLOBUS_AUTH_CALLBACK")
         log.info("Redirect for return call = {}".format(redirect_uri))
 
         client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
         client.oauth2_start_flow(redirect_uri, refresh_tokens=True)
         code = request.args.get('code')
+        log.info("-------------------------------------------------")
+        log.info("Before call to get tokens; code = {}".format(code))
+        log.info("-------------------------------------------------")
         tokens = client.oauth2_exchange_code_for_tokens(code)
+        log.info("-------------------------------------------------")
+        log.info("After call to get tokens; tokens = {}".format(tokens))
+        log.info("-------------------------------------------------")
 
         id_token = tokens.decode_id_token()
         log.info("Returned as from globus auth:")
@@ -500,7 +513,7 @@ def globus_auth_callback():
     return 'You Should be logged in - return to Materials Commons page/tab and refresh.'
 
 
-@app.route('/globus/auth/logout', methods=['GET','POST'])
+@app.route('/globus/auth/logout', methods=['GET', 'POST'])
 @apikey
 def globus_auth_logout():
     """
@@ -552,7 +565,7 @@ def faktory_status():
 
     # noinspection PyBroadException
     # status = statusHolder().get_status();
-    status = {
+    status_value = {
         "faktory": {
             "default_size": 0,
             "tasks": {
@@ -575,4 +588,4 @@ def faktory_status():
         "server_utc_time": "04:50:36 UTC"
     }
 
-    return format_as_json_return(status)
+    return format_as_json_return(status_value)

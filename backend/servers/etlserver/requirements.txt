@@ -1,6 +1,5 @@
 configparser
 httplib2
-materials_commons==0.7.7b2
 flask-api
 faktory
 rethinkdb
@@ -9,3 +8,4 @@ six
 xlsxwriter
 openpyxl
 globus_sdk
+materials_commons

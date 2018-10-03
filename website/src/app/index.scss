@@ -21,6 +21,12 @@ body {
   /*margin-top: 41px;*/
 }
 
+.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: .5;
+}
+
 .mc-name-color {
   color: $mc-md-light-primary-color;
 }

@@ -23,6 +23,12 @@ class GlobusAccess:
     def get_impl_type(self):
         return self.use_implementation
 
+    def get_auth_client(self):
+        return self.impl.get_auth_client()
+
+    def get_cc_transfer_client(self):
+        return self.impl.get_transfer_client()
+
     def get_globus_user(self, user_name):
         auth_client = self.impl.get_auth_client()
         ret = auth_client.get_identities(usernames=[user_name])
