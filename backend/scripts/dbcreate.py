@@ -21,9 +21,6 @@ def create_mc_tables():
 
     create_mc_table("properties", "item_id", "value")
 
-    # Is machines needed?
-    create_mc_table("machines")
-
     create_mc_table("projects", "name", "owner")
     create_compound_index("projects", "name_owner", ["name", "owner"])
 
