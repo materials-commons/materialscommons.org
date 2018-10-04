@@ -11,9 +11,6 @@ const r = require('rethinkdbdash')({
 
 const backend_base = '../../../..';
 const dbModelUsers = require(backend_base + '/servers/mcapi/db/model/users');
-const dbModelProfile = require(backend_base + '/servers/mcapi/db/model/user_profiles');
-const projects = require(backend_base + '/servers/mcapi/db/model/projects');
-const directories = require(backend_base + '/servers/mcapi/db/model/directories');
 
 let userId = "test@test.mc";
 let user = null;
@@ -56,28 +53,6 @@ describe('Feature - Users: ', function() {
             assert(ids.indexOf("another@test.mc") > -1);
             assert(ids.indexOf("admin@test.mc") > -1);
             assert(ids.indexOf("tadmin@test.mc") > -1);
-        });
-    });
-    describe('User Profile', function () {
-        it('can store values', function* () {
-            let name = random_name("test value - ");
-            let value = name;
-            let probe = yield dbModelProfile.storeInUserProfile(userId, name, value);
-            assert.isOk(probe);
-            assert.equal(probe,name);
-            probe = yield dbModelProfile.storeInUserProfile(userId, name, value);
-            assert.isOk(probe);
-            assert.equal(probe,name);
-            probe = yield dbModelProfile.getFromUserProfile(userId, name);
-            assert.isOk(probe);
-            assert.equal(probe,name);
-            probe = yield dbModelProfile.clearFromUserProfile(userId, name);
-            assert.isOk(probe);
-            assert.equal(probe,name);
-            probe = yield dbModelProfile.clearFromUserProfile(userId, name);
-            assert.isNull(probe);
-            probe = yield dbModelProfile.getFromUserProfile(userId, name);
-            assert.isNull(probe)
         });
     });
 });
