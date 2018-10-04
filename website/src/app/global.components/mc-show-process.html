@@ -5,11 +5,11 @@
 
     <div>
         <md-content>
-            <process-settings settings="$ctrl.process.setup[0].properties"
-                              attribute="$ctrl.process.setup[0].attribute"
-                              template-id="$ctrl.process.template_id"
-                              task-id="">
-            </process-settings>
+            <process-settings2 settings="$ctrl.process.setup[0].properties"
+                               attribute="$ctrl.process.setup[0].attribute"
+                               template-id="$ctrl.process.template_id"
+                               process-id="$ctrl.process.id">
+            </process-settings2>
             <mc-project-samples-table samples="$ctrl.process.input_samples" ng-if="$ctrl.showInputSamples"></mc-project-samples-table>
             <mc-project-samples-table samples="$ctrl.process.output_samples" ng-if="$ctrl.showOutputSamples"></mc-project-samples-table>
             <mc-files-table files="$ctrl.process.files"></mc-files-table>

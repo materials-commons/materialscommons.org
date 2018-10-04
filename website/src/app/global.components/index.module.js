@@ -23,3 +23,4 @@ import './attribute/mc-attribute-date.component'
 import './attribute/mc-attribute-selection.component'
 import './mc-project-overview.component';
 import './mc-project-status.component';
+import './periodic-table.directive';

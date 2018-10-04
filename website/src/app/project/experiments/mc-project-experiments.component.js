@@ -1,4 +1,4 @@
-import {Experiment} from './experiment/components/tasks/experiment.model';
+import { Experiment } from '../../models/experiment.model';
 
 angular.module('materialscommons').component('mcProjectExperiments', {
     template: require('./mc-project-experiments.html'),

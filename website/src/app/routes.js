@@ -186,10 +186,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/details',
             template: '<mc-experiment-details experiment="$resolve.experiment" show-note="true"></mc-experiment-details>'
         })
-        .state('project.experiment.tasks', {
-            url: '/tasks',
-            template: '<mc-experiment-tasks></mc-experiment-tasks>'
-        })
         .state('project.experiment.forecast', {
             url: '/forecast',
             template: '<mc-experiment-forecast experiment="$resolve.experiment"></mc-experiment-forecast>'
@@ -227,10 +223,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.experiment.tbuilder', {
             url: '/tbuilder',
             template: '<mc-template-builder layout="column" layout-fill></mc-template-builder>'
-        })
-        .state('project.experiment.notes', {
-            url: '/notes',
-            template: '<mc-experiment-notes experiment="$resolve.experiment"></mc-experiment-notes>'
         })
         .state('project.experiment.publish', {
             url: '/publish',
