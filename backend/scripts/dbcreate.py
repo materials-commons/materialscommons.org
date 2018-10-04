@@ -30,7 +30,6 @@ def create_mc_tables():
     create_mc_table('access', "user_id", "project_id")
     create_compound_index("access", "user_project", ["user_id", "project_id"])
 
-    create_mc_table("elements")
     create_mc_table("events", "project_id", "birthtime")
 
     create_mc_table("datafiles", "name", "owner", "checksum", "usesid", "mediatype")
