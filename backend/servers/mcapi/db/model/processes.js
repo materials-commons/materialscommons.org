@@ -204,21 +204,6 @@ function* deleteProcessFull(projectId, processId, options) {
             // remove process2file records with processId
             yield r.table('process2file').filter({process_id: processId}).delete();
 
-            // remove experimentTask2Process records with processId
-            //   for each such experimentTask, if there are no other records, delete experimentsTasks
-            let experimenttask2process = yield r.table('experimenttask2process').filter({process_id: processId});
-            let experimentTaskIdValues = experimenttask2process.map(record => record.experimentaltask_id);
-            yield r.table('experimenttask2process').filter({process_id: processId}).delete();
-            if (experimentTaskIdValues) {
-                for (i = 0; i < experimentTaskIdValues.length; i++) {
-                    let id = experimentTaskIdValues[i];
-                    let hits = yield r.table('experimenttask2process').filter({experimentaltask_id: id});
-                    if (!hits || (hits && (hits.length === 0))) {
-                        yield r.table('experimenttasks').get(id).delete();
-                    }
-                }
-            }
-
             // remove process2measurement records
             //   for each such measurement, if there are no other records, delete measurement
             let process2measurement = yield r.table('process2measurement').filter({process_id: processId});

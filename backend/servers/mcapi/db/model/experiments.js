@@ -20,12 +20,7 @@ function addExperimentComputed(rql) {
     rql = rql.merge((experiment) => {
         return {
             owner_details: r.table('users').get(experiment('owner')).pluck('fullname'),
-                tasks: r.table('experiment2experimenttask')
-                    .getAll(experiment('id'), {index: 'experiment_id'})
-                    .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
-                    .filter({parent_id: ''})
-                    .orderBy('index')
-                    .coerceTo('array'),
+            tasks: [],
                 notes: r.table('experiment2experimentnote')
                     .getAll(experiment('id'), {index: 'experiment_id'})
                     .eqJoin('experiment_note_id', r.table('experimentnotes')).zip()
@@ -68,8 +63,6 @@ function* create(experiment, owner) {
     let newExperiment = yield db.insert('experiments', e);
     let proj2experiment = new model.Project2Experiment(experiment.project_id, newExperiment.id);
     yield db.insert('project2experiment', proj2experiment);
-    let etask = new model.ExperimentTask('', owner);
-    yield createTask(newExperiment.id, etask, owner);
     return yield get(newExperiment.id);
 }
 
@@ -113,101 +106,6 @@ function* insertIntoExperimentTable(table, experimentId, ids, member) {
     yield r.table(table).insert(entriesToInsert);
 }
 
-function* createTask(experimentID, task, owner) {
-    let etask = new model.ExperimentTask(task.name, owner);
-    if (task.note !== '') {
-        etask.note = task.note;
-    }
-    etask.parent_id = task.parent_id;
-    etask.index = task.index;
-    yield updateIndexOfAllAffected(experimentID, task.parent_id, task.index);
-    let createdTask = yield db.insert('experimenttasks', etask);
-    let e2etask = new model.Experiment2ExperimentTask(experimentID, createdTask.id);
-    yield db.insert('experiment2experimenttask', e2etask);
-    return yield getTask(createdTask.id);
-}
-
-function* updateIndexOfAllAffected(experimentID, parentID, index) {
-    let rql = r.table('experiment2experimenttask')
-        .getAll(experimentID, {index: 'experiment_id'})
-        .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
-        .filter({parent_id: parentID})
-        .filter(r.row('index').ge(index));
-
-    let matchingTasks = yield dbExec(rql);
-    let itemsToChange = matchingTasks.map((t) => {
-        return {id: t.id, index: t.index + 1};
-    });
-    let updateRql = r.table('experimenttasks').insert(itemsToChange, {conflict: 'update'});
-    yield dbExec(updateRql);
-}
-
-function* getTask(taskID) {
-    let rql = r.table('experimenttasks').get(taskID)
-        .merge((task) => {
-            return {
-                processes: r.table('experimenttask2process').getAll(task('id'), {index: 'experiment_task_id'})
-                    .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
-                tasks: r.table('experimenttasks').getAll(task('id'), {index: 'parent_id'}).coerceTo('array')
-            }
-        });
-    let t = yield dbExec(rql);
-
-    // merge processes into tasks and then remove the entry
-    t.tasks.concat(t.processes);
-    delete t.processes;
-
-    return {val: t};
-}
-
-function* updateTask(taskID, updateArgs) {
-    let task = yield r.table('experimenttasks').get(taskID);
-    if (updateArgs.swap) {
-        let swapTask = yield r.table('experimenttasks').get(updateArgs.swap.task_id);
-        if (swapTask.parent_id !== task.parent_id) {
-            return {error: 'Tasks have different parents'};
-        }
-        let swapItems = [
-            {
-                id: taskID,
-                index: swapTask.index
-            },
-            {
-                id: updateArgs.swap.task_id,
-                index: task.index
-            }
-        ];
-        let updateRql = r.table('experimenttasks').insert(swapItems, {conflict: 'update'});
-        yield dbExec(updateRql);
-    }
-    yield db.update('experimenttasks', taskID, updateArgs);
-    if (task.process_id) {
-        let processUpdates = {};
-        if (updateArgs.name) {
-            processUpdates.name = updateArgs.name;
-        }
-        if (updateArgs.note) {
-            processUpdates.note = updateArgs.note;
-        }
-        if (processUpdates.name || processUpdates.note) {
-            yield r.table('processes').get(task.process_id).update(processUpdates);
-        }
-    }
-    return yield getTask(taskID);
-}
-
-function* deleteTask(experimentID, taskID) {
-    yield r.table('experiment2experimenttask').getAll([experimentID, taskID]).delete();
-    let old = yield r.table('experimenttasks').get(taskID).delete({returnChanges: true});
-    let oldParentID = old.changes[0].old_val.parent_id;
-    let oldIndex = old.changes[0].old_val.index;
-    yield updateTasksAboveDeleted(experimentID, oldParentID, oldIndex);
-    if (old.process_id) {
-        yield quickDeleteExperimentProcess(experimentID, old.process_id);
-    }
-    return {val: old.changes[0].old_val};
-}
-
 function* deleteProcess(experimentId, processId) {
     let process2setupEntries = yield r.table('process2setup').getAll(r.args(processId), {index: 'process_id'});
     let setupIds = process2setupEntries.map(e => e.setup_id);
@@ -216,21 +114,6 @@ function* deleteProcess(experimentId, processId) {
     yield r.table('setupproperties').getAll(r.args(setupIds), {index: 'setup_id'}).delete();
     yield r.table('process2setup').getAll(processId, {index: 'process_id'}).delete();
     yield r.table('experiment2process').getAll([experimentId, processId], {index: 'experiment_process'}).delete();
-}
-
-function* updateTasksAboveDeleted(experimentID, parentID, index) {
-    let rql = r.table('experiment2experimenttask')
-        .getAll(experimentID, {index: 'experiment_id'})
-        .eqJoin('experiment_task_id', r.table('experimenttasks')).zip()
-        .filter({parent_id: parentID})
-        .filter(r.row('index').ge(index));
-
-    let matchingTasks = yield dbExec(rql);
-    let itemsToChange = matchingTasks.map((t) => {
-        return {id: t.id, index: t.index - 1};
-    });
-    let updateRql = r.table('experimenttasks').insert(itemsToChange, {conflict: 'update'});
-    yield dbExec(updateRql);
 }
 
 function* getExperimentNote(noteID) {
@@ -257,20 +140,6 @@ function* deleteExperimentNote(experimentID, noteID) {
         .getAll([experimentID, noteID], {index: 'experiment_experiment_note'}).delete();
     let old = yield r.table('experimentnotes').get(noteID).delete({returnChanges: true});
     return {val: old.changes[0].old_val};
-}
-
-function* addTemplateToTask(projectId, experimentId, taskId, templateId, owner) {
-    let template = yield r.table('templates').get(templateId);
-    let procId = yield processCommon.createProcessFromTemplate(projectId, template, owner);
-    let templateName = templateId.substring(7);
-    yield r.table('experimenttasks').get(taskId).update({
-        process_id: procId,
-        template_name: templateName,
-        template_id: templateId
-    });
-    let e2proc = new model.Experiment2Process(experimentId, procId);
-    yield r.table('experiment2process').insert(e2proc);
-    return yield getTask(taskId);
 }
 
 function* addProcessFromTemplate(projectId, experimentId, templateId, owner) {
@@ -326,21 +195,6 @@ function* updateProcess(experimentId, processId, properties, files, samples) {
     }
 
     return yield processCommon.getProcess(r, processId);
-}
-
-function* updateTaskTemplate(taskId, experimentId, processId, properties, files, samples) {
-    let errors = yield updateTemplateCommon(experimentId, processId, properties, files, samples);
-
-    if (errors !== null) {
-        return errors;
-    }
-
-    if (processId) {
-        let task = yield r.table('experimenttasks').get(taskId);
-        yield r.table('processes').get(processId).update({name: task.name});
-    }
-
-    return yield getTask(taskId);
 }
 
 function* updateTemplateCommon(experimentId, processId, properties, files, samples) {
@@ -480,17 +334,11 @@ module.exports = {
     get,
     create,
     update,
-    createTask,
-    getTask,
-    updateTask,
-    deleteTask,
     getExperimentNote,
     merge,
     createExperimentNote,
     updateExperimentNote,
     deleteExperimentNote,
-    addTemplateToTask,
-    updateTaskTemplate,
     getTemplate,
     addSamples,
     deleteSamplesFromExperiment,

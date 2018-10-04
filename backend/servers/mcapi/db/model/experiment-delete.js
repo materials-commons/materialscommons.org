@@ -54,10 +54,6 @@ function* deleteExperimentFull(projectId, experimentId, options) {
     }
     overallResults['experiment_notes'] = yield deleteExperimentNotes(experimentId, dryRun);
 
-    let partialResults = yield deleteExperimentTasks(experimentId, dryRun);
-    overallResults['experiment_task_processes'] = partialResults.experiment_task_processes;
-    overallResults['experiment_tasks'] = partialResults.experiment_tasks;
-
     let fileLinkIds = yield deleteExperimentFileLinks(experimentId, dryRun);
 
     let allPosibleItems = fileLinkIds;
@@ -217,41 +213,6 @@ function* deleteExperimentNotes(experimentId, dryRun) {
     return ret;
 }
 
-function* deleteExperimentTasks(experimentId, dryRun) {
-    let partialResults = {};
-
-    let taskidList = yield r.table('experiment2experimenttask')
-        .getAll(experimentId, {index: 'experiment_id'})
-        .eqJoin('experiment_task_id', r.table('experimenttasks'))
-        .zip().getField('experiment_task_id');
-
-    let idList = yield r.table('experimenttask2process')
-        .getAll(r.args([...taskidList]), {index: 'experiment_task_id'})
-        .eqJoin('process_id', r.table('processes'))
-        .zip().getField('process_id');
-    if (dryRun) {
-        partialResults['experiment_task_processes'] = idList;
-        partialResults['experiment_tasks'] = taskidList;
-    } else {
-        let delete_msg = yield r.table('processes').getAll(r.args([...idList])).delete();
-        if (delete_msg.deleted === idList.length) {
-            partialResults['experiment_task_processes'] = idList;
-        }
-
-        yield r.table('experimenttask2process')
-            .getAll(r.args([...taskidList]), {index: 'experiment_task_id'}).delete();
-
-        delete_msg = yield r.table('experimenttasks').getAll(r.args([...taskidList])).delete();
-        if (delete_msg.deleted === taskidList.length) {
-            partialResults['experiment_tasks'] = taskidList;
-        }
-
-        yield r.table('experiment2experimenttask')
-            .getAll(experimentId, {index: 'experiment_id'}).delete();
-    }
-    return partialResults;
-}
-
 function* deleteExperimentFileLinks(experimentId, dryRun) {
     let fileLinkIds = yield r.table('experiment2datafile')
         .getAll(experimentId, {index: 'experiment_id'}).getField('datafile_id');
@@ -288,7 +249,6 @@ function* clearAllRemainingLinks(experimentId) {
         'experiment2datafile',
         'experiment2dataset',
         'experiment2experimentnote',
-        'experiment2experimenttask',
         'experiment2process',
         'experiment2sample',
         'project2experiment'

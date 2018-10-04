@@ -234,38 +234,6 @@ let setUpFakeExperimentNoteData = function* (experimentId,userId) {
     return yield r.table('experimentnotes').get(key);
 };
 
-let setUpAdditionalExperimentTaskData = function* (experimentId,userId) {
-    // ---- experimenttask ----
-    // experiment2experimenttask
-    // experimenttask2process
-    // experimenttasks
-    // processes
-
-    let fakeProcess = {
-        otype:  "process" ,
-        does_transform: false ,
-        name:  "Test Process" ,
-        owner: userId,
-        template_id:  "global_As Measured" ,
-        template_name:  "As Measured"
-    };
-
-    let insertMsg = yield r.table('processes').insert(fakeProcess);
-    let processId = insertMsg.generated_keys[0];
-
-    let idList = yield r.table('experiment2experimenttask')
-        .getAll(experimentId,{index:'experiment_id'})
-        .eqJoin('experiment_task_id',r.table('experimenttasks'))
-        .zip().getField('experiment_task_id');
-    let taskId = idList[0];
-
-    let updateMsg = yield r.table('experimenttasks').get(taskId).update({process_id: processId});
-    insertMsg = yield r.table('experimenttask2process')
-        .insert({experiment_task_id: taskId, process_id: processId});
-
-    return yield r.table('experimenttasks').get(taskId);
-};
-
 module.exports = {
     createDemoTestProject,
     createProject,
@@ -276,5 +244,4 @@ module.exports = {
     createFileFromDemoFileSet,
     addSamplesToProcess,
     setUpFakeExperimentNoteData,
-    setUpAdditionalExperimentTaskData,
 };

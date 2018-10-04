@@ -30,21 +30,10 @@ function* experimentExistsInProject(projectID, experimentID) {
     return matches.length !== 0;
 }
 
-function* taskInExperiment(experimentID, taskId) {
-    let matches = yield r.table('experiment2experimenttask')
-        .getAll([experimentID, taskId], {index: 'experiment_experiment_task'});
-    return matches.length !== 0;
-}
-
 function* noteInExperiment(experimentID, experimentNoteID) {
     let matches = yield r.table('experiment2experimentnote')
         .getAll([experimentID, experimentNoteID], {index: 'experiment_experiment_note'});
     return matches.length !== 0;
-}
-
-function* taskIsUsingProcess(taskID) {
-    let task = yield r.table('experimenttasks').get(taskID);
-    return task.process_id !== '';
 }
 
 function* commentExists(commentId) {
@@ -70,11 +59,6 @@ function* templateIsOwnedBy(templateId, userId) {
 function* isTemplateAdmin(userId) {
     let user = yield r.table('users').get(userId);
     return (user && (user.is_template_admin))
-}
-
-function* isTemplateForTask(templateId, taskId) {
-    let task = yield r.table('experimenttasks').get(taskId);
-    return task.template_id === templateId;
 }
 
 function* isTemplateForProcess(templateId, processId) {
@@ -141,15 +125,6 @@ function* experimentHasDataset(experimentId, datasetId) {
 function * projectHasDataset (projectId, datasetId) {
     let datasets = yield r.table('project2dataset').getAll([projectId, datasetId], {index: 'project_dataset'});
     return datasets.length !== 0;
-}
-
-function* taskProcessIsUnused(taskId) {
-    let task = yield r.table('experimenttasks').get(taskId);
-    if (task.process_id === '') {
-        return true;
-    }
-
-    return yield processCommon.processIsUnused(task.process_id);
 }
 
 function* sampleInProject(projectId, sampleId) {

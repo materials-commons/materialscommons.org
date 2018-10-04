@@ -107,14 +107,6 @@ def create_mc_tables():
 
     create_mc_table("experiments")
 
-    create_mc_table("experiment2experimenttask", "experiment_id", "experiment_task_id")
-    create_compound_index("experiment2experimenttask", "experiment_experiment_task",
-                          ["experiment_id", "experiment_task_id"])
-
-    create_mc_table("experimenttasks", "parent_id")
-
-    create_mc_table("experimenttask2process", "experiment_task_id", "process_id")
-
     create_mc_table("experiment2process", "experiment_id", "process_id")
     create_compound_index("experiment2process", "experiment_process", ["experiment_id", "process_id"])
 

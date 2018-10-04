@@ -144,8 +144,6 @@ describe('Feature - Experiments: ', function () {
 
             yield testExperimentNotes({assertExists: true});
 
-            yield testExperimentTasks({assertExists: true});
-
             yield testFileLinks({assertExists: true});
 
             yield testNotes({assertExists: true});
@@ -165,8 +163,6 @@ describe('Feature - Experiments: ', function () {
             yield testProcessesSamples({assertExists: false});
 
             yield testExperimentNotes({assertExists: false});
-
-            yield testExperimentTasks({assertExists: false});
 
             yield testFileLinks({assertExists: false});
 
@@ -192,8 +188,6 @@ describe('Feature - Experiments: ', function () {
 
             yield testExperimentNotes({assertExists: true});
 
-            yield testExperimentTasks({assertExists: true});
-
             yield testFileLinks({assertExists: true});
 
             yield testNotes({assertExists: true});
@@ -213,8 +207,6 @@ describe('Feature - Experiments: ', function () {
             yield testProcessesSamples({assertExists: true});
 
             yield testExperimentNotes({assertExists: false});
-
-            yield testExperimentTasks({assertExists: false});
 
             yield testFileLinks({assertExists: false});
 
@@ -240,8 +232,6 @@ describe('Feature - Experiments: ', function () {
 
             yield testExperimentNotes({assertExists: true});
 
-            yield testExperimentTasks({assertExists: true});
-
             yield testFileLinks({assertExists: true});
 
             yield testNotes({assertExists: true});
@@ -261,8 +251,6 @@ describe('Feature - Experiments: ', function () {
             yield testProcessesSamples({assertExists: true});
 
             yield testExperimentNotes({assertExists: true});
-
-            yield testExperimentTasks({assertExists: true});
 
             yield testFileLinks({assertExists: true});
 
@@ -288,8 +276,6 @@ describe('Feature - Experiments: ', function () {
 
             yield testExperimentNotes({assertExists: true});
 
-            yield testExperimentTasks({assertExists: true});
-
             yield testFileLinks({assertExists: true});
 
             yield testNotes({assertExists: true});
@@ -309,8 +295,6 @@ describe('Feature - Experiments: ', function () {
             yield testProcessesSamples({assertExists: true});
 
             yield testExperimentNotes({assertExists: true});
-
-            yield testExperimentTasks({assertExists: true});
 
             yield testFileLinks({assertExists: true});
 
@@ -342,7 +326,6 @@ function* setup() {
     yield r.table('project2sample').insert({sample_id: key, project_id: project.id});
 
     experimentNote = yield testHelpers.setUpFakeExperimentNoteData(experiment.id, userId);
-    experimentTask = yield testHelpers.setUpAdditionalExperimentTaskData(experiment.id, userId);
 
     yield setUpFakeNotes();
 }
@@ -403,7 +386,6 @@ function* checkLinks(experiment_id, options) {
         'experiment2datafile',
         'experiment2dataset',
         'experiment2experimentnote',
-        'experiment2experimenttask',
         'experiment2process',
         'experiment2sample',
         'project2experiment'
@@ -529,38 +511,6 @@ function* testExperimentNotes(options) {
         .getAll(experiment.id, {index: 'experiment_id'});
 
     assert.equal(results.length, count);
-
-}
-
-function* testExperimentTasks(options) {
-
-    let count = 0;
-    if (options && options.assertExists) {
-        count = 1;
-    }
-
-    let taskId = experimentTask.id;
-    let processId = experimentTask.process_id;
-
-    let idList = yield r.table('experiment2experimenttask')
-        .getAll(experiment.id, {index: 'experiment_id'});
-    assert.isOk(idList);
-    assert.equal(idList.length, count);
-
-    idList = yield r.table('experimenttask2process')
-        .getAll(taskId, {index: 'experiment_task_id'});
-    assert.isOk(idList);
-    assert.equal(idList.length, count);
-
-    idList = yield r.table('experimenttask2process')
-        .getAll(taskId, {index: 'experiment_task_id'});
-    assert.isOk(idList);
-    assert.equal(idList.length, count);
-
-    idList = yield r.table('experimenttasks')
-        .getAll(taskId);
-    assert.isOk(idList);
-    assert.equal(idList.length, count);
 
 }
 

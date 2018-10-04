@@ -179,16 +179,6 @@ function* validateFileInProject(next) {
     yield next;
 }
 
-function* validateTaskInExperiment(next) {
-    let isInExperiment = yield check.taskInExperiment(this.params.experiment_id, this.params.task_id);
-    if (!isInExperiment) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such task in experiment ${this.params.task_id}`};
-        return this.status;
-    }
-    yield next;
-}
-
 function* validateTemplateExists(next) {
     let templateExists = yield check.templateExists(this.params.template_id);
     if (!templateExists) {

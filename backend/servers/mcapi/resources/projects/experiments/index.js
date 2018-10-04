@@ -278,9 +278,6 @@ function createResource() {
     let samplesResource = samples.createResource();
     router.use('/:experiment_id/samples', samplesResource.routes(), samplesResource.allowedMethods());
 
-    let tasksResource = tasks.createResource();
-    router.use('/:experiment_id/tasks', tasksResource.routes(), tasksResource.allowedMethods());
-
     return router;
 }
 
