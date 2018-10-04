@@ -309,8 +309,6 @@ function* setup() {
     yield r.table('experiment2sample').insert({sample_id: key, experiment_id: experiment.id});
     yield r.table('project2sample').insert({sample_id: key, project_id: project.id});
 
-    experimentNote = yield testHelpers.setUpFakeExperimentNoteData(experiment.id, userId);
-
     yield setUpFakeNotes();
 }
 
