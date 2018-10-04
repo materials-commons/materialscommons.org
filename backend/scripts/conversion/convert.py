@@ -33,6 +33,9 @@ def delete_unused_tables(conn):
     run_rql(r.table_drop("experimenttasks"), conn)
     run_rql(r.table_drop("experiment2experimenttask"), conn)
     run_rql(r.table_drop("experimenttask2process"), conn)
+    run_rql(r.table_drop("experimentnotes"), conn)
+    run_rql(r.table_drop("experiment2experimentnote"), conn)
+    run_rql(r.table_drop("dataset2experimentnote"), conn)
 
 
 def main():

@@ -116,11 +116,6 @@ def create_mc_tables():
     create_mc_table("experiment2datafile", "experiment_id", "datafile_id")
     create_compound_index("experiment2datafile", "experiment_datafile", ["experiment_id", "datafile_id"])
 
-    create_mc_table("experimentnotes")
-    create_mc_table("experiment2experimentnote", "experiment_id", "experiment_note_id")
-    create_compound_index("experiment2experimentnote", "experiment_experiment_note",
-                          ["experiment_id", "experiment_note_id"])
-
     create_mc_table("datasets", "owner")
 
     create_mc_table("experiment2dataset", "experiment_id", "dataset_id")
@@ -137,9 +132,6 @@ def create_mc_tables():
 
     create_mc_table("dataset2datafile", "dataset_id", "datafile_id")
     create_compound_index("dataset2datafile", "dataset_datafile", ["dataset_id", "datafile_id"])
-
-    create_mc_table("dataset2experimentnote", "dataset_id", "experiment_note_id")
-    create_compound_index("dataset2experimentnote", "dataset_experiment_note", ["dataset_id", "experiment_note_id"])
 
     create_mc_table("deletedprocesses", "process_id", "sample_id", "project_id", "property_set_id")
 
@@ -186,10 +178,6 @@ def create_mcpub_tables():
 
     create_mcpub_table("dataset2datafile", "dataset_id", "datafile_id")
     create_compound_index("dataset2datafile", "dataset_datafile", ["dataset_id", "datafile_id"], db='mcpub')
-
-    create_mcpub_table("dataset2experimentnote", "dataset_id", "experiment_note_id")
-    create_compound_index("dataset2experimentnote", "dataset_experiment_note",
-                          ["dataset_id", "experiment_note_id"], db='mcpub')
 
     create_mcpub_table("datafiles", "name", "owner", "checksum", "usesid", "mediatype")
     run(r.db('mcpub').table("datafiles").index_create("mime", r.row["mediatype"]["mime"]))
