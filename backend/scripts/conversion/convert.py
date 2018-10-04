@@ -26,6 +26,8 @@ def delete_unused_tables(conn):
     run_rql(r.table_drop("machines"), conn)
     run_rql(r.table_drop("ui"), conn)
     run_rql(r.table_drop("elements"), conn)
+    run_rql(r.table_drop("sample2sample"), conn)
+    run_rql(r.db('mcpub').table_drop("sample2sample"), conn)
 
 
 def main():
