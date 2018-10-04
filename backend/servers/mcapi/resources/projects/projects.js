@@ -9,7 +9,6 @@ const samples = require('./samples');
 const files = require('./files');
 const directories = require('./directories');
 const processes = require('./processes');
-const shares = require('./shares');
 const experiments = require('./experiments');
 const activityFeed = require('../../db/model/activity-feed');
 const shortcuts = require('./shortcuts');
@@ -267,9 +266,6 @@ function createResource() {
 
     let processesResource = processes.createResource();
     router.use('/:project_id/processes', processesResource.routes(), processesResource.allowedMethods());
-
-    let sharesResource = shares.createResource();
-    router.use('/:project_id/shares', sharesResource.routes(), sharesResource.allowedMethods());
 
     let experimentsResource = experiments.createResource();
     router.use('/:project_id/experiments', experimentsResource.routes(), experimentsResource.allowedMethods());

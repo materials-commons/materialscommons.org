@@ -100,10 +100,6 @@ def create_mc_tables():
     create_mc_table("sample2datafile", "sample_id", "datafile_id")
     create_compound_index("sample2datafile", "sample_file", ["sample_id", "datafile_id"])
 
-    create_mc_table("shares", "project_id", "item_id", "item_type")
-    create_mc_table("user2share", "user_id", "share_id")
-    create_compound_index('user2share', 'user_share', ["user_id", "share_id"])
-
     create_mc_table("measurement2datafile", "measurement_id", "datafile_id")
 
     create_mc_table("project2experiment", "project_id", "experiment_id")
