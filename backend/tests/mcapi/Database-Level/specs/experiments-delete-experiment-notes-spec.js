@@ -92,35 +92,11 @@ before(function* () {
 
     assert.equal(rv.deleted, 7);
 
-    yield testHelpers.setUpFakeExperimentNoteData(experimentId, userId);
     console.log('done before experiments-delete-experiment-notes-spec.js');
 });
 
 describe('Feature - Experiments: ', function () {
     describe('Delete Experiment - basic parts: ', function () {
-        it('deletes experiment part: experiment-notes', function* () {
-            // ---- experimentnote ----
-            // experiment2experimentnote
-            // experimentnotes
-
-            let projectId = project.id;
-            assert.isOk(projectId);
-            let experimentId = experiment.id;
-            assert.isOk(experimentId);
-
-            let idList = yield r.table('experiment2experimentnote')
-                .getAll(experimentId, {index: 'experiment_id'})
-                .eqJoin('experiment_note_id', r.table('experimentnotes'))
-                .zip().getField('experiment_note_id');
-
-            let delete_msg = yield r.table('experimentnotes').getAll(r.args([...idList])).delete();
-            assert.equal(delete_msg.deleted, 1);
-
-            delete_msg = yield r.table('experiment2experimentnote')
-                .getAll(experimentId, {index: 'experiment_id'}).delete();
-            // assert.equal(delete_msg.deleted, 1);
-        });
-
         it('deletes links between files and experiment', function* () {
             let experimentId = experiment.id;
             assert.isOk(experimentId);

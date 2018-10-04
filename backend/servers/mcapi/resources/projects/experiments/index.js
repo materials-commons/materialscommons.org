@@ -8,10 +8,8 @@ const _ = require('lodash');
 const ra = require('../../resource-access');
 const Router = require('koa-router');
 const datasets = require('./datasets');
-const notes = require('./notes');
 const samples = require('./samples');
 const processes = require('./processes');
-const tasks = require('./tasks');
 
 function* getAllExperimentsForProject(next) {
     let rv = yield experiments.getAllForProject(this.params.project_id);
@@ -268,9 +266,6 @@ function createResource() {
 
     let datasetsResource = datasets.createResource();
     router.use('/:experiment_id/datasets', datasetsResource.routes(), datasetsResource.allowedMethods());
-
-    let notesResource = notes.createResource();
-    router.use('/:experiment_id/notes', notesResource.routes(), notesResource.allowedMethods());
 
     let processesResource = processes.createResource();
     router.use('/:experiment_id/processes', processesResource.routes(), processesResource.allowedMethods());

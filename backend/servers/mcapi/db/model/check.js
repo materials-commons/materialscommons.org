@@ -30,12 +30,6 @@ function* experimentExistsInProject(projectID, experimentID) {
     return matches.length !== 0;
 }
 
-function* noteInExperiment(experimentID, experimentNoteID) {
-    let matches = yield r.table('experiment2experimentnote')
-        .getAll([experimentID, experimentNoteID], {index: 'experiment_experiment_note'});
-    return matches.length !== 0;
-}
-
 function* commentExists(commentId) {
     let matches = yield r.table('comments').getAll(commentId);
     return matches.length !== 0;
@@ -188,7 +182,6 @@ module.exports = {
     allFilesInProject,
     allExperimentsInProject,
     experimentExistsInProject,
-    noteInExperiment,
     commentExists,
     commentIsOwnedBy,
     templateExists,

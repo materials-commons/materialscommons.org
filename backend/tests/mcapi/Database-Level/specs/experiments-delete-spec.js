@@ -142,8 +142,6 @@ describe('Feature - Experiments: ', function () {
 
             yield testProcessesSamples({assertExists: true});
 
-            yield testExperimentNotes({assertExists: true});
-
             yield testFileLinks({assertExists: true});
 
             yield testNotes({assertExists: true});
@@ -161,8 +159,6 @@ describe('Feature - Experiments: ', function () {
             yield testBestMearureHistroy({assertExists: false});
 
             yield testProcessesSamples({assertExists: false});
-
-            yield testExperimentNotes({assertExists: false});
 
             yield testFileLinks({assertExists: false});
 
@@ -186,8 +182,6 @@ describe('Feature - Experiments: ', function () {
 
             yield testProcessesSamples({assertExists: true});
 
-            yield testExperimentNotes({assertExists: true});
-
             yield testFileLinks({assertExists: true});
 
             yield testNotes({assertExists: true});
@@ -205,8 +199,6 @@ describe('Feature - Experiments: ', function () {
             yield testBestMearureHistroy({assertExists: true});
 
             yield testProcessesSamples({assertExists: true});
-
-            yield testExperimentNotes({assertExists: false});
 
             yield testFileLinks({assertExists: false});
 
@@ -230,8 +222,6 @@ describe('Feature - Experiments: ', function () {
 
             yield testProcessesSamples({assertExists: true});
 
-            yield testExperimentNotes({assertExists: true});
-
             yield testFileLinks({assertExists: true});
 
             yield testNotes({assertExists: true});
@@ -249,8 +239,6 @@ describe('Feature - Experiments: ', function () {
             yield testBestMearureHistroy({assertExists: true});
 
             yield testProcessesSamples({assertExists: true});
-
-            yield testExperimentNotes({assertExists: true});
 
             yield testFileLinks({assertExists: true});
 
@@ -274,8 +262,6 @@ describe('Feature - Experiments: ', function () {
 
             yield testProcessesSamples({assertExists: true});
 
-            yield testExperimentNotes({assertExists: true});
-
             yield testFileLinks({assertExists: true});
 
             yield testNotes({assertExists: true});
@@ -293,8 +279,6 @@ describe('Feature - Experiments: ', function () {
             yield testBestMearureHistroy({assertExists: true});
 
             yield testProcessesSamples({assertExists: true});
-
-            yield testExperimentNotes({assertExists: true});
 
             yield testFileLinks({assertExists: true});
 
@@ -385,7 +369,6 @@ function* checkLinks(experiment_id, options) {
     let tables = [
         'experiment2datafile',
         'experiment2dataset',
-        'experiment2experimentnote',
         'experiment2process',
         'experiment2sample',
         'project2experiment'
@@ -484,33 +467,6 @@ function* testProcessesSamples(options) {
     assert.isOk(results.val);
     let procList = results.val;
     assert.equal(procList.length, processCount);
-
-}
-
-function* testExperimentNotes(options) {
-
-    let count = 0;
-    if (options && options.assertExists) {
-        count = 1;
-    }
-
-    let results = yield r.table('experiment2experimentnote')
-        .getAll(experiment.id, {index: 'experiment_id'});
-    assert.isOk(results);
-    assert.equal(results.length, count);
-
-    results = yield r.table('experimentnotes').get(experimentNote.id);
-    if (count === 1) {
-        assert.isOk(results);
-        assert.equal(results.otype, 'experimentnote');
-    } else {
-        assert.isNull(results);
-    }
-
-    results = yield r.table('experiment2experimentnote')
-        .getAll(experiment.id, {index: 'experiment_id'});
-
-    assert.equal(results.length, count);
 
 }
 

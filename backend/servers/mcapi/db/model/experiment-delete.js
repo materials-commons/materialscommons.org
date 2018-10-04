@@ -190,29 +190,6 @@ function* deleteProcessesSamplesSetupAndMeasure(projectId, experimentId, dryRun)
     return partialResults;
 }
 
-function* deleteExperimentNotes(experimentId, dryRun) {
-    let ret = [];
-    let idList = yield r.table('experiment2experimentnote')
-        .getAll(experimentId, {index: 'experiment_id'})
-        .eqJoin('experiment_note_id', r.table('experimentnotes'))
-        .zip().getField('experiment_note_id');
-
-    if (dryRun) {
-        ret = idList;
-    } else {
-        let delete_msg1 = yield r.table('experimentnotes').getAll(r.args([...idList])).delete();
-
-        let delete_msg2 = yield r.table('experiment2experimentnote')
-            .getAll(experimentId, {index: 'experiment_id'}).delete();
-
-        if ((delete_msg1.deleted === idList.length) && (delete_msg2.deleted === idList.length)) {
-            ret = idList;
-        } // else?
-    }
-
-    return ret;
-}
-
 function* deleteExperimentFileLinks(experimentId, dryRun) {
     let fileLinkIds = yield r.table('experiment2datafile')
         .getAll(experimentId, {index: 'experiment_id'}).getField('datafile_id');
@@ -248,7 +225,6 @@ function* clearAllRemainingLinks(experimentId) {
     let tables = [
         'experiment2datafile',
         'experiment2dataset',
-        'experiment2experimentnote',
         'experiment2process',
         'experiment2sample',
         'project2experiment'

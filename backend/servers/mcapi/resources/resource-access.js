@@ -222,16 +222,6 @@ function* validateCommentAccess(next) {
     yield next;
 }
 
-function* validateNoteInExperiment(next) {
-    let isInExperiment = yield check.noteInExperiment(this.params.experiment_id, this.params.note_id);
-    if (!isInExperiment) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such note in experiment ${this.params.note_id}`};
-        return this.status;
-    }
-    yield next;
-}
-
 function* validateFileAccess(next) {
     let file = yield files.getFileSimple(this.params.file_id);
     if (!file) {
@@ -293,12 +283,10 @@ module.exports = {
     validateDirectoryInProject,
     validateProcessInProject,
     validateFileInProject,
-    validateTaskInExperiment,
     validateTemplateAccess,
     validateTemplateExists,
     validateCommentAccess,
     validateCommentExists,
-    validateNoteInExperiment,
     validateFileAccess,
     checkProjectAccess,
 };

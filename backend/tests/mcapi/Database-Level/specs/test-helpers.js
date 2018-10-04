@@ -31,7 +31,7 @@ const experimentDatasets = require(backend_base + '/experiment-datasets');
 
 const demoProjectHelper = require(build_project_base + '/build-demo-project-helper');
 const demoProjectConf = require(build_project_base + '/build-demo-project-conf');
-// correction needed bacause package.json was moved to backend - Terry Weymouth - 14AUG2017
+// correction needed because package.json was moved to backend - Terry Weymouth - 14AUG2017
 demoProjectConf.datapathPrefix = path.resolve('./') + '/';
 const demoProjectBuild = require(build_project_base + '/build-demo-project');
 
@@ -214,26 +214,6 @@ let createDatasetList = function* (experiment, processList, userId) {
     return dataset_list;
 };
 
-let setUpFakeExperimentNoteData = function* (experimentId,userId) {
-    // ---- experimentnote ----
-    // experiment2experimentnote
-    // experimentnotes
-
-    // Note, the demo project (used as base for this test) had no items in experimentnotes
-    // Inserting one here, as base for test
-    let fakeNote = {
-        name: "Test Note",
-        note: "Fake note for testing",
-        otype:'experimentnote',
-        owner: userId
-    };
-    let insert_msg = yield r.table('experimentnotes').insert(fakeNote);
-    let key = insert_msg.generated_keys[0];
-    yield r.table('experiment2experimentnote')
-        .insert({experiment_note_id: key, experiment_id: experimentId});
-    return yield r.table('experimentnotes').get(key);
-};
-
 module.exports = {
     createDemoTestProject,
     createProject,
@@ -243,5 +223,4 @@ module.exports = {
     createDatasetList,
     createFileFromDemoFileSet,
     addSamplesToProcess,
-    setUpFakeExperimentNoteData,
 };
