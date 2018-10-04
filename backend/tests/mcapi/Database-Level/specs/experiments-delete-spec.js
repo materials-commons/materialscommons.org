@@ -323,12 +323,6 @@ function checkResults(results) {
     assert.equal(results.val.processes.length, 5);
     assert.isOk(results.val.samples);
     assert.equal(results.val.samples.length, 8);
-    assert.isOk(results.val.experiment_notes);
-    assert.equal(results.val.experiment_notes.length, 1);
-    assert.isOk(results.val.experiment_tasks);
-    assert.equal(results.val.experiment_tasks.length, 1);
-    assert.isOk(results.val.experiment_task_processes);
-    assert.equal(results.val.experiment_task_processes.length, 1);
     assert.isOk(results.val.notes);
     assert.equal(results.val.notes.length, 1);
     assert.isOk(results.val.experiments);
