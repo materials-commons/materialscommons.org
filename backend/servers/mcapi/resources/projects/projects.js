@@ -63,6 +63,7 @@ function* deleteProjectFully(next) {
     let options = {
         dryRun: false
     };
+    console.log("resource-project-deleteProjectFully", this.params.project_id);
     let rv = yield projectDelete.fullProjectDelete(this.params.project_id, options);
     if (rv.error) {
         this.status = status.BAD_REQUEST;

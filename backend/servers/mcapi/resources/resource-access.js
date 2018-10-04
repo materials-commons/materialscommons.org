@@ -40,8 +40,10 @@ function* checkProjectAccess(projectId, user) {
 
 function* validateProjectOwner(next) {
     let projectId = this.params.project_id;
+    console.log("validateProjectOwner", projectId);
     if (projectId) {
         let isOwner = yield check.isUserProjectOwner(this.reqctx.user.id, projectId);
+        console.log("validateProjectOwner", this.reqctx.user.id, isOwner);
         if (!isOwner) {
             this.status = httpStatus.BAD_REQUEST;
             this.body = {error: 'Only the project owner can delete a project'};

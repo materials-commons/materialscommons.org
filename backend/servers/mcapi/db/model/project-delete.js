@@ -19,10 +19,14 @@ function* fullProjectDelete(projectId, options) {
         return {error: "Can not delete a project that has any experiment with a published datasets"}
     }
 
+    console.log("In fullProjectDelete: hasPublishedDatasets", hasPublishedDatasets)
+
     let hasDOIAssigned = yield testForDOIAssigned(projectId);
     if (hasDOIAssigned) {
         return {error: "Can not delete a project that has any experiment with a DOI assigned"}
     }
+
+    console.log("In fullProjectDelete: hasDOIAssigned", hasDOIAssigned)
 
     let results = yield projects.getProject(projectId);
 
@@ -55,7 +59,7 @@ function* fullProjectDelete(projectId, options) {
     for (let i = 0; i < experimentList.length; i++) {
         let experiment = experimentList[i];
         let results = yield experimentDelete
-            .deleteExperiment(projectId, experiment.id, {deleteProcesses: true, dryRun: dryRun});
+            .fullExperimentDelete(projectId, experiment.id, {deleteProcesses: true, dryRun: dryRun});
         if (results.val) {
             let tally = results.val;
             deletedExperiments.push(

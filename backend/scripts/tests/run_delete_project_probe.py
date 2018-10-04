@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import rethinkdb as r
+import rethinkdb as rdb
 import requests
 from os import environ
 from os import path as os_path
@@ -12,31 +12,18 @@ USER_ID = 'test@test.mc'
 APIKEY = 'totally-bogus'
 
 # noinspection SpellCheckingInspection
-TABLES = ['access', 'best_measure_history', 'comments', 'datadir2datafile', 'datadirs',
-          'datafiles', 'dataset2datafile', 'dataset2experimentnote', 'dataset2process',
-          'dataset2sample', 'datasets', 'deletedprocesses', 'elements', 'events',
-          'experiment2datafile', 'experiment2dataset', 'experiment2experimentnote',
-          'experiment2experimenttask', 'experiment2process', 'experiment2sample',
-          'experiment_etl_metadata', 'experimentnotes', 'experiments', 'experimenttask2process',
-          'experimenttasks', 'machines', 'measurement2datafile',
-          'measurements', 'note2item', 'notes', 'process2file', 'process2measurement',
-          'process2sample', 'process2setup', 'process2setupfile', 'processes',
-          'project2datadir', 'project2datafile', 'project2dataset', 'project2experiment',
-          'project2process', 'project2sample', 'projects', 'properties', 'property2measurement',
-          'propertyset2property', 'propertysets', 'review2item', 'reviews', 'runs',
-          'sample2datafile', 'sample2propertyset', 'sample2sample', 'samples',
-          'setupproperties', 'setups', 'shares', 'tag2item', 'tags']
+STOP_LIST = ['account_requests', 'background_process', 'deletedprocesses', 'globus_auth_info',
+             'globus_uploads', 'machines', 'templates', 'ui', 'uploads', 'user2share',
+             'usergroups', 'userprofiles', 'users',
+             # new items added from analysis
+             'elements', 'comments','machines', 'note2item', 'runs'
+             ]
 
-# Check: project2dataset
-# these tables are not getting reset by project delete:
-#             datadirs
-#             process2setup
-#             properties
-#             property2measurement
-#             propertyset2property
-#             propertysets
-#             sample2propertyset
-#             setupproperties
+GLENNS_LIST = ['userprofiles', 'usergroups', 'tags', 'tag2item', 'runs', 'reviews', 'review2item',
+               'machines', 'ui', 'elements', 'sample2sample', 'shares', 'user2share', 'experimenttasks',
+               'experiment2experimenttask', 'experimeenttask2process', 'experimentnotes',
+               'comments', 'comment2item'
+               ]
 
 
 class StubApiInterface:
@@ -91,16 +78,20 @@ class StubApiInterface:
 
 class DeleteProjectHelper:
     def __init__(self, apikey, user_id):
+        self.conn = rdb.connect('localhost', PORT, db='materialscommons')
         self.user_id = user_id
         self.api = StubApiInterface(apikey)
 
     def build_project(self):
         project_name = self._fake_name("ProjectForDeleteProbe-")
         project = self._build_sample_project()
+        project = self._augment_project(project)
         project = self._rename_project(project, project_name)
         return project
 
     def delete_project(self, project_id):
+        url = self.api.url("projects/{}/fully".format(project_id))
+        self.api.delete(url)
         pass
 
     def _build_sample_project(self):
@@ -108,6 +99,39 @@ class DeleteProjectHelper:
         data = {}
         ret = self.api.put(url, data)
         return ret
+
+    def _augment_project(self, project):
+        # events
+        data = {
+            "project_id": project['id'],
+            "item_type": 'project',
+            "item_id": project['id'],
+            "item_name": '',
+            "event_type": 'test',
+            "user": {"id": project['owner']}
+        }
+        rdb.table('events').insert(data).run(self.conn)
+
+        # measurement2datafile
+        # process2setupfile
+        # project2dataset
+        # sample2datafile
+
+        # create unpulbished dataset and
+        #     add to both and experiment and a project
+        #     should cover...
+        # dataset2datafile
+        # dataset2process
+        # dataset2sample
+        # datasets
+        # experiment2dataset
+        # project2dataset
+
+        # addition "fake" data
+        # experiment_etl_metadata
+        # notes
+
+        return project
 
     def _rename_project(self, project, project_name):
         old_name = project['name']
@@ -137,37 +161,70 @@ class DeleteProjectHelper:
 
 class DeleteProjectProbe:
     def __init__(self):
-        self.conn = r.connect('localhost', PORT, db='materialscommons')
+        self.conn = rdb.connect('localhost', PORT, db='materialscommons')
         self.helper = DeleteProjectHelper(APIKEY, USER_ID)
         self.pre_condition = {}
         self.post_condition = {}
+        self.after_create = {}
+
+    def all_tables(self):
+        return rdb.table_list().run(self.conn)
+
+    def candidate_tables(self):
+        tables = self.all_tables()
+        candidates = []
+        for table in tables:
+            if not (table in STOP_LIST or table in GLENNS_LIST):
+                candidates.append(table)
+        return candidates
 
     def doit(self):
-        tables = TABLES
+        tables = self.candidate_tables()
         for table in tables:
-            results = r.table(table).count().run(self.conn)
+            results = rdb.table(table).count().run(self.conn)
             self.pre_condition[table] = results
         project = self.helper.build_project()
+        print(project)
         print("project id = {}".format(project['id']))
         print("project name = {}".format(project['name']))
+        for table in tables:
+            results = rdb.table(table).count().run(self.conn)
+            self.after_create[table] = results
         print()
         experiments = project['experiments']
         for exp in experiments:
             print("experiment id = {}".format(exp['id']))
         self.helper.delete_project(project['id'])
         for table in tables:
-            results = r.table(table).count().run(self.conn)
+            results = rdb.table(table).count().run(self.conn)
             self.post_condition[table] = results
+        print ("-------------- Restored tables -----------")
         for key in tables:
-            mark = "-->" if not self.pre_condition[key] == self.post_condition[key] else "   "
-            print("{} {}: {} - {}".format(mark, key, self.pre_condition[key], self.post_condition[key]))
+            if not self.pre_condition[key] == 0 \
+                    and not self.post_condition[key] == 0 \
+                    and self.pre_condition[key] == self.post_condition[key]:
+                self.print_table_entry("   ", key)
+        print ("------------ Non-Restored tables ----------")
+        for key in tables:
+            if not self.pre_condition[key] == 0 \
+                    and not self.post_condition[key] == 0 \
+                    and not self.pre_condition[key] == self.post_condition[key]:
+                self.print_table_entry("-->", key)
+        print ("------------ Tables in question -----------")
+        for key in tables:
+            if self.pre_condition[key] == 0 and self.post_condition[key] == 0:
+                self.print_table_entry("???", key)
+
+    def print_table_entry(self, mark, key):
+        print("   {} {}: {} - {} ({})".
+              format(mark, key, self.pre_condition[key], self.post_condition[key], self.after_create[key]))
 
     def determined_tables_used(self):
         # Assuming empty database
-        tables = r.table_list().run(self.conn)
+        tables = rdb.table_list().run(self.conn)
         print(tables)
         for table in tables:
-            results = r.table(table).pluck('owner').run(self.conn)
+            results = rdb.table(table).pluck('owner').run(self.conn)
             if results:
                 results = list(results)
                 if len(results) > 0 and results[0]:
@@ -175,6 +232,8 @@ class DeleteProjectProbe:
             print("{} --> {}".format(table, results))
 
 if __name__ == "__main__":
-    print("Using database on port = {}".format(PORT))
+    print("Project Delete Probe... ")
     print("For this probe, USER = {}, APIKEY = {}".format(USER_ID, APIKEY))
+    print("Using database on port = {}".format(PORT))
     DeleteProjectProbe().doit()
+    print("Done.")
