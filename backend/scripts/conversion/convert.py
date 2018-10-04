@@ -19,6 +19,10 @@ def run_rql(rql, conn):
 
 def delete_unused_tables(conn):
     run_rql(r.table_drop("userprofiles"), conn)
+    run_rql(r.table_drop("usergroups"), conn)
+    run_rql(r.table_drop("runs"), conn)
+    run_rql(r.table_drop("reviews"), conn)
+    run_rql(r.table_drop("review2item"), conn)
 
 
 def main():

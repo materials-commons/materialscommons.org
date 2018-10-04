@@ -16,17 +16,10 @@ def create_mc_tables():
     create_mc_table("account_requests", "validate_uuid")
     create_compound_index("account_requests", "id_validate", ["id", "validate_uuid"])
 
-    # User groups should go away once mcstored is updated
-    create_mc_table("usergroups", "owner", "name")
-
     create_mc_table("tags")
     create_mc_table("notes", "project_id")
 
-    # Are runs, properties, and property_sets needed?
-    create_mc_table("runs")
     create_mc_table("properties", "item_id", "value")
-
-    create_mc_table("reviews", "assigned_to", "author", "project_id")
 
     # Is machines needed?
     create_mc_table("machines")
@@ -61,7 +54,6 @@ def create_mc_tables():
     create_mc_table("tag2item", "tag_id", "item_id")
     create_mc_table("comments", "owner", "item_id", "item_type")
     create_mc_table("note2item", "note_id", "item_id")
-    create_mc_table("review2item", "review_id", "item_id")
 
     create_mc_table("datadir2datafile", "datadir_id", "datafile_id")
     create_compound_index('datadir2datafile', 'datadir_datafile', ['datadir_id', 'datafile_id'])
@@ -315,8 +307,6 @@ def create_mc_indices():
     create_index('processes', 'project')  # Keep one of these
 
     create_index('samples', 'project_id')
-
-    create_index('property_sets', 'item_id')
 
     create_index('properties', 'item_id')
     create_index('properties', 'value')

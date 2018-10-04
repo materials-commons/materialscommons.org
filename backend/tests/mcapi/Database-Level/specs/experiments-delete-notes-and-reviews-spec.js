@@ -41,10 +41,9 @@ let process_list = null;
 let sample_list = null;
 let file_list = null;
 let notes_count = 0;
-let reviews_count = 0;
 
 before(function* () {
-    console.log('before experiments-delete-notes-and-reviews-spec.js');
+    console.log('before experiments-delete-notes-spec.js');
     this.timeout(80000); // this test suite can take up to 8 seconds
 
     let user = yield dbModelUsers.getUser(userId);
@@ -80,25 +79,14 @@ before(function* () {
 
     // set up fake note data
     let fake_note_entry = {
-        title: "Fake note/review entry for testing",
-        note: "Test of fake node/review",
+        title: 'Fake note entry for testing',
+        note: 'Test of fake node',
         owner: project.owner,
         projectId: project.id,
     };
 
     let insert_msg = yield r.table('notes').insert(fake_note_entry);
     let noteId = insert_msg.generated_keys[0];
-
-    // set up fake review data
-    let fake_review_entry = {
-        title: "Fake note/review entry for testing",
-        review: "Test of fake node/review",
-        owner: project.owner,
-        projectId: project.id,
-    };
-
-    insert_msg = yield r.table('reviews').insert(fake_review_entry);
-    let reviewId = insert_msg.generated_keys[0];
 
     let entities = [];
     for (let i = 0; i < process_list.length; i++) {
@@ -134,40 +122,7 @@ before(function* () {
 
     notes_count = entities.length;
 
-    entities = [];
-    for (let i = 0; i < process_list.length; i++) {
-        let review2item = {
-            item_id: process_list[i].id,
-            item_type: 'process',
-            review_id: reviewId
-        };
-        entities.push(review2item);
-    }
-
-    for (let i = 0; i < sample_list.length; i++) {
-        let review2item = {
-            item_id: sample_list[i].id,
-            item_type: 'sample',
-            review_id: reviewId
-        };
-        entities.push(review2item);
-    }
-
-    for (let i = 0; i < file_list.length; i++) {
-        let review2item = {
-            item_id: file_list[i].id,
-            item_type: 'files',
-            review_id: reviewId
-        };
-        entities.push(review2item);
-    }
-
-    insert_msg = yield r.table('review2item').insert(entities);
-
-    assert.equal(insert_msg.generated_keys.length, entities.length);
-
-    reviews_count = entities.length;
-    console.log('done before experiments-delete-notes-and-reviews-spec.js');
+    console.log('done before experiments-delete-notes-spec.js');
 });
 
 describe('Feature - Experiments: ', function () {
@@ -202,39 +157,6 @@ describe('Feature - Experiments: ', function () {
             assert.equal(delete_msg.deleted, notes_count);
 
             delete_msg = yield r.table('notes').getAll(r.args([...noteIdSet])).delete();
-            assert.equal(delete_msg.deleted, 1);
-
-        });
-        it('deletes items in reviews', function* () {
-            let id_list = [];
-
-            for (let i = 0; i < process_list.length; i++) {
-                id_list.push(process_list[i].id);
-            }
-
-            for (let i = 0; i < sample_list.length; i++) {
-                id_list.push(sample_list[i].id);
-            }
-
-            for (let i = 0; i < file_list.length; i++) {
-                id_list.push(file_list[i].id);
-            }
-
-            let entities = yield r.table('review2item').getAll(r.args(id_list), {index: 'item_id'});
-
-            assert.equal(entities.length, reviews_count);
-
-            let reviewIdSet = new Set();
-            for (let i = 0; i < entities.length; i++) {
-                reviewIdSet = reviewIdSet.add(entities[i].review_id);
-            }
-
-            assert.equal(reviewIdSet.size, 1);
-
-            let delete_msg = yield r.table('review2item').getAll(r.args(id_list), {index: 'item_id'}).delete();
-            assert.equal(delete_msg.deleted, reviews_count);
-
-            delete_msg = yield r.table('reviews').getAll(r.args([...reviewIdSet])).delete();
             assert.equal(delete_msg.deleted, 1);
 
         });

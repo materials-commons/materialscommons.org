@@ -65,7 +65,6 @@ function* deleteExperimentFull(projectId, experimentId, options) {
     allPosibleItems = allPosibleItems.concat(overallResults.samples);
 
     overallResults['notes'] = yield deleteNotes(allPosibleItems, dryRun);
-    overallResults['reviews'] = yield deleteReviews(allPosibleItems, dryRun);
 
     if (!dryRun) {
         yield clearAllRemainingLinks(experimentId);
@@ -282,24 +281,6 @@ function* deleteNotes(allPosibleItems, dryRun) {
     }
 
     return noteIdList;
-}
-
-function* deleteReviews(allPosibleItems, dryRun) {
-    let reviewIdSet = new Set();
-
-    let reviewItems = yield r.table('review2item').getAll(r.args(allPosibleItems), {index: 'item_id'});
-    for (let i = 0; i < reviewItems.length; i++) {
-        let reviewId = reviewItems[i].review_id;
-        reviewIdSet.add(reviewId);
-    }
-
-    let reviewIdList = [...reviewIdSet];
-    if (!dryRun) {
-        yield r.table('review2item').getAll(r.args(reviewIdList), {index: 'review_id'}).delete();
-        yield r.table('reviews').getAll(r.args(reviewIdList)).delete();
-    }
-
-    return reviewIdList;
 }
 
 function* clearAllRemainingLinks(experimentId) {
