@@ -52,7 +52,6 @@ function* deleteExperimentFull(projectId, experimentId, options) {
         overallResults['processes'] = [];
         overallResults['samples'] = [];
     }
-    overallResults['experiment_notes'] = yield deleteExperimentNotes(experimentId, dryRun);
 
     let fileLinkIds = yield deleteExperimentFileLinks(experimentId, dryRun);
 
