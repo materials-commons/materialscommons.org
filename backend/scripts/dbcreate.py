@@ -25,7 +25,6 @@ def create_mc_tables():
     create_compound_index("projects", "name_owner", ["name", "owner"])
 
     create_mc_table("templates", "owner")
-    create_mc_table("ui")
 
     create_mc_table("samples", "project_id")
     create_mc_table('access', "user_id", "project_id")
