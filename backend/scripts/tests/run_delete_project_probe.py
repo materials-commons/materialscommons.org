@@ -5,6 +5,7 @@ from os import environ
 from os import path as os_path
 from random import randint
 
+from materials_commons.api import get_project_by_id
 import requests
 import rethinkdb as rdb
 
@@ -84,10 +85,14 @@ class DeleteProjectHelper:
         self.api = StubApiInterface(apikey)
 
     def build_project(self):
+        url = self.api.url("users/{}/create_demo_project".format(self.user_id))
+        data = {}
+        ret = self.api.put(url, data)
+        project_id = ret['id']
         project_name = self._fake_name("ProjectForDeleteProbe-")
-        project = self._build_sample_project()
-        project = self._augment_project(project)
-        project = self._rename_project(project, project_name)
+        project = get_project_by_id(project_id)
+        project.rename(project_name, project.description)
+        self._augment_project(project)
         return project
 
     def delete_project(self, project_id):
@@ -95,29 +100,27 @@ class DeleteProjectHelper:
         self.api.delete(url)
         pass
 
-    def _build_sample_project(self):
-        url = self.api.url("users/{}/create_demo_project".format(self.user_id))
-        data = {}
-        ret = self.api.put(url, data)
-        return ret
-
-    def _augment_project(self, project):
+    def _augment_project(self, demo_project):
         # events
         data = {
-            "project_id": project['id'],
+            "project_id": demo_project.id,
             "item_type": 'project',
-            "item_id": project['id'],
+            "item_id": demo_project.id,
             "item_name": '',
             "event_type": 'test',
-            "user": {"id": project['owner']}
+            "user": {"id": demo_project.owner}
         }
         rdb.table('events').insert(data).run(self.conn)
 
         # measurement2datafile
-        process = self._get_demo_project_process(project)
-        files = self._get_demo_project_process_files(project, process)
+        experiments = demo_project.get_all_experiments()
+        experiment = experiments[0]
+        processes = experiment.get_all_processes()
+        process = processes[0]
+        files = process.get_all_files()
         file1 = files[0]
-        print(process['measurements'])
+        print(file1)
+        process
 
         # process2setupfile
         # project2dataset
@@ -137,10 +140,10 @@ class DeleteProjectHelper:
 
         # experiment_etl_metadata
         data = {
-            "experiment_id": project['experiments'][0]['id'],
+            "experiment_id": experiment.id,
             "json": {'blob': {}},
             "otype": "experiment_etl_metadata",
-            "owner": project['owner']
+            "owner": demo_project.owner
         }
         rdb.table('experiment_etl_metadata').insert(data).run(self.conn)
 
@@ -148,37 +151,11 @@ class DeleteProjectHelper:
         data = {
             "title": "NOTE TITLE",
             "note": "Note",
-            "owner": project['owner']
+            "owner": demo_project.owner
         }
         rdb.table('notes').insert(data).run(self.conn)
 
-        return project
-
-    def _rename_project(self, project, project_name):
-        old_name = project['name']
-        print("Renaming project {} --> {}".format(old_name, project_name))
-        url = self.api.url("projects/{}".format(project['id']))
-        data = {"name": project_name}
-        ret = self.api.put(url, data)
-        project_id = ret['id']
-        ret = self._get_project_by_id(project_id)
-        return ret
-
-    def _get_project_by_id(self, project_id):
-        url = self.api.url("projects/{}".format(project_id))
-        return self.api.get(url)
-
-    def _get_demo_project_process(self, demo_project):
-        project_id = demo_project['id']
-        process_id = demo_project['processes'][0]['id']
-        url = self.api.url("projects/{}/processes/{}".format(project_id, process_id))
-        return self.api.get(url)
-
-    def _get_demo_project_process_files(self, demo_project, process):
-        project_id = demo_project['id']
-        process_id = process['id']
-        url = self.api.url("projects/{}/processes/{}/files".format(demo_project['id'], process_id))
-        return self.api.get(url)
+        return demo_project
 
     @staticmethod
     def _make_test_dir_path():
@@ -217,6 +194,7 @@ class DeleteProjectProbe:
             results = rdb.table(table).count().run(self.conn)
             self.pre_condition[table] = results
         project = self.helper.build_project()
+        print(project)
         # print("project id = {}".format(project['id']))
         # print("project name = {}".format(project['name']))
         # for table in tables:
