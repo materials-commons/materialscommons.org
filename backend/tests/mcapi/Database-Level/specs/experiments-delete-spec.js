@@ -205,7 +205,7 @@ describe('Feature - Experiments: ', function () {
             yield testNotes({assertExists: false});
 
         });
-        it('with dry run true, delete process true - shows all will be deleted', function* () {
+        it.skip('with dry run true, delete process true - shows all will be deleted', function* () {
 
             this.timeout(80000); // test take up to 8 seconds
 
@@ -245,7 +245,7 @@ describe('Feature - Experiments: ', function () {
             yield testNotes({assertExists: true});
 
         });
-        it('with dry run true, delete process false - shows some will be deleted', function* () {
+        it.skip('with dry run true, delete process false - shows some will be deleted', function* () {
 
             this.timeout(80000); // test take up to 8 seconds
 
