@@ -53,14 +53,13 @@ def create_mc_tables():
     create_mc_table("datadir2datafile", "datadir_id", "datafile_id")
     create_compound_index('datadir2datafile', 'datadir_datafile', ['datadir_id', 'datafile_id'])
 
-    create_mc_table("uploads", "uploads", "project_id")
+    create_mc_table("uploads", "owner", "project_id")
 
     create_mc_table("background_process", "project_id", "queue", "status")
     create_mc_table("globus_auth_info", "owner")
 
     create_mc_table("globus_uploads")
 
-    # Create samples model
     create_mc_table("processes", "template_id", "birthtime")
     create_mc_table("project2process", "project_id", "process_id")
     create_compound_index("project2process", "project_process", ["project_id", "process_id"])
@@ -154,12 +153,6 @@ def create_mcpub_tables():
     create_mcpub_table("tag2dataset", "tag", "dataset_id")
     create_compound_index("tag2dataset", "tag_dataset", ["tag", "dataset_id"], db="mcpub")
 
-# comments move to mcapi - Nov 2017 - Terry E. Weymouth
-#    create_mcpub_table("comments", "dataset_id", "user_id")
-
-# views changed - now using view2item - where the view information is in that table
-#    create_mcpub_table("views", "dataset_id")
-
     create_mcpub_table("view2item", "user_id", "item_id", "item_type")
     create_compound_index("view2item", "user_type", ["user_id", "item_type"], db='mcpub')
     create_compound_index("view2item", "user_item", ["user_id", "item_id"], db='mcpub')
@@ -246,85 +239,6 @@ def create_compound_index(table, name, index_fields, db='materialscommons'):
     run(r.db(db).table(table).index_wait())
 
 
-def create_mc_indices():
-    create_index('access', 'user_id')
-    create_index('access', 'project_id')
-    create_index('access', 'dataset')
-
-    create_index('users', 'apikey')
-    create_index('users', 'admin')
-
-    create_index('projects', 'name')
-    create_index('projects', 'owner')
-
-    create_index('usergroups', 'owner')
-    create_index('usergroups', 'name')
-
-    create_index('templates', 'template_name')
-    create_index('templates', 'template_pick')
-
-    create_index('drafts', 'owner')
-    create_index('drafts', 'project_id')
-
-    create_index('reviews', 'assigned_to')
-    create_index('reviews', 'author')
-    create_index('reviews', 'project')
-
-    create_index('processes', 'project_id')
-    create_index('processes', 'project')  # Keep one of these
-
-    create_index('samples', 'project_id')
-
-    create_index('properties', 'item_id')
-    create_index('properties', 'value')
-
-    create_index('notes', 'project_id')
-
-    create_index('events', 'project_id')
-
-    create_index('datadirs', 'name')
-    create_index('datadirs', 'project')
-
-    create_index('project2datadir', 'datadir_id')
-    create_index('project2datadir', 'project_id')
-
-    create_index('datafiles', 'name')
-    create_index('datafiles', 'owner')
-    create_index('datafiles', 'checksum')
-    create_index('datafiles', 'usesid')
-    create_index('datafiles', 'mediatype')
-
-    create_index('project2datafile', 'project_id')
-    create_index('project2datafile', 'datafile_id')
-
-    run(r.db("materialscommons").table("datafiles")
-        .index_create("mime", r.row["mediatype"]["mime"]))
-
-    create_index('tag2item', 'tag_id')
-    create_index('tag2item', 'item_id')
-
-    create_index("comment2item", "comment_id")
-    create_index("comment2item", "item_id")
-
-    create_index("note2item", "note_id")
-    create_index("note2item", "item_id")
-
-    create_index("review2item", "review_id")
-    create_index("review2item", "item_id")
-
-    create_index("process2item", "process_id")
-    create_index("process2item", "item_id")
-
-    create_index('sample2item', 'sample_id')
-    create_index('sample2item', 'item_id')
-
-    create_index("datadir2datafile", "datadir_id")
-    create_index("datadir2datafile", "datafile_id")
-
-    create_index("uploads", "owner")
-    create_index("uploads", "project_id")
-
-
 def run(rql):
     try:
         rql.run()
@@ -335,6 +249,5 @@ def run(rql):
 if __name__ == "__main__":
     create_mc_database()
     create_mc_tables()
-    create_mc_indices()
     create_mcpub_database()
     create_mcpub_tables()
