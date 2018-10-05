@@ -1,0 +1,18 @@
+record = {"status": "Submitted to queue",
+          "description": "ETL Process; Status for project: 942d833d-41e4-4e23-b79a-6cd9fda5487d",
+          "reported_to_user": false,
+          "queue": "etl-globus-transfer",
+          "otype": "background_process",
+          "extras": {
+              "transfer_base_path": "/mcfs/data/materialscommons/__upload_staging/etl-transfer-a27d3bbf-fe92-43a9-a71b-c9865d4b874e",
+              "experiment_description": "Desc", "excel_file_path": "input.xlsx",
+              "globus_endpoint": "d35abd9a-86d6-11e8-9571-0a6d4e044368", "label": "upload to project Demo Project",
+              "globus_destination_path": "/__upload_staging/etl-transfer-a27d3bbf-fe92-43a9-a71b-c9865d4b874e/",
+              "experiment_name": "Exp Test-1",
+              "globus_path": "/Volumes/Data2/GlobusEndpoint/sharing/share_for_test_of_transfer/dataForTest/",
+              "data_dir_path": "data"},
+          "mtime": {"timezone": "+00:00", "$reql_type$": "TIME", "epoch_time": 1538505748.875},
+          "owner": "weymouth@umich.edu",
+          "birthtime": {"timezone": "+00:00", "$reql_type$": "TIME", "epoch_time": 1538505748.841},
+          "project_id": "942d833d-41e4-4e23-b79a-6cd9fda5487d", "id": "a27d3bbf-fe92-43a9-a71b-c9865d4b874e",
+          "name": "ETL Process"}
