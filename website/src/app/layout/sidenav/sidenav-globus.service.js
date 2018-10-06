@@ -45,6 +45,21 @@ class SidenavGlobusService {
         );
     }
 
+    globusAbortTasks(project){
+        return this.$mdDialog.show({
+                templateUrl: 'app/modals/globus-abort-tasks-dialog.html',
+                controller: GlobusAbortTasksDialogController,
+                controllerAs: '$ctrl',
+                bindToController: true,
+                locals: {
+                    project: project,
+                }
+            }
+        );
+
+    }
+
+
     loginToGlobus() {
         return this.$mdDialog.show({
             templateUrl: 'app/modals/globus-login-logout-dialog.html',
@@ -154,6 +169,48 @@ class GlobusReportStatusDialogController {
                 }
                 console.log(this.statusReportList);
             });
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class GlobusAbortTasksDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, etlServerAPI) {
+        this.$mdDialog = $mdDialog;
+        this.etlServerAPI = etlServerAPI;
+        this.statusReportList = [];
+        console.log('GlobusReportStatusDialogController - Fetching status');
+        this.etlServerAPI.getRecentGlobusStatus(this.project.id)
+            .then(results => {
+                console.log('results', results);
+                this.statusReportList = [];
+                let probe_list = results.status_list;
+                console.log('probe_list', probe_list);
+                for (let i = 0; i < probe_list.length; i++) {
+                    let item = probe_list[i];
+                    if (item.status == "Fail"){
+                        continue;
+                    }
+                    if (item.status == "Success"){
+                        continue;
+                    }
+                    let d = new Date(0);
+                    d.setUTCSeconds(item.timestamp);
+                    let iso = d.toISOString().match(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})/);
+                    item.timestamp = iso[1] + ' ' + iso[2];
+                    this.statusReportList.push(item);
+                }
+                console.log('statusReportList', this.statusReportList);
+            });
+    }
+
+    abortTasks(){
+        if (this.statusReportList.length > 0) {
+            this.etlServerAPI.deleteAllPendingGlobusStatusRecords()
+        }
     }
 
     cancel() {

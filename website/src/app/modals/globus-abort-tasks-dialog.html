@@ -1,0 +1,20 @@
+<md-dialog flex="60">
+    <md-toolbar ng-if="! $ctrl.requestComplete" layout="row">
+        <div layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>Abort Pending Globus Task(s)</i>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <div ng-if="$ctrl.statusReportList.length==0">
+            No Globus task status reports.
+        </div>
+        <div ng-if="$ctrl.statusReportList.length>0" ng-repeat="report in $ctrl.statusReportList">
+            {{report.timestamp}}: {{report.name}} - Status: {{report.status}}
+            <span ng-if="report.queue">, Queue: {{report.queue}}</span>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.abortTasks()">Abort Task(s)</md-button>
+        <md-button ng-click="$ctrl.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>

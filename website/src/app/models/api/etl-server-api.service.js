@@ -101,6 +101,19 @@ class EtlServerAPIService {
         );
     }
 
+    // noinspection JSMethodCanBeStatic
+    deleteAllPendingGlobusStatusRecords(){
+        let route = this.etlAPIRoute('globus').one('transfer').one('status').one('clearpending');
+        let data = {};
+        return route.customPOST(data).then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return results;
+            }
+        );
+    }
+
     // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
     getSystemGlobusInformation(){
         let route = this.etlAPIRoute('globus').one('transfer').one('info');

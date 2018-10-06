@@ -76,6 +76,10 @@ class MCProjectSidenavComponentController {
         this.sidenavGlobus.globusUpload(this.project);
     }
 
+    abortGlobusTasks() {
+        this.sidenavGlobus.globusAbortTasks(this.project);
+    }
+
     loginToGlobus() {
         this.sidenavGlobus.loginToGlobus().then(() => this._checkGlobusAuthStatus());
     }
