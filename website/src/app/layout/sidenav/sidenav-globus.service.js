@@ -209,7 +209,7 @@ class GlobusAbortTasksDialogController {
 
     abortTasks(){
         if (this.statusReportList.length > 0) {
-            etlServerAPI.deleteAllPendingGlobusStatusRecords()
+            this.etlServerAPI.deleteAllPendingGlobusStatusRecords()
         }
     }
 
