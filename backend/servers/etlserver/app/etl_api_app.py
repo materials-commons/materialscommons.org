@@ -143,10 +143,7 @@ def get_background_status_for_project():
 @app.route('/upload', methods=['POST'])
 @apikey
 def upload_file():
-    log.info("etl file upload - starting")
-    log.info("============================")
-    log.info("    Upload/ETL no files     ")
-    log.info("============================")
+    log.info("etl-only; no data file upload - starting")
     api_key = request.args.get('apikey', default="no_such_key")
     name = request.form.get('name')
     project_id = request.form.get("project_id")
