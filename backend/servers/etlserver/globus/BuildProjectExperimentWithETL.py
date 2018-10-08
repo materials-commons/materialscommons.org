@@ -617,7 +617,7 @@ class BuildProjectExperiment:
     def _get_template_id_for(self, match):
         found_id = None
         for key in self.template_table:
-            if match in key:
+            if match == key:
                 found_id = key
         return found_id
 
