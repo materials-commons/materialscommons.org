@@ -162,7 +162,7 @@ class BuildProjectExperiment:
             if parent_process_record:
                 parent_process = parent_process_record['process']
             if self._start_new_process(row_key, parent_process):
-                self.log.info("Start new process: {} ({})", template_id, row_index)
+                # self.log.info("Start new process: {} ({})".format(template_id, row_index))
                 process = self.experiment.create_process_from_template(template_id)
                 if not process.name == process_name:
                     process = process.rename(process_name)
@@ -458,7 +458,7 @@ class BuildProjectExperiment:
         return ret_list
 
     def _scan_for_process_descriptions(self):
-        self.log.info("_scan_for_process_descriptions", self.start_sweep_col, self.end_sweep_col)
+        # self.log.info("_scan_for_process_descriptions: {}, {}".format(self.start_sweep_col, self.end_sweep_col))
         name_row = None
         row_index = 0
         while row_index < len(self.source) and not self.source[row_index][0] == "BEING_DATA":
@@ -481,8 +481,7 @@ class BuildProjectExperiment:
                 if name_row and self.source[name_row][col_index]:
                     process_name = self.source[name_row][col_index]
                 template_id = self._get_template_id_for(process_entry)
-                self.log.info("Template match for process: name = {} template_id = {}".format(
-                    process_name, template_id))
+                self.log.info("Template match for process: name = {} template_id = {}".format(process_name, template_id))
                 if template_id:
                     previous_process = {
                         'name': process_name,
@@ -624,7 +623,7 @@ class BuildProjectExperiment:
         template_list = get_all_templates(apikey=self.apikey)
         table = {}
         for template in template_list:
-            self.log.info(template,id)
+            self.log.info("Init Template entry for {}".format(template.id))
             table[template.id] = template
         self.template_table = table
 
