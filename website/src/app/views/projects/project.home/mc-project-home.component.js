@@ -409,11 +409,12 @@ class DeleteExperimentsDialogController {
 
 class EtlUploadDialogController {
     /*@ngInject*/
-    constructor($mdDialog, Upload, etlServerAPI, sidenavGlobus, toast, User) {
+    constructor($mdDialog, Upload, etlServerAPI, sidenavGlobus, toast, User, globusEndpointSaver) {
         this.$mdDialog = $mdDialog;
         this.Upload = Upload;
         this.etlServerAPI = etlServerAPI;
         this.sidenavGlobus = sidenavGlobus;
+        this.globusEndpointSaver = globusEndpointSaver;
         this.toast = toast;
         this.User = User;
         this.user_id = User.u();
@@ -422,10 +423,11 @@ class EtlUploadDialogController {
         // for direct upload, without Globus
         this.files = [];
         // for Globus upload
-        this.ep_uuid = "";
-        this.base_path = "/A/path/on/the/endpoint/to/base/directory";
-        this.spreadsheet_rel_path = "/my_project/input.xlsx";
-        this.data_dir_rel_path = "/my_project/data";
+        let etlGlobus = this.globusEndpointSaver.getEtlEndpoint();
+        this.ep_uuid = etlGlobus.uuid;
+        this.base_path = etlGlobus.path;
+        this.spreadsheet_rel_path = etlGlobus.spreadsheet;
+        this.data_dir_rel_path = etlGlobus.data;
         this.isAuthenticatedToGlobus = false;
         this.sidenavGlobus.isAuthenticated()
             .then(authStatus => this.isAuthenticatedToGlobus = authStatus);
@@ -453,6 +455,7 @@ class EtlUploadDialogController {
         data.globus_base_path = this.base_path;
         data.globus_excel_file = this.spreadsheet_rel_path;
         data.globus_data_dir = this.data_dir_rel_path;
+        this.globusEndpointSaver.saveEtlEndpoint(this.base_path, this.ep_uuid, this.spreadsheet_rel_path, this.data_dir_rel_path);
         return this.etlServerAPI.startBackgroundEtlUpload(data).then (
             (reply) => {
                 this.$mdDialog.hide(reply);

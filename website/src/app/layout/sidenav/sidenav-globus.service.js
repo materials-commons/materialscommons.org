@@ -72,11 +72,13 @@ class SidenavGlobusService {
 
 class GlobusUploadTransferDialogController {
     /*@ngInject*/
-    constructor($mdDialog, etlServerAPI) {
+    constructor($mdDialog, etlServerAPI, globusEndpointSaver) {
         this.$mdDialog = $mdDialog;
         this.etlServerAPI = etlServerAPI;
-        this.endpoint = '';
-        this.endpointPath = '';
+        this.globusEndpointSaver = globusEndpointSaver;
+        let globusEndpoint = globusEndpointSaver.getNonEtlEndpoint();
+        this.endpoint = globusEndpoint.uuid;
+        this.endpointPath = globusEndpoint.path;
         this.uploadName = 'undefined';
         this.uploadUniquename = 'undefined';
         this.uploadId = 'undefined';
@@ -92,6 +94,7 @@ class GlobusUploadTransferDialogController {
 
     submitToServer() {
         console.log('Submitting request to server: ', this.project.id, this.endpoint, this.endpointPath);
+        this.globusEndpointSaver.saveNonEtlEndpoint(this.endpointPath, this.endpoint);
         this.etlServerAPI.setupGlobusUploadTransfer(this.project.id, this.endpoint, this.endpointPath)
             .then(globusResults => {
                 console.log('Results returned from server: ', globusResults);
