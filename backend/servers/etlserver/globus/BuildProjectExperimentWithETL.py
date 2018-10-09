@@ -113,7 +113,10 @@ class BuildProjectExperiment:
         self._set_row_positions()
         self._set_col_positions()
 
-        self.sweep()
+        try :
+            self.sweep()
+        except BaseException:
+            self.log.exception("Error in sweep")
 
         self.write_metadata()
 
@@ -127,7 +130,7 @@ class BuildProjectExperiment:
     def sweep(self):
         process_list = self._scan_for_process_descriptions()
         if len(process_list) == 0:
-            self.log.debug("No complete processes found in project")
+            self.log.error("No complete processes found in project")
         self.parent_process_list = []
         for index in range(self.data_start_row, len(self.source)):
             self.parent_process_list.append(None)
@@ -146,6 +149,8 @@ class BuildProjectExperiment:
         self._record_header_rows()
         process_record = None
 
+        self.log.info("Sweep, create process workflow, process name = {}".format(process_name))
+
         for row_index in range(self.data_start_row, len(self.source)):
             row_key = self._row_key(row_index, start_col_index, end_col_index)
             if not row_key:
@@ -157,7 +162,7 @@ class BuildProjectExperiment:
             if parent_process_record:
                 parent_process = parent_process_record['process']
             if self._start_new_process(row_key, parent_process):
-                # print ("Start new process:", template_id, row_key)
+                # self.log.info("Start new process: {} ({})".format(template_id, row_index))
                 process = self.experiment.create_process_from_template(template_id)
                 if not process.name == process_name:
                     process = process.rename(process_name)
@@ -201,7 +206,9 @@ class BuildProjectExperiment:
             self.previous_parent_process = None
             if parent_process_record:
                 self.previous_parent_process = parent_process_record['process']
-            self.parent_process_list[process_index] = process_record
+            process = process_record['process']
+            if process.category == 'create_sample' or process.does_transform:
+                self.parent_process_list[process_index] = process_record
 
     def sweep_for_process_value(self, data_row, process, start_col, end_col, start_attr_row):
         self.clear_params_and_measurement()
@@ -289,25 +296,30 @@ class BuildProjectExperiment:
         return sample_name
 
     def set_params_and_measurement(self, process):
+
         # parameters
         known_param_keys = []
         unknown_param_entries = []
         for key in self.process_values["PARAM"]:
             entry = self.process_values["PARAM"][key]
+            # self.log.info("Param key = {}".format(key))
+            # self.log.info("PARMA process = {}, key = {}, entry = {}, ({})".format(
+            #    process.name, key, entry, process.is_known_setup_property(key)))
             if process.is_known_setup_property(key):
-                # self.log.debug("PARMA", process.name, key, entry, process.is_known_setup_property(key))
                 if entry['value'] is not None:
                     process.set_value_of_setup_property(key, entry['value'])
                     if entry['unit']:
                         # table =
                         process.get_setup_properties_as_dictionary()
-                        # self.log.debug("unit check", entry['unit'], table[key].name, table[key].unit)
+                        # self.log.info("unit check", entry['unit'], table[key].name, table[key].unit)
                         process.set_unit_of_setup_property(key, entry['unit'])
                     known_param_keys.append(key)
             else:
                 entry['attribute'] = key
-                # self.log.debug("Additional setup parameter:", entry)
+                # self.log.info("Additional setup parameter:", entry)
                 unknown_param_entries.append(entry)
+        # self.log.info("known_param_keys = {}".format(known_param_keys))
+        # self.log.info("unknown_param_entries = {}".format(unknown_param_entries))
         if known_param_keys:
             process.update_setup_properties(known_param_keys)
         if unknown_param_entries:
@@ -317,6 +329,7 @@ class BuildProjectExperiment:
         #     for prop in elem.properties:
         #         if prop.value:
         #             self.log.debug("Setup Results: ", attribute, prop.name, prop.value, prop.unit)
+
         # measurements
         for key in self.process_values["MEAS"]:
             # self.log.debug("MEAS", process.name, key)
@@ -445,7 +458,7 @@ class BuildProjectExperiment:
         return ret_list
 
     def _scan_for_process_descriptions(self):
-        # self.log.debug("_scan_for_process_descriptions", self.start_sweep_col, self.end_sweep_col)
+        # self.log.info("_scan_for_process_descriptions: {}, {}".format(self.start_sweep_col, self.end_sweep_col))
         name_row = None
         row_index = 0
         while row_index < len(self.source) and not self.source[row_index][0] == "BEING_DATA":
@@ -468,6 +481,7 @@ class BuildProjectExperiment:
                 if name_row and self.source[name_row][col_index]:
                     process_name = self.source[name_row][col_index]
                 template_id = self._get_template_id_for(process_entry)
+                self.log.info("Template match for process: name = {} template_id = {}".format(process_name, template_id))
                 if template_id:
                     previous_process = {
                         'name': process_name,
@@ -609,13 +623,15 @@ class BuildProjectExperiment:
         template_list = get_all_templates(apikey=self.apikey)
         table = {}
         for template in template_list:
+            self.log.info("Init Template entry for {}".format(template.id))
             table[template.id] = template
         self.template_table = table
 
     def _get_template_id_for(self, match):
         found_id = None
+        match = "global_" + match
         for key in self.template_table:
-            if match in key:
+            if match == key:
                 found_id = key
         return found_id
 
