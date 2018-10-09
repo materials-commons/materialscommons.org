@@ -127,7 +127,7 @@ class BuildProjectExperiment:
     def sweep(self):
         process_list = self._scan_for_process_descriptions()
         if len(process_list) == 0:
-            self.log.debug("No complete processes found in project")
+            self.log.error("No complete processes found in project")
         self.parent_process_list = []
         for index in range(self.data_start_row, len(self.source)):
             self.parent_process_list.append(None)
@@ -447,7 +447,7 @@ class BuildProjectExperiment:
         return ret_list
 
     def _scan_for_process_descriptions(self):
-        # self.log.debug("_scan_for_process_descriptions", self.start_sweep_col, self.end_sweep_col)
+        self.log.info("_scan_for_process_descriptions", self.start_sweep_col, self.end_sweep_col)
         name_row = None
         row_index = 0
         while row_index < len(self.source) and not self.source[row_index][0] == "BEING_DATA":
@@ -467,9 +467,11 @@ class BuildProjectExperiment:
                     previous_process = None
                 process_entry = self._prune_entry(process_entry, "PROC:")
                 process_name = process_entry
+                self.log.info("Scan for process: name = {}".format(process_name))
                 if name_row and self.source[name_row][col_index]:
                     process_name = self.source[name_row][col_index]
                 template_id = self._get_template_id_for(process_entry)
+                self.log.info("Scan for process: template_id = {}".format(template_id))
                 if template_id:
                     previous_process = {
                         'name': process_name,
@@ -611,11 +613,13 @@ class BuildProjectExperiment:
         template_list = get_all_templates(apikey=self.apikey)
         table = {}
         for template in template_list:
+            self.log.info(template,id)
             table[template.id] = template
         self.template_table = table
 
     def _get_template_id_for(self, match):
         found_id = None
+        match = "global_" + match
         for key in self.template_table:
             if match == key:
                 found_id = key
