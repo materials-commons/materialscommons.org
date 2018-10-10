@@ -384,12 +384,18 @@ class BuildProjectExperiment:
             else:
                 self.log.debug("  Requested path for data not in user data directory, ignoring: " + str(path))
         for entry in file_list:
-            process_files.append(self.project.add_file_by_local_path(entry))
+            try:
+                process_files.append(self.project.add_file_by_local_path(entry, limit=500))
+            except BaseException as e:
+                self.log.error(e)
         for entry in dir_list:
-            self.project.add_directory_tree_by_local_path(entry)
-            directory = self.project.get_by_local_path(entry)
-            file_list = self._get_all_files_in_directory(directory)
-            process_files += file_list
+            try:
+                self.project.add_directory_tree_by_local_path(entry, limit=500)
+                directory = self.project.get_by_local_path(entry)
+                file_list = self._get_all_files_in_directory(directory)
+                process_files += file_list
+            except BaseException as e:
+                self.log.error(e)
         self.log.debug("for process {}({})adding files {}".format(process.name, process.id, process_files))
         process.add_files(process_files)
 

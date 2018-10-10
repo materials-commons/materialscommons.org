@@ -51,7 +51,7 @@ def hello_world():
 @app.route('/version')
 def get_version():
     return format_as_json_return({
-        "version": pkg_resources.get_distribution("materials_commons").version
+        "mc_version": pkg_resources.get_distribution("materials_commons").version
     })
 
 
