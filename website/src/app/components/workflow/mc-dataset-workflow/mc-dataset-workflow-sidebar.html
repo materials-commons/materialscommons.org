@@ -4,7 +4,9 @@
             <span><i class="fa fa-fw fa-filter"></i>filters</span>
         </md-tab-label>
         <md-tab-body>
-            <mc-dataset-workflow-filters dataset="$ctrl.dataset"></mc-dataset-workflow-filters>
+            <md-content layout="column" flex>
+                <mc-dataset-workflow-filters dataset="$ctrl.dataset" style="height: 70vh"></mc-dataset-workflow-filters>
+            </md-content>
         </md-tab-body>
     </md-tab>
     <md-tab>
