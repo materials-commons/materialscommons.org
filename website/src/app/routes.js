@@ -83,7 +83,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('templates', {
             url: '/templates',
             abstract: true,
-            template: '<div ui-view layout="column"></div>'
+            template: '<md-content ui-view layout="column" flex></md-content>'
         })
         .state('templates.builder', {
             url: '/builder',
