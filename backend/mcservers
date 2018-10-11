@@ -354,15 +354,17 @@ function start_servers() {
 }
 
 function stop_servers() {
-    if [ "$TESTSERVER" = "p" ]; then
-        echo "**** You are stopping PRODUCTION ****"
-        read -p "Are you sure you want to do this [y/n]? " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            exit 0
-        else
-            echo "Shutting down production in 5 seconds CTRL-C to abort..."
-            sleep 5
+    if [ "$SHUTDOWN_PROMPT" = "y" ]; then
+        if [ "$TESTSERVER" = "p" ]; then
+            echo "**** You are stopping PRODUCTION ****"
+            read -p "Are you sure you want to do this [y/n]? " -n 1 -r
+            echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                exit 0
+            else
+                echo "Shutting down production in 5 seconds CTRL-C to abort..."
+                sleep 5
+            fi
         fi
     fi
 
@@ -865,6 +867,7 @@ BACKUP_DATABASE=t
 SHOW_SERVERS=f
 #PS_ALL_SERVERS=t
 REDIS_PORT=6379
+SHUTDOWN_PROMPT="y"
 
 CMD=$1
 shift
@@ -935,6 +938,9 @@ while test $# -gt 0; do
             TESTSERVER=t
             SERVERTYPE="test"
             PS_ALL_SERVERS=f
+            ;;
+        -y)
+            SHUTDOWN_PROMPT="n"  # When -y is given user is saying I want you to automatically answer yes to prompt
             ;;
         -p)
             TESTSERVER=p
