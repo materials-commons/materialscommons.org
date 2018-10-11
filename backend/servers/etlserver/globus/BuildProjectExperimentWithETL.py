@@ -467,7 +467,7 @@ class BuildProjectExperiment:
         # self.log.info("_scan_for_process_descriptions: {}, {}".format(self.start_sweep_col, self.end_sweep_col))
         name_row = None
         row_index = 0
-        while row_index < len(self.source) and not self.source[row_index][0] == "BEING_DATA":
+        while row_index < len(self.source) and not self.source[row_index][0] == "BEGIN_DATA":
             if self.source[row_index][0] == "NAME":
                 name_row = row_index
                 break
