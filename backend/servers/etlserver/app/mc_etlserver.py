@@ -3,6 +3,7 @@ import os
 import sys
 import signal
 import logging
+import pkg_resources
 
 # Note: after fooling around with modules and paths for a couple of days, I discovered
 #  that the below conditional addition to sys.path, solved the problem with werkzeug
@@ -35,6 +36,8 @@ def main():
         exit(-1)
 
     log.info("Starting ELT SERVER with host = {} and port = {}".format(_HOST, _PORT))
+    log.info("  Using MC Python API, version = {}".format(pkg_resources.get_distribution("materials_commons").version))
+
 
     if SERVER_TYPE and SERVER_TYPE == 'dev':
         if not _SSL_DIR:
