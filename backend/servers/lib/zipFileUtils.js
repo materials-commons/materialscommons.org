@@ -55,7 +55,7 @@ module.exports.getBase = function() {
     base = base.split(':')[0];
 
     if (!base) {
-        throw new Error({message: "Can not create zipfile for dataset: please show this message to a site adminstrator - 'MCDIR is not set in environment' "});
+        throw new Error("Can not create zipfile for dataset: please show this message to a site adminstrator - 'MCDIR is not set in environment' ");
     }
 
     if (!base.endsWith('/')) {
