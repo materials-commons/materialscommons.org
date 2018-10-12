@@ -113,7 +113,8 @@ class BuildProjectExperiment:
         self._set_row_positions()
         self._set_col_positions()
 
-        try :
+        # noinspection PyBroadException
+        try:
             self.sweep()
         except BaseException:
             self.log.exception("Error in sweep")
@@ -253,10 +254,10 @@ class BuildProjectExperiment:
         signature = signature.strip()
         parts = signature.split('.')
         entry = self.process_values[values_type]
-        attribute = parts[0]
-        attribute = normalise_property_name(attribute)
+        name = parts[0]
+        attribute = normalise_property_name(name)
         if attribute not in entry:
-            entry[attribute] = {"value": None, "unit": unit}
+            entry[attribute] = {"value": None, "unit": unit, "name": name}
         if attribute == "composition":
             if not entry[attribute]["value"]:
                 entry[attribute]["value"] = []
@@ -316,7 +317,7 @@ class BuildProjectExperiment:
                     known_param_keys.append(key)
             else:
                 entry['attribute'] = key
-                # self.log.info("Additional setup parameter:", entry)
+                # self.log.info("unknown_param entry = {}".format(entry))
                 unknown_param_entries.append(entry)
         # self.log.info("known_param_keys = {}".format(known_param_keys))
         # self.log.info("unknown_param_entries = {}".format(unknown_param_entries))
@@ -487,7 +488,8 @@ class BuildProjectExperiment:
                 if name_row and self.source[name_row][col_index]:
                     process_name = self.source[name_row][col_index]
                 template_id = self._get_template_id_for(process_entry)
-                self.log.info("Template match for process: name = {} template_id = {}".format(process_name, template_id))
+                self.log.info("Template match for process: name = {} template_id = {}"
+                              .format(process_name, template_id))
                 if template_id:
                     previous_process = {
                         'name': process_name,
@@ -629,7 +631,7 @@ class BuildProjectExperiment:
         template_list = get_all_templates(apikey=self.apikey)
         table = {}
         for template in template_list:
-            self.log.info("Init Template entry for {}".format(template.id))
+            self.log.debug("Init Template entry for {}".format(template.id))
             table[template.id] = template
         self.template_table = table
 
