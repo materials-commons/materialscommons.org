@@ -3,7 +3,7 @@
         <md-tab-label>Setup</md-tab-label>
         <md-tab-body>
             <div layout="column" class="margin-top-10">
-                <div ng-repeat="setup in $ctrl.process.setup" class="margin-top-10">
+                <div ng-repeat="setup in $ctrl.process.setup | orderBy:'name'" class="margin-top-10">
                     <process-settings2 settings="setup.properties"
                                        attribute="setup.attribute"
                                        process-id="$ctrl.process.id"
