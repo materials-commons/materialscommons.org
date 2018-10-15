@@ -8,6 +8,7 @@ from ..common.utils import normalise_property_name
 from ..common.worksheet_data import ExcelIO
 from ..common.metadata import Metadata
 from ..common.access_exceptions import NoSuchItem, RequiredAttributeException
+from ..database.DatabaseInterface import DatabaseInterface
 
 
 class BuildProjectExperiment:
@@ -352,16 +353,30 @@ class BuildProjectExperiment:
     def _set_etl_source_date_from_path(self, project, spread_sheet_path):
         # Note: passing in project to facilitate partial testing
         server_side_file = self._server_side_file_path_for_project_path(project, spread_sheet_path)
-        excel_io_controller = ExcelIO()
-        excel_io_controller.read_workbook(server_side_file)
-        sheet_name_list = excel_io_controller.sheet_name_list()
-        excel_io_controller.set_current_worksheet_by_index(0)
-        sheet_name = sheet_name_list[0]
-        self.log.debug("In Excel file, using sheet '" +
-                       sheet_name +
-                       "' from sheets: [" + ", ".join(sheet_name_list) + "]")
-        self.etl_source_data = excel_io_controller.read_entire_data_from_current_sheet()
-        excel_io_controller.close()
+        # create link dir (if needed) and link
+        uuid = DatabaseInterface().get_uuid()
+        mcdir = os.environ['MCDIR'].split(':')[0]
+        link_base_path = os.path.join(mcdir, 'ExcelFileLinks')
+        file_name = "{}.xlsx".format(uuid)
+        link_path = os.path.join(link_base_path, file_name)
+        os.link(server_side_file, link_path)
+        # read data
+        # noinspection PyBroadException
+        try:
+            excel_io_controller = ExcelIO()
+            excel_io_controller.read_workbook(link_path)
+            sheet_name_list = excel_io_controller.sheet_name_list()
+            sheet_name = sheet_name_list[0]
+            self.log.debug("In Excel file, using sheet '" +
+                           sheet_name +
+                           "' from sheets: [" + ", ".join(sheet_name_list) + "]")
+            excel_io_controller.set_current_worksheet_by_index(0)
+            self.etl_source_data = excel_io_controller.read_entire_data_from_current_sheet()
+            excel_io_controller.close()
+        except BaseException as e:
+            self.log.exception("Reading failed: {}".format(e))
+        # remove link
+        os.unlink(link_path)
 
     def _create_base_experiment(self):
         experiment_list = self.project.get_all_experiments()

@@ -47,7 +47,6 @@ class TestFileProcessSample(unittest.TestCase):
             local_dir_path = os.path.join(cls.data_dir_path, TEST_DIR)
             project.add_directory_tree_by_local_path(local_dir_path)
 
-    @pytest.mark.skip()
     def test_is_setup_correctly(self):
         self.assertIn('MC_API_KEY', os.environ)
         self.assertIn('TEST_DATA_DIR', os.environ)
@@ -92,7 +91,6 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertIsNotNone(internal_file_path, "Could not find internal file path for file, '{}'"
                              .format(spread_sheet_path))
 
-    @pytest.mark.skip()
     def test_builder_gets_spreadsheet_data(self):
         builder = BuildProjectExperiment(self.apikey)
         spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
@@ -130,8 +128,7 @@ class TestFileProcessSample(unittest.TestCase):
         experiment_name = "Test of internal ETL"
         builder.build(spreadsheet_path, data_dir_path, self.project.id, experiment_name)
 
-    def test_open_excel(self):
-        excel_io_controller = ExcelIO()
+    def test_open_excel_row(self):
         builder = BuildProjectExperiment(self.apikey)
         spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
         internal_file_path = builder._server_side_file_path_for_project_path(self.project, spread_sheet_path)
@@ -149,6 +146,7 @@ class TestFileProcessSample(unittest.TestCase):
         source_data = None
         # noinspection PyBroadException
         try:
+            excel_io_controller = ExcelIO()
             excel_io_controller.read_workbook(link_path)
             sheet_name_list = excel_io_controller.sheet_name_list()
             excel_io_controller.set_current_worksheet_by_index(0)
@@ -163,3 +161,9 @@ class TestFileProcessSample(unittest.TestCase):
         sheet_name = sheet_name_list[0]
         self.assertEqual(sheet_name, 'Sheet')
         self.assertEqual(source_data[0][0], 'PROJ: Generic Testing')
+
+    def test_open_excel_in_builder(self):
+        builder = BuildProjectExperiment(self.apikey)
+        spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
+        builder._set_etl_source_date_from_path(self.project, spread_sheet_path)
+        self.assertEqual(builder.etl_source_data[0][0], 'PROJ: Generic Testing')
