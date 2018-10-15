@@ -1,6 +1,5 @@
 import unittest
 import pytest
-import pathlib
 import os
 from random import randint
 from materials_commons.api import create_project, get_all_projects
@@ -51,8 +50,8 @@ class TestFileProcessSample(unittest.TestCase):
     @pytest.mark.skip()
     def test_is_setup_correctly(self):
         self.assertIn('MC_API_KEY', os.environ)
-        self.assertIn('TEST_DATA_DIR',os.environ)
-        self.assertIn('MCDIR',os.environ)
+        self.assertIn('TEST_DATA_DIR', os.environ)
+        self.assertIn('MCDIR', os.environ)
         self.assertIsNotNone(self.apikey, "Missing test api key; MC_API_KEY not set properly")
 
         self.assertIsNotNone(self.project)
@@ -83,7 +82,7 @@ class TestFileProcessSample(unittest.TestCase):
     def test_server_side_file_for_internal_path(self):
         builder = BuildProjectExperiment(self.apikey)
 
-        self.assertIn('MCDIR',os.environ)
+        self.assertIn('MCDIR', os.environ)
         spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
         top_directory = self.project.get_top_directory()
         file = builder._find_file_in_dir(top_directory, spread_sheet_path.split('/'))
@@ -102,7 +101,7 @@ class TestFileProcessSample(unittest.TestCase):
 
     @pytest.mark.skip()
     def test_build_experiment_from_etl(self):
-        self.assertIn('MCDIR',os.environ)
+        self.assertIn('MCDIR', os.environ)
         print("\nStarting test...")
         print("  Project name = {}".format(self.project.name))
         print("  Internal Test Dir path = {}".format(TEST_DIR))
@@ -140,7 +139,7 @@ class TestFileProcessSample(unittest.TestCase):
         # SET UP THE LINK
         uuid = DatabaseInterface().get_uuid()
         mcdir = os.environ['MCDIR'].split(':')[0]
-        link_base_path = os.path.join(mcdir,'ExcelFileLinks')
+        link_base_path = os.path.join(mcdir, 'ExcelFileLinks')
         file_name = "{}.xlsx".format(uuid)
         link_path = os.path.join(link_base_path, file_name)
         os.link(internal_file_path, link_path)
@@ -148,6 +147,7 @@ class TestFileProcessSample(unittest.TestCase):
         # READ DATA
         sheet_name_list = None
         source_data = None
+        # noinspection PyBroadException
         try:
             excel_io_controller.read_workbook(link_path)
             sheet_name_list = excel_io_controller.sheet_name_list()
@@ -155,7 +155,7 @@ class TestFileProcessSample(unittest.TestCase):
             source_data = excel_io_controller.read_entire_data_from_current_sheet()
             excel_io_controller.close()
         except BaseException as e:
-            print("Reading failed")
+            print("Reading failed: {}".format(e))
 
         # TAKE DOWN LINK
         os.unlink(link_path)
@@ -163,4 +163,3 @@ class TestFileProcessSample(unittest.TestCase):
         sheet_name = sheet_name_list[0]
         self.assertEqual(sheet_name, 'Sheet')
         self.assertEqual(source_data[0][0], 'PROJ: Generic Testing')
-
