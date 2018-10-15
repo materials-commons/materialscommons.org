@@ -9,6 +9,9 @@ class DatabaseInterface:
         self.conn = db.connection()
         self.r = db.interface()
 
+    def get_new_uuid(self):
+        return self.r.uuid().run(self.conn)
+
     def get_project(self, project_id):
         return self.r.table('projects').get(project_id).run(self.conn)
 
