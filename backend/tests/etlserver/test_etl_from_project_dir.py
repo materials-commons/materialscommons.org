@@ -9,9 +9,9 @@ from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 
 EXCEL_FILE_NAME = "small_input.xlsx"
 DATA_DIR_NAME = "data"
-TEST_DIR = "ForETL"
+TEST_DIR = "ProjectDir/ForETL"
 TEST_PROJECT_NAME = "Test1"
-USER_TEST_PROJECT = True
+USER_TEST_PROJECT = False
 
 
 def fake_name(prefix):
@@ -59,18 +59,22 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertIsNotNone(self.project.id)
         self.assertEqual(self.project_id, self.project.id)
 
+        print("\nStarting test...")
+        print("  Project name = {}".format(self.project.name))
+        print("  Internal Test Dir path = {}".format(TEST_DIR))
+        print("  Internal Excel File name = {}".format(EXCEL_FILE_NAME))
+        print("  Internal Data Dir name = {}".format(DATA_DIR_NAME))
+
         directory = self.project.get_top_directory()
-        test_dir = None
-        for file_or_dir in directory.get_children():
-            print(file_or_dir.name)
-            if file_or_dir.name == TEST_DIR:
-                test_dir = file_or_dir
-        self.assertIsNotNone(test_dir, "Missing directory for test data, {}".format(TEST_DIR))
+        for dir_name in TEST_DIR.split('/'):
+            for file_or_dir in directory.get_children():
+                if file_or_dir.name == dir_name:
+                    directory = file_or_dir
+        self.assertIsNotNone(directory, "Missing directory for test data, {}".format(TEST_DIR))
 
         found_excel_file = False
         found_data_dir = False
-        for file_or_dir in test_dir.get_children():
-            print(file_or_dir.name)
+        for file_or_dir in directory.get_children():
             if file_or_dir.name == EXCEL_FILE_NAME:
                 found_excel_file = True
             if file_or_dir.name == DATA_DIR_NAME:
@@ -79,9 +83,11 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertTrue(found_data_dir, "Missing Data Dir, {}, in test data".format(DATA_DIR_NAME))
 
     def test_server_side_file_for_internal_path(self):
+        self.assertIsNotNone(self.project)
+        self.assertIn('MCDIR', os.environ)
+
         builder = BuildProjectExperiment(self.apikey)
 
-        self.assertIn('MCDIR', os.environ)
         spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
         top_directory = self.project.get_top_directory()
         file = builder._find_file_in_dir(top_directory, spread_sheet_path.split('/'))
@@ -92,34 +98,15 @@ class TestFileProcessSample(unittest.TestCase):
                              .format(spread_sheet_path))
 
     def test_builder_gets_spreadsheet_data(self):
+        self.assertIsNotNone(self.project)
         builder = BuildProjectExperiment(self.apikey)
         spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
         builder._set_etl_source_date_from_path(self.project, spread_sheet_path)
         print(builder.etl_source_data[1][1])
 
-    @pytest.mark.skip()
     def test_build_experiment_from_etl(self):
+        self.assertIsNotNone(self.project)
         self.assertIn('MCDIR', os.environ)
-        print("\nStarting test...")
-        print("  Project name = {}".format(self.project.name))
-        print("  Internal Test Dir path = {}".format(TEST_DIR))
-        print("  Internal Excel File name = {}".format(EXCEL_FILE_NAME))
-        print("  Internal Data Dir name = {}".format(DATA_DIR_NAME))
-        directory = self.project.get_top_directory()
-        test_dir = None
-        for file_or_dir in directory.get_children():
-            if file_or_dir.name == TEST_DIR:
-                test_dir = file_or_dir
-        self.assertIsNotNone(test_dir, "Missing directory for test data, {}".format(TEST_DIR))
-        excel_file = None
-        data_dir = None
-        for file_or_dir in test_dir.get_children():
-            if file_or_dir.name == EXCEL_FILE_NAME:
-                excel_file = file_or_dir
-            if file_or_dir.name == DATA_DIR_NAME:
-                data_dir = file_or_dir
-        self.assertIsNotNone(excel_file, "Missing Excel File, {}, in test data".format(EXCEL_FILE_NAME))
-        self.assertIsNotNone(data_dir, "Missing Data Dir, {}, in test data".format(DATA_DIR_NAME))
 
         builder = BuildProjectExperiment(self.apikey)
         spreadsheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
@@ -128,10 +115,29 @@ class TestFileProcessSample(unittest.TestCase):
         experiment_name = "Test of internal ETL"
         builder.build(spreadsheet_path, data_dir_path, self.project.id, experiment_name)
 
-    def test_open_excel_row(self):
-        builder = BuildProjectExperiment(self.apikey)
+    def test_open_excel_raw(self):
+        self.assertIsNotNone(self.project)
         spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
-        internal_file_path = builder._server_side_file_path_for_project_path(self.project, spread_sheet_path)
+        top_directory = self.project.get_top_directory()
+        file = self._find_file_in_dir(top_directory, spread_sheet_path.split('/'))
+        self.assertIsNotNone(file)
+        self.assertEqual(file.name, EXCEL_FILE_NAME)
+
+        mc_dirs_base = os.environ['MCDIR']
+        print(mc_dirs_base)
+        internal_file_path = None
+        if mc_dirs_base:
+            mc_dirs = mc_dirs_base.split(":")
+            for mc_dir in mc_dirs:
+                print(mc_dir)
+                if os.path.exists(mc_dir):
+                    probe = self._internal_file_path_from_file_record(file)
+                    probe = os.path.join(mc_dir, probe)
+                    print(probe)
+                    if os.path.exists(probe):
+                        internal_file_path = probe
+                        break
+        self.assertIsNotNone(internal_file_path)
 
         # SET UP THE LINK
         uuid = DatabaseInterface().get_uuid()
@@ -163,7 +169,29 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertEqual(source_data[0][0], 'PROJ: Generic Testing')
 
     def test_open_excel_in_builder(self):
+        self.assertIsNotNone(self.project)
         builder = BuildProjectExperiment(self.apikey)
         spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
         builder._set_etl_source_date_from_path(self.project, spread_sheet_path)
         self.assertEqual(builder.etl_source_data[0][0], 'PROJ: Generic Testing')
+
+    @staticmethod
+    def _internal_file_path_from_file_record(file):
+        file_id = file.id
+        if file.usesid:
+            file_id = file.usesid
+        file_path = "{}/{}/{}".format(file_id[9:11], file_id[11:13], file_id)
+        return file_path
+
+    def _find_file_in_dir(self, directory, path_list):
+        if not path_list:
+            return None
+        name = path_list[0]
+        for file_or_dir in directory.get_children():
+            if file_or_dir.name == name:
+                path_list = path_list[1:]
+                if len(path_list) > 0 and file_or_dir.otype == 'directory':
+                    return self._find_file_in_dir(file_or_dir, path_list)
+                elif len(path_list) == 0:
+                    return file_or_dir
+        return None

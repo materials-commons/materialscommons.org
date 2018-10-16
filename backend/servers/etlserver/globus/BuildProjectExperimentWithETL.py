@@ -327,26 +327,11 @@ class BuildProjectExperiment:
         dir_list = []
         process_files = []
         for entry in file_or_dir_list:
-            path = Path(self.project.local_path) / entry
-            if path.is_dir():
-                dir_list.append(str(path.absolute()))
-            elif path.is_file():
-                file_list.append(str(path.absolute()))
-            else:
-                self.log.debug("  Requested path for data not in user data directory, ignoring: " + str(path))
-        for entry in file_list:
-            try:
-                process_files.append(self.project.add_file_by_local_path(entry, limit=500))
-            except BaseException as e:
-                self.log.error(e)
+            print("in _add_files, file entry = {}".format(entry))
         for entry in dir_list:
-            try:
-                self.project.add_directory_tree_by_local_path(entry, limit=500)
-                directory = self.project.get_by_local_path(entry)
-                file_list = self._get_all_files_in_directory(directory)
-                process_files += file_list
-            except BaseException as e:
-                self.log.error(e)
+            print("in _add_files, dir entry = {}".format(entry))
+        for file in file_list:
+            process_files.append(file)
         self.log.debug("for process {}({})adding files {}".format(process.name, process.id, process_files))
         process.add_files(process_files)
 
@@ -605,6 +590,8 @@ class BuildProjectExperiment:
     @staticmethod
     def _internal_file_path_from_file_record(file):
         file_id = file.id
+        if file.usesid:
+            file_id = file.usesid
         file_path = "{}/{}/{}".format(file_id[9:11], file_id[11:13], file_id)
         return file_path
 
