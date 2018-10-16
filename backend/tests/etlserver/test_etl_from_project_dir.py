@@ -1,5 +1,5 @@
 import unittest
-import pytest
+# import pytest
 import os
 from random import randint
 from materials_commons.api import create_project, get_all_projects
@@ -47,7 +47,7 @@ class TestFileProcessSample(unittest.TestCase):
             local_dir_path = os.path.join(cls.data_dir_path, TEST_DIR)
             project.add_directory_tree_by_local_path(local_dir_path)
 
-    @pytest.mark.skip()
+    # @pytest.mark.skip()
     def test_is_setup_correctly(self):
         self.assertIn('MC_API_KEY', os.environ)
         self.assertIn('TEST_DATA_DIR', os.environ)
@@ -77,7 +77,7 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertTrue(found_excel_file, "Missing Excel File, {}, in test data".format(EXCEL_FILE_NAME))
         self.assertTrue(found_data_dir, "Missing Data Dir, {}, in test data".format(DATA_DIR_NAME))
 
-    @pytest.mark.skip()
+    # @pytest.mark.skip()
     def test_server_side_file_for_internal_path(self):
         self.assertIsNotNone(self.project)
         self.assertIn('MCDIR', os.environ)
@@ -93,7 +93,7 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertIsNotNone(internal_file_path, "Could not find internal file path for file, '{}'"
                              .format(spread_sheet_path))
 
-    @pytest.mark.skip()
+    # @pytest.mark.skip()
     def test_builder_gets_spreadsheet_data(self):
         self.assertIsNotNone(self.project)
         builder = BuildProjectExperiment(self.apikey)
@@ -113,7 +113,7 @@ class TestFileProcessSample(unittest.TestCase):
         experiment_name = "Test of internal ETL"
         builder.build(spreadsheet_path, data_dir_path, self.project.id, experiment_name)
 
-    @pytest.mark.skip()
+    # @pytest.mark.skip()
     def test_open_excel_raw(self):
         self.assertIsNotNone(self.project)
         spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
@@ -160,7 +160,7 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertEqual(sheet_name, 'Sheet')
         self.assertEqual(source_data[0][0], 'PROJ: Generic Testing')
 
-    @pytest.mark.skip()
+    # @pytest.mark.skip()
     def test_open_excel_in_builder(self):
         self.assertIsNotNone(self.project)
         builder = BuildProjectExperiment(self.apikey)
