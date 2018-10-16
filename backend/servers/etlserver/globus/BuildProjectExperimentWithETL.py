@@ -22,13 +22,12 @@ class BuildProjectExperiment:
         self.experiment_description = None
         self.experiment = None
         self.data_start_row = None
-        self.data_path = None
         self.parent_process_list = None
         self.previous_row_key = None
         self.previous_parent_process = None
         self.process_values = {}
         self.process_files = {}
-        self.data_path = None
+        self.data_directory = None
         self.suppress_data_upload = False
         self._make_template_table()
 
@@ -47,15 +46,16 @@ class BuildProjectExperiment:
 
         self._set_etl_source_date_from_path(self.project, spread_sheet_path)
 
-        self.suppress_data_upload = not data_dir_path
-
         self.log.info("Building Experiment from ETL spreadsheet: ")
         self.log.info("  project: name = {}, id = {}".format(self.project.name, self.project.id))
         self.log.info("  spreadsheet = {}".format(spread_sheet_path))
         self.log.info("  data = {}".format(data_dir_path))
 
-        self.data_path = data_dir_path
         self.metadata.set_input_information(spread_sheet_path, data_dir_path)
+        self.data_directory = self._get_project_directory_from_path(data_dir_path)
+        print(self.data_directory.name)
+
+        self.suppress_data_upload = not self.data_directory
 
         self._create_base_experiment()
 
@@ -319,21 +319,36 @@ class BuildProjectExperiment:
                 }
                 process.set_measurements_for_process_samples(measurement_property, [measurement])
 
+    def _get_project_directory_from_path(self, path):
+        if not path:
+            return None
+        directory = self.project.get_top_directory()
+        for part in path.split('/'):
+            probe = None
+            for child in directory.get_children():
+                if child.name == part:
+                    probe = child
+                    break
+            if probe:
+                directory = probe
+            else:
+                return None
+        return directory
+
     def _add_files(self, process, files_from_sheet):
         if not files_from_sheet:
             return
-        file_or_dir_list = [x.strip() for x in files_from_sheet.split(',')]
-        file_list = []
-        dir_list = []
+        if not self.data_directory:
+            return
+        process_data_path_list = [x.strip() for x in files_from_sheet.split(',')]
         process_files = []
-        for entry in file_or_dir_list:
-            print("in _add_files, file entry = {}".format(entry))
-        for entry in dir_list:
-            print("in _add_files, dir entry = {}".format(entry))
-        for file in file_list:
-            process_files.append(file)
-        self.log.debug("for process {}({})adding files {}".format(process.name, process.id, process_files))
-        process.add_files(process_files)
+        for path in process_data_path_list:
+            path_list = path.split('/')
+            process_files += self._all_files_in_data_directory_path(self.data_directory, path_list)
+        self.log.debug("for process {}({})adding files {}".
+                       format(process.name, process.id, [x.name for x in process_files]))
+        if len(process_files) > 0:
+            process.add_files(process_files)
 
     def _set_etl_source_date_from_path(self, project, spread_sheet_path):
         # Note: passing in project to facilitate partial testing
@@ -459,6 +474,19 @@ class BuildProjectExperiment:
                 and parent_process.id != self.previous_parent_process.id:
             return True
         return row_key != self.previous_row_key
+
+    def _all_files_in_data_directory_path(self, directory, path_list):
+        if len(path_list) == 0:
+            return self._get_all_files_in_directory(directory)
+        file_return_list = []
+        for part in path_list:
+            for child in directory.get_children():
+                if child.name == part:
+                    if type(child) is FileRecord:
+                        file_return_list.append(child)
+                    else:
+                        file_return_list += self._all_files_in_data_directory_path(child, path_list[1:])
+        return file_return_list
 
     def _get_all_files_in_directory(self, directory):
         file_list = []

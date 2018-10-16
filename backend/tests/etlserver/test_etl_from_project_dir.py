@@ -47,6 +47,7 @@ class TestFileProcessSample(unittest.TestCase):
             local_dir_path = os.path.join(cls.data_dir_path, TEST_DIR)
             project.add_directory_tree_by_local_path(local_dir_path)
 
+    @pytest.mark.skip()
     def test_is_setup_correctly(self):
         self.assertIn('MC_API_KEY', os.environ)
         self.assertIn('TEST_DATA_DIR', os.environ)
@@ -58,12 +59,6 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertEqual(self.project_name, self.project.name)
         self.assertIsNotNone(self.project.id)
         self.assertEqual(self.project_id, self.project.id)
-
-        print("\nStarting test...")
-        print("  Project name = {}".format(self.project.name))
-        print("  Internal Test Dir path = {}".format(TEST_DIR))
-        print("  Internal Excel File name = {}".format(EXCEL_FILE_NAME))
-        print("  Internal Data Dir name = {}".format(DATA_DIR_NAME))
 
         directory = self.project.get_top_directory()
         for dir_name in TEST_DIR.split('/'):
@@ -82,6 +77,7 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertTrue(found_excel_file, "Missing Excel File, {}, in test data".format(EXCEL_FILE_NAME))
         self.assertTrue(found_data_dir, "Missing Data Dir, {}, in test data".format(DATA_DIR_NAME))
 
+    @pytest.mark.skip()
     def test_server_side_file_for_internal_path(self):
         self.assertIsNotNone(self.project)
         self.assertIn('MCDIR', os.environ)
@@ -97,24 +93,27 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertIsNotNone(internal_file_path, "Could not find internal file path for file, '{}'"
                              .format(spread_sheet_path))
 
+    @pytest.mark.skip()
     def test_builder_gets_spreadsheet_data(self):
         self.assertIsNotNone(self.project)
         builder = BuildProjectExperiment(self.apikey)
         spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
         builder._set_etl_source_date_from_path(self.project, spread_sheet_path)
-        print(builder.etl_source_data[1][1])
+        self.assertEqual(builder.etl_source_data[1][1], "SAMPLES")
 
     def test_build_experiment_from_etl(self):
         self.assertIsNotNone(self.project)
         self.assertIn('MCDIR', os.environ)
 
+        print("\nProject name = {}".format(self.project.name))
+
         builder = BuildProjectExperiment(self.apikey)
         spreadsheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
         data_dir_path = os.path.join(TEST_DIR, DATA_DIR_NAME)
-        print("For ETL: spreadsheet_path = {}, data_dir_path = {}".format(spreadsheet_path, data_dir_path))
         experiment_name = "Test of internal ETL"
         builder.build(spreadsheet_path, data_dir_path, self.project.id, experiment_name)
 
+    @pytest.mark.skip()
     def test_open_excel_raw(self):
         self.assertIsNotNone(self.project)
         spread_sheet_path = os.path.join(TEST_DIR, EXCEL_FILE_NAME)
@@ -124,16 +123,13 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertEqual(file.name, EXCEL_FILE_NAME)
 
         mc_dirs_base = os.environ['MCDIR']
-        print(mc_dirs_base)
         internal_file_path = None
         if mc_dirs_base:
             mc_dirs = mc_dirs_base.split(":")
             for mc_dir in mc_dirs:
-                print(mc_dir)
                 if os.path.exists(mc_dir):
                     probe = self._internal_file_path_from_file_record(file)
                     probe = os.path.join(mc_dir, probe)
-                    print(probe)
                     if os.path.exists(probe):
                         internal_file_path = probe
                         break
@@ -150,16 +146,12 @@ class TestFileProcessSample(unittest.TestCase):
         # READ DATA
         sheet_name_list = None
         source_data = None
-        # noinspection PyBroadException
-        try:
-            excel_io_controller = ExcelIO()
-            excel_io_controller.read_workbook(link_path)
-            sheet_name_list = excel_io_controller.sheet_name_list()
-            excel_io_controller.set_current_worksheet_by_index(0)
-            source_data = excel_io_controller.read_entire_data_from_current_sheet()
-            excel_io_controller.close()
-        except BaseException as e:
-            print("Reading failed: {}".format(e))
+        excel_io_controller = ExcelIO()
+        excel_io_controller.read_workbook(link_path)
+        sheet_name_list = excel_io_controller.sheet_name_list()
+        excel_io_controller.set_current_worksheet_by_index(0)
+        source_data = excel_io_controller.read_entire_data_from_current_sheet()
+        excel_io_controller.close()
 
         # TAKE DOWN LINK
         os.unlink(link_path)
@@ -168,6 +160,7 @@ class TestFileProcessSample(unittest.TestCase):
         self.assertEqual(sheet_name, 'Sheet')
         self.assertEqual(source_data[0][0], 'PROJ: Generic Testing')
 
+    @pytest.mark.skip()
     def test_open_excel_in_builder(self):
         self.assertIsNotNone(self.project)
         builder = BuildProjectExperiment(self.apikey)
