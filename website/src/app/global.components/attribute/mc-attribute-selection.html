@@ -1,7 +1,7 @@
 <div layout="column" layout-alignx="start center" flex="100">
     <div style="margin-top:45px" flex>
         <md-input-container class="md-block" flex="70">
-            <label>{{::$ctrl.setting.name}} here</label>
+            <label>{{::$ctrl.setting.name}}</label>
             <md-select ng-model="$ctrl.setting.value"
                        ng-model-options="{trackBy: '$value.name'}"
                        ng-change="$ctrl.updateSelectionSettingProperty($ctrl.setting)"
