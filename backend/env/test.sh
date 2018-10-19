@@ -10,6 +10,7 @@ export MC_API_SERVICE_PORT=6004
 export MC_PUB_SERVICE_PORT=6026
 export MC_API_GLOBUS_SERVICE_PORT=6046
 export MC_ETL_SERVICE_PORT=6032
+export MCSERV_PORT=6052
 export MCDB_PORT=50815
 export MCDB_CONNECTION="localhost:$MCDB_PORT"
 export MCDB_DIR=/var/db/materialscommons/testdb

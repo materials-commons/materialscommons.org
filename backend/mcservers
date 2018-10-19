@@ -187,6 +187,25 @@ function stop_mcapiserver() {
     done
 }
 
+function start_mcserv() {
+    R=$(is_running "mcserv" "--db-connection ${MCDB_CONNECTION}")
+    if [ "$R" = "" ]; then
+        echo "Starting mcserv ($SERVERTYPE)..."
+        build_mcserv
+        ${MCSERVBIN} --db-connection ${MCDB_CONNECTION} --db-name ${MCDB} --port ${MCSERV_PORT} > ${MC_LOG_DIR}/mserv.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
+}
+
+function stop_mcserv() {
+    echo "Stopping mcserv ($SERVERTYPE)..."
+    ps -ef "pid,command" | grep mcserv | grep "$MCDB_CONNECTION" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    do
+        kill ${line}
+        echo "  Stopped mcserv with pid ${line}"
+    done
+}
+
 function start_mcstored() {
     R=$(is_running "mcstored.forever.sh" "${SERVERTYPE}")
     if [ "$R" = "" ]; then
@@ -349,6 +368,7 @@ function start_servers() {
     start_etl_server
     start_mcapiserver
     start_mcstored
+    start_mcserv
     start_mcapi
     start_mcpub
     start_mcmon
@@ -383,6 +403,7 @@ function stop_servers() {
     stop_etl_server
     stop_mcapiserver
     stop_mcstored
+    stop_mcserv
     stop_mcapi
     stop_mcpub
     stop_mcmon
@@ -401,6 +422,10 @@ function stop_named_server() {
 
         mcstored)
             stop_mcstored
+            ;;
+
+        mcserv)
+            stop_mcserv
             ;;
 
         mcapi)
@@ -463,6 +488,10 @@ function restart_named_server() {
 
         mcstored)
             start_mcstored
+            ;;
+
+        mcserv)
+            start_mcserv
             ;;
 
         mcapi)
@@ -578,6 +607,11 @@ function ps_server_env() {
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
 
     echo
+    echo "MCSERV Server (${SERVERTYPE}):"
+    ps -ef | grep mcserv | grep "$MCDB_CONNECTION" | grep -v grep
+
+
+    echo
     echo "MCMON Server (${SERVERTYPE}):"
     ps -ef | grep "servers/mcmon/main.js" | grep "servertype ${SERVERTYPE}" | grep -v grep
 
@@ -683,11 +717,11 @@ function tail_servers() {
     touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} \
         ${D}/mcpub.out.${ST} ${D}/mcmon.out.${ST} ${D}/redis.out.${ST} \
         ${D}/mcapid.out.${ST} ${D}/mcetlserver.out.${ST} \
-        ${D}/faktory.out.${ST} ${D}/mcetlfaktoryworker.out.${ST}
+        ${D}/faktory.out.${ST} ${D}/mcetlfaktoryworker.out.${ST} ${D}/mcserv.out.${ST}
     tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} \
         -f ${D}/mcpub.out.${ST} -f ${D}/mcmon.out.${ST} -f ${D}/redis.out.${ST} \
         -f ${D}/mcapid.out.${ST} -f ${D}/mcetlserver.out.${ST} \
-        -f ${D}/faktory.out.${ST} -f ${D}/mcetlfaktoryworker.out.${ST}
+        -f ${D}/faktory.out.${ST} -f ${D}/mcetlfaktoryworker.out.${ST} ${D}/mcserv.out.${ST}
 }
 
 function setup_deploy_dir() {
