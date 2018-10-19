@@ -737,6 +737,9 @@ function deploy_mc() {
     echo "  Stopping servers..."
     stop_servers
 
+    echo "  Updating Python API Library"
+    scripts/updatePythonApi.sh
+
     echo "  Updating server dependencies..."
     rm -f package-lock.json
     npm install
