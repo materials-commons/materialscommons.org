@@ -3,6 +3,7 @@ import os
 import sys
 import signal
 import logging
+import pkg_resources
 
 # Note: after fooling around with modules and paths for a couple of days, I discovered
 #  that the below conditional addition to sys.path, solved the problem with werkzeug
@@ -35,6 +36,20 @@ def main():
         exit(-1)
 
     log.info("Starting ELT SERVER with host = {} and port = {}".format(_HOST, _PORT))
+    log.info("  Using MC Python API, version = {}".format(pkg_resources.get_distribution("materials_commons").version))
+    # try:
+    #     import http.client as http_client
+    # except ImportError:
+    #     # Python 2
+    #     import httplib as http_client
+    # http_client.HTTPConnection.debuglevel = 1
+    #
+    # # You must initialize logging, otherwise you'll not see debug output.
+    # logging.basicConfig()
+    # logging.getLogger().setLevel(logging.DEBUG)
+    # requests_log = logging.getLogger("requests.packages.urllib3")
+    # requests_log.setLevel(logging.DEBUG)
+    # requests_log.propagate = True
 
     if SERVER_TYPE and SERVER_TYPE == 'dev':
         if not _SSL_DIR:

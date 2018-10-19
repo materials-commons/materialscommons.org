@@ -63,6 +63,7 @@ class MCDatasetOverviewContainerComponentController {
 angular.module('materialscommons').component('mcDatasetOverviewContainer', {
     template: `
         <mc-dataset-overview 
+            layout="column" flex
             ng-if="$ctrl.dataset"
             dataset="$ctrl.dataset"
             on-toggle-useful="$ctrl.onToggleUseful()"

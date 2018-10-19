@@ -36,10 +36,9 @@ function* validateProperty (template, property) {
         return errors;
     }
 
-
-    if (!propertyValidator.isValidSetupProperty(template, property)) {
-        return {error: `Invalid property ${property.attribute}`};
-    }
+    // if (!propertyValidator.isValidSetupProperty(template, property)) {
+    //     return {error: `Invalid property ${property.attribute}`};
+    // }
 
     return null;
 }

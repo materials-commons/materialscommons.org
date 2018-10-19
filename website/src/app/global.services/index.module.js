@@ -33,5 +33,4 @@ import './store/dsstore.service';
 import './store/projectstore.service';
 import './project-shortcuts.service';
 import './mc-route-state.service';
-
-
+import './globus-endpoint-saver.service';

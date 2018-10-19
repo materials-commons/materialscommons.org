@@ -6,6 +6,7 @@ import pkg_resources
 from flask import Flask, request
 from flask_api import status
 
+from servers.etlserver.globus.BuildProjectExperimentWithETL import BuildProjectExperiment
 from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.database.DB import DbConnection
 from servers.etlserver.download.GlobusDownload import GlobusDownload, DOWNLOAD_NO_FILES_FOUND
@@ -51,7 +52,7 @@ def hello_world():
 @app.route('/version')
 def get_version():
     return format_as_json_return({
-        "version": pkg_resources.get_distribution("materials_commons").version
+        "python_api_version": pkg_resources.get_distribution("materials_commons").version
     })
 
 
@@ -143,7 +144,7 @@ def get_background_status_for_project():
 @app.route('/upload', methods=['POST'])
 @apikey
 def upload_file():
-    log.info("etl file upload - starting")
+    log.info("etl-only; no data file upload - starting")
     api_key = request.args.get('apikey', default="no_such_key")
     name = request.form.get('name')
     project_id = request.form.get("project_id")
@@ -169,13 +170,13 @@ def upload_file():
     log.info("etl file upload - file saved to " + file_path)
     # noinspection PyBroadException
     try:
-        # builder = BuildProjectExperiment(api_key)
-        # builder.set_rename_is_ok(True)
-        # builder.preset_project_id(project_id)
-        # builder.preset_experiment_name_description(name, description)
-        # log.info("etl file upload - build starting...")
-        # builder.build(file_path, None)
-        # log.info("etl file upload - done")
+        builder = BuildProjectExperiment(api_key)
+        builder.set_rename_is_ok(True)
+        builder.preset_project_id(project_id)
+        builder.preset_experiment_name_description(name, description)
+        log.info("etl file upload - build starting...")
+        builder.build(file_path, None)
+        log.info("etl file upload - done")
         return format_as_json_return({"project_id": project_id})
     except Exception as e:
         log.info("Unexpected exception...", exc_info=True)

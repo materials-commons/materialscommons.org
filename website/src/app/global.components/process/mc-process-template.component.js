@@ -10,7 +10,8 @@ class MCProcessTemplateComponentController {
         this.mcprojstore = mcprojstore;
     }
 
-    $onInit() {
+    $onChanges(changes) {
+        this.process = changes.process.currentValue;
         if (!this.process.filesLoaded && this.process.files_count) {
             this.processesAPI.getProcessFiles(this.projectId, this.process.id).then(
                 (files) => {
