@@ -15,6 +15,7 @@ export MC_SERVICE_PORT=5006
 export RETHINKDB_HTTP_PORT=8080
 export RETHINKDB_CLUSTER_PORT=29015
 export MCSTOREDBIN=${MC_DEPLOY_DIR}/bin/mcstored
+export MCSERVBIN=${MC_DEPLOY_DIR}/bin/mcserv
 export MCDB_DIR=/var/db/materialscommons/proddb
 export MC_ES_URL="http://localhost:9200"
 export MC_ES_NAME="mc-es"

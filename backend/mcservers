@@ -8,11 +8,17 @@ function docker_instance_running() {
     docker ps -a | grep "$1\$" | grep "Up "
 }
 
-function build_mcstored()
-{
+function build_mcstored() {
     if [ ${COMPILE_MCSTORE} = "t" ]; then
         (cd ${MCSTORE_SRC}; make server)
         cp ${MCSTORE_SRC}/server/mcstore/main/mcstored ${MCSTOREDBIN}
+    fi
+}
+
+function build_mcserv() {
+    if [ ${COMPILE_MCSERV} = "t" ]; then
+        (cd ${MCSERV_SRC}; make server)
+        cp ${MCSERV_SRC}/cmd/mcserv/mcserv ${MCSERVBIN}
     fi
 }
 
@@ -842,6 +848,7 @@ if [ "$MCUSER" = "" ]; then
 fi
 
 export MCSTORE_SRC=$HOME/workspace/src/github.com/materials-commons/mcstore
+export MCSERV_SRC=$HOME/workspace/src/github.com/materials-commons/mc
 
 # Set defaults
 TESTSERVER="d"
@@ -862,6 +869,7 @@ MCSTORE_RESTORE_BRANCH=""
 MC_BRANCH=""
 MCSTORE_BRANCH=""
 COMPILE_MCSTORE=t
+COMPILE_MCSERV=t
 MC_SERVICE_NAME=""
 BACKUP_DATABASE=t
 SHOW_SERVERS=f

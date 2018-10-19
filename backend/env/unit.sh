@@ -15,6 +15,7 @@ export MCDB_DIR=~/unitdb
 export RETHINKDB_HTTP_PORT=8070
 export RETHINKDB_CLUSTER_PORT=41815
 export MCSTOREDBIN=testbin/mcstored
+export MCSERVBIN=testbin/mcserv
 export MC_ES_URL="http://localhost:9500"
 export MC_ES_NAME="mc-es-test"
 export MC_LOG_DIR=/tmp
