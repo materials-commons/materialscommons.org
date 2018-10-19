@@ -199,7 +199,7 @@ function start_mcserv() {
 
 function stop_mcserv() {
     echo "Stopping mcserv ($SERVERTYPE)..."
-    ps -ef "pid,command" | grep mcserv | grep "$MCDB_CONNECTION" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    ps -eo "pid,command" | grep mcserv | grep "$MCDB_CONNECTION" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
         kill ${line}
         echo "  Stopped mcserv with pid ${line}"
