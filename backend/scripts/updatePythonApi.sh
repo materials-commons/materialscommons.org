@@ -24,7 +24,7 @@ set_locations() {
     popd
 }
 
-update_pyton_api() {
+update_python_api() {
     echo "Update of Python API"
     pushd ${BACKEND}/servers/etlserver
     source .python_env/bin/activate
@@ -46,4 +46,4 @@ set_locations
 echo "BASE           = $BASE"
 echo "BACKEND        = $BACKEND"
 echo "PYTHON_API_DIR = $PYTHON_API_DIR"
-update_pyton_api
+update_python_api
