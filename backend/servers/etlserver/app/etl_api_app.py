@@ -557,7 +557,7 @@ def globus_auth_logout():
 
 @app.route('/faktory/status', methods=['GET', 'POST'])
 def faktory_status():
-    log.info("Faktory status - starting")
+    log.info("Faktory status - starting - NOTE: not fully implemented")
     # user_id = access.get_user()
     # if not access.is_administrator(user_id):
     #    message = "User is not admin"
@@ -566,6 +566,10 @@ def faktory_status():
 
     # noinspection PyBroadException
     # status = statusHolder().get_status();
+    #
+    # Note: this feature is commented out in the UI - not fully implemented
+    #  see src/app/components/admin/mc-admin-info/mc-admin-info.html
+    #
     status_value = {
         "faktory": {
             "default_size": 0,
