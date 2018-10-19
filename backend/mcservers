@@ -188,11 +188,11 @@ function stop_mcapiserver() {
 }
 
 function start_mcserv() {
-    R=$(is_running "mcserv" "--db-connection ${MCDB_CONNECTION}")
+    R=$(is_running "mcserv" "db-connection ${MCDB_CONNECTION}")
     if [ "$R" = "" ]; then
         echo "Starting mcserv ($SERVERTYPE)..."
         build_mcserv
-        ${MCSERVBIN} --db-connection ${MCDB_CONNECTION} --db-name ${MCDB} --port ${MCSERV_PORT} > ${MC_LOG_DIR}/mserv.out.${SERVERTYPE} 2>&1&
+        ${MCSERVBIN} --db-connection ${MCDB_CONNECTION} --port ${MCSERV_PORT} > ${MC_LOG_DIR}/mcserv.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
