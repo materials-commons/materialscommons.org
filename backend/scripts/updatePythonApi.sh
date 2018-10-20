@@ -1,27 +1,9 @@
 #!/usr/bin/env bash
-set -e
-
-# no-output on pushd and popd
-pushd () {
-    command pushd "$@" > /dev/null
-}
-
-popd () {
-    command popd "$@" > /dev/null
-}
 
 set_locations() {
-    # location of this script: backend/scripts
-    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    pushd ${DIR}
-    BASE=`pwd`
-    pushd '..'
-    BACKEND=`pwd`
-    pushd '../../mcapi/python'
-    PYTHON_API_DIR=`pwd`
-    popd
-    popd
-    popd
+    BASE="$HOME/workspace/src/github.com/materials-commons/materialscommons.org/backend/scripts"
+    BACKEND="$HOME/workspace/src/github.com/materials-commons/materialscommons.org/backend"
+    PYTHON_API_DIR="$HOME/workspace/src/github.com/materials-commons/mcapi/python"
 }
 
 update_python_api() {
@@ -33,7 +15,10 @@ update_python_api() {
     popd
     pushd ${PYTHON_API_DIR}
     git pull
-    pip uninstall -y materials-commons
+    probe=`pip list | grep materials-commons`
+    if [ "${probe}" != "" ]; then
+        pip uninstall -y materials-commons
+    fi
     python setup.py install
     echo "==== Python API version check ===="
     cat materials_commons/VERSION.txt
