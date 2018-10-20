@@ -431,6 +431,11 @@ class EtlUploadDialogController {
         this.isAuthenticatedToGlobus = false;
         this.sidenavGlobus.isAuthenticated()
             .then(authStatus => this.isAuthenticatedToGlobus = authStatus);
+        // for Project upload
+        this.excelFiles = ['excel_file_one.xslx', 'excel_file_two.xslx'];
+        this.excelFile = "";
+        this.dirPaths = ["/data","/not/data/dir"];
+        this.dirPath = "";
         // test data settings
         // this.name = "Exp Test-";
         // this.description = "Test experiment for testing";
@@ -441,9 +446,13 @@ class EtlUploadDialogController {
     }
 
     globus_upload_ok() {
-        return this.name && this.description && this.ep_uuid && this.base_path
+        return this.name && this.ep_uuid && this.base_path
             && this.spreadsheet_rel_path && this.data_dir_rel_path
             && this.isAuthenticatedToGlobus;
+    }
+
+    project_upload_ok() {
+        return this.name && (this.excelFile.length > 0);
     }
 
     uploadWithGlobus() {

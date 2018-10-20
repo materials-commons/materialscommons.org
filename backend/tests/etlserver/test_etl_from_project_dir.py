@@ -3,7 +3,7 @@ import unittest
 import os
 from random import randint
 from materials_commons.api import create_project, get_all_projects
-from servers.etlserver.globus.BuildProjectExperimentWithETL import BuildProjectExperiment
+from servers.etlserver.internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
 from servers.etlserver.common.worksheet_data import ExcelIO
 from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 
