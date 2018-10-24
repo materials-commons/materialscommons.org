@@ -17,6 +17,7 @@ const shortcuts = require('./shortcuts');
 const schema = require('../../schema');
 const experimentDatasets = require('../../db/model/experiment-datasets');
 const experimentDatasetsDoi = require('../../db/model/experiment-datasets-doi');
+const _ = require('lodash');
 
 
 function* create(next) {
