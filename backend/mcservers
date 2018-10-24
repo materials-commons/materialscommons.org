@@ -760,6 +760,7 @@ function deploy_mc() {
         (cd ${MCSTORE_SRC}; git checkout ${MCSTORE_BRANCH})
     fi
     (cd ${MCSTORE_SRC}; git pull)
+    (cd ${MCSERV_SRC}; git pull)
 
     if [ "$BACKUP_DATABASE" = "t" ]; then
         echo "  Creating database backup..."
