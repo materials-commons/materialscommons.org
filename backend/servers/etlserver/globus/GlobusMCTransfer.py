@@ -38,6 +38,9 @@ class GlobusMCTransfer:
         while not status == "SUCCEEDED" and not status == "FAILED":
             task = self.mc_globus_interface.user_transfer_client.get_task(task_id)
             status = task['status']
+            self.log.info("Transferred: bytes - {}, files - {}/{}".format(
+                task['bytes_transferred'], task['files_transferred'], task['files']
+            ))
             self.log.info("Current task status = {}".format(status))
             time.sleep(5)
         # self.mc_globus_interface.clear_user_access_rule(destination_path)
