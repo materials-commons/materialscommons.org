@@ -441,7 +441,7 @@ class EtlUploadDialogController {
     }
 
     globus_upload_ok() {
-        return this.name && this.description && this.ep_uuid && this.base_path
+        return this.name && this.ep_uuid && this.base_path
             && this.spreadsheet_rel_path && this.data_dir_rel_path
             && this.isAuthenticatedToGlobus;
     }
