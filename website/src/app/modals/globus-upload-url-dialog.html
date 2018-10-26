@@ -1,0 +1,28 @@
+<md-dialog flex="60">
+    <md-toolbar ng-if="! $ctrl.requestComplete" layout="row">
+        <div layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>
+            Globus: Upload to top level directory of
+            <b>{{$ctrl.project.name}}</b>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <p>
+            To upload one or more files from your Globus endpoint to the top level directory
+                of the project '{{$ctrl.project.name}}':
+            <br />
+            this
+            <a ng-click="$ctrl.dismiss()"
+                 href="{{$ctrl.getDestinationEndpoint()}}"
+                 target="_blank">
+                one-time-use link</a>
+            to the destination endpoint {{$ctrl.upload_endpoint}}.
+            <br />
+            Simply click and browse to your globus endpoint. You may return to this dialog
+            to obtain additional upload links. Each link should only be used once.
+        </p>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>

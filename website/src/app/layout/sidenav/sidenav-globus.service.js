@@ -21,7 +21,7 @@ class SidenavGlobusService {
 
     globusUpload(project) {
         return this.$mdDialog.show({
-                templateUrl: 'app/modals/globus-upload-transfer-dialog.html',
+                templateUrl: 'app/modals/globus-upload-url-dialog.html',
                 controller: GlobusUploadTransferDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
@@ -83,29 +83,16 @@ class GlobusUploadTransferDialogController {
         this.uploadUniquename = 'undefined';
         this.uploadId = 'undefined';
         this.status = '';
-        this.etlServerAPI.getSystemGlobusInformation()
-            .then(infoResults => {
-                console.log('Info results returned from server: ', infoResults);
-                this.uploadName = infoResults.upload_user_name;
-                this.uploadUniquename = infoResults.upload_user_unique_name;
-                this.uploadId = infoResults.upload_user_id;
-            });
+        this.endpoint_id = 'abddfdbe-bdcb-11e8-8c1e-0a1d4c5c824a';
+        this.fake_url = 'https://www.globus.org/app/transfer?destination_id=abddfdbe-bdcb-11e8-8c1e-0a1d4c5c824a&destination_path=%2F__upload_staging%2Fproject-8afbb6ab-73c7-4f76-97ca-82960ff7144b%2Fupload-abddfdbe-bdcb-11e8-8c1e-0a1d4c5c824a%2F'
     }
 
-    submitToServer() {
-        console.log('Submitting request to server: ', this.project.id, this.endpoint, this.endpointPath);
-        this.globusEndpointSaver.saveNonEtlEndpoint(this.endpointPath, this.endpoint);
-        this.etlServerAPI.setupGlobusUploadTransfer(this.project.id, this.endpoint, this.endpointPath)
-            .then(globusResults => {
-                console.log('Results returned from server: ', globusResults);
-                if (globusResults) {
-                    this.status = globusResults.status;
-                    this.status_record_id = globusResults.status_record_id;
-                }
-                else {
-                    this.status = 'FAIL';
-                }
-            });
+    getDestinationEndpoint() {
+        return this.fake_url
+    }
+
+    dismiss() {
+        this.$mdDialog.cancel();
     }
 
     cancel() {

@@ -152,20 +152,20 @@
         </div>
 
         <div class="padding-3">
+            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.setupGlobusUpload()" ng-class="{disabled: !$ctrl.isAuthenticatedToGlobus}">
+                <i class="fa fa-fw fa-cloud-upload"></i>Globus Upload To Project
+            </a>
+        </div>
+
+        <div class="padding-3">
             <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.startGlobusDownloadTransfer()" ng-class="{disabled: !$ctrl.isAuthenticatedToGlobus}">
                 <i class="fa fa-fw fa-cloud-download"></i>Globus Download From Project
             </a>
         </div>
 
         <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.startGlobusTransfer()" ng-class="{disabled: !$ctrl.isAuthenticatedToGlobus}">
-                <i class="fa fa-fw fa-cloud-upload"></i>Globus Upload To Project
-            </a>
-        </div>
-
-        <div class="padding-3">
             <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.showGlobusTasks()" ng-class="{disabled: !$ctrl.isAuthenticatedToGlobus}">
-                <i class="fa fa-fw fa-info-circle"></i>Globus Upload Tasks
+                <i class="fa fa-fw fa-info-circle"></i>Status of Globus Requests
             </a>
         </div>
 
