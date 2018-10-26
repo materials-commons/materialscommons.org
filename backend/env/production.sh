@@ -25,10 +25,6 @@ export MC_FAKTORY_DIR=/var/lib/materialscommons/faktory/production
 export MCDIR=/mcfs/data/materialscommons
 export MCFS_HTTP_PORT=5010
 
-if [ -f /etc/materialscommons/config.prod ]; then
-    . /etc/materialscommons/config.prod
-fi
-
 export MCAPID_COMMAND="npx actionhero start cluster --workerTitlePrefix=mcapid-${SERVERTYPE}"
 export MCAPID_PORT=5016
 export REDIS_PORT=6379
@@ -40,5 +36,11 @@ export MC_API_URL="https://materialscommons.org/api"
 export MC_GLOBUS_AUTH_CALLBACK="$MC_API_URL/etl/globus/auth/callback"
 
 export MC_ETL_WORKER_LOG_LEVEL=WARNING
+
+if [ -f /etc/materialscommons/config.prod ]; then
+    . /etc/materialscommons/config.prod
+fi
+
+
 
 # see also the override file /etc/materialscommons/config.prod

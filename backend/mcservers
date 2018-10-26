@@ -15,6 +15,18 @@ function build_mcstored() {
     fi
 }
 
+function move_log() {
+    mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
+    (cd ${MC_LOG_DIR}; mv ${1}.* archive)
+}
+
+function delete_old_logs() {
+    if [ "$MC_LOG_DIR" != "" ]; then
+        mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
+        (cd ${MC_LOG_DIR}/archive; find . -type f -mtime +5 | xargs rm -f)
+    fi
+}
+
 function build_mcserv() {
     if [ ${COMPILE_MCSERV} = "t" ]; then
         (cd ${MCSERV_SRC}; make server)
@@ -53,7 +65,8 @@ function start_faktory() {
         R=$(ps -eo "pid,command" | grep faktory | grep -v tail | grep -v grep | grep -v bash)
         if [ "$R" = "" ]; then
             echo "Starting Faktory from command line..."
-            faktory > ${MC_LOG_DIR}/faktory.out.${SERVERTYPE} 2>&1&
+            move_log "faktory"
+            faktory > ${MC_LOG_DIR}/faktory.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&
             sleep 1
         fi
     else
@@ -85,7 +98,8 @@ function start_etl_faktory_worker() {
     R=$(is_running "run_worker" "$SERVERTYPE")
     if [ "$R" = "" ]; then
         echo "Starting ETL faktory worker ($SERVERTYPE)..."
-        ./servers/etlserver/run_worker.sh $SERVERTYPE > ${MC_LOG_DIR}/mcetlfaktoryworker.out.${SERVERTYPE} 2>&1&
+        move_log "mcetlfaktoryworker"
+        ./servers/etlserver/run_worker.sh $SERVERTYPE > ${MC_LOG_DIR}/mcetlfaktoryworker.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
@@ -103,7 +117,8 @@ function start_etl_server() {
     R=$(is_running "mc_etlserver.py")
     if [ "$R" = "" ]; then
         echo "Starting mcetlserver (${SERVERTYPE})..."
-        ./servers/etlserver/run_server.sh ${SERVERTYPE} > ${MC_LOG_DIR}/mcetlserver.out.${SERVERTYPE} 2>&1&
+        move_log "mcetlserver"
+        ./servers/etlserver/run_server.sh ${SERVERTYPE} > ${MC_LOG_DIR}/mcetlserver.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
@@ -173,7 +188,8 @@ function start_mcapiserver() {
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcapiserver ($SERVERTYPE)..."
-        ./mcapiserver.py -p ${MC_SERVICE_PORT} > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
+        move_log "mcapiserver"
+        ./mcapiserver.py -p ${MC_SERVICE_PORT} > ${MC_LOG_DIR}/mcapiserver.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
@@ -191,8 +207,9 @@ function start_mcserv() {
     R=$(is_running "mcserv" "db-connection ${MCDB_CONNECTION}")
     if [ "$R" = "" ]; then
         echo "Starting mcserv ($SERVERTYPE)..."
+        move_log "mcserv"
         build_mcserv
-        ${MCSERVBIN} --db-connection ${MCDB_CONNECTION} --port ${MCSERV_PORT} > ${MC_LOG_DIR}/mcserv.out.${SERVERTYPE} 2>&1&
+        ${MCSERVBIN} --db-connection ${MCDB_CONNECTION} --port ${MCSERV_PORT} > ${MC_LOG_DIR}/mcserv.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
@@ -212,6 +229,7 @@ function start_mcstored() {
         echo "Starting mcstored ($SERVERTYPE)..."
         build_mcstored
         export MC_LOG_DIR
+        export LOGSTAMP
         export SERVERTYPE
         export MCSTOREDBIN
         ./mcstored.forever.sh ${SERVERTYPE} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect="localhost:$MCDB_PORT" --es-url=${MC_ES_URL} > /dev/null 2>&1&
@@ -238,7 +256,8 @@ function start_mcapi() {
     R=$(is_running "servers/mcapi/mcapi.js" "p $MC_API_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcapi ($SERVERTYPE)..."
-        nodemon --watch servers/mcapi --watch servers/lib servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
+        move_log "mcapi"
+        nodemon --watch servers/mcapi --watch servers/lib servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
@@ -256,7 +275,8 @@ function start_mcpub() {
     R=$(is_running "servers/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcpub ($SERVERTYPE)..."
-        nodemon --watch servers/mcpub --watch servers/lib servers/mcpub/mcpub.js -p ${MC_PUB_SERVICE_PORT} > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
+        move_log "mcpub"
+        nodemon --watch servers/mcpub --watch servers/lib servers/mcpub/mcpub.js -p ${MC_PUB_SERVICE_PORT} > ${MC_LOG_DIR}/mcpub.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
@@ -274,7 +294,8 @@ function start_mcmon() {
     R=$(is_running "servers/mcmon/main.js" "servertype $SERVERTYPE")
     if [ "$R" = "" ]; then
         echo "Starting mcmon ($SERVERTYPE)..."
-        nodemon --watch servers/mcmon/main.js --watch servers/mcmon/src servers/mcmon/main.js --servertype $SERVERTYPE  > ${MC_LOG_DIR}/mcmon.out.${SERVERTYPE} 2>&1&
+        move_log "mcmon"
+        nodemon --watch servers/mcmon/main.js --watch servers/mcmon/src servers/mcmon/main.js --servertype $SERVERTYPE  > ${MC_LOG_DIR}/mcmon.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&
     fi
 }
 
@@ -291,7 +312,8 @@ function start_redis() {
     R=$(is_running "redis-server" "${REDIS_PORT}")
     if [ "$R" = "" ]; then
         echo "Starting redis (${SERVERTYPE})..."
-        redis-server --port ${REDIS_PORT} > ${MC_LOG_DIR}/redis.out.${SERVERTYPE} 2>&1&
+        move_log "redis"
+        redis-server --port ${REDIS_PORT} > ${MC_LOG_DIR}/redis.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
 }
@@ -309,8 +331,9 @@ function start_mcapid() {
     R=$(is_running "mcapid-${SERVERTYPE}" " ")
     if [ "$R" = "" ]; then
         echo "Start mcapid server (${SERVERTYPE})..."
+        move_log "mcapid"
         echo "${MCAPID_COMMAND}"
-        (cd servers/mcapid; sh -c "${MCAPID_COMMAND}" > ${MC_LOG_DIR}/mcapid.out.${SERVERTYPE} 2>&1&)
+        (cd servers/mcapid; sh -c "${MCAPID_COMMAND}" > ${MC_LOG_DIR}/mcapid.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&)
         sleep 1
     fi
 }
@@ -329,7 +352,8 @@ function start_globus() {
         R=$(is_running "globusonline" " ")
         if [ "$R" = "" ]; then
             echo "Starting globus (${SERVERTYPE})..."
-            (cd ~/bin/globus; ./globusconnectpersonal -start > ${MC_LOG_DIR}/globus.out.${SERVERTYPE} 2>&1&)
+            move_log "globus"
+            (cd ~/bin/globus; ./globusconnectpersonal -start > ${MC_LOG_DIR}/globus.${LOGSTAMP}.out.${SERVERTYPE} 2>&1&)
             sleep 1
         fi
     fi
@@ -354,7 +378,8 @@ function check_nginx() {
 
 function start_servers() {
     echo Starting ${SERVERTYPE} servers...
-    mkdir -p ${MC_LOG_DIR} 2> /dev/null
+    mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
+    delete_old_logs
 
     if [ ${SERVERTYPE} = "test" -o ${SERVERTYPE} = "production" ]; then
         cd "${MC_DEPLOY_DIR}/backend"
@@ -760,6 +785,7 @@ function deploy_mc() {
         (cd ${MCSTORE_SRC}; git checkout ${MCSTORE_BRANCH})
     fi
     (cd ${MCSTORE_SRC}; git pull)
+    (cd ${MCSERV_SRC}; git pull)
 
     if [ "$BACKUP_DATABASE" = "t" ]; then
         echo "  Creating database backup..."
@@ -913,6 +939,8 @@ SHOW_SERVERS=f
 #PS_ALL_SERVERS=t
 REDIS_PORT=6379
 SHUTDOWN_PROMPT="y"
+
+LOGSTAMP=$(date  +'%Y-%d-%m_%H:%M:%S')
 
 CMD=$1
 shift
