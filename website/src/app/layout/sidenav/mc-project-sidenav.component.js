@@ -72,7 +72,7 @@ class MCProjectSidenavComponentController {
         this.sidenavGlobus.showGlobusTasks(this.project);
     }
 
-    startGlobusTransfer() {
+    setupGlobusUpload() {
         this.sidenavGlobus.globusUpload(this.project);
     }
 

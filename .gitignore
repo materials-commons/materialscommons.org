@@ -19,3 +19,8 @@ bower_components/
 rethinkdb_data/
 mochawesome-reports/
 html/
+
+# eclipse
+.project
+.settings/
+
