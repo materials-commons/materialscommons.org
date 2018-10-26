@@ -738,15 +738,15 @@ function show_env() {
 function tail_servers() {
     D=${MC_LOG_DIR}
     ST=${SERVERTYPE}
-    # Ensure files exist
-    touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} \
-        ${D}/mcpub.out.${ST} ${D}/mcmon.out.${ST} ${D}/redis.out.${ST} \
-        ${D}/mcapid.out.${ST} ${D}/mcetlserver.out.${ST} \
-        ${D}/faktory.out.${ST} ${D}/mcetlfaktoryworker.out.${ST} ${D}/mcserv.out.${ST}
-    tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} \
-        -f ${D}/mcpub.out.${ST} -f ${D}/mcmon.out.${ST} -f ${D}/redis.out.${ST} \
-        -f ${D}/mcapid.out.${ST} -f ${D}/mcetlserver.out.${ST} \
-        -f ${D}/faktory.out.${ST} -f ${D}/mcetlfaktoryworker.out.${ST} ${D}/mcserv.out.${ST}
+    # Ensure files exist - this no longer works
+    # touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} \
+    #    ${D}/mcpub.out.${ST} ${D}/mcmon.out.${ST} ${D}/redis.out.${ST} \
+    #    ${D}/mcapid.out.${ST} ${D}/mcetlserver.out.${ST} \
+    #    ${D}/faktory.out.${ST} ${D}/mcetlfaktoryworker.out.${ST} ${D}/mcserv.out.${ST}
+    tail -f ${D}/mcapiserver.*.out.${ST} -f ${D}/mcstored.*.out.${ST} -f ${D}/mcapi.*.out.+${ST} \
+        -f ${D}/mcpub.*.out.${ST} -f ${D}/mcmon.*.out.${ST} -f ${D}/redis.*.out.${ST} \
+        -f ${D}/mcapid.*.out.${ST} -f ${D}/mcetlserver.*.out.${ST} \
+        -f ${D}/faktory.*.out.${ST} -f ${D}/mcetlfaktoryworker.*.out.${ST} ${D}/mcserv.*.out.${ST}
 }
 
 function setup_deploy_dir() {
