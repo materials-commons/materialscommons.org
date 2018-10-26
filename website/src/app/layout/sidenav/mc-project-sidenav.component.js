@@ -17,7 +17,6 @@ class MCProjectSidenavComponentController {
         this.sidenavGlobus = sidenavGlobus;
         this.$interval = $interval;
         this.blockUI = blockUI;
-        this.isAuthenticatedToGlobus = false;
     }
 
     $onInit() {
@@ -38,7 +37,6 @@ class MCProjectSidenavComponentController {
 
         this.project = this.mcprojstore.currentProject;
         this.isBetaUser = this.User.isBetaUser();
-        this.sidenavGlobus.isAuthenticated().then(authStatus => this.isAuthenticatedToGlobus = authStatus);
     }
 
     loadProjectFiles() {
@@ -64,7 +62,7 @@ class MCProjectSidenavComponentController {
         this.ProjectModel.getProjectForCurrentUser(this.project.id).then((p) => this._updateProject(p));
     }
 
-    startGlobusDownloadTransfer() {
+    startGlobusDownload() {
         this.sidenavGlobus.globusDownload(this.project)
     }
 
@@ -75,35 +73,6 @@ class MCProjectSidenavComponentController {
     setupGlobusUpload() {
         this.sidenavGlobus.globusUpload(this.project);
     }
-
-    loginToGlobus() {
-        this.sidenavGlobus.loginToGlobus().then(() => this._checkGlobusAuthStatus());
-    }
-
-    logoutFromGlobus() {
-        this.sidenavGlobus.logoutFromGlobus().then(() => this._checkGlobusAuthStatus());
-    }
-
-    _checkGlobusAuthStatus() {
-        let promise = null;
-        this.blockUI.stop();
-        promise = this.$interval(() => {
-            this.blockUI.stop();
-            this.sidenavGlobus.isAuthenticated().then(authStatus => {
-                console.log(`${this.isAuthenticatedToGlobus}/${authStatus}`);
-                // check if we are logging out
-                if (this.isAuthenticatedToGlobus && !authStatus) {
-                    this.isAuthenticatedToGlobus = authStatus;
-                    this.$interval.cancel(promise);
-                } else if (!this.isAuthenticatedToGlobus && authStatus) {
-                    this.isAuthenticatedToGlobus = authStatus;
-                    this.$interval.cancel(promise);
-                }
-            });
-        }, 2000, 2);
-    }
-
-
 
     _updateProject(project) {
         this.mcprojstore.updateCurrentProject((currentProject, transformers) => {
