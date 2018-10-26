@@ -22,7 +22,7 @@ class SidenavGlobusService {
     globusUpload(project) {
         return this.$mdDialog.show({
                 templateUrl: 'app/modals/globus-upload-url-dialog.html',
-                controller: GlobusUploadDialogController,
+                controller: GlobusUploadTransferDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
                 locals: {
@@ -44,9 +44,33 @@ class SidenavGlobusService {
             }
         );
     }
+
+    loginToGlobus() {
+        return this.$mdDialog.show({
+            templateUrl: 'app/modals/globus-login-logout-dialog.html',
+            controller: GlobusLoginLogoutDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {}
+        });
+    }
+
+    logoutFromGlobus() {
+        return this.$mdDialog.show({
+            templateUrl: 'app/modals/globus-login-logout-dialog.html',
+            controller: GlobusLoginLogoutDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: {}
+        });
+    }
+
+    isAuthenticated() {
+        return this.etlServerAPI.getGlobusAuthStatus().then(authStatus => authStatus.status.authenticated, () => false);
+    }
 }
 
-class GlobusUploadDialogController {
+class GlobusUploadTransferDialogController {
     /*@ngInject*/
     constructor($mdDialog, etlServerAPI, globusEndpointSaver) {
         this.$mdDialog = $mdDialog;
