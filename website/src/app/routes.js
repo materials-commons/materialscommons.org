@@ -344,7 +344,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('data', {
             url: '/data',
             abstract: true,
-            //template: '<md-content ui-view flex></md-content>'
+            // template: '<md-content ui-view flex></md-content>'
             template: '<div ui-view flex layout="column"></div>'
         })
         .state('data.dataset', {
@@ -353,7 +353,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('data.home', {
             url: '/home',
-            template: '<mc-data-home tags="$resolve.tags"></mc-data-home>',
+            template: '<md-content flex><mc-data-home tags="$resolve.tags"></mc-data-home></md-content>',
             resolve: {
                 tags: ['publicTagsAPI',
                     (publicTagsAPI) => publicTagsAPI.getPopularTags().then(
