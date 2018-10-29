@@ -121,6 +121,7 @@ class MaterialsCommonsGlobusInterface:
     def transfer(self, source_endpoint, source_path, destination_endpoint, destination_path,
                  label='to specified project'):
         transfer_label = 'MaterialsCommons {}'.format(label)
+        transfer_label = "".join([c if (c.isalnum() or c=='-') else "_" for c in transfer_label])
         self.log.info("Setting up transfer for:")
         self.log.info("  source_endpoint = {}".format(source_endpoint))
         self.log.info("  source_path = {}".format(source_path))
