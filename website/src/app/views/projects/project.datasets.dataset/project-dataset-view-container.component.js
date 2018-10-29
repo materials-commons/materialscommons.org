@@ -40,30 +40,29 @@ class MCProjectDatasetViewContainerComponentController {
             newFileIds = newFiles.map(f => f.id);
         this.datasetsAPI.addFilesToProjectDataset(this.$stateParams.project_id, this.$stateParams.dataset_id, newFileIds)
             .then(
-                () => {
-                    this.state.dataset.files = this.state.dataset.files.concat(newFiles);
-                    this.state.dataset = angular.copy(this.state.dataset);
+                (d) => {
+                    this.state.dataset = angular.copy(d);
                 }
             );
     }
 
     handleUpdateDataset (dataset) {
         this.datasetsAPI.updateProjectDatasetDetails(this.$stateParams.project_id, this.$stateParams.dataset_id, dataset).then(
-            (d) => this.state.dataset = d,
+            (d) => this.state.dataset = angular.copy(d),
             () => this.toast.error('Unable to update dataset')
         );
     }
 
     handlePublishDataset () {
         this.datasetsAPI.publishProjectDataset(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
-            (d) => this.state.dataset = d,
+            (d) => this.state.dataset = angular.copy(d),
             () => this.toast.error('Unable to publish dataset')
         );
     }
 
     handleUnpublishDataset () {
         this.datasetsAPI.unpublishProjectDataset(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
-            (d) => this.state.dataset = d,
+            (d) => this.state.dataset = angular.copy(d),
             () => this.toast.error('Unable to unpublish dataset')
         );
     }
