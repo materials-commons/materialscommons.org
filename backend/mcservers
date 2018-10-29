@@ -379,7 +379,6 @@ function check_nginx() {
 function start_servers() {
     echo Starting ${SERVERTYPE} servers...
     mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
-    delete_old_logs
 
     if [ ${SERVERTYPE} = "test" -o ${SERVERTYPE} = "production" ]; then
         cd "${MC_DEPLOY_DIR}/backend"
@@ -435,6 +434,8 @@ function stop_servers() {
     stop_mcapid
     stop_rethinkdb
     stop_redis
+
+    delete_old_logs
 
     echo Stopped ${SERVERTYPE}.
 }
@@ -739,14 +740,10 @@ function tail_servers() {
     D=${MC_LOG_DIR}
     ST=${SERVERTYPE}
     # Ensure files exist
-    touch ${D}/mcapiserver.${LOGSTAMP}.out.${ST} ${D}/mcstored.${LOGSTAMP}.out.${ST} ${D}/mcapi.${LOGSTAMP}.out.${ST} \
-        ${D}/mcpub.${LOGSTAMP}.out.${ST} ${D}/mcmon.${LOGSTAMP}.out.${ST} ${D}/redis.${LOGSTAMP}.out.${ST} \
-        ${D}/mcapid.${LOGSTAMP}.out.${ST} ${D}/mcetlserver.${LOGSTAMP}.out.${ST} \
-        ${D}/faktory.${LOGSTAMP}.out.${ST} ${D}/mcetlfaktoryworker.${LOGSTAMP}.out.${ST} ${D}/mcserv.${LOGSTAMP}.out.${ST}
-    tail -f ${D}/mcapiserver.${LOGSTAMP}.out.${ST} -f ${D}/mcstored.${LOGSTAMP}.out.${ST} -f ${D}/mcapi.${LOGSTAMP}.out.${ST} \
-        -f ${D}/mcpub.${LOGSTAMP}.out.${ST} -f ${D}/mcmon.${LOGSTAMP}.out.${ST} -f ${D}/redis.${LOGSTAMP}.out.${ST} \
-        -f ${D}/mcapid.${LOGSTAMP}.out.${ST} -f ${D}/mcetlserver.${LOGSTAMP}.out.${ST} \
-        -f ${D}/faktory.${LOGSTAMP}.out.${ST} -f ${D}/mcetlfaktoryworker.${LOGSTAMP}.out.${ST} ${D}/mcserv.${LOGSTAMP}.out.${ST}
+    tail -f ${D}/mcapiserver.*.out.${ST} -f ${D}/mcstored.*.out.${ST} -f ${D}/mcapi.*.out.${ST} \
+        -f ${D}/mcpub.*.out.${ST} -f ${D}/mcmon.*.out.${ST} -f ${D}/redis.*.out.${ST} \
+        -f ${D}/mcapid.*.out.${ST} -f ${D}/mcetlserver.*.out.${ST} \
+        -f ${D}/faktory.*.out.${ST} -f ${D}/mcetlfaktoryworker.*.out.${ST} ${D}/mcserv.*.out.${ST}
 }
 
 function setup_deploy_dir() {
