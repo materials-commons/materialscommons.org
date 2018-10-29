@@ -72,23 +72,22 @@ class SidenavGlobusService {
 
 class GlobusUploadTransferDialogController {
     /*@ngInject*/
-    constructor($mdDialog, etlServerAPI, globusEndpointSaver) {
+    constructor($mdDialog, globusInterfaceAPI) {
         this.$mdDialog = $mdDialog;
-        this.etlServerAPI = etlServerAPI;
-        this.globusEndpointSaver = globusEndpointSaver;
-        let globusEndpoint = globusEndpointSaver.getNonEtlEndpoint();
-        this.endpoint = globusEndpoint.uuid;
-        this.endpointPath = globusEndpoint.path;
-        this.uploadName = 'undefined';
-        this.uploadUniquename = 'undefined';
-        this.uploadId = 'undefined';
-        this.status = '';
-        this.endpoint_id = 'abddfdbe-bdcb-11e8-8c1e-0a1d4c5c824a';
-        this.fake_url = 'https://www.globus.org/app/transfer?destination_id=abddfdbe-bdcb-11e8-8c1e-0a1d4c5c824a&destination_path=%2F__upload_staging%2Fproject-8afbb6ab-73c7-4f76-97ca-82960ff7144b%2Fupload-abddfdbe-bdcb-11e8-8c1e-0a1d4c5c824a%2F'
-    }
-
-    getDestinationEndpoint() {
-        return this.fake_url
+        this.url = null;
+        console.log('GlobusUploadTransferDialogController - constructor');
+        globusInterfaceAPI.setupUploadEndpoint(this.project.owner, this.project.id).then(
+            results => {
+                let globusDownloadInfo = results;
+                console.log('GlobusUploadTransferDialogController - from service', globusDownloadInfo);
+                let endpointId = globusDownloadInfo.destination_endpoint_id;
+                let endpointPath = globusDownloadInfo.destination_path;
+                this.url = "https://www.globus.org/app/transfer"
+                    + "?destination_id=" + endpointId
+                    + "&destination_path=" + encodeURIComponent(endpointPath);
+                console.log("url", this.url)
+            }
+        )
     }
 
     dismiss() {

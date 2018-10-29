@@ -6,14 +6,21 @@
             <b>{{$ctrl.project.name}}</b>
         </div>
     </md-toolbar>
-    <md-dialog-content layout-margin>
+    <md-dialog-content ng_if="!$ctrl.url" layout-margin>
+        <p>
+            Setting up: if the link for upload has not appeared in a short time, please check
+            that you have added your Globus user id to your "Account Settings" information (in
+            pull-down menu from you name in the upper right on the navigation bar)
+        </p>
+    </md-dialog-content>
+    <md-dialog-content ng_if="$ctrl.url" layout-margin>
         <p>
             To upload one or more files from your Globus endpoint to the top level directory
                 of the project '{{$ctrl.project.name}}':
             <br />
             this
             <a ng-click="$ctrl.dismiss()"
-                 href="{{$ctrl.getDestinationEndpoint()}}"
+                 href="{{$ctrl.url}}"
                  target="_blank">
                 one-time-use link</a>
             to the destination endpoint {{$ctrl.upload_endpoint}}.
