@@ -1,6 +1,7 @@
-<div layout="column" ng-if="!$ctrl.templateLoaded" layout-align="center center" flex>
+<div layout="column" ng-if="!$ctrl.templateLoaded" flex layout-margin>
     <md-button class="md-primary" ng-click="$ctrl.createNew()">create new template</md-button>
-    <input class="mc-input-as-line" placeholder="Search Templates..." ng-model="$ctrl.search" flex style="min-height: 20px">
+    <input class="mc-input-as-line" placeholder="Search Templates..." ng-model="$ctrl.search"
+           style="min-height: 20px; max-height: 20px; width: 50vw;">
     <md-table-container class="margin-top-40">
         <table md-table>
             <thead md-head md-order="$ctrl.sortOrder">

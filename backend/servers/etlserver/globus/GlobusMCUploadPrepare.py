@@ -47,6 +47,7 @@ class GlobusMCUploadPrepare:
         self.log.info("transfer_dir = {}".format(transfer_dir))
         self.log.info("transfer_base_path = {}".format(transfer_base_path))
         self.log.info("globus_destination_path = {}".format(globus_destination_path))
+        os.mkdir(transfer_base_path)
         extras = {
             "experiment_name": experiment_name,
             "experiment_description": experiment_description,
@@ -99,6 +100,7 @@ class GlobusMCUploadPrepare:
         self.log.info("transfer_dir = {}".format(transfer_dir))
         self.log.info("transfer_base_path = {}".format(transfer_base_path))
         self.log.info("globus_destination_path = {}".format(globus_destination_path))
+        os.mkdir(transfer_base_path)
         extras = {
             "transfer_base_path": transfer_base_path,
             "globus_endpoint": self.globus_endpoint,

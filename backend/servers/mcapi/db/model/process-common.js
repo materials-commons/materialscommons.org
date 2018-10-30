@@ -39,7 +39,7 @@ function mergeTemplateIntoProcess(template, process) {
                     // default other in the choices will update the value and the user will lose what
                     // they set.
                     if (property.otype === 'selection') {
-                        if (property.value.name === 'Other') {
+                        if (property.value && (property.value.name === 'Other')) {
                             let otherChoicesIndex = _.findIndex(template.setup[0].properties[i].choices, (c) => c.name === 'Other');
                             if (otherChoicesIndex !== -1) {
                                 template.setup[0].properties[i].choices[otherChoicesIndex].value = property.value.value;

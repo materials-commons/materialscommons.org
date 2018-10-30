@@ -3,11 +3,14 @@
         <md-tab-label>Setup</md-tab-label>
         <md-tab-body>
             <div layout="column">
-                <process-settings2 settings="$ctrl.process.setup[0].properties"
-                                   attribute="$ctrl.process.setup[0].attribute"
-                                   template-id="$ctrl.process.template_id"
-                                   process-id="$ctrl.process.id">
-                </process-settings2>
+                <div ng-repeat="setup in $ctrl.process.setup | orderBy:'name'" class="margin-top-10">
+                    <process-settings2 settings="setup.properties"
+                                       attribute="setup.attribute"
+                                       template-id="$ctrl.process.template_id"
+                                       name="setup.name"
+                                       process-id="$ctrl.process.id">
+                    </process-settings2>
+                </div>
             </div>
         </md-tab-body>
     </md-tab>

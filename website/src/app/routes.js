@@ -83,7 +83,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('templates', {
             url: '/templates',
             abstract: true,
-            template: '<div ui-view layout="column"></div>'
+            template: '<md-content ui-view layout="column" flex></md-content>'
         })
         .state('templates.builder', {
             url: '/builder',
@@ -336,15 +336,16 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('data', {
             url: '/data',
             abstract: true,
-            template: '<md-content ui-view flex></md-content>'
+            // template: '<md-content ui-view flex></md-content>'
+            template: '<div ui-view flex layout="column"></div>'
         })
         .state('data.dataset', {
             url: '/dataset/:dataset_id',
-            template: '<mc-dataset-overview-container></mc-dataset-overview-container>'
+            template: '<mc-dataset-overview-container layout="column" flex></mc-dataset-overview-container>'
         })
         .state('data.home', {
             url: '/home',
-            template: '<mc-data-home tags="$resolve.tags"></mc-data-home>',
+            template: '<md-content flex><mc-data-home tags="$resolve.tags"></mc-data-home></md-content>',
             resolve: {
                 tags: ['publicTagsAPI',
                     (publicTagsAPI) => publicTagsAPI.getPopularTags().then(

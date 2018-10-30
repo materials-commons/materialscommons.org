@@ -8,11 +8,29 @@ function docker_instance_running() {
     docker ps -a | grep "$1\$" | grep "Up "
 }
 
-function build_mcstored()
-{
+function build_mcstored() {
     if [ ${COMPILE_MCSTORE} = "t" ]; then
         (cd ${MCSTORE_SRC}; make server)
         cp ${MCSTORE_SRC}/server/mcstore/main/mcstored ${MCSTOREDBIN}
+    fi
+}
+
+function move_log() {
+    mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
+    (cd ${MC_LOG_DIR}; cp ${1}.* archive/${1}.${LOGSTAMP}.out.${SERVERTYPE})
+}
+
+function delete_old_logs() {
+    if [ "$MC_LOG_DIR" != "" ]; then
+        mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
+        (cd ${MC_LOG_DIR}/archive; find . -type f -mtime +5 | xargs rm -f)
+    fi
+}
+
+function build_mcserv() {
+    if [ ${COMPILE_MCSERV} = "t" ]; then
+        (cd ${MCSERV_SRC}; make server)
+        cp ${MCSERV_SRC}/cmd/mcserv/mcserv ${MCSERVBIN}
     fi
 }
 
@@ -47,6 +65,7 @@ function start_faktory() {
         R=$(ps -eo "pid,command" | grep faktory | grep -v tail | grep -v grep | grep -v bash)
         if [ "$R" = "" ]; then
             echo "Starting Faktory from command line..."
+            move_log "faktory"
             faktory > ${MC_LOG_DIR}/faktory.out.${SERVERTYPE} 2>&1&
             sleep 1
         fi
@@ -79,6 +98,7 @@ function start_etl_faktory_worker() {
     R=$(is_running "run_worker" "$SERVERTYPE")
     if [ "$R" = "" ]; then
         echo "Starting ETL faktory worker ($SERVERTYPE)..."
+        move_log "mcetlfaktoryworker"
         ./servers/etlserver/run_worker.sh $SERVERTYPE > ${MC_LOG_DIR}/mcetlfaktoryworker.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
@@ -97,6 +117,7 @@ function start_etl_server() {
     R=$(is_running "mc_etlserver.py")
     if [ "$R" = "" ]; then
         echo "Starting mcetlserver (${SERVERTYPE})..."
+        move_log "mcetlserver"
         ./servers/etlserver/run_server.sh ${SERVERTYPE} > ${MC_LOG_DIR}/mcetlserver.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
@@ -167,6 +188,7 @@ function start_mcapiserver() {
     R=$(is_running "mcapiserver.py" "p $MC_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcapiserver ($SERVERTYPE)..."
+        move_log "mcapiserver"
         ./mcapiserver.py -p ${MC_SERVICE_PORT} > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
@@ -178,6 +200,26 @@ function stop_mcapiserver() {
     do
         kill ${line}
         echo "  Stopped mcapiserver with pid ${line}"
+    done
+}
+
+function start_mcserv() {
+    R=$(is_running "mcserv" "db-connection ${MCDB_CONNECTION}")
+    if [ "$R" = "" ]; then
+        echo "Starting mcserv ($SERVERTYPE)..."
+        move_log "mcserv"
+        build_mcserv
+        ${MCSERVBIN} --db-connection ${MCDB_CONNECTION} --port ${MCSERV_PORT} > ${MC_LOG_DIR}/mcserv.out.${SERVERTYPE} 2>&1&
+        sleep 1
+    fi
+}
+
+function stop_mcserv() {
+    echo "Stopping mcserv ($SERVERTYPE)..."
+    ps -eo "pid,command" | grep mcserv | grep "$MCDB_CONNECTION" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
+    do
+        kill ${line}
+        echo "  Stopped mcserv with pid ${line}"
     done
 }
 
@@ -213,6 +255,7 @@ function start_mcapi() {
     R=$(is_running "servers/mcapi/mcapi.js" "p $MC_API_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcapi ($SERVERTYPE)..."
+        move_log "mcapi"
         nodemon --watch servers/mcapi --watch servers/lib servers/mcapi/mcapi.js -p ${MC_API_SERVICE_PORT} > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
@@ -231,6 +274,7 @@ function start_mcpub() {
     R=$(is_running "servers/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
     if [ "$R" = "" ]; then
         echo "Starting mcpub ($SERVERTYPE)..."
+        move_log "mcpub"
         nodemon --watch servers/mcpub --watch servers/lib servers/mcpub/mcpub.js -p ${MC_PUB_SERVICE_PORT} > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
@@ -249,6 +293,7 @@ function start_mcmon() {
     R=$(is_running "servers/mcmon/main.js" "servertype $SERVERTYPE")
     if [ "$R" = "" ]; then
         echo "Starting mcmon ($SERVERTYPE)..."
+        move_log "mcmon"
         nodemon --watch servers/mcmon/main.js --watch servers/mcmon/src servers/mcmon/main.js --servertype $SERVERTYPE  > ${MC_LOG_DIR}/mcmon.out.${SERVERTYPE} 2>&1&
     fi
 }
@@ -266,6 +311,7 @@ function start_redis() {
     R=$(is_running "redis-server" "${REDIS_PORT}")
     if [ "$R" = "" ]; then
         echo "Starting redis (${SERVERTYPE})..."
+        move_log "redis"
         redis-server --port ${REDIS_PORT} > ${MC_LOG_DIR}/redis.out.${SERVERTYPE} 2>&1&
         sleep 1
     fi
@@ -284,6 +330,7 @@ function start_mcapid() {
     R=$(is_running "mcapid-${SERVERTYPE}" " ")
     if [ "$R" = "" ]; then
         echo "Start mcapid server (${SERVERTYPE})..."
+        move_log "mcapid"
         echo "${MCAPID_COMMAND}"
         (cd servers/mcapid; sh -c "${MCAPID_COMMAND}" > ${MC_LOG_DIR}/mcapid.out.${SERVERTYPE} 2>&1&)
         sleep 1
@@ -304,6 +351,7 @@ function start_globus() {
         R=$(is_running "globusonline" " ")
         if [ "$R" = "" ]; then
             echo "Starting globus (${SERVERTYPE})..."
+            move_log "globus"
             (cd ~/bin/globus; ./globusconnectpersonal -start > ${MC_LOG_DIR}/globus.out.${SERVERTYPE} 2>&1&)
             sleep 1
         fi
@@ -329,7 +377,7 @@ function check_nginx() {
 
 function start_servers() {
     echo Starting ${SERVERTYPE} servers...
-    mkdir -p ${MC_LOG_DIR} 2> /dev/null
+    mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
 
     if [ ${SERVERTYPE} = "test" -o ${SERVERTYPE} = "production" ]; then
         cd "${MC_DEPLOY_DIR}/backend"
@@ -343,6 +391,7 @@ function start_servers() {
     start_etl_server
     start_mcapiserver
     start_mcstored
+    start_mcserv
     start_mcapi
     start_mcpub
     start_mcmon
@@ -354,15 +403,17 @@ function start_servers() {
 }
 
 function stop_servers() {
-    if [ "$TESTSERVER" = "p" ]; then
-        echo "**** You are stopping PRODUCTION ****"
-        read -p "Are you sure you want to do this [y/n]? " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            exit 0
-        else
-            echo "Shutting down production in 5 seconds CTRL-C to abort..."
-            sleep 5
+    if [ "$SHUTDOWN_PROMPT" = "y" ]; then
+        if [ "$TESTSERVER" = "p" ]; then
+            echo "**** You are stopping PRODUCTION ****"
+            read -p "Are you sure you want to do this [y/n]? " -n 1 -r
+            echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                exit 0
+            else
+                echo "Shutting down production in 5 seconds CTRL-C to abort..."
+                sleep 5
+            fi
         fi
     fi
 
@@ -375,12 +426,15 @@ function stop_servers() {
     stop_etl_server
     stop_mcapiserver
     stop_mcstored
+    stop_mcserv
     stop_mcapi
     stop_mcpub
     stop_mcmon
     stop_mcapid
     stop_rethinkdb
     stop_redis
+
+    delete_old_logs
 
     echo Stopped ${SERVERTYPE}.
 }
@@ -393,6 +447,10 @@ function stop_named_server() {
 
         mcstored)
             stop_mcstored
+            ;;
+
+        mcserv)
+            stop_mcserv
             ;;
 
         mcapi)
@@ -455,6 +513,10 @@ function restart_named_server() {
 
         mcstored)
             start_mcstored
+            ;;
+
+        mcserv)
+            start_mcserv
             ;;
 
         mcapi)
@@ -570,6 +632,11 @@ function ps_server_env() {
     ps -ef | grep mcstored | grep "db-connect=localhost:$MCDB_PORT" | grep -v grep
 
     echo
+    echo "MCSERV Server (${SERVERTYPE}):"
+    ps -ef | grep mcserv | grep "$MCDB_CONNECTION" | grep -v grep
+
+
+    echo
     echo "MCMON Server (${SERVERTYPE}):"
     ps -ef | grep "servers/mcmon/main.js" | grep "servertype ${SERVERTYPE}" | grep -v grep
 
@@ -671,15 +738,10 @@ function show_env() {
 function tail_servers() {
     D=${MC_LOG_DIR}
     ST=${SERVERTYPE}
-    # Ensure files exist
-    touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} \
-        ${D}/mcpub.out.${ST} ${D}/mcmon.out.${ST} ${D}/redis.out.${ST} \
-        ${D}/mcapid.out.${ST} ${D}/mcetlserver.out.${ST} \
-        ${D}/faktory.out.${ST} ${D}/mcetlfaktoryworker.out.${ST}
     tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} \
         -f ${D}/mcpub.out.${ST} -f ${D}/mcmon.out.${ST} -f ${D}/redis.out.${ST} \
         -f ${D}/mcapid.out.${ST} -f ${D}/mcetlserver.out.${ST} \
-        -f ${D}/faktory.out.${ST} -f ${D}/mcetlfaktoryworker.out.${ST}
+        -f ${D}/faktory.out.${ST} -f ${D}/mcetlfaktoryworker.out.${ST} ${D}/mcserv.out.${ST}
 }
 
 function setup_deploy_dir() {
@@ -718,6 +780,7 @@ function deploy_mc() {
         (cd ${MCSTORE_SRC}; git checkout ${MCSTORE_BRANCH})
     fi
     (cd ${MCSTORE_SRC}; git pull)
+    (cd ${MCSERV_SRC}; git pull)
 
     if [ "$BACKUP_DATABASE" = "t" ]; then
         echo "  Creating database backup..."
@@ -734,6 +797,9 @@ function deploy_mc() {
 
     echo "  Stopping servers..."
     stop_servers
+
+    echo "  Updating Python API Library"
+    scripts/updatePythonApi.sh
 
     echo "  Updating server dependencies..."
     rm -f package-lock.json
@@ -840,6 +906,7 @@ if [ "$MCUSER" = "" ]; then
 fi
 
 export MCSTORE_SRC=$HOME/workspace/src/github.com/materials-commons/mcstore
+export MCSERV_SRC=$HOME/workspace/src/github.com/materials-commons/mc
 
 # Set defaults
 TESTSERVER="d"
@@ -860,11 +927,15 @@ MCSTORE_RESTORE_BRANCH=""
 MC_BRANCH=""
 MCSTORE_BRANCH=""
 COMPILE_MCSTORE=t
+COMPILE_MCSERV=t
 MC_SERVICE_NAME=""
 BACKUP_DATABASE=t
 SHOW_SERVERS=f
 #PS_ALL_SERVERS=t
 REDIS_PORT=6379
+SHUTDOWN_PROMPT="y"
+
+LOGSTAMP=$(date  +'%Y-%d-%m_%H:%M:%S')
 
 CMD=$1
 shift
@@ -935,6 +1006,9 @@ while test $# -gt 0; do
             TESTSERVER=t
             SERVERTYPE="test"
             PS_ALL_SERVERS=f
+            ;;
+        -y)
+            SHUTDOWN_PROMPT="n"  # When -y is given user is saying I want you to automatically answer yes to prompt
             ;;
         -p)
             TESTSERVER=p

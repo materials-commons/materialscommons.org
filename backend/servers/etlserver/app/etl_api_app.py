@@ -1,16 +1,17 @@
-import logging
 import json
+import logging
+
 import os
 import pkg_resources
 from flask import Flask, request
 from flask_api import status
 
-from servers.etlserver.globus_etl_upload.etl_task_library import startup_and_verify
-# from servers.etlserver.globus_etl_upload.BuildProjectExperimentWithETL import BuildProjectExperiment
+from servers.etlserver.globus.BuildProjectExperimentWithETL import BuildProjectExperiment
 from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.database.DB import DbConnection
 from servers.etlserver.download.GlobusDownload import GlobusDownload, DOWNLOAD_NO_FILES_FOUND
 from servers.etlserver.globus_non_etl_upload.non_etl_task_library import non_etl_startup_and_verify
+from servers.etlserver.globus_etl_upload.etl_task_library import startup_and_verify
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
 from servers.etlserver.utils.UploadUtility import UploadUtility
@@ -51,7 +52,7 @@ def hello_world():
 @app.route('/version')
 def get_version():
     return format_as_json_return({
-        "version": pkg_resources.get_distribution("materials_commons").version
+        "python_api_version": pkg_resources.get_distribution("materials_commons").version
     })
 
 
@@ -143,7 +144,7 @@ def get_background_status_for_project():
 @app.route('/upload', methods=['POST'])
 @apikey
 def upload_file():
-    log.info("etl file upload - starting")
+    log.info("etl-only; no data file upload - starting")
     api_key = request.args.get('apikey', default="no_such_key")
     name = request.form.get('name')
     project_id = request.form.get("project_id")
@@ -169,13 +170,13 @@ def upload_file():
     log.info("etl file upload - file saved to " + file_path)
     # noinspection PyBroadException
     try:
-        # builder = BuildProjectExperiment(api_key)
-        # builder.set_rename_is_ok(True)
-        # builder.preset_project_id(project_id)
-        # builder.preset_experiment_name_description(name, description)
-        # log.info("etl file upload - build starting...")
-        # builder.build(file_path, None)
-        # log.info("etl file upload - done")
+        builder = BuildProjectExperiment(api_key)
+        builder.set_rename_is_ok(True)
+        builder.preset_project_id(project_id)
+        builder.preset_experiment_name_description(name, description)
+        log.info("etl file upload - build starting...")
+        builder.build(file_path, None)
+        log.info("etl file upload - done")
         return format_as_json_return({"project_id": project_id})
     except Exception as e:
         log.info("Unexpected exception...", exc_info=True)
@@ -552,3 +553,44 @@ def globus_auth_logout():
 
     # This link to the Globus Auth logout page
     return format_as_json_return({'url': ''.join(ga_logout_url)})
+
+
+@app.route('/faktory/status', methods=['GET', 'POST'])
+def faktory_status():
+    log.info("Faktory status - starting - NOTE: not fully implemented")
+    # user_id = access.get_user()
+    # if not access.is_administrator(user_id):
+    #    message = "User is not admin"
+    #    log.exception(message)
+    #    return message, status.HTTP_401_UNAUTHORIZED
+
+    # noinspection PyBroadException
+    # status = statusHolder().get_status();
+    #
+    # Note: this feature is commented out in the UI - not fully implemented
+    #  see src/app/components/admin/mc-admin-info/mc-admin-info.html
+    #
+    status_value = {
+        "faktory": {
+            "default_size": 0,
+            "tasks": {
+                "Busy": {"reaped": 0, "size": 0},
+                "Dead": {"cycles": 344, "enqueued": 0, "size": 0, "wall_time_sec": 0.003644927},
+                "Retries": {"cycles": 4116, "enqueued": 0, "size": 0, "wall_time_sec": 0.192080748},
+                "Scheduled": {"cycles": 4116, "enqueued": 0, "size": 0, "wall_time_sec": 0.24730945},
+                "Workers": {"reaped": 0, "size": 1},
+                "backup": {"count": 0}},
+            "total_enqueued": 0,
+            "total_failures": 3,
+            "total_processed": 262,
+            "total_queues": 5},
+        "server": {
+            "command_count": 11543,
+            "connections": 1,
+            "faktory_version": "0.7.0",
+            "uptime": 20568,
+            "used_memory_mb": "9 MB"},
+        "server_utc_time": "04:50:36 UTC"
+    }
+
+    return format_as_json_return(status_value)
