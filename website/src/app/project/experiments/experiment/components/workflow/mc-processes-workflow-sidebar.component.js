@@ -25,7 +25,6 @@ class MCProcessesWorkflowSidebarComponentController {
     }
 
     $onDestroy() {
-        //this.workflowState.leaveSelectedProcess(this.myName);
         this.unsubscribe();
         this.unsubscribeDelete();
     }
