@@ -102,7 +102,12 @@ class MCDatasetDetailsComponentController {
     }
 
     updateDataset() {
-        this.datasetsAPI.updateDatasetDetails(this.projectId, this.experimentId, this.datasetId, this.dataset)
+        let ds = angular.copy(this.dataset);
+        delete ds['files'];
+        delete ds['samples'];
+        delete ds['processes'];
+
+        this.datasetsAPI.updateDatasetDetails(this.projectId, this.experimentId, this.datasetId, ds)
             .then(
                 () => null,
                 () => this.toast.error('Unable to update dataset')
