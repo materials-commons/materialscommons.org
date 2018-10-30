@@ -106,6 +106,7 @@ class MCDatasetDetailsComponentController {
         delete ds['files'];
         delete ds['samples'];
         delete ds['processes'];
+        delete ds['comments'];
 
         this.datasetsAPI.updateDatasetDetails(this.projectId, this.experimentId, this.datasetId, ds)
             .then(
