@@ -34,7 +34,7 @@ class MCDatasetDetails2ComponentController {
 
     $onChanges (changes) {
         if (changes.dataset) {
-            this.state.dataset = angular.copy(changes.dataset.currentValue);
+            this.state.dataset = changes.dataset.currentValue; //angular.copy(changes.dataset.currentValue);
             //console.log('mc-dataset-details2', this.state.dataset);
         }
     }

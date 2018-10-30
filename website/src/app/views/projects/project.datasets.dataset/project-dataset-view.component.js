@@ -9,7 +9,7 @@ class MCProjectDatasetViewComponentController {
 
     $onChanges(changes) {
         if (changes.dataset) {
-            this.state.dataset = angular.copy(changes.dataset.currentValue);
+            this.state.dataset = changes.dataset.currentValue; //angular.copy(changes.dataset.currentValue);
         }
     }
 
