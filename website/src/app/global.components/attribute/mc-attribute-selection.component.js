@@ -8,7 +8,13 @@ class MCAttributeSelectionComponentController {
     }
 
     $onInit() {
-        // console.log('$ctrl.setting', this.setting);
+        //console.log('$ctrl.setting', this.setting);
+    }
+
+    $onChanges(changes) {
+        if (changes.setting) {
+            this.setting = changes.setting.currentValue;
+        }
     }
 
     updateSelectionSettingProperty(property) {
