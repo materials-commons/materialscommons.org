@@ -8,6 +8,10 @@ class ExperimentsAPIService {
         return this.projectsAPIRoute(projectID).one('experiments').getList().then(experiments => experiments.plain());
     }
 
+    getExperimentForProject(projectId, experimentId) {
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).customGET().then(e => e.plain());
+    }
+
     createForProject(projectID, experiment) {
         return this.projectsAPIRoute(projectID).one('experiments').customPOST(experiment).then((e) => e.plain());
     }
@@ -86,7 +90,7 @@ class ExperimentsAPIService {
 
     getProcessesForExperiment(projectId, experimentId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId)
-            .customGET("processes").then(processes => processes.plain());
+            .customGET('processes').then(processes => processes.plain());
     }
 
     getProcessForExperiment(projectId, experimentId, processId) {
@@ -146,7 +150,7 @@ class ExperimentsAPIService {
         angular.forEach(process.setup, (s) => s.properties.filter(p => p.otype === 'date')
             .forEach(p => {
                 if (p.value) {
-                    p.value = this.convertDateValueFromTransport(p.value)
+                    p.value = this.convertDateValueFromTransport(p.value);
                 }
             }));
     }
