@@ -47,8 +47,23 @@ class MCProjectDatasetViewContainerComponentController {
     }
 
     handleUpdateDataset (dataset) {
-        this.datasetsAPI.updateProjectDatasetDetails(this.$stateParams.project_id, this.$stateParams.dataset_id, dataset).then(
-            (d) => this.state.dataset = angular.copy(d),
+        let ds = angular.copy(dataset);
+        delete ds['files'];
+        delete ds['samples'];
+        delete ds['processes'];
+        delete ds['comments'];
+        this.datasetsAPI.updateProjectDatasetDetails(this.$stateParams.project_id, this.$stateParams.dataset_id, ds).then(
+            (d) => {
+                // Update doesn't return the full dataset, so we need to construct it
+                // First copy over into returned object, then to trigger events copy
+                // that into this.state.dataset
+                d.files = this.state.dataset.files;
+                d.samples = this.state.dataset.samples;
+                d.processes = this.state.dataset.processes;
+                d.comments = this.state.dataset.comments;
+                d.status = this.state.dataset.status;
+                this.state.dataset = d; //angular.copy(d);
+            },
             () => this.toast.error('Unable to update dataset')
         );
     }

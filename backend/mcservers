@@ -939,7 +939,7 @@ SHOW_SERVERS=f
 REDIS_PORT=6379
 SHUTDOWN_PROMPT="y"
 
-LOGSTAMP=$(date  +'%Y-%d-%m_%H:%M:%S')
+LOGSTAMP=$(date  +'%Y-%d-%m_%H-%M-%S')
 
 CMD=$1
 shift

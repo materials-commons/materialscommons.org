@@ -19,8 +19,8 @@ function* getProcess(dbr, processID) {
 }
 
 function mergeTemplateIntoProcess(template, process) {
-    for (pindex = 0; pindex < process.setup.length; pindex++) {
-        setup = process.setup[pindex];
+    for (let pindex = 0; pindex < process.setup.length; pindex++) {
+        let setup = process.setup[pindex];
         if (setup.attribute === 'instrument') {
             setup.properties.forEach(function(property) {
                 let i = _.findIndex(template.setup[0].properties, (tprop) => tprop.attribute === property.attribute);
