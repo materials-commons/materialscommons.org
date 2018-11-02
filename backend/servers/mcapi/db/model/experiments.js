@@ -49,7 +49,6 @@ function* get(experimentID) {
     let rql = r.table('experiments').get(experimentID);
     rql = addExperimentComputed(rql);
     let experiment = yield dbExec(rql);
-    experiment.tasks.forEach((task) => task.tasks = []);
     return {val: experiment};
 }
 
