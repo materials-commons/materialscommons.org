@@ -34,10 +34,10 @@ def main(project, user_id, excel_file_path, data_dir_path):
         main_log.info("Aborting Transfer and ELT because of verify failure(s) = {}".format(verify_status))
         exit(-1)
 
-    handler = MCInternalBuiltProjectExperimentFromELT()
-    main_log.info("Starting ETL")
-    etl_status = handler.build_experiment(status_record_id)
-    main_log.info("ETL status = {}".format(etl_status))
+    # handler = MCInternalBuiltProjectExperimentFromELT()
+    # main_log.info("Starting ETL")
+    # etl_status = handler.build_experiment(status_record_id)
+    # main_log.info("ETL status = {}".format(etl_status))
 
 
 if __name__ == "__main__":
@@ -102,3 +102,5 @@ if __name__ == "__main__":
                    format(args.name, project_selected.name, project_selected.id))
 
     main(project_selected, args.user, args.input, args.data)
+
+    startup_log.info("Done; project name = {}".format(project_selected.name))
