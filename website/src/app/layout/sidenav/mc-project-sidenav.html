@@ -139,32 +139,20 @@
 
         <md-divider style="margin-top:8px; margin-bottom: 8px"></md-divider>
 
-        <div class="padding-3" ng-show="!$ctrl.isAuthenticatedToGlobus">
-            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.loginToGlobus()">
-                <i class="fa fa-fw fa-sign-in"></i> Globus User Status (Sign In)
-            </a>
-        </div>
-
-        <div class="padding-3" ng-show="$ctrl.isAuthenticatedToGlobus">
-            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.logoutFromGlobus()">
-                <i class="fa fa-fw fa-sign-out"></i> Globus User Status (Sign Out)
-            </a>
-        </div>
-
         <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.setupGlobusUpload()" ng-class="{disabled: !$ctrl.isAuthenticatedToGlobus}">
+            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.setupGlobusUpload()">
                 <i class="fa fa-fw fa-cloud-upload"></i>Globus Upload To Project
             </a>
         </div>
 
         <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.startGlobusDownloadTransfer()" ng-class="{disabled: !$ctrl.isAuthenticatedToGlobus}">
+            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.startGlobusDownloadTransfer()">
                 <i class="fa fa-fw fa-cloud-download"></i>Globus Download From Project
             </a>
         </div>
 
         <div class="padding-3">
-            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.showGlobusTasks()" ng-class="{disabled: !$ctrl.isAuthenticatedToGlobus}">
+            <a class="project-sidenav-tool margin-left-30" ng-click="$ctrl.showGlobusTasks()">
                 <i class="fa fa-fw fa-info-circle"></i>Status of Globus Requests
             </a>
         </div>
