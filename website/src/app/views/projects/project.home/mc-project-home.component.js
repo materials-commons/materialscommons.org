@@ -1,4 +1,4 @@
-import {Experiment} from '../../../project/experiments/experiment/components/tasks/experiment.model';
+import { Experiment } from '../../../models/experiment.model';
 
 class MCProjectHomeComponentController {
     /*@ngInject*/
@@ -33,10 +33,15 @@ class MCProjectHomeComponentController {
     }
 
     $onInit() {
+        // subscribed function will be called in $onInit the first time this activates, and we don't want this
+        // call to go through because it isn't needed. So set a flag to ignore first call. This is a work around
+        // that will be removed eventually.
+        let doReload = false;
         this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVUPDATE, () => {
-            this._reloadComponentState();
+            this._reloadComponentState(doReload);
+            doReload = true;
         });
-        this._reloadComponentState();
+        this._reloadComponentState(false);
         this.etlServerAPI.getEtlStatusForProject(this.project.id).then(
             status => {
                 if (status && status.status) {
@@ -90,7 +95,7 @@ class MCProjectHomeComponentController {
         });
     }
 
-    _reloadComponentState() {
+    _reloadComponentState(reload) {
         this.project = this.mcprojstore.getProject(this.$stateParams.project_id);
         this.projectOverview = this.project.overview;
         let experimentsList = _.values(this.project.experiments);
@@ -98,7 +103,9 @@ class MCProjectHomeComponentController {
         this.onholdExperimentsCount = experimentsList.filter(e => e.status === 'on-hold').length;
         this.doneExperimentsCount = experimentsList.filter(e => e.status === 'done').length;
         this.getProjectExperiments();
-        this.mcprojectstore2.reloadProject(this.$stateParams.project_id);
+        if (reload) {
+            this.mcprojectstore2.reloadProject(this.$stateParams.project_id);
+        }
     }
 
     startNewExperiment() {

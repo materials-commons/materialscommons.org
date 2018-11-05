@@ -30,23 +30,6 @@ function* experimentExistsInProject(projectID, experimentID) {
     return matches.length !== 0;
 }
 
-function* taskInExperiment(experimentID, taskId) {
-    let matches = yield r.table('experiment2experimenttask')
-        .getAll([experimentID, taskId], {index: 'experiment_experiment_task'});
-    return matches.length !== 0;
-}
-
-function* noteInExperiment(experimentID, experimentNoteID) {
-    let matches = yield r.table('experiment2experimentnote')
-        .getAll([experimentID, experimentNoteID], {index: 'experiment_experiment_note'});
-    return matches.length !== 0;
-}
-
-function* taskIsUsingProcess(taskID) {
-    let task = yield r.table('experimenttasks').get(taskID);
-    return task.process_id !== '';
-}
-
 function* commentExists(commentId) {
     let matches = yield r.table('comments').getAll(commentId);
     return matches.length !== 0;
@@ -70,11 +53,6 @@ function* templateIsOwnedBy(templateId, userId) {
 function* isTemplateAdmin(userId) {
     let user = yield r.table('users').get(userId);
     return (user && (user.is_template_admin))
-}
-
-function* isTemplateForTask(templateId, taskId) {
-    let task = yield r.table('experimenttasks').get(taskId);
-    return task.template_id === templateId;
 }
 
 function* isTemplateForProcess(templateId, processId) {
@@ -143,15 +121,6 @@ function * projectHasDataset (projectId, datasetId) {
     return datasets.length !== 0;
 }
 
-function* taskProcessIsUnused(taskId) {
-    let task = yield r.table('experimenttasks').get(taskId);
-    if (task.process_id === '') {
-        return true;
-    }
-
-    return yield processCommon.processIsUnused(task.process_id);
-}
-
 function* sampleInProject(projectId, sampleId) {
     let samples = yield r.table('project2sample').getAll([projectId, sampleId], {index: 'project_sample'});
     return samples.length !== 0;
@@ -213,15 +182,11 @@ module.exports = {
     allFilesInProject,
     allExperimentsInProject,
     experimentExistsInProject,
-    taskInExperiment,
-    noteInExperiment,
-    taskIsUsingProcess,
     commentExists,
     commentIsOwnedBy,
     templateExists,
     templateIsOwnedBy,
     isTemplateAdmin,
-    isTemplateForTask,
     isTemplateForProcess,
     allSamplesInExperiment,
     allFilesInExperiment,
@@ -233,7 +198,6 @@ module.exports = {
     fileInProject,
     experimentHasDataset,
     projectHasDataset,
-    taskProcessIsUnused,
     sampleInProject,
     sampleHasPropertySet,
     allSamplesInProject,

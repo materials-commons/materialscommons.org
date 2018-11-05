@@ -17,25 +17,25 @@ def run_rql(rql, conn):
         pass
 
 
-def add_todos_to_projects(conn):
-    print "Adding todos entry to projects..."
-    res = r.db('materialscommons').table('projects').update({"todos": []}).run(conn)
-    print res
-    print "Done."
-
-
-def add_shortcut_to_dirs(conn):
-    print "Adding shortcut flag to directories..."
-    res = r.table('datadirs').update({"shortcut": False}).run(conn)
-    print res
-    print "Done."
-
-
-def add_otype_to_dataset(conn):
-    print "Adding otype to dataset..."
-    res = r.table('datasets').update({'otype': 'dataset'}).run(conn)
-    print res
-    print "Done."
+def delete_unused_tables(conn):
+    run_rql(r.table_drop("userprofiles"), conn)
+    run_rql(r.table_drop("usergroups"), conn)
+    run_rql(r.table_drop("runs"), conn)
+    run_rql(r.table_drop("reviews"), conn)
+    run_rql(r.table_drop("review2item"), conn)
+    run_rql(r.table_drop("machines"), conn)
+    run_rql(r.table_drop("ui"), conn)
+    run_rql(r.table_drop("elements"), conn)
+    run_rql(r.table_drop("sample2sample"), conn)
+    run_rql(r.db('mcpub').table_drop("sample2sample"), conn)
+    run_rql(r.table_drop("shares"), conn)
+    run_rql(r.table_drop("user2share"), conn)
+    run_rql(r.table_drop("experimenttasks"), conn)
+    run_rql(r.table_drop("experiment2experimenttask"), conn)
+    run_rql(r.table_drop("experimenttask2process"), conn)
+    run_rql(r.table_drop("experimentnotes"), conn)
+    run_rql(r.table_drop("experiment2experimentnote"), conn)
+    run_rql(r.table_drop("dataset2experimentnote"), conn)
 
 
 def main():
@@ -43,10 +43,7 @@ def main():
     parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
-
-    add_todos_to_projects(conn)
-    add_shortcut_to_dirs(conn)
-    add_otype_to_dataset(conn)
+    delete_unused_tables(conn)
 
 
 if __name__ == "__main__":

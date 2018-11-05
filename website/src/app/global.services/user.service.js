@@ -63,15 +63,6 @@ function UserService($window, $log, Restangular) {
             $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
         },
 
-        getFromProfile: function(name) {
-            return Restangular.one('v2').one('profiles').one(name);
-        },
-
-        setInProfile: function(name, value) {
-            return Restangular.one('v2').one('profiles').one(name)
-                .customPUT({value: value});
-        },
-
         removeFromFavorites: function(projectID, templateName) {
             let i = _.indexOf(self.mcuser.favorites[projectID].processes, function(n) {
                 return n === templateName;

@@ -12,7 +12,8 @@ import urllib
 import pathlib
 import shutil
 
-BASEDIR = "/home/gtarcea/mcdir/mcfs/users"
+# BASEDIR = "/home/gtarcea/mcdir/mcfs/users"
+BASEDIR = "/home/gtarcea/mcdir/mcfs/data/test/__upload_staging"
 
 
 def load_file(conn, filepath, project):

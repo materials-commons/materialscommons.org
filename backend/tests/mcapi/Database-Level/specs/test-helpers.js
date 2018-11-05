@@ -31,7 +31,7 @@ const experimentDatasets = require(backend_base + '/experiment-datasets');
 
 const demoProjectHelper = require(build_project_base + '/build-demo-project-helper');
 const demoProjectConf = require(build_project_base + '/build-demo-project-conf');
-// correction needed bacause package.json was moved to backend - Terry Weymouth - 14AUG2017
+// correction needed because package.json was moved to backend - Terry Weymouth - 14AUG2017
 demoProjectConf.datapathPrefix = path.resolve('./') + '/';
 const demoProjectBuild = require(build_project_base + '/build-demo-project');
 
@@ -214,58 +214,6 @@ let createDatasetList = function* (experiment, processList, userId) {
     return dataset_list;
 };
 
-let setUpFakeExperimentNoteData = function* (experimentId,userId) {
-    // ---- experimentnote ----
-    // experiment2experimentnote
-    // experimentnotes
-
-    // Note, the demo project (used as base for this test) had no items in experimentnotes
-    // Inserting one here, as base for test
-    let fakeNote = {
-        name: "Test Note",
-        note: "Fake note for testing",
-        otype:'experimentnote',
-        owner: userId
-    };
-    let insert_msg = yield r.table('experimentnotes').insert(fakeNote);
-    let key = insert_msg.generated_keys[0];
-    yield r.table('experiment2experimentnote')
-        .insert({experiment_note_id: key, experiment_id: experimentId});
-    return yield r.table('experimentnotes').get(key);
-};
-
-let setUpAdditionalExperimentTaskData = function* (experimentId,userId) {
-    // ---- experimenttask ----
-    // experiment2experimenttask
-    // experimenttask2process
-    // experimenttasks
-    // processes
-
-    let fakeProcess = {
-        otype:  "process" ,
-        does_transform: false ,
-        name:  "Test Process" ,
-        owner: userId,
-        template_id:  "global_As Measured" ,
-        template_name:  "As Measured"
-    };
-
-    let insertMsg = yield r.table('processes').insert(fakeProcess);
-    let processId = insertMsg.generated_keys[0];
-
-    let idList = yield r.table('experiment2experimenttask')
-        .getAll(experimentId,{index:'experiment_id'})
-        .eqJoin('experiment_task_id',r.table('experimenttasks'))
-        .zip().getField('experiment_task_id');
-    let taskId = idList[0];
-
-    let updateMsg = yield r.table('experimenttasks').get(taskId).update({process_id: processId});
-    insertMsg = yield r.table('experimenttask2process')
-        .insert({experiment_task_id: taskId, process_id: processId});
-
-    return yield r.table('experimenttasks').get(taskId);
-};
-
 module.exports = {
     createDemoTestProject,
     createProject,
@@ -275,6 +223,4 @@ module.exports = {
     createDatasetList,
     createFileFromDemoFileSet,
     addSamplesToProcess,
-    setUpFakeExperimentNoteData,
-    setUpAdditionalExperimentTaskData,
 };

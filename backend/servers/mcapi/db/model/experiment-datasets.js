@@ -84,7 +84,6 @@ function* deleteDataset(datasetId) {
     yield r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();
     yield r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'}).delete();
     yield r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'}).delete();
-    yield r.table('dataset2experimentnote').getAll(datasetId, {index: 'dataset_id'}).delete();
     return {val: true};
 }
 
