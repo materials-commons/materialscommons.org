@@ -1,5 +1,5 @@
 <md-dialog flex="60">
-    <md-toolbar ng-if="! $ctrl.requestComplete" layout="row">
+    <md-toolbar ng-if="!$ctrl.requestComplete" layout="row">
         <div layout-margin>
             <i class="fa fa-fw fa-folder-open"></i>
             Globus: Upload to top level directory of
@@ -12,6 +12,9 @@
             that you have added your Globus user id to your "Account Settings" information (in
             pull-down menu from you name in the upper right on the navigation bar)
         </p>
+        <div ng-if="$ctrl.error">
+            <b>Error: {{$ctrl.error}}</b>
+        </div>
     </md-dialog-content>
     <md-dialog-content ng_if="$ctrl.url" layout-margin>
         <p>
@@ -30,6 +33,6 @@
         </p>
     </md-dialog-content>
     <md-dialog-actions layout="row">
-        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Dismiss</md-button>
     </md-dialog-actions>
 </md-dialog>
