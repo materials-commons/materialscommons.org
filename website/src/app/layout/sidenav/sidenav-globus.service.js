@@ -85,11 +85,7 @@ class GlobusUploadTransferDialogController {
                 }
                 let globusDownloadInfo = results;
                 console.log('GlobusUploadTransferDialogController - from service', globusDownloadInfo);
-                let endpointId = globusDownloadInfo.id;
-                let endpointPath = globusDownloadInfo.globus_url;
-                this.url = "https://www.globus.org/app/transfer"
-                    + "?destination_id=" + endpointId
-                    + "&destination_path=" + encodeURIComponent(endpointPath);
+                this.url = globusDownloadInfo.globus_url;
                 console.log("url", this.url)
             }
         )
