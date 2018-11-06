@@ -3,8 +3,7 @@ class MCAccountSettingsAboutUserComponentController {
     constructor(User, toast, editorOpts, $scope, mcbus) {
         this.User = User;
         this.toast = toast;
-        this.globusUserName = User.attr().globusUserName;
-        this.globusUserNameValid = User.attr().globusUserNameValidated;
+        this.globusUserName = User.attr().globus_user;
         this.fullname = User.attr().fullname;
         this.affiliation = User.attr().affiliation;
         if (!this.affiliation) {
@@ -25,17 +24,11 @@ class MCAccountSettingsAboutUserComponentController {
     }
 
     updateGlobusUserName() {
-        this.User.attr().globusUserName = this.globusUserName;
+        this.User.attr().globus_user = this.globusUserName;
         this.User.save();
         this.User.updateGlobusUserName(this.globusUserName).then(
-            () => {
-                this.globusUserNameValid = true;
-                this.toast.success('Globus User Name updated', 'bottom left')
-            },
-            () => {
-                this.globusUserNameValid = false;
-                this.toast.error('Unable to update Globus User Name', 'bottom left')
-            }
+            () => this.toast.success('Globus User Name updated', 'bottom left'),
+            () => this.toast.error('Unable to update Globus User Name', 'bottom left')
         );
     }
 
