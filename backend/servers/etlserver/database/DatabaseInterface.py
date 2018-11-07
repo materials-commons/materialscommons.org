@@ -65,9 +65,12 @@ class DatabaseInterface:
           .limit(limit).run(self.conn)
 
     def get_users_apikey(self, user_id):
-        return self.r.table('users')\
-            .get(user_id)\
-            .pluck('apikey')
+        return self.r.table('users').get(user_id)\
+            .pluck('apikey').run(self.conn)
+
+    def get_users_globus_id(self, user_id):
+        return self.r.table('users').get(user_id) \
+            .pluck('globus_user').run(self.conn)
 
     def create_globus_auth_info(self, user_id, globus_name, globus_id, tokens):
         record_obj = GlobusAuthInfo(user_id, globus_name, globus_id, tokens)

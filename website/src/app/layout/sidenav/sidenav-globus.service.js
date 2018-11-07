@@ -65,46 +65,16 @@ class GlobusUploadDialogController {
 }
 
 //new Version
-class GlobusDownloadDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, User, globusInterfaceAPI) {
-        this.$mdDialog = $mdDialog;
-        this.url = null;
-        this.error = null;
-        globusInterfaceAPI.setupDownloadEndpoint(this.project.id).then(
-            results => {
-                if (results.globus_url) {
-                    this.url = results.globus_url;
-                } else {
-                    this.error = results.error;
-                    if (!this.error) {
-                        this.error = 'Unexpected error, no URL: please contact site admin';
-                    }
-                }
-            },
-            error => this.error = error
-        );
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-
-}
-
-
-// old version
 // class GlobusDownloadDialogController {
 //     /*@ngInject*/
-//     constructor($mdDialog, etlServerAPI) {
+//     constructor($mdDialog, User, globusInterfaceAPI) {
 //         this.$mdDialog = $mdDialog;
-//         this.etlServerAPI = etlServerAPI;
 //         this.url = null;
 //         this.error = null;
-//         this.etlServerAPI.setupGlobusDownloadTransfer(this.project.id).then(
+//         globusInterfaceAPI.setupDownloadEndpoint(this.project.id).then(
 //             results => {
-//                 if (results.url) {
-//                     this.url = results.url;
+//                 if (results.globus_url) {
+//                     this.url = results.globus_url;
 //                 } else {
 //                     this.error = results.error;
 //                     if (!this.error) {
@@ -121,5 +91,35 @@ class GlobusDownloadDialogController {
 //     }
 //
 // }
+
+
+// old version
+class GlobusDownloadDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, etlServerAPI) {
+        this.$mdDialog = $mdDialog;
+        this.etlServerAPI = etlServerAPI;
+        this.url = null;
+        this.error = null;
+        this.etlServerAPI.setupGlobusDownloadTransfer(this.project.id).then(
+            results => {
+                if (results.url) {
+                    this.url = results.url;
+                } else {
+                    this.error = results.error;
+                    if (!this.error) {
+                        this.error = 'Unexpected error, no URL: please contact site admin';
+                    }
+                }
+            },
+            error => this.error = error
+        );
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+
+}
 
 angular.module('materialscommons').service('sidenavGlobus', SidenavGlobusService);
