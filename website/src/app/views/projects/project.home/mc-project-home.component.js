@@ -435,9 +435,6 @@ class EtlUploadDialogController {
         this.base_path = etlGlobus.path;
         this.spreadsheet_rel_path = etlGlobus.spreadsheet;
         this.data_dir_rel_path = etlGlobus.data;
-        this.isAuthenticatedToGlobus = false;
-        this.sidenavGlobus.isAuthenticated()
-            .then(authStatus => this.isAuthenticatedToGlobus = authStatus);
         // for Project upload
         this.excelFiles = ['excel_file_one.xslx', 'excel_file_two.xslx'];
         this.excelFile = "";
