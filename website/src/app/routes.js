@@ -66,11 +66,11 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('account', {
             url: '/account',
             abstract: true,
-            template: '<div ui-view></div>'
+            template: '<div ui-view layout="column" class="height-100"></div>'
         })
         .state('account.settings', {
             url: '/settings',
-            template: '<mc-account-settings></mc-account-settings>'
+            template: '<md-content><mc-account-settings></mc-account-settings></md-content>'
         })
         .state('account.settings.profile', {
             url: '/profile',
