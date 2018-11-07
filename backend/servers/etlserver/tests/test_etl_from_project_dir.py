@@ -3,9 +3,9 @@ import unittest
 import os
 from random import randint
 from materials_commons.api import create_project, get_all_projects
-from servers.etlserver.internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
-from servers.etlserver.common.worksheet_data import ExcelIO
-from servers.etlserver.database.DatabaseInterface import DatabaseInterface
+from backend.servers.etlserver.internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
+from backend.servers.etlserver.common.worksheet_data import ExcelIO
+from backend.servers.etlserver.database.DatabaseInterface import DatabaseInterface
 
 EXCEL_FILE_NAME = "small_input.xlsx"
 DATA_DIR_NAME = "data"
@@ -23,9 +23,8 @@ class TestFileProcessSample(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.apikey = os.environ['MC_API_KEY']
+        print("MC_API_KEY = {}".format(cls.apikey))
         cls.project = None
-        cls.project_id = None
-        cls.project_name = None
 
         if USER_TEST_PROJECT:
             all_projects = get_all_projects()
@@ -41,13 +40,18 @@ class TestFileProcessSample(unittest.TestCase):
             cls.project = create_project(cls.project_name, description)
             cls.project_id = cls.project.id
 
-            project = cls.project
-            cls.data_dir_path = os.path.abspath(os.environ['TEST_DATA_DIR'])
-            project.local_path = cls.data_dir_path
-            local_dir_path = os.path.join(cls.data_dir_path, TEST_DIR)
-            project.add_directory_tree_by_local_path(local_dir_path)
+        cls.data_dir_path = os.path.abspath(os.environ['TEST_DATA_DIR'])
+        print("TEST_DATA_DIR = {}".format(cls.data_dir_path))
 
-    # @pytest.mark.skip()
+        project = cls.project
+
+        project.local_path = cls.data_dir_path
+        local_dir_path = os.path.join(cls.data_dir_path, TEST_DIR)
+        project.add_directory_tree_by_local_path(local_dir_path)
+        print("project {} ({})".format(project.name, project.id))
+        print("project.local_path = {}".format(project.local_path))
+        print("local_dir_path = {}".format(local_dir_path))
+
     def test_is_setup_correctly(self):
         self.assertIn('MC_API_KEY', os.environ)
         self.assertIn('TEST_DATA_DIR', os.environ)
@@ -101,6 +105,7 @@ class TestFileProcessSample(unittest.TestCase):
         builder._set_etl_source_date_from_path(self.project, spread_sheet_path)
         self.assertEqual(builder.etl_source_data[1][1], "SAMPLES")
 
+    # @pytest.mark.skpi()
     def test_build_experiment_from_etl(self):
         self.assertIsNotNone(self.project)
         self.assertIn('MCDIR', os.environ)
