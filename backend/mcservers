@@ -16,8 +16,10 @@ function build_mcstored() {
 }
 
 function move_log() {
-    mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
-    (cd ${MC_LOG_DIR}; cp ${1}.* archive/${1}.${LOGSTAMP}.out.${SERVERTYPE})
+    if [ ${MC_LOG_DIR} != "" ]; then
+        mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
+        (cd ${MC_LOG_DIR}; cp ${1}.* archive/${1}.${LOGSTAMP}.out.${SERVERTYPE})
+    fi
 }
 
 function delete_old_logs() {
