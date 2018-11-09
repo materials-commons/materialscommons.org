@@ -30,7 +30,7 @@ class MCProcessesWorkflowGraphComponentController {
         // functions lexically scope, so this in the arrow function is the this for
         // MCProcessesWorkflowGraphComponentController
         let cb = (processes) => {
-            this.processes = processes;
+            this.processes = angular.copy(processes);
             this.allProcessesGraph();
         };
 
@@ -47,7 +47,7 @@ class MCProcessesWorkflowGraphComponentController {
             if (edges.length) {
                 this.cy.add(edges);
             }
-            this.processes.push(process);
+            this.processes.push(angular.copy(process));
             this.cy.layout({name: 'dagre', fit: true});
             this.cyGraph.setupQTips(this.cy);
             if (!this.tooltips) {
@@ -65,7 +65,8 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.mcbus.subscribe('PROCESS$CHANGE', this.myName, process => {
             this.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
-                ele.data('name', process.name);
+                let name = (' ' + process.name).slice(1);
+                ele.data('name', name);
             });
         });
 
@@ -77,7 +78,8 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.procUpdateUnsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVUPDATE, process => {
             this.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
-                ele.data('name', process.name);
+                let name = (' ' + process.name).slice(1);
+                ele.data('name', name);
             });
         });
 
@@ -158,7 +160,7 @@ class MCProcessesWorkflowGraphComponentController {
     // This method will be called implicitly when the component is loaded.
     $onChanges(changes) {
         if (changes.processes) {
-            this.processes = changes.processes.currentValue;
+            this.processes = angular.copy(changes.processes.currentValue);
         }
         if (changes.highlightProcesses) {
             this.highlightProcesses = changes.highlightProcesses.currentValue;
