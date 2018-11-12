@@ -4,6 +4,7 @@ class MCDatasetDetails2ComponentController {
         this.state = {dataset: {}};
         this.$mdDialog = $mdDialog;
         this.$window = $window;
+        this.changesMade = false;
         this.licenses = [
             {
                 name: `Public Domain Dedication and License (PDDL)`,
@@ -34,8 +35,13 @@ class MCDatasetDetails2ComponentController {
 
     $onChanges (changes) {
         if (changes.dataset) {
-            this.state.dataset = changes.dataset.currentValue; //angular.copy(changes.dataset.currentValue);
-            //console.log('mc-dataset-details2', this.state.dataset);
+            this.state.dataset = angular.copy(changes.dataset.currentValue);
+        }
+    }
+
+    $onDestroy() {
+        if (this.changesMade) {
+            this.updateDataset();
         }
     }
 
@@ -45,12 +51,12 @@ class MCDatasetDetails2ComponentController {
             firstname: '',
             affiliation: ''
         });
-        this.onUpdateDataset({dataset: this.state.dataset});
+        this.changesMade = true;
     }
 
     removeAuthor (index) {
         this.state.dataset.authors.splice(index, 1);
-        this.onUpdateDataset({dataset: this.state.dataset});
+        this.changesMade = true;
     }
 
     addPaper () {
@@ -61,12 +67,16 @@ class MCDatasetDetails2ComponentController {
             doi: '',
             authors: ''
         });
-        this.onUpdateDataset({dataset: this.state.dataset});
+        this.changesMade = true;
     }
 
     removePaper (index) {
         this.state.dataset.papers.splice(index, 1);
-        this.onUpdateDataset({dataset: this.state.dataset});
+        this.changesMade = true;
+    }
+
+    changed() {
+        this.changesMade = true;
     }
 
     addDoi () {
@@ -83,6 +93,7 @@ class MCDatasetDetails2ComponentController {
 
     updateDataset () {
         this.onUpdateDataset({dataset: this.state.dataset});
+        this.changesMade = false;
     }
 
     publishDataset () {
@@ -109,6 +120,11 @@ class MCDatasetDetails2ComponentController {
         }).then(
             () => this.onUnpublishDataset());
     }
+
+    cancel() {
+        this.changesMade = false;
+        this.onCancel();
+    }
 }
 
 angular.module('materialscommons').component('mcDatasetDetails2', {
@@ -120,6 +136,7 @@ angular.module('materialscommons').component('mcDatasetDetails2', {
         onPublishDataset: '&',
         onUnpublishDataset: '&',
         onAddDoi: '&',
+        onCancel: '&',
     }
 });
 

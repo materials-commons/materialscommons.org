@@ -1,7 +1,8 @@
 class MCProjectDatasetViewContainerComponentController {
     /*@ngInject*/
-    constructor($stateParams, mcdsstore, datasetsAPI, mcprojectstore2, toast) {
+    constructor($stateParams, $state, mcdsstore, datasetsAPI, mcprojectstore2, toast) {
         this.$stateParams = $stateParams;
+        this.$state = $state;
         this.mcdsstore = mcdsstore;
         this.datasetsAPI = datasetsAPI;
         this.mcprojectstore = mcprojectstore2;
@@ -52,7 +53,7 @@ class MCProjectDatasetViewContainerComponentController {
         delete ds['samples'];
         delete ds['processes'];
         delete ds['comments'];
-        this.datasetsAPI.updateProjectDatasetDetails(this.$stateParams.project_id, this.$stateParams.dataset_id, ds).then(
+        this.datasetsAPI.updateProjectDatasetDetails(this.$stateParams.project_id, dataset.id, ds).then(
             (d) => {
                 // Update doesn't return the full dataset, so we need to construct it
                 // First copy over into returned object, then to trigger events copy
@@ -92,6 +93,10 @@ class MCProjectDatasetViewContainerComponentController {
             () => this.toast.error('Unable to create DOI for dataset')
         );
     }
+
+    handleCancel() {
+        this.$state.go('project.datasets.list');
+    }
 }
 
 angular.module('materialscommons').component('mcProjectDatasetViewContainer', {
@@ -102,6 +107,7 @@ angular.module('materialscommons').component('mcProjectDatasetViewContainer', {
                                     on-publish-dataset="$ctrl.handlePublishDataset()"
                                     on-unpublish-dataset="$ctrl.handleUnpublishDataset()"
                                     on-add-doi="$ctrl.handleAddDOI(doiDetails)"
+                                    on-cancel="$ctrl.handleCancel()"
                                     layout-fill ng-if="$ctrl.state.dataset"></mc-project-dataset-view>`,
     controller: MCProjectDatasetViewContainerComponentController
 });
