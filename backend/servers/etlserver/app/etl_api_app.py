@@ -56,6 +56,27 @@ def get_version():
     })
 
 
+@app.route('/project/etlexcelfiles', methods=['POST'])
+@apikey
+def project_excel_files_for_etl():
+    log.info("project_excel_files_for_etl")
+    j = request.get_json(force=True)
+    log.info("project_excel_files_for_etl: data in = {}".format(j))
+    project_id = j['project_id']
+    api_key = request.args.get('apikey', default="no_such_key")
+    user_id = access.get_user()
+    log.info("  project_id = {}".format(project_id))
+    log.info("  api_key = {}".format(api_key))
+    log.info("  user_id = {}".format(user_id))
+    if not project_id:
+        message = "Project-based ETL - project_id missing, required"
+        log.error(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    ret_value = {'status': 'ok'}
+    ret = format_as_json_return(ret_value)
+    return ret
+
+
 @app.route('/project/etl', methods=['POST'])
 @apikey
 def project_based_etl():
@@ -64,12 +85,10 @@ def project_based_etl():
     log.info("project_based_etl: data in = {}".format(j))
     project_id = j['project_id']
     excel_file_path = j['excel_file_path']
-    data_dir_path = j['data_dir_path']
     api_key = request.args.get('apikey', default="no_such_key")
     user_id = access.get_user()
     log.info("  project_id = {}".format(project_id))
     log.info("  excel_file_path = {}".format(excel_file_path))
-    log.info("  data_dir_path = {}".format(data_dir_path))
     log.info("  api_key = {}".format(api_key))
     log.info("  user_id = {}".format(user_id))
     if not project_id:
@@ -78,10 +97,6 @@ def project_based_etl():
         return message, status.HTTP_400_BAD_REQUEST
     if not excel_file_path:
         message = "Project-based ETL - excel_file_path missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    if not data_dir_path:
-        message = "Project-based ETL - data_dir_path missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
     ret_value = {'status': 'ok'}
