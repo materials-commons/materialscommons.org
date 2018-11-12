@@ -27,7 +27,7 @@ def main(project, user_id, apikey, excel_file_path, data_dir_path):
     builder.preset_experiment_name_description(experiment_name, experiment_description)
     builder.preset_project_id(project.id)
     builder.set_rename_is_ok(True)
-    builder.build(excel_file_path,data_dir_path)
+    builder.build(excel_file_path, data_dir_path)
     main_log.info("Done")
 
 
@@ -90,7 +90,7 @@ if __name__ == "__main__":
         exit(-1)
 
     startup_log.info("Found match with name-match = {}; project.name = {}; id = {}".
-                   format(args.name, project_selected.name, project_selected.id))
+                     format(args.name, project_selected.name, project_selected.id))
 
     main(project_selected, args.user, args.apikey, args.input, args.data)
 
