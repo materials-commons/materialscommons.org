@@ -284,6 +284,16 @@ function* updateExistingTemplate(template_id, template) {
     let rv = {};
     yield r.table('templates').get(template_id).update(template);
     rv.val = yield getTemplate(template_id);
+    if (`global_${template.name}` !== template_id) {
+        // Make sure the template name and template id match without the global_.
+        // This is a real that needs to be fixed.
+        let t = rv.val;
+        t.id = `global_${t.name}`;
+        t.process_name = t.name;
+        yield r.table('templates').insert(t);
+        yield r.table('templates').get(template_id).delete();
+        rv.val = yield getTemplate(t.id);
+    }
     return rv;
 }
 
