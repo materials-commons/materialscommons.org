@@ -58,6 +58,68 @@ module.exports.GetDatasetAction = class GetDatasetAction extends Action {
     }
 };
 
+module.exports.GetDatasetFilesAction = class GetDatasetFilesAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getDatasetFiles';
+        this.description = 'Get dataset files';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            dataset_id: {
+                required: true,
+            },
+        };
+    }
+
+    async run({response, params}) {
+        const inProject = await dal.tryCatch(async() => await check.datasetInProject(params.dataset_id, params.project_id));
+        if (!inProject) {
+            throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
+        }
+
+        const ds = await dal.tryCatch(async() => await datasets.getDatasetFiles(params.dataset_id));
+        if (!ds) {
+            throw new Error(`Unable to retrieve dataset ${params.dataset_id}`);
+        }
+
+        response.data = ds;
+    }
+};
+
+module.exports.GetDatasetSamplesAndProcessesAction = class GetDatasetSamplesAndProcessesAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getDatasetSamplesAndProcesses';
+        this.description = 'Get dataset samples and processes';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            dataset_id: {
+                required: true,
+            },
+        };
+    }
+
+    async run({response, params}) {
+        const inProject = await dal.tryCatch(async() => await check.datasetInProject(params.dataset_id, params.project_id));
+        if (!inProject) {
+            throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
+        }
+
+        const ds = await dal.tryCatch(async() => await datasets.getDatasetSamplesAndProcesses(params.dataset_id));
+        if (!ds) {
+            throw new Error(`Unable to retrieve dataset ${params.dataset_id}`);
+        }
+
+        response.data = ds;
+    }
+};
+
 module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
     constructor () {
         super();

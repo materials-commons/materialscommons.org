@@ -14,19 +14,21 @@
                     </mc-dataset-details2>
                 </md-tab-body>
             </md-tab>
-            <md-tab>
+            <md-tab md-on-select="$ctrl.samplesSelected()">
                 <md-tab-label>
                     Samples
                 </md-tab-label>
                 <md-tab-body>
-                    <mc-workflow-as-table-editor samples="$ctrl.state.dataset.samples"
+                    <mc-workflow-as-table-editor ng-if="$ctrl.state.dataset.samplesLoaded"
+                                                 samples="$ctrl.state.dataset.samples"
                                                  processes="$ctrl.state.dataset.processes" layout-fill></mc-workflow-as-table-editor>
                 </md-tab-body>
             </md-tab>
-            <md-tab>
+            <md-tab md-on-select="$ctrl.filesSelected()">
                 <md-tab-label>Files</md-tab-label>
                 <md-tab-body>
-                    <mc-dataset-files files="$ctrl.state.dataset.files"
+                    <mc-dataset-files ng-if="$ctrl.state.dataset.filesLoaded"
+                                      files="$ctrl.state.dataset.files"
                                       on-remove-files="$ctrl.handleDeleteFiles(filesToDelete)"
                                       on-add-files="$ctrl.handleAddFiles(filesToAdd)">
                     </mc-dataset-files>
