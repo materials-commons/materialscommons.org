@@ -1,13 +1,7 @@
 <md-dialog flex="50">
     <md-toolbar layout="row">
-        <div ng-if="$ctrl.currentTab == 0" layout-margin>
-            ETL - Create Experiment from Project Data
-        </div>
-        <div ng-if="$ctrl.currentTab == 1" layout-margin>
-            ETL - Create Experiment using Globus
-        </div>
-        <div ng-if="$ctrl.currentTab == 2" layout-margin>
-            ETL - Create Experiment using direct upload
+        <div layout-margin>
+            ETL - Create Experiment from ETL spreadsheet
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
@@ -16,17 +10,13 @@
                 <md-tab-label>Using Project Files</md-tab-label>
                 <md-tab-body>
                     <div layout="column">
-                        <p>To create new experiment in the
-                            project <b>{{$ctrl.project.name}}</b>.
-                            Select an Excel file from your project, and a path for the
-                            ELT data directory. (Note: * indicates required fields)
-                        </p><br />
-                        <p>Project data can be uploaded directly within the web app,
-                            file by file or in small groups,
-                            using the project files pages;
-                            see the <b>All files</b> tab on the left side bar.
-                            Or in as a batch process, using Globus;
-                            see the <b>Globus Upload To Project</b> tab on the left side bar.
+                        <p>To create new experiment in this project,
+                            <b>{{$ctrl.project.name}}</b>,
+                            select an Excel file from the project.
+                            Project data files, as specified in your spreadsheet,
+                            will be uploaded from (and relative to)
+                            the project directory that contains the excel file.
+                            (Note: * indicates required fields)
                         </p>
                     </div>
                     <form layout="column" class="dialog-form">
@@ -47,24 +37,10 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        <md-input-container md-no-float>
-                            <label>Path to data directory</label>
-                            <md-select ng-required="false" ng-model="$ctrl.dirPath">
-                                <md-option ng-value="choice"
-                                           ng-repeat="choice in $ctrl.dirPaths">
-                                    {{::choice}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
                     </form>
-                    <p class="warning" ng-if="!$ctrl.dirPath">
-                        While the 'Path to the data directory' is not required. If not entered, none of the
-                        data files in the spreadsheet will be attached to the experiment, it's processes, or it's
-                        samples.
-                    </p>
                 </md-tab-body>
             </md-tab>
-            <md-tab>
+            <md-tab ng-if="False">
                 <md-tab-label>Using Globus</md-tab-label>
                 <md-tab-body>
                     <div layout="column">
@@ -131,18 +107,14 @@
                 <md-tab-label>Drag and Drop</md-tab-label>
                 <md-tab-body>
                     <form layout="column" class="dialog-form">
-                        <p> To create an experiment <b>without uploading files</b>,
-                            fill out the form and drag/drop (or open)
-                            the Excel spreadsheet, below.
-                        </p>
-                        <p> To create an experiment with the data files uploaded, using Globus,
-                            switch to the alternate dialog using the 'USING GLOBUS' tab (above).
+                        <p> To create new experiment in the project <b>{{$ctrl.project.name}}</b>,
+                            <b>without data files</b>, fill out the form below and drag/drop (or open)
+                            the Excel spreadsheet from your machine. (Note: * indicates required fields)
                         </p>
                         <br />
-                        <p> To create new experiment in the project <b>{{$ctrl.project.name}}</b>.
-                            The experiment name and the excel file are required (*).
+                        <p> To create an experiment with the data files see the tab
+                            'USING PROJECT FILES' and follow the instructions there.
                         </p>
-                        <br />
                         <md-input-container md-no-float>
                             <label>Experiment Name</label>
                             <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
