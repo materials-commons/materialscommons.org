@@ -221,6 +221,7 @@ function stop_mcserv() {
     ps -eo "pid,command" | grep mcserv | grep "$MCDB_CONNECTION" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
         kill ${line}
+        sleep 3
         echo "  Stopped mcserv with pid ${line}"
     done
 }
